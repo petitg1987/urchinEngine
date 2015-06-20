@@ -67,8 +67,7 @@ namespace urchin
 
 	template<class T> Quaternion<T>::Quaternion(const Vector3<T> &eulerAngles)
 	{
-		float angle;
-		angle = eulerAngles.Z * 0.5f;
+		float angle = eulerAngles.Z * 0.5f;
 		float sinZ = std::sin(angle);
 		float cosZ = std::cos(angle);
 		angle = eulerAngles.Y * 0.5f;
