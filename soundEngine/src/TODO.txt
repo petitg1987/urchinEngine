@@ -1,0 +1,24 @@
+############################################
+# To do :
+############################################
+- SOUND MANAGER
+	- (1) [NEW FEATURE] Pause all sounds
+	- (2) [NEW FEATURE] SoundManager#addPointSound: allow user to choose shape margin
+- SOUND TRIGGER
+	- (2) [NEW FEATURE] Support convex hull sound shape
+	- (2) [NEW FEATURE] Support portal IN and portal OUT to trigger sound
+
+############################################
+# To check :
+############################################
+- 
+
+############################################
+# Bug :
+############################################
+- 
+
+############################################
+# Notes :
+############################################
+- 

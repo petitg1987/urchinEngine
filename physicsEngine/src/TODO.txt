@@ -1,0 +1,37 @@
+############################################
+# To do :
+############################################
+- BROADPHASE
+	- (2) [OPTIMIZATION] Use a memory pool when create new OverlappingPair
+- NARROWPHASE
+	- (2) [NEW FEATURE] Support continuous collision detection (see Box2D project)
+	- (2) [NEW FEATURE] Allow changing shape on body for animated objects & allow to retrieve dynamic bound box on animated object
+	- (2) [NEW FEATURE] Support joints between shapes
+	- (2) [NEW FEATURE] Support compound shape with PhysicsTransform instead of translation
+	- (2) [OPTIMIZATION] Use a memory pool when transfom a shape to object (i.e.: CollisionBoxShape#toConvexObject)
+	- (3) [OPTIMIZATION] GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC).
+	- (3) [OPTIMIZATION] EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
+	- (2) [OPTIMIZATION] Use a memory pool when create a result of GJK and EPA algorithm
+- GLOBAL
+	- (3) [OPTIMIZATION] Use PGO in g++
+	- (3) [OPTIMIZATION] Use lock-free
+- PROCESSABLE
+	- (3) [NEW FEATURE] Handle stair for character controller
+
+############################################
+# To check :
+############################################
+- 
+
+############################################
+# Bug :
+############################################
+- CONSTRAINT SOLVER
+	- (2) A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision.
+- ISLAND
+	- (2) When an object bounces and reaches higher value on Y axis, his velocity is near 0.0 and object is deactivated by IslandManager.
+
+############################################
+# Notes :
+############################################
+- 

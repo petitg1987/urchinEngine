@@ -1,0 +1,52 @@
+############################################
+# To do :
+############################################
+- LIGHTING
+	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
+- SHADOW
+	- (3) [QUALITY IMPROVEMENT] Stable shadow (Shader X6)
+	- (3) [QUALITY IMPROVEMENT] Don't use main octree to determine shadow caster box. Indeed, it isn't working well for large scene.
+	- (3) [QUALITY IMPROVEMENT] Use step (palier) for shadow caster box. It avoid jerk on shadow when objects move.
+	- (3) [NEW FEATURE] Shadow on omnidirectional light
+	- (3) [OPTIMIZATION] Don't use two textures (depth and GL_RG32F) for shadow maps
+- GUI
+	- (1) [NEW FEATURE] Combo list
+	- (3) [NEW FEATURE] Drag and drop
+	- (3) [NEW FEATURE] Textarea
+	- (3) [NEW FEATURE] Scrollbar
+	- (3) [NEW FEATURE] Text selection
+	- (3) [NEW FEATURE] Use 'glutBitmapCharacter' to display characters
+- GRAPHIC EFFECT
+	- (3) [NEW FEATURE] Water
+	- (3) [NEW FEATURE] Reflects
+	- (3) [NEW FEATURE] Smoke
+	- (3) [NEW FEATURE] Fire & explosion
+	- (3) [NEW FEATURE] Trees & wind (http://http.developer.nvidia.com/GPUGems3/gpugems3_ch06.html)
+	- (3) [NEW FEATURE] Ambient occlusion
+	- (3) [NEW FEATURE] Alpha management
+	- (3) [OPTIMIZATION] Textures compression
+- SCENE
+	- (3) [OPTIMIZATION] LOD
+	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
+- GLOBAL
+	- (3) [OPTIMIZATION] Use PGO in g++
+
+############################################
+# To check :
+############################################
+- 
+
+############################################
+# Bug :
+############################################
+- 
+
+############################################
+# Notes :
+############################################
+- Library: OpenGL, GLU, Glew, Boost, FreeType2
+- COD4 character: 6000 triangles + normal mapping
+- Crysis 1 scene: from 500 000 to 1 million of triangles displayed
+- Skyrim: shadow map resolution 4096x4096 (hight quality), 2048*2048 (medium quality), 2 shadow maps: primary and secondary
+- OpenGL/3dEngine (column major): Proj*View*Model*v
+- OpenGL: coordinate -1,1 in X, Y and Z (if Z=-farPlane => 1, if Z=-nearPlane => -1 | urchin: negative Z are visible)

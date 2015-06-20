@@ -1,0 +1,28 @@
+#ifndef ENGINE_MATERIAL_H
+#define ENGINE_MATERIAL_H
+
+#include "resources/Resource.h"
+#include "resources/image/Image.h"
+
+namespace urchin
+{
+
+	class Material : public Resource
+	{
+		public:
+			Material(Image *, Image *, float);
+			~Material();
+
+			const Image *getDiffuseTexture() const;
+			const Image *getNormalTexture() const;
+			float getAmbientFactor() const;
+		
+		private:
+			Image *diffuseTexture;
+			Image *normalTexture;
+			float ambientFactor;
+	};
+
+}
+	
+#endif

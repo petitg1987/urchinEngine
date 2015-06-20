@@ -1,0 +1,87 @@
+#include <GL/glew.h>
+#include <GL/gl.h>
+
+#include "Mesh.h"
+#include "scene/renderer3d/model/displayer/ModelDisplayer.h"
+#include "resources/model/MeshService.h"
+#include "utils/shader/ShaderManager.h"
+
+namespace urchin
+{
+
+	Mesh::Mesh(const ConstMesh *const constMesh) :
+		constMesh(constMesh),
+		vertices(new Point3<float>[constMesh->getNumberVertices()]),
+		dataVertices(new DataVertex[constMesh->getNumberVertices()])
+	{
+		//visual
+		glGenBuffers(4, bufferIDs);
+		glGenVertexArrays(1, &vertexArrayObject);
+		glBindVertexArray(vertexArrayObject);
+
+		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, constMesh->getBaseVertices(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
+		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*2, constMesh->getTextureCoordinates(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(SHADER_TEX_COORD);
+		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, false, 0, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL_TANGENT]);
+		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), constMesh->getBaseDataVertices(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(SHADER_NORMAL);
+		glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, false, sizeof(DataVertex), 0);
+		glEnableVertexAttribArray(SHADER_TANGENT);
+		glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, false, sizeof(DataVertex), (char*)(sizeof(float)*3));
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(int),  constMesh->getTriangles(), GL_STATIC_DRAW);
+	}
+
+	Mesh::~Mesh()
+	{
+		delete [] vertices;
+		delete [] dataVertices;
+
+		glDeleteVertexArrays(1, &vertexArrayObject);
+		glDeleteBuffers(4, bufferIDs);
+	}
+
+	void Mesh::update(const Bone *const skeleton)
+	{
+		//recompute the vertices and normals
+		MeshService::instance()->computeVertices(constMesh, skeleton, vertices);
+		MeshService::instance()->computeNormals(constMesh, vertices, dataVertices);
+
+		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, vertices, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL_TANGENT]);
+		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), dataVertices, GL_DYNAMIC_DRAW);
+	}
+
+	void Mesh::display(const MeshParameter &meshParameter) const
+	{
+		if(meshParameter.getDiffuseTextureUnit()!=-1)
+		{
+			glActiveTexture(meshParameter.getDiffuseTextureUnit());
+			glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
+		}
+
+		if(meshParameter.getNormalTextureUnit()!=-1)
+		{
+			glActiveTexture(meshParameter.getNormalTextureUnit());
+			glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getNormalTexture()->getTextureID());
+		}
+
+		if(meshParameter.getAmbientFactorLoc()!=-1)
+		{
+			glUniform1f(meshParameter.getAmbientFactorLoc(), constMesh->getMaterial()->getAmbientFactor());
+		}
+
+		glBindVertexArray(vertexArrayObject);
+		glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, 0);
+	}
+
+}
