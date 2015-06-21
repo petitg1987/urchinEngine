@@ -30,5 +30,5 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - *None*
   
 - Map Editor:
-  - Add 3d models, rigid body, sound on scene
+  - Add > 3d model, rigid body and sound on scene
   - Debug > view light scope, hitbox, sound trigger
