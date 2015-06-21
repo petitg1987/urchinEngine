@@ -19,7 +19,7 @@ namespace urchin
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
-			const Sphere<float> getSphere() const;
+			const Sphere<float> retrieveSphere() const;
 
 		private:
 			const Sphere<float> sphereObject; //object without margin

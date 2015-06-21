@@ -18,7 +18,7 @@ namespace urchin
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
-			const ConvexHull3D<float> getConvexHull() const;
+			const ConvexHull3D<float> retrieveConvexHull() const;
 
 		private:
 			const ConvexHull3D<float> convexHullObjectWithMargin;

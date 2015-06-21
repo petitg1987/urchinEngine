@@ -39,7 +39,7 @@ namespace urchin
 		return convexHullObjectWithoutMargin.getSupportPoint(direction);
 	}
 
-	const ConvexHull3D<float> CollisionConvexHullObject::getConvexHull() const
+	const ConvexHull3D<float> CollisionConvexHullObject::retrieveConvexHull() const
 	{
 		return convexHullObjectWithMargin;
 	}

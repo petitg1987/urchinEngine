@@ -56,13 +56,13 @@ namespace urchin
 	{
 		if(includeMargin)
 		{
-			return getCapsule().getSupportPoint(direction);
+			return retrieveCapsule().getSupportPoint(direction);
 		}
 
 		return capsuleObject.getSupportPoint(direction);
 	}
 
-	const Capsule<float> CollisionCapsuleObject::getCapsule() const
+	const Capsule<float> CollisionCapsuleObject::retrieveCapsule() const
 	{
 		return Capsule<float>(getRadius(), getCylinderHeight(), getCapsuleOrientation(), getCenterPosition(), getOrientation());
 	}

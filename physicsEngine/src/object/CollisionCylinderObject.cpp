@@ -59,13 +59,13 @@ namespace urchin
 	{
 		if(includeMargin)
 		{
-			return getCylinder().getSupportPoint(direction);
+			return retrieveCylinder().getSupportPoint(direction);
 		}
 
 		return cylinderObject.getSupportPoint(direction);
 	}
 
-	const Cylinder<float> CollisionCylinderObject::getCylinder() const
+	const Cylinder<float> CollisionCylinderObject::retrieveCylinder() const
 	{
 		return Cylinder<float>(getRadius(), getHeight(), getCylinderOrientation(), getCenterPosition(), getOrientation());
 	}

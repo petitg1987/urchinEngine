@@ -22,7 +22,7 @@ namespace urchin
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
-			const OBBox<float> getOBBox() const;
+			const OBBox<float> retrieveOBBox() const;
 
 		private:
 			const OBBox<float> boxObject; //object without margin

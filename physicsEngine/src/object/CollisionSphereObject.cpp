@@ -32,13 +32,13 @@ namespace urchin
 	{
 		if(includeMargin)
 		{
-			return getSphere().getSupportPoint(direction);
+			return retrieveSphere().getSupportPoint(direction);
 		}
 
 		return sphereObject.getPosition();
 	}
 
-	const Sphere<float> CollisionSphereObject::getSphere() const
+	const Sphere<float> CollisionSphereObject::retrieveSphere() const
 	{
 		return Sphere<float>(getRadius(), getPosition());
 	}

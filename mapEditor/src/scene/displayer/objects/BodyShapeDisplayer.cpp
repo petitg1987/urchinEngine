@@ -90,31 +90,31 @@ namespace urchin
 	GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
 		const CollisionSphereObject *sphereObject = static_cast<const CollisionSphereObject *>(bodyObject);
-		return new SphereModel(sphereObject->getSphere(), 15);
+		return new SphereModel(sphereObject->retrieveSphere(), 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveBoxGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
 		const CollisionBoxObject *boxObject = static_cast<const CollisionBoxObject *>(bodyObject);
-		return new OBBoxModel(boxObject->getOBBox());
+		return new OBBoxModel(boxObject->retrieveOBBox());
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveCylinderGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
 		const CollisionCylinderObject *cylinderObject = static_cast<const CollisionCylinderObject *>(bodyObject);
-		return new CylinderModel(cylinderObject->getCylinder(), 15);
+		return new CylinderModel(cylinderObject->retrieveCylinder(), 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
 		const CollisionCapsuleObject *capsuleObject = static_cast<const CollisionCapsuleObject *>(bodyObject);
-		return new CapsuleModel(capsuleObject->getCapsule(), 15, 15);
+		return new CapsuleModel(capsuleObject->retrieveCapsule(), 15, 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
 		const CollisionConvexHullObject *convexHullObject = static_cast<const CollisionConvexHullObject *>(bodyObject);
-		return new PointsModel(convexHullObject->getConvexHull().getPoints(), 5.0);
+		return new PointsModel(convexHullObject->retrieveConvexHull().getPoints(), 5.0);
 	}
 
 	void BodyShapeDisplayer::cleanCurrentDisplay()

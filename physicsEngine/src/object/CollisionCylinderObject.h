@@ -23,7 +23,7 @@ namespace urchin
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
-			const Cylinder<float> getCylinder() const;
+			const Cylinder<float> retrieveCylinder() const;
 
 		private:
 			const Cylinder<float> cylinderObject; //object without margin

@@ -23,7 +23,7 @@ namespace urchin
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
-			const Capsule<float> getCapsule() const;
+			const Capsule<float> retrieveCapsule() const;
 
 		private:
 			const Capsule<float> capsuleObject; //object without margin
