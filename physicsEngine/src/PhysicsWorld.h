@@ -2,6 +2,7 @@
 #define ENGINE_PHYSICSWORLD_H
 
 #include <vector>
+#include <atomic>
 #include <boost/thread.hpp>
 #include "UrchinCommon.h"
 
@@ -48,8 +49,7 @@ namespace urchin
 			void postProcess(float, const Vector3<float> &);
 
 			boost::thread *physicsSimulationThread;
-			bool physicsSimulationStopper;
-			boost::recursive_mutex stopperMutex;
+			std::atomic_bool physicsSimulationStopper;
 
 			mutable boost::recursive_mutex gravityMutex;
 			Vector3<float> gravity;

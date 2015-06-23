@@ -13,13 +13,14 @@ namespace urchin
 	StreamUpdateWorker::StreamUpdateWorker() :
 		nbChunkBuffer(ConfigService::instance()->getUnsignedIntValue("player.immutable.numberOfStreamBuffer")),
 		nbSecondByChunk(ConfigService::instance()->getUnsignedIntValue("player.immutable.streamChunkSizeInSecond")),
-		updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.immutable.updateStreamBufferPauseTime")),
-		streamUpdateWorkerStopper(false)
+		updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.immutable.updateStreamBufferPauseTime"))
 	{
 		if(nbChunkBuffer <= 1)
 		{
 			throw std::domain_error("Number of chunk buffer must be greater than one.");
 		}
+
+		streamUpdateWorkerStopper.store(false, std::memory_order_relaxed);
 	}
 
 	StreamUpdateWorker::~StreamUpdateWorker()
@@ -129,9 +130,7 @@ namespace urchin
 	 */
 	bool StreamUpdateWorker::continueExecution()
 	{
-		boost::recursive_mutex::scoped_lock lock(stopperMutex);
-
-		return !streamUpdateWorkerStopper;
+		return !streamUpdateWorkerStopper.load(std::memory_order_relaxed);
 	}
 
 	/**
@@ -139,9 +138,7 @@ namespace urchin
 	 */
 	void StreamUpdateWorker::interrupt()
 	{
-		boost::recursive_mutex::scoped_lock lock(stopperMutex);
-
-		streamUpdateWorkerStopper = true;
+		streamUpdateWorkerStopper.store(true, std::memory_order_relaxed);
 	}
 
 	bool StreamUpdateWorker::processTask(StreamUpdateTask *task)

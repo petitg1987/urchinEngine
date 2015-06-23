@@ -123,9 +123,7 @@ namespace urchin
 	 */
 	void PhysicsWorld::interrupt()
 	{
-		boost::recursive_mutex::scoped_lock lock(stopperMutex);
-
-		physicsSimulationStopper = true;
+		physicsSimulationStopper.store(true, std::memory_order_relaxed);
 	}
 
 	void PhysicsWorld::startPhysicsUpdate()
@@ -168,9 +166,7 @@ namespace urchin
 	 */
 	bool PhysicsWorld::continueExecution()
 	{
-		boost::recursive_mutex::scoped_lock lock(stopperMutex);
-
-		return !physicsSimulationStopper;
+		return !physicsSimulationStopper.load(std::memory_order_relaxed);
 	}
 
 	void PhysicsWorld::processPhysicsUpdate()

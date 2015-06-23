@@ -4,14 +4,10 @@ namespace urchin
 {
 
 	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, std::shared_ptr<const CollisionShape3D> shape) :
-			bIsNew(false),
-			bIsDeleted(false),
 			workBody(nullptr),
 			transform(transform),
 			originalShape(shape),
-			id(id),
-			bIsStatic(true),
-			bIsActive(false)
+			id(id)
 	{
 		this->scaledShape = originalShape->scale(transform.getScale());
 
@@ -19,6 +15,11 @@ namespace urchin
 		restitution = 0.2f;
 		friction = 0.5f;
 		rollingFriction = 0.0f;
+
+		bIsNew.store(false, std::memory_order_relaxed);
+		bIsDeleted.store(false, std::memory_order_relaxed);
+		bIsStatic.store(true, std::memory_order_relaxed);
+		bIsActive.store(false, std::memory_order_relaxed);
 	}
 
 	AbstractBody::~AbstractBody()
@@ -28,30 +29,22 @@ namespace urchin
 
 	void AbstractBody::setIsNew(bool isNew)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		this->bIsNew = isNew;
+		this->bIsNew.store(isNew, std::memory_order_relaxed);
 	}
 
 	bool AbstractBody::isNew() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		return bIsNew;
+		return bIsNew.load(std::memory_order_relaxed);
 	}
 
 	void AbstractBody::markAsDeleted()
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		this->bIsDeleted = true;
+		this->bIsDeleted.store(true, std::memory_order_relaxed);
 	}
 
 	bool AbstractBody::isDeleted() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		return bIsDeleted;
+		return bIsDeleted.load(std::memory_order_relaxed);
 	}
 
 	void AbstractBody::setWorkBody(AbstractWorkBody *workBody)
@@ -75,11 +68,13 @@ namespace urchin
 
 	void AbstractBody::apply(const AbstractWorkBody *workBody)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		{
+			boost::recursive_mutex::scoped_lock lock(bodyMutex);
 
-		transform.setPosition(workBody->getPosition());
-		transform.setOrientation(workBody->getOrientation());
-		bIsActive = workBody->isActive();
+			transform.setPosition(workBody->getPosition());
+			transform.setOrientation(workBody->getOrientation());
+		}
+		bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
 	}
 
 	const Transform<float> &AbstractBody::getTransform() const
@@ -193,9 +188,7 @@ namespace urchin
 	 */
 	bool AbstractBody::isStatic() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		return bIsStatic;
+		return bIsStatic.load(std::memory_order_relaxed);
 	}
 
 	/**
@@ -203,9 +196,7 @@ namespace urchin
 	 */
 	void AbstractBody::setIsStatic(bool bIsStatic)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		this->bIsStatic = bIsStatic;
+		this->bIsStatic.store(bIsStatic, std::memory_order_relaxed);
 	}
 
 	/**
@@ -213,9 +204,7 @@ namespace urchin
 	 */
 	bool AbstractBody::isActive() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
-
-		return bIsActive;
+		return bIsActive.load(std::memory_order_relaxed);
 	}
 
 }

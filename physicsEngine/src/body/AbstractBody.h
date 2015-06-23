@@ -4,6 +4,7 @@
 #include <boost/thread.hpp>
 #include <string>
 #include <memory>
+#include <atomic>
 #include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
@@ -57,8 +58,8 @@ namespace urchin
 
 		private:
 			//technical data
-			bool bIsNew;
-			bool bIsDeleted;
+			std::atomic_bool bIsNew;
+			std::atomic_bool bIsDeleted;
 			AbstractWorkBody *workBody;
 
 			//body representation data
@@ -73,8 +74,8 @@ namespace urchin
 			float rollingFriction;
 
 			//state flags
-			bool bIsStatic;
-			bool bIsActive;
+			std::atomic_bool bIsStatic;
+			std::atomic_bool bIsActive;
 	};
 
 }

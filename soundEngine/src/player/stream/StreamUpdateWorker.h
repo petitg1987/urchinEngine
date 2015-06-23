@@ -2,6 +2,7 @@
 #define ENGINE_STREAMUPDATEWORKER_H
 
 #include <vector>
+#include <atomic>
 #include <boost/thread.hpp>
 
 #include "player/stream/StreamUpdateTask.h"
@@ -40,8 +41,7 @@ namespace urchin
 			const unsigned int nbSecondByChunk;
 			const unsigned int updateStreamBufferPauseTime;
 
-			bool streamUpdateWorkerStopper;
-			boost::recursive_mutex stopperMutex;
+			std::atomic_bool streamUpdateWorkerStopper;
 			mutable boost::recursive_mutex tasksMutex;
 
 			std::vector<StreamUpdateTask *> tasks;
