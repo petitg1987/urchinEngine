@@ -225,7 +225,7 @@ namespace urchin
 					const ManifoldContactPoint &manifoldContactPoint = it->getManifoldContactPoint(i);
 					float depth = manifoldContactPoint.getDepth();
 
-					if(depth < 0.00001f)
+					if(depth < 0.0001f)
 					{
 						Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
 						Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
