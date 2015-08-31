@@ -11,6 +11,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - UI 2D: button, window, text, text input, bitmap
   - Skybox
   - Normal mapping
+  - Anti-aliasing (FXAA)
 
 - Physics Engine:
   - Supported shapes: sphere, box, cylinder, capsule, convex hull
