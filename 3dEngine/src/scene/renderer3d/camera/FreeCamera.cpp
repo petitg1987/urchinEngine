@@ -3,6 +3,13 @@
 #include "FreeCamera.h"
 #include "scene/SceneManager.h"
 
+#define DEFAULT_KEY_FRONT 'Z'
+#define DEFAULT_KEY_BACK 'S'
+#define DEFAULT_KEY_LEFT 'Q'
+#define DEFAULT_KEY_RIGHT 'D'
+#define DEFAULT_SPEED 10.0
+#define DEFAULT_ROTATE_SPEED 2.0
+
 namespace urchin
 {
 	
@@ -11,18 +18,18 @@ namespace urchin
 	*/
 	FreeCamera::FreeCamera(float angle, float nearPlane, float farPlane) :
 			Camera(angle, nearPlane, farPlane),
+			keyFront(DEFAULT_KEY_FRONT),
+			keyBack(DEFAULT_KEY_BACK),
+			keyLeft(DEFAULT_KEY_LEFT),
+			keyRight(DEFAULT_KEY_RIGHT),
 			isKeyFrontPressed(false),
 			isKeyBackPressed(false),
 			isKeyLeftPressed(false),
-			isKeyRightPressed(false)
+			isKeyRightPressed(false),
+			speed(DEFAULT_SPEED),
+			rotateSpeed(DEFAULT_ROTATE_SPEED)
 	{
-		keyFront = ConfigService::instance()->getCharValue("freeCamera.defaultValue.keyFront");
-		keyBack = ConfigService::instance()->getCharValue("freeCamera.defaultValue.keyBack");
-		keyLeft = ConfigService::instance()->getCharValue("freeCamera.defaultValue.keyLeft");
-		keyRight = ConfigService::instance()->getCharValue("freeCamera.defaultValue.keyRight");
 
-		speed = ConfigService::instance()->getFloatValue("freeCamera.defaultValue.speed");
-		rotateSpeed = ConfigService::instance()->getFloatValue("freeCamera.defaultValue.rotateSpeed");
 	}
 
 	FreeCamera::~FreeCamera()

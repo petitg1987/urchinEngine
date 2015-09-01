@@ -4,8 +4,8 @@ namespace urchin
 {
 
 	template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
-		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.immutable.epaMaxIteration")),
-		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.immutable.epaTerminationTolerance")),
+		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.epaMaxIteration")),
+		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance")),
 		minDotProductTolerance(std::numeric_limits<T>::epsilon() * (T)10.0)
 	{
 

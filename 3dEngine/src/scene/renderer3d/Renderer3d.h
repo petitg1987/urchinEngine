@@ -34,6 +34,7 @@ namespace urchin
 			LightManager *getLightManager() const;
 			OctreeManager<Model> *getModelOctreeManager() const;
 			ShadowManager *getShadowManager() const;
+			AntiAliasingApplier *getAntiAliasingApplier() const;
 
 			//camera
 			void setCamera(Camera *);

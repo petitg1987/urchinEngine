@@ -38,7 +38,7 @@ namespace urchin
 				maxElementSize = std::max(maxElementSize, collisionAlgorithmBuilderMatrix[i][j]->getAlgorithmSize());
 			}
 		}
-		unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.immutable.algorithmPoolSize");
+		unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
 		algorithmPool = new FixedSizePool<CollisionAlgorithm>(maxElementSize, algorithmPoolSize);
 	}
 

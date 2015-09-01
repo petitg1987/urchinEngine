@@ -1,6 +1,6 @@
 template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(int depth) :
 		isInitialized(false),
-		overflowSize(ConfigService::instance()->getFloatValue("octree.immutable.overflowSize")),
+		overflowSize(ConfigService::instance()->getFloatValue("octree.overflowSize")),
 		depth(depth),
 		mainOctree(nullptr)
 {

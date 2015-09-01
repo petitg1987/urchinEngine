@@ -9,6 +9,8 @@
 #include "utils/shader/TokenReplacerShader.h"
 #include "utils/display/texture/DisplayTexture.h"
 
+#define DEFAULT_OCTREE_DEPTH 3
+
 namespace urchin
 {
 
@@ -33,7 +35,7 @@ namespace urchin
 	{
 		antiAliasingApplier = new AntiAliasingApplier();
 		lightManager = new LightManager();
-		modelOctreeManager = new OctreeManager<Model>(ConfigService::instance()->getUnsignedIntValue("renderer3d.defaultValue.octreeDepth"));
+		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
 	}
 
@@ -213,6 +215,11 @@ namespace urchin
 		return shadowManager;
 	}
 
+	AntiAliasingApplier *Renderer3d::getAntiAliasingApplier() const
+	{
+		return antiAliasingApplier;
+	}
+
 	void Renderer3d::setCamera(Camera *camera)
 	{
 		if(!isInitialized)
@@ -364,7 +371,7 @@ namespace urchin
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		antiAliasingApplier->applyOn(textureIDs[TEX_LIGHTING_PASS]);
+		antiAliasingApplier->applyOn(textureIDs[TEX_LIGHTING_PASS]); //TODO add choice to apply or not
 
 		#ifdef _DEBUG
 			//display depth buffer

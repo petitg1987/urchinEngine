@@ -9,7 +9,7 @@ namespace urchin
 			body1(body1),
 			body2(body2),
 			nbContactPoint(0),
-			contactBreakingThreshold(ConfigService::instance()->getFloatValue("narrowPhase.immutable.contactBreakingThreshold"))
+			contactBreakingThreshold(ConfigService::instance()->getFloatValue("narrowPhase.contactBreakingThreshold"))
 	{
 
 	}

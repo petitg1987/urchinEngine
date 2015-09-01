@@ -9,17 +9,9 @@ namespace urchin
 {
 
 	TextureManager::TextureManager() : Singleton<TextureManager>(),
-		anisotropy(0.0f)
+		anisotropy(getMaxSupportedAnisotropy())
 	{
-		const std::string &defaultAnisotropy = ConfigService::instance()->getStringValue("texture.defaultValue.anisotropy");
-		if(defaultAnisotropy.compare("MAX")==0)
-		{
-			anisotropy = getMaxSupportedAnisotropy();
-		}else
-		{
-			anisotropy = Converter::toFloat(defaultAnisotropy);
-			clampToMaxAnisotropy();
-		}
+
 	}
 
 	TextureManager::~TextureManager()

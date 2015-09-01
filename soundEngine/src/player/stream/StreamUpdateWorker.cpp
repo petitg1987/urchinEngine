@@ -11,9 +11,9 @@ namespace urchin
 {
 
 	StreamUpdateWorker::StreamUpdateWorker() :
-		nbChunkBuffer(ConfigService::instance()->getUnsignedIntValue("player.immutable.numberOfStreamBuffer")),
-		nbSecondByChunk(ConfigService::instance()->getUnsignedIntValue("player.immutable.streamChunkSizeInSecond")),
-		updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.immutable.updateStreamBufferPauseTime"))
+		nbChunkBuffer(ConfigService::instance()->getUnsignedIntValue("player.numberOfStreamBuffer")),
+		nbSecondByChunk(ConfigService::instance()->getUnsignedIntValue("player.streamChunkSizeInSecond")),
+		updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.updateStreamBufferPauseTime"))
 	{
 		if(nbChunkBuffer <= 1)
 		{

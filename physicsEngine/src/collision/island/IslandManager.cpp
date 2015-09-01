@@ -5,8 +5,8 @@ namespace urchin
 
 	IslandManager::IslandManager(const BodyManager *bodyManager) :
 		bodyManager(bodyManager),
-		linearSleepingThreshold(ConfigService::instance()->getFloatValue("island.immutable.linearSleepingThreshold")),
-		angularSleepingThreshold(ConfigService::instance()->getFloatValue("island.immutable.angularSleepingThreshold"))
+		linearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
+		angularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold"))
 	{
 
 	}

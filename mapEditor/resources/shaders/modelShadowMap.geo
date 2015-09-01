@@ -9,10 +9,8 @@ uniform int lastSplit;
 
 out int gl_Layer;
 
-void main()
-{
-	for(int layer=firstSplit; layer<=lastSplit; layer++)
-	{
+void main(){
+	for(int layer=firstSplit; layer<=lastSplit; layer++){
 		gl_Layer = layer;
 
 		gl_Position = projectionMatrix[layer] * gl_in[0].gl_Position;

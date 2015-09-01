@@ -9,8 +9,7 @@ uniform int layer;
 
 out vec4 fragColor;
 
-void main()
-{
+void main(){
 	vec4 diffuse = texture2DArray(colorTex, vec3(textCoordinates, layer));
 	
 	vec4 finalDiffuse;

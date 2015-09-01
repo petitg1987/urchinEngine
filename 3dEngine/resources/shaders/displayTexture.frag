@@ -7,8 +7,7 @@ uniform float colorFactor;
 
 out vec4 fragColor;
 
-void main()
-{
+void main(){
 	vec4 diffuse = texture2D(colorTex, textCoordinates);
 	
 	vec4 finalDiffuse;

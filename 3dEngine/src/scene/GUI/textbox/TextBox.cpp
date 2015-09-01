@@ -31,7 +31,7 @@ namespace urchin
 		maxWidthText = width - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
 		
 		//cursor information
-		cursorBlinkSpeed = ConfigService::instance()->getFloatValue("GUI.immutable.cursorBlinkSpeed");
+		cursorBlinkSpeed = ConfigService::instance()->getFloatValue("GUI.cursorBlinkSpeed");
 
 		//visual
 		glGenBuffers(2, bufferIDs);

@@ -4,10 +4,10 @@ namespace urchin
 {
 
 	template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
-		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.immutable.gjkMaxIteration")),
-		relativeTerminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.immutable.gjkRelativeTerminationTolerance")),
-		minimumTerminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.immutable.gjkMinimumTerminationTolerance")),
-		percentageIncreaseOfMinimumTolerance(ConfigService::instance()->getFloatValue("narrowPhase.immutable.gjkPercentageIncreaseOfMinimumTolerance"))
+		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkMaxIteration")),
+		relativeTerminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkRelativeTerminationTolerance")),
+		minimumTerminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkMinimumTerminationTolerance")),
+		percentageIncreaseOfMinimumTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkPercentageIncreaseOfMinimumTolerance"))
 	{
 
 	}

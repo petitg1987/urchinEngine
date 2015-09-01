@@ -11,7 +11,7 @@ namespace urchin
 
 	SweepAndPrune::SweepAndPrune() :
 		defaultPairContainer(new VectorPairContainer()),
-		contactBreakingThreshold(ConfigService::instance()->getFloatValue("narrowPhase.immutable.contactBreakingThreshold"))
+		contactBreakingThreshold(ConfigService::instance()->getFloatValue("narrowPhase.contactBreakingThreshold"))
 	{
 		for(unsigned int axis=0; axis<3; ++axis)
 		{

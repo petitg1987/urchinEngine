@@ -25,7 +25,7 @@ namespace urchin
 
 	void CollisionCapsuleShape::computeSafeMargin()
 	{
-		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.immutable.maximumMarginPercentage");
+		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
 		float minimumSafeMargin = getRadius() * maximumMarginPercentage;
 
 		if(minimumSafeMargin < getInnerMargin())

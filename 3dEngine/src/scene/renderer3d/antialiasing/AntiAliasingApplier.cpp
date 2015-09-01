@@ -1,14 +1,23 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <stdexcept>
+#include <map>
+#include <string>
 
 #include "AntiAliasingApplier.h"
+#include "utils/shader/ShaderManager.h"
+#include "utils/shader/TokenReplacerShader.h"
+
+#define DEFAULT_AA_QUALITY AntiAliasingApplier::Quality::VERY_HIGH
 
 namespace urchin
 {
 
 	AntiAliasingApplier::AntiAliasingApplier() :
 		isInitialized(false),
+		quality(DEFAULT_AA_QUALITY),
+		sceneWidth(-1),
+		sceneHeight(-1),
 		fxaaShader(0),
 		texLoc(0),
 		invSceneSizeLoc(0),
@@ -21,6 +30,8 @@ namespace urchin
 	AntiAliasingApplier::~AntiAliasingApplier()
 	{
 		delete []bufferIDs;
+
+		ShaderManager::instance()->removeProgram(fxaaShader);
 	}
 
 	void AntiAliasingApplier::initialize()
@@ -30,10 +41,7 @@ namespace urchin
 			throw std::runtime_error("Anti aliasing applier is already initialized.");
 		}
 
-		fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "fxaa.frag");
-		ShaderManager::instance()->bind(fxaaShader);
-		texLoc = glGetUniformLocation(fxaaShader, "tex");
-		invSceneSizeLoc = glGetUniformLocation(fxaaShader, "invSceneSize");
+		loadFxaaShader();
 
 		const int vertexArray[8] = {	-1, 1, 1, 1, 1, -1,	-1, -1	};
 		const int stArray[8] = {0, 1, 1, 1, 1, 0, 0, 0};
@@ -56,11 +64,35 @@ namespace urchin
 		isInitialized = true;
 	}
 
+	void AntiAliasingApplier::loadFxaaShader()
+	{
+		std::map<TokenReplacerShader::ShaderToken, std::string> fxaaTokens;
+		fxaaTokens[TokenReplacerShader::ShaderToken::TOKEN0] = std::to_string(static_cast<int>(quality));
+
+		ShaderManager::instance()->removeProgram(fxaaShader);
+		fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "fxaa.frag", fxaaTokens);
+
+		ShaderManager::instance()->bind(fxaaShader);
+		texLoc = glGetUniformLocation(fxaaShader, "tex");
+		invSceneSizeLoc = glGetUniformLocation(fxaaShader, "invSceneSize");
+		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
+	}
+
 	void AntiAliasingApplier::onResize(int width, int height)
 	{
 		ShaderManager::instance()->bind(fxaaShader);
 
-		glUniform2f(invSceneSizeLoc, 1.0f/(float)width, 1.0f/(float)height);
+		this->sceneWidth = width;
+		this->sceneHeight = height;
+
+		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
+	}
+
+	void AntiAliasingApplier::loadNewQuality(Quality quality)
+	{
+		this->quality = quality;
+
+		loadFxaaShader();
 	}
 
 	void AntiAliasingApplier::applyOn(unsigned int textureId)

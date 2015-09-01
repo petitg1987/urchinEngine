@@ -2,6 +2,9 @@
 
 #include "Camera.h"
 
+#define DEFAULT_MAX_ROTATION_X 0.995
+#define DEFAULT_MOUSE_SENSITIVITY 0.006
+
 namespace urchin
 {
 
@@ -20,11 +23,11 @@ namespace urchin
 			view(Point3<float>(0.0, 0.0, -1.0)),
 			up(Vector3<float>(0.0, 1.0, 0.0)),
 			currentRotationX(0.0),
-			maxRotationX(ConfigService::instance()->getFloatValue("camera.defaultValue.maxRotationX")),
+			maxRotationX(DEFAULT_MAX_ROTATION_X),
 			distance(0.0),
 			bUseMouse(false),
 			keyboardLocked(false),
-			mouseSensitivity(ConfigService::instance()->getFloatValue("camera.defaultValue.mouseSensitivity")),
+			mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
 			middleScreenX(0),
 			middleScreenY(0),
 			oldMouseX(0),

@@ -1,6 +1,6 @@
-#include "UrchinCommon.h"
-
 #include "behavior/SoundBehavior.h"
+
+#define DEFAULT_VOLUME_DECREASE_PERCENTAGE_ON_STOP 0.5
 
 namespace urchin
 {
@@ -12,7 +12,7 @@ namespace urchin
 	SoundBehavior::SoundBehavior(PlayBehavior playBehavior, StopBehavior stopBehavior) :
 		playBehavior(playBehavior),
 		stopBehavior(stopBehavior),
-		volumeDecreasePercentageOnStop(ConfigService::instance()->getFloatValue("soundBehavior.defaultValue.volumeDecreasePercentageOnStop"))
+		volumeDecreasePercentageOnStop(DEFAULT_VOLUME_DECREASE_PERCENTAGE_ON_STOP)
 	{
 
 	}
@@ -26,9 +26,10 @@ namespace urchin
 	 */
 	SoundBehavior::SoundBehavior(PlayBehavior playBehavior, StopBehavior stopBehavior, float volumeDecreasePercentageOnStop) :
 		playBehavior(playBehavior),
-		stopBehavior(stopBehavior)
+		stopBehavior(stopBehavior),
+		volumeDecreasePercentageOnStop(volumeDecreasePercentageOnStop)
 	{
-		this->volumeDecreasePercentageOnStop = volumeDecreasePercentageOnStop;
+
 	}
 
 	SoundBehavior::~SoundBehavior()

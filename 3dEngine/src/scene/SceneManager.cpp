@@ -15,7 +15,7 @@ namespace urchin
 			currFrame(0),
 			nbrFps(60), //60 fps by default
 			indexFps(0),
-			refreshRateFps(ConfigService::instance()->getFloatValue("sceneManager.immutable.refreshRateFps"))
+			refreshRateFps(ConfigService::instance()->getFloatValue("sceneManager.refreshRateFps"))
 	{
 		//initialize GL
 		initializeGl();

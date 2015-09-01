@@ -9,7 +9,7 @@ namespace urchin
 {
 
 	ShaderManager::ShaderManager() : Singleton<ShaderManager>(),
-			shadersLocation(ConfigService::instance()->getStringValue("shaders.immutable.shadersLocation")),
+			shadersLocation(ConfigService::instance()->getStringValue("shaders.shadersLocation")),
 			currentProgramID(0)
 	{
 		this->shadersWorkingDirectory = FileSystem::instance()->getWorkingDirectory();

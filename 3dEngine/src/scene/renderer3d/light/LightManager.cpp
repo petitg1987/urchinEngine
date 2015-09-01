@@ -6,18 +6,20 @@
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 
+#define DEFAULT_OCTREE_DEPTH 2
+
 namespace urchin
 {
 
 	LightManager::LightManager() :
 			isInitialized(false),
 			lastUpdatedLight(nullptr),
-			maxLights(ConfigService::instance()->getUnsignedIntValue("light.immutable.maxLights")),
+			maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
 			globalAmbientColorLoc(0),
 			globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0))
 	{
 		lightsInfo = new LightInfo[maxLights];
-		lightOctreeManager = new OctreeManager<Light>(ConfigService::instance()->getUnsignedIntValue("light.defaultValue.octreeDepth"));
+		lightOctreeManager = new OctreeManager<Light>(DEFAULT_OCTREE_DEPTH);
 	}
 
 	LightManager::~LightManager()

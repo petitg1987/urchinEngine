@@ -13,8 +13,8 @@ namespace urchin
 {
 
 	CharacterController::CharacterController(std::shared_ptr<const CollisionShape3D> characterShape, const PhysicsTransform &transform) :
-		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.immutable.timeKeepMoveInAir")),
-		percentageControlInAir(ConfigService::instance()->getFloatValue("character.immutable.percentageControlInAir")),
+		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
+		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
 		physicsWorld(nullptr),
 		ghostBody(new WorkGhostBody("character", transform, characterShape)),
 		verticalVelocity(0.0f),
@@ -225,7 +225,7 @@ namespace urchin
 					const ManifoldContactPoint &manifoldContactPoint = it->getManifoldContactPoint(i);
 					float depth = manifoldContactPoint.getDepth();
 
-					if(depth < 0.0001f)
+					if(depth < 0.0005f)
 					{
 						Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
 						Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];

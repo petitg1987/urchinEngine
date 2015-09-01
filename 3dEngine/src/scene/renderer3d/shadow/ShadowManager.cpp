@@ -14,16 +14,20 @@
 #include "utils/shader/ShaderManager.h"
 #include "utils/shader/TokenReplacerShader.h"
 
+#define DEFAULT_NUMBER_SHADOW_MAPS 2
+#define DEFAULT_SHADOW_MAP_RESOLUTION 2048
+#define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
+
 namespace urchin
 {
 
 	ShadowManager::ShadowManager(LightManager *lightManager, OctreeManager<Model> *modelOctreeManager) :
 			sceneWidth(0),
 			sceneHeight(0),
-			percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.immutable.frustumUniformSplitAgainstLogSplit")),
-			shadowMapResolution(ConfigService::instance()->getUnsignedIntValue("shadow.defaultValue.shadowMapResolution")),
-			nbShadowMaps(ConfigService::instance()->getUnsignedIntValue("shadow.defaultValue.numberOfShadowMaps")),
-			viewingShadowDistance(ConfigService::instance()->getFloatValue("shadow.defaultValue.viewingShadowDistance")),
+			percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
+			shadowMapResolution(DEFAULT_SHADOW_MAP_RESOLUTION),
+			nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
+			viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
 			isInitialized(false),
 			shadowModelDisplayer(nullptr),
 			lightManager(lightManager),
@@ -34,7 +38,7 @@ namespace urchin
 			depthSplitDistanceLoc(0),
 			lightsLocation(nullptr)
 	{
-		switch(ConfigService::instance()->getIntValue("shadow.immutable.depthComponent"))
+		switch(ConfigService::instance()->getIntValue("shadow.depthComponent"))
 		{
 			case 16:
 				depthComponent = GL_DEPTH_COMPONENT16;
@@ -46,7 +50,7 @@ namespace urchin
 				depthComponent = GL_DEPTH_COMPONENT32;
 				break;
 			default:
-				throw std::domain_error("Unsupported value for parameter 'shadow.immutable.depthComponent'.");
+				throw std::domain_error("Unsupported value for parameter 'shadow.depthComponent'.");
 		}
 	}
 

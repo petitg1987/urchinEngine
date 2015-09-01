@@ -6,12 +6,12 @@ namespace urchin
 {
 
 	ConstraintSolverManager::ConstraintSolverManager() :
-			constraintSolverIteration(ConfigService::instance()->getUnsignedIntValue("constraintSolver.immutable.constraintSolverIteration")),
-			biasFactor(ConfigService::instance()->getFloatValue("constraintSolver.immutable.biasFactor")),
-			useWarmStarting(ConfigService::instance()->getBoolValue("constraintSolver.immutable.useWarmStarting")),
-			restitutionVelocityThreshold(ConfigService::instance()->getBoolValue("constraintSolver.immutable.restitutionVelocityThreshold"))
+			constraintSolverIteration(ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolverIteration")),
+			biasFactor(ConfigService::instance()->getFloatValue("constraintSolver.biasFactor")),
+			useWarmStarting(ConfigService::instance()->getBoolValue("constraintSolver.useWarmStarting")),
+			restitutionVelocityThreshold(ConfigService::instance()->getBoolValue("constraintSolver.restitutionVelocityThreshold"))
 	{
-		unsigned int constraintSolvingPoolSize = ConfigService::instance()->getUnsignedIntValue("constraintSolver.immutable.constraintSolvingPoolSize");
+		unsigned int constraintSolvingPoolSize = ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
 		constraintSolvingPool = new FixedSizePool<ConstraintSolving>(sizeof(ConstraintSolving), constraintSolvingPoolSize);
 	}
 

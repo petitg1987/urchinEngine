@@ -27,7 +27,7 @@ namespace urchin
 	{
 		const Vector3<float> &halfSizes = getHalfSizes();
 		float minAxis = (halfSizes.X < halfSizes.Y) ? ((halfSizes.X < halfSizes.Z) ? halfSizes.X : halfSizes.Z) : ((halfSizes.Y < halfSizes.Z) ? halfSizes.Y : halfSizes.Z);
-		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.immutable.maximumMarginPercentage");
+		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
 		float minimumSafeMargin = minAxis * maximumMarginPercentage;
 
 		if(minimumSafeMargin < getInnerMargin())

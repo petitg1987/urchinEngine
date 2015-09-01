@@ -2,6 +2,12 @@
 
 #include "FpsCamera.h"
 
+#define DEFAULT_KEY_FRONT 'Z'
+#define DEFAULT_KEY_BACK 'S'
+#define DEFAULT_KEY_LEFT 'Q'
+#define DEFAULT_KEY_RIGHT 'D'
+#define DEFAULT_SPEED 10.0
+
 namespace urchin
 {
 	
@@ -10,18 +16,16 @@ namespace urchin
 	*/
 	FpsCamera::FpsCamera(float angle, float nearPlane, float farPlane) :
 			Camera(angle, nearPlane, farPlane),
+			keyFront(DEFAULT_KEY_FRONT),
+			keyBack(DEFAULT_KEY_BACK),
+			keyLeft(DEFAULT_KEY_LEFT),
+			keyRight(DEFAULT_KEY_RIGHT),
 			isKeyFrontPressed(false),
 			isKeyBackPressed(false),
 			isKeyLeftPressed(false),
-			isKeyRightPressed(false)
+			isKeyRightPressed(false),
+			speed(DEFAULT_SPEED)
 	{
-		keyFront = ConfigService::instance()->getCharValue("fpsCamera.defaultValue.keyFront");
-		keyBack = ConfigService::instance()->getCharValue("fpsCamera.defaultValue.keyBack");
-		keyLeft = ConfigService::instance()->getCharValue("fpsCamera.defaultValue.keyLeft");
-		keyRight = ConfigService::instance()->getCharValue("fpsCamera.defaultValue.keyRight");
-
-		speed = ConfigService::instance()->getFloatValue("fpsCamera.defaultValue.speed");
-		
 		useMouseToMoveCamera(true);
 	}
 
