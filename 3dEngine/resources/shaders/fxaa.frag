@@ -73,17 +73,17 @@ void main(){
 	const float fxaaQualitySubpix = 0.75;
 	
 	//amount of local contrast required to apply algorithm (0.333=too little (faster), 0.063=overkill)
-	const float fxaaQualityEdgeThreshold = 0.166;
+	const float fxaaQualityEdgeThreshold = 0.25;
 	
-	//trims the algorithm from processing darks (0.0312=visible limit (slower), 0.0833=upper limit)
-	const float fxaaQualityEdgeThresholdMin = 0.04;
+	//trims the algorithm from processing darks (0.0312=max pixel process, 0.3=min pixel process)
+	const float fxaaQualityEdgeThresholdMin = 0.2;
 
 	vec2 posM;
 	posM.x = textCoordinates.x;
 	posM.y = textCoordinates.y;
 
 	vec4 rgbyM = textureLod(tex, posM, 0.0);
-	#define lumaM rgbyM.y
+	float lumaM = fxaaLuma(rgbyM);
 	float lumaS = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 0, 1)));
 	float lumaE = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 1, 0)));
 	float lumaN = fxaaLuma(texture2DLodOffset(tex, posM, 0.0, ivec2( 0,-1)));

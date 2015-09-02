@@ -21,7 +21,7 @@ namespace urchin
 			void initialize();
 			void onResize(int, int);
 
-			void loadNewQuality(Quality quality);
+			void setQuality(Quality quality);
 
 			void applyOn(unsigned int);
 		private:

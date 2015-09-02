@@ -33,7 +33,7 @@ uniform StructLightInfo lightsInfo[#TOKEN0#];
 uniform float depthSplitDistance[#TOKEN1#];
 uniform vec4 globalAmbient;
 
-layout (location = 2) out vec4 fragColor;
+layout (location = #TOKEN2#) out vec4 fragColor;
 
 float computePercentLit(float shadowMapZ, vec2 moments){
 	if (shadowMapZ <= moments.x){ //no shadow

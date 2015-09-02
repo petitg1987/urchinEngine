@@ -34,7 +34,10 @@ namespace urchin
 			LightManager *getLightManager() const;
 			OctreeManager<Model> *getModelOctreeManager() const;
 			ShadowManager *getShadowManager() const;
+
+			//anti aliasing
 			AntiAliasingApplier *getAntiAliasingApplier() const;
+			void activateAntiAliasing(bool);
 
 			//camera
 			void setCamera(Camera *);
@@ -63,6 +66,7 @@ namespace urchin
 			void display(float);
 
 		private:
+			void loadDeferredShadingShader();
 			void onCameraProjectionUpdate();
 
 			//scene
@@ -76,11 +80,14 @@ namespace urchin
 
 			//managers
 			ModelDisplayer *modelDisplayer;
-			AntiAliasingApplier *antiAliasingApplier;
 			GeometryDisplayer *geometryDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
 			LightManager *lightManager;
 			ShadowManager *shadowManager;
+
+			//anti aliasing
+			AntiAliasingApplier *antiAliasingApplier;
+			bool isAntiAliasingActivated;
 
 			//camera
 			Camera *camera;

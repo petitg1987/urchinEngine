@@ -33,10 +33,12 @@ namespace urchin
 			mInverseViewProjectionLoc(0),
 			viewPositionLoc(0)
 	{
-		antiAliasingApplier = new AntiAliasingApplier();
 		lightManager = new LightManager();
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
+
+		antiAliasingApplier = new AntiAliasingApplier();
+		isAntiAliasingActivated = true;
 	}
 
 	Renderer3d::~Renderer3d()
@@ -50,11 +52,13 @@ namespace urchin
 
 		//managers
 		delete modelDisplayer;
-		delete antiAliasingApplier;
 		delete geometryDisplayer;
 		delete shadowManager;
 		delete modelOctreeManager;
 		delete lightManager;
+
+		//anti aliasing
+		delete antiAliasingApplier;
 
 		//skybox
 		delete skybox;
@@ -101,20 +105,7 @@ namespace urchin
 		glGenTextures(4, textureIDs);
 
 		//deferred shading (pass 2)
-		std::ostringstream maxLightsString, nbShadowMapsString;
-		maxLightsString << lightManager->getMaxLights();
-		nbShadowMapsString << shadowManager->getNumberShadowMaps();
-		std::map<TokenReplacerShader::ShaderToken, std::string> tokens;
-		tokens[TokenReplacerShader::TOKEN0] = maxLightsString.str();
-		tokens[TokenReplacerShader::TOKEN1] = nbShadowMapsString.str();
-
-		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
-		ShaderManager::instance()->bind(deferredShadingShader);
-		depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
-		diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
-		normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
-		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
-		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
+		loadDeferredShadingShader();
 
 		const int vertexArray[8] = {-1, 1, 1, 1, 1, -1,	-1, -1};
 		const int stArray[8] = {0, 1, 1, 1, 1, 0, 0, 0};
@@ -134,15 +125,38 @@ namespace urchin
 		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_INT, false, 0, 0);
 
 		//managers
-		antiAliasingApplier->initialize();
 		lightManager->initialize(deferredShadingShader);
 		modelOctreeManager->initialize();
 		shadowManager->initialize(deferredShadingShader);
+
+		//anti aliasing
+		antiAliasingApplier->initialize();
 
 		//default black skybox
 		skybox = new Skybox();
 
 		isInitialized = true;
+	}
+
+	void Renderer3d::loadDeferredShadingShader()
+	{
+		std::ostringstream maxLightsString, nbShadowMapsString;
+		maxLightsString << lightManager->getMaxLights();
+		nbShadowMapsString << shadowManager->getNumberShadowMaps();
+
+		std::map<TokenReplacerShader::ShaderToken, std::string> tokens;
+		tokens[TokenReplacerShader::TOKEN0] = maxLightsString.str();
+		tokens[TokenReplacerShader::TOKEN1] = nbShadowMapsString.str();
+		tokens[TokenReplacerShader::TOKEN2] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
+
+		ShaderManager::instance()->removeProgram(deferredShadingShader);
+		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
+		ShaderManager::instance()->bind(deferredShadingShader);
+		depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
+		diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
+		normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
+		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
+		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 	}
 
 	void Renderer3d::onResize(int width, int height)
@@ -218,6 +232,13 @@ namespace urchin
 	AntiAliasingApplier *Renderer3d::getAntiAliasingApplier() const
 	{
 		return antiAliasingApplier;
+	}
+
+	void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated)
+	{
+		this->isAntiAliasingActivated = isAntiAliasingActivated;
+
+		loadDeferredShadingShader();
 	}
 
 	void Renderer3d::setCamera(Camera *camera)
@@ -364,14 +385,18 @@ namespace urchin
 		updateScene(invFrameRate);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-
 		deferredGeometryRendering();
 
-		lightingPassRendering();
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		antiAliasingApplier->applyOn(textureIDs[TEX_LIGHTING_PASS]); //TODO add choice to apply or not
+		if(isAntiAliasingActivated)
+		{
+			lightingPassRendering();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			antiAliasingApplier->applyOn(textureIDs[TEX_LIGHTING_PASS]);
+		}else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			lightingPassRendering();
+		}
 
 		#ifdef _DEBUG
 			//display depth buffer

@@ -88,7 +88,7 @@ namespace urchin
 		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
 	}
 
-	void AntiAliasingApplier::loadNewQuality(Quality quality)
+	void AntiAliasingApplier::setQuality(Quality quality)
 	{
 		this->quality = quality;
 
