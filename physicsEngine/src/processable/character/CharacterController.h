@@ -16,8 +16,7 @@ namespace urchin
 
 	struct SignificantContactValues
 	{
-		bool hasHit;
-		unsigned int nbOfRecover;
+		unsigned int numberOfHit;
 
 		float maxDotProductUpNormalAxis;
 		Vector3<float> mostUpVerticalNormal;
@@ -78,10 +77,10 @@ namespace urchin
 
 			Point3<float> previousBodyPosition;
 			Vector3<float> lastWalkDirection;
-			bool hasHit; //character hit
 			unsigned int numberOfHit; //number of contact point touching the character
 			bool isOnGround; //character is on the ground
 			float timeInTheAir; //time (sec.) character is not on the ground
+			float jumping; //character is jumping
 			float slopeInPercentage; //slope in percentage (a positive value means that character climb)
 	};
 

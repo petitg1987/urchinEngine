@@ -9,6 +9,10 @@
 #include "collision/broadphase/PairContainer.h"
 #include "PhysicsWorld.h"
 
+#define DEFAULT_MAX_SLOPE 0.785398163f //45 degrees
+#define MIN_RECOVERABLE_DEPTH 0.0001f
+#define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f;
+
 namespace urchin
 {
 
@@ -20,13 +24,13 @@ namespace urchin
 		verticalVelocity(0.0f),
 		jumpSpeed(5.0f),
 		makeJump(false),
-		hasHit(false),
 		numberOfHit(0),
 		isOnGround(false),
 		timeInTheAir(0.0f),
+		jumping(false),
 		slopeInPercentage(0.0f)
 	{
-		setMaxSlope(0.785398163f); //45 degrees
+		setMaxSlope(DEFAULT_MAX_SLOPE);
 		ghostBody->setIsActive(true); //always active for get better reactivity
 	}
 
@@ -166,10 +170,14 @@ namespace urchin
 		}
 
 		//jump
-		if(needJumpAndUpdateFlag() && isOnGround)
+		bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
+		if(needJumpAndUpdateFlag() && closeToTheGround && !jumping)
 		{
 			verticalVelocity += getJumpSpeed();
 			isOnGround = false;
+			jumping = true;
+		}else if(isOnGround && jumping){
+			jumping = false;
 		}
 
 		//compute gravity velocity
@@ -225,13 +233,17 @@ namespace urchin
 					const ManifoldContactPoint &manifoldContactPoint = it->getManifoldContactPoint(i);
 					float depth = manifoldContactPoint.getDepth();
 
-					if(depth < 0.0005f)
+					if(depth < MIN_RECOVERABLE_DEPTH)
 					{
 						Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
 						Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
+
 						ghostBody->setPosition(ghostBody->getPosition().translate(moveVector));
 
-						saveSignificantContactValues(significantContactValues, normal);
+						if(subStepIndex==0)
+						{
+							saveSignificantContactValues(significantContactValues, normal);
+						}
 					}
 				}
 			}
@@ -243,19 +255,15 @@ namespace urchin
 	SignificantContactValues CharacterController::resetSignificantContactValues()
 	{
 		SignificantContactValues significantContactValues;
-		significantContactValues.hasHit = false;
-		significantContactValues.nbOfRecover = 0;
+		significantContactValues.numberOfHit = 0;
 		significantContactValues.maxDotProductUpNormalAxis = std::numeric_limits<float>::min();
-
-		numberOfHit = 0;
 
 		return significantContactValues;
 	}
 
 	void CharacterController::saveSignificantContactValues(SignificantContactValues &significantContactValues, const Vector3<float> &normal)
 	{
-		significantContactValues.hasHit = true;
-		significantContactValues.nbOfRecover++;
+		significantContactValues.numberOfHit++;
 
 		float dotProductUpNormalAxis = (-normal).dotProduct(Vector3<float>(0.0, 1.0, 0.0));
 		if(dotProductUpNormalAxis > significantContactValues.maxDotProductUpNormalAxis)
@@ -267,24 +275,9 @@ namespace urchin
 
 	void CharacterController::computeSignificantContactValues(SignificantContactValues &significantContactValues, float dt)
 	{
-		hasHit = significantContactValues.hasHit;
-		numberOfHit = std::ceil(significantContactValues.nbOfRecover/RECOVER_PENETRATION_SUB_STEPS - 0.00001f);
-
-		if(numberOfHit > 0)
-		{
-			isOnGround = std::acos(significantContactValues.maxDotProductUpNormalAxis) < getMaxSlopeInRadian();
-		}else
-		{
-			isOnGround = false;
-		}
-
-		if(isOnGround)
-		{
-			timeInTheAir = 0.0f;
-		}else
-		{
-			timeInTheAir += dt;
-		}
+		numberOfHit = significantContactValues.numberOfHit;
+		isOnGround = (numberOfHit > 0) ? std::acos(significantContactValues.maxDotProductUpNormalAxis) < getMaxSlopeInRadian() : false;
+		timeInTheAir = isOnGround ? 0.0f : timeInTheAir+dt;
 	}
 
 	/**
