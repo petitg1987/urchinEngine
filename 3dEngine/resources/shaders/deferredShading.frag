@@ -57,11 +57,9 @@ float computeShadowContribution(int lightIndex, inout vec4 texPosition, inout ve
 
 				if(shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0){
 					//model has produceShadow flag to true
-					
-					shadowCoord.z -= 0.00015f;
 					vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, #LOOP1_COUNTER#)).rg;
 
-					shadowContribution = computePercentLit(shadowCoord.z, moments);
+					shadowContribution = computePercentLit(shadowCoord.z - 0.000001f, moments);
 					
 					#LOOP1_IF_LAST_ITERATION#
 						//shadow attenuation before disappear
