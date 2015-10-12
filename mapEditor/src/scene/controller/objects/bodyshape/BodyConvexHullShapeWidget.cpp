@@ -76,7 +76,7 @@ namespace urchin
 			LabelStyleHelper::applyNormalStyle(pointsLabel);
 			auto scaledShape = std::make_shared<const CollisionConvexHullShape>(getPoints());
 
-			//construction of original shape throw an exception due to imprecision of float?
+			//test construction of original shape because can throw an exception due to imprecision of float
 			float invScale = 1.0 / getSceneObject()->getModel()->getTransform().getScale();
 			scaledShape->scale(invScale);
 

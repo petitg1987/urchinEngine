@@ -1,4 +1,5 @@
-#include <cassert>
+#include <stdexcept>
+#include <sstream>
 
 #include "Plane.h"
 
@@ -13,7 +14,13 @@ namespace urchin
 		normal(normal),
 		d(distanceToOrigin)
 	{
-		assert(normal.length() > (T)0.9999 && normal.length() < (T)1.0001);
+		const T normalLength = normal.length();
+		if(normalLength < 0.9999f || normalLength > (T)1.0001)
+		{
+			std::ostringstream normalLengthStr;
+			normalLengthStr << normal.length();
+			throw std::invalid_argument("Impossible to build a plane. Wrong normal length: " + normalLengthStr.str() + ".");
+		}
 	}
 
 	template<class T> Plane<T>::Plane(const Point3<T> &p1, const Point3<T> &p2, const Point3<T> &p3)
