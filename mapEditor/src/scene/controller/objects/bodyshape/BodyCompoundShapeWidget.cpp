@@ -48,6 +48,11 @@ namespace urchin
 		return COMPOUND_SHAPE_LABEL;
 	}
 
+	LocalizedShapeTableView *BodyCompoundShapeWidget::getLocalizedShapeTableView() const
+	{
+		return localizedShapeTableView;
+	}
+
 	void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
 	{
 		const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(shape.get());

@@ -19,7 +19,7 @@
 namespace urchin
 {
 
-	class ObjectControllerWidget : public QWidget, public Observer
+	class ObjectControllerWidget : public QWidget, public Observer, public Observable
 	{
 		Q_OBJECT
 
@@ -27,7 +27,13 @@ namespace urchin
 			ObjectControllerWidget();
 			virtual ~ObjectControllerWidget();
 
+			enum NotificationType
+			{
+				BODY_SHAPE_INITIALIZED
+			};
+
 			ObjectTableView *getObjectTableView() const;
+			BodyShapeWidget *getBodyShapeWidget() const;
 
 			void load(ObjectController *);
 			void unload();

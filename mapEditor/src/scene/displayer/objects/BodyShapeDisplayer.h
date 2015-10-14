@@ -13,6 +13,8 @@ namespace urchin
 			BodyShapeDisplayer(SceneManager *);
 			~BodyShapeDisplayer();
 
+			void setSelectedCompoundShapeComponent(const LocalizedCollisionShape *);
+
 			void displayBodyShapeFor(const SceneObject *);
 
 		private:
@@ -28,6 +30,8 @@ namespace urchin
 
 			SceneManager *sceneManager;
 			std::vector<GeometryModel *> bodyShapeModels;
+
+			const LocalizedCollisionShape *selectedCompoundShapeComponent;
 	};
 
 }

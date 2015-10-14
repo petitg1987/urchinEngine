@@ -51,6 +51,11 @@ namespace urchin
 		return objectTableView;
 	}
 
+	BodyShapeWidget *ObjectControllerWidget::getBodyShapeWidget() const
+	{
+		return bodyShapeWidget;
+	}
+
 	void ObjectControllerWidget::setupTransformBox(QWidget *tabGeneral)
 	{
 		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
@@ -435,6 +440,9 @@ namespace urchin
 
 		bodyShapeWidget->setGeometry(QRect(0, 30, 339, 375));
 		bodyShapeWidget->show();
+
+		notifyObservers(this, NotificationType::BODY_SHAPE_INITIALIZED);
+
 		return bodyShapeWidget;
 	}
 

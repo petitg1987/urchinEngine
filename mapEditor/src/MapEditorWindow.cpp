@@ -9,7 +9,10 @@
 #include "dialog/NewDialog.h"
 #include "dialog/NotSavedDialog.h"
 #include "scene/controller/objects/ObjectTableView.h"
+#include "scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h"
+#include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "scene/controller/lights/LightTableView.h"
+#include "scene/controller/sounds/SoundTableView.h"
 
 namespace urchin
 {
@@ -151,6 +154,7 @@ namespace urchin
 		sceneControllerWidget->setMaximumSize(QSize(360, 16777215));
 
 		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::SELECTION_CHANGED);
+		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::BODY_SHAPE_INITIALIZED);
 		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::SELECTION_CHANGED);
 		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SELECTION_CHANGED);
 
@@ -182,7 +186,34 @@ namespace urchin
 				case SoundTableView::SELECTION_CHANGED:
 					sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
 					break;
-				}
+			}
+		}
+
+		handleCompoundShapeSelectionChange(observable, notificationType);
+	}
+
+	void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType)
+	{
+		if(ObjectControllerWidget *objectControllerWidget = dynamic_cast<ObjectControllerWidget *>(observable))
+		{
+			switch(notificationType)
+			{
+				case ObjectControllerWidget::BODY_SHAPE_INITIALIZED:
+					BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
+					if(BodyCompoundShapeWidget *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
+					{
+						bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
+					}
+					break;
+			}
+		}else if(LocalizedShapeTableView *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
+		{
+			switch(notificationType)
+			{
+				case LocalizedShapeTableView::SELECTION_CHANGED:
+					sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape().get());
+					break;
+			}
 		}
 	}
 

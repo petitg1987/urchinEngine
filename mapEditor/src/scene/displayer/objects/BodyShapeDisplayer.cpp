@@ -9,7 +9,8 @@ namespace urchin
 {
 
 	BodyShapeDisplayer::BodyShapeDisplayer(SceneManager *sceneManager) :
-		sceneManager(sceneManager)
+		sceneManager(sceneManager),
+		selectedCompoundShapeComponent(nullptr)
 	{
 
 	}
@@ -17,6 +18,11 @@ namespace urchin
 	BodyShapeDisplayer::~BodyShapeDisplayer()
 	{
 		cleanCurrentDisplay();
+	}
+
+	void BodyShapeDisplayer::setSelectedCompoundShapeComponent(const LocalizedCollisionShape *selectedCompoundShapeComponent)
+	{
+		this->selectedCompoundShapeComponent = selectedCompoundShapeComponent;
 	}
 
 	void BodyShapeDisplayer::displayBodyShapeFor(const SceneObject *sceneObject)
@@ -43,6 +49,14 @@ namespace urchin
 					std::shared_ptr<CollisionConvexObject3D> bodyObject = localizedShape->shape->toConvexObject(transform);
 
 					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject.get());
+					if(selectedCompoundShapeComponent==localizedShape.get())
+					{
+						geometryModel->setColor(1.0, 1.0, 1.0);
+					}else
+					{
+						geometryModel->setColor(0.0, 1.0, 0.0);
+					}
+
 					bodyShapeModels.push_back(geometryModel);
 				}
 			}else
@@ -51,12 +65,12 @@ namespace urchin
 				std::shared_ptr<CollisionConvexObject3D> bodyObject = bodyShape->toConvexObject(transform);
 
 				GeometryModel *geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject.get());
+				geometryModel->setColor(0.0, 1.0, 0.0);
 				bodyShapeModels.push_back(geometryModel);
 			}
 
 			for(unsigned int i=0; i<bodyShapeModels.size(); ++i)
 			{
-				bodyShapeModels[i]->setColor(0.0, 1.0, 0.0);
 				sceneManager->get3dRenderer()->addGeometry(bodyShapeModels[i]);
 			}
 		}

@@ -35,6 +35,7 @@ namespace urchin
 			void updateMapFilename(QString);
 
 			void notify(Observable *, int);
+			void handleCompoundShapeSelectionChange(Observable *, int);
 
 			QAction *saveAction;
 			QAction *saveAsAction;

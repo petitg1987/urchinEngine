@@ -24,6 +24,7 @@ namespace urchin
 			virtual ~BodyCompoundShapeWidget();
 
 			std::string getBodyShapeName() const;
+			LocalizedShapeTableView *getLocalizedShapeTableView() const;
 
 		protected:
 			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>);

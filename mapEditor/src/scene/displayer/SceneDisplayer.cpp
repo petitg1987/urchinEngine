@@ -106,6 +106,11 @@ namespace urchin
 		this->highlightSceneObject = highlightSceneObject;
 	}
 
+	void SceneDisplayer::setHighlightCompoundShapeComponent(const LocalizedCollisionShape *selectedCompoundShapeComponent)
+	{
+		bodyShapeDisplayer->setSelectedCompoundShapeComponent(selectedCompoundShapeComponent);
+	}
+
 	void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight)
 	{
 		this->highlightSceneLight = highlightSceneLight;
