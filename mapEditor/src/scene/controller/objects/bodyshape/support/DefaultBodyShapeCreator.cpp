@@ -40,6 +40,7 @@ namespace urchin
 			std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;
 
 			std::shared_ptr<LocalizedCollisionShape> boxLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+			boxLocalizedShape->position = 0;
 			boxLocalizedShape->shape = std::make_shared<const CollisionBoxShape>(modelAABBox.getHalfSizes());
 			boxLocalizedShape->translation = Vector3<float>(0.0, 0.0, 0.0);
 			localizedCollisionShapes.push_back(boxLocalizedShape);

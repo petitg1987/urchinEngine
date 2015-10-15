@@ -31,6 +31,7 @@ namespace urchin
 		for(unsigned int i=0; i<localizedShapes.size(); ++i)
 		{
 			std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+			localizedShape->position = localizedShapes[i]->position;
 			localizedShape->shape = localizedShapes[i]->shape->scale(scale);
 			localizedShape->translation = localizedShapes[i]->translation * scale;
 

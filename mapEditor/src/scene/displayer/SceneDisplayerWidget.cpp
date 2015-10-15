@@ -72,7 +72,7 @@ namespace urchin
 		}
 	}
 
-	void SceneDisplayerWidget::setHighlightCompoundShapeComponent(const LocalizedCollisionShape *selectedCompoundShapeComponent)
+	void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
 	{
 		if(sceneDisplayer!=nullptr)
 		{

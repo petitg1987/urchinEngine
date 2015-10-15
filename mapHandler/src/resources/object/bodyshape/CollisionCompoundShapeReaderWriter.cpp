@@ -26,6 +26,8 @@ namespace urchin
 		{
 			std::shared_ptr<LocalizedCollisionShape> localizedBox(new LocalizedCollisionShape());
 
+			localizedBox->position = i;
+
 			std::shared_ptr<XmlChunk> translationChunk = xmlParser.getUniqueChunk(true, TRANSLATION, XmlAttribute(), localizedShapesChunk[i]);
 			localizedBox->translation = translationChunk->getVector3Value();
 

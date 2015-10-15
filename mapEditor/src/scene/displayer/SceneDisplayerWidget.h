@@ -26,7 +26,7 @@ namespace urchin
 
 			void setViewProperties(SceneDisplayer::ViewProperties, bool);
 			void setHighlightSceneObject(const SceneObject *);
-			void setHighlightCompoundShapeComponent(const LocalizedCollisionShape *);
+			void setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
 			void setHighlightSceneLight(const SceneLight *);
 			void setHighlightSceneSound(const SceneSound *);
 

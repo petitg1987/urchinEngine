@@ -13,7 +13,7 @@ namespace urchin
 			BodyShapeDisplayer(SceneManager *);
 			~BodyShapeDisplayer();
 
-			void setSelectedCompoundShapeComponent(const LocalizedCollisionShape *);
+			void setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
 
 			void displayBodyShapeFor(const SceneObject *);
 
@@ -31,7 +31,7 @@ namespace urchin
 			SceneManager *sceneManager;
 			std::vector<GeometryModel *> bodyShapeModels;
 
-			const LocalizedCollisionShape *selectedCompoundShapeComponent;
+			std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent;
 	};
 
 }

@@ -142,6 +142,7 @@ namespace urchin
 		}
 
 		std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+		localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
 		localizedShape->shape = bodyShapeWidget->retrieveShape();
 		localizedShape->translation = Vector3<float>(translationX->value(), translationY->value(), translationZ->value());
 		localizedShapeTableView->updateSelectedLocalizedShape(localizedShape);
@@ -159,7 +160,17 @@ namespace urchin
 			CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
 			std::shared_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType, true);
 
+			unsigned int nextPosition = 0;
+			for(unsigned int i=0; i<localizedShapeTableView->getLocalizedShapes().size(); ++i)
+			{
+				if(nextPosition<=localizedShapeTableView->getLocalizedShapes()[i]->position)
+				{
+					nextPosition = localizedShapeTableView->getLocalizedShapes()[i]->position + 1;
+				}
+			}
+
 			std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+			localizedShape->position = nextPosition;
 			localizedShape->shape = defaultNewShape;
 			localizedShape->translation = Vector3<float>(0.0, 0.0, 0.0);
 

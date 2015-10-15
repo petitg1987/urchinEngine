@@ -211,7 +211,7 @@ namespace urchin
 			switch(notificationType)
 			{
 				case LocalizedShapeTableView::SELECTION_CHANGED:
-					sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape().get());
+					sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
 					break;
 			}
 		}

@@ -9,8 +9,7 @@ namespace urchin
 {
 
 	BodyShapeDisplayer::BodyShapeDisplayer(SceneManager *sceneManager) :
-		sceneManager(sceneManager),
-		selectedCompoundShapeComponent(nullptr)
+		sceneManager(sceneManager)
 	{
 
 	}
@@ -20,7 +19,7 @@ namespace urchin
 		cleanCurrentDisplay();
 	}
 
-	void BodyShapeDisplayer::setSelectedCompoundShapeComponent(const LocalizedCollisionShape *selectedCompoundShapeComponent)
+	void BodyShapeDisplayer::setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
 	{
 		this->selectedCompoundShapeComponent = selectedCompoundShapeComponent;
 	}
@@ -49,7 +48,8 @@ namespace urchin
 					std::shared_ptr<CollisionConvexObject3D> bodyObject = localizedShape->shape->toConvexObject(transform);
 
 					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject.get());
-					if(selectedCompoundShapeComponent==localizedShape.get())
+
+					if(selectedCompoundShapeComponent.get()!=nullptr && selectedCompoundShapeComponent->position==localizedShape->position)
 					{
 						geometryModel->setColor(1.0, 1.0, 1.0);
 					}else
