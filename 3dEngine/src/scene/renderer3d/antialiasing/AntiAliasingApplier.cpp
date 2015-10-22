@@ -43,7 +43,7 @@ namespace urchin
 
 		loadFxaaShader();
 
-		const int vertexArray[8] = {	-1, 1, 1, 1, 1, -1,	-1, -1	};
+		const int vertexArray[8] = {-1, 1, 1, 1, 1, -1,	-1, -1};
 		const int stArray[8] = {0, 1, 1, 1, 1, 0, 0, 0};
 
 		bufferIDs = new unsigned int[2];
