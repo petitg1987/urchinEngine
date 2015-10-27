@@ -7,6 +7,7 @@
 
 #include "FrustumShadowData.h"
 #include "scene/renderer3d/light/Light.h"
+#include "scene/renderer3d/filter/TextureFilter.h"
 
 namespace urchin
 {
@@ -20,13 +21,16 @@ namespace urchin
 			ShadowData(const Light *const, unsigned int);
 			~ShadowData();
 
-			void setFrameBufferObjectID(unsigned int);
-			unsigned int getFrameBufferObjectID() const;
+			void setFboID(unsigned int);
+			unsigned int getFboID() const;
 
 			void setDepthTextureID(unsigned int);
 			unsigned int getDepthTextureID() const;
 			void setShadowMapTextureID(unsigned int);
 			unsigned int getShadowMapTextureID() const;
+
+			void setDownSampleFilter(TextureFilter *);
+			const TextureFilter *getDownSampleFilter() const;
 
 			void setLightViewMatrix(const Matrix4<float> &);
 			const Matrix4<float> &getLightViewMatrix() const;
@@ -43,6 +47,9 @@ namespace urchin
 			unsigned int fboID; //frame buffer object ID containing shadow map(s)
 			unsigned int depthTextureID; //depth texture ID
 			unsigned int shadowMapTextureID; //shadow map texture ID (variance shadow map)
+
+			//shadow map filters
+			TextureFilter *downSampleFilter;
 
 			Matrix4<float> lightViewMatrix;
 			std::vector<FrustumShadowData *> frustumShadowData;

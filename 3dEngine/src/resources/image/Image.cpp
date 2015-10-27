@@ -96,7 +96,7 @@ namespace urchin
 			maxCoordS = 1.0;
 			maxCoordT = 1.0;
 		}
-		
+
 		glGenTextures(1, &textureID);
 		glBindTexture (GL_TEXTURE_2D, textureID);
 
@@ -107,24 +107,19 @@ namespace urchin
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, TextureManager::instance()->getAnisotropy());
 			}else
 			{
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 0);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
 			}
 		}
 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, needMipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, newWidth, newHeight, 0, format, GL_UNSIGNED_BYTE, texels);
+
 		if(needMipmaps)
 		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-			gluBuild2DMipmaps(GL_TEXTURE_2D, internalFormat, newWidth, newHeight, format, GL_UNSIGNED_BYTE, texels);
-		}else
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-			glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, newWidth, newHeight, 0, format, GL_UNSIGNED_BYTE, texels);
+			glGenerateMipmap(GL_TEXTURE_2D);
 		}
-		
+
 		delete [] texels; //the API has its own copy
 		isTexture=true;
 

@@ -401,31 +401,39 @@ namespace urchin
 		#ifdef _DEBUG
 			//display depth buffer
 //			DisplayTexture displayTexture0(textureIDs[TEX_DEPTH], DisplayTexture::DEPTH_FACTOR);
-//			displayTexture0.setPosition(DisplayTexture::RIGHT, DisplayTexture::BOTTOM);
+//			displayTexture0.setPosition(DisplayTexture::LEFT, DisplayTexture::TOP);
 //			displayTexture0.display(width, height);
 
 			//display color buffer
-//			DisplayTexture displayTexture1(textureIDs[TEX_DIFFUSE], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture1.setPosition(DisplayTexture::LEFT, DisplayTexture::BOTTOM);
-//			displayTexture1.display(width, height);
+			DisplayTexture displayTexture1(textureIDs[TEX_DIFFUSE], DisplayTexture::DEFAULT_FACTOR);
+			displayTexture1.setPosition(DisplayTexture::CENTER_X, DisplayTexture::TOP);
+			displayTexture1.display(width, height);
 
 			//display normal and ambient buffer
-//			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture2.setPosition(DisplayTexture::CENTER_X, DisplayTexture::BOTTOM);
-//			displayTexture2.display(width, height);
+/*			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
+			displayTexture2.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
+			displayTexture2.display(width, height);
 
 			//display illuminated scene buffer
-//			DisplayTexture displayTexture3(textureIDs[TEX_LIGHTING_PASS], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture3.setPosition(DisplayTexture::RIGHT, DisplayTexture::CENTER_Y);
-//			displayTexture3.display(width, height);
+			DisplayTexture displayTexture3(textureIDs[TEX_LIGHTING_PASS], DisplayTexture::DEFAULT_FACTOR);
+			displayTexture3.setPosition(DisplayTexture::LEFT, DisplayTexture::BOTTOM);
+			displayTexture3.display(width, height);
 
 			//display shadow map
-//			const Light *firstLight = lightManager->getVisibleLights()[1]; //choose light
-//			const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
-//			unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-//			DisplayTexture displayTexture3(shadowMapTextureID, shadowMapNumber, DisplayTexture::DEPTH_FACTOR);
-//			displayTexture3.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
-//			displayTexture3.display(width, height);
+			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
+			const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
+			unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
+			DisplayTexture displayTexture4(shadowMapTextureID, shadowMapNumber, DisplayTexture::DEPTH_FACTOR);
+			displayTexture4.setPosition(DisplayTexture::CENTER_X, DisplayTexture::BOTTOM);
+			displayTexture4.display(width, height);
+
+			//display down sample shadow map
+			const Light *dsFirstLight = lightManager->getVisibleLights()[0]; //choose light
+			const unsigned int dsShadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
+			unsigned int dsShadowMapTextureID = shadowManager->getShadowData(dsFirstLight).getDownSampleShadowMapTextureID();
+			DisplayTexture displayTexture5(dsShadowMapTextureID, dsShadowMapNumber, DisplayTexture::DEPTH_FACTOR);
+			displayTexture5.setPosition(DisplayTexture::RIGHT, DisplayTexture::BOTTOM);
+			displayTexture5.display(width, height);*/
 		#endif
 	}
 

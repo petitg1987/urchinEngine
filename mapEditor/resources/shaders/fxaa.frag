@@ -73,7 +73,7 @@ void main(){
 	const float fxaaQualitySubpix = 0.75;
 	
 	//amount of local contrast required to apply algorithm (0.333=too little (faster), 0.063=overkill)
-	const float fxaaQualityEdgeThreshold = 0.25;
+	const float fxaaQualityEdgeThreshold = 0.2;
 	
 	//trims the algorithm from processing darks (0.0312=max pixel process, 0.3=min pixel process)
 	const float fxaaQualityEdgeThresholdMin = 0.2;

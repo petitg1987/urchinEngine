@@ -44,7 +44,7 @@
 ############################################
 # Notes :
 ############################################
-- Library: OpenGL, GLU, Glew, Boost, FreeType2
+- Library: OpenGL, Glew, Boost, FreeType2
 - COD4 character: 6000 triangles + normal mapping
 - Crysis 1 scene: from 500 000 to 1 million of triangles displayed
 - Skyrim: shadow map resolution 4096x4096 (hight quality), 2048*2048 (medium quality), 2 shadow maps: primary and secondary

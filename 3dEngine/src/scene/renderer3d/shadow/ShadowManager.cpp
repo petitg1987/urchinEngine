@@ -11,6 +11,7 @@
 #include "scene/renderer3d/model/octreefilter/ProduceShadowFilter.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
+#include "scene/renderer3d/filter/TextureFilter.h"
 #include "utils/shader/ShaderManager.h"
 #include "utils/shader/TokenReplacerShader.h"
 
@@ -58,14 +59,7 @@ namespace urchin
 	{
 		for(std::map<const Light *, ShadowData *>::iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
 		{
-			unsigned int depthTextureID = it->second->getDepthTextureID();
-			glDeleteTextures(1, &depthTextureID);
-
-			unsigned int shadowMapTextureID = it->second->getShadowMapTextureID();
-			glDeleteTextures(1, &shadowMapTextureID);
-
-			unsigned int frameBufferObjectID = it->second->getFrameBufferObjectID();
-			glDeleteFramebuffers(1, &frameBufferObjectID);
+			removeShadowMaps(it->first);
 
 			delete it->second;
 		}
@@ -92,12 +86,9 @@ namespace urchin
 		}
 
 		//scene information
-		std::ostringstream nbVerticeLayer, nbLayer;
-		nbVerticeLayer << nbShadowMaps * 3;
-		nbLayer << nbShadowMaps;
 		std::map<TokenReplacerShader::ShaderToken, std::string> geometryTokens, fragmentTokens;
-		geometryTokens[TokenReplacerShader::TOKEN0] = nbVerticeLayer.str();
-		geometryTokens[TokenReplacerShader::TOKEN1] = nbLayer.str();
+		geometryTokens[TokenReplacerShader::TOKEN0] = std::to_string(3*nbShadowMaps);
+		geometryTokens[TokenReplacerShader::TOKEN1] = std::to_string(nbShadowMaps);
 		shadowModelDisplayer = new ModelDisplayer(ModelDisplayer::DEPTH_ONLY_MODE);
 		shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geo", geometryTokens);
 		shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
@@ -509,10 +500,10 @@ namespace urchin
 	{
 		//frame buffer object
 		unsigned int fboID;
-		glGenFramebuffers(1, &fboID);
+		glGenFramebuffers(1, &fboID); //TODO should be deleted
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-		shadowDatas[light]->setFrameBufferObjectID(fboID);
+		shadowDatas[light]->setFboID(fboID);
 
 		//textures for shadow map: depth texture && shadow map texture (variance shadow map)
 		GLenum fragData[1] = {GL_COLOR_ATTACHMENT0};
@@ -520,11 +511,11 @@ namespace urchin
 		glReadBuffer(GL_NONE);
 
 		unsigned int textureIDs[2];
-		glGenTextures(2, &textureIDs[0]);
+		glGenTextures(2, &textureIDs[0]); //TODO should be deleted
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[0]);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
@@ -541,19 +532,23 @@ namespace urchin
 
 		shadowDatas[light]->setDepthTextureID(textureIDs[0]);
 		shadowDatas[light]->setShadowMapTextureID(textureIDs[1]);
+
+		//shadow map filters
+		TextureFilter *downSampleFilter = new TextureFilter(TextureFilter::DOWN_SAMPLE, shadowMapResolution/2, shadowMapResolution/2);
+		downSampleFilter->setNumberLayer(nbShadowMaps);
+		downSampleFilter->initialize();
+		shadowDatas[light]->setDownSampleFilter(downSampleFilter);
 	}
 
 	void ShadowManager::removeShadowMaps(const Light *const light)
 	{
-		//textures
 		unsigned int depthTextureID = shadowDatas[light]->getDepthTextureID();
 		glDeleteTextures(1, &depthTextureID);
 
 		unsigned int shadowMapTextureID = shadowDatas[light]->getShadowMapTextureID();
 		glDeleteTextures(1, &shadowMapTextureID);
 
-		//frame buffer object
-		unsigned int frameBufferObjectID = shadowDatas[light]->getFrameBufferObjectID();
+		unsigned int frameBufferObjectID = shadowDatas[light]->getFboID();
 		glDeleteFramebuffers(1, &frameBufferObjectID);
 	}
 
@@ -575,8 +570,8 @@ namespace urchin
 		{
 			ShadowData *shadowData = it->second;
 
-			glBindFramebuffer(GL_FRAMEBUFFER, shadowData->getFrameBufferObjectID());
-			glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowData->getFboID());
+			glBindTexture(GL_TEXTURE_2D_ARRAY, 0); //TODO move outside the loop ? or at end of step ???
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 			shadowUniform->setUniformData(shadowData);
@@ -584,6 +579,8 @@ namespace urchin
 
 			shadowModelDisplayer->setModels(shadowData->retrieveModels());
 			shadowModelDisplayer->display(shadowData->getLightViewMatrix());
+
+			shadowData->getDownSampleFilter()->applyOn(shadowData->getShadowMapTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
@@ -601,7 +598,7 @@ namespace urchin
 				const ShadowData *shadowData = it->second;
 
 				glActiveTexture(GL_TEXTURE0 + lightsLocation[i].shadowMapTextureUnits);
-				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getShadowMapTextureID());
+				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getDownSampleFilter()->getTextureID());
 				glUniform1i(lightsLocation[i].shadowMapTexLoc, lightsLocation[i].shadowMapTextureUnits);
 
 				for(unsigned int j=0; j<nbShadowMaps; ++j)

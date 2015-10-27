@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-	GUISkinService::GUISkinService() : Singleton<GUISkinService>(), xmlSkin(nullptr) //TODO shouldn't be a singleton !
+	GUISkinService::GUISkinService() : Singleton<GUISkinService>(), xmlSkin(nullptr)
 	{
 
 	}

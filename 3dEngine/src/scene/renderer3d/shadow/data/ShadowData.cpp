@@ -11,7 +11,8 @@ namespace urchin
 			light(light),
 			fboID(0),
 			depthTextureID(0),
-			shadowMapTextureID(0)
+			shadowMapTextureID(0),
+			downSampleFilter(nullptr)
 	{
 		for(unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumsplit; ++frustumSplitIndex)
 		{
@@ -25,14 +26,16 @@ namespace urchin
 		{
 			delete frustumShadowData[i];
 		}
+
+		delete downSampleFilter;
 	}
 
-	void ShadowData::setFrameBufferObjectID(unsigned int fboID)
+	void ShadowData::setFboID(unsigned int fboID)
 	{
 		this->fboID = fboID;
 	}
 
-	unsigned int ShadowData::getFrameBufferObjectID() const
+	unsigned int ShadowData::getFboID() const
 	{
 		return fboID;
 	}
@@ -63,6 +66,16 @@ namespace urchin
 		return shadowMapTextureID;
 	}
 
+	void ShadowData::setDownSampleFilter(TextureFilter *downSampleFilter)
+	{
+		this->downSampleFilter = downSampleFilter;
+	}
+
+	const TextureFilter *ShadowData::getDownSampleFilter() const
+	{
+		return downSampleFilter;
+	}
+
 	void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix)
 	{
 		this->lightViewMatrix = lightViewMatrix;
@@ -75,7 +88,7 @@ namespace urchin
 
 	unsigned int ShadowData::getNbFrustumShadowData() const
 	{
-			return frustumShadowData.size();
+		return frustumShadowData.size();
 	}
 
 	/**
