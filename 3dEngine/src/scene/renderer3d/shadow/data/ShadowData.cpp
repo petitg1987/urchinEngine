@@ -27,6 +27,10 @@ namespace urchin
 			delete frustumShadowData[i];
 		}
 
+		glDeleteFramebuffers(1, &fboID);
+		glDeleteTextures(1, &depthTextureID);
+		glDeleteTextures(1, &shadowMapTextureID);
+
 		delete downSampleFilter;
 	}
 

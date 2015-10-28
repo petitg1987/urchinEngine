@@ -3,14 +3,10 @@
 
 #include <string>
 
+class TextureFilterBuilder;
+
 namespace urchin
 {
-
-	struct TextureReference
-	{
-
-	};
-
 
 	class TextureFilter
 	{
@@ -21,12 +17,15 @@ namespace urchin
 				BLUR
 			};
 
-			TextureFilter(TextureFilter::FilterType, unsigned int, unsigned int);
+			TextureFilter(TextureFilterBuilder *);
 			~TextureFilter();
 
+			void setTextureType(unsigned int);
+			void setTextureInternalFormat(int);
+			void setTextureFormat(unsigned int);
 			void setNumberLayer(unsigned int);
 
-			void initialize();
+
 
 			unsigned int getFboId() const;
 			unsigned int getTextureID() const;
@@ -34,10 +33,14 @@ namespace urchin
 			void applyOn(unsigned int) const;
 
 		private:
-			bool isInitialized;
+			void initializeDisplay();
+			void initializeTexture();
 
 			unsigned int textureWidth, textureHeight;
-			unsigned int numberLayer;
+			unsigned int textureType;
+			unsigned int textureNumberLayer;
+			int textureInternalFormat;
+			unsigned int textureFormat;
 
 			unsigned int *bufferIDs;
 			unsigned int vertexArrayObject;
@@ -53,7 +56,6 @@ namespace urchin
 			};
 			unsigned int downSampleShader;
 			int texLoc;
-
 
 			unsigned int fboID;
 			unsigned int textureID;
