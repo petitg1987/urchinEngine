@@ -11,19 +11,18 @@ namespace urchin
 	class TextureFilter
 	{
 		public:
-			enum FilterType
-			{
-				DOWN_SAMPLE,
-				BLUR
-			};
-
 			TextureFilter(const TextureFilterBuilder *);
-			~TextureFilter();
+			virtual ~TextureFilter();
+
+			void initialize();
 
 			unsigned int getFboId() const;
 			unsigned int getTextureID() const;
 
 			void applyOn(unsigned int) const;
+
+		protected:
+			virtual std::string getShaderName() const = 0;
 
 		private:
 			void initializeDisplay();

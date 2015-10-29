@@ -12,11 +12,16 @@ namespace urchin
 	class TextureFilterBuilder
 	{
 		public:
+			enum FilterType
+			{
+				DOWN_SAMPLE,
+				BLUR
+			};
+
 			TextureFilterBuilder();
 			~TextureFilterBuilder();
 
-			TextureFilterBuilder *filterType(TextureFilter::FilterType);
-			TextureFilter::FilterType getFilterType() const;
+			TextureFilterBuilder *filterType(FilterType);
 
 			TextureFilterBuilder *textureSize(unsigned int, unsigned int);
 			unsigned int getTextureWidth() const;
@@ -37,7 +42,7 @@ namespace urchin
 			std::shared_ptr<TextureFilter> build();
 
 		private:
-			TextureFilter::FilterType pFilterType;
+			FilterType pFilterType;
 			unsigned int textureWidth, textureHeight;
 
 			unsigned int pTextureType;

@@ -9,5 +9,5 @@ in vec2 vertexTextCoordinates;
 layout (location = 0) out #OUTPUT_TYPE# fragColor;
 
 void main(){
-	fragColor = texture2DArray(tex, vec3(vertexTextCoordinates.st, gl_Layer)).#TEX_COMPONENTS#;
+	fragColor = texture2DArray(tex, vec3(vertexTextCoordinates.st, gl_Layer)).#SOURCE_TEX_COMPONENTS#;
 }

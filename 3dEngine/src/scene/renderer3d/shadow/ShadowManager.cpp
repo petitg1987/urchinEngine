@@ -537,7 +537,7 @@ namespace urchin
 
 		//shadow map filters
 		std::shared_ptr<TextureFilter> downSampleFilter = std::make_shared<TextureFilterBuilder>()
-				->filterType(TextureFilter::DOWN_SAMPLE)
+				->filterType(TextureFilterBuilder::DOWN_SAMPLE)
 				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
 				->textureType(GL_TEXTURE_2D_ARRAY)
 				->textureNumberLayer(nbShadowMaps)

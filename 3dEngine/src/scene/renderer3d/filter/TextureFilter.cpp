@@ -24,8 +24,7 @@ namespace urchin
 		fboID(0),
 		textureID(0)
 	{
-		initializeDisplay();
-		initializeTexture();
+
 	}
 
 	TextureFilter::~TextureFilter()
@@ -43,6 +42,12 @@ namespace urchin
 
 		glDeleteFramebuffers(1, &fboID);
 		glDeleteTextures(1, &textureID);
+	}
+
+	void TextureFilter::initialize()
+	{
+		initializeDisplay();
+		initializeTexture();
 	}
 
 	void TextureFilter::initializeDisplay()
@@ -68,11 +73,11 @@ namespace urchin
 		if(textureFormat==GL_RGB)
 		{
 			shaderTokens["OUTPUT_TYPE"] = "vec3";
-			shaderTokens["TEX_COMPONENTS"] = "rgb";
+			shaderTokens["SOURCE_TEX_COMPONENTS"] = "rgb";
 		}else if(textureFormat==GL_RG)
 		{
 			shaderTokens["OUTPUT_TYPE"] = "vec2";
-			shaderTokens["TEX_COMPONENTS"] = "rg";
+			shaderTokens["SOURCE_TEX_COMPONENTS"] = "rg";
 		}else
 		{
 			throw std::invalid_argument("Unsupported texture format for filter: " + textureFormat);
@@ -84,11 +89,11 @@ namespace urchin
 			geometryTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
 			geometryTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-			downSampleShader = ShaderManager::instance()->createProgram("downSampleTex.vert", "downSampleTexArray.frag", shaderTokens);
-			ShaderManager::instance()->setGeometryShader(downSampleShader, "downSampleTex.geo", geometryTokens);
+			downSampleShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+"Array.frag", shaderTokens);
+			ShaderManager::instance()->setGeometryShader(downSampleShader, "textureFilter.geo", geometryTokens);
 		}else
 		{
-			downSampleShader = ShaderManager::instance()->createProgram("downSampleTex.vert", "downSampleTex.frag", shaderTokens);
+			downSampleShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+".frag", shaderTokens);
 		}
 
 		ShaderManager::instance()->bind(downSampleShader);

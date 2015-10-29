@@ -1,13 +1,16 @@
 #include <GL/gl.h>
+#include <stdexcept>
 
 #include "TextureFilterBuilder.h"
 #include "TextureFilter.h"
+#include "DownSampleFilter.h"
+#include "BlurFilter.h"
 
 namespace urchin
 {
 
 	TextureFilterBuilder::TextureFilterBuilder() :
-		pFilterType(TextureFilter::DOWN_SAMPLE),
+		pFilterType(DOWN_SAMPLE),
 		textureWidth(1024),
 		textureHeight(1024),
 		pTextureType(GL_TEXTURE_2D),
@@ -23,15 +26,10 @@ namespace urchin
 
 	}
 
-	TextureFilterBuilder *TextureFilterBuilder::filterType(TextureFilter::FilterType filterType)
+	TextureFilterBuilder *TextureFilterBuilder::filterType(FilterType filterType)
 	{
 		this->pFilterType = filterType;
 		return this;
-	}
-
-	TextureFilter::FilterType TextureFilterBuilder::getFilterType() const
-	{
-		return pFilterType;
 	}
 
 	TextureFilterBuilder *TextureFilterBuilder::textureSize(unsigned int textureWidth, unsigned int textureHeight)
@@ -97,7 +95,22 @@ namespace urchin
 
 	std::shared_ptr<TextureFilter> TextureFilterBuilder::build()
 	{
-		return std::make_shared<TextureFilter>(this);
+		std::shared_ptr<TextureFilter> textureFilter;
+
+		if(pFilterType==DOWN_SAMPLE)
+		{
+			textureFilter = std::make_shared<DownSampleFilter>(this);
+		}else if(pFilterType==BLUR)
+		{
+			textureFilter = std::make_shared<BlurFilter>(this);
+		}else
+		{
+			throw std::invalid_argument("Unknown filter type: " + pFilterType);
+		}
+
+		textureFilter->initialize();
+
+		return textureFilter;
 	}
 
 }
