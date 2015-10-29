@@ -144,10 +144,10 @@ namespace urchin
 		maxLightsString << lightManager->getMaxLights();
 		nbShadowMapsString << shadowManager->getNumberShadowMaps();
 
-		std::map<TokenReplacerShader::ShaderToken, std::string> tokens;
-		tokens[TokenReplacerShader::TOKEN0] = maxLightsString.str();
-		tokens[TokenReplacerShader::TOKEN1] = nbShadowMapsString.str();
-		tokens[TokenReplacerShader::TOKEN2] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
+		std::map<std::string, std::string> tokens;
+		tokens["MAX_LIGHTS"] = maxLightsString.str();
+		tokens["NUMBER_SHADOW_MAPS"] = nbShadowMapsString.str();
+		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
 
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
 		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);

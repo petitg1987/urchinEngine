@@ -3,10 +3,10 @@
 
 #include <string>
 
-class TextureFilterBuilder;
-
 namespace urchin
 {
+
+	class TextureFilterBuilder;
 
 	class TextureFilter
 	{
@@ -17,15 +17,8 @@ namespace urchin
 				BLUR
 			};
 
-			TextureFilter(TextureFilterBuilder *);
+			TextureFilter(const TextureFilterBuilder *);
 			~TextureFilter();
-
-			void setTextureType(unsigned int);
-			void setTextureInternalFormat(int);
-			void setTextureFormat(unsigned int);
-			void setNumberLayer(unsigned int);
-
-
 
 			unsigned int getFboId() const;
 			unsigned int getTextureID() const;

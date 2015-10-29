@@ -30,8 +30,6 @@ namespace urchin
 		glDeleteFramebuffers(1, &fboID);
 		glDeleteTextures(1, &depthTextureID);
 		glDeleteTextures(1, &shadowMapTextureID);
-
-		delete downSampleFilter;
 	}
 
 	void ShadowData::setFboID(unsigned int fboID)
@@ -70,12 +68,12 @@ namespace urchin
 		return shadowMapTextureID;
 	}
 
-	void ShadowData::setDownSampleFilter(TextureFilter *downSampleFilter)
+	void ShadowData::setDownSampleFilter(std::shared_ptr<const TextureFilter> downSampleFilter)
 	{
 		this->downSampleFilter = downSampleFilter;
 	}
 
-	const TextureFilter *ShadowData::getDownSampleFilter() const
+	std::shared_ptr<const TextureFilter> ShadowData::getDownSampleFilter() const
 	{
 		return downSampleFilter;
 	}

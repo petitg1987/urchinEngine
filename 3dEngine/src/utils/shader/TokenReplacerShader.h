@@ -14,23 +14,9 @@ namespace urchin
 	class TokenReplacerShader
 	{
 		public:
-			enum ShaderToken
-			{
-				TOKEN0 = 0,
-				TOKEN1,
-				TOKEN2,
-				TOKEN3,
-				TOKEN4,
-				TOKEN5,
-				TOKEN6,
-				TOKEN7,
-				TOKEN8,
-				TOKEN9
-			};
-
 			TokenReplacerShader();
 
-			std::string replaceTokens(const std::string &, const std::map<ShaderToken, std::string> &);
+			std::string replaceTokens(const std::string &, const std::map<std::string, std::string> &);
 	};
 
 }

@@ -9,13 +9,13 @@
 namespace urchin
 {
 
-	TextureFilter::TextureFilter(TextureFilterBuilder *textureFilterBuilder):
-		textureWidth(),
-		textureHeight(),
-		textureType(),
-		textureNumberLayer(),
-		textureInternalFormat(),
-		textureFormat(),
+	TextureFilter::TextureFilter(const TextureFilterBuilder *textureFilterBuilder):
+		textureWidth(textureFilterBuilder->getTextureWidth()),
+		textureHeight(textureFilterBuilder->getTextureHeight()),
+		textureType(textureFilterBuilder->getTextureType()),
+		textureNumberLayer(textureFilterBuilder->getTextureNumberLayer()),
+		textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
+		textureFormat(textureFilterBuilder->getTextureFormat()),
 
 		bufferIDs(nullptr),
 		vertexArrayObject(0),
@@ -64,12 +64,33 @@ namespace urchin
 		glEnableVertexAttribArray(SHADER_TEX_COORD);
 		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_INT, false, 0, 0);
 
-		std::map<TokenReplacerShader::ShaderToken, std::string> geometryTokens;
-		geometryTokens[TokenReplacerShader::TOKEN0] = std::to_string(3*textureNumberLayer);
-		geometryTokens[TokenReplacerShader::TOKEN1] = std::to_string(textureNumberLayer);
+		std::map<std::string, std::string> shaderTokens;
+		if(textureFormat==GL_RGB)
+		{
+			shaderTokens["OUTPUT_TYPE"] = "vec3";
+			shaderTokens["TEX_COMPONENTS"] = "rgb";
+		}else if(textureFormat==GL_RG)
+		{
+			shaderTokens["OUTPUT_TYPE"] = "vec2";
+			shaderTokens["TEX_COMPONENTS"] = "rg";
+		}else
+		{
+			throw std::invalid_argument("Unsupported texture format for filter: " + textureFormat);
+		}
 
-		downSampleShader = ShaderManager::instance()->createProgram("downSampleTex.vert", "downSampleTex.frag");
-		ShaderManager::instance()->setGeometryShader(downSampleShader, "downSampleTex.geo", geometryTokens);
+		if(textureType==GL_TEXTURE_2D_ARRAY)
+		{
+			std::map<std::string, std::string> geometryTokens;
+			geometryTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
+			geometryTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
+
+			downSampleShader = ShaderManager::instance()->createProgram("downSampleTex.vert", "downSampleTexArray.frag", shaderTokens);
+			ShaderManager::instance()->setGeometryShader(downSampleShader, "downSampleTex.geo", geometryTokens);
+		}else
+		{
+			downSampleShader = ShaderManager::instance()->createProgram("downSampleTex.vert", "downSampleTex.frag", shaderTokens);
+		}
+
 		ShaderManager::instance()->bind(downSampleShader);
 		texLoc = glGetUniformLocation(downSampleShader, "tex");
 		glUniform1i(texLoc, 0);

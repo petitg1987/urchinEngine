@@ -1,13 +1,11 @@
 #version 330
-#extension GL_EXT_gpu_shader4 : enable
 
-uniform sampler2DArray tex;
+uniform sampler2D tex;
 
-in int gl_Layer;
 in vec2 vertexTextCoordinates;
 
-layout (location = 0) out vec2 fragColor;
+layout (location = 0) out #OUTPUT_TYPE# fragColor;
 
 void main(){
-	fragColor = texture2DArray(tex, vec3(vertexTextCoordinates.st, gl_Layer)).rg;
+	fragColor = texture2D(tex, vertexTextCoordinates.st).#TEX_COMPONENTS#;
 }

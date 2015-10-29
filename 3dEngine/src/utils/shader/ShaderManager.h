@@ -20,11 +20,11 @@ namespace urchin
 			void replaceShadersWorkingDirectoryBy(const std::string &);
 
 			unsigned int createProgram(const std::string &, const std::string &);
-			unsigned int createProgram(const std::string &, const std::string &, const std::map<TokenReplacerShader::ShaderToken, std::string> &);
+			unsigned int createProgram(const std::string &, const std::string &, const std::map<std::string, std::string> &);
 			void removeProgram(unsigned int);
 
 			void setGeometryShader(unsigned int, const std::string &);
-			void setGeometryShader(unsigned int, const std::string &, const std::map<TokenReplacerShader::ShaderToken, std::string> &);
+			void setGeometryShader(unsigned int, const std::string &, const std::map<std::string, std::string> &);
 
 			void bind(unsigned int);
 

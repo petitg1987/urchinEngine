@@ -1,8 +1,8 @@
 #version 330
 layout(triangles) in;
-layout(triangle_strip, max_vertices=#TOKEN0#) out;
+layout(triangle_strip, max_vertices=#MAX_VERTICES#) out;
 
-uniform mat4 projectionMatrix[#TOKEN1#];
+uniform mat4 projectionMatrix[#NUMBER_SHADOW_MAPS#];
 
 uniform int firstSplit;
 uniform int lastSplit;

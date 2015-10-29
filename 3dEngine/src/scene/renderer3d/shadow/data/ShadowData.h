@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <set>
+#include <memory>
 #include "UrchinCommon.h"
 
 #include "FrustumShadowData.h"
@@ -29,8 +30,8 @@ namespace urchin
 			void setShadowMapTextureID(unsigned int);
 			unsigned int getShadowMapTextureID() const;
 
-			void setDownSampleFilter(TextureFilter *);
-			const TextureFilter *getDownSampleFilter() const;
+			void setDownSampleFilter(std::shared_ptr<const TextureFilter>);
+			std::shared_ptr<const TextureFilter> getDownSampleFilter() const;
 
 			void setLightViewMatrix(const Matrix4<float> &);
 			const Matrix4<float> &getLightViewMatrix() const;
@@ -49,7 +50,7 @@ namespace urchin
 			unsigned int shadowMapTextureID; //shadow map texture ID (variance shadow map)
 
 			//shadow map filters
-			TextureFilter *downSampleFilter;
+			std::shared_ptr<const TextureFilter> downSampleFilter;
 
 			Matrix4<float> lightViewMatrix;
 			std::vector<FrustumShadowData *> frustumShadowData;

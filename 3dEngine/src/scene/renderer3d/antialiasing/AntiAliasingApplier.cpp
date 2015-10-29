@@ -66,8 +66,8 @@ namespace urchin
 
 	void AntiAliasingApplier::loadFxaaShader()
 	{
-		std::map<TokenReplacerShader::ShaderToken, std::string> fxaaTokens;
-		fxaaTokens[TokenReplacerShader::ShaderToken::TOKEN0] = std::to_string(static_cast<int>(quality));
+		std::map<std::string, std::string> fxaaTokens;
+		fxaaTokens["QUALITY"] = std::to_string(static_cast<int>(quality));
 
 		ShaderManager::instance()->removeProgram(fxaaShader);
 		fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "fxaa.frag", fxaaTokens);

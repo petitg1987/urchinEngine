@@ -3,6 +3,7 @@
 #include <cmath>
 #include <sstream>
 #include <stdexcept>
+#include <memory>
 #include <limits>
 #include <map>
 #include <string>
@@ -87,9 +88,9 @@ namespace urchin
 		}
 
 		//scene information
-		std::map<TokenReplacerShader::ShaderToken, std::string> geometryTokens, fragmentTokens;
-		geometryTokens[TokenReplacerShader::TOKEN0] = std::to_string(3*nbShadowMaps);
-		geometryTokens[TokenReplacerShader::TOKEN1] = std::to_string(nbShadowMaps);
+		std::map<std::string, std::string> geometryTokens, fragmentTokens;
+		geometryTokens["MAX_VERTICES"] = std::to_string(3*nbShadowMaps);
+		geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
 		shadowModelDisplayer = new ModelDisplayer(ModelDisplayer::DEPTH_ONLY_MODE);
 		shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geo", geometryTokens);
 		shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
@@ -535,7 +536,7 @@ namespace urchin
 		shadowDatas[light]->setShadowMapTextureID(textureIDs[1]);
 
 		//shadow map filters
-		TextureFilter *downSampleFilter = (new TextureFilterBuilder())
+		std::shared_ptr<TextureFilter> downSampleFilter = std::make_shared<TextureFilterBuilder>()
 				->filterType(TextureFilter::DOWN_SAMPLE)
 				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
 				->textureType(GL_TEXTURE_2D_ARRAY)

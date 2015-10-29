@@ -30,12 +30,12 @@ namespace urchin
 
 	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &fragmentShaderFilename)
 	{
-		std::map<TokenReplacerShader::ShaderToken, std::string> emptyTokens;
+		std::map<std::string, std::string> emptyTokens;
 		return createProgram(vertexShaderFilename, fragmentShaderFilename, emptyTokens);
 	}
 
 	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &fragmentShaderFilename,
-			const std::map<TokenReplacerShader::ShaderToken, std::string> &tokens)
+			const std::map<std::string, std::string> &tokens)
 	{
 		unsigned int programID = glCreateProgram();
 		programs.push_back(programID);
@@ -73,12 +73,12 @@ namespace urchin
 
 	void ShaderManager::setGeometryShader(unsigned int programID, const std::string &geometryShaderFilename)
 	{
-		std::map<TokenReplacerShader::ShaderToken, std::string> emptyTokens;
+		std::map<std::string, std::string> emptyTokens;
 		setGeometryShader(programID, geometryShaderFilename, emptyTokens);
 	}
 
 	void ShaderManager::setGeometryShader(unsigned int programID, const std::string &geometryShaderFilename,
-			const std::map<TokenReplacerShader::ShaderToken, std::string> &tokens)
+			const std::map<std::string, std::string> &tokens)
 	{
 		//geometry shader
 		const std::string &geometryShaderFileSource = readEntireFile(shadersWorkingDirectory + shadersLocation + geometryShaderFilename);

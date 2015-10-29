@@ -1,6 +1,6 @@
 #version 330
 layout(triangles) in;
-layout(triangle_strip, max_vertices=#TOKEN0#) out;
+layout(triangle_strip, max_vertices=#MAX_VERTICES#) out;
 
 in vec2 textCoordinates[];
 
@@ -8,7 +8,7 @@ out int gl_Layer;
 smooth out vec2 vertexTextCoordinates;
 
 void main(){
-	#LOOP1_START(#TOKEN1#)#
+	#LOOP1_START(#NUMBER_LAYER#)#
 		gl_Layer = #LOOP1_COUNTER#;
 
 		gl_Position = gl_in[0].gl_Position;

@@ -2,6 +2,7 @@
 #define ENGINE_TEXTUREFILTERBUILDER_H
 
 #include <string>
+#include <memory>
 
 #include "TextureFilter.h"
 
@@ -15,13 +16,25 @@ namespace urchin
 			~TextureFilterBuilder();
 
 			TextureFilterBuilder *filterType(TextureFilter::FilterType);
-			TextureFilterBuilder *textureSize(unsigned int, unsigned int);
-			TextureFilterBuilder *textureType(unsigned int);
-			TextureFilterBuilder *textureNumberLayer(unsigned int);
-			TextureFilterBuilder *textureInternalFormat(int);
-			TextureFilterBuilder *textureFormat(unsigned int);
+			TextureFilter::FilterType getFilterType() const;
 
-			TextureFilter *build();
+			TextureFilterBuilder *textureSize(unsigned int, unsigned int);
+			unsigned int getTextureWidth() const;
+			unsigned int getTextureHeight() const;
+
+			TextureFilterBuilder *textureType(unsigned int);
+			unsigned int getTextureType() const;
+
+			TextureFilterBuilder *textureNumberLayer(unsigned int);
+			unsigned int getTextureNumberLayer() const;
+
+			TextureFilterBuilder *textureInternalFormat(int);
+			int getTextureInternalFormat() const;
+
+			TextureFilterBuilder *textureFormat(unsigned int);
+			unsigned int getTextureFormat() const;
+
+			std::shared_ptr<TextureFilter> build();
 
 		private:
 			TextureFilter::FilterType pFilterType;

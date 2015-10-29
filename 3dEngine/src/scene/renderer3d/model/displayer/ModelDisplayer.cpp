@@ -136,7 +136,7 @@ namespace urchin
 		return glGetUniformLocation(modelShader, name.c_str());
 	}
 
-	void ModelDisplayer::setCustomGeometryShader(const std::string &geometryShaderName, const std::map<TokenReplacerShader::ShaderToken, std::string> &geometryTokens)
+	void ModelDisplayer::setCustomGeometryShader(const std::string &geometryShaderName, const std::map<std::string, std::string> &geometryTokens)
 	{
 		if(isInitialized)
 		{
@@ -147,7 +147,7 @@ namespace urchin
 		this->geometryTokens = geometryTokens;
 	}
 
-	void ModelDisplayer::setCustomFragmentShader(const std::string &fragmentShaderName, const std::map<TokenReplacerShader::ShaderToken, std::string> &fragmentTokens)
+	void ModelDisplayer::setCustomFragmentShader(const std::string &fragmentShaderName, const std::map<std::string, std::string> &fragmentTokens)
 	{
 		if(isInitialized)
 		{

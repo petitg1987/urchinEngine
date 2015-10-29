@@ -36,8 +36,8 @@ namespace urchin
 			void onCameraProjectionUpdate(const Camera *const);
 
 			int getUniformLocation(const std::string &name);
-			void setCustomGeometryShader(const std::string &, const std::map<TokenReplacerShader::ShaderToken, std::string> &);
-			void setCustomFragmentShader(const std::string &, const std::map<TokenReplacerShader::ShaderToken, std::string> &);
+			void setCustomGeometryShader(const std::string &, const std::map<std::string, std::string> &);
+			void setCustomFragmentShader(const std::string &, const std::map<std::string, std::string> &);
 			void setCustomUniform(CustomUniform *);
 			void setCustomModelUniform(CustomModelUniform *);
 			void setModels(const std::set<Model *> &);
@@ -55,7 +55,7 @@ namespace urchin
 			bool isInitialized;
 
 			std::string geometryShaderName, fragmentShaderName;
-			std::map<TokenReplacerShader::ShaderToken, std::string> geometryTokens, fragmentTokens;
+			std::map<std::string, std::string> geometryTokens, fragmentTokens;
 
 			DisplayMode displayMode;
 			MeshParameter meshParameter;

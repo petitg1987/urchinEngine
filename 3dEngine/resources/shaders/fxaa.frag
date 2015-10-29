@@ -8,7 +8,7 @@ uniform vec2 invSceneSize;
 
 out vec4 fragColor;
 
-#define FXAA_QUALITY #TOKEN0# //0=Low, 1=Medium, 2=High, 3=Very high
+#define FXAA_QUALITY #QUALITY# //0=Low, 1=Medium, 2=High, 3=Very high
 
 #if(FXAA_QUALITY == 0)
 	#define FXAA_QUALITY_PS 6
