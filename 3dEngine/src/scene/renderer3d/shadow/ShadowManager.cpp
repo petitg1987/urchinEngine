@@ -545,6 +545,17 @@ namespace urchin
 				->textureFormat(GL_RG)
 				->build();
 		shadowDatas[light]->setDownSampleFilter(downSampleFilter);
+
+		std::shared_ptr<TextureFilter> blurFilter = std::make_shared<TextureFilterBuilder>()
+				->filterType(TextureFilterBuilder::BLUR)
+				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
+			//	->textureSize(shadowMapResolution, shadowMapResolution)
+				->textureType(GL_TEXTURE_2D_ARRAY)
+				->textureNumberLayer(nbShadowMaps)
+				->textureInternalFormat(GL_RG32F)
+				->textureFormat(GL_RG)
+				->build();
+		shadowDatas[light]->setBlurFilter(blurFilter);
 	}
 
 	void ShadowManager::removeShadowMaps(const Light *const light)
@@ -588,6 +599,8 @@ namespace urchin
 			shadowModelDisplayer->display(shadowData->getLightViewMatrix());
 
 			shadowData->getDownSampleFilter()->applyOn(shadowData->getShadowMapTextureID());
+			shadowData->getBlurFilter()->applyOn(shadowData->getDownSampleFilter()->getTextureID());
+			//shadowData->getBlurFilter()->applyOn(shadowData->getShadowMapTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
@@ -606,7 +619,7 @@ namespace urchin
 				const ShadowData *shadowData = it->second;
 
 				glActiveTexture(GL_TEXTURE0 + lightsLocation[i].shadowMapTextureUnits);
-				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getDownSampleFilter()->getTextureID());
+				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getBlurFilter()->getTextureID());
 				glUniform1i(lightsLocation[i].shadowMapTexLoc, lightsLocation[i].shadowMapTextureUnits);
 
 				for(unsigned int j=0; j<nbShadowMaps; ++j)

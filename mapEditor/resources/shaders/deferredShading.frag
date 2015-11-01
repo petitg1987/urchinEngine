@@ -27,13 +27,13 @@ struct StructLightInfo{
 	
 	sampler2DArray shadowMapTex;
 
-	mat4 mLightProjectionView[#TOKEN1#];
+	mat4 mLightProjectionView[#NUMBER_SHADOW_MAPS#];
 };
-uniform StructLightInfo lightsInfo[#TOKEN0#];
-uniform float depthSplitDistance[#TOKEN1#];
+uniform StructLightInfo lightsInfo[#MAX_LIGHTS#];
+uniform float depthSplitDistance[#NUMBER_SHADOW_MAPS#];
 uniform vec4 globalAmbient;
 
-layout (location = #TOKEN2#) out vec4 fragColor;
+layout (location = #OUTPUT_LOCATION#) out vec4 fragColor;
 
 float linearStep(float min, float max, float v){
   	return clamp((v - min) / (max - min), 0.0f, 1.0f);  
@@ -56,7 +56,7 @@ float computeShadowContribution(int lightIndex, inout vec4 texPosition, inout ve
 	float shadowContribution = 1.0;
 	
 	if(lightsInfo[lightIndex].produceShadow){
-		#LOOP1_START(#TOKEN1#)#
+		#LOOP1_START(#NUMBER_SHADOW_MAPS#)#
 			if(texPosition.z < depthSplitDistance[#LOOP1_COUNTER#]){
 				vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[#LOOP1_COUNTER#] * position) / 2.0) + 0.5);
 
@@ -68,9 +68,9 @@ float computeShadowContribution(int lightIndex, inout vec4 texPosition, inout ve
 					
 					#LOOP1_IF_LAST_ITERATION#
 						//shadow attenuation before disappear
-						float startAttenuation = depthSplitDistance[#TOKEN1#-1] * 0.9996;
+						float startAttenuation = depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] * 0.9996;
 						shadowContribution = min(1.0f, shadowContribution 
-								+ max(0.0f, ((texPosition.z - startAttenuation)/(depthSplitDistance[#TOKEN1#-1] - startAttenuation))));
+								+ max(0.0f, ((texPosition.z - startAttenuation)/(depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] - startAttenuation))));
 					#LOOP1_ENDIF_LAST_ITERATION#
 				}
 
@@ -105,7 +105,7 @@ void main(){
 	
 	fragColor = globalAmbient * modelAmbient;
 		
-	for(int i=0; i<#TOKEN0#;++i){
+	for(int i=0; i<#MAX_LIGHTS#;++i){
 		if(lightsInfo[i].isExist){
 			vec3 vertexToLightNormalized;
 			float lightAttenuation;

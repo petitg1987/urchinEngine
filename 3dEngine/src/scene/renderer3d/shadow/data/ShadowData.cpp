@@ -12,7 +12,8 @@ namespace urchin
 			fboID(0),
 			depthTextureID(0),
 			shadowMapTextureID(0),
-			downSampleFilter(nullptr)
+			downSampleFilter(nullptr),
+			blurFilter(nullptr)
 	{
 		for(unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumsplit; ++frustumSplitIndex)
 		{
@@ -76,6 +77,16 @@ namespace urchin
 	std::shared_ptr<const TextureFilter> ShadowData::getDownSampleFilter() const
 	{
 		return downSampleFilter;
+	}
+
+	void ShadowData::setBlurFilter(std::shared_ptr<const TextureFilter> blurFilter)
+	{
+		this->blurFilter = blurFilter;
+	}
+
+	std::shared_ptr<const TextureFilter> ShadowData::getBlurFilter() const
+	{
+		return blurFilter;
 	}
 
 	void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix)

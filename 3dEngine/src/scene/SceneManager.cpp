@@ -257,11 +257,7 @@ namespace urchin
 		}
 
 		computeFps();
-
-		//prepare rendering
 		float invFrameRate = getOneOnFps();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClear(GL_COLOR_BUFFER_BIT);
 
 		//3d renderer
 		renderer3d->display(invFrameRate);

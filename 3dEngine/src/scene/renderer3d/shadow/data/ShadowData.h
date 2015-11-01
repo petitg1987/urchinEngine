@@ -33,6 +33,9 @@ namespace urchin
 			void setDownSampleFilter(std::shared_ptr<const TextureFilter>);
 			std::shared_ptr<const TextureFilter> getDownSampleFilter() const;
 
+			void setBlurFilter(std::shared_ptr<const TextureFilter>);
+			std::shared_ptr<const TextureFilter> getBlurFilter() const;
+
 			void setLightViewMatrix(const Matrix4<float> &);
 			const Matrix4<float> &getLightViewMatrix() const;
 
@@ -51,6 +54,7 @@ namespace urchin
 
 			//shadow map filters
 			std::shared_ptr<const TextureFilter> downSampleFilter;
+			std::shared_ptr<const TextureFilter> blurFilter;
 
 			Matrix4<float> lightViewMatrix;
 			std::vector<FrustumShadowData *> frustumShadowData;

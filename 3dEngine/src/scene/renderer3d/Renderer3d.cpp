@@ -147,7 +147,7 @@ namespace urchin
 		std::map<std::string, std::string> tokens;
 		tokens["MAX_LIGHTS"] = maxLightsString.str();
 		tokens["NUMBER_SHADOW_MAPS"] = nbShadowMapsString.str();
-		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
+		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "2" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/; //TODO 2 is correct output ?
 
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
 		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
@@ -410,9 +410,9 @@ namespace urchin
 //			displayTexture1.display(width, height);
 
 			//display normal and ambient buffer
-//			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture2.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
-//			displayTexture2.display(width, height);
+			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
+			displayTexture2.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
+			displayTexture2.display(width, height);
 
 			//display illuminated scene buffer
 //			DisplayTexture displayTexture3(textureIDs[TEX_LIGHTING_PASS], DisplayTexture::DEFAULT_FACTOR);
