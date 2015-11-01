@@ -508,8 +508,8 @@ namespace urchin
 		shadowDatas[light]->setFboID(fboID);
 
 		//textures for shadow map: depth texture && shadow map texture (variance shadow map)
-		GLenum fragData[1] = {GL_COLOR_ATTACHMENT0};
-		glDrawBuffers(1, fragData);
+		GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
+		glDrawBuffers(1, fboAttachments);
 		glReadBuffer(GL_NONE);
 
 		unsigned int textureIDs[2];
@@ -530,7 +530,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RG32F, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_RG, GL_FLOAT, 0);
-		glFramebufferTexture(GL_FRAMEBUFFER, fragData[0], textureIDs[1], 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureIDs[1], 0);
 
 		shadowDatas[light]->setDepthTextureID(textureIDs[0]);
 		shadowDatas[light]->setShadowMapTextureID(textureIDs[1]);
@@ -549,7 +549,6 @@ namespace urchin
 		std::shared_ptr<TextureFilter> blurFilter = std::make_shared<TextureFilterBuilder>()
 				->filterType(TextureFilterBuilder::BLUR)
 				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
-			//	->textureSize(shadowMapResolution, shadowMapResolution)
 				->textureType(GL_TEXTURE_2D_ARRAY)
 				->textureNumberLayer(nbShadowMaps)
 				->textureInternalFormat(GL_RG32F)
@@ -600,7 +599,6 @@ namespace urchin
 
 			shadowData->getDownSampleFilter()->applyOn(shadowData->getShadowMapTextureID());
 			shadowData->getBlurFilter()->applyOn(shadowData->getDownSampleFilter()->getTextureID());
-			//shadowData->getBlurFilter()->applyOn(shadowData->getShadowMapTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);

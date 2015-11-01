@@ -106,8 +106,8 @@ namespace urchin
 		glGenFramebuffers(1, &fboID);
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
-		GLenum fragData[1] = {GL_COLOR_ATTACHMENT0};
-		glDrawBuffers(1, fragData);
+		GLenum fboAttachments[1] = {GL_COLOR_ATTACHMENT0};
+		glDrawBuffers(1, fboAttachments);
 		glReadBuffer(GL_NONE);
 
 		glGenTextures(1, &textureID);
@@ -127,7 +127,7 @@ namespace urchin
 		{
 			throw std::invalid_argument("Unsupported texture type for filter: " + textureType);
 		}
-		glFramebufferTexture(GL_FRAMEBUFFER, fragData[0], textureID, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureID, 0);
 	}
 
 	unsigned int TextureFilter::getFboId() const

@@ -147,7 +147,7 @@ namespace urchin
 		std::map<std::string, std::string> tokens;
 		tokens["MAX_LIGHTS"] = maxLightsString.str();
 		tokens["NUMBER_SHADOW_MAPS"] = nbShadowMapsString.str();
-		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "2" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/; //TODO 2 is correct output ?
+		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
 
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
 		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
@@ -178,7 +178,9 @@ namespace urchin
 
 		//deferred shading
 		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-		GLenum fragData[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+		fboAttachments[0] = GL_COLOR_ATTACHMENT0;
+		fboAttachments[1] = GL_COLOR_ATTACHMENT1;
+		fboAttachments[2] = GL_COLOR_ATTACHMENT2;
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]); //depth buffer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -190,21 +192,20 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, fragData[0], GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]); //normal and ambient factor buffer
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, fragData[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS]); //illuminated scene buffer
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, fragData[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
 
-		glDrawBuffers(3, fragData);
 		glReadBuffer(GL_NONE);
 
 		//shadow
@@ -385,11 +386,14 @@ namespace urchin
 		updateScene(invFrameRate);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
+		glDrawBuffers(2, &fboAttachments[0]);
 		deferredGeometryRendering();
 
 		if(isAntiAliasingActivated)
 		{
+			glDrawBuffers(1, &fboAttachments[2]);
 			lightingPassRendering();
+
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			antiAliasingApplier->applyOn(textureIDs[TEX_LIGHTING_PASS]);
 		}else
@@ -410,9 +414,9 @@ namespace urchin
 //			displayTexture1.display(width, height);
 
 			//display normal and ambient buffer
-			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
-			displayTexture2.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
-			displayTexture2.display(width, height);
+//			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
+//			displayTexture2.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
+//			displayTexture2.display(width, height);
 
 			//display illuminated scene buffer
 //			DisplayTexture displayTexture3(textureIDs[TEX_LIGHTING_PASS], DisplayTexture::DEFAULT_FACTOR);
