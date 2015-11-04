@@ -345,7 +345,7 @@ namespace urchin
 			eye.buildTranslation(lightDirection.X, lightDirection.Y, lightDirection.Z);
 			Matrix4<float> mViewShadow = M * eye;
 
-			shadowData->setLightViewMatrix(mViewShadow);
+			shadowData->setLightViewMatrix(mViewShadow); //TODO could be Matrix3 ?
 		}else
 		{
 			throw std::runtime_error("Shadow currently not supported on omnidirectional light.");
@@ -369,7 +369,7 @@ namespace urchin
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, shadowData->getLightViewMatrix());
 				shadowData->getFrustumShadowData(i)->setShadowCasterReceiverBox(aabboxSceneDependent);
-				shadowData->getFrustumShadowData(i)->setLightProjectionMatrix(aabboxSceneDependent.toProjectionMatrix());
+				shadowData->getFrustumShadowData(i)->setLightProjectionMatrix(aabboxSceneDependent.toProjectionMatrix()); //TODO could be matrix3 ?
 			}
 		}else
 		{
@@ -460,7 +460,7 @@ namespace urchin
 		Point3<float> cutMin(
 			aabboxSceneDependent.getMin().X<aabboxSceneIndependent.getMin().X ? aabboxSceneIndependent.getMin().X : aabboxSceneDependent.getMin().X,
 			aabboxSceneDependent.getMin().Y<aabboxSceneIndependent.getMin().Y ? aabboxSceneIndependent.getMin().Y : aabboxSceneDependent.getMin().Y,
-			aabboxSceneIndependent.getMin().Z);
+			aabboxSceneIndependent.getMin().Z); //TODO: why not take the minimum ?
 
 		Point3<float> cutMax(
 			aabboxSceneDependent.getMax().X>aabboxSceneIndependent.getMax().X ? aabboxSceneIndependent.getMax().X : aabboxSceneDependent.getMax().X,
@@ -536,7 +536,7 @@ namespace urchin
 		shadowDatas[light]->setShadowMapTextureID(textureIDs[1]);
 
 		//shadow map filters
-		std::shared_ptr<TextureFilter> downSampleFilter = std::make_shared<TextureFilterBuilder>()
+		std::shared_ptr<TextureFilter> downSample2xFilter = std::make_shared<TextureFilterBuilder>()
 				->filterType(TextureFilterBuilder::DOWN_SAMPLE)
 				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
 				->textureType(GL_TEXTURE_2D_ARRAY)
@@ -544,11 +544,21 @@ namespace urchin
 				->textureInternalFormat(GL_RG32F)
 				->textureFormat(GL_RG)
 				->build();
-		shadowDatas[light]->setDownSampleFilter(downSampleFilter);
+		shadowDatas[light]->setDownSample2xFilter(downSample2xFilter);
+
+		std::shared_ptr<TextureFilter> downSample4xFilter = std::make_shared<TextureFilterBuilder>()
+				->filterType(TextureFilterBuilder::DOWN_SAMPLE)
+				->textureSize(shadowMapResolution/4, shadowMapResolution/4)
+				->textureType(GL_TEXTURE_2D_ARRAY)
+				->textureNumberLayer(nbShadowMaps)
+				->textureInternalFormat(GL_RG32F)
+				->textureFormat(GL_RG)
+				->build();
+		shadowDatas[light]->setDownSample4xFilter(downSample4xFilter);
 
 		std::shared_ptr<TextureFilter> blurFilter = std::make_shared<TextureFilterBuilder>()
 				->filterType(TextureFilterBuilder::BLUR)
-				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
+				->textureSize(shadowMapResolution/4, shadowMapResolution/4)
 				->textureType(GL_TEXTURE_2D_ARRAY)
 				->textureNumberLayer(nbShadowMaps)
 				->textureInternalFormat(GL_RG32F)
@@ -597,8 +607,9 @@ namespace urchin
 			shadowModelDisplayer->setModels(shadowData->retrieveModels());
 			shadowModelDisplayer->display(shadowData->getLightViewMatrix());
 
-			shadowData->getDownSampleFilter()->applyOn(shadowData->getShadowMapTextureID());
-			shadowData->getBlurFilter()->applyOn(shadowData->getDownSampleFilter()->getTextureID());
+			shadowData->getDownSample2xFilter()->applyOn(shadowData->getShadowMapTextureID());
+			shadowData->getDownSample4xFilter()->applyOn(shadowData->getDownSample2xFilter()->getTextureID());
+			shadowData->getBlurFilter()->applyOn(shadowData->getDownSample4xFilter()->getTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
