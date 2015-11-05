@@ -13,6 +13,8 @@ namespace urchin
 		textureWidth(textureFilterBuilder->getTextureWidth()),
 		textureHeight(textureFilterBuilder->getTextureHeight()),
 		textureType(textureFilterBuilder->getTextureType()),
+		textureAccessFilter(textureFilterBuilder->getTextureAccessFilter()),
+		textureAnisotropy(textureFilterBuilder->getTextureAnisotropy()),
 		textureNumberLayer(textureFilterBuilder->getTextureNumberLayer()),
 		textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
 		textureFormat(textureFilterBuilder->getTextureFormat()),
@@ -112,9 +114,9 @@ namespace urchin
 
 		glGenTextures(1, &textureID);
 		glBindTexture(textureType, textureID);
-		glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
+		glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, textureAccessFilter);
+		glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, textureAccessFilter);
+		glTexParameterf(textureType, GL_TEXTURE_MAX_ANISOTROPY_EXT, textureAnisotropy);
 		glTexParameteri(textureType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(textureType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		if(textureType==GL_TEXTURE_2D_ARRAY)

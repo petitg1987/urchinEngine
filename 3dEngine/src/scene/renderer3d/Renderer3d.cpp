@@ -427,7 +427,7 @@ namespace urchin
 //			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
 //			const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
 //			unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-//			DisplayTexture displayTexture4(shadowMapTextureID, shadowMapNumber, DisplayTexture::DEPTH_FACTOR);
+//			DisplayTexture displayTexture4(shadowMapTextureID, shadowMapNumber, DisplayTexture::DEFAULT_FACTOR);
 //			displayTexture4.setPosition(DisplayTexture::CENTER_X, DisplayTexture::BOTTOM);
 //			displayTexture4.display(width, height);
 
@@ -435,7 +435,7 @@ namespace urchin
 //			const Light *dsFirstLight = lightManager->getVisibleLights()[0]; //choose light
 //			const unsigned int dsShadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
 //			unsigned int dsShadowMapTextureID = shadowManager->getShadowData(dsFirstLight).getDownSampleFilter()->getTextureID();
-//			DisplayTexture displayTexture5(dsShadowMapTextureID, dsShadowMapNumber, DisplayTexture::DEPTH_FACTOR);
+//			DisplayTexture displayTexture5(dsShadowMapTextureID, dsShadowMapNumber, DisplayTexture::DEFAULT_FACTOR);
 //			displayTexture5.setPosition(DisplayTexture::RIGHT, DisplayTexture::BOTTOM);
 //			displayTexture5.display(width, height);
 		#endif

@@ -14,6 +14,8 @@ namespace urchin
 		textureWidth(1024),
 		textureHeight(1024),
 		pTextureType(GL_TEXTURE_2D),
+		pTextureAccessFilter(GL_LINEAR),
+		pTextureAnisotropy(1.0f),
 		pTextureNumberLayer(1),
 		pTextureInternalFormat(GL_RGB),
 		pTextureFormat(GL_RGB)
@@ -58,6 +60,28 @@ namespace urchin
 	unsigned int TextureFilterBuilder::getTextureType() const
 	{
 		return pTextureType;
+	}
+
+	TextureFilterBuilder *TextureFilterBuilder::textureAccessFilter(unsigned int)
+	{
+		this->pTextureAccessFilter = pTextureAccessFilter;
+		return this;
+	}
+
+	unsigned int TextureFilterBuilder::getTextureAccessFilter() const
+	{
+		return pTextureAccessFilter;
+	}
+
+	TextureFilterBuilder *TextureFilterBuilder::textureAnisotropy(float pTextureAnisotropy)
+	{
+		this->pTextureAnisotropy = pTextureAnisotropy;
+		return this;
+	}
+
+	float TextureFilterBuilder::getTextureAnisotropy() const
+	{
+		return pTextureAnisotropy;
 	}
 
 	TextureFilterBuilder *TextureFilterBuilder::textureNumberLayer(unsigned int textureNumberLayer)

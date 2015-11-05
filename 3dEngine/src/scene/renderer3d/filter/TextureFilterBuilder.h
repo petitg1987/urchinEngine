@@ -30,6 +30,12 @@ namespace urchin
 			TextureFilterBuilder *textureType(unsigned int);
 			unsigned int getTextureType() const;
 
+			TextureFilterBuilder *textureAccessFilter(unsigned int);
+			unsigned int getTextureAccessFilter() const;
+
+			TextureFilterBuilder *textureAnisotropy(float);
+			float getTextureAnisotropy() const;
+
 			TextureFilterBuilder *textureNumberLayer(unsigned int);
 			unsigned int getTextureNumberLayer() const;
 
@@ -46,6 +52,8 @@ namespace urchin
 			unsigned int textureWidth, textureHeight;
 
 			unsigned int pTextureType;
+			unsigned int pTextureAccessFilter;
+			float pTextureAnisotropy;
 			unsigned int pTextureNumberLayer;
 			int pTextureInternalFormat;
 			unsigned int pTextureFormat;

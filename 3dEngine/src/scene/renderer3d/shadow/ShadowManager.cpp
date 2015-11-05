@@ -50,7 +50,7 @@ namespace urchin
 				depthComponent = GL_DEPTH_COMPONENT24;
 				break;
 			case 32:
-				depthComponent = GL_DEPTH_COMPONENT32;
+				depthComponent = GL_DEPTH_COMPONENT32; //TODO: what about GL_RG32F ?
 				break;
 			default:
 				throw std::domain_error("Unsupported value for parameter 'shadow.depthComponent'.");
@@ -460,12 +460,12 @@ namespace urchin
 		Point3<float> cutMin(
 			aabboxSceneDependent.getMin().X<aabboxSceneIndependent.getMin().X ? aabboxSceneIndependent.getMin().X : aabboxSceneDependent.getMin().X,
 			aabboxSceneDependent.getMin().Y<aabboxSceneIndependent.getMin().Y ? aabboxSceneIndependent.getMin().Y : aabboxSceneDependent.getMin().Y,
-			aabboxSceneIndependent.getMin().Z); //TODO: why not take the minimum ?
+			aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
 
 		Point3<float> cutMax(
 			aabboxSceneDependent.getMax().X>aabboxSceneIndependent.getMax().X ? aabboxSceneIndependent.getMax().X : aabboxSceneDependent.getMax().X,
 			aabboxSceneDependent.getMax().Y>aabboxSceneIndependent.getMax().Y ? aabboxSceneIndependent.getMax().Y : aabboxSceneDependent.getMax().Y,
-			aabboxSceneIndependent.getMax().Z);
+			aabboxSceneDependent.getMax().Z>aabboxSceneIndependent.getMax().Z ? aabboxSceneIndependent.getMax().Z : aabboxSceneDependent.getMax().Z);
 
 		return AABBox<float>(cutMin, cutMax);
 	}
@@ -541,7 +541,8 @@ namespace urchin
 				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
 				->textureType(GL_TEXTURE_2D_ARRAY)
 				->textureNumberLayer(nbShadowMaps)
-				->textureInternalFormat(GL_RG32F)
+				->textureInternalFormat(GL_RG32F)  //TODO use 24 bits ??
+				->textureAnisotropy(1.0f)
 				->textureFormat(GL_RG)
 				->build();
 		shadowDatas[light]->setDownSample2xFilter(downSample2xFilter);
@@ -550,6 +551,7 @@ namespace urchin
 				->filterType(TextureFilterBuilder::DOWN_SAMPLE)
 				->textureSize(shadowMapResolution/4, shadowMapResolution/4)
 				->textureType(GL_TEXTURE_2D_ARRAY)
+				->textureAnisotropy(1.0f)
 				->textureNumberLayer(nbShadowMaps)
 				->textureInternalFormat(GL_RG32F)
 				->textureFormat(GL_RG)
@@ -560,6 +562,7 @@ namespace urchin
 				->filterType(TextureFilterBuilder::BLUR)
 				->textureSize(shadowMapResolution/4, shadowMapResolution/4)
 				->textureType(GL_TEXTURE_2D_ARRAY)
+				->textureAnisotropy(1.0f) //TODO review anisotropy
 				->textureNumberLayer(nbShadowMaps)
 				->textureInternalFormat(GL_RG32F)
 				->textureFormat(GL_RG)

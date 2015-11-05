@@ -11,10 +11,9 @@ layout (location = 0) out #OUTPUT_TYPE# fragColor;
 void main(){
 	fragColor = #OUTPUT_TYPE#(0.0);
 
-	//TODO review it
-	//TODO usage horizontal & vertical blur
+	//TODO review it and use uniform
 	const float blurPixelSize = 1.0;
-	const float resolution = 256.0; //TODO use uniform or token
+	const float resolution = 1024.0;
 	const float pixelSize = (1.0*blurPixelSize)/resolution;
 
 	float blurFactors[3][3];

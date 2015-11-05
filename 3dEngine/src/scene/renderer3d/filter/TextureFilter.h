@@ -30,6 +30,8 @@ namespace urchin
 
 			unsigned int textureWidth, textureHeight;
 			unsigned int textureType;
+			unsigned int textureAccessFilter;
+			float textureAnisotropy;
 			unsigned int textureNumberLayer;
 			int textureInternalFormat;
 			unsigned int textureFormat;
