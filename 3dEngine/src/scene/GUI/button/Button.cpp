@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include "scene/GUI/button/Button.h"

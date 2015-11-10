@@ -118,6 +118,12 @@ namespace urchin
 		return maxPoint;
 	}
 
+	template<class T> AABBox<T> OBBox<T>::toAABBox() const
+	{
+		return AABBox<T>(centerPosition.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]),
+			 centerPosition.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]));
+	}
+
 	/**
 	* @return True if the bounding box collides or is inside this bounding box
 	*/

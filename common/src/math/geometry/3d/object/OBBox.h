@@ -41,6 +41,7 @@ namespace urchin
 			const Point3<T> getPoint(unsigned int) const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
+			AABBox<T> toAABBox() const;
 
 			bool collideWithOBBox(const OBBox<T> &) const;
 			bool collideWithAABBox(const AABBox<T> &) const;

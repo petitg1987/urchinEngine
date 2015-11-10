@@ -46,6 +46,10 @@ namespace urchin
 			void updateShadowMaps();
 			void loadShadowMaps(const Matrix4<float> &);
 			
+			#ifdef _DEBUG
+				void drawLightSceneBox(const Frustum<float> &, const Light *const, const Matrix4<float> &) const;
+			#endif
+
 		private:
 			//light handling
 			void addShadowLight(Light *const);

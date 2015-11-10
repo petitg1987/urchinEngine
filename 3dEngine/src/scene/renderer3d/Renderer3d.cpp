@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GL/gl.h>
 #include <sstream>
 #include <set>
@@ -475,13 +474,17 @@ namespace urchin
 
 		#ifdef _DEBUG
 			//display the octree
-			//modelOctreeManager->drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+//			modelOctreeManager->drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
 
 			//display models bounding box
-			//modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
+//			modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
 
 			//display light octree
-			//lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+//			lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+
+			//display scene box visible from light based on input (splitted) frustum
+//			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
+//			shadowManager->drawLightSceneBox(camera->getFrustum(), firstLight, camera->getViewMatrix());
 		#endif
 	}
 

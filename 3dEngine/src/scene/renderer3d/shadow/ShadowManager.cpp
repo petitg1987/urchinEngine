@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GL/gl.h>
 #include <cmath>
 #include <sstream>
@@ -16,6 +15,7 @@
 #include "scene/renderer3d/filter/TextureFilterBuilder.h"
 #include "utils/shader/ShaderManager.h"
 #include "utils/shader/TokenReplacerShader.h"
+#include "utils/display/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 2
 #define DEFAULT_SHADOW_MAP_RESOLUTION 2048
@@ -362,12 +362,11 @@ namespace urchin
 			for(unsigned int i=0; i<splittedFrustum.size(); ++i)
 			{
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustum[i], light, shadowData->getLightViewMatrix());
-				OBBox<float> obboxViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
+				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
-				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxViewSpace, ProduceShadowFilter());
+				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ProduceShadowFilter());
 				shadowData->getFrustumShadowData(i)->setModels(models);
 
-				//TODO train support shadow not always display
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, shadowData->getLightViewMatrix());
 				shadowData->getFrustumShadowData(i)->setShadowCasterReceiverBox(aabboxSceneDependent);
 				shadowData->getFrustumShadowData(i)->setLightProjectionMatrix(aabboxSceneDependent.toProjectionMatrix());
@@ -442,8 +441,7 @@ namespace urchin
 	/**
 	 * @return Box in light space containing shadow caster and receiver (scene dependent)
 	 */
-	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const std::set<Model *> &models,
-			const Matrix4<float> &lightViewMatrix) const
+	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
 		std::set<Model *>::iterator it = models.begin();
 		AABBox<float> aabboxSceneDependent;
@@ -462,14 +460,13 @@ namespace urchin
 			aabboxSceneDependent.getMin().X<aabboxSceneIndependent.getMin().X ? aabboxSceneIndependent.getMin().X : aabboxSceneDependent.getMin().X,
 			aabboxSceneDependent.getMin().Y<aabboxSceneIndependent.getMin().Y ? aabboxSceneIndependent.getMin().Y : aabboxSceneDependent.getMin().Y,
 			aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
-//TODO try to reduce this box...
 
 		Point3<float> cutMax(
 			aabboxSceneDependent.getMax().X>aabboxSceneIndependent.getMax().X ? aabboxSceneIndependent.getMax().X : aabboxSceneDependent.getMax().X,
 			aabboxSceneDependent.getMax().Y>aabboxSceneIndependent.getMax().Y ? aabboxSceneIndependent.getMax().Y : aabboxSceneDependent.getMax().Y,
 			aabboxSceneDependent.getMax().Z>aabboxSceneIndependent.getMax().Z ? aabboxSceneIndependent.getMax().Z : aabboxSceneDependent.getMax().Z);
 
-		float step = 3.0f;
+		float step = 2.0f; //TODO should be a parameter
 		cutMin.X = (cutMin.X<0.0f) ? cutMin.X-(step+fmod(cutMin.X, step)) : cutMin.X-fmod(cutMin.X, step);
 		cutMin.Y = (cutMin.Y<0.0f) ? cutMin.Y-(step+fmod(cutMin.Y, step)) : cutMin.Y-fmod(cutMin.Y, step);
 		cutMin.Z = (cutMin.Z<0.0f) ? cutMin.Z-(step+fmod(cutMin.Z, step)) : cutMin.Z-fmod(cutMin.Z, step);
@@ -662,5 +659,29 @@ namespace urchin
 
 		glUniform1fv(depthSplitDistanceLoc, nbShadowMaps, depthSplitDistance);
 	}
+
+#ifdef _DEBUG
+	void ShadowManager::drawLightSceneBox(const Frustum<float> &frustum, const Light *const light, const Matrix4<float> &viewMatrix) const
+	{
+		auto itShadowData = shadowDatas.find(light);
+		if(itShadowData==shadowDatas.end())
+		{
+			throw std::invalid_argument("shadow manager doesn't know this light.");
+		}
+
+		const Matrix4<float> &lightViewMatrix = itShadowData->second->getLightViewMatrix();
+		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, light, lightViewMatrix);
+
+		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
+		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ProduceShadowFilter());
+
+		AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, lightViewMatrix);
+		OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);
+
+		OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
+		sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
+		sceneDependentObboxModel.display(viewMatrix);
+	}
+#endif
 
 }

@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include "utils/display/geometry/obbox/OBBoxModel.h"

@@ -4,11 +4,10 @@
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - SHADOW
-	- (3) [QUALITY IMPROVEMENT] Stable shadow (Shader X6)
-	- (3) [QUALITY IMPROVEMENT] Don't use main octree to determine shadow caster box. Indeed, it isn't working well for large scene.
-	- (3) [QUALITY IMPROVEMENT] Use step (palier) for shadow caster box. It avoid jerk on shadow when objects move.
+	- (3) [OPTIMIZATION] Don't update all shadow maps at each frame
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [OPTIMIZATION] Don't use two textures (depth and GL_RG32F) for shadow maps
+	- (3) [NEW FEATURE] Add additional blur to far shadow
 - GUI
 	- (1) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop
@@ -22,7 +21,7 @@
 	- (3) [NEW FEATURE] Smoke
 	- (3) [NEW FEATURE] Fire & explosion
 	- (3) [NEW FEATURE] Trees & wind (http://http.developer.nvidia.com/GPUGems3/gpugems3_ch06.html)
-	- (3) [NEW FEATURE] Ambient occlusion
+	- (1) [NEW FEATURE] Ambient occlusion
 	- (3) [NEW FEATURE] Alpha management
 	- (3) [OPTIMIZATION] Textures compression
 - SCENE

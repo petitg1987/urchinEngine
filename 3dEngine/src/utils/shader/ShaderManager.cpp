@@ -1,7 +1,6 @@
+#include <GL/gl.h>
 #include <fstream>
 #include <stdexcept>
-#include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "utils/shader/ShaderManager.h"
 
