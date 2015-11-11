@@ -72,6 +72,7 @@ namespace urchin
 			//matrix information
 			int sceneWidth, sceneHeight;
 			float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
+			float lightViewOverflowStepSize;
 			unsigned int shadowMapResolution, nbShadowMaps;
 			float viewingShadowDistance;
 

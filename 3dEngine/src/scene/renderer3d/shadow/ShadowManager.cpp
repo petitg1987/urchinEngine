@@ -8,7 +8,6 @@
 #include <string>
 
 #include "ShadowManager.h"
-#include "scene/renderer3d/model/octreefilter/ProduceShadowFilter.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/filter/TextureFilter.h"
@@ -17,8 +16,8 @@
 #include "utils/shader/TokenReplacerShader.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
-#define DEFAULT_NUMBER_SHADOW_MAPS 2
-#define DEFAULT_SHADOW_MAP_RESOLUTION 2048
+#define DEFAULT_NUMBER_SHADOW_MAPS 4
+#define DEFAULT_SHADOW_MAP_RESOLUTION 1024
 #define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
 
 namespace urchin
@@ -28,6 +27,7 @@ namespace urchin
 			sceneWidth(0),
 			sceneHeight(0),
 			percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
+			lightViewOverflowStepSize(ConfigService::instance()->getFloatValue("shadow.lightViewOverflowStepSize")),
 			shadowMapResolution(DEFAULT_SHADOW_MAP_RESOLUTION),
 			nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
 			viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
@@ -364,7 +364,7 @@ namespace urchin
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustum[i], light, shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
-				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ProduceShadowFilter());
+				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
 				shadowData->getFrustumShadowData(i)->setModels(models);
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, shadowData->getLightViewMatrix());
@@ -443,16 +443,23 @@ namespace urchin
 	 */
 	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
-		std::set<Model *>::iterator it = models.begin();
 		AABBox<float> aabboxSceneDependent;
-		if(it!=models.end())
-		{
-			aabboxSceneDependent = lightViewMatrix * (*it)->getAABBox();
-			++it;
+		bool boxInitialized = false;
 
-			for(;it!=models.end(); ++it)
+		for(std::set<Model *>::iterator it = models.begin(); it!=models.end(); ++it)
+		{
+			const Model* model = *it;
+			if(model->isProduceShadow())
 			{
-				aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * (*it)->getAABBox());
+				if(boxInitialized)
+				{
+					aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getAABBox());
+				}else
+				{
+					aabboxSceneDependent = lightViewMatrix * model->getAABBox();
+					boxInitialized = true;
+				}
+
 			}
 		}
 
@@ -466,13 +473,12 @@ namespace urchin
 			aabboxSceneDependent.getMax().Y>aabboxSceneIndependent.getMax().Y ? aabboxSceneIndependent.getMax().Y : aabboxSceneDependent.getMax().Y,
 			aabboxSceneDependent.getMax().Z>aabboxSceneIndependent.getMax().Z ? aabboxSceneIndependent.getMax().Z : aabboxSceneDependent.getMax().Z);
 
-		float step = 2.0f; //TODO should be a parameter
-		cutMin.X = (cutMin.X<0.0f) ? cutMin.X-(step+fmod(cutMin.X, step)) : cutMin.X-fmod(cutMin.X, step);
-		cutMin.Y = (cutMin.Y<0.0f) ? cutMin.Y-(step+fmod(cutMin.Y, step)) : cutMin.Y-fmod(cutMin.Y, step);
-		cutMin.Z = (cutMin.Z<0.0f) ? cutMin.Z-(step+fmod(cutMin.Z, step)) : cutMin.Z-fmod(cutMin.Z, step);
-		cutMax.X = (cutMax.X<0.0f) ? cutMax.X-fmod(cutMax.X, step) : cutMax.X+(step-fmod(cutMax.X, step));
-		cutMax.Y = (cutMax.Y<0.0f) ? cutMax.Y-fmod(cutMax.Y, step) : cutMax.Y+(step-fmod(cutMax.Y, step));
-		cutMax.Z = (cutMax.Z<0.0f) ? cutMax.Z-fmod(cutMax.Z, step) : cutMax.Z+(step-fmod(cutMax.Z, step));
+		cutMin.X = (cutMin.X<0.0f) ? cutMin.X-(lightViewOverflowStepSize+fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X-fmod(cutMin.X, lightViewOverflowStepSize);
+		cutMin.Y = (cutMin.Y<0.0f) ? cutMin.Y-(lightViewOverflowStepSize+fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y-fmod(cutMin.Y, lightViewOverflowStepSize);
+		cutMin.Z = (cutMin.Z<0.0f) ? cutMin.Z-(lightViewOverflowStepSize+fmod(cutMin.Z, lightViewOverflowStepSize)) : cutMin.Z-fmod(cutMin.Z, lightViewOverflowStepSize);
+		cutMax.X = (cutMax.X<0.0f) ? cutMax.X-fmod(cutMax.X, lightViewOverflowStepSize) : cutMax.X+(lightViewOverflowStepSize-fmod(cutMax.X, lightViewOverflowStepSize));
+		cutMax.Y = (cutMax.Y<0.0f) ? cutMax.Y-fmod(cutMax.Y, lightViewOverflowStepSize) : cutMax.Y+(lightViewOverflowStepSize-fmod(cutMax.Y, lightViewOverflowStepSize));
+		cutMax.Z = (cutMax.Z<0.0f) ? cutMax.Z-fmod(cutMax.Z, lightViewOverflowStepSize) : cutMax.Z+(lightViewOverflowStepSize-fmod(cutMax.Z, lightViewOverflowStepSize));
 
 		return AABBox<float>(cutMin, cutMax);
 	}
@@ -638,8 +644,8 @@ namespace urchin
 				const ShadowData *shadowData = it->second;
 
 				glActiveTexture(GL_TEXTURE0 + lightsLocation[i].shadowMapTextureUnits);
-				//glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getBlurFilter()->getTextureID());
-				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getShadowMapTextureID());
+				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getBlurFilter()->getTextureID());
+				//glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getShadowMapTextureID());
 				glUniform1i(lightsLocation[i].shadowMapTexLoc, lightsLocation[i].shadowMapTextureUnits);
 
 				for(unsigned int j=0; j<nbShadowMaps; ++j)
@@ -673,7 +679,7 @@ namespace urchin
 		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, light, lightViewMatrix);
 
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
-		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ProduceShadowFilter());
+		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
 
 		AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, lightViewMatrix);
 		OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);
@@ -681,6 +687,12 @@ namespace urchin
 		OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
 		sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
 		sceneDependentObboxModel.display(viewMatrix);
+
+		std::cout<<aabboxSceneDependent<<std::endl;
+		std::cout<<
+				(aabboxSceneDependent.getMax().X-aabboxSceneDependent.getMin().X) *
+				(aabboxSceneDependent.getMax().Y-aabboxSceneDependent.getMin().Y) *
+				(aabboxSceneDependent.getMax().Z-aabboxSceneDependent.getMin().Z)<<std::endl;
 	}
 #endif
 
