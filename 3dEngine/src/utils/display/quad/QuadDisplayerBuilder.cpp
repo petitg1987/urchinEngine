@@ -6,6 +6,8 @@ namespace urchin
 {
 
 	QuadDisplayerBuilder::QuadDisplayerBuilder() :
+		pNumberOfQuad(1),
+		pDimension(2), //2D
 		pBufferUsage(GL_STATIC_DRAW),
 		vertexDataType(GL_INT),
 		vertexCoord(nullptr),
@@ -18,6 +20,28 @@ namespace urchin
 	QuadDisplayerBuilder::~QuadDisplayerBuilder()
 	{
 
+	}
+
+	QuadDisplayerBuilder *QuadDisplayerBuilder::numberOfQuad(unsigned int numberOfQuad)
+	{
+		this->pNumberOfQuad = numberOfQuad;
+		return this;
+	}
+
+	unsigned int QuadDisplayerBuilder::getNumberOfQuad() const
+	{
+		return pNumberOfQuad;
+	}
+
+	QuadDisplayerBuilder *QuadDisplayerBuilder::dimension(unsigned int dimension)
+	{
+		this->pDimension = dimension;
+		return this;
+	}
+
+	unsigned int QuadDisplayerBuilder::getDimension() const
+	{
+		return pDimension;
 	}
 
 	QuadDisplayerBuilder *QuadDisplayerBuilder::bufferUsage(unsigned int bufferUsage)

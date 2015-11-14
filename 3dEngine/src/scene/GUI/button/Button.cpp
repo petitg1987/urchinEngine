@@ -4,6 +4,7 @@
 #include "scene/GUI/GUISkinService.h"
 #include "scene/GUI/text/Text.h"
 #include "scene/SceneManager.h"
+#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
@@ -35,31 +36,16 @@ namespace urchin
 		}
 
 		//visual
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-
-		const int vertexArray[] = {0, 0, width, 0, width, height, 0, height};
-		const float stArray[] = {0.0, 0.0, texInfoDefault->getMaxCoordS(), 0.0, texInfoDefault->getMaxCoordS(), texInfoDefault->getMaxCoordT(), 0.0, texInfoDefault->getMaxCoordT()};
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray), vertexArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_INT, false, 0, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(stArray), stArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, false, 0, 0);
+		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
+				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, texInfoDefault->getMaxCoordS(), 0.0, texInfoDefault->getMaxCoordS(), texInfoDefault->getMaxCoordT(), 0.0, texInfoDefault->getMaxCoordT()})
+				->build();
 
 		textureID = texInfoDefault->getTextureID();
 	}
 
 	Button::~Button()
 	{
-		glDeleteVertexArrays(1, &vertexArrayObject);
-		glDeleteBuffers(2, bufferIDs);
-
 		texInfoDefault->release();
 		texInfoOnFocus->release();
 		texInfoOnClick->release();
@@ -127,8 +113,7 @@ namespace urchin
 	{
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
-		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_QUADS, 0, 4);
+		quadDisplayer->display();
 
 		//displays children
 		Widget::display(translateDistanceLoc, invFrameRate);

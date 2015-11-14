@@ -8,6 +8,7 @@
 #include "scene/GUI/Widget.h"
 #include "scene/GUI/button/ButtonCommand.h"
 #include "resources/image/Image.h"
+#include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
 {
@@ -39,17 +40,7 @@ namespace urchin
 			unsigned int textureID;
 			Image *texInfoDefault, *texInfoOnFocus, *texInfoOnClick;
 
-			unsigned int bufferIDs[2], vertexArrayObject;
-			enum //buffer IDs indexes
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD
-			};
+			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 
 }

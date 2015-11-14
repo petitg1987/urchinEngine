@@ -3,6 +3,7 @@
 
 #include "scene/GUI/textbox/TextBox.h"
 #include "scene/SceneManager.h"
+#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
@@ -33,22 +34,20 @@ namespace urchin
 		cursorBlinkSpeed = ConfigService::instance()->getFloatValue("GUI.cursorBlinkSpeed");
 
 		//visual
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
+		glGenBuffers(1, &cursorLineBufferID);
+		glGenVertexArrays(1, &cursorLineVAO);
+		glBindVertexArray(cursorLineVAO);
 
-		const int vertexArray[] = {0, 0, width, 0, width, height, 0, height, 0, widgetOutline->topWidth, 0, height - widgetOutline->bottomWidth};
-		const float stArray[] = {0.0, 0.0, texTextBoxDefault->getMaxCoordS(), 0.0, texTextBoxDefault->getMaxCoordS(), texTextBoxDefault->getMaxCoordT(), 0.0, texTextBoxDefault->getMaxCoordT()};
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray), vertexArray, GL_STATIC_DRAW);
+		const int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, height - widgetOutline->bottomWidth};
+		glBindBuffer(GL_ARRAY_BUFFER, cursorLineBufferID);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(cursorLineVertexData), cursorLineVertexData, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
 		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_INT, false, 0, 0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(stArray), stArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, false, 0, 0);
+		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
+				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, texTextBoxDefault->getMaxCoordS(), 0.0, texTextBoxDefault->getMaxCoordS(), texTextBoxDefault->getMaxCoordT(), 0.0, texTextBoxDefault->getMaxCoordT()})
+				->build();
 
 		textureID = texTextBoxDefault->getTextureID();
 		computeCursorPosition();
@@ -56,8 +55,8 @@ namespace urchin
 
 	TextBox::~TextBox()
 	{
-		glDeleteVertexArrays(1, &vertexArrayObject);
-		glDeleteBuffers(2, bufferIDs);
+		glDeleteVertexArrays(1, &cursorLineVAO);
+		glDeleteBuffers(1, &cursorLineBufferID);
 
 		delete widgetOutline;
 		texTextBoxDefault->release();
@@ -221,8 +220,7 @@ namespace urchin
 		//display the text box
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
-		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_QUADS, 0, 4);
+		quadDisplayer->display();
 
 		//displays the cursor
 		static float blink=0.0;
@@ -232,7 +230,15 @@ namespace urchin
 			glUniform2iv(translateDistanceLoc, 1, (const int*)(getTranslateDistance() + Vector2<int>(cursorPosition, 0)));
 			glBindTexture(GL_TEXTURE_2D, 0);
 
-			glDrawArrays(GL_LINES, 4, 2);
+			glDisable(GL_DEPTH_TEST);
+			glDepthMask(GL_FALSE);
+
+			glBindVertexArray(cursorLineVAO);
+			glDrawArrays(GL_LINES, 0, 2);
+
+			glDepthMask(GL_TRUE);
+			glEnable(GL_DEPTH_TEST);
+
 			glUniform2iv(translateDistanceLoc, 1, (const int*)getTranslateDistance());
 		}
 

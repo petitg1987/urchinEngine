@@ -6,6 +6,7 @@
 #include "scene/GUI/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
 #include "resources/MediaManager.h"
+#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
@@ -19,9 +20,6 @@ namespace urchin
 		std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
 
 		//visual
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-
 		int fontSize = sizeFontChunk->getIntValue();
 		font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*)(&fontSize));
 		setText("");
@@ -29,9 +27,6 @@ namespace urchin
 
 	Text::~Text()
 	{
-		glDeleteVertexArrays(1, &vertexArrayObject);
-		glDeleteBuffers(2, bufferIDs);
-
 		font->release();
 	}
 
@@ -99,17 +94,17 @@ namespace urchin
 			offsetY -= font->getSpaceBetweenLines();
 		}
 
-		glBindVertexArray(vertexArrayObject);
+		int *vertexData = new int[numberLetter*8];
+		std::copy(vertexArray.begin(), vertexArray.end(), vertexData);
 
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, 8*sizeof(int)*numberLetter, &vertexArray[0], GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_INT, false, 0, 0);
+		float *textureData = new float[numberLetter*8];
+		std::copy(stArray.begin(), stArray.end(), textureData);
 
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, 8*sizeof(float)*numberLetter, &stArray[0], GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, false, 0, 0);
+		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+				->numberOfQuad(numberLetter)
+				->vertexData(GL_INT, vertexData)
+				->textureData(GL_FLOAT, textureData)
+				->build();
 	}
 
 	std::string Text::cutText(const std::string &constText, int maxLength)
@@ -161,8 +156,7 @@ namespace urchin
 
 		glBindTexture(GL_TEXTURE_2D, font->getTextureID());
 
-		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_QUADS, 0, 4*numberLetter);
+		quadDisplayer->display();
 		
 		glDisable(GL_BLEND);
 

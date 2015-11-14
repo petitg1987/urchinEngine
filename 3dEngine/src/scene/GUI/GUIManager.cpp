@@ -190,8 +190,6 @@ namespace urchin
 		ShaderManager::instance()->bind(GUIShader);
 		glUniform1i(diffuseTexSamplerLoc, 0);
 
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(GL_FALSE);
 		glActiveTexture(GL_TEXTURE0);
 
 		for(unsigned int i=0;i<widgets.size();++i)
@@ -202,9 +200,6 @@ namespace urchin
 				widgets[i]->display(translateDistanceLoc, invFrameRate);
 			}
 		}
-
-		glDepthMask(GL_TRUE);
-		glEnable(GL_DEPTH_TEST);
 
 		#ifdef _DEBUG
 			//display font texture

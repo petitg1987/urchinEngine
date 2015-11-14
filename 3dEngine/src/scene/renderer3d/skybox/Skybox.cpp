@@ -5,6 +5,7 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "utils/shader/ShaderManager.h"
 #include "resources/MediaManager.h"
+#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
@@ -52,9 +53,6 @@ namespace urchin
 	Skybox::~Skybox()
 	{
 		glDeleteTextures(1, &textureID);
-		glDeleteVertexArrays(1, &vertexArrayObject);
-		glDeleteBuffers(2, bufferIDs);
-
 		ShaderManager::instance()->removeProgram(skyboxShader);
 	}
 
@@ -84,8 +82,15 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		//create vertex array
-		const float vertexArray[] = {
+		//visual
+		skyboxShader = ShaderManager::instance()->createProgram("skybox.vert", "skybox.frag");
+
+		ShaderManager::instance()->bind(skyboxShader);
+		mProjectionLoc = glGetUniformLocation(skyboxShader, "mProjection");
+		mViewLoc = glGetUniformLocation(skyboxShader, "mView");
+		diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader, "diffuseTexture");
+
+		void *vertexCoord = new float[72]{
 			//x negative:
 			-SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE,
 			//x positive:
@@ -100,8 +105,7 @@ namespace urchin
 			SIZE, -SIZE, SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE,
 		};
 
-		//create texture coordinates array
-		const float stArray[] = {
+		void *textureCoord = new float[72]{
 			//x negative:
 			-SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, -SIZE,
 			//x positive:
@@ -116,27 +120,12 @@ namespace urchin
 			SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE,
 		};
 		
-		//visual
-		skyboxShader = ShaderManager::instance()->createProgram("skybox.vert", "skybox.frag");
-
-		ShaderManager::instance()->bind(skyboxShader);
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray), &vertexArray[0], GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(stArray), &stArray[0], GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 3, GL_FLOAT, false, 0, 0);
-
-		mProjectionLoc = glGetUniformLocation(skyboxShader, "mProjection");
-		mViewLoc = glGetUniformLocation(skyboxShader, "mView");
-		diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader, "diffuseTexture");
+		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+				->numberOfQuad(6)
+				->dimension(3) //3D
+				->vertexData(GL_FLOAT, vertexCoord)
+				->textureData(GL_FLOAT, textureCoord)
+				->build();
 	}
 
 	void Skybox::onCameraProjectionUpdate(const Camera *const camera)
@@ -161,14 +150,7 @@ namespace urchin
 		glUniform1i(diffuseTexSamplerLoc, 0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 		
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(GL_FALSE);
-
-		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDepthMask(GL_TRUE);
-		glEnable(GL_DEPTH_TEST);
+		quadDisplayer->display();
 	}
 
 }

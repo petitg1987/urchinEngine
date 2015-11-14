@@ -2,10 +2,12 @@
 #define ENGINE_TEXTBOX_H
 
 #include <string>
+#include <memory>
 
 #include "scene/GUI/Widget.h"
 #include "scene/GUI/GUISkinService.h"
 #include "scene/GUI/text/Text.h"
+#include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
 {
@@ -51,16 +53,11 @@ namespace urchin
 			unsigned int textureID;
 			WidgetOutline *widgetOutline;
 
-			unsigned int bufferIDs[2], vertexArrayObject;
-			enum //buffer IDs indexes
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD
-			};
+			std::shared_ptr<QuadDisplayer> quadDisplayer;
+			unsigned int cursorLineBufferID, cursorLineVAO;
 			enum //shader input
 			{
 				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD
 			};
 	};
 

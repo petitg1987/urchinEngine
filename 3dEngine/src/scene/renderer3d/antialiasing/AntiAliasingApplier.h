@@ -1,6 +1,10 @@
 #ifndef ENGINE_ANTIALIASINGAPPLIER_H
 #define ENGINE_ANTIALIASINGAPPLIER_H
 
+#include <memory>
+
+#include "utils/display/quad/QuadDisplayer.h"
+
 namespace urchin
 {
 
@@ -37,18 +41,7 @@ namespace urchin
 			unsigned int fxaaShader;
 			int texLoc, invSceneSizeLoc;
 
-			unsigned int *bufferIDs;
-			unsigned int vertexArrayObject;
-			enum //buffer IDs indexes
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD
-			};
+			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 
 }

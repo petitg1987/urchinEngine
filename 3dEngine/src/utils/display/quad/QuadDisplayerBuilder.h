@@ -14,6 +14,12 @@ namespace urchin
 			QuadDisplayerBuilder();
 			~QuadDisplayerBuilder();
 
+			QuadDisplayerBuilder *numberOfQuad(unsigned int);
+			unsigned int getNumberOfQuad() const;
+
+			QuadDisplayerBuilder *dimension(unsigned int);
+			unsigned int getDimension() const;
+
 			QuadDisplayerBuilder *bufferUsage(unsigned int);
 			unsigned int getBufferUsage() const;
 
@@ -28,6 +34,9 @@ namespace urchin
 			std::shared_ptr<QuadDisplayer> build();
 
 		private:
+			unsigned int pNumberOfQuad;
+			unsigned int pDimension;
+
 			unsigned int pBufferUsage;
 
 			unsigned int vertexDataType;

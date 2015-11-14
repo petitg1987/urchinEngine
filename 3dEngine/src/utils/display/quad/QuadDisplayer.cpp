@@ -9,6 +9,8 @@ namespace urchin
 
 	QuadDisplayer::QuadDisplayer(const QuadDisplayerBuilder *quadDisplayerBuilder) :
 			isInitialized(false),
+			numberOfQuad(quadDisplayerBuilder->getNumberOfQuad()),
+			dimension(quadDisplayerBuilder->getDimension()),
 			bufferUsage(quadDisplayerBuilder->getBufferUsage()),
 			vertexDataType(quadDisplayerBuilder->getVertexDataType()),
 			vertexCoord(quadDisplayerBuilder->getVertexCoord()),
@@ -52,20 +54,20 @@ namespace urchin
 		glBindVertexArray(vertexArrayObject);
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 8;
+		const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
 		glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, bufferUsage);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, vertexDataType, false, 0, 0);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, false, 0, 0);
 		(vertexDataType==GL_FLOAT) ?
 				(delete [] static_cast<float *>(vertexCoord)) :
 				(delete [] static_cast<int *>(vertexCoord));
 		vertexCoord = nullptr;
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		const unsigned int textureSize = (textureDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 8;
+		const unsigned int textureSize = (textureDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
 		glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, bufferUsage);
 		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, textureDataType, false, 0, 0);
+		glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, false, 0, 0);
 		(textureDataType==GL_FLOAT) ?
 						(delete [] static_cast<float *>(textureCoord)) :
 						(delete [] static_cast<int *>(textureCoord));
@@ -87,7 +89,7 @@ namespace urchin
 		glDepthMask(GL_FALSE);
 
 		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+		glDrawArrays(GL_QUADS, 0, 4*numberOfQuad);
 
 		glDepthMask(GL_TRUE);
 		glEnable(GL_DEPTH_TEST);
