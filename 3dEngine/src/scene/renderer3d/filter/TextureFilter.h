@@ -2,6 +2,9 @@
 #define ENGINE_TEXTUREFILTER_H
 
 #include <string>
+#include <memory>
+
+#include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
 {
@@ -28,6 +31,8 @@ namespace urchin
 			void initializeDisplay();
 			void initializeTexture();
 
+			bool isInitialized;
+
 			unsigned int textureWidth, textureHeight;
 			unsigned int textureType;
 			unsigned int textureAccessFilter;
@@ -36,18 +41,7 @@ namespace urchin
 			int textureInternalFormat;
 			unsigned int textureFormat;
 
-			unsigned int *bufferIDs;
-			unsigned int vertexArrayObject;
-			enum //buffer IDs indexes
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD
-			};
+			std::shared_ptr<QuadDisplayer> texQuadDisplayer;
 			unsigned int downSampleShader;
 			int texLoc;
 

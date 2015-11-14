@@ -1,8 +1,8 @@
 #ifndef ENGINE_RENDERER3D_H
 #define ENGINE_RENDERER3D_H
 
-#include <utils/display/geometry/GeometryModel.h>
 #include <string>
+#include <memory>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/camera/Camera.h"
@@ -10,12 +10,14 @@
 #include "scene/renderer3d/camera/FreeCamera.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/antialiasing/AntiAliasingApplier.h"
-#include "utils/display/geometry/GeometryDisplayer.h"
 #include "scene/renderer3d/octree/OctreeManager.h"
 #include "scene/renderer3d/octree/Octreeable.h"
 #include "scene/renderer3d/shadow/ShadowManager.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/skybox/Skybox.h"
+#include "utils/display/geometry/GeometryDisplayer.h"
+#include "utils/display/geometry/GeometryModel.h"
+#include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
 {
@@ -112,19 +114,7 @@ namespace urchin
 				TEX_LIGHTING_PASS
 			};
 
-			unsigned int *bufferIDs;
-			unsigned int vertexArrayObject;
-			enum //buffer IDs indexes
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD
-			};
-
+			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
 			unsigned int deferredShadingShader;
 			int depthTexLoc, diffuseTexLoc, normalAndAmbientTexLoc, mInverseViewProjectionLoc, viewPositionLoc;
 	};

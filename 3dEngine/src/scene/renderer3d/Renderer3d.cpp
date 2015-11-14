@@ -6,7 +6,8 @@
 #include "Renderer3d.h"
 #include "utils/shader/ShaderManager.h"
 #include "utils/shader/TokenReplacerShader.h"
-#include "utils/display/texture/DisplayTexture.h"
+#include "utils/display/texture/TextureDisplayer.h"
+#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 #define DEFAULT_OCTREE_DEPTH 3
 
@@ -23,8 +24,6 @@ namespace urchin
 			skybox(nullptr),
 			fboIDs(nullptr),
 			textureIDs(nullptr),
-			bufferIDs(nullptr),
-			vertexArrayObject(0),
 			deferredShadingShader(0),
 			depthTexLoc(0),
 			diffuseTexLoc(0),
@@ -75,15 +74,6 @@ namespace urchin
 		}
 
 		//deferred shading (pass 2)
-		if(vertexArrayObject!=0)
-		{
-			glDeleteVertexArrays(1, &vertexArrayObject);
-		}
-		if(bufferIDs!=nullptr)
-		{
-			glDeleteBuffers(2, bufferIDs);
-			delete [] bufferIDs;
-		}
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
 	}
 
@@ -105,23 +95,8 @@ namespace urchin
 
 		//deferred shading (pass 2)
 		loadDeferredShadingShader();
-
-		const int vertexArray[8] = {-1, 1, 1, 1, 1, -1,	-1, -1};
-		const int stArray[8] = {0, 1, 1, 1, 1, 0, 0, 0};
-		bufferIDs = new unsigned int[2];
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray), vertexArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_INT, false, 0, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(stArray), stArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_INT, false, 0, 0);
+		lightingPassQuadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+				->build();
 
 		//managers
 		lightManager->initialize(deferredShadingShader);
@@ -403,40 +378,37 @@ namespace urchin
 
 		#ifdef _DEBUG
 			//display depth buffer
-//			DisplayTexture displayTexture0(textureIDs[TEX_DEPTH], DisplayTexture::DEPTH_FACTOR);
-//			displayTexture0.setPosition(DisplayTexture::LEFT, DisplayTexture::TOP);
-//			displayTexture0.display(width, height);
+//			TextureDisplayer textureDisplayer0(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_FACTOR);
+//			textureDisplayer0.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
+//			textureDisplayer0.initialize(width, height);
+//			textureDisplayer0.display();
 
 			//display color buffer
-//			DisplayTexture displayTexture1(textureIDs[TEX_DIFFUSE], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture1.setPosition(DisplayTexture::CENTER_X, DisplayTexture::TOP);
-//			displayTexture1.display(width, height);
+//			TextureDisplayer textureDisplayer1(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer1.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
+//			textureDisplayer1.initialize(width, height);
+//			textureDisplayer1.display();
 
 			//display normal and ambient buffer
-//			DisplayTexture displayTexture2(textureIDs[TEX_NORMAL_AND_AMBIENT], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture2.setPosition(DisplayTexture::RIGHT, DisplayTexture::TOP);
-//			displayTexture2.display(width, height);
+//			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
+//			textureDisplayer2.initialize(width, height);
+//			textureDisplayer2.display();
 
 			//display illuminated scene buffer
-//			DisplayTexture displayTexture3(textureIDs[TEX_LIGHTING_PASS], DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture3.setPosition(DisplayTexture::LEFT, DisplayTexture::BOTTOM);
-//			displayTexture3.display(width, height);
+//			TextureDisplayer textureDisplayer3(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer3.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
+//			textureDisplayer3.initialize(width, height);
+//			textureDisplayer3.display();
 
 			//display shadow map
 //			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
 //			const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
 //			unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-//			DisplayTexture displayTexture4(shadowMapTextureID, shadowMapNumber, DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture4.setPosition(DisplayTexture::CENTER_X, DisplayTexture::BOTTOM);
-//			displayTexture4.display(width, height);
-
-			//display down sample shadow map
-//			const Light *dsFirstLight = lightManager->getVisibleLights()[0]; //choose light
-//			const unsigned int dsShadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
-//			unsigned int dsShadowMapTextureID = shadowManager->getShadowData(dsFirstLight).getDownSampleFilter()->getTextureID();
-//			DisplayTexture displayTexture5(dsShadowMapTextureID, dsShadowMapNumber, DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture5.setPosition(DisplayTexture::RIGHT, DisplayTexture::BOTTOM);
-//			displayTexture5.display(width, height);
+//			TextureDisplayer textureDisplayer4(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer4.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
+//			textureDisplayer4.initialize(width, height);
+//			textureDisplayer4.display();
 		#endif
 	}
 
@@ -496,9 +468,6 @@ namespace urchin
 	{
 		ShaderManager::instance()->bind(deferredShadingShader);
 
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(GL_FALSE);
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]);
 
@@ -518,11 +487,7 @@ namespace urchin
 		lightManager->loadLights();
 		shadowManager->loadShadowMaps(camera->getViewMatrix());
 
-		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_QUADS, 0, 4);
-
-		glDepthMask(GL_TRUE);
-		glEnable(GL_DEPTH_TEST);
+		lightingPassQuadDisplayer->display();
 	}
 
 }

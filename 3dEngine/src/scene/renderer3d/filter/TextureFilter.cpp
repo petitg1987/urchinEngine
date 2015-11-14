@@ -5,11 +5,13 @@
 #include "TextureFilterBuilder.h"
 #include "utils/shader/ShaderManager.h"
 #include "utils/shader/TokenReplacerShader.h"
+#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
 
 	TextureFilter::TextureFilter(const TextureFilterBuilder *textureFilterBuilder):
+		isInitialized(false),
 		textureWidth(textureFilterBuilder->getTextureWidth()),
 		textureHeight(textureFilterBuilder->getTextureHeight()),
 		textureType(textureFilterBuilder->getTextureType()),
@@ -19,8 +21,6 @@ namespace urchin
 		textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
 		textureFormat(textureFilterBuilder->getTextureFormat()),
 
-		bufferIDs(nullptr),
-		vertexArrayObject(0),
 		downSampleShader(0),
 		texLoc(0),
 		fboID(0),
@@ -31,15 +31,6 @@ namespace urchin
 
 	TextureFilter::~TextureFilter()
 	{
-		if(vertexArrayObject!=0)
-		{
-			glDeleteVertexArrays(1, &vertexArrayObject);
-		}
-		if(bufferIDs!=nullptr)
-		{
-			glDeleteBuffers(2, bufferIDs);
-			delete [] bufferIDs;
-		}
 		ShaderManager::instance()->removeProgram(downSampleShader);
 
 		glDeleteFramebuffers(1, &fboID);
@@ -48,28 +39,23 @@ namespace urchin
 
 	void TextureFilter::initialize()
 	{
+		#ifdef _DEBUG
+			if(isInitialized)
+			{
+				throw std::runtime_error("Texture filter is already initialized.");
+			}
+		#endif
+
 		initializeDisplay();
 		initializeTexture();
+
+		isInitialized = true;
 	}
 
 	void TextureFilter::initializeDisplay()
 	{
-		const int vertexArray[8] = {-1, 1, 1, 1, 1, -1,	-1, -1};
-		const int stArray[8] = {0, 1, 1, 1, 1, 0, 0, 0};
-		bufferIDs = new unsigned int[2];
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArray), vertexArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_INT, false, 0, 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(stArray), stArray, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_INT, false, 0, 0);
+		texQuadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+				->build();
 
 		std::map<std::string, std::string> shaderTokens;
 		if(textureFormat==GL_RGB)
@@ -144,8 +130,13 @@ namespace urchin
 
 	void TextureFilter::applyOn(unsigned int sourceTextureId) const
 	{
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(GL_FALSE);
+		#ifdef _DEBUG
+			if(!isInitialized)
+			{
+				throw std::runtime_error("Texture filter must be initialized before display.");
+			}
+		#endif
+
 		ShaderManager::instance()->bind(downSampleShader);
 
 		glViewport(0, 0, textureWidth, textureHeight);
@@ -156,12 +147,8 @@ namespace urchin
 
 		glUniform1i(texLoc, 0);
 
-		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+		texQuadDisplayer->display();
 
 		glBindTexture(textureType, 0);
-
-		glDepthMask(GL_TRUE);
-		glEnable(GL_DEPTH_TEST);
 	}
 }

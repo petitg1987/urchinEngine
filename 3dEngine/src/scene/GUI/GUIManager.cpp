@@ -6,7 +6,7 @@
 #include "resources/font/Font.h"
 #include "resources/MediaManager.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/display/texture/DisplayTexture.h"
+#include "utils/display/texture/TextureDisplayer.h"
 
 namespace urchin
 {
@@ -208,15 +208,16 @@ namespace urchin
 
 		#ifdef _DEBUG
 			//display font texture
-//			std::shared_ptr<ChunkXml> fontChunk = GUISkinService::instance()->getXmlSkin()->getChunk("text", "nameSkin", "defaultSkin");
-//			std::shared_ptr<ChunkXml> fileFontChunk = GUISkinService::instance()->getXmlSkin()->getChunk("ttf", "", "", fontChunk.get());
-//			std::shared_ptr<ChunkXml> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getChunk("size", "", "", fontChunk.get());
+//			std::shared_ptr<XmlChunk> fontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", "defaultSkin"));
+//			std::shared_ptr<XmlChunk> fileFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "ttf", XmlAttribute(), fontChunk);
+//			std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
 //			Font *font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*) sizeFontChunk->getIntValue());
 //
-//			DisplayTexture displayTexture(font->getTextureID(), DisplayTexture::DEFAULT_FACTOR);
-//			displayTexture.setPosition(DisplayTexture::USER_DEFINED_X, DisplayTexture::USER_DEFINED_Y);
-//			displayTexture.setSize(20.0, font->getDimensionTexture() + 20.0, 20.0, font->getDimensionTexture() + 20.0);
-//			displayTexture.display(width, height);
+//			TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer.setPosition(TextureDisplayer::USER_DEFINED_X, TextureDisplayer::USER_DEFINED_Y);
+//			textureDisplayer.setSize(20.0, font->getDimensionTexture() + 20.0, 20.0, font->getDimensionTexture() + 20.0);
+//			textureDisplayer.initialize(width, height);
+//			textureDisplayer.display();
 //			font->release();
 		#endif
 	}

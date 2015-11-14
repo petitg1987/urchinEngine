@@ -13,7 +13,7 @@ void main(){
 
 	//TODO review it and use uniform
 	const float blurPixelSize = 1.0;
-	const float resolution = 512.0;
+	const float resolution = 1024.0;
 	const float pixelSize = (1.0*blurPixelSize)/resolution;
 
 	float blurFactors[3][3];

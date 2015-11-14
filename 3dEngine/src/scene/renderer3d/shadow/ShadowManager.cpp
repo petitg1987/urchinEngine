@@ -573,7 +573,7 @@ namespace urchin
 
 		std::shared_ptr<TextureFilter> blurFilter = std::make_shared<TextureFilterBuilder>()
 				->filterType(TextureFilterBuilder::BLUR)
-				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
+				->textureSize(shadowMapResolution, shadowMapResolution)
 				->textureType(GL_TEXTURE_2D_ARRAY)
 				->textureAnisotropy(1.0f) //TODO review anisotropy
 				->textureNumberLayer(nbShadowMaps)
@@ -623,9 +623,10 @@ namespace urchin
 			shadowModelDisplayer->setModels(shadowData->retrieveModels());
 			shadowModelDisplayer->display(shadowData->getLightViewMatrix());
 
-			shadowData->getDownSample2xFilter()->applyOn(shadowData->getShadowMapTextureID());
+			//shadowData->getDownSample2xFilter()->applyOn(shadowData->getShadowMapTextureID());
 			//shadowData->getDownSample4xFilter()->applyOn(shadowData->getDownSample2xFilter()->getTextureID());
-			shadowData->getBlurFilter()->applyOn(shadowData->getDownSample2xFilter()->getTextureID());
+			//shadowData->getBlurFilter()->applyOn(shadowData->getDownSample2xFilter()->getTextureID());
+			shadowData->getBlurFilter()->applyOn(shadowData->getShadowMapTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
@@ -687,12 +688,6 @@ namespace urchin
 		OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
 		sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
 		sceneDependentObboxModel.display(viewMatrix);
-
-		std::cout<<aabboxSceneDependent<<std::endl;
-		std::cout<<
-				(aabboxSceneDependent.getMax().X-aabboxSceneDependent.getMin().X) *
-				(aabboxSceneDependent.getMax().Y-aabboxSceneDependent.getMin().Y) *
-				(aabboxSceneDependent.getMax().Z-aabboxSceneDependent.getMin().Z)<<std::endl;
 	}
 #endif
 

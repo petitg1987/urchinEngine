@@ -1,7 +1,10 @@
-#ifndef ENGINE_DISPLAYTEXTURE_H
-#define ENGINE_DISPLAYTEXTURE_H
+#ifndef ENGINE_TEXTUREDISPLAYER_H
+#define ENGINE_TEXTUREDISPLAYER_H
 
+#include <memory>
 #include "UrchinCommon.h"
+
+#include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
 {
@@ -14,7 +17,7 @@ namespace urchin
 	*	displayTexture.setFullscreen(false);
 	*	displayTexture.display();
 	*/
-	class DisplayTexture
+	class TextureDisplayer
 	{
 		public:
 			enum CoordinateX
@@ -39,40 +42,32 @@ namespace urchin
 				DEPTH_FACTOR
 			};
 
-			DisplayTexture(unsigned int, DisplayTexture::ColorFactor);
-			DisplayTexture(unsigned int, unsigned int, DisplayTexture::ColorFactor);
-			~DisplayTexture();
+			TextureDisplayer(unsigned int, TextureDisplayer::ColorFactor);
+			TextureDisplayer(unsigned int, unsigned int, TextureDisplayer::ColorFactor);
+			~TextureDisplayer();
 
-			void setPosition(DisplayTexture::CoordinateX, DisplayTexture::CoordinateY);
+			void setPosition(TextureDisplayer::CoordinateX, TextureDisplayer::CoordinateY);
 			void setSize(float, float, float, float);
-			void setFullscreen(bool);
+			void setFullScreen(bool);
 
-			void display(int, int);
+			void initialize(int, int);
+
+			void display();
 
 		private:
 			void initializeShader();
-			void loadGeometry(int, int);
 
-			DisplayTexture::CoordinateX coordinateX;
-			DisplayTexture::CoordinateY coordinateY;
-			bool fullscreen;
+			bool isInitialized;
+
+			TextureDisplayer::CoordinateX coordinateX;
+			TextureDisplayer::CoordinateY coordinateY;
+			bool fullScreen;
 			float userMinX, userMaxX, userMinY, userMaxY;
 
 			//visual
 			unsigned int textureID;
-			DisplayTexture::ColorFactor colorFactor;
-
-			unsigned int bufferIDs[2], vertexArrayObject;
-			enum //buffer IDs indexes
-			{
-				VAO_VERTEX_POSITION = 0,
-				VAO_TEX_COORD
-			};
-			enum //shader input
-			{
-				SHADER_VERTEX_POSITION = 0,
-				SHADER_TEX_COORD
-			};
+			TextureDisplayer::ColorFactor colorFactor;
+			std::shared_ptr<QuadDisplayer> quadDisplayer;
 
 			Matrix3<float> mProjection;
 			unsigned int displayTextureShader;
