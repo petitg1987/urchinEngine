@@ -114,6 +114,20 @@ namespace urchin
 	}
 
 	/**
+	 * @return identical to getAABBox() method but the bounding box is splitted to the limit size configured
+	 */
+	const std::vector<AABBox<float>> &Model::getSplittedAABBox() const
+	{
+		if(isAnimate())
+		{
+			return currAnimation->getGlobalSplittedAABBox();
+		}else
+		{
+			return meshes->getGlobalSplittedAABBox();
+		}
+	}
+
+	/**
 	* @return Local merged bounding box for all animations. If not animation exist: return local meshes bounding box.
 	*/
 	const AABBox<float> &Model::getLocalAABBox() const

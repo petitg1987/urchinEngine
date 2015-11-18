@@ -1,6 +1,7 @@
 #ifndef ENGINE_ANIMATION_H
 #define ENGINE_ANIMATION_H
 
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "resources/model/ConstAnimation.h"
@@ -17,6 +18,7 @@ namespace urchin
 
 			const Bone *getSkeleton() const;
 			const AABBox<float> &getGlobalAABBox() const;
+			const std::vector<AABBox<float>> &getGlobalSplittedAABBox() const;
 			const AABBox<float> &getGlobalLocalAABBox() const;
 
 			void animate(float);
@@ -30,6 +32,7 @@ namespace urchin
 			AnimationInformation animationInformation;
 			Bone *const skeleton;
 			AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
+			std::vector<AABBox<float>> globalSplittedBBox;
 	};
 	
 }

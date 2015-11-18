@@ -120,8 +120,27 @@ namespace urchin
 
 	template<class T> AABBox<T> OBBox<T>::toAABBox() const
 	{
-		return AABBox<T>(centerPosition.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]),
-			 centerPosition.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]));
+		Point3<float> min(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
+		Point3<float> max(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max());
+
+		for(unsigned int i=0; i<8; ++i)
+		{
+			Point3<float> point = getPoint(i);
+			for(unsigned int coordinate=0; coordinate<3; ++coordinate)
+			{
+				if(point[coordinate]<min[coordinate])
+				{
+					min[coordinate] = point[coordinate];
+				}
+
+				if(point[coordinate]>max[coordinate])
+				{
+					max[coordinate] = point[coordinate];
+				}
+			}
+		}
+
+		return AABBox<T>(min, max);
 	}
 
 	/**

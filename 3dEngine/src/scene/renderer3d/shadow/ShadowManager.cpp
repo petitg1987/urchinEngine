@@ -367,7 +367,8 @@ namespace urchin
 				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
 				shadowData->getFrustumShadowData(i)->setModels(models);
 
-				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, shadowData->getLightViewMatrix());
+				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
+						models, shadowData->getLightViewMatrix());
 				shadowData->getFrustumShadowData(i)->setShadowCasterReceiverBox(aabboxSceneDependent);
 				shadowData->getFrustumShadowData(i)->setLightProjectionMatrix(aabboxSceneDependent.toProjectionMatrix());
 			}
@@ -441,22 +442,28 @@ namespace urchin
 	/**
 	 * @return Box in light space containing shadow caster and receiver (scene dependent)
 	 */
-	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
+	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
+			const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
 		AABBox<float> aabboxSceneDependent;
 		bool boxInitialized = false;
+
+		AABBox<float> aabboxSceneIndependentViewSpace = obboxSceneIndependentViewSpace.toAABBox();
 
 		for(std::set<Model *>::iterator it = models.begin(); it!=models.end(); ++it)
 		{
 			const Model* model = *it;
 			if(model->isProduceShadow())
 			{
+				//TODO use splitted aabbox of model and check collision with obboxSceneIndependentViewSpace ?
+				std::cout<<"Split for: "<<model->getMeshes()->getName()<<" is "<<model->getSplittedAABBox().size()<<std::endl;
+
 				if(boxInitialized)
 				{
-					aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getAABBox());
+					aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * (model->getAABBox().cutTo(aabboxSceneIndependentViewSpace)));
 				}else
 				{
-					aabboxSceneDependent = lightViewMatrix * model->getAABBox();
+					aabboxSceneDependent = lightViewMatrix * (model->getAABBox().cutTo(aabboxSceneIndependentViewSpace));
 					boxInitialized = true;
 				}
 
@@ -554,7 +561,7 @@ namespace urchin
 				->textureSize(shadowMapResolution/2, shadowMapResolution/2)
 				->textureType(GL_TEXTURE_2D_ARRAY)
 				->textureNumberLayer(nbShadowMaps)
-				->textureInternalFormat(GL_RG32F)  //TODO use 24 bits ??
+				->textureInternalFormat(GL_RG32F)
 				->textureAnisotropy(1.0f)
 				->textureFormat(GL_RG)
 				->build();
@@ -676,17 +683,25 @@ namespace urchin
 			throw std::invalid_argument("shadow manager doesn't know this light.");
 		}
 
+		//scene independent (red)
 		const Matrix4<float> &lightViewMatrix = itShadowData->second->getLightViewMatrix();
 		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, light, lightViewMatrix);
-
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
-		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
 
-		AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, models, lightViewMatrix);
+		OBBoxModel sceneIndependentObboxModel(obboxSceneIndependentViewSpace);
+		sceneIndependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
+		sceneIndependentObboxModel.setColor(1.0, 0.0, 0.0);
+		sceneIndependentObboxModel.display(viewMatrix);
+
+		//scene dependent (green)
+		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
+		AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
+				models, lightViewMatrix);
 		OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);
 
 		OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
 		sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
+		sceneDependentObboxModel.setColor(0.0, 1.0, 0.0);
 		sceneDependentObboxModel.display(viewMatrix);
 	}
 #endif

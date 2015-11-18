@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "Meshes.h"
@@ -28,6 +29,7 @@ namespace urchin
 			std::map<std::string, const ConstAnimation *> getAnimations() const;
 
 			const AABBox<float> &getAABBox() const;
+			const std::vector<AABBox<float>> &getSplittedAABBox() const;
 			const AABBox<float> &getLocalAABBox() const;
 			
 			void setPosition(const Point3<float> &);

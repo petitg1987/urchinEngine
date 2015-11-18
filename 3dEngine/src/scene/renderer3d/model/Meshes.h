@@ -19,6 +19,7 @@ namespace urchin
 			unsigned int getNumberMeshes() const;
 			Mesh *getMesh(unsigned int);
 			const AABBox<float> &getGlobalAABBox() const;
+			const std::vector<AABBox<float>> &getGlobalSplittedAABBox() const;
 			const AABBox<float> &getGlobalLocalAABBox() const;
 
 			void onMoving(const Transform<float> &);
@@ -29,6 +30,7 @@ namespace urchin
 		
 			std::vector<Mesh *> meshes;
 			AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
+			std::vector<AABBox<float>> globalSplittedBBox;
 	};
 
 }

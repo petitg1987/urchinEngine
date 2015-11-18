@@ -32,7 +32,9 @@ namespace urchin
 			unsigned int getNumberBones() const;
 			unsigned int getFrameRate() const;
 			const Bone &getBone(int, int) const;
+
 			const AABBox<float> &getOriginalGlobalAABBox() const;
+			const std::vector<AABBox<float>> &getOriginalGlobalSplittedAABBox() const;
 
 		private:
 			std::string animationFilename;
@@ -40,6 +42,7 @@ namespace urchin
 			const Bone *const *const skeletonFrames;
 			const AABBox<float> *const *const bboxes; //bounding boxes of each animation frames (not transformed)
 			AABBox<float> *originalGlobalBBox; //original global bounding box (not transformed)
+			std::vector<AABBox<float>> originalGlobalSplittedBBox;
 	};
 
 }

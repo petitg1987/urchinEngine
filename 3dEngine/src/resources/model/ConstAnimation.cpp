@@ -1,6 +1,7 @@
 #include <limits>
 
 #include "resources/model/ConstAnimation.h"
+#include "resources/model/boundingbox/SplitBoundingBox.h"
 
 namespace urchin
 {
@@ -47,6 +48,7 @@ namespace urchin
 			}
 		}
 		originalGlobalBBox = new AABBox<float>(globalMin, globalMax);
+		originalGlobalSplittedBBox = SplitBoundingBox().split(*originalGlobalBBox);
 	}
 
 	ConstAnimation::~ConstAnimation()
@@ -90,6 +92,11 @@ namespace urchin
 	const AABBox<float> &ConstAnimation::getOriginalGlobalAABBox() const
 	{
 		return *originalGlobalBBox;
+	}
+
+	const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplittedAABBox() const
+	{
+		return originalGlobalSplittedBBox;
 	}
 
 }

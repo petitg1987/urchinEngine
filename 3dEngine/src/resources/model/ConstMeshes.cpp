@@ -1,6 +1,7 @@
 #include <limits>
 
 #include "resources/model/ConstMeshes.h"
+#include "resources/model/boundingbox/SplitBoundingBox.h"
 
 namespace urchin
 {
@@ -46,6 +47,7 @@ namespace urchin
 			}
 		}
 		originalBBox = new AABBox<float>(min, max);
+		originalSplittedBBox = SplitBoundingBox().split(*originalBBox);
 	}
 
 	ConstMeshes::~ConstMeshes()
@@ -76,6 +78,11 @@ namespace urchin
 	const AABBox<float> &ConstMeshes::getOriginalAABBox() const
 	{
 		return *originalBBox;
+	}
+
+	const std::vector<AABBox<float>> &ConstMeshes::getOriginalSplittedAABBox() const
+	{
+		return originalSplittedBBox;
 	}
 
 }

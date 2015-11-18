@@ -29,6 +29,14 @@ namespace urchin
 		return globalBBox;
 	}
 
+	const std::vector<AABBox<float>> &Animation::getGlobalSplittedAABBox() const
+	{
+		return globalSplittedBBox;
+	}
+
+	/**
+	 * @return Return global bounding box for all animations but not transformed
+	 */
 	const AABBox<float> &Animation::getGlobalLocalAABBox() const
 	{
 		return constAnimation->getOriginalGlobalAABBox();
@@ -37,6 +45,13 @@ namespace urchin
 	void Animation::onMoving(const Transform<float> &newTransform)
 	{
 		globalBBox = constAnimation->getOriginalGlobalAABBox().moveAABBox(newTransform);
+
+		globalSplittedBBox.clear();
+		const std::vector<AABBox<float>> &originalGlobalSplittedAABBox = constAnimation->getOriginalGlobalSplittedAABBox();
+		for(unsigned int i=0; i<originalGlobalSplittedAABBox.size(); ++i)
+		{
+			globalSplittedBBox.push_back(originalGlobalSplittedAABBox[i].moveAABBox(newTransform));
+		}
 	}
 
 	void Animation::animate(float invFrameRate)

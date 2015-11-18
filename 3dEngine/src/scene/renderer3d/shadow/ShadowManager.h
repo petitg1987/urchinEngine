@@ -62,7 +62,8 @@ namespace urchin
 			void updateFrustumShadowData(const Light *const, ShadowData *const);
 			AABBox<float> createSceneIndependentBox(const Frustum<float> &, const Light *const, const Matrix4<float> &) const;
 			float computeNearZForSceneIndependentBox(const Frustum<float> &) const;
-			AABBox<float> createSceneDependentBox(const AABBox<float> &, const std::set<Model *> &, const Matrix4<float> &) const;
+			AABBox<float> createSceneDependentBox(const AABBox<float> &, const OBBox<float> &,
+					const std::set<Model *> &, const Matrix4<float> &) const;
 			void splitFrustum(const Frustum<float> &);
 
 			//shadow map handling
