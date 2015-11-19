@@ -31,7 +31,7 @@ namespace urchin
 
 			for(int split = 0; split < nbSplits; ++split)
 			{
-				float splitValue = std::max(aabbox.getMin()[axis] + limitSize*split, maxValue);
+				float splitValue = std::min(aabbox.getMin()[axis] + limitSize*(split+1), maxValue);
 				axisSplits[axis].push_back(splitValue);
 			}
 		}

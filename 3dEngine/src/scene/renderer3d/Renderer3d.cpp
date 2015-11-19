@@ -455,17 +455,17 @@ namespace urchin
 //			lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
 
 			//display scene box visible from light based on input (splitted) frustum
-			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-			Frustum<float> frustum(
-				Point3<float>(-14.1412, -1.43174, -8.4988),
-				Point3<float>(-14.4282, -1.43174, -8.43292),
-				Point3<float>(-14.1672, -1.54952, -8.61236),
-				Point3<float>(-14.4543, -1.54952, -8.54648),
-				Point3<float>(-8.16763, -4.02435, -3.34841),
-				Point3<float>(-17.5582, -4.02439, -1.19325),
-				Point3<float>(-9.02018, -7.87719, -7.06327),
-				Point3<float>(-18.4108, -7.87724, -4.90811));
-			shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
+//			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
+//			Frustum<float> frustum(
+//				Point3<float>(-14.1412, -1.43174, -8.4988),
+//				Point3<float>(-14.4282, -1.43174, -8.43292),
+//				Point3<float>(-14.1672, -1.54952, -8.61236),
+//				Point3<float>(-14.4543, -1.54952, -8.54648),
+//				Point3<float>(-8.16763, -4.02435, -3.34841),
+//				Point3<float>(-17.5582, -4.02439, -1.19325),
+//				Point3<float>(-9.02018, -7.87719, -7.06327),
+//				Point3<float>(-18.4108, -7.87724, -4.90811));
+//			shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
 		#endif
 	}
 

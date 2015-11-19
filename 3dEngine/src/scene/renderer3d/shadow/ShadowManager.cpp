@@ -455,18 +455,21 @@ namespace urchin
 			const Model* model = *it;
 			if(model->isProduceShadow())
 			{
-				//TODO use splitted aabbox of model and check collision with obboxSceneIndependentViewSpace ?
-				std::cout<<"Split for: "<<model->getMeshes()->getName()<<" is "<<model->getSplittedAABBox().size()<<std::endl;
-
-				if(boxInitialized)
+				const std::vector<AABBox<float>> &splittedAABBox = model->getSplittedAABBox();
+				for(unsigned int i=0; i<splittedAABBox.size(); ++i)
 				{
-					aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * (model->getAABBox().cutTo(aabboxSceneIndependentViewSpace)));
-				}else
-				{
-					aabboxSceneDependent = lightViewMatrix * (model->getAABBox().cutTo(aabboxSceneIndependentViewSpace));
-					boxInitialized = true;
+					if(splittedAABBox.size()==1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
+					{
+						if(boxInitialized)
+						{
+							aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splittedAABBox[i]);
+						}else
+						{
+							aabboxSceneDependent = lightViewMatrix * splittedAABBox[i];
+							boxInitialized = true;
+						}
+					}
 				}
-
 			}
 		}
 
