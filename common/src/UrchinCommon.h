@@ -58,6 +58,7 @@
 #include "math/geometry/3d/object/Capsule.h"
 #include "math/geometry/3d/object/Cylinder.h"
 #include "math/algorithm/MathAlgorithm.h"
+#include "math/algorithm/PascalTriangle.h"
 #include "math/trigonometry/AngleConverter.h"
 
 #endif

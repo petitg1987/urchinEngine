@@ -15,7 +15,8 @@ namespace urchin
 			enum FilterType
 			{
 				DOWN_SAMPLE,
-				BLUR
+				GAUSSIAN_BLUR_V,
+				GAUSSIAN_BLUR_H
 			};
 
 			TextureFilterBuilder();
@@ -45,6 +46,10 @@ namespace urchin
 			TextureFilterBuilder *textureFormat(unsigned int);
 			unsigned int getTextureFormat() const;
 
+			//Blur specific
+			TextureFilterBuilder *blurSize(unsigned int);
+			unsigned int getBlurSize() const;
+
 			std::shared_ptr<TextureFilter> build();
 
 		private:
@@ -57,6 +62,9 @@ namespace urchin
 			unsigned int pTextureNumberLayer;
 			int pTextureInternalFormat;
 			unsigned int pTextureFormat;
+
+			//Blur specific
+			unsigned int pBlurSize;
 	};
 
 }

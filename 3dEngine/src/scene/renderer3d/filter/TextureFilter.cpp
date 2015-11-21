@@ -70,6 +70,7 @@ namespace urchin
 		{
 			throw std::invalid_argument("Unsupported texture format for filter: " + textureFormat);
 		}
+		this->completeShaderTokens(shaderTokens);
 
 		if(textureType==GL_TEXTURE_2D_ARRAY)
 		{
@@ -126,6 +127,16 @@ namespace urchin
 	unsigned int TextureFilter::getTextureID() const
 	{
 		return textureID;
+	}
+
+	unsigned int TextureFilter::getTextureWidth() const
+	{
+		return textureWidth;
+	}
+
+	unsigned int TextureFilter::getTextureHeight() const
+	{
+		return textureHeight;
 	}
 
 	void TextureFilter::applyOn(unsigned int sourceTextureId) const

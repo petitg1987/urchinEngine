@@ -18,6 +18,7 @@ namespace urchin
 
 		private:
 			std::string getShaderName() const;
+			void completeShaderTokens(std::map<std::string, std::string> &) const;
 	};
 
 }

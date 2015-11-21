@@ -12,9 +12,8 @@ namespace urchin
 			fboID(0),
 			depthTextureID(0),
 			shadowMapTextureID(0),
-			downSample2xFilter(nullptr),
-			downSample4xFilter(nullptr),
-			blurFilter(nullptr)
+			verticalBlurFilter(nullptr),
+			horizontalBlurFilter(nullptr)
 	{
 		for(unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumsplit; ++frustumSplitIndex)
 		{
@@ -70,34 +69,24 @@ namespace urchin
 		return shadowMapTextureID;
 	}
 
-	void ShadowData::setDownSample2xFilter(std::shared_ptr<const TextureFilter> downSample2xFilter)
+	void ShadowData::setVerticalBlurFilter(std::shared_ptr<const TextureFilter> verticalBlurFilter)
 	{
-		this->downSample2xFilter = downSample2xFilter;
+		this->verticalBlurFilter = verticalBlurFilter;
 	}
 
-	std::shared_ptr<const TextureFilter> ShadowData::getDownSample2xFilter() const
+	std::shared_ptr<const TextureFilter> ShadowData::getVerticalBlurFilter() const
 	{
-		return downSample2xFilter;
+		return verticalBlurFilter;
 	}
 
-	void ShadowData::setDownSample4xFilter(std::shared_ptr<const TextureFilter> downSample4xFilter)
+	void ShadowData::setHorizontalBlurFilter(std::shared_ptr<const TextureFilter> horizontalBlurFilter)
 	{
-		this->downSample4xFilter = downSample4xFilter;
+		this->horizontalBlurFilter = horizontalBlurFilter;
 	}
 
-	std::shared_ptr<const TextureFilter> ShadowData::getDownSample4xFilter() const
+	std::shared_ptr<const TextureFilter> ShadowData::getHorizontalBlurFilter() const
 	{
-		return downSample4xFilter;
-	}
-
-	void ShadowData::setBlurFilter(std::shared_ptr<const TextureFilter> blurFilter)
-	{
-		this->blurFilter = blurFilter;
-	}
-
-	std::shared_ptr<const TextureFilter> ShadowData::getBlurFilter() const
-	{
-		return blurFilter;
+		return horizontalBlurFilter;
 	}
 
 	void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix)

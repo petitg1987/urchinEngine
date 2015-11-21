@@ -4,7 +4,7 @@
 #include "TextureFilterBuilder.h"
 #include "TextureFilter.h"
 #include "DownSampleFilter.h"
-#include "BlurFilter.h"
+#include "GaussianBlurFilter.h"
 
 namespace urchin
 {
@@ -18,7 +18,8 @@ namespace urchin
 		pTextureAnisotropy(1.0f),
 		pTextureNumberLayer(1),
 		pTextureInternalFormat(GL_RGB),
-		pTextureFormat(GL_RGB)
+		pTextureFormat(GL_RGB),
+		pBlurSize(3) //3x3 blur
 	{
 
 	}
@@ -117,6 +118,17 @@ namespace urchin
 		return pTextureFormat;
 	}
 
+	TextureFilterBuilder *TextureFilterBuilder::blurSize(unsigned int blurSize)
+	{
+		this->pBlurSize = blurSize;
+		return this;
+	}
+
+	unsigned int TextureFilterBuilder::getBlurSize() const
+	{
+		return pBlurSize;
+	}
+
 	std::shared_ptr<TextureFilter> TextureFilterBuilder::build()
 	{
 		std::shared_ptr<TextureFilter> textureFilter;
@@ -124,9 +136,12 @@ namespace urchin
 		if(pFilterType==DOWN_SAMPLE)
 		{
 			textureFilter = std::make_shared<DownSampleFilter>(this);
-		}else if(pFilterType==BLUR)
+		}else if(pFilterType==GAUSSIAN_BLUR_V)
 		{
-			textureFilter = std::make_shared<BlurFilter>(this);
+			textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
+		}else if(pFilterType==GAUSSIAN_BLUR_H)
+		{
+			textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::HORIZONTAL);
 		}else
 		{
 			throw std::invalid_argument("Unknown filter type: " + pFilterType);

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <map>
 
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -26,6 +27,10 @@ namespace urchin
 
 		protected:
 			virtual std::string getShaderName() const = 0;
+			virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
+
+			unsigned int getTextureWidth() const;
+			unsigned int getTextureHeight() const;
 
 		private:
 			void initializeDisplay();

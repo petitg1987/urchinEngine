@@ -1,4 +1,6 @@
 #include <limits>
+#include <cassert>
+#include <algorithm>
 
 #include "math/algorithm/MathAlgorithm.h"
 

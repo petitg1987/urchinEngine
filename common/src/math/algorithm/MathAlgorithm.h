@@ -1,10 +1,6 @@
 #ifndef ENGINE_MATHALGORITHM_H
 #define ENGINE_MATHALGORITHM_H
 
-#include <algorithm>
-#include <limits>
-#include <cassert>
-
 namespace urchin
 {
 
