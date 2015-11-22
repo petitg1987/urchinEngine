@@ -7,7 +7,6 @@
 	- (3) [OPTIMIZATION] Don't update all shadow maps at each frame
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [OPTIMIZATION] Don't use two textures (depth and GL_RG32F) for shadow maps
-	- (3) [NEW FEATURE] Add additional blur to far shadow
 - GUI
 	- (1) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop

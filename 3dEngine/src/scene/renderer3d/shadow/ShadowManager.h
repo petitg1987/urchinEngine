@@ -24,6 +24,14 @@ namespace urchin
 	class ShadowManager : public Observer
 	{
 		public:
+			enum BlurShadow
+			{
+				NO_BLUR=0,
+				LOW = 3,
+				MEDIUM = 5,
+				HIGH = 7
+			};
+
 			ShadowManager(LightManager *, OctreeManager<Model> *);
 			virtual ~ShadowManager();
 
@@ -38,6 +46,8 @@ namespace urchin
 			unsigned int getNumberShadowMaps() const;
 			void setViewingShadowDistance(float);
 			float getViewingShadowDistance() const;
+			void setBlurShadow(BlurShadow);
+			BlurShadow getBlurShadow() const;
 
 			const ShadowData &getShadowData(const Light *const) const;
 			std::set<Model *> getVisibleModels();
@@ -70,15 +80,17 @@ namespace urchin
 			void createShadowMaps(const Light *const);
 			void removeShadowMaps(const Light *const);
 
-			//matrix information
-			int sceneWidth, sceneHeight;
+			//shadow map quality
 			float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
 			float lightViewOverflowStepSize;
-			unsigned int shadowMapResolution, nbShadowMaps;
+			unsigned int shadowMapResolution;
+			unsigned int nbShadowMaps;
 			float viewingShadowDistance;
+			BlurShadow blurShadow;
 
 			//scene information
 			bool isInitialized;
+			int sceneWidth, sceneHeight;
 			ModelDisplayer *shadowModelDisplayer;
 			LightManager *lightManager;
 			OctreeManager<Model> *modelOctreeManager;
