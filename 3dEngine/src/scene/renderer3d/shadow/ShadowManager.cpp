@@ -263,6 +263,11 @@ namespace urchin
 		return blurShadow;
 	}
 
+	const std::vector<Frustum<float>> &ShadowManager::getSplittedFrustums() const
+	{
+		return splittedFrustums;
+	}
+
 	const ShadowData &ShadowManager::getShadowData(const Light *const light) const
 	{
 		std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.find(light);
@@ -372,9 +377,9 @@ namespace urchin
 	{
 		if(light->hasParallelBeams())
 		{ //sun light
-			for(unsigned int i=0; i<splittedFrustum.size(); ++i)
+			for(unsigned int i=0; i<splittedFrustums.size(); ++i)
 			{
-				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustum[i], light, shadowData->getLightViewMatrix());
+				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], light, shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
 				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
@@ -509,7 +514,7 @@ namespace urchin
 	void ShadowManager::splitFrustum(const Frustum<float> &frustum)
 	{
 		splittedDistance.clear();
-		splittedFrustum.clear();
+		splittedFrustums.clear();
 
 		float near = frustum.computeNearDistance();
 		float far = viewingShadowDistance;
@@ -528,7 +533,7 @@ namespace urchin
 			float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0 - percentageUniformSplit) * logarithmicSplit);
 
 			splittedDistance.push_back(splitDistance);
-			splittedFrustum.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+			splittedFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
 
 			previousSplitDistance = splitDistance;
 		}

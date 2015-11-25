@@ -49,6 +49,7 @@ namespace urchin
 			void setBlurShadow(BlurShadow);
 			BlurShadow getBlurShadow() const;
 
+			const std::vector<Frustum<float>> &getSplittedFrustums() const;
 			const ShadowData &getShadowData(const Light *const) const;
 			std::set<Model *> getVisibleModels();
 
@@ -102,7 +103,7 @@ namespace urchin
 			int depthComponent;
 			float frustumDistance;
 			std::vector<float> splittedDistance;
-			std::vector<Frustum<float>> splittedFrustum;
+			std::vector<Frustum<float>> splittedFrustums;
 			std::map<const Light *, ShadowData *> shadowDatas;
 			unsigned int depthSplitDistanceLoc;
 
