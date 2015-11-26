@@ -1,8 +1,8 @@
 #include <GL/gl.h>
 #include <cmath>
 #include <sstream>
-#include <stdexcept>
 #include <memory>
+#include <stdexcept>
 #include <limits>
 #include <map>
 #include <string>
@@ -12,8 +12,6 @@
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/filter/TextureFilter.h"
 #include "scene/renderer3d/filter/TextureFilterBuilder.h"
-#include "utils/shader/ShaderManager.h"
-#include "utils/shader/TokenReplacerShader.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 4
@@ -56,6 +54,11 @@ namespace urchin
 				break;
 			default:
 				throw std::domain_error("Unsupported value for parameter 'shadow.depthComponent'.");
+		}
+
+		if(lightViewOverflowStepSize==0.0f)
+		{ //because fmod function doesn't accept zero value.
+			lightViewOverflowStepSize=std::numeric_limits<float>::epsilon();
 		}
 	}
 
@@ -635,7 +638,12 @@ namespace urchin
 
 			glViewport(0, 0, shadowMapResolution, shadowMapResolution);
 			glBindFramebuffer(GL_FRAMEBUFFER, shadowData->getFboID());
-			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT); //not needed: GL_COLOR_BUFFER_BIT
+
+			/*static unsigned int i=0;
+			if(((++i)%2)!=0){
+				continue;
+			}*/
 
 			shadowUniform->setUniformData(shadowData);
 			shadowModelUniform->setModelUniformData(shadowData);

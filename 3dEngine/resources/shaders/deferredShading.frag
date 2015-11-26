@@ -40,13 +40,12 @@ float linearStep(float min, float max, float v){
 } 
 
 float computePercentLit(float shadowMapZ, vec2 moments){
-    float shadowMapZBiased = shadowMapZ - 0.000001f;
-    float isInHardShadow = float(shadowMapZBiased <= moments.x);
+    float isInHardShadow = float(shadowMapZ <= moments.x);
     
     float variance = moments.y - (moments.x*moments.x);
     variance = max(variance, 0.000005f); //reduce fake shadow between splitted shadow maps
     
-    float d = moments.x - shadowMapZBiased;
+    float d = moments.x - shadowMapZ;
     float pMax = variance / (variance + d*d);
     
     pMax = linearStep(0.4f, 1.0f, pMax); //reduce light bleeding
