@@ -43,7 +43,6 @@ namespace urchin
 			Matrix4<float> projectionMatrix;
 			float red, green, blue;
 
-			std::vector<Point3<float>> vertexArray;
 			Matrix4<float> modelMatrix;
 	};
 

@@ -37,7 +37,8 @@
 ############################################
 # Bug :
 ############################################
-- 
+- Renderer3d#deferredGeometryRendering(): display of scene independent box visible from light don't work 
+correctly: only first one is displayed.
 
 ############################################
 # Notes :

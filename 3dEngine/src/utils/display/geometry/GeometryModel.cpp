@@ -49,7 +49,14 @@ namespace urchin
 	void GeometryModel::initialize()
 	{
 		modelMatrix = retrieveModelMatrix();
-		vertexArray = retrieveVertexArray();
+		std::vector<Point3<float>> vertexArray = retrieveVertexArray();
+
+		glBindVertexArray(vertexArrayObject);
+
+		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+		glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(Point3<float>), &vertexArray[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
 	}
 
 	void GeometryModel::display(const Matrix4<float> &viewMatrix) const
@@ -62,27 +69,9 @@ namespace urchin
 		glUniform3fv(colorLoc, 1, (const float*)Vector3<float>(red, green, blue));
 
 		glBindVertexArray(vertexArrayObject);
-
-		GLboolean cullFaceActive;
-		glGetBooleanv(GL_CULL_FACE, &cullFaceActive);
-		if(cullFaceActive)
-		{
-			glDisable(GL_CULL_FACE);
-		}
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glLineWidth(1.3);
 
-		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-		glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(Point3<float>), &vertexArray[0], GL_DYNAMIC_DRAW);
-		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
 		drawGeometry();
-
-		if(cullFaceActive)
-		{
-			glEnable(GL_CULL_FACE);
-		}
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		ShaderManager::instance()->bind(shaderSaved);
 	}
