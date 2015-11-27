@@ -145,15 +145,14 @@ template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable
 	return *mainOctree;
 }
 
-template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject)
+template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject) const
 {
 	return getOctreeablesIn(convexObject, AcceptAllFilter<TOctreeable>());
 }
 
-template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject, const OctreeableFilter<TOctreeable> &filter)
-{
-	refreshOctreeables();
-	
+template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject, 
+		const OctreeableFilter<TOctreeable> &filter) const
+{	
 	std::set<TOctreeable *> visibleOctreeables;
 	mainOctree->getOctreeablesIn(visibleOctreeables, convexObject, filter);
 	return visibleOctreeables;

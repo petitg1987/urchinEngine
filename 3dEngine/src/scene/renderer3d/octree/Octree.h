@@ -29,8 +29,8 @@ namespace urchin
 			void addOctreeable(TOctreeable *, bool addRef);
 			void removeOctreeable(TOctreeable *, bool removeRef);
 
-			void getOctreeablesIn(std::set<TOctreeable *> &, const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &);
-			void getAllOctreeables(std::set<TOctreeable *> &);
+			void getOctreeablesIn(std::set<TOctreeable *> &, const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &) const;
+			void getAllOctreeables(std::set<TOctreeable *> &) const;
 		
 			#ifdef _DEBUG
 				void drawNode(const Matrix4<float> &, const Matrix4<float> &) const;

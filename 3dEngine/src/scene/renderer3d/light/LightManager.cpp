@@ -166,9 +166,10 @@ namespace urchin
 
 	void LightManager::updateLights(const Frustum<float> &frustum)
 	{
-		visibleLights.clear();
+		lightOctreeManager->refreshOctreeables();
 		std::set<Light *> lightInFrustum = lightOctreeManager->getOctreeablesIn(frustum);
 
+		visibleLights.clear();
 		visibleLights.assign(lightInFrustum.begin(), lightInFrustum.end());
 		visibleLights.insert(visibleLights.end(), parallelBeamsLights.begin(), parallelBeamsLights.end());
 	}

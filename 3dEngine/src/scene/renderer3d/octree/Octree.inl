@@ -125,7 +125,7 @@ template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeab
 	}
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<TOctreeable *> &visibleOctreeables, const ConvexObject3D<float> &convexObject, const OctreeableFilter<TOctreeable> &filter)
+template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<TOctreeable *> &visibleOctreeables, const ConvexObject3D<float> &convexObject, const OctreeableFilter<TOctreeable> &filter) const
 {
 	if(convexObject.collideWithAABBox(bbox))
 	{		
@@ -141,7 +141,7 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 			}
 		}else
 		{
-			for(typename std::vector<Octree *>::iterator it=children.begin(); it!=children.end(); ++it)
+			for(typename std::vector<Octree *>::const_iterator it=children.begin(); it!=children.end(); ++it)
 			{
 				(*it)->getOctreeablesIn(visibleOctreeables, convexObject, filter);
 			}
@@ -149,14 +149,14 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 	}
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::getAllOctreeables(std::set<TOctreeable *> &allOctreeables)
+template<class TOctreeable> void Octree<TOctreeable>::getAllOctreeables(std::set<TOctreeable *> &allOctreeables) const
 {
 	if(depth==0)
 	{ //leaf of the octree
 		allOctreeables.insert(octreeables.begin(), octreeables.end());
 	}else
 	{
-		for(typename std::vector<Octree *>::iterator it=children.begin(); it!=children.end(); ++it)
+		for(typename std::vector<Octree *>::const_iterator it=children.begin(); it!=children.end(); ++it)
 		{
 			(*it)->getAllOctreeables(allOctreeables);
 		}

@@ -35,17 +35,17 @@ namespace urchin
 			void removeOctreeable(TOctreeable *);
 			std::set<TOctreeable *> getOctreeables() const;
 
+			void refreshOctreeables();
+
 			const Octree<TOctreeable> &getMainOctree() const;
-			std::set<TOctreeable *> getOctreeablesIn(const ConvexObject3D<float> &);
-			std::set<TOctreeable *> getOctreeablesIn(const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &);
+			std::set<TOctreeable *> getOctreeablesIn(const ConvexObject3D<float> &) const;
+			std::set<TOctreeable *> getOctreeablesIn(const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &) const;
 		
 			#ifdef _DEBUG
 				void drawOctree(const Matrix4<float> &, const Matrix4<float> &) const;
 			#endif
 		
 		private:
-			void refreshOctreeables();
-
 			void buildOctree(std::set<TOctreeable *> &);
 			bool resizeOctree(TOctreeable *);
 		

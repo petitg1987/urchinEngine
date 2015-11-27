@@ -417,6 +417,9 @@ namespace urchin
 		//move the camera
 		camera->updateCameraView(invFrameRate);
 
+		//refresh models in octree
+		modelOctreeManager->refreshOctreeables();
+
 		//determine visible lights on scene
 		lightManager->updateLights(camera->getFrustum());
 
