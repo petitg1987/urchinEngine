@@ -4,9 +4,7 @@
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - SHADOW
-	- (3) [OPTIMIZATION] Don't update all shadow maps at each frame
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
-	- (3) [OPTIMIZATION] Don't use two textures (depth and GL_RG32F) for shadow maps
 - GUI
 	- (1) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop

@@ -106,8 +106,7 @@ namespace urchin
 		shadowModelDisplayer->setCustomUniform(shadowUniform);
 
 		shadowModelUniform = new ShadowModelUniform();
-		shadowModelUniform->setFirstSplitLocation(shadowModelDisplayer->getUniformLocation("firstSplit"));
-		shadowModelUniform->setLastSplitLocation(shadowModelDisplayer->getUniformLocation("lastSplit"));
+		shadowModelUniform->setSplitsToUpdateLocation(shadowModelDisplayer->getUniformLocation("splitsToUpdate"));
 		shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
 
 		lightManager->addObserver(this, LightManager::ADD_LIGHT);
@@ -390,8 +389,7 @@ namespace urchin
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
 						models, shadowData->getLightViewMatrix());
-				shadowData->getFrustumShadowData(i)->setShadowCasterReceiverBox(aabboxSceneDependent);
-				shadowData->getFrustumShadowData(i)->setLightProjectionMatrix(aabboxSceneDependent.toProjectionMatrix());
+				shadowData->getFrustumShadowData(i)->updateShadowCasterReceiverBox(aabboxSceneDependent);
 			}
 		}else
 		{
@@ -639,11 +637,6 @@ namespace urchin
 			glViewport(0, 0, shadowMapResolution, shadowMapResolution);
 			glBindFramebuffer(GL_FRAMEBUFFER, shadowData->getFboID());
 			glClear(GL_DEPTH_BUFFER_BIT); //not needed: GL_COLOR_BUFFER_BIT
-
-			/*static unsigned int i=0;
-			if(((++i)%2)!=0){
-				continue;
-			}*/
 
 			shadowUniform->setUniformData(shadowData);
 			shadowModelUniform->setModelUniformData(shadowData);

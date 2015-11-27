@@ -17,20 +17,22 @@ namespace urchin
 			FrustumShadowData(unsigned int);
 			~FrustumShadowData();
 
-			void setShadowCasterReceiverBox(const AABBox<float> &);
+			void updateShadowCasterReceiverBox(const AABBox<float> &);
 			const AABBox<float> &getShadowCasterReceiverBox() const;
-
-			void setLightProjectionMatrix(const Matrix4<float> &);
 			const Matrix4<float> &getLightProjectionMatrix() const;
+			bool isShadowCasterReceiverBoxUpdated() const;
 
 			void setModels(const std::set<Model *> &);
 			const std::set<Model *> &getModels() const;
 
 		private:
+			bool areIdenticalAABBox(const AABBox<float> &, const AABBox<float> &) const;
+
 			unsigned int frustumSplitIndex; //index of frustum split (0: frustum split nearest to eye)
 
 			Matrix4<float> lightProjectionMatrix;
 			AABBox<float> shadowCasterReceiverBox;
+			bool shadowCasterReceiverBoxUpdated;
 
 			std::set<Model *> models;
 	};
