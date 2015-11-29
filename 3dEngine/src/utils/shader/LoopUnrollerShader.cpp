@@ -22,8 +22,8 @@ namespace urchin
 		boost::match_results<std::string::const_iterator> loopWhat;
 		boost::match_flag_type flags = boost::match_default;
 
-		std::string::const_iterator start = shaderSource.begin();
-		std::string::const_iterator end = shaderSource.end();
+		std::string::const_iterator start = result.begin();
+		std::string::const_iterator end = result.end();
 		while(regex_search(start, end, loopWhat, startLoopRegex, flags))
 		{
 			//loopWhat[1]: contain loop number
@@ -39,23 +39,24 @@ namespace urchin
 			//end of loop
 			std::ostringstream endOfLoopString;
 			endOfLoopString << "#LOOP" << loopNumber << "_END#";
-			std::string::size_type endLoopPos = shaderSource.find(endOfLoopString.str());
+			std::string::size_type endLoopPos = result.find(endOfLoopString.str());
 			if(endLoopPos == std::string::npos)
 			{
 				throw std::runtime_error("End of loop number " + ssLoopNumber.str() + " not found.");
 			}
 
 			//unroll loop
-			std::string::size_type startLoopPos = loopWhat[0].second - start;
-			std::string loopContent = shaderSource.substr(startLoopPos, endLoopPos - startLoopPos);
+			std::string::size_type startLoopPos = loopWhat[0].second - result.begin();
+			std::string loopContent = result.substr(startLoopPos, endLoopPos - startLoopPos);
 			std::string unrolledLoop = unrollLoop(loopContent, loopNumber, loopIterationNumber);
 
 			//replace loop by unrolled loop
-			std::string::size_type startLoopTokenPos = loopWhat[0].first - start;
+			std::string::size_type startLoopTokenPos = loopWhat[0].first - result.begin();
 			std::string::size_type endLoopTokenPos = endLoopPos + endOfLoopString.str().length();
 			result = result.replace(startLoopTokenPos, endLoopTokenPos - startLoopTokenPos, unrolledLoop);
 
-			start = loopWhat[0].second;
+			start = result.begin() + startLoopTokenPos;
+			end = result.end();
 		}
 
 		return result;
@@ -89,7 +90,7 @@ namespace urchin
 			std::string loopIterationContent = "";
 			if(hasLoopStop && index!=0)
 			{
-				loopIterationContent = "if(!stopLoop" + loopNumberString.str() + ")\n{";
+				loopIterationContent = "if(!stopLoop" + loopNumberString.str() + "){";
 			}
 			loopIterationContent = loopIterationContent + loopContentUpdated;
 

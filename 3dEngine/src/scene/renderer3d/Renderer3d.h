@@ -75,6 +75,7 @@ namespace urchin
 			void updateScene(float);
 			void deferredGeometryRendering();
 			void lightingPassRendering();
+			void postUpdateScene();
 
 			//scene properties
 			bool isInitialized;

@@ -206,10 +206,16 @@ namespace urchin
 			}else
 			{
 				glUniform1i(lightsInfo[i].isExistLoc, false);
+				break;
 			}
 		}
 
 		glUniform4fv(globalAmbientColorLoc, 1, (const float *)getGlobalAmbientColor());
+	}
+
+	void LightManager::postUpdateLights()
+	{
+		lightOctreeManager->postRefreshOctreeables();
 	}
 
 #ifdef _DEBUG

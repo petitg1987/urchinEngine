@@ -5,7 +5,8 @@ namespace urchin
 
 	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex) :
 			frustumSplitIndex(frustumSplitIndex),
-			shadowCasterReceiverBoxUpdated(true)
+			shadowCasterReceiverBoxUpdated(true),
+			modelsMoved(true)
 	{
 
 	}
@@ -50,8 +51,24 @@ namespace urchin
 	/**
 	 * @models Models visible from light in frustum split
 	 */
-	void FrustumShadowData::setModels(const std::set<Model *> &models)
+	void FrustumShadowData::updateModels(const std::set<Model *> &models)
 	{
+		modelsMoved = false;
+
+		for(std::set<Model *>::const_iterator it = models.begin(); it!=models.end(); ++it)
+		{
+			Model *model = *it;
+			if(model->isMovingInOctree() || model->isAnimate())
+			{
+				modelsMoved = true;
+			}
+		}
+
+		if(!modelsMoved && models!=this->models)
+		{ //models have moved outside the frustum split OR new model move inside the frustum split
+			modelsMoved = true;
+		}
+
 		this->models = models;
 	}
 
@@ -61,6 +78,11 @@ namespace urchin
 	const std::set<Model *> &FrustumShadowData::getModels() const
 	{
 		return models;
+	}
+
+	bool FrustumShadowData::isModelsMoved() const
+	{
+		return modelsMoved;
 	}
 
 	bool FrustumShadowData::areIdenticalAABBox(const AABBox<float> &shadowCasterReceiverBox1, const AABBox<float> &shadowCasterReceiverBox2) const

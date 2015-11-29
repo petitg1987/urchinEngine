@@ -36,6 +36,7 @@ namespace urchin
 
 			void updateLights(const Frustum<float> &);
 			void loadLights();
+			void postUpdateLights();
 
 			#ifdef _DEBUG
 				void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;

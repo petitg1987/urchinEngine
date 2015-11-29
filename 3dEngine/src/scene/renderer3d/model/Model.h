@@ -48,11 +48,11 @@ namespace urchin
 			void onMoving(const Transform<float> &);
 
 			//meshes
-			ConstMeshes *constMeshes; //constant part of the meshes
+			ConstMeshes *constMeshes; //constant part of the meshes (common to all cloned models)
 			Meshes *meshes; //variable part of the meshes
 			
 			//animations
-			std::map<std::string, ConstAnimation *> constAnimations; //constant part of the animations
+			std::map<std::string, ConstAnimation *> constAnimations; //constant part of the animations (common to all cloned models)
 			std::map<std::string, Animation *> animations; //variable part of the animations
 			const ConstAnimation *currConstAnimation;
 			Animation *currAnimation;

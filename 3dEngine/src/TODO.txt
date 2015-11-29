@@ -5,6 +5,7 @@
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - SHADOW
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
+	- (3) [OPTIMIZATION] Use LOD
 - GUI
 	- (1) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop
@@ -35,8 +36,9 @@
 ############################################
 # Bug :
 ############################################
-- Renderer3d#deferredGeometryRendering(): display of scene independent box visible from light don't work 
-correctly: only first one is displayed.
+- SHADOW
+	- (3) Renderer3d#deferredGeometryRendering(): display of scene independent box visible from light don't work 
+	correctly: only first one is displayed.
 
 ############################################
 # Notes :

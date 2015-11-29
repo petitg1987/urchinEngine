@@ -10,14 +10,24 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(int depth)
 	}
 	
 	overflowSize += 0.001f; //add offset to avoid rounding problem when overflow size is 0.0f.
+	
+	#ifdef _DEBUG
+		refreshModCount = postRefreshModCount = 0;
+	#endif
 }
 
 template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
 {
-	std::set<TOctreeable *> allOctreeables;
 	if(mainOctree!=nullptr)
 	{
+		std::set<TOctreeable *> allOctreeables;
 		mainOctree->getAllOctreeables(allOctreeables);
+		
+		for(typename std::set<TOctreeable *>::const_iterator it = allOctreeables.begin(); it!=allOctreeables.end(); ++it)
+		{
+			removeOctreeable(*it);
+		}
+		
 		delete mainOctree;
 	}
 }
@@ -35,19 +45,19 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::initialize()
 	isInitialized = true;
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::setDepth(int depth)
+template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *observable, int notificationType)
 {
-	this->depth = depth;
-
-	//gets all octreeables from the current octree
-	std::set<TOctreeable *> allOctreeables;
-	if(mainOctree!=nullptr)
+	if(dynamic_cast<TOctreeable *>(observable))
 	{
-		mainOctree->getAllOctreeables(allOctreeables);
+		switch(notificationType)
+		{
+			case TOctreeable::MOVE:
+			{
+				TOctreeable *octreeable = dynamic_cast<TOctreeable *>(observable);
+				movingOctreeables.insert(octreeable);
+			}
+		}
 	}
-
-	//rebuild the octree
-	buildOctree(allOctreeables);
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::set<TOctreeable *> &octreeables)
@@ -118,6 +128,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
 	{
 		mainOctree->addOctreeable(octreeable, true);
 	}
+	
+	octreeable->addObserver(this, TOctreeable::MOVE);
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TOctreeable *octreeable)
@@ -130,6 +142,77 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TO
 	{
 		octreeable->getRefOctree()[i]->removeOctreeable(octreeable, true);
 	}
+	
+	octreeable->removeObserver(this, TOctreeable::MOVE);
+}
+
+template<class TOctreeable> void OctreeManager<TOctreeable>::updateDepth(int depth)
+{
+	this->depth = depth;
+
+	//gets all octreeables from the current octree
+	std::set<TOctreeable *> allOctreeables;
+	if(mainOctree!=nullptr)
+	{
+		mainOctree->getAllOctreeables(allOctreeables);
+	}
+
+	//rebuild the octree
+	buildOctree(allOctreeables);
+}
+
+template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables()
+{
+	if(mainOctree!=nullptr)
+	{
+		//1. remove octreeables which have been moved
+		for(typename std::set<TOctreeable *>::iterator it=movingOctreeables.begin();it!=movingOctreeables.end();++it)
+		{
+			removeOctreeable((*it));
+		}
+
+		//2. add the octreeables which have been moved and recreate the octree if necessary
+		for(typename std::set<TOctreeable *>::iterator it=movingOctreeables.begin();it!=movingOctreeables.end();++it)
+		{
+			addOctreeable((*it));
+		}
+	}
+	
+	#ifdef _DEBUG
+		if(refreshModCount!=postRefreshModCount)
+		{
+			throw std::runtime_error("Methods 'refreshOctreeables' and 'postRefreshOctreeables' must be called the same number of times: " +
+					std::to_string(refreshModCount) + " <-> " + std::to_string(postRefreshModCount));
+		}
+		refreshModCount++;
+	#endif
+}
+
+template<class TOctreeable> void OctreeManager<TOctreeable>::postRefreshOctreeables()
+{
+	for(typename std::set<TOctreeable *>::iterator it=movingOctreeables.begin();it!=movingOctreeables.end();++it)
+	{
+		(*it)->onMoveDone();
+	}
+	
+	movingOctreeables.clear();
+	
+	#ifdef _DEBUG
+		postRefreshModCount++;
+	#endif
+}
+
+template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable>::getMainOctree() const
+{
+	return *mainOctree;
+}
+
+/**
+ * Returns octreeables which move. This list is valid from the time the octreeables move until a call to postRefreshOctreeables method is done.
+ */
+template<class TOctreeable> const std::set<TOctreeable *> &OctreeManager<TOctreeable>::getMovingOctreeables() const
+{
+	return movingOctreeables;
 }
 
 template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeables() const
@@ -138,11 +221,6 @@ template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::
 	mainOctree->getAllOctreeables(allOctreeables);
 	
 	return allOctreeables;
-}
-
-template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable>::getMainOctree() const
-{
-	return *mainOctree;
 }
 
 template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject) const
@@ -156,35 +234,6 @@ template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::
 	std::set<TOctreeable *> visibleOctreeables;
 	mainOctree->getOctreeablesIn(visibleOctreeables, convexObject, filter);
 	return visibleOctreeables;
-}
-
-template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables()
-{
-	//check if the octreeables are moving
-	if(mainOctree!=nullptr)
-	{
-		std::set<TOctreeable *> allOctreeables;
-		mainOctree->getAllOctreeables(allOctreeables);
-
-		//1. remove octreeables which have been moved
-		for(typename std::set<TOctreeable *>::iterator it=allOctreeables.begin();it!=allOctreeables.end();++it)
-		{
-			if((*it)->hasNeedUpdate())
-			{
-				removeOctreeable((*it));
-			}
-		}
-
-		//2. add the octreeables which have been moved and recreate the octree if necessary
-		for(typename std::set<TOctreeable *>::iterator it=allOctreeables.begin();it!=allOctreeables.end();++it)
-		{
-			if((*it)->hasNeedUpdate())
-			{
-				addOctreeable((*it));
-				(*it)->setToUpdate(false);
-			}
-		}
-	}
 }
 
 template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable *newOctreeable)

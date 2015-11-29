@@ -376,6 +376,8 @@ namespace urchin
 			lightingPassRendering();
 		}
 
+		postUpdateScene();
+
 		#ifdef _DEBUG
 			//display depth buffer
 //			TextureDisplayer textureDisplayer0(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_FACTOR);
@@ -423,7 +425,7 @@ namespace urchin
 		//determine visible lights on scene
 		lightManager->updateLights(camera->getFrustum());
 
-		//animate models (only one visible to scene OR producing shadow on scene)
+		//animate models (only those visible to scene OR producing shadow on scene)
 		shadowManager->updateVisibleModels(camera->getFrustum());
 		modelDisplayer->setModels(shadowManager->getVisibleModels());
 		modelDisplayer->updateAnimation(invFrameRate);
@@ -494,6 +496,13 @@ namespace urchin
 		shadowManager->loadShadowMaps(camera->getViewMatrix());
 
 		lightingPassQuadDisplayer->display();
+	}
+
+	void Renderer3d::postUpdateScene()
+	{
+		modelOctreeManager->postRefreshOctreeables();
+
+		lightManager->postUpdateLights();
 	}
 
 }

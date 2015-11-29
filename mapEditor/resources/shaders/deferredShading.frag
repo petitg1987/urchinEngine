@@ -40,13 +40,12 @@ float linearStep(float min, float max, float v){
 } 
 
 float computePercentLit(float shadowMapZ, vec2 moments){
-    float shadowMapZBiased = shadowMapZ - 0.000001f;
-    float isInHardShadow = float(shadowMapZBiased <= moments.x);
+    float isInHardShadow = float(shadowMapZ <= moments.x);
     
     float variance = moments.y - (moments.x*moments.x);
     variance = max(variance, 0.000005f); //reduce fake shadow between splitted shadow maps
     
-    float d = moments.x - shadowMapZBiased;
+    float d = moments.x - shadowMapZ;
     float pMax = variance / (variance + d*d);
     
     pMax = linearStep(0.4f, 1.0f, pMax); //reduce light bleeding
@@ -60,10 +59,11 @@ float computeShadowContribution(int lightIndex, inout vec4 texPosition, inout ve
 	if(lightsInfo[lightIndex].produceShadow){
 		#LOOP1_START(#NUMBER_SHADOW_MAPS#)#
 			if(texPosition.z < depthSplitDistance[#LOOP1_COUNTER#]){
+			
 				vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[#LOOP1_COUNTER#] * position) / 2.0) + 0.5);
 
+				//model has produceShadow flag to true ?
 				if(shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0){
-					//model has produceShadow flag to true
 					vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, #LOOP1_COUNTER#)).rg;
 
 					shadowContribution = computePercentLit(shadowCoord.z, moments);
@@ -129,6 +129,21 @@ void main(){
 			float percentLit = computeShadowContribution(i, texPosition, position);
 			
 			fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
+		}else{
+			break; //no more light
 		}
 	}
+	
+	//DEBUG: add color to shadow map splits
+/*	const float colorValue = 0.25f;
+	vec4 splitColors[5] = vec4[](
+		vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
+		vec4(colorValue, 0.0, colorValue, 1.0),	vec4(colorValue, colorValue, 0.0, 1.0));
+	#LOOP2_START(#NUMBER_SHADOW_MAPS#)#
+		if(texPosition.z < depthSplitDistance[#LOOP2_COUNTER#]){
+			fragColor += splitColors[#LOOP2_COUNTER#%5];
+			
+			#LOOP2_STOP#
+		}
+	#LOOP2_END# */
 }

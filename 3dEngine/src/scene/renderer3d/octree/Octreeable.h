@@ -14,14 +14,20 @@ namespace urchin
 	/**
 	* Virtual class that can be inserted into an octree
 	*/
-	template<class TOctreeable> class Octreeable
+	template<class TOctreeable> class Octreeable : public Observable
 	{
 		public:
 			Octreeable();
 			virtual ~Octreeable();
+
+			enum NotificationType
+			{
+				MOVE
+			};
 		
-			void setToUpdate(bool);
-			bool hasNeedUpdate();
+			void notifyOctreeableMove();
+			void onMoveDone();
+			bool isMovingInOctree() const;
 
 			void setVisible(bool);
 			bool isVisible()const;
@@ -40,8 +46,8 @@ namespace urchin
 		private:
 			std::vector<Octree<TOctreeable> *> refOctree;
 
-			bool bNeedUpdate; //indicates whether the octreeable is moving
-			bool bIsVisible; //indicates whether the octreeablel is visible
+			bool bIsMovingInOctree;
+			bool bIsVisible;
 	};
 
 	#include "Octreeable.inl"

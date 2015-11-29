@@ -191,7 +191,7 @@ namespace urchin
 		{
 			switch(notificationType)
 			{
-				case Light::MOVE:
+				case Light::LIGHT_MOVE:
 				{
 					updateViewMatrix(light);
 					break;
@@ -302,7 +302,7 @@ namespace urchin
 
 	void ShadowManager::addShadowLight(Light *const light)
 	{
-		light->addObserver(this, Light::MOVE);
+		light->addObserver(this, Light::LIGHT_MOVE);
 
 		shadowDatas[light] = new ShadowData(light, nbShadowMaps);
 
@@ -312,7 +312,7 @@ namespace urchin
 
 	void ShadowManager::removeShadowLight(Light *const light)
 	{
-		light->removeObserver(this, Light::MOVE);
+		light->removeObserver(this, Light::LIGHT_MOVE);
 
 		removeShadowMaps(light);
 
@@ -385,7 +385,7 @@ namespace urchin
 				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
 				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
-				shadowData->getFrustumShadowData(i)->setModels(models);
+				shadowData->getFrustumShadowData(i)->updateModels(models);
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
 						models, shadowData->getLightViewMatrix());

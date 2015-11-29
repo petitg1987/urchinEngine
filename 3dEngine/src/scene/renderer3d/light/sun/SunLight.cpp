@@ -21,7 +21,7 @@ namespace urchin
 	{
 		this->direction = direction;
 
-		notifyObservers(this, Light::MOVE);
+		notifyObservers(this, Light::LIGHT_MOVE);
 	}
 
 	std::vector<Vector3<float>> SunLight::getDirections() const

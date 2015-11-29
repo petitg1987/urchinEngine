@@ -16,7 +16,7 @@
 namespace urchin
 {
 	
-	template<class TOctreeable> class OctreeManager : public Observable
+	template<class TOctreeable> class OctreeManager : public Observable, public Observer
 	{
 		public:
 			OctreeManager(int);
@@ -28,16 +28,19 @@ namespace urchin
 			};
 
 			void initialize();
-
-			void setDepth(int);
+			void notify(Observable *, int);
 		
 			void addOctreeable(TOctreeable *);
 			void removeOctreeable(TOctreeable *);
-			std::set<TOctreeable *> getOctreeables() const;
 
+			void updateDepth(int);
 			void refreshOctreeables();
+			void postRefreshOctreeables();
 
 			const Octree<TOctreeable> &getMainOctree() const;
+			const std::set<TOctreeable *> &getMovingOctreeables() const;
+
+			std::set<TOctreeable *> getOctreeables() const;
 			std::set<TOctreeable *> getOctreeablesIn(const ConvexObject3D<float> &) const;
 			std::set<TOctreeable *> getOctreeablesIn(const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &) const;
 		
@@ -53,6 +56,12 @@ namespace urchin
 			float overflowSize;
 			int depth;
 			Octree<TOctreeable> *mainOctree;
+
+			std::set<TOctreeable *> movingOctreeables;
+
+			#ifdef _DEBUG
+				unsigned int refreshModCount, postRefreshModCount;
+			#endif
 	};
 
 	#include "OctreeManager.inl"

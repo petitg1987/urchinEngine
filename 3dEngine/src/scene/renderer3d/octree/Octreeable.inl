@@ -1,5 +1,6 @@
 template<class TOctreeable> Octreeable<TOctreeable>::Octreeable() :
-	bNeedUpdate(false), bIsVisible(true)
+	bIsMovingInOctree(false),
+	bIsVisible(true)
 {
 
 }
@@ -14,14 +15,34 @@ template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable()
 	}
 }
 
-template<class TOctreeable> void Octreeable<TOctreeable>::setToUpdate(bool needUpdate)
+/**
+ * Method to be called when octreeable moving
+ */
+template<class TOctreeable> void Octreeable<TOctreeable>::notifyOctreeableMove()
 {
-	bNeedUpdate = needUpdate;
+	notifyObservers(this, Octreeable::MOVE);
+	
+	if(refOctree.size()>0)
+	{ //octreeable can move in an octree only if it's attached to an octree
+		bIsMovingInOctree = true;
+	}
 }
 
-template<class TOctreeable> bool Octreeable<TOctreeable>::hasNeedUpdate()
+/**
+ * Method called at post process when octreeable is moving
+ */
+template<class TOctreeable> void Octreeable<TOctreeable>::onMoveDone()
 {
-	return bNeedUpdate;
+	bIsMovingInOctree = false;
+}
+
+/**
+ * Return true when octreeable moves in an octree. True is even returned if octreeable doesn't change of leaf octree.
+ * If octreeable is not attached to an octree: false is always returned.
+ */
+template<class TOctreeable> bool Octreeable<TOctreeable>::isMovingInOctree() const
+{
+	return bIsMovingInOctree;
 }
 
 template<class TOctreeable> void Octreeable<TOctreeable>::setVisible(bool isVisible)

@@ -9,7 +9,7 @@
 namespace urchin
 {
 
-	class Light : public Observable, public Octreeable<Light>
+	class Light : public Octreeable<Light>
 	{
 		public:
 			Light();
@@ -23,7 +23,7 @@ namespace urchin
 
 			enum NotificationType
 			{
-				MOVE, //A light has been moved (position, direction...)
+				LIGHT_MOVE, //A light has been moved (position, direction...)
 				PRODUCE_SHADOW, //Produce shadow flag has been updated
 			};
 

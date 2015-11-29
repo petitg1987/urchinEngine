@@ -30,7 +30,8 @@ namespace urchin
 		this->position = position;
 
 		computeScope();
-		notifyObservers(this, Light::MOVE);
+
+		notifyObservers(this, Light::LIGHT_MOVE);
 	}
 
 	const Point3<float> &OmnidirectionalLight::getPosition() const
@@ -104,6 +105,8 @@ namespace urchin
 		float radius = -std::log(attenuationNoEffect) / getExponentialAttenuation();
 		sphereScope = new Sphere<float>(radius, getPosition());
 		bboxScope = new AABBox<float>(getPosition()-radius, getPosition()+radius);
+
+		notifyOctreeableMove();
 	}
 
 }

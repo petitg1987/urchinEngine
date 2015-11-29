@@ -36,9 +36,10 @@ namespace urchin
 
 		for(unsigned int i=0; i<nbSplits; ++i)
 		{
-			if(shadowData->getFrustumShadowData(i)->isShadowCasterReceiverBoxUpdated())
+			const FrustumShadowData *frustumShadowData = shadowData->getFrustumShadowData(i);
+			if(frustumShadowData->isShadowCasterReceiverBoxUpdated() || frustumShadowData->isModelsMoved())
 			{
-				const std::set<Model *> &frustumModels = shadowData->getFrustumShadowData(i)->getModels();
+				const std::set<Model *> &frustumModels = frustumShadowData->getModels();
 				std::set<Model *>::const_iterator itModel = std::find(frustumModels.begin(), frustumModels.end(), model);
 
 				if(itModel!=frustumModels.end())

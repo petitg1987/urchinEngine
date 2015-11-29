@@ -86,6 +86,19 @@ namespace urchin
 		return currAnimation!=nullptr && currConstAnimation!=nullptr;
 	}
 
+	void Model::onMoving(const Transform<float> &newTransform)
+	{
+		//inform the OctreeManager that the model should be updated in the octree
+		this->notifyOctreeableMove();
+
+		//update the bounding box
+		meshes->onMoving(newTransform);
+		if(currAnimation)
+		{
+			currAnimation->onMoving(newTransform);
+		}
+	}
+
 	const ConstMeshes *Model::getMeshes() const
 	{
 		return constMeshes;
@@ -181,18 +194,6 @@ namespace urchin
 	bool Model::isProduceShadow() const
 	{
 		return bIsProduceShadow;
-	}
-
-	void Model::onMoving(const Transform<float> &newTransform)
-	{
-		setToUpdate(true); //inform the OctreeManager that the model should be updated in the octree
-
-		//update the bounding box
-		meshes->onMoving(newTransform);
-		if(currAnimation)
-		{
-			currAnimation->onMoving(newTransform);
-		}
 	}
 
 	void Model::updateAnimation(float invFrameRate)
