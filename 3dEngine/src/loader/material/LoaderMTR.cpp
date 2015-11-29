@@ -17,7 +17,7 @@ namespace urchin
 
 	Material *LoaderMTR::loadFromFile(const std::string &filename, void *params)
 	{
-		setlocale(LC_NUMERIC, "C"); //for float
+		std::locale::global(std::locale("C")); //for float
 
 		XmlParser parserXml(filename);
 		

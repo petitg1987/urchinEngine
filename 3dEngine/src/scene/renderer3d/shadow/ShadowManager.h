@@ -40,6 +40,7 @@ namespace urchin
 			void onCameraProjectionUpdate(const Camera *const);
 			void notify(Observable *, int);
 
+			float getShadowMapBias() const;
 			void setShadowMapResolution(unsigned int);
 			unsigned int getShadowMapResolution() const;
 			void setNumberShadowMaps(unsigned int);
@@ -48,6 +49,8 @@ namespace urchin
 			float getViewingShadowDistance() const;
 			void setBlurShadow(BlurShadow);
 			BlurShadow getBlurShadow() const;
+			void setShadowMapFrequencyUpdate(float);
+			float getShadowMapFrequencyUpdate() const;
 
 			const std::vector<Frustum<float>> &getSplittedFrustums() const;
 			const ShadowData &getShadowData(const Light *const) const;
@@ -82,12 +85,14 @@ namespace urchin
 			void removeShadowMaps(const Light *const);
 
 			//shadow map quality
-			float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
+			const float shadowMapBias;
+			const float percentageUniformSplit; //percentage of uniform split against the logarithmic split to split frustum
 			float lightViewOverflowStepSize;
 			unsigned int shadowMapResolution;
 			unsigned int nbShadowMaps;
 			float viewingShadowDistance;
 			BlurShadow blurShadow;
+			float shadowMapFrequencyUpdate;
 
 			//scene information
 			bool isInitialized;

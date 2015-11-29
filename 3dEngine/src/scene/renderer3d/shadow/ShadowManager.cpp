@@ -14,21 +14,24 @@
 #include "scene/renderer3d/filter/TextureFilterBuilder.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
-#define DEFAULT_NUMBER_SHADOW_MAPS 4
+#define DEFAULT_NUMBER_SHADOW_MAPS 5
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024
 #define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
 #define DEFAULT_BLUR_SHADOW 3 //=BlurShadow::MEDIUM
+#define DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE 0.5
 
 namespace urchin
 {
 
 	ShadowManager::ShadowManager(LightManager *lightManager, OctreeManager<Model> *modelOctreeManager) :
+			shadowMapBias(ConfigService::instance()->getFloatValue("shadow.shadowMapBias")),
 			percentageUniformSplit(ConfigService::instance()->getFloatValue("shadow.frustumUniformSplitAgainstLogSplit")),
 			lightViewOverflowStepSize(ConfigService::instance()->getFloatValue("shadow.lightViewOverflowStepSize")),
 			shadowMapResolution(DEFAULT_SHADOW_MAP_RESOLUTION),
 			nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
 			viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
 			blurShadow((BlurShadow)DEFAULT_BLUR_SHADOW),
+			shadowMapFrequencyUpdate(DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE),
 			isInitialized(false),
 			sceneWidth(0),
 			sceneHeight(0),
@@ -211,6 +214,11 @@ namespace urchin
 		}
 	}
 
+	float ShadowManager::getShadowMapBias() const
+	{
+		return shadowMapBias;
+	}
+
 	void ShadowManager::setShadowMapResolution(unsigned int shadowMapResolution)
 	{
 		this->shadowMapResolution = shadowMapResolution;
@@ -265,6 +273,21 @@ namespace urchin
 		return blurShadow;
 	}
 
+	/**
+	 * @param shadowMapFrequencyUpdate A value of 100% (1.0) represent an update of shadow maps at each frame.
+	 * A value of 25% (0.25) represent an update of shadow maps at each 4 frame.
+	 */
+	void ShadowManager::setShadowMapFrequencyUpdate(float shadowMapFrequencyUpdate)
+	{
+		this->shadowMapFrequencyUpdate = shadowMapFrequencyUpdate;
+		updateShadowLights();
+	}
+
+	float ShadowManager::getShadowMapFrequencyUpdate() const
+	{
+		return shadowMapFrequencyUpdate;
+	}
+
 	const std::vector<Frustum<float>> &ShadowManager::getSplittedFrustums() const
 	{
 		return splittedFrustums;
@@ -304,7 +327,7 @@ namespace urchin
 	{
 		light->addObserver(this, Light::LIGHT_MOVE);
 
-		shadowDatas[light] = new ShadowData(light, nbShadowMaps);
+		shadowDatas[light] = new ShadowData(light, nbShadowMaps, shadowMapFrequencyUpdate);
 
 		createShadowMaps(light);
 		updateViewMatrix(light);

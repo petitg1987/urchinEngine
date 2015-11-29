@@ -29,7 +29,7 @@ namespace urchin
 
 	ConstAnimation *LoaderMD5Anim::loadFromFile(const std::string &filename, void *params)
 	{
-		setlocale(LC_NUMERIC, "C"); //for float
+		std::locale::global(std::locale("C")); //for float
 		
 		std::ifstream file;
 		std::istringstream iss;

@@ -43,7 +43,7 @@ float computePercentLit(float shadowMapZ, vec2 moments){
     float isInHardShadow = float(shadowMapZ <= moments.x);
     
     float variance = moments.y - (moments.x*moments.x);
-    variance = max(variance, 0.000005f); //reduce fake shadow between splitted shadow maps
+    variance = max(variance, #SHADOW_MAP_BIAS#); //reduce fake shadow between splitted shadow maps
     
     float d = moments.x - shadowMapZ;
     float pMax = variance / (variance + d*d);

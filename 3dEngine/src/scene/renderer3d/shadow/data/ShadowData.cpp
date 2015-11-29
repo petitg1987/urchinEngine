@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-	ShadowData::ShadowData(const Light *const light, unsigned int nbFrustumsplit) :
+	ShadowData::ShadowData(const Light *const light, unsigned int nbFrustumsplit, float shadowMapFrequencyUpdate) :
 			light(light),
 			fboID(0),
 			depthTextureID(0),
@@ -17,7 +17,7 @@ namespace urchin
 	{
 		for(unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumsplit; ++frustumSplitIndex)
 		{
-			frustumShadowData.push_back(new FrustumShadowData(frustumSplitIndex));
+			frustumShadowData.push_back(new FrustumShadowData(frustumSplitIndex, shadowMapFrequencyUpdate));
 		}
 	}
 
@@ -125,8 +125,11 @@ namespace urchin
 		std::set<Model *> models;
 		for(unsigned int i=0; i<getNbFrustumShadowData(); ++i)
 		{
-			const std::set<Model *> &frustumsplitModels = getFrustumShadowData(i)->getModels();
-			models.insert(frustumsplitModels.begin(), frustumsplitModels.end());
+			if(getFrustumShadowData(i)->needShadowMapUpdate())
+			{
+				const std::set<Model *> &frustumsplitModels = getFrustumShadowData(i)->getModels();
+				models.insert(frustumsplitModels.begin(), frustumsplitModels.end());
+			}
 		}
 		return models;
 	}

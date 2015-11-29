@@ -3,10 +3,13 @@
 namespace urchin
 {
 
-	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex) :
+	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex, float shadowMapFrequencyUpdate) :
 			frustumSplitIndex(frustumSplitIndex),
-			shadowCasterReceiverBoxUpdated(true),
-			modelsMoved(true)
+			shadowCasterReceiverBoxUpdated(false),
+			modelsMoved(false),
+			modelsInverseFrequencyUpdate(round(1.0f/shadowMapFrequencyUpdate)),
+			modelsMovedCount(0),
+			modelsRequiredUpdate(false)
 	{
 
 	}
@@ -28,6 +31,14 @@ namespace urchin
 
 			this->shadowCasterReceiverBoxUpdated = true;
 		}
+	}
+
+	bool FrustumShadowData::areIdenticalAABBox(const AABBox<float> &shadowCasterReceiverBox1, const AABBox<float> &shadowCasterReceiverBox2) const
+	{
+		constexpr float EPSILON = 0.0001f * 0.0001f;
+
+		return shadowCasterReceiverBox1.getMin().squareDistance(shadowCasterReceiverBox2.getMin())<EPSILON
+				&& shadowCasterReceiverBox1.getMax().squareDistance(shadowCasterReceiverBox2.getMax())<EPSILON;
 	}
 
 	const AABBox<float> &FrustumShadowData::getShadowCasterReceiverBox() const
@@ -69,7 +80,23 @@ namespace urchin
 			modelsMoved = true;
 		}
 
+		updateModelsRequiredUpdateFlag();
+
 		this->models = models;
+	}
+
+	void FrustumShadowData::updateModelsRequiredUpdateFlag()
+	{
+		modelsRequiredUpdate = modelsMoved;
+
+		if(modelsMoved)
+		{
+			modelsMovedCount++;
+			if(modelsMovedCount % modelsInverseFrequencyUpdate!=0)
+			{
+				modelsRequiredUpdate = false;
+			}
+		}
 	}
 
 	/**
@@ -90,15 +117,6 @@ namespace urchin
 	 */
 	bool FrustumShadowData::needShadowMapUpdate() const
 	{
-		return modelsMoved || shadowCasterReceiverBoxUpdated;
+		return shadowCasterReceiverBoxUpdated || modelsRequiredUpdate;
 	}
-
-	bool FrustumShadowData::areIdenticalAABBox(const AABBox<float> &shadowCasterReceiverBox1, const AABBox<float> &shadowCasterReceiverBox2) const
-	{
-		constexpr float EPSILON = 0.0001f * 0.0001f;
-
-		return shadowCasterReceiverBox1.getMin().squareDistance(shadowCasterReceiverBox2.getMin())<EPSILON
-				&& shadowCasterReceiverBox1.getMax().squareDistance(shadowCasterReceiverBox2.getMax())<EPSILON;
-	}
-
 }

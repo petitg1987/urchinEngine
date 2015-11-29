@@ -14,7 +14,7 @@ namespace urchin
 	class FrustumShadowData
 	{
 		public:
-			FrustumShadowData(unsigned int);
+			FrustumShadowData(unsigned int, float);
 			~FrustumShadowData();
 
 			void updateShadowCasterReceiverBox(const AABBox<float> &);
@@ -30,6 +30,7 @@ namespace urchin
 
 		private:
 			bool areIdenticalAABBox(const AABBox<float> &, const AABBox<float> &) const;
+			void updateModelsRequiredUpdateFlag();
 
 			unsigned int frustumSplitIndex; //index of frustum split (0: frustum split nearest to eye)
 
@@ -39,6 +40,10 @@ namespace urchin
 
 			std::set<Model *> models;
 			bool modelsMoved;
+
+			const unsigned int modelsInverseFrequencyUpdate;
+			unsigned int modelsMovedCount;
+			bool modelsRequiredUpdate;
 	};
 
 }

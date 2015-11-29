@@ -117,7 +117,8 @@ namespace urchin
 		if(sceneDisplayer!=nullptr)
 		{
 			sceneDisplayer->paint();
-		}else{
+		}else
+		{
 			glClear(GL_COLOR_BUFFER_BIT);
 			glClearColor(0.1f, 0.05f, 0.1f, 1.0f);
 		}

@@ -1,7 +1,7 @@
 #include <GL/gl.h>
-#include <sstream>
 #include <set>
 #include <stdexcept>
+#include <locale>
 
 #include "Renderer3d.h"
 #include "utils/shader/ShaderManager.h"
@@ -111,13 +111,12 @@ namespace urchin
 
 	void Renderer3d::loadDeferredShadingShader()
 	{
-		std::ostringstream maxLightsString, nbShadowMapsString;
-		maxLightsString << lightManager->getMaxLights();
-		nbShadowMapsString << shadowManager->getNumberShadowMaps();
+		std::locale::global(std::locale("C")); //for float
 
 		std::map<std::string, std::string> tokens;
-		tokens["MAX_LIGHTS"] = maxLightsString.str();
-		tokens["NUMBER_SHADOW_MAPS"] = nbShadowMapsString.str();
+		tokens["MAX_LIGHTS"] = std::to_string(lightManager->getMaxLights());
+		tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
+		tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
 		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
 
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
