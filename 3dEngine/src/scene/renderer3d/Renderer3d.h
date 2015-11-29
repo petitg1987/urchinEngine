@@ -117,7 +117,7 @@ namespace urchin
 
 			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
 			unsigned int deferredShadingShader;
-			int depthTexLoc, diffuseTexLoc, normalAndAmbientTexLoc, mInverseViewProjectionLoc, viewPositionLoc;
+			int mInverseViewProjectionLoc, viewPositionLoc;
 	};
 
 }

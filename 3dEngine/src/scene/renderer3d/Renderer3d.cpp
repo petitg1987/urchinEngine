@@ -25,9 +25,6 @@ namespace urchin
 			fboIDs(nullptr),
 			textureIDs(nullptr),
 			deferredShadingShader(0),
-			depthTexLoc(0),
-			diffuseTexLoc(0),
-			normalAndAmbientTexLoc(0),
 			mInverseViewProjectionLoc(0),
 			viewPositionLoc(0)
 	{
@@ -126,9 +123,13 @@ namespace urchin
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
 		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
 		ShaderManager::instance()->bind(deferredShadingShader);
-		depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
-		diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
-		normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
+
+		int depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");
+		glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
+		int diffuseTexLoc = glGetUniformLocation(deferredShadingShader, "colorTex");
+		glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
+		int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
+		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
 		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
 		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 	}
@@ -484,10 +485,6 @@ namespace urchin
 
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]);
-
-		glUniform1i(depthTexLoc, 0);
-		glUniform1i(diffuseTexLoc, 1);
-		glUniform1i(normalAndAmbientTexLoc, 2);
 
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
 		glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());

@@ -21,8 +21,8 @@ namespace urchin
 		textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
 		textureFormat(textureFilterBuilder->getTextureFormat()),
 
-		downSampleShader(0),
-		texLoc(0),
+		textureFilterShader(0),
+		layersToUpdateLoc(0),
 		fboID(0),
 		textureID(0)
 	{
@@ -31,7 +31,7 @@ namespace urchin
 
 	TextureFilter::~TextureFilter()
 	{
-		ShaderManager::instance()->removeProgram(downSampleShader);
+		ShaderManager::instance()->removeProgram(textureFilterShader);
 
 		glDeleteFramebuffers(1, &fboID);
 		glDeleteTextures(1, &textureID);
@@ -78,16 +78,17 @@ namespace urchin
 			geometryTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
 			geometryTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-			downSampleShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+"Array.frag", shaderTokens);
-			ShaderManager::instance()->setGeometryShader(downSampleShader, "textureFilter.geo", geometryTokens);
+			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+"Array.frag", shaderTokens);
+			ShaderManager::instance()->setGeometryShader(textureFilterShader, "textureFilter.geo", geometryTokens);
 		}else
 		{
-			downSampleShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+".frag", shaderTokens);
+			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+".frag", shaderTokens);
 		}
 
-		ShaderManager::instance()->bind(downSampleShader);
-		texLoc = glGetUniformLocation(downSampleShader, "tex");
-		glUniform1i(texLoc, 0);
+		ShaderManager::instance()->bind(textureFilterShader);
+		int texLoc = glGetUniformLocation(textureFilterShader, "tex");
+		glUniform1i(texLoc, GL_TEXTURE0-GL_TEXTURE0);
+		layersToUpdateLoc = glGetUniformLocation(textureFilterShader, "layersToUpdate");
 	}
 
 	void TextureFilter::initializeTexture()
@@ -139,7 +140,11 @@ namespace urchin
 		return textureHeight;
 	}
 
-	void TextureFilter::applyOn(unsigned int sourceTextureId) const
+	/**
+	 * @param layersToUpdate Specify the layers which must be affected by the filter (only for GL_TEXTURE_2D_ARRAY).
+	 * Lowest bit represent the first layer, the second lowest bit represent the second layer, etc.
+	 */
+	void TextureFilter::applyOn(unsigned int sourceTextureId, unsigned int layersToUpdate) const
 	{
 		#ifdef _DEBUG
 			if(!isInitialized)
@@ -148,7 +153,7 @@ namespace urchin
 			}
 		#endif
 
-		ShaderManager::instance()->bind(downSampleShader);
+		ShaderManager::instance()->bind(textureFilterShader);
 
 		glViewport(0, 0, textureWidth, textureHeight);
 
@@ -156,7 +161,10 @@ namespace urchin
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(textureType, sourceTextureId);
 
-		glUniform1i(texLoc, 0);
+		if(textureType==GL_TEXTURE_2D_ARRAY)
+		{
+			glUniform1ui(layersToUpdateLoc, layersToUpdate);
+		}
 
 		texQuadDisplayer->display();
 

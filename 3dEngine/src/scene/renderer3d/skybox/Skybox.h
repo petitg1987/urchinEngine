@@ -37,7 +37,7 @@ namespace urchin
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 
 			unsigned int skyboxShader;
-			int mProjectionLoc, mViewLoc, diffuseTexSamplerLoc;
+			int mProjectionLoc, mViewLoc;
 	};
 
 }

@@ -106,7 +106,7 @@ namespace urchin
 		shadowModelDisplayer->setCustomUniform(shadowUniform);
 
 		shadowModelUniform = new ShadowModelUniform();
-		shadowModelUniform->setSplitsToUpdateLocation(shadowModelDisplayer->getUniformLocation("splitsToUpdate"));
+		shadowModelUniform->setLayersToUpdateLocation(shadowModelDisplayer->getUniformLocation("layersToUpdate"));
 		shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
 
 		lightManager->addObserver(this, LightManager::ADD_LIGHT);
@@ -646,8 +646,17 @@ namespace urchin
 
 			if(blurShadow!=BlurShadow::NO_BLUR)
 			{
-				shadowData->getVerticalBlurFilter()->applyOn(shadowData->getShadowMapTextureID());
-				shadowData->getHorizontalBlurFilter()->applyOn(shadowData->getVerticalBlurFilter()->getTextureID());
+				unsigned int layersToUpdate = 0;
+				for(unsigned int i=0; i<shadowData->getNbFrustumShadowData(); ++i)
+				{
+					if(shadowData->getFrustumShadowData(i)->needShadowMapUpdate())
+					{
+						layersToUpdate = layersToUpdate | MathAlgorithm::pow2(i);
+					}
+				}
+
+				shadowData->getVerticalBlurFilter()->applyOn(shadowData->getShadowMapTextureID(), layersToUpdate);
+				shadowData->getHorizontalBlurFilter()->applyOn(shadowData->getVerticalBlurFilter()->getTextureID(), layersToUpdate);
 			}
 		}
 

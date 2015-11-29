@@ -85,6 +85,14 @@ namespace urchin
 		return modelsMoved;
 	}
 
+	/**
+	 * Return true when it's necessary to update the shadow map
+	 */
+	bool FrustumShadowData::needShadowMapUpdate() const
+	{
+		return modelsMoved || shadowCasterReceiverBoxUpdated;
+	}
+
 	bool FrustumShadowData::areIdenticalAABBox(const AABBox<float> &shadowCasterReceiverBox1, const AABBox<float> &shadowCasterReceiverBox2) const
 	{
 		constexpr float EPSILON = 0.0001f * 0.0001f;

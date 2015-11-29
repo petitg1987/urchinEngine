@@ -88,7 +88,8 @@ namespace urchin
 		ShaderManager::instance()->bind(skyboxShader);
 		mProjectionLoc = glGetUniformLocation(skyboxShader, "mProjection");
 		mViewLoc = glGetUniformLocation(skyboxShader, "mView");
-		diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader, "diffuseTexture");
+		int diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader, "diffuseTexture");
+		glUniform1i(diffuseTexSamplerLoc, GL_TEXTURE0-GL_TEXTURE0);
 
 		void *vertexCoord = new float[72]{
 			//x negative:
@@ -147,7 +148,6 @@ namespace urchin
 		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)(viewMatrix * translationMatrix));
 
 		glActiveTexture(GL_TEXTURE0);
-		glUniform1i(diffuseTexSamplerLoc, 0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 		
 		quadDisplayer->display();

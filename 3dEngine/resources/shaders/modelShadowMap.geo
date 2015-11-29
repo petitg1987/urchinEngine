@@ -3,7 +3,7 @@ layout(triangles) in;
 layout(triangle_strip, max_vertices=#MAX_VERTICES#) out;
 
 uniform mat4 projectionMatrix[#NUMBER_SHADOW_MAPS#];
-uniform unsigned int splitsToUpdate;
+uniform unsigned int layersToUpdate;
 
 const unsigned int POWER_TWO_TAB[13] = unsigned int[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096);
 
@@ -11,7 +11,7 @@ out int gl_Layer;
 
 void main(){
 	for(int layer=0; layer<#NUMBER_SHADOW_MAPS#; layer++){
-		if((splitsToUpdate & POWER_TWO_TAB[layer]) != uint(0)){
+		if((layersToUpdate & POWER_TWO_TAB[layer]) != uint(0)){
 			gl_Layer = layer;
 	
 			gl_Position = projectionMatrix[layer] * gl_in[0].gl_Position;

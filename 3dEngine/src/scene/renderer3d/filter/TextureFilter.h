@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <limits>
 #include <map>
 
 #include "utils/display/quad/QuadDisplayer.h"
@@ -23,7 +24,7 @@ namespace urchin
 			unsigned int getFboId() const;
 			unsigned int getTextureID() const;
 
-			void applyOn(unsigned int) const;
+			void applyOn(unsigned int, unsigned int layersToUpdate = std::numeric_limits<unsigned int>::max()) const;
 
 		protected:
 			virtual std::string getShaderName() const = 0;
@@ -47,8 +48,8 @@ namespace urchin
 			unsigned int textureFormat;
 
 			std::shared_ptr<QuadDisplayer> texQuadDisplayer;
-			unsigned int downSampleShader;
-			int texLoc;
+			unsigned int textureFilterShader;
+			int layersToUpdateLoc;
 
 			unsigned int fboID;
 			unsigned int textureID;

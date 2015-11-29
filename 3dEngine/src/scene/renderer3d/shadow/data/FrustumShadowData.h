@@ -26,6 +26,8 @@ namespace urchin
 			const std::set<Model *> &getModels() const;
 			bool isModelsMoved() const;
 
+			bool needShadowMapUpdate() const;
+
 		private:
 			bool areIdenticalAABBox(const AABBox<float> &, const AABBox<float> &) const;
 

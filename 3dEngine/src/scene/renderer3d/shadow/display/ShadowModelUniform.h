@@ -19,13 +19,13 @@ namespace urchin
 			ShadowModelUniform();
 			~ShadowModelUniform();
 
-			void setSplitsToUpdateLocation(int);
+			void setLayersToUpdateLocation(int);
 			void setModelUniformData(const ShadowData *);
 
 			void loadCustomUniforms(const Model *);
 
 		private:
-			int splitsToUpdateLoc;
+			int layersToUpdateLoc;
 			const ShadowData *shadowData;
 	};
 
