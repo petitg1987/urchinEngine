@@ -70,13 +70,13 @@ float fxaaLuma(vec4 rgba){
 
 void main(){
 	//amount of sub-pixel aliasing removal (0.0=off, 1.0=softer)
-	const float fxaaQualitySubpix = 0.75;
+	const float fxaaQualitySubpix = 0.8;
 	
 	//amount of local contrast required to apply algorithm (0.333=too little (faster), 0.063=overkill)
-	const float fxaaQualityEdgeThreshold = 0.2;
+	const float fxaaQualityEdgeThreshold = 0.1;
 	
 	//trims the algorithm from processing darks (0.0312=max pixel process, 0.3=min pixel process)
-	const float fxaaQualityEdgeThresholdMin = 0.2;
+	const float fxaaQualityEdgeThresholdMin = 0.1;
 
 	vec2 posM;
 	posM.x = textCoordinates.x;
