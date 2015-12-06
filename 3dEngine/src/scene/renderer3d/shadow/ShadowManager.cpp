@@ -10,8 +10,8 @@
 #include "ShadowManager.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
-#include "scene/renderer3d/filter/TextureFilter.h"
-#include "scene/renderer3d/filter/TextureFilterBuilder.h"
+#include "utils/filter/TextureFilter.h"
+#include "utils/filter/TextureFilterBuilder.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5

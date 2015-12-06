@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-#include "scene/renderer3d/filter/TextureFilter.h"
+#include "TextureFilter.h"
 
 namespace urchin
 {
