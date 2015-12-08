@@ -31,6 +31,7 @@ namespace urchin
 		lightManager = new LightManager();
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
+		ambientOcclusionManager = new AmbientOcclusionManager();
 
 		antiAliasingApplier = new AntiAliasingApplier();
 		isAntiAliasingActivated = true;
@@ -51,6 +52,7 @@ namespace urchin
 		delete shadowManager;
 		delete modelOctreeManager;
 		delete lightManager;
+		delete ambientOcclusionManager;
 
 		//anti aliasing
 		delete antiAliasingApplier;
@@ -99,6 +101,7 @@ namespace urchin
 		lightManager->initialize(deferredShadingShader);
 		modelOctreeManager->initialize();
 		shadowManager->initialize(deferredShadingShader);
+		ambientOcclusionManager->initialize();
 
 		//anti aliasing
 		antiAliasingApplier->initialize();
@@ -185,6 +188,9 @@ namespace urchin
 		//shadow
 		shadowManager->onResize(width, height);
 
+		//ambient occlusion
+		ambientOcclusionManager->onResize(width, height);
+
 		//anti-aliasing
 		antiAliasingApplier->onResize(width, height);
 	}
@@ -202,6 +208,11 @@ namespace urchin
 	ShadowManager *Renderer3d::getShadowManager() const
 	{
 		return shadowManager;
+	}
+
+	AmbientOcclusionManager *Renderer3d::getAmbientOcclusionManager() const
+	{
+		return ambientOcclusionManager;
 	}
 
 	AntiAliasingApplier *Renderer3d::getAntiAliasingApplier() const
@@ -432,6 +443,9 @@ namespace urchin
 
 		//update shadow maps
 		shadowManager->updateShadowMaps();
+
+		//update ambient occlusion texture
+		ambientOcclusionManager->updateAOTexture();
 	}
 
 	/**
@@ -490,6 +504,7 @@ namespace urchin
 
 		lightManager->loadLights();
 		shadowManager->loadShadowMaps(camera->getViewMatrix());
+		ambientOcclusionManager->loadAOTexture();
 
 		lightingPassQuadDisplayer->display();
 	}

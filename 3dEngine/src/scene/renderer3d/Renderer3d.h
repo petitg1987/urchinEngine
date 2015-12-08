@@ -13,6 +13,7 @@
 #include "scene/renderer3d/octree/OctreeManager.h"
 #include "scene/renderer3d/octree/Octreeable.h"
 #include "scene/renderer3d/shadow/ShadowManager.h"
+#include "scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/skybox/Skybox.h"
 #include "utils/display/geometry/GeometryDisplayer.h"
@@ -36,6 +37,7 @@ namespace urchin
 			LightManager *getLightManager() const;
 			OctreeManager<Model> *getModelOctreeManager() const;
 			ShadowManager *getShadowManager() const;
+			AmbientOcclusionManager *getAmbientOcclusionManager() const;
 
 			//anti aliasing
 			AntiAliasingApplier *getAntiAliasingApplier() const;
@@ -87,6 +89,7 @@ namespace urchin
 			OctreeManager<Model> *modelOctreeManager;
 			LightManager *lightManager;
 			ShadowManager *shadowManager;
+			AmbientOcclusionManager *ambientOcclusionManager;
 
 			//anti aliasing
 			AntiAliasingApplier *antiAliasingApplier;
