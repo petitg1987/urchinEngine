@@ -3,16 +3,19 @@
 
 //deferred textures:
 //|-------------------------------------------------------------------|
-//| Depth                                                             |
+//| Depth (32 bits)                                                   |
 //|-------------------------------------------------------------------|
 //| Diffuse red    | Diffuse green  | Diffuse blue   | EMPTY          |
 //|-------------------------------------------------------------------|
 //| Normal X       | Normal Y       | Normal Z       | Ambient factor |
 //|-------------------------------------------------------------------|
+//| Ambient occlusion factor (16 bits)                                |
+//|-------------------------------------------------------------------|
 in vec2 textCoordinates;
 uniform sampler2D depthTex;
 uniform sampler2D colorTex;
 uniform sampler2D normalAndAmbientTex;
+uniform sampler2D ambientOcclusionTex;
 uniform mat4 mInverseViewProjection;
 
 //lights and shadows:
@@ -104,8 +107,10 @@ void main(){
 	position /= position.w;
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
+	float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
 	
 	fragColor = globalAmbient * modelAmbient;
+	fragColor *= ambienOcclusionFactor;
 		
 	for(int i=0; i<#MAX_LIGHTS#;++i){
 		if(lightsInfo[i].isExist){

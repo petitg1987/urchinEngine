@@ -3,6 +3,8 @@
 #include <stdexcept>
 
 #include "ModelDisplayer.h"
+#include "utils/shader/ShaderManager.h"
+#include "utils/shader/TokenReplacerShader.h"
 
 namespace urchin
 {

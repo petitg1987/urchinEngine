@@ -88,6 +88,9 @@ namespace urchin
 		delete shadowModelUniform;
 	}
 
+	/**
+	 * @param shaderId Shader which use shadow map textures
+	 */
 	void ShadowManager::initialize(unsigned int shaderID)
 	{
 		if(isInitialized)
@@ -116,6 +119,7 @@ namespace urchin
 		lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
 
 		//shadow information
+		ShaderManager::instance()->bind(shaderID);
 		depthSplitDistanceLoc = glGetUniformLocation(shaderID, "depthSplitDistance");
 
 		//light information
@@ -123,9 +127,6 @@ namespace urchin
 		std::ostringstream shadowMapTextureLocName, mLightProjectionViewLocName;
 		for(unsigned int i=0;i<lightManager->getMaxLights();++i)
 		{
-			//texture unit
-			lightsLocation[i].shadowMapTextureUnits = i + 3; //shadow map texture start to GL_TEXTURE3
-
 			//depth shadow texture
 			shadowMapTextureLocName.str("");
 			shadowMapTextureLocName << "lightsInfo[" << i << "].shadowMapTex";
@@ -674,7 +675,7 @@ namespace urchin
 				{
 					if(shadowData->getFrustumShadowData(i)->needShadowMapUpdate())
 					{
-						layersToUpdate = layersToUpdate | MathAlgorithm::pow2(i);
+						layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
 					}
 				}
 
@@ -687,7 +688,7 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	}
 
-	void ShadowManager::loadShadowMaps(const Matrix4<float> &viewMatrix)
+	void ShadowManager::loadShadowMaps(const Matrix4<float> &viewMatrix, unsigned int shadowMapTextureUnitStart)
 	{
 		int i = 0;
 		std::vector<Light *> visibleLights = lightManager->getVisibleLights();
@@ -698,12 +699,13 @@ namespace urchin
 				std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.find(*itLights);
 				const ShadowData *shadowData = it->second;
 
-				glActiveTexture(GL_TEXTURE0 + lightsLocation[i].shadowMapTextureUnits);
+				unsigned int shadowMapTextureUnit = shadowMapTextureUnitStart + i;
+				glActiveTexture(GL_TEXTURE0 + shadowMapTextureUnit);
 				unsigned int shadowMapTextureID = (blurShadow==BlurShadow::NO_BLUR)
 						? shadowData->getShadowMapTextureID() : shadowData->getHorizontalBlurFilter()->getTextureID();
 				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowMapTextureID);
 
-				glUniform1i(lightsLocation[i].shadowMapTexLoc, lightsLocation[i].shadowMapTextureUnits);
+				glUniform1i(lightsLocation[i].shadowMapTexLoc, shadowMapTextureUnit);
 
 				for(unsigned int j=0; j<nbShadowMaps; ++j)
 				{

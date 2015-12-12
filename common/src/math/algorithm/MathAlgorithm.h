@@ -11,7 +11,7 @@ namespace urchin
 			template<class T> static T sign(T);
 			static int nextPowerOfTwo(int);
 			static bool isZero(float);
-			static unsigned int pow2(unsigned int);
+			static unsigned int powerOfTwo(unsigned int);
 	};
 
 }

@@ -43,7 +43,7 @@ namespace urchin
 
 				if(itModel!=frustumModels.end())
 				{
-					layersToUpdate = layersToUpdate | MathAlgorithm::pow2(i);
+					layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
 				}
 			}
 		}

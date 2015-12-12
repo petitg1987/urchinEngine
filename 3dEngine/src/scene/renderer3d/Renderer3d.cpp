@@ -101,7 +101,7 @@ namespace urchin
 		lightManager->initialize(deferredShadingShader);
 		modelOctreeManager->initialize();
 		shadowManager->initialize(deferredShadingShader);
-		ambientOcclusionManager->initialize();
+		ambientOcclusionManager->initialize(deferredShadingShader, textureIDs[TEX_DEPTH]);
 
 		//anti aliasing
 		antiAliasingApplier->initialize();
@@ -162,7 +162,7 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]); //depth buffer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureIDs[TEX_DEPTH], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]); //diffuse buffer
@@ -422,6 +422,12 @@ namespace urchin
 //			textureDisplayer4.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
 //			textureDisplayer4.initialize(width, height);
 //			textureDisplayer4.display();
+
+			//display ambient occlusion buffer
+//			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
+//			textureDisplayer5.initialize(width, height);
+//			textureDisplayer5.display();
 		#endif
 	}
 
@@ -445,7 +451,7 @@ namespace urchin
 		shadowManager->updateShadowMaps();
 
 		//update ambient occlusion texture
-		ambientOcclusionManager->updateAOTexture();
+		ambientOcclusionManager->updateAOTexture(camera);
 	}
 
 	/**
@@ -503,8 +509,12 @@ namespace urchin
 		glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
 
 		lightManager->loadLights();
-		shadowManager->loadShadowMaps(camera->getViewMatrix());
-		ambientOcclusionManager->loadAOTexture();
+
+		unsigned int shadowMapTextureUnitStart = 3;
+		shadowManager->loadShadowMaps(camera->getViewMatrix(), shadowMapTextureUnitStart);
+
+		unsigned int ambientOcclusionTexrtureUnitStart = shadowMapTextureUnitStart + shadowManager->getNumberShadowMaps();
+		ambientOcclusionManager->loadAOTexture(ambientOcclusionTexrtureUnitStart);
 
 		lightingPassQuadDisplayer->display();
 	}

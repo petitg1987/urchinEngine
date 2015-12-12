@@ -11,8 +11,6 @@
 #include "CustomModelUniform.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/camera/Camera.h"
-#include "utils/shader/ShaderManager.h"
-#include "utils/shader/TokenReplacerShader.h"
 
 namespace urchin
 {

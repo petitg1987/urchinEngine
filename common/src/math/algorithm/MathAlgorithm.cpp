@@ -44,15 +44,10 @@ namespace urchin
 		return value > -std::numeric_limits<float>::epsilon() && value < std::numeric_limits<float>::epsilon();
 	}
 
-	unsigned int MathAlgorithm::pow2(unsigned int exponent)
+	unsigned int MathAlgorithm::powerOfTwo(unsigned int exponent)
 	{
 		unsigned int result = 1;
-		for(unsigned int i=0; i<exponent; ++i)
-		{
-			result *= 2;
-		}
-
-		return result;
+		return result << exponent;
 	}
 
 	//explicit template

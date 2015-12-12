@@ -58,7 +58,7 @@ namespace urchin
 
 			void updateVisibleModels(const Frustum<float> &);
 			void updateShadowMaps();
-			void loadShadowMaps(const Matrix4<float> &);
+			void loadShadowMaps(const Matrix4<float> &, unsigned int);
 			
 			#ifdef _DEBUG
 				void drawLightSceneBox(const Frustum<float> &, const Light *const, const Matrix4<float> &) const;
@@ -117,7 +117,6 @@ namespace urchin
 			{ //reservation of light locations for light producing shadow
 				int shadowMapTexLoc;
 				int *mLightProjectionViewLoc;
-				unsigned int shadowMapTextureUnits;
 			};
 			LightLocation *lightsLocation;
 	};
