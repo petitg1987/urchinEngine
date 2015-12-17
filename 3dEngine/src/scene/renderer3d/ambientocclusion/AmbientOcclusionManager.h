@@ -18,9 +18,13 @@ namespace urchin
 			AmbientOcclusionManager();
 			virtual ~AmbientOcclusionManager();
 
-			void initialize(unsigned int, unsigned int);
+			void initialize(unsigned int, unsigned int, unsigned int);
 			void onResize(int, int);
 			void createOrUpdateTexture();
+
+			void setNumDirections(unsigned int);
+			void setNumSteps(unsigned int);
+			void setRadius(float);
 
 			unsigned int getAmbientOcclusionTextureID() const;
 
@@ -32,6 +36,11 @@ namespace urchin
 			bool isInitialized;
 			int sceneWidth, sceneHeight;
 
+			//tweak
+			unsigned int numDirections;
+			unsigned int numSteps;
+			float radius;
+
 			//frame buffer object
 			unsigned int fboID;
 			unsigned int ambientOcclusionTexID;
@@ -39,9 +48,11 @@ namespace urchin
 			//ambient occlusion shader
 			unsigned int hbaoShader;
 			int mInverseViewProjectionLoc;
+			int invResolutionLoc;
 
 			//visual data
 			unsigned int depthTexID;
+			unsigned int normalAndAmbientTexID;
 			unsigned int ambienOcclusionTexLoc;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};

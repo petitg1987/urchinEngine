@@ -101,7 +101,7 @@ namespace urchin
 		lightManager->initialize(deferredShadingShader);
 		modelOctreeManager->initialize();
 		shadowManager->initialize(deferredShadingShader);
-		ambientOcclusionManager->initialize(deferredShadingShader, textureIDs[TEX_DEPTH]);
+		ambientOcclusionManager->initialize(deferredShadingShader, textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
 
 		//anti aliasing
 		antiAliasingApplier->initialize();
@@ -374,6 +374,11 @@ namespace urchin
 		glDrawBuffers(2, &fboAttachments[0]);
 		deferredGeometryRendering();
 
+		//TODO find better place to add this source code:
+		//update ambient occlusion texture
+		ambientOcclusionManager->updateAOTexture(camera);
+		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]); //TODO remove ?
+
 		if(isAntiAliasingActivated)
 		{
 			glDrawBuffers(1, &fboAttachments[2]);
@@ -424,10 +429,10 @@ namespace urchin
 //			textureDisplayer4.display();
 
 			//display ambient occlusion buffer
-//			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::DEFAULT_FACTOR);
-//			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
-//			textureDisplayer5.initialize(width, height);
-//			textureDisplayer5.display();
+			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::DEFAULT_FACTOR);
+			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
+			textureDisplayer5.initialize(width, height);
+			textureDisplayer5.display();
 		#endif
 	}
 
@@ -449,9 +454,6 @@ namespace urchin
 
 		//update shadow maps
 		shadowManager->updateShadowMaps();
-
-		//update ambient occlusion texture
-		ambientOcclusionManager->updateAOTexture(camera);
 	}
 
 	/**
