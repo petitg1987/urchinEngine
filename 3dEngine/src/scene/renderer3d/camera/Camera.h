@@ -28,6 +28,10 @@ namespace urchin
 			const Point3<float> &getPosition() const;
 			const Point3<float> &getView() const;
 			const Vector3<float> &getUp() const;
+
+			float getAngle() const;
+			float getNearPlane() const;
+			float getFarPlane() const;
 		
 			void moveTo(const Point3<float> &);
 			void moveX(float);

@@ -148,6 +148,21 @@ namespace urchin
 		return up;
 	}
 
+	float Camera::getAngle() const
+	{
+		return angle;
+	}
+
+	float Camera::getNearPlane() const
+	{
+		return nearPlane;
+	}
+
+	float Camera::getFarPlane() const
+	{
+		return farPlane;
+	}
+
 	void Camera::moveTo(const Point3<float> &newPos)
 	{
 		Vector3<float> axis = position.vector(newPos);

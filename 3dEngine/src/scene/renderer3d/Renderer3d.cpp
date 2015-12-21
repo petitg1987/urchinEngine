@@ -250,6 +250,8 @@ namespace urchin
 		geometryDisplayer->onCameraProjectionUpdate(camera);
 
 		shadowManager->onCameraProjectionUpdate(camera);
+
+		ambientOcclusionManager->onCameraProjectionUpdate(camera);
 	}
 
 	Camera *Renderer3d::getCamera() const
@@ -374,11 +376,6 @@ namespace urchin
 		glDrawBuffers(2, &fboAttachments[0]);
 		deferredGeometryRendering();
 
-		//TODO find better place to add this source code:
-		//update ambient occlusion texture
-		ambientOcclusionManager->updateAOTexture(camera);
-		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]); //TODO remove ?
-
 		if(isAntiAliasingActivated)
 		{
 			glDrawBuffers(1, &fboAttachments[2]);
@@ -470,6 +467,8 @@ namespace urchin
 		modelDisplayer->display(camera->getViewMatrix());
 
 		geometryDisplayer->display(camera->getViewMatrix());
+
+		ambientOcclusionManager->updateAOTexture(camera);
 
 		#ifdef _DEBUG
 			//display the octree

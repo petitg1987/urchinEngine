@@ -1,14 +1,17 @@
 #version 330
 
+#define NEAR_PLANE 0
+#define FAR_PLANE 1
 #define M_PI 3.14159265f
-#define BIAS 0.1f
 
 uniform sampler2D depthTex;
 uniform sampler2D normalAndAmbientTex;
 
 in vec2 textCoordinates;
 uniform mat4 mInverseViewProjection;
+uniform float cameraPlanes[2];
 uniform vec2 invResolution;
+uniform float nearPlaneScreenRadius;
 
 layout (location = 0) out float fragColor;
 
@@ -29,23 +32,14 @@ vec3 fetchPosition(vec2 textCoord){
 	return fetchPosition(textCoord, depthValue);
 }
 
-float falloff(float distanceSquare, float radius){
-  float meters2viewspace = 1.0f;
-  float R = radius * meters2viewspace;
-  float negInvR2 = -1.0f / (R * R);
-  
-  return distanceSquare * negInvR2 + 1.0f;
-}
-
-float computeAO(vec3 position, vec3 normal, vec3 inspectPosition, float radius){
+float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
 	vec3 V = inspectPosition - position;
-	float VdotV = dot(V, V);
-	float NdotV = dot(normal, V) * 1.0/sqrt(VdotV);
 
-	const float bias = BIAS;
-	const float NDotVBias = min(max(0.0f, bias),1.0f);
-  
-	return clamp(NdotV - NDotVBias, 0, 1) * clamp(falloff(VdotV, radius), 0, 1);
+	float Vlength = length(V);
+	float normalDotV = dot(normal, V/Vlength);
+	
+  	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);
+	return max(normalDotV, 0) * linearAttenuationFactor;
 }
 
 void main(){
@@ -55,12 +49,14 @@ void main(){
 		return;
 	}
 	
+	float linearizedDepthValue = (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] - 
+			depthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0=nearPlane, 1.0=far plane]	
 	vec3 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz  * 2.0f - 1.0f;
 	
-	float rotationAngleStep = 2.0f*M_PI / #NUM_DIRECTIONS#.0f;
-	float radius = #RADIUS#;
-	float stepSizePixel = radius / #NUM_STEPS#;
+	float rotationAngleStep = 2.0f*M_PI / #NUM_DIRECTIONS#;
+	float zScreenRadius = nearPlaneScreenRadius / linearizedDepthValue; //radius in pixel at position.z plane
+	float stepSizePixel = zScreenRadius / (#NUM_STEPS# +1); //+1: avoid total attenuation at last step
 	float AO = 0.0f;
 	
 	float rotationAngle = 0.0f;
@@ -72,22 +68,13 @@ void main(){
 			vec2 uvShift = (direction * raySizePixel) * invResolution;
 			vec3 inspectPosition = fetchPosition(textCoordinates + uvShift);
 			
-			AO += computeAO(position, normal, inspectPosition, radius);
+			AO += computeAO(position, normal, inspectPosition);
 			
 			raySizePixel += stepSizePixel;
 		}
 		rotationAngle += rotationAngleStep;
 	}
 	
-	const float bias = BIAS;
-  	const float NDotVBias = min(max(0.0f, bias),1.0f);
-  	const float AOMultiplier = 1.0f / (1.0f - NDotVBias);
-	AO *= AOMultiplier / (#NUM_DIRECTIONS# * #NUM_STEPS#);
-	
-	float AOClamped = clamp(1.0 - AO * 2.0, 0, 1);
-	
-	const float intensity = 2.0f;
-	const float powExponent = max(intensity, 0.0f);
-
-	fragColor = pow(AOClamped, powExponent);
+	AO = AO / (#NUM_DIRECTIONS# * #NUM_STEPS#);
+	fragColor = clamp(1.0 - AO * 2.0, 0, 1);
 }

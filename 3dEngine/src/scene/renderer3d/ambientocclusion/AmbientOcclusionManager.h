@@ -20,6 +20,7 @@ namespace urchin
 
 			void initialize(unsigned int, unsigned int, unsigned int);
 			void onResize(int, int);
+			void onCameraProjectionUpdate(const Camera *const);
 			void createOrUpdateTexture();
 
 			void setNumDirections(unsigned int);
@@ -48,7 +49,9 @@ namespace urchin
 			//ambient occlusion shader
 			unsigned int hbaoShader;
 			int mInverseViewProjectionLoc;
+			int cameraPlanesLoc;
 			int invResolutionLoc;
+			int nearPlaneScreenRadiusLoc;
 
 			//visual data
 			unsigned int depthTexID;

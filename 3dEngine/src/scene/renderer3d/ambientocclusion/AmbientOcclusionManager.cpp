@@ -1,6 +1,7 @@
 #include <GL/gl.h>
 #include <map>
 #include <string>
+#include <cmath>
 
 #include "AmbientOcclusionManager.h"
 #include "utils/shader/ShaderManager.h"
@@ -8,7 +9,7 @@
 
 #define DEFAULT_NUM_DIRECTIONS 6
 #define DEFAULT_NUM_STEPS 3
-#define DEFAULT_RADIUS 3.0
+#define DEFAULT_RADIUS 0.2
 
 namespace urchin
 {
@@ -24,7 +25,9 @@ namespace urchin
 		ambientOcclusionTexID(0),
 		hbaoShader(0),
 		mInverseViewProjectionLoc(0),
+		cameraPlanesLoc(0),
 		invResolutionLoc(0),
+		nearPlaneScreenRadiusLoc(0),
 		depthTexID(0),
 		normalAndAmbientTexID(0),
 		ambienOcclusionTexLoc(0)
@@ -63,11 +66,13 @@ namespace urchin
 		ShaderManager::instance()->bind(hbaoShader);
 
 		mInverseViewProjectionLoc = glGetUniformLocation(hbaoShader, "mInverseViewProjection");
+		cameraPlanesLoc = glGetUniformLocation(hbaoShader, "cameraPlanes");
 		int depthTexLoc = glGetUniformLocation(hbaoShader, "depthTex");
 		glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
 		int normalAndAmbientTexLoc = glGetUniformLocation(hbaoShader, "normalAndAmbientTex");
 		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE1-GL_TEXTURE0);
 		invResolutionLoc = glGetUniformLocation(hbaoShader, "invResolution");
+		nearPlaneScreenRadiusLoc = glGetUniformLocation(hbaoShader, "nearPlaneScreenRadius");
 
 		//visual data
 		ShaderManager::instance()->bind(shaderID);
@@ -93,7 +98,23 @@ namespace urchin
 
 		ShaderManager::instance()->bind(hbaoShader);
 		Vector2<float> invResolution(1.0f/sceneWidth, 1.0f/sceneHeight);
-		glUniform2fv(invResolutionLoc, 1, &invResolution[0]);
+		glUniform2fv(invResolutionLoc, 1, invResolution);
+	}
+
+	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *const camera)
+	{
+		if(!isInitialized)
+		{
+			throw std::runtime_error("Ambient occlusion manager must be initialized.");
+		}
+
+		ShaderManager::instance()->bind(hbaoShader);
+
+		float nearPlaneScreenRadiusInPixel = radius * camera->getProjectionMatrix()(1, 1);
+		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
+
+		float cameraPlanes[2] = {camera->getNearPlane(), camera->getFarPlane()};
+		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 	}
 
 	void AmbientOcclusionManager::createOrUpdateTexture()
@@ -108,8 +129,8 @@ namespace urchin
 		glGenTextures(1, &ambientOcclusionTexID);
 
 		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, sceneWidth, sceneHeight, 0, GL_RED, GL_FLOAT, 0);
@@ -136,6 +157,10 @@ namespace urchin
 		this->numSteps = numSteps;
 	}
 
+	/**
+	 * @param radius Scope radius in units.
+	 * Example: if 1.0f represents one meter, a radius of 0.5f will represent of radius of 50 centimeters.
+	 */
 	void AmbientOcclusionManager::setRadius(float radius)
 	{
 		if(isInitialized)
@@ -153,6 +178,8 @@ namespace urchin
 
 	void AmbientOcclusionManager::updateAOTexture(const Camera *const camera)
 	{
+		int activeFBO;
+		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -165,6 +192,8 @@ namespace urchin
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() *camera->getViewMatrix()).inverse());
 
 		quadDisplayer->display();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, activeFBO);
 	}
 
 	void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const
