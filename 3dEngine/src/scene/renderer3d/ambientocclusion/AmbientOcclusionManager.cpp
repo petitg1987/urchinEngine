@@ -77,9 +77,17 @@ namespace urchin
 		//visual data
 		ShaderManager::instance()->bind(shaderID);
 		ambienOcclusionTexLoc = glGetUniformLocation(shaderID, "ambientOcclusionTex");
-		this->depthTexID = depthTexID;
-		this->normalAndAmbientTexID = normalAndAmbientTexID;
 		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()->build();
+
+		this->depthTexID = depthTexID;
+		glBindTexture(GL_TEXTURE_2D, depthTexID);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		this->normalAndAmbientTexID = normalAndAmbientTexID;
+		glBindTexture(GL_TEXTURE_2D, normalAndAmbientTexID);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		isInitialized=true;
 	}
@@ -131,8 +139,6 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, sceneWidth, sceneHeight, 0, GL_RED, GL_FLOAT, 0);
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 	}

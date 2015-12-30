@@ -38,6 +38,18 @@ uniform vec4 globalAmbient;
 
 layout (location = #OUTPUT_LOCATION#) out vec4 fragColor;
 
+vec4 fetchPosition(vec2 textCoord, float depthValue){
+	vec4 texPosition = vec4(
+		textCoord.s * 2.0f - 1.0f,
+		textCoord.t * 2.0f - 1.0f,
+		depthValue,
+		1.0
+	);
+	vec4 position = mInverseViewProjection * texPosition;
+	position /= position.w;
+	return position;
+}
+
 float linearStep(float min, float max, float v){
   	return clamp((v - min) / (max - min), 0.0f, 1.0f);  
 } 
@@ -56,12 +68,12 @@ float computePercentLit(float shadowMapZ, vec2 moments){
     return max(isInHardShadow, pMax);
 }
 
-float computeShadowContribution(int lightIndex, inout vec4 texPosition, inout vec4 position){
+float computeShadowContribution(int lightIndex, float depthValue, vec4 position){
 	float shadowContribution = 1.0;
 	
 	if(lightsInfo[lightIndex].produceShadow){
 		#LOOP1_START(#NUMBER_SHADOW_MAPS#)#
-			if(texPosition.z < depthSplitDistance[#LOOP1_COUNTER#]){
+			if(depthValue < depthSplitDistance[#LOOP1_COUNTER#]){
 			
 				vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[#LOOP1_COUNTER#] * position) / 2.0) + 0.5);
 
@@ -75,7 +87,7 @@ float computeShadowContribution(int lightIndex, inout vec4 texPosition, inout ve
 						//shadow attenuation before disappear
 						float startAttenuation = depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] * 0.9996;
 						shadowContribution = min(1.0f, shadowContribution 
-								+ max(0.0f, ((texPosition.z - startAttenuation)/(depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] - startAttenuation))));
+								+ max(0.0f, ((depthValue - startAttenuation)/(depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] - startAttenuation))));
 					#LOOP1_ENDIF_LAST_ITERATION#
 				}
 
@@ -92,19 +104,13 @@ void main(){
 	vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
 	float modelAmbientFactor = normalAndAmbient.a;
 	
-	if(modelAmbientFactor >= 0.999f){ //no lighting
+	if(modelAmbientFactor >= 0.99999f){ //no lighting
 		fragColor = diffuse;
 		return;
 	}
 	
-	vec4 texPosition = vec4(
-		textCoordinates.s * 2.0f - 1.0f,
-		textCoordinates.t * 2.0f - 1.0f,
-		texture2D(depthTex, textCoordinates).r * 2.0f - 1.0f,
-		1.0
-	);
-	vec4 position = mInverseViewProjection * texPosition;
-	position /= position.w;
+	float depthValue = texture2D(depthTex, textCoordinates).r * 2.0f - 1.0f;
+	vec4 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
 	float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
@@ -131,7 +137,7 @@ void main(){
 			float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
 			vec4 ambient = vec4(lightsInfo[i].lightAmbient, 0.0f) * modelAmbient;
 			
-			float percentLit = computeShadowContribution(i, texPosition, position);
+			float percentLit = computeShadowContribution(i, depthValue, position);
 			
 			fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
 		}else{
