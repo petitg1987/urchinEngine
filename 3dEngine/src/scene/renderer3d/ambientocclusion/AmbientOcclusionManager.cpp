@@ -9,7 +9,7 @@
 
 #define DEFAULT_NUM_DIRECTIONS 6
 #define DEFAULT_NUM_STEPS 3
-#define DEFAULT_RADIUS 0.2
+#define DEFAULT_RADIUS 0.3
 
 namespace urchin
 {
