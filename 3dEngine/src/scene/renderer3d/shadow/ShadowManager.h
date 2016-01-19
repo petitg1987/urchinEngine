@@ -26,7 +26,7 @@ namespace urchin
 		public:
 			enum BlurShadow
 			{
-				NO_BLUR=0,
+				NO_BLUR = 0,
 				LOW = 3,
 				MEDIUM = 5,
 				HIGH = 7

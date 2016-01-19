@@ -11,13 +11,13 @@
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "utils/filter/TextureFilter.h"
-#include "utils/filter/TextureFilterBuilder.h"
+#include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024
 #define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
-#define DEFAULT_BLUR_SHADOW 3 //=BlurShadow::MEDIUM
+#define DEFAULT_BLUR_SHADOW 3 //=BlurShadow::LOW
 #define DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE 0.5
 
 namespace urchin
@@ -604,24 +604,24 @@ namespace urchin
 		//blur shadow map
 		if(blurShadow!=BlurShadow::NO_BLUR)
 		{
-			std::shared_ptr<TextureFilter> verticalBlurFilter = std::make_shared<TextureFilterBuilder>()
-					->filterType(TextureFilterBuilder::GAUSSIAN_BLUR_V)
+			std::shared_ptr<TextureFilter> verticalBlurFilter = std::make_shared<GaussianBlurFilterBuilder>()
 					->textureSize(shadowMapResolution, shadowMapResolution)
 					->textureType(GL_TEXTURE_2D_ARRAY)
 					->textureNumberLayer(nbShadowMaps)
 					->textureInternalFormat(GL_RG32F)
 					->textureFormat(GL_RG)
+					->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
 					->blurSize(static_cast<int>(blurShadow))
 					->build();
 			shadowDatas[light]->setVerticalBlurFilter(verticalBlurFilter);
 
-			std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_shared<TextureFilterBuilder>()
-					->filterType(TextureFilterBuilder::GAUSSIAN_BLUR_H)
+			std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_shared<GaussianBlurFilterBuilder>()
 					->textureSize(shadowMapResolution, shadowMapResolution)
 					->textureType(GL_TEXTURE_2D_ARRAY)
 					->textureNumberLayer(nbShadowMaps)
 					->textureInternalFormat(GL_RG32F)
 					->textureFormat(GL_RG)
+					->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
 					->blurSize(static_cast<int>(blurShadow))
 					->build();
 			shadowDatas[light]->setHorizontalBlurFilter(horizontalBlurFilter);

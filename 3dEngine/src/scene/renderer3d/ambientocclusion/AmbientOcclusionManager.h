@@ -5,6 +5,7 @@
 
 #include "scene/renderer3d/camera/Camera.h"
 #include "utils/display/quad/QuadDisplayer.h"
+#include "utils/filter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin
 {
@@ -15,17 +16,26 @@ namespace urchin
 	class AmbientOcclusionManager
 	{
 		public:
+			enum AOTextureSize
+			{
+				FULL_SIZE = 0,
+				HALF_SIZE = 1
+			};
+
 			AmbientOcclusionManager();
-			virtual ~AmbientOcclusionManager();
+			~AmbientOcclusionManager();
 
 			void initialize(unsigned int, unsigned int, unsigned int);
 			void onResize(int, int);
-			void onCameraProjectionUpdate(const Camera *const);
 			void createOrUpdateTexture();
+			void onCameraProjectionUpdate(const Camera *const);
 
+			void setTextureSize(AOTextureSize);
 			void setNumDirections(unsigned int);
 			void setNumSteps(unsigned int);
 			void setRadius(float);
+			void setBlurSize(unsigned int);
+			void setBlurSharpness(float);
 
 			unsigned int getAmbientOcclusionTextureID() const;
 
@@ -33,14 +43,21 @@ namespace urchin
 			void loadAOTexture(unsigned int) const;
 
 		private:
+			void computeTextureSize();
+
 			//scene information
 			bool isInitialized;
 			int sceneWidth, sceneHeight;
+			float nearPlane, farPlane;
 
 			//tweak
+			AOTextureSize textureSize;
+			int textureSizeX, textureSizeY;
 			unsigned int numDirections;
 			unsigned int numSteps;
 			float radius;
+			unsigned int blurSize;
+			float blurSharpness;
 
 			//frame buffer object
 			unsigned int fboID;
@@ -58,6 +75,8 @@ namespace urchin
 			unsigned int normalAndAmbientTexID;
 			unsigned int ambienOcclusionTexLoc;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
+			std::shared_ptr<BilateralBlurFilter> verticalBlurFilter;
+			std::shared_ptr<BilateralBlurFilter> horizontalBlurFilter;
 	};
 
 }

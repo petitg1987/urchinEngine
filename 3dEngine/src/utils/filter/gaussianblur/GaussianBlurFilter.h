@@ -1,26 +1,27 @@
-#ifndef ENGINE_BLURFILTER_H
-#define ENGINE_BLURFILTER_H
+#ifndef ENGINE_GAUSSIANBLURFILTER_H
+#define ENGINE_GAUSSIANBLURFILTER_H
 
 #include <string>
 #include <vector>
+#include <map>
 
-#include "TextureFilter.h"
+#include "utils/filter/TextureFilter.h"
 
 namespace urchin
 {
 
-	class TextureFilterBuilder;
+	class GaussianBlurFilterBuilder;
 
 	class GaussianBlurFilter : public TextureFilter
 	{
 		public:
-			enum GaussianDirection
+			enum BlurDirection
 			{
 				VERTICAL,
 				HORIZONTAL
 			};
 
-			GaussianBlurFilter(const TextureFilterBuilder *, GaussianDirection);
+			GaussianBlurFilter(const GaussianBlurFilterBuilder *, BlurDirection);
 			~GaussianBlurFilter();
 
 		private:
@@ -30,9 +31,8 @@ namespace urchin
 			std::vector<float> computeWeights() const;
 			std::vector<float> computeWeightsLinearSampling(const std::vector<float> &) const;
 			std::vector<float> computeOffsetsLinearSampling(const std::vector<float> &, const std::vector<float> &) const;
-			std::string toShaderVectorValues(std::vector<float> &) const;
 
-			GaussianDirection gaussianDirection;
+			BlurDirection blurDirection;
 			unsigned int blurSize;
 
 			unsigned int nbTextureFetch;

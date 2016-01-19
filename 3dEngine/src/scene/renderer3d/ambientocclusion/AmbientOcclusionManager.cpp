@@ -6,10 +6,14 @@
 #include "AmbientOcclusionManager.h"
 #include "utils/shader/ShaderManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
-#define DEFAULT_NUM_DIRECTIONS 6
-#define DEFAULT_NUM_STEPS 3
+#define DEFAULT_TEXTURE_SIZE 1 //=AOTextureSize::HALF_SIZE
+#define DEFAULT_NUM_DIRECTIONS 8
+#define DEFAULT_NUM_STEPS 4
 #define DEFAULT_RADIUS 0.3
+#define DEFAULT_BLUR_SIZE 5
+#define DEFAULT_BLUR_SHARPNESS 40.0
 
 namespace urchin
 {
@@ -18,9 +22,16 @@ namespace urchin
 		isInitialized(false),
 		sceneWidth(0),
 		sceneHeight(0),
+		nearPlane(0.0f),
+		farPlane(0.0f),
+		textureSize((AOTextureSize)DEFAULT_TEXTURE_SIZE),
+		textureSizeX(0),
+		textureSizeY(0),
 		numDirections(DEFAULT_NUM_DIRECTIONS),
 		numSteps(DEFAULT_NUM_STEPS),
 		radius(DEFAULT_RADIUS),
+		blurSize(DEFAULT_BLUR_SIZE),
+		blurSharpness(DEFAULT_BLUR_SHARPNESS),
 		fboID(0),
 		ambientOcclusionTexID(0),
 		hbaoShader(0),
@@ -30,7 +41,9 @@ namespace urchin
 		nearPlaneScreenRadiusLoc(0),
 		depthTexID(0),
 		normalAndAmbientTexID(0),
-		ambienOcclusionTexLoc(0)
+		ambienOcclusionTexLoc(0),
+		verticalBlurFilter(nullptr),
+		horizontalBlurFilter(nullptr)
 	{
 
 	}
@@ -101,28 +114,13 @@ namespace urchin
 
 		sceneWidth = width;
 		sceneHeight = height;
-
+		
+		computeTextureSize();
 		createOrUpdateTexture();
 
 		ShaderManager::instance()->bind(hbaoShader);
 		Vector2<float> invResolution(1.0f/sceneWidth, 1.0f/sceneHeight);
 		glUniform2fv(invResolutionLoc, 1, invResolution);
-	}
-
-	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *const camera)
-	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Ambient occlusion manager must be initialized.");
-		}
-
-		ShaderManager::instance()->bind(hbaoShader);
-
-		float nearPlaneScreenRadiusInPixel = radius * camera->getProjectionMatrix()(1, 1);
-		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
-
-		float cameraPlanes[2] = {camera->getNearPlane(), camera->getFarPlane()};
-		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 	}
 
 	void AmbientOcclusionManager::createOrUpdateTexture()
@@ -136,11 +134,67 @@ namespace urchin
 		glDeleteTextures(1, &ambientOcclusionTexID);
 		glGenTextures(1, &ambientOcclusionTexID);
 
-		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, sceneWidth, sceneHeight, 0, GL_RED, GL_FLOAT, 0);
-		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
+		if(textureSizeX!=0 || textureSizeY!=0)
+		{
+			glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, 0);
+			glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
+
+			verticalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
+					->textureSize(textureSizeX, textureSizeY)
+					->textureType(GL_TEXTURE_2D)
+					->textureInternalFormat(GL_R16F)
+					->textureFormat(GL_RED)
+					->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
+					->blurSize(blurSize)
+					->depthTextureID(depthTexID)
+					->buildBilateralBlur();
+			verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+
+			horizontalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
+					->textureSize(textureSizeX, textureSizeY)
+					->textureType(GL_TEXTURE_2D)
+					->textureInternalFormat(GL_R16F)
+					->textureFormat(GL_RED)
+					->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
+					->blurSize(blurSize)
+					->depthTextureID(depthTexID)
+					->buildBilateralBlur();
+			horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+		}
+	}
+
+	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *const camera)
+	{
+		if(!isInitialized)
+		{
+			throw std::runtime_error("Ambient occlusion manager must be initialized.");
+		}
+
+		nearPlane = camera->getNearPlane();
+		farPlane = camera->getFarPlane();
+
+		ShaderManager::instance()->bind(hbaoShader);
+
+		float nearPlaneScreenRadiusInPixel = radius * camera->getProjectionMatrix()(1, 1);
+		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
+
+		float cameraPlanes[2] = {nearPlane, farPlane};
+		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
+
+		if(verticalBlurFilter && horizontalBlurFilter)
+		{
+			verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+			horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+		}
+	}
+
+	void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize)
+	{
+		this->textureSize = textureSize;
+		computeTextureSize();
 	}
 
 	void AmbientOcclusionManager::setNumDirections(unsigned int numDirections)
@@ -177,9 +231,45 @@ namespace urchin
 		this->radius = radius;
 	}
 
+	void AmbientOcclusionManager::setBlurSize(unsigned int blurSize)
+	{
+		if(isInitialized)
+		{
+			throw std::runtime_error("Impossible to change blur size once the scene initialized.");
+		}
+
+		this->blurSize = blurSize;
+	}
+
+	void AmbientOcclusionManager::setBlurSharpness(float blurSharpness)
+	{
+		if(isInitialized)
+		{
+			throw std::runtime_error("Impossible to change blur sharpness once the scene initialized.");
+		}
+
+		this->blurSharpness = blurSharpness;
+	}
+
+	void AmbientOcclusionManager::computeTextureSize()
+	{
+		if(textureSize==AOTextureSize::FULL_SIZE)
+		{
+			textureSizeX = sceneWidth;
+			textureSizeY = sceneHeight;
+		}else if(textureSize==AOTextureSize::HALF_SIZE)
+		{
+			textureSizeX = sceneWidth / 2;
+			textureSizeY = sceneHeight / 2;
+		}else
+		{
+			throw std::invalid_argument("Unknown texture size value: " + textureSize);
+		}
+	}
+
 	unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const
 	{
-		return ambientOcclusionTexID;
+		return horizontalBlurFilter->getTextureID();
 	}
 
 	void AmbientOcclusionManager::updateAOTexture(const Camera *const camera)
@@ -197,15 +287,21 @@ namespace urchin
 		ShaderManager::instance()->bind(hbaoShader);
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() *camera->getViewMatrix()).inverse());
 
+		glViewport(0, 0, textureSizeX, textureSizeY);
+
 		quadDisplayer->display();
 
+		verticalBlurFilter->applyOn(ambientOcclusionTexID);
+		horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
+
+		glViewport(0, 0, sceneWidth, sceneHeight);
 		glBindFramebuffer(GL_FRAMEBUFFER, activeFBO);
 	}
 
 	void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const
 	{
 		glActiveTexture(GL_TEXTURE0 + ambientOcclusionTextureUnit);
-		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
+		glBindTexture(GL_TEXTURE_2D, horizontalBlurFilter->getTextureID());
 
 		glUniform1i(ambienOcclusionTexLoc, ambientOcclusionTextureUnit);
 	}

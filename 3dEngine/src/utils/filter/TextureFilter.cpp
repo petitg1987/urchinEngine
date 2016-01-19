@@ -10,25 +10,6 @@
 namespace urchin
 {
 
-	TextureFilter::TextureFilter(const TextureFilterBuilder *textureFilterBuilder):
-		isInitialized(false),
-		textureWidth(textureFilterBuilder->getTextureWidth()),
-		textureHeight(textureFilterBuilder->getTextureHeight()),
-		textureType(textureFilterBuilder->getTextureType()),
-		textureAccessFilter(textureFilterBuilder->getTextureAccessFilter()),
-		textureAnisotropy(textureFilterBuilder->getTextureAnisotropy()),
-		textureNumberLayer(textureFilterBuilder->getTextureNumberLayer()),
-		textureInternalFormat(textureFilterBuilder->getTextureInternalFormat()),
-		textureFormat(textureFilterBuilder->getTextureFormat()),
-
-		textureFilterShader(0),
-		layersToUpdateLoc(0),
-		fboID(0),
-		textureID(0)
-	{
-
-	}
-
 	TextureFilter::~TextureFilter()
 	{
 		ShaderManager::instance()->removeProgram(textureFilterShader);
@@ -66,6 +47,10 @@ namespace urchin
 		{
 			shaderTokens["OUTPUT_TYPE"] = "vec2";
 			shaderTokens["SOURCE_TEX_COMPONENTS"] = "rg";
+		}else if(textureFormat==GL_RED)
+		{
+			shaderTokens["OUTPUT_TYPE"] = "float";
+			shaderTokens["SOURCE_TEX_COMPONENTS"] = "r";
 		}else
 		{
 			throw std::invalid_argument("Unsupported texture format for filter: " + textureFormat);
@@ -80,15 +65,19 @@ namespace urchin
 
 			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+"Array.frag", shaderTokens);
 			ShaderManager::instance()->setGeometryShader(textureFilterShader, "textureFilter.geo", geometryTokens);
-		}else
+		}else if(textureType==GL_TEXTURE_2D)
 		{
 			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+".frag", shaderTokens);
+		}else
+		{
+			throw std::invalid_argument("Unsupported texture type for filter: " + textureType);
 		}
 
 		ShaderManager::instance()->bind(textureFilterShader);
 		int texLoc = glGetUniformLocation(textureFilterShader, "tex");
 		glUniform1i(texLoc, GL_TEXTURE0-GL_TEXTURE0);
 		layersToUpdateLoc = glGetUniformLocation(textureFilterShader, "layersToUpdate");
+		initializeAdditionalUniforms(textureFilterShader);
 	}
 
 	void TextureFilter::initializeTexture()
@@ -120,6 +109,16 @@ namespace urchin
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureID, 0);
 	}
 
+	void TextureFilter::initializeAdditionalUniforms(unsigned int)
+	{
+		//do nothing: to override
+	}
+
+	void TextureFilter::bindAdditionalTextures() const
+	{
+		//do nothing: to override
+	}
+
 	unsigned int TextureFilter::getFboId() const
 	{
 		return fboID;
@@ -138,6 +137,26 @@ namespace urchin
 	unsigned int TextureFilter::getTextureHeight() const
 	{
 		return textureHeight;
+	}
+
+	unsigned int TextureFilter::getTextureFilterShader() const
+	{
+		return textureFilterShader;
+	}
+
+	std::string TextureFilter::toShaderVectorValues(std::vector<float> &vector) const
+	{
+		std::string vectorValuesStr = "";
+		for(unsigned int i=0;i<vector.size(); ++i)
+		{
+			vectorValuesStr += std::to_string(vector[i]);
+			if(i!=vector.size()-1)
+			{
+				vectorValuesStr += ", ";
+			}
+		}
+
+		return vectorValuesStr;
 	}
 
 	/**
@@ -160,6 +179,7 @@ namespace urchin
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(textureType, sourceTextureId);
+		bindAdditionalTextures();
 
 		if(textureType==GL_TEXTURE_2D_ARRAY)
 		{

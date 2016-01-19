@@ -1,10 +1,10 @@
 #include "DownSampleFilter.h"
-#include "TextureFilterBuilder.h"
+#include "utils/filter/downsample/DownSampleFilterBuilder.h"
 
 namespace urchin
 {
 
-	DownSampleFilter::DownSampleFilter(const TextureFilterBuilder *textureFilterBuilder):
+	DownSampleFilter::DownSampleFilter(const DownSampleFilterBuilder *textureFilterBuilder):
 		TextureFilter(textureFilterBuilder)
 	{
 

@@ -66,7 +66,7 @@ namespace urchin
 	{
 		std::string result;
 
-		std::string loopContentUpdated = loopContent;
+		std::string loopContentUpdated = "{ " + loopContent + " }";
 		std::ostringstream loopStopString, loopNumberString, counterTokenString;
 
 		//handle loop stop

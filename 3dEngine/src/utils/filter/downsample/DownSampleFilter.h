@@ -2,18 +2,19 @@
 #define ENGINE_DOWNSAMPLEFILTER_H
 
 #include <string>
+#include <map>
 
-#include "TextureFilter.h"
+#include "utils/filter/TextureFilter.h"
 
 namespace urchin
 {
 
-	class TextureFilterBuilder;
+	class DownSampleFilterBuilder;
 
 	class DownSampleFilter : public TextureFilter
 	{
 		public:
-			DownSampleFilter(const TextureFilterBuilder *);
+			DownSampleFilter(const DownSampleFilterBuilder *);
 			~DownSampleFilter();
 
 		private:

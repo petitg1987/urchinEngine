@@ -1,59 +1,53 @@
 #ifndef ENGINE_TEXTUREFILTERBUILDER_H
 #define ENGINE_TEXTUREFILTERBUILDER_H
 
+#include <GL/gl.h>
 #include <string>
 #include <memory>
+#include <stdexcept>
 
+#include "TextureFilterBuilder.h"
 #include "TextureFilter.h"
+#include "utils/filter/downsample/DownSampleFilter.h"
+#include "utils/filter/gaussianblur/GaussianBlurFilter.h"
+#include "utils/filter/bilateralblur/BilateralBlurFilter.h"
 
 namespace urchin
 {
 
-	class TextureFilterBuilder
+	template<typename T> class TextureFilterBuilder
 	{
 		public:
-			enum FilterType
-			{
-				DOWN_SAMPLE,
-				GAUSSIAN_BLUR_V,
-				GAUSSIAN_BLUR_H
-			};
-
 			TextureFilterBuilder();
-			~TextureFilterBuilder();
+			virtual ~TextureFilterBuilder();
 
-			TextureFilterBuilder *filterType(FilterType);
-
-			TextureFilterBuilder *textureSize(unsigned int, unsigned int);
+			T *textureSize(unsigned int, unsigned int);
 			unsigned int getTextureWidth() const;
 			unsigned int getTextureHeight() const;
 
-			TextureFilterBuilder *textureType(unsigned int);
+			T *textureType(unsigned int);
 			unsigned int getTextureType() const;
 
-			TextureFilterBuilder *textureAccessFilter(unsigned int);
+			T *textureAccessFilter(unsigned int);
 			unsigned int getTextureAccessFilter() const;
 
-			TextureFilterBuilder *textureAnisotropy(float);
+			T *textureAnisotropy(float);
 			float getTextureAnisotropy() const;
 
-			TextureFilterBuilder *textureNumberLayer(unsigned int);
+			T *textureNumberLayer(unsigned int);
 			unsigned int getTextureNumberLayer() const;
 
-			TextureFilterBuilder *textureInternalFormat(int);
+			T *textureInternalFormat(int);
 			int getTextureInternalFormat() const;
 
-			TextureFilterBuilder *textureFormat(unsigned int);
+			T *textureFormat(unsigned int);
 			unsigned int getTextureFormat() const;
 
-			//Blur specific
-			TextureFilterBuilder *blurSize(unsigned int);
-			unsigned int getBlurSize() const;
-
-			std::shared_ptr<TextureFilter> build();
+			virtual std::shared_ptr<TextureFilter> build() = 0;
 
 		private:
-			FilterType pFilterType;
+			T* _this();
+
 			unsigned int textureWidth, textureHeight;
 
 			unsigned int pTextureType;
@@ -62,10 +56,9 @@ namespace urchin
 			unsigned int pTextureNumberLayer;
 			int pTextureInternalFormat;
 			unsigned int pTextureFormat;
-
-			//Blur specific
-			unsigned int pBlurSize;
 	};
+
+	#include "TextureFilterBuilder.inl"
 
 }
 

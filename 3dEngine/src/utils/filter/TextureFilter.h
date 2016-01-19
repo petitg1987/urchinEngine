@@ -5,18 +5,19 @@
 #include <memory>
 #include <limits>
 #include <map>
+#include <vector>
 
 #include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
 {
 
-	class TextureFilterBuilder;
+	template<class T> class TextureFilterBuilder;
 
 	class TextureFilter
 	{
 		public:
-			TextureFilter(const TextureFilterBuilder *);
+			template<class BUILDER> TextureFilter(const TextureFilterBuilder<BUILDER> *);
 			virtual ~TextureFilter();
 
 			void initialize();
@@ -28,10 +29,16 @@ namespace urchin
 
 		protected:
 			virtual std::string getShaderName() const = 0;
+			virtual void initializeAdditionalUniforms(unsigned int);
+			virtual void bindAdditionalTextures() const;
 			virtual void completeShaderTokens(std::map<std::string, std::string> &) const = 0;
 
 			unsigned int getTextureWidth() const;
 			unsigned int getTextureHeight() const;
+
+			unsigned int getTextureFilterShader() const;
+
+			std::string toShaderVectorValues(std::vector<float> &) const;
 
 		private:
 			void initializeDisplay();
@@ -54,6 +61,8 @@ namespace urchin
 			unsigned int fboID;
 			unsigned int textureID;
 	};
+
+	#include "TextureFilter.inl"
 
 }
 
