@@ -12,6 +12,7 @@
 #define DEFAULT_NUM_DIRECTIONS 8
 #define DEFAULT_NUM_STEPS 4
 #define DEFAULT_RADIUS 0.3
+#define DEFAULT_BIAS_ANGLE_IN_DEGREE 25.0
 #define DEFAULT_BLUR_SIZE 5
 #define DEFAULT_BLUR_SHARPNESS 40.0
 
@@ -24,21 +25,26 @@ namespace urchin
 		sceneHeight(0),
 		nearPlane(0.0f),
 		farPlane(0.0f),
+
 		textureSize((AOTextureSize)DEFAULT_TEXTURE_SIZE),
-		textureSizeX(0),
-		textureSizeY(0),
+		textureSizeX(1),
+		textureSizeY(1),
 		numDirections(DEFAULT_NUM_DIRECTIONS),
 		numSteps(DEFAULT_NUM_STEPS),
 		radius(DEFAULT_RADIUS),
+		biasAngleInDegree(DEFAULT_BIAS_ANGLE_IN_DEGREE),
 		blurSize(DEFAULT_BLUR_SIZE),
 		blurSharpness(DEFAULT_BLUR_SHARPNESS),
+
 		fboID(0),
 		ambientOcclusionTexID(0),
+
 		hbaoShader(0),
 		mInverseViewProjectionLoc(0),
 		cameraPlanesLoc(0),
 		invResolutionLoc(0),
 		nearPlaneScreenRadiusLoc(0),
+
 		depthTexID(0),
 		normalAndAmbientTexID(0),
 		ambienOcclusionTexLoc(0),
@@ -75,6 +81,7 @@ namespace urchin
 		hbaoTokens["NUM_DIRECTIONS"] = std::to_string(numDirections);
 		hbaoTokens["NUM_STEPS"] = std::to_string(numSteps);
 		hbaoTokens["RADIUS"] = std::to_string(radius);
+		hbaoTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/M_PI)));
 		hbaoShader = ShaderManager::instance()->createProgram("hbao.vert", "hbao.frag", hbaoTokens);
 		ShaderManager::instance()->bind(hbaoShader);
 
@@ -134,36 +141,36 @@ namespace urchin
 		glDeleteTextures(1, &ambientOcclusionTexID);
 		glGenTextures(1, &ambientOcclusionTexID);
 
-		if(textureSizeX!=0 || textureSizeY!=0)
-		{
-			glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, 0);
-			glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
+		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 
-			verticalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
-					->textureSize(textureSizeX, textureSizeY)
-					->textureType(GL_TEXTURE_2D)
-					->textureInternalFormat(GL_R16F)
-					->textureFormat(GL_RED)
-					->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
-					->blurSize(blurSize)
-					->depthTextureID(depthTexID)
-					->buildBilateralBlur();
-			verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+		verticalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
+				->textureSize(textureSizeX, textureSizeY)
+				->textureType(GL_TEXTURE_2D)
+				->textureInternalFormat(GL_R16F)
+				->textureFormat(GL_RED)
+				->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
+				->blurSize(blurSize)
+				->blurSharpness(blurSharpness)
+				->depthTextureID(depthTexID)
+				->buildBilateralBlur();
 
-			horizontalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
-					->textureSize(textureSizeX, textureSizeY)
-					->textureType(GL_TEXTURE_2D)
-					->textureInternalFormat(GL_R16F)
-					->textureFormat(GL_RED)
-					->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
-					->blurSize(blurSize)
-					->depthTextureID(depthTexID)
-					->buildBilateralBlur();
-			horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-		}
+		horizontalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
+				->textureSize(textureSizeX, textureSizeY)
+				->textureType(GL_TEXTURE_2D)
+				->textureInternalFormat(GL_R16F)
+				->textureFormat(GL_RED)
+				->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
+				->blurSize(blurSize)
+				->blurSharpness(blurSharpness)
+				->depthTextureID(depthTexID)
+				->buildBilateralBlur();
+
+		verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+		horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 	}
 
 	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *const camera)
@@ -184,11 +191,8 @@ namespace urchin
 		float cameraPlanes[2] = {nearPlane, farPlane};
 		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 
-		if(verticalBlurFilter && horizontalBlurFilter)
-		{
-			verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-			horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
-		}
+		verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
+		horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 	}
 
 	void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize)
@@ -229,6 +233,21 @@ namespace urchin
 		}
 
 		this->radius = radius;
+	}
+
+	/**
+	 * @param biasAngle Bias angle in degree. If angle between two faces is below the bias angle: faces will not produce occlusion on each other.
+	 * A value of 0 degree will produce maximum of occlusion. A value of 90 degrees won't produce occlusion.
+	 * This bias angle allows to eliminate some unexpected artifacts.
+	 */
+	void AmbientOcclusionManager::setBiasAngleInDegree(float biasAngleInDegree)
+	{
+		if(isInitialized)
+		{
+			throw std::runtime_error("Impossible to change bias angle once the scene initialized.");
+		}
+
+		this->biasAngleInDegree = biasAngleInDegree;
 	}
 
 	void AmbientOcclusionManager::setBlurSize(unsigned int blurSize)

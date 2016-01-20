@@ -34,6 +34,7 @@ namespace urchin
 			void setNumDirections(unsigned int);
 			void setNumSteps(unsigned int);
 			void setRadius(float);
+			void setBiasAngleInDegree(float);
 			void setBlurSize(unsigned int);
 			void setBlurSharpness(float);
 
@@ -56,6 +57,7 @@ namespace urchin
 			unsigned int numDirections;
 			unsigned int numSteps;
 			float radius;
+			float biasAngleInDegree;
 			unsigned int blurSize;
 			float blurSharpness;
 

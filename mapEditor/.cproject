@@ -25,16 +25,16 @@
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1268755735" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.990673599" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="/usr/include/qt5"/>
-									<listOptionValue builtIn="false" value="/usr/include/qt5/QtGui"/>
-									<listOptionValue builtIn="false" value="/usr/include/qt5/QtCore"/>
-									<listOptionValue builtIn="false" value="/usr/include/qt5/QtOpenGL"/>
-									<listOptionValue builtIn="false" value="/usr/include/qt5/QtWidgets"/>
 									<listOptionValue builtIn="false" value="../../3dEngine/src"/>
 									<listOptionValue builtIn="false" value="../../soundEngine/src"/>
 									<listOptionValue builtIn="false" value="../../common/src"/>
 									<listOptionValue builtIn="false" value="../../physicsEngine/src"/>
 									<listOptionValue builtIn="false" value="../../mapHandler/src"/>
+									<listOptionValue builtIn="false" value="/usr/include/x86_64-linux-gnu/qt5"/>
+									<listOptionValue builtIn="false" value="/usr/include/x86_64-linux-gnu/qt5/QtGui"/>
+									<listOptionValue builtIn="false" value="/usr/include/x86_64-linux-gnu/qt5/QtCore"/>
+									<listOptionValue builtIn="false" value="/usr/include/x86_64-linux-gnu/qt5/QtOpenGL"/>
+									<listOptionValue builtIn="false" value="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1787653833" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>

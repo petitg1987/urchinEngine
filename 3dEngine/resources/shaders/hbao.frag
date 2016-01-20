@@ -38,9 +38,13 @@ float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
 
 	float Vlength = length(V);
 	float normalDotV = dot(normal, V/Vlength);
+	 
+  	if(normalDotV < #BIAS_ANGLE#){
+  		return 0.0;
+  	}
 	
-  	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);
-	return max(normalDotV, 0) * linearAttenuationFactor;
+  	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);  	
+	return normalDotV* linearAttenuationFactor;
 }
 
 float linearizeDepth(float depthValue){
