@@ -11,7 +11,7 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
-#include "scene/renderer3d/antialiasing/AntiAliasingApplier.h"
+#include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
 
 #include "scene/GUI/GUIManager.h"
 #include "scene/GUI/window/Window.h"

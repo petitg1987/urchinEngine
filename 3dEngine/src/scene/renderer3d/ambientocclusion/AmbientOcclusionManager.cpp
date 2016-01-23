@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <cmath>
+#include <locale>
 #include <random>
 
 #include "AmbientOcclusionManager.h"
@@ -9,10 +10,11 @@
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 #include "utils/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
-#define DEFAULT_TEXTURE_SIZE 1 //=AOTextureSize::HALF_SIZE
+#define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_NUM_DIRECTIONS 8
 #define DEFAULT_NUM_STEPS 4
 #define DEFAULT_RADIUS 0.3
+#define DEFAULT_AO_EXPONENT 1.5
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 25.0
 #define DEFAULT_BLUR_SIZE 5
 #define DEFAULT_BLUR_SHARPNESS 40.0
@@ -34,6 +36,7 @@ namespace urchin
 		numDirections(DEFAULT_NUM_DIRECTIONS),
 		numSteps(DEFAULT_NUM_STEPS),
 		radius(DEFAULT_RADIUS),
+		ambientOcclusionExponent(DEFAULT_AO_EXPONENT),
 		biasAngleInDegree(DEFAULT_BIAS_ANGLE_IN_DEGREE),
 		blurSize(DEFAULT_BLUR_SIZE),
 		blurSharpness(DEFAULT_BLUR_SHARPNESS),
@@ -53,7 +56,8 @@ namespace urchin
 		normalAndAmbientTexID(0),
 		ambienOcclusionTexLoc(0),
 		verticalBlurFilter(nullptr),
-		horizontalBlurFilter(nullptr)
+		horizontalBlurFilter(nullptr),
+		isBlurActivated(true)
 	{
 
 	}
@@ -83,10 +87,13 @@ namespace urchin
 		createOrUpdateTexture();
 
 		//ambient occlusion shader
+		std::locale::global(std::locale("C")); //for float
+
 		std::map<std::string, std::string> hbaoTokens;
 		hbaoTokens["NUM_DIRECTIONS"] = std::to_string(numDirections);
 		hbaoTokens["NUM_STEPS"] = std::to_string(numSteps);
 		hbaoTokens["RADIUS"] = std::to_string(radius);
+		hbaoTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent);
 		hbaoTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor()));
 		hbaoTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/M_PI)));
 		hbaoTokens["RANDOM_TEXTURE_SIZE"] = std::to_string(randomTextureSize);
@@ -202,6 +209,7 @@ namespace urchin
 			hbaoRandom[i].Z = distribution(generator);
 		}
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glGenTextures(1, &randomTexID);
 		glBindTexture (GL_TEXTURE_2D, randomTexID);
 
@@ -283,6 +291,16 @@ namespace urchin
 		this->radius = radius;
 	}
 
+	void AmbientOcclusionManager::setAmbientOcclusionExponent(float ambientOcclusionExponent)
+	{
+		if(isInitialized)
+		{
+			throw std::runtime_error("Impossible to change ambient occlusion exponent once the scene initialized.");
+		}
+
+		this->ambientOcclusionExponent = ambientOcclusionExponent;
+	}
+
 	/**
 	 * @param biasAngle Bias angle in degree. If angle between two faces is > (180 degree - 2*bias angle): faces will not produce occlusion on each other.
 	 * A value of 0 degree will produce maximum of occlusion. A value of 90 degrees won't produce occlusion.
@@ -318,6 +336,11 @@ namespace urchin
 		this->blurSharpness = blurSharpness;
 	}
 
+	void AmbientOcclusionManager::activateBlur(bool isBlurActivated)
+	{
+		this->isBlurActivated = isBlurActivated;
+	}
+
 	int AmbientOcclusionManager::retrieveTextureSizeFactor()
 	{
 		if(textureSize==AOTextureSize::FULL_SIZE)
@@ -333,7 +356,12 @@ namespace urchin
 
 	unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const
 	{
-		return horizontalBlurFilter->getTextureID();
+		if(isBlurActivated)
+		{
+			 return horizontalBlurFilter->getTextureID();
+		}
+
+		return ambientOcclusionTexID;
 	}
 
 	void AmbientOcclusionManager::updateAOTexture(const Camera *const camera)
@@ -358,8 +386,11 @@ namespace urchin
 
 		quadDisplayer->display();
 
-		verticalBlurFilter->applyOn(ambientOcclusionTexID);
-		horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
+		if(isBlurActivated)
+		{
+			verticalBlurFilter->applyOn(ambientOcclusionTexID);
+			horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
+		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
 		glBindFramebuffer(GL_FRAMEBUFFER, activeFBO);
@@ -368,7 +399,7 @@ namespace urchin
 	void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const
 	{
 		glActiveTexture(GL_TEXTURE0 + ambientOcclusionTextureUnit);
-		glBindTexture(GL_TEXTURE_2D, horizontalBlurFilter->getTextureID());
+		glBindTexture(GL_TEXTURE_2D, getAmbientOcclusionTextureID());
 
 		glUniform1i(ambienOcclusionTexLoc, ambientOcclusionTextureUnit);
 	}

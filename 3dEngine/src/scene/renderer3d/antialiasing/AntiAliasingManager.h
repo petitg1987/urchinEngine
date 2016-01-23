@@ -1,5 +1,5 @@
-#ifndef ENGINE_ANTIALIASINGAPPLIER_H
-#define ENGINE_ANTIALIASINGAPPLIER_H
+#ifndef ENGINE_ANTIALIASINGMANAGER_H
+#define ENGINE_ANTIALIASINGMANAGER_H
 
 #include <memory>
 
@@ -8,7 +8,7 @@
 namespace urchin
 {
 
-	class AntiAliasingApplier
+	class AntiAliasingManager
 	{
 		public:
 			enum Quality
@@ -19,8 +19,8 @@ namespace urchin
 				VERY_HIGH
 			};
 
-			AntiAliasingApplier();
-			~AntiAliasingApplier();
+			AntiAliasingManager();
+			~AntiAliasingManager();
 
 			void initialize();
 			void onResize(int, int);

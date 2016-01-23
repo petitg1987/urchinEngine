@@ -17,6 +17,7 @@ uniform sampler2D colorTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D ambientOcclusionTex;
 uniform mat4 mInverseViewProjection;
+uniform bool hasAmbientOcclusion;
 
 //lights and shadows:
 struct StructLightInfo{
@@ -113,10 +114,13 @@ void main(){
 	vec4 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
-	float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
 	
 	fragColor = globalAmbient * modelAmbient;
-	fragColor *= ambienOcclusionFactor;
+	
+	if(hasAmbientOcclusion){
+		float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
+		fragColor *= (1.0f - ambienOcclusionFactor);
+	}
 		
 	for(int i=0; i<#MAX_LIGHTS#;++i){
 		if(lightsInfo[i].isExist){

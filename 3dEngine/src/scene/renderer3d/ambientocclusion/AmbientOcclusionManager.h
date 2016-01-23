@@ -33,9 +33,12 @@ namespace urchin
 			void setNumDirections(unsigned int);
 			void setNumSteps(unsigned int);
 			void setRadius(float);
+			void setAmbientOcclusionExponent(float);
 			void setBiasAngleInDegree(float);
 			void setBlurSize(unsigned int);
 			void setBlurSharpness(float);
+
+			void activateBlur(bool);
 
 			unsigned int getAmbientOcclusionTextureID() const;
 
@@ -59,8 +62,10 @@ namespace urchin
 			unsigned int numDirections;
 			unsigned int numSteps;
 			float radius;
+			float ambientOcclusionExponent;
 
 			float biasAngleInDegree;
+
 			unsigned int blurSize;
 			float blurSharpness;
 
@@ -83,8 +88,10 @@ namespace urchin
 			unsigned int normalAndAmbientTexID;
 			unsigned int ambienOcclusionTexLoc;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
+
 			std::shared_ptr<BilateralBlurFilter> verticalBlurFilter;
 			std::shared_ptr<BilateralBlurFilter> horizontalBlurFilter;
+			bool isBlurActivated;
 	};
 
 }

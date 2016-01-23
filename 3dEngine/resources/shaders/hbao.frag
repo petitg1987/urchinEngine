@@ -51,7 +51,7 @@ float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
   	}
 	
   	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);  	
-	return normalDotV* linearAttenuationFactor;
+	return normalDotV * linearAttenuationFactor;
 }
 
 float linearizeDepth(float depthValue){
@@ -96,8 +96,8 @@ void main(){
 		rotationAngle += rotationAngleStep;
 	}
 	
-	AO = AO / (#NUM_DIRECTIONS# * numStepsAdjusted);
-	fragColor = clamp(1.0 - AO * 2.0, 0, 1);
+	AO = clamp(AO / (#NUM_DIRECTIONS# * numStepsAdjusted), 0.0f, 1.0f);
+	fragColor = pow(AO, #AO_EXPONENT#);
 
 	//DEBUG: display scope radius at screen center point
 /*	float centerDepthValue = texture2D(depthTex, vec2(0.5, 0.5)).r * 2.0f - 1.0f;

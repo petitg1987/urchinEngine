@@ -9,7 +9,7 @@
 #include "scene/renderer3d/camera/FpsCamera.h"
 #include "scene/renderer3d/camera/FreeCamera.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
-#include "scene/renderer3d/antialiasing/AntiAliasingApplier.h"
+#include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
 #include "scene/renderer3d/octree/OctreeManager.h"
 #include "scene/renderer3d/octree/Octreeable.h"
 #include "scene/renderer3d/shadow/ShadowManager.h"
@@ -37,10 +37,11 @@ namespace urchin
 			LightManager *getLightManager() const;
 			OctreeManager<Model> *getModelOctreeManager() const;
 			ShadowManager *getShadowManager() const;
-			AmbientOcclusionManager *getAmbientOcclusionManager() const;
 
-			//anti aliasing
-			AntiAliasingApplier *getAntiAliasingApplier() const;
+			AmbientOcclusionManager *getAmbientOcclusionManager() const;
+			void activateAmbientOcclusion(bool);
+
+			AntiAliasingManager *getAntiAliasingManager() const;
 			void activateAntiAliasing(bool);
 
 			//camera
@@ -89,10 +90,11 @@ namespace urchin
 			OctreeManager<Model> *modelOctreeManager;
 			LightManager *lightManager;
 			ShadowManager *shadowManager;
-			AmbientOcclusionManager *ambientOcclusionManager;
 
-			//anti aliasing
-			AntiAliasingApplier *antiAliasingApplier;
+			AmbientOcclusionManager *ambientOcclusionManager;
+			bool isAmbientOcclusionActivated;
+
+			AntiAliasingManager *antiAliasingManager;
 			bool isAntiAliasingActivated;
 
 			//camera
@@ -120,7 +122,7 @@ namespace urchin
 
 			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
 			unsigned int deferredShadingShader;
-			int mInverseViewProjectionLoc, viewPositionLoc;
+			int mInverseViewProjectionLoc, viewPositionLoc, hasAmbientOcclusionLoc;
 	};
 
 }

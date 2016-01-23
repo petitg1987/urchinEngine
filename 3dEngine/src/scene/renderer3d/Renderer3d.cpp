@@ -26,14 +26,17 @@ namespace urchin
 			textureIDs(nullptr),
 			deferredShadingShader(0),
 			mInverseViewProjectionLoc(0),
-			viewPositionLoc(0)
+			viewPositionLoc(0),
+			hasAmbientOcclusionLoc(0)
 	{
 		lightManager = new LightManager();
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
-		ambientOcclusionManager = new AmbientOcclusionManager();
 
-		antiAliasingApplier = new AntiAliasingApplier();
+		ambientOcclusionManager = new AmbientOcclusionManager();
+		isAmbientOcclusionActivated = true;
+
+		antiAliasingManager = new AntiAliasingManager();
 		isAntiAliasingActivated = true;
 	}
 
@@ -53,9 +56,7 @@ namespace urchin
 		delete modelOctreeManager;
 		delete lightManager;
 		delete ambientOcclusionManager;
-
-		//anti aliasing
-		delete antiAliasingApplier;
+		delete antiAliasingManager;
 
 		//skybox
 		delete skybox;
@@ -102,9 +103,7 @@ namespace urchin
 		modelOctreeManager->initialize();
 		shadowManager->initialize(deferredShadingShader);
 		ambientOcclusionManager->initialize(deferredShadingShader, textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
-
-		//anti aliasing
-		antiAliasingApplier->initialize();
+		antiAliasingManager->initialize();
 
 		//default black skybox
 		skybox = new Skybox();
@@ -120,9 +119,8 @@ namespace urchin
 		tokens["MAX_LIGHTS"] = std::to_string(lightManager->getMaxLights());
 		tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
 		tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
-		tokens["OUTPUT_LOCATION"] = isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
+		tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
 
-		ShaderManager::instance()->removeProgram(deferredShadingShader);
 		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
 		ShaderManager::instance()->bind(deferredShadingShader);
 
@@ -134,6 +132,9 @@ namespace urchin
 		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
 		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
 		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
+
+		hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
+		glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
 	}
 
 	void Renderer3d::onResize(int width, int height)
@@ -185,14 +186,10 @@ namespace urchin
 
 		glReadBuffer(GL_NONE);
 
-		//shadow
+		//manager
 		shadowManager->onResize(width, height);
-
-		//ambient occlusion
 		ambientOcclusionManager->onResize(width, height);
-
-		//anti-aliasing
-		antiAliasingApplier->onResize(width, height);
+		antiAliasingManager->onResize(width, height);
 	}
 
 	LightManager *Renderer3d::getLightManager() const
@@ -215,16 +212,25 @@ namespace urchin
 		return ambientOcclusionManager;
 	}
 
-	AntiAliasingApplier *Renderer3d::getAntiAliasingApplier() const
+	void Renderer3d::activateAmbientOcclusion(bool isAmbientOcclusionActivated)
 	{
-		return antiAliasingApplier;
+		this->isAmbientOcclusionActivated = isAmbientOcclusionActivated;
+
+		if(isInitialized)
+		{
+			ShaderManager::instance()->bind(deferredShadingShader);
+			glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
+		}
+	}
+
+	AntiAliasingManager *Renderer3d::getAntiAliasingManager() const
+	{
+		return antiAliasingManager;
 	}
 
 	void Renderer3d::activateAntiAliasing(bool isAntiAliasingActivated)
 	{
 		this->isAntiAliasingActivated = isAntiAliasingActivated;
-
-		loadDeferredShadingShader();
 	}
 
 	void Renderer3d::setCamera(Camera *camera)
@@ -382,7 +388,7 @@ namespace urchin
 			lightingPassRendering();
 
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			antiAliasingApplier->applyOn(textureIDs[TEX_LIGHTING_PASS]);
+			antiAliasingManager->applyOn(textureIDs[TEX_LIGHTING_PASS]);
 		}else
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -426,10 +432,10 @@ namespace urchin
 //			textureDisplayer4.display();
 
 			//display ambient occlusion buffer
-			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::DEFAULT_FACTOR);
-			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
-			textureDisplayer5.initialize(width, height);
-			textureDisplayer5.display();
+//			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::DEFAULT_FACTOR);
+//			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
+//			textureDisplayer5.initialize(width, height);
+//			textureDisplayer5.display();
 		#endif
 	}
 
@@ -468,7 +474,10 @@ namespace urchin
 
 		geometryDisplayer->display(camera->getViewMatrix());
 
-		ambientOcclusionManager->updateAOTexture(camera);
+		if(isAmbientOcclusionActivated)
+		{
+			ambientOcclusionManager->updateAOTexture(camera);
+		}
 
 		#ifdef _DEBUG
 			//display the octree
@@ -514,8 +523,11 @@ namespace urchin
 		unsigned int shadowMapTextureUnitStart = 3;
 		shadowManager->loadShadowMaps(camera->getViewMatrix(), shadowMapTextureUnitStart);
 
-		unsigned int ambientOcclusionTexrtureUnitStart = shadowMapTextureUnitStart + shadowManager->getNumberShadowMaps();
-		ambientOcclusionManager->loadAOTexture(ambientOcclusionTexrtureUnitStart);
+		if(isAmbientOcclusionActivated)
+		{
+			unsigned int ambientOcclusionTexrtureUnitStart = shadowMapTextureUnitStart + shadowManager->getNumberShadowMaps();
+			ambientOcclusionManager->loadAOTexture(ambientOcclusionTexrtureUnitStart);
+		}
 
 		lightingPassQuadDisplayer->display();
 	}

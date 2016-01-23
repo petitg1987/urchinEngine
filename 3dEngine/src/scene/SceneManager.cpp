@@ -269,7 +269,7 @@ namespace urchin
 			GLenum err = GL_NO_ERROR;
 			while((err = glGetError()) != GL_NO_ERROR)
 			{
-			  std::cout<<"OpenGL error: "<<err<<std::endl;
+				std::cout<<"OpenGL error: "<<err<<std::endl;
 			}
 		#endif
 	}
