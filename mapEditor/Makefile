@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -D_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -m64 -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -m64 -pipe -std=c++11 -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -m64 -pipe -std=c++14 -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I../mapEditor/src -I../common/src -I../3dEngine/src -I../physicsEngine/src -I../AIEngine/src -I../soundEngine/src -I../mapHandler/src -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -ItargetLinux -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -699,7 +699,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -713,10 +713,12 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -877,7 +879,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -891,10 +893,12 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -1175,7 +1179,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -1189,10 +1193,12 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -1333,7 +1339,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -1347,10 +1353,12 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -1556,7 +1564,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -1570,10 +1578,12 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -1775,7 +1785,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -1789,10 +1799,12 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -2062,7 +2074,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -2076,10 +2088,12 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -2282,7 +2296,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -2296,10 +2310,12 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -2502,7 +2518,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -2516,10 +2532,12 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -2727,7 +2745,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -2741,10 +2759,12 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -2947,7 +2967,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -2961,10 +2981,12 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -3100,7 +3122,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -3114,10 +3136,12 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -3386,7 +3410,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -3400,10 +3424,12 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -3606,7 +3632,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -3620,10 +3646,12 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -3759,7 +3787,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -3773,10 +3801,12 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -3983,7 +4013,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -3997,10 +4027,12 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -4203,7 +4235,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -4217,10 +4249,12 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -4426,7 +4460,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -4440,10 +4474,12 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -4649,7 +4685,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -4663,10 +4699,12 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -4870,7 +4908,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -4884,10 +4922,12 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -5094,7 +5134,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -5108,10 +5148,12 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -5317,7 +5359,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -5331,10 +5373,12 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -5536,7 +5580,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -5550,10 +5594,12 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -5755,7 +5801,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -5769,10 +5815,12 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -5992,7 +6040,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -6006,10 +6054,12 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -6195,7 +6245,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -6209,10 +6259,12 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -6431,7 +6483,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -6445,10 +6497,12 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -6699,7 +6753,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -6713,10 +6767,12 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -6940,7 +6996,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -6954,10 +7010,12 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -7178,7 +7236,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -7192,10 +7250,12 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -7493,7 +7553,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -7507,10 +7567,12 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -7715,7 +7777,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -7729,10 +7791,12 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -8012,7 +8076,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -8026,10 +8090,12 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -8233,7 +8299,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -8247,10 +8313,12 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -8396,7 +8464,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -8410,10 +8478,12 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -8619,7 +8689,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -8633,10 +8703,12 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -8839,7 +8911,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -8853,10 +8925,12 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -9127,7 +9201,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -9141,10 +9215,12 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -9348,7 +9424,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -9362,10 +9438,12 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -9569,7 +9647,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -9583,10 +9661,12 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -9799,7 +9879,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -9813,10 +9893,12 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -10023,7 +10105,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -10037,10 +10119,12 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -10177,7 +10261,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -10191,10 +10275,12 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -10462,7 +10548,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -10476,10 +10562,12 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -10695,7 +10783,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -10709,10 +10797,12 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -10916,7 +11006,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -10930,10 +11020,12 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -11069,7 +11161,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -11083,10 +11175,12 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -11288,7 +11382,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -11302,10 +11396,12 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -11514,7 +11610,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -11528,10 +11624,12 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -11734,7 +11832,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -11748,10 +11846,12 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -11954,7 +12054,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -11968,10 +12068,12 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -12180,7 +12282,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -12194,10 +12296,12 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -12403,7 +12507,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -12417,10 +12521,12 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -12624,7 +12730,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -12638,10 +12744,12 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -12845,7 +12953,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -12859,10 +12967,12 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -13075,7 +13185,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -13089,10 +13199,12 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -13298,7 +13410,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -13312,10 +13424,12 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -13518,7 +13632,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -13532,10 +13646,12 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -13737,7 +13853,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -13751,10 +13867,12 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -13975,7 +14093,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -13989,10 +14107,12 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -14179,7 +14299,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -14193,10 +14313,12 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -14414,7 +14536,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -14428,10 +14550,12 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -14637,7 +14761,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -14651,10 +14775,12 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -14841,7 +14967,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -14855,10 +14981,12 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -15124,7 +15252,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -15138,10 +15266,12 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -15348,7 +15478,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -15362,10 +15492,12 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -15505,7 +15637,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -15519,10 +15651,12 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -15702,7 +15836,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -15716,10 +15850,12 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -15855,7 +15991,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -15869,10 +16005,12 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \
@@ -16092,7 +16230,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
 		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingApplier.h \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
 		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
 		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
 		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
@@ -16106,10 +16244,12 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
 		../3dEngine/src/scene/renderer3d/light/Light.h \
 		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
 		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
 		../3dEngine/src/scene/renderer3d/light/LightManager.h \
 		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
 		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
 		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
 		../3dEngine/src/scene/GUI/GUIManager.h \

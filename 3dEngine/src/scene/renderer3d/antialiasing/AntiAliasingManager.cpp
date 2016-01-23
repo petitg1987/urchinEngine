@@ -39,8 +39,7 @@ namespace urchin
 
 		loadFxaaShader();
 
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
-				->build();
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
 
 		isInitialized = true;
 	}

@@ -604,7 +604,7 @@ namespace urchin
 		//blur shadow map
 		if(blurShadow!=BlurShadow::NO_BLUR)
 		{
-			std::shared_ptr<TextureFilter> verticalBlurFilter = std::make_shared<GaussianBlurFilterBuilder>()
+			std::shared_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
 					->textureSize(shadowMapResolution, shadowMapResolution)
 					->textureType(GL_TEXTURE_2D_ARRAY)
 					->textureNumberLayer(nbShadowMaps)
@@ -615,7 +615,7 @@ namespace urchin
 					->build();
 			shadowDatas[light]->setVerticalBlurFilter(verticalBlurFilter);
 
-			std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_shared<GaussianBlurFilterBuilder>()
+			std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
 					->textureSize(shadowMapResolution, shadowMapResolution)
 					->textureType(GL_TEXTURE_2D_ARRAY)
 					->textureNumberLayer(nbShadowMaps)

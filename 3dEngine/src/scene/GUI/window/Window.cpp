@@ -31,7 +31,7 @@ namespace urchin
 		}
 
 		//visual
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
 				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, texWindow->getMaxCoordS(), 0.0, texWindow->getMaxCoordS(), texWindow->getMaxCoordT(), 0.0, texWindow->getMaxCoordT()})
 				->build();

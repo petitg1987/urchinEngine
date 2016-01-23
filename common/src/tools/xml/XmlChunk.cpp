@@ -1,8 +1,7 @@
-#include <boost/algorithm/string/iter_find.hpp>
-#include <boost/algorithm/string/finder.hpp>
 #include <stdexcept>
 
 #include "tools/xml/XmlChunk.h"
+#include "io/StringUtil.h"
 #include "io/Converter.h"
 
 namespace urchin
@@ -310,7 +309,7 @@ namespace urchin
 	{
 		std::vector<std::string> stringValues;
 		stringValues.reserve(expectedSplit);
-		boost::iter_split(stringValues, str, boost::first_finder(FLOAT_DELIMITOR));
+		StringUtil::split(str, FLOAT_DELIMITOR, stringValues);
 
 		if(stringValues.size()!=expectedSplit)
 		{

@@ -1,5 +1,3 @@
-#include <boost/algorithm/string/replace.hpp>
-
 #include "system/FileSystem.h"
 #include "system/FileHandler.h"
 

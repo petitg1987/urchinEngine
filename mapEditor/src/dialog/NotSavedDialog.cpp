@@ -1,6 +1,5 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
-#include <boost/algorithm/string.hpp>
 
 #include "UrchinCommon.h"
 #include "NotSavedDialog.h"

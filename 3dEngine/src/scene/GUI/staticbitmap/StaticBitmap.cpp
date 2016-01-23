@@ -18,7 +18,7 @@ namespace urchin
 		height = tex->getHeight();
 
 		//visual
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
 				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, tex->getMaxCoordS(), 0.0, tex->getMaxCoordS(), tex->getMaxCoordT(), 0.0, tex->getMaxCoordT()})
 				->build();

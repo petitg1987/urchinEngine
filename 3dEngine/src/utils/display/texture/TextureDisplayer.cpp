@@ -176,7 +176,7 @@ namespace urchin
 		glUniformMatrix3fv(mProjectionLoc, 1, false, (const float*)mProjection);
 
 		//update the display
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->vertexData(GL_FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY})
 				->build();
 

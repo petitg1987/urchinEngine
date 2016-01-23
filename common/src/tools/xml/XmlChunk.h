@@ -23,7 +23,7 @@ namespace urchin
 	{
 		#define BOOL_FALSE "false"
 		#define BOOL_TRUE "true"
-		#define FLOAT_DELIMITOR " "
+		#define FLOAT_DELIMITOR ' '
 
 		public:
 			friend class XmlParser;

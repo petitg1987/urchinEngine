@@ -1,8 +1,6 @@
 #include <sstream>
 #include <algorithm>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/replace.hpp>
+#include <regex>
 
 #include "utils/shader/LoopUnrollerShader.h"
 
@@ -18,13 +16,12 @@ namespace urchin
 	{
 		std::string result = shaderSource;
 
-		boost::regex startLoopRegex("#LOOP([0-9]*)_START\\(([0-9]*)\\)#");
-		boost::match_results<std::string::const_iterator> loopWhat;
-		boost::match_flag_type flags = boost::match_default;
+		std::regex startLoopRegex("#LOOP([0-9]*)_START\\(([0-9]*)\\)#");
+		std::match_results<std::string::const_iterator> loopWhat;
 
 		std::string::const_iterator start = result.begin();
 		std::string::const_iterator end = result.end();
-		while(regex_search(start, end, loopWhat, startLoopRegex, flags))
+		while(std::regex_search(start, end, loopWhat, startLoopRegex))
 		{
 			//loopWhat[1]: contain loop number
 			unsigned int loopNumber;
@@ -77,7 +74,7 @@ namespace urchin
 			loopNumberString << loopNumber;
 			result = "bool stopLoop" + loopNumberString.str() + " = false;\n";
 
-			boost::replace_all(loopContentUpdated, loopStopString.str(), "stopLoop" + loopNumberString.str() + " = true;");
+			StringUtil::replaceAll(loopContentUpdated, loopStopString.str(), "stopLoop" + loopNumberString.str() + " = true;");
 
 			hasLoopStop=true;
 		}
@@ -139,7 +136,7 @@ namespace urchin
 			//replace loop counter by iteration number
 			std::ostringstream iterationNumber;
 			iterationNumber << index;
-			boost::replace_all(loopIterationContent, counterTokenString.str(), iterationNumber.str());
+			StringUtil::replaceAll(loopIterationContent, counterTokenString.str(), iterationNumber.str());
 
 			//add loop iteration content to result
 			result = result + loopIterationContent;

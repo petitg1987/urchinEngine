@@ -58,7 +58,7 @@ FORMS +=
 
 RESOURCES += 
 
-QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -std=c++14
 
 INCLUDEPATH += ../mapEditor/src \
 	../common/src \

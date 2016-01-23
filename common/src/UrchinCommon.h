@@ -16,6 +16,7 @@
 #include "pattern/singleton/SingletonInterface.h"
 
 #include "io/Converter.h"
+#include "io/StringUtil.h"
 #include "system/FileSystem.h"
 #include "system/FileHandler.h"
 #include "math/algebra/matrix/Matrix2.h"

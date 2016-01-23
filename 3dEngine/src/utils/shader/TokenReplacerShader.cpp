@@ -1,5 +1,3 @@
-#include <boost/algorithm/string/replace.hpp>
-
 #include "utils/shader/TokenReplacerShader.h"
 
 namespace urchin
@@ -17,7 +15,7 @@ namespace urchin
 		{
 			std::ostringstream tokenString;
 			tokenString << "#" << it->first << "#";
-			boost::replace_all(result, tokenString.str(), it->second);
+			StringUtil::replaceAll(result, tokenString.str(), it->second);
 		}
 
 		return result;

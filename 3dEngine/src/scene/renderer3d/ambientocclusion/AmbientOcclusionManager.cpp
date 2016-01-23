@@ -114,7 +114,7 @@ namespace urchin
 		//visual data
 		ShaderManager::instance()->bind(shaderID);
 		ambienOcclusionTexLoc = glGetUniformLocation(shaderID, "ambientOcclusionTex");
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()->build();
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
 
 		this->depthTexID = depthTexID;
 		glBindTexture(GL_TEXTURE_2D, depthTexID);
@@ -166,7 +166,7 @@ namespace urchin
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, 0);
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 
-		verticalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
+		verticalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
 				->textureSize(textureSizeX, textureSizeY)
 				->textureType(GL_TEXTURE_2D)
 				->textureInternalFormat(GL_R16F)
@@ -177,7 +177,7 @@ namespace urchin
 				->depthTextureID(depthTexID)
 				->buildBilateralBlur();
 
-		horizontalBlurFilter = std::make_shared<BilateralBlurFilterBuilder>()
+		horizontalBlurFilter = std::make_unique<BilateralBlurFilterBuilder>()
 				->textureSize(textureSizeX, textureSizeY)
 				->textureType(GL_TEXTURE_2D)
 				->textureInternalFormat(GL_R16F)

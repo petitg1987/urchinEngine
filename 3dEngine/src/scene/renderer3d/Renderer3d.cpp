@@ -95,8 +95,7 @@ namespace urchin
 
 		//deferred shading (pass 2)
 		loadDeferredShadingShader();
-		lightingPassQuadDisplayer = std::make_shared<QuadDisplayerBuilder>()
-				->build();
+		lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
 
 		//managers
 		lightManager->initialize(deferredShadingShader);

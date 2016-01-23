@@ -121,7 +121,7 @@ namespace urchin
 			SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE,
 		};
 		
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->numberOfQuad(6)
 				->dimension(3) //3D
 				->vertexData(GL_FLOAT, vertexCoord)

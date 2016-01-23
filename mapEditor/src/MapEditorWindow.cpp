@@ -3,8 +3,6 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QFileDialog>
 
-#include <boost/algorithm/string.hpp>
-
 #include "MapEditorWindow.h"
 #include "dialog/NewDialog.h"
 #include "dialog/NotSavedDialog.h"
@@ -264,7 +262,7 @@ namespace urchin
 		{
 			std::string filenameString = filename.toUtf8().constData();
 			std::string fileExtension = FileHandler::getFileExtension(filenameString);
-			if(!boost::iequals(fileExtension, ".xml"))
+			if(!StringUtil::insensitiveEquals(fileExtension, ".xml"))
 			{
 				filenameString += ".xml";
 			}

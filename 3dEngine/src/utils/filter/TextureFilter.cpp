@@ -35,7 +35,7 @@ namespace urchin
 
 	void TextureFilter::initializeDisplay()
 	{
-		texQuadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+		texQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->build();
 
 		std::map<std::string, std::string> shaderTokens;

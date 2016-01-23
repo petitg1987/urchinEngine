@@ -1,7 +1,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
-#include <boost/algorithm/string.hpp>
 
 #include "UrchinCommon.h"
 #include "NewDialog.h"
@@ -96,7 +95,7 @@ namespace urchin
 		{
 			this->mapFilename = mapFilename.toUtf8().constData();
 			std::string fileExtension = FileHandler::getFileExtension(this->mapFilename);
-			if(!boost::iequals(fileExtension, ".xml"))
+			if(!StringUtil::insensitiveEquals(fileExtension, ".xml"))
 			{
 				this->mapFilename += ".xml";
 			}

@@ -1,7 +1,6 @@
 #include <GL/gl.h>
 #include <sstream>
 #include <memory>
-#include <boost/algorithm/string.hpp>
 
 #include "scene/GUI/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
@@ -40,11 +39,19 @@ namespace urchin
 			std::string cuttedText = cutText(text, maxLength);
 
 			//splits the text at each newline
-			boost::split(cuttedTextLines, cuttedText, boost::is_any_of("\n"));
+			std::stringstream cuttedTextStream(cuttedText);
+			std::string item;
+			while (std::getline(cuttedTextStream, item, '\n')) {
+				cuttedTextLines.push_back(item);
+			}
 		}else
 		{
 			//splits the text at each newline
-			boost::split(cuttedTextLines, text, boost::is_any_of("\n"));
+			std::stringstream cuttedTextStream(text);
+			std::string item;
+			while (std::getline(cuttedTextStream, item, '\n')) {
+				cuttedTextLines.push_back(item);
+			}
 		}
 		
 		height = cuttedTextLines.size()*font->getHeight() + (cuttedTextLines.size()-1)*font->getSpaceBetweenLines();
@@ -100,7 +107,7 @@ namespace urchin
 		float *textureData = new float[numberLetter*8];
 		std::copy(stArray.begin(), stArray.end(), textureData);
 
-		quadDisplayer = std::make_shared<QuadDisplayerBuilder>()
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->numberOfQuad(numberLetter)
 				->vertexData(GL_INT, vertexData)
 				->textureData(GL_FLOAT, textureData)
