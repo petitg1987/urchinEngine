@@ -36,7 +36,7 @@ DISTNAME      = urchinMapEditor1.0.0
 DISTDIR = /home/greg/Project/VideoGame/urchinEngine/mapEditor/targetLinux/urchinMapEditor1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -L../common/targetLinux/ -lurchinCommon -L../3dEngine/targetLinux/ -lurchin3dEngine -L../AIEngine/targetLinux/ -lurchinAIEngine -L../physicsEngine/targetLinux/ -lurchinPhysicsEngine -L../soundEngine/targetLinux/ -lurchinSoundEngine -L../mapHandler/targetLinux/ -lurchinMapHandler -lboost_system -lQt5OpenGL -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -L../common/targetLinux/ -lurchinCommon -L../3dEngine/targetLinux/ -lurchin3dEngine -L../AIEngine/targetLinux/ -lurchinAIEngine -L../physicsEngine/targetLinux/ -lurchinPhysicsEngine -L../soundEngine/targetLinux/ -lurchinSoundEngine -L../mapHandler/targetLinux/ -lurchinMapHandler -lQt5OpenGL -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -569,6 +569,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -814,6 +815,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -1047,6 +1049,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -1274,6 +1277,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -1501,6 +1505,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -1722,6 +1727,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -1942,6 +1948,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -2164,6 +2171,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -2386,6 +2394,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -2613,6 +2622,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -2835,6 +2845,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -3057,6 +3068,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -3278,6 +3290,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -3502,6 +3515,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -3722,6 +3736,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -3948,6 +3963,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -4169,6 +4185,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -4395,6 +4412,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -4622,6 +4640,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -4842,6 +4861,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -5069,6 +5089,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -5296,6 +5317,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -5517,6 +5539,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -5738,6 +5761,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -5958,6 +5982,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -6180,6 +6205,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -6401,6 +6427,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -6623,6 +6650,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -6866,6 +6894,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -7106,6 +7135,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -7358,6 +7388,7 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -7423,6 +7454,7 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -7490,6 +7522,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -7712,6 +7745,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -7945,6 +7979,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -8167,6 +8202,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -8399,6 +8435,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -8623,6 +8660,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -8845,6 +8883,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -9069,6 +9108,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -9292,6 +9332,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -9515,6 +9556,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -9747,6 +9789,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -9973,6 +10016,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -10196,6 +10240,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -10419,6 +10464,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -10651,6 +10697,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -10876,6 +10923,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -11098,6 +11146,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -11317,6 +11366,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -11545,6 +11595,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -11767,6 +11818,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -11988,6 +12040,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -12217,6 +12270,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -12441,6 +12495,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -12665,6 +12720,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -12887,6 +12943,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -13120,6 +13177,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -13344,6 +13402,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -13566,6 +13625,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -13787,6 +13847,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -14011,6 +14072,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -14234,6 +14296,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -14457,6 +14520,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -14679,6 +14743,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -14904,6 +14969,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -15123,6 +15189,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -15348,6 +15415,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -15574,6 +15642,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -15706,6 +15775,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -15927,6 +15997,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \
@@ -16148,6 +16219,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
 		../common/src/math/algebra/Transform.h \

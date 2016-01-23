@@ -9,7 +9,7 @@ namespace urchin
 
 	//static
 	StreamUpdateWorker *AudioStreamPlayer::streamUpdateWorker = nullptr;
-	boost::thread *AudioStreamPlayer::streamUpdateWorkerThread = nullptr;
+	std::thread *AudioStreamPlayer::streamUpdateWorkerThread = nullptr;
 
 	AudioStreamPlayer::AudioStreamPlayer(const Sound *sound) :
 		AudioPlayer(sound)
@@ -28,7 +28,7 @@ namespace urchin
 	void AudioStreamPlayer::initializeStreamWorkerThread()
 	{
 		streamUpdateWorker = new StreamUpdateWorker();
-		streamUpdateWorkerThread = new boost::thread(boost::bind(&StreamUpdateWorker::start, streamUpdateWorker));
+		streamUpdateWorkerThread = new std::thread(&StreamUpdateWorker::start, streamUpdateWorker);
 	}
 
 	void AudioStreamPlayer::destroyStreamWorkerThread()

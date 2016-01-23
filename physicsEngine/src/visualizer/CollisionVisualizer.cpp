@@ -25,7 +25,7 @@ namespace urchin
 			{
 				case CollisionWorld::COLLISION_RESULT_UPDATED:
 				{
-					boost::recursive_mutex::scoped_lock lock(visualizerDataMutex);
+					std::lock_guard<std::mutex> lock(visualizerDataMutex);
 
 					const std::vector<ManifoldResult> *manifoldResults = collisionWorld->getLastUpdatedManifoldResults();
 					this->manifoldResults.clear();
@@ -42,7 +42,7 @@ namespace urchin
 
 	const std::vector<ManifoldResult> &CollisionVisualizer::getManifoldResult() const
 	{
-		boost::recursive_mutex::scoped_lock lock(visualizerDataMutex);
+		std::lock_guard<std::mutex> lock(visualizerDataMutex);
 
 		return manifoldResults;
 	}

@@ -1,6 +1,6 @@
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <boost/date_time.hpp>
+#include <thread>
 #include <iostream>
 #include <stdexcept>
 #include "UrchinCommon.h"
@@ -61,7 +61,7 @@ namespace urchin
 			}
 		}
 
-		boost::recursive_mutex::scoped_lock lock(tasksMutex);
+		std::lock_guard<std::mutex> lock(tasksMutex);
 		#ifdef _DEBUG
 			assert(!isTaskExist(sound));
 		#endif
@@ -71,7 +71,7 @@ namespace urchin
 
 	bool StreamUpdateWorker::isTaskExist(const Sound *sound) const
 	{
-		boost::recursive_mutex::scoped_lock lock(tasksMutex);
+		std::lock_guard<std::mutex> lock(tasksMutex);
 
 		for(unsigned int i=0; i<tasks.size(); ++i)
 		{
@@ -86,7 +86,7 @@ namespace urchin
 
 	void StreamUpdateWorker::removeTask(const Sound *sound)
 	{
-		boost::recursive_mutex::scoped_lock lock(tasksMutex);
+		std::lock_guard<std::mutex> lock(tasksMutex);
 
 		for(std::vector<StreamUpdateTask *>::iterator it=tasks.begin(); it!=tasks.end(); ++it)
 		{
@@ -105,7 +105,7 @@ namespace urchin
 		while(continueExecution())
 		{
 			{
-				boost::recursive_mutex::scoped_lock lock(tasksMutex);
+				std::lock_guard<std::mutex> lock(tasksMutex);
 
 				for(std::vector<StreamUpdateTask *>::iterator it=tasks.begin(); it!=tasks.end();)
 				{
@@ -121,7 +121,7 @@ namespace urchin
 				}
 			}
 
-			boost::this_thread::sleep(boost::posix_time::milliseconds(updateStreamBufferPauseTime));
+			std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
 		}
 	}
 

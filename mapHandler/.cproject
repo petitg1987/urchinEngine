@@ -61,8 +61,6 @@
 									<listOptionValue builtIn="false" value="urchin3dEngine"/>
 									<listOptionValue builtIn="false" value="urchinPhysicsEngine"/>
 									<listOptionValue builtIn="false" value="urchinSoundEngine"/>
-									<listOptionValue builtIn="false" value="boost_system"/>
-									<listOptionValue builtIn="false" value="boost_thread"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.523756878" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common/targetLinux}&quot;"/>
@@ -147,8 +145,6 @@
 									<listOptionValue builtIn="false" value="urchinPhysicsEngine"/>
 									<listOptionValue builtIn="false" value="urchin3dEngine"/>
 									<listOptionValue builtIn="false" value="urchinSoundEngine"/>
-									<listOptionValue builtIn="false" value="boost_system"/>
-									<listOptionValue builtIn="false" value="boost_thread"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.738062576" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common/targetWin}&quot;"/>

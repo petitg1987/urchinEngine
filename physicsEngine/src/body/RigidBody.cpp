@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <limits>
-#include <boost/thread.hpp>
+#include <mutex>
 
 #include "body/RigidBody.h"
 
@@ -33,7 +33,7 @@ namespace urchin
 
 	void RigidBody::update(AbstractWorkBody *workBody)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		AbstractBody::update(workBody);
 
@@ -56,7 +56,7 @@ namespace urchin
 
 	void RigidBody::apply(const AbstractWorkBody *workBody)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		AbstractBody::apply(workBody);
 
@@ -70,35 +70,35 @@ namespace urchin
 
 	const Vector3<float> &RigidBody::getLinearVelocity() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return linearVelocity;
 	}
 
 	const Vector3<float> &RigidBody::getAngularVelocity() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return angularVelocity;
 	}
 
 	const Vector3<float> &RigidBody::getTotalForce() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return totalForce;
 	}
 
 	void RigidBody::applyCentralForce(const Vector3<float> &force)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		totalForce += force;
 	}
 
 	void RigidBody::applyForce(const Vector3<float> &force, const Point3<float> &pos)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		//apply central force
 		totalForce += force;
@@ -109,21 +109,21 @@ namespace urchin
 
 	const Vector3<float> &RigidBody::getTotalTorque() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return totalTorque;
 	}
 
 	void RigidBody::applyTorque(const Vector3<float> &torque)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		totalTorque += torque;
 	}
 
 	void RigidBody::setMassProperties(float mass, const Vector3<float> &localInertia)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->mass = mass;
 		this->localInertia = localInertia;
@@ -133,14 +133,14 @@ namespace urchin
 
 	float RigidBody::getMass() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return mass;
 	}
 
 	const Vector3<float> &RigidBody::getLocalInertia() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return localInertia;
 	}
@@ -152,7 +152,7 @@ namespace urchin
 	 */
 	void RigidBody::setDamping(float linearDamping, float angularDamping)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		if(linearDamping < 0.0 || linearDamping > 1.0)
 		{
@@ -170,14 +170,14 @@ namespace urchin
 
 	float RigidBody::getLinearDamping() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return linearDamping;
 	}
 
 	float RigidBody::getAngularDamping() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return angularDamping;
 	}
@@ -187,7 +187,7 @@ namespace urchin
 	 */
 	void RigidBody::setLinearFactor(const Vector3<float> &linearFactor)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->linearFactor = linearFactor;
 	}
@@ -197,7 +197,7 @@ namespace urchin
 	 */
 	const Vector3<float> &RigidBody::getLinearFactor() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return linearFactor;
 	}
@@ -207,7 +207,7 @@ namespace urchin
 	 */
 	void RigidBody::setAngularFactor(const Vector3<float> &angularFactor)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->angularFactor = angularFactor;
 	}
@@ -217,7 +217,7 @@ namespace urchin
 	 */
 	const Vector3<float> &RigidBody::getAngularFactor() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return angularFactor;
 	}

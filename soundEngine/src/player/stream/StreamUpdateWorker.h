@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <atomic>
-#include <boost/thread.hpp>
+#include <mutex>
 
 #include "player/stream/StreamUpdateTask.h"
 
@@ -42,7 +42,7 @@ namespace urchin
 			const unsigned int updateStreamBufferPauseTime;
 
 			std::atomic_bool streamUpdateWorkerStopper;
-			mutable boost::recursive_mutex tasksMutex;
+			mutable std::mutex tasksMutex;
 
 			std::vector<StreamUpdateTask *> tasks;
 	};

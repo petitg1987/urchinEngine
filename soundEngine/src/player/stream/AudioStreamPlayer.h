@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include <boost/thread.hpp>
+#include <thread>
 
 #include "player/AudioPlayer.h"
 #include "player/stream/StreamUpdateWorker.h"
@@ -31,7 +31,7 @@ namespace urchin
 
 			//stream chunk updater thread
 			static StreamUpdateWorker *streamUpdateWorker;
-			static boost::thread *streamUpdateWorkerThread;
+			static std::thread *streamUpdateWorkerThread;
 	};
 
 }

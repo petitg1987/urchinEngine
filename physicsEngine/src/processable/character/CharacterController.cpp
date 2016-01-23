@@ -54,42 +54,42 @@ namespace urchin
 
 	void CharacterController::setWalkDirection(const Vector3<float> &walkDirection)
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		this->walkDirection = walkDirection;
 	}
 
 	const Vector3<float> &CharacterController::getWalkDirection() const
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		return walkDirection;
 	}
 
 	void CharacterController::setJumpSpeed(float jumpSpeed)
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		this->jumpSpeed = jumpSpeed;
 	}
 
 	float CharacterController::getJumpSpeed() const
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		return jumpSpeed;
 	}
 
 	void CharacterController::jump()
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		this->makeJump = true;
 	}
 
 	bool CharacterController::needJumpAndUpdateFlag()
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		if(makeJump)
 		{
@@ -102,7 +102,7 @@ namespace urchin
 
 	void CharacterController::setMaxSlope(float maxSlopeInRadian)
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		this->maxSlopeInRadian = maxSlopeInRadian;
 		this->maxSlopeInPercentage = std::tan(maxSlopeInRadian);
@@ -110,28 +110,28 @@ namespace urchin
 
 	float CharacterController::getMaxSlopeInRadian() const
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		return maxSlopeInRadian;
 	}
 
 	float CharacterController::getMaxSlopeInPercentage() const
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		return maxSlopeInPercentage;
 	}
 
 	void CharacterController::setTransform(const PhysicsTransform &ghostBodyTransform)
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		this->ghostBodyTransform = ghostBodyTransform;
 	}
 
 	const PhysicsTransform &CharacterController::getTransform() const
 	{
-		boost::recursive_mutex::scoped_lock lock(characterMutex);
+		std::lock_guard<std::mutex> lock(characterMutex);
 
 		return ghostBodyTransform;
 	}

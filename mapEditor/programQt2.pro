@@ -75,7 +75,6 @@ unix{
 	    -L../physicsEngine/targetLinux/ -lurchinPhysicsEngine \
 	    -L../soundEngine/targetLinux/ -lurchinSoundEngine \
 	    -L../mapHandler/targetLinux/ -lurchinMapHandler \
-	    -lboost_system \
 	    
 	OBJECTS_DIR = targetLinux
 	MOC_DIR = targetLinux
@@ -90,7 +89,6 @@ win32{
 	    -L../physicsEngine/targetWin/ -lliburchinPhysicsEngine \
 	    -L../soundEngine/targetWin/ -lliburchinSoundEngine \
 	    -L../mapHandler/targetWin/ -lliburchinMapHandler \
-	    
 	
 	OBJECTS_DIR = targetWin
 	MOC_DIR = targetWin

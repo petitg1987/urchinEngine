@@ -1,4 +1,3 @@
-#include <boost/date_time.hpp>
 #include <chrono>
 
 #include "PhysicsWorld.h"
@@ -90,7 +89,7 @@ namespace urchin
 	 */
 	void PhysicsWorld::setGravity(const Vector3<float> &gravity)
 	{
-		boost::recursive_mutex::scoped_lock lock(gravityMutex);
+		std::lock_guard<std::mutex> lock(gravityMutex);
 
 		this->gravity = gravity;
 	}
@@ -100,7 +99,7 @@ namespace urchin
 	 */
 	Vector3<float> PhysicsWorld::getGravity() const
 	{
-		boost::recursive_mutex::scoped_lock lock(gravityMutex);
+		std::lock_guard<std::mutex> lock(gravityMutex);
 
 		return gravity;
 	}
@@ -115,7 +114,7 @@ namespace urchin
 		this->timeStep = timeStep;
 		this->maxSubStep = maxSubStep;
 
-		physicsSimulationThread = new boost::thread(std::bind(&PhysicsWorld::startPhysicsUpdate, this));
+		physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
 	}
 
 	/**
@@ -150,7 +149,7 @@ namespace urchin
 
 			if(remainingTime >= 0.0)
 			{
-				boost::this_thread::sleep(boost::posix_time::milliseconds(static_cast<int>(remainingTime * 1000.0)));
+				std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0)));
 
 				remainingTime = 0.0;
 				frameStartTime = std::chrono::high_resolution_clock::now();

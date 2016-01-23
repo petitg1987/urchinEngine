@@ -1,10 +1,10 @@
 #ifndef ENGINE_ABSTRACTBODY_H
 #define ENGINE_ABSTRACTBODY_H
 
-#include <boost/thread.hpp>
 #include <string>
 #include <memory>
 #include <atomic>
+#include <mutex>
 #include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
@@ -54,7 +54,7 @@ namespace urchin
 			void setIsStatic(bool);
 
 			//mutex for attributes modifiable from external
-			mutable boost::recursive_mutex bodyMutex;
+			mutable std::mutex bodyMutex;
 
 		private:
 			//technical data

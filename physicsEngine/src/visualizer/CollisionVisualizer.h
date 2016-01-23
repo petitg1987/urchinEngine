@@ -2,7 +2,7 @@
 #define ENGINE_COLLISIONVISUALIZER_H
 
 #include <vector>
-#include <boost/thread.hpp>
+#include <mutex>
 #include "UrchinCommon.h"
 
 #include "collision/CollisionWorld.h"
@@ -28,7 +28,7 @@ namespace urchin
 
 			private:
 				CollisionWorld *collisionWorld;
-				mutable boost::recursive_mutex visualizerDataMutex;
+				mutable std::mutex visualizerDataMutex;
 
 				std::vector<ManifoldResult> manifoldResults;
 		};

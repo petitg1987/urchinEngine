@@ -2,7 +2,7 @@
 #define ENGINE_CHARATERCONTROLLER_H
 
 #include <memory>
-#include <boost/thread.hpp>
+#include <mutex>
 
 #include "processable/ProcessableInterface.h"
 #include "utils/math/PhysicsTransform.h"
@@ -65,7 +65,7 @@ namespace urchin
 			const float percentageControlInAir;
 
 			PhysicsWorld *physicsWorld;
-			mutable boost::recursive_mutex characterMutex;
+			mutable std::mutex characterMutex;
 			WorkGhostBody *ghostBody;
 			PhysicsTransform ghostBodyTransform;
 			float verticalVelocity;

@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "body/AbstractBody.h"
 
 namespace urchin
@@ -59,7 +61,12 @@ namespace urchin
 
 	void AbstractBody::update(AbstractWorkBody *workBody)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		#ifdef _DEBUG
+			if(bodyMutex.try_lock())
+			{
+				throw std::runtime_error("Body mutex should be locked before call this method.");
+			}
+		#endif
 
 		workBody->setRestitution(restitution);
 		workBody->setFriction(friction);
@@ -69,7 +76,12 @@ namespace urchin
 	void AbstractBody::apply(const AbstractWorkBody *workBody)
 	{
 		{
-			boost::recursive_mutex::scoped_lock lock(bodyMutex);
+			#ifdef _DEBUG
+				if(bodyMutex.try_lock())
+				{
+					throw std::runtime_error("Body mutex should be locked before call this method.");
+				}
+			#endif
 
 			transform.setPosition(workBody->getPosition());
 			transform.setOrientation(workBody->getOrientation());
@@ -79,28 +91,28 @@ namespace urchin
 
 	const Transform<float> &AbstractBody::getTransform() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return transform;
 	}
 
 	const Point3<float> &AbstractBody::getPosition() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return transform.getPosition();
 	}
 
 	const Quaternion<float> &AbstractBody::getOrientation() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return transform.getOrientation();
 	}
 
 	std::shared_ptr<const CollisionShape3D> AbstractBody::getOriginalShape() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return originalShape;
 	}
@@ -111,14 +123,14 @@ namespace urchin
 	 */
 	std::shared_ptr<const CollisionShape3D> AbstractBody::getScaledShape() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return scaledShape;
 	}
 
 	const std::string &AbstractBody::getId() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return id;
 	}
@@ -128,7 +140,7 @@ namespace urchin
 	 */
 	void AbstractBody::setRestitution(float restitution)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->restitution = restitution;
 	}
@@ -138,7 +150,7 @@ namespace urchin
 	 */
 	float AbstractBody::getRestitution() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return restitution;
 	}
@@ -148,7 +160,7 @@ namespace urchin
 	 */
 	void AbstractBody::setFriction(float friction)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->friction = friction;
 	}
@@ -158,7 +170,7 @@ namespace urchin
 	 */
 	float AbstractBody::getFriction() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return friction;
 	}
@@ -168,7 +180,7 @@ namespace urchin
 	 */
 	void AbstractBody::setRollingFriction(float rollingFriction)
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->rollingFriction = rollingFriction;
 	}
@@ -178,7 +190,7 @@ namespace urchin
 	 */
 	float AbstractBody::getRollingFriction() const
 	{
-		boost::recursive_mutex::scoped_lock lock(bodyMutex);
+		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return rollingFriction;
 	}

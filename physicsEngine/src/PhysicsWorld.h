@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <atomic>
-#include <boost/thread.hpp>
+#include <thread>
 #include "UrchinCommon.h"
 
 #include "body/AbstractBody.h"
@@ -48,10 +48,10 @@ namespace urchin
 			void preProcess(float, const Vector3<float> &);
 			void postProcess(float, const Vector3<float> &);
 
-			boost::thread *physicsSimulationThread;
+			std::thread *physicsSimulationThread;
 			std::atomic_bool physicsSimulationStopper;
 
-			mutable boost::recursive_mutex gravityMutex;
+			mutable std::mutex gravityMutex;
 			Vector3<float> gravity;
 			float timeStep;
 			unsigned int maxSubStep;
