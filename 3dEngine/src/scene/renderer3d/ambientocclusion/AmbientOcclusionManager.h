@@ -27,7 +27,6 @@ namespace urchin
 
 			void initialize(unsigned int, unsigned int, unsigned int);
 			void onResize(int, int);
-			void createOrUpdateTexture();
 			void onCameraProjectionUpdate(const Camera *const);
 
 			void setTextureSize(AOTextureSize);
@@ -44,7 +43,9 @@ namespace urchin
 			void loadAOTexture(unsigned int) const;
 
 		private:
-			void computeTextureSize();
+			int retrieveTextureSizeFactor();
+			void createOrUpdateTexture();
+			void generateRandomTexture(unsigned int);
 
 			//scene information
 			bool isInitialized;
@@ -54,12 +55,16 @@ namespace urchin
 			//tweak
 			AOTextureSize textureSize;
 			int textureSizeX, textureSizeY;
+
 			unsigned int numDirections;
 			unsigned int numSteps;
 			float radius;
+
 			float biasAngleInDegree;
 			unsigned int blurSize;
 			float blurSharpness;
+
+			unsigned int randomTextureSize;
 
 			//frame buffer object
 			unsigned int fboID;
@@ -71,6 +76,7 @@ namespace urchin
 			int cameraPlanesLoc;
 			int invResolutionLoc;
 			int nearPlaneScreenRadiusLoc;
+			unsigned int randomTexID;
 
 			//visual data
 			unsigned int depthTexID;

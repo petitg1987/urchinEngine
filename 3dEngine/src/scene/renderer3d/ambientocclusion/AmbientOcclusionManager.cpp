@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <cmath>
+#include <random>
 
 #include "AmbientOcclusionManager.h"
 #include "utils/shader/ShaderManager.h"
@@ -15,6 +16,7 @@
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 25.0
 #define DEFAULT_BLUR_SIZE 5
 #define DEFAULT_BLUR_SHARPNESS 40.0
+#define RANDOM_TEXTURE_SIZE 4
 
 namespace urchin
 {
@@ -27,14 +29,15 @@ namespace urchin
 		farPlane(0.0f),
 
 		textureSize((AOTextureSize)DEFAULT_TEXTURE_SIZE),
-		textureSizeX(1),
-		textureSizeY(1),
+		textureSizeX(0),
+		textureSizeY(0),
 		numDirections(DEFAULT_NUM_DIRECTIONS),
 		numSteps(DEFAULT_NUM_STEPS),
 		radius(DEFAULT_RADIUS),
 		biasAngleInDegree(DEFAULT_BIAS_ANGLE_IN_DEGREE),
 		blurSize(DEFAULT_BLUR_SIZE),
 		blurSharpness(DEFAULT_BLUR_SHARPNESS),
+		randomTextureSize(RANDOM_TEXTURE_SIZE),
 
 		fboID(0),
 		ambientOcclusionTexID(0),
@@ -44,6 +47,7 @@ namespace urchin
 		cameraPlanesLoc(0),
 		invResolutionLoc(0),
 		nearPlaneScreenRadiusLoc(0),
+		randomTexID(0),
 
 		depthTexID(0),
 		normalAndAmbientTexID(0),
@@ -58,6 +62,8 @@ namespace urchin
 	{
 		glDeleteFramebuffers(1, &fboID);
 		glDeleteTextures(1, &ambientOcclusionTexID);
+
+		glDeleteTextures(1, &randomTexID);
 	}
 
 	/**
@@ -81,7 +87,9 @@ namespace urchin
 		hbaoTokens["NUM_DIRECTIONS"] = std::to_string(numDirections);
 		hbaoTokens["NUM_STEPS"] = std::to_string(numSteps);
 		hbaoTokens["RADIUS"] = std::to_string(radius);
+		hbaoTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor()));
 		hbaoTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/M_PI)));
+		hbaoTokens["RANDOM_TEXTURE_SIZE"] = std::to_string(randomTextureSize);
 		hbaoShader = ShaderManager::instance()->createProgram("hbao.vert", "hbao.frag", hbaoTokens);
 		ShaderManager::instance()->bind(hbaoShader);
 
@@ -93,6 +101,8 @@ namespace urchin
 		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE1-GL_TEXTURE0);
 		invResolutionLoc = glGetUniformLocation(hbaoShader, "invResolution");
 		nearPlaneScreenRadiusLoc = glGetUniformLocation(hbaoShader, "nearPlaneScreenRadius");
+
+		generateRandomTexture(hbaoShader);
 
 		//visual data
 		ShaderManager::instance()->bind(shaderID);
@@ -122,7 +132,6 @@ namespace urchin
 		sceneWidth = width;
 		sceneHeight = height;
 		
-		computeTextureSize();
 		createOrUpdateTexture();
 
 		ShaderManager::instance()->bind(hbaoShader);
@@ -140,6 +149,9 @@ namespace urchin
 
 		glDeleteTextures(1, &ambientOcclusionTexID);
 		glGenTextures(1, &ambientOcclusionTexID);
+
+		this->textureSizeX = sceneWidth / retrieveTextureSizeFactor();
+		this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
 
 		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -173,6 +185,38 @@ namespace urchin
 		horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 	}
 
+	void AmbientOcclusionManager::generateRandomTexture(unsigned int hbaoShader)
+	{
+		std::default_random_engine generator;
+		std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+
+		Vector3<float> *hbaoRandom = new Vector3<float>[randomTextureSize*randomTextureSize];
+		for(unsigned int i=0; i<randomTextureSize*randomTextureSize; ++i)
+		{
+			//random rotation
+			float randomAngleRadian = (2.0f*M_PI) * (distribution(generator) / static_cast<float>(numDirections));
+			hbaoRandom[i].X = std::sin(randomAngleRadian);
+			hbaoRandom[i].Y = std::cos(randomAngleRadian);
+
+			//random step distance
+			hbaoRandom[i].Z = distribution(generator);
+		}
+
+		glGenTextures(1, &randomTexID);
+		glBindTexture (GL_TEXTURE_2D, randomTexID);
+
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, randomTextureSize, randomTextureSize, 0, GL_RGB, GL_FLOAT, hbaoRandom);
+		delete [] hbaoRandom;
+
+		ShaderManager::instance()->bind(hbaoShader);
+		int randomTexLoc = glGetUniformLocation(hbaoShader, "randomTex");
+		glUniform1i(randomTexLoc, GL_TEXTURE2-GL_TEXTURE0);
+	}
+
 	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *const camera)
 	{
 		if(!isInitialized)
@@ -197,8 +241,12 @@ namespace urchin
 
 	void AmbientOcclusionManager::setTextureSize(AOTextureSize textureSize)
 	{
+		if(isInitialized)
+		{
+			throw std::runtime_error("Impossible to change texture size once the scene initialized.");
+		}
+
 		this->textureSize = textureSize;
-		computeTextureSize();
 	}
 
 	void AmbientOcclusionManager::setNumDirections(unsigned int numDirections)
@@ -236,9 +284,9 @@ namespace urchin
 	}
 
 	/**
-	 * @param biasAngle Bias angle in degree. If angle between two faces is below the bias angle: faces will not produce occlusion on each other.
+	 * @param biasAngle Bias angle in degree. If angle between two faces is > (180 degree - 2*bias angle): faces will not produce occlusion on each other.
 	 * A value of 0 degree will produce maximum of occlusion. A value of 90 degrees won't produce occlusion.
-	 * This bias angle allows to eliminate some unexpected artifacts.
+	 * This bias angle allows to eliminate some unexpected artifacts especially when camera is near to a surface.
 	 */
 	void AmbientOcclusionManager::setBiasAngleInDegree(float biasAngleInDegree)
 	{
@@ -270,20 +318,17 @@ namespace urchin
 		this->blurSharpness = blurSharpness;
 	}
 
-	void AmbientOcclusionManager::computeTextureSize()
+	int AmbientOcclusionManager::retrieveTextureSizeFactor()
 	{
 		if(textureSize==AOTextureSize::FULL_SIZE)
 		{
-			textureSizeX = sceneWidth;
-			textureSizeY = sceneHeight;
+			return 1;
 		}else if(textureSize==AOTextureSize::HALF_SIZE)
 		{
-			textureSizeX = sceneWidth / 2;
-			textureSizeY = sceneHeight / 2;
-		}else
-		{
-			throw std::invalid_argument("Unknown texture size value: " + textureSize);
+			return 2;
 		}
+
+		throw std::invalid_argument("Unknown texture size value: " + textureSize);
 	}
 
 	unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const
@@ -302,6 +347,9 @@ namespace urchin
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, normalAndAmbientTexID);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, randomTexID);
 
 		ShaderManager::instance()->bind(hbaoShader);
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() *camera->getViewMatrix()).inverse());

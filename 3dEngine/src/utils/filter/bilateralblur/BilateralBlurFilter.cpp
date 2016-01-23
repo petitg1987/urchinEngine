@@ -73,12 +73,16 @@ namespace urchin
 
 	std::vector<float> BilateralBlurFilter::computeOffsets() const
 	{
-		std::vector<float> offsets;
+		unsigned int numOffsets = blurSize / 2;
+		std::vector<float> offsets(numOffsets, 0.0f);
 
-		float pixelSize = 1.0f / static_cast<float>(textureSize);
-		for(unsigned int i=1; i<=(blurSize / 2); ++i)
+		if(textureSize!=0)
 		{
-			offsets.push_back(pixelSize*i);
+			float pixelSize = 1.0f / static_cast<float>(textureSize);
+			for(unsigned int i=1; i<=numOffsets; ++i)
+			{
+				offsets[i-1] = pixelSize * i;
+			}
 		}
 
 		return offsets;

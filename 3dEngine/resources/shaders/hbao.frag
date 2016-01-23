@@ -7,6 +7,7 @@
 
 uniform sampler2D depthTex;
 uniform sampler2D normalAndAmbientTex;
+uniform sampler2D randomTex;
 
 in vec2 textCoordinates;
 uniform mat4 mInverseViewProjection;
@@ -31,6 +32,12 @@ vec3 fetchPosition(vec2 textCoord, float depthValue){
 vec3 fetchPosition(vec2 textCoord){
 	float depthValue = texture2D(depthTex, textCoord).r * 2.0f - 1.0f;
 	return fetchPosition(textCoord, depthValue);
+}
+
+vec2 rotateDirection(vec2 direction, vec2 sinCos)
+{
+	return vec2(	direction.x*sinCos.x - direction.y*sinCos.y, 
+  					direction.x*sinCos.y + direction.y*sinCos.x);
 }
 
 float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
@@ -63,19 +70,23 @@ void main(){
 	
 	vec3 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz  * 2.0f - 1.0f;
+	vec3 randomValues = texture2D(randomTex, (textCoordinates/(invResolution*#RANDOM_TEXTURE_SIZE#)) * #TEXTURE_SIZE_FACTOR#).xyz;
 		
 	int numStepsAdjusted = min(#NUM_STEPS#, int(zScreenRadius - 1)); //avoid too much steps in case of small radius
 	float stepSizePixel = zScreenRadius / (numStepsAdjusted + 1); //+1: avoid total attenuation at last step
+	float halfStepSizePixel = stepSizePixel / 2.0f;
 	float rotationAngleStep = 2.0f*M_PI / #NUM_DIRECTIONS#;
 
 	float AO = 0.0f;
 	float rotationAngle = 0.0f;
 	for(int directionIndex=0; directionIndex<#NUM_DIRECTIONS#; ++directionIndex){
-		vec2 direction = vec2(sin(rotationAngle), cos(rotationAngle)); //TODO limit direction to semi-spherical around the normal... (see http://john-chapman-graphics.blogspot.be/2013/01/ssao-tutorial.html)
+		vec2 direction = vec2(sin(rotationAngle), cos(rotationAngle));
+		vec2 randomizedDirection = rotateDirection(direction, randomValues.xy);
 		
 		float raySizePixel = stepSizePixel;
+		float randomizedRaySizePixel = (raySizePixel * randomValues.z) + halfStepSizePixel;
 		for(int stepIndex=0; stepIndex<numStepsAdjusted; ++stepIndex){
-			vec2 uvShift = (direction * raySizePixel) * invResolution;
+			vec2 uvShift = (randomizedDirection * randomizedRaySizePixel) * invResolution;
 			vec3 inspectPosition = fetchPosition(textCoordinates + uvShift);
 			
 			AO += computeAO(position, normal, inspectPosition);
@@ -87,7 +98,7 @@ void main(){
 	
 	AO = AO / (#NUM_DIRECTIONS# * numStepsAdjusted);
 	fragColor = clamp(1.0 - AO * 2.0, 0, 1);
-	
+
 	//DEBUG: display scope radius at screen center point
 /*	float centerDepthValue = texture2D(depthTex, vec2(0.5, 0.5)).r * 2.0f - 1.0f;
 	float centerLinearizedDepthValue = linearizeDepth(centerDepthValue);
@@ -96,4 +107,7 @@ void main(){
 	if(lengthToCenter < centerZScreenRadius){
 		fragColor = 0.0f;
 	}*/
+	
+	//DEBUG: display random texture
+/*	fragColor = randomValues.b; */
 }
