@@ -13,8 +13,8 @@
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_NUM_DIRECTIONS 8
 #define DEFAULT_NUM_STEPS 4
-#define DEFAULT_RADIUS 0.3
-#define DEFAULT_AO_EXPONENT 1.5
+#define DEFAULT_RADIUS 0.35
+#define DEFAULT_AO_EXPONENT 1.2
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 5.0
 #define DEFAULT_BLUR_SIZE 5
 #define DEFAULT_BLUR_SHARPNESS 40.0
@@ -380,7 +380,7 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D, randomTexID);
 
 		ShaderManager::instance()->bind(hbaoShader);
-		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() *camera->getViewMatrix()).inverse());
+		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
 
 		glViewport(0, 0, textureSizeX, textureSizeY);
 

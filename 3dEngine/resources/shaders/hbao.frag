@@ -60,7 +60,7 @@ void main(){
 	float linearizedDepthValue = linearizeDepth(depthValue);
 	float zScreenRadius = nearPlaneScreenRadius / linearizedDepthValue; //radius in pixel at position.z
 	if(zScreenRadius < MIN_RADIUS_THRESHOLD){
-		fragColor = 1.0f;
+		fragColor = 0.0f;
 		return;
 	}
 	
@@ -89,7 +89,7 @@ void main(){
 			
 			AO += computeAO(position, normal, inspectPosition);
 			
-			raySizePixel += stepSizePixel;
+			randomizedRaySizePixel += stepSizePixel;
 		}
 		rotationAngle += rotationAngleStep;
 	}
