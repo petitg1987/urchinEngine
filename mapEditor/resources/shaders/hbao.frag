@@ -45,13 +45,9 @@ float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
 
 	float Vlength = length(V);
 	float normalDotV = dot(normal, V/Vlength);
-	 
-  	if(normalDotV < #BIAS_ANGLE#){
-  		return 0.0;
-  	}
-	
-  	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);  	
-	return normalDotV * linearAttenuationFactor;
+  	
+  	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);
+	return max(normalDotV - #BIAS_ANGLE#, 0.0f) * linearAttenuationFactor;
 }
 
 float linearizeDepth(float depthValue){
@@ -73,13 +69,15 @@ void main(){
 	vec3 randomValues = texture2D(randomTex, (textCoordinates/(invResolution*#RANDOM_TEXTURE_SIZE#)) * #TEXTURE_SIZE_FACTOR#).xyz;
 		
 	int numStepsAdjusted = min(#NUM_STEPS#, int(zScreenRadius - 1)); //avoid too much steps in case of small radius
-	float stepSizePixel = zScreenRadius / (numStepsAdjusted + 1); //+1: avoid total attenuation at last step
+	float stepSizePixel = zScreenRadius / (float(numStepsAdjusted) + 1.0f); //+1: avoid total attenuation at last step
 	float halfStepSizePixel = stepSizePixel / 2.0f;
-	float rotationAngleStep = 2.0f*M_PI / #NUM_DIRECTIONS#;
+	
+	int numDirectionsAdjusted = min(#NUM_DIRECTIONS#, int(zScreenRadius - 1)); //avoid too much directions in case of small radius
+	float rotationAngleStep = 2.0f*M_PI / numDirectionsAdjusted;
 
 	float AO = 0.0f;
 	float rotationAngle = 0.0f;
-	for(int directionIndex=0; directionIndex<#NUM_DIRECTIONS#; ++directionIndex){
+	for(int directionIndex=0; directionIndex<numDirectionsAdjusted; ++directionIndex){
 		vec2 direction = vec2(sin(rotationAngle), cos(rotationAngle));
 		vec2 randomizedDirection = rotateDirection(direction, randomValues.xy);
 		
@@ -96,7 +94,7 @@ void main(){
 		rotationAngle += rotationAngleStep;
 	}
 	
-	AO = clamp(AO / (#NUM_DIRECTIONS# * numStepsAdjusted), 0.0f, 1.0f);
+	AO = clamp(AO / (numDirectionsAdjusted * numStepsAdjusted), 0.0f, 1.0f);
 	fragColor = pow(AO, #AO_EXPONENT#);
 
 	//DEBUG: display scope radius at screen center point
@@ -105,9 +103,9 @@ void main(){
 	float centerZScreenRadius = nearPlaneScreenRadius / centerLinearizedDepthValue;
 	float lengthToCenter = length((textCoordinates - vec2(0.5, 0.5)) / invResolution);
 	if(lengthToCenter < centerZScreenRadius){
-		fragColor = 0.0f;
+		fragColor = 1.0f;
 	}*/
 	
 	//DEBUG: display random texture
-/*	fragColor = randomValues.b; */
+/*	fragColor = randomValues.b;*/
 }
