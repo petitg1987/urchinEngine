@@ -18,7 +18,7 @@ float linearizeDepth(float depthValue){
 
 float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inout float totalWeight){
 	float texValue = texture2D(tex, textCoordinates+uvOffset).r;
-	float depthValue = texture2D(depthTex, textCoordinates).r * 2.0f - 1.0f;
+	float depthValue = texture2D(depthTex, textCoordinates).r;
 	float linearizedDepthValue = linearizeDepth(depthValue);
 	
 	const float blurSigma = float(#KERNEL_RADIUS#) * 0.5f;

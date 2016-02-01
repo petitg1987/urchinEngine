@@ -21,7 +21,7 @@ vec3 fetchPosition(vec2 textCoord, float depthValue){
 	vec4 texPosition = vec4(
 		textCoord.s * 2.0f - 1.0f,
 		textCoord.t * 2.0f - 1.0f,
-		depthValue,
+		depthValue * 2.0f - 1.0f,
 		1.0
 	);
 	vec4 position = mInverseViewProjection * texPosition;
@@ -30,7 +30,7 @@ vec3 fetchPosition(vec2 textCoord, float depthValue){
 }
 
 vec3 fetchPosition(vec2 textCoord){
-	float depthValue = texture2D(depthTex, textCoord).r * 2.0f - 1.0f;
+	float depthValue = texture2D(depthTex, textCoord).r;
 	return fetchPosition(textCoord, depthValue);
 }
 
@@ -56,7 +56,7 @@ float linearizeDepth(float depthValue){
 }
 
 void main(){
-	float depthValue = texture2D(depthTex, textCoordinates).r * 2.0f - 1.0f;	
+	float depthValue = texture2D(depthTex, textCoordinates).r;	
 	float linearizedDepthValue = linearizeDepth(depthValue);
 	float zScreenRadius = nearPlaneScreenRadius / linearizedDepthValue; //radius in pixel at position.z
 	if(zScreenRadius < MIN_RADIUS_THRESHOLD){

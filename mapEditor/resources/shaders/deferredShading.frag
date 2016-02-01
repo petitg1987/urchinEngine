@@ -43,7 +43,7 @@ vec4 fetchPosition(vec2 textCoord, float depthValue){
 	vec4 texPosition = vec4(
 		textCoord.s * 2.0f - 1.0f,
 		textCoord.t * 2.0f - 1.0f,
-		depthValue,
+		depthValue * 2.0f - 1.0f,
 		1.0
 	);
 	vec4 position = mInverseViewProjection * texPosition;
@@ -110,7 +110,7 @@ void main(){
 		return;
 	}
 	
-	float depthValue = texture2D(depthTex, textCoordinates).r * 2.0f - 1.0f;
+	float depthValue = texture2D(depthTex, textCoordinates).r;
 	vec4 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
@@ -155,7 +155,7 @@ void main(){
 		vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
 		vec4(colorValue, 0.0, colorValue, 1.0),	vec4(colorValue, colorValue, 0.0, 1.0));
 	#LOOP2_START(#NUMBER_SHADOW_MAPS#)#
-		if(texPosition.z < depthSplitDistance[#LOOP2_COUNTER#]){
+		if(depthValue < depthSplitDistance[#LOOP2_COUNTER#]){
 			fragColor += splitColors[#LOOP2_COUNTER#%5];
 			
 			#LOOP2_STOP#

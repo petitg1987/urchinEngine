@@ -720,7 +720,7 @@ namespace urchin
 		for(unsigned int i=0; i<nbShadowMaps; ++i)
 		{
 			float currSplitDistance = splittedDistance[i];
-			depthSplitDistance[i] = (projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance);
+			depthSplitDistance[i] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
 		}
 
 		glUniform1fv(depthSplitDistanceLoc, nbShadowMaps, depthSplitDistance);
