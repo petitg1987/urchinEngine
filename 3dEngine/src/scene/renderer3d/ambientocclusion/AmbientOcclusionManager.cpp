@@ -3,6 +3,7 @@
 #include <string>
 #include <cmath>
 #include <locale>
+#include <limits>
 #include <random>
 
 #include "AmbientOcclusionManager.h"
@@ -13,8 +14,8 @@
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_NUM_DIRECTIONS 8
 #define DEFAULT_NUM_STEPS 4
-#define DEFAULT_RADIUS 0.35
-#define DEFAULT_AO_EXPONENT 1.2
+#define DEFAULT_RADIUS 0.20
+#define DEFAULT_AO_EXPONENT 1.0
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 5.0
 #define DEFAULT_BLUR_SIZE 5
 #define DEFAULT_BLUR_SHARPNESS 40.0

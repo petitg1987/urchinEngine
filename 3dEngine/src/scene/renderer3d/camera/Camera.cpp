@@ -57,7 +57,7 @@ namespace urchin
 		mProjection.setValues(
 			fov/ratio, 	0, 		0, 		0,
 			0, 				fov, 	0, 		0,
-			0, 				0, 		(farPlane+nearPlane)/(nearPlane-farPlane),  (2*farPlane*nearPlane)/(nearPlane-farPlane),
+			0, 				0, 		(farPlane+nearPlane)/(nearPlane-farPlane),  (2.0*farPlane*nearPlane)/(nearPlane-farPlane),
 			0, 				0, 		-1,		0);
 
 		//frustum

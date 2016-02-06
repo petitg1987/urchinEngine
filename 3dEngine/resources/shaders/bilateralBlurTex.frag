@@ -12,8 +12,9 @@ in vec2 textCoordinates;
 layout (location = 0) out #OUTPUT_TYPE# fragColor;
 
 float linearizeDepth(float depthValue){
+	float unmapDepthValue = depthValue * 2.0 - 1.0;
 	return (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] - 
-			depthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0=nearPlane, 1.0=far plane]
+			unmapDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0=nearPlane, 1.0=far plane]
 }
 
 float bilateralBlur(vec2 uvOffset, int r, float linearizedDepthCenterValue, inout float totalWeight){
