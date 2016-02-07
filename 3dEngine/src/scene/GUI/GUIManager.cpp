@@ -208,10 +208,10 @@ namespace urchin
 //			std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
 //			Font *font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*) sizeFontChunk->getIntValue());
 //
-//			TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_FACTOR);
+//			TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer.setPosition(TextureDisplayer::USER_DEFINED_X, TextureDisplayer::USER_DEFINED_Y);
 //			textureDisplayer.setSize(20.0, font->getDimensionTexture() + 20.0, 20.0, font->getDimensionTexture() + 20.0);
-//			textureDisplayer.initialize(width, height);
+//			textureDisplayer.initialize(width, height, -1.0, -1.0);
 //			textureDisplayer.display();
 //			font->release();
 		#endif

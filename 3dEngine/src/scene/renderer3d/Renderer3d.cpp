@@ -398,42 +398,44 @@ namespace urchin
 
 		#ifdef _DEBUG
 			//display depth buffer
-//			TextureDisplayer textureDisplayer0(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_FACTOR);
+//			float depthIntensity = 5.0f;
+//			TextureDisplayer textureDisplayer0(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_VALUE, depthIntensity);
 //			textureDisplayer0.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
-//			textureDisplayer0.initialize(width, height);
+//			textureDisplayer0.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer0.display();
 
 			//display color buffer
-//			TextureDisplayer textureDisplayer1(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_FACTOR);
+//			TextureDisplayer textureDisplayer1(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer1.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
-//			textureDisplayer1.initialize(width, height);
+//			textureDisplayer1.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer1.display();
 
 			//display normal and ambient buffer
-//			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_FACTOR);
+//			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
-//			textureDisplayer2.initialize(width, height);
+//			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer2.display();
 
 			//display illuminated scene buffer
-//			TextureDisplayer textureDisplayer3(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_FACTOR);
+//			TextureDisplayer textureDisplayer3(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer3.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
-//			textureDisplayer3.initialize(width, height);
+//			textureDisplayer3.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer3.display();
 
 			//display shadow map
 //			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
 //			const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
 //			unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-//			TextureDisplayer textureDisplayer4(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_FACTOR);
+//			TextureDisplayer textureDisplayer4(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer4.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
-//			textureDisplayer4.initialize(width, height);
+//			textureDisplayer4.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer4.display();
 
 			//display ambient occlusion buffer
-//			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::DEFAULT_FACTOR);
+//			float ambientOcclusionIntensity = 2.0f;
+//			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
 //			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
-//			textureDisplayer5.initialize(width, height);
+//			textureDisplayer5.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer5.display();
 		#endif
 	}

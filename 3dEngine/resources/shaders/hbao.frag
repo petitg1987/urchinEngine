@@ -63,7 +63,7 @@ float toWorldDepthValue(float linearizedDepthValue){
 void main(){
 	float depthValue = texture2D(depthTex, textCoordinates).r;	
 	float linearizedDepthValue = linearizeDepth(depthValue);
-	float zScreenRadius = (nearPlaneScreenRadius / toWorldDepthValue(linearizedDepthValue)) / invResolution.y; //radius in pixel at position.z
+	float zScreenRadius = nearPlaneScreenRadius / toWorldDepthValue(linearizedDepthValue); //radius in pixel at position.z
 	if(zScreenRadius < MIN_RADIUS_THRESHOLD){
 		fragColor = 0.0f;
 		return;
@@ -105,7 +105,7 @@ void main(){
 	//DEBUG: display scope radius at screen center point
 /*	float centerDepthValue = texture2D(depthTex, vec2(0.5, 0.5)).r;
 	float centerLinearizedDepthValue = linearizeDepth(centerDepthValue);
-	float centerZScreenRadius = (nearPlaneScreenRadius / toWorldDepthValue(centerLinearizedDepthValue)) / invResolution.y;
+	float centerZScreenRadius = nearPlaneScreenRadius / toWorldDepthValue(centerLinearizedDepthValue);
 	float lengthToCenter = length((textCoordinates - vec2(0.5, 0.5)) / invResolution);
 	if(lengthToCenter < centerZScreenRadius){
 		fragColor = 1.0f;

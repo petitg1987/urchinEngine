@@ -14,8 +14,8 @@
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_NUM_DIRECTIONS 8
 #define DEFAULT_NUM_STEPS 4
-#define DEFAULT_RADIUS 0.20
-#define DEFAULT_AO_EXPONENT 1.0
+#define DEFAULT_RADIUS 0.15
+#define DEFAULT_AO_EXPONENT 0.7
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 5.0
 #define DEFAULT_BLUR_SIZE 5
 #define DEFAULT_BLUR_SHARPNESS 40.0
@@ -30,6 +30,7 @@ namespace urchin
 		sceneHeight(0),
 		nearPlane(0.0f),
 		farPlane(0.0f),
+		projectionScale(0.0f),
 
 		textureSize((AOTextureSize)DEFAULT_TEXTURE_SIZE),
 		textureSizeX(0),
@@ -141,6 +142,7 @@ namespace urchin
 		sceneHeight = height;
 		
 		createOrUpdateTexture();
+		loadRadiusUniform();
 
 		ShaderManager::instance()->bind(hbaoShader);
 		Vector2<float> invResolution(1.0f/sceneWidth, 1.0f/sceneHeight);
@@ -193,6 +195,14 @@ namespace urchin
 		horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 	}
 
+	void AmbientOcclusionManager::loadRadiusUniform() const
+	{
+		ShaderManager::instance()->bind(hbaoShader);
+
+		float nearPlaneScreenRadiusInPixel = radius * projectionScale * sceneHeight;
+		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
+	}
+
 	void AmbientOcclusionManager::generateRandomTexture(unsigned int hbaoShader)
 	{
 		std::default_random_engine generator;
@@ -235,14 +245,13 @@ namespace urchin
 
 		nearPlane = camera->getNearPlane();
 		farPlane = camera->getFarPlane();
+		projectionScale = camera->getProjectionMatrix()(1, 1);
 
 		ShaderManager::instance()->bind(hbaoShader);
-
-		float nearPlaneScreenRadiusInPixel = radius * camera->getProjectionMatrix()(1, 1);
-		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
-
 		float cameraPlanes[2] = {nearPlane, farPlane};
 		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
+
+		loadRadiusUniform();
 
 		verticalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 		horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);

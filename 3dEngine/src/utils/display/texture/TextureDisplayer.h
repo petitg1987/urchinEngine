@@ -36,26 +36,28 @@ namespace urchin
 				USER_DEFINED_Y
 			};
 
-			enum ColorFactor
+			enum ColorType
 			{
-				DEFAULT_FACTOR,
-				DEPTH_FACTOR
+				DEFAULT_VALUE,
+				DEPTH_VALUE,
+				GRAYSCALE_VALUE,
+				INVERSE_GRAYSCALE_VALUE
 			};
 
-			TextureDisplayer(unsigned int, TextureDisplayer::ColorFactor);
-			TextureDisplayer(unsigned int, unsigned int, TextureDisplayer::ColorFactor);
+			TextureDisplayer(unsigned int, TextureDisplayer::ColorType, float colorIntensity = 1.0);
+			TextureDisplayer(unsigned int, unsigned int, TextureDisplayer::ColorType, float colorIntensity = 1.0);
 			~TextureDisplayer();
 
 			void setPosition(TextureDisplayer::CoordinateX, TextureDisplayer::CoordinateY);
 			void setSize(float, float, float, float);
 			void setFullScreen(bool);
 
-			void initialize(int, int);
+			void initialize(int, int, float, float);
 
 			void display();
 
 		private:
-			void initializeShader();
+			void initializeShader(float, float);
 
 			bool isInitialized;
 
@@ -66,13 +68,14 @@ namespace urchin
 
 			//visual
 			unsigned int textureID;
-			TextureDisplayer::ColorFactor colorFactor;
+			TextureDisplayer::ColorType colorType;
+			float colorIntensity;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 
 			Matrix3<float> mProjection;
 			unsigned int displayTextureShader;
 			int layer;
-			int mProjectionLoc, diffuseTexLoc, colorFactorLoc, layerLoc;
+			int mProjectionLoc, diffuseTexLoc;
 	};
 
 }

@@ -48,12 +48,14 @@ namespace urchin
 		private:
 			int retrieveTextureSizeFactor();
 			void createOrUpdateTexture();
+			void loadRadiusUniform() const;
 			void generateRandomTexture(unsigned int);
 
 			//scene information
 			bool isInitialized;
 			int sceneWidth, sceneHeight;
 			float nearPlane, farPlane;
+			float projectionScale;
 
 			//tweak
 			AOTextureSize textureSize;

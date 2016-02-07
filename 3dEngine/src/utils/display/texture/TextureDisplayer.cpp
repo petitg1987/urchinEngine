@@ -8,7 +8,7 @@
 namespace urchin
 {
 
-	TextureDisplayer::TextureDisplayer(unsigned int textureID, TextureDisplayer::ColorFactor colorFactor) :
+	TextureDisplayer::TextureDisplayer(unsigned int textureID, TextureDisplayer::ColorType colorType, float colorIntensity) :
 			isInitialized(false),
 			coordinateX(TextureDisplayer::LEFT),
 			coordinateY(TextureDisplayer::BOTTOM),
@@ -18,18 +18,17 @@ namespace urchin
 			userMinY(0.0),
 			userMaxY(1.0),
 			textureID(textureID),
-			colorFactor(colorFactor),
+			colorType(colorType),
+			colorIntensity(colorIntensity),
 			displayTextureShader(0),
 			layer(-1),
 			mProjectionLoc(-1),
-			diffuseTexLoc(-1),
-			colorFactorLoc(-1),
-			layerLoc(-1)
+			diffuseTexLoc(-1)
 	{
 
 	}
 
-	TextureDisplayer::TextureDisplayer(unsigned int textureID, unsigned int layer, TextureDisplayer::ColorFactor colorFactor) :
+	TextureDisplayer::TextureDisplayer(unsigned int textureID, unsigned int layer, TextureDisplayer::ColorType colorType, float colorIntensity) :
 			isInitialized(false),
 			coordinateX(TextureDisplayer::LEFT),
 			coordinateY(TextureDisplayer::BOTTOM),
@@ -39,13 +38,12 @@ namespace urchin
 			userMinY(0.0),
 			userMaxY(1.0),
 			textureID(textureID),
-			colorFactor(colorFactor),
+			colorType(colorType),
+			colorIntensity(colorIntensity),
 			displayTextureShader(0),
 			layer(layer),
 			mProjectionLoc(-1),
-			diffuseTexLoc(-1),
-			colorFactorLoc(-1),
-			layerLoc(-1)
+			diffuseTexLoc(-1)
 	{
 
 	}
@@ -101,7 +99,7 @@ namespace urchin
 		this->fullScreen = fullScreen;
 	}
 
-	void TextureDisplayer::initialize(int sceneWidth, int sceneHeight)
+	void TextureDisplayer::initialize(int sceneWidth, int sceneHeight, float nearPlane, float farPlane)
 	{
 		#ifdef _DEBUG
 			if(isInitialized)
@@ -110,7 +108,7 @@ namespace urchin
 			}
 		#endif
 
-		initializeShader();
+		initializeShader(nearPlane, farPlane);
 
 		float minX, maxX, minY, maxY;
 		if(fullScreen)
@@ -183,36 +181,35 @@ namespace urchin
 		isInitialized = true;
 	}
 
-	void TextureDisplayer::initializeShader()
+	void TextureDisplayer::initializeShader(float nearPlane, float farPlane)
 	{
-		float colorFactorValue;
-		switch(colorFactor)
-		{
-			case TextureDisplayer::DEFAULT_FACTOR:
-				colorFactorValue = 1.0;
-				break;
-			case TextureDisplayer::DEPTH_FACTOR:
-				colorFactorValue = 200.0;
-				break;
-			default:
-				throw std::domain_error("Unsupported color factor");
-				break;
-		}
+		std::map<std::string, std::string> textureDisplayTokens;
+		textureDisplayTokens["IS_DEFAULT_VALUE"] = colorType==ColorType::DEFAULT_VALUE ? "true" : "false";
+		textureDisplayTokens["IS_DEPTH_VALUE"] = colorType==ColorType::DEPTH_VALUE ? "true" : "false";
+		textureDisplayTokens["IS_GRAYSCALE_VALUE"] = colorType==ColorType::GRAYSCALE_VALUE ? "true" : "false";
+		textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType==ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
 
 		const std::string &fragShaderName = (layer==-1) ? "displayTexture.frag" : "displayTextureArray.frag";
-		displayTextureShader = ShaderManager::instance()->createProgram("displayTexture.vert", fragShaderName);
+		displayTextureShader = ShaderManager::instance()->createProgram("displayTexture.vert", fragShaderName, textureDisplayTokens);
 
 		ShaderManager::instance()->bind(displayTextureShader);
-		mProjectionLoc  = glGetUniformLocation(displayTextureShader, "mProjection");
-		diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
-		colorFactorLoc = glGetUniformLocation(displayTextureShader, "colorFactor");
-		if(layer!= -1)
+		unsigned int colorIntensityLoc = glGetUniformLocation(displayTextureShader, "colorIntensity");
+		glUniform1f(colorIntensityLoc, colorIntensity);
+
+		unsigned int cameraPlanesLoc = glGetUniformLocation(displayTextureShader, "cameraPlanes");
+		float cameraPlanes[2] = {nearPlane, farPlane};
+		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
+
+		unsigned int diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
+		glUniform1i(diffuseTexLoc, GL_TEXTURE0-GL_TEXTURE0);
+
+		if(layer!=-1)
 		{
-			layerLoc = glGetUniformLocation(displayTextureShader, "layer");
+			unsigned int layerLoc = glGetUniformLocation(displayTextureShader, "layer");
 			glUniform1i(layerLoc, layer);
 		}
 
-		glUniform1f(colorFactorLoc, colorFactorValue);
+		mProjectionLoc  = glGetUniformLocation(displayTextureShader, "mProjection");
 	}
 
 	void TextureDisplayer::display()
@@ -228,8 +225,6 @@ namespace urchin
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture((layer==-1) ? GL_TEXTURE_2D : GL_TEXTURE_2D_ARRAY, textureID);
-
-		glUniform1i(diffuseTexLoc, 0);
 
 		quadDisplayer->display();
 	}
