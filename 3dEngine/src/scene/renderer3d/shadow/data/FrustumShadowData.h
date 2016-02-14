@@ -17,7 +17,7 @@ namespace urchin
 			FrustumShadowData(unsigned int, float);
 			~FrustumShadowData();
 
-			void updateShadowCasterReceiverBox(const AABBox<float> &);
+			void updateShadowCasterReceiverBox(const AABBox<float> &, bool);
 			const AABBox<float> &getShadowCasterReceiverBox() const;
 			const Matrix4<float> &getLightProjectionMatrix() const;
 			bool isShadowCasterReceiverBoxUpdated() const;

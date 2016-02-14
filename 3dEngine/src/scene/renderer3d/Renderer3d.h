@@ -36,7 +36,9 @@ namespace urchin
 			//managers
 			LightManager *getLightManager() const;
 			OctreeManager<Model> *getModelOctreeManager() const;
+
 			ShadowManager *getShadowManager() const;
+			void activateShadow(bool);
 
 			AmbientOcclusionManager *getAmbientOcclusionManager() const;
 			void activateAmbientOcclusion(bool);
@@ -89,7 +91,9 @@ namespace urchin
 			GeometryDisplayer *geometryDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
 			LightManager *lightManager;
+
 			ShadowManager *shadowManager;
+			bool isShadowActivated;
 
 			AmbientOcclusionManager *ambientOcclusionManager;
 			bool isAmbientOcclusionActivated;
@@ -122,7 +126,7 @@ namespace urchin
 
 			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
 			unsigned int deferredShadingShader;
-			int mInverseViewProjectionLoc, viewPositionLoc, hasAmbientOcclusionLoc;
+			int mInverseViewProjectionLoc, viewPositionLoc, hasShadowLoc, hasAmbientOcclusionLoc;
 	};
 
 }

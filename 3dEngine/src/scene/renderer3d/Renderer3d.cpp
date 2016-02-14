@@ -27,11 +27,14 @@ namespace urchin
 			deferredShadingShader(0),
 			mInverseViewProjectionLoc(0),
 			viewPositionLoc(0),
+			hasShadowLoc(0),
 			hasAmbientOcclusionLoc(0)
 	{
 		lightManager = new LightManager();
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
+
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
+		isShadowActivated = true;
 
 		ambientOcclusionManager = new AmbientOcclusionManager();
 		isAmbientOcclusionActivated = true;
@@ -132,6 +135,9 @@ namespace urchin
 		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
 		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
+		hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
+		glUniform1i(hasShadowLoc, isShadowActivated);
+
 		hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
 		glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
 	}
@@ -204,6 +210,19 @@ namespace urchin
 	ShadowManager *Renderer3d::getShadowManager() const
 	{
 		return shadowManager;
+	}
+
+	void Renderer3d::activateShadow(bool isShadowActivated)
+	{
+		this->isShadowActivated = isShadowActivated;
+
+		if(isInitialized)
+		{
+			ShaderManager::instance()->bind(deferredShadingShader);
+			glUniform1i(hasShadowLoc, isShadowActivated);
+
+			shadowManager->forceUpdateAllShadowMaps();
+		}
 	}
 
 	AmbientOcclusionManager *Renderer3d::getAmbientOcclusionManager() const
@@ -457,7 +476,10 @@ namespace urchin
 		modelDisplayer->updateAnimation(invFrameRate);
 
 		//update shadow maps
-		shadowManager->updateShadowMaps();
+		if(isShadowActivated)
+		{
+			shadowManager->updateShadowMaps();
+		}
 	}
 
 	/**
@@ -522,7 +544,10 @@ namespace urchin
 		lightManager->loadLights();
 
 		unsigned int shadowMapTextureUnitStart = 3;
-		shadowManager->loadShadowMaps(camera->getViewMatrix(), shadowMapTextureUnitStart);
+		if(isShadowActivated)
+		{
+			shadowManager->loadShadowMaps(camera->getViewMatrix(), shadowMapTextureUnitStart);
+		}
 
 		if(isAmbientOcclusionActivated)
 		{

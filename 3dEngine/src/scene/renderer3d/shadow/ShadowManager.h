@@ -57,6 +57,7 @@ namespace urchin
 			std::set<Model *> getVisibleModels();
 
 			void updateVisibleModels(const Frustum<float> &);
+			void forceUpdateAllShadowMaps();
 			void updateShadowMaps();
 			void loadShadowMaps(const Matrix4<float> &, unsigned int);
 			
@@ -110,6 +111,7 @@ namespace urchin
 			std::vector<float> splittedDistance;
 			std::vector<Frustum<float>> splittedFrustums;
 			std::map<const Light *, ShadowData *> shadowDatas;
+			bool bForceUpdateAllShadowMaps;
 			unsigned int depthSplitDistanceLoc;
 
 			//light information

@@ -41,6 +41,7 @@ namespace urchin
 			shadowUniform(nullptr),
 			shadowModelUniform(nullptr),
 			frustumDistance(0.0),
+			bForceUpdateAllShadowMaps(false),
 			depthSplitDistanceLoc(0),
 			lightsLocation(nullptr)
 	{
@@ -413,12 +414,14 @@ namespace urchin
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
 						models, shadowData->getLightViewMatrix());
-				shadowData->getFrustumShadowData(i)->updateShadowCasterReceiverBox(aabboxSceneDependent);
+				shadowData->getFrustumShadowData(i)->updateShadowCasterReceiverBox(aabboxSceneDependent, bForceUpdateAllShadowMaps);
 			}
 		}else
 		{
 			throw std::runtime_error("Shadow not supported on omnidirectional light.");
 		}
+
+		bForceUpdateAllShadowMaps = false;
 	}
 
 	/**
@@ -648,6 +651,11 @@ namespace urchin
 		{
 			updateFrustumShadowData(it->first, it->second);
 		}
+	}
+
+	void ShadowManager::forceUpdateAllShadowMaps()
+	{
+		bForceUpdateAllShadowMaps = true;
 	}
 
 	void ShadowManager::updateShadowMaps()
