@@ -93,7 +93,7 @@ namespace urchin
 		camera->setDistance(0.0);
 		camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
 		sceneManager->get3dRenderer()->setCamera(camera);
-		sceneManager->get3dRenderer()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.6, 0.6, 0.3, 0.0));
+		sceneManager->get3dRenderer()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 	}
 
 	void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)

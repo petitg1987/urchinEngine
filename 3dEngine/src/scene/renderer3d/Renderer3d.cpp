@@ -451,7 +451,7 @@ namespace urchin
 //			textureDisplayer4.display();
 
 			//display ambient occlusion buffer
-//			float ambientOcclusionIntensity = 2.0f;
+//			float ambientOcclusionIntensity = 10.0f;
 //			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
 //			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
 //			textureDisplayer5.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());

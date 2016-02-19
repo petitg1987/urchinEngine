@@ -37,8 +37,10 @@
 # Bug :
 ############################################
 - SHADOW
-	- (3) Renderer3d#deferredGeometryRendering(): display of scene independent box visible from light don't work 
-	correctly: only first one is displayed.
+	- (3) Renderer3d#deferredGeometryRendering(): only one scene independent box visible from light is displayed
+- AMBIENT OCCLUSION
+	- (2) In a wall corner, move camera to bottom or top: AO is less intensive
+	- (2) Blur is not well smooth but has steps
 
 ############################################
 # Notes :

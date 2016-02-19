@@ -116,11 +116,11 @@ void main(){
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
 	
-	fragColor = globalAmbient * modelAmbient;
+	fragColor = globalAmbient;
 	
 	if(hasAmbientOcclusion){
 		float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
-		fragColor *= (1.0f - ambienOcclusionFactor);
+		fragColor -= vec4(ambienOcclusionFactor, ambienOcclusionFactor, ambienOcclusionFactor, 0.0f);
 	}
 		
 	for(int i=0; i<#MAX_LIGHTS#;++i){

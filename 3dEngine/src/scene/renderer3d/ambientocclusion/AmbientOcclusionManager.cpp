@@ -15,7 +15,7 @@
 #define DEFAULT_NUM_DIRECTIONS 6
 #define DEFAULT_NUM_STEPS 6
 #define DEFAULT_RADIUS 0.1
-#define DEFAULT_AO_EXPONENT 0.75
+#define DEFAULT_AO_EXPONENT 1.6
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 10.0
 #define DEFAULT_BLUR_SIZE 7
 #define DEFAULT_BLUR_SHARPNESS 40.0
@@ -164,8 +164,8 @@ namespace urchin
 		this->textureSizeY = sceneHeight / retrieveTextureSizeFactor();
 
 		glBindTexture(GL_TEXTURE_2D, ambientOcclusionTexID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, 0);
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 
@@ -174,6 +174,7 @@ namespace urchin
 				->textureType(GL_TEXTURE_2D)
 				->textureInternalFormat(GL_R16F)
 				->textureFormat(GL_RED)
+				->textureAccessFilter(GL_NEAREST)
 				->blurDirection(BilateralBlurFilterBuilder::VERTICAL_BLUR)
 				->blurSize(blurSize)
 				->blurSharpness(blurSharpness)
@@ -185,6 +186,7 @@ namespace urchin
 				->textureType(GL_TEXTURE_2D)
 				->textureInternalFormat(GL_R16F)
 				->textureFormat(GL_RED)
+				->textureAccessFilter(GL_LINEAR)
 				->blurDirection(BilateralBlurFilterBuilder::HORIZONTAL_BLUR)
 				->blurSize(blurSize)
 				->blurSharpness(blurSharpness)

@@ -17,6 +17,7 @@ uniform sampler2D colorTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D ambientOcclusionTex;
 uniform mat4 mInverseViewProjection;
+uniform bool hasShadow;
 uniform bool hasAmbientOcclusion;
 
 //lights and shadows:
@@ -115,11 +116,11 @@ void main(){
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
 	
-	fragColor = globalAmbient * modelAmbient;
+	fragColor = globalAmbient;
 	
 	if(hasAmbientOcclusion){
 		float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
-		fragColor *= (1.0f - ambienOcclusionFactor);
+		fragColor -= vec4(ambienOcclusionFactor, ambienOcclusionFactor, ambienOcclusionFactor, 0.0f);
 	}
 		
 	for(int i=0; i<#MAX_LIGHTS#;++i){
@@ -141,7 +142,10 @@ void main(){
 			float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
 			vec4 ambient = vec4(lightsInfo[i].lightAmbient, 0.0f) * modelAmbient;
 			
-			float percentLit = computeShadowContribution(i, depthValue, position);
+			float percentLit = 1.0;
+			if(hasShadow){
+				percentLit = computeShadowContribution(i, depthValue, position);
+			}
 			
 			fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
 		}else{
