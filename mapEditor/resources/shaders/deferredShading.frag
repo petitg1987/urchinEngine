@@ -17,6 +17,7 @@ uniform sampler2D colorTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D ambientOcclusionTex;
 uniform mat4 mInverseViewProjection;
+uniform bool hasLighting;
 uniform bool hasShadow;
 uniform bool hasAmbientOcclusion;
 
@@ -122,35 +123,39 @@ void main(){
 		float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
 		fragColor -= vec4(ambienOcclusionFactor, ambienOcclusionFactor, ambienOcclusionFactor, 0.0f);
 	}
-		
-	for(int i=0; i<#MAX_LIGHTS#;++i){
-		if(lightsInfo[i].isExist){
-			vec3 vertexToLightNormalized;
-			float lightAttenuation;
+
+	if(hasLighting){		
+		for(int i=0; i<#MAX_LIGHTS#;++i){
+			if(lightsInfo[i].isExist){
+				vec3 vertexToLightNormalized;
+				float lightAttenuation;
+					
+				if(lightsInfo[i].hasParallelBeams){ //sun light
+					vec3 vertexToLight = -lightsInfo[i].positionOrDirection;
+					vertexToLightNormalized = normalize(vertexToLight);
+					lightAttenuation = 1.0f;
+				}else{ //omnidirectional light
+					vec3 vertexToLight = lightsInfo[i].positionOrDirection - vec3(position);
+					float dist = length(vertexToLight);
+					vertexToLightNormalized = normalize(vertexToLight);
+					lightAttenuation = exp(-dist * lightsInfo[i].exponentialAttenuation);
+				}
 				
-			if(lightsInfo[i].hasParallelBeams){ //sun light
-				vec3 vertexToLight = -lightsInfo[i].positionOrDirection;
-				vertexToLightNormalized = normalize(vertexToLight);
-				lightAttenuation = 1.0f;
-			}else{ //omnidirectional light
-				vec3 vertexToLight = lightsInfo[i].positionOrDirection - vec3(position);
-				float dist = length(vertexToLight);
-				vertexToLightNormalized = normalize(vertexToLight);
-				lightAttenuation = exp(-dist * lightsInfo[i].exponentialAttenuation);
+				float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
+				vec4 ambient = vec4(lightsInfo[i].lightAmbient, 0.0f) * modelAmbient;
+				
+				float percentLit = 1.0;
+				if(hasShadow){
+					percentLit = computeShadowContribution(i, depthValue, position);
+				}
+				
+				fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
+			}else{
+				break; //no more light
 			}
-			
-			float NdotL = max(dot(normal, vertexToLightNormalized), 0.0f);
-			vec4 ambient = vec4(lightsInfo[i].lightAmbient, 0.0f) * modelAmbient;
-			
-			float percentLit = 1.0;
-			if(hasShadow){
-				percentLit = computeShadowContribution(i, depthValue, position);
-			}
-			
-			fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
-		}else{
-			break; //no more light
 		}
+	}else{
+		fragColor += diffuse;
 	}
 	
 	//DEBUG: add color to shadow map splits

@@ -54,9 +54,9 @@ namespace urchin
 		}
 
 		//2. compute the normals for each vertex
+		Vector3<float> tempNormalsByVertices[constMesh->getNumberVertices()];
 		for(unsigned int i=0;i<constMesh->getNumberVertices();i++)
 		{
-			dataVertices[i].normal.setNull();
 			dataVertices[i].nbFace = 0;
 		}
 		for(unsigned int i=0;i<constMesh->getNumberTriangles();++i)
@@ -65,21 +65,24 @@ namespace urchin
 
 			for(int j=0;j<3;j++)
 			{
-				//adds the normal to the previous normal (average between normals)
-				float nbFace = (float)dataVertices[pTris[j]].nbFace + 1.0;
-				dataVertices[pTris[j]].normal = ((normalByTriangles[i] + dataVertices[pTris[j]].normal * (float)dataVertices[pTris[j]].nbFace) / nbFace).normalize();
+				tempNormalsByVertices[pTris[j]] = normalByTriangles[i] + tempNormalsByVertices[pTris[j]];
 				dataVertices[pTris[j]].nbFace++;
+			}
+		}
+		for(unsigned int i=0;i<constMesh->getNumberVertices();++i)
+		{
+			//computes normal
+			dataVertices[i].normal = (tempNormalsByVertices[i] / (float)dataVertices[i].nbFace).normalize();
 
-				//computes tangent
-				const Vector3<float> &c1 = dataVertices[pTris[j]].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));
-				const Vector3<float> &c2 = dataVertices[pTris[j]].normal.crossProduct(Vector3<float>(0.0, 1.0, 0.0));
-				if(c1.squareLength() > c2.squareLength())
-				{
-					dataVertices[pTris[j]].tangent = c1.normalize();
-				}else
-				{
-					dataVertices[pTris[j]].tangent = c2.normalize();
-				}
+			//computes tangent
+			const Vector3<float> &c1 = dataVertices[i].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));
+			const Vector3<float> &c2 = dataVertices[i].normal.crossProduct(Vector3<float>(0.0, 1.0, 0.0));
+			if(c1.squareLength() > c2.squareLength())
+			{
+				dataVertices[i].tangent = c1.normalize();
+			}else
+			{
+				dataVertices[i].tangent = c2.normalize();
 			}
 		}
 	}

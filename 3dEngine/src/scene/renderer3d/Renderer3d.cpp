@@ -27,11 +27,14 @@ namespace urchin
 			deferredShadingShader(0),
 			mInverseViewProjectionLoc(0),
 			viewPositionLoc(0),
+			hasLightingLoc(0),
 			hasShadowLoc(0),
 			hasAmbientOcclusionLoc(0)
 	{
-		lightManager = new LightManager();
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
+
+		lightManager = new LightManager();
+		isLightingActivated = true;
 
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
 		isShadowActivated = true;
@@ -135,6 +138,9 @@ namespace urchin
 		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
 		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
+		hasLightingLoc = glGetUniformLocation(deferredShadingShader, "hasLighting");
+		glUniform1i(hasLightingLoc, isLightingActivated);
+
 		hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
 		glUniform1i(hasShadowLoc, isShadowActivated);
 
@@ -197,14 +203,25 @@ namespace urchin
 		antiAliasingManager->onResize(width, height);
 	}
 
+	OctreeManager<Model> *Renderer3d::getModelOctreeManager() const
+	{
+		return modelOctreeManager;
+	}
+
 	LightManager *Renderer3d::getLightManager() const
 	{
 		return lightManager;
 	}
 
-	OctreeManager<Model> *Renderer3d::getModelOctreeManager() const
+	void Renderer3d::activateLighting(bool isLightingActivated)
 	{
-		return modelOctreeManager;
+		this->isLightingActivated = isLightingActivated;
+
+		if(isInitialized)
+		{
+			ShaderManager::instance()->bind(deferredShadingShader);
+			glUniform1i(hasLightingLoc, isLightingActivated);
+		}
 	}
 
 	ShadowManager *Renderer3d::getShadowManager() const
@@ -541,7 +558,10 @@ namespace urchin
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
 		glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
 
-		lightManager->loadLights();
+		if(isLightingActivated)
+		{
+			lightManager->loadLights();
+		}
 
 		unsigned int shadowMapTextureUnitStart = 3;
 		if(isShadowActivated)

@@ -34,8 +34,10 @@ namespace urchin
 			void onResize(int, int);
 
 			//managers
-			LightManager *getLightManager() const;
 			OctreeManager<Model> *getModelOctreeManager() const;
+
+			LightManager *getLightManager() const;
+			void activateLighting(bool);
 
 			ShadowManager *getShadowManager() const;
 			void activateShadow(bool);
@@ -90,7 +92,9 @@ namespace urchin
 			ModelDisplayer *modelDisplayer;
 			GeometryDisplayer *geometryDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
+
 			LightManager *lightManager;
+			bool isLightingActivated;
 
 			ShadowManager *shadowManager;
 			bool isShadowActivated;
@@ -126,7 +130,7 @@ namespace urchin
 
 			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
 			unsigned int deferredShadingShader;
-			int mInverseViewProjectionLoc, viewPositionLoc, hasShadowLoc, hasAmbientOcclusionLoc;
+			int mInverseViewProjectionLoc, viewPositionLoc, hasLightingLoc, hasShadowLoc, hasAmbientOcclusionLoc;
 	};
 
 }
