@@ -46,4 +46,11 @@ namespace urchin
 		return ambientFactor;
 	}
 
+	std::vector<const Image *> Material::getTextures() const
+	{
+		std::vector<const Image *> textures = {getDiffuseTexture(), getNormalTexture()};
+
+		return textures;
+	}
+
 }

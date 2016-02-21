@@ -26,8 +26,9 @@ namespace urchin
 		MeshService::instance()->computeVertices(this, baseSkeleton, baseVertices);
 		MeshService::instance()->computeNormals(this, baseVertices, baseDataVertices);
 
-		//load the material
+		//load material
 		material = MediaManager::instance()->getMedia<Material>(materialFilename, loaderParams);
+		defineTextureWrap();
 	}
 
 	ConstMesh::~ConstMesh()
@@ -112,6 +113,28 @@ namespace urchin
 	const DataVertex *ConstMesh::getBaseDataVertices() const
 	{
 		return baseDataVertices;
+	}
+
+	void ConstMesh::defineTextureWrap()
+	{ //GL_CLAMP_TO_EDGE should be used when it's possible: give better result on edge.
+		bool needRepeatTexture = false;
+		for(unsigned int i=0; i<numVertices; ++i)
+		{
+			if(st[i].s > 1.0f || st[i].s < 0.0f
+					|| st[i].t > 1.0f || st[i].t < 0.0f)
+			{
+				needRepeatTexture = true;
+				break;
+			}
+		}
+
+		std::vector<const Image *> textures = material->getTextures();
+		for(auto texture : textures)
+		{
+			glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, needRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, needRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+		}
 	}
 
 }

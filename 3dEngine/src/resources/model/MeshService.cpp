@@ -53,8 +53,8 @@ namespace urchin
 			normalByTriangles.push_back(v1.crossProduct(v2).normalize());
 		}
 
-		//2. compute the normals for each vertex
-		Vector3<float> tempNormalsByVertices[constMesh->getNumberVertices()];
+		//2. compute the normals and tangents for each vertex
+		Vector3<float> normalsSum[constMesh->getNumberVertices()];
 		for(unsigned int i=0;i<constMesh->getNumberVertices();i++)
 		{
 			dataVertices[i].nbFace = 0;
@@ -65,14 +65,14 @@ namespace urchin
 
 			for(int j=0;j<3;j++)
 			{
-				tempNormalsByVertices[pTris[j]] = normalByTriangles[i] + tempNormalsByVertices[pTris[j]];
+				normalsSum[pTris[j]] = normalByTriangles[i] + normalsSum[pTris[j]];
 				dataVertices[pTris[j]].nbFace++;
 			}
 		}
 		for(unsigned int i=0;i<constMesh->getNumberVertices();++i)
 		{
 			//computes normal
-			dataVertices[i].normal = (tempNormalsByVertices[i] / (float)dataVertices[i].nbFace).normalize();
+			dataVertices[i].normal = (normalsSum[i] / (float)dataVertices[i].nbFace).normalize();
 
 			//computes tangent
 			const Vector3<float> &c1 = dataVertices[i].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));

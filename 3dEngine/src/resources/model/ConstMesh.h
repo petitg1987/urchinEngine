@@ -79,6 +79,8 @@ namespace urchin
 			const DataVertex *getBaseDataVertices() const;
 
 		private:
+			void defineTextureWrap();
+
 			Material *material;
 
 			const unsigned int numVertices;

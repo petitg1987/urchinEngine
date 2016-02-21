@@ -17,6 +17,8 @@ namespace urchin
 			const Image *getNormalTexture() const;
 			float getAmbientFactor() const;
 		
+			std::vector<const Image *> getTextures() const;
+
 		private:
 			Image *diffuseTexture;
 			Image *normalTexture;
