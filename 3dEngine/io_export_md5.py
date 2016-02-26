@@ -19,18 +19,18 @@
 
 #"""
 #Name: 'Quake Model 5 (.md5)...'
-#Blender: 263
+#Blender: 266
 #Group: 'Export'
 #Tooltip: 'Export a Quake Model 5 File'
 #
-#credit to der_ton for the 2.4x Blender export script
+#credit to der_ton for the 2.6x Blender export script
 #"""
 
 bl_info = { # changed from bl_addon_info in 2.57 -mikshaw
     "name": "Export idTech4 (.md5)",
     "author": "Paul Zirkle aka Keless, credit to der_ton, ported to Blender 2.62 by motorsep and tested by kat, special thanks to MCampagnini",
     "version": (1,0,0),
-    "blender": (2, 6, 3),
+    "blender": (2, 6, 6),
     "api": 31847,
     "location": "File > Export > Skeletal Mesh/Animation Data (.md5mesh/.md5anim)",
     "description": "Export idTech4 (.md5)",
@@ -91,25 +91,7 @@ def matrix_invert(m):
        + m.col[2][0] * (m.col[0][1] * m.col[1][2] - m.col[1][1] * m.col[0][2]))
   if det == 0.0: return None
   det = 1.0 / det
-# transposed matrix
-#  r = [ [
-#      det * (m.col[1][1] * m.col[2][2] - m.col[2][1] * m.col[1][2]),
-#    - det * (m.col[1][0] * m.col[2][2] - m.col[2][0] * m.col[1][2]),
-#      det * (m.col[1][0] * m.col[2][1] - m.col[2][0] * m.col[1][1]),
-#    ], [
-#    - det * (m.col[0][1] * m.col[2][2] - m.col[2][1] * m.col[0][2]),
-#     det * (m.col[0][0] * m.col[2][2] - m.col[2][0] * m.col[0][2]),
-#   - det * (m.col[0][0] * m.col[2][1] - m.col[2][0] * m.col[0][1]),
-#    ], [
-#      det * (m.col[0][1] * m.col[1][2] - m.col[1][1] * m.col[0][2]),
-#    - det * (m.col[0][0] * m.col[1][2] - m.col[1][0] * m.col[0][2]),
-#      det * (m.col[0][0] * m.col[1][1] - m.col[1][0] * m.col[0][1]),
-#    ], [
-#      0.0,
-#      0.0,
-#      0.0,
-#    ] ]
-# original matrix from 2.61 compaticle script adopted for 2.62; the mesh with this matric is consistent, but rotated 180 degrees around Z axis and centered at 0 0 0
+
   r = [ [
       det * (m.col[1][1] * m.col[2][2] - m.col[2][1] * m.col[1][2]),
     - det * (m.col[0][1] * m.col[2][2] - m.col[2][1] * m.col[0][2]),
@@ -166,7 +148,6 @@ class Mesh:
     buf = ""
     for submesh in self.submeshes:
       buf=buf + "mesh {\n"
-#      buf=buf + "mesh {\n\t// meshes: " + submesh.name + "\n"  # used for Sauerbraten -mikshaw
       meshnumber += 1
       buf=buf + submesh.to_md5mesh()
       buf=buf + "}\n\n"
@@ -400,8 +381,7 @@ class Bone:
     #    qy = -qy
     #    qz = -qz
     m = self.matrix
-#    bquat = self.matrix.to_quat()  #changed from matrix.toQuat() in blender 2.4x script
-    bquat = self.matrix.to_quaternion()  #changed from to_quat in 2.57 -mikshaw
+    bquat = self.matrix.to_quaternion()
     bquat.normalize()
     qx = bquat.x
     qy = bquat.y
@@ -542,13 +522,7 @@ def generateboundingbox(objects, md5animation, framerange):
         (lx, ly, lz ) = obj.location
         #bbox = obj.getBoundBox()
         bbox = obj.bound_box
-# transposed matrix
-#        matrix = [[1.0,  0.0,  0.0,  0.0],
-#          [0.0,  1.0,  1.0,  0.0],
-#          [0.0,  0.0,  1.0,  0.0],
-#          [0.0,  0.0,  0.0,  1.0],
-#          ]
-# original matrix from the 2.61 compatible script
+
         matrix = [[1.0,  0.0, 0.0, 0.0],
           [0.0,  1.0, 0.0, 0.0],
           [0.0,  1.0, 1.0, 0.0],
@@ -680,8 +654,12 @@ def save_md5(settings):
                 vertex = vertices[  face.vertices[i] ] #type of Vertex
               if not vertex: #found unique vertex, add to list
                 coord  = point_by_matrix( verts[face.vertices[i]].co, w_matrix ) #fix possible bug here
-                if face.use_smooth: normal = vector_normalize(vector_by_matrix( verts[face.vertices[i]].normal, w_matrix ))
-                vertex  = vertices[face.vertices[i]] = Vertex(submesh, coord, normal) 
+                if face.use_smooth:
+                    normal = vector_normalize(vector_by_matrix( verts[face.vertices[i]].normal, w_matrix ))
+                
+                vertex  = Vertex(submesh, coord, normal) 
+                if face.use_smooth: #smooth face can share vertex, not flat face
+                    vertices[face.vertices[i]] = vertex
                 createVertexA += 1
                 
                 influences = []
@@ -725,7 +703,8 @@ def save_md5(settings):
               if hasFaceUV: 
               	uv = [uv_textures.active.data[face.index].uv[i][0], uv_textures.active.data[face.index].uv[i][1]]
               	uv[1] = 1.0 - uv[1]  # should we flip Y? yes, new in Blender 2.5x
-              	if not vertex.maps: vertex.maps.append(Map(*uv))
+              	if not vertex.maps: 
+                  vertex.maps.append(Map(*uv))
               	elif (vertex.maps[0].u != uv[0]) or (vertex.maps[0].v != uv[1]):
                   # This vertex can be shared for Blender, but not for MD5
                   # MD5 does not support vertex sharing for 2 vertices with
@@ -797,8 +776,7 @@ def save_md5(settings):
             posebonemat.col[3][1],
             posebonemat.col[3][2],
             ]
-#        rot = posebonemat.to_quat().normalize()
-        rot = posebonemat.to_quaternion() # changed from to_quat in 2.57 -mikshaw
+        rot = posebonemat.to_quaternion()
         rot.normalize() # mikshaw
         rot = [rot.w,rot.x,rot.y,rot.z]
         
@@ -886,13 +864,8 @@ class ExportMD5(bpy.types.Operator):
 
   filepath = StringProperty(subtype = 'FILE_PATH',name="File Path", description="Filepath for exporting", maxlen= 1024, default= "")
   md5name = StringProperty(name="MD5 Name", description="MD3 header name / skin path (64 bytes)",maxlen=64,default="")
-  md5exportList = EnumProperty(name="Exports", items=exportModes, description="Choose export mode.", default='mesh & anim')
-  #md5logtype = EnumProperty(name="Save log", items=logenum, description="File logging options",default = 'console')
+  md5exportList = EnumProperty(name="Exports", items=exportModes, description="Choose export mode.", default='mesh only')
   md5scale = FloatProperty(name="Scale", description="Scale all objects from world origin (0,0,0)", min=0.001, max=1000.0, default=1.0,precision=6)
-  #md5offsetx = FloatProperty(name="Offset X", description="Transition scene along x axis",default=0.0,precision=5)
-  #md5offsety = FloatProperty(name="Offset Y", description="Transition scene along y axis",default=0.0,precision=5)
-  #md5offsetz = FloatProperty(name="Offset Z", description="Transition scene along z axis",default=0.0,precision=5)
-  
   
 
   def execute(self, context):

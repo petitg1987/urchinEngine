@@ -25,6 +25,8 @@
 - SCENE
 	- (3) [OPTIMIZATION] LOD
 	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
+- MODEL
+	- (2) [NEW FEATURE] Use own model file (MD5 compressed + physics shape + multiple UV coord by vertex on smooth face)
 - GLOBAL
 	- (3) [OPTIMIZATION] Use PGO in g++
 
