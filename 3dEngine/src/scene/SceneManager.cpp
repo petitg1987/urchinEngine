@@ -4,6 +4,8 @@
 
 #include "SceneManager.h"
 
+#define START_FPS 60
+
 namespace urchin
 {
 	
@@ -13,7 +15,7 @@ namespace urchin
 			sceneHeight(-1),
 			previousTime(std::chrono::high_resolution_clock::now()),
 			currFrame(0),
-			nbrFps(60), //60 fps by default
+			nbrFps(START_FPS),
 			indexFps(0),
 			refreshRateFps(ConfigService::instance()->getFloatValue("sceneManager.refreshRateFps"))
 	{
@@ -185,7 +187,7 @@ namespace urchin
 
 	int SceneManager::getFps() const
 	{
-		return (nbrFps==0 ? 60 : nbrFps);
+		return (nbrFps==0 ? START_FPS : nbrFps);
 	}
 
 	float SceneManager::getOneOnFps() const

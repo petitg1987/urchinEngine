@@ -629,6 +629,8 @@ namespace urchin
 					->build();
 			shadowDatas[light]->setHorizontalBlurFilter(horizontalBlurFilter);
 		}
+
+		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	}
 
 	void ShadowManager::removeShadowMaps(const Light *const light)
