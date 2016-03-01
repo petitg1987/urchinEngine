@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOADERMD5MESH_H
-#define ENGINE_LOADERMD5MESH_H
+#ifndef ENGINE_LOADERURCHINMESH_H
+#define ENGINE_LOADERURCHINMESH_H
 
 #include <string>
 #include <fstream>
@@ -10,10 +10,10 @@
 namespace urchin
 {
 	
-	class LoaderMD5Mesh : public Loader<ConstMeshes>
+	class LoaderUrchinMesh : public Loader<ConstMeshes>
 	{
 		public:
-			virtual ~LoaderMD5Mesh();
+			virtual ~LoaderUrchinMesh();
 
 			ConstMeshes *loadFromFile(const std::string &, void *);
 			

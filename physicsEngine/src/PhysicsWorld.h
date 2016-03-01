@@ -34,6 +34,9 @@ namespace urchin
 			Vector3<float> getGravity() const;
 
 			void start(float, unsigned int maxStep = 1);
+			void pause();
+			void play();
+			bool isPaused() const;
 			void interrupt();
 
 			#ifdef _DEBUG
@@ -51,10 +54,11 @@ namespace urchin
 			std::thread *physicsSimulationThread;
 			std::atomic_bool physicsSimulationStopper;
 
-			mutable std::mutex gravityMutex;
+			mutable std::mutex mutex;
 			Vector3<float> gravity;
 			float timeStep;
 			unsigned int maxSubStep;
+			bool paused;
 
 			BodyManager *bodyManager;
 			CollisionWorld *collisionWorld;

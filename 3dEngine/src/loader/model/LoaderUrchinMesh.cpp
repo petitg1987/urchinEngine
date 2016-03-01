@@ -2,17 +2,17 @@
 #include <stdexcept>
 #include "UrchinCommon.h"
 
-#include "loader/model/LoaderMD5Mesh.h"
+#include "loader/model/LoaderUrchinMesh.h"
 
 namespace urchin
 {
 	
-	LoaderMD5Mesh::~LoaderMD5Mesh()
+	LoaderUrchinMesh::~LoaderUrchinMesh()
 	{
 
 	}
 
-	void LoaderMD5Mesh::nextLine(std::ifstream &file, std::string &buffer)
+	void LoaderUrchinMesh::nextLine(std::ifstream &file, std::string &buffer)
 	{
 		do
 		{
@@ -28,7 +28,7 @@ namespace urchin
 		}while(buffer.length()==0 && !file.eof());
 	}
 
-	ConstMeshes *LoaderMD5Mesh::loadFromFile(const std::string &filename, void *params)
+	ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename, void *params)
 	{	
 		std::locale::global(std::locale("C")); //for float
 		
@@ -44,20 +44,7 @@ namespace urchin
 		{
 			throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
 		}
-		
-		//version
-		int version;
-		nextLine(file, buffer);
-		iss.clear(); iss.str(buffer);
-		iss >> sdata >> version;
-		if(version!=10)
-		{
-			throw std::runtime_error("Bad version of the file " + filenamePath + ".");
-		}
-		
-		//command line
-		nextLine(file, buffer);
-		
+
 		//numBones
 		unsigned int numBones;
 		nextLine(file, buffer);

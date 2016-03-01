@@ -69,9 +69,22 @@ namespace urchin
 		glUniform3fv(colorLoc, 1, (const float*)Vector3<float>(red, green, blue));
 
 		glBindVertexArray(vertexArrayObject);
+		GLboolean cullFaceActive;
+		glGetBooleanv(GL_CULL_FACE, &cullFaceActive);
+		if(cullFaceActive)
+		{
+			glDisable(GL_CULL_FACE);
+		}
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glLineWidth(1.3);
 
 		drawGeometry();
+
+		if(cullFaceActive)
+		{
+			glEnable(GL_CULL_FACE);
+		}
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		ShaderManager::instance()->bind(shaderSaved);
 	}

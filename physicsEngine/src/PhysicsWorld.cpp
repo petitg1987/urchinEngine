@@ -10,6 +10,7 @@ namespace urchin
 			physicsSimulationStopper(false),
 			timeStep(0),
 			maxSubStep(1),
+			paused(false),
 			bodyManager(new BodyManager()),
 			collisionWorld(new CollisionWorld(bodyManager))
 	{
@@ -89,7 +90,7 @@ namespace urchin
 	 */
 	void PhysicsWorld::setGravity(const Vector3<float> &gravity)
 	{
-		std::lock_guard<std::mutex> lock(gravityMutex);
+		std::lock_guard<std::mutex> lock(mutex);
 
 		this->gravity = gravity;
 	}
@@ -99,7 +100,7 @@ namespace urchin
 	 */
 	Vector3<float> PhysicsWorld::getGravity() const
 	{
-		std::lock_guard<std::mutex> lock(gravityMutex);
+		std::lock_guard<std::mutex> lock(mutex);
 
 		return gravity;
 	}
@@ -111,10 +112,36 @@ namespace urchin
 	 */
 	void PhysicsWorld::start(float timeStep, unsigned int maxSubStep)
 	{
+		if(physicsSimulationThread!=nullptr)
+		{
+			throw std::runtime_error("Physics thread is already started");
+		}
+
 		this->timeStep = timeStep;
 		this->maxSubStep = maxSubStep;
 
 		physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
+	}
+
+	void PhysicsWorld::pause()
+	{
+		std::lock_guard<std::mutex> lock(mutex);
+
+		paused = true;
+	}
+
+	void PhysicsWorld::play()
+	{
+		std::lock_guard<std::mutex> lock(mutex);
+
+		paused = false;
+	}
+
+	bool PhysicsWorld::isPaused() const
+	{
+		std::lock_guard<std::mutex> lock(mutex);
+
+		return paused;
 	}
 
 	/**
@@ -170,14 +197,25 @@ namespace urchin
 
 	void PhysicsWorld::processPhysicsUpdate()
 	{
-		float dt = static_cast<float>(timeStep);
-		Vector3<float> gravity = getGravity();
+		Vector3<float> gravity;
+		bool paused;
+		{
+			std::lock_guard<std::mutex> lock(mutex);
 
-		preProcess(dt, gravity);
+			gravity = this->gravity;
+			paused = this->paused;
+		}
 
-		collisionWorld->process(dt, gravity);
+		if(!paused)
+		{
+			float dt = static_cast<float>(timeStep);
 
-		postProcess(dt, gravity);
+			preProcess(dt, gravity);
+
+			collisionWorld->process(dt, gravity);
+
+			postProcess(dt, gravity);
+		}
 	}
 
 	/**

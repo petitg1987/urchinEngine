@@ -103,7 +103,7 @@ namespace urchin
 	void NewObjectDialog::showMeshFilenameDialog()
 	{
 		QString directory = preferredMeshPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getWorkingDirectory()) : preferredMeshPath;
-		QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.md5mesh)", 0, QFileDialog::DontUseNativeDialog);
+		QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.urchinMesh)", 0, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull())
 		{
 			this->meshFilename = filename.toUtf8().constData();

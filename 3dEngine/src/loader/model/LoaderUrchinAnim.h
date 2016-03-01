@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOADERMD5ANIM_H
-#define ENGINE_LOADERMD5ANIM_H
+#ifndef ENGINE_LOADERURCHINANIM_H
+#define ENGINE_LOADERURCHINANIM_H
 
 #include <string>
 #include <fstream>
@@ -25,10 +25,10 @@ namespace urchin
 		Quaternion<float> orient;
 	};
 
-	class LoaderMD5Anim : public Loader<ConstAnimation>
+	class LoaderUrchinAnim : public Loader<ConstAnimation>
 	{
 		public:
-			virtual ~LoaderMD5Anim();
+			virtual ~LoaderUrchinAnim();
 
 			ConstAnimation *loadFromFile(const std::string &, void *);
 			

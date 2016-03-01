@@ -1,17 +1,17 @@
 #include <locale>
 #include <stdexcept>
 
-#include "loader/model/LoaderMD5Anim.h"
+#include "loader/model/LoaderUrchinAnim.h"
 
 namespace urchin
 {
 
-	LoaderMD5Anim::~LoaderMD5Anim()
+	LoaderUrchinAnim::~LoaderUrchinAnim()
 	{
 
 	}
 
-	void LoaderMD5Anim::nextLine(std::ifstream &file, std::string &buffer)
+	void LoaderUrchinAnim::nextLine(std::ifstream &file, std::string &buffer)
 	{
 		do
 		{
@@ -27,7 +27,7 @@ namespace urchin
 		}while(buffer.length()==0 && !file.eof());
 	}
 
-	ConstAnimation *LoaderMD5Anim::loadFromFile(const std::string &filename, void *params)
+	ConstAnimation *LoaderUrchinAnim::loadFromFile(const std::string &filename, void *params)
 	{
 		std::locale::global(std::locale("C")); //for float
 		
@@ -42,19 +42,6 @@ namespace urchin
 		{
 			throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
 		}
-
-		//version
-		int version;
-		nextLine(file, buffer);
-		iss.clear(); iss.str(buffer);
-		iss >> sdata >> version;
-		if(version!=10)
-		{
-			throw std::runtime_error("Bad version of the file " + filenamePath + ".");
-		}
-		
-		//command line
-		nextLine(file, buffer);
 		
 		//numFrames
 		unsigned int numFrames;
