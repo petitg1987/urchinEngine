@@ -1,6 +1,5 @@
 bl_info = {
     "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
-    "author": "Gregory Petit",
     "version": (1, 0, 0),
     "blender": (2, 6, 6),
     "api": 31847,
@@ -8,7 +7,8 @@ bl_info = {
     "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
     "category": "Import-Export"}
 
-import bpy, struct, math, os, time, sys, mathutils
+import bpy, struct, math, os, time, sys, mathutils, enum
+from enum import Enum
 
 # ---------------------------------------------------------------------------
 # MATH UTILS
@@ -111,6 +111,7 @@ class SubMesh:
     self.weights = []
     
     self.nextVertexId = 0
+    self.nextGroupMapId = 0
     self.nextWeightId = 0
     
     self.mesh = mesh
@@ -151,21 +152,21 @@ class SubMesh:
     buf = "\tmaterial \"%s\"\n\n" % (self.material.toUrchinMesh())
     
     # vertices
-    buf = buf + "\tnumverts %i\n" % (len(self.vertices))
+    buf = buf + "\tnumVerts %i\n" % (len(self.vertices))
     vnumber = 0
     for vert in self.vertices:
       buf = buf + "\tvert %i %s\n" % (vnumber, vert.toUrchinMesh())
       vnumber += 1
     
     # faces
-    buf = buf + "\n\tnumtris %i\n" % (len(self.faces))
+    buf = buf + "\n\tnumTris %i\n" % (len(self.faces))
     facenumber = 0
     for face in self.faces:
       buf = buf + "\ttri %i %s\n" % (facenumber, face.toUrchinMesh())
       facenumber += 1
       
     # weights
-    buf = buf + "\n\tnumweights %i\n" % (len(self.weights))
+    buf = buf + "\n\tnumWeights %i\n" % (len(self.weights))
     weightnumber = 0
     for weight in self.weights:
       buf = buf + "\tweight %i %s\n" % (weightnumber, weight.toUrchinMesh())
@@ -173,20 +174,35 @@ class SubMesh:
       
     return buf
 
+class CloneReason(Enum):
+    NOT_CLONED = 1
+    FLAT_FACE = 2
+    DIFFERENT_MAP = 3
 
 class Vertex:
-  def __init__(self, subMesh, coord):
+  def __init__(self, subMesh, coord, clonedFrom = None, cloneReason = CloneReason.NOT_CLONED):
+    self.id = subMesh.nextVertexId
     self.coord = coord
-    self.maps = []
-    self.influences = []
+    self.map = None
     self.weights = []
     self.weight = None
     self.firstWeightIndex = 0
-    self.clonedFrom = None
     self.clones = []
-    
     self.subMesh = subMesh
-    self.id = subMesh.nextVertexId
+    self.clonedFrom = clonedFrom
+    
+    if self.clonedFrom != None:
+        self.influences = clonedFrom.influences
+        clonedFrom.clones.append(self)
+    else:
+        self.influences = []
+    
+    if cloneReason == CloneReason.DIFFERENT_MAP:
+        self.groupMapId = self.clonedFrom.groupMapId
+    else:
+        self.groupMapId = subMesh.nextGroupMapId
+        subMesh.nextGroupMapId += 1
+    
     subMesh.nextVertexId += 1
     subMesh.vertices.append(self)
     
@@ -199,11 +215,12 @@ class Vertex:
       self.weights.append(newWeight)
 
   def toUrchinMesh(self):
-    if self.maps:
-      buf = self.maps[0].toUrchinMesh()
+    buf = "%i " % (self.groupMapId)
+    if self.map:
+      buf = buf + self.map.toUrchinMesh()
     else:
-      buf = "( %f %f )" % (self.coord[0], self.coord[1])
-    buf = buf + " %i %i" % (self.firstWeightIndex, len(self.influences))
+      buf = buf + "( %f %f )" % (self.coord[0], self.coord[1])
+    buf = buf + " ( %i %i )" % (self.firstWeightIndex, len(self.influences))
     return buf    
 
 
@@ -377,7 +394,7 @@ class UrchinAnimation:
       buf = buf + "\t( %f %f %f ) ( %f %f %f )\n" % (b)
     buf = buf + "}\n\n"
 
-    buf = buf + "baseframe {\n"
+    buf = buf + "baseFrame {\n"
     for b in self.baseFrame:
       buf = buf + "\t( %f %f %f ) ( %f %f %f )\n" % (b)
     buf = buf + "}\n\n"
@@ -503,9 +520,9 @@ def saveUrchin(settings):
       for f in obj.data.polygons:
         faces.append(f)
       
-      createVertexA = 0
-      createVertexB = 0
-      createVertexC = 0
+      createVertexA = 0 # normal vertex
+      createVertexB = 0 # cloned because flat face
+      createVertexC = 0 # cloned because different UV map
         
       while faces:
         materialIndex = faces[0].material_index
@@ -568,32 +585,24 @@ def saveUrchin(settings):
                         continue
                         
               elif not face.use_smooth:                
-                old_vertex = vertex
-                vertex = Vertex(subMesh, vertex.coord)
+                vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.FLAT_FACE)
                 createVertexB += 1
-                vertex.cloned_from = old_vertex
-                vertex.influences = old_vertex.influences
-                old_vertex.clones.append(vertex)
               
               hasFaceUV = len(uv_textures) > 0
               if hasFaceUV: 
               	uv = [uv_textures.active.data[face.index].uv[i][0], uv_textures.active.data[face.index].uv[i][1]]
               	uv[1] = 1.0 - uv[1]
-              	if not vertex.maps: 
-                  vertex.maps.append(Map(*uv))
-              	elif (vertex.maps[0].u != uv[0]) or (vertex.maps[0].v != uv[1]):
+              	if not vertex.map: 
+                  vertex.map = Map(*uv)
+              	elif (vertex.map.u != uv[0]) or (vertex.map.v != uv[1]):
                   for clone in vertex.clones:
-                    if (clone.maps[0].u == uv[0]) and (clone.maps[0].v == uv[1]):
+                    if (clone.map.u == uv[0]) and (clone.map.v == uv[1]):
                       vertex = clone
                       break
-                  else:
-                    old_vertex = vertex
-                    vertex = Vertex(subMesh, vertex.coord)
+                  else: # clone vertex because different UV map
+                    vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.DIFFERENT_MAP)
+                    vertex.map = Map(*uv)
                     createVertexC += 1
-                    vertex.cloned_from = old_vertex
-                    vertex.influences = old_vertex.influences
-                    vertex.maps.append(Map(*uv))
-                    old_vertex.clones.append(vertex)
 
               faceVertices.append(vertex)
               
