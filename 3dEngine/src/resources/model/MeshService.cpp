@@ -23,9 +23,9 @@ namespace urchin
 			vertices[i].setNull();
 
 			//calculate final vertex to draw with weights
-			for(int j=0;j<constMesh->getStructVertex(i).count;++j)
+			for(int j=0;j<constMesh->getStructVertex(i).weightCount;++j)
 			{
-				const Weight *weight = &constMesh->getWeight(constMesh->getStructVertex(i).start + j);
+				const Weight *weight = &constMesh->getWeight(constMesh->getStructVertex(i).weightStart + j);
 
 				//calculate transformed vertex for this weight
 				Point3<float> wv = skeleton[weight->bone].orient.rotatePoint(weight->pos);
@@ -69,10 +69,24 @@ namespace urchin
 				dataVertices[pTris[j]].nbFace++;
 			}
 		}
+
 		for(unsigned int i=0;i<constMesh->getNumberVertices();++i)
 		{
 			//computes normal
-			dataVertices[i].normal = (normalsSum[i] / (float)dataVertices[i].nbFace).normalize();
+			unsigned int linkedVerticesGroupId = constMesh->getStructVertex(i).linkedVerticesGroupId;
+			std::vector<unsigned int> linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
+
+			Vector3<float> totalNormalsSum = Vector3<float>(0.0f, 0.0f, 0.0f);
+			int totalNbFace = 0;
+			for(unsigned int j=0; j<linkedVertices.size(); ++j)
+			{
+				unsigned int linkedVertexIndex = linkedVertices[j];
+
+				totalNormalsSum += normalsSum[linkedVertexIndex];
+				totalNbFace += dataVertices[linkedVertexIndex].nbFace;
+			}
+
+			dataVertices[i].normal = (totalNormalsSum / (float)totalNbFace).normalize();
 
 			//computes tangent
 			const Vector3<float> &c1 = dataVertices[i].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));

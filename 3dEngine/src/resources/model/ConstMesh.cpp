@@ -1,4 +1,5 @@
 #include <GL/gl.h>
+#include <stdexcept>
 
 #include "resources/model/ConstMesh.h"
 #include "resources/model/MeshService.h"
@@ -8,11 +9,11 @@ namespace urchin
 {
 
 	ConstMesh::ConstMesh(const std::string &materialFilename, unsigned int numVertices, const Vertex *const vertices,
-			const St *const st, unsigned int numTriangles, const Triangle *const triangles, unsigned int numWeights,
+			const TextureCoordinate *const textureCoordinates, unsigned int numTriangles, const Triangle *const triangles, unsigned int numWeights,
 			const Weight *const weights, unsigned int numBones, const Bone *const baseSkeleton, void *loaderParams) :
 		numVertices(numVertices),
 		vertices(vertices),
-		st(st),
+		textureCoordinates(textureCoordinates),
 		numTriangles(numTriangles),
 		triangles(triangles),
 		numWeights(numWeights),
@@ -22,6 +23,12 @@ namespace urchin
 		baseVertices(new Point3<float>[numVertices]),
 		baseDataVertices(new DataVertex[numVertices])
 	{
+		//regroup duplicate vertex due to their different texture coordinates
+		for(unsigned int i=0;i<numVertices;++i)
+		{
+			linkedVertices[vertices[i].linkedVerticesGroupId].push_back(i);
+		}
+
 		//compute vertices and normals based on bind-pose skeleton
 		MeshService::instance()->computeVertices(this, baseSkeleton, baseVertices);
 		MeshService::instance()->computeNormals(this, baseVertices, baseDataVertices);
@@ -34,7 +41,7 @@ namespace urchin
 	ConstMesh::~ConstMesh()
 	{
 		delete [] vertices;
-		delete [] st;
+		delete [] textureCoordinates;
 		delete [] triangles;
 		delete [] weights;
 		delete [] baseSkeleton;
@@ -60,9 +67,24 @@ namespace urchin
 		return vertices[index];
 	}
 
-	const St *ConstMesh::getTextureCoordinates() const
+	const TextureCoordinate *ConstMesh::getTextureCoordinates() const
 	{
-		return st;
+		return textureCoordinates;
+	}
+
+	/**
+	 * Vertices can be duplicated because they have different texture coordinates.
+	 * This method returns all duplicates vertices thanks to 'linked vertices group ID' stored on each vertex.
+	 */
+	std::vector<unsigned int> ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const
+	{
+		std::map<unsigned int, std::vector<unsigned int>>::const_iterator it = linkedVertices.find(linkedVerticesGroupId);
+		if(it!=linkedVertices.end())
+		{
+			return it->second;
+		}
+
+		throw std::runtime_error("Impossible to find linked vertices for group ID: " + linkedVerticesGroupId);
 	}
 
 	unsigned int ConstMesh::getNumberTriangles() const
@@ -120,8 +142,8 @@ namespace urchin
 		bool needRepeatTexture = false;
 		for(unsigned int i=0; i<numVertices; ++i)
 		{
-			if(st[i].s > 1.0f || st[i].s < 0.0f
-					|| st[i].t > 1.0f || st[i].t < 0.0f)
+			if(textureCoordinates[i].s > 1.0f || textureCoordinates[i].s < 0.0f
+					|| textureCoordinates[i].t > 1.0f || textureCoordinates[i].t < 0.0f)
 			{
 				needRepeatTexture = true;
 				break;

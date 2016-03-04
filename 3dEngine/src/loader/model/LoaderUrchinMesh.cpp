@@ -73,7 +73,7 @@ namespace urchin
 
 		//mesh
 		Vertex *vertices;
-		St *st;
+		TextureCoordinate *textureCoordinates;
 		Triangle *triangles;
 		Weight *weights;
 		
@@ -96,12 +96,13 @@ namespace urchin
 			
 			//vertices
 			vertices = new Vertex[numVertices];
-			st = new St[numVertices];
+			textureCoordinates = new TextureCoordinate[numVertices];
 			for(unsigned int i=0;i<numVertices;i++)
 			{
 				nextLine(file, buffer);
 				iss.clear(); iss.str(buffer);
-				iss >> sdata >> idata >> sdata >> st[i].s >> st[i].t >> sdata >> vertices[i].start >> vertices[i].count;
+				iss >> sdata >> idata >> vertices[i].linkedVerticesGroupId >> sdata >> textureCoordinates[i].s >> textureCoordinates[i].t
+						>> sdata >> sdata >> vertices[i].weightStart >> vertices[i].weightCount >> sdata;
 			}
 			
 			//numTriangles
@@ -135,7 +136,8 @@ namespace urchin
 			}
 			nextLine(file, buffer); //buffer= "}"
 			
-			constMeshes.push_back(new ConstMesh(materialFilename, numVertices, vertices, st, numTriangles, triangles, numWeights, weights, numBones, baseSkeleton, params));
+			constMeshes.push_back(new ConstMesh(materialFilename, numVertices, vertices, textureCoordinates, numTriangles, triangles,
+					numWeights, weights, numBones, baseSkeleton, params));
 		}
 		
 		file.close();

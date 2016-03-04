@@ -111,7 +111,7 @@ class SubMesh:
     self.weights = []
     
     self.nextVertexId = 0
-    self.nextGroupMapId = 0
+    self.nextLinkedVerticesGroupId = 0
     self.nextWeightId = 0
     
     self.mesh = mesh
@@ -177,13 +177,13 @@ class SubMesh:
 class CloneReason(Enum):
     NOT_CLONED = 1
     FLAT_FACE = 2
-    DIFFERENT_MAP = 3
+    DIFFERENT_TEXTURE_COORD = 3
 
 class Vertex:
   def __init__(self, subMesh, coord, clonedFrom = None, cloneReason = CloneReason.NOT_CLONED):
     self.id = subMesh.nextVertexId
     self.coord = coord
-    self.map = None
+    self.textureCoord = None
     self.weights = []
     self.weight = None
     self.firstWeightIndex = 0
@@ -197,11 +197,11 @@ class Vertex:
     else:
         self.influences = []
     
-    if cloneReason == CloneReason.DIFFERENT_MAP:
-        self.groupMapId = self.clonedFrom.groupMapId
+    if cloneReason == CloneReason.DIFFERENT_TEXTURE_COORD:
+        self.linkedVerticesGroupId = self.clonedFrom.linkedVerticesGroupId
     else:
-        self.groupMapId = subMesh.nextGroupMapId
-        subMesh.nextGroupMapId += 1
+        self.linkedVerticesGroupId = subMesh.nextLinkedVerticesGroupId
+        subMesh.nextLinkedVerticesGroupId += 1
     
     subMesh.nextVertexId += 1
     subMesh.vertices.append(self)
@@ -215,16 +215,16 @@ class Vertex:
       self.weights.append(newWeight)
 
   def toUrchinMesh(self):
-    buf = "%i " % (self.groupMapId)
-    if self.map:
-      buf = buf + self.map.toUrchinMesh()
+    buf = "%i " % (self.linkedVerticesGroupId)
+    if self.textureCoord:
+      buf = buf + self.textureCoord.toUrchinMesh()
     else:
-      buf = buf + "( %f %f )" % (self.coord[0], self.coord[1])
+      buf = buf + "( 0.0 0.0 )"
     buf = buf + " ( %i %i )" % (self.firstWeightIndex, len(self.influences))
     return buf    
 
 
-class Map:
+class TextureCoordinate:
   def __init__(self, u, v):
     self.u = u
     self.v = v
@@ -522,7 +522,7 @@ def saveUrchin(settings):
       
       createVertexA = 0 # normal vertex
       createVertexB = 0 # cloned because flat face
-      createVertexC = 0 # cloned because different UV map
+      createVertexC = 0 # cloned because different texture coord
         
       while faces:
         materialIndex = faces[0].material_index
@@ -592,16 +592,16 @@ def saveUrchin(settings):
               if hasFaceUV: 
               	uv = [uv_textures.active.data[face.index].uv[i][0], uv_textures.active.data[face.index].uv[i][1]]
               	uv[1] = 1.0 - uv[1]
-              	if not vertex.map: 
-                  vertex.map = Map(*uv)
-              	elif (vertex.map.u != uv[0]) or (vertex.map.v != uv[1]):
+              	if not vertex.textureCoord: 
+                  vertex.textureCoord = TextureCoordinate(*uv)
+              	elif (vertex.textureCoord.u != uv[0]) or (vertex.textureCoord.v != uv[1]):
                   for clone in vertex.clones:
-                    if (clone.map.u == uv[0]) and (clone.map.v == uv[1]):
+                    if (clone.textureCoord.u == uv[0]) and (clone.textureCoord.v == uv[1]):
                       vertex = clone
                       break
-                  else: # clone vertex because different UV map
-                    vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.DIFFERENT_MAP)
-                    vertex.map = Map(*uv)
+                  else: # clone vertex because different texture coord
+                    vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.DIFFERENT_TEXTURE_COORD)
+                    vertex.textureCoord = TextureCoordinate(*uv)
                     createVertexC += 1
 
               faceVertices.append(vertex)

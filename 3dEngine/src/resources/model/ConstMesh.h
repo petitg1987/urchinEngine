@@ -2,6 +2,8 @@
 #define ENGINE_CONSTMESH_H
 
 #include <string>
+#include <vector>
+#include <map>
 #include "UrchinCommon.h"
 
 #include "resources/material/Material.h"
@@ -11,13 +13,14 @@ namespace urchin
 
 	struct Vertex
 	{
-		int start; //start weight
-		int count; //weight count
+		unsigned int linkedVerticesGroupId;
+		int weightStart;
+		int weightCount;
 	};
 
-	struct St
+	struct TextureCoordinate
 	{
-		float s, t; //texture coordinates
+		float s, t;
 	};
 
 	struct Triangle
@@ -54,16 +57,17 @@ namespace urchin
 	class ConstMesh
 	{
 		public:
-			ConstMesh(const std::string &, unsigned int, const Vertex *const,
-					const St *const, unsigned int, const Triangle *const, unsigned int,
-					const Weight *const, unsigned int, const Bone *const, void *);
+			ConstMesh(const std::string &, unsigned int, const Vertex *const, const TextureCoordinate *const,
+					unsigned int, const Triangle *const, unsigned int, const Weight *const, unsigned int,
+					const Bone *const, void *);
 			~ConstMesh();
 
 			const Material *getMaterial() const;
 
 			unsigned int getNumberVertices() const;
 			const Vertex &getStructVertex(unsigned int) const;
-			const St *getTextureCoordinates() const;
+			const TextureCoordinate *getTextureCoordinates() const;
+			std::vector<unsigned int> getLinkedVertices(unsigned int) const;
 
 			unsigned int getNumberTriangles() const;
 			const Triangle *getTriangles() const;
@@ -85,7 +89,8 @@ namespace urchin
 
 			const unsigned int numVertices;
 			const Vertex *const vertices;
-			const St *const st;
+			const TextureCoordinate *const textureCoordinates;
+			std::map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
 			const unsigned int numTriangles;
 			const Triangle *const triangles;
