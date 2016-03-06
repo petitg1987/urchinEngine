@@ -13,7 +13,7 @@
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
 
-#include "scene/GUI/GUIManager.h"
+#include "scene/GUI/GUIRenderer.h"
 #include "scene/GUI/window/Window.h"
 #include "scene/GUI/button/Button.h"
 #include "scene/GUI/button/ButtonCommand.h"

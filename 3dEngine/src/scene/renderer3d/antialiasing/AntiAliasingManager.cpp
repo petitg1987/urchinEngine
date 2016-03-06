@@ -14,7 +14,6 @@ namespace urchin
 {
 
 	AntiAliasingManager::AntiAliasingManager() :
-		isInitialized(false),
 		quality(DEFAULT_AA_QUALITY),
 		sceneWidth(-1),
 		sceneHeight(-1),
@@ -22,26 +21,14 @@ namespace urchin
 		texLoc(0),
 		invSceneSizeLoc(0)
 	{
-	
+		loadFxaaShader();
+
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
 	}
 	
 	AntiAliasingManager::~AntiAliasingManager()
 	{
 		ShaderManager::instance()->removeProgram(fxaaShader);
-	}
-
-	void AntiAliasingManager::initialize()
-	{
-		if(isInitialized)
-		{
-			throw std::runtime_error("Anti aliasing applier is already initialized.");
-		}
-
-		loadFxaaShader();
-
-		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
-
-		isInitialized = true;
 	}
 
 	void AntiAliasingManager::loadFxaaShader()
@@ -77,11 +64,6 @@ namespace urchin
 
 	void AntiAliasingManager::applyOn(unsigned int textureId)
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Anti aliasing applier must be initialized before applied.");
-		}
-
 		ShaderManager::instance()->bind(fxaaShader);
 
 		glActiveTexture(GL_TEXTURE0);

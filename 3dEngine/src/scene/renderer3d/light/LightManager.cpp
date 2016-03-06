@@ -11,7 +11,6 @@ namespace urchin
 {
 
 	LightManager::LightManager() :
-			isInitialized(false),
 			lastUpdatedLight(nullptr),
 			maxLights(ConfigService::instance()->getUnsignedIntValue("light.maxLights")),
 			globalAmbientColorLoc(0),
@@ -38,14 +37,8 @@ namespace urchin
 		delete [] lightsInfo;
 	}
 
-	void LightManager::initialize(unsigned int shaderID)
+	void LightManager::loadUniformLocationFor(unsigned int deferredShaderID)
 	{
-		if(isInitialized)
-		{
-			throw std::runtime_error("Light manager is already initialized.");
-		}
-
-		//get shader locations
 		std::ostringstream isExistLocName, produceShadowLocName, hasParallelBeamsName, positionOrDirectionLocName;
 		std::ostringstream exponentialAttName, lightAmbientName;
 		for(unsigned int i=0;i<maxLights;++i)
@@ -68,21 +61,16 @@ namespace urchin
 			lightAmbientName.str("");
 			lightAmbientName << "lightsInfo[" << i << "].lightAmbient";
 
-			lightsInfo[i].isExistLoc = glGetUniformLocation(shaderID, isExistLocName.str().c_str());
-			lightsInfo[i].produceShadowLoc = glGetUniformLocation(shaderID, produceShadowLocName.str().c_str());
-			lightsInfo[i].hasParallelBeamsLoc = glGetUniformLocation(shaderID, hasParallelBeamsName.str().c_str());
-			lightsInfo[i].positionOrDirectionLoc = glGetUniformLocation(shaderID, positionOrDirectionLocName.str().c_str());
+			lightsInfo[i].isExistLoc = glGetUniformLocation(deferredShaderID, isExistLocName.str().c_str());
+			lightsInfo[i].produceShadowLoc = glGetUniformLocation(deferredShaderID, produceShadowLocName.str().c_str());
+			lightsInfo[i].hasParallelBeamsLoc = glGetUniformLocation(deferredShaderID, hasParallelBeamsName.str().c_str());
+			lightsInfo[i].positionOrDirectionLoc = glGetUniformLocation(deferredShaderID, positionOrDirectionLocName.str().c_str());
 
-			lightsInfo[i].exponentialAttLoc = glGetUniformLocation(shaderID, exponentialAttName.str().c_str());
-			lightsInfo[i].lightAmbientLoc = glGetUniformLocation(shaderID, lightAmbientName.str().c_str());
+			lightsInfo[i].exponentialAttLoc = glGetUniformLocation(deferredShaderID, exponentialAttName.str().c_str());
+			lightsInfo[i].lightAmbientLoc = glGetUniformLocation(deferredShaderID, lightAmbientName.str().c_str());
 		}
 
-		globalAmbientColorLoc = glGetUniformLocation(shaderID, "globalAmbient");
-
-		//managers
-		lightOctreeManager->initialize();
-
-		isInitialized = true;
+		globalAmbientColorLoc = glGetUniformLocation(deferredShaderID, "globalAmbient");
 	}
 
 	OctreeManager<Light> *LightManager::getLightOctreeManager() const
@@ -116,11 +104,6 @@ namespace urchin
 
 	void LightManager::addLight(Light *const light)
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Light cannot be added to the light manager because it's not initialized.");
-		}
-
 		if(light!=nullptr)
 		{
 			if(light->hasParallelBeams())

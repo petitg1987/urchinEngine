@@ -22,10 +22,10 @@ namespace urchin
 				HALF_SIZE = 1
 			};
 
-			AmbientOcclusionManager();
+			AmbientOcclusionManager(unsigned int, unsigned int);
 			~AmbientOcclusionManager();
 
-			void initialize(unsigned int, unsigned int, unsigned int);
+			void loadUniformLocationFor(unsigned int);
 			void onResize(int, int);
 			void onCameraProjectionUpdate(const Camera *const);
 
@@ -46,13 +46,13 @@ namespace urchin
 			void loadAOTexture(unsigned int) const;
 
 		private:
-			int retrieveTextureSizeFactor();
-			void createOrUpdateTexture();
-			void loadRadiusUniform() const;
+			void createOrUpdateAOTexture();
+			void createOrUpdateAOShader();
 			void generateRandomTexture(unsigned int);
 
+			int retrieveTextureSizeFactor();
+
 			//scene information
-			bool isInitialized;
 			int sceneWidth, sceneHeight;
 			float nearPlane, farPlane;
 			float projectionScale;

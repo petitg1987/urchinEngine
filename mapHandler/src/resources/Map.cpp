@@ -6,8 +6,8 @@
 namespace urchin
 {
 
-	Map::Map(SceneManager *sceneManager, PhysicsWorld *physicsWorld, SoundManager *soundManager) :
-			sceneManager(sceneManager),
+	Map::Map(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager) :
+			renderer3d(renderer3d),
 			physicsWorld(physicsWorld),
 			soundManager(soundManager)
 	{
@@ -141,7 +141,7 @@ namespace urchin
 
 	void Map::addSceneObject(SceneObject *sceneObject)
 	{
-		sceneObject->setObjectManagers(sceneManager, physicsWorld);
+		sceneObject->setObjectManagers(renderer3d, physicsWorld);
 		sceneObjects.push_back(sceneObject);
 	}
 
@@ -171,7 +171,7 @@ namespace urchin
 
 	void Map::addSceneLight(SceneLight *sceneLight)
 	{
-		sceneLight->setLightManager(sceneManager->get3dRenderer()->getLightManager());
+		sceneLight->setLightManager(renderer3d->getLightManager());
 		sceneLights.push_back(sceneLight);
 	}
 

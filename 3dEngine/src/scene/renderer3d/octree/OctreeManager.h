@@ -27,7 +27,6 @@ namespace urchin
 				OCTREE_BUILT,
 			};
 
-			void initialize();
 			void notify(Observable *, int);
 		
 			void addOctreeable(TOctreeable *);
@@ -52,7 +51,6 @@ namespace urchin
 			void buildOctree(std::set<TOctreeable *> &);
 			bool resizeOctree(TOctreeable *);
 		
-			bool isInitialized;
 			float overflowSize;
 			int depth;
 			Octree<TOctreeable> *mainOctree;

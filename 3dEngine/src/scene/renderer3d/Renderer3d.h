@@ -23,15 +23,15 @@
 namespace urchin
 {
 
-	class Renderer3d
+	class Renderer3d : public Observer
 	{
 		public:
 			Renderer3d();
 			virtual ~Renderer3d();
 
 			//scene properties
-			void initialize();
 			void onResize(int, int);
+			void notify(Observable *, int);
 
 			//managers
 			OctreeManager<Model> *getModelOctreeManager() const;
@@ -69,13 +69,12 @@ namespace urchin
 			void onKeyDown(unsigned int);
 			void onKeyUp(unsigned int);
 			void onMouseMove(int, int);
-			void onKeyboardLocked(bool);
 
 			//scene
 			void display(float);
 
 		private:
-			void loadDeferredShadingShader();
+			void createOrUpdateDeferredShadingShader();
 			void onCameraProjectionUpdate();
 
 			//scene
@@ -85,7 +84,6 @@ namespace urchin
 			void postUpdateScene();
 
 			//scene properties
-			bool isInitialized;
 			int width, height;
 
 			//managers

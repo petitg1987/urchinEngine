@@ -8,16 +8,17 @@ namespace urchin
 {
 
 	SceneDisplayer::SceneDisplayer(QWidget *parentWidget) :
-		  parentWidget(parentWidget),
-		  sceneManager(nullptr),
-		  camera(nullptr),
-		  mapHandler(nullptr),
-		  bodyShapeDisplayer(nullptr),
-		  lightScopeDisplayer(nullptr),
-		  soundTriggerDisplayer(nullptr),
-		  highlightSceneObject(nullptr),
-		  highlightSceneLight(nullptr),
-		  highlightSceneSound(nullptr)
+		isInitialized(false),
+		parentWidget(parentWidget),
+		sceneManager(nullptr),
+		camera(nullptr),
+		mapHandler(nullptr),
+		bodyShapeDisplayer(nullptr),
+		lightScopeDisplayer(nullptr),
+		soundTriggerDisplayer(nullptr),
+		highlightSceneObject(nullptr),
+		highlightSceneLight(nullptr),
+		highlightSceneSound(nullptr)
 	{
 
 	}
@@ -44,7 +45,8 @@ namespace urchin
 
 			initializeScene();
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapWorkingDirectory, mapFilename);
-			mapHandler = new MapHandler(sceneManager, nullptr, nullptr, relativeMapFilename);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, nullptr, relativeMapFilename);
+			isInitialized = true;
 		}catch(std::exception &e)
 		{
 			QMessageBox::critical(nullptr, "Error", e.what());
@@ -62,7 +64,8 @@ namespace urchin
 			FileSystem::instance()->setupWorkingDirectory(mapWorkingDirectory);
 
 			initializeScene();
-			mapHandler = new MapHandler(sceneManager, nullptr, nullptr);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, nullptr);
+			isInitialized = true;
 		}catch(std::exception &e)
 		{
 			QMessageBox::critical(nullptr, "Error", e.what());
@@ -82,7 +85,7 @@ namespace urchin
 	void SceneDisplayer::initializeScene()
 	{
 		sceneManager = new SceneManager();
-		sceneManager->initialize();
+		sceneManager->newRenderer3d("default", true);
 
 		bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
 		lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
@@ -92,8 +95,8 @@ namespace urchin
 		camera = new SceneFreeCamera(50.0f, 0.1f, 250.0f, parentWidget);
 		camera->setDistance(0.0);
 		camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
-		sceneManager->get3dRenderer()->setCamera(camera);
-		sceneManager->get3dRenderer()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
+		sceneManager->getActiveRenderer3d()->setCamera(camera);
+		sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 	}
 
 	void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)
@@ -158,11 +161,14 @@ namespace urchin
 	{
 		try
 		{
-			refreshRigidBodyShapeModel();
-			refreshLightScopeModel();
-			refreshSoundTriggerModel();
+			if(isInitialized)
+			{
+				refreshRigidBodyShapeModel();
+				refreshLightScopeModel();
+				refreshSoundTriggerModel();
 
-			sceneManager->display();
+				sceneManager->display();
+			}
 		}catch(std::exception &e)
 		{
 			QMessageBox::critical(nullptr, "Error", e.what());

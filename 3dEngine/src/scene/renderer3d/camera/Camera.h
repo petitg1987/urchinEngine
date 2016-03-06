@@ -43,10 +43,6 @@ namespace urchin
 			virtual void updateCameraView(float) = 0;
 		
 			void onMouseMove(int, int);
-			void onKeyboardLocked(bool);
-
-		protected:
-			bool isKeyboardLocked() const;
 
 		private:
 			void updateMatrix();
@@ -63,7 +59,6 @@ namespace urchin
 			float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
 		
 			bool bUseMouse; //true if the cursor is used to move the camera
-			bool keyboardLocked; //true if the keyboard is locked by another resource
 			float mouseSensitivity;
 			int middleScreenX, middleScreenY, oldMouseX, oldMouseY;
 	};

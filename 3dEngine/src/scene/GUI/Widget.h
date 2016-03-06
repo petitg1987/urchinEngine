@@ -15,14 +15,8 @@ namespace urchin
 
 			enum NotificationType
 			{
-				ADD_CHILD_WIDGET, //A child widget has been added
-				REMOVE_CHILD_WIDGET, //A child widget has been removed
-				KEYBOARD_LOCKED, //Keyboard is locked by the widget
-				KEYBOARD_UNLOCKED, //Keyboard is unlocked by the widget
 				SET_IN_FOREGROUND //Widget should be set in the foreground
 			};
-
-			Widget *getLastUpdatedChildWidget();
 		
 			virtual void addChild(Widget *);
 			virtual void removeChild(Widget *);
@@ -45,17 +39,15 @@ namespace urchin
 			void onPositionChange();
 			const Vector2<int> &getTranslateDistance();
 		
-			virtual void onKeyDown(unsigned int);
-			virtual void onKeyUp(unsigned int);
-			virtual void onChar(unsigned int);
-			virtual void onMouseMove(int, int);
+			virtual bool onKeyDown(unsigned int);
+			virtual bool onKeyUp(unsigned int);
+			virtual bool onChar(unsigned int);
+			virtual bool onMouseMove(int, int);
 			virtual void reset();
 
 			virtual void display(int, float);
 
 		private:
-			void onChildWidgetEvent(Widget *const, NotificationType);
-
 			Widget *parent;
 
 			int positionX, positionY;
@@ -63,7 +55,6 @@ namespace urchin
 
 		protected:
 			std::vector<Widget *> children;
-			Widget *lastUpdatedChildWidget;
 
 			int width, height;
 			Vector2<int> translateDistance;

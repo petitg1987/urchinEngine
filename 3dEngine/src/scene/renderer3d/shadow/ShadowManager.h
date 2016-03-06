@@ -21,7 +21,7 @@ namespace urchin
 	/**
 	* Manager for shadow mapping (parallel-split shadow maps & variance shadow maps)
 	*/
-	class ShadowManager : public Observer
+	class ShadowManager : public Observer, public Observable
 	{
 		public:
 			enum BlurShadow
@@ -32,10 +32,15 @@ namespace urchin
 				HIGH = 7
 			};
 
+			enum NotificationType
+			{
+				NUMBER_SHADOW_MAPS_UPDATE
+			};
+
 			ShadowManager(LightManager *, OctreeManager<Model> *);
 			virtual ~ShadowManager();
 
-			void initialize(unsigned int);
+			void loadUniformLocationFor(unsigned int);
 			void onResize(int, int);
 			void onCameraProjectionUpdate(const Camera *const);
 			void notify(Observable *, int);
@@ -66,6 +71,9 @@ namespace urchin
 			#endif
 
 		private:
+			//model displayer
+			void createOrUpdateShadowModelDisplayer();
+
 			//light handling
 			void addShadowLight(Light *const);
 			void removeShadowLight(Light *const);
@@ -96,7 +104,6 @@ namespace urchin
 			float shadowMapFrequencyUpdate;
 
 			//scene information
-			bool isInitialized;
 			int sceneWidth, sceneHeight;
 			ModelDisplayer *shadowModelDisplayer;
 			LightManager *lightManager;

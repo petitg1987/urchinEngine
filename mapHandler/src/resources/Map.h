@@ -31,7 +31,7 @@ namespace urchin
 		public:
 			friend class MapHandler;
 
-			Map(SceneManager *, PhysicsWorld *, SoundManager *);
+			Map(Renderer3d *, PhysicsWorld *, SoundManager *);
 			~Map();
 
 			std::list<SceneObject *> getSceneObjects() const;
@@ -62,7 +62,7 @@ namespace urchin
 			void writeSceneLightsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
-			SceneManager *sceneManager;
+			Renderer3d *renderer3d;
 			PhysicsWorld *physicsWorld;
 			SoundManager *soundManager;
 

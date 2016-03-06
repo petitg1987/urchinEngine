@@ -10,7 +10,6 @@ namespace urchin
 {
 	
 	SceneManager::SceneManager() :
-			bIsInitialized(false),
 			sceneWidth(-1),
 			sceneHeight(-1),
 			previousTime(std::chrono::high_resolution_clock::now()),
@@ -22,47 +21,22 @@ namespace urchin
 		//initialize GL
 		initializeGl();
 
-		//3d renderer
-		renderer3d = new Renderer3d();
-
-		//GUI manager
-		guiManager = new GUIManager();
+		//initialize FPS
+		previousFps[0] = nbrFps; previousFps[1] = nbrFps; previousFps[2] = nbrFps;
+		previousTime = std::chrono::high_resolution_clock::now();
 	}
 
 	SceneManager::~SceneManager()
 	{
-		//3d renderer
-		delete renderer3d;
-
-		//GUI manager
-		delete guiManager;
-	}
-
-	void SceneManager::initialize()
-	{
-		if(bIsInitialized)
+		for(std::map<std::string, Renderer3d *>::iterator it = renderers3d.begin(); it!=renderers3d.end(); ++it)
 		{
-			throw std::runtime_error("Scene manager is already initialized.");
+			delete it->second;
 		}
 
-		//3d renderer
-		renderer3d->initialize();
-
-		//GUI manager
-		guiManager->initialize();
-		guiManager->addObserver(this, GUIManager::ADD_WIDGET);
-		guiManager->addObserver(this, GUIManager::REMOVE_WIDGET);
-
-		//fps
-		previousFps[0] = nbrFps; previousFps[1] = nbrFps; previousFps[2] = nbrFps;
-		previousTime = std::chrono::high_resolution_clock::now();
-
-		bIsInitialized = true;
-	}
-
-	bool SceneManager::isInitialized() const
-	{
-		return bIsInitialized;
+		for(std::map<std::string, GUIRenderer *>::iterator it = guiRenderers.begin(); it!=guiRenderers.end(); ++it)
+		{
+			delete it->second;
+		}
 	}
 
 	void SceneManager::initializeGl()
@@ -99,79 +73,19 @@ namespace urchin
 
 	void SceneManager::onResize(int width, int height)
 	{
-		if(!bIsInitialized)
-		{
-			return;
-		}
-
 		//scene properties
 		sceneWidth = width;
 		sceneHeight = height;
 		glViewport(0, 0, sceneWidth, sceneHeight);
 
-		//scene 3d
-		renderer3d->onResize(width, height);
-
-		//GUI manager
-		guiManager->onResize(width, height);
-	}
-
-	void SceneManager::notify(Observable *observable, int notificationType)
-	{
-		if(GUIManager *guiManager = dynamic_cast<GUIManager *>(observable))
+		//renderer
+		if(activeRenderer3d)
 		{
-			Widget *widget = guiManager->getLastUpdatedWidget();
-			switch(notificationType)
-			{
-				case GUIManager::ADD_WIDGET:
-				{
-					widget->addObserver(this, Widget::KEYBOARD_LOCKED);
-					widget->addObserver(this, Widget::KEYBOARD_UNLOCKED);
-					widget->addObserver(this, Widget::ADD_CHILD_WIDGET);
-					widget->addObserver(this, Widget::REMOVE_CHILD_WIDGET);
-					break;
-				}
-				case GUIManager::REMOVE_WIDGET:
-				{
-					widget->removeObserver(this, Widget::KEYBOARD_LOCKED);
-					widget->removeObserver(this, Widget::KEYBOARD_UNLOCKED);
-					widget->removeObserver(this, Widget::ADD_CHILD_WIDGET);
-					widget->removeObserver(this, Widget::REMOVE_CHILD_WIDGET);
-					break;
-				}
-			}
-		}else if(Widget *widget = dynamic_cast<Widget *>(observable))
+			activeRenderer3d->onResize(width, height);
+		}
+		if(activeGUIRenderer)
 		{
-			Widget *childWidget = widget->getLastUpdatedChildWidget();
-			switch(notificationType)
-			{
-				case Widget::ADD_CHILD_WIDGET:
-				{
-					childWidget->addObserver(this, Widget::KEYBOARD_LOCKED);
-					childWidget->addObserver(this, Widget::KEYBOARD_UNLOCKED);
-					childWidget->addObserver(this, Widget::ADD_CHILD_WIDGET);
-					childWidget->addObserver(this, Widget::REMOVE_CHILD_WIDGET);
-					break;
-				}
-				case Widget::REMOVE_CHILD_WIDGET:
-				{
-					childWidget->removeObserver(this, Widget::KEYBOARD_LOCKED);
-					childWidget->removeObserver(this, Widget::KEYBOARD_UNLOCKED);
-					childWidget->removeObserver(this, Widget::ADD_CHILD_WIDGET);
-					childWidget->removeObserver(this, Widget::REMOVE_CHILD_WIDGET);
-					break;
-				}
-				case Widget::KEYBOARD_LOCKED:
-				{
-					renderer3d->onKeyboardLocked(true);
-					break;
-				}
-				case Widget::KEYBOARD_UNLOCKED:
-				{
-					renderer3d->onKeyboardLocked(false);
-					break;
-				}
-			}
+			activeGUIRenderer->onResize(width, height);
 		}
 	}
 
@@ -213,14 +127,112 @@ namespace urchin
 		}
 	}
 
-	Renderer3d *SceneManager::get3dRenderer() const
+	Renderer3d *SceneManager::newRenderer3d(const std::string &name, bool activeIt)
 	{
+		std::map<std::string, Renderer3d *>::const_iterator it = renderers3d.find(name);
+		if(it!=renderers3d.end())
+		{
+			throw std::invalid_argument("Renderer 3d with following name already exist: " + name);
+		}
+
+		Renderer3d *renderer3d = new Renderer3d();
+		renderers3d[name] = renderer3d;
+
+		if(activeIt)
+		{
+			enableRenderer3d(name);
+		}
+
 		return renderer3d;
 	}
 
-	GUIManager *SceneManager::getGUIManager() const
+	Renderer3d *SceneManager::enableRenderer3d(const std::string &name)
 	{
-		return guiManager;
+		std::map<std::string, Renderer3d *>::const_iterator it = renderers3d.find(name);
+		if(it==renderers3d.end())
+		{
+			throw std::invalid_argument("Impossible to find a renderer 3d named " + name);
+		}
+
+		activeRenderer3d = it->second;
+		return activeRenderer3d;
+	}
+
+	void SceneManager::disableActiveRenderer3d()
+	{
+		activeRenderer3d = nullptr;
+	}
+
+	void SceneManager::removeRenderer3d(const std::string &name)
+	{
+		std::map<std::string, Renderer3d *>::const_iterator it = renderers3d.find(name);
+		if(it!=renderers3d.end())
+		{
+			if(it->second==activeRenderer3d)
+			{
+				disableActiveRenderer3d();
+			}
+			delete it->second;
+		}
+	}
+
+	Renderer3d *SceneManager::getActiveRenderer3d() const
+	{
+		return activeRenderer3d;
+	}
+
+	GUIRenderer *SceneManager::newGUIRenderer(const std::string &name, bool activeIt)
+	{
+		std::map<std::string, GUIRenderer *>::const_iterator it = guiRenderers.find(name);
+		if(it!=guiRenderers.end())
+		{
+			throw std::invalid_argument("GUI renderer with following name already exist: " + name);
+		}
+
+		GUIRenderer *guiRenderer = new GUIRenderer();
+		guiRenderers[name] = guiRenderer;
+
+		if(activeIt)
+		{
+			enableGUIRenderer(name);
+		}
+
+		return guiRenderer;
+	}
+
+	GUIRenderer *SceneManager::enableGUIRenderer(const std::string &name = "")
+	{
+		std::map<std::string, GUIRenderer *>::const_iterator it = guiRenderers.find(name);
+		if(it==guiRenderers.end())
+		{
+			throw std::invalid_argument("Impossible to find a GUI renderer named " + name);
+		}
+
+		activeGUIRenderer = it->second;
+		return activeGUIRenderer;
+	}
+
+	void SceneManager::disableActiveGUIRenderer()
+	{
+		activeGUIRenderer = nullptr;
+	}
+
+	void SceneManager::removeGUIRenderer3d(const std::string &name)
+	{
+		std::map<std::string, GUIRenderer *>::const_iterator it = guiRenderers.find(name);
+		if(it!=guiRenderers.end())
+		{
+			if(it->second==activeGUIRenderer)
+			{
+				disableActiveGUIRenderer();
+			}
+			delete it->second;
+		}
+	}
+
+	GUIRenderer *SceneManager::getActiveGUIRenderer() const
+	{
+		return activeGUIRenderer;
 	}
 
 	TextureManager *SceneManager::getTextureManager() const
@@ -230,42 +242,68 @@ namespace urchin
 
 	void SceneManager::onKeyDown(unsigned int key)
 	{
-		renderer3d->onKeyDown(key);
-		guiManager->onKeyDown(key);
+		bool propagateEvent = true;
+		if(activeGUIRenderer)
+		{
+			propagateEvent = activeGUIRenderer->onKeyDown(key);
+		}
+
+		if(activeRenderer3d && propagateEvent)
+		{
+			activeRenderer3d->onKeyDown(key);
+		}
 	}
 
 	void SceneManager::onKeyUp(unsigned int key)
 	{
-		renderer3d->onKeyUp(key);
-		guiManager->onKeyUp(key);
+		bool propagateEvent = true;
+		if(activeGUIRenderer)
+		{
+			propagateEvent = activeGUIRenderer->onKeyUp(key);
+		}
+
+		if(activeRenderer3d && propagateEvent)
+		{
+			activeRenderer3d->onKeyUp(key);
+		}
 	}
 
 	void SceneManager::onChar(unsigned int character)
 	{
-		guiManager->onChar(character);
+		if(activeGUIRenderer)
+		{
+			activeGUIRenderer->onChar(character);
+		}
 	}
 
 	void SceneManager::onMouseMove(int mouseX, int mouseY)
 	{
-		renderer3d->onMouseMove(mouseX, mouseY);
-		guiManager->onMouseMove(mouseX, mouseY);
+		bool propagateEvent = true;
+		if(activeGUIRenderer)
+		{
+			propagateEvent = activeGUIRenderer->onMouseMove(mouseX, mouseY);
+		}
+
+		if(activeRenderer3d && propagateEvent)
+		{
+			activeRenderer3d->onMouseMove(mouseX, mouseY);
+		}
 	}
 
 	void SceneManager::display()
 	{
-		if(!bIsInitialized)
-		{
-			throw std::runtime_error("Scene must be initialized before displayed.");
-		}
-
 		computeFps();
 		float invFrameRate = getOneOnFps();
 
-		//3d renderer
-		renderer3d->display(invFrameRate);
-
-		//GUI manager
-		guiManager->display(invFrameRate);
+		//renderer
+		if(activeRenderer3d)
+		{
+			activeRenderer3d->display(invFrameRate);
+		}
+		if(activeGUIRenderer)
+		{
+			activeGUIRenderer->display(invFrameRate);
+		}
 
 		#ifdef _DEBUG
 			GLenum err = GL_NO_ERROR;

@@ -8,7 +8,7 @@ namespace urchin
 {
 
 	SceneObject::SceneObject() :
-		sceneManager(nullptr),
+		renderer3d(nullptr),
 		physicsWorld(nullptr),
 		model(nullptr),
 		rigidBody(nullptr)
@@ -18,7 +18,7 @@ namespace urchin
 
 	SceneObject::~SceneObject()
 	{
-		sceneManager->get3dRenderer()->removeModel(this->model);
+		renderer3d->removeModel(this->model);
 		if(physicsWorld!=nullptr)
 		{
 			physicsWorld->removeBody(this->rigidBody);
@@ -28,21 +28,21 @@ namespace urchin
 		}
 	}
 
-	void SceneObject::setObjectManagers(SceneManager *sceneManager, PhysicsWorld *physicsWorld)
+	void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld)
 	{
-		if(this->sceneManager!=nullptr)
+		if(this->renderer3d!=nullptr)
 		{
 			throw std::invalid_argument("Cannot add the scene object on two different object managers.");
 		}
-		if(sceneManager==nullptr)
+		if(renderer3d==nullptr)
 		{
-			throw std::invalid_argument("Cannot specify a null scene manager for a scene object.");
+			throw std::invalid_argument("Cannot specify a null renderer 3d for a scene object.");
 		}
 
-		this->sceneManager = sceneManager;
+		this->renderer3d = renderer3d;
 		this->physicsWorld = physicsWorld;
 
-		sceneManager->get3dRenderer()->addModel(model);
+		renderer3d->addModel(model);
 		if(physicsWorld!=nullptr)
 		{
 			physicsWorld->addBody(rigidBody);
@@ -102,10 +102,10 @@ namespace urchin
 			throw std::invalid_argument("Cannot set a null model on scene object.");
 		}
 
-		if(sceneManager!=nullptr)
+		if(renderer3d!=nullptr)
 		{
-			sceneManager->get3dRenderer()->removeModel(this->model);
-			sceneManager->get3dRenderer()->addModel(model);
+			renderer3d->removeModel(this->model);
+			renderer3d->addModel(model);
 		}else
 		{
 			delete this->model;

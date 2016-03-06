@@ -51,7 +51,7 @@ namespace urchin
 		texInfoOnClick->release();
 	}
 
-	void Button::onKeyDown(unsigned int key)
+	bool Button::onKeyDown(unsigned int key)
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
@@ -63,10 +63,10 @@ namespace urchin
 			}
 		}
 
-		Widget::onKeyDown(key);
+		return Widget::onKeyDown(key);
 	}
 
-	void Button::onKeyUp(unsigned int key)
+	bool Button::onKeyUp(unsigned int key)
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
@@ -87,10 +87,10 @@ namespace urchin
 			}
 		}
 
-		Widget::onKeyUp(key);
+		return Widget::onKeyUp(key);
 	}
 
-	void Button::onMouseMove(int mouseX, int mouseY)
+	bool Button::onMouseMove(int mouseX, int mouseY)
 	{
 		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
 		if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
@@ -106,7 +106,7 @@ namespace urchin
 			textureID = texInfoDefault->getTextureID();
 		}
 
-		Widget::onMouseMove(mouseX, mouseY);
+		return Widget::onMouseMove(mouseX, mouseY);
 	}
 
 	void Button::display(int translateDistanceLoc, float invFrameRate)

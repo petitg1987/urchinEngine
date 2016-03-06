@@ -12,12 +12,10 @@ namespace urchin
 			QuadDisplayer(const QuadDisplayerBuilder *);
 			~QuadDisplayer();
 
-			void initialize();
-
 			void display() const;
 
 		private:
-			bool isInitialized;
+			void initializeDisplay();
 
 			unsigned int numberOfQuad;
 			unsigned int dimension; //2=2D, 3=3D

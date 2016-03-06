@@ -22,7 +22,7 @@ namespace urchin
 				REMOVE_LIGHT, //A light has been removed
 			};
 
-			void initialize(unsigned int);
+			void loadUniformLocationFor(unsigned int);
 			OctreeManager<Light> *getLightOctreeManager() const;
 			Light *getLastUpdatedLight();
 
@@ -44,8 +44,6 @@ namespace urchin
 
 		private:
 			void onLightEvent(Light *const, NotificationType);
-
-			bool isInitialized;
 
 			//lights container
 			std::vector<Light *> parallelBeamsLights; //sun lights

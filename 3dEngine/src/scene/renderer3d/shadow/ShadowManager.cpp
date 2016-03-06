@@ -32,7 +32,6 @@ namespace urchin
 			viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
 			blurShadow((BlurShadow)DEFAULT_BLUR_SHADOW),
 			shadowMapFrequencyUpdate(DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE),
-			isInitialized(false),
 			sceneWidth(0),
 			sceneHeight(0),
 			shadowModelDisplayer(nullptr),
@@ -64,6 +63,11 @@ namespace urchin
 		{ //because fmod function doesn't accept zero value.
 			lightViewOverflowStepSize=std::numeric_limits<float>::epsilon();
 		}
+
+		lightManager->addObserver(this, LightManager::ADD_LIGHT);
+		lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
+
+		createOrUpdateShadowModelDisplayer();
 	}
 
 	ShadowManager::~ShadowManager()
@@ -89,39 +93,11 @@ namespace urchin
 		delete shadowModelUniform;
 	}
 
-	/**
-	 * @param shaderId Shader which use shadow map textures
-	 */
-	void ShadowManager::initialize(unsigned int shaderID)
+	void ShadowManager::loadUniformLocationFor(unsigned int deferredShaderID)
 	{
-		if(isInitialized)
-		{
-			throw std::runtime_error("Shadow manager is already initialized.");
-		}
-
-		//scene information
-		std::map<std::string, std::string> geometryTokens, fragmentTokens;
-		geometryTokens["MAX_VERTICES"] = std::to_string(3*nbShadowMaps);
-		geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
-		shadowModelDisplayer = new ModelDisplayer(ModelDisplayer::DEPTH_ONLY_MODE);
-		shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geo", geometryTokens);
-		shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
-		shadowModelDisplayer->initialize();
-
-		shadowUniform = new ShadowUniform();
-		shadowUniform->setProjectionMatricesLocation(shadowModelDisplayer->getUniformLocation("projectionMatrix"));
-		shadowModelDisplayer->setCustomUniform(shadowUniform);
-
-		shadowModelUniform = new ShadowModelUniform();
-		shadowModelUniform->setLayersToUpdateLocation(shadowModelDisplayer->getUniformLocation("layersToUpdate"));
-		shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
-
-		lightManager->addObserver(this, LightManager::ADD_LIGHT);
-		lightManager->addObserver(this, LightManager::REMOVE_LIGHT);
-
 		//shadow information
-		ShaderManager::instance()->bind(shaderID);
-		depthSplitDistanceLoc = glGetUniformLocation(shaderID, "depthSplitDistance");
+		ShaderManager::instance()->bind(deferredShaderID);
+		depthSplitDistanceLoc = glGetUniformLocation(deferredShaderID, "depthSplitDistance");
 
 		//light information
 		lightsLocation = new LightLocation[lightManager->getMaxLights()];
@@ -131,7 +107,7 @@ namespace urchin
 			//depth shadow texture
 			shadowMapTextureLocName.str("");
 			shadowMapTextureLocName << "lightsInfo[" << i << "].shadowMapTex";
-			lightsLocation[i].shadowMapTexLoc = glGetUniformLocation(shaderID, shadowMapTextureLocName.str().c_str());
+			lightsLocation[i].shadowMapTexLoc = glGetUniformLocation(deferredShaderID, shadowMapTextureLocName.str().c_str());
 
 			//light projection matrices
 			lightsLocation[i].mLightProjectionViewLoc = new int[nbShadowMaps];
@@ -139,11 +115,31 @@ namespace urchin
 			{
 				mLightProjectionViewLocName.str("");
 				mLightProjectionViewLocName << "lightsInfo[" << i << "].mLightProjectionView[" << j << "]";
-				lightsLocation[i].mLightProjectionViewLoc[j] = glGetUniformLocation(shaderID, mLightProjectionViewLocName.str().c_str());
+				lightsLocation[i].mLightProjectionViewLoc[j] = glGetUniformLocation(deferredShaderID, mLightProjectionViewLocName.str().c_str());
 			}
 		}
+	}
 
-		isInitialized=true;
+	void ShadowManager::createOrUpdateShadowModelDisplayer()
+	{
+		std::map<std::string, std::string> geometryTokens, fragmentTokens;
+		geometryTokens["MAX_VERTICES"] = std::to_string(3*nbShadowMaps);
+		geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
+		delete shadowModelDisplayer;
+		shadowModelDisplayer = new ModelDisplayer(ModelDisplayer::DEPTH_ONLY_MODE);
+		shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geo", geometryTokens);
+		shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
+		shadowModelDisplayer->initialize();
+
+		delete shadowUniform;
+		shadowUniform = new ShadowUniform();
+		shadowUniform->setProjectionMatricesLocation(shadowModelDisplayer->getUniformLocation("projectionMatrix"));
+		shadowModelDisplayer->setCustomUniform(shadowUniform);
+
+		delete shadowModelUniform;
+		shadowModelUniform = new ShadowModelUniform();
+		shadowModelUniform->setLayersToUpdateLocation(shadowModelDisplayer->getUniformLocation("layersToUpdate"));
+		shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
 	}
 
 	void ShadowManager::onResize(int width, int height)
@@ -235,12 +231,10 @@ namespace urchin
 
 	void ShadowManager::setNumberShadowMaps(unsigned int nbShadowMaps)
 	{
-		if(isInitialized)
-		{
-			throw std::runtime_error("Impossible to change number of shadow maps once the scene initialized.");
-		}
-
 		this->nbShadowMaps = nbShadowMaps;
+
+		createOrUpdateShadowModelDisplayer();
+		notify(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 	}
 
 	unsigned int ShadowManager::getNumberShadowMaps() const
@@ -631,6 +625,7 @@ namespace urchin
 		}
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void ShadowManager::removeShadowMaps(const Light *const light)

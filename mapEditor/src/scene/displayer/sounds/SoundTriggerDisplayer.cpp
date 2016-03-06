@@ -35,7 +35,7 @@ namespace urchin
 			for(unsigned int i=0; i<soundTriggerModels.size(); ++i)
 			{
 				soundTriggerModels[i]->setColor(0.0, 1.0, 1.0);
-				sceneManager->get3dRenderer()->addGeometry(soundTriggerModels[i]);
+				sceneManager->getActiveRenderer3d()->addGeometry(soundTriggerModels[i]);
 			}
 		}
 	}
@@ -70,7 +70,7 @@ namespace urchin
 	{
 		for(unsigned int i=0; i<soundTriggerModels.size(); ++i)
 		{
-			sceneManager->get3dRenderer()->removeGeometry(soundTriggerModels[i]);
+			sceneManager->getActiveRenderer3d()->removeGeometry(soundTriggerModels[i]);
 			delete soundTriggerModels[i];
 		}
 

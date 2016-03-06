@@ -54,6 +54,7 @@ namespace urchin
 			void refreshLightScopeModel();
 			void refreshSoundTriggerModel();
 
+			bool isInitialized;
 			QWidget *parentWidget;
 
 			SceneManager *sceneManager;

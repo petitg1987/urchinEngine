@@ -26,7 +26,6 @@ namespace urchin
 			maxRotationX(DEFAULT_MAX_ROTATION_X),
 			distance(0.0),
 			bUseMouse(false),
-			keyboardLocked(false),
 			mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
 			middleScreenX(0),
 			middleScreenY(0),
@@ -82,23 +81,6 @@ namespace urchin
 	{
 		return bUseMouse;
 	}
-
-	/**
-	 * @return True if keyboard is locked by another resource
-	 */
-	bool Camera::isKeyboardLocked() const
-	{
-		return keyboardLocked;
-	}
-
-	/**
-	 * @param keyboardLocked Indicates if keyboard is locked by another resource
-	 */
-	void Camera::onKeyboardLocked(bool keyboardLocked)
-	{
-		this->keyboardLocked = keyboardLocked;
-	}
-
 
 	void Camera::setMouseSensitivity(float mouseSensitivity)
 	{

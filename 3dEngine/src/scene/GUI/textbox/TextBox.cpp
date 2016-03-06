@@ -68,7 +68,7 @@ namespace urchin
 		return allText;
 	}
 
-	void TextBox::onKeyDown(unsigned int key)
+	bool TextBox::onKeyDown(unsigned int key)
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
@@ -76,7 +76,6 @@ namespace urchin
 			if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 			{
 				state = ACTIVE;
-				notifyObservers(this, KEYBOARD_LOCKED);
 				textureID = texTextBoxFocus->getTextureID();
 
 				int localMouseX = mouseX - text->getGlobalPositionX();
@@ -84,7 +83,6 @@ namespace urchin
 			}else
 			{
 				state = UNACTIVE;
-				notifyObservers(this, KEYBOARD_UNLOCKED);
 				textureID = texTextBoxDefault->getTextureID();
 			}
 		}else if(key==KEY_LEFT_ARROW && state==ACTIVE)
@@ -95,10 +93,10 @@ namespace urchin
 			refreshText(cursorIndex+1);
 		}
 
-		Widget::onKeyDown(key);
+		return Widget::onKeyDown(key);
 	}
 
-	void TextBox::onChar(unsigned int character)
+	bool TextBox::onChar(unsigned int character)
 	{
 		if(state==ACTIVE)
 		{
@@ -125,15 +123,16 @@ namespace urchin
 
 				refreshText(cursorIndex+1);
 			}
+
+			return false;
 		}
 		
-		Widget::onChar(character);
+		return Widget::onChar(character);
 	}
 
 	void TextBox::reset()
 	{
 		state = UNACTIVE;
-		notifyObservers(this, KEYBOARD_UNLOCKED);
 		textureID = texTextBoxDefault->getTextureID();
 
 		Widget::reset();

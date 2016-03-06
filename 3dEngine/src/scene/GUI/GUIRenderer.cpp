@@ -1,7 +1,7 @@
 #include <GL/gl.h>
 #include <memory>
 
-#include "scene/GUI/GUIManager.h"
+#include "scene/GUI/GUIRenderer.h"
 #include "scene/GUI/GUISkinService.h"
 #include "resources/font/Font.h"
 #include "resources/MediaManager.h"
@@ -11,21 +11,22 @@
 namespace urchin
 {
 	
-	GUIManager::GUIManager() :
-		isInitialized(false),
+	GUIRenderer::GUIRenderer() :
 		width(0),
 		height(0),
-		lastUpdatedWidget(nullptr),
 		GUIShader(0),
 		mProjectionLoc(0),
 		translateDistanceLoc(0),
-		diffuseTexSamplerLoc(0),
-		stopPropagateEvents(false)
+		diffuseTexSamplerLoc(0)
 	{
+		GUIShader = ShaderManager::instance()->createProgram("gui.vert", "gui.frag");
 
+		mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");
+		translateDistanceLoc = glGetUniformLocation(GUIShader, "translateDistance");
+		diffuseTexSamplerLoc = glGetUniformLocation(GUIShader, "diffuseTexture");
 	}
 
-	GUIManager::~GUIManager() 
+	GUIRenderer::~GUIRenderer()
 	{
 		for(int i=widgets.size()-1;i>=0;--i)
 		{
@@ -35,29 +36,8 @@ namespace urchin
 		ShaderManager::instance()->removeProgram(GUIShader);
 	}
 
-	void GUIManager::initialize()
+	void GUIRenderer::onResize(int width, int height)
 	{
-		if(isInitialized)
-		{
-			throw std::runtime_error("GUI manager is already initialized.");
-		}
-
-		GUIShader = ShaderManager::instance()->createProgram("gui.vert", "gui.frag");
-
-		mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");
-		translateDistanceLoc = glGetUniformLocation(GUIShader, "translateDistance");
-		diffuseTexSamplerLoc = glGetUniformLocation(GUIShader, "diffuseTexture");
-
-		isInitialized = true;
-	}
-
-	void GUIManager::onResize(int width, int height)
-	{
-		//is initialized
-		if(!isInitialized)
-		{
-			return;
-		}
 		this->width = width;
 		this->height = height;
 
@@ -69,7 +49,7 @@ namespace urchin
 		glUniformMatrix3fv(mProjectionLoc, 1, false, (const float*)mProjection);
 	}
 
-	void GUIManager::notify(Observable *observable, int notificationType)
+	void GUIRenderer::notify(Observable *observable, int notificationType)
 	{
 		if(Widget *widget = dynamic_cast<Widget *>(observable))
 		{
@@ -80,8 +60,6 @@ namespace urchin
 					std::vector<Widget *>::iterator it = std::find(widgets.begin(), widgets.end(), widget);
 					widgets.erase(it);
 					widgets.push_back(widget);
-
-					stopPropagateEvents=true;
 
 					//reset the other widgets
 					for(int i=widgets.size()-2;i>=0;--i)
@@ -98,94 +76,91 @@ namespace urchin
 		}
 	}
 
-	void GUIManager::onWidgetEvent(Widget *const widget, NotificationType notificationType)
-	{
-		lastUpdatedWidget = widget;
-		notifyObservers(this, notificationType);
-	}
-
-	void GUIManager::setupSkin(const std::string &skinFilename)
+	void GUIRenderer::setupSkin(const std::string &skinFilename)
 	{
 		GUISkinService::instance()->setSkin(skinFilename);
 	}
 
-	Widget *GUIManager::getLastUpdatedWidget()
-	{
-		return lastUpdatedWidget;
-	}
-
-	void GUIManager::onKeyDown(unsigned int key)
+	bool GUIRenderer::onKeyDown(unsigned int key)
 	{
 		if(key<260)
 		{
-			for(int i=widgets.size()-1;i>=0 && !stopPropagateEvents;--i)
+			for(int i=widgets.size()-1;i>=0;--i)
 			{
 				if(widgets[i]->isVisible())
 				{
-					widgets[i]->onKeyDown(key);
+					if(!widgets[i]->onKeyDown(key)){
+						return false;
+					}
 				}
 			}
-			stopPropagateEvents=false;
 		}
+		return true;
 	}
 
-	void GUIManager::onKeyUp(unsigned int key)
+	bool GUIRenderer::onKeyUp(unsigned int key)
 	{
 		if(key<260)
 		{
-			for(int i=widgets.size()-1;i>=0 && !stopPropagateEvents;--i)
+			for(int i=widgets.size()-1;i>=0;--i)
 			{
 				if(widgets[i]->isVisible())
 				{
-					widgets[i]->onKeyUp(key);
+					if(!widgets[i]->onKeyUp(key))
+					{
+						return false;
+					}
 				}
 			}
-			stopPropagateEvents=false;
 		}
+		return true;
 	}
 
-	void GUIManager::onChar(unsigned int character)
+	bool GUIRenderer::onChar(unsigned int character)
 	{
-		for(int i=widgets.size()-1;i>=0 && !stopPropagateEvents;--i)
+		for(int i=widgets.size()-1;i>=0;--i)
 		{
 			if(widgets[i]->isVisible())
 			{
-				widgets[i]->onChar(character);
+				if(!widgets[i]->onChar(character))
+				{
+					return false;
+				}
 			}
 		}
-		stopPropagateEvents=false;
+		return true;
 	}
 
-	void GUIManager::onMouseMove(int mouseX, int mouseY)
+	bool GUIRenderer::onMouseMove(int mouseX, int mouseY)
 	{
-		for(int i=widgets.size()-1;i>=0 && !stopPropagateEvents;--i)
+		for(int i=widgets.size()-1;i>=0;--i)
 		{
 			if(widgets[i]->isVisible())
 			{
-				widgets[i]->onMouseMove(mouseX, mouseY);
+				if(!widgets[i]->onMouseMove(mouseX, mouseY))
+				{
+					return false;
+				}
 			}
 		}
-		stopPropagateEvents=false;
+		return true;
 	}
 
-	void GUIManager::addWidget(Widget *widget)
+	void GUIRenderer::addWidget(Widget *widget)
 	{
 		widgets.push_back(widget);
 
 		widget->addObserver(this, Widget::SET_IN_FOREGROUND);
-		onWidgetEvent(widget, GUIManager::ADD_WIDGET);
 	}
 
-	void GUIManager::removeWidget(Widget *widget)
+	void GUIRenderer::removeWidget(Widget *widget)
 	{
 		std::vector<Widget *>::iterator it = std::find(widgets.begin(), widgets.end(), widget);
 		delete widget;
 		widgets.erase(it);
-
-		onWidgetEvent(widget, GUIManager::REMOVE_WIDGET);
 	}
 
-	void GUIManager::display(float invFrameRate)
+	void GUIRenderer::display(float invFrameRate)
 	{
 		ShaderManager::instance()->bind(GUIShader);
 		glUniform1i(diffuseTexSamplerLoc, 0);

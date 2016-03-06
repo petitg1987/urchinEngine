@@ -71,7 +71,7 @@ namespace urchin
 
 			for(unsigned int i=0; i<bodyShapeModels.size(); ++i)
 			{
-				sceneManager->get3dRenderer()->addGeometry(bodyShapeModels[i]);
+				sceneManager->getActiveRenderer3d()->addGeometry(bodyShapeModels[i]);
 			}
 		}
 	}
@@ -135,7 +135,7 @@ namespace urchin
 	{
 		for(unsigned int i=0; i<bodyShapeModels.size(); ++i)
 		{
-			sceneManager->get3dRenderer()->removeGeometry(bodyShapeModels[i]);
+			sceneManager->getActiveRenderer3d()->removeGeometry(bodyShapeModels[i]);
 			delete bodyShapeModels[i];
 		}
 

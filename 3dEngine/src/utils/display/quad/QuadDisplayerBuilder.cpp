@@ -109,10 +109,7 @@ namespace urchin
 					0, 0};
 		}
 
-		std::shared_ptr<QuadDisplayer> quadDisplayer = std::make_shared<QuadDisplayer>(this);
-		quadDisplayer->initialize();
-
-		return quadDisplayer;
+		return std::make_shared<QuadDisplayer>(this);
 	}
 
 }

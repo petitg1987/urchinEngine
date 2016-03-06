@@ -15,7 +15,6 @@ namespace urchin
 {
 
 	Renderer3d::Renderer3d() :
-			isInitialized(false),
 			width(0),
 			height(0),
 			modelDisplayer(nullptr),
@@ -31,19 +30,36 @@ namespace urchin
 			hasShadowLoc(0),
 			hasAmbientOcclusionLoc(0)
 	{
+		//deferred shading (pass 1)
+		fboIDs = new unsigned int[1];
+		textureIDs = new unsigned int[4];
+		modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
+		modelDisplayer->initialize();
+		geometryDisplayer = new GeometryDisplayer();
+		glGenFramebuffers(1, fboIDs);
+		glGenTextures(4, textureIDs);
+
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 
 		lightManager = new LightManager();
 		isLightingActivated = true;
 
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
+		shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 		isShadowActivated = true;
 
-		ambientOcclusionManager = new AmbientOcclusionManager();
+		ambientOcclusionManager = new AmbientOcclusionManager(textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
 		isAmbientOcclusionActivated = true;
 
 		antiAliasingManager = new AntiAliasingManager();
 		isAntiAliasingActivated = true;
+
+		//deferred shading (pass 2)
+		createOrUpdateDeferredShadingShader();
+		lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+
+		//default black skybox
+		skybox = new Skybox();
 	}
 
 	Renderer3d::~Renderer3d()
@@ -83,40 +99,7 @@ namespace urchin
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
 	}
 
-	void Renderer3d::initialize()
-	{
-		if(isInitialized)
-		{
-			throw std::runtime_error("Renderer is already initialized.");
-		}
-
-		//deferred shading (pass 1)
-		fboIDs = new unsigned int[1];
-		textureIDs = new unsigned int[4];
-		modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
-		modelDisplayer->initialize();
-		geometryDisplayer = new GeometryDisplayer();
-		glGenFramebuffers(1, fboIDs);
-		glGenTextures(4, textureIDs);
-
-		//deferred shading (pass 2)
-		loadDeferredShadingShader();
-		lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
-
-		//managers
-		lightManager->initialize(deferredShadingShader);
-		modelOctreeManager->initialize();
-		shadowManager->initialize(deferredShadingShader);
-		ambientOcclusionManager->initialize(deferredShadingShader, textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
-		antiAliasingManager->initialize();
-
-		//default black skybox
-		skybox = new Skybox();
-
-		isInitialized = true;
-	}
-
-	void Renderer3d::loadDeferredShadingShader()
+	void Renderer3d::createOrUpdateDeferredShadingShader()
 	{
 		std::locale::global(std::locale("C")); //for float
 
@@ -125,7 +108,7 @@ namespace urchin
 		tokens["NUMBER_SHADOW_MAPS"] = std::to_string(shadowManager->getNumberShadowMaps());
 		tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
 		tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
-
+		ShaderManager::instance()->removeProgram(deferredShadingShader);
 		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
 		ShaderManager::instance()->bind(deferredShadingShader);
 
@@ -146,15 +129,16 @@ namespace urchin
 
 		hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
 		glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
+
+		//managers
+		lightManager->loadUniformLocationFor(deferredShadingShader);
+		shadowManager->loadUniformLocationFor(deferredShadingShader);
+		ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
 	}
 
 	void Renderer3d::onResize(int width, int height)
 	{
 		//scene properties
-		if(!isInitialized)
-		{
-			return;
-		}
 		this->width = width;
 		this->height = height;
 
@@ -204,11 +188,27 @@ namespace urchin
 		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
 
 		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		//manager
 		shadowManager->onResize(width, height);
 		ambientOcclusionManager->onResize(width, height);
 		antiAliasingManager->onResize(width, height);
+	}
+
+	void Renderer3d::notify(Observable *observable, int notificationType)
+	{
+		if(dynamic_cast<ShadowManager *>(observable))
+		{
+			switch(notificationType)
+			{
+				case ShadowManager::NUMBER_SHADOW_MAPS_UPDATE:
+				{
+					createOrUpdateDeferredShadingShader();
+					break;
+				}
+			}
+		}
 	}
 
 	OctreeManager<Model> *Renderer3d::getModelOctreeManager() const
@@ -225,11 +225,7 @@ namespace urchin
 	{
 		this->isLightingActivated = isLightingActivated;
 
-		if(isInitialized)
-		{
-			ShaderManager::instance()->bind(deferredShadingShader);
-			glUniform1i(hasLightingLoc, isLightingActivated);
-		}
+		createOrUpdateDeferredShadingShader();
 	}
 
 	ShadowManager *Renderer3d::getShadowManager() const
@@ -241,13 +237,8 @@ namespace urchin
 	{
 		this->isShadowActivated = isShadowActivated;
 
-		if(isInitialized)
-		{
-			ShaderManager::instance()->bind(deferredShadingShader);
-			glUniform1i(hasShadowLoc, isShadowActivated);
-
-			shadowManager->forceUpdateAllShadowMaps();
-		}
+		createOrUpdateDeferredShadingShader();
+		shadowManager->forceUpdateAllShadowMaps();
 	}
 
 	AmbientOcclusionManager *Renderer3d::getAmbientOcclusionManager() const
@@ -259,11 +250,7 @@ namespace urchin
 	{
 		this->isAmbientOcclusionActivated = isAmbientOcclusionActivated;
 
-		if(isInitialized)
-		{
-			ShaderManager::instance()->bind(deferredShadingShader);
-			glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
-		}
+		createOrUpdateDeferredShadingShader();
 	}
 
 	AntiAliasingManager *Renderer3d::getAntiAliasingManager() const
@@ -278,11 +265,6 @@ namespace urchin
 
 	void Renderer3d::setCamera(Camera *camera)
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Camera cannot be set because renderer is not initialized.");
-		}
-
 		this->camera = camera;
 		if(camera)
 		{
@@ -305,21 +287,11 @@ namespace urchin
 
 	Camera *Renderer3d::getCamera() const
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Camera cannot be retrieved because renderer is not initialized.");
-		}
-
 		return camera;
 	}
 
 	void Renderer3d::createSkybox(const std::vector<std::string> &filenames)
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Skybox cannot be created because renderer is not initialized.");
-		}
-
 		delete skybox;
 		skybox = new Skybox(filenames);
 	}
@@ -331,11 +303,6 @@ namespace urchin
 
 	Model *Renderer3d::addModel(Model *model)
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Model cannot be added to the renderer because it's not initialized.");
-		}
-
 		if(model!=nullptr)
 		{
 			modelOctreeManager->addOctreeable(model);
@@ -360,11 +327,6 @@ namespace urchin
 
 	GeometryModel *Renderer3d::addGeometry(GeometryModel *geometry)
 	{
-		if(!isInitialized)
-		{
-			throw std::runtime_error("Geometry cannot be added to the renderer because it's not initialized.");
-		}
-
 		geometryDisplayer->addGeometry(geometry);
 		return geometry;
 	}
@@ -398,17 +360,6 @@ namespace urchin
 		if(camera!=nullptr)
 		{
 			camera->onMouseMove(mouseX, mouseY);
-		}
-	}
-
-	/**
-	 * @param keyboardLocked Indicates if keyboard is locked by another resource
-	 */
-	void Renderer3d::onKeyboardLocked(bool keyboardLocked)
-	{
-		if(camera!=nullptr)
-		{
-			camera->onKeyboardLocked(keyboardLocked);
 		}
 	}
 

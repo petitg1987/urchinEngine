@@ -8,7 +8,6 @@ namespace urchin
 {
 
 	QuadDisplayer::QuadDisplayer(const QuadDisplayerBuilder *quadDisplayerBuilder) :
-			isInitialized(false),
 			numberOfQuad(quadDisplayerBuilder->getNumberOfQuad()),
 			dimension(quadDisplayerBuilder->getDimension()),
 			bufferUsage(quadDisplayerBuilder->getBufferUsage()),
@@ -25,6 +24,8 @@ namespace urchin
 		{
 			throw std::invalid_argument("Texture data type not supported: " + textureDataType);
 		}
+
+		initializeDisplay();
 	}
 
 	QuadDisplayer::~QuadDisplayer()
@@ -40,15 +41,8 @@ namespace urchin
 		}
 	}
 
-	void QuadDisplayer::initialize()
+	void QuadDisplayer::initializeDisplay()
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Quad displayer is already initialized.");
-			}
-		#endif
-
 		glGenBuffers(2, bufferIDs);
 		glGenVertexArrays(1, &vertexArrayObject);
 		glBindVertexArray(vertexArrayObject);
@@ -72,19 +66,10 @@ namespace urchin
 						(delete [] static_cast<float *>(textureCoord)) :
 						(delete [] static_cast<int *>(textureCoord));
 		textureCoord = nullptr;
-
-		isInitialized = true;
 	}
 
 	void QuadDisplayer::display() const
 	{
-		#ifdef _DEBUG
-			if(!isInitialized)
-			{
-				throw std::runtime_error("Quad displayer must be initialized before display.");
-			}
-		#endif
-
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(GL_FALSE);
 

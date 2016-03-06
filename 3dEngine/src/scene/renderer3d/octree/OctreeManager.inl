@@ -1,5 +1,4 @@
 template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(int depth) :
-		isInitialized(false),
 		overflowSize(ConfigService::instance()->getFloatValue("octree.overflowSize")),
 		depth(depth),
 		mainOctree(nullptr)
@@ -10,6 +9,9 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(int depth)
 	}
 	
 	overflowSize += 0.001f; //add offset to avoid rounding problem when overflow size is 0.0f.
+	
+	std::set<TOctreeable *> emptyOctreeable;
+	buildOctree(emptyOctreeable);
 	
 	#ifdef _DEBUG
 		refreshModCount = postRefreshModCount = 0;
@@ -30,19 +32,6 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
 		
 		delete mainOctree;
 	}
-}
-
-template<class TOctreeable> void OctreeManager<TOctreeable>::initialize()
-{
-	if(isInitialized)
-	{
-		throw std::runtime_error("Octree manager is already initialized.");
-	}
-
-	std::set<TOctreeable *> emptyOctreeable;
-	buildOctree(emptyOctreeable);
-	
-	isInitialized = true;
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *observable, int notificationType)

@@ -35,7 +35,7 @@ namespace urchin
 			for(unsigned int i=0; i<lightScopeModels.size(); ++i)
 			{
 				lightScopeModels[i]->setColor(1.0, 0.0, 0.0);
-				sceneManager->get3dRenderer()->addGeometry(lightScopeModels[i]);
+				sceneManager->getActiveRenderer3d()->addGeometry(lightScopeModels[i]);
 			}
 		}
 	}
@@ -44,7 +44,7 @@ namespace urchin
 	{
 		for(unsigned int i=0; i<lightScopeModels.size(); ++i)
 		{
-			sceneManager->get3dRenderer()->removeGeometry(lightScopeModels[i]);
+			sceneManager->getActiveRenderer3d()->removeGeometry(lightScopeModels[i]);
 			delete lightScopeModels[i];
 		}
 

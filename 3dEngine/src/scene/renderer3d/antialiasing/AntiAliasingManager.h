@@ -22,7 +22,6 @@ namespace urchin
 			AntiAliasingManager();
 			~AntiAliasingManager();
 
-			void initialize();
 			void onResize(int, int);
 
 			void setQuality(Quality quality);
@@ -30,8 +29,6 @@ namespace urchin
 			void applyOn(unsigned int);
 		private:
 			void loadFxaaShader();
-
-			bool isInitialized;
 
 			//properties
 			Quality quality;

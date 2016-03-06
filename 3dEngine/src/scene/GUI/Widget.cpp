@@ -20,23 +20,10 @@ namespace urchin
 		}
 	}
 
-	void Widget::onChildWidgetEvent(Widget *const widget, NotificationType notificationType)
-	{
-		lastUpdatedChildWidget = widget;
-		notifyObservers(this, notificationType);
-	}
-
-	Widget *Widget::getLastUpdatedChildWidget()
-	{
-		return lastUpdatedChildWidget;
-	}
-
 	void Widget::addChild(Widget *child)
 	{
 		child->setParent(this);
 		children.push_back(child);
-
-		onChildWidgetEvent(child, Widget::ADD_CHILD_WIDGET);
 	}
 
 	void Widget::removeChild(Widget *child)
@@ -44,8 +31,6 @@ namespace urchin
 		std::vector<Widget *>::iterator it = std::find(children.begin(), children.end(), child);
 		delete child;
 		children.erase(it);
-
-		onChildWidgetEvent(child, Widget::REMOVE_CHILD_WIDGET);
 	}
 
 	void Widget::setParent(Widget *parent)
@@ -149,40 +134,53 @@ namespace urchin
 		return translateDistance;
 	}
 
-	void Widget::onKeyDown(unsigned int key)
+	bool Widget::onKeyDown(unsigned int key)
 	{
 		for(unsigned int i=0;i<children.size();++i)
 		{
 			if(children[i]->isVisible())
 			{
-				children[i]->onKeyDown(key);
+				if(!children[i]->onKeyDown(key))
+				{
+					return false;
+				}
+
 			}
 		}
+
+		return true;
 	}
 
-	void Widget::onKeyUp(unsigned int key)
+	bool Widget::onKeyUp(unsigned int key)
 	{
 		for(unsigned int i=0;i<children.size();++i)
 		{
 			if(children[i]->isVisible())
 			{
-				children[i]->onKeyUp(key);
+				if(!children[i]->onKeyUp(key))
+				{
+					return false;
+				}
 			}
 		}
+		return true;
 	}
 
-	void Widget::onChar(unsigned int character)
+	bool Widget::onChar(unsigned int character)
 	{
 		for(unsigned int i=0;i<children.size();++i)
 		{
 			if(children[i]->isVisible())
 			{
-				children[i]->onChar(character);
+				if(!children[i]->onChar(character)){
+					return false;
+				}
 			}
 		}
+		return true;
 	}
 
-	void Widget::onMouseMove(int mouseX, int mouseY)
+	bool Widget::onMouseMove(int mouseX, int mouseY)
 	{
 		this->mouseX = mouseX;
 		this->mouseY = mouseY;
@@ -191,9 +189,13 @@ namespace urchin
 		{
 			if(children[i]->isVisible())
 			{
-				children[i]->onMouseMove(mouseX, mouseY);
+				if(!children[i]->onMouseMove(mouseX, mouseY))
+				{
+					return false;
+				}
 			}
 		}
+		return true;
 	}
 
 	void Widget::reset()

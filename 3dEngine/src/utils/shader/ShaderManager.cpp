@@ -98,8 +98,11 @@ namespace urchin
 
 	void ShaderManager::removeProgram(unsigned int programID)
 	{
-		clearProgram(programID);
-		programs.remove(programID);
+		if(programID!=0)
+		{
+			clearProgram(programID);
+			programs.remove(programID);
+		}
 	}
 
 	std::string ShaderManager::readEntireFile(const std::string &filename)

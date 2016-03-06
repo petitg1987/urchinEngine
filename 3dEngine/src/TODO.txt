@@ -7,7 +7,7 @@
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [OPTIMIZATION] Use LOD
 - GUI
-	- (1) [NEW FEATURE] Combo list
+	- (2) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop
 	- (3) [NEW FEATURE] Textarea
 	- (3) [NEW FEATURE] Scrollbar
@@ -19,14 +19,13 @@
 	- (3) [NEW FEATURE] Smoke
 	- (3) [NEW FEATURE] Fire & explosion
 	- (3) [NEW FEATURE] Trees & wind (http://http.developer.nvidia.com/GPUGems3/gpugems3_ch06.html)
-	- (1) [NEW FEATURE] Ambient occlusion
 	- (3) [NEW FEATURE] Alpha management
 	- (3) [OPTIMIZATION] Textures compression
 - SCENE
 	- (3) [OPTIMIZATION] LOD
 	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
 - MODEL
-	- (2) [NEW FEATURE] Improve model file (physics shape + multiple UV coord by vertex on smooth face)
+	- (2) [NEW FEATURE] Improve model file: add physics shape
 - GLOBAL
 	- (3) [OPTIMIZATION] Use PGO in g++
 

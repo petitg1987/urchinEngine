@@ -35,6 +35,8 @@ namespace urchin
 
 	void TextureFilter::initializeDisplay()
 	{
+		std::locale::global(std::locale("C")); //for float
+
 		texQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->build();
 
@@ -55,6 +57,7 @@ namespace urchin
 		{
 			throw std::invalid_argument("Unsupported texture format for filter: " + textureFormat);
 		}
+
 		this->completeShaderTokens(shaderTokens);
 
 		if(textureType==GL_TEXTURE_2D_ARRAY)
@@ -107,6 +110,8 @@ namespace urchin
 			throw std::invalid_argument("Unsupported texture type for filter: " + textureType);
 		}
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureID, 0);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void TextureFilter::initializeAdditionalUniforms(unsigned int)

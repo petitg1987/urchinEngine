@@ -8,24 +8,24 @@ namespace urchin
 	/**
 	 * Constructor which construct a new empty map
 	 */
-	MapHandler::MapHandler(SceneManager *sceneManager, PhysicsWorld *physicsWorld, SoundManager *soundManager) :
-			sceneManager(sceneManager),
+	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager) :
+			renderer3d(renderer3d),
 			physicsWorld(physicsWorld),
 			soundManager(soundManager)
 	{
-		map = new Map(sceneManager, physicsWorld, soundManager);
+		map = new Map(renderer3d, physicsWorld, soundManager);
 
-		if(sceneManager==nullptr || !sceneManager->isInitialized())
+		if(renderer3d==nullptr)
 		{
-			throw std::invalid_argument("A scene manager initialized is expected.");
+			throw std::invalid_argument("Renderer 3d not null expected.");
 		}
 	}
 
 	/**
 	 * Constructor which construct a map from a XML file
 	 */
-	MapHandler::MapHandler(SceneManager *sceneManager, PhysicsWorld *physicsWorld, SoundManager *soundManager, const std::string &filename) :
-			MapHandler(sceneManager, physicsWorld, soundManager)
+	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager, const std::string &filename) :
+			MapHandler(renderer3d, physicsWorld, soundManager)
 	{
 		loadMapFromFile(filename);
 	}

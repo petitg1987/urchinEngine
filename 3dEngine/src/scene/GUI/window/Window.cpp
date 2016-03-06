@@ -49,7 +49,7 @@ namespace urchin
 		Widget::addChild(child);
 	}
 
-	void Window::onKeyDown(unsigned int key)
+	bool Window::onKeyDown(unsigned int key)
 	{
 		Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
 				Point2<int>(getGlobalPositionX()+(width-widgetOutline->rightWidth), getGlobalPositionY()+widgetOutline->topWidth));
@@ -69,15 +69,17 @@ namespace urchin
 		
 		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
 				Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+		bool propagateEvent = true;
 		if(key==KEY_MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 		{
 			notifyObservers(this, SET_IN_FOREGROUND);
+			propagateEvent = false;
 		}
 		
-		Widget::onKeyDown(key);
+		return Widget::onKeyDown(key) && propagateEvent;
 	}
 
-	void Window::onKeyUp(unsigned int key)
+	bool Window::onKeyUp(unsigned int key)
 	{
 		Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(width-widgetOutline->rightWidth), getGlobalPositionY()),
 				Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+widgetOutline->topWidth));
@@ -88,17 +90,17 @@ namespace urchin
 		
 		state = DEFAULT;
 
-		Widget::onKeyUp(key);
+		return Widget::onKeyUp(key);
 	}
 
-	void Window::onMouseMove(int mouseX, int mouseY)
+	bool Window::onMouseMove(int mouseX, int mouseY)
 	{
 		if(state==MOVING)
 		{
 			setPosition(mouseX - mousePositionX, mouseY - mousePositionY);
 		}
 		
-		Widget::onMouseMove(mouseX, mouseY);
+		return Widget::onMouseMove(mouseX, mouseY);
 	}
 
 	void Window::display(int translateDistanceLoc, float invFrameRate)

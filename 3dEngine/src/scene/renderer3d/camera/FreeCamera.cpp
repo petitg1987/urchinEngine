@@ -56,11 +56,6 @@ namespace urchin
 
 	void FreeCamera::onKeyDown(unsigned int key)
 	{
-		if(isKeyboardLocked())
-		{
-			return;
-		}
-
 		if(key == KEY_MOUSE_RIGHT)
 		{
 			useMouseToMoveCamera(true);
@@ -81,11 +76,6 @@ namespace urchin
 
 	void FreeCamera::onKeyUp(unsigned int key)
 	{
-		if(isKeyboardLocked())
-		{
-			return;
-		}
-
 		if(key == KEY_MOUSE_RIGHT)
 		{
 			useMouseToMoveCamera(false);

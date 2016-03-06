@@ -24,8 +24,8 @@ namespace urchin
 		#define WORKING_DIR_ATTR "relativeWorkingDirectory"
 
 		public:
-			MapHandler(SceneManager *, PhysicsWorld *, SoundManager *);
-			MapHandler(SceneManager *, PhysicsWorld *, SoundManager *, const std::string &);
+			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *);
+			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *, const std::string &);
 			~MapHandler();
 
 			static std::string getRelativeWorkingDirectory(const std::string &);
@@ -41,7 +41,7 @@ namespace urchin
 		private:
 			void loadMapFromFile(const std::string &);
 
-			SceneManager *sceneManager;
+			Renderer3d *renderer3d;
 			PhysicsWorld *physicsWorld;
 			SoundManager *soundManager;
 

@@ -27,7 +27,7 @@ namespace urchin
 			SceneObject();
 			~SceneObject();
 
-			void setObjectManagers(SceneManager *, PhysicsWorld *);
+			void setObjectManagers(Renderer3d *, PhysicsWorld *);
 
 			std::string getName() const;
 			void setName(const std::string &);
@@ -42,7 +42,7 @@ namespace urchin
 			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
-			SceneManager *sceneManager;
+			Renderer3d *renderer3d;
 			PhysicsWorld *physicsWorld;
 
 			std::string name;

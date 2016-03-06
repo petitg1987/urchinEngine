@@ -52,11 +52,6 @@ namespace urchin
 
 	void FpsCamera::onKeyDown(unsigned int key)
 	{
-		if(isKeyboardLocked())
-		{
-			return;
-		}
-
 		if(key == keyFront)
 		{
 			isKeyFrontPressed = true;
@@ -74,11 +69,6 @@ namespace urchin
 
 	void FpsCamera::onKeyUp(unsigned int key)
 	{
-		if(isKeyboardLocked())
-		{
-			return;
-		}
-
 		if(key == keyFront)
 		{
 			isKeyFrontPressed = false;
