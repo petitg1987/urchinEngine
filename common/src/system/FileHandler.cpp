@@ -31,6 +31,17 @@ namespace urchin
 
 	}
 
+	std::string FileHandler::getFileName(const std::string &filePath)
+	{
+		std::size_t found = filePath.find_last_of("/\\");
+		if(found==std::string::npos)
+		{
+			return filePath;
+		}
+
+		return filePath.substr(found+1);
+	}
+
 	std::string FileHandler::getDirectoryFrom(const std::string &filePath)
 	{
 		std::size_t found = filePath.find_last_of("/\\");

@@ -5,13 +5,16 @@
 #include "SceneManager.h"
 
 #define START_FPS 60
+#define NUM_RENDERER 2
+#define RENDERER_3D 0
+#define GUI_RENDERER 1
 
 namespace urchin
 {
 	
 	SceneManager::SceneManager() :
-			sceneWidth(-1),
-			sceneHeight(-1),
+			sceneWidth(0),
+			sceneHeight(0),
 			previousTime(std::chrono::high_resolution_clock::now()),
 			currFrame(0),
 			nbrFps(START_FPS),
@@ -24,18 +27,24 @@ namespace urchin
 		//initialize FPS
 		previousFps[0] = nbrFps; previousFps[1] = nbrFps; previousFps[2] = nbrFps;
 		previousTime = std::chrono::high_resolution_clock::now();
+
+		//renderer
+		for(unsigned int i=0; i<NUM_RENDERER; ++i)
+		{
+			activeRenderers[i] = nullptr;
+		}
 	}
 
 	SceneManager::~SceneManager()
 	{
-		for(std::map<std::string, Renderer3d *>::iterator it = renderers3d.begin(); it!=renderers3d.end(); ++it)
+		for(unsigned int i=0; i<renderers3d.size(); ++i)
 		{
-			delete it->second;
+			delete renderers3d[i];
 		}
 
-		for(std::map<std::string, GUIRenderer *>::iterator it = guiRenderers.begin(); it!=guiRenderers.end(); ++it)
+		for(unsigned int i=0; i<guiRenderers.size(); ++i)
 		{
-			delete it->second;
+			delete guiRenderers[i];
 		}
 	}
 
@@ -71,7 +80,7 @@ namespace urchin
 		}
 	}
 
-	void SceneManager::onResize(int width, int height)
+	void SceneManager::onResize(unsigned int width, unsigned int height)
 	{
 		//scene properties
 		sceneWidth = width;
@@ -79,13 +88,12 @@ namespace urchin
 		glViewport(0, 0, sceneWidth, sceneHeight);
 
 		//renderer
-		if(activeRenderer3d)
+		for(unsigned int i=0; i<NUM_RENDERER; ++i)
 		{
-			activeRenderer3d->onResize(width, height);
-		}
-		if(activeGUIRenderer)
-		{
-			activeGUIRenderer->onResize(width, height);
+			if(activeRenderers[i]!=nullptr)
+			{
+				activeRenderers[i]->onResize(sceneWidth, sceneHeight);
+			}
 		}
 	}
 
@@ -127,112 +135,78 @@ namespace urchin
 		}
 	}
 
-	Renderer3d *SceneManager::newRenderer3d(const std::string &name, bool activeIt)
+	Renderer3d *SceneManager::newRenderer3d(bool enable)
 	{
-		std::map<std::string, Renderer3d *>::const_iterator it = renderers3d.find(name);
-		if(it!=renderers3d.end())
-		{
-			throw std::invalid_argument("Renderer 3d with following name already exist: " + name);
-		}
-
 		Renderer3d *renderer3d = new Renderer3d();
-		renderers3d[name] = renderer3d;
+		renderers3d.push_back(renderer3d);
 
-		if(activeIt)
+		if(enable)
 		{
-			enableRenderer3d(name);
+			enableRenderer3d(renderer3d);
 		}
-
 		return renderer3d;
 	}
 
-	Renderer3d *SceneManager::enableRenderer3d(const std::string &name)
+	void SceneManager::enableRenderer3d(Renderer3d *renderer3d)
 	{
-		std::map<std::string, Renderer3d *>::const_iterator it = renderers3d.find(name);
-		if(it==renderers3d.end())
+		activeRenderers[RENDERER_3D] = renderer3d;
+		if(renderer3d!=nullptr)
 		{
-			throw std::invalid_argument("Impossible to find a renderer 3d named " + name);
+			renderer3d->onResize(sceneWidth, sceneHeight);
 		}
-
-		activeRenderer3d = it->second;
-		return activeRenderer3d;
 	}
 
-	void SceneManager::disableActiveRenderer3d()
+	void SceneManager::removeRenderer3d(Renderer3d *renderer3d)
 	{
-		activeRenderer3d = nullptr;
-	}
-
-	void SceneManager::removeRenderer3d(const std::string &name)
-	{
-		std::map<std::string, Renderer3d *>::const_iterator it = renderers3d.find(name);
-		if(it!=renderers3d.end())
+		if(activeRenderers[RENDERER_3D] == renderer3d)
 		{
-			if(it->second==activeRenderer3d)
-			{
-				disableActiveRenderer3d();
-			}
-			delete it->second;
+			activeRenderers[RENDERER_3D] = nullptr;
 		}
+
+		renderers3d.erase(std::remove(renderers3d.begin(), renderers3d.end(), renderer3d), renderers3d.end());
+		delete renderer3d;
 	}
 
 	Renderer3d *SceneManager::getActiveRenderer3d() const
 	{
-		return activeRenderer3d;
+		return static_cast<Renderer3d *>(activeRenderers[RENDERER_3D]);
 	}
 
-	GUIRenderer *SceneManager::newGUIRenderer(const std::string &name, bool activeIt)
+	GUIRenderer *SceneManager::newGUIRenderer(bool enable)
 	{
-		std::map<std::string, GUIRenderer *>::const_iterator it = guiRenderers.find(name);
-		if(it!=guiRenderers.end())
-		{
-			throw std::invalid_argument("GUI renderer with following name already exist: " + name);
-		}
-
 		GUIRenderer *guiRenderer = new GUIRenderer();
-		guiRenderers[name] = guiRenderer;
+		guiRenderers.push_back(guiRenderer);
 
-		if(activeIt)
+		if(enable)
 		{
-			enableGUIRenderer(name);
+			enableGUIRenderer(guiRenderer);
 		}
-
 		return guiRenderer;
 	}
 
-	GUIRenderer *SceneManager::enableGUIRenderer(const std::string &name = "")
+	void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer)
 	{
-		std::map<std::string, GUIRenderer *>::const_iterator it = guiRenderers.find(name);
-		if(it==guiRenderers.end())
+		activeRenderers[GUI_RENDERER] = guiRenderer;
+		if(guiRenderer!=nullptr)
 		{
-			throw std::invalid_argument("Impossible to find a GUI renderer named " + name);
+			guiRenderer->onResize(sceneWidth, sceneHeight);
 		}
-
-		activeGUIRenderer = it->second;
-		return activeGUIRenderer;
 	}
 
-	void SceneManager::disableActiveGUIRenderer()
+	void SceneManager::removeGUIRenderer(GUIRenderer *guiRenderer)
 	{
-		activeGUIRenderer = nullptr;
-	}
-
-	void SceneManager::removeGUIRenderer3d(const std::string &name)
-	{
-		std::map<std::string, GUIRenderer *>::const_iterator it = guiRenderers.find(name);
-		if(it!=guiRenderers.end())
+		if(activeRenderers[GUI_RENDERER] == guiRenderer)
 		{
-			if(it->second==activeGUIRenderer)
-			{
-				disableActiveGUIRenderer();
-			}
-			delete it->second;
+			activeRenderers[GUI_RENDERER] = nullptr;
 		}
+
+		guiRenderers.erase(std::remove(guiRenderers.begin(), guiRenderers.end(), guiRenderer), guiRenderers.end());
+		delete guiRenderer;
 	}
 
 	GUIRenderer *SceneManager::getActiveGUIRenderer() const
 	{
-		return activeGUIRenderer;
+		return static_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
 	}
 
 	TextureManager *SceneManager::getTextureManager() const
@@ -242,67 +216,61 @@ namespace urchin
 
 	void SceneManager::onKeyDown(unsigned int key)
 	{
-		bool propagateEvent = true;
-		if(activeGUIRenderer)
+		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			propagateEvent = activeGUIRenderer->onKeyDown(key);
-		}
-
-		if(activeRenderer3d && propagateEvent)
-		{
-			activeRenderer3d->onKeyDown(key);
+			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onKeyDown(key))
+			{
+				break;
+			}
 		}
 	}
 
 	void SceneManager::onKeyUp(unsigned int key)
 	{
-		bool propagateEvent = true;
-		if(activeGUIRenderer)
+		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			propagateEvent = activeGUIRenderer->onKeyUp(key);
-		}
-
-		if(activeRenderer3d && propagateEvent)
-		{
-			activeRenderer3d->onKeyUp(key);
+			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onKeyUp(key))
+			{
+				break;
+			}
 		}
 	}
 
 	void SceneManager::onChar(unsigned int character)
 	{
-		if(activeGUIRenderer)
+		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			activeGUIRenderer->onChar(character);
+			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onChar(character))
+			{
+				break;
+			}
 		}
 	}
 
 	void SceneManager::onMouseMove(int mouseX, int mouseY)
 	{
-		bool propagateEvent = true;
-		if(activeGUIRenderer)
+		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			propagateEvent = activeGUIRenderer->onMouseMove(mouseX, mouseY);
-		}
-
-		if(activeRenderer3d && propagateEvent)
-		{
-			activeRenderer3d->onMouseMove(mouseX, mouseY);
+			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onMouseMove(mouseX, mouseY))
+			{
+				break;
+			}
 		}
 	}
 
 	void SceneManager::display()
 	{
+		//FPS
 		computeFps();
 		float invFrameRate = getOneOnFps();
 
 		//renderer
-		if(activeRenderer3d)
+		for(unsigned int i=0; i<NUM_RENDERER; ++i)
 		{
-			activeRenderer3d->display(invFrameRate);
-		}
-		if(activeGUIRenderer)
-		{
-			activeGUIRenderer->display(invFrameRate);
+			if(activeRenderers[i]!=nullptr)
+			{
+				activeRenderers[i]->display(invFrameRate);
+			}
 		}
 
 		#ifdef _DEBUG

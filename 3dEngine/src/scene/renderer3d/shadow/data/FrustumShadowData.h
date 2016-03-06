@@ -25,6 +25,7 @@ namespace urchin
 			void updateModels(const std::set<Model *> &);
 			const std::set<Model *> &getModels() const;
 			bool isModelsMoved() const;
+			bool isDifferentModels() const;
 
 			bool needShadowMapUpdate() const;
 
@@ -39,7 +40,8 @@ namespace urchin
 			bool shadowCasterReceiverBoxUpdated;
 
 			std::set<Model *> models;
-			bool modelsMoved;
+			bool bIsModelsMoved;
+			bool bIsDifferentModels;
 
 			const unsigned int modelsInverseFrequencyUpdate;
 			unsigned int modelsMovedCount;

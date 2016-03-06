@@ -14,7 +14,7 @@ namespace urchin
 			SceneFreeCamera(float, float, float, const QWidget *);
 			virtual ~SceneFreeCamera();
 
-			void moveMouse(int, int);
+			void moveMouse(unsigned int, unsigned int);
 
 		private:
 			const QWidget *parentWidget;

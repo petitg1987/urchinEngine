@@ -79,14 +79,7 @@ namespace urchin
 			delete it->second;
 		}
 
-		if(lightsLocation!=nullptr)
-		{
-			for(unsigned int i=0;i<lightManager->getMaxLights();++i)
-			{
-				delete [] lightsLocation[i].mLightProjectionViewLoc;
-			}
-			delete [] lightsLocation;
-		}
+		deleteLightsLocation();
 
 		delete shadowModelDisplayer;
 		delete shadowUniform;
@@ -100,6 +93,7 @@ namespace urchin
 		depthSplitDistanceLoc = glGetUniformLocation(deferredShaderID, "depthSplitDistance");
 
 		//light information
+		deleteLightsLocation();
 		lightsLocation = new LightLocation[lightManager->getMaxLights()];
 		std::ostringstream shadowMapTextureLocName, mLightProjectionViewLocName;
 		for(unsigned int i=0;i<lightManager->getMaxLights();++i)
@@ -142,7 +136,19 @@ namespace urchin
 		shadowModelDisplayer->setCustomModelUniform(shadowModelUniform);
 	}
 
-	void ShadowManager::onResize(int width, int height)
+	void ShadowManager::deleteLightsLocation()
+	{
+		if(lightsLocation!=nullptr)
+		{
+			for(unsigned int i=0;i<lightManager->getMaxLights();++i)
+			{
+				delete [] lightsLocation[i].mLightProjectionViewLoc;
+			}
+			delete [] lightsLocation;
+		}
+	}
+
+	void ShadowManager::onResize(unsigned int width, unsigned int height)
 	{
 		sceneWidth = width;
 		sceneHeight = height;

@@ -51,12 +51,12 @@ namespace urchin
 		ambientOcclusionManager = new AmbientOcclusionManager(textureIDs[TEX_DEPTH], textureIDs[TEX_NORMAL_AND_AMBIENT]);
 		isAmbientOcclusionActivated = true;
 
-		antiAliasingManager = new AntiAliasingManager();
-		isAntiAliasingActivated = true;
-
 		//deferred shading (pass 2)
 		createOrUpdateDeferredShadingShader();
 		lightingPassQuadDisplayer = std::make_unique<QuadDisplayerBuilder>()->build();
+
+		antiAliasingManager = new AntiAliasingManager();
+		isAntiAliasingActivated = true;
 
 		//default black skybox
 		skybox = new Skybox();
@@ -136,7 +136,7 @@ namespace urchin
 		ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
 	}
 
-	void Renderer3d::onResize(int width, int height)
+	void Renderer3d::onResize(unsigned int width, unsigned int height)
 	{
 		//scene properties
 		this->width = width;
@@ -339,28 +339,37 @@ namespace urchin
 		}
 	}
 
-	void Renderer3d::onKeyDown(unsigned int key)
+	bool Renderer3d::onKeyDown(unsigned int key)
 	{
 		if(camera!=nullptr && key<260)
 		{
 			camera->onKeyDown(key);
 		}
+		return true;
 	}
 
-	void Renderer3d::onKeyUp(unsigned int key)
+	bool Renderer3d::onKeyUp(unsigned int key)
 	{
 		if(camera!=nullptr && key<260)
 		{
 			camera->onKeyUp(key);
 		}
+		return true;
 	}
 
-	void Renderer3d::onMouseMove(int mouseX, int mouseY)
+	bool Renderer3d::onChar(unsigned int)
+	{
+		//nothing to do
+		return true;
+	}
+
+	bool Renderer3d::onMouseMove(int mouseX, int mouseY)
 	{
 		if(camera!=nullptr)
 		{
 			camera->onMouseMove(mouseX, mouseY);
 		}
+		return true;
 	}
 
 	void Renderer3d::display(float invFrameRate)

@@ -41,7 +41,7 @@ namespace urchin
 			virtual ~ShadowManager();
 
 			void loadUniformLocationFor(unsigned int);
-			void onResize(int, int);
+			void onResize(unsigned int, unsigned int);
 			void onCameraProjectionUpdate(const Camera *const);
 			void notify(Observable *, int);
 
@@ -75,6 +75,7 @@ namespace urchin
 			void createOrUpdateShadowModelDisplayer();
 
 			//light handling
+			void deleteLightsLocation();
 			void addShadowLight(Light *const);
 			void removeShadowLight(Light *const);
 			void updateShadowLights();
@@ -104,7 +105,7 @@ namespace urchin
 			float shadowMapFrequencyUpdate;
 
 			//scene information
-			int sceneWidth, sceneHeight;
+			unsigned int sceneWidth, sceneHeight;
 			ModelDisplayer *shadowModelDisplayer;
 			LightManager *lightManager;
 			OctreeManager<Model> *modelOctreeManager;

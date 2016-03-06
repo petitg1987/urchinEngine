@@ -12,8 +12,8 @@ namespace urchin
 			Camera(float, float, float);
 			virtual ~Camera();
 			
-			void onResize(int, int);
-			virtual void moveMouse(int, int) = 0;
+			void onResize(unsigned int, unsigned int);
+			virtual void moveMouse(unsigned int, unsigned int) = 0;
 			
 			void useMouseToMoveCamera(bool);
 			bool isUseMouseToMoveCamera() const;

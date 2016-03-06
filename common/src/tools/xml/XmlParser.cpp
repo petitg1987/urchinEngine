@@ -44,7 +44,7 @@ namespace urchin
 	 * Return a XML chunk representing the root
 	 * @return XML chunk representing the root
 	 */
-	std::shared_ptr<XmlChunk> XmlParser::getRootChunk()
+	std::shared_ptr<XmlChunk> XmlParser::getRootChunk() const
 	{
 		const TiXmlNode *rootNode = doc->FirstChild()->NextSibling();
 		if(rootNode->Type()==TiXmlNode::ELEMENT)

@@ -45,7 +45,8 @@ namespace urchin
 
 			initializeScene();
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapWorkingDirectory, mapFilename);
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, nullptr, relativeMapFilename);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, nullptr);
+			mapHandler->loadMapFromFile(relativeMapFilename);
 			isInitialized = true;
 		}catch(std::exception &e)
 		{
@@ -85,7 +86,7 @@ namespace urchin
 	void SceneDisplayer::initializeScene()
 	{
 		sceneManager = new SceneManager();
-		sceneManager->newRenderer3d("default", true);
+		sceneManager->newRenderer3d(true);
 
 		bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
 		lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
@@ -177,9 +178,9 @@ namespace urchin
 		}
 	}
 
-	void SceneDisplayer::resize(int width, int height)
+	void SceneDisplayer::resize(unsigned int width, unsigned int height)
 	{
-		if(sceneManager!=nullptr)
+		if(isInitialized)
 		{
 			sceneManager->onResize(width, height);
 		}

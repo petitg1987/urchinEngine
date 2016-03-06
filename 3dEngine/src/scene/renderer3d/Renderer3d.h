@@ -5,6 +5,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
+#include "scene/Renderer.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/camera/FpsCamera.h"
 #include "scene/renderer3d/camera/FreeCamera.h"
@@ -23,14 +24,14 @@
 namespace urchin
 {
 
-	class Renderer3d : public Observer
+	class Renderer3d : public Renderer, public Observer
 	{
 		public:
 			Renderer3d();
 			virtual ~Renderer3d();
 
 			//scene properties
-			void onResize(int, int);
+			void onResize(unsigned int, unsigned int);
 			void notify(Observable *, int);
 
 			//managers
@@ -66,9 +67,10 @@ namespace urchin
 			void removeGeometry(GeometryModel *);
 
 			//events
-			void onKeyDown(unsigned int);
-			void onKeyUp(unsigned int);
-			void onMouseMove(int, int);
+			bool onKeyDown(unsigned int);
+			bool onKeyUp(unsigned int);
+			bool onChar(unsigned int);
+			bool onMouseMove(int, int);
 
 			//scene
 			void display(float);
@@ -84,7 +86,7 @@ namespace urchin
 			void postUpdateScene();
 
 			//scene properties
-			int width, height;
+			unsigned int width, height;
 
 			//managers
 			ModelDisplayer *modelDisplayer;

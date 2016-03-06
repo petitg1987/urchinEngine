@@ -25,26 +25,19 @@ namespace urchin
 
 		public:
 			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *);
-			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *, const std::string &);
 			~MapHandler();
+
+			void loadMapFromFile(const std::string &);
+			void writeMapOnFile(const std::string &) const;
 
 			static std::string getRelativeWorkingDirectory(const std::string &);
 			std::string getRelativeWorkingDirectory() const;
 			void setRelativeWorkingDirectory(const std::string &);
 
-			void writeMapOnFile(const std::string &) const;
-
 			void refreshMap();
-
 			Map *getMap() const;
 
 		private:
-			void loadMapFromFile(const std::string &);
-
-			Renderer3d *renderer3d;
-			PhysicsWorld *physicsWorld;
-			SoundManager *soundManager;
-
 			std::string relativeWorkingDirectory;
 			Map *map;
 	};

@@ -5,34 +5,38 @@
 namespace urchin
 {
 
-	/**
-	 * Constructor which construct a new empty map
-	 */
 	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager) :
-			renderer3d(renderer3d),
-			physicsWorld(physicsWorld),
-			soundManager(soundManager)
+		map(nullptr)
 	{
-		map = new Map(renderer3d, physicsWorld, soundManager);
-
 		if(renderer3d==nullptr)
 		{
-			throw std::invalid_argument("Renderer 3d not null expected.");
+			throw std::invalid_argument("Renderer 3d cannot be null in map handler");
 		}
-	}
 
-	/**
-	 * Constructor which construct a map from a XML file
-	 */
-	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager, const std::string &filename) :
-			MapHandler(renderer3d, physicsWorld, soundManager)
-	{
-		loadMapFromFile(filename);
+		map = new Map(renderer3d, physicsWorld, soundManager);
 	}
 
 	MapHandler::~MapHandler()
 	{
 		delete map;
+	}
+
+	void MapHandler::loadMapFromFile(const std::string &filename)
+	{
+		XmlParser xmlParser(filename);
+
+		this->relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
+		map->loadFrom(xmlParser.getRootChunk(), xmlParser);
+	}
+
+	void MapHandler::writeMapOnFile(const std::string &filename) const
+	{
+		XmlWriter xmlWriter(filename);
+
+		std::shared_ptr<XmlChunk> rootChunk = xmlWriter.createChunk(SCENE_TAG, XmlAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
+		map->writeOn(rootChunk, xmlWriter);
+
+		xmlWriter.saveInFile();
 	}
 
 	/**
@@ -59,24 +63,6 @@ namespace urchin
 	void MapHandler::setRelativeWorkingDirectory(const std::string &relativeWorkingDirectory)
 	{
 		this->relativeWorkingDirectory = relativeWorkingDirectory;
-	}
-
-	void MapHandler::loadMapFromFile(const std::string &filename)
-	{
-		XmlParser xmlParser(filename);
-
-		this->relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
-		map->loadFrom(xmlParser.getRootChunk(), xmlParser);
-	}
-
-	void MapHandler::writeMapOnFile(const std::string &filename) const
-	{
-		XmlWriter xmlWriter(filename);
-
-		std::shared_ptr<XmlChunk> rootChunk = xmlWriter.createChunk(SCENE_TAG, XmlAttribute(WORKING_DIR_ATTR, relativeWorkingDirectory));
-		map->writeOn(rootChunk, xmlWriter);
-
-		xmlWriter.saveInFile();
 	}
 
 	void MapHandler::refreshMap()

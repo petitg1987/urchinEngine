@@ -5,17 +5,18 @@
 #include "UrchinCommon.h"
 
 #include "scene/GUI/Widget.h"
+#include "scene/Renderer.h"
 
 namespace urchin
 {
 	
-	class GUIRenderer : public Observable, public Observer
+	class GUIRenderer : public Renderer, public Observer
 	{
 		public:
 			GUIRenderer();
 			virtual ~GUIRenderer();
 
-			void onResize(int, int);
+			void onResize(unsigned int, unsigned  int);
 			void notify(Observable *, int);
 			void setupSkin(const std::string &);
 
@@ -30,7 +31,7 @@ namespace urchin
 			void display(float);
 			
 		private:
-			int width, height;
+			unsigned int width, height;
 
 			std::vector<Widget *> widgets;
 

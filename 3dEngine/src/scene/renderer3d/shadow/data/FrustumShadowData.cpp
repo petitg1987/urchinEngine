@@ -6,7 +6,8 @@ namespace urchin
 	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex, float shadowMapFrequencyUpdate) :
 			frustumSplitIndex(frustumSplitIndex),
 			shadowCasterReceiverBoxUpdated(false),
-			modelsMoved(false),
+			bIsModelsMoved(false),
+			bIsDifferentModels(false),
 			modelsInverseFrequencyUpdate(round(1.0f/shadowMapFrequencyUpdate)),
 			modelsMovedCount(0),
 			modelsRequiredUpdate(false)
@@ -64,20 +65,21 @@ namespace urchin
 	 */
 	void FrustumShadowData::updateModels(const std::set<Model *> &models)
 	{
-		modelsMoved = false;
+		bIsModelsMoved = false;
+		bIsDifferentModels = false;
 
 		for(std::set<Model *>::const_iterator it = models.begin(); it!=models.end(); ++it)
 		{
 			Model *model = *it;
 			if(model->isMovingInOctree() || model->isAnimate())
 			{
-				modelsMoved = true;
+				bIsModelsMoved = true;
 			}
 		}
 
-		if(!modelsMoved && models!=this->models)
-		{ //models have moved outside the frustum split OR new model move inside the frustum split
-			modelsMoved = true;
+		if(models!=this->models)
+		{ //models have been created or deleted OR models have moved outside the frustum split OR models have moved inside the frustum split
+			bIsDifferentModels = true;
 		}
 
 		updateModelsRequiredUpdateFlag();
@@ -87,14 +89,20 @@ namespace urchin
 
 	void FrustumShadowData::updateModelsRequiredUpdateFlag()
 	{
-		modelsRequiredUpdate = modelsMoved;
-
-		if(modelsMoved)
+		if(bIsDifferentModels)
 		{
-			modelsMovedCount++;
-			if(modelsMovedCount % modelsInverseFrequencyUpdate!=0)
+			modelsRequiredUpdate = true;
+		}else
+		{
+			modelsRequiredUpdate = bIsModelsMoved;
+
+			if(bIsModelsMoved)
 			{
-				modelsRequiredUpdate = false;
+				modelsMovedCount++;
+				if(modelsMovedCount % modelsInverseFrequencyUpdate!=0)
+				{
+					modelsRequiredUpdate = false;
+				}
 			}
 		}
 	}
@@ -109,7 +117,12 @@ namespace urchin
 
 	bool FrustumShadowData::isModelsMoved() const
 	{
-		return modelsMoved;
+		return bIsModelsMoved;
+	}
+
+	bool FrustumShadowData::isDifferentModels() const
+	{
+		return bIsDifferentModels;
 	}
 
 	/**

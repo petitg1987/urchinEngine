@@ -22,7 +22,7 @@ namespace urchin
 			AntiAliasingManager();
 			~AntiAliasingManager();
 
-			void onResize(int, int);
+			void onResize(unsigned int, unsigned int);
 
 			void setQuality(Quality quality);
 
@@ -32,7 +32,7 @@ namespace urchin
 
 			//properties
 			Quality quality;
-			int sceneWidth, sceneHeight;
+			unsigned int sceneWidth, sceneHeight;
 
 			//shader
 			unsigned int fxaaShader;

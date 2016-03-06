@@ -2,7 +2,7 @@
 #define ENGINE_SCENEMANAGER_H
 
 #include <chrono>
-#include <map>
+#include <vector>
 #include <string>
 #include "UrchinCommon.h"
 
@@ -29,25 +29,23 @@ namespace urchin
 			virtual ~SceneManager();
 
 			//scene properties
-			void onResize(int, int);
+			void onResize(unsigned int, unsigned int);
 			int getSceneWidth() const;
 			int getSceneHeight() const;
 
-			//fps
+			//FPS
 			int getFps() const;
 			float getOneOnFps() const;
 
 			//renderer
-			Renderer3d *newRenderer3d(const std::string &, bool);
-			Renderer3d *enableRenderer3d(const std::string &name);
-			void disableActiveRenderer3d();
-			void removeRenderer3d(const std::string &);
+			Renderer3d *newRenderer3d(bool);
+			void enableRenderer3d(Renderer3d *);
+			void removeRenderer3d(Renderer3d *);
 			Renderer3d *getActiveRenderer3d() const;
 
-			GUIRenderer *newGUIRenderer(const std::string &, bool);
-			GUIRenderer *enableGUIRenderer(const std::string &name);
-			void disableActiveGUIRenderer();
-			void removeGUIRenderer3d(const std::string &);
+			GUIRenderer *newGUIRenderer(bool);
+			void enableGUIRenderer(GUIRenderer *);
+			void removeGUIRenderer(GUIRenderer *);
 			GUIRenderer *getActiveGUIRenderer() const;
 
 			//texture manager
@@ -69,16 +67,14 @@ namespace urchin
 			void computeFps();
 		
 			//scene properties
-			int sceneWidth, sceneHeight;
+			unsigned int sceneWidth, sceneHeight;
 
 			//renderer
-			std::map<std::string, Renderer3d *> renderers3d;
-			Renderer3d *activeRenderer3d;
-
-			std::map<std::string, GUIRenderer *> guiRenderers;
-			GUIRenderer *activeGUIRenderer;
+			std::vector<Renderer3d *> renderers3d;
+			std::vector<GUIRenderer *> guiRenderers;
+			Renderer *activeRenderers[2];
 		
-			//fps
+			//FPS
 			std::chrono::high_resolution_clock::time_point previousTime;
 			int currFrame, nbrFps, previousFps[3], indexFps;
 			float refreshRateFps;

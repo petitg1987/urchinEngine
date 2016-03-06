@@ -40,7 +40,7 @@ namespace urchin
 
 	}
 
-	void Camera::onResize(int width, int height)
+	void Camera::onResize(unsigned int width, unsigned int height)
 	{
 		middleScreenX = width/2;
 		middleScreenY = height/2;

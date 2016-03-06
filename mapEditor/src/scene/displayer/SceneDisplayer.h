@@ -44,7 +44,7 @@ namespace urchin
 			void setHighlightSceneSound(const SceneSound *);
 
 			void paint();
-			void resize(int width, int height);
+			void resize(unsigned int width, unsigned int height);
 
 			SceneManager *getSceneManager() const;
 			MapHandler *getMapHandler() const;

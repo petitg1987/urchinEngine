@@ -21,6 +21,7 @@ namespace urchin
 	{
 		GUIShader = ShaderManager::instance()->createProgram("gui.vert", "gui.frag");
 
+		ShaderManager::instance()->bind(GUIShader);
 		mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");
 		translateDistanceLoc = glGetUniformLocation(GUIShader, "translateDistance");
 		diffuseTexSamplerLoc = glGetUniformLocation(GUIShader, "diffuseTexture");
@@ -36,7 +37,7 @@ namespace urchin
 		ShaderManager::instance()->removeProgram(GUIShader);
 	}
 
-	void GUIRenderer::onResize(int width, int height)
+	void GUIRenderer::onResize(unsigned int width, unsigned int height)
 	{
 		this->width = width;
 		this->height = height;

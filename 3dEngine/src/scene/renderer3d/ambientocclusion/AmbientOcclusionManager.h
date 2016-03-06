@@ -26,7 +26,7 @@ namespace urchin
 			~AmbientOcclusionManager();
 
 			void loadUniformLocationFor(unsigned int);
-			void onResize(int, int);
+			void onResize(unsigned int, unsigned int);
 			void onCameraProjectionUpdate(const Camera *const);
 
 			void setTextureSize(AOTextureSize);
@@ -53,7 +53,7 @@ namespace urchin
 			int retrieveTextureSizeFactor();
 
 			//scene information
-			int sceneWidth, sceneHeight;
+			unsigned int sceneWidth, sceneHeight;
 			float nearPlane, farPlane;
 			float projectionScale;
 
