@@ -3,16 +3,13 @@
 #include "scene/GUI/button/Button.h"
 #include "scene/GUI/GUISkinService.h"
 #include "scene/GUI/text/Text.h"
-#include "scene/SceneManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
 
-	Button::Button(int positionX, int positionY, int width, int height, const std::string &nameSkin, std::shared_ptr<ButtonCommand> buttonCommand, const std::string &text)
-		: Widget(positionX, positionY, width, height),
-		  buttonCommand(buttonCommand),
-		  state(DEFAULT)
+	Button::Button(int positionX, int positionY, int width, int height, const std::string &nameSkin, const std::string &text)
+		: Widget(positionX, positionY, width, height)
 	{
 		//skin informations
 		std::shared_ptr<XmlChunk> buttonChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
@@ -51,62 +48,35 @@ namespace urchin
 		texInfoOnClick->release();
 	}
 
-	bool Button::onKeyDown(unsigned int key)
+	unsigned int Button::getTextureId()
 	{
-		if(key==KEY_MOUSE_LEFT)
+		if(getWidgetState()==FOCUS)
 		{
-			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
-			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
-			{
-				state=CLICKING;
-				textureID = texInfoOnClick->getTextureID();
-			}
+			return texInfoOnFocus->getTextureID();
+		}else if(getWidgetState()==CLICKING)
+		{
+			textureID = texInfoOnClick->getTextureID();
 		}
 
-		return Widget::onKeyDown(key);
+		return texInfoDefault->getTextureID();
 	}
 
-	bool Button::onKeyUp(unsigned int key)
+	bool Button::onKeyDownEvent(unsigned int key)
 	{
-		if(key==KEY_MOUSE_LEFT)
-		{
-			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
-			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
-			{
-				if(state==CLICKING)
-				{
-					buttonCommand->onClick();
-				}
-				state = FOCUS;
-				textureID = texInfoOnFocus->getTextureID();
-			}
-			else
-			{
-				state = DEFAULT;
-				textureID = texInfoDefault->getTextureID();
-			}
-		}
-
-		return Widget::onKeyUp(key);
+		textureID = getTextureId();
+		return true;
 	}
 
-	bool Button::onMouseMove(int mouseX, int mouseY)
+	bool Button::onKeyUpEvent(unsigned int key)
 	{
-		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
-		if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
-		{
-			if(state==DEFAULT)
-			{
-				state = FOCUS;
-				textureID = texInfoOnFocus->getTextureID();
-			}
-		}else if(state==FOCUS)
-		{
-			state = DEFAULT;
-			textureID = texInfoDefault->getTextureID();
-		}
+		textureID = getTextureId();
+		return true;
+	}
 
-		return Widget::onMouseMove(mouseX, mouseY);
+	bool Button::onMouseMoveEvent(int mouseX, int mouseY)
+	{
+		textureID = getTextureId();
+		return true;
 	}
 
 	void Button::display(int translateDistanceLoc, float invFrameRate)

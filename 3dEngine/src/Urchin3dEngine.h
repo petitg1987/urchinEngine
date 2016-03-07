@@ -13,10 +13,10 @@
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
 
+#include "scene/GUI/EventListener.h"
 #include "scene/GUI/GUIRenderer.h"
 #include "scene/GUI/window/Window.h"
 #include "scene/GUI/button/Button.h"
-#include "scene/GUI/button/ButtonCommand.h"
 #include "scene/GUI/staticbitmap/StaticBitmap.h"
 #include "scene/GUI/text/Text.h"
 #include "scene/GUI/textbox/TextBox.h"

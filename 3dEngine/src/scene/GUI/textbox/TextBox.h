@@ -23,8 +23,8 @@ namespace urchin
 			void display(int, float);
 			
 		private:
-			bool onKeyDown(unsigned int);
-			bool onChar(unsigned int);
+			bool onKeyDownEvent(unsigned int);
+			bool onCharEvent(unsigned int);
 			void reset();
 		
 			//display informations

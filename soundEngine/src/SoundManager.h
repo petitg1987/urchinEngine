@@ -28,6 +28,7 @@ namespace urchin
 			SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
 
 			void process(const Point3<float> &);
+			void process();
 
 		private:
 			void deleteAudioController(AudioController *);

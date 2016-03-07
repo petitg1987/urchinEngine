@@ -49,7 +49,7 @@ namespace urchin
 		Widget::addChild(child);
 	}
 
-	bool Window::onKeyDown(unsigned int key)
+	bool Window::onKeyDownEvent(unsigned int key)
 	{
 		Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
 				Point2<int>(getGlobalPositionX()+(width-widgetOutline->rightWidth), getGlobalPositionY()+widgetOutline->topWidth));
@@ -76,10 +76,10 @@ namespace urchin
 			propagateEvent = false;
 		}
 		
-		return Widget::onKeyDown(key) && propagateEvent;
+		return propagateEvent;
 	}
 
-	bool Window::onKeyUp(unsigned int key)
+	bool Window::onKeyUpEvent(unsigned int key)
 	{
 		Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(width-widgetOutline->rightWidth), getGlobalPositionY()),
 				Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+widgetOutline->topWidth));
@@ -90,17 +90,17 @@ namespace urchin
 		
 		state = DEFAULT;
 
-		return Widget::onKeyUp(key);
+		return true;
 	}
 
-	bool Window::onMouseMove(int mouseX, int mouseY)
+	bool Window::onMouseMoveEvent(int mouseX, int mouseY)
 	{
 		if(state==MOVING)
 		{
 			setPosition(mouseX - mousePositionX, mouseY - mousePositionY);
 		}
 		
-		return Widget::onMouseMove(mouseX, mouseY);
+		return true;
 	}
 
 	void Window::display(int translateDistanceLoc, float invFrameRate)

@@ -104,6 +104,11 @@ namespace urchin
 		}
 	}
 
+	void SoundManager::process()
+	{
+		process(Point3<float>(0.0, 0.0, 0.0));
+	}
+
 	void SoundManager::deleteAudioController(AudioController *audioController)
 	{
 		delete audioController;

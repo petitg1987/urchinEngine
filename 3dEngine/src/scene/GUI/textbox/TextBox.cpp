@@ -68,7 +68,7 @@ namespace urchin
 		return allText;
 	}
 
-	bool TextBox::onKeyDown(unsigned int key)
+	bool TextBox::onKeyDownEvent(unsigned int key)
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
@@ -93,10 +93,10 @@ namespace urchin
 			refreshText(cursorIndex+1);
 		}
 
-		return Widget::onKeyDown(key);
+		return true;
 	}
 
-	bool TextBox::onChar(unsigned int character)
+	bool TextBox::onCharEvent(unsigned int character)
 	{
 		if(state==ACTIVE)
 		{
@@ -127,7 +127,7 @@ namespace urchin
 			return false;
 		}
 		
-		return Widget::onChar(character);
+		return true;
 	}
 
 	void TextBox::reset()

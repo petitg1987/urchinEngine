@@ -1,13 +1,21 @@
 #include <GL/gl.h>
 
 #include "scene/GUI/Widget.h"
+#include "scene/SceneManager.h"
 
 namespace urchin
 {
 
 	Widget::Widget(int positionX, int positionY, int width, int height) :
-		parent(nullptr), positionX(positionX), positionY(positionY), bIsVisible(true),
-		width(width), height(height), mouseX(0), mouseY(0)
+		parent(nullptr),
+		widgetState(Widget::DEFAULT),
+		positionX(positionX),
+		positionY(positionY),
+		bIsVisible(true),
+		width(width),
+		height(height),
+		mouseX(0),
+		mouseY(0)
 	{
 		onPositionChange();
 	}
@@ -44,6 +52,21 @@ namespace urchin
 	Widget *Widget::getParent() const
 	{
 		return parent;
+	}
+
+	void Widget::setEventListener(std::shared_ptr<EventListener> eventListener)
+	{
+		this->eventListener = eventListener;
+	}
+
+	std::shared_ptr<EventListener> Widget::getEventListener() const
+	{
+		return eventListener;
+	}
+
+	Widget::WidgetStates Widget::getWidgetState() const
+	{
+		return widgetState;
 	}
 
 	void Widget::setPosition(int positionX, int positionY)
@@ -136,47 +159,100 @@ namespace urchin
 
 	bool Widget::onKeyDown(unsigned int key)
 	{
+		handleWidgetKeyDown(key);
+
+		bool propagateEvent = onKeyDownEvent(key);
+
 		for(unsigned int i=0;i<children.size();++i)
 		{
-			if(children[i]->isVisible())
+			if(children[i]->isVisible() && !children[i]->onKeyDown(key))
 			{
-				if(!children[i]->onKeyDown(key))
-				{
-					return false;
-				}
-
+				return false;
 			}
 		}
 
+		return propagateEvent;
+	}
+
+	bool Widget::onKeyDownEvent(unsigned int key)
+	{
 		return true;
+	}
+
+	void Widget::handleWidgetKeyDown(unsigned int key)
+	{
+		if(key==KEY_MOUSE_LEFT)
+		{
+			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
+			{
+				widgetState=CLICKING;
+				if(eventListener)
+				{
+					eventListener->onClick(this);
+				}
+			}
+		}
 	}
 
 	bool Widget::onKeyUp(unsigned int key)
 	{
+		handkeWidgetKeyUp(key);
+
+		bool propagateEvent = onKeyUpEvent(key);
+
 		for(unsigned int i=0;i<children.size();++i)
 		{
-			if(children[i]->isVisible())
+			if(children[i]->isVisible() && !children[i]->onKeyUp(key))
 			{
-				if(!children[i]->onKeyUp(key))
+				return false;
+			}
+		}
+		return propagateEvent;
+	}
+
+	bool Widget::onKeyUpEvent(unsigned int key)
+	{
+		return true;
+	}
+
+	void Widget::handkeWidgetKeyUp(unsigned int key)
+	{
+		if(key==KEY_MOUSE_LEFT)
+		{
+			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
+			{
+				if(eventListener && widgetState==CLICKING)
 				{
-					return false;
+					eventListener->onClickRelease(this);
 				}
+				widgetState = FOCUS;
+			}else
+			{
+				widgetState = DEFAULT;
+			}
+		}
+	}
+
+	bool Widget::onChar(unsigned int character)
+	{
+		if(!onCharEvent(character))
+		{
+			return false;
+		}
+
+		for(unsigned int i=0;i<children.size();++i)
+		{
+			if(children[i]->isVisible() && !children[i]->onChar(character)){
+				return false;
 			}
 		}
 		return true;
 	}
 
-	bool Widget::onChar(unsigned int character)
+	bool Widget::onCharEvent(unsigned int character)
 	{
-		for(unsigned int i=0;i<children.size();++i)
-		{
-			if(children[i]->isVisible())
-			{
-				if(!children[i]->onChar(character)){
-					return false;
-				}
-			}
-		}
 		return true;
 	}
 
@@ -184,6 +260,10 @@ namespace urchin
 	{
 		this->mouseX = mouseX;
 		this->mouseY = mouseY;
+
+		handleWidgetMouseMove(mouseX, mouseY);
+
+		bool propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
 		for(unsigned int i=0;i<children.size();++i)
 		{
@@ -195,7 +275,35 @@ namespace urchin
 				}
 			}
 		}
+		return propagateEvent;
+	}
+
+	bool Widget::onMouseMoveEvent(int mouseX, int mouseY)
+	{
 		return true;
+	}
+
+	void Widget::handleWidgetMouseMove(int mouseX, int mouseY)
+	{
+		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+		if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
+		{
+			if(widgetState==DEFAULT)
+			{
+				if(eventListener)
+				{
+					eventListener->onFocus(this);
+				}
+				widgetState = FOCUS;
+			}
+		}else if(widgetState==FOCUS)
+		{
+			if(eventListener)
+			{
+				eventListener->onFocusLost(this);
+			}
+			widgetState = DEFAULT;
+		}
 	}
 
 	void Widget::reset()

@@ -23,9 +23,9 @@ namespace urchin
 			void display(int, float);
 		
 		private:
-			bool onKeyDown(unsigned int);
-			bool onKeyUp(unsigned int);
-			bool onMouseMove(int, int);
+			bool onKeyDownEvent(unsigned int);
+			bool onKeyUpEvent(unsigned int);
+			bool onMouseMoveEvent(int, int);
 
 			int mousePositionX, mousePositionY;
 

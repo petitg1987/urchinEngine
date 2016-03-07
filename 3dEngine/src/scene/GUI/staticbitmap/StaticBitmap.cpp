@@ -14,8 +14,8 @@ namespace urchin
 		tex = MediaManager::instance()->getMedia<Image>(filename);
 		tex->toTexture(false, false);
 		
-		width = tex->getWidth();
-		height = tex->getHeight();
+		width = 1900; //tex->getWidth();
+		height = 1080; //tex->getHeight();
 
 		//visual
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()

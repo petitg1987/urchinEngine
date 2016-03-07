@@ -8,7 +8,7 @@ namespace urchin
 	{
 		//ambient sound: always position at 0 distance to listener
 		alSourcei(getSourceId(), AL_SOURCE_RELATIVE, true);
-		alSource3f(getSourceId(), AL_POSITION, 0.0f, 0.f, 0.f);
+		alSource3f(getSourceId(), AL_POSITION, 0.0f, 0.0f, 0.0f);
 	}
 
 	AmbientSound::~AmbientSound()
