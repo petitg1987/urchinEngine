@@ -15,9 +15,11 @@ namespace urchin
 	class TextBox : public Widget
 	{
 		public:
-			TextBox(int, int, int, int, const std::string &);
+			TextBox(int, int, Size, const std::string &);
 			virtual ~TextBox();
 			
+			void createOrUpdateWidget();
+
 			std::string getText();
 		
 			void display(int, float);
@@ -27,6 +29,9 @@ namespace urchin
 			bool onCharEvent(unsigned int);
 			void reset();
 		
+			//properties
+			const std::string nameSkin;
+
 			//display informations
 			void refreshText(int);
 			void computeCursorPosition();
@@ -49,10 +54,9 @@ namespace urchin
 			float cursorBlinkSpeed;
 
 			//visual
-			Image *texTextBoxDefault, *texTextBoxFocus;
+			std::shared_ptr<Image> texTextBoxDefault, texTextBoxFocus;
 			unsigned int textureID;
 			WidgetOutline *widgetOutline;
-
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 			unsigned int cursorLineBufferID, cursorLineVAO;
 			enum //shader input

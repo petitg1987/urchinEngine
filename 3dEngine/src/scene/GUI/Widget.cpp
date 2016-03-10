@@ -6,14 +6,41 @@
 namespace urchin
 {
 
-	Widget::Widget(int positionX, int positionY, int width, int height) :
+	Size::Size(float width, SizeType widthSizeType, float height, SizeType heightSizeType) :
+			width(width), height(height), widthSizeType(widthSizeType), heightSizeType(heightSizeType)
+	{
+
+	}
+
+	float Size::getWidth() const
+	{
+		return width;
+	}
+
+	Size::SizeType Size::getWidthSizeType() const
+	{
+		return widthSizeType;
+	}
+
+	float Size::getHeight() const
+	{
+		return height;
+	}
+
+	Size::SizeType Size::getHeightSizeType() const
+	{
+		return heightSizeType;
+	}
+
+	Widget::Widget(int positionX, int positionY, Size size) :
+		sceneWidth(0),
+		sceneHeight(0),
 		parent(nullptr),
 		widgetState(Widget::DEFAULT),
+		size(size),
 		positionX(positionX),
 		positionY(positionY),
 		bIsVisible(true),
-		width(width),
-		height(height),
 		mouseX(0),
 		mouseY(0)
 	{
@@ -28,6 +55,19 @@ namespace urchin
 		}
 	}
 
+	void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
+	{
+		this->sceneWidth = sceneWidth;
+		this->sceneHeight = sceneHeight;
+
+		createOrUpdateWidget();
+
+		for(unsigned int i=0;i<children.size();++i)
+		{
+			children[i]->onResize(sceneWidth, sceneHeight);
+		}
+	}
+
 	void Widget::addChild(Widget *child)
 	{
 		child->setParent(this);
@@ -36,9 +76,12 @@ namespace urchin
 
 	void Widget::removeChild(Widget *child)
 	{
-		std::vector<Widget *>::iterator it = std::find(children.begin(), children.end(), child);
-		delete child;
-		children.erase(it);
+		if(child!=nullptr)
+		{
+			std::vector<Widget *>::iterator it = std::find(children.begin(), children.end(), child);
+			delete child;
+			children.erase(it);
+		}
 	}
 
 	void Widget::setParent(Widget *parent)
@@ -113,14 +156,32 @@ namespace urchin
 		return parent->getGlobalPositionY() + positionY;
 	}
 
-	int Widget::getWidth() const
+	void Widget::setWidth(unsigned int width, Size::SizeType sizeType)
 	{
-		return width;
+		this->size = Size(width, sizeType, size.getHeight(), size.getHeightSizeType());
 	}
 
-	int Widget::getHeight() const
+	unsigned int Widget::getWidth() const
 	{
-		return height;
+		if(size.getWidthSizeType()==Size::PERCENTAGE)
+		{
+			return size.getWidth() * sceneWidth;
+		}
+		return size.getWidth();
+	}
+
+	void Widget::setHeight(unsigned int height, Size::SizeType sizeType)
+	{
+		this->size = Size(size.getWidth(), size.getWidthSizeType(), height, sizeType);
+	}
+
+	unsigned int Widget::getHeight() const
+	{
+		if(size.getHeightSizeType()==Size::PERCENTAGE)
+		{
+			return size.getHeight() * sceneHeight;
+		}
+		return size.getHeight();
 	}
 
 	void Widget::setIsVisible(bool isVisible)
@@ -183,7 +244,7 @@ namespace urchin
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
-			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 			{
 				widgetState=CLICKING;
@@ -220,7 +281,7 @@ namespace urchin
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
-			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 			{
 				if(eventListener && widgetState==CLICKING)
@@ -285,7 +346,7 @@ namespace urchin
 
 	void Widget::handleWidgetMouseMove(int mouseX, int mouseY)
 	{
-		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 		if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 		{
 			if(widgetState==DEFAULT)
@@ -304,6 +365,16 @@ namespace urchin
 			}
 			widgetState = DEFAULT;
 		}
+	}
+
+	int Widget::getMouseX() const
+	{
+		return mouseX;
+	}
+
+	int Widget::getMouseY() const
+	{
+		return mouseY;
 	}
 
 	void Widget::reset()

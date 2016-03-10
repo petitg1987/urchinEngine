@@ -11,7 +11,9 @@ namespace urchin
 {
 
 	Text::Text(int positionX, int positionY, const std::string &nameSkin) :
-		Widget(positionX, positionY, -1, -1)
+		Widget(positionX, positionY, Size(0, Size::PIXEL, 0, Size::PIXEL)),
+		text(""),
+		maxLength(-1)
 	{
 		//skin informations
 		std::shared_ptr<XmlChunk> fontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
@@ -21,7 +23,8 @@ namespace urchin
 		//visual
 		int fontSize = sizeFontChunk->getIntValue();
 		font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*)(&fontSize));
-		setText("");
+
+		setText(text);
 	}
 
 	Text::~Text()
@@ -29,8 +32,16 @@ namespace urchin
 		font->release();
 	}
 
+	void Text::createOrUpdateWidget()
+	{
+		//nothing to do: text cannot be defined in percentage (Size::SizeType::PERCENTAGE).
+	}
+
 	void Text::setText(const std::string &text, int maxLength)
 	{
+		this->text = text;
+		this->maxLength = maxLength;
+
 		//cut the text if needed
 		std::vector<std::string> cuttedTextLines;
 		if(maxLength>0)
@@ -53,10 +64,11 @@ namespace urchin
 				cuttedTextLines.push_back(item);
 			}
 		}
-		
-		height = cuttedTextLines.size()*font->getHeight() + (cuttedTextLines.size()-1)*font->getSpaceBetweenLines();
-		width = -1;
-		numberLetter = 0;
+
+		unsigned int numberOfInterLines = static_cast<unsigned int>(std::max(0, ((int)cuttedTextLines.size()-1)));
+		setHeight(cuttedTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL);
+		setWidth(0, Size::SizeType::PIXEL);
+		int numberLetter = 0;
 
 		//creates the vertex array and texture array
 		std::vector<int> vertexArray;
@@ -64,8 +76,8 @@ namespace urchin
 		int offsetY = 0;
 		for(unsigned int numLine=0; numLine<cuttedTextLines.size(); ++numLine)
 		{ //each lines
-			int offsetX = 0;
-			for(unsigned int numLetter=0; cuttedTextLines[numLine][numLetter]!=0; ++numLetter)
+			unsigned int offsetX = 0;
+			for(unsigned int numLetter=0; numLetter<cuttedTextLines[numLine].size(); ++numLetter)
 			{ //each letters
 				unsigned char letter = cuttedTextLines[numLine][numLetter];
 				numberLetter++;
@@ -93,12 +105,12 @@ namespace urchin
 
 				offsetX += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
 
-				if(width < (offsetX - font->getSpaceBetweenLetters()))
+				if(getWidth() < (offsetX - font->getSpaceBetweenLetters()))
 				{
-					width = offsetX - font->getSpaceBetweenLetters();
+					setWidth(offsetX - font->getSpaceBetweenLetters(), Size::SizeType::PIXEL);
 				}
 			}
-			offsetY -= font->getSpaceBetweenLines();
+			offsetY += font->getSpaceBetweenLines();
 		}
 
 		int *vertexData = new int[numberLetter*8];

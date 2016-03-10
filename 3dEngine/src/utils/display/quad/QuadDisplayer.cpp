@@ -17,10 +17,10 @@ namespace urchin
 			textureCoord(quadDisplayerBuilder->getTextureCoord()),
 			vertexArrayObject(0)
 	{
-		if(vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT)
+		if(vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT)
 		{
 			throw std::invalid_argument("Vertex data type not supported: " + vertexDataType);
-		}else if(textureDataType!=GL_FLOAT && textureDataType!=GL_INT)
+		}else if(textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT)
 		{
 			throw std::invalid_argument("Texture data type not supported: " + textureDataType);
 		}
@@ -52,9 +52,16 @@ namespace urchin
 		glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, bufferUsage);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
 		glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, false, 0, 0);
-		(vertexDataType==GL_FLOAT) ?
-				(delete [] static_cast<float *>(vertexCoord)) :
-				(delete [] static_cast<int *>(vertexCoord));
+		if(vertexDataType==GL_FLOAT)
+		{
+			delete [] static_cast<float *>(vertexCoord);
+		}else if(vertexDataType==GL_INT)
+		{
+			delete [] static_cast<int *>(vertexCoord);
+		}else if(vertexDataType==GL_UNSIGNED_INT)
+		{
+			delete [] static_cast<unsigned int *>(vertexCoord);
+		}
 		vertexCoord = nullptr;
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
@@ -62,9 +69,16 @@ namespace urchin
 		glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, bufferUsage);
 		glEnableVertexAttribArray(SHADER_TEX_COORD);
 		glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, false, 0, 0);
-		(textureDataType==GL_FLOAT) ?
-						(delete [] static_cast<float *>(textureCoord)) :
-						(delete [] static_cast<int *>(textureCoord));
+		if(textureDataType==GL_FLOAT)
+		{
+			delete [] static_cast<float *>(textureCoord);
+		}else if(textureDataType==GL_INT)
+		{
+			delete [] static_cast<int *>(textureCoord);
+		}else if(textureDataType==GL_UNSIGNED_INT)
+		{
+			delete [] static_cast<unsigned int *>(textureCoord);
+		}
 		textureCoord = nullptr;
 	}
 

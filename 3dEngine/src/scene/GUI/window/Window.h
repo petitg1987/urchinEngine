@@ -6,6 +6,7 @@
 
 #include "scene/GUI/GUISkinService.h"
 #include "scene/GUI/Widget.h"
+#include "scene/GUI/text/Text.h"
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -15,9 +16,11 @@ namespace urchin
 	class Window : public Widget
 	{
 		public:
-			Window(int, int, int, int, const std::string &, const std::string &stringTitle = "");
+			Window(int, int, Size, const std::string &, const std::string &stringTitle = "");
 			virtual ~Window();
 		
+			void createOrUpdateWidget();
+
 			void addChild(Widget *);
 
 			void display(int, float);
@@ -27,9 +30,12 @@ namespace urchin
 			bool onKeyUpEvent(unsigned int);
 			bool onMouseMoveEvent(int, int);
 
-			int mousePositionX, mousePositionY;
+			//properties
+			const std::string nameSkin;
+			const std::string stringTitle;
 
 			//state
+			int mousePositionX, mousePositionY;
 			enum windowStates
 			{
 				DEFAULT,
@@ -38,9 +44,9 @@ namespace urchin
 			} state;
 			
 			//visual
-			Image *texWindow;
+			Text *title;
+			std::shared_ptr<Image> texWindow;
 			WidgetOutline *widgetOutline;
-
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 

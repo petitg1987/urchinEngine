@@ -18,21 +18,21 @@ namespace urchin
 	class Font : public Resource
 	{
 		public:
-			Font(Image *, Glyph *, int, int, int);
+			Font(Image *, Glyph *, unsigned int, unsigned int, unsigned int);
 			~Font();
 		
 			const Glyph &getGlyph(unsigned char i) const;
 			unsigned int getTextureID() const;
 			unsigned int getDimensionTexture() const;
-			int getSpaceBetweenLetters() const;
-			int getSpaceBetweenLines() const;
-			int getHeight() const;
+			unsigned int getSpaceBetweenLetters() const;
+			unsigned int getSpaceBetweenLines() const;
+			unsigned int getHeight() const;
 		
 		private:
 			Image *texAlphabet;
 		
 			Glyph *glyph;
-			int spaceBetweenLetters, spaceBetweenLines, height;
+			unsigned int spaceBetweenLetters, spaceBetweenLines, height;
 	};
 
 }

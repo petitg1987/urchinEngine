@@ -3,44 +3,53 @@
 #include "UrchinCommon.h"
 
 #include "scene/GUI/window/Window.h"
-#include "scene/GUI/text/Text.h"
 #include "scene/SceneManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
 
-	Window::Window(int positionX, int positionY, int width, int height, const std::string &nameSkin, const std::string &stringTitle) :
-		Widget(positionX, positionY, width, height), state(DEFAULT), widgetOutline(new WidgetOutline())
+	Window::Window(int positionX, int positionY, Size size, const std::string &nameSkin, const std::string &stringTitle) :
+		Widget(positionX, positionY, size),
+		nameSkin(nameSkin),
+		stringTitle(stringTitle),
+		state(DEFAULT),
+		title(nullptr),
+		widgetOutline(new WidgetOutline())
 	{
-		//load the skin
-		std::shared_ptr<XmlChunk> windowChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "window", XmlAttribute("nameSkin", nameSkin));
-		
-		//creates the texture
-		std::shared_ptr<XmlChunk> skinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute(), windowChunk);
-		texWindow = GUISkinService::instance()->createTexWidget(width, height, skinChunk, widgetOutline);
-
-		//creates font for title
-		if(!stringTitle.empty())
-		{
-			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
-			Text *title = new Text(0, 0, textChunk->getStringValue());
-			addChild(title);
-			title->setPosition(widgetOutline->leftWidth, (widgetOutline->topWidth - title->getHeight())/2);
-			title->setText(stringTitle.c_str(), 300.0);
-		}
-
-		//visual
-		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
-				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, texWindow->getMaxCoordS(), 0.0, texWindow->getMaxCoordS(), texWindow->getMaxCoordT(), 0.0, texWindow->getMaxCoordT()})
-				->build();
+		createOrUpdateWidget();
 	}
 
 	Window::~Window()
 	{
 		delete widgetOutline;
-		texWindow->release();
+	}
+
+	void Window::createOrUpdateWidget()
+	{
+		//load the skin
+		std::shared_ptr<XmlChunk> windowChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "window", XmlAttribute("nameSkin", nameSkin));
+
+		//creates the texture
+		std::shared_ptr<XmlChunk> skinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute(), windowChunk);
+		texWindow = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunk, widgetOutline);
+
+		//creates font for title
+		if(!stringTitle.empty())
+		{
+			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
+			Widget::removeChild(title);
+			title = new Text(0, 0, textChunk->getStringValue());
+			title->setPosition(widgetOutline->leftWidth, (widgetOutline->topWidth - title->getHeight())/2);
+			title->setText(stringTitle.c_str());
+			Widget::addChild(title);
+		}
+
+		//visual
+		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+				->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()})
+				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0})
+				->build();
 	}
 
 	void Window::addChild(Widget *child)
@@ -52,25 +61,25 @@ namespace urchin
 	bool Window::onKeyDownEvent(unsigned int key)
 	{
 		Rectangle<int> titleZone(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-				Point2<int>(getGlobalPositionX()+(width-widgetOutline->rightWidth), getGlobalPositionY()+widgetOutline->topWidth));
-		Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(width - widgetOutline->rightWidth), getGlobalPositionY()),
-				Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+widgetOutline->topWidth));
+				Point2<int>(getGlobalPositionX()+(getWidth()-widgetOutline->rightWidth), getGlobalPositionY()+widgetOutline->topWidth));
+		Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth() - widgetOutline->rightWidth), getGlobalPositionY()),
+				Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+widgetOutline->topWidth));
 		
-		if(key==KEY_MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(mouseX, mouseY)))
+		if(key==KEY_MOUSE_LEFT && titleZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
 		{
-			mousePositionX = mouseX - getPositionX();
-			mousePositionY = mouseY - getPositionY();
+			mousePositionX = getMouseX() - getPositionX();
+			mousePositionY = getMouseY() - getPositionY();
 			
 			state = MOVING;
-		}else if(key==KEY_MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(mouseX, mouseY)))
+		}else if(key==KEY_MOUSE_LEFT && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
 		{
 			state =CLOSING;
 		}
 		
 		Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()),
-				Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
+				Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 		bool propagateEvent = true;
-		if(key==KEY_MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
+		if(key==KEY_MOUSE_LEFT && widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
 		{
 			notifyObservers(this, SET_IN_FOREGROUND);
 			propagateEvent = false;
@@ -81,9 +90,9 @@ namespace urchin
 
 	bool Window::onKeyUpEvent(unsigned int key)
 	{
-		Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(width-widgetOutline->rightWidth), getGlobalPositionY()),
-				Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+widgetOutline->topWidth));
-		if(key==KEY_MOUSE_LEFT && state==CLOSING && closeZone.collideWithPoint(Point2<int>(mouseX, mouseY)))
+		Rectangle<int> closeZone(Point2<int>(getGlobalPositionX()+(getWidth()-widgetOutline->rightWidth), getGlobalPositionY()),
+				Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+widgetOutline->topWidth));
+		if(key==KEY_MOUSE_LEFT && state==CLOSING && closeZone.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
 		{
 			setIsVisible(false);
 		}

@@ -12,23 +12,41 @@
 namespace urchin
 {
 
-	TextBox::TextBox(int positionX, int positionY, int width, int height, const std::string &nameSkin) :
-		Widget(positionX, positionY, width, height), startTextIndex(0), cursorIndex(0), state(UNACTIVE), widgetOutline(new WidgetOutline())
+	TextBox::TextBox(int positionX, int positionY, Size size, const std::string &nameSkin) :
+		Widget(positionX, positionY, size),
+		nameSkin(nameSkin),
+		startTextIndex(0),
+		cursorIndex(0),
+		state(UNACTIVE),
+		widgetOutline(new WidgetOutline())
+	{
+		createOrUpdateWidget();
+	}
+
+	TextBox::~TextBox()
+	{
+		glDeleteVertexArrays(1, &cursorLineVAO);
+		glDeleteBuffers(1, &cursorLineBufferID);
+
+		delete widgetOutline;
+	}
+
+	void TextBox::createOrUpdateWidget()
 	{
 		//skin information
 		std::shared_ptr<XmlChunk> textBoxChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textBox", XmlAttribute("nameSkin", nameSkin));
 
 		std::shared_ptr<XmlChunk> skinChunkDefault = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), textBoxChunk);
-		texTextBoxDefault = GUISkinService::instance()->createTexWidget(width, height, skinChunkDefault, widgetOutline);
+		texTextBoxDefault = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkDefault, widgetOutline);
 		
 		std::shared_ptr<XmlChunk> skinChunkFocus = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), textBoxChunk);
-		texTextBoxFocus = GUISkinService::instance()->createTexWidget(width, height, skinChunkFocus);
+		texTextBoxFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkFocus);
 		
 		std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
 		text = new Text(0, 0,  textChunk->getStringValue());
 		addChild(text);
-		text->setPosition(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (int)(height - text->getHeight())/2);
-		maxWidthText = width - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
+		text->setPosition(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (int)(getHeight() - text->getHeight())/2);
+		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
 		
 		//cursor information
 		cursorBlinkSpeed = ConfigService::instance()->getFloatValue("GUI.cursorBlinkSpeed");
@@ -38,29 +56,19 @@ namespace urchin
 		glGenVertexArrays(1, &cursorLineVAO);
 		glBindVertexArray(cursorLineVAO);
 
-		const int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, height - widgetOutline->bottomWidth};
+		const unsigned int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
 		glBindBuffer(GL_ARRAY_BUFFER, cursorLineBufferID);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(cursorLineVertexData), cursorLineVertexData, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_INT, false, 0, 0);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, false, 0, 0);
 
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
-				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, texTextBoxDefault->getMaxCoordS(), 0.0, texTextBoxDefault->getMaxCoordS(), texTextBoxDefault->getMaxCoordT(), 0.0, texTextBoxDefault->getMaxCoordT()})
+				->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()})
+				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0})
 				->build();
 
 		textureID = texTextBoxDefault->getTextureID();
 		computeCursorPosition();
-	}
-
-	TextBox::~TextBox()
-	{
-		glDeleteVertexArrays(1, &cursorLineVAO);
-		glDeleteBuffers(1, &cursorLineBufferID);
-
-		delete widgetOutline;
-		texTextBoxDefault->release();
-		texTextBoxFocus->release();
 	}
 
 	std::string TextBox::getText()
@@ -72,13 +80,13 @@ namespace urchin
 	{
 		if(key==KEY_MOUSE_LEFT)
 		{
-			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+width, getGlobalPositionY()+height));
-			if (widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
+			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
+			if (widgetRectangle.collideWithPoint(Point2<int>(getMouseX(), getMouseY())))
 			{
 				state = ACTIVE;
 				textureID = texTextBoxFocus->getTextureID();
 
-				int localMouseX = mouseX - text->getGlobalPositionX();
+				int localMouseX = getMouseX() - text->getGlobalPositionX();
 				computeCursorIndex(localMouseX);
 			}else
 			{

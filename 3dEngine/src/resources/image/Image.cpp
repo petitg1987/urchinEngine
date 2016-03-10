@@ -16,9 +16,7 @@ namespace urchin
 			format(format),
 			texels(texels),
 			isTexture(false),
-			textureID(0),
-			maxCoordS(0),
-			maxCoordT(0)
+			textureID(0)
 	{
 
 	}
@@ -70,33 +68,6 @@ namespace urchin
 			return textureID;
 		}
 
-		//find the next power 2 of width/height
-		unsigned int newWidth = MathAlgorithm::nextPowerOfTwo(width);
-		unsigned int newHeight = MathAlgorithm::nextPowerOfTwo(height);
-
-		if(newWidth!=width || newHeight!=height) //reScale image
-		{
-			unsigned char *newTexels = new unsigned char[newWidth*newHeight*internalFormat];
-			//copy texInfo->texels to newTexels with reScale :
-			for(unsigned int i=0;i<height;i++)
-			{
-				for(unsigned int j=0;j<width*internalFormat;j++)
-				{
-					newTexels[j+i*newWidth*internalFormat] = texels[j+i*width*internalFormat];
-				}
-			}
-				
-			maxCoordS = (float)width/(float)newWidth;
-			maxCoordT = (float)height/(float)newHeight;
-			
-			delete [] texels;
-			texels = newTexels;
-		}else
-		{
-			maxCoordS = 1.0;
-			maxCoordT = 1.0;
-		}
-
 		glGenTextures(1, &textureID);
 		glBindTexture (GL_TEXTURE_2D, textureID);
 
@@ -115,7 +86,8 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, needMipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, newWidth, newHeight, 0, format, GL_UNSIGNED_BYTE, texels);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, texels);
 
 		if(needMipmaps)
 		{
@@ -136,15 +108,4 @@ namespace urchin
 		}
 		return textureID;
 	}
-
-	float Image::getMaxCoordS() const
-	{
-		return maxCoordS;
-	}
-
-	float Image::getMaxCoordT() const
-	{
-		return maxCoordT;
-	}
-
 }

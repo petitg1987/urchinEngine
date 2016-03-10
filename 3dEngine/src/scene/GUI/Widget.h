@@ -10,10 +10,27 @@
 namespace urchin
 {
 	
+	class Size
+	{
+		public:
+			enum SizeType{PIXEL, PERCENTAGE};
+			Size(float width, SizeType widthSizeType, float height, SizeType heightSizeType);
+
+			float getWidth() const;
+			SizeType getWidthSizeType() const;
+
+			float getHeight() const;
+			SizeType getHeightSizeType() const;
+
+		private:
+			float width, height;
+			SizeType widthSizeType, heightSizeType;
+	};
+
 	class Widget : public Observable
 	{
 		public:
-			Widget(int, int, int, int);
+			Widget(int, int, Size);
 			virtual ~Widget();
 
 			enum NotificationType
@@ -28,6 +45,9 @@ namespace urchin
 				FOCUS
 			};
 		
+			void onResize(unsigned int, unsigned int);
+			virtual void createOrUpdateWidget() = 0;
+
 			virtual void addChild(Widget *);
 			virtual void removeChild(Widget *);
 
@@ -44,8 +64,8 @@ namespace urchin
 			int getGlobalPositionX() const;
 			int getGlobalPositionY() const;
 
-			int getWidth() const;
-			int getHeight() const;
+			unsigned int getWidth() const;
+			unsigned int getHeight() const;
 		
 			void setIsVisible(bool);
 			bool isVisible() const;
@@ -61,14 +81,22 @@ namespace urchin
 			virtual bool onCharEvent(unsigned int);
 			bool onMouseMove(int, int);
 			virtual bool onMouseMoveEvent(int, int);
+			int getMouseX() const;
+			int getMouseY() const;
 			virtual void reset();
 
 			virtual void display(int, float);
+
+		protected:
+			void setWidth(unsigned int, Size::SizeType);
+			void setHeight(unsigned int, Size::SizeType);
 
 		private:
 			void handleWidgetKeyDown(unsigned int);
 			void handkeWidgetKeyUp(unsigned int);
 			void handleWidgetMouseMove(int, int);
+
+			unsigned int sceneWidth, sceneHeight;
 
 			Widget *parent;
 			std::vector<Widget *> children;
@@ -76,12 +104,11 @@ namespace urchin
 			std::shared_ptr<EventListener> eventListener;
 			WidgetStates widgetState;
 
+			Size size;
 			int positionX, positionY;
 			Vector2<int> translateDistance;
 			bool bIsVisible;
 
-		protected:
-			int width, height;
 			int mouseX, mouseY;
 	};
 

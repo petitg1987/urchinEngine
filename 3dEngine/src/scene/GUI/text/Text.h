@@ -17,6 +17,8 @@ namespace urchin
 			Text(int, int, const std::string &);
 			virtual ~Text();
 		
+			void createOrUpdateWidget();
+
 			void setText(const std::string &, int maxLength=-1);
 			const Font *getFont();
 			
@@ -25,11 +27,12 @@ namespace urchin
 		private:
 			std::string cutText(const std::string &, int);
 
-			int numberLetter;
+			//properties
+			std::string text;
+			int maxLength;
 
 			//visual
 			Font *font;
-
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 	

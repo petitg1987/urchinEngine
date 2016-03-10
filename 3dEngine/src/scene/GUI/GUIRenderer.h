@@ -31,8 +31,6 @@ namespace urchin
 			void display(float);
 			
 		private:
-			unsigned int width, height;
-
 			std::vector<Widget *> widgets;
 
 			Matrix3<float> mProjection, mModelView;

@@ -111,9 +111,9 @@ namespace urchin
 
 		//compute space between lines, space between letters and height of letters (basis on letter "A")
 		int basisLetter = 'A';
-		int spaceBetweenLines = (int) -(glyph[basisLetter].height*WIDTH_BETWEEN_LINES_RATE);
-		int spaceBetweenLetters = WIDTH_BETWEEN_LETTERS;
-		int height = glyph[basisLetter].height;
+		unsigned int spaceBetweenLines = (unsigned int) (glyph[basisLetter].height*WIDTH_BETWEEN_LINES_RATE);
+		unsigned int spaceBetweenLetters = WIDTH_BETWEEN_LETTERS;
+		unsigned int height = glyph[basisLetter].height;
 		glyph[' '].width = (int)((float)glyph[basisLetter].width*WIDTH_SPACE_RATE);
 
 		//dimension of letters and texture

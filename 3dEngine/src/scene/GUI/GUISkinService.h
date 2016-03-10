@@ -11,10 +11,10 @@ namespace urchin
 
 	struct WidgetOutline
 	{
-		int topWidth;
-		int bottomWidth;
-		int leftWidth;
-		int rightWidth;
+		unsigned int topWidth;
+		unsigned int bottomWidth;
+		unsigned int leftWidth;
+		unsigned int rightWidth;
 	};
 
 	class GUISkinService : public Singleton<GUISkinService>
@@ -24,7 +24,7 @@ namespace urchin
 
 			void setSkin(const std::string &);
 		
-			Image *createTexWidget(int, int, std::shared_ptr<XmlChunk>, WidgetOutline *widgetOutline=nullptr) const;
+			std::shared_ptr<Image> createTexWidget(unsigned int, unsigned int, std::shared_ptr<XmlChunk>, WidgetOutline *widgetOutline=nullptr) const;
 			XmlParser *getXmlSkin() const;
 
 		private:

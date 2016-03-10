@@ -14,15 +14,19 @@ namespace urchin
 	class StaticBitmap : public Widget
 	{
 		public:
-			StaticBitmap(int, int, const std::string &);
+			StaticBitmap(int, int, Size, const std::string &);
 			virtual ~StaticBitmap();
 			
+			void createOrUpdateWidget();
+
 			void display(int, float);
 			
 		private:
+			//properties
+			const std::string filename;
+
 			//visual
 			Image *tex;
-
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 	

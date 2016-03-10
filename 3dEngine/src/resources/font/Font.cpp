@@ -3,8 +3,12 @@
 namespace urchin
 {
 	
-	Font::Font(Image *texAlphabet, Glyph *glyph, int spaceBetweenLetters, int spaceBetweenLines, int height) :
-		texAlphabet(texAlphabet), glyph(glyph), spaceBetweenLetters(spaceBetweenLetters), spaceBetweenLines(spaceBetweenLines), height(height)
+	Font::Font(Image *texAlphabet, Glyph *glyph, unsigned int spaceBetweenLetters, unsigned int spaceBetweenLines, unsigned int height) :
+		texAlphabet(texAlphabet),
+		glyph(glyph),
+		spaceBetweenLetters(spaceBetweenLetters),
+		spaceBetweenLines(spaceBetweenLines),
+		height(height)
 	{
 		
 	}
@@ -30,17 +34,17 @@ namespace urchin
 		return texAlphabet->getWidth();
 	}
 
-	int Font::getSpaceBetweenLetters() const
+	unsigned int Font::getSpaceBetweenLetters() const
 	{
 		return spaceBetweenLetters;
 	}
 
-	int Font::getSpaceBetweenLines() const
+	unsigned int Font::getSpaceBetweenLines() const
 	{
 		return spaceBetweenLines;
 	}
 
-	int Font::getHeight() const
+	unsigned int Font::getHeight() const
 	{
 		return height;
 	}

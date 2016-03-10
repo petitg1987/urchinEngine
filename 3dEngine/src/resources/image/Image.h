@@ -21,8 +21,6 @@ namespace urchin
 		
 			unsigned int toTexture(bool, bool);
 			unsigned int getTextureID() const;
-			float getMaxCoordS() const;
-			float getMaxCoordT() const;
 			
 		private:
 			int internalFormat;	//number of component of the image
@@ -33,7 +31,6 @@ namespace urchin
 			
 			bool isTexture;
 			unsigned int textureID;
-			float maxCoordS, maxCoordT;
 	};
 
 }

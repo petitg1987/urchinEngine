@@ -12,8 +12,6 @@ namespace urchin
 {
 	
 	GUIRenderer::GUIRenderer() :
-		width(0),
-		height(0),
 		GUIShader(0),
 		mProjectionLoc(0),
 		translateDistanceLoc(0),
@@ -39,15 +37,18 @@ namespace urchin
 
 	void GUIRenderer::onResize(unsigned int width, unsigned int height)
 	{
-		this->width = width;
-		this->height = height;
-
 		//orthogonal matrix with origin at top left screen
 		ShaderManager::instance()->bind(GUIShader);
 		mProjection.setValues(2.0f/(float)width, 0.0, -1.0,
 			0.0, -2.0f/(float)height, 1.0,
 			0.0, 0.0, 1.0);
 		glUniformMatrix3fv(mProjectionLoc, 1, false, (const float*)mProjection);
+
+		//widgets resize
+		for(int i=widgets.size()-1;i>=0;--i)
+		{
+			widgets[i]->onResize(width, height);
+		}
 	}
 
 	void GUIRenderer::notify(Observable *observable, int notificationType)

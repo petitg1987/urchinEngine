@@ -15,9 +15,11 @@ namespace urchin
 	class Button : public Widget
 	{
 		public:
-			Button(int, int, int, int, const std::string &, const std::string &);
+			Button(int, int, Size, const std::string &, const std::string &);
 			virtual ~Button();
 			
+			void createOrUpdateWidget();
+
 			void display(int, float);
 			
 		private:
@@ -27,10 +29,13 @@ namespace urchin
 			bool onKeyUpEvent(unsigned int);
 			bool onMouseMoveEvent(int, int);
 
+			//properties
+			const std::string nameSkin;
+			const std::string buttonText;
+
 			//visual
 			unsigned int textureID;
-			Image *texInfoDefault, *texInfoOnFocus, *texInfoOnClick;
-
+			std::shared_ptr<Image> texInfoDefault, texInfoOnFocus, texInfoOnClick;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 

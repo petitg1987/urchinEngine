@@ -8,44 +8,49 @@
 namespace urchin
 {
 
-	Button::Button(int positionX, int positionY, int width, int height, const std::string &nameSkin, const std::string &text)
-		: Widget(positionX, positionY, width, height)
+	Button::Button(int positionX, int positionY, Size size, const std::string &nameSkin, const std::string &buttonText)
+		: Widget(positionX, positionY, size),
+		  nameSkin(nameSkin),
+		  buttonText(buttonText)
+	{
+		createOrUpdateWidget();
+	}
+
+	Button::~Button()
+	{
+
+	}
+
+	void Button::createOrUpdateWidget()
 	{
 		//skin informations
 		std::shared_ptr<XmlChunk> buttonChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
 
 		std::shared_ptr<XmlChunk> skinDefaultChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), buttonChunk);
-		texInfoDefault = GUISkinService::instance()->createTexWidget(width, height, skinDefaultChunk);
+		texInfoDefault = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinDefaultChunk);
 
 		std::shared_ptr<XmlChunk> skinFocusChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "focus"), buttonChunk);
-		texInfoOnFocus = GUISkinService::instance()->createTexWidget(width, height, skinFocusChunk);
+		texInfoOnFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinFocusChunk);
 
 		std::shared_ptr<XmlChunk> skinClickChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "click"), buttonChunk);
-		texInfoOnClick = GUISkinService::instance()->createTexWidget(width, height, skinClickChunk);
+		texInfoOnClick = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinClickChunk);
 
-		if(!text.empty())
+		if(!buttonText.empty())
 		{
 			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
 			Text *msg = new Text(0, 0, textChunk->getStringValue());
 			addChild(msg);
-			msg->setText(text.c_str());
-			msg->setPosition((int)(width - msg->getWidth())/2, (int)(height - msg->getHeight())/2);
+			msg->setText(buttonText.c_str());
+			msg->setPosition((int)(getWidth() - msg->getWidth())/2, (int)(getHeight() - msg->getHeight())/2);
 		}
 
 		//visual
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-				->vertexData(GL_INT, new int[8]{0, 0, width, 0, width, height, 0, height})
-				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, texInfoDefault->getMaxCoordS(), 0.0, texInfoDefault->getMaxCoordS(), texInfoDefault->getMaxCoordT(), 0.0, texInfoDefault->getMaxCoordT()})
+				->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()})
+				->textureData(GL_FLOAT, new float[8]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0})
 				->build();
 
 		textureID = texInfoDefault->getTextureID();
-	}
-
-	Button::~Button()
-	{
-		texInfoDefault->release();
-		texInfoOnFocus->release();
-		texInfoOnClick->release();
 	}
 
 	unsigned int Button::getTextureId()
