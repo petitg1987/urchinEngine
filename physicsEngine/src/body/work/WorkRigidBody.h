@@ -12,7 +12,7 @@ namespace urchin
 	class WorkRigidBody : public AbstractWorkBody
 	{
 		public:
-			WorkRigidBody(const std::string &, const PhysicsTransform &, std::shared_ptr<const CollisionShape3D>);
+			WorkRigidBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
 			~WorkRigidBody();
 
 			static WorkRigidBody *upCast(AbstractWorkBody *);

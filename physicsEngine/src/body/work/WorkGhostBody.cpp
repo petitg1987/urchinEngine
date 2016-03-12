@@ -4,7 +4,7 @@
 namespace urchin
 {
 
-	WorkGhostBody::WorkGhostBody(const std::string &id, const PhysicsTransform &physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
+	WorkGhostBody::WorkGhostBody(const std::string &id, const PhysicsTransform &physicsTransform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			AbstractWorkBody(id, physicsTransform, shape),
 			pairContainer(new VectorPairContainer())
 	{

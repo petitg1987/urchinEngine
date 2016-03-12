@@ -97,7 +97,7 @@ namespace urchin
 		return parent;
 	}
 
-	void Widget::setEventListener(std::shared_ptr<EventListener> eventListener)
+	void Widget::setEventListener(const std::shared_ptr<EventListener> &eventListener)
 	{
 		this->eventListener = eventListener;
 	}

@@ -28,7 +28,7 @@ namespace urchin
 	class CharacterController : public ProcessableInterface
 	{
 		public:
-			CharacterController(std::shared_ptr<const CollisionShape3D>, const PhysicsTransform &);
+			CharacterController(const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
 			~CharacterController();
 
 			void initialize(PhysicsWorld *);

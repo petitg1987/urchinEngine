@@ -9,7 +9,7 @@ namespace urchin
 	uint_fast32_t AbstractWorkBody::nextObjectId = 0;
 
 	AbstractWorkBody::AbstractWorkBody(const std::string &id, const PhysicsTransform &physicsTransform,
-		std::shared_ptr<const CollisionShape3D> shape) :
+		const std::shared_ptr<const CollisionShape3D> &shape) :
 			physicsTransform(physicsTransform),
 			shape(shape),
 			id(id),

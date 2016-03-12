@@ -54,7 +54,7 @@ namespace urchin
 			void setParent(Widget *);
 			Widget *getParent() const;
 
-			void setEventListener(std::shared_ptr<EventListener>);
+			void setEventListener(const std::shared_ptr<EventListener> &);
 			std::shared_ptr<EventListener> getEventListener() const;
 			WidgetStates getWidgetState() const;
 		

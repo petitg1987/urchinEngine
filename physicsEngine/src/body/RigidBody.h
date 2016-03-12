@@ -14,7 +14,7 @@ namespace urchin
 	class RigidBody : public AbstractBody
 	{
 		public:
-			RigidBody(const std::string &, const Transform<float> &, std::shared_ptr<const CollisionShape3D>);
+			RigidBody(const std::string &, const Transform<float> &, const std::shared_ptr<const CollisionShape3D> &);
 			virtual ~RigidBody();
 
 			AbstractWorkBody *createWorkBody() const;

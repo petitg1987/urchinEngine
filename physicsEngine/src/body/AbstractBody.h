@@ -16,7 +16,7 @@ namespace urchin
 	class AbstractBody
 	{
 		public:
-			AbstractBody(const std::string &, const Transform<float> &, std::shared_ptr<const CollisionShape3D>);
+			AbstractBody(const std::string &, const Transform<float> &, const std::shared_ptr<const CollisionShape3D> &);
 			virtual ~AbstractBody();
 
 			void setIsNew(bool);

@@ -10,6 +10,9 @@
 #define WIDTH_BETWEEN_LETTERS 2
 #define WIDTH_BETWEEN_LINES_RATE 1.9
 #define WIDTH_SPACE_RATE 0.4
+#define NUM_COLORS 4
+#define NUM_LETTERS 256
+#define NUM_LETTERS_BY_LINE 16
 
 namespace urchin
 {
@@ -21,8 +24,8 @@ namespace urchin
 
 	Font *LoaderTTF::loadFromFile(const std::string &fileFont, void *params)
 	{
-		//get the font size from parameters
-		int size = (int)(*static_cast<int*>(params));
+		//parameters
+		FontParameters textParameters = (FontParameters)(*static_cast<FontParameters*>(params));
 		
 		//initialize freetype
 		std::string fileFontPath = FileSystem::instance()->getWorkingDirectory() + fileFont;
@@ -40,7 +43,7 @@ namespace urchin
 			throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ".");
 		}
 
-		if (FT_Set_Char_Size(face, 0, size << 6, 96, 96))
+		if (FT_Set_Char_Size(face, 0, textParameters.fontSize << 6, 96, 96))
 		{
 			FT_Done_Face(face);
 			FT_Done_FreeType(library);
@@ -49,7 +52,7 @@ namespace urchin
 		}
 		
 		//filled the struct_glyph
-		Glyph *glyph = new Glyph[256];
+		Glyph *glyph = new Glyph[NUM_LETTERS];
 		
 		int glyphIndex = FT_Get_Char_Index(face, 65);
 		if(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT))
@@ -70,7 +73,7 @@ namespace urchin
 		}
 		int bitmapTopA = face->glyph->bitmap_top;
 		
-		for(int i=0;i<256;i++)
+		for(int i=0;i<NUM_LETTERS;i++)
 		{
 			int glyphIndex = FT_Get_Char_Index(face, i);
 			if(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT))
@@ -118,7 +121,7 @@ namespace urchin
 
 		//dimension of letters and texture
 		int dimensionLetters=0;
-		for(int i=0;i<256;++i) //seek the largest letter
+		for(int i=0;i<NUM_LETTERS;++i) //seek the largest letter
 		{
 			if(glyph[i].width > dimensionLetters)
 			{
@@ -129,36 +132,40 @@ namespace urchin
 				dimensionLetters = glyph[i].height;
 			}
 		}
-		dimensionLetters = MathAlgorithm::nextPowerOfTwo(dimensionLetters);
-		unsigned int dimensionTexture = dimensionLetters << 4;
+		unsigned int dimensionTexture = dimensionLetters * NUM_LETTERS_BY_LINE;
 		
-		//creations of the texture
-		unsigned char *texels = new unsigned char[dimensionTexture*dimensionTexture];
+		//texture creation
+		unsigned char *texels = new unsigned char[dimensionTexture*dimensionTexture*NUM_COLORS];
 		
-		for(unsigned int i=0;i<dimensionTexture*dimensionTexture;i++)
+		for(unsigned int i=0;i<dimensionTexture*dimensionTexture*NUM_COLORS;i++)
 		{
-			texels[i] = 0; //initialize to 0
+			texels[i] = 0; //initialize
 		}
 
-		for(int i=0,c=0; i<16*dimensionLetters; i+=dimensionLetters)
+		Vector3<float> fontColor = textParameters.fontColor;
+		for(unsigned int i=0,c=0; i<dimensionTexture; i+=dimensionLetters)
 		{
-			for(int j=0; j<16*dimensionLetters; j+=dimensionLetters,c++)
+			for(unsigned int j=0; j<dimensionTexture; j+=dimensionLetters,c++)
 			{
 				for(int yy=0,m=0; yy<glyph[c].height; yy++)
 				{
 					for(int xx=0; xx<glyph[c].width; xx++,m++)
 					{
-						texels[ ((i+yy)*dimensionTexture) + j+xx] = glyph[c].buf[m];
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 0] = (glyph[c].buf[m]>0) ? fontColor.X*255.0 : 0;
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 1] = (glyph[c].buf[m]>0) ? fontColor.Y*255.0 : 0;
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 2] = (glyph[c].buf[m]>0) ? fontColor.Z*255.0 : 0;
+
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 3] = glyph[c].buf[m];
 					}
 				}
 			}
 		}
 
-		Image *texAlphabet = new Image(1, dimensionTexture, dimensionTexture, GL_LUMINANCE, texels);
+		Image *texAlphabet = new Image(GL_RGBA, dimensionTexture, dimensionTexture, GL_RGBA, texels);
 		texAlphabet->toTexture(false, false);
 		
 		//clears buffers of letters
-		for(int i=0;i<256;i++)
+		for(int i=0;i<NUM_LETTERS;i++)
 		{
 			delete [] glyph[i].buf;
 			glyph[i].buf = nullptr;

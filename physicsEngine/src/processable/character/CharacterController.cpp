@@ -16,7 +16,7 @@
 namespace urchin
 {
 
-	CharacterController::CharacterController(std::shared_ptr<const CollisionShape3D> characterShape, const PhysicsTransform &transform) :
+	CharacterController::CharacterController(const std::shared_ptr<const CollisionShape3D> &characterShape, const PhysicsTransform &transform) :
 		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
 		physicsWorld(nullptr),

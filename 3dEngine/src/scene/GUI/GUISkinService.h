@@ -24,7 +24,7 @@ namespace urchin
 
 			void setSkin(const std::string &);
 		
-			std::shared_ptr<Image> createTexWidget(unsigned int, unsigned int, std::shared_ptr<XmlChunk>, WidgetOutline *widgetOutline=nullptr) const;
+			std::shared_ptr<Image> createTexWidget(unsigned int, unsigned int, const std::shared_ptr<XmlChunk> &, WidgetOutline *widgetOutline=nullptr) const;
 			XmlParser *getXmlSkin() const;
 
 		private:

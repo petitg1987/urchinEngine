@@ -5,7 +5,7 @@
 namespace urchin
 {
 
-	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, std::shared_ptr<const CollisionShape3D> shape) :
+	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			workBody(nullptr),
 			transform(transform),
 			originalShape(shape),

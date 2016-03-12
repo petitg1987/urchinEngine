@@ -20,7 +20,7 @@ namespace urchin
 	class AbstractWorkBody : public IslandElement
 	{
 		public:
-			AbstractWorkBody(const std::string &, const PhysicsTransform &, std::shared_ptr<const CollisionShape3D> shape);
+			AbstractWorkBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
 			virtual ~AbstractWorkBody();
 
 			const PhysicsTransform &getPhysicsTransform() const;

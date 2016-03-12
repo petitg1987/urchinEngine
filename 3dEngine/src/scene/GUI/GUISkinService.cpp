@@ -24,7 +24,7 @@ namespace urchin
 		xmlSkin = new XmlParser(skinFilename);
 	}
 
-	std::shared_ptr<Image> GUISkinService::createTexWidget(unsigned int width, unsigned int height, std::shared_ptr<XmlChunk> skinXmlChunk, WidgetOutline *widgetOutline) const
+	std::shared_ptr<Image> GUISkinService::createTexWidget(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk> &skinXmlChunk, WidgetOutline *widgetOutline) const
 	{
 		//skin informations
 		std::shared_ptr<XmlChunk> imgWidgetElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);

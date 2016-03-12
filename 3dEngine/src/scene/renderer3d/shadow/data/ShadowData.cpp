@@ -69,7 +69,7 @@ namespace urchin
 		return shadowMapTextureID;
 	}
 
-	void ShadowData::setVerticalBlurFilter(std::shared_ptr<const TextureFilter> verticalBlurFilter)
+	void ShadowData::setVerticalBlurFilter(const std::shared_ptr<const TextureFilter> &verticalBlurFilter)
 	{
 		this->verticalBlurFilter = verticalBlurFilter;
 	}
@@ -79,7 +79,7 @@ namespace urchin
 		return verticalBlurFilter;
 	}
 
-	void ShadowData::setHorizontalBlurFilter(std::shared_ptr<const TextureFilter> horizontalBlurFilter)
+	void ShadowData::setHorizontalBlurFilter(const std::shared_ptr<const TextureFilter> &horizontalBlurFilter)
 	{
 		this->horizontalBlurFilter = horizontalBlurFilter;
 	}

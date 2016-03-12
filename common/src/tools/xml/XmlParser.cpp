@@ -28,7 +28,7 @@ namespace urchin
 		if(!doc->LoadFile())
 		{
 			delete doc;
-			throw std::invalid_argument("Cannot open the file " + filenamePath + ".");
+			throw std::invalid_argument("Cannot open or load the file " + filenamePath + ".");
 		}
 	}
 

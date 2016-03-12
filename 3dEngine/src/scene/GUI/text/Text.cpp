@@ -19,10 +19,13 @@ namespace urchin
 		std::shared_ptr<XmlChunk> fontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
 		std::shared_ptr<XmlChunk> fileFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "ttf", XmlAttribute(), fontChunk);
 		std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
+		std::shared_ptr<XmlChunk> colorFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "color", XmlAttribute(), fontChunk);
 
 		//visual
-		int fontSize = sizeFontChunk->getIntValue();
-		font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*)(&fontSize));
+		FontParameters textParameters;
+		textParameters.fontSize = sizeFontChunk->getIntValue();
+		textParameters.fontColor = colorFontChunk->getVector3Value();
+		font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*)(&textParameters));
 
 		setText(text);
 	}
@@ -171,7 +174,7 @@ namespace urchin
 	void Text::display(int translateDistanceLoc, float invFrameRate)
 	{
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glBindTexture(GL_TEXTURE_2D, font->getTextureID());
 

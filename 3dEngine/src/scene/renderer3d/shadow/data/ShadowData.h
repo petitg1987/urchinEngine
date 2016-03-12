@@ -30,10 +30,10 @@ namespace urchin
 			void setShadowMapTextureID(unsigned int);
 			unsigned int getShadowMapTextureID() const;
 
-			void setVerticalBlurFilter(std::shared_ptr<const TextureFilter>);
+			void setVerticalBlurFilter(const std::shared_ptr<const TextureFilter> &);
 			std::shared_ptr<const TextureFilter> getVerticalBlurFilter() const;
 
-			void setHorizontalBlurFilter(std::shared_ptr<const TextureFilter>);
+			void setHorizontalBlurFilter(const std::shared_ptr<const TextureFilter> &);
 			std::shared_ptr<const TextureFilter> getHorizontalBlurFilter() const;
 
 			void setLightViewMatrix(const Matrix4<float> &);

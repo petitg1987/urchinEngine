@@ -16,7 +16,7 @@ namespace urchin
 	class WorkGhostBody : public AbstractWorkBody
 	{
 		public:
-			WorkGhostBody(const std::string &, const PhysicsTransform &, std::shared_ptr<const CollisionShape3D>);
+			WorkGhostBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
 			~WorkGhostBody();
 
 			static WorkGhostBody *upCast(AbstractWorkBody *);

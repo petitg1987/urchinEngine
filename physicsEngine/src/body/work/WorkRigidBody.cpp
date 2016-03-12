@@ -6,7 +6,7 @@
 namespace urchin
 {
 
-	WorkRigidBody::WorkRigidBody(const std::string &id, const PhysicsTransform &physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
+	WorkRigidBody::WorkRigidBody(const std::string &id, const PhysicsTransform &physicsTransform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			AbstractWorkBody(id, physicsTransform, shape),
 			mass(0.0f),
 			invMass(0.0f),
