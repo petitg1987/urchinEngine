@@ -1,14 +1,14 @@
 #include <GL/gl.h>
 
-#include "scene/GUI/staticbitmap/StaticBitmap.h"
+#include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
 	
-	StaticBitmap::StaticBitmap(int positionX, int positionY, Size size, const std::string &filename) :
-		Widget(positionX, positionY, size),
+	StaticBitmap::StaticBitmap(Position position, Size size, const std::string &filename) :
+		Widget(position, size),
 		filename(filename),
 		tex(nullptr)
 	{

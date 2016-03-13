@@ -173,7 +173,9 @@ namespace urchin
 		{
 			if(widgets[i]->isVisible())
 			{
-				glUniform2iv(translateDistanceLoc, 1, (const int*)widgets[i]->getTranslateDistance());
+				Vector2<int> translateVector(widgets[i]->getGlobalPositionX(), widgets[i]->getGlobalPositionY());
+				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
+
 				widgets[i]->display(translateDistanceLoc, invFrameRate);
 			}
 		}

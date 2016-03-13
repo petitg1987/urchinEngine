@@ -1,15 +1,16 @@
 #include <GL/gl.h>
+#include "UrchinCommon.h"
 
-#include "scene/GUI/button/Button.h"
+#include "scene/GUI/widget/button/Button.h"
 #include "scene/GUI/GUISkinService.h"
-#include "scene/GUI/text/Text.h"
+#include "scene/GUI/widget/text/Text.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
 
-	Button::Button(int positionX, int positionY, Size size, const std::string &nameSkin, const std::string &buttonText)
-		: Widget(positionX, positionY, size),
+	Button::Button(Position position, Size size, const std::string &nameSkin, const std::string &buttonText)
+		: Widget(position, size),
 		  nameSkin(nameSkin),
 		  buttonText(buttonText)
 	{
@@ -38,10 +39,10 @@ namespace urchin
 		if(!buttonText.empty())
 		{
 			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
-			Text *msg = new Text(0, 0, textChunk->getStringValue());
-			addChild(msg);
+			Text *msg = new Text(Position(0, Position::PIXEL, 0, Position::PIXEL), textChunk->getStringValue());
 			msg->setText(buttonText.c_str());
-			msg->setPosition((int)(getWidth() - msg->getWidth())/2, (int)(getHeight() - msg->getHeight())/2);
+			msg->setPosition(Position((int)(getWidth() - msg->getWidth())/2, Position::PIXEL, (int)(getHeight() - msg->getHeight())/2, Position::PIXEL));
+			addChild(msg);
 		}
 
 		//visual

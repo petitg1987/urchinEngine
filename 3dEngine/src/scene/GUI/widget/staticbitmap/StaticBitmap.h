@@ -4,7 +4,9 @@
 #include <string>
 #include <memory>
 
-#include "scene/GUI/Widget.h"
+#include "scene/GUI/widget/Widget.h"
+#include "scene/GUI/widget/Position.h"
+#include "scene/GUI/widget/Size.h"
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -14,7 +16,7 @@ namespace urchin
 	class StaticBitmap : public Widget
 	{
 		public:
-			StaticBitmap(int, int, Size, const std::string &);
+			StaticBitmap(Position, Size, const std::string &);
 			virtual ~StaticBitmap();
 			
 			void createOrUpdateWidget();

@@ -1,7 +1,7 @@
 #include <GL/gl.h>
 #include "UrchinCommon.h"
 
-#include "scene/GUI/textbox/TextBox.h"
+#include "scene/GUI/widget/textbox/TextBox.h"
 #include "scene/SceneManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
@@ -12,8 +12,8 @@
 namespace urchin
 {
 
-	TextBox::TextBox(int positionX, int positionY, Size size, const std::string &nameSkin) :
-		Widget(positionX, positionY, size),
+	TextBox::TextBox(Position position, Size size, const std::string &nameSkin) :
+		Widget(position, size),
 		nameSkin(nameSkin),
 		startTextIndex(0),
 		cursorIndex(0),
@@ -43,9 +43,9 @@ namespace urchin
 		texTextBoxFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkFocus);
 		
 		std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
-		text = new Text(0, 0,  textChunk->getStringValue());
+		text = new Text(Position(0, Position::PIXEL, 0, Position::PIXEL),  textChunk->getStringValue());
+		text->setPosition(Position(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, Position::PIXEL, (int)(getHeight() - text->getHeight())/2, Position::PIXEL));
 		addChild(text);
-		text->setPosition(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (int)(getHeight() - text->getHeight())/2);
 		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
 		
 		//cursor information
@@ -234,7 +234,8 @@ namespace urchin
 		blink+=invFrameRate*cursorBlinkSpeed;
 		if(state==ACTIVE && ((int)blink%2)>0)
 		{
-			glUniform2iv(translateDistanceLoc, 1, (const int*)(getTranslateDistance() + Vector2<int>(cursorPosition, 0)));
+			Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
+			glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			glDisable(GL_DEPTH_TEST);
@@ -246,7 +247,7 @@ namespace urchin
 			glDepthMask(GL_TRUE);
 			glEnable(GL_DEPTH_TEST);
 
-			glUniform2iv(translateDistanceLoc, 1, (const int*)getTranslateDistance());
+			glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
 		}
 
 		//displays children

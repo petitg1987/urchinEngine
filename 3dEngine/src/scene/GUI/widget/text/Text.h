@@ -4,7 +4,9 @@
 #include <string>
 #include <memory>
 
-#include "scene/GUI/Widget.h"
+#include "scene/GUI/widget/Widget.h"
+#include "scene/GUI/widget/Position.h"
+#include "scene/GUI/widget/Size.h"
 #include "resources/font/Font.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -14,7 +16,7 @@ namespace urchin
 	class Text : public Widget
 	{
 		public:
-			Text(int, int, const std::string &);
+			Text(Position, const std::string &);
 			virtual ~Text();
 		
 			void createOrUpdateWidget();

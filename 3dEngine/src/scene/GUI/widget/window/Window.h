@@ -4,9 +4,11 @@
 #include <string>
 #include <memory>
 
+#include "scene/GUI/widget/Widget.h"
+#include "scene/GUI/widget/Position.h"
+#include "scene/GUI/widget/Size.h"
+#include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
-#include "scene/GUI/Widget.h"
-#include "scene/GUI/text/Text.h"
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -16,7 +18,7 @@ namespace urchin
 	class Window : public Widget
 	{
 		public:
-			Window(int, int, Size, const std::string &, const std::string &stringTitle = "");
+			Window(Position, Size, const std::string &, const std::string &stringTitle = "");
 			virtual ~Window();
 		
 			void createOrUpdateWidget();

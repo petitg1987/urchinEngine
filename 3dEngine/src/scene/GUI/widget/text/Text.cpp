@@ -2,7 +2,7 @@
 #include <sstream>
 #include <memory>
 
-#include "scene/GUI/text/Text.h"
+#include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
@@ -10,8 +10,8 @@
 namespace urchin
 {
 
-	Text::Text(int positionX, int positionY, const std::string &nameSkin) :
-		Widget(positionX, positionY, Size(0, Size::PIXEL, 0, Size::PIXEL)),
+	Text::Text(Position position, const std::string &nameSkin) :
+		Widget(position, Size(0, Size::PIXEL, 0, Size::PIXEL)),
 		text(""),
 		maxLength(-1)
 	{

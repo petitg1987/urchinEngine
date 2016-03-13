@@ -5,32 +5,17 @@
 #include <memory>
 #include "UrchinCommon.h"
 
+#include "scene/GUI/widget/Position.h"
+#include "scene/GUI/widget/Size.h"
 #include "scene/GUI/EventListener.h"
 
 namespace urchin
 {
 	
-	class Size
-	{
-		public:
-			enum SizeType{PIXEL, PERCENTAGE};
-			Size(float width, SizeType widthSizeType, float height, SizeType heightSizeType);
-
-			float getWidth() const;
-			SizeType getWidthSizeType() const;
-
-			float getHeight() const;
-			SizeType getHeightSizeType() const;
-
-		private:
-			float width, height;
-			SizeType widthSizeType, heightSizeType;
-	};
-
 	class Widget : public Observable
 	{
 		public:
-			Widget(int, int, Size);
+			Widget(Position, Size);
 			virtual ~Widget();
 
 			enum NotificationType
@@ -58,9 +43,11 @@ namespace urchin
 			std::shared_ptr<EventListener> getEventListener() const;
 			WidgetStates getWidgetState() const;
 		
-			void setPosition(int, int);
+			void setPosition(Position);
 			int getPositionX() const;
 			int getPositionY() const;
+			Position::PositionType getPositionTypeX() const;
+			Position::PositionType getPositionTypeY() const;
 			int getGlobalPositionX() const;
 			int getGlobalPositionY() const;
 
@@ -70,9 +57,6 @@ namespace urchin
 			void setIsVisible(bool);
 			bool isVisible() const;
 
-			void onPositionChange();
-			const Vector2<int> &getTranslateDistance();
-		
 			bool onKeyDown(unsigned int);
 			virtual bool onKeyDownEvent(unsigned int);
 			bool onKeyUp(unsigned int);
@@ -91,6 +75,9 @@ namespace urchin
 			void setWidth(unsigned int, Size::SizeType);
 			void setHeight(unsigned int, Size::SizeType);
 
+			unsigned int getSceneWidth() const;
+			unsigned int getSceneHeight() const;
+
 		private:
 			void handleWidgetKeyDown(unsigned int);
 			void handkeWidgetKeyUp(unsigned int);
@@ -104,9 +91,8 @@ namespace urchin
 			std::shared_ptr<EventListener> eventListener;
 			WidgetStates widgetState;
 
+			Position position;
 			Size size;
-			int positionX, positionY;
-			Vector2<int> translateDistance;
 			bool bIsVisible;
 
 			int mouseX, mouseY;

@@ -1,7 +1,7 @@
 #include <stdexcept>
 
 #include "scene/GUI/EventListener.h"
-#include "scene/GUI/Widget.h"
+#include "scene/GUI/widget/Widget.h"
 
 namespace urchin
 {

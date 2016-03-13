@@ -15,11 +15,11 @@
 
 #include "scene/GUI/EventListener.h"
 #include "scene/GUI/GUIRenderer.h"
-#include "scene/GUI/window/Window.h"
-#include "scene/GUI/button/Button.h"
-#include "scene/GUI/staticbitmap/StaticBitmap.h"
-#include "scene/GUI/text/Text.h"
-#include "scene/GUI/textbox/TextBox.h"
+#include "scene/GUI/widget/window/Window.h"
+#include "scene/GUI/widget/button/Button.h"
+#include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
+#include "scene/GUI/widget/text/Text.h"
+#include "scene/GUI/widget/textbox/TextBox.h"
 
 #include "texture/TextureManager.h"
 

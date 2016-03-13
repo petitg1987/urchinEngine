@@ -4,8 +4,8 @@
 #include <set>
 #include "UrchinCommon.h"
 
-#include "scene/GUI/Widget.h"
 #include "scene/Renderer.h"
+#include "scene/GUI/widget/Widget.h"
 
 namespace urchin
 {

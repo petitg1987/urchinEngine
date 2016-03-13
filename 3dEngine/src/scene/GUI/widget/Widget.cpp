@@ -1,50 +1,23 @@
 #include <GL/gl.h>
 
-#include "scene/GUI/Widget.h"
+#include "scene/GUI/widget/Widget.h"
 #include "scene/SceneManager.h"
 
 namespace urchin
 {
 
-	Size::Size(float width, SizeType widthSizeType, float height, SizeType heightSizeType) :
-			width(width), height(height), widthSizeType(widthSizeType), heightSizeType(heightSizeType)
-	{
-
-	}
-
-	float Size::getWidth() const
-	{
-		return width;
-	}
-
-	Size::SizeType Size::getWidthSizeType() const
-	{
-		return widthSizeType;
-	}
-
-	float Size::getHeight() const
-	{
-		return height;
-	}
-
-	Size::SizeType Size::getHeightSizeType() const
-	{
-		return heightSizeType;
-	}
-
-	Widget::Widget(int positionX, int positionY, Size size) :
+	Widget::Widget(Position position, Size size) :
 		sceneWidth(0),
 		sceneHeight(0),
 		parent(nullptr),
 		widgetState(Widget::DEFAULT),
+		position(position),
 		size(size),
-		positionX(positionX),
-		positionY(positionY),
 		bIsVisible(true),
 		mouseX(0),
 		mouseY(0)
 	{
-		onPositionChange();
+
 	}
 
 	Widget::~Widget()
@@ -68,6 +41,16 @@ namespace urchin
 		}
 	}
 
+	unsigned int Widget::getSceneWidth() const
+	{
+		return sceneWidth;
+	}
+
+	unsigned int Widget::getSceneHeight() const
+	{
+		return sceneHeight;
+	}
+
 	void Widget::addChild(Widget *child)
 	{
 		child->setParent(this);
@@ -87,9 +70,6 @@ namespace urchin
 	void Widget::setParent(Widget *parent)
 	{
 		this->parent = parent;
-
-		//if we set a parent, the position of the widget is affected by the parent
-		onPositionChange();
 	}
 
 	Widget *Widget::getParent() const
@@ -112,12 +92,9 @@ namespace urchin
 		return widgetState;
 	}
 
-	void Widget::setPosition(int positionX, int positionY)
+	void Widget::setPosition(Position position)
 	{
-		this->positionX = positionX;
-		this->positionY = positionY;
-
-		onPositionChange();
+		this->position = position;
 	}
 
 	/**
@@ -125,7 +102,12 @@ namespace urchin
 	*/
 	int Widget::getPositionX() const
 	{
-		return positionX;
+		if(position.getPositionTypeX()==Position::PERCENTAGE)
+		{
+			return position.getPositionX() * sceneWidth;
+		}
+
+		return position.getPositionX();
 	}
 
 	/**
@@ -133,27 +115,42 @@ namespace urchin
 	*/
 	int Widget::getPositionY() const
 	{
-		return positionY;
+		if(position.getPositionTypeY()==Position::PERCENTAGE)
+		{
+			return position.getPositionY() * sceneHeight;
+		}
+
+		return position.getPositionY();
+	}
+
+	Position::PositionType Widget::getPositionTypeX() const
+	{
+		return position.getPositionTypeX();
+	}
+
+	Position::PositionType Widget::getPositionTypeY() const
+	{
+		return position.getPositionTypeY();
 	}
 
 	int Widget::getGlobalPositionX() const
 	{
 		if(parent==nullptr)
 		{
-			return positionX;
+			return getPositionX();
 		}
 
-		return parent->getGlobalPositionX() + positionX;
+		return parent->getGlobalPositionX() + getPositionX();
 	}
 
 	int Widget::getGlobalPositionY() const
 	{
 		if(parent==nullptr)
 		{
-			return positionY;
+			return getPositionY();
 		}
 
-		return parent->getGlobalPositionY() + positionY;
+		return parent->getGlobalPositionY() + getPositionY();
 	}
 
 	void Widget::setWidth(unsigned int width, Size::SizeType sizeType)
@@ -192,30 +189,6 @@ namespace urchin
 	bool Widget::isVisible() const
 	{
 		return bIsVisible;
-	}
-
-	void Widget::onPositionChange()
-	{
-		//update model view matrix
-		translateDistance.setValues(this->positionX, this->positionY);
-		if(parent!=nullptr)
-		{
-			translateDistance += parent->getTranslateDistance();
-		}
-
-		//update model view matrix of children
-		for(unsigned int i=0;i<children.size();++i)
-		{
-			if(children[i]->isVisible())
-			{
-				children[i]->onPositionChange();
-			}
-		}
-	}
-
-	const Vector2<int> &Widget::getTranslateDistance()
-	{
-		return translateDistance;
 	}
 
 	bool Widget::onKeyDown(unsigned int key)
@@ -394,7 +367,9 @@ namespace urchin
 		{
 			if(children[i]->isVisible())
 			{
-				glUniform2iv(translateDistanceLoc, 1, (const int*)children[i]->getTranslateDistance());
+				Vector2<int> translateVector(children[i]->getGlobalPositionX(), children[i]->getGlobalPositionY());
+				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
+
 				children[i]->display(translateDistanceLoc, invFrameRate);
 			}
 		}

@@ -2,15 +2,15 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "scene/GUI/window/Window.h"
+#include "scene/GUI/widget/window/Window.h"
 #include "scene/SceneManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
 {
 
-	Window::Window(int positionX, int positionY, Size size, const std::string &nameSkin, const std::string &stringTitle) :
-		Widget(positionX, positionY, size),
+	Window::Window(Position position, Size size, const std::string &nameSkin, const std::string &stringTitle) :
+		Widget(position, size),
 		nameSkin(nameSkin),
 		stringTitle(stringTitle),
 		state(DEFAULT),
@@ -39,9 +39,9 @@ namespace urchin
 		{
 			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
 			Widget::removeChild(title);
-			title = new Text(0, 0, textChunk->getStringValue());
-			title->setPosition(widgetOutline->leftWidth, (widgetOutline->topWidth - title->getHeight())/2);
+			title = new Text(Position(0, Position::PIXEL, 0, Position::PIXEL), textChunk->getStringValue());
 			title->setText(stringTitle.c_str());
+			title->setPosition(Position(widgetOutline->leftWidth + 1, Position::PIXEL, (widgetOutline->topWidth - title->getHeight())/2, Position::PIXEL));
 			Widget::addChild(title);
 		}
 
@@ -54,7 +54,8 @@ namespace urchin
 
 	void Window::addChild(Widget *child)
 	{
-		child->setPosition(child->getPositionX()+widgetOutline->leftWidth, child->getPositionY()+widgetOutline->topWidth);
+		Position childPosition(child->getPositionX()+widgetOutline->leftWidth, Position::PIXEL, child->getPositionY()+widgetOutline->topWidth, Position::PIXEL);
+		child->setPosition(childPosition);
 		Widget::addChild(child);
 	}
 
@@ -106,7 +107,19 @@ namespace urchin
 	{
 		if(state==MOVING)
 		{
-			setPosition(mouseX - mousePositionX, mouseY - mousePositionY);
+			float positionX = mouseX - mousePositionX;
+			if(getPositionTypeX() == Position::PERCENTAGE)
+			{
+				positionX /= getSceneWidth();
+			}
+
+			float positionY = mouseY - mousePositionY;
+			if(getPositionTypeY() == Position::PERCENTAGE)
+			{
+				positionY /= getSceneHeight();
+			}
+
+			setPosition(Position(positionX, getPositionTypeX(), positionY, getPositionTypeY()));
 		}
 		
 		return true;

@@ -4,9 +4,11 @@
 #include <string>
 #include <memory>
 
-#include "scene/GUI/Widget.h"
+#include "scene/GUI/widget/Widget.h"
+#include "scene/GUI/widget/Position.h"
+#include "scene/GUI/widget/Size.h"
+#include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/GUISkinService.h"
-#include "scene/GUI/text/Text.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
 namespace urchin
@@ -15,7 +17,7 @@ namespace urchin
 	class TextBox : public Widget
 	{
 		public:
-			TextBox(int, int, Size, const std::string &);
+			TextBox(Position, Size, const std::string &);
 			virtual ~TextBox();
 			
 			void createOrUpdateWidget();
