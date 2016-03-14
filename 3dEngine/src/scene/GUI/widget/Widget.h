@@ -44,13 +44,14 @@ namespace urchin
 			WidgetStates getWidgetState() const;
 		
 			void setPosition(Position);
+			Position getPosition() const;
 			int getPositionX() const;
 			int getPositionY() const;
-			Position::PositionType getPositionTypeX() const;
-			Position::PositionType getPositionTypeY() const;
 			int getGlobalPositionX() const;
 			int getGlobalPositionY() const;
 
+			void setSize(Size);
+			Size getSize() const;
 			unsigned int getWidth() const;
 			unsigned int getHeight() const;
 		
@@ -72,9 +73,6 @@ namespace urchin
 			virtual void display(int, float);
 
 		protected:
-			void setWidth(unsigned int, Size::SizeType);
-			void setHeight(unsigned int, Size::SizeType);
-
 			unsigned int getSceneWidth() const;
 			unsigned int getSceneHeight() const;
 

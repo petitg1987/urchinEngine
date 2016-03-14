@@ -108,18 +108,18 @@ namespace urchin
 		if(state==MOVING)
 		{
 			float positionX = mouseX - mousePositionX;
-			if(getPositionTypeX() == Position::PERCENTAGE)
+			if(getPosition().getPositionTypeX() == Position::PERCENTAGE)
 			{
 				positionX /= getSceneWidth();
 			}
 
 			float positionY = mouseY - mousePositionY;
-			if(getPositionTypeY() == Position::PERCENTAGE)
+			if(getPosition().getPositionTypeY() == Position::PERCENTAGE)
 			{
 				positionY /= getSceneHeight();
 			}
 
-			setPosition(Position(positionX, getPositionTypeX(), positionY, getPositionTypeY()));
+			setPosition(Position(positionX, getPosition().getPositionTypeX(), positionY, getPosition().getPositionTypeY()));
 		}
 		
 		return true;

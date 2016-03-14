@@ -97,6 +97,11 @@ namespace urchin
 		this->position = position;
 	}
 
+	Position Widget::getPosition() const
+	{
+		return position;
+	}
+
 	/**
 	* @return Position X of the widget relative to his parent
 	*/
@@ -123,16 +128,6 @@ namespace urchin
 		return position.getPositionY();
 	}
 
-	Position::PositionType Widget::getPositionTypeX() const
-	{
-		return position.getPositionTypeX();
-	}
-
-	Position::PositionType Widget::getPositionTypeY() const
-	{
-		return position.getPositionTypeY();
-	}
-
 	int Widget::getGlobalPositionX() const
 	{
 		if(parent==nullptr)
@@ -153,9 +148,14 @@ namespace urchin
 		return parent->getGlobalPositionY() + getPositionY();
 	}
 
-	void Widget::setWidth(unsigned int width, Size::SizeType sizeType)
+	void Widget::setSize(Size size)
 	{
-		this->size = Size(width, sizeType, size.getHeight(), size.getHeightSizeType());
+		this->size = size;
+	}
+
+	Size Widget::getSize() const
+	{
+		return size;
 	}
 
 	unsigned int Widget::getWidth() const
@@ -165,11 +165,6 @@ namespace urchin
 			return size.getWidth() * sceneWidth;
 		}
 		return size.getWidth();
-	}
-
-	void Widget::setHeight(unsigned int height, Size::SizeType sizeType)
-	{
-		this->size = Size(size.getWidth(), size.getWidthSizeType(), height, sizeType);
 	}
 
 	unsigned int Widget::getHeight() const

@@ -46,36 +46,20 @@ namespace urchin
 		this->maxLength = maxLength;
 
 		//cut the text if needed
+		unsigned int numLetters = 0;
+		std::stringstream cuttedTextStream((maxLength>0) ? cutText(text, maxLength) : text);
+		std::string item;
 		std::vector<std::string> cuttedTextLines;
-		if(maxLength>0)
-		{
-			//cuts the text all the "maxLength" pixels
-			std::string cuttedText = cutText(text, maxLength);
-
-			//splits the text at each newline
-			std::stringstream cuttedTextStream(cuttedText);
-			std::string item;
-			while (std::getline(cuttedTextStream, item, '\n')) {
-				cuttedTextLines.push_back(item);
-			}
-		}else
-		{
-			//splits the text at each newline
-			std::stringstream cuttedTextStream(text);
-			std::string item;
-			while (std::getline(cuttedTextStream, item, '\n')) {
-				cuttedTextLines.push_back(item);
-			}
+		while (std::getline(cuttedTextStream, item, '\n')) {
+			cuttedTextLines.push_back(item);
+			numLetters += item.size();
 		}
 
-		unsigned int numberOfInterLines = static_cast<unsigned int>(std::max(0, ((int)cuttedTextLines.size()-1)));
-		setHeight(cuttedTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL);
-		setWidth(0, Size::SizeType::PIXEL);
-		int numberLetter = 0;
-
 		//creates the vertex array and texture array
-		std::vector<int> vertexArray;
-		std::vector<float> stArray;
+		int *vertexData = new int[numLetters*8];
+		float *textureData = new float[numLetters*8];
+		unsigned int vertexIndex = 0, stIndex = 0;
+		unsigned int width = 0;
 		int offsetY = 0;
 		for(unsigned int numLine=0; numLine<cuttedTextLines.size(); ++numLine)
 		{ //each lines
@@ -83,47 +67,40 @@ namespace urchin
 			for(unsigned int numLetter=0; numLetter<cuttedTextLines[numLine].size(); ++numLetter)
 			{ //each letters
 				unsigned char letter = cuttedTextLines[numLine][numLetter];
-				numberLetter++;
 
 				float t = (float)((letter)>>4)/16.0;
 				float s = (float)((letter)%16)/16.0;
 
-				vertexArray.push_back(offsetX);
-				vertexArray.push_back(-font->getGlyph(letter).shift + offsetY);
-				vertexArray.push_back(font->getGlyph(letter).width + offsetX);
-				vertexArray.push_back(-font->getGlyph(letter).shift + offsetY);
-				vertexArray.push_back(font->getGlyph(letter).width + offsetX);
-				vertexArray.push_back(font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY);
-				vertexArray.push_back(offsetX);
-				vertexArray.push_back(font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY);
+				vertexData[vertexIndex++] = offsetX;
+				vertexData[vertexIndex++] = -font->getGlyph(letter).shift + offsetY;
+				vertexData[vertexIndex++] = font->getGlyph(letter).width + offsetX;
+				vertexData[vertexIndex++] = -font->getGlyph(letter).shift + offsetY;
+				vertexData[vertexIndex++] = font->getGlyph(letter).width + offsetX;
+				vertexData[vertexIndex++] = font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY;
+				vertexData[vertexIndex++] = offsetX;
+				vertexData[vertexIndex++] = font->getGlyph(letter).height - font->getGlyph(letter).shift + offsetY;
 
-				stArray.push_back(s);
-				stArray.push_back(t);
-				stArray.push_back(s+((float)font->getGlyph(letter).width/font->getDimensionTexture()));
-				stArray.push_back(t);
-				stArray.push_back(s+((float)font->getGlyph(letter).width/font->getDimensionTexture()));
-				stArray.push_back(t+((float)font->getGlyph(letter).height/font->getDimensionTexture()));
-				stArray.push_back(s);
-				stArray.push_back(t+((float)font->getGlyph(letter).height/font->getDimensionTexture()));
+				textureData[stIndex++] = s;
+				textureData[stIndex++] = t;
+				textureData[stIndex++] = s+((float)font->getGlyph(letter).width/font->getDimensionTexture());
+				textureData[stIndex++] = t;
+				textureData[stIndex++] = s+((float)font->getGlyph(letter).width/font->getDimensionTexture());
+				textureData[stIndex++] = t+((float)font->getGlyph(letter).height/font->getDimensionTexture());
+				textureData[stIndex++] = s;
+				textureData[stIndex++] = t+((float)font->getGlyph(letter).height/font->getDimensionTexture());
 
 				offsetX += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
 
-				if(getWidth() < (offsetX - font->getSpaceBetweenLetters()))
-				{
-					setWidth(offsetX - font->getSpaceBetweenLetters(), Size::SizeType::PIXEL);
-				}
+				width = std::max(width, offsetX - font->getSpaceBetweenLetters());
 			}
 			offsetY += font->getSpaceBetweenLines();
 		}
 
-		int *vertexData = new int[numberLetter*8];
-		std::copy(vertexArray.begin(), vertexArray.end(), vertexData);
-
-		float *textureData = new float[numberLetter*8];
-		std::copy(stArray.begin(), stArray.end(), textureData);
+		unsigned int numberOfInterLines = static_cast<unsigned int>(std::max(0, ((int)cuttedTextLines.size()-1)));
+		setSize(Size(width, cuttedTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL));
 
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-				->numberOfQuad(numberLetter)
+				->numberOfQuad(numLetters)
 				->vertexData(GL_INT, vertexData)
 				->textureData(GL_FLOAT, textureData)
 				->build();
