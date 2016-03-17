@@ -29,7 +29,7 @@ namespace urchin
 		}else
 		{
 			sf_close(file);
-			throw std::domain_error("Unsupported channels: " + Converter::toString(fileInfos.channels) + ".");
+			throw std::domain_error("Unsupported channels: " + std::to_string(fileInfos.channels) + ".");
 		}
 	}
 

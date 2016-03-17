@@ -219,7 +219,7 @@ namespace urchin
 			}
 		}
 
-		throw std::domain_error("Stream chunk with buffer id " + Converter::toString(bufferId) + " not found.");
+		throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found.");
 	}
 
 	void StreamUpdateWorker::clearQueue(StreamUpdateTask *task)

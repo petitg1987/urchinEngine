@@ -73,7 +73,7 @@ namespace urchin
 			result = SoundTrigger::NO_TRIGGER;
 		}else
 		{
-			throw std::invalid_argument("Unknown manual trigger value: " + Converter::toString(manualTriggerValue));
+			throw std::invalid_argument("Unknown manual trigger value: " + std::to_string(manualTriggerValue));
 		}
 
 		manualTriggerValue = NO_TRIGGER;

@@ -93,7 +93,7 @@ namespace urchin
 	 */
 	void XmlChunk::setIntValue(int value)
 	{
-		setStringValue(Converter::toString(value));
+		setStringValue(std::to_string(value));
 	}
 
 	/**
@@ -111,25 +111,9 @@ namespace urchin
 	 */
 	void XmlChunk::setFloatValue(float value)
 	{
-		setStringValue(Converter::toString(value));
-	}
+		std::locale::global(std::locale("C")); //for float
 
-	/**
-	 * Returns chunk value in double
-	 * @return Chunk value in double
-	 */
-	double XmlChunk::getDoubleValue() const
-	{
-		return Converter::toDouble(getStringValue());
-	}
-
-	/**
-	 * Sets value on chunk
-	 * @param value Value to set
-	 */
-	void XmlChunk::setDoubleValue(double value)
-	{
-		setStringValue(Converter::toString(value));
+		setStringValue(std::to_string(value));
 	}
 
 	/**
@@ -180,7 +164,7 @@ namespace urchin
 	 */
 	void XmlChunk::setCharValue(char value)
 	{
-		setStringValue(Converter::toString(value));
+		setStringValue(std::to_string(value));
 	}
 
 	/**
@@ -199,7 +183,9 @@ namespace urchin
 	 */
 	void XmlChunk::setPoint2Value(const Point2<float> &value)
 	{
-		setStringValue(Converter::toString(value.X) + FLOAT_DELIMITOR + Converter::toString(value.Y));
+		std::locale::global(std::locale("C")); //for float
+
+		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y));
 	}
 
 	/**
@@ -218,7 +204,9 @@ namespace urchin
 	 */
 	void XmlChunk::setPoint3Value(const Point3<float> &value)
 	{
-		setStringValue(Converter::toString(value.X) + FLOAT_DELIMITOR + Converter::toString(value.Y) + FLOAT_DELIMITOR + Converter::toString(value.Z));
+		std::locale::global(std::locale("C")); //for float
+
+		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z));
 	}
 
 	/**
@@ -237,8 +225,10 @@ namespace urchin
 	 */
 	void XmlChunk::setPoint4Value(const Point4<float> &value)
 	{
-		setStringValue(Converter::toString(value.X) + FLOAT_DELIMITOR + Converter::toString(value.Y) + FLOAT_DELIMITOR + Converter::toString(value.Z)
-			+ FLOAT_DELIMITOR + Converter::toString(value.W));
+		std::locale::global(std::locale("C")); //for float
+
+		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z)
+			+ FLOAT_DELIMITOR + std::to_string(value.W));
 	}
 
 	/**
@@ -257,7 +247,9 @@ namespace urchin
 	 */
 	void XmlChunk::setVector2Value(const Vector2<float> &value)
 	{
-		setStringValue(Converter::toString(value.X) + FLOAT_DELIMITOR + Converter::toString(value.Y));
+		std::locale::global(std::locale("C")); //for float
+
+		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y));
 	}
 
 	/**
@@ -276,7 +268,9 @@ namespace urchin
 	 */
 	void XmlChunk::setVector3Value(const Vector3<float> &value)
 	{
-		setStringValue(Converter::toString(value.X) + FLOAT_DELIMITOR + Converter::toString(value.Y) + FLOAT_DELIMITOR + Converter::toString(value.Z));
+		std::locale::global(std::locale("C")); //for float
+
+		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z));
 	}
 
 	/**
@@ -295,8 +289,10 @@ namespace urchin
 	 */
 	void XmlChunk::setVector4Value(const Vector4<float> &value)
 	{
-		setStringValue(Converter::toString(value.X) + FLOAT_DELIMITOR + Converter::toString(value.Y) + FLOAT_DELIMITOR + Converter::toString(value.Z)
-			+ FLOAT_DELIMITOR + Converter::toString(value.W));
+		std::locale::global(std::locale("C")); //for float
+
+		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z)
+			+ FLOAT_DELIMITOR + std::to_string(value.W));
 	}
 
 	/**
@@ -313,8 +309,8 @@ namespace urchin
 
 		if(stringValues.size()!=expectedSplit)
 		{
-			throw std::invalid_argument("Number of float expected: " + Converter::toString(expectedSplit) + ", found: "
-					+ Converter::toString((unsigned int)stringValues.size()) + ". String value: " + str + ".");
+			throw std::invalid_argument("Number of float expected: " + std::to_string(expectedSplit) + ", found: "
+					+ std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
 		}
 
 		std::vector<float> floatValues;

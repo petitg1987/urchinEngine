@@ -16,42 +16,6 @@ namespace urchin
 
 	}
 
-	std::string Converter::toString(int value)
-	{
-		std::stringstream ss;
-		ss << value;
-		return ss.str();
-	}
-
-
-	std::string Converter::toString(unsigned int value)
-	{
-		std::stringstream ss;
-		ss << value;
-		return ss.str();
-	}
-
-	std::string Converter::toString(float value)
-	{
-		std::stringstream ss;
-		ss << value;
-		return ss.str();
-	}
-
-	std::string Converter::toString(double value)
-	{
-		std::stringstream ss;
-		ss << value;
-		return ss.str();
-	}
-
-	std::string Converter::toString(char value)
-	{
-		std::stringstream ss;
-		ss << value;
-		return ss.str();
-	}
-
 	int Converter::toInt(std::string str)
 	{
 		std::istringstream iss(str);
@@ -70,6 +34,8 @@ namespace urchin
 
 	float Converter::toFloat(std::string str)
 	{
+		std::locale::global(std::locale("C")); //for float
+
 		std::istringstream iss(str);
 		float value;
 		iss >> value;

@@ -9,12 +9,6 @@ namespace urchin
 	class Converter
 	{
 		public:
-			static std::string toString(int);
-			static std::string toString(unsigned int);
-			static std::string toString(float);
-			static std::string toString(double);
-			static std::string toString(char);
-
 			static int toInt(std::string);
 			static unsigned int toUnsignedInt(std::string);
 			static float toFloat(std::string);
