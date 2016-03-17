@@ -22,13 +22,19 @@ namespace urchin
 	 */
 	void DeviceManager::initializeDevice()
 	{
+		ALCcontext *context = alcGetCurrentContext();
+		if(context!=nullptr)
+		{
+			throw std::runtime_error("Sound device already initialized. Cannot initialize more then one sound device.");
+		}
+
 	    ALCdevice *device = alcOpenDevice(nullptr);
 	    if (!device)
 	    {
 	        throw std::runtime_error("Impossible to found sound device.");
 	    }
 
-	    ALCcontext *context = alcCreateContext(device, nullptr);
+	    context = alcCreateContext(device, nullptr);
 	    if (!context)
 	    {
 	    	throw std::runtime_error("Impossible to create sound context.");

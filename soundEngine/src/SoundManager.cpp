@@ -102,6 +102,14 @@ namespace urchin
 		{
 			audioControllers[i]->process(listenerPosition);
 		}
+
+		#ifdef _DEBUG
+			ALenum err = AL_NO_ERROR;
+			while((err = alGetError()) != AL_NO_ERROR)
+			{
+				std::cout<<"OpenAL error: "<<err<<std::endl;
+			}
+		#endif
 	}
 
 	void SoundManager::process()

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdexcept>
+#include <AL/alc.h>
 
 #include "sound/Sound.h"
 
@@ -9,6 +11,14 @@ namespace urchin
 		filename(filename),
 		volume(1.0f)
 	{
+		#ifdef _DEBUG
+			ALCcontext *context = alcGetCurrentContext();
+			if(context==nullptr)
+			{
+				throw std::runtime_error("No OpenAL context found: check that a sound manager has been created.");
+			}
+		#endif
+
 		alGenSources(1, &sourceId);
 		alSourcef(sourceId, AL_GAIN, volume);
 	}

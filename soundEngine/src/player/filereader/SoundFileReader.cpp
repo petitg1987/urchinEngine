@@ -41,26 +41,34 @@ namespace urchin
 	/**
 	 * Read next chunk of the sound file to fill buffer up to his maximum capacity
 	 * @param buffer [out] Buffer to fill with samples
-	 * @return Number of samples read. Could be differ from buffer capacity when end of file is reach.
+	 * @param numSamplesRead [out] Number of samples read
+	 * @return True when all samples are read. In case of play loop, the result is always false.
 	 */
-	ALsizei SoundFileReader::readNextChunk(std::vector<ALshort> &buffer)
+	bool SoundFileReader::readNextChunk(std::vector<ALshort> &buffer, unsigned int &numSamplesRead, bool playLoop)
 	{
-		ALsizei nbSampleRead = sf_read_short(file, &buffer[0], buffer.size());
-		bEndOfFileReached = buffer.size() != static_cast<unsigned int>(nbSampleRead);
+		numSamplesRead = 0;
+		bool bufferFilled;
+		do
+		{
+			unsigned int itemsToRead = buffer.size()-numSamplesRead;
+			numSamplesRead += sf_read_short(file, &buffer[numSamplesRead], itemsToRead);
+			bool endOfFileReached = buffer.size() != numSamplesRead;
 
-		return nbSampleRead;
-	}
+			if(endOfFileReached)
+			{
+				if(playLoop)
+				{ //reset cursor to 0
+					sf_seek(file, 0, SEEK_SET);
+				}else
+				{
+					return true;
+				}
+			}
 
-	void SoundFileReader::resetCursor()
-	{
-		sf_seek(file, 0, SEEK_SET);
+			bufferFilled = numSamplesRead == buffer.size();
+		}while(!bufferFilled);
 
-		bEndOfFileReached = false;
-	}
-
-	bool SoundFileReader::isEndOfFileReached() const
-	{
-		return bEndOfFileReached;
+		return false;
 	}
 
 	ALenum SoundFileReader::getFormat() const

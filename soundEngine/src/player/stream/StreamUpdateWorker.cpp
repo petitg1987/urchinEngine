@@ -51,21 +51,18 @@ namespace urchin
 		//initialize buffers/chunks
 		for(unsigned int i=0; i<nbChunkBuffer; ++i)
 		{
-			if(!task->getSoundFileReader()->isEndOfFileReached())
+			bool allSamplesRead = fillAndPushChunk(task, i);
+			if(allSamplesRead)
 			{
-				fillAndPushChunk(task, i);
-			}else if(task->isPlayLoop())
-			{
-				task->getSoundFileReader()->resetCursor();
-				fillAndPushChunk(task, i);
+				break;
 			}
 		}
 
-		std::lock_guard<std::mutex> lock(tasksMutex);
 		#ifdef _DEBUG
 			assert(!isTaskExist(sound));
 		#endif
 
+		std::lock_guard<std::mutex> lock(tasksMutex);
 		tasks.push_back(task);
 	}
 
@@ -154,20 +151,11 @@ namespace urchin
 
 			unsigned int chunkId = retrieveChunkId(task, bufferId);
 
-			if(!task->getSoundFileReader()->isEndOfFileReached())
-			{
-				fillAndPushChunk(task, chunkId);
-			}else
-			{
-				if(task->isPlayLoop())
-				{
-					task->getSoundFileReader()->resetCursor();
-					fillAndPushChunk(task, chunkId);
 
-				}else if(task->isSourceStopped())
-				{
-					return true;
-				}
+			bool allSamplesRead = fillAndPushChunk(task, chunkId);
+			if(allSamplesRead)
+			{
+				return true; //task finished
 			}
 		}
 
@@ -192,9 +180,9 @@ namespace urchin
 	 * Fill chunk and push it in the queue of buffers
 	 * @param task Task currently executed
 	 */
-	void StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask *task, unsigned int chunkId)
+	bool StreamUpdateWorker::fillAndPushChunk(StreamUpdateTask *task, unsigned int chunkId)
 	{
-		fillChunk(task, chunkId);
+		bool allSamplesRead = fillChunk(task, chunkId);
 
 		const StreamChunk &streamChunk = task->getStreamChunk(chunkId);
 		ALsizei size = streamChunk.numberOfSamples * sizeof(ALushort);
@@ -205,20 +193,20 @@ namespace urchin
 
 			alSourceQueueBuffers(task->getSourceId(), 1, &streamChunk.bufferId);
 		}
+
+		return allSamplesRead;
 	}
 
 	/**
 	 * @param task Task currently executed
 	 */
-	void StreamUpdateWorker::fillChunk(StreamUpdateTask *task, unsigned int chunkId)
+	bool StreamUpdateWorker::fillChunk(StreamUpdateTask *task, unsigned int chunkId)
 	{
 		StreamChunk &streamChunk = task->getStreamChunk(chunkId);
+		unsigned int bufferSize = task->getSoundFileReader()->getSampleRate() * task->getSoundFileReader()->getNumberOfChannels() * nbSecondByChunk;
+		streamChunk.samples.resize(bufferSize);
 
-		unsigned int nbSamplesToRead = task->getSoundFileReader()->getSampleRate() * task->getSoundFileReader()->getNumberOfChannels() * nbSecondByChunk;
-		streamChunk.samples.resize(nbSamplesToRead);
-
-		unsigned int nbSamplesRead = task->getSoundFileReader()->readNextChunk(streamChunk.samples);
-		streamChunk.numberOfSamples = nbSamplesRead;
+		return task->getSoundFileReader()->readNextChunk(streamChunk.samples, streamChunk.numberOfSamples, task->isPlayLoop());
 	}
 
 	unsigned int StreamUpdateWorker::retrieveChunkId(StreamUpdateTask *task, ALuint bufferId)
