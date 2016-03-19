@@ -1,7 +1,7 @@
 #include <GL/gl.h>
 
 #include "scene/GUI/widget/Widget.h"
-#include "scene/SceneManager.h"
+#include "scene/InputDevice.h"
 
 namespace urchin
 {
@@ -210,7 +210,7 @@ namespace urchin
 
 	void Widget::handleWidgetKeyDown(unsigned int key)
 	{
-		if(key==KEY_MOUSE_LEFT)
+		if(key==InputDevice::Key::MOUSE_LEFT)
 		{
 			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
@@ -247,7 +247,7 @@ namespace urchin
 
 	void Widget::handkeWidgetKeyUp(unsigned int key)
 	{
-		if(key==KEY_MOUSE_LEFT)
+		if(key==InputDevice::Key::MOUSE_LEFT)
 		{
 			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))

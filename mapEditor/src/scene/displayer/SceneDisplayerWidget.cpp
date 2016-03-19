@@ -148,10 +148,10 @@ namespace urchin
 			sceneDisplayer->getSceneManager()->onChar(event->text().toLatin1()[0]);
 		}else if(event->key() == Qt::Key_Left)
 		{
-			sceneDisplayer->getSceneManager()->onKeyDown(KEY_LEFT_ARROW);
+			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::LEFT_ARROW);
 		}else if(event->key() == Qt::Key_Right)
 		{
-			sceneDisplayer->getSceneManager()->onKeyDown(KEY_RIGHT_ARROW);
+			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::RIGHT_ARROW);
 		}
 		else if(event->key() == Qt:: Key_Backspace)
 		{
@@ -174,10 +174,10 @@ namespace urchin
 			sceneDisplayer->getSceneManager()->onKeyUp(event->key());
 		}else if(event->key() == Qt::Key_Left)
 		{
-			sceneDisplayer->getSceneManager()->onKeyUp(KEY_LEFT_ARROW);
+			sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::LEFT_ARROW);
 		}else if(event->key() == Qt::Key_Right)
 		{
-			sceneDisplayer->getSceneManager()->onKeyUp(KEY_RIGHT_ARROW);
+			sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::RIGHT_ARROW);
 		}
 	}
 
@@ -190,10 +190,10 @@ namespace urchin
 
 		if(event->buttons() == Qt::LeftButton)
 		{
-			sceneDisplayer->getSceneManager()->onKeyDown(KEY_MOUSE_LEFT);
+			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_LEFT);
 		}else if (event->button() == Qt::RightButton)
 		{
-			sceneDisplayer->getSceneManager()->onKeyDown(KEY_MOUSE_RIGHT);
+			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_RIGHT);
 		}
 	}
 
@@ -206,10 +206,10 @@ namespace urchin
 
 		if(event->button() == Qt::LeftButton)
 		{
-			sceneDisplayer->getSceneManager()->onKeyUp(KEY_MOUSE_LEFT);
+			sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_LEFT);
 		}else if (event->button() == Qt::RightButton)
 		{
-			sceneDisplayer->getSceneManager()->onKeyUp(KEY_MOUSE_RIGHT);
+			sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_RIGHT);
 		}
 	}
 

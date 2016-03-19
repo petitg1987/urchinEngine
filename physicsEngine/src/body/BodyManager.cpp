@@ -26,6 +26,8 @@ namespace urchin
 	void BodyManager::addBody(AbstractBody *body)
 	{
 		body->setIsNew(true);
+
+		std::lock_guard<std::mutex> lock(bodiesMutex);
 		this->bodies.push_back(body);
 	}
 
@@ -49,6 +51,8 @@ namespace urchin
 	 */
 	void BodyManager::setupWorkBodies()
 	{
+		std::lock_guard<std::mutex> lock(bodiesMutex);
+
 		std::vector<AbstractBody *>::iterator it = bodies.begin();
 		while(it!=bodies.end())
 		{
@@ -103,6 +107,8 @@ namespace urchin
 
 	void BodyManager::applyWorkBodies()
 	{
+		std::lock_guard<std::mutex> lock(bodiesMutex);
+
 		for(std::vector<AbstractBody *>::iterator it = bodies.begin(); it!=bodies.end(); ++it)
 		{
 			AbstractBody *body = *it;

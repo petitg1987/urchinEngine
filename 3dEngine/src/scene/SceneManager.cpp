@@ -214,37 +214,40 @@ namespace urchin
 		return TextureManager::instance();
 	}
 
-	void SceneManager::onKeyDown(unsigned int key)
+	bool SceneManager::onKeyDown(unsigned int key)
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
 			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onKeyDown(key))
 			{
-				break;
+				return false;
 			}
 		}
+		return false;
 	}
 
-	void SceneManager::onKeyUp(unsigned int key)
+	bool SceneManager::onKeyUp(unsigned int key)
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
 			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onKeyUp(key))
 			{
-				break;
+				return false;
 			}
 		}
+		return true;
 	}
 
-	void SceneManager::onChar(unsigned int character)
+	bool SceneManager::onChar(unsigned int character)
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
 			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onChar(character))
 			{
-				break;
+				return false;
 			}
 		}
+		return true;
 	}
 
 	void SceneManager::onMouseMove(int mouseX, int mouseY)

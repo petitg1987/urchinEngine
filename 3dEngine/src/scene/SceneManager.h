@@ -13,15 +13,6 @@
 
 namespace urchin
 {
-
-	enum
-	{ //enumeration for keys
-		KEY_MOUSE_LEFT = 256,
-		KEY_MOUSE_RIGHT,
-		KEY_LEFT_ARROW,
-		KEY_RIGHT_ARROW,
-	};
-
 	class SceneManager
 	{
 		public:
@@ -52,9 +43,9 @@ namespace urchin
 			TextureManager *getTextureManager() const;
 
 			//events
-			void onKeyDown(unsigned int);
-			void onKeyUp(unsigned int);
-			void onChar(unsigned int);
+			bool onKeyDown(unsigned int);
+			bool onKeyUp(unsigned int);
+			bool onChar(unsigned int);
 			void onMouseMove(int, int);
 			int getMousePositionX();
 			int getMousePositionY();

@@ -22,13 +22,13 @@ namespace urchin
 
 	SoundManager::~SoundManager()
 	{
-		AudioStreamPlayer::destroyStreamWorkerThread();
-
 		for(unsigned int i=0; i<audioControllers.size(); ++i)
 		{
 			AudioController *audioController  = audioControllers[i];
 			deleteAudioController(audioController);
 		}
+
+		AudioStreamPlayer::destroyStreamWorkerThread();
 
 		deviceManager.shutdownDevice();
 	}

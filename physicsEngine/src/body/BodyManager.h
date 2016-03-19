@@ -1,6 +1,8 @@
 #ifndef ENGINE_BODYMANAGER_H
 #define ENGINE_BODYMANAGER_H
 
+#include <mutex>
+
 #include "body/AbstractBody.h"
 #include "body/work/AbstractWorkBody.h"
 
@@ -35,6 +37,8 @@ namespace urchin
 		private:
 			std::vector<AbstractBody *> bodies;
 			std::vector<AbstractWorkBody *> workBodies;
+
+			mutable std::mutex bodiesMutex;
 
 			AbstractWorkBody *lastUpdatedWorkBody;
 	};

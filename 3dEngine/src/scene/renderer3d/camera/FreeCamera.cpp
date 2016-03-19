@@ -2,6 +2,7 @@
 
 #include "FreeCamera.h"
 #include "scene/SceneManager.h"
+#include "scene/InputDevice.h"
 
 #define DEFAULT_KEY_FRONT 'Z'
 #define DEFAULT_KEY_BACK 'S'
@@ -56,7 +57,7 @@ namespace urchin
 
 	void FreeCamera::onKeyDown(unsigned int key)
 	{
-		if(key == KEY_MOUSE_RIGHT)
+		if(key == InputDevice::Key::MOUSE_RIGHT)
 		{
 			useMouseToMoveCamera(true);
 		}else if(key == keyFront)
@@ -76,7 +77,7 @@ namespace urchin
 
 	void FreeCamera::onKeyUp(unsigned int key)
 	{
-		if(key == KEY_MOUSE_RIGHT)
+		if(key == InputDevice::Key::MOUSE_RIGHT)
 		{
 			useMouseToMoveCamera(false);
 		}else if(key == keyFront)
