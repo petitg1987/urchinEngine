@@ -58,6 +58,7 @@ namespace urchin
 			QWidget *parentWidget;
 
 			SceneManager *sceneManager;
+			SoundManager *soundManager;
 			SceneFreeCamera *camera;
 
 			MapHandler *mapHandler;

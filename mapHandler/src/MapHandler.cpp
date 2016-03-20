@@ -13,6 +13,11 @@ namespace urchin
 			throw std::invalid_argument("Renderer 3d cannot be null in map handler");
 		}
 
+		if(soundManager==nullptr)
+		{
+			throw std::invalid_argument("Sound manager cannot be null in map handler");
+		}
+
 		map = new Map(renderer3d, physicsWorld, soundManager);
 	}
 

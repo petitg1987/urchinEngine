@@ -11,6 +11,7 @@ namespace urchin
 		isInitialized(false),
 		parentWidget(parentWidget),
 		sceneManager(nullptr),
+		soundManager(nullptr),
 		camera(nullptr),
 		mapHandler(nullptr),
 		bodyShapeDisplayer(nullptr),
@@ -30,6 +31,7 @@ namespace urchin
 		delete lightScopeDisplayer;
 		delete soundTriggerDisplayer;
 		delete sceneManager;
+		delete soundManager;
 
 		SingletonManager::destroyAllSingletons();
 	}
@@ -45,7 +47,7 @@ namespace urchin
 
 			initializeScene();
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapWorkingDirectory, mapFilename);
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, nullptr);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager);
 			mapHandler->loadMapFromFile(relativeMapFilename);
 			isInitialized = true;
 		}catch(std::exception &e)
@@ -65,7 +67,7 @@ namespace urchin
 			FileSystem::instance()->setupWorkingDirectory(mapWorkingDirectory);
 
 			initializeScene();
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, nullptr);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager);
 			isInitialized = true;
 		}catch(std::exception &e)
 		{
@@ -86,6 +88,8 @@ namespace urchin
 	void SceneDisplayer::initializeScene()
 	{
 		sceneManager = new SceneManager();
+		soundManager = new SoundManager();
+
 		sceneManager->newRenderer3d(true);
 
 		bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);

@@ -44,7 +44,7 @@ namespace urchin
 	 * @param numSamplesRead [out] Number of samples read
 	 * @return True when all samples are read. In case of play loop, the result is always false.
 	 */
-	bool SoundFileReader::readNextChunk(std::vector<ALshort> &buffer, unsigned int &numSamplesRead, bool playLoop)
+	void SoundFileReader::readNextChunk(std::vector<ALshort> &buffer, unsigned int &numSamplesRead, bool playLoop)
 	{
 		numSamplesRead = 0;
 		bool bufferFilled;
@@ -61,14 +61,12 @@ namespace urchin
 					sf_seek(file, 0, SEEK_SET);
 				}else
 				{
-					return true;
+					break;
 				}
 			}
 
 			bufferFilled = numSamplesRead == buffer.size();
 		}while(!bufferFilled);
-
-		return false;
 	}
 
 	ALenum SoundFileReader::getFormat() const

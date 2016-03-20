@@ -19,7 +19,7 @@ namespace urchin
 			SoundFileReader(const std::string &);
 			~SoundFileReader();
 
-			bool readNextChunk(std::vector<ALshort> &, unsigned int &, bool);
+			void readNextChunk(std::vector<ALshort> &, unsigned int &, bool);
 
 			ALenum getFormat() const;
 			ALsizei getNumberOfSamples() const;

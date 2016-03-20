@@ -11,10 +11,7 @@ namespace urchin
 			physicsWorld(physicsWorld),
 			soundManager(soundManager)
 	{
-		if(soundManager==nullptr)
-		{ //create default sound manager in order to be able to create sound object
-			soundManager = new urchin::SoundManager();
-		}
+
 	}
 
 	Map::~Map()
