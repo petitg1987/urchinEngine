@@ -43,7 +43,6 @@ namespace urchin
 
 		quadDisplayer->display();
 
-		//displays children
 		Widget::display(translateDistanceLoc, invFrameRate);
 	}
 

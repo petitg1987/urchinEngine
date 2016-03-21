@@ -89,11 +89,9 @@ namespace urchin
 		{
 			for(int i=widgets.size()-1;i>=0;--i)
 			{
-				if(widgets[i]->isVisible())
+				if(widgets[i]->isVisible() && !widgets[i]->onKeyDown(key))
 				{
-					if(!widgets[i]->onKeyDown(key)){
-						return false;
-					}
+					return false;
 				}
 			}
 		}
@@ -106,12 +104,9 @@ namespace urchin
 		{
 			for(int i=widgets.size()-1;i>=0;--i)
 			{
-				if(widgets[i]->isVisible())
+				if(widgets[i]->isVisible() && !widgets[i]->onKeyUp(key))
 				{
-					if(!widgets[i]->onKeyUp(key))
-					{
-						return false;
-					}
+					return false;
 				}
 			}
 		}
@@ -122,12 +117,9 @@ namespace urchin
 	{
 		for(int i=widgets.size()-1;i>=0;--i)
 		{
-			if(widgets[i]->isVisible())
+			if(widgets[i]->isVisible() && !widgets[i]->onChar(character))
 			{
-				if(!widgets[i]->onChar(character))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
@@ -137,12 +129,9 @@ namespace urchin
 	{
 		for(int i=widgets.size()-1;i>=0;--i)
 		{
-			if(widgets[i]->isVisible())
+			if(widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY))
 			{
-				if(!widgets[i]->onMouseMove(mouseX, mouseY))
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;

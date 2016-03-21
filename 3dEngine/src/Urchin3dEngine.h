@@ -21,6 +21,7 @@
 #include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
 #include "scene/GUI/widget/text/Text.h"
 #include "scene/GUI/widget/textbox/TextBox.h"
+#include "scene/GUI/widget/slider/Slider.h"
 
 #include "texture/TextureManager.h"
 

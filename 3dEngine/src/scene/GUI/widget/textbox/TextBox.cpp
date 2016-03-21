@@ -15,11 +15,15 @@ namespace urchin
 	TextBox::TextBox(Position position, Size size, const std::string &nameSkin) :
 		Widget(position, size),
 		nameSkin(nameSkin),
+		text(nullptr),
 		startTextIndex(0),
 		cursorIndex(0),
 		state(UNACTIVE),
 		widgetOutline(new WidgetOutline())
 	{
+		glGenBuffers(1, &cursorLineBufferID);
+		glGenVertexArrays(1, &cursorLineVAO);
+
 		createOrUpdateWidget();
 	}
 
@@ -43,17 +47,17 @@ namespace urchin
 		texTextBoxFocus = GUISkinService::instance()->createTexWidget(getWidth(), getHeight(), skinChunkFocus);
 		
 		std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), textBoxChunk);
-		text = new Text(Position(0, Position::PIXEL, 0, Position::PIXEL),  textChunk->getStringValue());
-		text->setPosition(Position(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, Position::PIXEL, (int)(getHeight() - text->getHeight())/2, Position::PIXEL));
+		removeChild(text);
+		text = new Text(Position(0, 0, Position::PIXEL),  textChunk->getStringValue());
+		text->setPosition(Position(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (int)(getHeight() - text->getHeight())/2, Position::PIXEL));;
 		addChild(text);
 		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
+		refreshText(cursorIndex);
 		
 		//cursor information
 		cursorBlinkSpeed = ConfigService::instance()->getFloatValue("GUI.cursorBlinkSpeed");
 
 		//visual
-		glGenBuffers(1, &cursorLineBufferID);
-		glGenVertexArrays(1, &cursorLineVAO);
 		glBindVertexArray(cursorLineVAO);
 
 		const unsigned int cursorLineVertexData[] = {0, widgetOutline->topWidth, 0, getHeight() - widgetOutline->bottomWidth};
@@ -250,7 +254,6 @@ namespace urchin
 			glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
 		}
 
-		//displays children
 		Widget::display(translateDistanceLoc, invFrameRate);
 	}
 

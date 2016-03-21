@@ -31,13 +31,14 @@ namespace urchin
 			bool onCharEvent(unsigned int);
 			void reset();
 		
+			void refreshText(int);
+			void computeCursorPosition();
+			void computeCursorIndex(int);
+
 			//properties
 			const std::string nameSkin;
 
 			//display informations
-			void refreshText(int);
-			void computeCursorPosition();
-			void computeCursorIndex(int);
 			Text *text; //text of the text box (widget)
 			std::string allText; //text of the text box (string)
 			int maxWidthText; //maximum length of text can be displayed
@@ -61,7 +62,7 @@ namespace urchin
 			WidgetOutline *widgetOutline;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 			unsigned int cursorLineBufferID, cursorLineVAO;
-			enum //shader input
+			enum
 			{
 				SHADER_VERTEX_POSITION = 0,
 			};

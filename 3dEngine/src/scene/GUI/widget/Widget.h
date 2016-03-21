@@ -76,6 +76,8 @@ namespace urchin
 			unsigned int getSceneWidth() const;
 			unsigned int getSceneHeight() const;
 
+			const std::vector<Widget *> &getChildren() const;
+
 		private:
 			void handleWidgetKeyDown(unsigned int);
 			void handkeWidgetKeyUp(unsigned int);

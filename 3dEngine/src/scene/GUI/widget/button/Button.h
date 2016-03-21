@@ -7,6 +7,7 @@
 #include "scene/GUI/widget/Widget.h"
 #include "scene/GUI/widget/Position.h"
 #include "scene/GUI/widget/Size.h"
+#include "scene/GUI/widget/text/Text.h"
 #include "resources/image/Image.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -32,6 +33,9 @@ namespace urchin
 
 			//properties
 			const std::string nameSkin;
+
+			//display informations
+			Text *text;
 			const std::string buttonText;
 
 			//visual

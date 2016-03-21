@@ -67,6 +67,11 @@ namespace urchin
 		}
 	}
 
+	const std::vector<Widget *> &Widget::getChildren() const
+	{
+		return children;
+	}
+
 	void Widget::setParent(Widget *parent)
 	{
 		this->parent = parent;

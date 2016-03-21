@@ -39,9 +39,9 @@ namespace urchin
 		{
 			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
 			Widget::removeChild(title);
-			title = new Text(Position(0, Position::PIXEL, 0, Position::PIXEL), textChunk->getStringValue());
+			title = new Text(Position(0, 0, Position::PIXEL), textChunk->getStringValue());
 			title->setText(stringTitle.c_str());
-			title->setPosition(Position(widgetOutline->leftWidth + 1, Position::PIXEL, (widgetOutline->topWidth - title->getHeight())/2, Position::PIXEL));
+			title->setPosition(Position(widgetOutline->leftWidth + 1, (widgetOutline->topWidth - title->getHeight())/2, Position::PIXEL));
 			Widget::addChild(title);
 		}
 
@@ -54,7 +54,7 @@ namespace urchin
 
 	void Window::addChild(Widget *child)
 	{
-		Position childPosition(child->getPositionX()+widgetOutline->leftWidth, Position::PIXEL, child->getPositionY()+widgetOutline->topWidth, Position::PIXEL);
+		Position childPosition(child->getPositionX()+widgetOutline->leftWidth, child->getPositionY()+widgetOutline->topWidth, Position::PIXEL);
 		child->setPosition(childPosition);
 		Widget::addChild(child);
 	}
@@ -131,7 +131,6 @@ namespace urchin
 
 		quadDisplayer->display();
 
-		//displays children
 		Widget::display(translateDistanceLoc, invFrameRate);
 	}
 

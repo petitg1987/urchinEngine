@@ -11,7 +11,7 @@ namespace urchin
 {
 
 	Text::Text(Position position, const std::string &nameSkin) :
-		Widget(position, Size(0, Size::PIXEL, 0, Size::PIXEL)),
+		Widget(position, Size(0, 0, Size::PIXEL)),
 		text(""),
 		maxLength(-1)
 	{
@@ -159,7 +159,6 @@ namespace urchin
 		
 		glDisable(GL_BLEND);
 
-		//displays children
 		Widget::display(translateDistanceLoc, invFrameRate);
 	}
 
