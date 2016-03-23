@@ -1,9 +1,7 @@
-#include <sstream>
-#include <iostream>
 #include <stdexcept>
-#include <string.h>
 
 #include "tools/ConfigService.h"
+#include "tools/file/PropertyFileHandler.h"
 #include "system/FileSystem.h"
 
 namespace urchin
@@ -19,22 +17,6 @@ namespace urchin
 	ConfigService::~ConfigService()
 	{
 
-	}
-
-	void ConfigService::nextLine(std::ifstream &file, std::string &buffer)
-	{
-		do
-		{
-			std::getline(file, buffer);
-
-			//delete '\r'
-			int length = buffer.length()-1;
-			if(length >=0 && buffer[length]=='\r')
-			{
-				buffer.resize(length);
-			}
-
-		}while(buffer.length()==0 && !file.eof());
 	}
 	
 	void ConfigService::checkState() const
@@ -55,36 +37,10 @@ namespace urchin
 	 */
 	void ConfigService::loadProperties(const std::string &propertiesFile, const std::string &workingDirectory)
 	{
-		std::ifstream file;
-		std::istringstream iss;
-
-		std::string propertyName;
-		std::string equalSign;
-		std::string propertyValue;
-		
 		std::string propertiesFilePath = workingDirectory + propertiesFile;
-		file.open(propertiesFilePath.c_str(), std::ios::in);
-		if(file.fail())
-		{
-			throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
-		}
+		PropertyFileHandler propertyFileHandler(propertiesFilePath);
 		
-		do
-		{
-			std::string buffer;
-			nextLine(file, buffer);
-			
-			iss.clear(); iss.str(buffer);
-			iss >> propertyName;
-			
-			if(buffer.length()==0 || propertyName[0]=='#')
-			{ //empty or commented line
-				continue;
-			}
-			
-			iss >> equalSign >> propertyValue;
-			properties[propertyName] = propertyValue;
-		}while(!file.eof());
+		properties = propertyFileHandler.loadPropertyFile();
 
 		isInitialized=true;
 	}

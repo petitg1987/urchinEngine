@@ -1,6 +1,7 @@
 #ifndef ENGINE_URCHINCOMMON_H
 #define ENGINE_URCHINCOMMON_H
 
+#include "tools/file/PropertyFileHandler.h"
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"
 #include "tools/ConfigService.h"

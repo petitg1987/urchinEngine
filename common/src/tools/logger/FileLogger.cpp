@@ -14,7 +14,7 @@ namespace urchin
 	void FileLogger::write(const std::string &msg)
 	{
 		std::ofstream file;
-		file.open(filename.c_str(), std::ios::app);
+		file.open(filename, std::ios::app);
 		if(file.fail())
 		{
 			throw std::invalid_argument("Cannot open the file " + filename + ".");

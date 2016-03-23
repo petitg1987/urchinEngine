@@ -30,7 +30,7 @@ namespace urchin
 		//opens file
 		std::ifstream file;
 		std::string filenamePath = FileSystem::instance()->getWorkingDirectory() + filename;
-		file.open(filenamePath.c_str(), std::ios::in | std::ios::binary);
+		file.open(filenamePath, std::ios::in | std::ios::binary);
 		if(file.fail())
 		{
 			throw std::invalid_argument("Cannot open the file " + filenamePath + ".");

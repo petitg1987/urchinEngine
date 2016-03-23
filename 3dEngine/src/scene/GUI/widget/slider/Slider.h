@@ -22,6 +22,7 @@ namespace urchin
 			void createOrUpdateWidget();
 
 			unsigned int getSelectedIndex() const;
+			void setSelectedIndex(unsigned int);
 
 			void display(int, float);
 

@@ -111,7 +111,7 @@ namespace urchin
 		fileContent.reserve(10000);
 
 		std::ifstream file;
-		file.open(filename.c_str(), std::ios::in|std::ios::binary);
+		file.open(filename, std::ios::in|std::ios::binary);
 		if(file.fail())
 		{
 			throw std::invalid_argument("Cannot open the file " + filename + ".");

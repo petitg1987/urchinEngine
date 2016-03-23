@@ -2,7 +2,7 @@
 #define ENGINE_CONFIGSERVICE_H
 
 #include <string>
-#include <fstream>
+#include <map>
 
 #include "pattern/singleton/Singleton.h"
 #include "io/Converter.h"
@@ -11,7 +11,7 @@ namespace urchin
 {
 
 	/**
-	* Service to handle properties files
+	* Service to handle configuration properties files
 	*/
 	class ConfigService : public Singleton<ConfigService>
 	{
@@ -33,7 +33,6 @@ namespace urchin
 			ConfigService();
 			virtual ~ConfigService();
 
-			void nextLine(std::ifstream &file, std::string &buffer);
 			void checkState() const;
 
 			std::map<std::string, std::string> properties;

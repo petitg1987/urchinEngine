@@ -85,6 +85,19 @@ namespace urchin
 		return selectedIndex;
 	}
 
+	void Slider::setSelectedIndex(unsigned int index)
+	{
+		if(index >= values.size())
+		{
+			throw std::out_of_range("Index is out of range: " + std::to_string(index) + ". Maximum index allowed: " + std::to_string(values.size()-1));
+		}
+
+		valuesText[selectedIndex]->setIsVisible(false);
+		valuesText[index]->setIsVisible(true);
+
+		this->selectedIndex = index;
+	}
+
 	void Slider::display(int translateDistanceLoc, float invFrameRate)
 	{
 		Widget::display(translateDistanceLoc, invFrameRate);

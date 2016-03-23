@@ -41,7 +41,7 @@ namespace urchin
 			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
 			removeChild(text);
 			text = new Text(Position(0, 0, Position::PIXEL), textChunk->getStringValue());
-			text->setText(buttonText.c_str());
+			text->setText(buttonText);
 			text->setPosition(Position((int)(getWidth() - text->getWidth())/2, (int)(getHeight() - text->getHeight())/2, Position::PIXEL));
 			addChild(text);
 		}

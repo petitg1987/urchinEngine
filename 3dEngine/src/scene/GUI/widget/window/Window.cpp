@@ -40,7 +40,7 @@ namespace urchin
 			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), windowChunk);
 			Widget::removeChild(title);
 			title = new Text(Position(0, 0, Position::PIXEL), textChunk->getStringValue());
-			title->setText(stringTitle.c_str());
+			title->setText(stringTitle);
 			title->setPosition(Position(widgetOutline->leftWidth + 1, (widgetOutline->topWidth - title->getHeight())/2, Position::PIXEL));
 			Widget::addChild(title);
 		}
