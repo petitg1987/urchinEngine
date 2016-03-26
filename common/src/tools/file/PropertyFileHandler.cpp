@@ -52,19 +52,19 @@ namespace urchin
 
 	void PropertyFileHandler::savePropertyFile(const std::map<std::string, std::string> &properties) const
 	{
-		 std::ofstream file;
-		 file.open(propertiesFilePath, std::ios::out);
+		std::ofstream file;
+		file.open(propertiesFilePath, std::ios::out);
 		if(file.fail())
 		{
 			throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
 		}
 
-		 for(std::map<std::string, std::string>::const_iterator it = properties.begin(); it!=properties.end(); ++it)
-		 {
-			 file << it->first << " = " << it->second <<"\n";
-		 }
+		for(std::map<std::string, std::string>::const_iterator it = properties.begin(); it!=properties.end(); ++it)
+		{
+			file << it->first << " = " << it->second <<"\n";
+		}
 
-		 file.close();
+		file.close();
 	}
 
 	void PropertyFileHandler::nextLine(std::ifstream &file, std::string &buffer) const

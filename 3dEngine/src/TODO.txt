@@ -6,6 +6,7 @@
 - SHADOW
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [OPTIMIZATION] Use LOD
+	- (3) [QUALITY IMPROVEMENT] Create shadow map texture only for visible lights
 - GUI
 	- (2) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop

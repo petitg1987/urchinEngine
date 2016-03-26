@@ -16,7 +16,7 @@ namespace urchin
 		}
 	}
 
-	void Observable::addObserver(Observer *observer, int notificationType)
+	void Observable::addObserver(Observer *observer, int notificationType) const
 	{
 		std::map<int, std::set<Observer *> *>::const_iterator it = mapObservers.find(notificationType);
 		if(it==mapObservers.end())
@@ -31,7 +31,7 @@ namespace urchin
 		}
 	}
 
-	void Observable::removeObserver(Observer *observer, int notificationType)
+	void Observable::removeObserver(Observer *observer, int notificationType) const
 	{
 		std::map<int, std::set<Observer *> *>::const_iterator it = mapObservers.find(notificationType);
 		if(it!=mapObservers.end())

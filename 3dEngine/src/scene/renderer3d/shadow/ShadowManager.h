@@ -76,10 +76,9 @@ namespace urchin
 
 			//light handling
 			void deleteLightsLocation();
-			void addShadowLight(Light *const);
-			void removeShadowLight(Light *const);
+			void addShadowLight(const Light *const);
+			void removeShadowLight(const Light *const);
 			void updateShadowLights();
-			void onFrustumUpdate(const Frustum<float> &);
 
 			//splits handling
 			void updateViewMatrix(const Light *const);

@@ -162,8 +162,10 @@ namespace urchin
 	void ShadowManager::onCameraProjectionUpdate(const Camera *const camera)
 	{
 		this->projectionMatrix = camera->getProjectionMatrix();
+		this->frustumDistance = camera->getFrustum().computeFarDistance() + camera->getFrustum().computeNearDistance();
 
-		onFrustumUpdate(camera->getFrustum());
+		splitFrustum(camera->getFrustum());
+		updateShadowLights();
 	}
 
 	void ShadowManager::notify(Observable *observable, int notificationType)
@@ -240,7 +242,8 @@ namespace urchin
 		this->nbShadowMaps = nbShadowMaps;
 
 		createOrUpdateShadowModelDisplayer();
-		notify(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
+		updateShadowLights();
+		notifyObservers(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
 	}
 
 	unsigned int ShadowManager::getNumberShadowMaps() const
@@ -325,7 +328,7 @@ namespace urchin
 		return visibleModels;
 	}
 
-	void ShadowManager::addShadowLight(Light *const light)
+	void ShadowManager::addShadowLight(const Light *const light)
 	{
 		light->addObserver(this, Light::LIGHT_MOVE);
 
@@ -335,7 +338,7 @@ namespace urchin
 		updateViewMatrix(light);
 	}
 
-	void ShadowManager::removeShadowLight(Light *const light)
+	void ShadowManager::removeShadowLight(const Light *const light)
 	{
 		light->removeObserver(this, Light::LIGHT_MOVE);
 
@@ -350,23 +353,17 @@ namespace urchin
 	 */
 	void ShadowManager::updateShadowLights()
 	{
-		std::vector<Light *> visibleLights = lightManager->getVisibleLights();
-		for(std::vector<Light *>::const_iterator itLights = visibleLights.begin(); itLights!=visibleLights.end(); ++itLights)
+		std::set<const Light *> allLights;
+		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
 		{
-			if((*itLights)->isProduceShadow())
-			{
-				removeShadowLight(*itLights);
-				addShadowLight(*itLights);
-			}
+			allLights.insert(it->first);
 		}
-	}
 
-	void ShadowManager::onFrustumUpdate(const Frustum<float> &frustum)
-	{
-		frustumDistance = frustum.computeFarDistance() + frustum.computeNearDistance();
-
-		splitFrustum(frustum);
-		updateShadowLights();
+		for(std::set<const Light *>::const_iterator itLights = allLights.begin(); itLights!=allLights.end(); ++itLights)
+		{
+			removeShadowLight(*itLights);
+			addShadowLight(*itLights);
+		}
 	}
 
 	void ShadowManager::updateViewMatrix(const Light *const light)
