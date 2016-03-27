@@ -24,6 +24,9 @@ namespace urchin
 			unsigned int getSelectedIndex() const;
 			void setSelectedIndex(unsigned int);
 
+			void setLeftButtonEventListener(const std::shared_ptr<EventListener> &);
+			void setRightButtonEventListener(const std::shared_ptr<EventListener> &);
+
 			void display(int, float);
 
 		private:
@@ -35,6 +38,12 @@ namespace urchin
 			//visual
 			Text *leftButton, *rightButton;
 			std::vector<Text *> valuesText;
+
+			std::shared_ptr<EventListener> leftButtonEventListener;
+			std::shared_ptr<EventListener> rightButtonEventListener;
+
+			float timeInClickingState;
+			float timeSinceLastChange;
 
 			class ButtonSliderEventListener : public EventListener
 			{

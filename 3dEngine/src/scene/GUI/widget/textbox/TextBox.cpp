@@ -8,6 +8,7 @@
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
 #define LETTER_AND_CURSOR_SHIFT 2 //Define space between the letters and cursor
+#define CURSOR_BLINK_SPEED 1.75
 
 namespace urchin
 {
@@ -53,9 +54,6 @@ namespace urchin
 		addChild(text);
 		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
 		refreshText(cursorIndex);
-		
-		//cursor information
-		cursorBlinkSpeed = ConfigService::instance()->getFloatValue("GUI.cursorBlinkSpeed");
 
 		//visual
 		glBindVertexArray(cursorLineVAO);
@@ -235,7 +233,7 @@ namespace urchin
 
 		//displays the cursor
 		static float blink=0.0;
-		blink+=invFrameRate*cursorBlinkSpeed;
+		blink+=invFrameRate*CURSOR_BLINK_SPEED;
 		if(state==ACTIVE && ((int)blink%2)>0)
 		{
 			Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());

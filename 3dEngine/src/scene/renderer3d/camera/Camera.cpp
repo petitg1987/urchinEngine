@@ -2,9 +2,6 @@
 
 #include "Camera.h"
 
-#define DEFAULT_MAX_ROTATION_X 0.995
-#define DEFAULT_MOUSE_SENSITIVITY 0.006
-
 namespace urchin
 {
 

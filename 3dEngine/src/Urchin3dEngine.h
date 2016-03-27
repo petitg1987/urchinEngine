@@ -16,6 +16,7 @@
 
 #include "scene/GUI/EventListener.h"
 #include "scene/GUI/GUIRenderer.h"
+#include "scene/GUI/widget/container/Container.h"
 #include "scene/GUI/widget/window/Window.h"
 #include "scene/GUI/widget/button/Button.h"
 #include "scene/GUI/widget/staticbitmap/StaticBitmap.h"

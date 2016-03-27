@@ -26,6 +26,8 @@ namespace urchin
 		{
 			delete (children[i]);
 		}
+
+		eventListeners.clear();
 	}
 
 	void Widget::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
@@ -82,14 +84,14 @@ namespace urchin
 		return parent;
 	}
 
-	void Widget::setEventListener(const std::shared_ptr<EventListener> &eventListener)
+	void Widget::addEventListener(const std::shared_ptr<EventListener> &eventListener)
 	{
-		this->eventListener = eventListener;
+		this->eventListeners.push_back(eventListener);
 	}
 
-	std::shared_ptr<EventListener> Widget::getEventListener() const
+	const std::vector<std::shared_ptr<EventListener>> &Widget::getEventListeners() const
 	{
-		return eventListener;
+		return eventListeners;
 	}
 
 	Widget::WidgetStates Widget::getWidgetState() const
@@ -221,7 +223,7 @@ namespace urchin
 			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 			{
 				widgetState=CLICKING;
-				if(eventListener)
+				for(std::shared_ptr<EventListener> &eventListener : eventListeners)
 				{
 					eventListener->onClick(this);
 				}
@@ -257,9 +259,12 @@ namespace urchin
 			Rectangle<int> widgetRectangle(Point2<int>(getGlobalPositionX(), getGlobalPositionY()), Point2<int>(getGlobalPositionX()+getWidth(), getGlobalPositionY()+getHeight()));
 			if(widgetRectangle.collideWithPoint(Point2<int>(mouseX, mouseY)))
 			{
-				if(eventListener && widgetState==CLICKING)
+				if(widgetState==CLICKING)
 				{
-					eventListener->onClickRelease(this);
+					for(std::shared_ptr<EventListener> &eventListener : eventListeners)
+					{
+						eventListener->onClickRelease(this);
+					}
 				}
 				widgetState = FOCUS;
 			}else
@@ -324,7 +329,7 @@ namespace urchin
 		{
 			if(widgetState==DEFAULT)
 			{
-				if(eventListener)
+				for(std::shared_ptr<EventListener> &eventListener : eventListeners)
 				{
 					eventListener->onFocus(this);
 				}
@@ -332,7 +337,7 @@ namespace urchin
 			}
 		}else if(widgetState==FOCUS)
 		{
-			if(eventListener)
+			for(std::shared_ptr<EventListener> &eventListener : eventListeners)
 			{
 				eventListener->onFocusLost(this);
 			}

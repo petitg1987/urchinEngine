@@ -52,9 +52,6 @@ namespace urchin
 				ACTIVE,
 				UNACTIVE
 			} state;
-			
-			//cursor
-			float cursorBlinkSpeed;
 
 			//visual
 			std::shared_ptr<Image> texTextBoxDefault, texTextBoxFocus;
