@@ -223,7 +223,7 @@ namespace urchin
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	bool SceneManager::onKeyUp(unsigned int key)

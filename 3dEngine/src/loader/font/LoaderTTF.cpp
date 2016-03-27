@@ -112,12 +112,15 @@ namespace urchin
 		FT_Done_Face(face);
 		FT_Done_FreeType(library);
 
-		//compute space between lines, space between letters and height of letters (basis on letter "A")
-		int basisLetter = 'A';
-		unsigned int spaceBetweenLines = (unsigned int) (glyph[basisLetter].height*WIDTH_BETWEEN_LINES_RATE);
+		//compute space between lines, space between letters and height of letters
+		unsigned int height =0;
+		for(int i='A'; i<'Z';i++)
+		{
+			height = std::max(height, (unsigned int)glyph[i].height);
+		}
+		unsigned int spaceBetweenLines = height * WIDTH_BETWEEN_LINES_RATE;
 		unsigned int spaceBetweenLetters = WIDTH_BETWEEN_LETTERS;
-		unsigned int height = glyph[basisLetter].height;
-		glyph[' '].width = (int)((float)glyph[basisLetter].width*WIDTH_SPACE_RATE);
+		glyph[' '].width = (int)((float)glyph['A'].width * WIDTH_SPACE_RATE);
 
 		//dimension of letters and texture
 		int dimensionLetters=0;

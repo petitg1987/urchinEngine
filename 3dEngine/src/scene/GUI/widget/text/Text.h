@@ -22,6 +22,7 @@ namespace urchin
 			void createOrUpdateWidget();
 
 			void setText(const std::string &, int maxLength=-1);
+			const std::string &getText() const;
 			const Font *getFont();
 			
 			void display(int, float);
