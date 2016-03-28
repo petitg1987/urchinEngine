@@ -137,6 +137,17 @@ namespace urchin
 		return true;
 	}
 
+	void GUIRenderer::onDisable()
+	{
+		for(int i=widgets.size()-1;i>=0;--i)
+		{
+			if(widgets[i]->isVisible())
+			{
+				widgets[i]->onDisable();
+			}
+		}
+	}
+
 	void GUIRenderer::addWidget(Widget *widget)
 	{
 		widgets.push_back(widget);

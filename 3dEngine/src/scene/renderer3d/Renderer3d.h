@@ -71,6 +71,7 @@ namespace urchin
 			bool onKeyUp(unsigned int);
 			bool onChar(unsigned int);
 			bool onMouseMove(int, int);
+			void onDisable();
 
 			//scene
 			void display(float);

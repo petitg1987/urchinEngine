@@ -543,6 +543,7 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) targetLinux/moc_MapEditorWindow.cpp targetLinux/moc_NewDialog.cpp targetLinux/moc_NotSavedDialog.cpp targetLinux/moc_SceneControllerWidget.cpp targetLinux/moc_ObjectControllerWidget.cpp targetLinux/moc_ObjectTableView.cpp targetLinux/moc_ChangeBodyShapeDialog.cpp targetLinux/moc_NewObjectDialog.cpp targetLinux/moc_BodyBoxShapeWidget.cpp targetLinux/moc_BodyCapsuleShapeWidget.cpp targetLinux/moc_BodyCompoundShapeWidget.cpp targetLinux/moc_BodyConvexHullShapeWidget.cpp targetLinux/moc_BodyCylinderShapeWidget.cpp targetLinux/moc_BodyShapeWidget.cpp targetLinux/moc_BodySphereShapeWidget.cpp targetLinux/moc_NoBodyShapeWidget.cpp targetLinux/moc_LocalizedShapeTableView.cpp targetLinux/moc_SpinBoxDelegate.cpp targetLinux/moc_LightControllerWidget.cpp targetLinux/moc_LightTableView.cpp targetLinux/moc_NewLightDialog.cpp targetLinux/moc_SoundControllerWidget.cpp targetLinux/moc_SoundTableView.cpp targetLinux/moc_ChangeSoundShapeDialog.cpp targetLinux/moc_ChangeSoundTriggerDialog.cpp targetLinux/moc_NewSoundDialog.cpp targetLinux/moc_SoundBoxShapeWidget.cpp targetLinux/moc_SoundShapeWidget.cpp targetLinux/moc_SoundSphereShapeWidget.cpp targetLinux/moc_SceneDisplayerWidget.cpp
 targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -731,6 +732,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -794,6 +796,7 @@ targetLinux/moc_NotSavedDialog.cpp: src/dialog/NotSavedDialog.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/dialog/NotSavedDialog.h -o targetLinux/moc_NotSavedDialog.cpp
 
 targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -917,6 +920,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -1033,6 +1037,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/SceneControllerWidget.h -o targetLinux/moc_SceneControllerWidget.cpp
 
 targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -1223,6 +1228,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -1266,6 +1272,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/ObjectControllerWidget.h -o targetLinux/moc_ObjectControllerWidget.cpp
 
 targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -1389,6 +1396,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -1499,6 +1507,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -1620,6 +1629,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -1726,6 +1736,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -1847,6 +1858,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -1952,6 +1964,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/dialog/NewObjectDialog.h -o targetLinux/moc_NewObjectDialog.cpp
 
 targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -2142,6 +2155,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -2180,6 +2194,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h -o targetLinux/moc_BodyBoxShapeWidget.cpp
 
 targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -2370,6 +2385,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -2408,6 +2424,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h -o targetLinux/moc_BodyCapsuleShapeWidget.cpp
 
 targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -2598,6 +2615,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -2641,6 +2659,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h -o targetLinux/moc_BodyCompoundShapeWidget.cpp
 
 targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -2831,6 +2850,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -2869,6 +2889,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h -o targetLinux/moc_BodyConvexHullShapeWidget.cpp
 
 targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -3059,6 +3080,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -3097,6 +3119,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h -o targetLinux/moc_BodyCylinderShapeWidget.cpp
 
 targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -3220,6 +3243,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -3324,6 +3348,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyShapeWidget.h -o targetLinux/moc_BodyShapeWidget.cpp
 
 targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -3514,6 +3539,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -3554,6 +3580,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.h \
 		../physicsEngine/src/PhysicsWorld.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -3742,6 +3769,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -3780,6 +3808,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h -o targetLinux/moc_NoBodyShapeWidget.cpp
 
 targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -3903,6 +3932,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -4012,6 +4042,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 
 targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -4135,6 +4166,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -4239,6 +4271,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h -o targetLinux/moc_SpinBoxDelegate.cpp
 
 targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -4363,6 +4396,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -4471,6 +4505,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/lights/LightControllerWidget.h -o targetLinux/moc_LightControllerWidget.cpp
 
 targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -4594,6 +4629,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -4704,6 +4740,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -4825,6 +4862,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -4930,6 +4968,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/lights/dialog/NewLightDialog.h -o targetLinux/moc_NewLightDialog.cpp
 
 targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -5054,6 +5093,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -5163,6 +5203,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/SoundControllerWidget.h -o targetLinux/moc_SoundControllerWidget.cpp
 
 targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -5286,6 +5327,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -5396,6 +5438,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -5517,6 +5560,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -5623,6 +5667,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -5744,6 +5789,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -5850,6 +5896,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -5971,6 +6018,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -6076,6 +6124,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/dialog/NewSoundDialog.h -o targetLinux/moc_NewSoundDialog.cpp
 
 targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -6216,6 +6265,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -6304,6 +6354,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h -o targetLinux/moc_SoundBoxShapeWidget.cpp
 
 targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -6427,6 +6478,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -6531,6 +6583,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/soundshape/SoundShapeWidget.h -o targetLinux/moc_SoundShapeWidget.cpp
 
 targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -6671,6 +6724,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -6759,6 +6813,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h -o targetLinux/moc_SoundSphereShapeWidget.cpp
 
 targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -6947,6 +7002,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -7008,6 +7064,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		src/MapEditorWindow.h \
 		src/scene/displayer/SceneDisplayerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -7196,6 +7253,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -7254,6 +7312,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		src/scene/displayer/SceneDisplayerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -7442,6 +7501,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -7512,6 +7572,7 @@ targetLinux/SpinBoxStyleHelper.o: src/support/SpinBoxStyleHelper.cpp src/support
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SpinBoxStyleHelper.o src/support/SpinBoxStyleHelper.cpp
 
 targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -7578,6 +7639,7 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/NewDialog.o src/dialog/NewDialog.cpp
 
 targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -7646,6 +7708,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -7767,6 +7830,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -7874,6 +7938,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 
 targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.cpp src/scene/controller/SceneControllerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -7997,6 +8062,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -8113,6 +8179,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 
 targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectController.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -8302,6 +8369,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -8341,6 +8409,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 
 targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectControllerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -8531,6 +8600,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -8579,6 +8649,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 
 targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/ObjectTableView.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -8702,6 +8773,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -8809,6 +8881,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ObjectTableView.o src/scene/controller/objects/ObjectTableView.cpp
 
 targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -8933,6 +9006,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -9037,6 +9111,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ChangeBodyShapeDialog.o src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp
 
 targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -9161,6 +9236,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -9267,6 +9343,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 
 targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -9457,6 +9534,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -9496,6 +9574,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 
 targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -9686,6 +9765,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -9725,6 +9805,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 
 targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -9915,6 +9996,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -9963,6 +10045,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 
 targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -10153,6 +10236,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -10195,6 +10279,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 
 targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -10385,6 +10470,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -10424,6 +10510,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 
 targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -10547,6 +10634,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -10653,6 +10741,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/UrchinPhysicsEngine.h \
 		../physicsEngine/src/PhysicsWorld.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -10840,6 +10929,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -10891,6 +10981,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 
 targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -11081,6 +11172,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -11122,6 +11214,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/UrchinPhysicsEngine.h \
 		../physicsEngine/src/PhysicsWorld.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -11310,6 +11403,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -11350,6 +11444,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -11471,6 +11566,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -11575,6 +11671,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 
 targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -11698,6 +11795,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -11809,6 +11907,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -11932,6 +12031,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -12037,6 +12137,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 
 targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightController.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -12160,6 +12261,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -12264,6 +12366,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 
 targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightControllerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -12388,6 +12491,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -12499,6 +12603,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 
 targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/LightTableView.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -12622,6 +12727,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -12729,6 +12835,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LightTableView.o src/scene/controller/lights/LightTableView.cpp
 
 targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -12853,6 +12960,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -12959,6 +13067,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 
 targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundController.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -13082,6 +13191,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -13187,6 +13297,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 
 targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundControllerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -13311,6 +13422,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -13426,6 +13538,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 
 targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/SoundTableView.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -13549,6 +13662,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -13656,6 +13770,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SoundTableView.o src/scene/controller/sounds/SoundTableView.cpp
 
 targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -13780,6 +13895,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -13884,6 +14000,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ChangeSoundShapeDialog.o src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp
 
 targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -14008,6 +14125,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -14111,6 +14229,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ChangeSoundTriggerDialog.o src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp
 
 targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -14235,6 +14354,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -14341,6 +14461,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 
 targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -14481,6 +14602,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -14570,6 +14692,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 
 targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -14693,6 +14816,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -14799,6 +14923,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -14936,6 +15061,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -15027,6 +15153,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 
 targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -15167,6 +15294,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -15258,6 +15386,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -15379,6 +15508,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -15483,6 +15613,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 
 targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayer.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -15670,6 +15801,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -15714,6 +15846,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 
 targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneDisplayerWidget.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -15902,6 +16035,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -15946,6 +16080,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 
 targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/SceneFreeCamera.h \
 		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -16067,6 +16202,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -16084,6 +16220,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
 
 targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -16272,6 +16409,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -16311,6 +16449,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/BodyShapeDisplayer.o src/scene/displayer/objects/BodyShapeDisplayer.cpp
 
 targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplayer.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -16433,6 +16572,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \
@@ -16538,6 +16678,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LightScopeDisplayer.o src/scene/displayer/lights/LightScopeDisplayer.cpp
 
 targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisplayer.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
 		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
@@ -16678,6 +16819,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/scene/InputDevice.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
 		../3dEngine/src/scene/GUI/widget/window/Window.h \
 		../3dEngine/src/scene/GUI/widget/text/Text.h \
 		../3dEngine/src/resources/font/Font.h \

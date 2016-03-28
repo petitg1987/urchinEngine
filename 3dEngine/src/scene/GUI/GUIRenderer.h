@@ -24,6 +24,7 @@ namespace urchin
 			bool onKeyUp(unsigned int);
 			bool onChar(unsigned int);
 			bool onMouseMove(int, int);
+			void onDisable();
 			
 			void addWidget(Widget *);
 			void removeWidget(Widget *);

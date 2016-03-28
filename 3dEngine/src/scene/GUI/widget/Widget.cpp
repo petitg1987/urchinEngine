@@ -261,12 +261,15 @@ namespace urchin
 			{
 				if(widgetState==CLICKING)
 				{
+					widgetState = FOCUS;
 					for(std::shared_ptr<EventListener> &eventListener : eventListeners)
 					{
 						eventListener->onClickRelease(this);
 					}
+				}else
+				{
+					widgetState = FOCUS;
 				}
-				widgetState = FOCUS;
 			}else
 			{
 				widgetState = DEFAULT;
@@ -329,19 +332,19 @@ namespace urchin
 		{
 			if(widgetState==DEFAULT)
 			{
+				widgetState = FOCUS;
 				for(std::shared_ptr<EventListener> &eventListener : eventListeners)
 				{
 					eventListener->onFocus(this);
 				}
-				widgetState = FOCUS;
 			}
 		}else if(widgetState==FOCUS)
 		{
+			widgetState = DEFAULT;
 			for(std::shared_ptr<EventListener> &eventListener : eventListeners)
 			{
 				eventListener->onFocusLost(this);
 			}
-			widgetState = DEFAULT;
 		}
 	}
 
@@ -362,6 +365,40 @@ namespace urchin
 			if(children[i]->isVisible())
 			{
 				children[i]->reset();
+			}
+		}
+	}
+
+	void Widget::onDisable()
+	{
+		handleDisable();
+
+		for(unsigned int i=0;i<children.size();++i)
+		{
+			if(children[i]->isVisible())
+			{
+				children[i]->onDisable();
+			}
+		}
+	}
+
+	void Widget::handleDisable()
+	{
+		if(widgetState==CLICKING)
+		{
+			widgetState = FOCUS;
+			for(std::shared_ptr<EventListener> &eventListener : eventListeners)
+			{
+				eventListener->onClickRelease(this);
+			}
+		}
+
+		if(widgetState==FOCUS)
+		{
+			widgetState = DEFAULT;
+			for(std::shared_ptr<EventListener> &eventListener : eventListeners)
+			{
+				eventListener->onFocusLost(this);
 			}
 		}
 	}

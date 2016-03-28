@@ -149,6 +149,11 @@ namespace urchin
 
 	void SceneManager::enableRenderer3d(Renderer3d *renderer3d)
 	{
+		if(activeRenderers[RENDERER_3D]!=nullptr)
+		{
+			activeRenderers[RENDERER_3D]->onDisable();
+		}
+
 		activeRenderers[RENDERER_3D] = renderer3d;
 		if(renderer3d!=nullptr)
 		{
@@ -186,6 +191,11 @@ namespace urchin
 
 	void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer)
 	{
+		if(activeRenderers[GUI_RENDERER]!=nullptr)
+		{
+			activeRenderers[GUI_RENDERER]->onDisable();
+		}
+
 		activeRenderers[GUI_RENDERER] = guiRenderer;
 		if(guiRenderer!=nullptr)
 		{

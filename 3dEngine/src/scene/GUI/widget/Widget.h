@@ -69,6 +69,7 @@ namespace urchin
 			int getMouseX() const;
 			int getMouseY() const;
 			virtual void reset();
+			void onDisable();
 
 			virtual void display(int, float);
 
@@ -82,6 +83,7 @@ namespace urchin
 			void handleWidgetKeyDown(unsigned int);
 			void handkeWidgetKeyUp(unsigned int);
 			void handleWidgetMouseMove(int, int);
+			void handleDisable();
 
 			unsigned int sceneWidth, sceneHeight;
 

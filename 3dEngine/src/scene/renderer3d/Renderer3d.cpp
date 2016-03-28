@@ -372,6 +372,11 @@ namespace urchin
 		return true;
 	}
 
+	void Renderer3d::onDisable()
+	{
+		//nothing to do
+	}
+
 	void Renderer3d::display(float invFrameRate)
 	{
 		if(!camera)
