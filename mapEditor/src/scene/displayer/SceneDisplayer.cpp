@@ -41,12 +41,12 @@ namespace urchin
 		try
 		{
 			initializeEngineResources(mapEditorPath);
-			std::string relativeMapWorkingDir = MapHandler::getRelativeWorkingDirectory(mapFilename);
-			std::string mapWorkingDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapWorkingDir);
-			FileSystem::instance()->setupWorkingDirectory(mapWorkingDirectory);
+			std::string relativeMapResourcesDir = MapHandler::getRelativeWorkingDirectory(mapFilename);
+			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapResourcesDir);
+			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
 			initializeScene();
-			std::string relativeMapFilename = FileHandler::getRelativePath(mapWorkingDirectory, mapFilename);
+			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager);
 			mapHandler->loadMapFromFile(relativeMapFilename);
 			isInitialized = true;
@@ -58,13 +58,13 @@ namespace urchin
 		}
 	}
 
-	void SceneDisplayer::initializeFromNewMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeMapWorkingDir)
+	void SceneDisplayer::initializeFromNewMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeMapResourcesDir)
 	{
 		try
 		{
 			initializeEngineResources(mapEditorPath);
-			std::string mapWorkingDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapWorkingDir);
-			FileSystem::instance()->setupWorkingDirectory(mapWorkingDirectory);
+			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapResourcesDir);
+			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
 			initializeScene();
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager);
@@ -79,10 +79,10 @@ namespace urchin
 
 	void SceneDisplayer::initializeEngineResources(const std::string &mapEditorPath)
 	{
-		std::string mapEditorWorkingDirectory = FileHandler::getDirectoryFrom(mapEditorPath);
+		std::string mapEditorResourcesDirectory = FileHandler::getDirectoryFrom(mapEditorPath);
 
-		ConfigService::instance()->loadProperties("resources/engine.properties", mapEditorWorkingDirectory);
-		ShaderManager::instance()->replaceShadersWorkingDirectoryBy(mapEditorWorkingDirectory);
+		ConfigService::instance()->loadProperties("resources/engine.properties", mapEditorResourcesDirectory);
+		ShaderManager::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
 	}
 
 	void SceneDisplayer::initializeScene()

@@ -5,7 +5,7 @@ namespace urchin
 {
 
 	FileSystem::FileSystem() : Singleton<FileSystem>(),
-			workingDirectory("./")
+			resourcesDirectory("./")
 	{
 
 	}
@@ -15,25 +15,14 @@ namespace urchin
 
 	}
 
-	/**
-	 * Setup the wording directory from binary path. Working directory will the same as directory containing the binary.
-	 */
-	void FileSystem::setupWorkingDirectoryFromBinaryPath(const std::string &binaryPath)
+	void FileSystem::setupResourcesDirectory(const std::string &resourcesDirectory)
 	{
-		this->workingDirectory = FileHandler::getDirectoryFrom(binaryPath);
+		this->resourcesDirectory = resourcesDirectory;
 	}
 
-	void FileSystem::setupWorkingDirectory(const std::string &workingDirectory)
+	const std::string &FileSystem::getResourcesDirectory()
 	{
-		this->workingDirectory = workingDirectory;
-	}
-
-	/**
-	 * @return Working directory (relative path to the binary directory)
-	 */
-	const std::string &FileSystem::getWorkingDirectory()
-	{
-		return workingDirectory;
+		return resourcesDirectory;
 	}
 
 }

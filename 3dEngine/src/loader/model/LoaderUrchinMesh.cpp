@@ -38,7 +38,7 @@ namespace urchin
 		std::string sdata;
 		int idata;
 
-		std::string filenamePath = FileSystem::instance()->getWorkingDirectory() + filename;
+		std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 		file.open(filenamePath, std::ios::in);
 		if(file.fail())
 		{

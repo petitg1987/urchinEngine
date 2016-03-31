@@ -48,10 +48,10 @@ namespace urchin
 
 	void SceneController::saveMapOnFile(const std::string &mapFilename)
 	{
-		std::string tmpWorkingDirectory = FileSystem::instance()->getWorkingDirectory();
-		FileSystem::instance()->setupWorkingDirectory("");
+		std::string tmpResourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+		FileSystem::instance()->setupResourcesDirectory("");
 		mapHandler->writeMapOnFile(mapFilename);
-		FileSystem::instance()->setupWorkingDirectory(tmpWorkingDirectory);
+		FileSystem::instance()->setupResourcesDirectory(tmpResourcesDirectory);
 
 		resetModified();
 	}

@@ -13,15 +13,14 @@ namespace urchin
 		public:
 			friend class Singleton<FileSystem>;
 
-			void setupWorkingDirectoryFromBinaryPath(const std::string &);
-			void setupWorkingDirectory(const std::string &);
-			const std::string &getWorkingDirectory();
+			void setupResourcesDirectory(const std::string &);
+			const std::string &getResourcesDirectory();
 
 		private:
 			FileSystem();
 			virtual ~FileSystem();
 
-			std::string workingDirectory;
+			std::string resourcesDirectory;
 	};
 
 }

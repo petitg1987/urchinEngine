@@ -29,7 +29,7 @@ namespace urchin
 	{
 		//opens file
 		std::ifstream file;
-		std::string filenamePath = FileSystem::instance()->getWorkingDirectory() + filename;
+		std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 		file.open(filenamePath, std::ios::in | std::ios::binary);
 		if(file.fail())
 		{

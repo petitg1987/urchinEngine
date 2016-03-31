@@ -29,7 +29,7 @@ namespace urchin
 
 	void ConfigService::loadProperties(const std::string &propertiesFile)
 	{
-		loadProperties(propertiesFile, FileSystem::instance()->getWorkingDirectory());
+		loadProperties(propertiesFile, FileSystem::instance()->getResourcesDirectory());
 	}
 
 	/**

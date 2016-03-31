@@ -90,8 +90,8 @@ namespace urchin
 
 			sceneSound->setName(soundName);
 
-			std::string workingDirectory = FileSystem::instance()->getWorkingDirectory();
-			std::string relativeSoundFilename = FileHandler::getRelativePath(workingDirectory, soundFilename);
+			std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+			std::string relativeSoundFilename = FileHandler::getRelativePath(resourcesDirectory, soundFilename);
 
 			QVariant variant = soundTypeComboBox->currentData();
 			Sound::SoundType soundType = static_cast<Sound::SoundType>(variant.toInt());
@@ -133,7 +133,7 @@ namespace urchin
 
 	void NewSoundDialog::showSoundFilenameDialog()
 	{
-		QString directory = preferredSoundPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getWorkingDirectory()) : preferredSoundPath;
+		QString directory = preferredSoundPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredSoundPath;
 		QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.wav)", 0, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull())
 		{

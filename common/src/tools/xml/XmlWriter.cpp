@@ -11,7 +11,7 @@ namespace urchin
 	 */
 	XmlWriter::XmlWriter(const std::string &filename)
 	{
-		this->filenamePath = FileSystem::instance()->getWorkingDirectory() + filename;
+		this->filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 
 		this->doc = new TiXmlDocument();
 		TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );

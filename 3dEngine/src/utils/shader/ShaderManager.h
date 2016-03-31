@@ -17,7 +17,7 @@ namespace urchin
 		public:
 			friend class Singleton<ShaderManager>;
 
-			void replaceShadersWorkingDirectoryBy(const std::string &);
+			void replaceShadersParentDirectoryBy(const std::string &);
 
 			unsigned int createProgram(const std::string &, const std::string &);
 			unsigned int createProgram(const std::string &, const std::string &, const std::map<std::string, std::string> &);
@@ -40,8 +40,8 @@ namespace urchin
 			void checkShader(unsigned int, const std::string &);
 			void checkProgram(unsigned int, const std::string &);
 
-			std::string shadersWorkingDirectory;
-			std::string shadersLocation;
+			std::string shadersParentDirectory;
+			std::string shadersDirectoryName;
 
 			TokenReplacerShader tokenReplacerShader;
 			LoopUnrollerShader loopUnrollerShader;

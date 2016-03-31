@@ -10,7 +10,7 @@ namespace urchin
 	 * @param filename XML filename
 	 */
 	XmlParser::XmlParser(const std::string &filename) :
-		XmlParser(filename, FileSystem::instance()->getWorkingDirectory())
+		XmlParser(filename, FileSystem::instance()->getResourcesDirectory())
 	{
 
 	}

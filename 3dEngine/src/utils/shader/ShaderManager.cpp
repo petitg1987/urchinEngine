@@ -8,10 +8,10 @@ namespace urchin
 {
 
 	ShaderManager::ShaderManager() : Singleton<ShaderManager>(),
-			shadersLocation(ConfigService::instance()->getStringValue("shaders.shadersLocation")),
+			shadersDirectoryName(ConfigService::instance()->getStringValue("shaders.shadersLocation")),
 			currentProgramID(0)
 	{
-		this->shadersWorkingDirectory = FileSystem::instance()->getWorkingDirectory();
+		this->shadersParentDirectory = FileSystem::instance()->getResourcesDirectory();
 	}
 
 	ShaderManager::~ShaderManager()
@@ -22,9 +22,9 @@ namespace urchin
 		}
 	}
 
-	void ShaderManager::replaceShadersWorkingDirectoryBy(const std::string &shadersWorkingDirectory)
+	void ShaderManager::replaceShadersParentDirectoryBy(const std::string &shadersParentDirectory)
 	{
-		this->shadersWorkingDirectory = shadersWorkingDirectory;
+		this->shadersParentDirectory = shadersParentDirectory;
 	}
 
 	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &fragmentShaderFilename)
@@ -40,7 +40,7 @@ namespace urchin
 		programs.push_back(programID);
 
 		//vertex shader
-		const std::string &vertexShaderFileSource = readEntireFile(shadersWorkingDirectory + shadersLocation + vertexShaderFilename);
+		const std::string &vertexShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + vertexShaderFilename);
 		const std::string &vertexShaderSourceStep1 = tokenReplacerShader.replaceTokens(vertexShaderFileSource, tokens);
 		const std::string &vertexShaderSource = loopUnrollerShader.unrollLoops(vertexShaderSourceStep1);
 		const char *vertexShaderSourceChar = vertexShaderSource.c_str();
@@ -52,7 +52,7 @@ namespace urchin
 		glAttachShader(programID, vertexShader);
 
 		//fragment shader
-		const std::string &fragmentShaderFileSource = readEntireFile(shadersWorkingDirectory + shadersLocation + fragmentShaderFilename);
+		const std::string &fragmentShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + fragmentShaderFilename);
 		const std::string &fragmentShaderSourceStep1 = tokenReplacerShader.replaceTokens(fragmentShaderFileSource, tokens);
 		const std::string &fragmentShaderSource = loopUnrollerShader.unrollLoops(fragmentShaderSourceStep1);
 		const char *fragmentShaderSourceChar = fragmentShaderSource.c_str();
@@ -80,7 +80,7 @@ namespace urchin
 			const std::map<std::string, std::string> &tokens)
 	{
 		//geometry shader
-		const std::string &geometryShaderFileSource = readEntireFile(shadersWorkingDirectory + shadersLocation + geometryShaderFilename);
+		const std::string &geometryShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + geometryShaderFilename);
 		const std::string &geometryShaderSourceStep1 = tokenReplacerShader.replaceTokens(geometryShaderFileSource, tokens);
 		const std::string &geometryShaderSource = loopUnrollerShader.unrollLoops(geometryShaderSourceStep1);
 		const char *geometryShaderSourceChar = geometryShaderSource.c_str();

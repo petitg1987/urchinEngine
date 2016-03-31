@@ -12,7 +12,7 @@ namespace urchin
 	{
 		//open file
 		std::memset (&fileInfos, 0, sizeof (fileInfos)) ;
-		std::string filenamePath = FileSystem::instance()->getWorkingDirectory() + filename;
+		std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 		file = sf_open(filenamePath.c_str(), SFM_READ, &fileInfos);
 		if (!file)
 		{

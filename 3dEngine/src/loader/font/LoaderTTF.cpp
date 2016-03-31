@@ -28,7 +28,7 @@ namespace urchin
 		FontParameters textParameters = (FontParameters)(*static_cast<FontParameters*>(params));
 		
 		//initialize freetype
-		std::string fileFontPath = FileSystem::instance()->getWorkingDirectory() + fileFont;
+		std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + fileFont;
 		FT_Library library;
 		FT_Face face;
 		if (FT_Init_FreeType(&library))
