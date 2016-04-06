@@ -3,6 +3,8 @@
 ############################################
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
+- AMBIENT OCCLUSION
+	- (3) [QUALITY IMPROVEMENT] Replace HBAO by VXAO technique
 - SHADOW
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [OPTIMIZATION] Use LOD
