@@ -124,7 +124,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.1248979578" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
 								<option id="gnu.cpp.link.option.libs.84618096" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="urchinCommon"/>
-									<listOptionValue builtIn="false" value="openal"/>
+									<listOptionValue builtIn="false" value="openal32"/>
 									<listOptionValue builtIn="false" value="sndfile"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1617365157" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">

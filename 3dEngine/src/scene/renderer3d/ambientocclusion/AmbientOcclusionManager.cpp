@@ -95,7 +95,7 @@ namespace urchin
 		hbaoTokens["RADIUS"] = std::to_string(radius);
 		hbaoTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent);
 		hbaoTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor()));
-		hbaoTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/M_PI)));
+		hbaoTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/PI_VALUE)));
 		hbaoTokens["RANDOM_TEXTURE_SIZE"] = std::to_string(randomTextureSize);
 		ShaderManager::instance()->removeProgram(hbaoShader);
 		hbaoShader = ShaderManager::instance()->createProgram("hbao.vert", "hbao.frag", hbaoTokens);
