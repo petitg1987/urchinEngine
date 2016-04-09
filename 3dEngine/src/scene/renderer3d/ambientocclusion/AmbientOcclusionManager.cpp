@@ -199,7 +199,7 @@ namespace urchin
 		for(unsigned int i=0; i<randomTextureSize*randomTextureSize; ++i)
 		{
 			//random rotation
-			float randomAngleRadian = (2.0f*M_PI) * (distribution(generator) / static_cast<float>(numDirections));
+			float randomAngleRadian = (2.0f*PI_VALUE) * (distribution(generator) / static_cast<float>(numDirections));
 			hbaoRandom[i].X = std::sin(randomAngleRadian);
 			hbaoRandom[i].Y = std::cos(randomAngleRadian);
 
