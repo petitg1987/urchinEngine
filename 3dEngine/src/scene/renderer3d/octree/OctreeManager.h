@@ -1,6 +1,7 @@
 #ifndef ENGINE_OCTREEMANAGER_H
 #define ENGINE_OCTREEMANAGER_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <limits>
 #include <set>

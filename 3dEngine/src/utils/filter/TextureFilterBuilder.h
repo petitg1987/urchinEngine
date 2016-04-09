@@ -1,6 +1,7 @@
 #ifndef ENGINE_TEXTUREFILTERBUILDER_H
 #define ENGINE_TEXTUREFILTERBUILDER_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <string>
 #include <memory>

@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <stdexcept>
 #include <ft2build.h>

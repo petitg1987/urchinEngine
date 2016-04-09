@@ -1,6 +1,7 @@
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <fstream>
 #include <stdexcept>
-#include <GL/gl.h>
 #include "UrchinCommon.h"
 
 #include "loader/image/LoaderTGA.h"

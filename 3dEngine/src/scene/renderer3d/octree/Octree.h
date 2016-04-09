@@ -1,6 +1,7 @@
 #ifndef ENGINE_OCTREE_H
 #define ENGINE_OCTREE_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <vector>
 #include <set>

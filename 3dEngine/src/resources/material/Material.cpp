@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include "resources/material/Material.h"
