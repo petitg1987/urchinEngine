@@ -5,9 +5,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.so.debug.1199183068.797530382" moduleId="org.eclipse.cdt.core.settings" name="targetLinux">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mapReader"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mapHandler"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/mapReader/targetLinux"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/mapHandler/targetLinux"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="urchinMapHandler" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
@@ -89,9 +87,9 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.so.debug.1199183068.776906398.763673110" moduleId="org.eclipse.cdt.core.settings" name="targetWin">
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mapReader"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/mapReader/targetWin"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="urchinMapReader" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/mapHandler"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/mapHandler/targetWin"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="urchinMapHandler" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -104,7 +102,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="dll" artifactName="urchinMapReader" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="targetWin" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.config.gnu.so.debug.1199183068.776906398.763673110" name="targetWin" parent="cdt.managedbuild.config.gnu.so.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
+				<configuration artifactExtension="dll" artifactName="urchinMapHandler" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="targetWin" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.config.gnu.so.debug.1199183068.776906398.763673110" name="targetWin" parent="cdt.managedbuild.config.gnu.so.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.so.debug.1199183068.776906398.763673110." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.1236725818" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.467809838" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
@@ -139,7 +137,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1245506614" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base">
 								<option defaultValue="true" id="gnu.c.link.option.shared.315217710" name="Shared (-shared)" superClass="gnu.c.link.option.shared" valueType="boolean"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.809861536" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
+							<tool command="g++ -std=c++14" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.809861536" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
 								<option id="gnu.cpp.link.option.libs.458969674" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="urchinCommon"/>
 									<listOptionValue builtIn="false" value="urchinPhysicsEngine"/>

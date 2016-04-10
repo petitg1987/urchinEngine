@@ -119,7 +119,7 @@ namespace urchin
 				FBO_SCENE = 0
 			};
 
-			GLenum fboAttachments[3];
+			unsigned int fboAttachments[3];
 			unsigned int *textureIDs;
 			enum //texture IDs indexes
 			{

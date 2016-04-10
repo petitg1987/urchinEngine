@@ -1,11 +1,11 @@
 #ifndef ENGINE_OCTREEABLE_H
 #define ENGINE_OCTREEABLE_H
 
-#include <utils/display/geometry/aabbox/AABBoxModel.h>
 #include <vector>
 #include <stdexcept>
 #include "UrchinCommon.h"
 
+#include "utils/display/geometry/aabbox/AABBoxModel.h"
 #include "Octree.h"
 
 namespace urchin

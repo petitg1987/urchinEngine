@@ -114,7 +114,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1654081253" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base">
 								<option defaultValue="true" id="gnu.c.link.option.shared.872946636" name="Shared (-shared)" superClass="gnu.c.link.option.shared" valueType="boolean"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.1570854828" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
+							<tool command="g++ -std=c++14" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.1570854828" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
 								<option defaultValue="true" id="gnu.cpp.link.option.shared.2055995188" name="Shared (-shared)" superClass="gnu.cpp.link.option.shared" valueType="boolean"/>
 								<option id="gnu.cpp.link.option.flags.44017961" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-static-libstdc++" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1235876868" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">

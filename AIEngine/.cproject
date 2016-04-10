@@ -107,7 +107,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.393935161" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base">
 								<option defaultValue="true" id="gnu.c.link.option.shared.1920770801" name="Shared (-shared)" superClass="gnu.c.link.option.shared" valueType="boolean"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.2125801210" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
+							<tool command="g++ -std=c++14" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.2125801210" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
 								<option id="gnu.cpp.link.option.libs.994432083" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="urchinCommon"/>
 								</option>
