@@ -47,7 +47,7 @@ namespace urchin
 		std::size_t found = filePath.find_last_of("/\\");
 		if(found==std::string::npos)
 		{
-			throw std::domain_error("Impossible to find directory from this file path: " + filePath);
+			return "./";
 		}
 
 		return filePath.substr(0, found+1);
