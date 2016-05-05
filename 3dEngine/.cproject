@@ -61,7 +61,6 @@
 									<listOptionValue builtIn="false" value="urchinCommon"/>
 									<listOptionValue builtIn="false" value="freetype"/>
 									<listOptionValue builtIn="false" value="GLEW"/>
-									<listOptionValue builtIn="false" value="GLU"/>
 								</option>
 								<option id="gnu.cpp.link.option.debugging.gprof.2088870825" name="Generate gprof information (-pg)" superClass="gnu.cpp.link.option.debugging.gprof" value="false" valueType="boolean"/>
 								<option id="gnu.cpp.link.option.paths.1905942709" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
@@ -139,7 +138,6 @@
 									<listOptionValue builtIn="false" value="freetype"/>
 									<listOptionValue builtIn="false" value="opengl32"/>
 									<listOptionValue builtIn="false" value="glew32"/>
-									<listOptionValue builtIn="false" value="glu32"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1839883544" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common/targetWin}&quot;"/>
