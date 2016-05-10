@@ -57,21 +57,21 @@ float linearStep(float min, float max, float v){
   	return clamp((v - min) / (max - min), 0.0f, 1.0f);  
 } 
 
-float computePercentLit(float shadowMapZ, vec2 moments){
-    float isInHardShadow = float(shadowMapZ <= moments.x);
+float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
+    float bias = #SHADOW_MAP_BIAS# * tan(acos(NdotL));
+    float shadowMapZBiase = shadowMapZ - bias;
+    float isInHardShadow = float(shadowMapZBiase <= moments.x);
     
     float variance = moments.y - (moments.x*moments.x);
-    variance = max(variance, #SHADOW_MAP_BIAS#); //reduce fake shadow between splitted shadow maps
-    
-    float d = moments.x - shadowMapZ;
+    float d = moments.x - shadowMapZBiase;
     float pMax = variance / (variance + d*d);
     
-    pMax = linearStep(0.4f, 1.0f, pMax); //reduce light bleeding
+    pMax = linearStep(0.45f, 1.0f, pMax); //reduce light bleeding
     
     return max(isInHardShadow, pMax);
 }
 
-float computeShadowContribution(int lightIndex, float depthValue, vec4 position){
+float computeShadowContribution(int lightIndex, float depthValue, vec4 position, float NdotL){
 	float shadowContribution = 1.0;
 	
 	if(lightsInfo[lightIndex].produceShadow){
@@ -84,14 +84,7 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position)
 				if(shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0){
 					vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, #LOOP1_COUNTER#)).rg;
 
-					shadowContribution = computePercentLit(shadowCoord.z, moments);
-					
-					#LOOP1_IF_LAST_ITERATION#
-						//shadow attenuation before disappear
-						float startAttenuation = depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] * 0.9996;
-						shadowContribution = min(1.0f, shadowContribution 
-								+ max(0.0f, ((depthValue - startAttenuation)/(depthSplitDistance[#NUMBER_SHADOW_MAPS#-1] - startAttenuation))));
-					#LOOP1_ENDIF_LAST_ITERATION#
+					shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
 				}
 
 				#LOOP1_STOP#
@@ -146,7 +139,7 @@ void main(){
 				
 				float percentLit = 1.0;
 				if(hasShadow){
-					percentLit = computeShadowContribution(i, depthValue, position);
+					percentLit = computeShadowContribution(i, depthValue, position, NdotL);
 				}
 				
 				fragColor += lightAttenuation * (percentLit * (diffuse * NdotL) + ambient);
