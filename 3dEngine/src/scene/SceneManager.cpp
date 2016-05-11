@@ -52,16 +52,16 @@ namespace urchin
 	{
 		//initialization Glew
 		GLenum err = glewInit();
-		if (err != GLEW_OK)
+		if(err != GLEW_OK)
 		{
 			throw std::runtime_error((char *)glewGetErrorString(err));
 		}
 
-		//initialization OpenGl
-		glEnable(GL_DEPTH_TEST);
-		glClearColor(1.0, 1.0, 1.0, 1.0);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
+		//check OpenGL version supported
+		if(!glewIsSupported("GL_VERSION_3_3"))
+		{
+			throw std::runtime_error("OpenGL version 3.3 is required but it's not supported on this environment.");
+		}
 
 		//check OpenGL context version
 		int majorVersionContext = 0, minorVersionContext = 0;
@@ -76,8 +76,14 @@ namespace urchin
 			std::ostringstream ossMinorVersionContext;
 			ossMinorVersionContext << minorVersionContext;
 
-			throw std::runtime_error("OpenGL version require: 3.3, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
+			throw std::runtime_error("OpenGL context version required: 3.3, current version: " + ossMajorVersionContext.str() + "." + ossMinorVersionContext.str() + ".");
 		}
+
+		//initialization OpenGl
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(1.0, 1.0, 1.0, 1.0);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
 	}
 
 	void SceneManager::onResize(unsigned int width, unsigned int height)
