@@ -2,6 +2,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 #include "system/FileHandlerTest.h"
+#include "math/algebra/QuaternionEulerTest.h"
 #include "math/geometry/OrthogonalProjectionTest.h"
 #include "math/geometry/VoronoiRegionTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
@@ -29,6 +30,9 @@ int main()
 
 	//system - file
 	runner.addTest(FileHandlerTest::suite());
+
+	//math - algebra
+	runner.addTest(QuaternionEulerTest::suite());
 
 	//math - geometry
 	runner.addTest(OrthogonalProjectionTest::suite());

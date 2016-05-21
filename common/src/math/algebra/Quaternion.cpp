@@ -65,27 +65,80 @@ namespace urchin
 		W = std::cos(halfAngle);
 	}
 
-	template<class T> Quaternion<T>::Quaternion(const Vector3<T> &eulerAngles)
+	template<class T> Quaternion<T>::Quaternion(const Vector3<T> &eulerAngles, RotationSequence rotationSequence)
 	{
-		float angle = eulerAngles.Z * 0.5f;
-		float sinZ = std::sin(angle);
-		float cosZ = std::cos(angle);
-		angle = eulerAngles.Y * 0.5f;
-		float sinY = std::sin(angle);
-		float cosY = std::cos(angle);
-		angle = eulerAngles.X * 0.5f;
-		float sinX = std::sin(angle);
-		float cosX = std::cos(angle);
+		Quaternion<float> finalQuaternion;
 
-		float cosYXcosZ = cosY * cosZ;
-		float sinYXsinZ = sinY * sinZ;
-		float cosYXsinZ = cosY * sinZ;
-		float sinYXcosZ = sinY * cosZ;
+		switch(rotationSequence)
+		{
+			case RotationSequence::XYZ:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::XZY:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::YXZ:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::YZX:
+				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::ZXY:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				break;
+			case RotationSequence::ZYX:
+				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				break;
+			case RotationSequence::XYX:
+				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::XZX:
+				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::YXY:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::YZY:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				break;
+			case RotationSequence::ZXZ:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				break;
+			case RotationSequence::ZYZ:
+				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				break;
+			default:
+				throw std::invalid_argument("Unknown quaternion rotation sequence: " + rotationSequence);
+		}
 
-		W = (cosYXcosZ * cosX - sinYXsinZ * sinX);
-		X = (cosYXcosZ * sinX + sinYXsinZ * cosX);
-		Y = (sinYXcosZ * cosX + cosYXsinZ * sinX);
-		Z = (cosYXsinZ * cosX - sinYXcosZ * sinX);
+		X = finalQuaternion.X;
+		Y = finalQuaternion.Y;
+		Z = finalQuaternion.Z;
+		W = finalQuaternion.W;
 	}
 
 	template<class T> void Quaternion<T>::computeW()
@@ -276,6 +329,91 @@ namespace urchin
 		}
 	}
 
+	template<class T> Vector3<T> Quaternion<T>::toEulerAngle(RotationSequence rotationSequence) const
+	{
+		switch(rotationSequence)
+		{
+			case RotationSequence::XYZ:
+				return threeAxisEulerRotation(0, 1, 2);
+			case RotationSequence::XZY:
+				return threeAxisEulerRotation(0, 2, 1);
+			case RotationSequence::YXZ:
+				return threeAxisEulerRotation(1, 0, 2);
+			case RotationSequence::YZX:
+				return threeAxisEulerRotation(1, 2, 0);
+			case RotationSequence::ZXY:
+				return threeAxisEulerRotation(2, 0, 1);
+			case RotationSequence::ZYX:
+				return threeAxisEulerRotation(2, 1, 0);
+			case RotationSequence::XYX:
+				return twoAxisEulerRotation(0, 1, 2);
+			case RotationSequence::XZX:
+				return twoAxisEulerRotation(0, 2, 1);
+			case RotationSequence::YXY:
+				return twoAxisEulerRotation(1, 0, 2);
+			case RotationSequence::YZY:
+				return twoAxisEulerRotation(1, 2, 0);
+			case RotationSequence::ZXZ:
+				return twoAxisEulerRotation(2, 0, 1);
+			case RotationSequence::ZYZ:
+				return twoAxisEulerRotation(2, 1, 0);
+			default:
+				throw std::invalid_argument("Unknown quaternion rotation sequence: " + rotationSequence);
+		}
+	}
+
+	template<class T> Vector3<T> Quaternion<T>::threeAxisEulerRotation(int i, int j, int k) const
+	{ //inspired on Eigen library (EulerAngle.h)
+		Vector3<T> euler;
+
+		bool sequenceAxis = ((i+1)%3==j) ? true : false;
+		Matrix3<T> m = toMatrix3();
+
+		euler[0] = atan2(m(k, j), m(k, k));
+		T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
+
+		if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0))
+		{
+			euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
+			euler[1] = atan2(-m(k, i), -cosEuler1);
+		}else
+		{
+			euler[1] = atan2(-m(k, i), cosEuler1);
+		}
+
+		T sinEuler0 = sin(euler[0]);
+		T cosEuler0 = cos(euler[0]);
+		euler[2] = atan2(sinEuler0*m(i, k) - cosEuler0*m(i, j), cosEuler0*m(j, j) - sinEuler0*m(j, k));
+
+		return sequenceAxis ? euler : -euler;
+	}
+
+	template<class T> Vector3<T> Quaternion<T>::twoAxisEulerRotation(int i, int j, int k) const
+	{ //inspired on Eigen library (EulerAngle.h)
+		Vector3<T> euler;
+
+		bool sequenceAxis = ((i+1)%3==j) ? true : false;
+		Matrix3<T> m = toMatrix3();
+
+		euler[0] = atan2(m(i, j), m(i, k));
+		T sinEuler1 = Vector2<T>(m(i, j), m(i, k)).length();
+
+	    if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0))
+	    {
+	    	euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
+	    	euler[1] = -atan2(sinEuler1, m(i, i));
+	    }else
+	    {
+	    	euler[1] = atan2(sinEuler1, m(i, i));
+	    }
+
+	    T sinEuler0 = sin(euler[0]);
+	    T cosEuler0 = cos(euler[0]);
+	    euler[2] = atan2(cosEuler0*m(k, j) - sinEuler0*m(k, k), cosEuler0*m(j, j) - sinEuler0*m(j, k));
+
+		return sequenceAxis ? euler : -euler;
+	}
+
 	template<class T> Quaternion<T> Quaternion<T>::operator *(const Quaternion<T> &q) const
 	{
 		return Quaternion<T>(	W*q.X + X*q.W + Y*q.Z - Z*q.Y,
@@ -304,6 +442,16 @@ namespace urchin
 		*this = *this * p;
 
 		return *this;
+	}
+
+	template<class T> T& Quaternion<T>::operator [](int i)
+	{
+		return (&X)[i];
+	}
+
+	template<class T> const T& Quaternion<T>::operator [](int i) const
+	{
+		return (&X)[i];
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Quaternion<T> &q)
