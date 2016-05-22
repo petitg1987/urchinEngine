@@ -26,6 +26,7 @@ namespace urchin
 		makeJump(false),
 		numberOfHit(0),
 		isOnGround(false),
+		hitRoof(false),
 		timeInTheAir(0.0f),
 		jumping(false),
 		slopeInPercentage(0.0f)
@@ -211,6 +212,10 @@ namespace urchin
 			verticalVelocity = 0.0f;
 			slopeInPercentage = computeSlope();
 		}
+		if(hitRoof)
+		{
+			verticalVelocity = 0.0f;
+		}
 
 		//set new transform on character
 		setTransform(ghostBody->getPhysicsTransform());
@@ -256,7 +261,9 @@ namespace urchin
 	{
 		SignificantContactValues significantContactValues;
 		significantContactValues.numberOfHit = 0;
+
 		significantContactValues.maxDotProductUpNormalAxis = std::numeric_limits<float>::min();
+		significantContactValues.maxDotProductDownNormalAxis = -std::numeric_limits<float>::max();
 
 		return significantContactValues;
 	}
@@ -271,12 +278,20 @@ namespace urchin
 			significantContactValues.maxDotProductUpNormalAxis = dotProductUpNormalAxis;
 			significantContactValues.mostUpVerticalNormal = -normal;
 		}
+
+		float dotProductDownNormalAxis = (-normal).dotProduct(Vector3<float>(0.0, -1.0, 0.0));
+		if(dotProductDownNormalAxis > significantContactValues.maxDotProductDownNormalAxis)
+		{
+			significantContactValues.maxDotProductDownNormalAxis = dotProductDownNormalAxis;
+			significantContactValues.mostDownVerticalNormal = -normal;
+		}
 	}
 
 	void CharacterController::computeSignificantContactValues(SignificantContactValues &significantContactValues, float dt)
 	{
 		numberOfHit = significantContactValues.numberOfHit;
-		isOnGround = (numberOfHit > 0) ? std::acos(significantContactValues.maxDotProductUpNormalAxis) < getMaxSlopeInRadian() : false;
+		isOnGround = numberOfHit>0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < getMaxSlopeInRadian();
+		hitRoof = numberOfHit>0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < getMaxSlopeInRadian();
 		timeInTheAir = isOnGround ? 0.0f : timeInTheAir+dt;
 	}
 

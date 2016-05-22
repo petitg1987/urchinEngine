@@ -20,6 +20,9 @@ namespace urchin
 
 		float maxDotProductUpNormalAxis;
 		Vector3<float> mostUpVerticalNormal;
+
+		float maxDotProductDownNormalAxis;
+		Vector3<float> mostDownVerticalNormal;
 	};
 
 	/**
@@ -79,6 +82,7 @@ namespace urchin
 			Vector3<float> lastWalkDirection;
 			unsigned int numberOfHit; //number of contact point touching the character
 			bool isOnGround; //character is on the ground
+			bool hitRoof; //character has hit the roof
 			float timeInTheAir; //time (sec.) character is not on the ground
 			float jumping; //character is jumping
 			float slopeInPercentage; //slope in percentage (a positive value means that character climb)
