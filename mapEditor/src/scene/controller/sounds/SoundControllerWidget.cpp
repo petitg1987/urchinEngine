@@ -65,7 +65,7 @@ namespace urchin
 
 		volume = new QDoubleSpinBox(generalPropertiesGroupBox);
 		volume->setGeometry(QRect(85, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(volume);
+		SpinBoxStyleHelper::applyDefaultStyleOn(volume);
 		volume->setMinimum(0.0);
 		connect(volume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
 	}
@@ -107,15 +107,15 @@ namespace urchin
 
 		positionX = new QDoubleSpinBox(pointSoundWidget);
 		positionX->setGeometry(QRect(85, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 		positionY = new QDoubleSpinBox(pointSoundWidget);
 		positionY->setGeometry(QRect(165, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 		positionZ = new QDoubleSpinBox(pointSoundWidget);
 		positionZ->setGeometry(QRect(245, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
 		QLabel *inaudibleDistanceLabel= new QLabel(pointSoundWidget);
@@ -124,7 +124,7 @@ namespace urchin
 
 		inaudibleDistance = new QDoubleSpinBox(pointSoundWidget);
 		inaudibleDistance->setGeometry(QRect(85, 25, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(inaudibleDistance);
+		SpinBoxStyleHelper::applyDefaultStyleOn(inaudibleDistance);
 		inaudibleDistance->setMinimum(0.0);
 		connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 	}
@@ -162,7 +162,7 @@ namespace urchin
 
 		volumeDecreasePercentageOnStop = new QDoubleSpinBox(soundBehaviorGroupBox);
 		volumeDecreasePercentageOnStop->setGeometry(QRect(110, 65, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(volumeDecreasePercentageOnStop);
+		SpinBoxStyleHelper::applyDefaultStyleOn(volumeDecreasePercentageOnStop);
 		volumeDecreasePercentageOnStop->setMinimum(0.0);
 		volumeDecreasePercentageOnStop->setMaximum(1.0);
 		connect(volumeDecreasePercentageOnStop, SIGNAL(valueChanged(double)), this, SLOT(updateSoundBehaviorProperties()));

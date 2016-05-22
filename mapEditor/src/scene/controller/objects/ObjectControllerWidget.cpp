@@ -18,12 +18,12 @@ namespace urchin
 
 		addObjectButton = new QPushButton(this);
 		addObjectButton->setText("New Object");
-		addObjectButton->setGeometry(QRect(0, 221, 85, 22));
+		addObjectButton->setGeometry(QRect(0, 221, 90, 22));
 		connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
 		removeObjectButton = new QPushButton(this);
 		removeObjectButton->setText("Remove Object");
-		removeObjectButton->setGeometry(QRect(86, 221, 85, 22));
+		removeObjectButton->setGeometry(QRect(91, 221, 90, 22));
 		removeObjectButton->setEnabled(false);
 		connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
 
@@ -60,7 +60,7 @@ namespace urchin
 	{
 		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
 		transformGroupBox->setTitle("Transform");
-		transformGroupBox->setGeometry(QRect(0, 5, 350, 120));
+		transformGroupBox->setGeometry(QRect(0, 5, 350, 145));
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 
 		setupPosition(transformGroupBox);
@@ -76,50 +76,58 @@ namespace urchin
 
 		positionX = new QDoubleSpinBox(transformGroupBox);
 		positionX->setGeometry(QRect(85, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 		positionY = new QDoubleSpinBox(transformGroupBox);
 		positionY->setGeometry(QRect(165, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 		positionZ = new QDoubleSpinBox(transformGroupBox);
 		positionZ->setGeometry(QRect(245, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 	}
 
 	void ObjectControllerWidget::setupOrientation(QGroupBox *transformGroupBox)
 	{
+		QLabel *orientationTypeLabel = new QLabel(transformGroupBox);
+		orientationTypeLabel->setText("Orient. Type:");
+		orientationTypeLabel->setGeometry(QRect(5, 40, 80, 22));
+
+		orientationType = new QComboBox(transformGroupBox);
+		orientationType->setGeometry(QRect(85, 40, 160, 22));
+		orientationType->addItem(EULER_XYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XYZ));
+		orientationType->addItem(EULER_XZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XZY));
+		orientationType->addItem(EULER_YXZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YXZ));
+		orientationType->addItem(EULER_YZX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YZX));
+		orientationType->addItem(EULER_ZXY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZXY));
+		orientationType->addItem(EULER_ZYX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZYX));
+		orientationType->addItem(EULER_XYX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XYX));
+		orientationType->addItem(EULER_XZX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XZX));
+		orientationType->addItem(EULER_YXY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YXY));
+		orientationType->addItem(EULER_YZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YZY));
+		orientationType->addItem(EULER_ZXZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZXZ));
+		orientationType->addItem(EULER_ZYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZYZ));
+		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectOrientationType()));
+
 		QLabel *orientationAxisLabel = new QLabel(transformGroupBox);
-		orientationAxisLabel->setText("Orient. Axis:");
-		orientationAxisLabel->setGeometry(QRect(5, 40, 80, 22));
+		orientationAxisLabel->setText("Euler Angle:");
+		orientationAxisLabel->setGeometry(QRect(5, 65, 80, 22));
 
-		orientationAxisX = new QDoubleSpinBox(transformGroupBox);
-		orientationAxisX->setGeometry(QRect(85, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAxisX);
-		connect(orientationAxisX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
+		eulerAxis0 = new QDoubleSpinBox(transformGroupBox);
+		eulerAxis0->setGeometry(QRect(85, 65, 80, 22));
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 
-		orientationAxisY = new QDoubleSpinBox(transformGroupBox);
-		orientationAxisY->setGeometry(QRect(165, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAxisY);
-		connect(orientationAxisY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
+		eulerAxis1 = new QDoubleSpinBox(transformGroupBox);
+		eulerAxis1->setGeometry(QRect(165, 65, 80, 22));
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+		connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 
-		orientationAxisZ = new QDoubleSpinBox(transformGroupBox);
-		orientationAxisZ->setGeometry(QRect(245, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAxisZ);
-		connect(orientationAxisZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
-
-		QLabel *orientationAngleLabel = new QLabel(transformGroupBox);
-		orientationAngleLabel->setText("Orient. Angle:");
-		orientationAngleLabel->setGeometry(QRect(5, 65, 80, 22));
-
-		orientationAngle = new QDoubleSpinBox(transformGroupBox);
-		orientationAngle->setGeometry(QRect(85, 65, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAngle);
-		orientationAngle->setSingleStep(5.0);
-		orientationAngle->setMinimum(0.0);
-		orientationAngle->setMaximum(360.0);
-		connect(orientationAngle, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
+		eulerAxis2 = new QDoubleSpinBox(transformGroupBox);
+		eulerAxis2->setGeometry(QRect(245, 65, 80, 22));
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 	}
 
 	void ObjectControllerWidget::setupScale(QGroupBox *transformGroupBox)
@@ -130,7 +138,7 @@ namespace urchin
 
 		scale = new QDoubleSpinBox(transformGroupBox);
 		scale->setGeometry(QRect(85, 90, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(scale);
+		SpinBoxStyleHelper::applyDefaultStyleOn(scale);
 		scale->setMinimum(0.0);
 		connect(scale, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
 	}
@@ -152,7 +160,7 @@ namespace urchin
 	{
 		hasRigidBody = new QCheckBox(tabPhysics);
 		hasRigidBody->setText("Rigid Body");
-		hasRigidBody->setGeometry(QRect(0, 10, 80, 15));
+		hasRigidBody->setGeometry(QRect(0, 10, 85, 15));
 		connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
 
 		tabPhysicsRigidBody = new QTabWidget(tabPhysics);
@@ -182,7 +190,7 @@ namespace urchin
 
 		mass = new QDoubleSpinBox(rigidBodyGeneralBox);
 		mass->setGeometry(QRect(75, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(mass);
+		SpinBoxStyleHelper::applyDefaultStyleOn(mass);
 		mass->setMinimum(0.0);
 		connect(mass, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
@@ -192,7 +200,7 @@ namespace urchin
 
 		restitution = new QDoubleSpinBox(rigidBodyGeneralBox);
 		restitution->setGeometry(QRect(255, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(restitution);
+		SpinBoxStyleHelper::applyDefaultStyleOn(restitution);
 		restitution->setMinimum(0.0);
 		restitution->setMaximum(1.0);
 		connect(restitution, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -203,7 +211,7 @@ namespace urchin
 
 		friction = new QDoubleSpinBox(rigidBodyGeneralBox);
 		friction->setGeometry(QRect(75, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(friction);
+		SpinBoxStyleHelper::applyDefaultStyleOn(friction);
 		friction->setMinimum(0.0);
 		friction->setMaximum(1.0);
 		connect(friction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -214,7 +222,7 @@ namespace urchin
 
 		rollingFriction = new QDoubleSpinBox(rigidBodyGeneralBox);
 		rollingFriction->setGeometry(QRect(255, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(rollingFriction);
+		SpinBoxStyleHelper::applyDefaultStyleOn(rollingFriction);
 		rollingFriction->setMinimum(0.0);
 		rollingFriction->setMaximum(1.0);
 		connect(rollingFriction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -233,7 +241,7 @@ namespace urchin
 
 		linearDamping = new QDoubleSpinBox(rigidBodyDampingBox);
 		linearDamping->setGeometry(QRect(75, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(linearDamping);
+		SpinBoxStyleHelper::applyDefaultStyleOn(linearDamping);
 		linearDamping->setMinimum(0.0);
 		linearDamping->setMaximum(1.0);
 		connect(linearDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -244,7 +252,7 @@ namespace urchin
 
 		angularDamping = new QDoubleSpinBox(rigidBodyDampingBox);
 		angularDamping->setGeometry(QRect(255, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(angularDamping);
+		SpinBoxStyleHelper::applyDefaultStyleOn(angularDamping);
 		angularDamping->setMinimum(0.0);
 		angularDamping->setMaximum(1.0);
 		connect(angularDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -263,21 +271,21 @@ namespace urchin
 
 		linearFactorX = new QDoubleSpinBox(rigidBodyFactorBox);
 		linearFactorX->setGeometry(QRect(75, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(linearFactorX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorX);
 		linearFactorX->setMinimum(0.0);
 		linearFactorX->setMaximum(1.0);
 		connect(linearFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
 		linearFactorY = new QDoubleSpinBox(rigidBodyFactorBox);
 		linearFactorY->setGeometry(QRect(155, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(linearFactorY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorY);
 		linearFactorY->setMinimum(0.0);
 		linearFactorY->setMaximum(1.0);
 		connect(linearFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
 		linearFactorZ = new QDoubleSpinBox(rigidBodyFactorBox);
 		linearFactorZ->setGeometry(QRect(235, 15, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(linearFactorZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorZ);
 		linearFactorZ->setMinimum(0.0);
 		linearFactorZ->setMaximum(1.0);
 		connect(linearFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -288,21 +296,21 @@ namespace urchin
 
 		angularFactorX = new QDoubleSpinBox(rigidBodyFactorBox);
 		angularFactorX->setGeometry(QRect(75, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(angularFactorX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorX);
 		angularFactorX->setMinimum(0.0);
 		angularFactorX->setMaximum(1.0);
 		connect(angularFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
 		angularFactorY = new QDoubleSpinBox(rigidBodyFactorBox);
 		angularFactorY->setGeometry(QRect(155, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(angularFactorY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorY);
 		angularFactorY->setMinimum(0.0);
 		angularFactorY->setMaximum(1.0);
 		connect(angularFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
 		angularFactorZ = new QDoubleSpinBox(rigidBodyFactorBox);
 		angularFactorZ->setGeometry(QRect(235, 40, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(angularFactorZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorZ);
 		angularFactorZ->setMinimum(0.0);
 		angularFactorZ->setMaximum(1.0);
 		connect(angularFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
@@ -377,15 +385,10 @@ namespace urchin
 		this->positionY->setValue(modelTransform.getPosition().Y);
 		this->positionZ->setValue(modelTransform.getPosition().Z);
 
-		Vector3<float> orientationAxis;
-		float orientationAngleRadian;
-		modelTransform.getOrientation().toAxisAngle(orientationAxis, orientationAngleRadian);
-		double orientationAngleDegree = AngleConverter<double>::toDegree(orientationAngleRadian);
-
-		this->orientationAxisX->setValue(orientationAxis.X);
-		this->orientationAxisY->setValue(orientationAxis.Y);
-		this->orientationAxisZ->setValue(orientationAxis.Z);
-		this->orientationAngle->setValue(orientationAngleDegree);
+		Vector3<float> eulerAngle = modelTransform.getOrientation().toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
+		this->eulerAxis0->setValue(AngleConverter<double>::toDegree(eulerAngle[0]));
+		this->eulerAxis1->setValue(AngleConverter<double>::toDegree(eulerAngle[1]));
+		this->eulerAxis2->setValue(AngleConverter<double>::toDegree(eulerAngle[2]));
 
 		this->scale->setValue(modelTransform.getScale());
 
@@ -471,18 +474,44 @@ namespace urchin
 		}
 	}
 
+	void ObjectControllerWidget::updateObjectOrientationType()
+	{
+		if(!disableObjectEvent)
+		{
+			const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
+
+			QVariant variant = orientationType->currentData();
+			Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+
+			Quaternion<float> orientation = sceneObject->getModel()->getTransform().getOrientation();
+			Vector3<float> eulerAngle = orientation.toEulerAngle(newRotationSequence);
+
+			eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
+			eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
+			eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+
+			updateObjectTransform();
+		}
+	}
+
 	void ObjectControllerWidget::updateObjectTransform()
 	{
 		if(!disableObjectEvent)
 		{
 			const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
-			double orientationAngleDegree = orientationAngle->value();
-			double orientationAngleRadian = AngleConverter<double>::toRadian(orientationAngleDegree);
+			Vector3<float> eulerAngle(
+					AngleConverter<float>::toRadian(eulerAxis0->value()),
+					AngleConverter<float>::toRadian(eulerAxis1->value()),
+					AngleConverter<float>::toRadian(eulerAxis2->value())
+			);
+
+			QVariant variant = orientationType->currentData();
+			Quaternion<float>::RotationSequence rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
 			Transform<float> newSceneObjectTransform(
 					Point3<float>(positionX->value(), positionY->value(), positionZ->value()),
-					Quaternion<float>(Vector3<float>(orientationAxisX->value(), orientationAxisY->value(), orientationAxisZ->value()), orientationAngleRadian),
+					Quaternion<float>(eulerAngle, rotationSequence),
 					scale->value());
 
 			objectController->updateSceneObjectTransform(sceneObject, newSceneObjectTransform);

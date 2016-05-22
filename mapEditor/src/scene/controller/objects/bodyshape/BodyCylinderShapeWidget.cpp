@@ -15,7 +15,7 @@ namespace urchin
 
 		radius = new QDoubleSpinBox(this);
 		radius->setGeometry(QRect(85, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(radius);
+		SpinBoxStyleHelper::applyDefaultStyleOn(radius);
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
@@ -25,7 +25,7 @@ namespace urchin
 
 		height = new QDoubleSpinBox(this);
 		height->setGeometry(QRect(85, 25, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(height);
+		SpinBoxStyleHelper::applyDefaultStyleOn(height);
 		height->setMinimum(0.0);
 		connect(height, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 

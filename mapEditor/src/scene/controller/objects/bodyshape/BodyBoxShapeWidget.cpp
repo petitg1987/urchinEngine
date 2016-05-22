@@ -15,19 +15,19 @@ namespace urchin
 
 		halfSizeX = new QDoubleSpinBox(this);
 		halfSizeX->setGeometry(QRect(85, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(halfSizeX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX);
 		halfSizeX->setMinimum(0.0);
 		connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
 		halfSizeY = new QDoubleSpinBox(this);
 		halfSizeY->setGeometry(QRect(165, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(halfSizeY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY);
 		halfSizeY->setMinimum(0.0);
 		connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
 		halfSizeZ = new QDoubleSpinBox(this);
 		halfSizeZ->setGeometry(QRect(245, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(halfSizeZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
 		halfSizeZ->setMinimum(0.0);
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 	}

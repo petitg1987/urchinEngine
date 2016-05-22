@@ -15,17 +15,17 @@ namespace urchin
 
 		positionX = new QDoubleSpinBox(this);
 		positionX->setGeometry(QRect(85, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		positionY = new QDoubleSpinBox(this);
 		positionY->setGeometry(QRect(165, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		positionZ = new QDoubleSpinBox(this);
 		positionZ->setGeometry(QRect(245, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		QLabel *halfSizesLabel = new QLabel(this);
@@ -34,17 +34,17 @@ namespace urchin
 
 		halfSizeX = new QDoubleSpinBox(this);
 		halfSizeX->setGeometry(QRect(85, 25, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(halfSizeX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX);
 		connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		halfSizeY = new QDoubleSpinBox(this);
 		halfSizeY->setGeometry(QRect(165, 25, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(halfSizeY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY);
 		connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		halfSizeZ = new QDoubleSpinBox(this);
 		halfSizeZ->setGeometry(QRect(245, 25, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(halfSizeZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		QLabel *orientationAxisLabel = new QLabel(this);
@@ -53,17 +53,17 @@ namespace urchin
 
 		orientationAxisX = new QDoubleSpinBox(this);
 		orientationAxisX->setGeometry(QRect(85, 50, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAxisX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(orientationAxisX);
 		connect(orientationAxisX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		orientationAxisY = new QDoubleSpinBox(this);
 		orientationAxisY->setGeometry(QRect(165, 50, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAxisY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(orientationAxisY);
 		connect(orientationAxisY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		orientationAxisZ = new QDoubleSpinBox(this);
 		orientationAxisZ->setGeometry(QRect(245, 50, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAxisZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(orientationAxisZ);
 		connect(orientationAxisZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		QLabel *orientationAngleLabel = new QLabel(this);
@@ -72,7 +72,7 @@ namespace urchin
 
 		orientationAngle = new QDoubleSpinBox(this);
 		orientationAngle->setGeometry(QRect(85, 75, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(orientationAngle);
+		SpinBoxStyleHelper::applyDefaultStyleOn(orientationAngle);
 		orientationAngle->setSingleStep(5.0);
 		orientationAngle->setMinimum(0.0);
 		orientationAngle->setMaximum(360.0);
@@ -84,7 +84,7 @@ namespace urchin
 
 		margin = new QDoubleSpinBox(this);
 		margin->setGeometry(QRect(85, 100, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(margin);
+		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
 		margin->setMinimum(0.0);
 		connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 	}

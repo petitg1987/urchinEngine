@@ -9,7 +9,8 @@ namespace urchin
 	class SpinBoxStyleHelper
 	{
 		public:
-			static void applyNormalStyle(QDoubleSpinBox *);
+			static void applyDefaultStyleOn(QDoubleSpinBox *);
+			static void applyAngleStyleOn(QDoubleSpinBox *);
 	};
 
 }

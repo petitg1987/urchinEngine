@@ -15,17 +15,17 @@ namespace urchin
 
 		positionX = new QDoubleSpinBox(this);
 		positionX->setGeometry(QRect(85, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionX);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		positionY = new QDoubleSpinBox(this);
 		positionY->setGeometry(QRect(165, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionY);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		positionZ = new QDoubleSpinBox(this);
 		positionZ->setGeometry(QRect(245, 0, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(positionZ);
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
 		QLabel *radiusLabel = new QLabel(this);
@@ -34,7 +34,7 @@ namespace urchin
 
 		radius = new QDoubleSpinBox(this);
 		radius->setGeometry(QRect(85, 25, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(radius);
+		SpinBoxStyleHelper::applyDefaultStyleOn(radius);
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
@@ -44,7 +44,7 @@ namespace urchin
 
 		margin = new QDoubleSpinBox(this);
 		margin->setGeometry(QRect(85, 50, 80, 22));
-		SpinBoxStyleHelper::applyNormalStyle(margin);
+		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
 		margin->setMinimum(0.0);
 		connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 	}

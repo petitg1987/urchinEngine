@@ -100,17 +100,17 @@ namespace urchin
 
 						translationX = new QDoubleSpinBox(localizedShapeDetails);
 						translationX->setGeometry(QRect(85, 0, 80, 22));
-						SpinBoxStyleHelper::applyNormalStyle(translationX);
+						SpinBoxStyleHelper::applyDefaultStyleOn(translationX);
 						translationX->setValue(localizedShape->translation.X);
 
 						translationY = new QDoubleSpinBox(localizedShapeDetails);
 						translationY->setGeometry(QRect(165, 0, 80, 22));
-						SpinBoxStyleHelper::applyNormalStyle(translationY);
+						SpinBoxStyleHelper::applyDefaultStyleOn(translationY);
 						translationY->setValue(localizedShape->translation.Y);
 
 						translationZ = new QDoubleSpinBox(localizedShapeDetails);
 						translationZ->setGeometry(QRect(245, 0, 80, 22));
-						SpinBoxStyleHelper::applyNormalStyle(translationZ);
+						SpinBoxStyleHelper::applyDefaultStyleOn(translationZ);
 						translationZ->setValue(localizedShape->translation.Z);
 
 						BodyShapeWidgetRetriever shapeWidgetRetriever(localizedShapeDetails, getSceneObject());

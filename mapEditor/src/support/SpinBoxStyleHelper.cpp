@@ -3,12 +3,23 @@
 namespace urchin
 {
 
-	void SpinBoxStyleHelper::applyNormalStyle(QDoubleSpinBox *spinBox)
+	void SpinBoxStyleHelper::applyDefaultStyleOn(QDoubleSpinBox *spinBox)
 	{
 		spinBox->setDecimals(5);
 		spinBox->setMinimum(-1e+09);
 		spinBox->setMaximum(1e+09);
 		spinBox->setSingleStep(0.1);
+		spinBox->setKeyboardTracking(true);
+		spinBox->setAccelerated(true);
+		spinBox->setLocale(QLocale::English);
+	}
+
+	void SpinBoxStyleHelper::applyAngleStyleOn(QDoubleSpinBox *spinBox)
+	{
+		spinBox->setDecimals(3);
+		spinBox->setMinimum(-360);
+		spinBox->setMaximum(360);
+		spinBox->setSingleStep(5);
 		spinBox->setKeyboardTracking(true);
 		spinBox->setAccelerated(true);
 		spinBox->setLocale(QLocale::English);
