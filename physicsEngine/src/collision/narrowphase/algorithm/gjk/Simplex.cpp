@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "collision/narrowphase/algorithm/gjk/Simplex.h"
 
 namespace urchin
@@ -23,6 +25,7 @@ namespace urchin
 		supportMapping.supportPointA = supportPointA;
 		supportMapping.supportPointB = supportPointB;
 		supportMapping.point = supportPointA - supportPointB;
+		supportMapping.barycentric = std::numeric_limits<T>::max();
 
 		simplexPoints.push_back(supportMapping);
 	}
@@ -65,6 +68,11 @@ namespace urchin
 	template<class T> inline const Point3<T> &Simplex<T>::getSupportPointB(unsigned int index) const
 	{
 		return simplexPoints[index].supportPointB;
+	}
+
+	template<class T> inline T Simplex<T>::getBarycentric(unsigned int index) const
+	{
+		return simplexPoints[index].barycentric;
 	}
 
 	/**
@@ -113,6 +121,12 @@ namespace urchin
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointA;
 			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB + simplexPoints[1].barycentric * simplexPoints[1].supportPointB
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointB;
+		}else if(simplexPoints.size() == 4)
+		{
+			closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA + simplexPoints[1].barycentric * simplexPoints[1].supportPointA
+					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointA + simplexPoints[3].barycentric * simplexPoints[3].supportPointA;
+			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB + simplexPoints[1].barycentric * simplexPoints[1].supportPointB
+					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointB + simplexPoints[3].barycentric * simplexPoints[3].supportPointB;
 		}else
 		{
 			std::ostringstream oss;

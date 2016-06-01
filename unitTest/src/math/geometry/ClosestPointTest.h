@@ -5,7 +5,7 @@
 #include <cppunit/Test.h>
 #include "UrchinCommon.h"
 
-class VoronoiRegionTest : public CppUnit::TestFixture
+class ClosestPointTest : public CppUnit::TestFixture
 {
 	public:
 		static CppUnit::Test *suite();

@@ -1,4 +1,5 @@
 #include "Tetrahedron.h"
+#include "math/algebra/matrix/Matrix4.h"
 
 namespace urchin
 {
@@ -47,19 +48,17 @@ namespace urchin
 	 */
 	template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T> &p, T barycentrics[4], short voronoiRegionMask) const
 	{
+		Point3<T> closestPoint;
 		T triangleBarycentrics[3];
 		T bestSquareDist = std::numeric_limits<T>::max();
 
-		//start by assuming point p is inside the tetrahedron
-		Point3<T> closestPoint = p;
-		barycentrics[0] = std::numeric_limits<T>::max();
-		barycentrics[1] = std::numeric_limits<T>::max();
-		barycentrics[2] = std::numeric_limits<T>::max();
-		barycentrics[3] = std::numeric_limits<T>::max();
+		bool pointOutsidePlaneABC = pointOutsidePlane(p, a, b, c, d);
+		bool pointOutsidePlaneACD = pointOutsidePlane(p, a, c, d, b);
+		bool pointOutsidePlaneADB = pointOutsidePlane(p, a, d, b, c);
+		bool pointOutsidePlaneBDC = pointOutsidePlane(p, b, d, c, a);
 
-		//if point outside face ABC, then compute closest point on ABC
-		if((voronoiRegionMask & 1) && pointOutsidePlane(p, a, b, c, d))
-		{
+		if((voronoiRegionMask & 1) && pointOutsidePlaneABC)
+		{ //point outside face ABC: compute closest point on ABC
 			Point3<T> q = Triangle3D<T>(a, b, c).closestPoint(p, triangleBarycentrics);
 
 			Vector3<T> pq = p.vector(q);
@@ -76,9 +75,8 @@ namespace urchin
 			}
 		}
 
-		//if point outside face ACD, then compute closest point on ACD
-		if((voronoiRegionMask & 2) && pointOutsidePlane(p, a, c, d, b))
-		{
+		if((voronoiRegionMask & 2) && pointOutsidePlaneACD)
+		{ //point outside face ACD: compute closest point on ACD
 			Point3<T> q = Triangle3D<T>(a, c, d).closestPoint(p, triangleBarycentrics);
 
 			Vector3<T> pq = p.vector(q);
@@ -95,9 +93,8 @@ namespace urchin
 			}
 		}
 
-		//if point outside face ADB, then compute closest point on ADB
-		if((voronoiRegionMask & 4) && pointOutsidePlane(p, a, d, b, c))
-		{
+		if((voronoiRegionMask & 4) && pointOutsidePlaneADB)
+		{ //point outside face ADB: compute closest point on ADB
 			Point3<T> q = Triangle3D<T>(a, d, b).closestPoint(p, triangleBarycentrics);
 
 			Vector3<T> pq = p.vector(q);
@@ -114,9 +111,9 @@ namespace urchin
 			}
 		}
 
-		//if point outside face BDC, then compute closest point on BDC
-		if((voronoiRegionMask & 8) && pointOutsidePlane(p, b, d, c, a))
-		{
+
+		if((voronoiRegionMask & 8) && pointOutsidePlaneBDC)
+		{ //point outside face BDC: compute closest point on BDC
 			Point3<T> q = Triangle3D<T>(b, d, c).closestPoint(p, triangleBarycentrics);
 
 			Vector3<T> pq = p.vector(q);
@@ -131,6 +128,37 @@ namespace urchin
 				barycentrics[2] = triangleBarycentrics[2];
 				barycentrics[3] = triangleBarycentrics[1];
 			}
+		}
+
+		if(!pointOutsidePlaneABC && !pointOutsidePlaneACD && !pointOutsidePlaneADB && !pointOutsidePlaneBDC)
+		{ //point inside tetrahedron
+			closestPoint = p;
+
+			Matrix4<T> d0(a.X, a.Y, a.Z, 1.0,
+				b.X, b.Y, b.Z, 1.0,
+				c.X, c.Y, c.Z, 1.0,
+				d.X, d.Y, d.Z, 1.0);
+
+			Matrix4<T> d1(p.X, p.Y, p.Z, 1.0,
+				b.X, b.Y, b.Z, 1.0,
+				c.X, c.Y, c.Z, 1.0,
+				d.X, d.Y, d.Z, 1.0);
+
+			Matrix4<T> d2(a.X, a.Y, a.Z, 1.0,
+				p.X, p.Y, p.Z, 1.0,
+				c.X, c.Y, c.Z, 1.0,
+				d.X, d.Y, d.Z, 1.0);
+
+			Matrix4<T> d3(a.X, a.Y, a.Z, 1.0,
+				b.X, b.Y, b.Z, 1.0,
+				p.X, p.Y, p.Z, 1.0,
+				d.X, d.Y, d.Z, 1.0);
+
+			T d0Determinant = d0.determinant();
+			barycentrics[0] = d1.determinant() / d0Determinant;
+			barycentrics[1] = d2.determinant() / d0Determinant;
+			barycentrics[2] = d3.determinant() / d0Determinant;
+			barycentrics[3] = 1.0 - (barycentrics[0] + barycentrics[1] + barycentrics[2]);
 		}
 
 		return closestPoint;

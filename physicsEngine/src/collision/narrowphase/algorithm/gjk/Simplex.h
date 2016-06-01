@@ -34,6 +34,7 @@ namespace urchin
 			const Point3<T> &getPoint(unsigned int) const;
 			const Point3<T> &getSupportPointA(unsigned int) const;
 			const Point3<T> &getSupportPointB(unsigned int) const;
+			T getBarycentric(unsigned int) const;
 			const Point3<T> &getClosestPointToOrigin() const;
 			bool isPointInSimplex(const Point3<T> &) const;
 
