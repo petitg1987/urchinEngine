@@ -37,6 +37,8 @@ namespace urchin
 			Vector3<T> axis[3]; //3 vectors of normalized axis
 	};
 
+	template<class T> std::ostream& operator <<(std::ostream &, const Capsule<T> &);
+
 }
 
  #endif

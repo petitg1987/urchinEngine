@@ -1,6 +1,7 @@
 #ifndef ENGINE_COLLISIONSPHEREOBJECT_H
 #define ENGINE_COLLISIONSPHEREOBJECT_H
 
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"
@@ -20,6 +21,7 @@ namespace urchin
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
 			const Sphere<float> retrieveSphere() const;
+			std::string toString() const;
 
 		private:
 			const Sphere<float> sphereObject; //object without margin

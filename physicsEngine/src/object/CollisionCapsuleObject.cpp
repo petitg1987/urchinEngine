@@ -66,4 +66,18 @@ namespace urchin
 	{
 		return Capsule<float>(getRadius(), getCylinderHeight(), getCapsuleOrientation(), getCenterPosition(), getOrientation());
 	}
+
+	std::string CollisionCapsuleObject::toString() const
+	{
+		std::stringstream ss;
+		ss << "Collision capsule:" << std::endl;
+		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
+		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;
+		ss << std::setw(20) << std::left << " - Cylinder height: " << getCylinderHeight() << std::endl;
+		ss << std::setw(20) << std::left << " - Orientation type: " << getCapsuleOrientation() << std::endl;
+		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
+		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
+
+		return ss.str();
+	}
 }

@@ -1,6 +1,7 @@
 #ifndef ENGINE_COLLISIONCONVEXOBJECT3D_H
 #define ENGINE_COLLISIONCONVEXOBJECT3D_H
 
+#include <sstream>
 #include "UrchinCommon.h"
 
 namespace urchin
@@ -15,6 +16,8 @@ namespace urchin
 			float getOuterMargin() const;
 
 			virtual Point3<float> getSupportPoint(const Vector3<float> &, bool) const = 0;
+
+			virtual std::string toString() const = 0;
 
 		private:
 			const float outerMargin;

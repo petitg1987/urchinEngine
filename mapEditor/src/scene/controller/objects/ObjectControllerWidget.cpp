@@ -60,7 +60,7 @@ namespace urchin
 	{
 		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
 		transformGroupBox->setTitle("Transform");
-		transformGroupBox->setGeometry(QRect(0, 5, 350, 145));
+		transformGroupBox->setGeometry(QRect(0, 5, 350, 120));
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 
 		setupPosition(transformGroupBox);

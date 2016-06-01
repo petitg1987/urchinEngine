@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <algorithm>
-#include <sstream>
 #include <stdexcept>
 #include "UrchinCommon.h"
 

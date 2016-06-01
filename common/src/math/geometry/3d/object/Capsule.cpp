@@ -86,7 +86,20 @@ namespace urchin
 		return supportPoint2;
 	}
 
+	template<class T> std::ostream& operator <<(std::ostream &stream, const Capsule<T> &capsule)
+	{
+		stream.setf(std::ios::left);
+		stream << std::setw(20) << "Shape radius: " << capsule.getRadius() << std::endl;
+		stream << std::setw(20) << "Shape height: " << capsule.getCylinderHeight() << std::endl;
+		stream << std::setw(20) << "Shape orientation: " << capsule.getCapsuleOrientation() << std::endl;
+		stream << std::setw(20) << "Center position: " << capsule.getCenterPosition() << std::endl;
+		stream << std::setw(20) << "Orientation: " << capsule.getOrientation() << std::endl;
+
+		return stream;
+	}
+
 	//explicit template
 	template class Capsule<float>;
+	template std::ostream& operator <<<float>(std::ostream &, const Capsule<float> &);
 
 }

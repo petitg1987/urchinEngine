@@ -44,4 +44,15 @@ namespace urchin
 		return convexHullObjectWithMargin;
 	}
 
+	std::string CollisionConvexHullObject::toString() const
+	{
+		std::stringstream ss;
+		ss << "Collision convex hull:" << std::endl;
+		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
+		ss << std::setw(20) << std::left << " - Convex hull (margin): " << convexHullObjectWithMargin << std::endl;
+		ss << std::setw(20) << std::left << " - Convex hull (no margin): " << convexHullObjectWithoutMargin << std::endl;
+
+		return ss.str();
+	}
+
 }

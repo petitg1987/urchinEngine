@@ -43,4 +43,15 @@ namespace urchin
 		return Sphere<float>(getRadius(), getPosition());
 	}
 
+	std::string CollisionSphereObject::toString() const
+	{
+		std::stringstream ss;
+		ss << "Collision sphere:" << std::endl;
+		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
+		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;
+		ss << std::setw(20) << std::left << " - Position: " << getPosition() << std::endl;
+
+		return ss.str();
+	}
+
 }

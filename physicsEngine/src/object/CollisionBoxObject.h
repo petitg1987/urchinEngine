@@ -1,6 +1,7 @@
 #ifndef ENGINE_COLLISIONBOXOBJECT_H
 #define ENGINE_COLLISIONBOXOBJECT_H
 
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"
@@ -23,6 +24,7 @@ namespace urchin
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
 			const OBBox<float> retrieveOBBox() const;
+			std::string toString() const;
 
 		private:
 			const OBBox<float> boxObject; //object without margin

@@ -1,6 +1,7 @@
 #ifndef ENGINE_COLLISIONCYLINDEROBJECT_H
 #define ENGINE_COLLISIONCYLINDEROBJECT_H
 
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"
@@ -24,6 +25,7 @@ namespace urchin
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
 			const Cylinder<float> retrieveCylinder() const;
+			std::string toString() const;
 
 		private:
 			const Cylinder<float> cylinderObject; //object without margin

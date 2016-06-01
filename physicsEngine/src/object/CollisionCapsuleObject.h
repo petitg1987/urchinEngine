@@ -1,6 +1,7 @@
 #ifndef ENGINE_COLLISIONCAPSULEOBJECT_H
 #define ENGINE_COLLISIONCAPSULEOBJECT_H
 
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"
@@ -24,6 +25,7 @@ namespace urchin
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
 			const Capsule<float> retrieveCapsule() const;
+			std::string toString() const;
 
 		private:
 			const Capsule<float> capsuleObject; //object without margin

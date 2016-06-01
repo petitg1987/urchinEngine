@@ -1,6 +1,7 @@
 #ifndef ENGINE_COLLISIONCONVEXHULLOBJECT_H
 #define ENGINE_COLLISIONCONVEXHULLOBJECT_H
 
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"
@@ -19,6 +20,7 @@ namespace urchin
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
 			const ConvexHull3D<float> retrieveConvexHull() const;
+			std::string toString() const;
 
 		private:
 			const ConvexHull3D<float> convexHullObjectWithMargin;

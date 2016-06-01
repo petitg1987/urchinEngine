@@ -73,4 +73,16 @@ namespace urchin
 		return OBBox<float>(getHalfSizes(), getCenterPosition(), getOrientation());
 	}
 
+	std::string CollisionBoxObject::toString() const
+	{
+		std::stringstream ss;
+		ss << "Collision box:" << std::endl;
+		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
+		ss << std::setw(20) << std::left << " - Half size: " << getHalfSizes() << std::endl;
+		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
+		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
+
+		return ss.str();
+	}
+
 }

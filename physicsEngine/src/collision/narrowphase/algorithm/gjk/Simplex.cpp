@@ -122,16 +122,14 @@ namespace urchin
 			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB + simplexPoints[1].barycentric * simplexPoints[1].supportPointB
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointB;
 		}else if(simplexPoints.size() == 4)
-		{
+		{ //simplex is a tetrahedron (3D)
 			closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA + simplexPoints[1].barycentric * simplexPoints[1].supportPointA
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointA + simplexPoints[3].barycentric * simplexPoints[3].supportPointA;
 			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB + simplexPoints[1].barycentric * simplexPoints[1].supportPointB
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointB + simplexPoints[3].barycentric * simplexPoints[3].supportPointB;
 		}else
 		{
-			std::ostringstream oss;
-			oss << simplexPoints.size();
-			throw std::invalid_argument("Size of simplex unsupported to compute closest points: " + oss.str() + ".");
+			throw std::invalid_argument("Size of simplex unsupported to compute closest points: " + std::to_string(simplexPoints.size()) + ".");
 		}
 	}
 
