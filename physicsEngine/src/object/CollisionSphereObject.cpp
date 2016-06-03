@@ -46,6 +46,8 @@ namespace urchin
 	std::string CollisionSphereObject::toString() const
 	{
 		std::stringstream ss;
+		ss.precision(std::numeric_limits<float>::max_digits10);
+
 		ss << "Collision sphere:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
 		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;

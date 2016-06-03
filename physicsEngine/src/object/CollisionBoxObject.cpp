@@ -76,9 +76,11 @@ namespace urchin
 	std::string CollisionBoxObject::toString() const
 	{
 		std::stringstream ss;
+		ss.precision(std::numeric_limits<float>::max_digits10);
+
 		ss << "Collision box:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
-		ss << std::setw(20) << std::left << " - Half size: " << getHalfSizes() << std::endl;
+		ss << std::setw(20) << std::left << " - Half size: " << boxObject.getHalfSizes() << std::endl;
 		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
 

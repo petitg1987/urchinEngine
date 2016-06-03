@@ -47,6 +47,8 @@ namespace urchin
 	std::string CollisionConvexHullObject::toString() const
 	{
 		std::stringstream ss;
+		ss.precision(std::numeric_limits<float>::max_digits10);
+
 		ss << "Collision convex hull:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
 		ss << std::setw(20) << std::left << " - Convex hull (margin): " << convexHullObjectWithMargin << std::endl;

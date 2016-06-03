@@ -42,12 +42,27 @@ void EPAConvexObjectTest::lightlyContactBoxAndCapsule()
 	AssertHelper::assertTrue(!resultEpa->isValidResult());
 }
 
+void EPAConvexObjectTest::lightlyContactBoxAndCapsule2()
+{
+	//capsule is laid on the tilted ground
+	CollisionBoxObject box(0.0186000001f, Vector3<float>(130.720001f, 130.7202f, 0.0743999928f), Point3<float>(-2.0f, -2.75f, 0.0f),
+			Quaternion<float>(-0.706433773f, -0.0308436025f, 0.0308436025f, 0.706433773f));
+	CollisionCapsuleObject capsule(0.0399999991, 0.210000008f, 1.0f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y,
+			Point3<float>(-11.2144461f, -2.66024923f, -7.12916136f), Quaternion<float>(0.f, 0.f, 0.f, 1.f));
+
+	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(capsule, box);
+
+	//TODO: is value is correct ?
+	std::cout<<resultEpa->getPenetrationDepth()<<std::endl;
+}
+
 CppUnit::Test *EPAConvexObjectTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("EPAConvexObjectTest");
 
 	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapSphereAndBox", &EPAConvexObjectTest::overlapSphereAndBox));
 	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("lightlyContactBoxAndCapsule", &EPAConvexObjectTest::lightlyContactBoxAndCapsule));
+	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("lightlyContactBoxAndCapsule2", &EPAConvexObjectTest::lightlyContactBoxAndCapsule2));
 
 	return suite;
 }

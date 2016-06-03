@@ -70,9 +70,11 @@ namespace urchin
 	std::string CollisionCapsuleObject::toString() const
 	{
 		std::stringstream ss;
+		ss.precision(std::numeric_limits<float>::max_digits10);
+
 		ss << "Collision capsule:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
-		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;
+		ss << std::setw(20) << std::left << " - Radius: " << capsuleObject.getRadius() << std::endl;
 		ss << std::setw(20) << std::left << " - Cylinder height: " << getCylinderHeight() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation type: " << getCapsuleOrientation() << std::endl;
 		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;

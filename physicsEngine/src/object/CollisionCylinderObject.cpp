@@ -73,10 +73,12 @@ namespace urchin
 	std::string CollisionCylinderObject::toString() const
 	{
 		std::stringstream ss;
+		ss.precision(std::numeric_limits<float>::max_digits10);
+
 		ss << "Collision cylinder:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
-		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;
-		ss << std::setw(20) << std::left << " - Height: " << getHeight() << std::endl;
+		ss << std::setw(20) << std::left << " - Radius: " << cylinderObject.getRadius() << std::endl;
+		ss << std::setw(20) << std::left << " - Height: " << cylinderObject.getHeight() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation type: " << getCylinderOrientation() << std::endl;
 		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
