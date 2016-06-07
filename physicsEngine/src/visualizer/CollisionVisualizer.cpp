@@ -3,8 +3,6 @@
 namespace urchin
 {
 
-#ifdef _DEBUG
-
 	CollisionVisualizer::CollisionVisualizer(CollisionWorld *collisionWorld) :
 		collisionWorld(collisionWorld)
 	{
@@ -46,7 +44,4 @@ namespace urchin
 
 		return manifoldResults;
 	}
-
-#endif
-
 }

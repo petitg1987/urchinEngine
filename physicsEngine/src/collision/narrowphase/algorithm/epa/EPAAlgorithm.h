@@ -5,7 +5,6 @@
 #include <limits>
 #include <map>
 #include <cmath>
-#include <sstream>
 #include <stdexcept>
 #include <cassert>
 #include <memory>
@@ -18,6 +17,7 @@
 #include "collision/narrowphase/algorithm/epa/EPAResultInvalid.h"
 #include "object/CollisionConvexObject3D.h"
 #include "collision/narrowphase/algorithm/gjk/GJKResult.h"
+#include "visualizer/DebugRecorder.h"
 
 namespace urchin
 {
@@ -29,6 +29,8 @@ namespace urchin
 			~EPAAlgorithm();
 
 			std::unique_ptr<EPAResult<T>> processEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &);
+
+			void setupDebugRecorder(DebugRecorder *);
 
 		private:
 			void determineInitialPoints(const Simplex<T> &, const CollisionConvexObject3D &, const CollisionConvexObject3D &,
@@ -45,6 +47,8 @@ namespace urchin
 			const unsigned int maxIteration;
 			const float terminationTolerance;
 			const float minDotProductTolerance;
+
+			DebugRecorder *debugRecorder;
 	};
 
 }

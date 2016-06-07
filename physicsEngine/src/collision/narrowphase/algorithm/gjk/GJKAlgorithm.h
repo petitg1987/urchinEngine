@@ -1,7 +1,6 @@
 #ifndef ENGINE_GJKALGORITHM_H
 #define ENGINE_GJKALGORITHM_H
 
-#include <sstream>
 #include <stdexcept>
 #include <cmath>
 #include <cassert>

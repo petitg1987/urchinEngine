@@ -579,8 +579,8 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -832,8 +832,8 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1073,8 +1073,8 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1308,8 +1308,8 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1543,8 +1543,8 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1772,8 +1772,8 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2000,8 +2000,8 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2230,8 +2230,8 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2460,8 +2460,8 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2695,8 +2695,8 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2925,8 +2925,8 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3155,8 +3155,8 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3384,8 +3384,8 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3616,8 +3616,8 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3844,8 +3844,8 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4078,8 +4078,8 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4307,8 +4307,8 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4541,8 +4541,8 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4776,8 +4776,8 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5004,8 +5004,8 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5239,8 +5239,8 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5474,8 +5474,8 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5703,8 +5703,8 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5932,8 +5932,8 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6160,8 +6160,8 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6390,8 +6390,8 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6619,8 +6619,8 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6849,8 +6849,8 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7100,8 +7100,8 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7348,8 +7348,8 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7608,8 +7608,8 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7675,8 +7675,8 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7744,8 +7744,8 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7974,8 +7974,8 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8215,8 +8215,8 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8445,8 +8445,8 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8685,8 +8685,8 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8917,8 +8917,8 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9147,8 +9147,8 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9379,8 +9379,8 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9610,8 +9610,8 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9841,8 +9841,8 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10081,8 +10081,8 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10315,8 +10315,8 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10546,8 +10546,8 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10777,8 +10777,8 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11017,8 +11017,8 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11250,8 +11250,8 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11480,8 +11480,8 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11707,8 +11707,8 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11943,8 +11943,8 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12173,8 +12173,8 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12402,8 +12402,8 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12639,8 +12639,8 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12871,8 +12871,8 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13103,8 +13103,8 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13333,8 +13333,8 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13574,8 +13574,8 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13806,8 +13806,8 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14036,8 +14036,8 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14265,8 +14265,8 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14497,8 +14497,8 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14728,8 +14728,8 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14959,8 +14959,8 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15189,8 +15189,8 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15422,8 +15422,8 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15649,8 +15649,8 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15882,8 +15882,8 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16116,8 +16116,8 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16256,8 +16256,8 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16485,8 +16485,8 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16714,8 +16714,8 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/io/StringUtil.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \

@@ -2,3 +2,4 @@ targetLinux/
 targetWindows/
 mapEditor/urchinMapEditor
 unitTest/unitTest
+debugVisualizer/urchinDebugVisualizer

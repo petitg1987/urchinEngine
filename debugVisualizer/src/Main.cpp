@@ -3,7 +3,7 @@
 #include <QFont>
 
 #include "Main.h"
-#include "MapEditorWindow.h"
+#include "DebugVisualizerWindow.h"
 using namespace urchin;
 
 int main(int argc, char *argv[])
@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	defaultFont.setStyleStrategy(QFont::PreferQuality);
 	app.setFont(defaultFont);
 
-	MapEditorWindow *window = new MapEditorWindow(std::string(argv[0]));
+	DebugVisualizerWindow *window = new DebugVisualizerWindow(std::string(argv[0]));
 	window->setVisible(true);
     window->showMaximized();
 

@@ -156,9 +156,7 @@ namespace urchin
 			}
 		}else
 		{
-			std::ostringstream oss;
-			oss << simplex.getSize();
-			throw std::invalid_argument("Size of simplex unsupported: " + oss.str() + ".");
+			throw std::invalid_argument("Size of simplex unsupported: " + std::to_string(simplex.getSize()) + ".");
 		}
 
 		simplex.setClosestPointToOrigin(closestPoint);

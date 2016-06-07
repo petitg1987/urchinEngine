@@ -50,10 +50,10 @@ void EPAConvexObjectTest::lightlyContactBoxAndCapsule2()
 	CollisionCapsuleObject capsule(0.0399999991, 0.210000008f, 1.0f, CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y,
 			Point3<float>(-11.2144461f, -2.66024923f, -7.12916136f), Quaternion<float>(0.f, 0.f, 0.f, 1.f));
 
-	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(capsule, box);
+	DebugRecorder *debugRecorder = new DebugRecorder("epaBoxCapsule.udbg");
+	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(capsule, box, debugRecorder);
 
-	//TODO: is value is correct ?
-	std::cout<<resultEpa->getPenetrationDepth()<<std::endl;
+	//TODO: test values are correct
 }
 
 CppUnit::Test *EPAConvexObjectTest::suite()
