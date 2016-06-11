@@ -6,6 +6,7 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "scene/displayer/SceneDisplayerWidget.h"
+#include "scene/controller/SceneController.h"
 
 namespace urchin
 {
@@ -25,19 +26,25 @@ namespace urchin
 			void setupStatusBar();
 			void setupSceneDisplayerWidget(QWidget *, QHBoxLayout *);
 
+			void updateMenuStatus();
+			void updateDebugVisualizerFilename(QString);
+
 			QAction *actionNextStepAction;
+			QAction *actionReverseStepAction;
 
 			std::string debugVisualizerPath;
 			std::string debugFilename;
 			QString preferredDebugVisualizerPath;
 
 			SceneDisplayerWidget *sceneDisplayerWidget;
+			SceneController *sceneController;
 
 		private slots:
 			void showOpenDialog();
 			void executeExitAction();
 
-			void executeNextStepAction();
+			void executeNextAction();
+			void reverseLastAction();
 	};
 
 }

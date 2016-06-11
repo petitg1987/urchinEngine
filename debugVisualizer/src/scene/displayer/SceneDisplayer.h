@@ -1,15 +1,14 @@
 #ifndef ENGINE_DEBUGVISUALIZER_SCENEDISPLAYER_H
 #define ENGINE_DEBUGVISUALIZER_SCENEDISPLAYER_H
 
+#include <memory>
 #include <vector>
 #include <QWidget>
 #include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
 #include "Urchin3dEngine.h"
-#include "UrchinSoundEngine.h"
-#include "UrchinMapHandler.h"
 
 #include "scene/displayer/SceneFreeCamera.h"
+#include "scene/entity/GeometryEntityHandler.h"
 
 namespace urchin
 {
@@ -20,9 +19,7 @@ namespace urchin
 			SceneDisplayer(QWidget *);
 			~SceneDisplayer();
 
-			void initializeFromDebugFile(const std::string &, const std::string &);
-			void initializeEngineResources(const std::string &);
-			void initializeScene();
+			 void initializeForOpen(const std::string &, std::shared_ptr<GeometryEntityHandler>);
 
 			void paint();
 			void resize(unsigned int width, unsigned int height);
@@ -30,8 +27,13 @@ namespace urchin
 			SceneManager *getSceneManager() const;
 
 		private:
+			void initializeEngineResources(const std::string &);
+			void initializeScene();
+
 			bool isInitialized;
 			QWidget *parentWidget;
+
+			std::shared_ptr<GeometryEntityHandler> geometryEntityHandler;
 
 			SceneManager *sceneManager;
 			SceneFreeCamera *camera;

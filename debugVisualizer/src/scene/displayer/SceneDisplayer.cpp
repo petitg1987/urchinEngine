@@ -24,19 +24,14 @@ namespace urchin
 		SingletonManager::destroyAllSingletons();
 	}
 
-	void SceneDisplayer::initializeFromDebugFile(const std::string &debugVisualizerPath, const std::string &debugFilename)
+	void SceneDisplayer::initializeForOpen(const std::string &debugVisualizerPath, std::shared_ptr<GeometryEntityHandler> geometryEntityHandler)
 	{
 		try
 		{
+			this->geometryEntityHandler = geometryEntityHandler;
+
 			initializeEngineResources(debugVisualizerPath);
-			std::string relativeMapResourcesDir = MapHandler::getRelativeWorkingDirectory(debugFilename);
-			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(debugFilename) + relativeMapResourcesDir);
-			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
-
 			initializeScene();
-			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, debugFilename);
-
-			//TODO read file & load in sceneManager->getActiveRenderer3d()
 
 			isInitialized = true;
 		}catch(std::exception &e)
@@ -74,6 +69,14 @@ namespace urchin
 		{
 			if(isInitialized)
 			{
+				sceneManager->getActiveRenderer3d()->removeAllGeometries();
+
+				std::list<GeometryEntity *> geometryEntities = geometryEntityHandler->getGeometryEntities();
+				for(std::list<GeometryEntity *>::const_iterator it = geometryEntities.begin(); it!=geometryEntities.end(); ++it)
+				{
+					sceneManager->getActiveRenderer3d()->addGeometry(((*it)->getGeometryModel()).get());
+				}
+
 				sceneManager->display();
 			}
 		}catch(std::exception &e)

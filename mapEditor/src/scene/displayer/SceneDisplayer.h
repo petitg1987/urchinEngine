@@ -34,8 +34,6 @@ namespace urchin
 
 			void initializeFromExistingMap(const std::string &, const std::string &);
 			void initializeFromNewMap(const std::string &, const std::string &, const std::string &);
-			void initializeEngineResources(const std::string &);
-			void initializeScene();
 
 			void setViewProperties(SceneDisplayer::ViewProperties, bool);
 			void setHighlightSceneObject(const SceneObject *);
@@ -50,6 +48,9 @@ namespace urchin
 			MapHandler *getMapHandler() const;
 
 		private:
+			void initializeEngineResources(const std::string &);
+			void initializeScene();
+
 			void refreshRigidBodyShapeModel();
 			void refreshLightScopeModel();
 			void refreshSoundTriggerModel();

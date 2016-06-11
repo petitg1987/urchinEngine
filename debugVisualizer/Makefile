@@ -50,15 +50,27 @@ OBJECTS_DIR   = targetLinux/
 
 SOURCES       = src/DebugVisualizerWindow.cpp \
 		src/Main.cpp \
+		src/scene/entity/GeometryEntity.cpp \
+		src/scene/entity/GeometryEntityHandler.cpp \
 		src/scene/displayer/SceneDisplayer.cpp \
 		src/scene/displayer/SceneDisplayerWidget.cpp \
-		src/scene/displayer/SceneFreeCamera.cpp targetLinux/moc_DebugVisualizerWindow.cpp \
+		src/scene/displayer/SceneFreeCamera.cpp \
+		src/scene/controller/ActionReader.cpp \
+		src/scene/controller/SceneController.cpp \
+		src/scene/controller/action/Action.cpp \
+		src/scene/controller/action/Point3Action.cpp targetLinux/moc_DebugVisualizerWindow.cpp \
 		targetLinux/moc_SceneDisplayerWidget.cpp
 OBJECTS       = targetLinux/DebugVisualizerWindow.o \
 		targetLinux/Main.o \
+		targetLinux/GeometryEntity.o \
+		targetLinux/GeometryEntityHandler.o \
 		targetLinux/SceneDisplayer.o \
 		targetLinux/SceneDisplayerWidget.o \
 		targetLinux/SceneFreeCamera.o \
+		targetLinux/ActionReader.o \
+		targetLinux/SceneController.o \
+		targetLinux/Action.o \
+		targetLinux/Point3Action.o \
 		targetLinux/moc_DebugVisualizerWindow.o \
 		targetLinux/moc_SceneDisplayerWidget.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -119,13 +131,25 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		programQt2.pro src/DebugVisualizerWindow.h \
 		src/Main.h \
+		src/scene/entity/GeometryEntity.h \
+		src/scene/entity/GeometryEntityHandler.h \
 		src/scene/displayer/SceneDisplayer.h \
 		src/scene/displayer/SceneDisplayerWidget.h \
-		src/scene/displayer/SceneFreeCamera.h src/DebugVisualizerWindow.cpp \
+		src/scene/displayer/SceneFreeCamera.h \
+		src/scene/controller/ActionReader.h \
+		src/scene/controller/SceneController.h \
+		src/scene/controller/action/Action.h \
+		src/scene/controller/action/Point3Action.h src/DebugVisualizerWindow.cpp \
 		src/Main.cpp \
+		src/scene/entity/GeometryEntity.cpp \
+		src/scene/entity/GeometryEntityHandler.cpp \
 		src/scene/displayer/SceneDisplayer.cpp \
 		src/scene/displayer/SceneDisplayerWidget.cpp \
-		src/scene/displayer/SceneFreeCamera.cpp
+		src/scene/displayer/SceneFreeCamera.cpp \
+		src/scene/controller/ActionReader.cpp \
+		src/scene/controller/SceneController.cpp \
+		src/scene/controller/action/Action.cpp \
+		src/scene/controller/action/Point3Action.cpp
 QMAKE_TARGET  = urchinDebugVisualizer
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = urchinDebugVisualizer
@@ -293,8 +317,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents src/DebugVisualizerWindow.h src/Main.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/DebugVisualizerWindow.cpp src/Main.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/DebugVisualizerWindow.h src/Main.h src/scene/entity/GeometryEntity.h src/scene/entity/GeometryEntityHandler.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/controller/ActionReader.h src/scene/controller/SceneController.h src/scene/controller/action/Action.h src/scene/controller/action/Point3Action.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/DebugVisualizerWindow.cpp src/Main.cpp src/scene/entity/GeometryEntity.cpp src/scene/entity/GeometryEntityHandler.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/controller/ActionReader.cpp src/scene/controller/SceneController.cpp src/scene/controller/action/Action.cpp src/scene/controller/action/Point3Action.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -388,72 +412,6 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
 		src/scene/displayer/SceneDisplayer.h \
-		../physicsEngine/src/UrchinPhysicsEngine.h \
-		../physicsEngine/src/PhysicsWorld.h \
-		../physicsEngine/src/body/AbstractBody.h \
-		../physicsEngine/src/body/work/AbstractWorkBody.h \
-		../physicsEngine/src/shape/CollisionShape3D.h \
-		../physicsEngine/src/utils/math/PhysicsTransform.h \
-		../physicsEngine/src/object/CollisionConvexObject3D.h \
-		../physicsEngine/src/collision/island/IslandElement.h \
-		../physicsEngine/src/body/BodyManager.h \
-		../physicsEngine/src/collision/CollisionWorld.h \
-		../physicsEngine/src/collision/ManifoldResult.h \
-		../physicsEngine/src/collision/ManifoldContactPoint.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
-		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
-		../physicsEngine/src/collision/OverlappingPair.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
-		../physicsEngine/src/collision/broadphase/PairContainer.h \
-		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
-		../physicsEngine/src/body/work/WorkRigidBody.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
-		../physicsEngine/src/collision/island/IslandManager.h \
-		../physicsEngine/src/collision/island/IslandContainer.h \
-		../physicsEngine/src/collision/island/IslandElementLink.h \
-		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
-		../physicsEngine/src/visualizer/CollisionVisualizer.h \
-		../physicsEngine/src/body/RigidBody.h \
-		../physicsEngine/src/body/InertiaCalculation.h \
-		../physicsEngine/src/shape/CollisionSphereShape.h \
-		../physicsEngine/src/shape/CollisionBoxShape.h \
-		../physicsEngine/src/shape/CollisionCapsuleShape.h \
-		../physicsEngine/src/shape/CollisionCylinderShape.h \
-		../physicsEngine/src/shape/CollisionConvexHullShape.h \
-		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
-		../physicsEngine/src/object/CollisionSphereObject.h \
-		../physicsEngine/src/object/CollisionBoxObject.h \
-		../physicsEngine/src/object/CollisionCapsuleObject.h \
-		../physicsEngine/src/object/CollisionCylinderObject.h \
-		../physicsEngine/src/object/CollisionConvexHullObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/Simplex.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
-		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
@@ -529,29 +487,11 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../soundEngine/src/UrchinSoundEngine.h \
-		../soundEngine/src/SoundManager.h \
-		../soundEngine/src/AudioController.h \
-		../soundEngine/src/sound/Sound.h \
-		../soundEngine/src/trigger/SoundTrigger.h \
-		../soundEngine/src/behavior/SoundBehavior.h \
-		../soundEngine/src/behavior/SmoothStopAction.h \
-		../soundEngine/src/player/AudioPlayer.h \
-		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
-		../soundEngine/src/sound/ambient/AmbientSound.h \
-		../soundEngine/src/trigger/ManualTrigger.h \
-		../soundEngine/src/trigger/ShapeTrigger.h \
-		../soundEngine/src/trigger/shape/SoundShape.h \
-		../soundEngine/src/trigger/shape/SoundBox.h \
-		../soundEngine/src/trigger/shape/SoundSphere.h \
-		../mapHandler/src/UrchinMapHandler.h \
-		../mapHandler/src/MapHandler.h \
-		../mapHandler/src/resources/Map.h \
-		../mapHandler/src/resources/object/SceneObject.h \
-		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		src/scene/controller/SceneController.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
 		src/DebugVisualizerWindow.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/debugVisualizer -I/home/greg/Project/VideoGame/urchinEngine/debugVisualizer/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/DebugVisualizerWindow.h -o targetLinux/moc_DebugVisualizerWindow.cpp
 
@@ -619,72 +559,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
 		src/scene/displayer/SceneDisplayer.h \
-		../physicsEngine/src/UrchinPhysicsEngine.h \
-		../physicsEngine/src/PhysicsWorld.h \
-		../physicsEngine/src/body/AbstractBody.h \
-		../physicsEngine/src/body/work/AbstractWorkBody.h \
-		../physicsEngine/src/shape/CollisionShape3D.h \
-		../physicsEngine/src/utils/math/PhysicsTransform.h \
-		../physicsEngine/src/object/CollisionConvexObject3D.h \
-		../physicsEngine/src/collision/island/IslandElement.h \
-		../physicsEngine/src/body/BodyManager.h \
-		../physicsEngine/src/collision/CollisionWorld.h \
-		../physicsEngine/src/collision/ManifoldResult.h \
-		../physicsEngine/src/collision/ManifoldContactPoint.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
-		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
-		../physicsEngine/src/collision/OverlappingPair.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
-		../physicsEngine/src/collision/broadphase/PairContainer.h \
-		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
-		../physicsEngine/src/body/work/WorkRigidBody.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
-		../physicsEngine/src/collision/island/IslandManager.h \
-		../physicsEngine/src/collision/island/IslandContainer.h \
-		../physicsEngine/src/collision/island/IslandElementLink.h \
-		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
-		../physicsEngine/src/visualizer/CollisionVisualizer.h \
-		../physicsEngine/src/body/RigidBody.h \
-		../physicsEngine/src/body/InertiaCalculation.h \
-		../physicsEngine/src/shape/CollisionSphereShape.h \
-		../physicsEngine/src/shape/CollisionBoxShape.h \
-		../physicsEngine/src/shape/CollisionCapsuleShape.h \
-		../physicsEngine/src/shape/CollisionCylinderShape.h \
-		../physicsEngine/src/shape/CollisionConvexHullShape.h \
-		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
-		../physicsEngine/src/object/CollisionSphereObject.h \
-		../physicsEngine/src/object/CollisionBoxObject.h \
-		../physicsEngine/src/object/CollisionCapsuleObject.h \
-		../physicsEngine/src/object/CollisionCylinderObject.h \
-		../physicsEngine/src/object/CollisionConvexHullObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/Simplex.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
-		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
@@ -760,29 +634,9 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../soundEngine/src/UrchinSoundEngine.h \
-		../soundEngine/src/SoundManager.h \
-		../soundEngine/src/AudioController.h \
-		../soundEngine/src/sound/Sound.h \
-		../soundEngine/src/trigger/SoundTrigger.h \
-		../soundEngine/src/behavior/SoundBehavior.h \
-		../soundEngine/src/behavior/SmoothStopAction.h \
-		../soundEngine/src/player/AudioPlayer.h \
-		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
-		../soundEngine/src/sound/ambient/AmbientSound.h \
-		../soundEngine/src/trigger/ManualTrigger.h \
-		../soundEngine/src/trigger/ShapeTrigger.h \
-		../soundEngine/src/trigger/shape/SoundShape.h \
-		../soundEngine/src/trigger/shape/SoundBox.h \
-		../soundEngine/src/trigger/shape/SoundSphere.h \
-		../mapHandler/src/UrchinMapHandler.h \
-		../mapHandler/src/MapHandler.h \
-		../mapHandler/src/resources/Map.h \
-		../mapHandler/src/resources/object/SceneObject.h \
-		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
 		src/scene/displayer/SceneDisplayerWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/debugVisualizer -I/home/greg/Project/VideoGame/urchinEngine/debugVisualizer/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/displayer/SceneDisplayerWidget.h -o targetLinux/moc_SceneDisplayerWidget.cpp
 
@@ -866,72 +720,6 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
 		src/scene/displayer/SceneDisplayer.h \
-		../physicsEngine/src/UrchinPhysicsEngine.h \
-		../physicsEngine/src/PhysicsWorld.h \
-		../physicsEngine/src/body/AbstractBody.h \
-		../physicsEngine/src/body/work/AbstractWorkBody.h \
-		../physicsEngine/src/shape/CollisionShape3D.h \
-		../physicsEngine/src/utils/math/PhysicsTransform.h \
-		../physicsEngine/src/object/CollisionConvexObject3D.h \
-		../physicsEngine/src/collision/island/IslandElement.h \
-		../physicsEngine/src/body/BodyManager.h \
-		../physicsEngine/src/collision/CollisionWorld.h \
-		../physicsEngine/src/collision/ManifoldResult.h \
-		../physicsEngine/src/collision/ManifoldContactPoint.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
-		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
-		../physicsEngine/src/collision/OverlappingPair.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
-		../physicsEngine/src/collision/broadphase/PairContainer.h \
-		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
-		../physicsEngine/src/body/work/WorkRigidBody.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
-		../physicsEngine/src/collision/island/IslandManager.h \
-		../physicsEngine/src/collision/island/IslandContainer.h \
-		../physicsEngine/src/collision/island/IslandElementLink.h \
-		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
-		../physicsEngine/src/visualizer/CollisionVisualizer.h \
-		../physicsEngine/src/body/RigidBody.h \
-		../physicsEngine/src/body/InertiaCalculation.h \
-		../physicsEngine/src/shape/CollisionSphereShape.h \
-		../physicsEngine/src/shape/CollisionBoxShape.h \
-		../physicsEngine/src/shape/CollisionCapsuleShape.h \
-		../physicsEngine/src/shape/CollisionCylinderShape.h \
-		../physicsEngine/src/shape/CollisionConvexHullShape.h \
-		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
-		../physicsEngine/src/object/CollisionSphereObject.h \
-		../physicsEngine/src/object/CollisionBoxObject.h \
-		../physicsEngine/src/object/CollisionCapsuleObject.h \
-		../physicsEngine/src/object/CollisionCylinderObject.h \
-		../physicsEngine/src/object/CollisionConvexHullObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/Simplex.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
-		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
@@ -1007,29 +795,11 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../soundEngine/src/UrchinSoundEngine.h \
-		../soundEngine/src/SoundManager.h \
-		../soundEngine/src/AudioController.h \
-		../soundEngine/src/sound/Sound.h \
-		../soundEngine/src/trigger/SoundTrigger.h \
-		../soundEngine/src/behavior/SoundBehavior.h \
-		../soundEngine/src/behavior/SmoothStopAction.h \
-		../soundEngine/src/player/AudioPlayer.h \
-		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
-		../soundEngine/src/sound/ambient/AmbientSound.h \
-		../soundEngine/src/trigger/ManualTrigger.h \
-		../soundEngine/src/trigger/ShapeTrigger.h \
-		../soundEngine/src/trigger/shape/SoundShape.h \
-		../soundEngine/src/trigger/shape/SoundBox.h \
-		../soundEngine/src/trigger/shape/SoundSphere.h \
-		../mapHandler/src/UrchinMapHandler.h \
-		../mapHandler/src/MapHandler.h \
-		../mapHandler/src/resources/Map.h \
-		../mapHandler/src/resources/object/SceneObject.h \
-		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h \
-		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h
+		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		src/scene/controller/SceneController.h \
+		../debugVisualizer/src/scene/controller/action/Action.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/DebugVisualizerWindow.o src/DebugVisualizerWindow.cpp
 
 targetLinux/Main.o: src/Main.cpp src/Main.h \
@@ -1099,72 +869,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
 		src/scene/displayer/SceneDisplayer.h \
-		../physicsEngine/src/UrchinPhysicsEngine.h \
-		../physicsEngine/src/PhysicsWorld.h \
-		../physicsEngine/src/body/AbstractBody.h \
-		../physicsEngine/src/body/work/AbstractWorkBody.h \
-		../physicsEngine/src/shape/CollisionShape3D.h \
-		../physicsEngine/src/utils/math/PhysicsTransform.h \
-		../physicsEngine/src/object/CollisionConvexObject3D.h \
-		../physicsEngine/src/collision/island/IslandElement.h \
-		../physicsEngine/src/body/BodyManager.h \
-		../physicsEngine/src/collision/CollisionWorld.h \
-		../physicsEngine/src/collision/ManifoldResult.h \
-		../physicsEngine/src/collision/ManifoldContactPoint.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
-		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
-		../physicsEngine/src/collision/OverlappingPair.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
-		../physicsEngine/src/collision/broadphase/PairContainer.h \
-		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
-		../physicsEngine/src/body/work/WorkRigidBody.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
-		../physicsEngine/src/collision/island/IslandManager.h \
-		../physicsEngine/src/collision/island/IslandContainer.h \
-		../physicsEngine/src/collision/island/IslandElementLink.h \
-		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
-		../physicsEngine/src/visualizer/CollisionVisualizer.h \
-		../physicsEngine/src/body/RigidBody.h \
-		../physicsEngine/src/body/InertiaCalculation.h \
-		../physicsEngine/src/shape/CollisionSphereShape.h \
-		../physicsEngine/src/shape/CollisionBoxShape.h \
-		../physicsEngine/src/shape/CollisionCapsuleShape.h \
-		../physicsEngine/src/shape/CollisionCylinderShape.h \
-		../physicsEngine/src/shape/CollisionConvexHullShape.h \
-		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
-		../physicsEngine/src/object/CollisionSphereObject.h \
-		../physicsEngine/src/object/CollisionBoxObject.h \
-		../physicsEngine/src/object/CollisionCapsuleObject.h \
-		../physicsEngine/src/object/CollisionCylinderObject.h \
-		../physicsEngine/src/object/CollisionConvexHullObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/Simplex.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
-		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
@@ -1240,30 +944,295 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../soundEngine/src/UrchinSoundEngine.h \
-		../soundEngine/src/SoundManager.h \
-		../soundEngine/src/AudioController.h \
-		../soundEngine/src/sound/Sound.h \
-		../soundEngine/src/trigger/SoundTrigger.h \
-		../soundEngine/src/behavior/SoundBehavior.h \
-		../soundEngine/src/behavior/SmoothStopAction.h \
-		../soundEngine/src/player/AudioPlayer.h \
-		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
-		../soundEngine/src/sound/ambient/AmbientSound.h \
-		../soundEngine/src/trigger/ManualTrigger.h \
-		../soundEngine/src/trigger/ShapeTrigger.h \
-		../soundEngine/src/trigger/shape/SoundShape.h \
-		../soundEngine/src/trigger/shape/SoundBox.h \
-		../soundEngine/src/trigger/shape/SoundSphere.h \
-		../mapHandler/src/UrchinMapHandler.h \
-		../mapHandler/src/MapHandler.h \
-		../mapHandler/src/resources/Map.h \
-		../mapHandler/src/resources/object/SceneObject.h \
-		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h \
-		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h
+		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		src/scene/controller/SceneController.h \
+		../debugVisualizer/src/scene/controller/action/Action.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/Main.o src/Main.cpp
+
+targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/entity/GeometryEntity.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GeometryEntity.o src/scene/entity/GeometryEntity.cpp
+
+targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GeometryEntityHandler.o src/scene/entity/GeometryEntityHandler.cpp
 
 targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayer.h \
 		../common/src/UrchinCommon.h \
@@ -1329,72 +1298,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
-		../physicsEngine/src/UrchinPhysicsEngine.h \
-		../physicsEngine/src/PhysicsWorld.h \
-		../physicsEngine/src/body/AbstractBody.h \
-		../physicsEngine/src/body/work/AbstractWorkBody.h \
-		../physicsEngine/src/shape/CollisionShape3D.h \
-		../physicsEngine/src/utils/math/PhysicsTransform.h \
-		../physicsEngine/src/object/CollisionConvexObject3D.h \
-		../physicsEngine/src/collision/island/IslandElement.h \
-		../physicsEngine/src/body/BodyManager.h \
-		../physicsEngine/src/collision/CollisionWorld.h \
-		../physicsEngine/src/collision/ManifoldResult.h \
-		../physicsEngine/src/collision/ManifoldContactPoint.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
-		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
-		../physicsEngine/src/collision/OverlappingPair.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
-		../physicsEngine/src/collision/broadphase/PairContainer.h \
-		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
-		../physicsEngine/src/body/work/WorkRigidBody.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
-		../physicsEngine/src/collision/island/IslandManager.h \
-		../physicsEngine/src/collision/island/IslandContainer.h \
-		../physicsEngine/src/collision/island/IslandElementLink.h \
-		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
-		../physicsEngine/src/visualizer/CollisionVisualizer.h \
-		../physicsEngine/src/body/RigidBody.h \
-		../physicsEngine/src/body/InertiaCalculation.h \
-		../physicsEngine/src/shape/CollisionSphereShape.h \
-		../physicsEngine/src/shape/CollisionBoxShape.h \
-		../physicsEngine/src/shape/CollisionCapsuleShape.h \
-		../physicsEngine/src/shape/CollisionCylinderShape.h \
-		../physicsEngine/src/shape/CollisionConvexHullShape.h \
-		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
-		../physicsEngine/src/object/CollisionSphereObject.h \
-		../physicsEngine/src/object/CollisionBoxObject.h \
-		../physicsEngine/src/object/CollisionCapsuleObject.h \
-		../physicsEngine/src/object/CollisionCylinderObject.h \
-		../physicsEngine/src/object/CollisionConvexHullObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/Simplex.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
-		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
@@ -1470,29 +1373,9 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../soundEngine/src/UrchinSoundEngine.h \
-		../soundEngine/src/SoundManager.h \
-		../soundEngine/src/AudioController.h \
-		../soundEngine/src/sound/Sound.h \
-		../soundEngine/src/trigger/SoundTrigger.h \
-		../soundEngine/src/behavior/SoundBehavior.h \
-		../soundEngine/src/behavior/SmoothStopAction.h \
-		../soundEngine/src/player/AudioPlayer.h \
-		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
-		../soundEngine/src/sound/ambient/AmbientSound.h \
-		../soundEngine/src/trigger/ManualTrigger.h \
-		../soundEngine/src/trigger/ShapeTrigger.h \
-		../soundEngine/src/trigger/shape/SoundShape.h \
-		../soundEngine/src/trigger/shape/SoundBox.h \
-		../soundEngine/src/trigger/shape/SoundSphere.h \
-		../mapHandler/src/UrchinMapHandler.h \
-		../mapHandler/src/MapHandler.h \
-		../mapHandler/src/resources/Map.h \
-		../mapHandler/src/resources/object/SceneObject.h \
-		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h \
-		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h
+		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneDisplayer.o src/scene/displayer/SceneDisplayer.cpp
 
 targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneDisplayerWidget.h \
@@ -1560,72 +1443,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
 		src/scene/displayer/SceneDisplayer.h \
-		../physicsEngine/src/UrchinPhysicsEngine.h \
-		../physicsEngine/src/PhysicsWorld.h \
-		../physicsEngine/src/body/AbstractBody.h \
-		../physicsEngine/src/body/work/AbstractWorkBody.h \
-		../physicsEngine/src/shape/CollisionShape3D.h \
-		../physicsEngine/src/utils/math/PhysicsTransform.h \
-		../physicsEngine/src/object/CollisionConvexObject3D.h \
-		../physicsEngine/src/collision/island/IslandElement.h \
-		../physicsEngine/src/body/BodyManager.h \
-		../physicsEngine/src/collision/CollisionWorld.h \
-		../physicsEngine/src/collision/ManifoldResult.h \
-		../physicsEngine/src/collision/ManifoldContactPoint.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
-		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
-		../physicsEngine/src/collision/OverlappingPair.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
-		../physicsEngine/src/collision/broadphase/PairContainer.h \
-		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.h \
-		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
-		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
-		../physicsEngine/src/body/work/WorkRigidBody.h \
-		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
-		../physicsEngine/src/collision/island/IslandManager.h \
-		../physicsEngine/src/collision/island/IslandContainer.h \
-		../physicsEngine/src/collision/island/IslandElementLink.h \
-		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
-		../physicsEngine/src/visualizer/CollisionVisualizer.h \
-		../physicsEngine/src/body/RigidBody.h \
-		../physicsEngine/src/body/InertiaCalculation.h \
-		../physicsEngine/src/shape/CollisionSphereShape.h \
-		../physicsEngine/src/shape/CollisionBoxShape.h \
-		../physicsEngine/src/shape/CollisionCapsuleShape.h \
-		../physicsEngine/src/shape/CollisionCylinderShape.h \
-		../physicsEngine/src/shape/CollisionConvexHullShape.h \
-		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
-		../physicsEngine/src/object/CollisionSphereObject.h \
-		../physicsEngine/src/object/CollisionBoxObject.h \
-		../physicsEngine/src/object/CollisionCapsuleObject.h \
-		../physicsEngine/src/object/CollisionCylinderObject.h \
-		../physicsEngine/src/object/CollisionConvexHullObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/Simplex.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
-		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
@@ -1701,29 +1518,9 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../soundEngine/src/UrchinSoundEngine.h \
-		../soundEngine/src/SoundManager.h \
-		../soundEngine/src/AudioController.h \
-		../soundEngine/src/sound/Sound.h \
-		../soundEngine/src/trigger/SoundTrigger.h \
-		../soundEngine/src/behavior/SoundBehavior.h \
-		../soundEngine/src/behavior/SmoothStopAction.h \
-		../soundEngine/src/player/AudioPlayer.h \
-		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
-		../soundEngine/src/sound/ambient/AmbientSound.h \
-		../soundEngine/src/trigger/ManualTrigger.h \
-		../soundEngine/src/trigger/ShapeTrigger.h \
-		../soundEngine/src/trigger/shape/SoundShape.h \
-		../soundEngine/src/trigger/shape/SoundBox.h \
-		../soundEngine/src/trigger/shape/SoundSphere.h \
-		../mapHandler/src/UrchinMapHandler.h \
-		../mapHandler/src/MapHandler.h \
-		../mapHandler/src/resources/Map.h \
-		../mapHandler/src/resources/object/SceneObject.h \
-		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h \
-		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h
+		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneDisplayerWidget.o src/scene/displayer/SceneDisplayerWidget.cpp
 
 targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/SceneFreeCamera.h \
@@ -1866,6 +1663,584 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
+
+targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp src/scene/controller/ActionReader.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		../debugVisualizer/src/scene/controller/action/Point3Action.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ActionReader.o src/scene/controller/ActionReader.cpp
+
+targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scene/controller/SceneController.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
+		../debugVisualizer/src/scene/controller/ActionReader.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneController.o src/scene/controller/SceneController.cpp
+
+targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controller/action/Action.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/Action.o src/scene/controller/action/Action.cpp
+
+targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/scene/controller/action/Point3Action.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h \
+		src/scene/controller/action/Action.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/Point3Action.o src/scene/controller/action/Point3Action.cpp
 
 targetLinux/moc_DebugVisualizerWindow.o: targetLinux/moc_DebugVisualizerWindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/moc_DebugVisualizerWindow.o targetLinux/moc_DebugVisualizerWindow.cpp

@@ -29,6 +29,11 @@ namespace urchin
 		}
 	}
 
+	void GeometryDisplayer::removeAllGeometries()
+	{
+		geometryModels.clear();
+	}
+
 	void GeometryDisplayer::onCameraProjectionUpdate(const Camera *const camera)
 	{
 		this->projectionMatrix = camera->getProjectionMatrix();

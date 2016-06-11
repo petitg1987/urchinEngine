@@ -65,6 +65,7 @@ namespace urchin
 			//geometry
 			GeometryModel *addGeometry(GeometryModel *);
 			void removeGeometry(GeometryModel *);
+			void removeAllGeometries();
 
 			//events
 			bool onKeyDown(unsigned int);

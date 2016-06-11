@@ -11,7 +11,8 @@ namespace urchin
 
 	DebugVisualizerWindow::DebugVisualizerWindow(const std::string &debugVisualizerPath) :
 		debugVisualizerPath(debugVisualizerPath),
-		preferredDebugVisualizerPath("./")
+		preferredDebugVisualizerPath("./"),
+		sceneController(new SceneController())
 	{
 		this->setWindowTitle(WINDOW_TITLE);
 		this->resize(1200, 675);
@@ -19,7 +20,6 @@ namespace urchin
 
 		QHBoxLayout *horizontalLayout = new QHBoxLayout(centralWidget);
 		horizontalLayout->setSpacing(6);
-		horizontalLayout->setContentsMargins(11, 11, 11, 11);
 		horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
 		setupMenu();
@@ -32,7 +32,7 @@ namespace urchin
 
 	DebugVisualizerWindow::~DebugVisualizerWindow()
 	{
-
+		delete sceneController;
 	}
 
 	void DebugVisualizerWindow::setupMenu()
@@ -58,9 +58,17 @@ namespace urchin
 
 		actionNextStepAction = new QAction(this);
 		actionNextStepAction->setText("Next step");
+		actionNextStepAction->setEnabled(false);
 		actionNextStepAction->setShortcut(QKeySequence("Ctrl+Y"));
 		actionMenu->addAction(actionNextStepAction);
-		connect(actionNextStepAction, SIGNAL(triggered()), this, SLOT(executeNextStepAction()));
+		connect(actionNextStepAction, SIGNAL(triggered()), this, SLOT(executeNextAction()));
+
+		actionReverseStepAction = new QAction(this);
+		actionReverseStepAction->setText("Previous step");
+		actionReverseStepAction->setEnabled(false);
+		actionReverseStepAction->setShortcut(QKeySequence("Ctrl+Z"));
+		actionMenu->addAction(actionReverseStepAction);
+		connect(actionReverseStepAction, SIGNAL(triggered()), this, SLOT(reverseLastAction()));
 
 		menu->addMenu(fileMenu);
 		menu->addMenu(actionMenu);
@@ -92,9 +100,12 @@ namespace urchin
 		QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), preferredDebugVisualizerPath, "Urchin Debug file (*.udbg)", 0, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull() && !filename.isEmpty())
 		{
-			debugFilename = filename.toUtf8().constData();
-			std::string preferredDebugVisualizerPathString = FileHandler::getDirectoryFrom(debugFilename);
-			preferredDebugVisualizerPath = QString::fromStdString(preferredDebugVisualizerPathString);
+			std::shared_ptr<GeometryEntityHandler> geometryEntityHandler = std::make_shared<GeometryEntityHandler>();
+			sceneDisplayerWidget->openDebugFile(geometryEntityHandler);
+			sceneController->openDebugFile(filename.toUtf8().constData(), geometryEntityHandler);
+
+			updateDebugVisualizerFilename(filename);
+			updateMenuStatus();
 		}
 	}
 
@@ -103,8 +114,37 @@ namespace urchin
 		QApplication::quit();
 	}
 
-	void DebugVisualizerWindow::executeNextStepAction()
+	void DebugVisualizerWindow::executeNextAction()
 	{
-		//TODO
+		sceneController->executeNextAction();
+	}
+
+	void DebugVisualizerWindow::reverseLastAction()
+	{
+		sceneController->reverseLastAction();
+	}
+
+	void DebugVisualizerWindow::updateMenuStatus()
+	{
+		bool hasDebugFileOpen = sceneController->hasDebugFileOpen();
+
+		actionNextStepAction->setEnabled(hasDebugFileOpen);
+		actionReverseStepAction->setEnabled(hasDebugFileOpen);
+	}
+
+	void DebugVisualizerWindow::updateDebugVisualizerFilename(QString qDebugVisualizerFilename)
+	{
+		debugFilename = qDebugVisualizerFilename.toUtf8().constData();
+
+		if(qDebugVisualizerFilename.isEmpty())
+		{
+			this->setWindowTitle(WINDOW_TITLE);
+		}else
+		{
+			std::string preferredDebugVisualizerPathString = FileHandler::getDirectoryFrom(debugFilename);
+			preferredDebugVisualizerPath = QString::fromStdString(preferredDebugVisualizerPathString);
+
+			this->setWindowTitle(QString::fromStdString(std::string(WINDOW_TITLE) + " (" + debugFilename + ")"));
+		}
 	}
 }

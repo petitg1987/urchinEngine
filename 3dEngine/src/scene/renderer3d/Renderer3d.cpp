@@ -340,6 +340,11 @@ namespace urchin
 		}
 	}
 
+	void Renderer3d::removeAllGeometries()
+	{
+		geometryDisplayer->removeAllGeometries();
+	}
+
 	bool Renderer3d::onKeyDown(unsigned int key)
 	{
 		if(camera!=nullptr && key<260)

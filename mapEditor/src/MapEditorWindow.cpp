@@ -25,7 +25,6 @@ namespace urchin
 
 		QHBoxLayout *horizontalLayout = new QHBoxLayout(centralWidget);
 		horizontalLayout->setSpacing(6);
-		horizontalLayout->setContentsMargins(11, 11, 11, 11);
 		horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
 		setupMenu();

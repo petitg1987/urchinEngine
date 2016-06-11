@@ -19,7 +19,7 @@ namespace urchin
 			SceneDisplayerWidget(QWidget *, const std::string &);
 			virtual ~SceneDisplayerWidget();
 
-			void openDebugFile(const std::string &);
+			void openDebugFile(std::shared_ptr<GeometryEntityHandler>);
 
 			void initializeGL();
 			void paintGL();

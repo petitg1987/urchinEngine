@@ -23,10 +23,10 @@ namespace urchin
 		delete sceneDisplayer;
 	}
 
-	void SceneDisplayerWidget::openDebugFile(const std::string &debugFilename)
+	void SceneDisplayerWidget::openDebugFile(std::shared_ptr<GeometryEntityHandler> geometryEntityHandler)
 	{
 		sceneDisplayer = new SceneDisplayer(this);
-		sceneDisplayer->initializeFromDebugFile(debugVisualizerPath, debugFilename);
+		sceneDisplayer->initializeForOpen(debugVisualizerPath, geometryEntityHandler);
 		sceneDisplayer->resize(this->geometry().width(), this->geometry().height());
 	}
 

@@ -17,10 +17,16 @@ CONFIG(debug, debug){
 }
 
 HEADERS += src/*.h
+HEADERS += src/scene/entity/*.h
 HEADERS += src/scene/displayer/*.h
+HEADERS += src/scene/controller/*.h
+HEADERS += src/scene/controller/action/*.h
 
 SOURCES += src/*.cpp
+SOURCES += src/scene/entity/*.cpp
 SOURCES += src/scene/displayer/*.cpp
+SOURCES += src/scene/controller/*.cpp
+SOURCES += src/scene/controller/action/*.cpp
     
 FORMS += 
 

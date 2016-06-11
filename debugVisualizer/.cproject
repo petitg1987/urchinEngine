@@ -25,7 +25,7 @@
 							</builder>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.108669956" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.322732683" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.786928818" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.786928818" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/greg/Project/VideoGame/urchinEngine/3dEngine/src"/>
 									<listOptionValue builtIn="false" value="/home/greg/Project/VideoGame/urchinEngine/soundEngine/src"/>
 									<listOptionValue builtIn="false" value="/home/greg/Project/VideoGame/urchinEngine/common/src"/>
@@ -55,7 +55,7 @@
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1839221015" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1021156440" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1762027053" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1762027053" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/greg/Project/VideoGame/urchinEngine/3dEngine/src"/>
 									<listOptionValue builtIn="false" value="/home/greg/Project/VideoGame/urchinEngine/soundEngine/src"/>
 									<listOptionValue builtIn="false" value="/home/greg/Project/VideoGame/urchinEngine/common/src"/>
