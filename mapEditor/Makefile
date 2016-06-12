@@ -559,10 +559,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -572,8 +568,16 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -590,16 +594,13 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -753,6 +754,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -812,10 +814,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -825,8 +823,16 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -843,16 +849,13 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -941,6 +944,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -1053,10 +1057,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1066,8 +1066,16 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1084,16 +1092,13 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1249,6 +1254,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -1288,10 +1294,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1301,8 +1303,16 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1319,16 +1329,13 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1417,6 +1424,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -1523,10 +1531,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1536,8 +1540,16 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1554,16 +1566,13 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1650,6 +1659,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -1752,10 +1762,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1765,8 +1771,16 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1783,16 +1797,13 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1879,6 +1890,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -1980,10 +1992,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1993,8 +2001,16 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2011,16 +2027,13 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2176,6 +2189,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -2210,10 +2224,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2223,8 +2233,16 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2241,16 +2259,13 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2406,6 +2421,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -2440,10 +2456,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2453,8 +2465,16 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2471,16 +2491,13 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2636,6 +2653,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -2675,10 +2693,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2688,8 +2702,16 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2706,16 +2728,13 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2871,6 +2890,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -2905,10 +2925,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2918,8 +2934,16 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2936,16 +2960,13 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3101,6 +3122,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -3135,10 +3157,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3148,8 +3166,16 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -3166,16 +3192,13 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3264,6 +3287,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -3364,10 +3388,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3377,8 +3397,16 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -3395,16 +3423,13 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3560,6 +3585,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -3596,10 +3622,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3609,8 +3631,16 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -3627,16 +3657,13 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3790,6 +3817,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -3824,10 +3852,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3837,8 +3861,16 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -3855,16 +3887,13 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3953,6 +3982,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -4058,10 +4088,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4071,8 +4097,16 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -4089,16 +4123,13 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4187,6 +4218,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -4287,10 +4319,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4300,8 +4328,16 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -4318,16 +4354,13 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4417,6 +4450,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -4521,10 +4555,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4534,8 +4564,16 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -4552,16 +4590,13 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4650,6 +4685,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -4756,10 +4792,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4769,8 +4801,16 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -4787,16 +4827,13 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4883,6 +4920,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -4984,10 +5022,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4997,8 +5031,16 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -5015,16 +5057,13 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5114,6 +5153,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -5219,10 +5259,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5232,8 +5268,16 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -5250,16 +5294,13 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5348,6 +5389,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -5454,10 +5496,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5467,8 +5505,16 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -5485,16 +5531,13 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5581,6 +5624,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -5683,10 +5727,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5696,8 +5736,16 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -5714,16 +5762,13 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5810,6 +5855,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -5912,10 +5958,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5925,8 +5967,16 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -5943,16 +5993,13 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6039,6 +6086,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -6140,10 +6188,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6153,8 +6197,16 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -6171,16 +6223,13 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6286,6 +6335,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6370,10 +6420,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6383,8 +6429,16 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -6401,16 +6455,13 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6499,6 +6550,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -6599,10 +6651,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6612,8 +6660,16 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -6630,16 +6686,13 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6745,6 +6798,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6829,10 +6883,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6842,8 +6892,16 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -6860,16 +6918,13 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7023,6 +7078,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -7080,10 +7136,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7093,8 +7145,16 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -7111,16 +7171,13 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7274,6 +7331,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -7328,10 +7386,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7341,8 +7395,16 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -7359,16 +7421,13 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7522,6 +7581,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -7588,10 +7648,6 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7601,8 +7657,16 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -7619,16 +7683,13 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7655,10 +7716,6 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7668,8 +7725,16 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -7686,16 +7751,13 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7724,10 +7786,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7737,8 +7795,16 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -7755,16 +7821,13 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7851,6 +7914,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -7954,10 +8018,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7967,8 +8027,16 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -7985,16 +8053,13 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8083,6 +8148,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -8195,10 +8261,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8208,8 +8270,16 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -8226,16 +8296,13 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8390,6 +8457,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -8425,10 +8493,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8438,8 +8502,16 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -8456,16 +8528,13 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8621,6 +8690,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -8665,10 +8735,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8678,8 +8744,16 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -8696,16 +8770,13 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8794,6 +8865,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -8897,10 +8969,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8910,8 +8978,16 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -8928,16 +9004,13 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9027,6 +9100,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -9127,10 +9201,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9140,8 +9210,16 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -9158,16 +9236,13 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9257,6 +9332,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -9359,10 +9435,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9372,8 +9444,16 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -9390,16 +9470,13 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9555,6 +9632,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -9590,10 +9668,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9603,8 +9677,16 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -9621,16 +9703,13 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9786,6 +9865,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -9821,10 +9901,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9834,8 +9910,16 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -9852,16 +9936,13 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10017,6 +10098,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -10061,10 +10143,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10074,8 +10152,16 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -10092,16 +10178,13 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10257,6 +10340,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -10295,10 +10379,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10308,8 +10388,16 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -10326,16 +10414,13 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10491,6 +10576,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -10526,10 +10612,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10539,8 +10621,16 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -10557,16 +10647,13 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10655,6 +10742,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -10757,10 +10845,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10770,8 +10854,16 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -10788,16 +10880,13 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10950,6 +11039,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -10997,10 +11087,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11010,8 +11096,16 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -11028,16 +11122,13 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11193,6 +11284,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -11230,10 +11322,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11243,8 +11331,16 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -11261,16 +11357,13 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11424,6 +11517,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -11460,10 +11554,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11473,8 +11563,16 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -11491,16 +11589,13 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11587,6 +11682,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -11687,10 +11783,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11700,8 +11792,16 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -11718,16 +11818,13 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11816,6 +11913,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -11923,10 +12021,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11936,8 +12030,16 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -11954,16 +12056,13 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12052,6 +12151,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -12153,10 +12253,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12166,8 +12262,16 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -12184,16 +12288,13 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12282,6 +12383,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -12382,10 +12484,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12395,8 +12493,16 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -12413,16 +12519,13 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12512,6 +12615,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -12619,10 +12723,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12632,8 +12732,16 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -12650,16 +12758,13 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12748,6 +12853,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -12851,10 +12957,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12864,8 +12966,16 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -12882,16 +12992,13 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12981,6 +13088,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -13083,10 +13191,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13096,8 +13200,16 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -13114,16 +13226,13 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13212,6 +13321,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -13313,10 +13423,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13326,8 +13432,16 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -13344,16 +13458,13 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13443,6 +13554,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -13554,10 +13666,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13567,8 +13675,16 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -13585,16 +13701,13 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13683,6 +13796,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -13786,10 +13900,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13799,8 +13909,16 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -13817,16 +13935,13 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13916,6 +14031,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -14016,10 +14132,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14029,8 +14141,16 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -14047,16 +14167,13 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14146,6 +14263,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -14245,10 +14363,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14258,8 +14372,16 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -14276,16 +14398,13 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14375,6 +14494,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -14477,10 +14597,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14490,8 +14606,16 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -14508,16 +14632,13 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14623,6 +14744,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14708,10 +14830,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14721,8 +14839,16 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -14739,16 +14865,13 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14837,6 +14960,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -14939,10 +15063,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14952,8 +15072,16 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -14970,16 +15098,13 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15082,6 +15207,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15169,10 +15295,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15182,8 +15304,16 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -15200,16 +15330,13 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15315,6 +15442,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15402,10 +15530,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15415,8 +15539,16 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -15433,16 +15565,13 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15529,6 +15658,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -15629,10 +15759,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15642,8 +15768,16 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -15660,16 +15794,13 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15822,6 +15953,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -15862,10 +15994,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15875,8 +16003,16 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -15893,16 +16029,13 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16056,6 +16189,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -16096,10 +16230,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16109,8 +16239,16 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -16127,16 +16265,13 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16222,7 +16357,8 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
-		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
 
 targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer.cpp ../common/src/UrchinCommon.h \
@@ -16236,10 +16372,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16249,8 +16381,16 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -16267,16 +16407,13 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16430,6 +16567,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -16465,10 +16603,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16478,8 +16612,16 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -16496,16 +16638,13 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16593,6 +16732,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -16694,10 +16834,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16707,8 +16843,16 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -16725,16 +16869,13 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16840,6 +16981,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \

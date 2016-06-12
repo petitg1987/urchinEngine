@@ -1,7 +1,6 @@
 #include <vector>
 
 #include "Point3Action.h"
-#include "Action.h"
 
 namespace urchin
 {

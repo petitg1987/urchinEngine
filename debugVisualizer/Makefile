@@ -58,6 +58,8 @@ SOURCES       = src/DebugVisualizerWindow.cpp \
 		src/scene/controller/ActionReader.cpp \
 		src/scene/controller/SceneController.cpp \
 		src/scene/controller/action/Action.cpp \
+		src/scene/controller/action/ClearEntityAction.cpp \
+		src/scene/controller/action/ConvexHull3DAction.cpp \
 		src/scene/controller/action/Point3Action.cpp targetLinux/moc_DebugVisualizerWindow.cpp \
 		targetLinux/moc_SceneDisplayerWidget.cpp
 OBJECTS       = targetLinux/DebugVisualizerWindow.o \
@@ -70,6 +72,8 @@ OBJECTS       = targetLinux/DebugVisualizerWindow.o \
 		targetLinux/ActionReader.o \
 		targetLinux/SceneController.o \
 		targetLinux/Action.o \
+		targetLinux/ClearEntityAction.o \
+		targetLinux/ConvexHull3DAction.o \
 		targetLinux/Point3Action.o \
 		targetLinux/moc_DebugVisualizerWindow.o \
 		targetLinux/moc_SceneDisplayerWidget.o
@@ -139,6 +143,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/scene/controller/ActionReader.h \
 		src/scene/controller/SceneController.h \
 		src/scene/controller/action/Action.h \
+		src/scene/controller/action/ClearEntityAction.h \
+		src/scene/controller/action/ConvexHull3DAction.h \
 		src/scene/controller/action/Point3Action.h src/DebugVisualizerWindow.cpp \
 		src/Main.cpp \
 		src/scene/entity/GeometryEntity.cpp \
@@ -149,6 +155,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/scene/controller/ActionReader.cpp \
 		src/scene/controller/SceneController.cpp \
 		src/scene/controller/action/Action.cpp \
+		src/scene/controller/action/ClearEntityAction.cpp \
+		src/scene/controller/action/ConvexHull3DAction.cpp \
 		src/scene/controller/action/Point3Action.cpp
 QMAKE_TARGET  = urchinDebugVisualizer
 DESTDIR       = #avoid trailing-slash linebreak
@@ -317,8 +325,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents src/DebugVisualizerWindow.h src/Main.h src/scene/entity/GeometryEntity.h src/scene/entity/GeometryEntityHandler.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/controller/ActionReader.h src/scene/controller/SceneController.h src/scene/controller/action/Action.h src/scene/controller/action/Point3Action.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/DebugVisualizerWindow.cpp src/Main.cpp src/scene/entity/GeometryEntity.cpp src/scene/entity/GeometryEntityHandler.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/controller/ActionReader.cpp src/scene/controller/SceneController.cpp src/scene/controller/action/Action.cpp src/scene/controller/action/Point3Action.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/DebugVisualizerWindow.h src/Main.h src/scene/entity/GeometryEntity.h src/scene/entity/GeometryEntityHandler.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/controller/ActionReader.h src/scene/controller/SceneController.h src/scene/controller/action/Action.h src/scene/controller/action/ClearEntityAction.h src/scene/controller/action/ConvexHull3DAction.h src/scene/controller/action/Point3Action.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/DebugVisualizerWindow.cpp src/Main.cpp src/scene/entity/GeometryEntity.cpp src/scene/entity/GeometryEntityHandler.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/controller/ActionReader.cpp src/scene/controller/SceneController.cpp src/scene/controller/action/Action.cpp src/scene/controller/action/ClearEntityAction.cpp src/scene/controller/action/ConvexHull3DAction.cpp src/scene/controller/action/Point3Action.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -359,10 +367,6 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -372,6 +376,10 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -487,6 +495,7 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h \
@@ -506,10 +515,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -519,6 +524,10 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -634,6 +643,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h \
@@ -667,10 +677,6 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -680,6 +686,10 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -795,6 +805,7 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h \
@@ -816,10 +827,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -829,6 +836,10 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -944,6 +955,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h \
@@ -965,10 +977,6 @@ targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/enti
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -978,6 +986,10 @@ targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/enti
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -1089,7 +1101,8 @@ targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/enti
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
-		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GeometryEntity.o src/scene/entity/GeometryEntity.cpp
 
 targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp src/scene/entity/GeometryEntityHandler.h \
@@ -1107,10 +1120,6 @@ targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp 
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1120,6 +1129,10 @@ targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -1231,7 +1244,8 @@ targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp 
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
-		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GeometryEntityHandler.o src/scene/entity/GeometryEntityHandler.cpp
 
 targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayer.h \
@@ -1246,10 +1260,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1259,6 +1269,10 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -1373,6 +1387,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h
@@ -1390,10 +1405,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1403,6 +1414,10 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -1518,6 +1533,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h
@@ -1535,10 +1551,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1548,6 +1560,10 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -1589,148 +1605,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/trigonometry/AngleConverter.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
-		../3dEngine/src/scene/renderer3d/Renderer3d.h \
-		../3dEngine/src/scene/Renderer.h \
-		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
-		../3dEngine/src/scene/renderer3d/model/Model.h \
-		../3dEngine/src/scene/renderer3d/model/Meshes.h \
-		../3dEngine/src/resources/model/ConstMeshes.h \
-		../3dEngine/src/resources/model/ConstMesh.h \
-		../3dEngine/src/resources/material/Material.h \
-		../3dEngine/src/resources/Resource.h \
-		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
-		../3dEngine/src/scene/renderer3d/model/Mesh.h \
-		../3dEngine/src/scene/renderer3d/model/Animation.h \
-		../3dEngine/src/resources/model/ConstAnimation.h \
-		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
-		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
-		../3dEngine/src/utils/display/geometry/GeometryModel.h \
-		../3dEngine/src/scene/renderer3d/octree/Octree.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
-		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
-		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
-		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
-		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
-		../3dEngine/src/utils/shader/ShaderManager.h \
-		../3dEngine/src/utils/shader/TokenReplacerShader.h \
-		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
-		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
-		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
-		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
-		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
-		../3dEngine/src/scene/renderer3d/light/Light.h \
-		../3dEngine/src/utils/filter/TextureFilter.h \
-		../3dEngine/src/utils/filter/TextureFilter.inl \
-		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
-		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
-		../3dEngine/src/scene/renderer3d/light/LightManager.h \
-		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
-		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
-		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
-		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
-		../3dEngine/src/scene/GUI/GUIRenderer.h \
-		../3dEngine/src/scene/GUI/widget/Widget.h \
-		../3dEngine/src/scene/GUI/widget/Position.h \
-		../3dEngine/src/scene/GUI/widget/Size.h \
-		../3dEngine/src/scene/GUI/EventListener.h \
-		../3dEngine/src/scene/InputDevice.h \
-		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
-		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
-		../3dEngine/src/scene/GUI/widget/container/Container.h \
-		../3dEngine/src/scene/GUI/widget/window/Window.h \
-		../3dEngine/src/scene/GUI/widget/text/Text.h \
-		../3dEngine/src/resources/font/Font.h \
-		../3dEngine/src/scene/GUI/GUISkinService.h \
-		../3dEngine/src/scene/GUI/widget/button/Button.h \
-		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
-		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
-		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
-		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
-		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
-		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
-		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
-		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
-		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
-
-targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp src/scene/controller/ActionReader.h \
-		../debugVisualizer/src/scene/controller/action/Action.h \
-		../3dEngine/src/Urchin3dEngine.h \
-		../3dEngine/src/scene/SceneManager.h \
-		../common/src/UrchinCommon.h \
-		../common/src/tools/file/PropertyFileHandler.h \
-		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
-		../common/src/tools/logger/FileLogger.h \
-		../common/src/tools/ConfigService.h \
-		../common/src/pattern/singleton/Singleton.h \
-		../common/src/pattern/singleton/SingletonManager.h \
-		../common/src/pattern/singleton/SingletonInterface.h \
-		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/math/algebra/point/Point2.h \
-		../common/src/math/algebra/vector/Vector2.h \
-		../common/src/math/algebra/matrix/Matrix2.h \
-		../common/src/math/algebra/point/Point3.h \
-		../common/src/math/algebra/vector/Vector3.h \
-		../common/src/math/algebra/matrix/Matrix3.h \
-		../common/src/math/algebra/point/Point4.h \
-		../common/src/math/algebra/vector/Vector4.h \
-		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/system/FileSystem.h \
-		../common/src/tools/xml/XmlWriter.h \
-		../common/src/pattern/observer/Observable.h \
-		../common/src/pattern/observer/Observer.h \
-		../common/src/io/StringUtil.h \
-		../common/src/system/FileHandler.h \
-		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
-		../common/src/math/algebra/Transform.h \
-		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
-		../common/src/math/geometry/2d/shape/RectangleShape.h \
-		../common/src/math/geometry/2d/object/ConvexObject2D.h \
-		../common/src/math/geometry/2d/object/ConvexHull2D.h \
-		../common/src/math/geometry/2d/object/LineSegment2D.h \
-		../common/src/math/geometry/2d/object/Rectangle.h \
-		../common/src/math/geometry/3d/Line3D.h \
-		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
-		../common/src/math/geometry/3d/shape/BoxShape.h \
-		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
-		../common/src/math/geometry/3d/shape/CapsuleShape.h \
-		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
-		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
-		../common/src/math/geometry/3d/object/Frustum.h \
-		../common/src/math/geometry/3d/object/Sphere.h \
-		../common/src/math/geometry/3d/object/LineSegment3D.h \
-		../common/src/math/geometry/3d/object/OBBox.h \
-		../common/src/math/geometry/3d/object/Triangle3D.h \
-		../common/src/math/geometry/3d/object/Tetrahedron.h \
-		../common/src/math/geometry/3d/object/Capsule.h \
-		../common/src/math/geometry/3d/object/Cylinder.h \
-		../common/src/math/algorithm/MathAlgorithm.h \
-		../common/src/math/algorithm/PascalTriangle.h \
-		../common/src/math/trigonometry/AngleConverter.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
@@ -1804,9 +1678,155 @@ targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp src/scene/cont
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
+
+targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		src/scene/controller/ActionReader.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h \
-		../debugVisualizer/src/scene/controller/action/Point3Action.h
+		../debugVisualizer/src/scene/controller/action/Point3Action.h \
+		../debugVisualizer/src/scene/controller/action/ConvexHull3DAction.h \
+		../debugVisualizer/src/scene/controller/action/ClearEntityAction.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ActionReader.o src/scene/controller/ActionReader.cpp
 
 targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scene/controller/SceneController.h \
@@ -1825,10 +1845,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1838,6 +1854,10 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -1950,6 +1970,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/controller/action/Action.h \
 		../debugVisualizer/src/scene/controller/ActionReader.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneController.o src/scene/controller/SceneController.cpp
@@ -1968,10 +1989,6 @@ targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controlle
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1981,6 +1998,10 @@ targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controlle
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -2093,11 +2114,15 @@ targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controlle
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
 		../debugVisualizer/src/scene/entity/GeometryEntity.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/Action.o src/scene/controller/action/Action.cpp
 
-targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/scene/controller/action/Point3Action.h \
+targetLinux/ClearEntityAction.o: src/scene/controller/action/ClearEntityAction.cpp src/scene/controller/action/ClearEntityAction.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
@@ -2109,10 +2134,6 @@ targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/sce
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
 		../common/src/io/Converter.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2122,6 +2143,152 @@ targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/sce
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ClearEntityAction.o src/scene/controller/action/ClearEntityAction.cpp
+
+targetLinux/ConvexHull3DAction.o: src/scene/controller/action/ConvexHull3DAction.cpp src/scene/controller/action/ConvexHull3DAction.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/pattern/observer/Observable.h \
@@ -2237,9 +2404,154 @@ targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/sce
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
-		../debugVisualizer/src/scene/entity/GeometryEntity.h \
-		src/scene/controller/action/Action.h
+		../debugVisualizer/src/scene/entity/GeometryEntity.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ConvexHull3DAction.o src/scene/controller/action/ConvexHull3DAction.cpp
+
+targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/scene/controller/action/Point3Action.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/io/Converter.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/system/FileSystem.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../debugVisualizer/src/scene/controller/action/Action.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
+		../debugVisualizer/src/scene/entity/GeometryEntity.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/Point3Action.o src/scene/controller/action/Point3Action.cpp
 
 targetLinux/moc_DebugVisualizerWindow.o: targetLinux/moc_DebugVisualizerWindow.cpp 

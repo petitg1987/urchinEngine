@@ -3,7 +3,9 @@
 
 #include <string>
 #include <fstream>
-#include "UrchinCommon.h"
+
+#include "math/algebra/point/Point3.h"
+#include "math/geometry/3d/object/ConvexHull3D.h"
 
 namespace urchin
 {
@@ -14,6 +16,13 @@ namespace urchin
 	*/
 	class DebugRecorder
 	{
+		#define POINT3_ACTION "POINT3"
+		#define CONVEX_HULL_3D_ACTION "CONVEX_HULL_3D"
+		#define CLEAR_ENTITY_ACTION "CLEAR_ENTITY"
+
+		#define NUM_INDEXED_TRIANGLES "NumIndexedTriangles"
+		#define NUM_INDEXED_POINTS "NumIndexedPoints"
+
 		public:
 			DebugRecorder(const std::string &);
 			~DebugRecorder();
@@ -22,7 +31,6 @@ namespace urchin
 			void recordConvexHull(const std::string &, const ConvexHull3D<float> &);
 
 			void clearEntity(const std::string &);
-			void clearAllEntities();
 
 		private:
 			std::ofstream file;

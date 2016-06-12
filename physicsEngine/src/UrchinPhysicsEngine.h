@@ -36,6 +36,5 @@
 #include "processable/character/CharacterController.h"
 
 #include "visualizer/CollisionVisualizer.h"
-#include "visualizer/DebugRecorder.h"
 
 #endif

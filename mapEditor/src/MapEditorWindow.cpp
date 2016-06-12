@@ -19,6 +19,7 @@ namespace urchin
 		mapEditorPath(mapEditorPath),
 		preferredMapPath("./")
 	{
+		this->setAttribute(Qt::WA_DeleteOnClose);
 		this->setWindowTitle(WINDOW_TITLE);
 		this->resize(1200, 675);
 		QWidget *centralWidget = new QWidget(this);
@@ -302,6 +303,7 @@ namespace urchin
 	{
 		if(executeCloseAction())
 		{
+			close();
 			QApplication::quit();
 		}else
 		{

@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include "tools/xml/XmlChunk.h"
-#include "io/StringUtil.h"
 #include "io/Converter.h"
 
 namespace urchin
@@ -173,8 +172,7 @@ namespace urchin
 	 */
 	Point2<float> XmlChunk::getPoint2Value() const
 	{
-		std::vector<float> floatValues = floatSplit(getStringValue(), 2);
-		return Point2<float>(floatValues[0], floatValues[1]);
+		return Converter::toPoint2(getStringValue());
 	}
 
 	/**
@@ -194,8 +192,7 @@ namespace urchin
 	 */
 	Point3<float> XmlChunk::getPoint3Value() const
 	{
-		std::vector<float> floatValues = floatSplit(getStringValue(), 3);
-		return Point3<float>(floatValues[0], floatValues[1], floatValues[2]);
+		return Converter::toPoint3(getStringValue());
 	}
 
 	/**
@@ -215,8 +212,7 @@ namespace urchin
 	 */
 	Point4<float> XmlChunk::getPoint4Value() const
 	{
-		std::vector<float> floatValues = floatSplit(getStringValue(), 4);
-		return Point4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+		return Converter::toPoint4(getStringValue());
 	}
 
 	/**
@@ -237,8 +233,7 @@ namespace urchin
 	 */
 	Vector2<float> XmlChunk::getVector2Value() const
 	{
-		std::vector<float> floatValues = floatSplit(getStringValue(), 2);
-		return Vector2<float>(floatValues[0], floatValues[1]);
+		return Converter::toVector2(getStringValue());
 	}
 
 	/**
@@ -258,8 +253,7 @@ namespace urchin
 	 */
 	Vector3<float> XmlChunk::getVector3Value() const
 	{
-		std::vector<float> floatValues = floatSplit(getStringValue(), 3);
-		return Vector3<float>(floatValues[0], floatValues[1], floatValues[2]);
+		return Converter::toVector3(getStringValue());
 	}
 
 	/**
@@ -279,8 +273,7 @@ namespace urchin
 	 */
 	Vector4<float> XmlChunk::getVector4Value() const
 	{
-		std::vector<float> floatValues = floatSplit(getStringValue(), 4);
-		return Vector4<float>(floatValues[0], floatValues[1], floatValues[2], floatValues[3]);
+		return Converter::toVector4(getStringValue());
 	}
 
 	/**
@@ -294,33 +287,4 @@ namespace urchin
 		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z)
 			+ FLOAT_DELIMITOR + std::to_string(value.W));
 	}
-
-	/**
-	 * Split a string into float
-	 * @param str String to split
-	 * @param expectedSplit Number of expected split
-	 * @return Split string in float
-	 */
-	std::vector<float> XmlChunk::floatSplit(const std::string &str, unsigned int expectedSplit) const
-	{
-		std::vector<std::string> stringValues;
-		stringValues.reserve(expectedSplit);
-		StringUtil::split(str, FLOAT_DELIMITOR, stringValues);
-
-		if(stringValues.size()!=expectedSplit)
-		{
-			throw std::invalid_argument("Number of float expected: " + std::to_string(expectedSplit) + ", found: "
-					+ std::to_string((unsigned int)stringValues.size()) + ". String value: " + str + ".");
-		}
-
-		std::vector<float> floatValues;
-		floatValues.reserve(expectedSplit);
-		for(unsigned int i=0; i<stringValues.size(); ++i)
-		{
-			floatValues.push_back(Converter::toFloat(stringValues[i]));
-		}
-
-		return floatValues;
-	}
-
 }

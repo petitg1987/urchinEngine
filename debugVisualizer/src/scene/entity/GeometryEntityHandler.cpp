@@ -20,28 +20,31 @@ namespace urchin
 		geometryEntities.push_back(geometryEntity);
 	}
 
-	void GeometryEntityHandler::remove(const std::string &id)
+	GeometryEntity *GeometryEntityHandler::remove(const std::string &id)
 	{
-		bool found = false;
-		for(std::list<GeometryEntity *>::iterator it=geometryEntities.begin(); it!=geometryEntities.end(); ++it)
+		std::list<GeometryEntity *>::iterator it;
+		for(it=geometryEntities.begin(); it!=geometryEntities.end(); ++it)
 		{
 			if((*it)->getId().compare(id)==0)
 			{
 				geometryEntities.erase(it);
-				found = true;
 				break;
 			}
 		}
 
-		if(!found)
+		if(it==geometryEntities.end())
 		{
 			throw std::runtime_error("Impossible to find geometry entity to remove with id: " + id);
 		}
+
+		return (*it);
 	}
 
-	void GeometryEntityHandler::remove(GeometryEntity *geometryEntity)
+	GeometryEntity *GeometryEntityHandler::remove(GeometryEntity *geometryEntity)
 	{
 		geometryEntities.remove(geometryEntity);
+
+		return geometryEntity;
 	}
 
 	void GeometryEntityHandler::removeAll()

@@ -23,7 +23,6 @@ namespace urchin
 	{
 		#define BOOL_FALSE "false"
 		#define BOOL_TRUE "true"
-		#define FLOAT_DELIMITOR ' '
 
 		public:
 			friend class XmlParser;
@@ -70,7 +69,6 @@ namespace urchin
 
 		private:
 			TiXmlElement *getChunk() const;
-			std::vector<float> floatSplit(const std::string &, unsigned int) const;
 
 			TiXmlElement *chunk;
 	};

@@ -86,7 +86,7 @@ namespace urchin
 			std::vector<unsigned int> &newTriangleIndexes, std::vector<unsigned int> &removedTriangleIndexes)
 	{
 		std::map<long long, std::pair<unsigned int, unsigned int>> edges;
-		const int HALF_SIZE_INDEX = (sizeof(unsigned int) * 8) / 2;
+		constexpr int HALF_SIZE_INDEX = (sizeof(unsigned int) * 8) / 2;
 
 		//deletes all triangles visible by the new point
 		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::iterator itTriangle=indexedTriangles.begin(); itTriangle!=indexedTriangles.end();)

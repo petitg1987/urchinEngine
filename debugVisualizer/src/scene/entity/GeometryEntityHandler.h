@@ -15,8 +15,8 @@ namespace urchin
 			~GeometryEntityHandler();
 
 			void add(GeometryEntity *);
-			void remove(const std::string &);
-			void remove(GeometryEntity *);
+			GeometryEntity *remove(const std::string &);
+			GeometryEntity *remove(GeometryEntity *);
 			void removeAll();
 
 			const GeometryEntity *getGeometryEntity(const std::string &) const;

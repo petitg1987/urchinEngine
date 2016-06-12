@@ -36,5 +36,6 @@
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 #include "utils/display/geometry/points/PointsModel.h"
 #include "utils/display/geometry/sphere/SphereModel.h"
+#include "utils/display/geometry/convexhull/ConvexHullModel.h"
 
 #endif

@@ -17,7 +17,6 @@
 #include "collision/narrowphase/algorithm/epa/EPAResultInvalid.h"
 #include "object/CollisionConvexObject3D.h"
 #include "collision/narrowphase/algorithm/gjk/GJKResult.h"
-#include "visualizer/DebugRecorder.h"
 
 namespace urchin
 {
