@@ -74,7 +74,7 @@ namespace urchin
 		for (int i=0; i<6; i++)
 		{
 			glTexImage2D(cubeMapTarget[i], 0, texSkybox[i]->getInternalFormat(), texSkybox[i]->getWidth(), texSkybox[i]->getHeight(), 0, texSkybox[i]->getFormat(), GL_UNSIGNED_BYTE, texSkybox[i]->getTexels());
-			delete texSkybox[i];
+			texSkybox[i]->release();
 		}
 		delete [] texSkybox;
 

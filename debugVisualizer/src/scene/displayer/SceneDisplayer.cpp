@@ -44,10 +44,11 @@ namespace urchin
 
 	void SceneDisplayer::initializeEngineResources(const std::string &mapEditorPath)
 	{
-		std::string mapEditorResourcesDirectory = FileHandler::getDirectoryFrom(mapEditorPath);
+		std::string debugVisualizerResourcesDirectory = FileHandler::getDirectoryFrom(mapEditorPath);
 
-		ConfigService::instance()->loadProperties("resources/engine.properties", mapEditorResourcesDirectory);
-		ShaderManager::instance()->replaceShadersParentDirectoryBy(mapEditorResourcesDirectory);
+		FileSystem::instance()->setupResourcesDirectory(debugVisualizerResourcesDirectory + "resources/");
+		ConfigService::instance()->loadProperties("engine.properties");
+		ShaderManager::instance()->replaceShadersParentDirectoryBy(debugVisualizerResourcesDirectory);
 	}
 
 	void SceneDisplayer::initializeScene()
@@ -56,11 +57,13 @@ namespace urchin
 		sceneManager->newRenderer3d(true);
 
 		//3d scene configuration
-		camera = new SceneFreeCamera(50.0f, 0.1f, 250.0f, parentWidget);
+		camera = new SceneFreeCamera(50.0f, 0.1f, 500.0f, parentWidget);
 		camera->setDistance(0.0);
 		camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
 		sceneManager->getActiveRenderer3d()->setCamera(camera);
 		sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
+		sceneManager->getActiveRenderer3d()->createSkybox({"skybox/NoTex.tga", "skybox/NoTex.tga", "skybox/NoTex.tga", "skybox/NoTex.tga", "skybox/NoTex.tga", "skybox/NoTex.tga"});
+		sceneManager->getActiveRenderer3d()->getSkybox()->setOffsetY(-1.0f);
 	}
 
 	void SceneDisplayer::paint()

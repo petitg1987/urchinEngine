@@ -36,13 +36,13 @@ namespace urchin
 		std::ostringstream oss;
 		oss.precision(std::numeric_limits<float>::max_digits10);
 
-		oss<<NUM_INDEXED_TRIANGLES<<": "<<convexHull.getIndexedPoints().size()<<std::endl;
+		oss<<NUM_INDEXED_POINTS<<": "<<convexHull.getIndexedPoints().size()<<std::endl;
 		for(auto  &it : convexHull.getIndexedPoints())
 		{
 			oss<<it.first<<": "<<it.second.X<<" "<<it.second.Y<<" "<<it.second.Z<<std::endl;
 		}
 
-		oss<<NUM_INDEXED_POINTS<<": "<<convexHull.getIndexedTriangles().size()<<std::endl;
+		oss<<NUM_INDEXED_TRIANGLES<<": "<<convexHull.getIndexedTriangles().size()<<std::endl;
 		for(auto  &it : convexHull.getIndexedTriangles())
 		{
 			oss<<it.first<<": "<<it.second.getIndexes()[0]<<" "<<it.second.getIndexes()[1]<<" "<<it.second.getIndexes()[2]<<std::endl;
