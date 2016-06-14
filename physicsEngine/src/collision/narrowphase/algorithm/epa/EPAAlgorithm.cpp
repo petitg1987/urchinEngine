@@ -6,7 +6,6 @@ namespace urchin
 	template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
 		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.epaMaxIteration")),
 		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance")),
-		minDotProductTolerance(std::numeric_limits<T>::epsilon() * (T)10.0),
 		debugRecorder(nullptr)
 	{
 
@@ -278,50 +277,44 @@ namespace urchin
 	/**
 	 * Determine triangles of initial convex hull of EPA algorithm. Normal of triangle must be outside the convex hull.
 	 * @param indexedPoints Points of initial convex hull
-	 * @param indexedTriangles [out] Triangle of initial convex hull
+	 * @param indexedTriangles [out] Triangle of initial convex hull. When points are too close together or almost on same
+	 * plane: the indexed triangles can be incomplete
 	 */
 	template<class T> void EPAAlgorithm<T>::determineInitialTriangles(const std::map<unsigned int, Point3<T>> &indexedPoints,
 			std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles)
 	{
-		const Vector3<T> normalTriangle1 = IndexedTriangle3D<T>(0, 1, 2).computeNormal(indexedPoints);
-		const Vector3<T> normalTriangle2 = IndexedTriangle3D<T>(0, 3, 1).computeNormal(indexedPoints);
-		const Vector3<T> normalTriangle3 = IndexedTriangle3D<T>(0, 2, 3).computeNormal(indexedPoints);
-		const Vector3<T> normalTriangle4 = IndexedTriangle3D<T>(1, 3, 2).computeNormal(indexedPoints);
-
-		T dotProduct1 = normalTriangle1.dotProduct(indexedPoints.at(0).vector(indexedPoints.at(3)));
-		if(dotProduct1 < -minDotProductTolerance)
+		const T MIN_POINTS_DISTANCE = terminationTolerance;
+		for(unsigned int i=0; i<3; ++i)
 		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(0, IndexedTriangle3D<T>(0, 1, 2)));
-		}else if(dotProduct1 > minDotProductTolerance)
-		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(0, IndexedTriangle3D<T>(0, 2, 1)));
+			for(unsigned int j=i+1; j<4; ++j)
+			{
+				T distance = indexedPoints.at(i).vector(indexedPoints.at(j)).length();
+				if(distance < MIN_POINTS_DISTANCE)
+				{
+					return;
+				}
+			}
 		}
 
-		T dotProduct2 = normalTriangle2.dotProduct(indexedPoints.at(0).vector(indexedPoints.at(2)));
-		if(dotProduct2 < -minDotProductTolerance)
+		constexpr T DOT_PRODUCT_TOLERANCE = std::numeric_limits<T>::epsilon() * (T)15.0;
+		const unsigned int indexes[4][3] = 		{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
+		const unsigned int revIndexes[4][3] = 	{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
+		for(unsigned int i=0; i<4; ++i)
 		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(1, IndexedTriangle3D<T>(0, 3, 1)));
-		}else if(dotProduct1 > minDotProductTolerance)
-		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(1, IndexedTriangle3D<T>(0, 1, 3)));
-		}
+			const unsigned int pointOutsideTriangle = 6 - (indexes[i][0] + indexes[i][1] + indexes[i][2]);
+			const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indexes[i]).computeNormal(indexedPoints);
+			T dotProduct = normalTriangle.dotProduct(indexedPoints.at(indexes[i][0]).vector(indexedPoints.at(pointOutsideTriangle)));
 
-		T dotProduct3 = normalTriangle3.dotProduct(indexedPoints.at(0).vector(indexedPoints.at(1)));
-		if(dotProduct3 < -minDotProductTolerance)
-		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(2, IndexedTriangle3D<T>(0, 2, 3)));
-		}else if(dotProduct1 > minDotProductTolerance)
-		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(2, IndexedTriangle3D<T>(0, 3, 2)));
-		}
-
-		T dotProduct4 = normalTriangle4.dotProduct(indexedPoints.at(1).vector(indexedPoints.at(0)));
-		if(dotProduct4 < -minDotProductTolerance)
-		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(3, IndexedTriangle3D<T>(1, 3, 2)));
-		}else if(dotProduct1 > minDotProductTolerance)
-		{
-			indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(3, IndexedTriangle3D<T>(1, 2, 3)));
+			if(dotProduct < -DOT_PRODUCT_TOLERANCE)
+			{
+				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indexes[i])));
+			}else if(dotProduct > DOT_PRODUCT_TOLERANCE)
+			{
+				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndexes[i])));
+			}else
+			{
+				return;
+			}
 		}
 	}
 

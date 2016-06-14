@@ -45,7 +45,6 @@ namespace urchin
 
 			const unsigned int maxIteration;
 			const float terminationTolerance;
-			const float minDotProductTolerance;
 
 			DebugRecorder *debugRecorder;
 	};
