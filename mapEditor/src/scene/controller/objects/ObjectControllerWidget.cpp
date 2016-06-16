@@ -323,11 +323,11 @@ namespace urchin
 		shapeTypeLabel->setGeometry(QRect(5, 5, 80, 22));
 
 		shapeTypeValueLabel = new QLabel(tabPhysicsShape);
-		shapeTypeValueLabel->setGeometry(QRect(85, 5, 90, 22));
+		shapeTypeValueLabel->setGeometry(QRect(85, 5, 100, 22));
 
 		changeBodyShapeButton = new QPushButton(tabPhysicsShape);
 		changeBodyShapeButton->setText("Change Shape");
-		changeBodyShapeButton->setGeometry(QRect(180, 5, 85, 22));
+		changeBodyShapeButton->setGeometry(QRect(190, 5, 85, 22));
 		connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
 
 		bodyShapeWidget = nullptr;

@@ -16,12 +16,12 @@ namespace urchin
 
 		addLightButton = new QPushButton(this);
 		addLightButton->setText("New Light");
-		addLightButton->setGeometry(QRect(0, 221, 85, 22));
+		addLightButton->setGeometry(QRect(0, 221, 90, 22));
 		connect(addLightButton, SIGNAL(clicked()), this, SLOT(showAddLightDialog()));
 
 		removeLightButton = new QPushButton(this);
 		removeLightButton->setText("Remove Light");
-		removeLightButton->setGeometry(QRect(86, 221, 85, 22));
+		removeLightButton->setGeometry(QRect(91, 221, 90, 22));
 		removeLightButton->setEnabled(false);
 		connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeSelectedLight()));
 
@@ -85,7 +85,7 @@ namespace urchin
 
 		QLabel *lightTypeLabel= new QLabel(specificPropertiesGroupBox);
 		lightTypeLabel->setText("Light Type:");
-		lightTypeLabel->setGeometry(QRect(5, 15, 55, 22));
+		lightTypeLabel->setGeometry(QRect(5, 15, 65, 22));
 
 		lightType = new QLabel(specificPropertiesGroupBox);
 		lightType->setGeometry(QRect(85, 15, 80, 22));

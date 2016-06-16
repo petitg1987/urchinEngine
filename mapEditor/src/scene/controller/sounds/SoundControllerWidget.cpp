@@ -19,12 +19,12 @@ namespace urchin
 
 		addSoundButton = new QPushButton(this);
 		addSoundButton->setText("New Sound");
-		addSoundButton->setGeometry(QRect(0, 221, 85, 22));
+		addSoundButton->setGeometry(QRect(0, 221, 90, 22));
 		connect(addSoundButton, SIGNAL(clicked()), this, SLOT(showAddSoundDialog()));
 
 		removeSoundButton = new QPushButton(this);
 		removeSoundButton->setText("Remove Sound");
-		removeSoundButton->setGeometry(QRect(86, 221, 85, 22));
+		removeSoundButton->setGeometry(QRect(91, 221, 90, 22));
 		removeSoundButton->setEnabled(false);
 		connect(removeSoundButton, SIGNAL(clicked()), this, SLOT(removeSelectedSound()));
 

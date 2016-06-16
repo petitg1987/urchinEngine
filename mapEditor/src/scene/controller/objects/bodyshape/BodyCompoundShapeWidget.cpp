@@ -23,12 +23,12 @@ namespace urchin
 
 		addShapeButton = new QPushButton(this);
 		addShapeButton->setText("New Shape");
-		addShapeButton->setGeometry(QRect(5, 126, 85, 22));
+		addShapeButton->setGeometry(QRect(5, 126, 90, 22));
 		connect(addShapeButton, SIGNAL(clicked()), this, SLOT(addNewLocalizedShape()));
 
 		removeShapeButton = new QPushButton(this);
 		removeShapeButton->setText("Remove Shape");
-		removeShapeButton->setGeometry(QRect(91, 126, 85, 22));
+		removeShapeButton->setGeometry(QRect(96, 126, 90, 22));
 		connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
 
 		localizedShapeDetails = nullptr;

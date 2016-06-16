@@ -6,6 +6,8 @@
 - AMBIENT OCCLUSION
 	- (3) [QUALITY IMPROVEMENT] Replace HBAO by VXAO technique
 - SHADOW
+	- (2) [NEW FEATURE] Use exponential shadow map to reduce light bleeding
+	- (2) [QUALITY IMPROVEMENT] Try to blur shadow with 3x3 tap access to shadow map texture
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [OPTIMIZATION] Use LOD
 	- (3) [QUALITY IMPROVEMENT] Create shadow map texture only for visible lights

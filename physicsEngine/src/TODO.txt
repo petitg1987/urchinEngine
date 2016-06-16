@@ -16,6 +16,7 @@
 	- (3) [OPTIMIZATION] Use PGO in g++
 - PROCESSABLE
 	- (2) [NEW FEATURE] Handle stair for character controller
+	- (3) [NEW FEATURE] Apply impusle on objects hit by character
 
 ############################################
 # To check :
