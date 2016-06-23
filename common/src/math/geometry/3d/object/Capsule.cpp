@@ -18,9 +18,9 @@ namespace urchin
 		centerPosition(centerPosition),
 		orientation(orientation)
 	{
-		axis[0] = orientation.rotatePoint(Point3<float>(1.0, 0.0, 0.0)).toVector();
-		axis[1] = orientation.rotatePoint(Point3<float>(0.0, 1.0, 0.0)).toVector();
-		axis[2] = orientation.rotatePoint(Point3<float>(0.0, 0.0, 1.0)).toVector();
+		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
+		axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
+		axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
 	}
 
 	template<class T> Capsule<T>::~Capsule()
@@ -63,20 +63,20 @@ namespace urchin
 
 	template<class T> Point3<T> Capsule<T>::getSupportPoint(const Vector3<T> &direction) const
 	{
-		Vector3<float> normalizedDirection;
+		Vector3<T> normalizedDirection;
 		if(direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0)
 		{
-			normalizedDirection = Vector3<float>(1.0, 0.0, 0.0);
+			normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);
 		}else
 		{
 			normalizedDirection = direction.normalize();
 		}
 
-		Point3<float> spherePos1 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
-		Point3<float> supportPoint1 = spherePos1.translate(normalizedDirection * getRadius());
+		Point3<T> spherePos1 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
+		Point3<T> supportPoint1 = spherePos1.translate(normalizedDirection * getRadius());
 
-		Point3<float> spherePos2 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
-		Point3<float> supportPoint2 = spherePos2.translate(normalizedDirection * getRadius());
+		Point3<T> spherePos2 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
+		Point3<T> supportPoint2 = spherePos2.translate(normalizedDirection * getRadius());
 
 		if(normalizedDirection.dotProduct(supportPoint1.toVector()) > normalizedDirection.dotProduct(supportPoint2.toVector()))
 		{
@@ -101,5 +101,8 @@ namespace urchin
 	//explicit template
 	template class Capsule<float>;
 	template std::ostream& operator <<<float>(std::ostream &, const Capsule<float> &);
+
+	template class Capsule<double>;
+	template std::ostream& operator <<<double>(std::ostream &, const Capsule<double> &);
 
 }

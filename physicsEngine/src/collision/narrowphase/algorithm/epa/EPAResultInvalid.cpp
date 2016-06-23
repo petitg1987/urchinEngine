@@ -46,5 +46,6 @@ namespace urchin
 
 	//explicit template
 	template class EPAResultInvalid<float>;
+	template class EPAResultInvalid<double>;
 
 }

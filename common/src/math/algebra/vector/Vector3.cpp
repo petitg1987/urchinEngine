@@ -176,6 +176,11 @@ namespace urchin
 		return &X;
 	}
 
+	template<class T> template<class NEW_TYPE> Vector3<NEW_TYPE> Vector3<T>::cast() const
+	{
+		return Vector3<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y, (NEW_TYPE)Z);
+	}
+
 	template<class T> Vector3<T> operator *(const Vector3<T> &v, T t)
 	{
 		return Vector3<T>(v.X * t, v.Y * t, v.Z * t);
@@ -210,11 +215,23 @@ namespace urchin
 
 	//explicit template
 	template class Vector3<float>;
+	template Vector3<float> Vector3<float>::cast() const;
+	template Vector3<double> Vector3<float>::cast() const;
 	template Vector3<float> operator *<float>(const Vector3<float> &, float);
 	template Vector3<float> operator *<float>(float, const Vector3<float> &);
 	template Vector3<float> operator /<float>(const Vector3<float> &, float);
 	template Vector3<float> operator *<float>(const Matrix3<float> &, const Vector3<float> &);
 	template Vector3<float> operator *<float>(const Vector3<float> &, const Matrix3<float> &);
 	template std::ostream& operator <<<float>(std::ostream &, const Vector3<float> &);
+
+	template class Vector3<double>;
+	template Vector3<double> Vector3<double>::cast() const;
+	template Vector3<float> Vector3<double>::cast() const;
+	template Vector3<double> operator *<double>(const Vector3<double> &, double);
+	template Vector3<double> operator *<double>(double, const Vector3<double> &);
+	template Vector3<double> operator /<double>(const Vector3<double> &, double);
+	template Vector3<double> operator *<double>(const Matrix3<double> &, const Vector3<double> &);
+	template Vector3<double> operator *<double>(const Vector3<double> &, const Matrix3<double> &);
+	template std::ostream& operator <<<double>(std::ostream &, const Vector3<double> &);
 
 }

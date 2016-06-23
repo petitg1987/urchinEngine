@@ -66,5 +66,6 @@ namespace urchin
 
 	//explicit template
 	template class GJKResultNoCollide<float>;
+	template class GJKResultNoCollide<double>;
 
 }

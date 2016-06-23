@@ -40,5 +40,6 @@ namespace urchin
 
 	//explicit template
 	template class IndexedTriangle3D<float>;
+	template class IndexedTriangle3D<double>;
 
 }

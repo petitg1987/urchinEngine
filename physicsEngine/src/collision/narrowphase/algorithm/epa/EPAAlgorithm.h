@@ -29,7 +29,7 @@ namespace urchin
 
 			std::unique_ptr<EPAResult<T>> processEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &);
 
-			void setupDebugRecorder(DebugRecorder *);
+			void setupDebugRecorder(DebugRecorder<T> *);
 
 		private:
 			void determineInitialPoints(const Simplex<T> &, const CollisionConvexObject3D &, const CollisionConvexObject3D &,
@@ -46,7 +46,7 @@ namespace urchin
 			const unsigned int maxIteration;
 			const float terminationTolerance;
 
-			DebugRecorder *debugRecorder;
+			DebugRecorder<T> *debugRecorder;
 	};
 
 }

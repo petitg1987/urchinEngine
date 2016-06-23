@@ -176,6 +176,11 @@ namespace urchin
 		return &X;
 	}
 
+	template<class T> template<class NEW_TYPE> Point2<NEW_TYPE> Point2<T>::cast() const
+	{
+		return Point2<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y);
+	}
+
 	template<class T> Point2<T> operator *(const Point2<T> &p, T t)
 	{
 		return Point2<T>(p.X * t, p.Y * t);
@@ -219,6 +224,8 @@ namespace urchin
 
 	//explicit template
 	template class Point2<float>;
+	template Point2<float> Point2<float>::cast() const;
+	template Point2<double> Point2<float>::cast() const;
 	template Point2<float> operator *<float>(const Point2<float> &, float);
 	template Point2<float> operator *<float>(float, const Point2<float> &);
 	template Point2<float> operator /<float>(const Point2<float> &, float);
@@ -227,6 +234,18 @@ namespace urchin
 	template Point2<float> operator *<float>(const Matrix2<float> &, const Point2<float> &);
 	template Point2<float> operator *<float>(const Point2<float> &, const Matrix2<float> &);
 	template std::ostream& operator <<<float>(std::ostream &, const Point2<float> &);
+
+	template class Point2<double>;
+	template Point2<double> Point2<double>::cast() const;
+	template Point2<float> Point2<double>::cast() const;
+	template Point2<double> operator *<double>(const Point2<double> &, double);
+	template Point2<double> operator *<double>(double, const Point2<double> &);
+	template Point2<double> operator /<double>(const Point2<double> &, double);
+	template Point2<double> operator +<double>(const Point2<double> &, double);
+	template Point2<double> operator -<double>(const Point2<double> &, double);
+	template Point2<double> operator *<double>(const Matrix2<double> &, const Point2<double> &);
+	template Point2<double> operator *<double>(const Point2<double> &, const Matrix2<double> &);
+	template std::ostream& operator <<<double>(std::ostream &, const Point2<double> &);
 
 	template class Point2<int>;
 	template Point2<int> operator *<int>(const Point2<int> &, int);

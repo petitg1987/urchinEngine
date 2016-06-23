@@ -54,7 +54,7 @@ namespace urchin
 		}
 
 		//4. find closest plane of extended polytope
-		float upperBoundPenDepth = std::numeric_limits<float>::max();
+		T upperBoundPenDepth = std::numeric_limits<T>::max();
 		typename std::map<unsigned int, EPATriangleData<T>>::const_iterator itClosestTriangleData;
 		unsigned int iterationNumber = 0;
 		Vector3<T> normal;
@@ -62,7 +62,7 @@ namespace urchin
 
 		if(debugRecorder!=nullptr)
 		{
-			debugRecorder->recordPoint("Origin", Point3<float>(0.0, 0.0, 0.0));
+			debugRecorder->recordPoint("Origin", Point3<T>(0.0, 0.0, 0.0));
 			debugRecorder->recordConvexHull("ConvexHull" + std::to_string(iterationNumber), convexHull);
 		}
 
@@ -80,8 +80,8 @@ namespace urchin
 			}
 
 			//get support point in direction of normal
-			const Point3<T> supportPointNormal = convexObject1.getSupportPoint(normal, true);
-			const Point3<T> supportPointMinusNormal = convexObject2.getSupportPoint(-normal, true);
+			const Point3<T> supportPointNormal = convexObject1.getSupportPoint(normal.template cast<float>(), true).template cast<T>();
+			const Point3<T> supportPointMinusNormal = convexObject2.getSupportPoint((-normal).template cast<float>(), true).template cast<T>();
 			const Point3<T> minkowskiDiffPoint = supportPointNormal - supportPointMinusNormal;
 
 			upperBoundPenDepth = std::min(upperBoundPenDepth, std::abs(minkowskiDiffPoint.toVector().dotProduct(normal)));
@@ -147,7 +147,7 @@ namespace urchin
 				+ closestTriangleData.getBarycentric(2) * supportPointsB[pointIndex3];
 
 		#ifdef _DEBUG
-			const float subtractDistance = contactPointA.vector(contactPointB).squareLength() - distanceToOrigin*distanceToOrigin;
+			const T subtractDistance = contactPointA.vector(contactPointB).squareLength() - distanceToOrigin*distanceToOrigin;
 			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
 		#endif
 
@@ -195,8 +195,14 @@ namespace urchin
 			const Vector3<T> v3 = rotationMatrix * Vector3<T>(v2.X, v2.Y, v2.Z);
 
 			//retrieve all points forming a hexahedron (two tetrahedron glued together)
-			Point3<T> supportPoints[3] = {convexObject1.getSupportPoint(v1, true), convexObject1.getSupportPoint(v2, true), convexObject1.getSupportPoint(v3, true)};
-			Point3<T> supportPointsMinus[3] = {convexObject2.getSupportPoint(-v1, true), convexObject2.getSupportPoint(-v2, true), convexObject2.getSupportPoint(-v3, true)};
+			Point3<T> supportPoints[3] = {
+					convexObject1.getSupportPoint(v1.template cast<float>(), true).template cast<T>(),
+					convexObject1.getSupportPoint(v2.template cast<float>(), true).template cast<T>(),
+					convexObject1.getSupportPoint(v3.template cast<float>(), true).template cast<T>()};
+			Point3<T> supportPointsMinus[3] = {
+					convexObject2.getSupportPoint((-v1).template cast<float>(), true).template cast<T>(),
+					convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>(),
+					convexObject2.getSupportPoint((-v3).template cast<float>(), true).template cast<T>()};
 
 			for(unsigned int i=0; i<2; ++i)
 			{
@@ -233,8 +239,12 @@ namespace urchin
 			const Vector3<T> v2 = -v1;
 
 			//retrieve all points forming a hexahedron (two tetrahedron glued together)
-			Point3<T> supportPoints[2] = {convexObject1.getSupportPoint(v1, true), convexObject1.getSupportPoint(v2, true)};
-			Point3<T> supportPointsMinus[2] = {convexObject2.getSupportPoint(-v1, true), convexObject2.getSupportPoint(-v2, true)};
+			Point3<T> supportPoints[2] = {
+					convexObject1.getSupportPoint(v1.template cast<float>(), true).template cast<T>(),
+					convexObject1.getSupportPoint(v2.template cast<float>(), true).template cast<T>()};
+			Point3<T> supportPointsMinus[2] = {
+					convexObject2.getSupportPoint((-v1).template cast<float>(), true).template cast<T>(),
+					convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>()};
 
 			for(unsigned int i=0; i<3; ++i)
 			{
@@ -283,32 +293,36 @@ namespace urchin
 	template<class T> void EPAAlgorithm<T>::determineInitialTriangles(const std::map<unsigned int, Point3<T>> &indexedPoints,
 			std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles)
 	{
-		const T MIN_POINTS_DISTANCE = terminationTolerance;
 		for(unsigned int i=0; i<3; ++i)
 		{
 			for(unsigned int j=i+1; j<4; ++j)
 			{
 				T distance = indexedPoints.at(i).vector(indexedPoints.at(j)).length();
-				if(distance < MIN_POINTS_DISTANCE)
+				T minPointsDistance = (std::nextafter(distance, std::numeric_limits<T>::max()) - distance) * 10.0;
+
+				if(distance < minPointsDistance)
 				{
 					return;
 				}
 			}
 		}
 
-		constexpr T DOT_PRODUCT_TOLERANCE = std::numeric_limits<T>::epsilon() * (T)15.0;
 		const unsigned int indexes[4][3] = 		{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
 		const unsigned int revIndexes[4][3] = 	{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
 		for(unsigned int i=0; i<4; ++i)
 		{
 			const unsigned int pointOutsideTriangle = 6 - (indexes[i][0] + indexes[i][1] + indexes[i][2]);
 			const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indexes[i]).computeNormal(indexedPoints);
-			T dotProduct = normalTriangle.dotProduct(indexedPoints.at(indexes[i][0]).vector(indexedPoints.at(pointOutsideTriangle)));
+			const Vector3<T> trianglePointToOutsidePoint = indexedPoints.at(indexes[i][0]).vector(indexedPoints.at(pointOutsideTriangle));
+			T dotProduct = normalTriangle.dotProduct(trianglePointToOutsidePoint);
 
-			if(dotProduct < -DOT_PRODUCT_TOLERANCE)
+			T trianglePointToOutsidePointLength = trianglePointToOutsidePoint.length();
+			T dotProductTolerance = (std::nextafter(trianglePointToOutsidePointLength, std::numeric_limits<T>::max()) - trianglePointToOutsidePointLength);
+
+			if(dotProduct < -dotProductTolerance)
 			{
 				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indexes[i])));
-			}else if(dotProduct > DOT_PRODUCT_TOLERANCE)
+			}else if(dotProduct > dotProductTolerance)
 			{
 				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndexes[i])));
 			}else
@@ -373,7 +387,7 @@ namespace urchin
 		return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
 	}
 
-	template<class T> void EPAAlgorithm<T>::setupDebugRecorder(DebugRecorder *debugRecorder)
+	template<class T> void EPAAlgorithm<T>::setupDebugRecorder(DebugRecorder<T> *debugRecorder)
 	{
 		this->debugRecorder = debugRecorder;
 	}
@@ -391,5 +405,6 @@ namespace urchin
 
 	//explicit template
 	template class EPAAlgorithm<float>;
+	template class EPAAlgorithm<double>;
 
 }

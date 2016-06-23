@@ -46,7 +46,7 @@ namespace urchin
 
 			const std::vector<Point3<T>> &getFrustumPoints() const;
 			const Point3<T> &getFrustumPoint(FrustumPoint frustumPoint) const;
-			const Point3<float> &getPosition() const;
+			const Point3<T> &getPosition() const;
 			
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 			T computeNearDistance() const;

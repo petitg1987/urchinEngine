@@ -17,9 +17,9 @@ namespace urchin
 		centerPosition(centerPosition),
 		orientation(orientation)
 	{
-		axis[0] = orientation.rotatePoint(Point3<float>(1.0, 0.0, 0.0)).toVector();
-		axis[1] = orientation.rotatePoint(Point3<float>(0.0, 1.0, 0.0)).toVector();
-		axis[2] = orientation.rotatePoint(Point3<float>(0.0, 0.0, 1.0)).toVector();
+		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
+		axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
+		axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
 	}
 
 	template<class T> OBBox<T>::OBBox(const AABBox<T> &aabb) :
@@ -120,12 +120,12 @@ namespace urchin
 
 	template<class T> AABBox<T> OBBox<T>::toAABBox() const
 	{
-		Point3<float> min(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
-		Point3<float> max(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max());
+		Point3<T> min(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max());
+		Point3<T> max(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max());
 
 		for(unsigned int i=0; i<8; ++i)
 		{
-			Point3<float> point = getPoint(i);
+			Point3<T> point = getPoint(i);
 			for(unsigned int coordinate=0; coordinate<3; ++coordinate)
 			{
 				if(point[coordinate]<min[coordinate])
@@ -150,8 +150,8 @@ namespace urchin
 	{ //Separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
 
 		//test spheres collide
-		Sphere<float> thisSphere(getPoint(0).distance(centerPosition), centerPosition);
-		Sphere<float> bboxSphere(bbox.getPoint(0).distance(bbox.getCenterPosition()), bbox.getCenterPosition());
+		Sphere<T> thisSphere(getPoint(0).distance(centerPosition), centerPosition);
+		Sphere<T> bboxSphere(bbox.getPoint(0).distance(bbox.getCenterPosition()), bbox.getCenterPosition());
 		if(!thisSphere.collideWithSphere(bboxSphere))
 		{
 			return false;
@@ -302,7 +302,7 @@ namespace urchin
 		#endif
 
 		//build OBB
-		Matrix3<float> m3 = m.toMatrix3();
+		Matrix3<T> m3 = m.toMatrix3();
 		Vector3<T> halfSizes(
 				(m3 * obb.getAxis(0) * obb.getHalfSize(0)).length(),
 				(m3 * obb.getAxis(1) * obb.getHalfSize(1)).length(),
@@ -339,5 +339,10 @@ namespace urchin
 	template OBBox<float> operator *<float>(const Matrix4<float> &, const OBBox<float> &);
 	template OBBox<float> operator *<float>(const OBBox<float> &, const Matrix4<float> &);
 	template std::ostream& operator <<<float>(std::ostream &, const OBBox<float> &);
+
+	template class OBBox<double>;
+	template OBBox<double> operator *<double>(const Matrix4<double> &, const OBBox<double> &);
+	template OBBox<double> operator *<double>(const OBBox<double> &, const Matrix4<double> &);
+	template std::ostream& operator <<<double>(std::ostream &, const OBBox<double> &);
 
 }

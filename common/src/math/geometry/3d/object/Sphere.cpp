@@ -63,5 +63,6 @@ namespace urchin
 
 	//explicit template
 	template class Sphere<float>;
+	template class Sphere<double>;
 
 }

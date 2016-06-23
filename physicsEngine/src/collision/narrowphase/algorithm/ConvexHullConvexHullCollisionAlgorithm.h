@@ -29,8 +29,8 @@ namespace urchin
 			};
 
 		private:
-			GJKAlgorithm<float> gjkAlgorithm;
-			EPAAlgorithm<float> epaAlgorithm;
+			GJKAlgorithm<double> gjkAlgorithm;
+			EPAAlgorithm<double> epaAlgorithm;
 	};
 
 }

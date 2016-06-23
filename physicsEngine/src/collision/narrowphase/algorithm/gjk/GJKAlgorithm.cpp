@@ -26,8 +26,8 @@ namespace urchin
 
 		//get point which belongs to the outline of the shape (Minkowski difference)
 		Vector3<T> initialDirection = Vector3<T>(1.0, 0.0, 0.0);
-		Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection, includeMargin);
-		Point3<T> initialSupportPointB = convexObject2.getSupportPoint(-initialDirection, includeMargin);
+		Point3<T> initialSupportPointA = convexObject1.getSupportPoint(initialDirection.template cast<float>(), includeMargin).template cast<T>();
+		Point3<T> initialSupportPointB = convexObject2.getSupportPoint((-initialDirection).template cast<float>(), includeMargin).template cast<T>();
 		Point3<T> initialPoint = initialSupportPointA - initialSupportPointB;
 
 		Vector3<T> direction = initialPoint.vector(Point3<T>(0.0, 0.0, 0.0));
@@ -42,8 +42,8 @@ namespace urchin
 
 		for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber)
 		{
-			Point3<T> supportPointA = convexObject1.getSupportPoint(direction, includeMargin);
-			Point3<T> supportPointB = convexObject2.getSupportPoint(-direction, includeMargin);
+			Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<T>();
+			Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>(), includeMargin).template cast<T>();
 			Point3<T> newPoint = supportPointA - supportPointB;
 
 			const Vector3<T> &vClosestPoint = -direction; //vector from origin to closest point of simplex
@@ -177,5 +177,6 @@ namespace urchin
 
 	//explicit template
 	template class GJKAlgorithm<float>;
+	template class GJKAlgorithm<double>;
 
 }

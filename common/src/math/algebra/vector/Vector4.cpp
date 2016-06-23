@@ -189,6 +189,11 @@ namespace urchin
 		return &X;
 	}
 
+	template<class T> template<class NEW_TYPE> Vector4<NEW_TYPE> Vector4<T>::cast() const
+	{
+		return Vector4<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y, (NEW_TYPE)Z, (NEW_TYPE)W);
+	}
+
 	template<class T> Vector4<T> operator *(const Vector4<T> &v, T t)
 	{
 		return Vector4<T>(v.X * t, v.Y * t, v.Z * t, v.W * t);
@@ -224,11 +229,23 @@ namespace urchin
 
 	//explicit template
 	template class Vector4<float>;
+	template Vector4<float> Vector4<float>::cast() const;
+	template Vector4<double> Vector4<float>::cast() const;
 	template Vector4<float> operator *<float>(const Vector4<float> &, float);
 	template Vector4<float> operator *<float>(float, const Vector4<float> &);
 	template Vector4<float> operator /<float>(const Vector4<float> &, float);
 	template Vector4<float> operator *<float>(const Matrix4<float> &, const Vector4<float> &);
 	template Vector4<float> operator *<float>(const Vector4<float> &, const Matrix4<float> &);
 	template std::ostream& operator <<<float>(std::ostream &, const Vector4<float> &);
+
+	template class Vector4<double>;
+	template Vector4<double> Vector4<double>::cast() const;
+	template Vector4<float> Vector4<double>::cast() const;
+	template Vector4<double> operator *<double>(const Vector4<double> &, double);
+	template Vector4<double> operator *<double>(double, const Vector4<double> &);
+	template Vector4<double> operator /<double>(const Vector4<double> &, double);
+	template Vector4<double> operator *<double>(const Matrix4<double> &, const Vector4<double> &);
+	template Vector4<double> operator *<double>(const Vector4<double> &, const Matrix4<double> &);
+	template std::ostream& operator <<<double>(std::ostream &, const Vector4<double> &);
 
 }

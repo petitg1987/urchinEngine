@@ -14,6 +14,7 @@
 	- (2) [OPTIMIZATION] Use a memory pool when create a result of GJK and EPA algorithm
 - GLOBAL
 	- (3) [OPTIMIZATION] Use PGO in g++
+	- (1) [NEW FEATURE] Create new shape type: triangle mesh (for ground)
 - PROCESSABLE
 	- (2) [NEW FEATURE] Handle stair for character controller
 	- (3) [NEW FEATURE] Apply impusle on objects hit by character

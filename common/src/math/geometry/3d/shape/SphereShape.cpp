@@ -17,5 +17,6 @@ namespace urchin
 
 	//explicit template
 	template class SphereShape<float>;
+	template class SphereShape<double>;
 
 }

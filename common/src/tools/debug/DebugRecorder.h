@@ -14,7 +14,7 @@ namespace urchin
 	* Debug recorder can be setup on some physics process in order to record debug data. The record produced can be then used in a
 	* debug visualizer to replay the process step by step.
 	*/
-	class DebugRecorder
+	template<class T> class DebugRecorder
 	{
 		#define POINT3_ACTION "POINT3"
 		#define CONVEX_HULL_3D_ACTION "CONVEX_HULL_3D"
@@ -27,8 +27,8 @@ namespace urchin
 			DebugRecorder(const std::string &);
 			~DebugRecorder();
 
-			void recordPoint(const std::string &, const Point3<float> &);
-			void recordConvexHull(const std::string &, const ConvexHull3D<float> &);
+			void recordPoint(const std::string &, const Point3<T> &);
+			void recordConvexHull(const std::string &, const ConvexHull3D<T> &);
 
 			void clearEntity(const std::string &);
 

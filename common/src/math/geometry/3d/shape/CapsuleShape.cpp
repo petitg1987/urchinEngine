@@ -34,4 +34,5 @@ namespace urchin
 
 	//explicit template
 	template class CapsuleShape<float>;
+	template class CapsuleShape<double>;
 }

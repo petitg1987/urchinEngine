@@ -135,5 +135,6 @@ namespace urchin
 
 	//explicit template
 	template class Simplex<float>;
+	template class Simplex<double>;
 
 }

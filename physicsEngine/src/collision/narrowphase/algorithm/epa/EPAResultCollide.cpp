@@ -59,5 +59,6 @@ namespace urchin
 
 	//explicit template
 	template class EPAResultCollide<float>;
+	template class EPAResultCollide<double>;
 
 }

@@ -110,9 +110,9 @@ namespace urchin
 		Point3<T> planePoint = Point3<T>(normal * -d);
 		Vector3<T> lineVector = line.getA().vector(line.getB());
 
-		float numerator = normal.dotProduct(lineVector);
+		T numerator = normal.dotProduct(lineVector);
 		Vector3<T> lineAToPlanePoint = line.getA().vector(planePoint);
-		float t = normal.dotProduct(lineAToPlanePoint) / numerator;
+		T t = normal.dotProduct(lineAToPlanePoint) / numerator;
 		return (line.getA() + Point3<T>(t * lineVector));
 	}
 
@@ -124,5 +124,8 @@ namespace urchin
 	//explicit template
 	template class Plane<float>;
 	template std::ostream& operator <<<float>(std::ostream &, const Plane<float> &);
+
+	template class Plane<double>;
+	template std::ostream& operator <<<double>(std::ostream &, const Plane<double> &);
 
 }

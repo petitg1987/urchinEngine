@@ -49,6 +49,8 @@ namespace urchin
 			operator T*();
 			operator const T*() const;
 
+			template<class NEW_TYPE> Point2<NEW_TYPE> cast() const;
+
 			T X, Y;
 	};
 

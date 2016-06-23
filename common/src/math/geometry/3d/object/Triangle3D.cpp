@@ -143,5 +143,6 @@ namespace urchin
 
 	//explicit template
 	template class Triangle3D<float>;
+	template class Triangle3D<double>;
 
 }

@@ -43,6 +43,8 @@ namespace urchin
 			
 			operator T*();
 			operator const T*() const;
+
+			template<class NEW_TYPE> Vector3<NEW_TYPE> cast() const;
 		
 			T X, Y, Z;
 	};

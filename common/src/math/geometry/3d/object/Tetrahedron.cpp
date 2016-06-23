@@ -208,5 +208,6 @@ namespace urchin
 
 	//explicit template
 	template class Tetrahedron<float>;
+	template class Tetrahedron<double>;
 
 }

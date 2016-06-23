@@ -36,5 +36,6 @@ namespace urchin
 
 	//explicit template
 	template class ConvexObject3D<float>;
+	template class ConvexObject3D<double>;
 
 }

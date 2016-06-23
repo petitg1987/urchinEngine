@@ -316,4 +316,10 @@ namespace urchin
 	template Matrix4<float> operator /<float>(const Matrix4<float> &, float);
 	template std::ostream& operator <<<float>(std::ostream &, const Matrix4<float> &);
 
+	template class Matrix4<double>;
+	template Matrix4<double> operator *<double>(const Matrix4<double> &, double);
+	template Matrix4<double> operator *<double>(double, const Matrix4<double> &);
+	template Matrix4<double> operator /<double>(const Matrix4<double> &, double);
+	template std::ostream& operator <<<double>(std::ostream &, const Matrix4<double> &);
+
 }

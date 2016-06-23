@@ -24,5 +24,6 @@ namespace urchin
 
 	//explicit template
 	template class Triangle3DShape<float>;
+	template class Triangle3DShape<double>;
 
 }

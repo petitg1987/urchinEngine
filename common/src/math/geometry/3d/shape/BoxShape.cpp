@@ -30,4 +30,5 @@ namespace urchin
 
 	//explicit template
 	template class BoxShape<float>;
+	template class BoxShape<double>;
 }

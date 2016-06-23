@@ -7,12 +7,12 @@
 namespace urchin
 {
 
-	DebugRecorder::DebugRecorder(const std::string &filename)
+	template <class T> DebugRecorder<T>::DebugRecorder(const std::string &filename)
 	{
 		file.open(filename, std::ofstream::out | std::ofstream::trunc);
 	}
 
-	DebugRecorder::~DebugRecorder()
+	template <class T> DebugRecorder<T>::~DebugRecorder()
 	{
 		if(file.is_open())
 		{
@@ -21,7 +21,7 @@ namespace urchin
 	}
 
 
-	void DebugRecorder::recordPoint(const std::string &entityId, const Point3<float>& point)
+	template <class T> void DebugRecorder<T>::recordPoint(const std::string &entityId, const Point3<T>& point)
 	{
 		std::ostringstream oss;
 		oss.precision(std::numeric_limits<float>::max_digits10);
@@ -31,7 +31,7 @@ namespace urchin
 		writeAction(std::string(POINT3_ACTION) + ": " + entityId + "\n" + oss.str());
 	}
 
-	void DebugRecorder::recordConvexHull(const std::string &entityId, const ConvexHull3D<float> &convexHull)
+	template <class T> void DebugRecorder<T>::recordConvexHull(const std::string &entityId, const ConvexHull3D<T> &convexHull)
 	{
 		std::ostringstream oss;
 		oss.precision(std::numeric_limits<float>::max_digits10);
@@ -51,16 +51,20 @@ namespace urchin
 		writeAction(std::string(CONVEX_HULL_3D_ACTION) + ": " + entityId + "\n" + oss.str());
 	}
 
-	void DebugRecorder::clearEntity(const std::string &entityId)
+	template <class T> void DebugRecorder<T>::clearEntity(const std::string &entityId)
 	{
 		std::string content = std::string(CLEAR_ENTITY_ACTION) + ": " + entityId + "\n";
 		writeAction(content);
 	}
 
-	void DebugRecorder::writeAction(const std::string &content)
+	template <class T> void DebugRecorder<T>::writeAction(const std::string &content)
 	{
 		std::string actionContent = ">" + content + "\n";
 		file.write(actionContent.c_str(), actionContent.size());
 	}
+
+	//explicit template
+	template class DebugRecorder<float>;
+	template class DebugRecorder<double>;
 
 }

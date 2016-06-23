@@ -55,5 +55,6 @@ namespace urchin
 
 	//explicit template
 	template class EPATriangleData<float>;
+	template class EPATriangleData<double>;
 
 }

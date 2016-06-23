@@ -29,5 +29,6 @@ namespace urchin
 
 	//explicit template
 	template class CylinderShape<float>;
+	template class CylinderShape<double>;
 
 }

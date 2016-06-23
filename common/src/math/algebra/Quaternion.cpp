@@ -67,69 +67,69 @@ namespace urchin
 
 	template<class T> Quaternion<T>::Quaternion(const Vector3<T> &eulerAngles, RotationSequence rotationSequence)
 	{
-		Quaternion<float> finalQuaternion;
+		Quaternion<T> finalQuaternion;
 
 		switch(rotationSequence)
 		{
 			case RotationSequence::XYZ:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::XZY:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::YXZ:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::YZX:
-				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::ZXY:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
 				break;
 			case RotationSequence::ZYX:
-				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
 				break;
 			case RotationSequence::XYX:
-				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::XZX:
-				finalQuaternion = Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::YXY:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::YZY:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[0]);
 				break;
 			case RotationSequence::ZXZ:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(1.0, 0.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(1.0, 0.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
 				break;
 			case RotationSequence::ZYZ:
-				finalQuaternion = Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[2]) *
-						Quaternion(Vector3<float>(0.0, 1.0, 0.0), eulerAngles[1]) *
-						Quaternion(Vector3<float>(0.0, 0.0, 1.0), eulerAngles[0]);
+				finalQuaternion = Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[2]) *
+						Quaternion(Vector3<T>(0.0, 1.0, 0.0), eulerAngles[1]) *
+						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
 				break;
 			default:
 				throw std::invalid_argument("Unknown quaternion rotation sequence: " + rotationSequence);
@@ -462,5 +462,8 @@ namespace urchin
 	//explicit template
 	template class Quaternion<float>;
 	template std::ostream& operator <<<float>(std::ostream &, const Quaternion<float> &);
+
+	template class Quaternion<double>;
+	template std::ostream& operator <<<double>(std::ostream &, const Quaternion<double> &);
 
 }

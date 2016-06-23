@@ -165,6 +165,11 @@ namespace urchin
 		return &X;
 	}
 
+	template<class T> template<class NEW_TYPE> Vector2<NEW_TYPE> Vector2<T>::cast() const
+	{
+		return Vector2<NEW_TYPE>((NEW_TYPE)X, (NEW_TYPE)Y);
+	}
+
 	template<class T> Vector2<T> operator *(const Vector2<T> &v, T t)
 	{
 		return Vector2<T>(v.X * t, v.Y * t);
@@ -198,12 +203,24 @@ namespace urchin
 
 	//explicit template
 	template class Vector2<float>;
+	template Vector2<float> Vector2<float>::cast() const;
+	template Vector2<double> Vector2<float>::cast() const;
 	template Vector2<float> operator *<float>(const Vector2<float> &, float);
 	template Vector2<float> operator *<float>(float, const Vector2<float> &);
 	template Vector2<float> operator /<float>(const Vector2<float> &, float);
 	template Vector2<float> operator *<float>(const Matrix2<float> &, const Vector2<float> &);
 	template Vector2<float> operator *<float>(const Vector2<float> &, const Matrix2<float> &);
 	template std::ostream& operator <<<float>(std::ostream &, const Vector2<float> &);
+
+	template class Vector2<double>;
+	template Vector2<double> Vector2<double>::cast() const;
+	template Vector2<float> Vector2<double>::cast() const;
+	template Vector2<double> operator *<double>(const Vector2<double> &, double);
+	template Vector2<double> operator *<double>(double, const Vector2<double> &);
+	template Vector2<double> operator /<double>(const Vector2<double> &, double);
+	template Vector2<double> operator *<double>(const Matrix2<double> &, const Vector2<double> &);
+	template Vector2<double> operator *<double>(const Vector2<double> &, const Matrix2<double> &);
+	template std::ostream& operator <<<double>(std::ostream &, const Vector2<double> &);
 
 	template class Vector2<int>;
 	template Vector2<int> operator *<int>(const Vector2<int> &, int);

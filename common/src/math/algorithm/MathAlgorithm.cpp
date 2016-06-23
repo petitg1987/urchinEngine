@@ -53,4 +53,7 @@ namespace urchin
 	//explicit template
 	template float MathAlgorithm::clamp<float>(float, float, float);
 	template float MathAlgorithm::sign<float>(float);
+
+	template double MathAlgorithm::clamp<double>(double, double, double);
+	template double MathAlgorithm::sign<double>(double);
 }

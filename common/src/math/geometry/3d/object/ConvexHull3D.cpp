@@ -355,4 +355,7 @@ namespace urchin
 	template class ConvexHull3D<float>;
 	template std::ostream& operator <<<float>(std::ostream &, const ConvexHull3D<float> &);
 
+	template class ConvexHull3D<double>;
+	template std::ostream& operator <<<double>(std::ostream &, const ConvexHull3D<double> &);
+
 }

@@ -60,4 +60,7 @@ namespace urchin
 	template class Line3D<float>;
 	template std::ostream& operator <<<float>(std::ostream &, const Line3D<float> &);
 
+	template class Line3D<double>;
+	template std::ostream& operator <<<double>(std::ostream &, const Line3D<double> &);
+
 }

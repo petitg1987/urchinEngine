@@ -18,9 +18,9 @@ namespace urchin
 		centerPosition(centerPosition),
 		orientation(orientation)
 	{
-		axis[0] = orientation.rotatePoint(Point3<float>(1.0, 0.0, 0.0)).toVector();
-		axis[1] = orientation.rotatePoint(Point3<float>(0.0, 1.0, 0.0)).toVector();
-		axis[2] = orientation.rotatePoint(Point3<float>(0.0, 0.0, 1.0)).toVector();
+		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
+		axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
+		axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
 	}
 
 	template<class T> Cylinder<T>::~Cylinder()
@@ -63,22 +63,22 @@ namespace urchin
 
 	template<class T> Point3<T> Cylinder<T>::getSupportPoint(const Vector3<T> &direction) const
 	{
-		Vector3<float> normalizedDirection;
+		Vector3<T> normalizedDirection;
 		if(direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0)
 		{
-			normalizedDirection = Vector3<float>(1.0, 0.0, 0.0);
+			normalizedDirection = Vector3<T>(1.0, 0.0, 0.0);
 		}else
 		{
 			normalizedDirection = direction.normalize();
 		}
-		Vector3<float> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(getAxis(getCylinderOrientation()))) * getAxis(getCylinderOrientation());
+		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(getAxis(getCylinderOrientation()))) * getAxis(getCylinderOrientation());
 		projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 
-		Point3<float> cirlcePos1 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
-		Point3<float> supportPoint1 = cirlcePos1.translate(projectedDirectionOnCircle * getRadius());
+		Point3<T> cirlcePos1 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
+		Point3<T> supportPoint1 = cirlcePos1.translate(projectedDirectionOnCircle * getRadius());
 
-		Point3<float> cirlcePos2 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
-		Point3<float> supportPoint2 = cirlcePos2.translate(projectedDirectionOnCircle * getRadius());
+		Point3<T> cirlcePos2 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
+		Point3<T> supportPoint2 = cirlcePos2.translate(projectedDirectionOnCircle * getRadius());
 
 		if(normalizedDirection.dotProduct(supportPoint1.toVector()) > normalizedDirection.dotProduct(supportPoint2.toVector()))
 		{
@@ -90,5 +90,6 @@ namespace urchin
 
 	//explicit template
 	template class Cylinder<float>;
+	template class Cylinder<double>;
 
 }
