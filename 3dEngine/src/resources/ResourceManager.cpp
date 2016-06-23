@@ -19,7 +19,7 @@ namespace urchin
 			Logger::logger()<<"Resources not released:\n";
 			for (std::map<std::string, Resource *>::const_iterator i = mResources.begin(); i != mResources.end(); ++i)
 			{
-				Logger::logger()<< " - " << i->second->getName() << "\n";
+				Logger::logger()<< " - " << i->second->getName() << "\n\n";
 			}
 			Logger::setLogger(nullptr);
 		}

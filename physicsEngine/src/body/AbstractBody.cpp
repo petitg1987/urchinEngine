@@ -12,6 +12,9 @@ namespace urchin
 			id(id)
 	{
 		this->scaledShape = originalShape->scale(transform.getScale());
+		#ifdef _DEBUG
+			this->scaledShape->checkInnerMarginQuality(id);
+		#endif
 
 		//default values
 		restitution = 0.2f;

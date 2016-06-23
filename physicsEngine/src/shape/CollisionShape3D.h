@@ -43,11 +43,16 @@ namespace urchin
 
 			virtual Vector3<float> computeLocalInertia(float) const = 0;
 
+			#ifdef _DEBUG
+				void checkInnerMarginQuality(const std::string &) const;
+			#endif
+
 		protected:
-			void setInnerMargin(float);
+			void refreshInnerMargin(float);
 
 		private:
 			float innerMargin;
+			const float initialInnerMargin;
 	};
 
 }

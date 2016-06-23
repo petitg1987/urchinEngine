@@ -332,6 +332,7 @@ namespace urchin
 		{
 			Logger::logger()<<"Impossible to build a convex hull with zero point.\n";
 		}
+		Logger::logger()<<"\n";
 		Logger::setLogger(nullptr);
 
 		return std::invalid_argument("Impossible to build the convex hull. All points form a " + formName + ".");

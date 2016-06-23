@@ -38,7 +38,7 @@ namespace urchin
 
 		if(convexHullReduced.get()==nullptr)
 		{ //impossible to shrink the convex hull correctly
-			setInnerMargin(0.0);
+			refreshInnerMargin(0.0);
 		}
 	}
 

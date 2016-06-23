@@ -170,7 +170,7 @@ namespace urchin
 			Logger::logger()<<"Maximum of iteration reached on GJK algorithm ("<<maxIteration<<")."<<"\n";
 			Logger::logger()<<" - Relative termination tolerance: "<<relativeTerminationTolerance<<"\n";
 			Logger::logger()<<" - Minimum termination tolerance: "<<minimumTerminationTolerance<<"\n";
-			Logger::logger()<<" - Percentage increase of minimum tolerance: "<<percentageIncreaseOfMinimumTolerance<<"\n";
+			Logger::logger()<<" - Percentage increase of minimum tolerance: "<<percentageIncreaseOfMinimumTolerance<<"\n\n";
 			Logger::setLogger(nullptr);
 		}
 	#endif

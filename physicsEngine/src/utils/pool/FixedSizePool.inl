@@ -81,7 +81,7 @@ template<class BaseType> inline void FixedSizePool<BaseType>::free(BaseType *ptr
 		Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
 		Logger::logger()<<"Pool is full of elements."<<"\n";
 		Logger::logger()<<" - Element size: "<<maxElementSize<<"\n";
-		Logger::logger()<<" - Maximum elements: "<<maxElements<<"\n";
+		Logger::logger()<<" - Maximum elements: "<<maxElements<<"\n\n";
 		Logger::setLogger(nullptr);
 	}
 #endif

@@ -27,12 +27,9 @@ namespace urchin
 	{
 		float minAxis = std::min(getRadius(), getHeight() / 2.0f);
 		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
-		float minimumSafeMargin = minAxis * maximumMarginPercentage;
+		float maximumSafeMargin = minAxis * maximumMarginPercentage;
 
-		if(minimumSafeMargin < getInnerMargin())
-		{
-			setInnerMargin(minimumSafeMargin);
-		}
+		refreshInnerMargin(maximumSafeMargin);
 	}
 
 	CollisionShape3D::ShapeType CollisionCylinderShape::getShapeType() const

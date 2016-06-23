@@ -398,7 +398,7 @@ namespace urchin
 			Logger::setLogger(new FileLogger());
 			Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
 			Logger::logger()<<"Maximum of iteration reached on EPA algorithm ("<<maxIteration<<")."<<"\n";
-			Logger::logger()<<" - Termination tolerance: "<<terminationTolerance<<"\n";
+			Logger::logger()<<" - Termination tolerance: "<<terminationTolerance<<"\n\n";
 			Logger::setLogger(nullptr);
 		}
 	#endif
