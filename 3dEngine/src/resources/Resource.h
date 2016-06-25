@@ -14,6 +14,8 @@ namespace urchin
 		
 			const std::string& getName() const;
 			void setName(const std::string &name);
+
+			unsigned int getRefCount() const;
 			void addRef();
 			void release();
 

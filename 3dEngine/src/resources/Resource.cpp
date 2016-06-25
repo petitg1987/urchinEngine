@@ -27,6 +27,11 @@ namespace urchin
 		name = nameU;
 	}
 
+	unsigned int Resource::getRefCount() const
+	{
+		return refCount;
+	}
+
 	void Resource::addRef()
 	{
 		++refCount;

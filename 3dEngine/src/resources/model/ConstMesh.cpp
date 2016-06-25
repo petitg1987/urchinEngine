@@ -155,8 +155,21 @@ namespace urchin
 		for(auto texture : textures)
 		{
 			glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, needRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, needRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+			float textureWrapValue = needRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE;
+
+			if(material->getRefCount()>1)
+			{
+				float currentTextureWrapValue = 0.0f;
+				glGetTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &currentTextureWrapValue);
+				if(textureWrapValue!=currentTextureWrapValue)
+				{
+					const std::string &materialName = material->getDiffuseTexture()->getName();
+					throw std::runtime_error("Unsupported two different configurations for same material: " + materialName + ".");
+				}
+			}
+
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapValue);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapValue);
 		}
 	}
 

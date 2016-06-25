@@ -1,0 +1,10 @@
+[2016-06-25 20:00:11] (WW) Not optimal margin on shape id desertGround.
+ - Current margin: 0.002
+ - Expected margin: 0.04
+ - Shape length: 778.235
+
+[2016-06-25 20:16:57] (WW) Not optimal margin on shape id desertGround.
+ - Current margin: 0.002
+ - Expected margin: 0.04
+ - Shape length: 778.235
+
