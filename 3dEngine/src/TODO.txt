@@ -6,7 +6,8 @@
 - AMBIENT OCCLUSION
 	- (3) [NEW FEATURE] Replace HBAO by VXAO technique
 - SHADOW
-	- (2) [OPTIMIZATION / QUALITY IMPROVEMENT] Blur variance shadow map with 'summed area' technique
+	- (2) [OPTIMIZATION] Blur variance shadow map with 'summed area' technique.
+						 Note: when implemented, the light bleeding constant in shader could be decreased to improve quality.
 	- (2) [QUALITY IMPROVEMENT] Use trilinear filter (mipmap) on shadow map
 	- (2) [QUALITY IMPROVEMENT] Use multisampling filter (MSAA) on shadow map
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
@@ -56,5 +57,6 @@
 - Library: OpenGL, Glew, FreeType2
 - COD4 character: 6000 triangles + normal mapping
 - Crysis 1: scene with 500 000 to 1 million of triangles displayed
+- Crysis: average of 512 pixels/m for textures (=texels density)
 - Skyrim: shadow map resolution 4096x4096 (hight quality), 2048*2048 (medium quality), 2 shadow maps: primary and secondary
 - GTA V: shadow map resolution 1024*4096 (4 rendering). http://www.adriancourreges.com/blog/2015/11/02/gta-v-graphics-study/
