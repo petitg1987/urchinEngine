@@ -1,7 +1,7 @@
 #include <iostream>
 #include <limits>
 
-#include "collision/broadphase/SweepAndPrune.h"
+#include "collision/broadphase/sweepandprune/SweepAndPrune.h"
 #include "collision/broadphase/VectorPairContainer.h"
 
 #define MAX_END_POINTS 16383

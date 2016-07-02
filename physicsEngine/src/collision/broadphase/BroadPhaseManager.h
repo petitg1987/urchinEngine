@@ -4,7 +4,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "collision/broadphase/SweepAndPrune.h"
+#include "collision/broadphase/BroadPhaseAlgorithm.h"
 #include "collision/broadphase/PairContainer.h"
 #include "collision/OverlappingPair.h"
 #include "body/BodyManager.h"
@@ -29,7 +29,7 @@ namespace urchin
 			const std::vector<OverlappingPair *> &computeOverlappingPairs();
 
 		private:
-			SweepAndPrune *sweepAndPrune;
+			BroadPhaseAlgorithm *broadPhaseAlgorithm;
 	};
 
 }

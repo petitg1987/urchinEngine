@@ -1,13 +1,14 @@
 #include "collision/broadphase/BroadPhaseManager.h"
 #include "body/work/AbstractWorkBody.h"
 #include "body/work/WorkGhostBody.h"
+#include "collision/broadphase/sweepandprune/SweepAndPrune.h"
 
 namespace urchin
 {
 
 	BroadPhaseManager::BroadPhaseManager(BodyManager *bodyManager)
 	{
-		sweepAndPrune = new SweepAndPrune();
+		broadPhaseAlgorithm = new SweepAndPrune();
 
 		bodyManager->addObserver(this, BodyManager::ADD_WORK_BODY);
 		bodyManager->addObserver(this, BodyManager::REMOVE_WORK_BODY);
@@ -15,7 +16,7 @@ namespace urchin
 
 	BroadPhaseManager::~BroadPhaseManager()
 	{
-		delete sweepAndPrune;
+		delete broadPhaseAlgorithm;
 	}
 
 	void BroadPhaseManager::notify(Observable *observable, int notificationType)
@@ -45,18 +46,18 @@ namespace urchin
 	 */
 	void BroadPhaseManager::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer)
 	{
-		sweepAndPrune->addBody(body, alternativePairContainer);
+		broadPhaseAlgorithm->addBody(body, alternativePairContainer);
 	}
 
 	void BroadPhaseManager::removeBody(AbstractWorkBody *body)
 	{
-		sweepAndPrune->removeBody(body);
+		broadPhaseAlgorithm->removeBody(body);
 	}
 
 	const std::vector<OverlappingPair *> &BroadPhaseManager::computeOverlappingPairs()
 	{
-		sweepAndPrune->updateBodies();
-		return sweepAndPrune->getOverlappingPairs();
+		broadPhaseAlgorithm->updateBodies();
+		return broadPhaseAlgorithm->getOverlappingPairs();
 	}
 
 }

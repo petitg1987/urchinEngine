@@ -7,9 +7,10 @@
 	- (3) [NEW FEATURE] Replace HBAO by VXAO technique
 - SHADOW
 	- (2) [OPTIMIZATION] Blur variance shadow map with 'summed area' technique.
-						 Note: when implemented, the light bleeding constant in shader could be decreased to improve quality.
-	- (2) [QUALITY IMPROVEMENT] Use trilinear filter (mipmap) on shadow map
-	- (2) [QUALITY IMPROVEMENT] Use multisampling filter (MSAA) on shadow map
+			- Note 1: decreased light bleeding to improve quality.
+			- Note 2: force usage of 32 bits shadow map.
+	- (2) [QUALITY IMPROVEMENT] Use mipmap on shadow map (on blured shadow maps when blur used)
+	- (2) [QUALITY IMPROVEMENT] Use anisotropic on shadow map (on blured shadow maps when blur used)
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [NEW FEATURE] Implement PCSS
 	- (3) [OPTIMIZATION] Use LOD
