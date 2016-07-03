@@ -3,16 +3,12 @@
 namespace urchin
 {
 
-	//static
-	float AABBNode::fatMargin = ConfigService::instance()->getFloatValue("broadPhase.aabbTreeFatMargin");
-
 	AABBNode::AABBNode(BodyNodeData *bodyNodeData) :
 		bodyNodeData(bodyNodeData),
-		parentNode(nullptr),
-		leftChild(nullptr),
-		rightChild(nullptr)
+		parentNode(nullptr)
 	{
-
+		//this->children[0] = nullptr; //not done because of union
+		this->children[1] = nullptr;
 	}
 
 	AABBNode::~AABBNode()
@@ -20,9 +16,14 @@ namespace urchin
 		delete bodyNodeData;
 	}
 
+	BodyNodeData *AABBNode::getBodyNodeData() const
+	{
+		return bodyNodeData;
+	}
+
 	bool AABBNode::isLeaf()
 	{
-		return leftChild==nullptr;
+		return children[1]==nullptr; //use second child because of union
 	}
 
 	void AABBNode::setParent(AABBNode *parentNode)
@@ -35,31 +36,42 @@ namespace urchin
 		return parentNode;
 	}
 
-	void AABBNode::setChildren(AABBNode *leftChild, AABBNode *rightChild)
+	void AABBNode::setLeftChild(AABBNode *leftChild)
 	{
-		this->leftChild = leftChild;
-		this->leftChild->setParent(this);
-
-		this->rightChild = rightChild;
-		this->rightChild->setParent(this);
+		this->children[0] = leftChild;
+		this->children[0]->setParent(this);
 	}
 
 	AABBNode *AABBNode::getLeftChild() const
 	{
-		return leftChild;
+		return children[0];
+	}
+
+	void AABBNode::setRightChild(AABBNode *rightChild)
+	{
+		this->children[1] = rightChild;
+		this->children[1]->setParent(this);
 	}
 
 	AABBNode *AABBNode::getRightChild() const
 	{
-		return rightChild;
+		return children[1];
 	}
 
+	AABBNode *AABBNode::getSibling() const
+	{
+		return parentNode->getLeftChild()==this ? parentNode->getRightChild() : parentNode->getLeftChild();
+	}
+
+	/**
+	 * Returns fat AABBox for leaf and bounding box for branch
+	 */
 	const AABBox<float> &AABBNode::getAABBox() const
 	{
 		return aabbox;
 	}
 
-	void AABBNode::updateAABBox()
+	void AABBNode::updateAABBox(float fatMargin)
 	{
 		if (isLeaf())
 		{
@@ -69,7 +81,7 @@ namespace urchin
 			aabbox = AABBox<float>(bodyBox.getMin()-fatMargin3, bodyBox.getMax()+fatMargin3);
 		}else
 		{
-			aabbox = leftChild->getAABBox().merge(rightChild->getAABBox());
+			aabbox = children[0]->getAABBox().merge(children[1]->getAABBox());
 		}
 	}
 

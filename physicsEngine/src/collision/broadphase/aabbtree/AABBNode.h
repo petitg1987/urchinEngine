@@ -14,27 +14,32 @@ namespace urchin
 			AABBNode(BodyNodeData *);
 			~AABBNode();
 
+			BodyNodeData *getBodyNodeData() const;
+
 			bool isLeaf();
 
 			void setParent(AABBNode *);
 			AABBNode *getParent() const;
 
-			void setChildren(AABBNode *, AABBNode *);
+			void setLeftChild(AABBNode *);
 			AABBNode *getLeftChild() const;
+			void setRightChild(AABBNode *);
 			AABBNode *getRightChild() const;
 
+			AABBNode *getSibling() const;
+
 			const AABBox<float> &getAABBox() const;
-			void updateAABBox();
+			void updateAABBox(float);
 
 		private:
-			static float fatMargin;
-
-			BodyNodeData *bodyNodeData;
 			AABBox<float> aabbox;
 
+			union
+			{
+				AABBNode *children[2];
+				BodyNodeData *bodyNodeData;
+			};
 			AABBNode *parentNode;
-			AABBNode *leftChild;
-			AABBNode *rightChild;
 	};
 
 }

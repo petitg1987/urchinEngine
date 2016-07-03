@@ -33,12 +33,14 @@ namespace urchin
 			const Point3<T> &getMax() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
+			const std::vector<Point3<T>> getEightPoints() const;
 			T getVolume() const;
+
 			AABBox<T> moveAABBox(const Transform<T> &) const;
 			Matrix4<T> toProjectionMatrix() const;
+			bool include(const AABBox<T> &) const;
 			AABBox<T> merge(const AABBox<T> &) const;
 			AABBox<T> cutTo(const AABBox<T> &) const;
-			const std::vector<Point3<T>> getEightPoints() const;
 
 			bool collideWithPoint(const Point3<T> &) const;
 			bool collideWithAABBox(const AABBox<T> &) const;

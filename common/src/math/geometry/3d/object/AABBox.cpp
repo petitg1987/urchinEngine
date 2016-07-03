@@ -69,6 +69,23 @@ namespace urchin
 				signZ * boxShape.getHalfSize(2) * 2.0);
 	}
 
+	template<class T> const std::vector<Point3<T>> AABBox<T>::getEightPoints() const
+	{
+		std::vector<Point3<T>> result;
+		result.reserve(8);
+
+		result.push_back(Point3<T>(max.X, max.Y, max.Z));
+		result.push_back(Point3<T>(max.X, min.Y, max.Z));
+		result.push_back(Point3<T>(min.X, min.Y, max.Z));
+		result.push_back(Point3<T>(min.X, max.Y, max.Z));
+		result.push_back(Point3<T>(max.X, max.Y, min.Z));
+		result.push_back(Point3<T>(max.X, min.Y, min.Z));
+		result.push_back(Point3<T>(min.X, min.Y, min.Z));
+		result.push_back(Point3<T>(min.X, max.Y, min.Z));
+
+		return result;
+	}
+
 	template<class T> T AABBox<T>::getVolume() const
 	{
 		return boxShape.getVolume();
@@ -95,18 +112,25 @@ namespace urchin
 			0.0, 0.0, 0.0, 1.0);
 	}
 
-	template<class T> AABBox<T> AABBox<T>::merge(const AABBox<T> &aabbox) const
+	template<class T> bool AABBox<T>::include(const AABBox<T> &aabb) const
+	{
+		return aabb.getMin().X > min.X && aabb.getMax().X < max.X &&
+				aabb.getMin().Y > min.Y && aabb.getMax().Y < max.Y &&
+				aabb.getMin().Z > min.Z && aabb.getMax().Z < max.Z;
+	}
+
+	template<class T> AABBox<T> AABBox<T>::merge(const AABBox<T> &aabb) const
 	{
 		Point3<T> mergedMin(
-			min.X<aabbox.getMin().X ? min.X : aabbox.getMin().X,
-			min.Y<aabbox.getMin().Y ? min.Y : aabbox.getMin().Y,
-			min.Z<aabbox.getMin().Z ? min.Z : aabbox.getMin().Z
+			min.X<aabb.getMin().X ? min.X : aabb.getMin().X,
+			min.Y<aabb.getMin().Y ? min.Y : aabb.getMin().Y,
+			min.Z<aabb.getMin().Z ? min.Z : aabb.getMin().Z
 		);
 
 		Point3<T> mergedMax(
-			max.X>aabbox.getMax().X ? max.X : aabbox.getMax().X,
-			max.Y>aabbox.getMax().Y ? max.Y : aabbox.getMax().Y,
-			max.Z>aabbox.getMax().Z ? max.Z : aabbox.getMax().Z
+			max.X>aabb.getMax().X ? max.X : aabb.getMax().X,
+			max.Y>aabb.getMax().Y ? max.Y : aabb.getMax().Y,
+			max.Z>aabb.getMax().Z ? max.Z : aabb.getMax().Z
 		);
 
 		return AABBox<T>(mergedMin, mergedMax);
@@ -132,23 +156,6 @@ namespace urchin
 		return AABBox<T>(cutMin, cutMax);
 	}
 
-	template<class T> const std::vector<Point3<T>> AABBox<T>::getEightPoints() const
-	{
-		std::vector<Point3<T>> result;
-		result.reserve(8);
-
-		result.push_back(Point3<T>(max.X, max.Y, max.Z));
-		result.push_back(Point3<T>(max.X, min.Y, max.Z));
-		result.push_back(Point3<T>(min.X, min.Y, max.Z));
-		result.push_back(Point3<T>(min.X, max.Y, max.Z));
-		result.push_back(Point3<T>(max.X, max.Y, min.Z));
-		result.push_back(Point3<T>(max.X, min.Y, min.Z));
-		result.push_back(Point3<T>(min.X, min.Y, min.Z));
-		result.push_back(Point3<T>(min.X, max.Y, min.Z));
-
-		return result;
-	}
-
 	template<class T> bool AABBox<T>::collideWithPoint(const Point3<T> &point) const
 	{
 		if(	point.X > min.X && point.Y > min.Y && point.Z > min.Z &&
@@ -163,16 +170,11 @@ namespace urchin
 	/**
 	* @return True if the bounding box collides or is inside this bounding box
 	*/
-	template<class T> bool AABBox<T>::collideWithAABBox(const AABBox<T> &bbox) const
+	template<class T> bool AABBox<T>::collideWithAABBox(const AABBox<T> &aabb) const
 	{
-		if(bbox.getMin().X < max.X && bbox.getMax().X > min.X &&
-				bbox.getMin().Y < max.Y && bbox.getMax().Y > min.Y &&
-				bbox.getMin().Z < max.Z && bbox.getMax().Z > min.Z)
-		{
-			return true;
-		}
-
-		return false;
+		return aabb.getMin().X < max.X && aabb.getMax().X > min.X &&
+				aabb.getMin().Y < max.Y && aabb.getMax().Y > min.Y &&
+				aabb.getMin().Z < max.Z && aabb.getMax().Z > min.Z;
 	}
 
 	template<class T> AABBox<T> operator *(const Matrix4<T> &m, const AABBox<T> &aabb)

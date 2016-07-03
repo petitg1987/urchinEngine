@@ -3,6 +3,7 @@
 
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
+#include "collision/broadphase/PairContainer.h"
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
 #include "collision/broadphase/aabbtree/AABBNode.h"
 
@@ -23,9 +24,16 @@ namespace urchin
 
 		private:
 			void insertNode(AABBNode *, AABBNode *);
+			void computeOverlappingPairsFor(AABBNode *, AABBNode *);
+
+			void createOverlappingPair(BodyNodeData *, BodyNodeData *);
+			void removeOverlappingPairs(const BodyNodeData *);
+
+			const float fatMargin;
 
 			AABBNode *rootNode;
 			std::map<AbstractWorkBody *, AABBNode *> bodiesNode;
+			PairContainer *defaultPairContainer;
 	};
 
 }
