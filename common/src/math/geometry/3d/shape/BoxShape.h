@@ -19,6 +19,8 @@ namespace urchin
 			const T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;
 
+			T getVolume() const;
+
 		private:
 			Vector3<T> halfSizes; //half sizes (width, height and depth) of box
 	};

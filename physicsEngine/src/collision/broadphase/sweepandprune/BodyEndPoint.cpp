@@ -1,4 +1,4 @@
-#include "collision/broadphase/BodyEndPoint.h"
+#include "collision/broadphase/sweepandprune/BodyEndPoint.h"
 
 namespace urchin
 {

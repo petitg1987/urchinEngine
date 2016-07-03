@@ -28,6 +28,11 @@ namespace urchin
 		return halfSizes;
 	}
 
+	template<class T> T BoxShape<T>::getVolume() const
+	{
+		return halfSizes.X * halfSizes.Y * halfSizes.Z * 8.0;
+	}
+
 	//explicit template
 	template class BoxShape<float>;
 	template class BoxShape<double>;

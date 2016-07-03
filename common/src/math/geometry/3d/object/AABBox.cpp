@@ -69,6 +69,11 @@ namespace urchin
 				signZ * boxShape.getHalfSize(2) * 2.0);
 	}
 
+	template<class T> T AABBox<T>::getVolume() const
+	{
+		return boxShape.getVolume();
+	}
+
 	template<class T> AABBox<T> AABBox<T>::moveAABBox(const Transform<T> &transform) const
 	{
 		return transform.getTransformMatrix() * (*this);

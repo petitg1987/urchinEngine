@@ -2,7 +2,7 @@
 #define ENGINE_BODYBOX_H
 
 #include "body/work/AbstractWorkBody.h"
-#include "PairContainer.h"
+#include "collision/broadphase/PairContainer.h"
 
 namespace urchin
 {
@@ -16,7 +16,9 @@ namespace urchin
 			BodyBox(AbstractWorkBody *, PairContainer *);
 			~BodyBox();
 
-			AbstractWorkBody *getOwner() const;
+			AbstractWorkBody *getBody() const;
+
+			AABBox<float> retrieveBodyAABBox() const;
 
 			bool hasAlternativePairContainer() const;
 			PairContainer *getAlternativePairContainer() const;
@@ -26,7 +28,7 @@ namespace urchin
 			unsigned int max[3];
 
 		private:
-			AbstractWorkBody *owner;
+			AbstractWorkBody *body;
 
 			PairContainer *alternativePairContainer;
 	};

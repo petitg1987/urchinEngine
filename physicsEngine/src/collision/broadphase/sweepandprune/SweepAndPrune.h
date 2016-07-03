@@ -6,8 +6,8 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
-#include "collision/broadphase/BodyEndPoint.h"
-#include "collision/broadphase/BodyBox.h"
+#include "collision/broadphase/sweepandprune/BodyEndPoint.h"
+#include "collision/broadphase/sweepandprune/BodyBox.h"
 #include "collision/broadphase/PairContainer.h"
 
 namespace urchin

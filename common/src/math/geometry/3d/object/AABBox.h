@@ -33,6 +33,7 @@ namespace urchin
 			const Point3<T> &getMax() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
+			T getVolume() const;
 			AABBox<T> moveAABBox(const Transform<T> &) const;
 			Matrix4<T> toProjectionMatrix() const;
 			AABBox<T> merge(const AABBox<T> &) const;

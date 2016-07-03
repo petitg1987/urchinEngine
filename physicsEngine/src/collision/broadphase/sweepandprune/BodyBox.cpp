@@ -1,4 +1,4 @@
-#include "collision/broadphase/BodyBox.h"
+#include "collision/broadphase/sweepandprune/BodyBox.h"
 
 namespace urchin
 {
@@ -6,8 +6,8 @@ namespace urchin
 	/**
 	* @param alternativePairContainer Alternative pair container to default one
 	*/
-	BodyBox::BodyBox(AbstractWorkBody *owner, PairContainer *alternativePairContainer) :
-		owner(owner),
+	BodyBox::BodyBox(AbstractWorkBody *body, PairContainer *alternativePairContainer) :
+		body(body),
 		alternativePairContainer(alternativePairContainer)
 	{
 
@@ -18,9 +18,14 @@ namespace urchin
 
 	}
 
-	AbstractWorkBody *BodyBox::getOwner() const
+	AbstractWorkBody *BodyBox::getBody() const
 	{
-		return owner;
+		return body;
+	}
+
+	AABBox<float> BodyBox::retrieveBodyAABBox() const
+	{
+		return body->getShape()->toAABBox(body->getPhysicsTransform());
 	}
 
 	bool BodyBox::hasAlternativePairContainer() const

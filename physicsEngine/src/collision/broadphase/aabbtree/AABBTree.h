@@ -22,8 +22,10 @@ namespace urchin
 			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
 
 		private:
-			AABBNode *rootNode;
+			void insertNode(AABBNode *, AABBNode *);
 
+			AABBNode *rootNode;
+			std::map<AbstractWorkBody *, AABBNode *> bodiesNode;
 	};
 
 }

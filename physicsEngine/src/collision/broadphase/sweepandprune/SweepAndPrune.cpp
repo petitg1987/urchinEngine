@@ -41,7 +41,7 @@ namespace urchin
 	void SweepAndPrune::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer)
 	{
 		BodyBox *bodyBox = new BodyBox(body, alternativePairContainer);
-		const AABBox<float> &aabbox = body->getShape()->toAABBox(body->getPhysicsTransform());
+		const AABBox<float> &aabbox = bodyBox->retrieveBodyAABBox();
 
 		unsigned int limit = bodiesBox.size() * 2 + 2; //bodies size * both points (min & max) + 2 sentinels
 
@@ -129,7 +129,7 @@ namespace urchin
 			if(body->isActive())
 			{
 				BodyBox *bodyBox = it->second;
-				const AABBox<float> &aabbox = body->getShape()->toAABBox(body->getPhysicsTransform());
+				const AABBox<float> &aabbox = bodyBox->retrieveBodyAABBox();
 
 				for(unsigned int axis=0; axis<3; ++axis)
 				{
@@ -369,17 +369,17 @@ namespace urchin
 	{
 		if(!bodyBox1->hasAlternativePairContainer() && !bodyBox2->hasAlternativePairContainer())
 		{
-			defaultPairContainer->addOverlappingPair(bodyBox1->getOwner(), bodyBox2->getOwner());
+			defaultPairContainer->addOverlappingPair(bodyBox1->getBody(), bodyBox2->getBody());
 		}else
 		{
 			if(bodyBox1->hasAlternativePairContainer())
 			{
-				bodyBox1->getAlternativePairContainer()->addOverlappingPair(bodyBox1->getOwner(), bodyBox2->getOwner());
+				bodyBox1->getAlternativePairContainer()->addOverlappingPair(bodyBox1->getBody(), bodyBox2->getBody());
 			}
 
 			if(bodyBox2->hasAlternativePairContainer())
 			{
-				bodyBox2->getAlternativePairContainer()->addOverlappingPair(bodyBox1->getOwner(), bodyBox2->getOwner());
+				bodyBox2->getAlternativePairContainer()->addOverlappingPair(bodyBox1->getBody(), bodyBox2->getBody());
 			}
 		}
 	}
@@ -388,17 +388,17 @@ namespace urchin
 	{
 		if(!bodyBox1->hasAlternativePairContainer() && !bodyBox2->hasAlternativePairContainer())
 		{
-			defaultPairContainer->removeOverlappingPair(bodyBox1->getOwner(), bodyBox2->getOwner());
+			defaultPairContainer->removeOverlappingPair(bodyBox1->getBody(), bodyBox2->getBody());
 		}else
 		{
 			if(bodyBox1->hasAlternativePairContainer())
 			{
-				bodyBox1->getAlternativePairContainer()->removeOverlappingPair(bodyBox1->getOwner(), bodyBox2->getOwner());
+				bodyBox1->getAlternativePairContainer()->removeOverlappingPair(bodyBox1->getBody(), bodyBox2->getBody());
 			}
 
 			if(bodyBox2->hasAlternativePairContainer())
 			{
-				bodyBox2->getAlternativePairContainer()->removeOverlappingPair(bodyBox1->getOwner(), bodyBox2->getOwner());
+				bodyBox2->getAlternativePairContainer()->removeOverlappingPair(bodyBox1->getBody(), bodyBox2->getBody());
 			}
 		}
 	}
@@ -416,7 +416,7 @@ namespace urchin
 				BodyBox *bodyBox = sortedEndPoints[axis][i].getBodyBox();
 				if(bodyBox!=nullptr)
 				{
-					idBody = bodyBox->getOwner()->getId();
+					idBody = bodyBox->getBody()->getId();
 				}
 
 				std::cout<<" - ["<<idBody<<", "<<sortedEndPoints[axis][i].getValue()<<"]"<<std::endl;
