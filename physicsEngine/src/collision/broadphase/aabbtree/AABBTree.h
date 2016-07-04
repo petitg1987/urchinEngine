@@ -24,8 +24,10 @@ namespace urchin
 
 		private:
 			void insertNode(AABBNode *, AABBNode *);
-			void computeOverlappingPairsFor(AABBNode *, AABBNode *);
+			void replaceNode(AABBNode *, AABBNode *);
+			void removeNode(AABBNode *);
 
+			void computeOverlappingPairsFor(AABBNode *, AABBNode *);
 			void createOverlappingPair(BodyNodeData *, BodyNodeData *);
 			void removeOverlappingPairs(const BodyNodeData *);
 
@@ -34,6 +36,10 @@ namespace urchin
 			AABBNode *rootNode;
 			std::map<AbstractWorkBody *, AABBNode *> bodiesNode;
 			PairContainer *defaultPairContainer;
+
+			#ifdef _DEBUG
+				void printTree(AABBNode *, unsigned int);
+			#endif
 	};
 
 }

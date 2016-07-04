@@ -7,12 +7,15 @@ namespace urchin
 		bodyNodeData(bodyNodeData),
 		parentNode(nullptr)
 	{
-		//this->children[0] = nullptr; //not done because of union
+		this->children[0] = nullptr;
 		this->children[1] = nullptr;
 	}
 
 	AABBNode::~AABBNode()
 	{
+		delete children[0];
+		delete children[1];
+
 		delete bodyNodeData;
 	}
 
@@ -21,9 +24,14 @@ namespace urchin
 		return bodyNodeData;
 	}
 
-	bool AABBNode::isLeaf()
+	bool AABBNode::isLeaf() const
 	{
-		return children[1]==nullptr; //use second child because of union
+		return children[0]==nullptr;
+	}
+
+	bool AABBNode::isRoot() const
+	{
+		return parentNode==nullptr;
 	}
 
 	void AABBNode::setParent(AABBNode *parentNode)
@@ -39,7 +47,10 @@ namespace urchin
 	void AABBNode::setLeftChild(AABBNode *leftChild)
 	{
 		this->children[0] = leftChild;
-		this->children[0]->setParent(this);
+		if(leftChild!=nullptr)
+		{
+			this->children[0]->setParent(this);
+		}
 	}
 
 	AABBNode *AABBNode::getLeftChild() const
@@ -50,7 +61,10 @@ namespace urchin
 	void AABBNode::setRightChild(AABBNode *rightChild)
 	{
 		this->children[1] = rightChild;
-		this->children[1]->setParent(this);
+		if(rightChild!=nullptr)
+		{
+			this->children[1]->setParent(this);
+		}
 	}
 
 	AABBNode *AABBNode::getRightChild() const

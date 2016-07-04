@@ -26,6 +26,10 @@ namespace urchin
 		buildIslands(overlappingPairs);
 		const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
+		#ifdef _DEBUG
+			//printIslands(islandElementsLink);
+		#endif
+
 		unsigned int i=0;
 		while(islandElementsLink.size()>i)
 		{ //loop on islands
@@ -117,5 +121,31 @@ namespace urchin
 
 		return true;
 	}
+
+	#ifdef _DEBUG
+		void IslandManager::printIslands(const std::vector<IslandElementLink> &islandElementsLink)
+		{
+			unsigned int islandId = 0;
+			unsigned int i=0;
+			while(islandElementsLink.size()>i)
+			{ //loop on islands
+				unsigned int startElementIndex = i;
+				unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
+
+				std::cout<<"Island "<<islandId<<":"<<std::endl;
+
+				for(unsigned int j=0; j<nbElements; ++j)
+				{ //loop on elements of the island
+					WorkRigidBody *body = static_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+					std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
+				}
+
+				i += nbElements;
+				islandId++;
+			}
+
+			std::cout<<std::endl;
+		}
+	#endif
 
 }

@@ -29,6 +29,10 @@ namespace urchin
 
 			const float linearSleepingThreshold;
 			const float angularSleepingThreshold;
+
+			#ifdef _DEBUG
+				void printIslands(const std::vector<IslandElementLink> &);
+			#endif
 	};
 
 }

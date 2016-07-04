@@ -130,8 +130,11 @@ namespace urchin
 			this->invMass = 0.0f;
 		}else
 		{
-			setIsStatic(false);
-			setIsActive(true);
+			if(isStatic())
+			{ //avoid wake up of body (isActive flag) when static flag is already correct
+				setIsStatic(false);
+				setIsActive(true);
+			}
 			this->invMass = 1.0f / mass;
 		}
 		this->mass = mass;

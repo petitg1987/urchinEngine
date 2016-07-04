@@ -1,4 +1,4 @@
-#include <queue>
+#include <stack>
 #include "UrchinCommon.h"
 
 #include "collision/broadphase/aabbtree/AABBTree.h"
@@ -40,6 +40,10 @@ namespace urchin
 		bodiesNode[body] = nodeToInsert;
 
 		computeOverlappingPairsFor(nodeToInsert, rootNode);
+
+		#ifdef _DEBUG
+			//printTree(rootNode, 0);
+		#endif
 	}
 
 	void AABBTree::insertNode(AABBNode *nodeToInsert, AABBNode *currentNode)
@@ -47,7 +51,7 @@ namespace urchin
 		if (currentNode->isLeaf())
 		{
 			AABBNode *newParent = new AABBNode(nullptr);
-			newParent->setParent(currentNode->getParent());
+			replaceNode(currentNode, newParent);
 			newParent->setLeftChild(nodeToInsert);
 			newParent->setRightChild(currentNode);
 			newParent->updateAABBox(fatMargin);
@@ -71,25 +75,43 @@ namespace urchin
 		}
 	}
 
+	void AABBTree::replaceNode(AABBNode *nodeToReplace, AABBNode *newNode)
+	{
+		if(nodeToReplace->getParent()!=nullptr)
+		{
+			if(nodeToReplace->getParent()->getLeftChild()==nodeToReplace)
+			{
+				nodeToReplace->getParent()->setLeftChild(newNode);
+			}else
+			{
+				nodeToReplace->getParent()->setRightChild(newNode);
+			}
+		}else
+		{
+			rootNode = newNode;
+			newNode->setParent(nullptr);
+		}
+	}
+
 	void AABBTree::computeOverlappingPairsFor(AABBNode *leafNode, AABBNode *rootNode)
 	{
-		std::queue<AABBNode *> stackNodes;
+		std::stack<AABBNode *> stackNodes;
 		stackNodes.push(rootNode);
 
 		while(!stackNodes.empty())
-		{
-			AABBNode *currentNode = stackNodes.front();
+		{ //tree traversal: pre-order (iterative)
+			AABBNode *currentNode = stackNodes.top();
 			stackNodes.pop();
 
-			if(leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox()))
+			if(leafNode!=currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox()))
 			{
 				if (currentNode->isLeaf())
 				{
 					createOverlappingPair(leafNode->getBodyNodeData(), currentNode->getBodyNodeData());
 				}else
 				{
-					stackNodes.push(currentNode->getLeftChild());
 					stackNodes.push(currentNode->getRightChild());
+					stackNodes.push(currentNode->getLeftChild());
 				}
 			}
 		}
@@ -99,7 +121,12 @@ namespace urchin
 	{
 		std::map<AbstractWorkBody *, AABBNode *>::iterator it = bodiesNode.find(body);
 
-		AABBNode *nodeToRemove = it->second;
+		removeNode(it->second);
+		bodiesNode.erase(it);
+	}
+
+	void AABBTree::removeNode(AABBNode *nodeToRemove)
+	{
 		AABBNode *parentNode = nodeToRemove->getParent();
 
 		if(parentNode==nullptr)
@@ -108,34 +135,23 @@ namespace urchin
 		}else
 		{
 			AABBNode *sibling = nodeToRemove->getSibling();
-			if(parentNode->getParent()!=nullptr)
-			{
-				if(parentNode->getParent()->getLeftChild()==parentNode)
-				{
-					parentNode->getParent()->setLeftChild(sibling);
-				}else
-				{
-					parentNode->getParent()->setRightChild(sibling);
-				}
-			}else
-			{
-				rootNode = sibling;
-				sibling->setParent(nullptr);
-			}
+			replaceNode(parentNode, sibling);
 
+			parentNode->setLeftChild(nullptr); //avoid child removal
+			parentNode->setRightChild(nullptr); //avoid child removal
 		    delete parentNode;
 		}
 
 		removeOverlappingPairs(nodeToRemove->getBodyNodeData());
 
-		bodiesNode.erase(it);
 		delete nodeToRemove;
 	}
 
 	void AABBTree::updateBodies()
 	{
-		for(std::map<AbstractWorkBody *, AABBNode *>::iterator it = bodiesNode.begin(); it!=bodiesNode.end(); ++it)
+		for(auto it = bodiesNode.begin(); it!=bodiesNode.end();)
 		{
+			bool removed = false;
 			AbstractWorkBody *body = it->first;
 			if(body->isActive())
 			{
@@ -144,9 +160,19 @@ namespace urchin
 				const AABBox<float> &bodyAABBox = leaf->getBodyNodeData()->retrieveBodyAABBox();
 				if(!leafFatAABBox.include(bodyAABBox))
 				{
-					removeBody(body);
-					addBody(body, leaf->getBodyNodeData()->getAlternativePairContainer());
+					PairContainer *alternativePairContainer = leaf->getBodyNodeData()->getAlternativePairContainer();
+
+					removeNode(leaf);
+					it = bodiesNode.erase(it);
+					removed = true;
+
+					addBody(body, alternativePairContainer);
 				}
+			}
+
+			if(!removed)
+			{
+				++it;
 			}
 		}
 	}
@@ -192,5 +218,32 @@ namespace urchin
 			ownerPairContainer->removeOverlappingPairs(nodeData->getBody());
 		}
 	}
+
+#ifdef _DEBUG
+	void AABBTree::printTree(AABBNode *node, unsigned int indentLevel)
+	{ //tree traversal: pre-order (recursive)
+		if(node->isLeaf())
+		{
+			std::cout<<std::string(indentLevel, ' ')<<"- Leaf: "<<node->getBodyNodeData()->getBody()->getId()<<std::endl;
+		}else
+		{
+			if(node->getParent()==nullptr)
+			{
+				std::cout<<std::string(indentLevel, ' ')<<"Root:"<<std::endl;
+			}else
+			{
+				std::cout<<std::string(indentLevel, ' ')<<"- Node:"<<std::endl;
+			}
+
+			printTree(node->getLeftChild(), indentLevel + 2);
+			printTree(node->getRightChild(), indentLevel + 2);
+		}
+
+		if(indentLevel==0)
+		{
+			std::cout<<std::endl;
+		}
+	}
+#endif
 
 }

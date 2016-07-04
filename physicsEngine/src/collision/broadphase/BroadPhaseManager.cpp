@@ -2,13 +2,14 @@
 #include "body/work/AbstractWorkBody.h"
 #include "body/work/WorkGhostBody.h"
 #include "collision/broadphase/sweepandprune/SweepAndPrune.h"
+#include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
 
 namespace urchin
 {
 
 	BroadPhaseManager::BroadPhaseManager(BodyManager *bodyManager)
 	{
-		broadPhaseAlgorithm = new SweepAndPrune();
+		broadPhaseAlgorithm = new AABBTreeAlgorithm();
 
 		bodyManager->addObserver(this, BodyManager::ADD_WORK_BODY);
 		bodyManager->addObserver(this, BodyManager::REMOVE_WORK_BODY);

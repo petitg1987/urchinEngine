@@ -16,7 +16,8 @@ namespace urchin
 
 			BodyNodeData *getBodyNodeData() const;
 
-			bool isLeaf();
+			bool isLeaf() const;
+			bool isRoot() const;
 
 			void setParent(AABBNode *);
 			AABBNode *getParent() const;
@@ -32,14 +33,11 @@ namespace urchin
 			void updateAABBox(float);
 
 		private:
+			BodyNodeData *bodyNodeData;
 			AABBox<float> aabbox;
 
-			union
-			{
-				AABBNode *children[2];
-				BodyNodeData *bodyNodeData;
-			};
 			AABBNode *parentNode;
+			AABBNode *children[2];
 	};
 
 }
