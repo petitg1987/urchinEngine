@@ -41,6 +41,7 @@
 #include "math/geometry/2d/object/LineSegment2D.h"
 #include "math/geometry/2d/object/Rectangle.h"
 #include "math/geometry/3d/Line3D.h"
+#include "math/geometry/3d/Ray.h"
 #include "math/geometry/3d/Plane.h"
 #include "math/geometry/3d/IndexedTriangle3D.h"
 #include "math/geometry/3d/shape/Shape3D.h"

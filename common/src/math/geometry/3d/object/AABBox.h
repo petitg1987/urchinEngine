@@ -6,6 +6,7 @@
 
 #include "ConvexObject3D.h"
 #include "math/geometry/3d/shape/BoxShape.h"
+#include "math/geometry/3d/Ray.h"
 #include "math/algebra/matrix/Matrix4.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/point/Point4.h"
@@ -44,6 +45,10 @@ namespace urchin
 
 			bool collideWithPoint(const Point3<T> &) const;
 			bool collideWithAABBox(const AABBox<T> &) const;
+			bool collideWithRay(const Ray<T> &) const;
+
+			const Point3<T>& operator [](std::size_t) const;
+			Point3<T>& operator [](std::size_t);
 
 		private:
 			BoxShape<T> boxShape;

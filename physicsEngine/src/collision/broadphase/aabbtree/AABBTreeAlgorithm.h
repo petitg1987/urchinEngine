@@ -21,6 +21,8 @@ namespace urchin
 
 			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
 
+			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
+
 		private:
 			AABBTree *tree;
 

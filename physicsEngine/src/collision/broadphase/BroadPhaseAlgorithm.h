@@ -2,6 +2,7 @@
 #define ENGINE_BROADPHASEALGORITHM_H
 
 #include <vector>
+#include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
@@ -21,6 +22,8 @@ namespace urchin
 			virtual void updateBodies() = 0;
 
 			virtual const std::vector<OverlappingPair *> &getOverlappingPairs() const = 0;
+
+			virtual std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const = 0;
 	};
 
 }

@@ -31,17 +31,17 @@ namespace urchin
 
 			Matrix2<T> operator +() const;
 			Matrix2<T> operator -() const;
-			Matrix2<T> operator +(const Matrix2<T>& m) const;
-			Matrix2<T> operator -(const Matrix2<T>& m) const;
-			const Matrix2<T>& operator +=(const Matrix2<T>& m);
-			const Matrix2<T>& operator -=(const Matrix2<T>& m);
-			Matrix2<T> operator *(const Matrix2<T>& m) const;
-			const Matrix2<T>& operator *=(const Matrix2<T>& m);
-			const Matrix2<T>& operator *=(T t);
-			const Matrix2<T>& operator /=(T t);
+			Matrix2<T> operator +(const Matrix2<T>&) const;
+			Matrix2<T> operator -(const Matrix2<T>&) const;
+			const Matrix2<T>& operator +=(const Matrix2<T>&);
+			const Matrix2<T>& operator -=(const Matrix2<T>&);
+			Matrix2<T> operator *(const Matrix2<T>&) const;
+			const Matrix2<T>& operator *=(const Matrix2<T>&);
+			const Matrix2<T>& operator *=(T);
+			const Matrix2<T>& operator /=(T);
 
-			T& operator ()(std::size_t i, std::size_t j);
-			const T& operator ()(std::size_t i, std::size_t j) const;
+			T& operator ()(std::size_t, std::size_t);
+			const T& operator ()(std::size_t, std::size_t) const;
 
 			operator T*();
 			operator const T*() const;

@@ -1,18 +1,11 @@
 #ifndef ENGINE_LINE3D_H
 #define ENGINE_LINE3D_H
 
-#include <cmath>
-#include <vector>
-#include <cassert>
-
 #include "math/algebra/point/Point3.h"
 
 namespace urchin
 {
 
-	/**
-	* Represents a line
-	*/
 	template<class T> class Line3D
 	{
 		public:

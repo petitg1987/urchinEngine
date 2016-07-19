@@ -34,4 +34,12 @@ namespace urchin
 		return tree->getOverlappingPairs();
 	}
 
+	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::rayTest(const Ray<float> &ray) const
+	{
+		std::vector<AbstractWorkBody *> bodiesHitByRay;
+		bodiesHitByRay.reserve(20);
+
+		return tree->rayTest(ray, bodiesHitByRay);
+	}
+
 }

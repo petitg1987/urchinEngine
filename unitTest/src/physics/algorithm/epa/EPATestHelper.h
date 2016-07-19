@@ -10,7 +10,7 @@ class EPATestHelper
 {
 	public:
 		static std::shared_ptr<EPAResult<float>> executeEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &);
-		static std::shared_ptr<EPAResult<float>> executeEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, DebugRecorder *debugRecorder);
+		static std::shared_ptr<EPAResult<float>> executeEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, DebugRecorder<float> *debugRecorder);
 
 	private:
 		EPATestHelper();

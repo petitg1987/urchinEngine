@@ -219,6 +219,35 @@ namespace urchin
 		}
 	}
 
+	/**
+	 * @param bodiesHitByRay [out] Bodies hit by the ray
+	 */
+	std::vector<AbstractWorkBody *> AABBTree::rayTest(const Ray<float> &ray, std::vector<AbstractWorkBody *> &bodiesHitByRay) const
+	{
+		std::stack<AABBNode *> stackNodes;
+		stackNodes.push(rootNode);
+
+		while(!stackNodes.empty())
+		{ //tree traversal: pre-order (iterative)
+			AABBNode *currentNode = stackNodes.top();
+			stackNodes.pop();
+
+			if(currentNode->getAABBox().collideWithRay(ray))
+			{
+				if (currentNode->isLeaf())
+				{
+					bodiesHitByRay.push_back(currentNode->getBodyNodeData()->getBody());
+				}else
+				{
+					stackNodes.push(currentNode->getRightChild());
+					stackNodes.push(currentNode->getLeftChild());
+				}
+			}
+		}
+
+		return bodiesHitByRay;
+	}
+
 #ifdef _DEBUG
 	void AABBTree::printTree(AABBNode *node, unsigned int indentLevel)
 	{ //tree traversal: pre-order (recursive)

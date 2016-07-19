@@ -177,6 +177,68 @@ namespace urchin
 				aabb.getMin().Z < max.Z && aabb.getMax().Z > min.Z;
 	}
 
+	/**
+	 * @return True if the ray is inside or partially inside the bouding box
+	 */
+	template<class T> bool AABBox<T>::collideWithRay(const Ray<T> &ray) const
+	{
+		T lengthToMinPlane = ((*this)[ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
+		T lengthToMaxPlane = ((*this)[1-ray.getDirectionSign(0)].X - ray.getOrigin().X) * ray.getInverseDirection().X;
+
+		T lengthToMinYPlane = ((*this)[ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
+		T lengthToMaxYPlane = ((*this)[1-ray.getDirectionSign(1)].Y - ray.getOrigin().Y) * ray.getInverseDirection().Y;
+
+
+		if(lengthToMinPlane > lengthToMaxYPlane || lengthToMinYPlane > lengthToMaxPlane)
+		{
+			return false;
+		}
+
+		if(lengthToMinYPlane > lengthToMinPlane)
+		{
+			lengthToMinPlane = lengthToMinYPlane;
+		}
+		if(lengthToMaxYPlane < lengthToMaxPlane)
+		{
+			lengthToMaxPlane = lengthToMaxYPlane;
+		}
+
+		T lengthToMinZPlane = ((*this)[ray.getDirectionSign(2)].Z - ray.getOrigin().Z) * ray.getInverseDirection().Z;
+		T lengthToMaxZPlane = ((*this)[1-ray.getDirectionSign(2)].Z - ray.getOrigin().Z) * ray.getInverseDirection().Z;
+
+		if(lengthToMinPlane > lengthToMaxZPlane || lengthToMinZPlane > lengthToMaxPlane)
+		{
+			return false;
+		}
+
+		if(lengthToMinZPlane > lengthToMinPlane)
+		{
+			lengthToMinPlane = lengthToMinZPlane;
+		}
+		if(lengthToMaxZPlane < lengthToMaxPlane)
+		{
+			lengthToMaxPlane = lengthToMaxZPlane;
+		}
+
+		return lengthToMinPlane < ray.getLength() && lengthToMaxPlane > 0.0;
+	}
+
+	/**
+	 * Allow to access to min and max value as an array (const).
+	 */
+	template<class T> const Point3<T>& AABBox<T>::operator [](std::size_t i) const
+	{
+		return (&min)[i];
+	}
+
+	/**
+	 * Allow to access to min and max value as an array (no const).
+	 */
+	template<class T> Point3<T>& AABBox<T>::operator [](std::size_t i)
+	{
+		return (&min)[i];
+	}
+
 	template<class T> AABBox<T> operator *(const Matrix4<T> &m, const AABBox<T> &aabb)
 	{
 		//projection matrix not accepted

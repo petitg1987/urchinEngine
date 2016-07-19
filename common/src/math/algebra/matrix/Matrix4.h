@@ -42,17 +42,17 @@ namespace urchin
 		
 			Matrix4<T> operator +() const;
 			Matrix4<T> operator -() const;
-			Matrix4<T> operator +(const Matrix4<T>& m) const;
-			Matrix4<T> operator -(const Matrix4<T>& m) const;
-			const Matrix4<T>& operator +=(const Matrix4<T>& m);
-			const Matrix4<T>& operator -=(const Matrix4<T>& m);
-			Matrix4<T> operator *(const Matrix4<T>& m) const;
-			const Matrix4<T>& operator *=(const Matrix4<T>& m);
-			const Matrix4<T>& operator *=(T t);
-			const Matrix4<T>& operator /=(T t);
+			Matrix4<T> operator +(const Matrix4<T>&) const;
+			Matrix4<T> operator -(const Matrix4<T>&) const;
+			const Matrix4<T>& operator +=(const Matrix4<T>&);
+			const Matrix4<T>& operator -=(const Matrix4<T>&);
+			Matrix4<T> operator *(const Matrix4<T>&) const;
+			const Matrix4<T>& operator *=(const Matrix4<T>&);
+			const Matrix4<T>& operator *=(T);
+			const Matrix4<T>& operator /=(T);
 
-			T& operator ()(std::size_t i, std::size_t j);
-			const T& operator ()(std::size_t i, std::size_t j) const;
+			T& operator ()(std::size_t, std::size_t);
+			const T& operator ()(std::size_t, std::size_t) const;
 
 			operator T*();
 			operator const T*() const;

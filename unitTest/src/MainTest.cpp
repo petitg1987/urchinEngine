@@ -5,6 +5,7 @@
 #include "math/algebra/QuaternionEulerTest.h"
 #include "math/geometry/OrthogonalProjectionTest.h"
 #include "math/geometry/ClosestPointTest.h"
+#include "math/geometry/AABBoxCollisionTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
 #include "physics/shape/ShrinkConvexHullTest.h"
@@ -37,6 +38,7 @@ int main()
 	//math - geometry
 	runner.addTest(OrthogonalProjectionTest::suite());
 	runner.addTest(ClosestPointTest::suite());
+	runner.addTest(AABBoxCollissionTest::suite());
 
 	//physics - shape
 	runner.addTest(ShapeToAABBoxTest::suite());

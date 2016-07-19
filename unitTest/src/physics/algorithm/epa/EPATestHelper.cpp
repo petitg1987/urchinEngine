@@ -17,7 +17,7 @@ std::shared_ptr<EPAResult<float>> EPATestHelper::executeEPA(const CollisionConve
 	return executeEPA(object1, object2, nullptr);
 }
 
-std::shared_ptr<EPAResult<float>> EPATestHelper::executeEPA(const CollisionConvexObject3D &object1, const CollisionConvexObject3D &object2, DebugRecorder *debugRecorder)
+std::shared_ptr<EPAResult<float>> EPATestHelper::executeEPA(const CollisionConvexObject3D &object1, const CollisionConvexObject3D &object2, DebugRecorder<float> *debugRecorder)
 {
 	std::shared_ptr<GJKResult<float>> resultGjk = GJKTestHelper::executeGJK(object1, object2);
 

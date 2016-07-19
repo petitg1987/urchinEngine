@@ -22,6 +22,8 @@ namespace urchin
 
 			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
 
+			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &, std::vector<AbstractWorkBody *> &) const;
+
 		private:
 			void insertNode(AABBNode *, AABBNode *);
 			void replaceNode(AABBNode *, AABBNode *);

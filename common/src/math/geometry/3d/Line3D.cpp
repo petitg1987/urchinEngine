@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "Line3D.h"
 
 namespace urchin

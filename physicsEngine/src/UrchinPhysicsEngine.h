@@ -25,6 +25,8 @@
 #include "collision/OverlappingPair.h"
 #include "collision/ManifoldResult.h"
 #include "collision/ManifoldContactPoint.h"
+#include "collision/broadphase/sweepandprune/SweepAndPrune.h"
+#include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 #include "collision/narrowphase/algorithm/epa/EPAResult.h"
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"

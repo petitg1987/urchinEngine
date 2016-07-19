@@ -38,17 +38,17 @@ namespace urchin
 
 			Matrix3<T> operator +() const;
 			Matrix3<T> operator -() const;
-			Matrix3<T> operator +(const Matrix3<T>& m) const;
-			Matrix3<T> operator -(const Matrix3<T>& m) const;
-			const Matrix3<T>& operator +=(const Matrix3<T>& m);
-			const Matrix3<T>& operator -=(const Matrix3<T>& m);
-			Matrix3<T> operator *(const Matrix3<T>& m) const;
-			const Matrix3<T>& operator *=(const Matrix3<T>& m);
-			const Matrix3<T>& operator *=(T t);
-			const Matrix3<T>& operator /=(T t);
+			Matrix3<T> operator +(const Matrix3<T>&) const;
+			Matrix3<T> operator -(const Matrix3<T>&) const;
+			const Matrix3<T>& operator +=(const Matrix3<T>&);
+			const Matrix3<T>& operator -=(const Matrix3<T>&);
+			Matrix3<T> operator *(const Matrix3<T> &) const;
+			const Matrix3<T>& operator *=(const Matrix3<T>&);
+			const Matrix3<T>& operator *=(T);
+			const Matrix3<T>& operator /=(T);
 
-			T& operator ()(std::size_t i, std::size_t j);
-			const T& operator ()(std::size_t i, std::size_t j) const;
+			T& operator ()(std::size_t, std::size_t);
+			const T& operator ()(std::size_t, std::size_t) const;
 
 			operator T*();
 			operator const T*() const;
