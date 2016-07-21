@@ -593,6 +593,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -627,18 +628,17 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -649,7 +649,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -665,6 +665,13 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -848,6 +855,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -977,18 +985,17 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -999,7 +1006,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1015,6 +1022,13 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -1091,6 +1105,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -1124,18 +1139,17 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1146,7 +1160,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1162,6 +1176,13 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -1328,6 +1349,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -1457,18 +1479,17 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1479,7 +1500,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1495,6 +1516,13 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -1565,6 +1593,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -1692,18 +1721,17 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1714,7 +1742,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1730,6 +1758,13 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -1796,6 +1831,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -1923,18 +1959,17 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1945,7 +1980,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1961,6 +1996,13 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -2026,6 +2068,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -2059,18 +2102,17 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2081,7 +2123,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2097,6 +2139,13 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -2258,6 +2307,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -2291,18 +2341,17 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2313,7 +2362,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2329,6 +2378,13 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -2490,6 +2546,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -2523,18 +2580,17 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2545,7 +2601,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2561,6 +2617,13 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -2727,6 +2790,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -2760,18 +2824,17 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2782,7 +2845,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2798,6 +2861,13 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -2959,6 +3029,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -2992,18 +3063,17 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3014,7 +3084,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3030,6 +3100,13 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -3191,6 +3268,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -3320,18 +3398,17 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3342,7 +3419,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3358,6 +3435,13 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -3422,6 +3506,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -3455,18 +3540,17 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3477,7 +3561,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3493,6 +3577,13 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -3656,6 +3747,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -3687,18 +3779,17 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3709,7 +3800,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3725,6 +3816,13 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -3886,6 +3984,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -4015,18 +4114,17 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4037,7 +4135,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4053,6 +4151,13 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -4122,6 +4227,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -4251,18 +4357,17 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4273,7 +4378,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4289,6 +4394,13 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -4353,6 +4465,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -4483,18 +4596,17 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4505,7 +4617,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4521,6 +4633,13 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -4589,6 +4708,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -4718,18 +4838,17 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4740,7 +4859,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4756,6 +4875,13 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -4826,6 +4952,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -4953,18 +5080,17 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4975,7 +5101,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4991,6 +5117,13 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -5056,6 +5189,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -5186,18 +5320,17 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5208,7 +5341,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5224,6 +5357,13 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -5293,6 +5433,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -5422,18 +5563,17 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5444,7 +5584,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5460,6 +5600,13 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -5530,6 +5677,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -5657,18 +5805,17 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5679,7 +5826,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5695,6 +5842,13 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -5761,6 +5915,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -5888,18 +6043,17 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5910,7 +6064,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5926,6 +6080,13 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -5992,6 +6153,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -6119,18 +6281,17 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6141,7 +6302,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6157,6 +6318,13 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -6222,6 +6390,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -6352,18 +6521,17 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6374,7 +6542,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6390,6 +6558,13 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -6454,6 +6629,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -6583,18 +6759,17 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6605,7 +6780,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6621,6 +6796,13 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -6685,6 +6867,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -6815,18 +6998,17 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6837,7 +7019,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6853,6 +7035,13 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -6917,6 +7106,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -6951,18 +7141,17 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6973,7 +7162,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6989,6 +7178,13 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -7170,6 +7366,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -7204,18 +7401,17 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7226,7 +7422,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7242,6 +7438,13 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -7420,6 +7623,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -7454,18 +7658,17 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7476,7 +7679,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7492,6 +7695,13 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -7682,6 +7892,7 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -7750,6 +7961,7 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -7820,6 +8032,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -7947,18 +8160,17 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7969,7 +8181,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7985,6 +8197,13 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -8052,6 +8271,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -8181,18 +8401,17 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8203,7 +8422,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8219,6 +8438,13 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -8295,6 +8521,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -8328,18 +8555,17 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8350,7 +8576,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8366,6 +8592,13 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -8527,6 +8760,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -8560,18 +8794,17 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8582,7 +8815,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8598,6 +8831,13 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -8769,6 +9009,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -8898,18 +9139,17 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8920,7 +9160,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8936,6 +9176,13 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -9003,6 +9250,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -9133,18 +9381,17 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9155,7 +9402,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9171,6 +9418,13 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -9235,6 +9489,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -9365,18 +9620,17 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9387,7 +9641,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9403,6 +9657,13 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -9469,6 +9730,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -9502,18 +9764,17 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9524,7 +9785,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9540,6 +9801,13 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -9702,6 +9970,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -9735,18 +10004,17 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9757,7 +10025,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9773,6 +10041,13 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -9935,6 +10210,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -9968,18 +10244,17 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9990,7 +10265,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10006,6 +10281,13 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -10177,6 +10459,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -10210,18 +10493,17 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10232,7 +10514,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10248,6 +10530,13 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -10413,6 +10702,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -10446,18 +10736,17 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10468,7 +10757,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10484,6 +10773,13 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -10646,6 +10942,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -10775,18 +11072,17 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10797,7 +11093,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10813,6 +11109,13 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -10879,6 +11182,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -10910,18 +11214,17 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10932,7 +11235,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10948,6 +11251,13 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -11121,6 +11431,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -11154,18 +11465,17 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11176,7 +11486,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11192,6 +11502,13 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -11356,6 +11673,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -11387,18 +11705,17 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11409,7 +11726,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11425,6 +11742,13 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -11588,6 +11912,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -11715,18 +12040,17 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11737,7 +12061,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11753,6 +12077,13 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -11817,6 +12148,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -11946,18 +12278,17 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11968,7 +12299,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11984,6 +12315,13 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -12055,6 +12393,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -12184,18 +12523,17 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12206,7 +12544,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12222,6 +12560,13 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -12287,6 +12632,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -12416,18 +12762,17 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12438,7 +12783,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12454,6 +12799,13 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -12518,6 +12870,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -12648,18 +13001,17 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12670,7 +13022,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12686,6 +13038,13 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -12757,6 +13116,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -12886,18 +13246,17 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12908,7 +13267,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12924,6 +13283,13 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -12991,6 +13357,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -13121,18 +13488,17 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13143,7 +13509,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13159,6 +13525,13 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -13225,6 +13598,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -13354,18 +13728,17 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13376,7 +13749,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13392,6 +13765,13 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -13457,6 +13837,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -13587,18 +13968,17 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13609,7 +13989,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13625,6 +14005,13 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -13700,6 +14087,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -13829,18 +14217,17 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13851,7 +14238,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13867,6 +14254,13 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -13934,6 +14328,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -14064,18 +14459,17 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14086,7 +14480,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14102,6 +14496,13 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -14166,6 +14567,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -14296,18 +14698,17 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14318,7 +14719,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14334,6 +14735,13 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -14397,6 +14805,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -14527,18 +14936,17 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14549,7 +14957,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14565,6 +14973,13 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -14631,6 +15046,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -14761,18 +15177,17 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14783,7 +15198,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14799,6 +15214,13 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -14864,6 +15286,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -14993,18 +15416,17 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15015,7 +15437,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15031,6 +15453,13 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -15097,6 +15526,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -15224,18 +15654,17 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15246,7 +15675,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15262,6 +15691,13 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -15329,6 +15765,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -15459,18 +15896,17 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15481,7 +15917,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15497,6 +15933,13 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -15564,6 +16007,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -15691,18 +16135,17 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15713,7 +16156,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15729,6 +16172,13 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -15793,6 +16243,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -15826,18 +16277,17 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15848,7 +16298,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15864,6 +16314,13 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -16028,6 +16485,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -16062,18 +16520,17 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16084,7 +16541,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16100,6 +16557,13 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -16264,6 +16728,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -16406,6 +16871,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -16439,18 +16905,17 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16461,7 +16926,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16477,6 +16942,13 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -16637,6 +17109,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -16767,18 +17240,17 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16789,7 +17261,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16805,6 +17277,13 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
@@ -16868,6 +17347,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
@@ -16998,18 +17478,17 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/ManifoldContactPoint.h \
 		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
 		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
-		../physicsEngine/src/collision/broadphase/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
 		../physicsEngine/src/collision/OverlappingPair.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
-		../physicsEngine/src/collision/broadphase/BodyEndPoint.h \
-		../physicsEngine/src/collision/broadphase/BodyBox.h \
 		../physicsEngine/src/collision/broadphase/PairContainer.h \
 		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17020,7 +17499,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/island/IslandContainer.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
-		../physicsEngine/src/processable/ProcessableInterface.h \
+		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -17036,6 +17515,13 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \

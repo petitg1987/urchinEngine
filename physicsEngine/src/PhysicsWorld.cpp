@@ -1,6 +1,7 @@
 #include <chrono>
 
 #include "PhysicsWorld.h"
+#include "processable/raytest/RayTester.h"
 
 namespace urchin
 {
@@ -29,10 +30,8 @@ namespace urchin
 			delete physicsSimulationThread;
 		}
 
-		for(unsigned int i=0; i<processables.size(); ++i)
-		{
-			delete processables[i];
-		}
+		processables.clear();
+		oneShotProcessables.clear();
 
 		#ifdef _DEBUG
 			delete collisionVisualizer;
@@ -68,21 +67,34 @@ namespace urchin
 		}
 	}
 
-	void PhysicsWorld::addProcessable(ProcessableInterface *processable)
+	void PhysicsWorld::addProcessable(std::shared_ptr<Processable> processable)
 	{
-		processables.push_back(processable);
+		std::lock_guard<std::mutex> lock(mutex);
 
 		processable->initialize(this);
+
+		processables.push_back(processable);
 	}
 
-	void PhysicsWorld::removeProcessable(ProcessableInterface *processable)
+	void PhysicsWorld::removeProcessable(std::shared_ptr<Processable> processable)
 	{
-		std::vector<ProcessableInterface *>::iterator itFind = std::find(processables.begin(), processables.end(), processable);
+		std::lock_guard<std::mutex> lock(mutex);
+
+		std::vector<std::shared_ptr<Processable>>::iterator itFind = std::find(processables.begin(), processables.end(), processable);
 		if(itFind!=processables.end())
 		{
-			delete processable;
 			processables.erase(itFind);
 		}
+	}
+
+	void PhysicsWorld::rayTest(const Ray<float> &ray, RayTestCallback &rayTestCallback)
+	{
+		std::lock_guard<std::mutex> lock(mutex);
+
+		std::shared_ptr<RayTester> rayTester = std::make_shared<RayTester>(ray, rayTestCallback);
+		rayTester->initialize(this);
+
+		oneShotProcessables.push_back(rayTester);
 	}
 
 	/**
@@ -197,24 +209,32 @@ namespace urchin
 
 	void PhysicsWorld::processPhysicsUpdate()
 	{
-		Vector3<float> gravity;
+		//shared data copy for local thread
 		bool paused;
+		Vector3<float> gravity;
+		std::vector<std::shared_ptr<Processable>> processables;
 		{
 			std::lock_guard<std::mutex> lock(mutex);
 
-			gravity = this->gravity;
 			paused = this->paused;
+
+			gravity = this->gravity;
+
+			processables = this->processables;
+			processables.insert(processables.end(), oneShotProcessables.begin(), oneShotProcessables.end());
+			oneShotProcessables.clear();
 		}
 
+		//physics execution
 		if(!paused)
 		{
 			float dt = static_cast<float>(timeStep);
 
-			preProcess(dt, gravity);
+			setupProcessables(processables, dt, gravity);
 
 			collisionWorld->process(dt, gravity);
 
-			postProcess(dt, gravity);
+			executeProcessables(processables, dt, gravity);
 		}
 	}
 
@@ -222,7 +242,7 @@ namespace urchin
 	 * @param dt Delta of time between two simulation steps
 	 * @param gravity Gravity expressed in units/s^2
 	 */
-	void PhysicsWorld::preProcess(float dt, const Vector3<float> &gravity)
+	void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
 		for(unsigned int i=0; i<processables.size(); ++i)
 		{
@@ -234,11 +254,11 @@ namespace urchin
 	 * @param dt Delta of time between two simulation steps
 	 * @param gravity Gravity expressed in units/s^2
 	 */
-	void PhysicsWorld::postProcess(float dt, const Vector3<float> &gravity)
+	void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
 		for(unsigned int i=0; i<processables.size(); ++i)
 		{
-			processables[i]->process(dt, gravity);
+			processables[i]->execute(dt, gravity);
 		}
 	}
 

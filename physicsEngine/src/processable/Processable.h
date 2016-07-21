@@ -1,5 +1,5 @@
-#ifndef ENGINE_PROCESSABLEINTERFACE_H
-#define ENGINE_PROCESSABLEINTERFACE_H
+#ifndef ENGINE_PROCESSABLE_H
+#define ENGINE_PROCESSABLE_H
 
 #include "UrchinCommon.h"
 
@@ -12,16 +12,16 @@ namespace urchin
 	* A processable will be processed in process loop of a physics world. Note that process execution is
 	* done in the physics thread: make sure the concrete class is thread safe.
 	*/
-	class ProcessableInterface
+	class Processable
 	{
 		public:
-			ProcessableInterface();
-			virtual ~ProcessableInterface();
+			Processable();
+			virtual ~Processable();
 
 			virtual void initialize(PhysicsWorld *) = 0;
 
 			virtual void setup(float, const Vector3<float> &) = 0;
-			virtual void process(float, const Vector3<float> &) = 0;
+			virtual void execute(float, const Vector3<float> &) = 0;
 	};
 
 }

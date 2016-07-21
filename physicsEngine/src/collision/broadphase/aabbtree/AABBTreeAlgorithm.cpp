@@ -36,10 +36,12 @@ namespace urchin
 
 	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::rayTest(const Ray<float> &ray) const
 	{
-		std::vector<AbstractWorkBody *> bodiesHitByRay;
-		bodiesHitByRay.reserve(20);
+		std::vector<AbstractWorkBody *> bodiesAABBoxHitRay;
+		bodiesAABBoxHitRay.reserve(20);
 
-		return tree->rayTest(ray, bodiesHitByRay);
+		tree->rayTest(ray, bodiesAABBoxHitRay);
+
+		return bodiesAABBoxHitRay;
 	}
 
 }

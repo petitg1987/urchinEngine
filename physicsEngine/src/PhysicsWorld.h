@@ -3,13 +3,15 @@
 
 #include <vector>
 #include <atomic>
+#include <memory>
 #include <thread>
 #include "UrchinCommon.h"
 
 #include "body/AbstractBody.h"
 #include "body/BodyManager.h"
 #include "collision/CollisionWorld.h"
-#include "processable/ProcessableInterface.h"
+#include "processable/Processable.h"
+#include "processable/raytest/RayTestCallback.h"
 #include "visualizer/CollisionVisualizer.h"
 
 namespace urchin
@@ -27,8 +29,10 @@ namespace urchin
 			void addBody(AbstractBody *);
 			void removeBody(AbstractBody *);
 
-			void addProcessable(ProcessableInterface *);
-			void removeProcessable(ProcessableInterface *);
+			void addProcessable(std::shared_ptr<Processable>);
+			void removeProcessable(std::shared_ptr<Processable>);
+
+			void rayTest(const Ray<float> &, RayTestCallback &);
 
 			void setGravity(const Vector3<float> &);
 			Vector3<float> getGravity() const;
@@ -48,8 +52,8 @@ namespace urchin
 			bool continueExecution();
 			void processPhysicsUpdate();
 
-			void preProcess(float, const Vector3<float> &);
-			void postProcess(float, const Vector3<float> &);
+			void setupProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
+			void executeProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
 
 			std::thread *physicsSimulationThread;
 			std::atomic_bool physicsSimulationStopper;
@@ -62,7 +66,10 @@ namespace urchin
 
 			BodyManager *bodyManager;
 			CollisionWorld *collisionWorld;
-			std::vector<ProcessableInterface *> processables;
+
+			std::vector<std::shared_ptr<Processable>> processables;
+			std::vector<std::shared_ptr<Processable>> oneShotProcessables;
+
 			#ifdef _DEBUG
 				CollisionVisualizer *collisionVisualizer;
 			#endif

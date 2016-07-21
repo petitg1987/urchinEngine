@@ -200,7 +200,7 @@ namespace urchin
 	 * @param dt Delta of time between two simulation steps
 	 * @param gravity Gravity expressed in units/s^2
 	 */
-	void CharacterController::process(float dt, const Vector3<float> &gravity)
+	void CharacterController::execute(float dt, const Vector3<float> &gravity)
 	{
 		//recover from penetration
 		recoverFromPenetration(dt);

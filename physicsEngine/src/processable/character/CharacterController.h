@@ -4,7 +4,7 @@
 #include <memory>
 #include <mutex>
 
-#include "processable/ProcessableInterface.h"
+#include "processable/Processable.h"
 #include "utils/math/PhysicsTransform.h"
 #include "shape/CollisionShape3D.h"
 #include "body/work/WorkGhostBody.h"
@@ -28,7 +28,7 @@ namespace urchin
 	/**
 	* Character controller: allow to move a character in a world
 	*/
-	class CharacterController : public ProcessableInterface
+	class CharacterController : public Processable
 	{
 		public:
 			CharacterController(const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
@@ -50,7 +50,7 @@ namespace urchin
 			const PhysicsTransform &getTransform() const;
 
 			void setup(float, const Vector3<float> &);
-			void process(float, const Vector3<float> &);
+			void execute(float, const Vector3<float> &);
 
 		private:
 			bool needJumpAndUpdateFlag();

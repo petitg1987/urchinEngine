@@ -13,6 +13,8 @@ namespace urchin
 			Ray(const Point3<T> &,  const Vector3<T> &, T);
 
 			const Point3<T> &getOrigin() const;
+			Point3<T> computeTo() const;
+
 			const Vector3<T> &getDirection() const;
 			T getLength() const;
 

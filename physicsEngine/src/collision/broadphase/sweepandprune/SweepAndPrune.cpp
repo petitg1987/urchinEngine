@@ -405,19 +405,19 @@ namespace urchin
 
 	std::vector<AbstractWorkBody *> SweepAndPrune::rayTest(const Ray<float> &ray) const
 	{ //Brute force method (slow). Prefer use AABB Tree algorithm for broad phase when ray tests are needed.
-		std::vector<AbstractWorkBody *> bodiesHitByRay;
-		bodiesHitByRay.reserve(20);
+		std::vector<AbstractWorkBody *> bodiesAABBoxHitByRay;
+		bodiesAABBoxHitByRay.reserve(20);
 
 		for(auto it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
 		{
 			AABBox<float> bodyAABBox = it->second->retrieveBodyAABBox();
 			if(bodyAABBox.collideWithRay(ray))
 			{
-				bodiesHitByRay.push_back(it->first);
+				bodiesAABBoxHitByRay.push_back(it->first);
 			}
 		}
 
-		return bodiesHitByRay;
+		return bodiesAABBoxHitByRay;
 	}
 
 #ifdef _DEBUG

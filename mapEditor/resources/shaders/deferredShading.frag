@@ -66,7 +66,7 @@ float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
     float d = moments.x - shadowMapZBiase;
     float pMax = variance / (variance + d*d);
     
-    pMax = linearStep(0.45f, 1.0f, pMax); //reduce light bleeding
+    pMax = linearStep(0.75f, 1.0f, pMax); //reduce light bleeding
     
     return max(isInHardShadow, pMax);
 }

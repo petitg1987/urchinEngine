@@ -61,4 +61,9 @@ namespace urchin
 		return broadPhaseAlgorithm->getOverlappingPairs();
 	}
 
+	std::vector<AbstractWorkBody *> BroadPhaseManager::rayTest(const Ray<float> &ray) const
+	{
+		return broadPhaseAlgorithm->rayTest(ray);
+	}
+
 }

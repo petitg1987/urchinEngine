@@ -1,6 +1,8 @@
-#include <vector>
-
 #include "collision/narrowphase/NarrowPhaseManager.h"
+#include "collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h"
+#include "collision/narrowphase/algorithm/raycast/RayCastObject.h"
+#include "shape/CollisionShape3D.h"
+#include "shape/CollisionSphereShape.h"
 
 namespace urchin
 {
@@ -61,6 +63,26 @@ namespace urchin
 		}
 
 		return collisionAlgorithm;
+	}
+
+	void NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay, RayTestCallback &rayTestCallback) const
+	{
+		CollisionSphereShape pointShapeA(0.0);
+		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());
+		PhysicsTransform toA = PhysicsTransform(ray.computeTo());
+		RayCastObject rayCastObjectA(&pointShapeA, fromA, toA);
+
+		GJKRayCastAlgorithm gjkRayCastAlgorithm;
+
+		for(auto bodyAABBoxHitRay : bodiesAABBoxHitRay)
+		{
+			const CollisionShape3D *shapeB = bodyAABBoxHitRay->getShape();
+			PhysicsTransform fromToB = bodyAABBoxHitRay->getPhysicsTransform();
+			RayCastObject rayCastObjectB(shapeB, fromToB, fromToB);
+
+			gjkRayCastAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB);
+			//TODO use result to fill rayTestCallback
+		}
 	}
 
 }

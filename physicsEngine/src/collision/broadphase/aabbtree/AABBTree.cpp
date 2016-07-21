@@ -220,9 +220,9 @@ namespace urchin
 	}
 
 	/**
-	 * @param bodiesHitByRay [out] Bodies hit by the ray
+	 * @param bodiesAABBoxHitRay [out] Bodies AABBox hit by the ray
 	 */
-	std::vector<AbstractWorkBody *> AABBTree::rayTest(const Ray<float> &ray, std::vector<AbstractWorkBody *> &bodiesHitByRay) const
+	void AABBTree::rayTest(const Ray<float> &ray, std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
 		std::stack<AABBNode *> stackNodes;
 		stackNodes.push(rootNode);
@@ -236,7 +236,7 @@ namespace urchin
 			{
 				if (currentNode->isLeaf())
 				{
-					bodiesHitByRay.push_back(currentNode->getBodyNodeData()->getBody());
+					bodiesAABBoxHitRay.push_back(currentNode->getBodyNodeData()->getBody());
 				}else
 				{
 					stackNodes.push(currentNode->getRightChild());
@@ -244,8 +244,6 @@ namespace urchin
 				}
 			}
 		}
-
-		return bodiesHitByRay;
 	}
 
 #ifdef _DEBUG
