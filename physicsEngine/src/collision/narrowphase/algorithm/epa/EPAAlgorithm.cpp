@@ -27,7 +27,7 @@ namespace urchin
 		const Simplex<T> &simplex = gjkResult.getSimplex();
 		if(simplex.getSize()==1)
 		{ //simplex point is the origin
-			return std::unique_ptr<EPAResultNoCollide<T>>(new EPAResultNoCollide<T>());
+			return std::make_unique<EPAResultNoCollide<T>>();
 		}
 
 		//2. initialize global variables
@@ -43,7 +43,7 @@ namespace urchin
 
 		if(indexedTriangles.size()!=4)
 		{//due to numerical imprecision, it's impossible to create indexed triangles correctly
-			return std::unique_ptr<EPAResultInvalid<T>>(new EPAResultInvalid<T>());
+			return std::make_unique<EPAResultInvalid<T>>();
 		}
 
 		ConvexHull3D<T> convexHull(indexedPoints, indexedTriangles);
@@ -151,7 +151,7 @@ namespace urchin
 			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
 		#endif
 
-		return std::unique_ptr<EPAResultCollide<T>>(new EPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin));
+		return std::make_unique<EPAResultCollide<T>>(contactPointA, contactPointB, normal, distanceToOrigin);
 	}
 
 	/**

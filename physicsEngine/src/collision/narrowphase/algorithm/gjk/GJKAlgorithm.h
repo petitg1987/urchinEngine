@@ -1,9 +1,6 @@
 #ifndef ENGINE_GJKALGORITHM_H
 #define ENGINE_GJKALGORITHM_H
 
-#include <stdexcept>
-#include <cmath>
-#include <cassert>
 #include <memory>
 #include "UrchinCommon.h"
 
@@ -28,7 +25,6 @@ namespace urchin
 			std::unique_ptr<GJKResult<T>> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
 		private:
-			void updateSimplex(Simplex<T> &) const;
 			#ifdef _DEBUG
 				void logMaximumIterationReach() const;
 			#endif

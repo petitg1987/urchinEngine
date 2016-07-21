@@ -2,8 +2,6 @@
 #define ENGINE_SIMPLEX_H
 
 #include <vector>
-#include <algorithm>
-#include <stdexcept>
 #include "UrchinCommon.h"
 
 namespace urchin
@@ -24,10 +22,6 @@ namespace urchin
 			~Simplex();
 
 			void addPoint(const Point3<T> &, const Point3<T> &);
-			void removePoint(unsigned int);
-			void swapPoints(unsigned int, unsigned int);
-			void setBarycentric(unsigned int, T);
-			void setClosestPointToOrigin(const Point3<T> &);
 
 			unsigned int getSize() const;
 			const Point3<T> &getPoint(unsigned int) const;
@@ -40,6 +34,10 @@ namespace urchin
 			void computeClosestPoints(Point3<T> &, Point3<T> &) const;
 
 		private:
+			void updateSimplex();
+			void removePoint(unsigned int);
+			void setBarycentric(unsigned int, T);
+
 			std::vector<SupportMapping<T>> simplexPoints;
 			Point3<T> closestPointToOrigin;
 	};

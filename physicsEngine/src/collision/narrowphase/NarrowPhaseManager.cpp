@@ -1,6 +1,6 @@
 #include "collision/narrowphase/NarrowPhaseManager.h"
-#include "collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h"
 #include "collision/narrowphase/algorithm/raycast/RayCastObject.h"
+#include "collision/narrowphase/algorithm/raycast/RayCastResult.h"
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
 
@@ -67,21 +67,35 @@ namespace urchin
 
 	void NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay, RayTestCallback &rayTestCallback) const
 	{
-		CollisionSphereShape pointShapeA(0.0);
 		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());
 		PhysicsTransform toA = PhysicsTransform(ray.computeTo());
-		RayCastObject rayCastObjectA(&pointShapeA, fromA, toA);
-
-		GJKRayCastAlgorithm gjkRayCastAlgorithm;
+		std::shared_ptr<CollisionConvexObject3D> pointObjectA = CollisionSphereShape(0.0).toConvexObject(ray.getOrigin());
+		RayCastObject rayCastObjectA(pointObjectA, fromA, toA);
 
 		for(auto bodyAABBoxHitRay : bodiesAABBoxHitRay)
 		{
-			const CollisionShape3D *shapeB = bodyAABBoxHitRay->getShape();
-			PhysicsTransform fromToB = bodyAABBoxHitRay->getPhysicsTransform();
-			RayCastObject rayCastObjectB(shapeB, fromToB, fromToB);
+			PhysicsTransform fromB = bodyAABBoxHitRay->getPhysicsTransform();
+			PhysicsTransform toB = fromB;
+			std::shared_ptr<CollisionConvexObject3D> objectB = bodyAABBoxHitRay->getShape()->toConvexObject(fromB);
+			RayCastObject rayCastObjectB(objectB, fromB, toB);
 
-			gjkRayCastAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB);
-			//TODO use result to fill rayTestCallback
+			std::unique_ptr<RayCastResult<float>> rayCastResult = gjkRayCastAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB);
+			if(rayCastResult->hasTimeOfImpactResult())
+			{
+				std::cout<<"Body: "<<bodyAABBoxHitRay->getId()<<std::endl;
+				std::cout<<" => Lambda: "<<rayCastResult->getLengthToHit()<<std::endl;
+				std::cout<<" => Normal: "<<rayCastResult->getNormal()<<std::endl;
+				std::cout<<" => Hit point A: "<<rayCastResult->getHitPointA()<<std::endl;
+				std::cout<<" => Hit point B: "<<rayCastResult->getHitPointB()<<std::endl;
+				std::cout<<std::endl;
+
+				//TODO use result to fill rayTestCallback
+			}else
+			{
+				std::cout<<"Body: "<<bodyAABBoxHitRay->getId()<<std::endl;
+				std::cout<<" => No hit"<<std::endl;
+				std::cout<<std::endl;
+			}
 		}
 	}
 

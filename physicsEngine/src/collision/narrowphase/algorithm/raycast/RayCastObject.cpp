@@ -3,8 +3,8 @@
 namespace urchin
 {
 
-	RayCastObject::RayCastObject(const CollisionShape3D *shape, const PhysicsTransform &from, const PhysicsTransform &to) :
-		shape(shape),
+	RayCastObject::RayCastObject(std::shared_ptr<const CollisionConvexObject3D> object, const PhysicsTransform &from, const PhysicsTransform &to) :
+		object(object),
 		from(from),
 		to(to)
 	{
@@ -16,9 +16,9 @@ namespace urchin
 
 	}
 
-	const CollisionShape3D *RayCastObject::getShape() const
+	std::shared_ptr<const CollisionConvexObject3D> RayCastObject::getObject() const
 	{
-		return shape;
+		return object;
 	}
 
 	const PhysicsTransform &RayCastObject::getFrom() const

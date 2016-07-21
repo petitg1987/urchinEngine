@@ -9,6 +9,7 @@
 #include "collision/OverlappingPair.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
+#include "collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h"
 #include "processable/raytest/RayTestCallback.h"
 
 namespace urchin
@@ -28,8 +29,9 @@ namespace urchin
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
 
 			CollisionAlgorithmSelector *collisionAlgorithmSelector;
-
 			std::vector<ManifoldResult> *manifoldResults;
+
+			GJKRayCastAlgorithm<float> gjkRayCastAlgorithm;
 	};
 
 }

@@ -10,16 +10,16 @@ namespace urchin
 	class RayCastObject
 	{
 		public:
-			RayCastObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
+			RayCastObject(std::shared_ptr<const CollisionConvexObject3D>, const PhysicsTransform &, const PhysicsTransform &);
 			~RayCastObject();
 
-			const CollisionShape3D *getShape() const;
+			std::shared_ptr<const CollisionConvexObject3D> getObject() const;
 
 			const PhysicsTransform &getFrom() const;
 			const PhysicsTransform &getTo() const;
 
 		private:
-			const CollisionShape3D *shape;
+			std::shared_ptr<const CollisionConvexObject3D> object;
 
 			PhysicsTransform from;
 			PhysicsTransform to;
