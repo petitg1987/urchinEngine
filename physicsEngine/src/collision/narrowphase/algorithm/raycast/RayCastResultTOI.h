@@ -9,7 +9,7 @@ namespace urchin
 	template<class T> class RayCastResultTOI : public RayCastResult<T>
 	{
 		public:
-			RayCastResultTOI(const Vector3<T> &, const Point3<T> &, const Point3<T> &, T);
+			RayCastResultTOI(const Vector3<T> &, const Point3<T> &, T);
 			~RayCastResultTOI();
 
 			bool hasTimeOfImpactResult() const;
@@ -19,15 +19,13 @@ namespace urchin
 			const Point3<T> getHitPointA() const;
 			const Point3<T> getHitPointB() const;
 
-			const T getLengthToHit() const;
+			const T getTimeToHit() const;
 
 		private:
 			Vector3<T> normal;
-
-			Point3<T> hitPointA;
 			Point3<T> hitPointB;
 
-			T lengthToHit;
+			T timeToHit;
 	};
 
 }

@@ -33,6 +33,8 @@ namespace urchin
 	{
 		setMaxSlope(DEFAULT_MAX_SLOPE);
 		ghostBody->setIsActive(true); //always active for get better reactivity
+
+		setTransform(ghostBody->getPhysicsTransform());
 	}
 
 	CharacterController::~CharacterController()

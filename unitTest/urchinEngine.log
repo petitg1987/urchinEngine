@@ -1,0 +1,10 @@
+[2016-07-22 12:52:18] (WW) Maximum of iteration reached on GJK algorithm (20).
+ - Relative termination tolerance: 0.01
+ - Minimum termination tolerance: 0.001
+ - Percentage increase of minimum tolerance: 0.05
+
+[2016-07-22 13:06:36] (WW) Maximum of iteration reached on GJK algorithm (20).
+ - Relative termination tolerance: 0.01
+ - Minimum termination tolerance: 0.001
+ - Percentage increase of minimum tolerance: 0.05
+

@@ -25,17 +25,12 @@ namespace urchin
 		throw std::domain_error("No time of impact: cannot call this method.");
 	}
 
-	template<class T> const Point3<T> RayCastResultNoTOI<T>::getHitPointA() const
-	{
-		throw std::domain_error("No time of impact: cannot call this method.");
-	}
-
 	template<class T> const Point3<T> RayCastResultNoTOI<T>::getHitPointB() const
 	{
 		throw std::domain_error("No time of impact: cannot call this method.");
 	}
 
-	template<class T> const T RayCastResultNoTOI<T>::getLengthToHit() const
+	template<class T> const T RayCastResultNoTOI<T>::getTimeToHit() const
 	{
 		throw std::domain_error("No time of impact: cannot call this method.");
 	}

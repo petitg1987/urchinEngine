@@ -21,6 +21,8 @@ namespace urchin
 			std::unique_ptr<RayCastResult<T>> calculateTimeOfImpact(const RayCastObject &, const RayCastObject &) const;
 
 		private:
+			Point3<T> getWorldSupportPoint(const RayCastObject &, const Vector3<T> &, const PhysicsTransform &) const;
+			Point3<float> interpolate(const Point3<float> &, const Point3<float> &, T) const;
 			#ifdef _DEBUG
 				void logMaximumIterationReach() const;
 			#endif

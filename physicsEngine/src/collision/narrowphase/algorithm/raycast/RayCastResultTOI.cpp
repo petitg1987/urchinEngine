@@ -3,11 +3,10 @@
 namespace urchin
 {
 
-	template<class T> RayCastResultTOI<T>::RayCastResultTOI(const Vector3<T> &normal, const Point3<T> &hitPointA, const Point3<T> &hitPointB, T lengthToHit) :
+	template<class T> RayCastResultTOI<T>::RayCastResultTOI(const Vector3<T> &normal, const Point3<T> &hitPointB, T timeToHit) :
 		normal(normal),
-		hitPointA(hitPointA),
 		hitPointB(hitPointB),
-		lengthToHit(lengthToHit)
+		timeToHit(timeToHit)
 	{
 
 	}
@@ -24,22 +23,21 @@ namespace urchin
 
 	template<class T> const Vector3<T> RayCastResultTOI<T>::getNormal() const
 	{
-		throw normal;
-	}
-
-	template<class T> const Point3<T> RayCastResultTOI<T>::getHitPointA() const
-	{
-		throw hitPointA;
+		return normal;
 	}
 
 	template<class T> const Point3<T> RayCastResultTOI<T>::getHitPointB() const
 	{
-		throw hitPointB;
+		return hitPointB;
 	}
 
-	template<class T> const T RayCastResultTOI<T>::getLengthToHit() const
+	/**
+	 * Return time to hit. A value of 0.0 means objects collide at initial situation (from transformation).
+	 * A value of 1.0 means objects will collide at final situation (to transformation).
+	 */
+	template<class T> const T RayCastResultTOI<T>::getTimeToHit() const
 	{
-		throw lengthToHit;
+		return timeToHit;
 	}
 
 	//explicit template

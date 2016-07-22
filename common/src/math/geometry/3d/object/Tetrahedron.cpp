@@ -52,12 +52,12 @@ namespace urchin
 		T triangleBarycentrics[3];
 		T bestSquareDist = std::numeric_limits<T>::max();
 
-		bool pointOutsidePlaneABC = pointOutsidePlane(p, a, b, c, d);
-		bool pointOutsidePlaneACD = pointOutsidePlane(p, a, c, d, b);
-		bool pointOutsidePlaneADB = pointOutsidePlane(p, a, d, b, c);
-		bool pointOutsidePlaneBDC = pointOutsidePlane(p, b, d, c, a);
+		bool pointOutsideOrInPlaneABC = pointOutsideOrInPlane(p, a, b, c, d);
+		bool pointOutsideOrInPlaneACD = pointOutsideOrInPlane(p, a, c, d, b);
+		bool pointOutsideOrInPlaneADB = pointOutsideOrInPlane(p, a, d, b, c);
+		bool pointOutsideOrInPlaneBDC = pointOutsideOrInPlane(p, b, d, c, a);
 
-		if((voronoiRegionMask & 1) && pointOutsidePlaneABC)
+		if((voronoiRegionMask & 1) && pointOutsideOrInPlaneABC)
 		{ //point outside face ABC: compute closest point on ABC
 			Point3<T> q = Triangle3D<T>(a, b, c).closestPoint(p, triangleBarycentrics);
 
@@ -75,7 +75,7 @@ namespace urchin
 			}
 		}
 
-		if((voronoiRegionMask & 2) && pointOutsidePlaneACD)
+		if((voronoiRegionMask & 2) && pointOutsideOrInPlaneACD)
 		{ //point outside face ACD: compute closest point on ACD
 			Point3<T> q = Triangle3D<T>(a, c, d).closestPoint(p, triangleBarycentrics);
 
@@ -93,7 +93,7 @@ namespace urchin
 			}
 		}
 
-		if((voronoiRegionMask & 4) && pointOutsidePlaneADB)
+		if((voronoiRegionMask & 4) && pointOutsideOrInPlaneADB)
 		{ //point outside face ADB: compute closest point on ADB
 			Point3<T> q = Triangle3D<T>(a, d, b).closestPoint(p, triangleBarycentrics);
 
@@ -112,7 +112,7 @@ namespace urchin
 		}
 
 
-		if((voronoiRegionMask & 8) && pointOutsidePlaneBDC)
+		if((voronoiRegionMask & 8) && pointOutsideOrInPlaneBDC)
 		{ //point outside face BDC: compute closest point on BDC
 			Point3<T> q = Triangle3D<T>(b, d, c).closestPoint(p, triangleBarycentrics);
 
@@ -130,7 +130,7 @@ namespace urchin
 			}
 		}
 
-		if(!pointOutsidePlaneABC && !pointOutsidePlaneACD && !pointOutsidePlaneADB && !pointOutsidePlaneBDC)
+		if(!pointOutsideOrInPlaneABC && !pointOutsideOrInPlaneACD && !pointOutsideOrInPlaneADB && !pointOutsideOrInPlaneBDC)
 		{ //point inside tetrahedron
 			closestPoint = p;
 
@@ -166,22 +166,22 @@ namespace urchin
 
 	template<class T> bool Tetrahedron<T>::collideWithPoint(const Point3<T> &p) const
 	{
-		if(pointOutsidePlane(p, a, b, c, d))
+		if(pointOutsideOrInPlane(p, a, b, c, d))
 		{
 			return false;
 		}
 
-		if(pointOutsidePlane(p, a, c, d, b))
+		if(pointOutsideOrInPlane(p, a, c, d, b))
 		{
 			return false;
 		}
 
-		if(pointOutsidePlane(p, a, d, b, c))
+		if(pointOutsideOrInPlane(p, a, d, b, c))
 		{
 			return false;
 		}
 
-		if(pointOutsidePlane(p, b, d, c, a))
+		if(pointOutsideOrInPlane(p, b, d, c, a))
 		{
 			return false;
 		}
@@ -192,7 +192,7 @@ namespace urchin
 	/**
 	 * @return True if point p is outside the plane. Direction of plane normal is determinate by d.
 	 */
-	template<class T> bool Tetrahedron<T>::pointOutsidePlane(const Point3<T> &p,
+	template<class T> bool Tetrahedron<T>::pointOutsideOrInPlane(const Point3<T> &p,
 		const Point3<T> &planePointA, const Point3<T> &planePointB, const Point3<T> &planePointC, const Point3<T> &d) const
 	{
 		Vector3<T> ap = planePointA.vector(p);
@@ -203,7 +203,7 @@ namespace urchin
 		T signp = ap.dotProduct(ab.crossProduct(ac));
 		T signd = ad.dotProduct(ab.crossProduct(ac));
 
-		return (signp * signd) < (T)0.0;
+		return (signp * signd) <= (T)0.0;
 	}
 
 	//explicit template

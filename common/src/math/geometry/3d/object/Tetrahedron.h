@@ -25,7 +25,7 @@ namespace urchin
 			bool collideWithPoint(const Point3<T> &) const;
 
 		private:
-			bool pointOutsidePlane(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &) const;
+			bool pointOutsideOrInPlane(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &) const;
 
 			Point3<T> a, b, c, d;
 	};

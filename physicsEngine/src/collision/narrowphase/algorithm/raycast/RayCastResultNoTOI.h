@@ -15,11 +15,9 @@ namespace urchin
 			bool hasTimeOfImpactResult() const;
 
 			const Vector3<T> getNormal() const;
-
-			const Point3<T> getHitPointA() const;
 			const Point3<T> getHitPointB() const;
 
-			const T getLengthToHit() const;
+			const T getTimeToHit() const;
 	};
 
 }
