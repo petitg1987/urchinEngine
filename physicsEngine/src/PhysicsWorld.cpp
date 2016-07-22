@@ -87,14 +87,16 @@ namespace urchin
 		}
 	}
 
-	void PhysicsWorld::rayTest(const Ray<float> &ray, RayTestCallback &rayTestCallback)
+	std::shared_ptr<RayTestResult> PhysicsWorld::rayTest(const Ray<float> &ray)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 
-		std::shared_ptr<RayTester> rayTester = std::make_shared<RayTester>(ray, rayTestCallback);
+		std::shared_ptr<RayTester> rayTester = std::make_shared<RayTester>(ray);
 		rayTester->initialize(this);
 
 		oneShotProcessables.push_back(rayTester);
+
+		return rayTester->getRayTestResult();
 	}
 
 	/**

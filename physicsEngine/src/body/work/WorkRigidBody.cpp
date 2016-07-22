@@ -230,4 +230,9 @@ namespace urchin
 		return angularFactor;
 	}
 
+	bool WorkRigidBody::isGhostBody() const
+	{
+		return false;
+	}
+
 }

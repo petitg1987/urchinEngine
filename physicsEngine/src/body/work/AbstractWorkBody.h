@@ -44,6 +44,7 @@ namespace urchin
 			void setIsStatic(bool);
 			bool isActive() const;
 			void setIsActive(bool);
+			virtual bool isGhostBody() const = 0;
 
 			void setIslandElementId(unsigned int);
 			unsigned int getIslandElementId() const;

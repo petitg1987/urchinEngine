@@ -18,7 +18,7 @@ namespace urchin
 			GJKRayCastAlgorithm();
 			~GJKRayCastAlgorithm();
 
-			std::unique_ptr<RayCastResult<T>> calculateTimeOfImpact(const RayCastObject &, const RayCastObject &) const;
+			std::shared_ptr<RayCastResult<T>> calculateTimeOfImpact(const RayCastObject &, const RayCastObject &) const;
 
 		private:
 			Point3<T> getWorldSupportPoint(const RayCastObject &, const Vector3<T> &, const PhysicsTransform &) const;

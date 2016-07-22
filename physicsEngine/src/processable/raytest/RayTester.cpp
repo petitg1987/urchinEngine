@@ -4,9 +4,9 @@
 namespace urchin
 {
 
-	RayTester::RayTester(const Ray<float> &ray, RayTestCallback &rayTestCallback) :
+	RayTester::RayTester(const Ray<float> &ray) :
 			ray(ray),
-			rayTestCallback(rayTestCallback),
+			rayTestResult(std::make_shared<RayTestResult>()),
 			collisionWorld(nullptr)
 	{
 
@@ -15,6 +15,11 @@ namespace urchin
 	RayTester::~RayTester()
 	{
 
+	}
+
+	std::shared_ptr<const RayTestResult> RayTester::getRayTestResult() const
+	{
+		return rayTestResult;
 	}
 
 	void RayTester::initialize(PhysicsWorld *physicsWorld)
@@ -30,8 +35,21 @@ namespace urchin
 	void RayTester::execute(float, const Vector3<float> &)
 	{
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitRay = collisionWorld->getBroadPhaseManager()->rayTest(ray);
+		std::vector<std::shared_ptr<RayCastResult<float>>> rayCastResults = collisionWorld->getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
 
-		collisionWorld->getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay, rayTestCallback);
+		std::vector<RayTestSingleResult> rayTestResults;
+		rayTestResults.reserve(rayCastResults.size());
+
+		for(const std::shared_ptr<RayCastResult<float>> &rayCastResult : rayCastResults)
+		{
+			if(rayCastResult->hasTimeOfImpactResult())
+			{
+				RayTestSingleResult rayTestSingleResult(rayCastResult->getNormal(), rayCastResult->getHitPointB(), rayCastResult->getTimeToHit());
+				rayTestResults.push_back(rayTestSingleResult);
+			}
+		}
+
+		rayTestResult->addResults(rayTestResults);
 	}
 
 }

@@ -14,12 +14,10 @@ namespace urchin
 
 			bool hasTimeOfImpactResult() const;
 
-			const Vector3<T> getNormal() const;
+			const Vector3<T> &getNormal() const;
+			const Point3<T> &getHitPointB() const;
 
-			const Point3<T> getHitPointA() const;
-			const Point3<T> getHitPointB() const;
-
-			const T getTimeToHit() const;
+			T getTimeToHit() const;
 
 		private:
 			Vector3<T> normal;

@@ -36,7 +36,8 @@
 
 #include "processable/Processable.h"
 #include "processable/character/CharacterController.h"
-#include "processable/raytest/RayTestCallback.h"
+#include "processable/raytest/RayTestResult.h"
+#include "processable/raytest/RayTestSingleResult.h"
 
 #include "visualizer/CollisionVisualizer.h"
 

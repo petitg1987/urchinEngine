@@ -12,7 +12,7 @@ namespace urchin
 	template<class T> GJKRayCastAlgorithm<T>::GJKRayCastAlgorithm() :
 		squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
 		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkRayCastMaxIteration")),
-		terminationTolerance(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkRayCastTerminationTolerance"))
+		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkRayCastTerminationTolerance"))
 	{
 
 	}
@@ -22,7 +22,7 @@ namespace urchin
 
 	}
 
-	template<class T> std::unique_ptr<RayCastResult<T>> GJKRayCastAlgorithm<T>::calculateTimeOfImpact(const RayCastObject &objectA, const RayCastObject &objectB) const
+	template<class T> std::shared_ptr<RayCastResult<T>> GJKRayCastAlgorithm<T>::calculateTimeOfImpact(const RayCastObject &objectA, const RayCastObject &objectB) const
 	{
 		T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
 		Vector3<T> normal;
@@ -52,7 +52,7 @@ namespace urchin
 
 			if (timeToHit > 1.0)
 			{ //no hit detected between from and to transformation
-				return std::make_unique<RayCastResultNoTOI<T>>();
+				return std::make_shared<RayCastResultNoTOI<T>>();
 			}
 
 			if (closestPointDotNewPoint > 0.0)
@@ -60,7 +60,7 @@ namespace urchin
 				T closestPointDotRelativeMotion = vClosestPoint.dotProduct(relativeMotion);
 				if (closestPointDotRelativeMotion >= -squareEpsilon)
 				{
-					return std::make_unique<RayCastResultNoTOI<T>>();
+					return std::make_shared<RayCastResultNoTOI<T>>();
 				}else
 				{
 					timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
@@ -84,7 +84,7 @@ namespace urchin
 			{
 				if(normal.squareLength() < squareEpsilon)
 				{
-					return std::make_unique<RayCastResultNoTOI<T>>();
+					return std::make_shared<RayCastResultNoTOI<T>>();
 				}
 
 				normal = normal.normalize(); //TODO see btCollisionWorld:300 ?
@@ -92,7 +92,7 @@ namespace urchin
 				Point3<T> hitPointA, hitPointB;
 				simplex.computeClosestPoints(hitPointA, hitPointB);
 
-				return std::make_unique<RayCastResultTOI<T>>(normal, hitPointB, timeToHit);
+				return std::make_shared<RayCastResultTOI<T>>(normal, hitPointB, timeToHit);
 			}
 		}
 

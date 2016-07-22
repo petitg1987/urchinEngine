@@ -4,7 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "processable/Processable.h"
-#include "processable/raytest/RayTestCallback.h"
+#include "processable/raytest/RayTestResult.h"
 #include "collision/CollisionWorld.h"
 
 namespace urchin
@@ -13,8 +13,10 @@ namespace urchin
 	class RayTester : public Processable
 	{
 		public:
-			RayTester(const Ray<float> &ray, RayTestCallback &);
+			RayTester(const Ray<float> &ray);
 			~RayTester();
+
+			std::shared_ptr<const RayTestResult> getRayTestResult() const;
 
 			void initialize(PhysicsWorld *);
 
@@ -23,7 +25,7 @@ namespace urchin
 
 		private:
 			const Ray<float> ray;
-			RayTestCallback &rayTestCallback;
+			std::shared_ptr<RayTestResult> rayTestResult;
 
 			CollisionWorld *collisionWorld;
 

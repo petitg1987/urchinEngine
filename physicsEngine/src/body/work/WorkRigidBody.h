@@ -51,6 +51,8 @@ namespace urchin
 			void setAngularFactor(const Vector3<float> &);
 			const Vector3<float> &getAngularFactor() const;
 
+			bool isGhostBody() const;
+
 		private:
 			void refreshBodyActiveState();
 

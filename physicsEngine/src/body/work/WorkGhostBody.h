@@ -24,6 +24,8 @@ namespace urchin
 
 			PairContainer *getPairContainer() const;
 
+			bool isGhostBody() const;
+
 		private:
 			PairContainer *pairContainer;
 

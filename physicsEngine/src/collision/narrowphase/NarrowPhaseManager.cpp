@@ -1,6 +1,6 @@
 #include "collision/narrowphase/NarrowPhaseManager.h"
 #include "collision/narrowphase/algorithm/raycast/RayCastObject.h"
-#include "collision/narrowphase/algorithm/raycast/RayCastResult.h"
+#include "processable/raytest/RayTestSingleResult.h"
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
 
@@ -65,8 +65,10 @@ namespace urchin
 		return collisionAlgorithm;
 	}
 
-	void NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay, RayTestCallback &rayTestCallback) const
+	std::vector<std::shared_ptr<RayCastResult<float>>> NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
+		std::vector<std::shared_ptr<RayCastResult<float>>> rayCastResults;
+
 		CollisionSphereShape pointShapeA(0.0);
 		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());
 		PhysicsTransform toA = PhysicsTransform(ray.computeTo());
@@ -77,23 +79,10 @@ namespace urchin
 			PhysicsTransform fromToB = bodyAABBoxHitRay->getPhysicsTransform();
 			RayCastObject rayCastObjectB(bodyAABBoxHitRay->getShape(), fromToB, fromToB);
 
-			std::unique_ptr<RayCastResult<float>> rayCastResult = gjkRayCastAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB);
-			if(rayCastResult->hasTimeOfImpactResult())
-			{
-				std::cout<<"Body: "<<bodyAABBoxHitRay->getId()<<std::endl;
-				std::cout<<" => Time to hit: "<<rayCastResult->getTimeToHit()<<std::endl;
-				std::cout<<" => Normal: "<<rayCastResult->getNormal()<<std::endl;
-				std::cout<<" => Hit point B: "<<rayCastResult->getHitPointB()<<std::endl;
-				std::cout<<std::endl;
-
-				//TODO use result to fill rayTestCallback
-			}else
-			{
-				std::cout<<"Body: "<<bodyAABBoxHitRay->getId()<<std::endl;
-				std::cout<<" => No hit"<<std::endl;
-				std::cout<<std::endl;
-			}
+			rayCastResults.push_back(gjkRayCastAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB));
 		}
+
+		return rayCastResults;
 	}
 
 }

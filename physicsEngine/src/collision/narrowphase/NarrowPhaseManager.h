@@ -10,7 +10,8 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 #include "collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h"
-#include "processable/raytest/RayTestCallback.h"
+#include "collision/narrowphase/algorithm/raycast/RayCastResult.h"
+#include "body/work/AbstractWorkBody.h"
 
 namespace urchin
 {
@@ -23,7 +24,7 @@ namespace urchin
 
 			std::vector<ManifoldResult> *process(const std::vector<OverlappingPair *> &);
 
-			void rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &, RayTestCallback &rayTestCallback) const;
+			std::vector<std::shared_ptr<RayCastResult<float>>> rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);

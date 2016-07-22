@@ -35,4 +35,9 @@ namespace urchin
 		return pairContainer;
 	}
 
+	bool WorkGhostBody::isGhostBody() const
+	{
+		return true;
+	}
+
 }

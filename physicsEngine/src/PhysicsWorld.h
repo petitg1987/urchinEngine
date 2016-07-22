@@ -11,7 +11,7 @@
 #include "body/BodyManager.h"
 #include "collision/CollisionWorld.h"
 #include "processable/Processable.h"
-#include "processable/raytest/RayTestCallback.h"
+#include "processable/raytest/RayTestResult.h"
 #include "visualizer/CollisionVisualizer.h"
 
 namespace urchin
@@ -32,7 +32,7 @@ namespace urchin
 			void addProcessable(std::shared_ptr<Processable>);
 			void removeProcessable(std::shared_ptr<Processable>);
 
-			void rayTest(const Ray<float> &, RayTestCallback &);
+			std::shared_ptr<RayTestResult> rayTest(const Ray<float> &);
 
 			void setGravity(const Vector3<float> &);
 			Vector3<float> getGravity() const;
