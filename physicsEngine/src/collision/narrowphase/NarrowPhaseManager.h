@@ -24,7 +24,7 @@ namespace urchin
 
 			std::vector<ManifoldResult> *process(const std::vector<OverlappingPair *> &);
 
-			std::vector<std::shared_ptr<RayCastResult<float>>> rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
+			std::vector<std::shared_ptr<RayCastResult<double>>> rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
@@ -32,7 +32,7 @@ namespace urchin
 			CollisionAlgorithmSelector *collisionAlgorithmSelector;
 			std::vector<ManifoldResult> *manifoldResults;
 
-			GJKRayCastAlgorithm<float> gjkRayCastAlgorithm;
+			GJKRayCastAlgorithm<double> gjkRayCastAlgorithm;
 	};
 
 }

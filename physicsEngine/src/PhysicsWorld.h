@@ -32,7 +32,7 @@ namespace urchin
 			void addProcessable(std::shared_ptr<Processable>);
 			void removeProcessable(std::shared_ptr<Processable>);
 
-			std::shared_ptr<RayTestResult> rayTest(const Ray<float> &);
+			std::shared_ptr<const RayTestResult> rayTest(const Ray<float> &);
 
 			void setGravity(const Vector3<float> &);
 			Vector3<float> getGravity() const;

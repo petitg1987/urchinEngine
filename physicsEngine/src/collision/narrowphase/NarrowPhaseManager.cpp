@@ -65,9 +65,9 @@ namespace urchin
 		return collisionAlgorithm;
 	}
 
-	std::vector<std::shared_ptr<RayCastResult<float>>> NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
+	std::vector<std::shared_ptr<RayCastResult<double>>> NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-		std::vector<std::shared_ptr<RayCastResult<float>>> rayCastResults;
+		std::vector<std::shared_ptr<RayCastResult<double>>> rayCastResults;
 
 		CollisionSphereShape pointShapeA(0.0);
 		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());

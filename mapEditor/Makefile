@@ -641,7 +641,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -653,6 +652,8 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -763,6 +764,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -954,6 +956,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -1001,7 +1004,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1013,6 +1015,8 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1158,7 +1162,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1170,6 +1173,8 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1283,6 +1288,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -1454,6 +1460,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -1501,7 +1508,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1513,6 +1519,8 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1699,6 +1707,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -1746,7 +1755,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1758,6 +1766,8 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1940,6 +1950,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -1987,7 +1998,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1999,6 +2009,8 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2133,7 +2145,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2145,6 +2156,8 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2258,6 +2271,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -2375,7 +2389,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2387,6 +2400,8 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2500,6 +2515,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -2617,7 +2633,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2629,6 +2644,8 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2742,6 +2759,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -2864,7 +2882,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2876,6 +2893,8 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2989,6 +3008,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -3106,7 +3126,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3118,6 +3137,8 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3231,6 +3252,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -3397,6 +3419,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -3444,7 +3467,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3456,6 +3478,8 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3589,7 +3613,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3601,6 +3624,8 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3714,6 +3739,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -3831,7 +3857,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3843,6 +3868,8 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3956,6 +3983,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -4122,6 +4150,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -4169,7 +4198,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4181,6 +4209,8 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4368,6 +4398,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -4415,7 +4446,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4427,6 +4457,8 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4610,6 +4642,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -4657,7 +4690,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4669,6 +4701,8 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4855,6 +4889,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -4902,7 +4937,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4914,6 +4948,8 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5100,6 +5136,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -5147,7 +5184,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5159,6 +5195,8 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5343,6 +5381,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -5390,7 +5429,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5402,6 +5440,8 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5589,6 +5629,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -5636,7 +5677,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5648,6 +5688,8 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5834,6 +5876,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -5881,7 +5924,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5893,6 +5935,8 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6075,6 +6119,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -6122,7 +6167,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6134,6 +6178,8 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6316,6 +6362,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -6363,7 +6410,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6375,6 +6421,8 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6575,6 +6623,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
@@ -6606,7 +6655,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6618,6 +6666,8 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6800,6 +6850,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -6847,7 +6898,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6859,6 +6909,8 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7058,6 +7110,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
@@ -7089,7 +7142,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7101,6 +7153,8 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7235,7 +7289,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7247,6 +7300,8 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7357,6 +7412,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -7498,7 +7554,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7510,6 +7565,8 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7620,6 +7677,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -7758,7 +7816,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7770,6 +7827,8 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7880,6 +7939,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -8216,6 +8276,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -8263,7 +8324,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8275,6 +8335,8 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8460,6 +8522,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -8507,7 +8570,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8519,6 +8581,8 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8664,7 +8728,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8676,6 +8739,8 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8788,6 +8853,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -8906,7 +8972,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8918,6 +8983,8 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9031,6 +9098,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -9207,6 +9275,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -9254,7 +9323,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9266,6 +9334,8 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9452,6 +9522,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -9499,7 +9570,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9511,6 +9581,8 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9694,6 +9766,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -9741,7 +9814,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9753,6 +9825,8 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9888,7 +9962,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9900,6 +9973,8 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10013,6 +10088,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -10131,7 +10207,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10143,6 +10218,8 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10256,6 +10333,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -10374,7 +10452,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10386,6 +10463,8 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10499,6 +10578,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -10626,7 +10706,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10638,6 +10717,8 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10751,6 +10832,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -10872,7 +10954,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10884,6 +10965,8 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10997,6 +11080,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -11164,6 +11248,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -11211,7 +11296,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11223,6 +11307,8 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11356,7 +11442,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11368,6 +11453,8 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11480,6 +11567,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -11610,7 +11698,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11622,6 +11709,8 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11735,6 +11824,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -11853,7 +11943,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11865,6 +11954,8 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11978,6 +12069,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -12144,6 +12236,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -12191,7 +12284,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12203,6 +12295,8 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12385,6 +12479,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -12432,7 +12527,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12444,6 +12538,8 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12633,6 +12729,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -12680,7 +12777,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12692,6 +12788,8 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12875,6 +12973,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -12922,7 +13021,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12934,6 +13032,8 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13117,6 +13217,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -13164,7 +13265,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13176,6 +13276,8 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13365,6 +13467,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -13412,7 +13515,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13424,6 +13526,8 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13610,6 +13714,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -13657,7 +13762,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13669,6 +13773,8 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13853,6 +13959,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -13900,7 +14007,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13912,6 +14018,8 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14096,6 +14204,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -14143,7 +14252,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14155,6 +14263,8 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14348,6 +14458,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -14395,7 +14506,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14407,6 +14517,8 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14593,6 +14705,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -14640,7 +14753,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14652,6 +14764,8 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14835,6 +14949,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -14882,7 +14997,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14894,6 +15008,8 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15076,6 +15192,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -15123,7 +15240,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15135,6 +15251,8 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15336,6 +15454,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
@@ -15367,7 +15486,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15379,6 +15497,8 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15562,6 +15682,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -15609,7 +15730,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15621,6 +15741,8 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15819,6 +15941,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
@@ -15850,7 +15973,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15862,6 +15984,8 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16064,6 +16188,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
@@ -16095,7 +16220,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16107,6 +16231,8 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16290,6 +16416,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -16337,7 +16464,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16349,6 +16475,8 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16482,7 +16610,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16494,6 +16621,8 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16604,6 +16733,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -16728,7 +16858,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16740,6 +16869,8 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16850,6 +16981,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
@@ -17020,6 +17152,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
@@ -17116,7 +17249,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17128,6 +17260,8 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -17239,6 +17373,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/UrchinMapHandler.h \
@@ -17405,6 +17540,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/UrchinMapHandler.h \
@@ -17454,7 +17590,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17466,6 +17601,8 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -17664,6 +17801,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../mapHandler/src/resources/Map.h \
@@ -17695,7 +17833,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
-		../physicsEngine/src/processable/raytest/RayTestCallback.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17707,6 +17844,8 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/island/IslandElementLink.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \

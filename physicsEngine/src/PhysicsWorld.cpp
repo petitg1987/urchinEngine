@@ -87,7 +87,7 @@ namespace urchin
 		}
 	}
 
-	std::shared_ptr<RayTestResult> PhysicsWorld::rayTest(const Ray<float> &ray)
+	std::shared_ptr<const RayTestResult> PhysicsWorld::rayTest(const Ray<float> &ray)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 

@@ -87,7 +87,7 @@ namespace urchin
 					return std::make_shared<RayCastResultNoTOI<T>>();
 				}
 
-				normal = normal.normalize(); //TODO see btCollisionWorld:300 ?
+				normal = normal.normalize();
 
 				Point3<T> hitPointA, hitPointB;
 				simplex.computeClosestPoints(hitPointA, hitPointB);
@@ -105,7 +105,7 @@ namespace urchin
 
 	template<class T> Point3<T> GJKRayCastAlgorithm<T>::getWorldSupportPoint(const RayCastObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
 	{
-		Vector3<float> localDirection = worldTransform.getOrientation().rotatePoint(Point3<T>(globalDirection).template cast<float>()).toVector();
+		Vector3<float> localDirection = worldTransform.getOrientationMatrix().transpose() * globalDirection.template cast<float>();
 		Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
 
 		return worldTransform.transform(localSupportPoint).template cast<T>();
