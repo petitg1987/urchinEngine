@@ -44,7 +44,12 @@ namespace urchin
 
 	template<class T> const T AABBox<T>::getMaxHalfSize() const
 	{
-		return std::max(std::max(boxShape.getHalfSize(0), boxShape.getHalfSize(1)), boxShape.getHalfSize(2));
+		return boxShape.getMaxHalfSize();
+	}
+
+	template<class T> unsigned int AABBox<T>::getMaxHalfSizeIndex() const
+	{
+		return boxShape.getMaxHalfSizeIndex();
 	}
 
 	template<class T> const Point3<T> &AABBox<T>::getMin() const
@@ -154,6 +159,11 @@ namespace urchin
 		);
 
 		return AABBox<T>(cutMin, cutMax);
+	}
+
+	template<class T> AABBox<T> AABBox<T>::enlarge(const Vector3<T> &minAdditionalSize, const Vector3<T> &maxAdditionalSize) const
+	{
+		return AABBox<T>(getMin()-Point3<T>(minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize));
 	}
 
 	template<class T> bool AABBox<T>::collideWithPoint(const Point3<T> &point) const

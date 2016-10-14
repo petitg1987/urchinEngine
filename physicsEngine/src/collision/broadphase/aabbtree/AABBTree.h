@@ -1,6 +1,8 @@
 #ifndef ENGINE_AABBTREE_H
 #define ENGINE_AABBTREE_H
 
+#include "UrchinCommon.h"
+
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
 #include "collision/broadphase/PairContainer.h"
@@ -23,6 +25,7 @@ namespace urchin
 			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
 
 			void rayTest(const Ray<float> &, std::vector<AbstractWorkBody *> &) const;
+			void enlargedRayTest(const Ray<float> &, const Vector3<float> &, std::vector<AbstractWorkBody *> &) const;
 
 		private:
 			void insertNode(AABBNode *, AABBNode *);

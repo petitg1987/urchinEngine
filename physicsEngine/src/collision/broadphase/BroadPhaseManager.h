@@ -29,6 +29,7 @@ namespace urchin
 			const std::vector<OverlappingPair *> &computeOverlappingPairs();
 
 			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
+			std::vector<AbstractWorkBody *> enlargedRayTest(const Ray<float> &, const Vector3<float> &) const;
 
 		private:
 			BroadPhaseAlgorithm *broadPhaseAlgorithm;

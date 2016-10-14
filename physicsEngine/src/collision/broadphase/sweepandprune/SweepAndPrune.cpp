@@ -404,6 +404,15 @@ namespace urchin
 	}
 
 	std::vector<AbstractWorkBody *> SweepAndPrune::rayTest(const Ray<float> &ray) const
+	{
+		return enlargedRayTest(ray, Vector3<float>(0.0, 0.0, 0.0));
+	}
+
+	/**
+	 * Enlarge each body box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
+	 * @param enlargeBodyBoxHalfSize Specify the size of the enlargement. A size of 0.5 in X axis will enlarge the body box from 1.0 (0.5 on left and 0.5 on right).
+	 */
+	std::vector<AbstractWorkBody *> SweepAndPrune::enlargedRayTest(const Ray<float> &ray, const Vector3<float> &enlargeBodyBoxHalfSize) const
 	{ //Brute force method (slow). Prefer use AABB Tree algorithm for broad phase when ray tests are needed.
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitByRay;
 		bodiesAABBoxHitByRay.reserve(20);
@@ -411,7 +420,8 @@ namespace urchin
 		for(auto it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
 		{
 			AABBox<float> bodyAABBox = it->second->retrieveBodyAABBox();
-			if(bodyAABBox.collideWithRay(ray))
+			AABBox<float> enlargedBodyAABBox = bodyAABBox.enlarge(enlargeBodyBoxHalfSize, enlargeBodyBoxHalfSize);
+			if(enlargedBodyAABBox.collideWithRay(ray))
 			{
 				bodiesAABBoxHitByRay.push_back(it->first);
 			}

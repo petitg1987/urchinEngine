@@ -30,6 +30,7 @@ namespace urchin
 			const T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;
 			const T getMaxHalfSize() const;
+			unsigned int getMaxHalfSizeIndex() const;
 			const Point3<T> &getMin() const;
 			const Point3<T> &getMax() const;
 
@@ -42,6 +43,7 @@ namespace urchin
 			bool include(const AABBox<T> &) const;
 			AABBox<T> merge(const AABBox<T> &) const;
 			AABBox<T> cutTo(const AABBox<T> &) const;
+			AABBox<T> enlarge(const Vector3<T> &, const Vector3<T> &) const;
 
 			bool collideWithPoint(const Point3<T> &) const;
 			bool collideWithAABBox(const AABBox<T> &) const;

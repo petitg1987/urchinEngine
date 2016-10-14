@@ -14,7 +14,7 @@ namespace urchin
 			integrateVelocityManager(new IntegrateVelocityManager(bodyManager)),
 			constraintSolverManager(new ConstraintSolverManager()),
 			islandManager(new IslandManager(bodyManager)),
-			integrateTransformManager(new IntegrateTransformManager(bodyManager)),
+			integrateTransformManager(new IntegrateTransformManager(bodyManager, broadPhaseManager, narrowPhaseManager)),
 			manifoldResults(nullptr)
 	{
 

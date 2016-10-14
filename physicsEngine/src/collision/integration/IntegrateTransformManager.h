@@ -3,6 +3,8 @@
 
 #include "body/BodyManager.h"
 #include "body/work/WorkRigidBody.h"
+#include "collision/broadphase/BroadPhaseManager.h"
+#include "collision/narrowphase/NarrowPhaseManager.h"
 
 namespace urchin
 {
@@ -13,13 +15,17 @@ namespace urchin
 	class IntegrateTransformManager
 	{
 		public:
-			IntegrateTransformManager(const BodyManager *);
+			IntegrateTransformManager(const BodyManager *, const BroadPhaseManager *, const NarrowPhaseManager *);
 			~IntegrateTransformManager();
 
 			void integrateTransform(float);
 
 		private:
+			PhysicsTransform computeNewIntegrateTransform(float, const WorkRigidBody *) const;
+
 			const BodyManager *bodyManager;
+			const BroadPhaseManager *broadPhaseManager;
+			const NarrowPhaseManager *narrowPhaseManager;
 	};
 
 }

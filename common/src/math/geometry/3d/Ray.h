@@ -10,7 +10,8 @@ namespace urchin
 	template<class T> class Ray
 	{
 		public:
-			Ray(const Point3<T> &,  const Vector3<T> &, T);
+			Ray(const Point3<T> &, const Vector3<T> &, T);
+			Ray(const Point3<T> &, const Point3<T> &);
 
 			const Point3<T> &getOrigin() const;
 			Point3<T> computeTo() const;

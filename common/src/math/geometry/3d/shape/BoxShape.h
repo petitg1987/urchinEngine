@@ -18,6 +18,8 @@ namespace urchin
 
 			const T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;
+			const T getMaxHalfSize() const;
+			unsigned int getMaxHalfSizeIndex() const;
 
 			T getVolume() const;
 

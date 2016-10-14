@@ -66,4 +66,13 @@ namespace urchin
 		return broadPhaseAlgorithm->rayTest(ray);
 	}
 
+	/**
+	 * Enlarge each box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
+	 * @param enlargeBoxHalfSize Specify the size of the enlargement. A size of 0.5 in X axis will enlarge the box from 1.0 (0.5 on left and 0.5 on right).
+	 */
+	std::vector<AbstractWorkBody *> BroadPhaseManager::enlargedRayTest(const Ray<float> &ray, const Vector3<float> &enlargeBoxHalfSize) const
+	{
+		return broadPhaseAlgorithm->enlargedRayTest(ray, enlargeBoxHalfSize);
+	}
+
 }

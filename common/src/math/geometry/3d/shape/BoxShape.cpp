@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "BoxShape.h"
 
 namespace urchin
@@ -26,6 +28,27 @@ namespace urchin
 	template<class T> const Vector3<T> &BoxShape<T>::getHalfSizes() const
 	{
 		return halfSizes;
+	}
+
+	template<class T> const T BoxShape<T>::getMaxHalfSize() const
+	{
+		return std::max(std::max(halfSizes[0], halfSizes[1]), halfSizes[2]);
+	}
+
+	template<class T> unsigned int BoxShape<T>::getMaxHalfSizeIndex() const
+	{
+		if(halfSizes[0] > halfSizes[1])
+		{
+			if(halfSizes[0] > halfSizes[2])
+			{
+				return 0;
+			}
+			return 1;
+		}else if(halfSizes[1] > halfSizes[2])
+		{
+			return 1;
+		}
+		return 2;
 	}
 
 	template<class T> T BoxShape<T>::getVolume() const
