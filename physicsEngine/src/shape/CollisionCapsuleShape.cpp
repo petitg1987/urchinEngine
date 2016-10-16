@@ -1,4 +1,5 @@
 #include "shape/CollisionCapsuleShape.h"
+#include "shape/CollisionSphereShape.h"
 #include "object/CollisionCapsuleObject.h"
 
 namespace urchin
@@ -55,6 +56,11 @@ namespace urchin
 	{
 		return std::make_shared<CollisionCapsuleShape>(capsuleShape.getRadius() * scale,
 				capsuleShape.getCylinderHeight() * scale, capsuleShape.getCapsuleOrientation());
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionCapsuleShape::retrieveSphereShape() const
+	{
+		return std::make_shared<CollisionSphereShape>(capsuleShape.getCylinderHeight()/2.0f+capsuleShape.getRadius());
 	}
 
 	AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const

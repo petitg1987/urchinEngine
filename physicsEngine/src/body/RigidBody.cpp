@@ -16,6 +16,8 @@ namespace urchin
 		angularDamping = 0.0f;
 		linearFactor.setValues(1.0, 1.0, 1.0);
 		angularFactor.setValues(1.0, 1.0, 1.0);
+		ccdMotionThreshold = getScaledShape()->toAABBox(PhysicsTransform()).getMinHalfSize()
+				* ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor");
 	}
 
 	RigidBody::~RigidBody()
@@ -46,6 +48,7 @@ namespace urchin
 			workRigidBody->setDamping(linearDamping, angularDamping);
 			workRigidBody->setLinearFactor(linearFactor);
 			workRigidBody->setAngularFactor(angularFactor);
+			workRigidBody->setCcdMotionThreshold(ccdMotionThreshold);
 
 			workRigidBody->refreshInvWorldInertia();
 
@@ -220,6 +223,28 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return angularFactor;
+	}
+
+	/**
+	 * @return Threshold for continuous collision detection in distance unit. A default value is determinate automatically
+	 * for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
+	 */
+	float RigidBody::getCcdMotionThreshold() const
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		return ccdMotionThreshold;
+	}
+
+	/**
+	 * Process continuous collision detection if the motion in one step is more then threshold.
+	 * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
+	 */
+	void RigidBody::setCcdMotionThreshold(float ccdMotionThreshold)
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		this->ccdMotionThreshold = ccdMotionThreshold;
 	}
 
 }

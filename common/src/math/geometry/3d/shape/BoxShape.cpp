@@ -51,6 +51,27 @@ namespace urchin
 		return 2;
 	}
 
+	template<class T> const T BoxShape<T>::getMinHalfSize() const
+	{
+		return std::min(std::min(halfSizes[0], halfSizes[1]), halfSizes[2]);
+	}
+
+	template<class T> unsigned int BoxShape<T>::getMinHalfSizeIndex() const
+	{
+		if(halfSizes[0] < halfSizes[1])
+		{
+			if(halfSizes[0] < halfSizes[2])
+			{
+				return 0;
+			}
+			return 1;
+		}else if(halfSizes[1] < halfSizes[2])
+		{
+			return 1;
+		}
+		return 2;
+	}
+
 	template<class T> T BoxShape<T>::getVolume() const
 	{
 		return halfSizes.X * halfSizes.Y * halfSizes.Z * 8.0;

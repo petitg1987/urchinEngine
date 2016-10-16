@@ -1,4 +1,5 @@
 #include "shape/CollisionCylinderShape.h"
+#include "shape/CollisionSphereShape.h"
 #include "object/CollisionCylinderObject.h"
 
 namespace urchin
@@ -56,6 +57,11 @@ namespace urchin
 	{
 		return std::make_shared<CollisionCylinderShape>(cylinderShape.getRadius() * scale,
 				cylinderShape.getHeight() * scale, cylinderShape.getCylinderOrientation());
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionCylinderShape::retrieveSphereShape() const
+	{
+		return std::make_shared<CollisionSphereShape>(std::max(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius()));
 	}
 
 	AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const

@@ -13,7 +13,8 @@ namespace urchin
 			invLocalInertia(Vector3<float>(0.0, 0.0, 0.0)),
 			invWorldInertia(Matrix3<float>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
 			linearDamping(0.0),
-			angularDamping(0.0)
+			angularDamping(0.0),
+			ccdMotionThreshold(0.0)
 	{
 
 	}
@@ -228,6 +229,23 @@ namespace urchin
 	const Vector3<float> &WorkRigidBody::getAngularFactor() const
 	{
 		return angularFactor;
+	}
+
+	/**
+	 * @return Threshold for continuous collision detection in distance unit
+	 */
+	float WorkRigidBody::getCcdMotionThreshold() const
+	{
+		return ccdMotionThreshold;
+	}
+
+	/**
+	 * Process continuous collision detection if the motion in one step is more then threshold.
+	 * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
+	 */
+	void WorkRigidBody::setCcdMotionThreshold(float ccdMotionThreshold)
+	{
+		this->ccdMotionThreshold = ccdMotionThreshold;
 	}
 
 	bool WorkRigidBody::isGhostBody() const

@@ -65,6 +65,16 @@ namespace urchin
 		return boxShape.getMaxHalfSizeIndex();
 	}
 
+	template<class T> const T OBBox<T>::getMinHalfSize() const
+	{
+		return boxShape.getMinHalfSize();
+	}
+
+	template<class T> unsigned int OBBox<T>::getMinHalfSizeIndex() const
+	{
+		return boxShape.getMinHalfSizeIndex();
+	}
+
 	template<class T> const Point3<T> &OBBox<T>::getCenterPosition() const
 	{
 		return centerPosition;

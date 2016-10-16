@@ -10,6 +10,7 @@
 
 namespace urchin
 {
+	class CollisionSphereShape;
 
 	class CollisionShape3D
 	{
@@ -37,6 +38,7 @@ namespace urchin
 			virtual CollisionShape3D::ShapeType getShapeType() const = 0;
 
 			virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
+			virtual std::shared_ptr<CollisionSphereShape> retrieveSphereShape() const = 0;
 
 			virtual AABBox<float> toAABBox(const PhysicsTransform &) const = 0;
 			virtual std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const = 0;

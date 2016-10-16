@@ -31,8 +31,11 @@ namespace urchin
 			const Vector3<T> &getHalfSizes() const;
 			const T getMaxHalfSize() const;
 			unsigned int getMaxHalfSizeIndex() const;
+			const T getMinHalfSize() const;
+			unsigned int getMinHalfSizeIndex() const;
 			const Point3<T> &getMin() const;
 			const Point3<T> &getMax() const;
+			Point3<T> getCenterPoint() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 			const std::vector<Point3<T>> getEightPoints() const;

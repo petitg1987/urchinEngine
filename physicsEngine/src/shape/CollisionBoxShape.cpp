@@ -1,4 +1,5 @@
 #include "shape/CollisionBoxShape.h"
+#include "shape/CollisionSphereShape.h"
 #include "object/CollisionBoxObject.h"
 
 namespace urchin
@@ -51,6 +52,11 @@ namespace urchin
 	std::shared_ptr<CollisionShape3D> CollisionBoxShape::scale(float scale) const
 	{
 		return std::make_shared<CollisionBoxShape>(boxShape.getHalfSizes() * scale);
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionBoxShape::retrieveSphereShape() const
+	{
+		return std::make_shared<CollisionSphereShape>(boxShape.getMaxHalfSize());
 	}
 
 	AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const

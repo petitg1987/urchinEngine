@@ -37,6 +37,8 @@ namespace urchin
 			const Vector3<T> &getHalfSizes() const;
 			const T getMaxHalfSize() const;
 			unsigned int getMaxHalfSizeIndex() const;
+			const T getMinHalfSize() const;
+			unsigned int getMinHalfSizeIndex() const;
 			const Point3<T> &getCenterPosition() const;
 			const Vector3<T> &getAxis(unsigned int) const;
 			const Quaternion<T> &getOrientation() const;

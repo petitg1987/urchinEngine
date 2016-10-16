@@ -52,6 +52,16 @@ namespace urchin
 		return boxShape.getMaxHalfSizeIndex();
 	}
 
+	template<class T> const T AABBox<T>::getMinHalfSize() const
+	{
+		return boxShape.getMinHalfSize();
+	}
+
+	template<class T> unsigned int AABBox<T>::getMinHalfSizeIndex() const
+	{
+		return boxShape.getMinHalfSizeIndex();
+	}
+
 	template<class T> const Point3<T> &AABBox<T>::getMin() const
 	{
 		return min;
@@ -60,6 +70,11 @@ namespace urchin
 	template<class T> const Point3<T> &AABBox<T>::getMax() const
 	{
 		return max;
+	}
+
+	template<class T> Point3<T> AABBox<T>::getCenterPoint() const
+	{
+		return min.translate(boxShape.getHalfSizes());
 	}
 
 	template<class T> Point3<T> AABBox<T>::getSupportPoint(const Vector3<T> &direction) const

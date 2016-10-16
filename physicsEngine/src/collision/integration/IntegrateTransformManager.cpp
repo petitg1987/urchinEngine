@@ -1,4 +1,5 @@
 #include "collision/integration/IntegrateTransformManager.h"
+#include <shape/CollisionSphereShape.h>
 
 namespace urchin
 {
@@ -30,12 +31,20 @@ namespace urchin
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
 				PhysicsTransform newTransform = computeNewIntegrateTransform(dt, body);
 
-				AABBox<float> bodyBox = body->getShape()->toAABBox(currentTransform); //TODO too slow ? propose sphere by default ?
+				float ccdMotionThreshold = body->getCcdMotionThreshold();
+				float motion = currentTransform.getPosition().vector(newTransform.getPosition()).length();
 
-				//TODO
-				//1. Check illigible to CCD
-				//2. Use broadphaseManager#enlargeRayTest() with object sphere
-				//3. Create method for object in narrowManager and use it
+				if(motion > ccdMotionThreshold)
+				{
+					std::cout<<"Body needs CCD: "<<body->getId()<<std::endl;
+
+					std::shared_ptr<CollisionSphereShape> bodySphereShape = body->getShape()->retrieveSphereShape();
+
+					//TODO
+					//1. Use broadphaseManager#enlargeRayTest() with object sphere
+					//2. Create method for object in narrowManager and use it
+					//3. Attention to compound objects: not convex (train...) + ccdMotionThreshold define by body shape
+				}
 
 				body->setPosition(newTransform.getPosition());
 				body->setOrientation(newTransform.getOrientation());

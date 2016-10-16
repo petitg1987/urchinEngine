@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include "shape/CollisionSphereShape.h"
 #include "shape/CollisionCompoundShape.h"
 
 namespace urchin
@@ -13,11 +14,19 @@ namespace urchin
 		{
 			throw std::invalid_argument("Compound shape must be composed of at least one shape.");
 		}
+
+		initializeSphareShape();
 	}
 
 	CollisionCompoundShape::~CollisionCompoundShape()
 	{
 
+	}
+
+	void CollisionCompoundShape::initializeSphareShape()
+	{
+		AABBox<float> aabbox = toAABBox(PhysicsTransform());
+		sphereShape = std::make_shared<CollisionSphereShape>(aabbox.getMaxHalfSize());
 	}
 
 	CollisionShape3D::ShapeType CollisionCompoundShape::getShapeType() const
@@ -39,6 +48,11 @@ namespace urchin
 		}
 
 		return std::make_shared<CollisionCompoundShape>(scaledLocalizedShapes);
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionCompoundShape::retrieveSphereShape() const
+	{
+		return sphereShape;
 	}
 
 	AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform &physicsTransform) const
@@ -64,7 +78,7 @@ namespace urchin
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
-		throw std::runtime_error("Not implemented");
+		throw std::runtime_error("To convex object not implemented for compound shape");
 	}
 
 	Vector3<float> CollisionCompoundShape::computeLocalInertia(float mass) const

@@ -2,6 +2,7 @@
 
 #include "shape/CollisionConvexHullShape.h"
 #include "shape/util/ResizeConvexHullService.h"
+#include "shape/CollisionSphereShape.h"
 #include "object/CollisionConvexHullObject.h"
 
 namespace urchin
@@ -14,7 +15,7 @@ namespace urchin
 			CollisionShape3D(),
 			convexHull(ConvexHull3D<float>(points))
 	{
-		intializeConvexHullReduced();
+		initialize();
 	}
 
 	/**
@@ -24,7 +25,7 @@ namespace urchin
 			CollisionShape3D(innerMargin),
 			convexHull(ConvexHull3D<float>(points))
 	{
-		intializeConvexHullReduced();
+		initialize();
 	}
 
 	CollisionConvexHullShape::~CollisionConvexHullShape()
@@ -32,7 +33,13 @@ namespace urchin
 
 	}
 
-	void CollisionConvexHullShape::intializeConvexHullReduced()
+	void CollisionConvexHullShape::initialize()
+	{
+		initializeConvexHullReduced();
+		initializeSphereShape();
+	}
+
+	void CollisionConvexHullShape::initializeConvexHullReduced()
 	{
 		convexHullReduced = ResizeConvexHullService::instance()->resizeConvexHull(convexHull, -getInnerMargin());
 
@@ -40,6 +47,25 @@ namespace urchin
 		{ //impossible to shrink the convex hull correctly
 			refreshInnerMargin(0.0);
 		}
+	}
+
+	void CollisionConvexHullShape::initializeSphereShape()
+	{
+		AABBox<float> aabbox = toAABBox(PhysicsTransform());
+		Point3<float> boxCenterPoint = aabbox.getCenterPoint();
+
+		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
+		float maxSquareDistance = -std::numeric_limits<float>::max();
+		for(std::vector<Point3<float>>::const_iterator it=convexHullPoints.begin(); it!=convexHullPoints.end(); ++it)
+		{
+			float squareDistance = boxCenterPoint.squareDistance(*it);
+			if(squareDistance > maxSquareDistance)
+			{
+				maxSquareDistance = squareDistance;
+			}
+		}
+
+		sphereShape = std::make_shared<CollisionSphereShape>(std::sqrt(maxSquareDistance));
 	}
 
 	CollisionShape3D::ShapeType CollisionConvexHullShape::getShapeType() const
@@ -78,6 +104,11 @@ namespace urchin
 		}
 
 		return std::make_shared<CollisionConvexHullShape>(newPoints);
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionConvexHullShape::retrieveSphereShape() const
+	{
+		return sphereShape;
 	}
 
 	AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform &physicsTransform) const

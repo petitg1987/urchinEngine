@@ -28,6 +28,7 @@ namespace urchin
 			CollisionShape3D::ShapeType getShapeType() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
+			std::shared_ptr<CollisionSphereShape> retrieveSphereShape() const;
 
 			AABBox<float> toAABBox(const PhysicsTransform &) const;
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
@@ -37,7 +38,11 @@ namespace urchin
 			const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &getLocalizedShapes() const;
 
 		private:
+			void initializeSphareShape();
+
 			const std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedShapes;
+
+			std::shared_ptr<CollisionSphereShape> sphereShape; //sphere including all compound shapes
 	};
 
 }
