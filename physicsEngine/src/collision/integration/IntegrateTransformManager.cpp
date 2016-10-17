@@ -40,10 +40,24 @@ namespace urchin
 
 					std::shared_ptr<CollisionSphereShape> bodySphereShape = body->getShape()->retrieveSphereShape();
 
-					//TODO
-					//1. Use broadphaseManager#enlargeRayTest() with object sphere
-					//2. Create method for object in narrowManager and use it
-					//3. Attention to compound objects: not convex (train...) + ccdMotionThreshold define by body shape
+					Ray<float> ray(currentTransform.getPosition(), newTransform.getPosition());
+					Vector3<float> enlargeBoxHalfSize(bodySphereShape->getRadius(), bodySphereShape->getRadius(), bodySphereShape->getRadius());
+					std::vector<AbstractWorkBody *> bodiesAABBoxHitEnlargedRay = broadPhaseManager->enlargedRayTest(ray, enlargeBoxHalfSize);
+
+					for(unsigned int i=0; i<bodiesAABBoxHitEnlargedRay.size(); ++i)
+					{
+						AbstractWorkBody *currentBody = bodiesAABBoxHitEnlargedRay[i];
+						if(currentBody==body)
+						{
+							continue;
+						}
+
+						std::cout<<" - Body to check:"<<currentBody->getId()<<std::endl;
+						//1. Create method for object in narrowManager and use it
+						//2. Update integration (/!\: reduce velocity ?!)
+						//Attention to compound objects: not convex (train...) + ccdMotionThreshold define by body shape
+						//Attention to two objects moving in opposite direction: is it working ?
+					}
 				}
 
 				body->setPosition(newTransform.getPosition());

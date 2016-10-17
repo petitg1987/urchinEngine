@@ -34,6 +34,7 @@
 	- (2) A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision.
 - ISLAND
 	- (2) When an object bounces and reaches higher value on Y axis, his velocity is near 0.0 and object is deactivated by IslandManager.
+		  Solution: avoid deactivate island when island contains only 1 dynamic object (to investigate...)
 
 ############################################
 # Notes :

@@ -23,6 +23,8 @@ namespace urchin
 			unsigned int getDirectionSign(unsigned int) const;
 
 		private:
+			void initializeAdditionalData();
+
 			Point3<T> origin;
 			Vector3<T> direction; //normalized
 			T length;

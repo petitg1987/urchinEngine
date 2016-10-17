@@ -1,3 +1,6 @@
+#include <cassert>
+#include <limits>
+
 #include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
 
 namespace urchin
@@ -50,6 +53,12 @@ namespace urchin
 	 */
 	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::enlargedRayTest(const Ray<float> &ray, const Vector3<float> &enlargeNodeBoxHalfSize) const
 	{
+		#ifdef _DEBUG
+			assert(enlargeNodeBoxHalfSize.X > -std::numeric_limits<float>::epsilon());
+			assert(enlargeNodeBoxHalfSize.Y > -std::numeric_limits<float>::epsilon());
+			assert(enlargeNodeBoxHalfSize.Z > -std::numeric_limits<float>::epsilon());
+		#endif
+
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitEnlargedRay;
 		bodiesAABBoxHitEnlargedRay.reserve(20);
 

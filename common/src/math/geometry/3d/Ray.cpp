@@ -10,10 +10,7 @@ namespace urchin
 			direction(direction.normalize()),
 			length(length)
 	{
-		inverseDirection = Vector3<T>(1.0, 1.0, 1.0) / this->direction;
-		directionSigns[0] = this->direction.X < 0.0;
-		directionSigns[1] = this->direction.Y < 0.0;
-		directionSigns[2] = this->direction.Z < 0.0;
+		initializeAdditionalData();
 	}
 
 	template<class T> Ray<T>::Ray(const Point3<T> &from, const Point3<T> &to) :
@@ -22,6 +19,17 @@ namespace urchin
 		Vector3<T> direction = from.vector(to);
 		this->length = direction.length();
 		this->direction = direction / length;
+
+		initializeAdditionalData();
+	}
+
+	template<class T> void Ray<T>::initializeAdditionalData()
+	{
+		inverseDirection = Vector3<T>(1.0, 1.0, 1.0) / this->direction;
+
+		directionSigns[0] = this->direction.X < 0.0;
+		directionSigns[1] = this->direction.Y < 0.0;
+		directionSigns[2] = this->direction.Z < 0.0;
 	}
 
 	template<class T> const Point3<T> &Ray<T>::getOrigin() const
