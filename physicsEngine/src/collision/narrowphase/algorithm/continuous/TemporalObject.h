@@ -1,5 +1,5 @@
-#ifndef ENGINE_RAYCASTOBJECT_H
-#define ENGINE_RAYCASTOBJECT_H
+#ifndef ENGINE_TEMPORALOBJECT_H
+#define ENGINE_TEMPORALOBJECT_H
 
 #include "shape/CollisionShape3D.h"
 #include "utils/math/PhysicsTransform.h"
@@ -7,11 +7,11 @@
 namespace urchin
 {
 
-	class RayCastObject
+	class TemporalObject
 	{
 		public:
-			RayCastObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
-			~RayCastObject();
+			TemporalObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
+			~TemporalObject();
 
 			std::shared_ptr<const CollisionConvexObject3D> getLocalObject() const;
 

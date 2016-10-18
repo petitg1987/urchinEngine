@@ -1,16 +1,16 @@
-#ifndef ENGINE_RAYCASTRESULT_H
-#define ENGINE_RAYCASTRESULT_H
+#ifndef ENGINE_CONTINUOUSCOLLISIONRESULT_H
+#define ENGINE_CONTINUOUSCOLLISIONRESULT_H
 
 #include "UrchinCommon.h"
 
 namespace urchin
 {
 
-	template<class T> class RayCastResult
+	template<class T> class ContinuousCollisionResult
 	{
 		public:
-			RayCastResult();
-			virtual ~RayCastResult();
+			ContinuousCollisionResult();
+			virtual ~ContinuousCollisionResult();
 
 			virtual bool hasTimeOfImpactResult() const = 0;
 

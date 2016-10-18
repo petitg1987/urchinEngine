@@ -1,5 +1,5 @@
 #include "collision/narrowphase/NarrowPhaseManager.h"
-#include "collision/narrowphase/algorithm/raycast/RayCastObject.h"
+#include "collision/narrowphase/algorithm/continuous/TemporalObject.h"
 #include "processable/raytest/RayTestSingleResult.h"
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
@@ -65,21 +65,21 @@ namespace urchin
 		return collisionAlgorithm;
 	}
 
-	std::vector<std::shared_ptr<RayCastResult<double>>> NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
+	std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-		std::vector<std::shared_ptr<RayCastResult<double>>> rayCastResults;
+		std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> rayCastResults;
 
 		CollisionSphereShape pointShapeA(0.0);
 		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());
 		PhysicsTransform toA = PhysicsTransform(ray.computeTo());
-		RayCastObject rayCastObjectA(&pointShapeA, fromA, toA);
+		TemporalObject rayCastObjectA(&pointShapeA, fromA, toA);
 
 		for(auto bodyAABBoxHitRay : bodiesAABBoxHitRay)
 		{
 			PhysicsTransform fromToB = bodyAABBoxHitRay->getPhysicsTransform();
-			RayCastObject rayCastObjectB(bodyAABBoxHitRay->getShape(), fromToB, fromToB);
+			TemporalObject rayCastObjectB(bodyAABBoxHitRay->getShape(), fromToB, fromToB);
 
-			rayCastResults.push_back(gjkRayCastAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB));
+			rayCastResults.push_back(gjkContinuousCollisionAlgorithm.calculateTimeOfImpact(rayCastObjectA, rayCastObjectB));
 		}
 
 		return rayCastResults;

@@ -638,9 +638,9 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1001,9 +1001,9 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1159,9 +1159,9 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1505,9 +1505,9 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1752,9 +1752,9 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1995,9 +1995,9 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2142,9 +2142,9 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2386,9 +2386,9 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2630,9 +2630,9 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2879,9 +2879,9 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3123,9 +3123,9 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3464,9 +3464,9 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3610,9 +3610,9 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3854,9 +3854,9 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4195,9 +4195,9 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4443,9 +4443,9 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4687,9 +4687,9 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4934,9 +4934,9 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5181,9 +5181,9 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5426,9 +5426,9 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5674,9 +5674,9 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5921,9 +5921,9 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6164,9 +6164,9 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6407,9 +6407,9 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6652,9 +6652,9 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6895,9 +6895,9 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7139,9 +7139,9 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7286,9 +7286,9 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7551,9 +7551,9 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7813,9 +7813,9 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8321,9 +8321,9 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8567,9 +8567,9 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8725,9 +8725,9 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8969,9 +8969,9 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9320,9 +9320,9 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9567,9 +9567,9 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9811,9 +9811,9 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9959,9 +9959,9 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10204,9 +10204,9 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10449,9 +10449,9 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10703,9 +10703,9 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10951,9 +10951,9 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11293,9 +11293,9 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11439,9 +11439,9 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11695,9 +11695,9 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11940,9 +11940,9 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12281,9 +12281,9 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12524,9 +12524,9 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12774,9 +12774,9 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13018,9 +13018,9 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13262,9 +13262,9 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13512,9 +13512,9 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13759,9 +13759,9 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14004,9 +14004,9 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14249,9 +14249,9 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14503,9 +14503,9 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14750,9 +14750,9 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14994,9 +14994,9 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15237,9 +15237,9 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15483,9 +15483,9 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15727,9 +15727,9 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15970,9 +15970,9 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16217,9 +16217,9 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16461,9 +16461,9 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16607,9 +16607,9 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16855,9 +16855,9 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17246,9 +17246,9 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17587,9 +17587,9 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17830,9 +17830,9 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastObject.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/raycast/RayCastResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \

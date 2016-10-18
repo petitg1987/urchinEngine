@@ -1,28 +1,28 @@
 #include <limits>
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/raycast/GJKRayCastAlgorithm.h"
-#include "collision/narrowphase/algorithm/raycast/RayCastResultTOI.h"
-#include "collision/narrowphase/algorithm/raycast/RayCastResultNoTOI.h"
+#include "collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResultTOI.h"
+#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResultNoTOI.h"
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 
 namespace urchin
 {
 
-	template<class T> GJKRayCastAlgorithm<T>::GJKRayCastAlgorithm() :
+	template<class T> GJKContinuousCollisionAlgorithm<T>::GJKContinuousCollisionAlgorithm() :
 		squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
-		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkRayCastMaxIteration")),
-		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkRayCastTerminationTolerance"))
+		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
+		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance"))
 	{
 
 	}
 
-	template<class T> GJKRayCastAlgorithm<T>::~GJKRayCastAlgorithm()
+	template<class T> GJKContinuousCollisionAlgorithm<T>::~GJKContinuousCollisionAlgorithm()
 	{
 
 	}
 
-	template<class T> std::shared_ptr<RayCastResult<T>> GJKRayCastAlgorithm<T>::calculateTimeOfImpact(const RayCastObject &objectA, const RayCastObject &objectB) const
+	template<class T> std::shared_ptr<ContinuousCollisionResult<T>> GJKContinuousCollisionAlgorithm<T>::calculateTimeOfImpact(const TemporalObject &objectA, const TemporalObject &objectB) const
 	{
 		T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
 		Vector3<T> normal;
@@ -52,7 +52,7 @@ namespace urchin
 
 			if (timeToHit > 1.0)
 			{ //no hit detected between from and to transformation
-				return std::make_shared<RayCastResultNoTOI<T>>();
+				return std::make_shared<ContinuousCollisionResultNoTOI<T>>();
 			}
 
 			if (closestPointDotNewPoint > 0.0)
@@ -60,7 +60,7 @@ namespace urchin
 				T closestPointDotRelativeMotion = vClosestPoint.dotProduct(relativeMotion);
 				if (closestPointDotRelativeMotion >= -squareEpsilon)
 				{
-					return std::make_shared<RayCastResultNoTOI<T>>();
+					return std::make_shared<ContinuousCollisionResultNoTOI<T>>();
 				}else
 				{
 					timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
@@ -84,7 +84,7 @@ namespace urchin
 			{
 				if(normal.squareLength() < squareEpsilon)
 				{
-					return std::make_shared<RayCastResultNoTOI<T>>();
+					return std::make_shared<ContinuousCollisionResultNoTOI<T>>();
 				}
 
 				normal = normal.normalize();
@@ -92,7 +92,7 @@ namespace urchin
 				Point3<T> hitPointA, hitPointB;
 				simplex.computeClosestPoints(hitPointA, hitPointB);
 
-				return std::make_shared<RayCastResultTOI<T>>(normal, hitPointB, timeToHit);
+				return std::make_shared<ContinuousCollisionResultTOI<T>>(normal, hitPointB, timeToHit);
 			}
 		}
 
@@ -100,10 +100,10 @@ namespace urchin
 			logMaximumIterationReach();
 		#endif
 
-		return std::make_unique<RayCastResultNoTOI<T>>();
+		return std::make_unique<ContinuousCollisionResultNoTOI<T>>();
 	}
 
-	template<class T> Point3<T> GJKRayCastAlgorithm<T>::getWorldSupportPoint(const RayCastObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
+	template<class T> Point3<T> GJKContinuousCollisionAlgorithm<T>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
 	{
 		Vector3<float> localDirection = worldTransform.getOrientationMatrix().transpose() * globalDirection.template cast<float>();
 		Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
@@ -111,7 +111,7 @@ namespace urchin
 		return worldTransform.transform(localSupportPoint).template cast<T>();
 	}
 
-	template<class T> Point3<float> GJKRayCastAlgorithm<T>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const
+	template<class T> Point3<float> GJKContinuousCollisionAlgorithm<T>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const
 	{
 		T invertedInterpolatePercentage = 1.0 - interpolatePercentage;
 
@@ -122,18 +122,18 @@ namespace urchin
 	}
 
 	#ifdef _DEBUG
-		template<class T> void GJKRayCastAlgorithm<T>::logMaximumIterationReach() const
+		template<class T> void GJKContinuousCollisionAlgorithm<T>::logMaximumIterationReach() const
 		{
 			Logger::setLogger(new FileLogger());
 			Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-			Logger::logger()<<"Maximum of iteration reached on Ray Cast algorithm ("<<maxIteration<<")."<<"\n";
+			Logger::logger()<<"Maximum of iteration reached on GJK continuous collision algorithm ("<<maxIteration<<")."<<"\n";
 			Logger::logger()<<" - Termination tolerance: "<<terminationTolerance<<"\n";
 			Logger::setLogger(nullptr);
 		}
 	#endif
 
 	//explicit template
-	template class GJKRayCastAlgorithm<float>;
-	template class GJKRayCastAlgorithm<double>;
+	template class GJKContinuousCollisionAlgorithm<float>;
+	template class GJKContinuousCollisionAlgorithm<double>;
 
 }

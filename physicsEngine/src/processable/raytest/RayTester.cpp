@@ -1,3 +1,4 @@
+#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
 #include "processable/raytest/RayTester.h"
 #include "PhysicsWorld.h"
 
@@ -35,12 +36,12 @@ namespace urchin
 	void RayTester::execute(float, const Vector3<float> &)
 	{
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitRay = collisionWorld->getBroadPhaseManager()->rayTest(ray);
-		std::vector<std::shared_ptr<RayCastResult<double>>> rayCastResults = collisionWorld->getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
+		std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> rayCastResults = collisionWorld->getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
 
 		std::vector<RayTestSingleResult> rayTestResults;
 		rayTestResults.reserve(rayCastResults.size());
 
-		for(const std::shared_ptr<RayCastResult<double>> &rayCastResult : rayCastResults)
+		for(const std::shared_ptr<ContinuousCollisionResult<double>> &rayCastResult : rayCastResults)
 		{
 			if(rayCastResult->hasTimeOfImpactResult())
 			{
