@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "collision/narrowphase/algorithm/continuous/TemporalObject.h"
+#include "object/TemporalObject.h"
 #include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
 
 namespace urchin

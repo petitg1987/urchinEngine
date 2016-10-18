@@ -1,5 +1,6 @@
 #include "collision/integration/IntegrateTransformManager.h"
-#include <shape/CollisionSphereShape.h>
+#include "shape/CollisionSphereShape.h"
+#include "object/TemporalObject.h"
 
 namespace urchin
 {
@@ -44,20 +45,15 @@ namespace urchin
 					Vector3<float> enlargeBoxHalfSize(bodySphereShape->getRadius(), bodySphereShape->getRadius(), bodySphereShape->getRadius());
 					std::vector<AbstractWorkBody *> bodiesAABBoxHitEnlargedRay = broadPhaseManager->enlargedRayTest(ray, enlargeBoxHalfSize);
 
-					for(unsigned int i=0; i<bodiesAABBoxHitEnlargedRay.size(); ++i)
-					{
-						AbstractWorkBody *currentBody = bodiesAABBoxHitEnlargedRay[i];
-						if(currentBody==body)
-						{
-							continue;
-						}
+					//TODO: remove 'body' from vector bodiesAABBoxHitEnlargedRay (create (moving)ObjectTest() method in broadPhase ?)
 
-						std::cout<<" - Body to check:"<<currentBody->getId()<<std::endl;
-						//1. Create method for object in narrowManager and use it
-						//2. Update integration (/!\: reduce velocity ?!)
-						//Attention to compound objects: not convex (train...) + ccdMotionThreshold define by body shape
-						//Attention to two objects moving in opposite direction: is it working ?
-					}
+					TemporalObject temporalObject(bodySphereShape.get(), currentTransform, newTransform);
+					std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitEnlargedRay);
+
+					//TODO NarrowPhase: give collector to find the nearest or all ?
+					//TODO Update transform & reduce linear velocity
+					//TODO Handle compound objects: not convex (train...) + ccdMotionThreshold define by body shape
+					//TODO Attention to two objects moving in opposite direction: is it working ?
 				}
 
 				body->setPosition(newTransform.getPosition());

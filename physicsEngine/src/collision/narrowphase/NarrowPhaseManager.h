@@ -11,6 +11,7 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 #include "collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
+#include "object/TemporalObject.h"
 #include "body/work/AbstractWorkBody.h"
 
 namespace urchin
@@ -24,6 +25,7 @@ namespace urchin
 
 			std::vector<ManifoldResult> *process(const std::vector<OverlappingPair *> &);
 
+			std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> continuousCollissionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
 			std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:

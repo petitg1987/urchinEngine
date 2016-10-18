@@ -1,4 +1,4 @@
-#include "collision/narrowphase/algorithm/continuous/TemporalObject.h"
+#include "object/TemporalObject.h"
 
 namespace urchin
 {
