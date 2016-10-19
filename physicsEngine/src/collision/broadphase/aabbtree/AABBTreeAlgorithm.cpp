@@ -1,7 +1,5 @@
-#include <cassert>
-#include <limits>
-
 #include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
+#include "shape/CollisionSphereShape.h"
 
 namespace urchin
 {
@@ -40,31 +38,24 @@ namespace urchin
 	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::rayTest(const Ray<float> &ray) const
 	{
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitRay;
-		bodiesAABBoxHitRay.reserve(15);
+		bodiesAABBoxHitRay.reserve(10);
 
 		tree->rayTest(ray, bodiesAABBoxHitRay);
 
 		return bodiesAABBoxHitRay;
 	}
 
-	/**
-	 * Enlarge each node box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
-	 * @param enlargeNodeBoxHalfSize Specify the size of the enlargement. A size of 0.5 in X axis will enlarge the node box from 1.0 (0.5 on left and 0.5 on right).
-	 */
-	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::enlargedRayTest(const Ray<float> &ray, const Vector3<float> &enlargeNodeBoxHalfSize) const
+	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::bodyTest(const AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
 	{
-		#ifdef _DEBUG
-			assert(enlargeNodeBoxHalfSize.X > -std::numeric_limits<float>::epsilon());
-			assert(enlargeNodeBoxHalfSize.Y > -std::numeric_limits<float>::epsilon());
-			assert(enlargeNodeBoxHalfSize.Z > -std::numeric_limits<float>::epsilon());
-		#endif
+		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody;
+		bodiesAABBoxHitBody.reserve(15);
 
-		std::vector<AbstractWorkBody *> bodiesAABBoxHitEnlargedRay;
-		bodiesAABBoxHitEnlargedRay.reserve(20);
+		Ray<float> ray(from.getPosition(), to.getPosition());
+		float bodySphereRadius = body->getShape()->retrieveSphereShape()->getRadius();
 
-		tree->enlargedRayTest(ray, enlargeNodeBoxHalfSize, bodiesAABBoxHitEnlargedRay);
+		tree->enlargedRayTest(ray, bodySphereRadius, body, bodiesAABBoxHitBody);
 
-		return bodiesAABBoxHitEnlargedRay;
+		return bodiesAABBoxHitBody;
 	}
 
 }

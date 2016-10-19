@@ -224,15 +224,16 @@ namespace urchin
 	 */
 	void AABBTree::rayTest(const Ray<float> &ray, std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-		enlargedRayTest(ray, Vector3<float>(0.0, 0.0, 0.0), bodiesAABBoxHitRay);
+		enlargedRayTest(ray, 0.0f, nullptr, bodiesAABBoxHitRay);
 	}
 
 	/**
 	 * Enlarge each node box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
-	 * @param enlargeNodeBoxHalfSize Specify the size of the enlargement. A size of 0.5 in X axis will enlarge the node box from 1.0 (0.5 on left and 0.5 on right).
+	 * @param enlargeNodeBoxHalfSize Specify the size of the enlargement. A size of 0.5 will enlarge the node box from 1.0 (0.5 on left and 0.5 on right).
 	 * @param bodiesAABBoxHitEnlargedRay [out] Bodies AABBox hit by the enlarged ray
 	 */
-	void AABBTree::enlargedRayTest(const Ray<float> &ray, const Vector3<float> &enlargeNodeBoxHalfSize, std::vector<AbstractWorkBody *> &bodiesAABBoxHitEnlargedRay) const
+	void AABBTree::enlargedRayTest(const Ray<float> &ray, float enlargeNodeBoxHalfSize, const AbstractWorkBody *testedBody,
+			std::vector<AbstractWorkBody *> &bodiesAABBoxHitEnlargedRay) const
 	{
 		std::stack<AABBNode *> stackNodes;
 		stackNodes.push(rootNode);
@@ -247,7 +248,11 @@ namespace urchin
 			{
 				if (currentNode->isLeaf())
 				{
-					bodiesAABBoxHitEnlargedRay.push_back(currentNode->getBodyNodeData()->getBody());
+					AbstractWorkBody *body = currentNode->getBodyNodeData()->getBody();
+					if(body!=testedBody)
+					{
+						bodiesAABBoxHitEnlargedRay.push_back(body);
+					}
 				}else
 				{
 					stackNodes.push(currentNode->getRightChild());

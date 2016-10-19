@@ -24,7 +24,7 @@ namespace urchin
 			virtual const std::vector<OverlappingPair *> &getOverlappingPairs() const = 0;
 
 			virtual std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const = 0;
-			virtual std::vector<AbstractWorkBody *> enlargedRayTest(const Ray<float> &, const Vector3<float> &) const = 0;
+			virtual std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const = 0;
 	};
 
 }

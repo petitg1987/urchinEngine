@@ -3,6 +3,7 @@
 
 #include "collision/broadphase/sweepandprune/SweepAndPrune.h"
 #include "collision/broadphase/VectorPairContainer.h"
+#include "shape/CollisionSphereShape.h"
 
 #define MAX_END_POINTS 16383
 
@@ -405,25 +406,32 @@ namespace urchin
 
 	std::vector<AbstractWorkBody *> SweepAndPrune::rayTest(const Ray<float> &ray) const
 	{
-		return enlargedRayTest(ray, Vector3<float>(0.0, 0.0, 0.0));
+		return enlargedRayTest(ray, 0.0f, nullptr);
 	}
 
-	/**
-	 * Enlarge each body box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
-	 * @param enlargeBodyBoxHalfSize Specify the size of the enlargement. A size of 0.5 in X axis will enlarge the body box from 1.0 (0.5 on left and 0.5 on right).
-	 */
-	std::vector<AbstractWorkBody *> SweepAndPrune::enlargedRayTest(const Ray<float> &ray, const Vector3<float> &enlargeBodyBoxHalfSize) const
+	std::vector<AbstractWorkBody *> SweepAndPrune::bodyTest(const AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
 	{ //Brute force method (slow). Prefer use AABB Tree algorithm for broad phase when ray tests are needed.
+		Ray<float> ray(from.getPosition(), to.getPosition());
+		float bodySphereRadius = body->getShape()->retrieveSphereShape()->getRadius();
+
+		return enlargedRayTest(ray, bodySphereRadius, body);
+	}
+
+	std::vector<AbstractWorkBody *> SweepAndPrune::enlargedRayTest(const Ray<float> &ray, float enlargeNodeBoxHalfSize, const AbstractWorkBody *testedBody) const
+	{
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitByRay;
 		bodiesAABBoxHitByRay.reserve(20);
 
 		for(auto it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
 		{
-			AABBox<float> bodyAABBox = it->second->retrieveBodyAABBox();
-			AABBox<float> enlargedBodyAABBox = bodyAABBox.enlarge(enlargeBodyBoxHalfSize, enlargeBodyBoxHalfSize);
-			if(enlargedBodyAABBox.collideWithRay(ray))
+			if(it->second->getBody()!=testedBody)
 			{
-				bodiesAABBoxHitByRay.push_back(it->first);
+				AABBox<float> bodyAABBox = it->second->retrieveBodyAABBox();
+				AABBox<float> enlargedBodyAABBox = bodyAABBox.enlarge(enlargeNodeBoxHalfSize, enlargeNodeBoxHalfSize);
+				if(enlargedBodyAABBox.collideWithRay(ray))
+				{
+					bodiesAABBoxHitByRay.push_back(it->first);
+				}
 			}
 		}
 

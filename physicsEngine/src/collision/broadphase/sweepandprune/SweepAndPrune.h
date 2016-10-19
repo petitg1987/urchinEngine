@@ -26,9 +26,11 @@ namespace urchin
 			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
 
 			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
-			std::vector<AbstractWorkBody *> enlargedRayTest(const Ray<float> &, const Vector3<float> &) const;
+			std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const;
 
 		private:
+			std::vector<AbstractWorkBody *> enlargedRayTest(const Ray<float> &, float, const AbstractWorkBody *) const;
+
 			void createSentinels();
 			float getMinSentinelValue();
 			float getMaxSentinelValue();

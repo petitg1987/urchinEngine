@@ -47,6 +47,7 @@ namespace urchin
 			AABBox<T> merge(const AABBox<T> &) const;
 			AABBox<T> cutTo(const AABBox<T> &) const;
 			AABBox<T> enlarge(const Vector3<T> &, const Vector3<T> &) const;
+			AABBox<T> enlarge(T, T) const;
 
 			bool collideWithPoint(const Point3<T> &) const;
 			bool collideWithAABBox(const AABBox<T> &) const;

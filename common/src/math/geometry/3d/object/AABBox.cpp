@@ -181,6 +181,11 @@ namespace urchin
 		return AABBox<T>(getMin()-Point3<T>(minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize));
 	}
 
+	template<class T> AABBox<T> AABBox<T>::enlarge(T minAdditionalSize, T maxAdditionalSize) const
+	{
+		return AABBox<T>(getMin()-Point3<T>(minAdditionalSize, minAdditionalSize, minAdditionalSize), getMax()+Point3<T>(maxAdditionalSize, maxAdditionalSize, maxAdditionalSize));
+	}
+
 	template<class T> bool AABBox<T>::collideWithPoint(const Point3<T> &point) const
 	{
 		if(	point.X > min.X && point.Y > min.Y && point.Z > min.Z &&

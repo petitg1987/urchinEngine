@@ -22,6 +22,7 @@ namespace urchin
 
 		private:
 			PhysicsTransform computeNewIntegrateTransform(float, const WorkRigidBody *) const;
+			void handleContinuousCollision(WorkRigidBody *, const PhysicsTransform &, const PhysicsTransform &);
 
 			const BodyManager *bodyManager;
 			const BroadPhaseManager *broadPhaseManager;
