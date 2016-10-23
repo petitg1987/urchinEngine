@@ -30,69 +30,86 @@ namespace urchin
 			if(body!=nullptr && body->isActive())
 			{
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
-				PhysicsTransform newTransform = computeNewIntegrateTransform(dt, body);
+				PhysicsTransform newTransform = integrateTransform(body->getPhysicsTransform(), body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
 				float ccdMotionThreshold = body->getCcdMotionThreshold();
 				float motion = currentTransform.getPosition().vector(newTransform.getPosition()).length();
 
 				if(motion > ccdMotionThreshold)
 				{
-					handleContinuousCollision(body, currentTransform, newTransform);
+					handleContinuousCollision(body, currentTransform, newTransform, dt);
+				}else
+				{
+					body->setPosition(newTransform.getPosition());
+					body->setOrientation(newTransform.getOrientation());
 				}
-
-				body->setPosition(newTransform.getPosition());
-				body->setOrientation(newTransform.getOrientation());
 			}
 		}
 	}
 
-	PhysicsTransform IntegrateTransformManager::computeNewIntegrateTransform(float dt, const WorkRigidBody *body) const
+	PhysicsTransform IntegrateTransformManager::integrateTransform(const PhysicsTransform &currentTransform, const Vector3<float> &linearVelocity,
+			const Vector3<float> &angularVelocity, float timeStep) const
 	{
-		PhysicsTransform newTransform;
+		Point3<float> interpolatePosition = currentTransform.getPosition().translate(linearVelocity * timeStep);
 
-		//update position
-		newTransform.setPosition(body->getPosition().translate(body->getLinearVelocity() * dt));
-
-		//update orientation
-		float length = body->getAngularVelocity().length();
+		float length = angularVelocity.length();
 		if(length > 0.0)
 		{
-			const Vector3<float> normalizedAxis = body->getAngularVelocity() / length;
-			const float angle = length * dt;
+			const Vector3<float> normalizedAxis = angularVelocity / length;
+			const float angle = length * timeStep;
 
-			Quaternion<float> newOrientation = Quaternion<float>(normalizedAxis, angle) * body->getOrientation();
+			//TODO slow because cos/sin in constructor (see last reply of "http://stackoverflow.com/questions/12053895/converting-angular-velocity-to-quaternion-in-opencv"
+			//Use: dq(t)/dt = 0.5 * x(t) * q(t)) (where x(t) is a quaternion of {0, w0, w1, w2})
+			//Attention: only work with low timeStep ?
+			Quaternion<float> newOrientation = Quaternion<float>(normalizedAxis, angle) * currentTransform.getOrientation();
 			newOrientation = newOrientation.normalize();
-			newTransform.setOrientation(newOrientation);
+
+			return PhysicsTransform(interpolatePosition, newOrientation);
 		}
 
-		return newTransform;
+		return PhysicsTransform(interpolatePosition, currentTransform.getOrientation());
 	}
 
-	void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody *body, const PhysicsTransform &from, const PhysicsTransform &to)
+	void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt)
 	{
+		PhysicsTransform updatedTargetTransform = to;
+
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
 		if(bodiesAABBoxHitBody.size() > 0)
 		{
-			std::cout<<"Body needs CCD: "<<body->getId()<<std::endl;
-			std::cout<<" - Broadphase: "<<std::endl;
-			for(unsigned int i=0; i<bodiesAABBoxHitBody.size(); ++i)
-			{
-				std::cout<<"    - Body: "<<bodiesAABBoxHitBody[i]->getId()<<std::endl;
-			}
-
 			std::shared_ptr<CollisionSphereShape> bodySphereShape = body->getShape()->retrieveSphereShape();
 			TemporalObject temporalObject(bodySphereShape.get(), from, to);
 			ccd_set ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
-			std::cout<<" - Narrowphase: "<<std::endl;
-			for(const std::shared_ptr<ContinuousCollisionResult<float>> &ccdResult : ccdResults)
+
+			if(ccdResults.size() > 0)
 			{
-				std::cout<<"    - Hit: "<<ccdResult->getTimeToHit()<<std::endl;
+				//determine new body transform to avoid collision
+				float timeToFirstHit = ccdResults.begin()->get()->getTimeToHit();
+				updatedTargetTransform = integrateTransform(from, body->getLinearVelocity(), body->getAngularVelocity(), timeToFirstHit*dt);
+
+				//clamp velocity to max speed
+				float maxSpeedAllowed = body->getCcdMotionThreshold() / dt;
+				float currentSpeed = body->getLinearVelocity().length();
+				if(currentSpeed > maxSpeedAllowed)
+				{
+					body->setLinearVelocity((body->getLinearVelocity() / currentSpeed) * maxSpeedAllowed);
+				}
+
+				//TODO Handle compound objects: not convex (train...) & ccdMotionThreshold define by body shape & crash in narrowphase if TemporalObject is created for compound
+				//TODO Attention to two objects moving in opposite direction: is it working ?
 			}
-
-			//TODO Update transform & reduce linear velocity
-			//TODO Handle compound objects: not convex (train...) + ccdMotionThreshold define by body shape
-			//TODO Attention to two objects moving in opposite direction: is it working ?
 		}
-	}
 
+		body->setPosition(updatedTargetTransform.getPosition());
+		body->setOrientation(updatedTargetTransform.getOrientation());
+
+		//TODO remove me when performance test is OK (see others TODO)
+		Quaternion<float> initialOrientation(Vector3<float>(1.0, 0.0, 0.0), 0.0);
+		PhysicsTransform initialTransform(Point3<float>(0.0, 0.0, 0.0), initialOrientation.normalize());
+		PhysicsTransform newTransform = integrateTransform(initialTransform, Vector3<float>(0.0, 0.0, 0.0), Vector3<float>(3.14159/2.0, 0.0, 0.0), 1.0);
+		Vector3<float> newAxis;
+		float newAngle;
+		newTransform.getOrientation().toAxisAngle(newAxis, newAngle);
+		std::cout<<"Axis: "<<newAxis <<", Angle:"<<newAngle<<std::endl;
+	}
 }

@@ -639,7 +639,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -653,7 +653,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1002,7 +1001,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -1016,7 +1015,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1160,7 +1158,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -1174,7 +1172,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1506,7 +1503,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -1520,7 +1517,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1753,7 +1749,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -1767,7 +1763,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -1996,7 +1991,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -2010,7 +2005,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2143,7 +2137,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -2157,7 +2151,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2387,7 +2380,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -2401,7 +2394,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2631,7 +2623,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -2645,7 +2637,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -2880,7 +2871,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -2894,7 +2885,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3124,7 +3114,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -3138,7 +3128,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3465,7 +3454,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -3479,7 +3468,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3611,7 +3599,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -3625,7 +3613,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -3855,7 +3842,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -3869,7 +3856,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4196,7 +4182,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -4210,7 +4196,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4444,7 +4429,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -4458,7 +4443,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4688,7 +4672,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -4702,7 +4686,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -4935,7 +4918,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -4949,7 +4932,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5182,7 +5164,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -5196,7 +5178,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5427,7 +5408,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -5441,7 +5422,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5675,7 +5655,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -5689,7 +5669,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -5922,7 +5901,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -5936,7 +5915,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6165,7 +6143,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -6179,7 +6157,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6408,7 +6385,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -6422,7 +6399,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6653,7 +6629,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -6667,7 +6643,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -6896,7 +6871,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -6910,7 +6885,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7140,7 +7114,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -7154,7 +7128,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7287,7 +7260,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -7301,7 +7274,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7552,7 +7524,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -7566,7 +7538,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -7814,7 +7785,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -7828,7 +7799,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8322,7 +8292,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -8336,7 +8306,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8568,7 +8537,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -8582,7 +8551,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8726,7 +8694,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -8740,7 +8708,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -8970,7 +8937,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -8984,7 +8951,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9321,7 +9287,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -9335,7 +9301,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9568,7 +9533,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -9582,7 +9547,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9812,7 +9776,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -9826,7 +9790,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -9960,7 +9923,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -9974,7 +9937,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10205,7 +10167,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -10219,7 +10181,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10450,7 +10411,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -10464,7 +10425,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10704,7 +10664,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -10718,7 +10678,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -10952,7 +10911,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -10966,7 +10925,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11294,7 +11252,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -11308,7 +11266,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11440,7 +11397,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -11454,7 +11411,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11696,7 +11652,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -11710,7 +11666,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -11941,7 +11896,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -11955,7 +11910,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12282,7 +12236,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -12296,7 +12250,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12525,7 +12478,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -12539,7 +12492,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -12775,7 +12727,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -12789,7 +12741,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13019,7 +12970,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -13033,7 +12984,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13263,7 +13213,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -13277,7 +13227,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13513,7 +13462,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -13527,7 +13476,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -13760,7 +13708,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -13774,7 +13722,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14005,7 +13952,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -14019,7 +13966,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14250,7 +14196,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -14264,7 +14210,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14504,7 +14449,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -14518,7 +14463,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14751,7 +14695,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -14765,7 +14709,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -14995,7 +14938,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -15009,7 +14952,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15238,7 +15180,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -15252,7 +15194,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15484,7 +15425,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -15498,7 +15439,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15728,7 +15668,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -15742,7 +15682,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -15971,7 +15910,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -15985,7 +15924,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16218,7 +16156,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -16232,7 +16170,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16462,7 +16399,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -16476,7 +16413,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16608,7 +16544,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -16622,7 +16558,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -16856,7 +16791,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -16870,7 +16805,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -17247,7 +17181,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -17261,7 +17195,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -17588,7 +17521,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -17602,7 +17535,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \
@@ -17831,7 +17763,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/utils/pool/FixedSizePool.h \
 		../physicsEngine/src/utils/pool/FixedSizePool.inl \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
-		../physicsEngine/src/collision/narrowphase/algorithm/continuous/TemporalObject.h \
+		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
@@ -17845,7 +17777,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
 		../physicsEngine/src/processable/Processable.h \
 		../physicsEngine/src/processable/raytest/RayTestResult.h \
-		../physicsEngine/src/processable/raytest/RayTestSingleResult.h \
 		../physicsEngine/src/visualizer/CollisionVisualizer.h \
 		../physicsEngine/src/body/RigidBody.h \
 		../physicsEngine/src/body/InertiaCalculation.h \

@@ -414,12 +414,37 @@ namespace urchin
 		return sequenceAxis ? euler : -euler;
 	}
 
+	template<class T> Quaternion<T> Quaternion<T>::operator +(const Quaternion<T> &q) const
+	{
+		return Quaternion<T>(X+q.X, Y+q.Y, Z+q.Z, W+q.W);
+	}
+
+	template<class T> Quaternion<T> Quaternion<T>::operator -(const Quaternion<T> &q) const
+	{
+		return Quaternion<T>(X-q.X, Y-q.Y, Z-q.Z, W-q.W);
+	}
+
 	template<class T> Quaternion<T> Quaternion<T>::operator *(const Quaternion<T> &q) const
 	{
-		return Quaternion<T>(	W*q.X + X*q.W + Y*q.Z - Z*q.Y,
-					W*q.Y - X*q.Z + Y*q.W + Z*q.X,
-					W*q.Z + X*q.Y - Y*q.X + Z*q.W,
-					W*q.W - X*q.X - Y*q.Y - Z*q.Z);
+		return Quaternion<T>(
+				W*q.X + X*q.W + Y*q.Z - Z*q.Y,
+				W*q.Y - X*q.Z + Y*q.W + Z*q.X,
+				W*q.Z + X*q.Y - Y*q.X + Z*q.W,
+				W*q.W - X*q.X - Y*q.Y - Z*q.Z);
+	}
+
+	template<class T> const Quaternion<T>& Quaternion<T>::operator -=(const Quaternion<T> &q)
+	{
+		*this = *this - q;
+
+		return *this;
+	}
+
+	template<class T> const Quaternion<T>& Quaternion<T>::operator +=(const Quaternion<T> &q)
+	{
+		*this = *this + q;
+
+		return *this;
 	}
 
 	template<class T> const Quaternion<T>& Quaternion<T>::operator *=(const Quaternion<T> &q)
@@ -429,17 +454,16 @@ namespace urchin
 		return *this;
 	}
 
-	template<class T> Quaternion<T> Quaternion<T>::operator *(const Point3<T> &p) const
-	{
-		return Quaternion<T>(	(W*p.X) + (Y*p.Z) - (Z*p.Y),
-					(W*p.Y) + (Z*p.X) - (X*p.Z),
-					(W*p.Z) + (X*p.Y) - (Y*p.X),
-					-(X*p.X) - (Y*p.Y) - (Z*p.Z));
-	}
-
 	template<class T> const Quaternion<T>& Quaternion<T>::operator *=(const Point3<T> &p)
 	{
 		*this = *this * p;
+
+		return *this;
+	}
+
+	template<class T> const Quaternion<T>& Quaternion<T>::operator *=(T t)
+	{
+		*this = *this * t;
 
 		return *this;
 	}
@@ -454,6 +478,25 @@ namespace urchin
 		return (&X)[i];
 	}
 
+	template<class T> Quaternion<T> operator *(const Quaternion<T> &q, const Point3<T> &p)
+	{
+		return Quaternion<T>(
+				(q.W*p.X) + (q.Y*p.Z) - (q.Z*p.Y),
+				(q.W*p.Y) + (q.Z*p.X) - (q.X*p.Z),
+				(q.W*p.Z) + (q.X*p.Y) - (q.Y*p.X),
+				-(q.X*p.X) - (q.Y*p.Y) - (q.Z*p.Z));
+	}
+
+	template<class T> Quaternion<T> operator *(const Quaternion<T> &q, T t)
+	{
+		return Quaternion<T>(q.X*t, q.Y*t, q.Z*t, q.W*t);
+	}
+
+	template<class T> Quaternion<T> operator *(T t, const Quaternion<T> &q)
+	{
+		return q * t;
+	}
+
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Quaternion<T> &q)
 	{
 		return stream << q.X << " " << q.Y << " " << q.Z << " " << q.W;
@@ -461,9 +504,15 @@ namespace urchin
 
 	//explicit template
 	template class Quaternion<float>;
+	template Quaternion<float> operator *(const Quaternion<float> &, const Point3<float> &);
+	template Quaternion<float> operator *(const Quaternion<float> &, float);
+	template Quaternion<float> operator *(float, const Quaternion<float> &);
 	template std::ostream& operator <<<float>(std::ostream &, const Quaternion<float> &);
 
 	template class Quaternion<double>;
+	template Quaternion<double> operator *(const Quaternion<double> &, const Point3<double> &);
+	template Quaternion<double> operator *(const Quaternion<double> &, double);
+	template Quaternion<double> operator *(double, const Quaternion<double> &);
 	template std::ostream& operator <<<double>(std::ostream &, const Quaternion<double> &);
 
 }

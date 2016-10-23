@@ -56,10 +56,14 @@ namespace urchin
 			void toAxisAngle(Vector3<T> &, T &) const;
 			Vector3<T> toEulerAngle(RotationSequence) const;
 		
+			Quaternion<T> operator +(const Quaternion<T> &) const;
+			Quaternion<T> operator -(const Quaternion<T> &) const;
 			Quaternion<T> operator *(const Quaternion<T> &) const;
+			const Quaternion<T>& operator +=(const Quaternion<T> &);
+			const Quaternion<T>& operator -=(const Quaternion<T> &);
 			const Quaternion<T>& operator *=(const Quaternion<T> &);
-			Quaternion<T> operator *(const Point3<T> &) const;
 			const Quaternion<T>& operator *=(const Point3<T> &);
+			const Quaternion<T>& operator *=(T);
 			
 			T& operator [](int i);
 			const T& operator [](int i) const;
@@ -70,6 +74,10 @@ namespace urchin
 			Vector3<T> threeAxisEulerRotation(int, int, int) const;
 			Vector3<T> twoAxisEulerRotation(int, int, int) const;
 	};
+
+	template<class T> Quaternion<T> operator *(const Quaternion<T> &, const Point3<T> &);
+	template<class T> Quaternion<T> operator *(const Quaternion<T> &, T);
+	template<class T> Quaternion<T> operator *(T, const Quaternion<T> &);
 
 	template<class T> std::ostream& operator <<(std::ostream &, const Quaternion<T> &);
 
