@@ -2,7 +2,7 @@
 #define ENGINE_GEOMETRYDISPLAYER_H
 
 #include <utils/display/geometry/GeometryModel.h>
-#include <list>
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/camera/Camera.h"
@@ -25,7 +25,7 @@ namespace urchin
 			void display(const Matrix4<float> &viewMatrix) const;
 
 		private:
-			std::list<GeometryModel *> geometryModels;
+			std::vector<GeometryModel *> geometryModels;
 			Matrix4<float> projectionMatrix;
 	};
 

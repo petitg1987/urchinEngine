@@ -1,5 +1,4 @@
 #include "collision/narrowphase/NarrowPhaseManager.h"
-#include "processable/raytest/RayTestSingleResult.h"
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
 #include "object/TemporalObject.h"
@@ -65,23 +64,26 @@ namespace urchin
 		return collisionAlgorithm;
 	}
 
-	std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
+	ccd_set NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-		std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> rayCastResults;
-		rayCastResults.reserve(bodiesAABBoxHitRay.size());
+		ccd_set continuousCollisionResults;
 
 		for(auto bodyAABBoxHitRay : bodiesAABBoxHitRay)
 		{
 			PhysicsTransform fromToB = bodyAABBoxHitRay->getPhysicsTransform();
-			TemporalObject rayCastObjectB(bodyAABBoxHitRay->getShape(), fromToB, fromToB);
+			TemporalObject temporalObjectB(bodyAABBoxHitRay->getShape(), fromToB, fromToB);
 
-			rayCastResults.push_back(gjkContinuousCollisionAlgorithm.calculateTimeOfImpact(temporalObject, rayCastObjectB));
+			std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisioncResult = gjkContinuousCollisionAlgorithm.calculateTimeOfImpact(temporalObject, temporalObjectB, bodyAABBoxHitRay);
+			if(continuousCollisioncResult)
+			{
+				continuousCollisionResults.insert(continuousCollisioncResult);
+			}
 		}
 
-		return rayCastResults;
+		return continuousCollisionResults;
 	}
 
-	std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
+	ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
 		CollisionSphereShape pointShapeA(0.0);
 		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());

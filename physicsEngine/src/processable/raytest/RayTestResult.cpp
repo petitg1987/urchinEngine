@@ -1,13 +1,11 @@
 #include <stdexcept>
-#include <limits>
 
 #include "processable/raytest/RayTestResult.h"
 
 namespace urchin
 {
 
-	RayTestResult::RayTestResult() :
-		nearestResultIndex(0)
+	RayTestResult::RayTestResult()
 	{
 		resultReady.store(false, std::memory_order_relaxed);
 	}
@@ -17,19 +15,9 @@ namespace urchin
 
 	}
 
-	void RayTestResult::addResults(const std::vector<RayTestSingleResult> &rayTestResults)
+	void RayTestResult::addResults(const ccd_set &rayTestResults)
 	{
 		this->rayTestResults = rayTestResults;
-
-		float nearestTimeToHit = std::numeric_limits<float>::max();
-		for(unsigned int i=0; i<rayTestResults.size(); ++i)
-		{
-			if(rayTestResults[i].getTimeToHit() < nearestTimeToHit)
-			{
-				nearestTimeToHit = rayTestResults[i].getTimeToHit();
-				nearestResultIndex = i;
-			}
-		}
 
 		resultReady.store(true, std::memory_order_relaxed);
 	}
@@ -53,22 +41,24 @@ namespace urchin
 		return rayTestResults.size() > 0;
 	}
 
-	const RayTestSingleResult &RayTestResult::getNearestResult() const
+	std::shared_ptr<ContinuousCollisionResult<float>> RayTestResult::getNearestResult() const
 	{
 		if(!resultReady.load(std::memory_order_relaxed))
 		{
 			throw std::runtime_error("Ray test callback result is not ready.");
 		}
 
-		if(!hasHit())
-		{
-			throw std::runtime_error("Impossible to return nearest result: there is no result.");
-		}
+		#ifdef _DEBUG
+			if(!hasHit())
+			{
+				throw std::runtime_error("Impossible to return nearest result: there is no result.");
+			}
+		#endif
 
-		return rayTestResults[nearestResultIndex];
+		return *rayTestResults.begin();
 	}
 
-	const std::vector<RayTestSingleResult> &RayTestResult::getResults() const
+	const ccd_set &RayTestResult::getResults() const
 	{
 		if(!resultReady.load(std::memory_order_relaxed))
 		{

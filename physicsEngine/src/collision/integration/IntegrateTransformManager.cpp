@@ -80,29 +80,19 @@ namespace urchin
 				std::cout<<"    - Body: "<<bodiesAABBoxHitBody[i]->getId()<<std::endl;
 			}
 
-
 			std::shared_ptr<CollisionSphereShape> bodySphereShape = body->getShape()->retrieveSphereShape();
 			TemporalObject temporalObject(bodySphereShape.get(), from, to);
-			std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+			ccd_set ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
 			std::cout<<" - Narrowphase: "<<std::endl;
-			for(unsigned int i=0; i<ccdResults.size(); ++i)
+			for(const std::shared_ptr<ContinuousCollisionResult<float>> &ccdResult : ccdResults)
 			{
-				if(ccdResults[i]->hasTimeOfImpactResult())
-				{
-					std::cout<<"    - Hit: "<<ccdResults[i]->getTimeToHit()<<std::endl;
-				}else
-				{
-					std::cout<<"    - Not hit"<<std::endl;
-				}
+				std::cout<<"    - Hit: "<<ccdResult->getTimeToHit()<<std::endl;
 			}
 
-			//TODO BroadPhase: return sorted result ?
 			//TODO Update transform & reduce linear velocity
 			//TODO Handle compound objects: not convex (train...) + ccdMotionThreshold define by body shape
 			//TODO Attention to two objects moving in opposite direction: is it working ?
 		}
-
-
 	}
 
 }

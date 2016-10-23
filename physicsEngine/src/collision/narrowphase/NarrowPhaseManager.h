@@ -16,7 +16,6 @@
 
 namespace urchin
 {
-
 	class NarrowPhaseManager
 	{
 		public:
@@ -25,8 +24,8 @@ namespace urchin
 
 			std::vector<ManifoldResult> *process(const std::vector<OverlappingPair *> &);
 
-			std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> continuousCollissionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
-			std::vector<std::shared_ptr<ContinuousCollisionResult<double>>> rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
+			ccd_set continuousCollissionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
+			ccd_set rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
@@ -34,7 +33,7 @@ namespace urchin
 			CollisionAlgorithmSelector *collisionAlgorithmSelector;
 			std::vector<ManifoldResult> *manifoldResults;
 
-			GJKContinuousCollisionAlgorithm<double> gjkContinuousCollisionAlgorithm;
+			GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
 	};
 
 }

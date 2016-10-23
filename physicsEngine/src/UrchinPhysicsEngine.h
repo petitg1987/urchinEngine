@@ -31,13 +31,13 @@
 #include "collision/narrowphase/algorithm/epa/EPAResult.h"
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
 #include "collision/narrowphase/algorithm/gjk/GJKResult.h"
+#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
 #include "collision/island/IslandContainer.h"
 #include "collision/island/IslandElement.h"
 
 #include "processable/Processable.h"
 #include "processable/character/CharacterController.h"
 #include "processable/raytest/RayTestResult.h"
-#include "processable/raytest/RayTestSingleResult.h"
 
 #include "visualizer/CollisionVisualizer.h"
 

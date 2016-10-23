@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "body/work/AbstractWorkBody.h"
 #include "object/TemporalObject.h"
 #include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
 
@@ -12,13 +13,13 @@ namespace urchin
 	/**
 	* Implementation of GJK Ray Cast algorithm (see http://www.dtecta.com/papers/unpublished04raycast.pdf)
 	*/
-	template<class T> class GJKContinuousCollisionAlgorithm
+	template<class T, class OUT> class GJKContinuousCollisionAlgorithm
 	{
 		public:
 			GJKContinuousCollisionAlgorithm();
 			~GJKContinuousCollisionAlgorithm();
 
-			std::shared_ptr<ContinuousCollisionResult<T>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &) const;
+			std::shared_ptr<ContinuousCollisionResult<OUT>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, const AbstractWorkBody *) const;
 
 		private:
 			Point3<T> getWorldSupportPoint(const TemporalObject &, const Vector3<T> &, const PhysicsTransform &) const;

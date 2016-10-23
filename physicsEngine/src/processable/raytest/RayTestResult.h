@@ -1,11 +1,10 @@
 #ifndef ENGINE_RAYTESTRESULT_H
 #define ENGINE_RAYTESTRESULT_H
 
-#include <mutex>
 #include <atomic>
-#include "UrchinCommon.h"
+#include <memory>
 
-#include "processable/raytest/RayTestSingleResult.h"
+#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
 
 namespace urchin
 {
@@ -20,20 +19,18 @@ namespace urchin
 			RayTestResult();
 			~RayTestResult();
 
-			void addResults(const std::vector<RayTestSingleResult> &);
+			void addResults(const ccd_set &rayTestResults);
 
 			bool isResultReady() const;
 
 			bool hasHit() const;
-			const RayTestSingleResult &getNearestResult() const;
-			const std::vector<RayTestSingleResult> &getResults() const;
+			std::shared_ptr<ContinuousCollisionResult<float>> getNearestResult() const;
+			const ccd_set &getResults() const;
 
 		private:
 			std::atomic_bool resultReady;
 
-			std::vector<RayTestSingleResult> rayTestResults;
-			unsigned int nearestResultIndex;
-
+			ccd_set rayTestResults;
 	};
 
 }
