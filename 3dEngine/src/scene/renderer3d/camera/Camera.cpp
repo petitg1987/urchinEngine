@@ -179,7 +179,7 @@ namespace urchin
 	* @param y Y coordinate of the vector where the camera turns around
 	* @param z Z coordinate of the vector where the camera turns around
 	*/
-	void Camera::rotate(float angle, float x, float y, float z)
+	void Camera::rotate(const Quaternion<float> &quatRotation)
 	{
 		Point3<float> pivot;
 		if(fabs(distance) > std::numeric_limits<float>::epsilon())
@@ -191,19 +191,17 @@ namespace urchin
 			pivot = position;
 		}
 
-		Quaternion<float> rotationAxis(Vector3<float>(x, y, z), angle);
-
 		//moves view point
 		Vector3<float> axis = pivot.vector(view);
 		Quaternion<float> quatView(axis.X, axis.Y, axis.Z, 0.0f);
-		const Quaternion<float> &resultView = (rotationAxis * quatView.normalize()) * rotationAxis.conjugate();
+		const Quaternion<float> &resultView = (quatRotation * quatView.normalize()) * quatRotation.conjugate();
 		view.X = resultView.X + pivot.X;
 		view.Y = resultView.Y + pivot.Y;
 		view.Z = resultView.Z + pivot.Z;
 
 		//moves up vector
 		Quaternion<float> quatUp(up.X, up.Y, up.Z, 0.0f);
-		const Quaternion<float> &resultUp = (rotationAxis * quatUp.normalize()) * rotationAxis.conjugate();
+		const Quaternion<float> &resultUp = (quatRotation * quatUp.normalize()) * quatRotation.conjugate();
 		up.X = resultUp.X;
 		up.Y = resultUp.Y;
 		up.Z = resultUp.Z;
@@ -213,7 +211,7 @@ namespace urchin
 		{
 			axis = pivot.vector(position);
 			Quaternion<float> quatPosition(axis.X, axis.Y, axis.Z, 0.0f);
-			const Quaternion<float> &resultPosition = (rotationAxis * quatPosition.normalize()) * rotationAxis.conjugate();
+			const Quaternion<float> &resultPosition = (quatRotation * quatPosition.normalize()) * quatRotation.conjugate();
 
 			position.X = resultPosition.X + pivot.X;
 			position.Y = resultPosition.Y + pivot.Y;
@@ -274,8 +272,8 @@ namespace urchin
 		axis = ((position.vector(view)).crossProduct(up)).normalize();
 
 		//rotate around the y and x axis
-		rotate(mouseDirection.Y, axis.X, axis.Y, axis.Z);
-		rotate(mouseDirection.X, 0.0, 1.0, 0.0);
+		rotate(Quaternion<float>(axis, mouseDirection.Y));
+		rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), mouseDirection.X));
 
 		updateMatrix();
 	}

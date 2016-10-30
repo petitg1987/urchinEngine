@@ -58,9 +58,6 @@ namespace urchin
 			const Vector3<float> normalizedAxis = angularVelocity / length;
 			const float angle = length * timeStep;
 
-			//TODO slow because cos/sin in constructor (see last reply of "http://stackoverflow.com/questions/12053895/converting-angular-velocity-to-quaternion-in-opencv"
-			//Use: dq(t)/dt = 0.5 * x(t) * q(t)) (where x(t) is a quaternion of {0, w0, w1, w2})
-			//Attention: only work with low timeStep ?
 			Quaternion<float> newOrientation = Quaternion<float>(normalizedAxis, angle) * currentTransform.getOrientation();
 			newOrientation = newOrientation.normalize();
 
@@ -95,21 +92,14 @@ namespace urchin
 					body->setLinearVelocity((body->getLinearVelocity() / currentSpeed) * maxSpeedAllowed);
 				}
 
-				//TODO Handle compound objects: not convex (train...) & ccdMotionThreshold define by body shape & crash in narrowphase if TemporalObject is created for compound
-				//TODO Attention to two objects moving in opposite direction: is it working ?
+				//TODO Handle compound objects:
+				// - ccdMotionThreshold should be defined by body or shape ?
+				// - Crash in narrow phase if TemporalObject is created for compound & crash in ray test if ray hit compound shape
+				//TODO Create predictive constraint contact point (to handle restitution)
 			}
 		}
 
 		body->setPosition(updatedTargetTransform.getPosition());
 		body->setOrientation(updatedTargetTransform.getOrientation());
-
-		//TODO remove me when performance test is OK (see others TODO)
-		Quaternion<float> initialOrientation(Vector3<float>(1.0, 0.0, 0.0), 0.0);
-		PhysicsTransform initialTransform(Point3<float>(0.0, 0.0, 0.0), initialOrientation.normalize());
-		PhysicsTransform newTransform = integrateTransform(initialTransform, Vector3<float>(0.0, 0.0, 0.0), Vector3<float>(3.14159/2.0, 0.0, 0.0), 1.0);
-		Vector3<float> newAxis;
-		float newAngle;
-		newTransform.getOrientation().toAxisAngle(newAxis, newAngle);
-		std::cout<<"Axis: "<<newAxis <<", Angle:"<<newAngle<<std::endl;
 	}
 }

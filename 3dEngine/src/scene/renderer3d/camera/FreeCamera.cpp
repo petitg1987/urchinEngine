@@ -104,7 +104,7 @@ namespace urchin
 				moveX(invFrameRate*speed);
 			}else
 			{
-				rotate(invFrameRate*rotateSpeed, 0.0, 1.0, 0.0);
+				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), invFrameRate*rotateSpeed));
 			}
 		}
 		
@@ -115,7 +115,7 @@ namespace urchin
 				moveX(-invFrameRate*speed);
 			}else
 			{
-				rotate(-invFrameRate*rotateSpeed, 0.0, 1.0, 0.0);
+				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), -invFrameRate*rotateSpeed));
 			}
 		}
 		

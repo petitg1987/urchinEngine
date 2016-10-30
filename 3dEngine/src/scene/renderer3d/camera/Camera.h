@@ -39,7 +39,7 @@ namespace urchin
 			void moveTo(const Point3<float> &);
 			void moveX(float);
 			void moveZ(float);
-			void rotate(float, float, float, float);
+			void rotate(const Quaternion<float> &);
 			
 			virtual void onKeyDown(unsigned int);
 			virtual void onKeyUp(unsigned int);
