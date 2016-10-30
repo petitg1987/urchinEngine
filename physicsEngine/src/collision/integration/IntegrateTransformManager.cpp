@@ -51,6 +51,7 @@ namespace urchin
 			const Vector3<float> &angularVelocity, float timeStep) const
 	{
 		Point3<float> interpolatePosition = currentTransform.getPosition().translate(linearVelocity * timeStep);
+		Quaternion<float> interpolateOrientation = currentTransform.getOrientation();
 
 		float length = angularVelocity.length();
 		if(length > 0.0)
@@ -58,13 +59,11 @@ namespace urchin
 			const Vector3<float> normalizedAxis = angularVelocity / length;
 			const float angle = length * timeStep;
 
-			Quaternion<float> newOrientation = Quaternion<float>(normalizedAxis, angle) * currentTransform.getOrientation();
-			newOrientation = newOrientation.normalize();
-
-			return PhysicsTransform(interpolatePosition, newOrientation);
+			interpolateOrientation = Quaternion<float>(normalizedAxis, angle) * interpolateOrientation;
+			interpolateOrientation = interpolateOrientation.normalize();
 		}
 
-		return PhysicsTransform(interpolatePosition, currentTransform.getOrientation());
+		return PhysicsTransform(interpolatePosition, interpolateOrientation);
 	}
 
 	void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt)
