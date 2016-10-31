@@ -47,7 +47,7 @@ namespace urchin
 			operator const T*() const;
 
 			T 	a11, a21,
-					a12, a22;
+				a12, a22;
 	};
 
 	template<class T> Matrix2<T> operator *(const Matrix2<T> &, T);

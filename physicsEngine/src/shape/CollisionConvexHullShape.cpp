@@ -114,7 +114,7 @@ namespace urchin
 	AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &pos = physicsTransform.getPosition();
-		const Matrix3<float> &orientation = physicsTransform.getOrientationMatrix();
+		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		//build AABBox
 		Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
@@ -122,7 +122,7 @@ namespace urchin
 		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
 		for(std::vector<Point3<float>>::const_iterator it=convexHullPoints.begin(); it!=convexHullPoints.end(); ++it)
 		{
-			const Point3<float> point = orientation * (*it);
+			const Point3<float> point = orientation.rotatePoint(*it);
 
 			if(min.X > point.X)
 			{

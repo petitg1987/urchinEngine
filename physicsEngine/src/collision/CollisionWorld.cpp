@@ -10,7 +10,7 @@ namespace urchin
 	CollisionWorld::CollisionWorld(BodyManager *bodyManager) :
 			bodyManager(bodyManager),
 			broadPhaseManager(new BroadPhaseManager(bodyManager)),
-			narrowPhaseManager(new NarrowPhaseManager()),
+			narrowPhaseManager(new NarrowPhaseManager(bodyManager, broadPhaseManager)),
 			integrateVelocityManager(new IntegrateVelocityManager(bodyManager)),
 			constraintSolverManager(new ConstraintSolverManager()),
 			islandManager(new IslandManager(bodyManager)),
@@ -54,7 +54,7 @@ namespace urchin
 		const std::vector<OverlappingPair *> &overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
 		//narrow phase: check if pair of bodies colliding and return collision constraints
-		manifoldResults = narrowPhaseManager->process(overlappingPairs);
+		manifoldResults = narrowPhaseManager->process(dt, overlappingPairs);
 		notifyObservers(this, COLLISION_RESULT_UPDATED);
 
 		//integrate bodies velocities (gravity, external forces...)

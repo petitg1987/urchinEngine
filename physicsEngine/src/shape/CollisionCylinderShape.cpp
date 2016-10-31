@@ -70,7 +70,7 @@ namespace urchin
 		boxHalfSizes[getCylinderOrientation()] += getHeight() / 2.0;
 
 		const Point3<float> &position = physicsTransform.getPosition();
-		const Matrix3<float> &orientation = physicsTransform.getOrientationMatrix();
+		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
 
 		Point3<float> extend(
 			boxHalfSizes.X * std::abs(orientation[0]) + boxHalfSizes.Y * std::abs(orientation[3]) + boxHalfSizes.Z * std::abs(orientation[6]),

@@ -382,6 +382,10 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -397,17 +401,15 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -494,6 +496,7 @@ targetLinux/moc_DebugVisualizerWindow.cpp: src/scene/displayer/SceneDisplayerWid
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
@@ -530,6 +533,10 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -545,17 +552,15 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -642,6 +647,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
@@ -692,6 +698,10 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -707,17 +717,15 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -804,6 +812,7 @@ targetLinux/DebugVisualizerWindow.o: src/DebugVisualizerWindow.cpp src/DebugVisu
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
@@ -842,6 +851,10 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -857,17 +870,15 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -954,6 +965,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
@@ -992,6 +1004,10 @@ targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/enti
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1007,17 +1023,15 @@ targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/enti
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1101,6 +1115,7 @@ targetLinux/GeometryEntity.o: src/scene/entity/GeometryEntity.cpp src/scene/enti
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GeometryEntity.o src/scene/entity/GeometryEntity.cpp
@@ -1135,6 +1150,10 @@ targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp 
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1150,17 +1169,15 @@ targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp 
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1244,6 +1261,7 @@ targetLinux/GeometryEntityHandler.o: src/scene/entity/GeometryEntityHandler.cpp 
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GeometryEntityHandler.o src/scene/entity/GeometryEntityHandler.cpp
@@ -1275,6 +1293,10 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1290,17 +1312,15 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1386,6 +1406,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
@@ -1420,6 +1441,10 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1435,17 +1460,15 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1532,6 +1555,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/displayer/SceneFreeCamera.h \
@@ -1566,6 +1590,10 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1581,17 +1609,15 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1677,6 +1703,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneFreeCamera.o src/scene/displayer/SceneFreeCamera.cpp
@@ -1707,6 +1734,10 @@ targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp ../common/src/
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1722,17 +1753,15 @@ targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp ../common/src/
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1820,6 +1849,7 @@ targetLinux/ActionReader.o: src/scene/controller/ActionReader.cpp ../common/src/
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
@@ -1860,6 +1890,10 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -1875,17 +1909,15 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1969,6 +2001,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/controller/action/Action.h \
@@ -2004,6 +2037,10 @@ targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controlle
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2019,17 +2056,15 @@ targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controlle
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2113,6 +2148,7 @@ targetLinux/Action.o: src/scene/controller/action/Action.cpp src/scene/controlle
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
@@ -2149,6 +2185,10 @@ targetLinux/ClearEntityAction.o: src/scene/controller/action/ClearEntityAction.c
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2164,17 +2204,15 @@ targetLinux/ClearEntityAction.o: src/scene/controller/action/ClearEntityAction.c
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2258,6 +2296,7 @@ targetLinux/ClearEntityAction.o: src/scene/controller/action/ClearEntityAction.c
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
@@ -2291,6 +2330,10 @@ targetLinux/ConvexHull3DAction.o: src/scene/controller/action/ConvexHull3DAction
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2306,17 +2349,15 @@ targetLinux/ConvexHull3DAction.o: src/scene/controller/action/ConvexHull3DAction
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2403,6 +2444,7 @@ targetLinux/ConvexHull3DAction.o: src/scene/controller/action/ConvexHull3DAction
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \
@@ -2436,6 +2478,10 @@ targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/sce
 		../common/src/tools/xml/XmlChunk.h \
 		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
 		../common/src/io/StringUtil.h \
@@ -2451,17 +2497,15 @@ targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/sce
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
 		../common/src/math/geometry/2d/object/Rectangle.h \
 		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
-		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/Shape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
-		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2548,6 +2592,7 @@ targetLinux/Point3Action.o: src/scene/controller/action/Point3Action.cpp src/sce
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../debugVisualizer/src/scene/entity/GeometryEntityHandler.h \

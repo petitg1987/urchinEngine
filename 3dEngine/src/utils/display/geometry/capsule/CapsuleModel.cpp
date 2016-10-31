@@ -55,7 +55,8 @@ namespace urchin
 
 		//cylinder
 		Quaternion<float> localCylinderOrientation = capsule.getOrientation() * qCapsuleOrientation;
-		for (int i = 0; i <= sides; i++) {
+		for (int i = 0; i <= sides; i++)
+		{
 		    float x = std::cos(i*angle) * radius;
 		    float y = std::sin(i*angle) * radius;
 

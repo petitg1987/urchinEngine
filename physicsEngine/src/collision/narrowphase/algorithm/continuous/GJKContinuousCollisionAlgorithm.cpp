@@ -20,31 +20,31 @@ namespace urchin
 
 	}
 
-	template<class T, class OUT> std::shared_ptr<ContinuousCollisionResult<OUT>> GJKContinuousCollisionAlgorithm<T, OUT>::calculateTimeOfImpact(const TemporalObject &objectA, const TemporalObject &objectB,
-			const AbstractWorkBody *bodyB) const
+	template<class T, class OUT> std::shared_ptr<ContinuousCollisionResult<OUT>> GJKContinuousCollisionAlgorithm<T, OUT>::calculateTimeOfImpact(const TemporalObject &object1, const TemporalObject &object2,
+			const AbstractWorkBody *body2) const
 	{
 		T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
-		Vector3<T> normal;
+		Vector3<T> normalFromObject2;
 		Simplex<T> simplex;
 
-		PhysicsTransform interpolatedTransformA = objectA.getFrom();
-		PhysicsTransform interpolatedTransformB = objectB.getFrom();
+		PhysicsTransform interpolatedTransform1 = object1.getFrom();
+		PhysicsTransform interpolatedTransform2 = object2.getFrom();
 
-		Vector3<T> linearVelocityA = objectA.getFrom().getPosition().vector(objectA.getTo().getPosition()).template cast<T>();
-		Vector3<T> linearVelocityB = objectB.getFrom().getPosition().vector(objectB.getTo().getPosition()).template cast<T>();
-		Vector3<T> relativeMotion = linearVelocityA - linearVelocityB;
+		Vector3<T> linearVelocity1 = object1.getFrom().getPosition().vector(object1.getTo().getPosition()).template cast<T>();
+		Vector3<T> linearVelocity2 = object2.getFrom().getPosition().vector(object2.getTo().getPosition()).template cast<T>();
+		Vector3<T> relativeMotion = linearVelocity1 - linearVelocity2;
 
-		Point3<T> initialSupportPointA = getWorldSupportPoint(objectA, -relativeMotion, interpolatedTransformA);
-		Point3<T> initialSupportPointB = getWorldSupportPoint(objectB, relativeMotion, interpolatedTransformB);
-		Point3<T> initialPoint = initialSupportPointA - initialSupportPointB;
+		Point3<T> initialSupportPoint1 = getWorldSupportPoint(object1, -relativeMotion, interpolatedTransform1);
+		Point3<T> initialSupportPoint2 = getWorldSupportPoint(object2, relativeMotion, interpolatedTransform2);
+		Point3<T> initialPoint = initialSupportPoint1 - initialSupportPoint2;
 
 		Vector3<T> direction = (-initialPoint).toVector();
 
 		for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber)
 		{
-			Point3<T> supportPointA = getWorldSupportPoint(objectA, direction, interpolatedTransformA);
-			Point3<T> supportPointB = getWorldSupportPoint(objectB, -direction, interpolatedTransformB);
-			Point3<T> newPoint = supportPointA - supportPointB;
+			Point3<T> supportPoint1 = getWorldSupportPoint(object1, direction, interpolatedTransform1);
+			Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
+			Point3<T> newPoint = supportPoint1 - supportPoint2;
 
 			const Vector3<T> &vClosestPoint = -direction; //vector from origin to closest point of simplex
 			T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
@@ -64,16 +64,16 @@ namespace urchin
 				{
 					timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
 
-					interpolatedTransformA.setPosition(interpolate(objectA.getFrom().getPosition(), objectA.getTo().getPosition(), timeToHit));
-					interpolatedTransformB.setPosition(interpolate(objectB.getFrom().getPosition(), objectB.getTo().getPosition(), timeToHit));
+					interpolatedTransform1.setPosition(interpolate(object1.getFrom().getPosition(), object1.getTo().getPosition(), timeToHit));
+					interpolatedTransform2.setPosition(interpolate(object2.getFrom().getPosition(), object2.getTo().getPosition(), timeToHit));
 
-					normal = -direction;
+					normalFromObject2 = -direction;
 				}
 			}
 
 			if(!simplex.isPointInSimplex(newPoint))
 			{
-				simplex.addPoint(supportPointA, supportPointB);
+				simplex.addPoint(supportPoint1, supportPoint2);
 			}
 
 			direction = (-simplex.getClosestPointToOrigin()).toVector();
@@ -81,17 +81,17 @@ namespace urchin
 
 			if(closestPointSquareDistance < terminationTolerance)
 			{
-				if(normal.squareLength() < squareEpsilon)
+				if(normalFromObject2.squareLength() < squareEpsilon)
 				{
 					return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
 				}
 
-				normal = normal.normalize();
+				normalFromObject2 = normalFromObject2.normalize();
 
-				Point3<T> hitPointA, hitPointB;
-				simplex.computeClosestPoints(hitPointA, hitPointB);
+				Point3<T> hitPointOnObject1, hitPointOnObject2;
+				simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-				return std::make_shared<ContinuousCollisionResult<OUT>>(bodyB, normal.template cast<OUT>(), hitPointB.template cast<OUT>(), (OUT)timeToHit);
+				return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT)timeToHit);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace urchin
 
 	template<class T, class OUT> Point3<T> GJKContinuousCollisionAlgorithm<T, OUT>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
 	{
-		Vector3<float> localDirection = worldTransform.getOrientationMatrix().transpose() * globalDirection.template cast<float>();
+		Vector3<float> localDirection = worldTransform.retrieveOrientationMatrix().transpose() * globalDirection.template cast<float>();
 		Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
 
 		return worldTransform.transform(localSupportPoint).template cast<T>();

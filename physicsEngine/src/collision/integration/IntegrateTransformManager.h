@@ -21,7 +21,6 @@ namespace urchin
 			void integrateTransform(float);
 
 		private:
-			PhysicsTransform integrateTransform(const PhysicsTransform &, const Vector3<float> &, const Vector3<float> &, float) const;
 			void handleContinuousCollision(WorkRigidBody *, const PhysicsTransform &, const PhysicsTransform &, float);
 
 			const BodyManager *bodyManager;

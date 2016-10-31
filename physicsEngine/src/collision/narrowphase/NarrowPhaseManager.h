@@ -11,24 +11,32 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 #include "collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
-#include "object/TemporalObject.h"
+#include "collision/broadphase/BroadPhaseManager.h"
+#include "body/BodyManager.h"
 #include "body/work/AbstractWorkBody.h"
+#include "body/work/WorkRigidBody.h"
+#include "object/TemporalObject.h"
 
 namespace urchin
 {
 	class NarrowPhaseManager
 	{
 		public:
-			NarrowPhaseManager();
+			NarrowPhaseManager(const BodyManager *, const BroadPhaseManager *);
 			~NarrowPhaseManager();
 
-			std::vector<ManifoldResult> *process(const std::vector<OverlappingPair *> &);
+			std::vector<ManifoldResult> *process(float, const std::vector<OverlappingPair *> &);
 
 			ccd_set continuousCollissionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
 			ccd_set rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
+			void processPredictiveContacts(float);
+			void handleContinuousCollision(WorkRigidBody *, const PhysicsTransform &, const PhysicsTransform &, float);
+
+			const BodyManager *bodyManager;
+			const BroadPhaseManager *broadPhaseManager;
 
 			CollisionAlgorithmSelector *collisionAlgorithmSelector;
 			std::vector<ManifoldResult> *manifoldResults;

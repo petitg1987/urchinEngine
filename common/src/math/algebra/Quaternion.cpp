@@ -162,29 +162,40 @@ namespace urchin
 
 	template<class T> Quaternion<T> Quaternion<T>::normalize() const
 	{
-		//computes magnitude of the quaternion
-		const T mag = length();
+		const T normValue = norm();
 	
-		//checks for bogus length, to protect against divide by zero
-		if(mag>0.0f)
+		//checks for bogus norm, to protect against divide by zero
+		if(normValue>0.0f)
 		{
-			return Quaternion<T>(X/mag, Y/mag, Z/mag, W/mag);
+			return Quaternion<T>(X/normValue, Y/normValue, Z/normValue, W/normValue);
 		}
 
 		return Quaternion(X, Y, Z, W);
 	}
 
+	/**
+	 * Return conjugate quaternion. In case of normalized quaternion: conjugate quaternion is equals to inverse quaternion. It's a faster alternative.
+	 */
 	template<class T> Quaternion<T> Quaternion<T>::conjugate() const
 	{
 		return Quaternion<T>(-X, -Y, -Z, W);
 	}
 
-	template<class T> T Quaternion<T>::length() const
+	/**
+	 * Return inverse quaternion. In case of normalized quaternion: use conjugate method to get same result with better performance.
+	 */
+	template<class T> Quaternion<T> Quaternion<T>::inverse() const
+	{
+		T squaredNorm = squareNorm();
+		return Quaternion<T>(-X/squaredNorm, -Y/squaredNorm, -Z/squaredNorm, W/squaredNorm);
+	}
+
+	template<class T> T Quaternion<T>::norm() const
 	{
 		return sqrt((X*X) + (Y*Y) + (Z*Z) + (W*W));
 	}
 
-	template<class T> T Quaternion<T>::squareLength() const
+	template<class T> T Quaternion<T>::squareNorm() const
 	{
 		return (X*X) + (Y*Y) + (Z*Z) + (W*W);
 	}
@@ -194,20 +205,16 @@ namespace urchin
 		return ((X*q.X) + (Y*q.Y) + (Z*q.Z) + (W*q.W));
 	}
 
-	template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T> &in) const
+	template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T> &point) const
 	{
 		//Rotate point only works with normalized quaternion
 		#ifdef _DEBUG
-			const T mag = length();
-			assert(mag >= (T)0.9999);
-			assert(mag <= (T)1.0001);
+			const T normValue = norm();
+			assert(normValue >= (T)0.9999);
+			assert(normValue <= (T)1.0001);
 		#endif
 
-		const Quaternion<T> &conjugateThis = conjugate().normalize();
-
-		Quaternion<T> final = (*this)*(in);
-		final = final*conjugateThis;
-
+		Quaternion<T> final = (*this) * point * this->conjugate();
 		return Point3<T>(final.X, final.Y, final.Z);
 	}
 
@@ -270,10 +277,11 @@ namespace urchin
 		}
 
 		//interpolates and returns new quaternion
-		return Quaternion<T>(	(k0 * X) + (k1 * q1x),
-					(k0 * Y) + (k1 * q1y),
-					(k0 * Z) + (k1 * q1z),
-					(k0 * W) + (k1 * q1w));
+		return Quaternion<T>(
+				(k0 * X) + (k1 * q1x),
+				(k0 * Y) + (k1 * q1y),
+				(k0 * Z) + (k1 * q1z),
+				(k0 * W) + (k1 * q1w));
 	}
 
 	template<class T> Matrix4<T> Quaternion<T>::toMatrix4() const

@@ -51,7 +51,8 @@ namespace urchin
 		std::stringstream cuttedTextStream((maxLength>0) ? cutText(text, maxLength) : text);
 		std::string item;
 		std::vector<std::string> cuttedTextLines;
-		while (std::getline(cuttedTextStream, item, '\n')) {
+		while (std::getline(cuttedTextStream, item, '\n'))
+		{
 			cuttedTextLines.push_back(item);
 			numLetters += item.size();
 		}

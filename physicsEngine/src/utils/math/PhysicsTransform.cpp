@@ -5,50 +5,47 @@ namespace urchin
 
 	PhysicsTransform::PhysicsTransform()
 	{
-		pPosition.setNull();
-		qOrientation.setIdentity();
+		position.setNull();
+		orientation.setIdentity();
 	}
 
 	PhysicsTransform::PhysicsTransform(const PhysicsTransform &physicsTransform) :
-		pPosition(physicsTransform.getPosition()),
-		qOrientation(physicsTransform.getOrientation()),
-		mOrientation(physicsTransform.getOrientationMatrix())
+		position(physicsTransform.getPosition()),
+		orientation(physicsTransform.getOrientation())
 	{
 
 	}
 
 	PhysicsTransform::PhysicsTransform(const Point3<float> &position, const Quaternion<float> &orientation) :
-		pPosition(position),
-		qOrientation(orientation)
+		position(position),
+		orientation(orientation)
 	{
-		mOrientation = qOrientation.toMatrix3();
+
 	}
 
 	void PhysicsTransform::setPosition(const Point3<float> &position)
 	{
-		pPosition = position;
+		this->position = position;
 	}
 
 	const Point3<float> &PhysicsTransform::getPosition() const
 	{
-		return pPosition;
+		return position;
 	}
 
 	void PhysicsTransform::setOrientation(const Quaternion<float> &orientation)
 	{
-		qOrientation = orientation;
-
-		mOrientation = qOrientation.toMatrix3();
+		this->orientation = orientation;
 	}
 
 	const Quaternion<float> &PhysicsTransform::getOrientation() const
 	{
-		return qOrientation;
+		return orientation;
 	}
 
-	const Matrix3<float> &PhysicsTransform::getOrientationMatrix() const
+	Matrix3<float> PhysicsTransform::retrieveOrientationMatrix() const
 	{
-		return mOrientation;
+		return orientation.toMatrix3();
 	}
 
 	/**
@@ -56,25 +53,35 @@ namespace urchin
 	 */
 	const Transform<float> PhysicsTransform::toTransform() const
 	{
-		return Transform<float>(pPosition, qOrientation, 1.0f);
+		return Transform<float>(position, orientation, 1.0f);
 	}
 
 	Point3<float> PhysicsTransform::transform(const Point3<float> &point) const
 	{
-		//apply rotation matrix
-		Point3<float> v = mOrientation * point;
-
-		//apply translation
-		return v + pPosition;
+		return orientation.rotatePoint(point) + position;
 	}
 
 	Point3<float> PhysicsTransform::inverseTransform(const Point3<float> &point) const
 	{
-		//apply inverse translation
-		Point3<float> v = point - pPosition;
+		return orientation.conjugate().rotatePoint(point - position);
+	}
 
-		//apply inverse rotation matrix (transpose=inverse for rotation matrix)
-		return (mOrientation.transpose() * v);
+	PhysicsTransform PhysicsTransform::integrate(const Vector3<float> &linearVelocity, const Vector3<float> &angularVelocity, float timeStep) const
+	{
+		Point3<float> interpolatePosition = position.translate(linearVelocity * timeStep);
+		Quaternion<float> interpolateOrientation = orientation;
+
+		float length = angularVelocity.length();
+		if(length > 0.0)
+		{
+			const Vector3<float> normalizedAxis = angularVelocity / length;
+			const float angle = length * timeStep;
+
+			interpolateOrientation = Quaternion<float>(normalizedAxis, angle) * interpolateOrientation;
+			interpolateOrientation = interpolateOrientation.normalize();
+		}
+
+		return PhysicsTransform(interpolatePosition, interpolateOrientation);
 	}
 
 }

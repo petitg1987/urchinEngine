@@ -30,7 +30,7 @@ namespace urchin
 			if(body!=nullptr && body->isActive())
 			{
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
-				PhysicsTransform newTransform = integrateTransform(body->getPhysicsTransform(), body->getLinearVelocity(), body->getAngularVelocity(), dt);
+				PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
 				float ccdMotionThreshold = body->getCcdMotionThreshold();
 				float motion = currentTransform.getPosition().vector(newTransform.getPosition()).length();
@@ -45,25 +45,6 @@ namespace urchin
 				}
 			}
 		}
-	}
-
-	PhysicsTransform IntegrateTransformManager::integrateTransform(const PhysicsTransform &currentTransform, const Vector3<float> &linearVelocity,
-			const Vector3<float> &angularVelocity, float timeStep) const
-	{
-		Point3<float> interpolatePosition = currentTransform.getPosition().translate(linearVelocity * timeStep);
-		Quaternion<float> interpolateOrientation = currentTransform.getOrientation();
-
-		float length = angularVelocity.length();
-		if(length > 0.0)
-		{
-			const Vector3<float> normalizedAxis = angularVelocity / length;
-			const float angle = length * timeStep;
-
-			interpolateOrientation = Quaternion<float>(normalizedAxis, angle) * interpolateOrientation;
-			interpolateOrientation = interpolateOrientation.normalize();
-		}
-
-		return PhysicsTransform(interpolatePosition, interpolateOrientation);
 	}
 
 	void IntegrateTransformManager::handleContinuousCollision(WorkRigidBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt)
@@ -81,7 +62,7 @@ namespace urchin
 			{
 				//determine new body transform to avoid collision
 				float timeToFirstHit = ccdResults.begin()->get()->getTimeToHit();
-				updatedTargetTransform = integrateTransform(from, body->getLinearVelocity(), body->getAngularVelocity(), timeToFirstHit*dt);
+				updatedTargetTransform = from.integrate(body->getLinearVelocity(), body->getAngularVelocity(), timeToFirstHit*dt);
 
 				//clamp velocity to max speed
 				float maxSpeedAllowed = body->getCcdMotionThreshold() / dt;
@@ -94,7 +75,6 @@ namespace urchin
 				//TODO Handle compound objects:
 				// - ccdMotionThreshold should be defined by body or shape ?
 				// - Crash in narrow phase if TemporalObject is created for compound & crash in ray test if ray hit compound shape
-				//TODO Create predictive constraint contact point (to handle restitution)
 			}
 		}
 

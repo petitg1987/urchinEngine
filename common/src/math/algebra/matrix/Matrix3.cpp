@@ -43,6 +43,9 @@ namespace urchin
 		return a11 * (a22 * a33 - a23 * a32) - a21 * (a12 * a33 - a13 * a32) + a31 * (a12 * a23 - a13 * a22);
 	}
 
+	/**
+	 * Return transpose matrix. In case of rotation matrix: transpose method return same result as inverse method but with better performance.
+	 */
 	template<class T> Matrix3<T> Matrix3<T>::transpose() const
 	{
 		return Matrix3<T>(	a11, a21, a31,
@@ -50,6 +53,9 @@ namespace urchin
 				a13, a23, a33);
 	}
 
+	/**
+	 * Return inverse matrix. In case of rotation matrix: inverse method return same result as transpose method but with worst performance.
+	 */
 	template<class T> Matrix3<T> Matrix3<T>::inverse() const
 	{
 		Matrix3<T> ret;

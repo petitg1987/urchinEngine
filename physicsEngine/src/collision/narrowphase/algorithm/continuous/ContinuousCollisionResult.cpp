@@ -3,11 +3,11 @@
 namespace urchin
 {
 
-	template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const AbstractWorkBody *bodyB, const Vector3<T> &normal,
-			const Point3<T> &hitPointB, T timeToHit) :
-		bodyB(bodyB),
-		normal(normal),
-		hitPointB(hitPointB),
+	template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const AbstractWorkBody *body2, const Vector3<T> &normalFromObject2,
+			const Point3<T> &hitPointOnObject2, T timeToHit) :
+		body2(body2),
+		normalFromObject2(normalFromObject2),
+		hitPointOnObject2(hitPointOnObject2),
 		timeToHit(timeToHit)
 	{
 
@@ -18,19 +18,19 @@ namespace urchin
 
 	}
 
-	template<class T> const AbstractWorkBody *ContinuousCollisionResult<T>::getBodyB() const
+	template<class T> const AbstractWorkBody *ContinuousCollisionResult<T>::getBody2() const
 	{
-		return bodyB;
+		return body2;
 	}
 
-	template<class T> const Vector3<T> &ContinuousCollisionResult<T>::getNormal() const
+	template<class T> const Vector3<T> &ContinuousCollisionResult<T>::getNormalFromObject2() const
 	{
-		return normal;
+		return normalFromObject2;
 	}
 
-	template<class T> const Point3<T> &ContinuousCollisionResult<T>::getHitPointB() const
+	template<class T> const Point3<T> &ContinuousCollisionResult<T>::getHitPointOnObject2() const
 	{
-		return hitPointB;
+		return hitPointOnObject2;
 	}
 
 	/**

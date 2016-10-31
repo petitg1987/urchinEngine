@@ -45,8 +45,9 @@ namespace urchin
 
 			Quaternion<T> normalize() const;
 			Quaternion<T> conjugate() const;
-			T length() const;
-			T squareLength() const;
+			Quaternion<T> inverse() const;
+			T norm() const;
+			T squareNorm() const;
 			T dotProduct(const Quaternion<T> &) const;
 			Point3<T> rotatePoint(const Point3<T> &) const;
 			Quaternion<T> slerp(const Quaternion<T> &, T t) const;

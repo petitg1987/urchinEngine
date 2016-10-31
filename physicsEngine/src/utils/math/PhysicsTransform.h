@@ -21,17 +21,17 @@ namespace urchin
 
 			void setOrientation(const Quaternion<float> &);
 			const Quaternion<float> &getOrientation() const;
-			const Matrix3<float> &getOrientationMatrix() const;
+			Matrix3<float> retrieveOrientationMatrix() const;
 
 			const Transform<float> toTransform() const;
 
 			Point3<float> transform(const Point3<float> &) const;
 			Point3<float> inverseTransform(const Point3<float> &) const;
-		private:
-			Point3<float> pPosition;
-			Quaternion<float> qOrientation;
+			PhysicsTransform integrate(const Vector3<float> &, const Vector3<float> &, float) const;
 
-			Matrix3<float> mOrientation;
+		private:
+			Point3<float> position;
+			Quaternion<float> orientation;
 	};
 
 }

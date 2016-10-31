@@ -50,7 +50,8 @@ namespace urchin
 		}
 
 		Quaternion<float> localOrientation = cylinder.getOrientation() * qCylinderOrientation;
-		for (int i = 0; i <= sides; i++) {
+		for (int i = 0; i <= sides; i++)
+		{
 		    float x = std::cos(i*angle) * radius;
 		    float y = std::sin(i*angle) * radius;
 

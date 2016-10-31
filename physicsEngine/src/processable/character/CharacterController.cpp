@@ -230,7 +230,7 @@ namespace urchin
 		const std::vector<OverlappingPair *> &overlappingPairs = ghostBody->getPairContainer()->getOverlappingPairs();
 		for(unsigned int subStepIndex=0; subStepIndex<RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex)
 		{
-			std::vector<ManifoldResult> *manifoldResults = physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->process(overlappingPairs);
+			std::vector<ManifoldResult> *manifoldResults = physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->process(dt, overlappingPairs);
 
 			for(std::vector<ManifoldResult>::const_iterator it = manifoldResults->begin(); it!=manifoldResults->end(); ++it)
 			{
