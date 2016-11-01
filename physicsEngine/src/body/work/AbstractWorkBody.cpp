@@ -16,6 +16,7 @@ namespace urchin
 			restitution(0.0f),
 			friction(0.0f),
 			rollingFriction(0.0f),
+			ccdMotionThreshold(0.0f),
 			bIsStatic(true),
 			bIsActive(false),
 			islandElementId(0),
@@ -110,6 +111,23 @@ namespace urchin
 	float AbstractWorkBody::getRollingFriction() const
 	{
 		return rollingFriction;
+	}
+
+	/**
+	 * @return Threshold for continuous collision detection in distance unit
+	 */
+	float AbstractWorkBody::getCcdMotionThreshold() const
+	{
+		return ccdMotionThreshold;
+	}
+
+	/**
+	 * Process continuous collision detection if the motion in one step is more then threshold.
+	 * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
+	 */
+	void AbstractWorkBody::setCcdMotionThreshold(float ccdMotionThreshold)
+	{
+		this->ccdMotionThreshold = ccdMotionThreshold;
 	}
 
 	/**

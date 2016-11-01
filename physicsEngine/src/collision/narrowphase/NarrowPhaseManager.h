@@ -14,7 +14,7 @@
 #include "collision/broadphase/BroadPhaseManager.h"
 #include "body/BodyManager.h"
 #include "body/work/AbstractWorkBody.h"
-#include "body/work/WorkRigidBody.h"
+#include "body/work/WorkGhostBody.h"
 #include "object/TemporalObject.h"
 
 namespace urchin
@@ -26,14 +26,17 @@ namespace urchin
 			~NarrowPhaseManager();
 
 			std::vector<ManifoldResult> *process(float, const std::vector<OverlappingPair *> &);
+			std::vector<ManifoldResult> *processGhostBody(WorkGhostBody *);
 
 			ccd_set continuousCollissionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
 			ccd_set rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:
+			void processOverlappingPairs(const std::vector<OverlappingPair *> &);
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
+
 			void processPredictiveContacts(float);
-			void handleContinuousCollision(WorkRigidBody *, const PhysicsTransform &, const PhysicsTransform &, float);
+			void handleContinuousCollision(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &, float);
 
 			const BodyManager *bodyManager;
 			const BroadPhaseManager *broadPhaseManager;

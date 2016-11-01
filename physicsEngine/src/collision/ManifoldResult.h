@@ -29,8 +29,8 @@ namespace urchin
 			ManifoldContactPoint &getManifoldContactPoint(unsigned int);
 			const ManifoldContactPoint &getManifoldContactPoint(unsigned int) const;
 
-			void addContactPoint(const Vector3<float> &, const Point3<float> &, float);
-			void addContactPoint(const Vector3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, float);
+			void addContactPoint(const Vector3<float> &, const Point3<float> &, float, bool);
+			void addContactPoint(const Vector3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, float, bool);
 			void refreshContactPoints();
 
 		private:

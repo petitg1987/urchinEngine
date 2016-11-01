@@ -52,7 +52,7 @@ namespace urchin
 	 */
 	void CollisionAlgorithm::addNewContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject2, float depth)
 	{
-		manifoldResult.addContactPoint(normalFromObject2, pointOnObject2, depth);
+		manifoldResult.addContactPoint(normalFromObject2, pointOnObject2, depth, false);
 	}
 
 	void CollisionAlgorithm::refreshContactPoints()

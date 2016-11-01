@@ -45,9 +45,6 @@ namespace urchin
 			void setAngularFactor(const Vector3<float> &);
 			const Vector3<float> &getAngularFactor() const;
 
-			float getCcdMotionThreshold() const;
-			void setCcdMotionThreshold(float);
-
 		private:
 			//rigid body representation data
 			Vector3<float> linearVelocity;
@@ -65,8 +62,6 @@ namespace urchin
 
 			Vector3<float> linearFactor;
 			Vector3<float> angularFactor;
-
-			float ccdMotionThreshold;
 	};
 
 }

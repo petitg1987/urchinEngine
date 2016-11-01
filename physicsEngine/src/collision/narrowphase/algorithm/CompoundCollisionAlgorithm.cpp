@@ -61,7 +61,8 @@ namespace urchin
 						manifolContactPoint.getPointOnObject1(),
 						manifolContactPoint.getLocalPointOnObject2(),
 						manifolContactPoint.getLocalPointOnObject1(),
-						manifolContactPoint.getDepth());
+						manifolContactPoint.getDepth(),
+						false);
 
 			}else
 			{
@@ -71,7 +72,8 @@ namespace urchin
 						manifolContactPoint.getPointOnObject2(),
 						manifolContactPoint.getLocalPointOnObject1(),
 						manifolContactPoint.getLocalPointOnObject2(),
-						manifolContactPoint.getDepth());
+						manifolContactPoint.getDepth(),
+						true);
 			}
 		}
 	}

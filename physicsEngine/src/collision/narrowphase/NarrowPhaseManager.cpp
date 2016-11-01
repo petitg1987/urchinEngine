@@ -1,6 +1,7 @@
 #include "collision/narrowphase/NarrowPhaseManager.h"
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
+#include "body/work/WorkRigidBody.h"
 #include "object/TemporalObject.h"
 
 namespace urchin
@@ -30,6 +31,28 @@ namespace urchin
 	{
 		manifoldResults->clear();
 
+		processOverlappingPairs(overlappingPairs);
+		processPredictiveContacts(dt);
+
+		return manifoldResults;
+	}
+
+	/**
+	 * @param dt Delta of time (sec.) between two simulation steps
+	 * @param ghostBody Ghost body to process
+	 */
+	std::vector<ManifoldResult> *NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody)
+	{
+		manifoldResults->clear();
+
+		const std::vector<OverlappingPair *> &overlappingPairs = ghostBody->getPairContainer()->getOverlappingPairs();
+		processOverlappingPairs(overlappingPairs);
+
+		return manifoldResults;
+	}
+
+	void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs)
+	{
 		for(std::vector<OverlappingPair *>::const_iterator it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
 		{
 			AbstractWorkBody *body1 = (*it)->getBody1();
@@ -50,10 +73,6 @@ namespace urchin
 				}
 			}
 		}
-
-		processPredictiveContacts(dt);
-
-		return manifoldResults;
 	}
 
 	std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair *overlappingPair)
@@ -77,8 +96,7 @@ namespace urchin
 		for(unsigned int i=0; i<bodyManager->getWorkBodies().size(); ++i)
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(bodyManager->getWorkBodies()[i]);
-			if(body!=nullptr && body->isActive())
-			{
+			if(body!=nullptr && body->isActive()){
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
 				PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
@@ -93,8 +111,10 @@ namespace urchin
 		}
 	}
 
-	void NarrowPhaseManager::handleContinuousCollision(WorkRigidBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt)
+	void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt)
 	{
+		//TODO: constraint solver: handle depth > 0 (see Box2D ?)
+
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
 		if(bodiesAABBoxHitBody.size() > 0)
 		{
@@ -108,10 +128,13 @@ namespace urchin
 
 				Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult->getTimeToHit();
 				float depth = distanceVector.dotProduct(-firstCCDResult->getNormalFromObject2());
-				const Point3<float> &hitPointOnObject2 = firstCCDResult->getHitPointOnObject2();
+				const Point3<float> &hitPointOnObject2 = firstCCDResult->getHitPointOnObject2() + Point3<float>(0.01, 0.0, 0.0);
 				const Vector3<float> &normalFromObject2 = firstCCDResult->getNormalFromObject2();
 
-				//TODO create contact point
+				ManifoldResult manifoldResult(body, firstCCDResult->getBody2());
+				manifoldResult.addContactPoint(normalFromObject2, hitPointOnObject2, depth, true);
+
+				manifoldResults->push_back(manifoldResult);
 			}
 		}
 	}

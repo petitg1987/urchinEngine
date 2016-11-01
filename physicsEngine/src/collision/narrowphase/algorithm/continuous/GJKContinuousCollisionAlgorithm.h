@@ -19,7 +19,7 @@ namespace urchin
 			GJKContinuousCollisionAlgorithm();
 			~GJKContinuousCollisionAlgorithm();
 
-			std::shared_ptr<ContinuousCollisionResult<OUT>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, const AbstractWorkBody *) const;
+			std::shared_ptr<ContinuousCollisionResult<OUT>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
 
 		private:
 			Point3<T> getWorldSupportPoint(const TemporalObject &, const Vector3<T> &, const PhysicsTransform &) const;

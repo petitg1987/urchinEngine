@@ -65,14 +65,15 @@ namespace urchin
 	 * @param normalFromObject2 Contact normal from object 2. The normal direction should be toward the object 1.
 	 * @param pointOnObject2 Contact point on object 2 in world coordinate
 	 * @param depth Penetration depth (negative when collision exist)
+	 * @param isPredictive Is a predictive contact point
 	 */
-	void ManifoldResult::addContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject2, float depth)
+	void ManifoldResult::addContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject2, float depth, bool isPredictive)
 	{
 		Point3<float> pointOnObject1 = pointOnObject2.translate(normalFromObject2 * depth);
 		Point3<float> localPointOnObject1 = body1->getPhysicsTransform().inverseTransform(pointOnObject1);
 		Point3<float> localPointOnObject2 = body2->getPhysicsTransform().inverseTransform(pointOnObject2);
 
-		addContactPoint(normalFromObject2, pointOnObject1, pointOnObject2, localPointOnObject1, localPointOnObject2, depth);
+		addContactPoint(normalFromObject2, pointOnObject1, pointOnObject2, localPointOnObject1, localPointOnObject2, depth, isPredictive);
 	}
 
 	/**
@@ -82,12 +83,16 @@ namespace urchin
 	 * @param localPointOnObject1 Contact point on object 1 in local coordinate
 	 * @param localPointOnObject2 Contact point on object 2 in local coordinate
 	 * @param depth Penetration depth (negative when collision exist)
+	 * @param isPredictive Is a predictive contact point
 	 */
 	void ManifoldResult::addContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject1, const Point3<float> &pointOnObject2,
-			const Point3<float> &localPointOnObject1, const Point3<float> &localPointOnObject2, float depth)
+			const Point3<float> &localPointOnObject1, const Point3<float> &localPointOnObject2, float depth, bool isPredictive)
 	{
 		#ifdef _DEBUG
-			assert(depth <= contactBreakingThreshold);
+			if(!isPredictive)
+			{
+				assert(depth <= contactBreakingThreshold);
+			}
 		#endif
 
 		//1. if similar point exist in manifold result: replace it

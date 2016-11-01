@@ -7,7 +7,6 @@
 	- (2) [OPTIMIZATION] Implement double AABBox trees: static and dynamic (see Bullet)
 	- (2) [OPTIMIZATION] Reblance AABBox tree for better performance
 - NARROWPHASE
-	- (2) [NEW FEATURE] Support continuous collision detection (see Box2D project)
 	- (2) [NEW FEATURE] Allow changing shape on body for animated objects & allow to retrieve dynamic bound box on animated object
 	- (2) [NEW FEATURE] Support joints between shapes
 	- (2) [NEW FEATURE] Support compound shape with PhysicsTransform instead of translation only

@@ -40,6 +40,9 @@ namespace urchin
 			void setRollingFriction(float);
 			float getRollingFriction() const;
 
+			float getCcdMotionThreshold() const;
+			void setCcdMotionThreshold(float);
+
 			bool isStatic() const;
 			void setIsStatic(bool);
 			bool isActive() const;
@@ -61,6 +64,7 @@ namespace urchin
 			float restitution;
 			float friction;
 			float rollingFriction;
+			float ccdMotionThreshold;
 
 			//state flags
 			bool bIsStatic;

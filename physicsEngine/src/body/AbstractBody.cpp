@@ -20,6 +20,8 @@ namespace urchin
 		restitution = 0.2f;
 		friction = 0.5f;
 		rollingFriction = 0.0f;
+		ccdMotionThreshold = getScaledShape()->toAABBox(PhysicsTransform()).getMinHalfSize()
+				* ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor");
 
 		bIsNew.store(false, std::memory_order_relaxed);
 		bIsDeleted.store(false, std::memory_order_relaxed);
@@ -74,6 +76,7 @@ namespace urchin
 		workBody->setRestitution(restitution);
 		workBody->setFriction(friction);
 		workBody->setRollingFriction(rollingFriction);
+		workBody->setCcdMotionThreshold(ccdMotionThreshold);
 	}
 
 	void AbstractBody::apply(const AbstractWorkBody *workBody)
@@ -196,6 +199,28 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return rollingFriction;
+	}
+
+	/**
+	 * @return Threshold for continuous collision detection in distance unit. A default value is determinate automatically
+	 * for each body thanks to properties 'collisionShape.ccdMotionThresholdFactor'.
+	 */
+	float AbstractBody::getCcdMotionThreshold() const
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		return ccdMotionThreshold;
+	}
+
+	/**
+	 * Process continuous collision detection if the motion in one step is more then threshold.
+	 * @param ccdMotionThreshold Threshold for continuous collision detection in distance unit.
+	 */
+	void AbstractBody::setCcdMotionThreshold(float ccdMotionThreshold)
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		this->ccdMotionThreshold = ccdMotionThreshold;
 	}
 
 	/**
