@@ -1,3 +1,4 @@
+#include "collision/broadphase/aabbtree/BodyNodeData.h"
 #include "collision/broadphase/aabbtree/AABBTree.h"
 
 namespace urchin

@@ -2,7 +2,6 @@
 #define ENGINE_CIMAGE_H
 
 #include "resources/Resource.h"
-#include "texture/TextureManager.h"
 
 namespace urchin
 {

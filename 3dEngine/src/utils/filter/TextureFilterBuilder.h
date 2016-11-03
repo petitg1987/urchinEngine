@@ -7,7 +7,6 @@
 #include <memory>
 #include <stdexcept>
 
-#include "TextureFilterBuilder.h"
 #include "TextureFilter.h"
 #include "utils/filter/downsample/DownSampleFilter.h"
 #include "utils/filter/gaussianblur/GaussianBlurFilter.h"

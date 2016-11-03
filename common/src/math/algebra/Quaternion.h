@@ -2,15 +2,11 @@
 #define ENGINE_QUATERNION_H
 
 #include <iostream>
-#include <cmath>
-#include <cassert>
-#include <stdexcept>
 
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/matrix/Matrix3.h"
 #include "math/algebra/matrix/Matrix4.h"
-#include "math/algebra/MathValue.h"
 
 namespace urchin
 {

@@ -5,7 +5,6 @@
 #include <map>
 
 #include "pattern/singleton/Singleton.h"
-#include "io/Converter.h"
 
 namespace urchin
 {

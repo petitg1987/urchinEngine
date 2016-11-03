@@ -1,4 +1,9 @@
+#include <cassert>
+#include <cmath>
+#include <stdexcept>
+
 #include "math/algebra/Quaternion.h"
+#include "math/algebra/MathValue.h"
 
 namespace urchin
 {

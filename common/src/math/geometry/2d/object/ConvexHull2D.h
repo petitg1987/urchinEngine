@@ -2,10 +2,8 @@
 #define ENGINE_CONVEXHULL2D_H
 
 #include <vector>
-#include <algorithm>
 
 #include "math/geometry/2d/object/ConvexObject2D.h"
-#include "math/geometry/2d/Line2D.h"
 #include "math/algebra/point/Point2.h"
 
 namespace urchin

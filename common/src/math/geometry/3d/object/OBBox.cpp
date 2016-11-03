@@ -1,4 +1,10 @@
+#include <cassert>
+#include <limits>
+#include <cmath>
+#include <stdexcept>
+
 #include "OBBox.h"
+#include "math/algebra/point/Point4.h"
 
 namespace urchin
 {

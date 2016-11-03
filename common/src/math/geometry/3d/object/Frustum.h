@@ -2,18 +2,14 @@
 #define ENGINE_FRUSTUM_H
 
 #include <vector>
-#include <cmath>
-#include "UrchinCommon.h"
 
 #include "ConvexObject3D.h"
 #include "Sphere.h"
 #include "AABBox.h"
-#include "math/geometry/3d/Line3D.h"
 #include "math/geometry/3d/Plane.h"
 #include "math/algebra/matrix/Matrix4.h"
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/point/Point3.h"
-#include "math/algebra/point/Point4.h"
 
 namespace urchin
 {

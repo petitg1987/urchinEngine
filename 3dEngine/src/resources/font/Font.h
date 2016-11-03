@@ -1,6 +1,8 @@
 #ifndef ENGINE_FONT_H
 #define ENGINE_FONT_H
 
+#include "UrchinCommon.h"
+
 #include "resources/Resource.h"
 #include "resources/image/Image.h"
 

@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "body/BodyManager.h"
 #include "body/RigidBody.h"
 

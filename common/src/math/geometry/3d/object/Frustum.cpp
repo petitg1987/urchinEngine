@@ -1,4 +1,9 @@
+#include <cmath>
+
 #include "Frustum.h"
+#include "math/geometry/3d/Line3D.h"
+#include "math/algebra/point/Point4.h"
+#include "math/algebra/MathValue.h"
 
 namespace urchin
 {

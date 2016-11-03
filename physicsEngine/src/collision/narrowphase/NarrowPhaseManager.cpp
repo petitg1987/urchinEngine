@@ -128,7 +128,7 @@ namespace urchin
 
 				Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult->getTimeToHit();
 				float depth = distanceVector.dotProduct(-firstCCDResult->getNormalFromObject2());
-				const Point3<float> &hitPointOnObject2 = firstCCDResult->getHitPointOnObject2() + Point3<float>(0.01, 0.0, 0.0);
+				const Point3<float> &hitPointOnObject2 = firstCCDResult->getHitPointOnObject2();
 				const Vector3<float> &normalFromObject2 = firstCCDResult->getNormalFromObject2();
 
 				ManifoldResult manifoldResult(body, firstCCDResult->getBody2());

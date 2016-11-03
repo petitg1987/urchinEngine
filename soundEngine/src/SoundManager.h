@@ -7,9 +7,7 @@
 #include "AudioController.h"
 #include "device/DeviceManager.h"
 #include "sound/Sound.h"
-#include "sound/spatial/PointSound.h"
 #include "trigger/SoundTrigger.h"
-#include "behavior/SoundBehavior.h"
 
 namespace urchin
 {

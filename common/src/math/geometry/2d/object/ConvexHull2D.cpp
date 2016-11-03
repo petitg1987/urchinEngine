@@ -1,4 +1,7 @@
+#include <algorithm>
+
 #include "math/geometry/2d/object/ConvexHull2D.h"
+#include "math/geometry/2d/Line2D.h"
 
 namespace urchin
 {

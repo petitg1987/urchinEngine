@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "AABBox.h"
 
 namespace urchin

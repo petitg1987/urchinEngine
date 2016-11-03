@@ -3,7 +3,6 @@
 
 #include <string>
 #include <fstream>
-#include "UrchinCommon.h"
 
 #include "resources/model/ConstAnimation.h"
 #include "loader/Loader.h"

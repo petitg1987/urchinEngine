@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "utils/display/geometry/GeometryDisplayer.h"
 
 namespace urchin

@@ -2,6 +2,7 @@
 
 #include "tools/ConfigService.h"
 #include "tools/file/PropertyFileHandler.h"
+#include "io/Converter.h"
 #include "system/FileSystem.h"
 
 namespace urchin

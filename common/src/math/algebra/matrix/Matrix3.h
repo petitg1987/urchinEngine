@@ -7,8 +7,6 @@
 
 namespace urchin
 {
-	template<class T> class Matrix4;
-
 	/**
 	* Represents a matrix 3x3 in column major
 	*/

@@ -5,7 +5,6 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/shadow/data/ShadowData.h"
-#include "scene/renderer3d/shadow/data/FrustumShadowData.h"
 #include "scene/renderer3d/shadow/display/ShadowUniform.h"
 #include "scene/renderer3d/shadow/display/ShadowModelUniform.h"
 #include "scene/renderer3d/light/Light.h"

@@ -31,7 +31,7 @@ namespace urchin
 			virtual std::vector<Vector3<float>> getDirections() const = 0;
 			virtual const Point3<float> &getPosition() const = 0;
 			virtual bool hasParallelBeams() const = 0;
-			virtual LightType getLightType() const =0;
+			virtual LightType getLightType() const = 0;
 			virtual const AABBox<float> &getAABBox() const = 0;
 			const Transform<float> &getTransform() const;
 
@@ -45,6 +45,7 @@ namespace urchin
 
 		private:
 			//general properties
+			Transform<float> noTransform; //no transformation because light position is specified in global space
 			Point3<float> ambientColor;
 
 			//shadow properties

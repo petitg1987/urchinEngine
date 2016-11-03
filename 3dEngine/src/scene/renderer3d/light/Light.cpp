@@ -19,9 +19,7 @@ namespace urchin
 
 	const Transform<float> &Light::getTransform() const
 	{
-		//Null transformation because light position is specified in global space
-		static Transform<float> transform;
-		return transform;
+		return noTransform;
 	}
 
 	void Light::setProduceShadow(bool produceShadow)

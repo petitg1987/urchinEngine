@@ -12,7 +12,6 @@
 #include "resources/image/Image.h"
 #include "resources/material/Material.h"
 #include "resources/font/Font.h"
-#include "resources/MediaManager.h"
 #include "loader/Loader.h"
 
 namespace urchin

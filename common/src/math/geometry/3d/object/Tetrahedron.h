@@ -4,7 +4,6 @@
 #include <limits>
 
 #include "ConvexObject3D.h"
-#include "Triangle3D.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 

@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <memory>
+#include <algorithm>
 
 #include "scene/GUI/GUIRenderer.h"
 #include "scene/GUI/GUISkinService.h"

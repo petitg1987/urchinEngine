@@ -1,9 +1,9 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <stdexcept>
-#include "UrchinCommon.h"
 
 #include "resources/image/Image.h"
+#include "texture/TextureManager.h"
 
 namespace urchin
 {

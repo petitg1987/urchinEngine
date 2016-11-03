@@ -1,11 +1,6 @@
 #ifndef ENGINE_OBBOX_H
 #define ENGINE_OBBOX_H
 
-#include <map>
-#include <cassert>
-#include <limits>
-#include <cmath>
-#include <stdexcept>
 #include <sstream>
 
 #include "ConvexObject3D.h"
@@ -14,7 +9,6 @@
 #include "math/geometry/3d/shape/BoxShape.h"
 #include "math/algebra/matrix/Matrix4.h"
 #include "math/algebra/point/Point3.h"
-#include "math/algebra/point/Point4.h"
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/Quaternion.h"
 

@@ -10,8 +10,6 @@
 #include "ConvexObject3D.h"
 #include "math/geometry/3d/IndexedTriangle3D.h"
 #include "math/algebra/point/Point3.h"
-#include "tools/logger/Logger.h"
-#include "tools/logger/FileLogger.h"
 
 namespace urchin
 {

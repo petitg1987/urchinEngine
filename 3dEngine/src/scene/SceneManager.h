@@ -7,7 +7,6 @@
 #include "UrchinCommon.h"
 
 #include "renderer3d/Renderer3d.h"
-#include "renderer3d/camera/Camera.h"
 #include "GUI/GUIRenderer.h"
 #include "texture/TextureManager.h"
 

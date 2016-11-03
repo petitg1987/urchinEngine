@@ -1,12 +1,7 @@
 #ifndef ENGINE_LINE2D_H
 #define ENGINE_LINE2D_H
 
-#include <cmath>
-#include <vector>
-#include <cassert>
-
 #include "math/algebra/point/Point2.h"
-#include "math/algebra/vector/Vector2.h"
 
 namespace urchin
 {

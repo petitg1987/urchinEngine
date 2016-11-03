@@ -3,7 +3,6 @@
 
 #include "Shape3D.h"
 #include "math/algebra/point/Point3.h"
-#include "math/algebra/vector/Vector3.h"
 
 namespace urchin
 {

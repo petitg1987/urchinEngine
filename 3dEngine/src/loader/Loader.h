@@ -3,7 +3,6 @@
 
 #include <string>
 #include <stdexcept>
-#include "UrchinCommon.h"
 
 namespace urchin
 {

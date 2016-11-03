@@ -5,6 +5,7 @@
 #include <set>
 #include <limits>
 #include <memory>
+#include <algorithm>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/octree/filter/OctreeableFilter.h"

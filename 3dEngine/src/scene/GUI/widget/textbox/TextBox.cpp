@@ -20,6 +20,7 @@ namespace urchin
 		text(nullptr),
 		startTextIndex(0),
 		cursorIndex(0),
+		cursorBlink(0.0f),
 		state(UNACTIVE),
 		widgetOutline(new WidgetOutline())
 	{
@@ -233,9 +234,8 @@ namespace urchin
 		quadDisplayer->display();
 
 		//displays the cursor
-		static float blink=0.0;
-		blink+=invFrameRate*CURSOR_BLINK_SPEED;
-		if(state==ACTIVE && ((int)blink%2)>0)
+		cursorBlink+=invFrameRate*CURSOR_BLINK_SPEED;
+		if(state==ACTIVE && ((int)cursorBlink%2)>0)
 		{
 			Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
 			glUniform2iv(translateDistanceLoc, 1, (const int*)(widgetPosition + Vector2<int>(cursorPosition, 0)));

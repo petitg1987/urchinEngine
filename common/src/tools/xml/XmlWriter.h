@@ -7,7 +7,6 @@
 #include "tinyxml/tinyxml.h"
 #include "tools/xml/XmlAttribute.h"
 #include "tools/xml/XmlChunk.h"
-#include "system/FileSystem.h"
 
 namespace urchin
 {

@@ -1,4 +1,4 @@
-#include "pattern/singleton/SingletonManager.h"
+#include "pattern/singleton/SingletonInterface.h"
 
 namespace urchin
 {

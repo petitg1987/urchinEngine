@@ -1,4 +1,6 @@
 #include "ConvexHull3D.h"
+#include "tools/logger/Logger.h"
+#include "tools/logger/FileLogger.h"
 
 namespace urchin
 {

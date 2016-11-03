@@ -1,4 +1,8 @@
+#include <cmath>
+#include <cassert>
+
 #include "math/geometry/2d/Line2D.h"
+#include "math/algebra/vector/Vector2.h"
 
 namespace urchin
 {

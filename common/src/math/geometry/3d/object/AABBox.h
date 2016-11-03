@@ -9,7 +9,6 @@
 #include "math/geometry/3d/Ray.h"
 #include "math/algebra/matrix/Matrix4.h"
 #include "math/algebra/point/Point3.h"
-#include "math/algebra/point/Point4.h"
 #include "math/algebra/vector/Vector3.h"
 #include "math/algebra/Transform.h"
 

@@ -45,6 +45,7 @@ namespace urchin
 			int startTextIndex; //index of the first letter to display
 			int cursorIndex; //index of the cursor
 			int cursorPosition; //position (in pixel) of the cursor
+			float cursorBlink;
 
 			//state
 			enum textboxStates

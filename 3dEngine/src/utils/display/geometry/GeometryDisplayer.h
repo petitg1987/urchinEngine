@@ -1,10 +1,10 @@
 #ifndef ENGINE_GEOMETRYDISPLAYER_H
 #define ENGINE_GEOMETRYDISPLAYER_H
 
-#include <utils/display/geometry/GeometryModel.h>
 #include <vector>
 #include "UrchinCommon.h"
 
+#include "utils/display/geometry/GeometryModel.h"
 #include "scene/renderer3d/camera/Camera.h"
 
 namespace urchin

@@ -1,5 +1,6 @@
 #include <locale>
 #include <stdexcept>
+#include "UrchinCommon.h"
 
 #include "loader/model/LoaderUrchinAnim.h"
 

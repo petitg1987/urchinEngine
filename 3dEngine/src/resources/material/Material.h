@@ -1,6 +1,8 @@
 #ifndef ENGINE_MATERIAL_H
 #define ENGINE_MATERIAL_H
 
+#include <vector>
+
 #include "resources/Resource.h"
 #include "resources/image/Image.h"
 
