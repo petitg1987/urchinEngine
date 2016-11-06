@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include <QtWidgets/QLabel>
+#include <QtWidgets/QDoubleSpinBox>
 
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
@@ -36,13 +36,17 @@ namespace urchin
 			void updateSoundShape();
 
 		protected:
+			bool disableShapeEvent;
+
+			float getMarginValue() const;
+
 			virtual void doSetupShapePropertiesFrom(const SoundShape *) = 0;
 			virtual const SoundShape *createSoundShape() const = 0;
 
 		private:
-			bool disableShapeEvent;
-			const SceneSound *sceneSound;
+			QDoubleSpinBox *margin;
 
+			const SceneSound *sceneSound;
 			const SoundShape *shape;
 	};
 

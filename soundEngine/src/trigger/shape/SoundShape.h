@@ -18,8 +18,10 @@ namespace urchin
 				BOX_SHAPE
 			};
 
-			SoundShape();
+			SoundShape(float);
 			virtual ~SoundShape();
+
+			float getMargin() const;
 
 			virtual ShapeType getShapeType() const = 0;
 
@@ -27,6 +29,9 @@ namespace urchin
 			virtual bool pointInsideStopShape(const Point3<float> &) const = 0;
 
 			virtual SoundShape *clone() const = 0;
+
+		private:
+			const float margin;
 	};
 
 }

@@ -34,10 +34,7 @@ namespace urchin
 					body1, localizedShape->shape.get(), body2, &otherShape);
 			const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 
-			Point3<float> rotatedTranslation = body1->getPhysicsTransform().getOrientation().rotatePoint(Point3<float>(localizedShape->translation));
-			Point3<float> finalPosition = body1->getPhysicsTransform().getPosition().translate(rotatedTranslation.toVector());
-			PhysicsTransform shapeWorldTransform(finalPosition, body1->getPhysicsTransform().getOrientation());
-
+			PhysicsTransform shapeWorldTransform = body1->getPhysicsTransform() * localizedShape->transform;
 			CollisionObjectWrapper object1(*localizedShape->shape, shapeWorldTransform);
 			CollisionObjectWrapper object2(otherShape, body2->getPhysicsTransform());
 

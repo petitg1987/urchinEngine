@@ -3,7 +3,8 @@
 namespace urchin
 {
 
-	SoundShape::SoundShape()
+	SoundShape::SoundShape(float margin) :
+		margin(margin)
 	{
 
 	}
@@ -11,6 +12,14 @@ namespace urchin
 	SoundShape::~SoundShape()
 	{
 
+	}
+
+	/**
+	 * @return Margin between shape trigger play event and trigger stop event
+	 */
+	float SoundShape::getMargin() const
+	{
+		return margin;
 	}
 
 }

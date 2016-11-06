@@ -7,7 +7,7 @@ namespace urchin
 	 * @param margin Margin to box used to determine stop sound trigger
 	 */
 	SoundBox::SoundBox(const Vector3<float> &halfSizes, const Point3<float> &centerPosition, const Quaternion<float> &orientation, float margin) :
-		margin(margin),
+		SoundShape(margin),
 		playTriggerBox(OBBox<float>(halfSizes, centerPosition, orientation)),
 		stopTriggerBox(OBBox<float>(halfSizes + Vector3<float>(margin, margin, margin), centerPosition, orientation))
 	{
@@ -32,14 +32,6 @@ namespace urchin
 	const OBBox<float> &SoundBox::getStopTriggerBox() const
 	{
 		return stopTriggerBox;
-	}
-
-	/**
-	 * @return Margin between shape trigger play event and trigger stop event
-	 */
-	float SoundBox::getMargin() const
-	{
-		return margin;
 	}
 
 	const Vector3<float> &SoundBox::getHalfSizes() const

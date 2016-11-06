@@ -29,7 +29,6 @@ namespace urchin
 		private:
 			QDoubleSpinBox *radius;
 			QDoubleSpinBox *positionX, *positionY, *positionZ;
-			QDoubleSpinBox *margin;
 	};
 
 }

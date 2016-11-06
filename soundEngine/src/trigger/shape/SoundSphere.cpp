@@ -7,7 +7,7 @@ namespace urchin
 	 * @param margin Margin to sphere used to determine stop sound trigger
 	 */
 	SoundSphere::SoundSphere(float radius, const Point3<float> &position, float margin) :
-		margin(margin),
+		SoundShape(margin),
 		playTriggerSphere(Sphere<float>(radius, position)),
 		stopTriggerSphere(Sphere<float>(radius + margin, position))
 	{
@@ -32,14 +32,6 @@ namespace urchin
 	const Sphere<float> &SoundSphere::getStopTriggerSphere() const
 	{
 		return stopTriggerSphere;
-	}
-
-	/**
-	 * @return Margin between shape trigger play event and trigger stop event
-	 */
-	float SoundSphere::getMargin() const
-	{
-		return margin;
 	}
 
 	float SoundSphere::getRadius() const

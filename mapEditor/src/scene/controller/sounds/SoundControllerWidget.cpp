@@ -15,7 +15,7 @@ namespace urchin
 	{
 		soundTableView = new SoundTableView(this);
 		soundTableView->addObserver(this, SoundTableView::SELECTION_CHANGED);
-		soundTableView->setGeometry(QRect(0, 0, 355, 220));
+		soundTableView->setGeometry(QRect(0, 0, 375, 220));
 
 		addSoundButton = new QPushButton(this);
 		addSoundButton->setText("New Sound");
@@ -30,7 +30,7 @@ namespace urchin
 
 		soundGroupBox = new QGroupBox(this);
 		soundGroupBox->setTitle("Sound");
-		soundGroupBox->setGeometry(QRect(0, 250, 355, 160));
+		soundGroupBox->setGeometry(QRect(0, 250, 375, 160));
 		GroupBoxStyleHelper::applyNormalStyle(soundGroupBox);
 		soundGroupBox->hide();
 
@@ -39,7 +39,7 @@ namespace urchin
 
 		soundTriggerGroupBox = new QGroupBox(this);
 		soundTriggerGroupBox->setTitle("Sound Trigger");
-		soundTriggerGroupBox->setGeometry(QRect(0, 415, 355, 360));
+		soundTriggerGroupBox->setGeometry(QRect(0, 415, 375, 435));
 		GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
 		soundTriggerGroupBox->hide();
 
@@ -56,7 +56,7 @@ namespace urchin
 	{
 		QGroupBox *generalPropertiesGroupBox = new QGroupBox(lightBox);
 		generalPropertiesGroupBox->setTitle("General Properties");
-		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 345, 40));
+		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 365, 40));
 		GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
 
 		QLabel *volumeLabel= new QLabel(generalPropertiesGroupBox);
@@ -74,7 +74,7 @@ namespace urchin
 	{
 		QGroupBox *specificPropertiesGroupBox = new QGroupBox(soundBox);
 		specificPropertiesGroupBox->setTitle("Specific Properties");
-		specificPropertiesGroupBox->setGeometry(QRect(5, 60, 345, 95));
+		specificPropertiesGroupBox->setGeometry(QRect(5, 60, 365, 95));
 		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
 
 		QLabel *soundTypeLabel= new QLabel(specificPropertiesGroupBox);
@@ -91,14 +91,14 @@ namespace urchin
 	void SoundControllerWidget::setupAmbientSoundBox(QWidget *specificPropertiesGroupBox)
 	{
 		ambientSoundWidget = new QWidget(specificPropertiesGroupBox);
-		ambientSoundWidget->setGeometry(QRect(5, 40, 345, 85));
+		ambientSoundWidget->setGeometry(QRect(5, 40, 365, 85));
 		ambientSoundWidget->hide();
 	}
 
 	void SoundControllerWidget::setupPointSoundBox(QWidget *specificPropertiesGroupBox)
 	{
 		pointSoundWidget = new QWidget(specificPropertiesGroupBox);
-		pointSoundWidget->setGeometry(QRect(5, 40, 345, 85));
+		pointSoundWidget->setGeometry(QRect(5, 40, 365, 85));
 		pointSoundWidget->hide();
 
 		QLabel *positionLabel= new QLabel(pointSoundWidget);
@@ -133,7 +133,7 @@ namespace urchin
 	{
 		QGroupBox *soundBehaviorGroupBox = new QGroupBox(soundTriggerGroupBox);
 		soundBehaviorGroupBox->setTitle("Sound Behavior");
-		soundBehaviorGroupBox->setGeometry(QRect(5, 15, 345, 95));
+		soundBehaviorGroupBox->setGeometry(QRect(5, 15, 365, 95));
 		GroupBoxStyleHelper::applyNormalStyle(soundBehaviorGroupBox);
 
 		QLabel *playBehaviorLabel= new QLabel(soundBehaviorGroupBox);
@@ -157,7 +157,7 @@ namespace urchin
 		connect(stopBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
 
 		QLabel *volumeDecreasePercentageOnStopLabel= new QLabel(soundBehaviorGroupBox);
-		volumeDecreasePercentageOnStopLabel->setText("Volume Decrease:");
+		volumeDecreasePercentageOnStopLabel->setText("Vol. Decrease:");
 		volumeDecreasePercentageOnStopLabel->setGeometry(QRect(5, 65, 95, 22));
 
 		volumeDecreasePercentageOnStop = new QDoubleSpinBox(soundBehaviorGroupBox);
@@ -172,18 +172,18 @@ namespace urchin
 	{
 		QGroupBox *specificPropertiesGroupBox = new QGroupBox(soundTriggerBox);
 		specificPropertiesGroupBox->setTitle("Specific Properties");
-		specificPropertiesGroupBox->setGeometry(QRect(5, 115, 345, 240));
+		specificPropertiesGroupBox->setGeometry(QRect(5, 115, 365, 240));
 		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
 
 		QLabel *soundTriggerTypeLabel= new QLabel(specificPropertiesGroupBox);
-		soundTriggerTypeLabel->setText("Trigger Type:");
+		soundTriggerTypeLabel->setText("Trigger:");
 		soundTriggerTypeLabel->setGeometry(QRect(5, 15, 65, 22));
 
 		soundTriggerType = new QLabel(specificPropertiesGroupBox);
 		soundTriggerType->setGeometry(QRect(85, 15, 80, 22));
 
 		changeSoundTriggerTypeButton = new QPushButton(specificPropertiesGroupBox);
-		changeSoundTriggerTypeButton->setText("Change Trigger");
+		changeSoundTriggerTypeButton->setText("Change");
 		changeSoundTriggerTypeButton->setGeometry(QRect(180, 15, 85, 22));
 		connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
 
@@ -194,25 +194,25 @@ namespace urchin
 	void SoundControllerWidget::setupManuelTriggerBox(QWidget *specificPropertiesGroupBox)
 	{
 		manualTriggerWidget = new QWidget(specificPropertiesGroupBox);
-		manualTriggerWidget->setGeometry(QRect(5, 40, 345, 235));
+		manualTriggerWidget->setGeometry(QRect(5, 40, 365, 235));
 		manualTriggerWidget->hide();
 	}
 
 	void SoundControllerWidget::setupShapeTriggerBox(QWidget *specificPropertiesGroupBox)
 	{
 		shapeTriggerWidget = new QWidget(specificPropertiesGroupBox);
-		shapeTriggerWidget->setGeometry(QRect(5, 40, 345, 235));
+		shapeTriggerWidget->setGeometry(QRect(5, 40, 365, 235));
 		shapeTriggerWidget->hide();
 
 		QLabel *soundShapeTypeLabel= new QLabel(shapeTriggerWidget);
-		soundShapeTypeLabel->setText("Shape Type:");
+		soundShapeTypeLabel->setText("Shape:");
 		soundShapeTypeLabel->setGeometry(QRect(0, 0, 65, 22));
 
 		soundShapeType = new QLabel(shapeTriggerWidget);
 		soundShapeType->setGeometry(QRect(80, 0, 80, 22));
 
 		changeSoundShapeTypeButton = new QPushButton(shapeTriggerWidget);
-		changeSoundShapeTypeButton->setText("Change Shape");
+		changeSoundShapeTypeButton->setText("Change");
 		changeSoundShapeTypeButton->setGeometry(QRect(175, 0, 85, 22));
 		connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeDialog()));
 

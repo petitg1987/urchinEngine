@@ -29,6 +29,9 @@ namespace urchin
 			Point3<float> inverseTransform(const Point3<float> &) const;
 			PhysicsTransform integrate(const Vector3<float> &, const Vector3<float> &, float) const;
 
+			PhysicsTransform operator *(const PhysicsTransform &) const;
+			const PhysicsTransform& operator *=(const PhysicsTransform &);
+
 		private:
 			Point3<float> position;
 			Quaternion<float> orientation;

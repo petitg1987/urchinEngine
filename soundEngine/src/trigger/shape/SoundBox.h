@@ -22,7 +22,6 @@ namespace urchin
 			const OBBox<float> &getPlayTriggerBox() const;
 			const OBBox<float> &getStopTriggerBox() const;
 
-			float getMargin() const;
 			const Vector3<float> &getHalfSizes() const;
 			const Point3<float> &getCenterPosition() const;
 			const Quaternion<float> &getOrientation() const;
@@ -36,7 +35,6 @@ namespace urchin
 		private:
 			bool pointInsideShape(const Point3<float> &, const OBBox<float> &) const;
 
-			const float margin;
 			const OBBox<float> playTriggerBox;
 			const OBBox<float> stopTriggerBox;
 	};

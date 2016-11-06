@@ -149,7 +149,7 @@ namespace urchin
 		sizePolicy.setVerticalStretch(0);
 		sizePolicy.setHeightForWidth(sceneControllerWidget->sizePolicy().hasHeightForWidth());
 		sceneControllerWidget->setSizePolicy(sizePolicy);
-		sceneControllerWidget->setMaximumSize(QSize(360, 16777215));
+		sceneControllerWidget->setMaximumSize(QSize(380, 16777215));
 
 		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::SELECTION_CHANGED);
 		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::BODY_SHAPE_INITIALIZED);

@@ -17,7 +17,7 @@ namespace urchin
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
 		horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
 		horizontalHeader()->resizeSection(0, 90);
-		horizontalHeader()->resizeSection(1, 230);
+		horizontalHeader()->resizeSection(1, 250);
 		verticalHeader()->hide();
 
 		setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);

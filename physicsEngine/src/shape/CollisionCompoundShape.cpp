@@ -42,7 +42,7 @@ namespace urchin
 			std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
 			localizedShape->position = localizedShapes[i]->position;
 			localizedShape->shape = localizedShapes[i]->shape->scale(scale);
-			localizedShape->translation = localizedShapes[i]->translation * scale;
+			localizedShape->transform = PhysicsTransform(localizedShapes[i]->transform.getPosition() * scale, localizedShapes[i]->transform.getOrientation());
 
 			scaledLocalizedShapes.push_back(localizedShape);
 		}
@@ -57,17 +57,12 @@ namespace urchin
 
 	AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
-		Point3<float> rotatedTranslation = physicsTransform.getOrientation().rotatePoint(Point3<float>(localizedShapes[0]->translation));
-		Point3<float> finalPosition = physicsTransform.getPosition().translate(rotatedTranslation.toVector());
-		PhysicsTransform shapeWorldTransform(finalPosition, physicsTransform.getOrientation());
+		PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
 		AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
 
 		for(unsigned int i=1; i<localizedShapes.size(); ++i)
 		{
-			rotatedTranslation = physicsTransform.getOrientation().rotatePoint(Point3<float>(localizedShapes[i]->translation));
-			finalPosition = physicsTransform.getPosition().translate(rotatedTranslation.toVector());
-			shapeWorldTransform.setPosition(finalPosition);
-
+			shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
 			AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);
 
 			globalCompoundBox = globalCompoundBox.merge(compoundBox);

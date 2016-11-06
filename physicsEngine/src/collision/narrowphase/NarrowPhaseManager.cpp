@@ -157,7 +157,7 @@ namespace urchin
 
 	ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-		CollisionSphereShape pointShapeA(0.0);
+		CollisionSphereShape pointShapeA(0.0f);
 		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());
 		PhysicsTransform toA = PhysicsTransform(ray.computeTo());
 		TemporalObject rayCastObjectA(&pointShapeA, fromA, toA);

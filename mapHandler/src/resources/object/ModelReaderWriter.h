@@ -20,11 +20,8 @@ namespace urchin
 		#define NAME_TAG "name"
 		#define TRANSFORM_TAG "transform"
 		#define POSITION_TAG "position"
-		#define ORIENTATION_TAG "orientation"
 		#define SCALE_TAG "scale"
 		#define PRODUCE_SHADOW_TAG "produceShadow"
-		#define AXIS_TAG "axis"
-		#define ANGLE_TAG "angle"
 
 		public:
 			ModelReaderWriter();

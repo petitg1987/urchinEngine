@@ -41,10 +41,7 @@ namespace urchin
 				{
 					std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapes[i];
 
-					Point3<float> rotatedTranslation = modelTransform.getOrientation().rotatePoint(Point3<float>(localizedShape->translation));
-					Point3<float> finalPosition = modelTransform.getPosition().translate(rotatedTranslation.toVector());
-					PhysicsTransform transform(finalPosition, modelTransform.getOrientation());
-
+					PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
 					std::shared_ptr<CollisionConvexObject3D> bodyObject = localizedShape->shape->toConvexObject(transform);
 
 					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject.get());

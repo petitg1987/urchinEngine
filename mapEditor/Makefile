@@ -50,6 +50,7 @@ OBJECTS_DIR   = targetLinux/
 
 SOURCES       = src/Main.cpp \
 		src/MapEditorWindow.cpp \
+		src/support/ComboBoxStyleHelper.cpp \
 		src/support/GroupBoxStyleHelper.cpp \
 		src/support/LabelStyleHelper.cpp \
 		src/support/SpinBoxStyleHelper.cpp \
@@ -126,6 +127,7 @@ SOURCES       = src/Main.cpp \
 		targetLinux/moc_SceneDisplayerWidget.cpp
 OBJECTS       = targetLinux/Main.o \
 		targetLinux/MapEditorWindow.o \
+		targetLinux/ComboBoxStyleHelper.o \
 		targetLinux/GroupBoxStyleHelper.o \
 		targetLinux/LabelStyleHelper.o \
 		targetLinux/SpinBoxStyleHelper.o \
@@ -259,6 +261,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		programQt2.pro src/Main.h \
 		src/MapEditorWindow.h \
+		src/support/ComboBoxStyleHelper.h \
 		src/support/GroupBoxStyleHelper.h \
 		src/support/LabelStyleHelper.h \
 		src/support/SpinBoxStyleHelper.h \
@@ -305,6 +308,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/scene/displayer/lights/LightScopeDisplayer.h \
 		src/scene/displayer/sounds/SoundTriggerDisplayer.h src/Main.cpp \
 		src/MapEditorWindow.cpp \
+		src/support/ComboBoxStyleHelper.cpp \
 		src/support/GroupBoxStyleHelper.cpp \
 		src/support/LabelStyleHelper.cpp \
 		src/support/SpinBoxStyleHelper.cpp \
@@ -517,8 +521,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.h src/MapEditorWindow.h src/support/GroupBoxStyleHelper.h src/support/LabelStyleHelper.h src/support/SpinBoxStyleHelper.h src/dialog/NewDialog.h src/dialog/NotSavedDialog.h src/scene/controller/SceneController.h src/scene/controller/SceneControllerWidget.h src/scene/controller/objects/ObjectController.h src/scene/controller/objects/ObjectControllerWidget.h src/scene/controller/objects/ObjectTableView.h src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h src/scene/controller/objects/dialog/NewObjectDialog.h src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h src/scene/controller/lights/LightController.h src/scene/controller/lights/LightControllerWidget.h src/scene/controller/lights/LightTableView.h src/scene/controller/lights/dialog/NewLightDialog.h src/scene/controller/sounds/SoundController.h src/scene/controller/sounds/SoundControllerWidget.h src/scene/controller/sounds/SoundTableView.h src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h src/scene/controller/sounds/dialog/NewSoundDialog.h src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/displayer/objects/BodyShapeDisplayer.h src/scene/displayer/lights/LightScopeDisplayer.h src/scene/displayer/sounds/SoundTriggerDisplayer.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.cpp src/MapEditorWindow.cpp src/support/GroupBoxStyleHelper.cpp src/support/LabelStyleHelper.cpp src/support/SpinBoxStyleHelper.cpp src/dialog/NewDialog.cpp src/dialog/NotSavedDialog.cpp src/scene/controller/SceneController.cpp src/scene/controller/SceneControllerWidget.cpp src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp src/scene/controller/objects/dialog/NewObjectDialog.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/NoBodyShapeWidget.cpp src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/dialog/NewLightDialog.cpp src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp src/scene/controller/sounds/dialog/NewSoundDialog.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/objects/BodyShapeDisplayer.cpp src/scene/displayer/lights/LightScopeDisplayer.cpp src/scene/displayer/sounds/SoundTriggerDisplayer.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.h src/MapEditorWindow.h src/support/ComboBoxStyleHelper.h src/support/GroupBoxStyleHelper.h src/support/LabelStyleHelper.h src/support/SpinBoxStyleHelper.h src/dialog/NewDialog.h src/dialog/NotSavedDialog.h src/scene/controller/SceneController.h src/scene/controller/SceneControllerWidget.h src/scene/controller/objects/ObjectController.h src/scene/controller/objects/ObjectControllerWidget.h src/scene/controller/objects/ObjectTableView.h src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h src/scene/controller/objects/dialog/NewObjectDialog.h src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h src/scene/controller/lights/LightController.h src/scene/controller/lights/LightControllerWidget.h src/scene/controller/lights/LightTableView.h src/scene/controller/lights/dialog/NewLightDialog.h src/scene/controller/sounds/SoundController.h src/scene/controller/sounds/SoundControllerWidget.h src/scene/controller/sounds/SoundTableView.h src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h src/scene/controller/sounds/dialog/NewSoundDialog.h src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/displayer/objects/BodyShapeDisplayer.h src/scene/displayer/lights/LightScopeDisplayer.h src/scene/displayer/sounds/SoundTriggerDisplayer.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.cpp src/MapEditorWindow.cpp src/support/ComboBoxStyleHelper.cpp src/support/GroupBoxStyleHelper.cpp src/support/LabelStyleHelper.cpp src/support/SpinBoxStyleHelper.cpp src/dialog/NewDialog.cpp src/dialog/NotSavedDialog.cpp src/scene/controller/SceneController.cpp src/scene/controller/SceneControllerWidget.cpp src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp src/scene/controller/objects/dialog/NewObjectDialog.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/NoBodyShapeWidget.cpp src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/dialog/NewLightDialog.cpp src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp src/scene/controller/sounds/dialog/NewSoundDialog.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/objects/BodyShapeDisplayer.cpp src/scene/displayer/lights/LightScopeDisplayer.cpp src/scene/displayer/sounds/SoundTriggerDisplayer.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -558,7 +562,10 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -568,11 +575,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -580,11 +582,13 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -641,6 +645,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -688,14 +693,11 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -707,7 +709,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -746,7 +747,10 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -775,8 +779,8 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -824,7 +828,10 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -834,11 +841,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -846,11 +848,13 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -886,8 +890,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -899,7 +901,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -938,7 +939,10 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -967,8 +971,8 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -1003,6 +1007,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1050,7 +1055,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -1078,7 +1082,10 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1088,11 +1095,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -1100,11 +1102,13 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1160,6 +1164,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1207,7 +1212,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -1216,8 +1220,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -1229,7 +1231,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -1268,7 +1269,10 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -1297,8 +1301,8 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -1326,7 +1330,10 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1336,11 +1343,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -1348,11 +1350,13 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1388,8 +1392,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -1401,7 +1403,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -1440,7 +1441,10 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -1469,8 +1473,8 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -1505,6 +1509,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1552,7 +1557,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -1574,7 +1578,10 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1584,11 +1591,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -1596,11 +1598,13 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1634,8 +1638,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -1647,7 +1649,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -1686,7 +1687,10 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -1715,8 +1719,8 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -1751,6 +1755,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -1798,7 +1803,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h
@@ -1816,7 +1820,10 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -1826,11 +1833,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -1838,11 +1840,13 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -1876,8 +1880,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -1889,7 +1891,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -1928,7 +1929,10 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -1957,8 +1961,8 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -1993,6 +1997,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2040,7 +2045,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
@@ -2057,7 +2061,10 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2067,11 +2074,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -2079,11 +2081,13 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2139,6 +2143,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2186,7 +2191,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -2195,8 +2199,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -2208,7 +2210,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -2247,7 +2248,10 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -2276,8 +2280,8 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -2300,7 +2304,10 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2310,11 +2317,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -2322,11 +2324,13 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2382,6 +2386,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2429,7 +2434,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -2438,8 +2442,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -2451,7 +2453,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -2490,7 +2491,10 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -2519,8 +2523,8 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -2543,7 +2547,10 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2553,11 +2560,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -2565,11 +2567,13 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2625,6 +2629,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2672,7 +2677,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -2681,8 +2685,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -2694,7 +2696,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -2733,7 +2734,10 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -2762,8 +2766,8 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -2791,7 +2795,10 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -2801,11 +2808,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -2813,11 +2815,13 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -2873,6 +2877,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -2920,7 +2925,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -2929,8 +2933,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -2942,7 +2944,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -2981,7 +2982,10 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -3010,8 +3014,8 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -3034,7 +3038,10 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3044,11 +3051,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -3056,11 +3058,13 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3116,6 +3120,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3163,7 +3168,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -3172,8 +3176,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -3185,7 +3187,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -3224,7 +3225,10 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -3253,8 +3257,8 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -3277,7 +3281,10 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3287,11 +3294,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -3299,11 +3301,13 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3339,8 +3343,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -3352,7 +3354,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -3391,7 +3392,10 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -3420,8 +3424,8 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -3456,6 +3460,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3503,7 +3508,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/objects/bodyshape/BodyShapeWidget.h
@@ -3519,7 +3523,10 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3529,11 +3536,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -3541,11 +3543,13 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3601,6 +3605,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3648,7 +3653,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -3657,8 +3661,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -3670,7 +3672,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -3709,7 +3710,10 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -3738,8 +3742,8 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -3764,7 +3768,10 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -3774,11 +3781,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -3786,11 +3788,13 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -3844,6 +3848,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -3891,7 +3896,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -3900,8 +3904,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -3913,7 +3915,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -3952,7 +3953,10 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -3981,8 +3985,8 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -4005,7 +4009,10 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4015,11 +4022,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -4027,11 +4029,13 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4067,8 +4071,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -4080,7 +4082,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -4119,7 +4120,10 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -4148,8 +4152,8 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -4184,6 +4188,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4231,7 +4236,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -4252,7 +4256,10 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4262,11 +4269,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -4274,11 +4276,13 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4314,8 +4318,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -4327,7 +4329,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -4366,7 +4367,10 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -4395,8 +4399,8 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -4431,6 +4435,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4478,7 +4483,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h
@@ -4494,7 +4498,10 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4504,11 +4511,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -4516,11 +4518,13 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4557,8 +4561,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -4570,7 +4572,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -4609,7 +4610,10 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -4638,8 +4642,8 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -4674,6 +4678,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4721,7 +4726,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/lights/LightTableView.h \
@@ -4741,7 +4745,10 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4751,11 +4758,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -4763,11 +4765,13 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -4803,8 +4807,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -4816,7 +4818,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -4855,7 +4856,10 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -4884,8 +4888,8 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -4920,6 +4924,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -4967,7 +4972,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -4989,7 +4993,10 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -4999,11 +5006,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -5011,11 +5013,13 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5049,8 +5053,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -5062,7 +5064,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -5101,7 +5102,10 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -5130,8 +5134,8 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -5166,6 +5170,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5213,7 +5218,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
@@ -5230,7 +5234,10 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5240,11 +5247,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -5252,11 +5254,13 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5293,8 +5297,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -5306,7 +5308,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -5345,7 +5346,10 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -5374,8 +5378,8 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -5410,6 +5414,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5457,7 +5462,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
@@ -5478,7 +5482,10 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5488,11 +5495,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -5500,11 +5502,13 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5540,8 +5544,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -5553,7 +5555,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -5592,7 +5593,10 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -5621,8 +5625,8 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -5657,6 +5661,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5704,7 +5709,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -5726,7 +5730,10 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5736,11 +5743,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -5748,11 +5750,13 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -5786,8 +5790,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -5799,7 +5801,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -5838,7 +5839,10 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -5867,8 +5871,8 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -5903,6 +5907,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -5950,7 +5955,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h
@@ -5968,7 +5972,10 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -5978,11 +5985,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -5990,11 +5992,13 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6028,8 +6032,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -6041,7 +6043,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -6080,7 +6081,10 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -6109,8 +6113,8 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -6145,6 +6149,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6192,7 +6197,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h
@@ -6210,7 +6214,10 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6220,11 +6227,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -6232,11 +6234,13 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6270,8 +6274,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -6283,7 +6285,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -6322,7 +6323,10 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -6351,8 +6355,8 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -6387,6 +6391,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6434,7 +6439,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
@@ -6451,7 +6455,10 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6461,11 +6468,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -6473,11 +6475,13 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6515,8 +6519,8 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -6530,8 +6534,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -6543,7 +6545,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -6582,7 +6583,10 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -6631,6 +6635,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6678,7 +6683,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h
@@ -6694,7 +6698,10 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6704,11 +6711,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -6716,11 +6718,13 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -6756,8 +6760,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -6769,7 +6771,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -6808,7 +6809,10 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -6837,8 +6841,8 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -6873,6 +6877,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -6920,7 +6925,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/sounds/soundshape/SoundShapeWidget.h
@@ -6936,7 +6940,10 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -6946,11 +6953,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -6958,11 +6960,13 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7000,8 +7004,8 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -7015,8 +7019,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -7028,7 +7030,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -7067,7 +7068,10 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -7116,6 +7120,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7163,7 +7168,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h
@@ -7179,7 +7183,10 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7189,11 +7196,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -7201,11 +7203,13 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7262,6 +7266,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7309,14 +7314,11 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -7328,7 +7330,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -7367,7 +7368,10 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -7396,8 +7400,8 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -7443,7 +7447,10 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7453,11 +7460,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -7465,11 +7467,13 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7526,6 +7530,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7573,14 +7578,11 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -7592,7 +7594,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -7631,7 +7632,10 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -7660,8 +7664,8 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -7704,7 +7708,10 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7714,11 +7721,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -7726,11 +7728,13 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -7787,6 +7791,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -7834,14 +7839,11 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -7853,7 +7855,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -7892,7 +7893,10 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -7921,8 +7925,8 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -7958,6 +7962,74 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/MapEditorWindow.o src/MapEditorWindow.cpp
 
+targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/support/ComboBoxStyleHelper.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/tools/debug/DebugRecorder.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ComboBoxStyleHelper.o src/support/ComboBoxStyleHelper.cpp
+
 targetLinux/GroupBoxStyleHelper.o: src/support/GroupBoxStyleHelper.cpp src/support/GroupBoxStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GroupBoxStyleHelper.o src/support/GroupBoxStyleHelper.cpp
 
@@ -7977,7 +8049,10 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -7987,11 +8062,6 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -7999,11 +8069,13 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8046,7 +8118,10 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8056,11 +8131,6 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -8068,11 +8138,13 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8117,7 +8189,10 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8127,11 +8202,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -8139,11 +8209,13 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8177,8 +8249,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -8190,7 +8260,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -8229,7 +8298,10 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -8258,8 +8330,8 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -8294,6 +8366,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8341,7 +8414,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
@@ -8360,7 +8432,10 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8370,11 +8445,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -8382,11 +8452,13 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8422,8 +8494,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -8435,7 +8505,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -8474,7 +8543,10 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -8503,8 +8575,8 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -8539,6 +8611,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8586,7 +8659,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -8614,7 +8686,10 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8624,11 +8699,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -8636,11 +8706,13 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8696,6 +8768,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8743,7 +8816,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../3dEngine/src/Urchin3dEngine.h \
@@ -8751,8 +8823,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -8764,7 +8834,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -8803,7 +8872,10 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -8832,8 +8904,8 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -8857,7 +8929,10 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -8867,11 +8942,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -8879,11 +8949,13 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -8939,6 +9011,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -8986,7 +9059,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -8995,8 +9067,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -9008,7 +9078,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -9047,7 +9116,10 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -9076,8 +9148,8 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -9094,6 +9166,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
+		../mapEditor/src/support/ComboBoxStyleHelper.h \
 		../mapEditor/src/scene/controller/objects/dialog/NewObjectDialog.h \
 		../mapEditor/src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h
@@ -9110,7 +9183,10 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9120,11 +9196,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -9132,11 +9203,13 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9172,8 +9245,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -9185,7 +9256,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -9224,7 +9294,10 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -9253,8 +9326,8 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -9289,6 +9362,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9336,7 +9410,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -9355,7 +9428,10 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9365,11 +9441,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -9377,11 +9448,13 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9418,8 +9491,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -9431,7 +9502,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -9470,7 +9540,10 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -9499,8 +9572,8 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -9535,6 +9608,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9582,7 +9656,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h
@@ -9598,7 +9671,10 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9608,11 +9684,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -9620,11 +9691,13 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9661,8 +9734,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -9674,7 +9745,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -9713,7 +9783,10 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -9742,8 +9815,8 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -9778,6 +9851,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9825,7 +9899,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
@@ -9843,7 +9916,10 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -9853,11 +9929,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -9865,11 +9936,13 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -9925,6 +9998,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -9972,7 +10046,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -9981,8 +10054,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -9994,7 +10065,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -10033,7 +10103,10 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -10062,8 +10135,8 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -10087,7 +10160,10 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10097,11 +10173,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -10109,11 +10180,13 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10169,6 +10242,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10216,7 +10290,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -10225,8 +10298,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -10238,7 +10309,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -10277,7 +10347,10 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -10306,8 +10379,8 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -10331,7 +10404,10 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10341,11 +10417,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -10353,11 +10424,13 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10413,6 +10486,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10460,7 +10534,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -10469,8 +10542,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -10482,7 +10553,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -10521,7 +10591,10 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -10550,8 +10623,8 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -10567,7 +10640,9 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
 		../mapEditor/src/support/LabelStyleHelper.h \
+		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
+		../mapEditor/src/support/ComboBoxStyleHelper.h \
 		../mapEditor/src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h
@@ -10584,7 +10659,10 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10594,11 +10672,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -10606,11 +10679,13 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10666,6 +10741,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10713,7 +10789,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -10722,8 +10797,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -10735,7 +10808,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -10774,7 +10846,10 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -10803,8 +10878,8 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -10831,7 +10906,10 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -10841,11 +10919,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -10853,11 +10926,13 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -10913,6 +10988,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -10960,7 +11036,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -10969,8 +11044,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -10982,7 +11055,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -11021,7 +11093,10 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -11050,8 +11125,8 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -11075,7 +11150,10 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11085,11 +11163,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -11097,11 +11170,13 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11137,8 +11212,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -11150,7 +11223,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -11189,7 +11261,10 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -11218,8 +11293,8 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -11254,6 +11329,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11301,7 +11377,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/BodyShapeWidget.o src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp
@@ -11319,7 +11394,10 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11329,11 +11407,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -11341,11 +11414,13 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11399,6 +11474,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11446,7 +11522,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../3dEngine/src/Urchin3dEngine.h \
@@ -11454,8 +11529,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -11467,7 +11540,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -11506,7 +11578,10 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -11535,8 +11610,8 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -11572,7 +11647,10 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11582,11 +11660,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -11594,11 +11667,13 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11654,6 +11729,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11701,7 +11777,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -11710,8 +11785,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -11723,7 +11796,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -11762,7 +11834,10 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -11791,8 +11866,8 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -11818,7 +11893,10 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -11828,11 +11906,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -11840,11 +11913,13 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -11898,6 +11973,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -11945,7 +12021,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -11954,8 +12029,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -11967,7 +12040,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -12006,7 +12078,10 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -12035,8 +12110,8 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -12061,7 +12136,10 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12071,11 +12149,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -12083,11 +12156,13 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12121,8 +12196,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -12134,7 +12207,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -12173,7 +12245,10 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -12202,8 +12277,8 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -12238,6 +12313,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12285,7 +12361,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/DefaultBodyShapeCreator.o src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp
@@ -12301,7 +12376,10 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12311,11 +12389,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -12323,11 +12396,13 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12363,8 +12438,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -12376,7 +12449,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -12415,7 +12487,10 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -12444,8 +12519,8 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -12480,6 +12555,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12527,7 +12603,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -12550,7 +12625,10 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12560,11 +12638,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -12572,11 +12645,13 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12612,8 +12687,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -12625,7 +12698,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -12664,7 +12736,10 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -12693,8 +12768,8 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -12729,6 +12804,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -12776,7 +12852,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h
@@ -12793,7 +12868,10 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -12803,11 +12881,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -12815,11 +12888,13 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -12855,8 +12930,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -12868,7 +12941,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -12907,7 +12979,10 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -12936,8 +13011,8 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -12972,6 +13047,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13019,7 +13095,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LightController.o src/scene/controller/lights/LightController.cpp
@@ -13035,7 +13110,10 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13045,11 +13123,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -13057,11 +13130,13 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13098,8 +13173,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -13111,7 +13184,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -13150,7 +13222,10 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -13179,8 +13254,8 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -13215,6 +13290,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13262,7 +13338,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/lights/LightTableView.h \
@@ -13285,7 +13360,10 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13295,11 +13373,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -13307,11 +13380,13 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13347,8 +13422,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -13360,7 +13433,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -13399,7 +13471,10 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -13428,8 +13503,8 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -13464,6 +13539,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13511,7 +13587,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -13530,7 +13605,10 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13540,11 +13618,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -13552,11 +13625,13 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13593,8 +13668,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -13606,7 +13679,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -13645,7 +13717,10 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -13674,8 +13749,8 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -13710,6 +13785,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -13757,7 +13833,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
@@ -13775,7 +13850,10 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -13785,11 +13863,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -13797,11 +13870,13 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -13837,8 +13912,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -13850,7 +13923,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -13889,7 +13961,10 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -13918,8 +13993,8 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -13954,6 +14029,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14001,7 +14077,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h
@@ -14018,7 +14093,10 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14028,11 +14106,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -14040,11 +14113,13 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14081,8 +14156,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -14094,7 +14167,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -14133,7 +14205,10 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -14162,8 +14237,8 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -14198,6 +14273,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14245,7 +14321,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
@@ -14272,7 +14347,10 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14282,11 +14360,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -14294,11 +14367,13 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14334,8 +14409,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -14347,7 +14420,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -14386,7 +14458,10 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -14415,8 +14490,8 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -14451,6 +14526,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14498,7 +14574,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/SceneController.h \
@@ -14517,7 +14592,10 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14527,11 +14605,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -14539,11 +14612,13 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14580,8 +14655,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -14593,7 +14666,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -14632,7 +14704,10 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -14661,8 +14736,8 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -14697,6 +14772,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14744,7 +14820,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h
@@ -14760,7 +14835,10 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -14770,11 +14848,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -14782,11 +14855,13 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -14823,8 +14898,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -14836,7 +14909,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -14875,7 +14947,10 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -14904,8 +14979,8 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -14940,6 +15015,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -14987,7 +15063,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ChangeSoundTriggerDialog.o src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp
@@ -15002,7 +15077,10 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15012,11 +15090,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -15024,11 +15097,13 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15065,8 +15140,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -15078,7 +15151,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -15117,7 +15189,10 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -15146,8 +15221,8 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -15182,6 +15257,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15229,7 +15305,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
@@ -15247,7 +15322,10 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15257,11 +15335,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -15269,11 +15342,13 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15311,8 +15386,8 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -15326,8 +15401,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -15339,7 +15412,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -15378,7 +15450,10 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -15427,6 +15502,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15474,10 +15550,10 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
-		../mapEditor/src/support/SpinBoxStyleHelper.h
+		../mapEditor/src/support/SpinBoxStyleHelper.h \
+		../mapEditor/src/support/ComboBoxStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SoundBoxShapeWidget.o src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp
 
 targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
@@ -15491,7 +15567,10 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15501,11 +15580,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -15513,11 +15587,13 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15553,8 +15629,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -15566,7 +15640,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -15605,7 +15678,10 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -15634,8 +15710,8 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -15670,6 +15746,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15717,9 +15794,9 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h
+		../mapHandler/src/resources/sound/SceneSound.h \
+		../mapEditor/src/support/SpinBoxStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SoundShapeWidget.o src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp
 
 targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h \
@@ -15735,7 +15812,10 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15745,11 +15825,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -15757,11 +15832,13 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -15797,8 +15874,8 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -15811,8 +15888,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -15824,7 +15899,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -15863,7 +15937,10 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -15912,6 +15989,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -15959,7 +16037,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
@@ -15978,7 +16055,10 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -15988,11 +16068,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -16000,11 +16075,13 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16042,8 +16119,8 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -16057,8 +16134,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -16070,7 +16145,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -16109,7 +16183,10 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -16158,6 +16235,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16205,7 +16283,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h
@@ -16224,7 +16301,10 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16234,11 +16314,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -16246,11 +16321,13 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16284,8 +16361,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -16297,7 +16372,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -16336,7 +16410,10 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -16365,8 +16442,8 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -16401,6 +16478,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16448,7 +16526,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/DefaultSoundShapeCreator.o src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp
@@ -16464,7 +16541,10 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16474,11 +16554,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -16486,11 +16561,13 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16546,6 +16623,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16593,14 +16671,11 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -16612,7 +16687,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -16651,7 +16725,10 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -16680,8 +16757,8 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -16710,7 +16787,10 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16720,11 +16800,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -16732,11 +16807,13 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -16793,6 +16870,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -16840,14 +16918,11 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -16859,7 +16934,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -16898,7 +16972,10 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -16927,8 +17004,8 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -16957,7 +17034,10 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -16967,11 +17047,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -16979,11 +17054,13 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -17017,8 +17094,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -17030,7 +17105,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -17069,7 +17143,10 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -17101,7 +17178,10 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -17111,11 +17191,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -17123,11 +17198,13 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -17183,6 +17260,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17230,15 +17308,12 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		src/scene/displayer/objects/BodyShapeDisplayer.h \
 		../3dEngine/src/Urchin3dEngine.h \
 		../3dEngine/src/scene/SceneManager.h \
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -17250,7 +17325,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -17289,7 +17363,10 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -17320,8 +17397,8 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -17343,7 +17420,10 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -17353,11 +17433,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -17365,11 +17440,13 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -17404,8 +17481,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -17417,7 +17492,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -17456,7 +17530,10 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -17487,8 +17564,8 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -17523,6 +17600,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17570,7 +17648,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LightScopeDisplayer.o src/scene/displayer/lights/LightScopeDisplayer.cpp
@@ -17585,7 +17662,10 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/pattern/singleton/SingletonManager.h \
 		../common/src/pattern/singleton/SingletonInterface.h \
 		../common/src/pattern/singleton/Singleton.inl \
-		../common/src/io/Converter.h \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
 		../common/src/math/algebra/point/Point2.h \
 		../common/src/math/algebra/vector/Vector2.h \
 		../common/src/math/algebra/matrix/Matrix2.h \
@@ -17595,11 +17675,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/algebra/point/Point4.h \
 		../common/src/math/algebra/vector/Vector4.h \
 		../common/src/math/algebra/matrix/Matrix4.h \
-		../common/src/tools/xml/XmlParser.h \
-		../common/src/tools/xml/tinyxml/tinyxml.h \
-		../common/src/tools/xml/XmlAttribute.h \
-		../common/src/tools/xml/XmlChunk.h \
-		../common/src/system/FileSystem.h \
 		../common/src/tools/xml/XmlWriter.h \
 		../common/src/tools/debug/DebugRecorder.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
@@ -17607,11 +17682,13 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/pattern/observer/Observable.h \
 		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
 		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
 		../common/src/system/FileHandler.h \
 		../common/src/math/algebra/Quaternion.h \
-		../common/src/math/algebra/MathValue.h \
 		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
 		../common/src/math/geometry/2d/shape/Shape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
@@ -17650,8 +17727,8 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../soundEngine/src/behavior/SmoothStopAction.h \
 		../soundEngine/src/player/AudioPlayer.h \
 		../soundEngine/src/device/DeviceManager.h \
-		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
 		../soundEngine/src/trigger/ManualTrigger.h \
 		../soundEngine/src/trigger/ShapeTrigger.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
@@ -17664,8 +17741,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/scene/renderer3d/Renderer3d.h \
 		../3dEngine/src/scene/Renderer.h \
 		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
 		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
@@ -17677,7 +17752,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/resources/material/Material.h \
 		../3dEngine/src/resources/Resource.h \
 		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/renderer3d/model/Mesh.h \
 		../3dEngine/src/scene/renderer3d/model/Animation.h \
 		../3dEngine/src/resources/model/ConstAnimation.h \
@@ -17716,7 +17790,10 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/scene/GUI/widget/Position.h \
 		../3dEngine/src/scene/GUI/widget/Size.h \
 		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
 		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
 		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
 		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
 		../3dEngine/src/scene/GUI/widget/container/Container.h \
@@ -17765,6 +17842,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
 		../physicsEngine/src/object/TemporalObject.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
 		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
@@ -17812,7 +17890,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
-		../physicsEngine/src/body/work/WorkGhostBody.h \
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SoundTriggerDisplayer.o src/scene/displayer/sounds/SoundTriggerDisplayer.cpp

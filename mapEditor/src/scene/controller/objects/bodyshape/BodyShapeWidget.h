@@ -40,11 +40,12 @@ namespace urchin
 			void updateBodyShape();
 
 		protected:
+			bool disableShapeEvent;
+
 			virtual void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) = 0;
 			virtual std::shared_ptr<const CollisionShape3D> createBodyShape() const = 0;
 
 		private:
-			bool disableShapeEvent;
 			const SceneObject *sceneObject;
 
 			std::shared_ptr<const CollisionShape3D> shape;

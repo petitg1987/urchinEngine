@@ -6,6 +6,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QComboBox>
 
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
@@ -33,17 +35,25 @@ namespace urchin
 		private:
 			void notify(Observable *, int);
 
+			void setupTransformBox(QWidget *, std::shared_ptr<const LocalizedCollisionShape>);
+			void setupPosition(QGroupBox *, const Point3<float> &);
+			void setupOrientation(QGroupBox *, const Quaternion<float> &);
+			void setupShapeBox(QWidget *, std::shared_ptr<const LocalizedCollisionShape>);
+
 			QLabel *shapesLabel;
 			LocalizedShapeTableView *localizedShapeTableView;
 			QPushButton *addShapeButton, *removeShapeButton;
 
 			QWidget *localizedShapeDetails;
-			QDoubleSpinBox *translationX, *translationY, *translationZ;
+			QDoubleSpinBox *positionX, *positionY, *positionZ;
+			QComboBox *orientationType;
+			QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
 			BodyShapeWidget *bodyShapeWidget;
 
 		private slots:
 			void addNewLocalizedShape();
 			void removeSelectedLocalizedShape();
+			void updateLocalizedShapeOrientationType();
 			void updateSelectedLocalizedShape();
 
 	};

@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "ModelReaderWriter.h"
+#include "resources/common/OrientationReaderWriter.h"
 
 namespace urchin
 {
@@ -81,10 +82,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), transformChunk);
 		Point3<float> position = positionChunk->getPoint3Value();
 
-		std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), transformChunk);
-		std::shared_ptr<XmlChunk> orientationAxisChunk = xmlParser.getUniqueChunk(true, AXIS_TAG, XmlAttribute(), orientationChunk);
-		std::shared_ptr<XmlChunk> orientationAngleChunk = xmlParser.getUniqueChunk(true, ANGLE_TAG, XmlAttribute(), orientationChunk);
-		Quaternion<float> orientation(orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue());
+		Quaternion<float> orientation = OrientationReaderWriter().loadOrientation(transformChunk, xmlParser);
 
 		std::shared_ptr<XmlChunk> scaleChunk = xmlParser.getUniqueChunk(false, SCALE_TAG, XmlAttribute(), transformChunk);
 		float scale = 1.0f;
@@ -103,14 +101,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), transformChunk);
 		positionChunk->setPoint3Value(model->getTransform().getPosition());
 
-		std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), transformChunk);
-		std::shared_ptr<XmlChunk> orientationAxisChunk = xmlWriter.createChunk(AXIS_TAG, XmlAttribute(), orientationChunk);
-		std::shared_ptr<XmlChunk> orientationAngleChunk = xmlWriter.createChunk(ANGLE_TAG, XmlAttribute(), orientationChunk);
-		Vector3<float> orientationAxis;
-		float orienationAngle;
-		model->getTransform().getOrientation().toAxisAngle(orientationAxis, orienationAngle);
-		orientationAxisChunk->setVector3Value(orientationAxis);
-		orientationAngleChunk->setFloatValue(orienationAngle);
+		OrientationReaderWriter().writeOrientation(transformChunk, model->getTransform().getOrientation(), xmlWriter);
 
 		std::shared_ptr<XmlChunk> scaleChunk = xmlWriter.createChunk(SCALE_TAG, XmlAttribute(), transformChunk);
 		scaleChunk->setFloatValue(model->getTransform().getScale());

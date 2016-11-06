@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QComboBox>
 
 #include "UrchinCommon.h"
 #include "UrchinSoundEngine.h"
@@ -29,8 +30,11 @@ namespace urchin
 		private:
 			QDoubleSpinBox *positionX, *positionY, *positionZ;
 			QDoubleSpinBox *halfSizeX, *halfSizeY, *halfSizeZ;
-			QDoubleSpinBox *orientationAxisX, *orientationAxisY, *orientationAxisZ, *orientationAngle;
-			QDoubleSpinBox *margin;
+			QComboBox *orientationType;
+			QDoubleSpinBox *eulerAxis0, *eulerAxis1, *eulerAxis2;
+
+		private slots:
+			void updateShapeOrientationType();
 	};
 
 }

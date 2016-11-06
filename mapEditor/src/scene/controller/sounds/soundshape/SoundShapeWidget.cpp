@@ -1,6 +1,8 @@
 #include <stdexcept>
+#include <QtWidgets/QLabel>
 
 #include "SoundShapeWidget.h"
+#include "support/SpinBoxStyleHelper.h"
 
 namespace urchin
 {
@@ -11,7 +13,15 @@ namespace urchin
 			sceneSound(sceneSound),
 			shape(nullptr)
 	{
+		QLabel *marginLabel = new QLabel(this);
+		marginLabel->setText("Margin:");
+		marginLabel->setGeometry(QRect(5, 0, 80, 22));
 
+		margin = new QDoubleSpinBox(this);
+		margin->setGeometry(QRect(85, 0, 80, 22));
+		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
+		margin->setMinimum(0.0);
+		connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 	}
 
 	SoundShapeWidget::~SoundShapeWidget()
@@ -37,6 +47,8 @@ namespace urchin
 	{
 		disableShapeEvent = true;
 
+		margin->setValue(shape->getMargin());
+
 		doSetupShapePropertiesFrom(shape);
 
 		disableShapeEvent = false;
@@ -50,5 +62,10 @@ namespace urchin
 
 			emit soundShapeChange(shape);
 		}
+	}
+
+	float SoundShapeWidget::getMarginValue() const
+	{
+		return margin->value();
 	}
 }

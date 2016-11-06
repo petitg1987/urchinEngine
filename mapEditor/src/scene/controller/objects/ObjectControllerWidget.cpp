@@ -1,6 +1,7 @@
 #include "ObjectControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
+#include "support/ComboBoxStyleHelper.h"
 #include "scene/controller/objects/dialog/NewObjectDialog.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
@@ -14,7 +15,7 @@ namespace urchin
 	{
 		objectTableView = new ObjectTableView(this);
 		objectTableView->addObserver(this, ObjectTableView::SELECTION_CHANGED);
-		objectTableView->setGeometry(QRect(0, 0, 355, 220));
+		objectTableView->setGeometry(QRect(0, 0, 375, 220));
 
 		addObjectButton = new QPushButton(this);
 		addObjectButton->setText("New Object");
@@ -28,7 +29,7 @@ namespace urchin
 		connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
 
 		tabWidget = new QTabWidget(this);
-		tabWidget->setGeometry(QRect(0, 250, 355, 525));
+		tabWidget->setGeometry(QRect(0, 250, 375, 600));
 		tabWidget->hide();
 
 		QWidget *tabGeneral = new QWidget();
@@ -60,7 +61,7 @@ namespace urchin
 	{
 		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
 		transformGroupBox->setTitle("Transform");
-		transformGroupBox->setGeometry(QRect(0, 5, 350, 120));
+		transformGroupBox->setGeometry(QRect(0, 5, 370, 120));
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 
 		setupPosition(transformGroupBox);
@@ -96,23 +97,12 @@ namespace urchin
 
 		orientationType = new QComboBox(transformGroupBox);
 		orientationType->setGeometry(QRect(85, 40, 160, 22));
-		orientationType->addItem(EULER_XYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XYZ));
-		orientationType->addItem(EULER_XZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XZY));
-		orientationType->addItem(EULER_YXZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YXZ));
-		orientationType->addItem(EULER_YZX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YZX));
-		orientationType->addItem(EULER_ZXY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZXY));
-		orientationType->addItem(EULER_ZYX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZYX));
-		orientationType->addItem(EULER_XYX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XYX));
-		orientationType->addItem(EULER_XZX_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::XZX));
-		orientationType->addItem(EULER_YXY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YXY));
-		orientationType->addItem(EULER_YZY_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::YZY));
-		orientationType->addItem(EULER_ZXZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZXZ));
-		orientationType->addItem(EULER_ZYZ_ORIENT_LABEL, QVariant(Quaternion<float>::RotationSequence::ZYZ));
+		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectOrientationType()));
 
-		QLabel *orientationAxisLabel = new QLabel(transformGroupBox);
-		orientationAxisLabel->setText("Euler Angle:");
-		orientationAxisLabel->setGeometry(QRect(5, 65, 80, 22));
+		QLabel *eulerAngleLabel = new QLabel(transformGroupBox);
+		eulerAngleLabel->setText("Euler Angle:");
+		eulerAngleLabel->setGeometry(QRect(5, 65, 80, 22));
 
 		eulerAxis0 = new QDoubleSpinBox(transformGroupBox);
 		eulerAxis0->setGeometry(QRect(85, 65, 80, 22));
@@ -147,7 +137,7 @@ namespace urchin
 	{
 		QGroupBox *flagsGroupBox = new QGroupBox(tabGeneral);
 		flagsGroupBox->setTitle("Flags");
-		flagsGroupBox->setGeometry(QRect(0, 135, 350, 45));
+		flagsGroupBox->setGeometry(QRect(0, 135, 370, 45));
 		GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
 
 		produceShadowCheckBox = new QCheckBox(flagsGroupBox);
@@ -164,7 +154,7 @@ namespace urchin
 		connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
 
 		tabPhysicsRigidBody = new QTabWidget(tabPhysics);
-		tabPhysicsRigidBody->setGeometry(QRect(0, 35, 350, 460));
+		tabPhysicsRigidBody->setGeometry(QRect(0, 35, 370, 595));
 
 		tabPhysicsProperties = new QWidget();
 		setupPhysicsGeneralPropertiesBox();
@@ -181,7 +171,7 @@ namespace urchin
 	{
 		QGroupBox *rigidBodyGeneralBox = new QGroupBox(tabPhysicsProperties);
 		rigidBodyGeneralBox->setTitle("General");
-		rigidBodyGeneralBox->setGeometry(QRect(0, 5, 345, 70));
+		rigidBodyGeneralBox->setGeometry(QRect(0, 5, 365, 70));
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
 
 		QLabel *massLabel = new QLabel(rigidBodyGeneralBox);
@@ -232,7 +222,7 @@ namespace urchin
 	{
 		QGroupBox *rigidBodyDampingBox = new QGroupBox(tabPhysicsProperties);
 		rigidBodyDampingBox->setTitle("Damping");
-		rigidBodyDampingBox->setGeometry(QRect(0, 80, 345, 45));
+		rigidBodyDampingBox->setGeometry(QRect(0, 80, 365, 45));
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
 
 		QLabel *linearDampingLabel = new QLabel(rigidBodyDampingBox);
@@ -262,7 +252,7 @@ namespace urchin
 	{
 		QGroupBox *rigidBodyFactorBox = new QGroupBox(tabPhysicsProperties);
 		rigidBodyFactorBox->setTitle("Factor");
-		rigidBodyFactorBox->setGeometry(QRect(0, 130, 345, 70));
+		rigidBodyFactorBox->setGeometry(QRect(0, 130, 365, 70));
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
 
 		QLabel *linearFactorLabel = new QLabel(rigidBodyFactorBox);
@@ -326,7 +316,7 @@ namespace urchin
 		shapeTypeValueLabel->setGeometry(QRect(85, 5, 100, 22));
 
 		changeBodyShapeButton = new QPushButton(tabPhysicsShape);
-		changeBodyShapeButton->setText("Change Shape");
+		changeBodyShapeButton->setText("Change");
 		changeBodyShapeButton->setGeometry(QRect(190, 5, 85, 22));
 		connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
 
@@ -441,7 +431,7 @@ namespace urchin
 		bodyShapeWidget = BodyShapeWidgetRetriever(tabPhysicsShape, sceneObject).retrieveShapeWidget(shape);
 		connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(bodyShapeChanged(std::shared_ptr<const CollisionShape3D>)));
 
-		bodyShapeWidget->setGeometry(QRect(0, 30, 339, 375));
+		bodyShapeWidget->setGeometry(QRect(0, 30, 369, 470));
 		bodyShapeWidget->show();
 
 		notifyObservers(this, NotificationType::BODY_SHAPE_INITIALIZED);

@@ -16,7 +16,7 @@ namespace urchin
 		unsigned int position;
 
 		std::shared_ptr<const CollisionShape3D> shape;
-		Vector3<float> translation;
+		PhysicsTransform transform;
 	};
 
 	class CollisionCompoundShape : public CollisionShape3D

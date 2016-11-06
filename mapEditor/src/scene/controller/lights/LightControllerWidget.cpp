@@ -12,7 +12,7 @@ namespace urchin
 	{
 		lightTableView = new LightTableView(this);
 		lightTableView->addObserver(this, LightTableView::SELECTION_CHANGED);
-		lightTableView->setGeometry(QRect(0, 0, 355, 220));
+		lightTableView->setGeometry(QRect(0, 0, 375, 220));
 
 		addLightButton = new QPushButton(this);
 		addLightButton->setText("New Light");
@@ -27,7 +27,7 @@ namespace urchin
 
 		lightGroupBox = new QGroupBox(this);
 		lightGroupBox->setTitle("Light");
-		lightGroupBox->setGeometry(QRect(0, 250, 355, 525));
+		lightGroupBox->setGeometry(QRect(0, 250, 375, 600));
 		GroupBoxStyleHelper::applyNormalStyle(lightGroupBox);
 		lightGroupBox->hide();
 
@@ -44,7 +44,7 @@ namespace urchin
 	{
 		QGroupBox *generalPropertiesGroupBox = new QGroupBox(lightBox);
 		generalPropertiesGroupBox->setTitle("General Properties");
-		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 345, 65));
+		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 365, 65));
 		GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
 
 		QLabel *ambientLabel= new QLabel(generalPropertiesGroupBox);
@@ -80,7 +80,7 @@ namespace urchin
 	{
 		QGroupBox *specificPropertiesGroupBox = new QGroupBox(lightBox);
 		specificPropertiesGroupBox->setTitle("Specific Properties");
-		specificPropertiesGroupBox->setGeometry(QRect(5, 85, 345, 95));
+		specificPropertiesGroupBox->setGeometry(QRect(5, 85, 365, 95));
 		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
 
 		QLabel *lightTypeLabel= new QLabel(specificPropertiesGroupBox);
@@ -97,7 +97,7 @@ namespace urchin
 	void LightControllerWidget::setupOmnidirectionalLightBox(QWidget *specificPropertiesGroupBox)
 	{
 		omnidirectionalLightWidget = new QWidget(specificPropertiesGroupBox);
-		omnidirectionalLightWidget->setGeometry(QRect(5, 40, 345, 85));
+		omnidirectionalLightWidget->setGeometry(QRect(5, 40, 365, 85));
 		omnidirectionalLightWidget->hide();
 
 		QLabel *positionLabel= new QLabel(omnidirectionalLightWidget);
@@ -132,7 +132,7 @@ namespace urchin
 	void LightControllerWidget::setupSunLightBox(QWidget *specificPropertiesGroupBox)
 	{
 		sunLightWidget = new QWidget(specificPropertiesGroupBox);
-		sunLightWidget->setGeometry(QRect(5, 40, 345, 85));
+		sunLightWidget->setGeometry(QRect(5, 40, 365, 85));
 		sunLightWidget->hide();
 
 		QLabel *directionLabel= new QLabel(sunLightWidget);

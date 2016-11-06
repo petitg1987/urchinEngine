@@ -2,7 +2,9 @@
 
 #include "BodyCompoundShapeWidget.h"
 #include "support/LabelStyleHelper.h"
+#include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
+#include "support/ComboBoxStyleHelper.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
 #include "scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h"
@@ -32,9 +34,13 @@ namespace urchin
 		connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
 
 		localizedShapeDetails = nullptr;
-		translationX = nullptr;
-		translationY = nullptr;
-		translationZ = nullptr;
+		positionX = nullptr;
+		positionY = nullptr;
+		positionZ = nullptr;
+		orientationType = nullptr;
+		eulerAxis0 = nullptr;
+		eulerAxis1 = nullptr;
+		eulerAxis2 = nullptr;
 		bodyShapeWidget = nullptr;
 	}
 
@@ -92,36 +98,10 @@ namespace urchin
 
 						delete localizedShapeDetails;
 						localizedShapeDetails = new QWidget(this);
-						localizedShapeDetails->setGeometry(QRect(10, 155, 338, 220));
+						localizedShapeDetails->setGeometry(QRect(10, 155, 358, 315));
 
-						QLabel *translationLabel = new QLabel(localizedShapeDetails);
-						translationLabel->setText("Translation:");
-						translationLabel->setGeometry(QRect(5, 0, 80, 22));
-
-						translationX = new QDoubleSpinBox(localizedShapeDetails);
-						translationX->setGeometry(QRect(85, 0, 80, 22));
-						SpinBoxStyleHelper::applyDefaultStyleOn(translationX);
-						translationX->setValue(localizedShape->translation.X);
-
-						translationY = new QDoubleSpinBox(localizedShapeDetails);
-						translationY->setGeometry(QRect(165, 0, 80, 22));
-						SpinBoxStyleHelper::applyDefaultStyleOn(translationY);
-						translationY->setValue(localizedShape->translation.Y);
-
-						translationZ = new QDoubleSpinBox(localizedShapeDetails);
-						translationZ->setGeometry(QRect(245, 0, 80, 22));
-						SpinBoxStyleHelper::applyDefaultStyleOn(translationZ);
-						translationZ->setValue(localizedShape->translation.Z);
-
-						BodyShapeWidgetRetriever shapeWidgetRetriever(localizedShapeDetails, getSceneObject());
-						bodyShapeWidget = shapeWidgetRetriever.retrieveShapeWidget(localizedShape->shape->getShapeType());
-						bodyShapeWidget->setGeometry(QRect(0, 25, 338, 165));
-						bodyShapeWidget->setupShapePropertiesFrom(localizedShape->shape);
-
-						connect(translationX, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-						connect(translationY, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-						connect(translationZ, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-						connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(updateSelectedLocalizedShape()));
+						setupTransformBox(localizedShapeDetails, localizedShape);
+						setupShapeBox(localizedShapeDetails, localizedShape);
 
 						localizedShapeDetails->show();
 					}else
@@ -134,20 +114,141 @@ namespace urchin
 		}
 	}
 
+	void BodyCompoundShapeWidget::setupTransformBox(QWidget *tabGeneral, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	{
+		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
+		transformGroupBox->setTitle("Transform");
+		transformGroupBox->setGeometry(QRect(5, 0, 350, 95));
+		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+
+		setupPosition(transformGroupBox, localizedShape->transform.getPosition());
+		setupOrientation(transformGroupBox,localizedShape->transform.getOrientation());
+	}
+
+	void BodyCompoundShapeWidget::setupPosition(QGroupBox *transformGroupBox, const Point3<float> &position)
+	{
+		QLabel *positionLabel= new QLabel(transformGroupBox);
+		positionLabel->setText("Position:");
+		positionLabel->setGeometry(QRect(5, 15, 55, 22));
+
+		positionX = new QDoubleSpinBox(transformGroupBox);
+		positionX->setGeometry(QRect(85, 15, 80, 22));
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
+		positionX->setValue(position.X);
+		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
+
+		positionY = new QDoubleSpinBox(transformGroupBox);
+		positionY->setGeometry(QRect(165, 15, 80, 22));
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
+		positionY->setValue(position.Y);
+		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
+
+		positionZ = new QDoubleSpinBox(transformGroupBox);
+		positionZ->setGeometry(QRect(245, 15, 80, 22));
+		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
+		positionZ->setValue(position.Z);
+		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
+	}
+
+	void BodyCompoundShapeWidget::setupOrientation(QGroupBox *transformGroupBox, const Quaternion<float> &orientation)
+	{
+		QLabel *orientationTypeLabel = new QLabel(transformGroupBox);
+		orientationTypeLabel->setText("Orient. Type:");
+		orientationTypeLabel->setGeometry(QRect(5, 40, 80, 22));
+
+		orientationType = new QComboBox(transformGroupBox);
+		orientationType->setGeometry(QRect(85, 40, 160, 22));
+		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
+		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLocalizedShapeOrientationType()));
+
+		QLabel *eulerAngleLabel = new QLabel(transformGroupBox);
+		eulerAngleLabel->setText("Euler Angle:");
+		eulerAngleLabel->setGeometry(QRect(5, 65, 80, 22));
+
+		QVariant variant = orientationType->currentData();
+		Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+		Vector3<float> eulerAngle = orientation.toEulerAngle(newRotationSequence);
+
+		eulerAxis0 = new QDoubleSpinBox(transformGroupBox);
+		eulerAxis0->setGeometry(QRect(85, 65, 80, 22));
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+		eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
+		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
+
+		eulerAxis1 = new QDoubleSpinBox(transformGroupBox);
+		eulerAxis1->setGeometry(QRect(165, 65, 80, 22));
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
+		eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
+		connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
+
+		eulerAxis2 = new QDoubleSpinBox(transformGroupBox);
+		eulerAxis2->setGeometry(QRect(245, 65, 80, 22));
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
+		eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
+	}
+
+	void BodyCompoundShapeWidget::setupShapeBox(QWidget *tabGeneral, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	{
+		QGroupBox *shapeGroupBox = new QGroupBox(tabGeneral);
+		shapeGroupBox->setTitle("Shape");
+		shapeGroupBox->setGeometry(QRect(5, 105, 350, 210));
+		GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
+
+		BodyShapeWidgetRetriever shapeWidgetRetriever(shapeGroupBox, getSceneObject());
+		bodyShapeWidget = shapeWidgetRetriever.retrieveShapeWidget(localizedShape->shape->getShapeType());
+		bodyShapeWidget->setGeometry(QRect(5, 15, 338, 165));
+		bodyShapeWidget->setupShapePropertiesFrom(localizedShape->shape);
+		connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(updateSelectedLocalizedShape()));
+	}
+
+	void BodyCompoundShapeWidget::updateLocalizedShapeOrientationType()
+	{
+		if(!disableShapeEvent)
+		{
+			std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
+
+			QVariant variant = orientationType->currentData();
+			Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			Vector3<float> eulerAngle = localizedShape->transform.getOrientation().toEulerAngle(newRotationSequence);
+
+			eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
+			eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
+			eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
+
+			updateSelectedLocalizedShape();
+		}
+	}
+
 	void BodyCompoundShapeWidget::updateSelectedLocalizedShape()
 	{
-		if(!localizedShapeTableView->hasLocalizedShapeSelected())
+		if(!disableShapeEvent)
 		{
-			throw std::invalid_argument("Localized shape table hasn't localized shaped selected");
+			if(!localizedShapeTableView->hasLocalizedShapeSelected())
+			{
+				throw std::invalid_argument("Localized shape table hasn't localized shaped selected");
+			}
+
+			std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
+
+			localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
+			localizedShape->shape = bodyShapeWidget->retrieveShape();
+
+			Vector3<float> eulerAngle(
+					AngleConverter<float>::toRadian(eulerAxis0->value()),
+					AngleConverter<float>::toRadian(eulerAxis1->value()),
+					AngleConverter<float>::toRadian(eulerAxis2->value())
+			);
+			QVariant variant = orientationType->currentData();
+			Quaternion<float>::RotationSequence rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			localizedShape->transform = PhysicsTransform(
+					Point3<float>(positionX->value(), positionY->value(), positionZ->value()),
+					Quaternion<float>(eulerAngle, rotationSequence));
+
+			localizedShapeTableView->updateSelectedLocalizedShape(localizedShape);
+
+			updateBodyShape();
 		}
-
-		std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
-		localizedShape->position = localizedShapeTableView->getSelectedLocalizedShape()->position;
-		localizedShape->shape = bodyShapeWidget->retrieveShape();
-		localizedShape->translation = Vector3<float>(translationX->value(), translationY->value(), translationZ->value());
-		localizedShapeTableView->updateSelectedLocalizedShape(localizedShape);
-
-		updateBodyShape();
 	}
 
 	void BodyCompoundShapeWidget::addNewLocalizedShape()
@@ -172,7 +273,7 @@ namespace urchin
 			std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
 			localizedShape->position = nextPosition;
 			localizedShape->shape = defaultNewShape;
-			localizedShape->translation = Vector3<float>(0.0, 0.0, 0.0);
+			localizedShape->transform = PhysicsTransform();
 
 			int rowId = localizedShapeTableView->addLocalizedShape(localizedShape);
 			localizedShapeTableView->selectLocalizedShape(rowId);

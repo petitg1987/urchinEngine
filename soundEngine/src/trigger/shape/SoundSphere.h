@@ -22,7 +22,6 @@ namespace urchin
 			const Sphere<float> &getPlayTriggerSphere() const;
 			const Sphere<float> &getStopTriggerSphere() const;
 
-			float getMargin() const;
 			float getRadius() const;
 			const Point3<float> getPosition() const;
 
@@ -32,7 +31,6 @@ namespace urchin
 			SoundShape *clone() const;
 
 		private:
-			const float margin;
 			const Sphere<float> playTriggerSphere;
 			const Sphere<float> stopTriggerSphere;
 	};

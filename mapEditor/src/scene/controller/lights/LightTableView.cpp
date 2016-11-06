@@ -14,7 +14,7 @@ namespace urchin
 		setModel(lightsListModel);
 
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
-		horizontalHeader()->resizeSection(0, 320);
+		horizontalHeader()->resizeSection(0, 340);
 		verticalHeader()->hide();
 
 		setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
@@ -24,8 +24,8 @@ namespace urchin
 	void LightTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
 	{
 		//hack to refresh selection
-		horizontalHeader()->resizeSection(0, 321);
-		horizontalHeader()->resizeSection(0, 320);
+		horizontalHeader()->resizeSection(0, 341);
+		horizontalHeader()->resizeSection(0, 340);
 
 		notifyObservers(this, NotificationType::SELECTION_CHANGED);
 	}
