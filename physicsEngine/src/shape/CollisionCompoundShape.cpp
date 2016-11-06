@@ -26,7 +26,7 @@ namespace urchin
 	void CollisionCompoundShape::initializeSphareShape()
 	{
 		AABBox<float> aabbox = toAABBox(PhysicsTransform());
-		sphereShape = std::make_shared<CollisionSphereShape>(aabbox.getMaxHalfSize());
+		sphereShape = std::make_shared<CollisionSphereShape>(aabbox.getMinHalfSize());
 	}
 
 	CollisionShape3D::ShapeType CollisionCompoundShape::getShapeType() const

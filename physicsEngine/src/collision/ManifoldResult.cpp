@@ -100,7 +100,7 @@ namespace urchin
 		if(nearestPointIndex >= 0)
 		{ //replace existing point
 			contactPoints[nearestPointIndex] = ManifoldContactPoint(normalFromObject2, pointOnObject1, pointOnObject2,
-					localPointOnObject1, localPointOnObject2, depth);
+					localPointOnObject1, localPointOnObject2, depth, isPredictive);
 			return;
 		}
 
@@ -115,7 +115,7 @@ namespace urchin
 			++nbContactPoint;
 		}
 		contactPoints[insertionIndex] = ManifoldContactPoint(normalFromObject2, pointOnObject1, pointOnObject2,
-				localPointOnObject1, localPointOnObject2, depth);
+				localPointOnObject1, localPointOnObject2, depth, isPredictive);
 	}
 
 	void ManifoldResult::refreshContactPoints()

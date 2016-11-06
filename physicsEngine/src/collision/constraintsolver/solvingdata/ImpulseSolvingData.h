@@ -11,9 +11,9 @@ namespace urchin
 		ImpulseSolvingData();
 		~ImpulseSolvingData();
 
-		float friction; //Friction factor. 0=no friction, 1=total friction
+		float friction; //friction factor: 0=no friction, 1=total friction
 
-		float bias; //Bias to avoid bodies penetrate and for restitution
+		float bias; //bias to avoid bodies penetrate and for restitution
 
 		float normalImpulseDenominator;
 		float tangentImpulseDenominator;

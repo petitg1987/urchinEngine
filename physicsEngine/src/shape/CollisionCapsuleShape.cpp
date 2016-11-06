@@ -60,7 +60,7 @@ namespace urchin
 
 	std::shared_ptr<CollisionSphereShape> CollisionCapsuleShape::retrieveSphereShape() const
 	{
-		return std::make_shared<CollisionSphereShape>(capsuleShape.getCylinderHeight()/2.0f+capsuleShape.getRadius());
+		return std::make_shared<CollisionSphereShape>(capsuleShape.getRadius());
 	}
 
 	AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const

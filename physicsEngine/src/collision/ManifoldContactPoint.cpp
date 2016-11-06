@@ -9,7 +9,8 @@ namespace urchin
 			pointOnObject2(Point3<float>()),
 			localPointOnObject1(Point3<float>()),
 			localPointOnObject2(Point3<float>()),
-			depth(0.0)
+			depth(0.0),
+			bIsPredictive(false)
 	{
 
 	}
@@ -23,13 +24,15 @@ namespace urchin
 			const Point3<float> &pointOnObject2,
 			const Point3<float> &localPointOnObject1,
 			const Point3<float> &localPointOnObject2,
-			float depth) :
+			float depth,
+			bool bIsPredictive) :
 			normalFromObject2(normalFromObject2),
 			pointOnObject1(pointOnObject1),
 			pointOnObject2(pointOnObject2),
 			localPointOnObject1(localPointOnObject1),
 			localPointOnObject2(localPointOnObject2),
-			depth(depth)
+			depth(depth),
+			bIsPredictive(bIsPredictive)
 	{
 
 	}
@@ -80,11 +83,19 @@ namespace urchin
 	}
 
 	/**
-	 * @param Penetration depth (negative when collision exist)
+	 * @return Penetration depth (negative when collision exist)
 	 */
 	float ManifoldContactPoint::getDepth() const
 	{
 		return depth;
+	}
+
+	/**
+	 * @return True if contact point is predictive
+	 */
+	bool ManifoldContactPoint::isPredictive() const
+	{
+		return bIsPredictive;
 	}
 
 	/**

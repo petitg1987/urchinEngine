@@ -55,17 +55,17 @@ namespace urchin
 		Point3<float> boxCenterPoint = aabbox.getCenterPoint();
 
 		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
-		float maxSquareDistance = -std::numeric_limits<float>::max();
+		float minSquareDistance = std::numeric_limits<float>::max();
 		for(std::vector<Point3<float>>::const_iterator it=convexHullPoints.begin(); it!=convexHullPoints.end(); ++it)
 		{
 			float squareDistance = boxCenterPoint.squareDistance(*it);
-			if(squareDistance > maxSquareDistance)
+			if(squareDistance < minSquareDistance)
 			{
-				maxSquareDistance = squareDistance;
+				minSquareDistance = squareDistance;
 			}
 		}
 
-		sphereShape = std::make_shared<CollisionSphereShape>(std::sqrt(maxSquareDistance));
+		sphereShape = std::make_shared<CollisionSphereShape>(std::sqrt(minSquareDistance));
 	}
 
 	CollisionShape3D::ShapeType CollisionConvexHullShape::getShapeType() const

@@ -58,7 +58,7 @@ namespace urchin
 			for(unsigned int j=0; j<manifoldResults[i].getNumContactPoints(); ++j)
 			{
 				ManifoldContactPoint &contact = manifoldResults[i].getManifoldContactPoint(j);
-				if(contact.getDepth() > 0.0)
+				if(contact.getDepth() > 0.0 && !contact.isPredictive())
 				{
 					continue;
 				}
@@ -174,6 +174,11 @@ namespace urchin
 		AccumulatedSolvingData &accumulatedSolvingData = constraintSolving->getAccumulatedData();
 
 		float normalRelativeVelocity = computeRelativeVelocity(commonSolvingData).dotProduct(commonSolvingData.contactNormal);
+
+	/*	if(commonSolvingData.depth>0.0f)
+		{
+			normalRelativeVelocity += -impulseSolvingData.bias + commonSolvingData.depth / (1.0f/60.0f);
+		}*/
 
 		float normalImpulseNumerator = (-normalRelativeVelocity) + impulseSolvingData.bias;
 		float normalImpulse = normalImpulseNumerator / impulseSolvingData.normalImpulseDenominator;

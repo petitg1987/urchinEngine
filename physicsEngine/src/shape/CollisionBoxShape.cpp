@@ -56,7 +56,7 @@ namespace urchin
 
 	std::shared_ptr<CollisionSphereShape> CollisionBoxShape::retrieveSphereShape() const
 	{
-		return std::make_shared<CollisionSphereShape>(boxShape.getMaxHalfSize());
+		return std::make_shared<CollisionSphereShape>(boxShape.getMinHalfSize());
 	}
 
 	AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const

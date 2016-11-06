@@ -113,13 +113,10 @@ namespace urchin
 
 	void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, float dt)
 	{
-		//TODO: constraint solver: handle depth > 0 (see Box2D ?)
-
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
 		if(bodiesAABBoxHitBody.size() > 0)
 		{
-			std::shared_ptr<CollisionSphereShape> bodySphereShape = body->getShape()->retrieveSphereShape();
-			TemporalObject temporalObject(bodySphereShape.get(), from, to);
+			TemporalObject temporalObject(body->getShape(), from, to);
 			ccd_set ccdResults = continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
 
 			if(ccdResults.size() > 0)
