@@ -2,6 +2,8 @@
 #include "shape/CollisionSphereShape.h"
 #include "object/TemporalObject.h"
 
+#define MAX_LINEAR_VELOCITY_FACTOR 0.95f
+
 namespace urchin
 {
 
@@ -64,12 +66,13 @@ namespace urchin
 				float timeToFirstHit = ccdResults.begin()->get()->getTimeToHit();
 				updatedTargetTransform = from.integrate(body->getLinearVelocity(), body->getAngularVelocity(), timeToFirstHit*dt);
 
-				//clamp velocity to max speed
-				float maxSpeedAllowed = body->getCcdMotionThreshold() / dt;
+				//clamp linear velocity
+				float maxLinearVelocityAllowed = body->getCcdMotionThreshold() / dt;
+				float maxLinearVelocity = maxLinearVelocityAllowed * MAX_LINEAR_VELOCITY_FACTOR; //avoid to create new CCD contact points in narrow phase
 				float currentSpeed = body->getLinearVelocity().length();
-				if(currentSpeed > maxSpeedAllowed)
+				if(currentSpeed > maxLinearVelocity)
 				{
-					body->setLinearVelocity((body->getLinearVelocity() / currentSpeed) * maxSpeedAllowed);
+					body->setLinearVelocity((body->getLinearVelocity() / currentSpeed) * maxLinearVelocity);
 				}
 
 				//TODO Handle compound objects:

@@ -175,11 +175,6 @@ namespace urchin
 
 		float normalRelativeVelocity = computeRelativeVelocity(commonSolvingData).dotProduct(commonSolvingData.contactNormal);
 
-	/*	if(commonSolvingData.depth>0.0f)
-		{
-			normalRelativeVelocity += -impulseSolvingData.bias + commonSolvingData.depth / (1.0f/60.0f);
-		}*/
-
 		float normalImpulseNumerator = (-normalRelativeVelocity) + impulseSolvingData.bias;
 		float normalImpulse = normalImpulseNumerator / impulseSolvingData.normalImpulseDenominator;
 
