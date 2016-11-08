@@ -58,11 +58,6 @@ namespace urchin
 				capsuleShape.getCylinderHeight() * scale, capsuleShape.getCapsuleOrientation());
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionCapsuleShape::retrieveSphereShape() const
-	{
-		return std::make_shared<CollisionSphereShape>(capsuleShape.getRadius());
-	}
-
 	AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
@@ -78,6 +73,11 @@ namespace urchin
 		);
 
 		return AABBox<float>(position - extend, position + extend);
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionCapsuleShape::toConfinedSphereShape() const
+	{
+		return std::make_shared<CollisionSphereShape>(capsuleShape.getRadius());
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const

@@ -20,7 +20,7 @@ namespace urchin
 		restitution = 0.2f;
 		friction = 0.5f;
 		rollingFriction = 0.0f;
-		ccdMotionThreshold = getScaledShape()->toAABBox(PhysicsTransform()).getMinHalfSize()
+		ccdMotionThreshold = getScaledShape()->toAABBox(PhysicsTransform()).getMinHalfSize() //TODO compute for sub-shape of compound shape
 				* ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor");
 
 		bIsNew.store(false, std::memory_order_relaxed);

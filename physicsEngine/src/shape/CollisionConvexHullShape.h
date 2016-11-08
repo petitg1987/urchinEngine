@@ -25,9 +25,9 @@ namespace urchin
 			std::vector<Point3<float>> getPoints() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
-			std::shared_ptr<CollisionSphereShape> retrieveSphereShape() const;
 
 			AABBox<float> toAABBox(const PhysicsTransform &) const;
+			std::shared_ptr<CollisionSphereShape> toConfinedSphereShape() const;
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
 
 			Vector3<float> computeLocalInertia(float) const;
@@ -42,7 +42,7 @@ namespace urchin
 			const ConvexHull3D<float> convexHull; //shape including margin
 			std::unique_ptr<ConvexHull3D<float>> convexHullReduced; //shape where margin has been subtracted
 
-			std::shared_ptr<CollisionSphereShape> sphereShape; //sphere including all convexHull points
+			std::shared_ptr<CollisionSphereShape> confinedSphereShape; //largest sphere included in convex hull
 	};
 
 }

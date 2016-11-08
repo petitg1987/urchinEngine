@@ -51,9 +51,9 @@ namespace urchin
 		bodiesAABBoxHitBody.reserve(15);
 
 		Ray<float> ray(from.getPosition(), to.getPosition());
-		float bodySphereRadius = body->getShape()->retrieveSphereShape()->getRadius();
+		float bodyConfinedSphereRadius = body->getShape()->toConfinedSphereShape()->getRadius(); //TODO is it correct to use confined sphere ?
 
-		tree->enlargedRayTest(ray, bodySphereRadius, body, bodiesAABBoxHitBody);
+		tree->enlargedRayTest(ray, bodyConfinedSphereRadius, body, bodiesAABBoxHitBody);
 
 		return bodiesAABBoxHitBody;
 	}

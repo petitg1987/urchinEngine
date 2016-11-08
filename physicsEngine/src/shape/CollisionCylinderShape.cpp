@@ -59,11 +59,6 @@ namespace urchin
 				cylinderShape.getHeight() * scale, cylinderShape.getCylinderOrientation());
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionCylinderShape::retrieveSphereShape() const
-	{
-		return std::make_shared<CollisionSphereShape>(std::min(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius()));
-	}
-
 	AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
@@ -79,6 +74,11 @@ namespace urchin
 		);
 
 		return AABBox<float>(position - extend, position + extend);
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionCylinderShape::toConfinedSphereShape() const
+	{
+		return std::make_shared<CollisionSphereShape>(std::min(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius()));
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const

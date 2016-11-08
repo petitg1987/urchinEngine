@@ -26,7 +26,7 @@ namespace urchin
 	void CollisionCompoundShape::initializeSphareShape()
 	{
 		AABBox<float> aabbox = toAABBox(PhysicsTransform());
-		sphereShape = std::make_shared<CollisionSphereShape>(aabbox.getMinHalfSize());
+		confinedSphereShape = std::make_shared<CollisionSphereShape>(aabbox.getMinHalfSize());
 	}
 
 	CollisionShape3D::ShapeType CollisionCompoundShape::getShapeType() const
@@ -50,11 +50,6 @@ namespace urchin
 		return std::make_shared<CollisionCompoundShape>(scaledLocalizedShapes);
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionCompoundShape::retrieveSphereShape() const
-	{
-		return sphereShape;
-	}
-
 	AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
@@ -71,9 +66,14 @@ namespace urchin
 		return globalCompoundBox;
 	}
 
+	std::shared_ptr<CollisionSphereShape> CollisionCompoundShape::toConfinedSphereShape() const
+	{
+		return confinedSphereShape;
+	}
+
 	std::shared_ptr<CollisionConvexObject3D> CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
-		throw std::runtime_error("To convex object not implemented for compound shape");
+		throw std::runtime_error("To convex object unsupported for compound shape");
 	}
 
 	Vector3<float> CollisionCompoundShape::computeLocalInertia(float mass) const

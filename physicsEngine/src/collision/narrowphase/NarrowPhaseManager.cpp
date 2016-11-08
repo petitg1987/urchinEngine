@@ -1,6 +1,7 @@
 #include "collision/narrowphase/NarrowPhaseManager.h"
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
+#include "shape/CollisionCompoundShape.h"
 #include "body/work/WorkRigidBody.h"
 #include "object/TemporalObject.h"
 
@@ -116,8 +117,28 @@ namespace urchin
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
 		if(bodiesAABBoxHitBody.size() > 0)
 		{
-			TemporalObject temporalObject(body->getShape(), from, to);
-			ccd_set ccdResults = continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+			ccd_set ccdResults;
+
+			const CollisionShape3D *bodyShape = body->getShape();
+			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
+			{
+				const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape);
+				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
+				for(const auto &localizedShape : localizedShapes)
+				{
+					TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
+					ccd_set localizedShapeCcdResults = continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+
+					for(auto &localizedShapeCcdResult : localizedShapeCcdResults)
+					{
+						ccdResults.insert(localizedShapeCcdResult);
+					}
+				}
+			}else
+			{
+				TemporalObject temporalObject(body->getShape(), from, to);
+				ccdResults = continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+			}
 
 			if(ccdResults.size() > 0)
 			{
@@ -136,33 +157,59 @@ namespace urchin
 		}
 	}
 
-	ccd_set NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
+	ccd_set NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const
 	{
 		ccd_set continuousCollisionResults;
 
-		for(auto bodyAABBoxHitRay : bodiesAABBoxHitRay)
+		for(auto bodyAABBoxHit : bodiesAABBoxHit)
 		{
-			PhysicsTransform fromToB = bodyAABBoxHitRay->getPhysicsTransform();
-			TemporalObject temporalObjectB(bodyAABBoxHitRay->getShape(), fromToB, fromToB);
-
-			std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisioncResult = gjkContinuousCollisionAlgorithm.calculateTimeOfImpact(temporalObject, temporalObjectB, bodyAABBoxHitRay);
-			if(continuousCollisioncResult)
+			const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
+			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
 			{
-				continuousCollisionResults.insert(continuousCollisioncResult);
+				const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape);
+				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
+				for(const auto &localizedShape : localizedShapes)
+				{
+					PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform() * localizedShape->transform;
+					TemporalObject temporalObject2(localizedShape->shape.get(), fromToObject2, fromToObject2);
+
+					continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+				}
+			}else
+			{
+				PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
+				TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
+
+				continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 			}
 		}
 
 		return continuousCollisionResults;
 	}
 
+	/**
+	 * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
+	 */
+	void NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject1, const TemporalObject &temporalObject2,
+			AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
+	{
+		std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisioncResult = gjkContinuousCollisionAlgorithm
+				.calculateTimeOfImpact(temporalObject1, temporalObject2, body2);
+
+		if(continuousCollisioncResult)
+		{
+			continuousCollisionResults.insert(continuousCollisioncResult);
+		}
+	}
+
 	ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-		CollisionSphereShape pointShapeA(0.0f);
-		PhysicsTransform fromA = PhysicsTransform(ray.getOrigin());
-		PhysicsTransform toA = PhysicsTransform(ray.computeTo());
-		TemporalObject rayCastObjectA(&pointShapeA, fromA, toA);
+		CollisionSphereShape pointShape(0.0f);
+		PhysicsTransform from = PhysicsTransform(ray.getOrigin());
+		PhysicsTransform to = PhysicsTransform(ray.computeTo());
+		TemporalObject rayCastObject(&pointShape, from, to);
 
-		return continuousCollissionTest(rayCastObjectA, bodiesAABBoxHitRay);
+		return continuousCollissionTest(rayCastObject, bodiesAABBoxHitRay);
 	}
 
 }

@@ -25,9 +25,9 @@ namespace urchin
 			CylinderShape<float>::CylinderOrientation getCylinderOrientation() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
-			std::shared_ptr<CollisionSphereShape> retrieveSphereShape() const;
 
 			AABBox<float> toAABBox(const PhysicsTransform &) const;
+			std::shared_ptr<CollisionSphereShape> toConfinedSphereShape() const;
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
 
 			Vector3<float> computeLocalInertia(float) const;

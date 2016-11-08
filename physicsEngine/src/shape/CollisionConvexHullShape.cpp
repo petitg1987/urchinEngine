@@ -65,7 +65,7 @@ namespace urchin
 			}
 		}
 
-		sphereShape = std::make_shared<CollisionSphereShape>(std::sqrt(minSquareDistance));
+		confinedSphereShape = std::make_shared<CollisionSphereShape>(std::sqrt(minSquareDistance));
 	}
 
 	CollisionShape3D::ShapeType CollisionConvexHullShape::getShapeType() const
@@ -104,11 +104,6 @@ namespace urchin
 		}
 
 		return std::make_shared<CollisionConvexHullShape>(newPoints);
-	}
-
-	std::shared_ptr<CollisionSphereShape> CollisionConvexHullShape::retrieveSphereShape() const
-	{
-		return sphereShape;
 	}
 
 	AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform &physicsTransform) const
@@ -152,6 +147,11 @@ namespace urchin
 		}
 
 		return AABBox<float>(min + pos, max + pos);
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionConvexHullShape::toConfinedSphereShape() const
+	{
+		return confinedSphereShape;
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const

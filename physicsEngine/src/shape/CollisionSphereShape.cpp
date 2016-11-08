@@ -34,15 +34,15 @@ namespace urchin
 		return std::make_shared<CollisionSphereShape>(sphereShape.getRadius() * scale);
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionSphereShape::retrieveSphereShape() const
-	{
-		return std::make_shared<CollisionSphereShape>(sphereShape.getRadius());
-	}
-
 	AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		return AABBox<float>(position - sphereShape.getRadius(), position + sphereShape.getRadius());
+	}
+
+	std::shared_ptr<CollisionSphereShape> CollisionSphereShape::toConfinedSphereShape() const
+	{
+		return std::make_shared<CollisionSphereShape>(sphereShape.getRadius());
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionSphereShape::toConvexObject(const PhysicsTransform &physicsTransform) const

@@ -56,8 +56,8 @@ namespace urchin
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
 		if(bodiesAABBoxHitBody.size() > 0)
 		{
-			std::shared_ptr<CollisionSphereShape> bodySphereShape = body->getShape()->retrieveSphereShape();
-			TemporalObject temporalObject(bodySphereShape.get(), from, to);
+			std::shared_ptr<CollisionSphereShape> bodyConfinedSphereShape = body->getShape()->toConfinedSphereShape();
+			TemporalObject temporalObject(bodyConfinedSphereShape.get(), from, to);
 			ccd_set ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
 
 			if(ccdResults.size() > 0)
@@ -74,10 +74,6 @@ namespace urchin
 				{
 					body->setLinearVelocity((body->getLinearVelocity() / currentSpeed) * maxLinearVelocity);
 				}
-
-				//TODO Handle compound objects:
-				// - ccdMotionThreshold should be defined by body or shape ?
-				// - Crash in narrow phase if TemporalObject is created for compound & crash in ray test if ray hit compound shape
 			}
 		}
 
