@@ -26,10 +26,8 @@ namespace urchin
 
 	void CollisionBoxShape::computeSafeMargin()
 	{
-		const Vector3<float> &halfSizes = getHalfSizes();
-		float minAxis = (halfSizes.X < halfSizes.Y) ? ((halfSizes.X < halfSizes.Z) ? halfSizes.X : halfSizes.Z) : ((halfSizes.Y < halfSizes.Z) ? halfSizes.Y : halfSizes.Z);
 		float maximumMarginPercentage = ConfigService::instance()->getFloatValue("collisionShape.maximumMarginPercentage");
-		float maximumSafeMargin = minAxis * maximumMarginPercentage;
+		float maximumSafeMargin = boxShape.getMinHalfSize() * maximumMarginPercentage;
 
 		refreshInnerMargin(maximumSafeMargin);
 	}
@@ -68,11 +66,6 @@ namespace urchin
 		return AABBox<float>(position - extend, position + extend);
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionBoxShape::toConfinedSphereShape() const
-	{
-		return std::make_shared<CollisionSphereShape>(boxShape.getMinHalfSize());
-	}
-
 	std::shared_ptr<CollisionConvexObject3D> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
@@ -92,6 +85,16 @@ namespace urchin
 		float localInertia2 = (1.0/12.0) * mass * (width*width + depth*depth);
 		float localInertia3 = (1.0/12.0) * mass * (width*width + height*height);
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
+	}
+
+	float CollisionBoxShape::getLargestDistance() const
+	{
+		return boxShape.getMaxHalfSize() * 2.0f;
+	}
+
+	float CollisionBoxShape::getSmallestDistance() const
+	{
+		return boxShape.getMinHalfSize() * 2.0f;
 	}
 
 }

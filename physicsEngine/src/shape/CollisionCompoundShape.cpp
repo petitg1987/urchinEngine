@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <limits>
 
 #include "shape/CollisionSphereShape.h"
 #include "shape/CollisionCompoundShape.h"
@@ -15,7 +16,7 @@ namespace urchin
 			throw std::invalid_argument("Compound shape must be composed of at least one shape.");
 		}
 
-		initializeSphareShape();
+		initializeDistances();
 	}
 
 	CollisionCompoundShape::~CollisionCompoundShape()
@@ -23,15 +24,32 @@ namespace urchin
 
 	}
 
-	void CollisionCompoundShape::initializeSphareShape()
+	void CollisionCompoundShape::initializeDistances()
 	{
-		AABBox<float> aabbox = toAABBox(PhysicsTransform());
-		confinedSphereShape = std::make_shared<CollisionSphereShape>(aabbox.getMinHalfSize());
+		largestDistance = 0.0f;
+		smallestDistance = std::numeric_limits<float>::max();
+		for(const auto &localizedShape : localizedShapes)
+		{
+			if(localizedShape->shape->getLargestDistance() > largestDistance)
+			{
+				largestDistance = localizedShape->shape->getLargestDistance();
+			}
+
+			if(localizedShape->shape->getSmallestDistance() < smallestDistance)
+			{
+				smallestDistance = localizedShape->shape->getSmallestDistance();
+			}
+		}
 	}
 
 	CollisionShape3D::ShapeType CollisionCompoundShape::getShapeType() const
 	{
 		return CollisionShape3D::COMPOUND_SHAPE;
+	}
+
+	const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &CollisionCompoundShape::getLocalizedShapes() const
+	{
+		return localizedShapes;
 	}
 
 	std::shared_ptr<CollisionShape3D> CollisionCompoundShape::scale(float scale) const
@@ -66,11 +84,6 @@ namespace urchin
 		return globalCompoundBox;
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionCompoundShape::toConfinedSphereShape() const
-	{
-		return confinedSphereShape;
-	}
-
 	std::shared_ptr<CollisionConvexObject3D> CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		throw std::runtime_error("To convex object unsupported for compound shape");
@@ -89,9 +102,14 @@ namespace urchin
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 
-	const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &CollisionCompoundShape::getLocalizedShapes() const
+	float CollisionCompoundShape::getLargestDistance() const
 	{
-		return localizedShapes;
+		return largestDistance;
+	}
+
+	float CollisionCompoundShape::getSmallestDistance() const
+	{
+		return smallestDistance;
 	}
 
 }

@@ -75,11 +75,6 @@ namespace urchin
 		return AABBox<float>(position - extend, position + extend);
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionCapsuleShape::toConfinedSphereShape() const
-	{
-		return std::make_shared<CollisionSphereShape>(capsuleShape.getRadius());
-	}
-
 	std::shared_ptr<CollisionConvexObject3D> CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
@@ -102,6 +97,16 @@ namespace urchin
 		float localInertia2 = (1.0/12.0) * mass * (widthSquare + depthSquare);
 		float localInertia3 = (1.0/12.0) * mass * (widthSquare + heightSquare);
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
+	}
+
+	float CollisionCapsuleShape::getLargestDistance() const
+	{
+		return capsuleShape.getCylinderHeight() + capsuleShape.getRadius() * 2.0f;
+	}
+
+	float CollisionCapsuleShape::getSmallestDistance() const
+	{
+		return capsuleShape.getRadius() * 2.0f;
 	}
 
 }

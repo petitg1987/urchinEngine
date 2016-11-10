@@ -27,22 +27,24 @@ namespace urchin
 			std::shared_ptr<CollisionShape3D> scale(float) const;
 
 			AABBox<float> toAABBox(const PhysicsTransform &) const;
-			std::shared_ptr<CollisionSphereShape> toConfinedSphereShape() const;
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
 
 			Vector3<float> computeLocalInertia(float) const;
+			float getLargestDistance() const;
+			float getSmallestDistance() const;
 
 		private:
 			void initialize();
 			void initializeConvexHullReduced();
-			void initializeSphereShape();
+			void initializeDistances();
 
 			ConvexHull3D<float> transformConvexHull(const ConvexHull3D<float> &, const PhysicsTransform &) const;
 
 			const ConvexHull3D<float> convexHull; //shape including margin
 			std::unique_ptr<ConvexHull3D<float>> convexHullReduced; //shape where margin has been subtracted
 
-			std::shared_ptr<CollisionSphereShape> confinedSphereShape; //largest sphere included in convex hull
+			float largestDistance;
+			float smallestDistance;
 	};
 
 }

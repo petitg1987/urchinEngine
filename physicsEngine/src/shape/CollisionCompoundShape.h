@@ -26,23 +26,24 @@ namespace urchin
 			~CollisionCompoundShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
+			const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &getLocalizedShapes() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
 
 			AABBox<float> toAABBox(const PhysicsTransform &) const;
-			std::shared_ptr<CollisionSphereShape> toConfinedSphereShape() const;
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
 
 			Vector3<float> computeLocalInertia(float) const;
-
-			const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &getLocalizedShapes() const;
+			float getLargestDistance() const;
+			float getSmallestDistance() const;
 
 		private:
-			void initializeSphareShape();
+			void initializeDistances();
 
 			const std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedShapes;
 
-			std::shared_ptr<CollisionSphereShape> confinedSphereShape; //largest sphere included in compound shape
+			float largestDistance;
+			float smallestDistance;
 	};
 
 }

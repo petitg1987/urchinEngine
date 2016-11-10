@@ -36,7 +36,7 @@ namespace urchin
 	void CollisionConvexHullShape::initialize()
 	{
 		initializeConvexHullReduced();
-		initializeSphereShape();
+		initializeDistances();
 	}
 
 	void CollisionConvexHullShape::initializeConvexHullReduced()
@@ -49,23 +49,29 @@ namespace urchin
 		}
 	}
 
-	void CollisionConvexHullShape::initializeSphereShape()
+	void CollisionConvexHullShape::initializeDistances()
 	{
+		largestDistance = 0.0f;
+		smallestDistance = std::numeric_limits<float>::max();
+
 		AABBox<float> aabbox = toAABBox(PhysicsTransform());
 		Point3<float> boxCenterPoint = aabbox.getCenterPoint();
 
 		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
-		float minSquareDistance = std::numeric_limits<float>::max();
 		for(std::vector<Point3<float>>::const_iterator it=convexHullPoints.begin(); it!=convexHullPoints.end(); ++it)
 		{
-			float squareDistance = boxCenterPoint.squareDistance(*it);
-			if(squareDistance < minSquareDistance)
+			float distance = boxCenterPoint.distance(*it) * 2.0f;
+
+			if(distance > largestDistance)
 			{
-				minSquareDistance = squareDistance;
+				largestDistance = distance;
+			}
+
+			if(distance < smallestDistance)
+			{
+				smallestDistance = distance;
 			}
 		}
-
-		confinedSphereShape = std::make_shared<CollisionSphereShape>(std::sqrt(minSquareDistance));
 	}
 
 	CollisionShape3D::ShapeType CollisionConvexHullShape::getShapeType() const
@@ -149,11 +155,6 @@ namespace urchin
 		return AABBox<float>(min + pos, max + pos);
 	}
 
-	std::shared_ptr<CollisionSphereShape> CollisionConvexHullShape::toConfinedSphereShape() const
-	{
-		return confinedSphereShape;
-	}
-
 	std::shared_ptr<CollisionConvexObject3D> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		ConvexHull3D<float> convexHullWithMargin = transformConvexHull(convexHull, physicsTransform);
@@ -189,6 +190,16 @@ namespace urchin
 		float localInertia2 = (1.0/12.0) * mass * (width*width + depth*depth);
 		float localInertia3 = (1.0/12.0) * mass * (width*width + height*height);
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
+	}
+
+	float CollisionConvexHullShape::getLargestDistance() const
+	{
+		return largestDistance;
+	}
+
+	float CollisionConvexHullShape::getSmallestDistance() const
+	{
+		return smallestDistance;
 	}
 
 }
