@@ -30,7 +30,7 @@ namespace urchin
 		private:
 			void addContactPointsToManifold(const ManifoldResult &, bool);
 
-			CollisionAlgorithmSelector *collisionAlgorithmSelector;
+			CollisionAlgorithmSelector *const collisionAlgorithmSelector;
 	};
 
 }

@@ -8,9 +8,10 @@ namespace urchin
 {
 
 	CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
-			CollisionAlgorithm(objectSwapped, result)
+			CollisionAlgorithm(objectSwapped, result),
+			collisionAlgorithmSelector(new CollisionAlgorithmSelector())
 	{
-		collisionAlgorithmSelector = new CollisionAlgorithmSelector();
+
 	}
 
 	CompoundCollisionAlgorithm::~CompoundCollisionAlgorithm()
@@ -34,11 +35,11 @@ namespace urchin
 					body1, localizedShape->shape.get(), body2, &otherShape);
 			const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 
-			PhysicsTransform shapeWorldTransform = body1->getPhysicsTransform() * localizedShape->transform;
-			CollisionObjectWrapper object1(*localizedShape->shape, shapeWorldTransform);
-			CollisionObjectWrapper object2(otherShape, body2->getPhysicsTransform());
+			PhysicsTransform shapeWorldTransform = object1.getShapeWorldTransform() * localizedShape->transform;
+			CollisionObjectWrapper subObject1(*localizedShape->shape, shapeWorldTransform);
+			CollisionObjectWrapper subObject2(otherShape, object2.getShapeWorldTransform());
 
-			collisionAlgorithm->processCollisionAlgorithm(object1, object2, false);
+			collisionAlgorithm->processCollisionAlgorithm(subObject1, subObject2, false);
 
 			const ManifoldResult &algorithmManifoldResult = constCollisionAlgorithm->getManifoldResult();
 			addContactPointsToManifold(algorithmManifoldResult, constCollisionAlgorithm->isObjectSwapped());
@@ -59,7 +60,7 @@ namespace urchin
 						manifolContactPoint.getLocalPointOnObject2(),
 						manifolContactPoint.getLocalPointOnObject1(),
 						manifolContactPoint.getDepth(),
-						false);
+						manifolContactPoint.isPredictive());
 
 			}else
 			{
@@ -70,7 +71,7 @@ namespace urchin
 						manifolContactPoint.getLocalPointOnObject1(),
 						manifolContactPoint.getLocalPointOnObject2(),
 						manifolContactPoint.getDepth(),
-						true);
+						manifolContactPoint.isPredictive());
 			}
 		}
 	}
