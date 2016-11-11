@@ -96,14 +96,14 @@ namespace urchin
 		return inertia;
 	}
 
-	float CollisionCylinderShape::getLargestDistance() const
+	float CollisionCylinderShape::getMaxDistanceToCenter() const
 	{
-		return std::max(cylinderShape.getHeight(), cylinderShape.getRadius() * 2.0f);
+		return std::max(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius());
 	}
 
-	float CollisionCylinderShape::getSmallestDistance() const
+	float CollisionCylinderShape::getMinDistanceToCenter() const
 	{
-		return std::min(cylinderShape.getHeight(), cylinderShape.getRadius() * 2.0f);
+		return std::min(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius());
 	}
 
 }

@@ -26,18 +26,14 @@ namespace urchin
 
 	void CollisionCompoundShape::initializeDistances()
 	{
-		largestDistance = 0.0f;
-		smallestDistance = std::numeric_limits<float>::max();
+		maxDistanceToCenter = toAABBox(PhysicsTransform()).getMaxHalfSize();
+
+		minDistanceToCenter = std::numeric_limits<float>::max();
 		for(const auto &localizedShape : localizedShapes)
 		{
-			if(localizedShape->shape->getLargestDistance() > largestDistance)
+			if(localizedShape->shape->getMinDistanceToCenter() < minDistanceToCenter)
 			{
-				largestDistance = localizedShape->shape->getLargestDistance();
-			}
-
-			if(localizedShape->shape->getSmallestDistance() < smallestDistance)
-			{
-				smallestDistance = localizedShape->shape->getSmallestDistance();
+				minDistanceToCenter = localizedShape->shape->getMinDistanceToCenter();
 			}
 		}
 	}
@@ -102,14 +98,14 @@ namespace urchin
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 
-	float CollisionCompoundShape::getLargestDistance() const
+	float CollisionCompoundShape::getMaxDistanceToCenter() const
 	{
-		return largestDistance;
+		return maxDistanceToCenter;
 	}
 
-	float CollisionCompoundShape::getSmallestDistance() const
+	float CollisionCompoundShape::getMinDistanceToCenter() const
 	{
-		return smallestDistance;
+		return minDistanceToCenter;
 	}
 
 }

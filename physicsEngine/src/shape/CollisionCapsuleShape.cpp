@@ -99,14 +99,14 @@ namespace urchin
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 
-	float CollisionCapsuleShape::getLargestDistance() const
+	float CollisionCapsuleShape::getMaxDistanceToCenter() const
 	{
-		return capsuleShape.getCylinderHeight() + capsuleShape.getRadius() * 2.0f;
+		return capsuleShape.getCylinderHeight()/2.0f + capsuleShape.getRadius();
 	}
 
-	float CollisionCapsuleShape::getSmallestDistance() const
+	float CollisionCapsuleShape::getMinDistanceToCenter() const
 	{
-		return capsuleShape.getRadius() * 2.0f;
+		return capsuleShape.getRadius();
 	}
 
 }

@@ -87,14 +87,14 @@ namespace urchin
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 
-	float CollisionBoxShape::getLargestDistance() const
+	float CollisionBoxShape::getMaxDistanceToCenter() const
 	{
-		return boxShape.getMaxHalfSize() * 2.0f;
+		return boxShape.getMaxHalfSize();
 	}
 
-	float CollisionBoxShape::getSmallestDistance() const
+	float CollisionBoxShape::getMinDistanceToCenter() const
 	{
-		return boxShape.getMinHalfSize() * 2.0f;
+		return boxShape.getMinHalfSize();
 	}
 
 }

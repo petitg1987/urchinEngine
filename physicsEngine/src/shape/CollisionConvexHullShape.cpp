@@ -51,27 +51,9 @@ namespace urchin
 
 	void CollisionConvexHullShape::initializeDistances()
 	{
-		largestDistance = 0.0f;
-		smallestDistance = std::numeric_limits<float>::max();
-
 		AABBox<float> aabbox = toAABBox(PhysicsTransform());
-		Point3<float> boxCenterPoint = aabbox.getCenterPoint();
-
-		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
-		for(std::vector<Point3<float>>::const_iterator it=convexHullPoints.begin(); it!=convexHullPoints.end(); ++it)
-		{
-			float distance = boxCenterPoint.distance(*it) * 2.0f;
-
-			if(distance > largestDistance)
-			{
-				largestDistance = distance;
-			}
-
-			if(distance < smallestDistance)
-			{
-				smallestDistance = distance;
-			}
-		}
+		maxDistanceToCenter = aabbox.getMaxHalfSize();
+		minDistanceToCenter = aabbox.getMinHalfSize();
 	}
 
 	CollisionShape3D::ShapeType CollisionConvexHullShape::getShapeType() const
@@ -192,14 +174,14 @@ namespace urchin
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 
-	float CollisionConvexHullShape::getLargestDistance() const
+	float CollisionConvexHullShape::getMaxDistanceToCenter() const
 	{
-		return largestDistance;
+		return maxDistanceToCenter;
 	}
 
-	float CollisionConvexHullShape::getSmallestDistance() const
+	float CollisionConvexHullShape::getMinDistanceToCenter() const
 	{
-		return smallestDistance;
+		return minDistanceToCenter;
 	}
 
 }

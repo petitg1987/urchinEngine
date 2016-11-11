@@ -30,8 +30,8 @@ namespace urchin
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
 
 			Vector3<float> computeLocalInertia(float) const;
-			float getLargestDistance() const;
-			float getSmallestDistance() const;
+			float getMaxDistanceToCenter() const;
+			float getMinDistanceToCenter() const;
 
 		private:
 			void computeSafeMargin();

@@ -30,8 +30,8 @@ namespace urchin
 			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
 
 			Vector3<float> computeLocalInertia(float) const;
-			float getLargestDistance() const;
-			float getSmallestDistance() const;
+			float getMaxDistanceToCenter() const;
+			float getMinDistanceToCenter() const;
 
 		private:
 			void initialize();
@@ -43,8 +43,8 @@ namespace urchin
 			const ConvexHull3D<float> convexHull; //shape including margin
 			std::unique_ptr<ConvexHull3D<float>> convexHullReduced; //shape where margin has been subtracted
 
-			float largestDistance;
-			float smallestDistance;
+			float minDistanceToCenter;
+			float maxDistanceToCenter;
 	};
 
 }

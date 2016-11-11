@@ -58,7 +58,7 @@ namespace urchin
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
 		if(bodiesAABBoxHitBody.size() > 0)
 		{
-			auto bodyEncompassedSphereShape = std::make_shared<CollisionSphereShape>(body->getShape()->getSmallestDistance() / 2.0f);
+			auto bodyEncompassedSphereShape = std::make_shared<CollisionSphereShape>(body->getShape()->getMinDistanceToCenter());
 			TemporalObject temporalObject(bodyEncompassedSphereShape.get(), from, to);
 			ccd_set ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
 

@@ -412,7 +412,7 @@ namespace urchin
 	std::vector<AbstractWorkBody *> SweepAndPrune::bodyTest(const AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
 	{ //Brute force method (slow). Prefer use AABB Tree algorithm for broad phase when ray tests are needed.
 		Ray<float> ray(from.getPosition(), to.getPosition());
-		float bodyBoundingSphereRadius = body->getShape()->getLargestDistance() / 2.0f;
+		float bodyBoundingSphereRadius = body->getShape()->getMaxDistanceToCenter();
 
 		return enlargedRayTest(ray, bodyBoundingSphereRadius, body);
 	}

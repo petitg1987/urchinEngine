@@ -41,8 +41,8 @@ namespace urchin
 			virtual std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const = 0;
 
 			virtual Vector3<float> computeLocalInertia(float) const = 0;
-			virtual float getLargestDistance() const = 0;
-			virtual float getSmallestDistance() const = 0;
+			virtual float getMaxDistanceToCenter() const = 0;
+			virtual float getMinDistanceToCenter() const = 0;
 
 			#ifdef _DEBUG
 				void checkInnerMarginQuality(const std::string &) const;

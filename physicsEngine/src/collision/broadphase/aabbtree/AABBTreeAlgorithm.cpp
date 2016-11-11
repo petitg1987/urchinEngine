@@ -51,7 +51,7 @@ namespace urchin
 		bodiesAABBoxHitBody.reserve(15);
 
 		Ray<float> ray(from.getPosition(), to.getPosition());
-		float bodyBoundingSphereRadius = body->getShape()->getLargestDistance() / 2.0f;
+		float bodyBoundingSphereRadius = body->getShape()->getMaxDistanceToCenter();
 
 		tree->enlargedRayTest(ray, bodyBoundingSphereRadius, body, bodiesAABBoxHitBody);
 
