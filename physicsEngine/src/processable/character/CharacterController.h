@@ -68,6 +68,7 @@ namespace urchin
 			const float percentageControlInAir;
 
 			PhysicsWorld *physicsWorld;
+			std::vector<ManifoldResult> manifoldResults;
 			mutable std::mutex characterMutex;
 			WorkGhostBody *ghostBody;
 			PhysicsTransform ghostBodyTransform;

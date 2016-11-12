@@ -5,7 +5,8 @@ namespace urchin
 
 	IslandElementLink::IslandElementLink() :
 		element(nullptr),
-		islandIdRef(0)
+		islandIdRef(0),
+		linkedToStaticElement(false)
 	{
 
 	}

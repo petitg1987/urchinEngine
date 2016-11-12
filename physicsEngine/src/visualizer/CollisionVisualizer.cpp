@@ -25,11 +25,11 @@ namespace urchin
 				{
 					std::lock_guard<std::mutex> lock(visualizerDataMutex);
 
-					const std::vector<ManifoldResult> *manifoldResults = collisionWorld->getLastUpdatedManifoldResults();
+					const std::vector<ManifoldResult> &manifoldResults = collisionWorld->getLastUpdatedManifoldResults();
 					this->manifoldResults.clear();
-					for(unsigned int i=0; i<manifoldResults->size(); ++i)
+					for(unsigned int i=0; i<manifoldResults.size(); ++i)
 					{
-						this->manifoldResults.push_back(manifoldResults->at(i));
+						this->manifoldResults.push_back(manifoldResults[i]);
 					}
 
 					break;
@@ -38,7 +38,7 @@ namespace urchin
 		}
 	}
 
-	const std::vector<ManifoldResult> &CollisionVisualizer::getManifoldResult() const
+	const std::vector<ManifoldResult> &CollisionVisualizer::getManifoldResults() const
 	{
 		std::lock_guard<std::mutex> lock(visualizerDataMutex);
 

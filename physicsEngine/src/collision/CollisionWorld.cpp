@@ -14,8 +14,7 @@ namespace urchin
 			integrateVelocityManager(new IntegrateVelocityManager(bodyManager)),
 			constraintSolverManager(new ConstraintSolverManager()),
 			islandManager(new IslandManager(bodyManager)),
-			integrateTransformManager(new IntegrateTransformManager(bodyManager, broadPhaseManager, narrowPhaseManager)),
-			manifoldResults(nullptr)
+			integrateTransformManager(new IntegrateTransformManager(bodyManager, broadPhaseManager, narrowPhaseManager))
 	{
 
 	}
@@ -53,25 +52,26 @@ namespace urchin
 		//broad phase: determine pairs of bodies potentially colliding based on their AABBox
 		const std::vector<OverlappingPair *> &overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
-		//narrow phase: check if pair of bodies colliding and return collision constraints
-		manifoldResults = narrowPhaseManager->process(dt, overlappingPairs);
+		//narrow phase: check if pair of bodies colliding and update collision constraints
+		manifoldResults.clear();
+		narrowPhaseManager->process(dt, overlappingPairs, manifoldResults);
 		notifyObservers(this, COLLISION_RESULT_UPDATED);
 
 		//integrate bodies velocities (gravity, external forces...)
-		integrateVelocityManager->integrateVelocity(dt, (*manifoldResults), gravity);
+		integrateVelocityManager->integrateVelocity(dt, manifoldResults, gravity);
 
 		//constraints solver: solve collision constraints
-		constraintSolverManager->solveConstraints(dt, (*manifoldResults));
+		constraintSolverManager->solveConstraints(dt, manifoldResults);
 
 		//update bodies state and integrate transformations
-		islandManager->refreshBodyActiveState(overlappingPairs);
+		islandManager->refreshBodyActiveState(manifoldResults);
 		integrateTransformManager->integrateTransform(dt);
 
 		//apply work bodies to bodies
 		bodyManager->applyWorkBodies();
 	}
 
-	const std::vector<ManifoldResult> *CollisionWorld::getLastUpdatedManifoldResults()
+	const std::vector<ManifoldResult> &CollisionWorld::getLastUpdatedManifoldResults()
 	{
 		return manifoldResults;
 	}

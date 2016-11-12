@@ -230,14 +230,15 @@ namespace urchin
 
 		for(unsigned int subStepIndex=0; subStepIndex<RECOVER_PENETRATION_SUB_STEPS; ++subStepIndex)
 		{
-			std::vector<ManifoldResult> *manifoldResults = physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody);
+			manifoldResults.clear();
+			physicsWorld->getCollisionWorld()->getNarrowPhaseManager()->processGhostBody(ghostBody, manifoldResults);
 
-			for(std::vector<ManifoldResult>::const_iterator it = manifoldResults->begin(); it!=manifoldResults->end(); ++it)
+			for(const auto &manifoldResult : manifoldResults)
 			{
-				float sign = it->getBody1()==ghostBody ? -1.0 : 1.0;
-				for(unsigned int i=0; i<it->getNumContactPoints(); ++i)
+				float sign = manifoldResult.getBody1()==ghostBody ? -1.0 : 1.0;
+				for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i)
 				{
-					const ManifoldContactPoint &manifoldContactPoint = it->getManifoldContactPoint(i);
+					const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
 					float depth = manifoldContactPoint.getDepth();
 
 					if(depth < MIN_RECOVERABLE_DEPTH)

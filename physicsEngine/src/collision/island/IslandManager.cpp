@@ -5,8 +5,8 @@ namespace urchin
 
 	IslandManager::IslandManager(const BodyManager *bodyManager) :
 		bodyManager(bodyManager),
-		linearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
-		angularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold"))
+		squaredLinearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold") * ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
+		squaredAngularSleepingThreshold(ConfigService::instance()->getFloatValue("island.angularSleepingThreshold") * ConfigService::instance()->getFloatValue("island.angularSleepingThreshold"))
 	{
 
 	}
@@ -21,9 +21,9 @@ namespace urchin
 	 * If one body of the island cannot sleep, we set their status to active.
 	 * @param overlappingPairs Overlapping pairs of broad phase used to determine the islands
 	 */
-	void IslandManager::refreshBodyActiveState(const std::vector<OverlappingPair *> &overlappingPairs)
+	void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult> &manifoldResults)
 	{
-		buildIslands(overlappingPairs);
+		buildIslands(manifoldResults);
 		const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
 		#ifdef _DEBUG
@@ -36,21 +36,32 @@ namespace urchin
 			unsigned int startElementIndex = i;
 			unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
 
-			bool allBodiesCanSleep = true;
+			bool islandLinkedToStaticElement = false;
+			bool islandBodiesCanSleep = true;
 			for(unsigned int j=0; j<nbElements; ++j)
 			{ //loop on elements of the island
 				WorkRigidBody *body = static_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
 				if(isBodyMoving(body))
 				{
-					allBodiesCanSleep = false;
+					islandBodiesCanSleep = false;
 					break;
 				}
+
+				if(body->isActive())
+				{
+					islandLinkedToStaticElement = islandLinkedToStaticElement || islandElementsLink[startElementIndex+j].linkedToStaticElement;
+				}else
+				{ //inactive elements are always linked to a static element
+					islandLinkedToStaticElement = true;
+				}
+
 			}
+			islandBodiesCanSleep = islandBodiesCanSleep && islandLinkedToStaticElement; //one element of the island must be in contact with a static element to sleep the island
 
 			for(unsigned int j=0; j<nbElements; ++j)
 			{ //loop on elements of the island
 				WorkRigidBody *body = static_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
-				bool bodyActiveState = !allBodiesCanSleep;
+				bool bodyActiveState = !islandBodiesCanSleep;
 				if(body->isActive()!=bodyActiveState)
 				{
 					body->setIsActive(bodyActiveState);
@@ -67,7 +78,7 @@ namespace urchin
 		}
 	}
 
-	void IslandManager::buildIslands(const std::vector<OverlappingPair *> &overlappingPairs)
+	void IslandManager::buildIslands(const std::vector<ManifoldResult> &manifoldResults)
 	{
 		//1. create an island for each body
 		std::vector<IslandElement *> islandElements;
@@ -83,14 +94,23 @@ namespace urchin
 		islandContainer.reset(islandElements);
 
 		//2. merge islands for bodies in contact
-		for(std::vector<OverlappingPair *>::const_iterator it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
+		for(const auto &manifoldResult : manifoldResults)
 		{
-			AbstractWorkBody *body1 = (*it)->getBody1();
-			AbstractWorkBody *body2 = (*it)->getBody2();
-
-			if(!body1->isStatic() && !body2->isStatic())
+			if(manifoldResult.getNumContactPoints() > 0)
 			{
-				islandContainer.mergeIsland(body1, body2);
+				AbstractWorkBody *body1 = manifoldResult.getBody1();
+				AbstractWorkBody *body2 = manifoldResult.getBody2();
+
+				if(!body1->isStatic() && !body2->isStatic())
+				{
+					islandContainer.mergeIsland(body1, body2);
+				}else if(!body1->isStatic() && body2->isStatic())
+				{
+					islandContainer.linkToStaticElement(body1);
+				}else if(!body2->isStatic() && body1->isStatic())
+				{
+					islandContainer.linkToStaticElement(body2);
+				}
 			}
 		}
 	}
@@ -113,8 +133,8 @@ namespace urchin
 
 	bool IslandManager::isBodyMoving(const WorkRigidBody *body) const
 	{
-		if(body->getLinearVelocity().squareLength() < linearSleepingThreshold*linearSleepingThreshold
-				&& body->getAngularVelocity().squareLength() < angularSleepingThreshold*angularSleepingThreshold)
+		if(body->getLinearVelocity().squareLength() < squaredLinearSleepingThreshold
+				&& body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold)
 		{
 			return false;
 		}

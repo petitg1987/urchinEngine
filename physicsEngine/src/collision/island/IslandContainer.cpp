@@ -56,6 +56,12 @@ namespace urchin
 		islandElementsLink[islandId1].islandIdRef = islandId2;
 	}
 
+	void IslandContainer::linkToStaticElement(IslandElement *element)
+	{
+		unsigned int islandId = findIslandId(element->getIslandElementId());
+		islandElementsLink[islandId].linkedToStaticElement = true;
+	}
+
 	/**
 	 * Sorts the islands by ID and returns them.
 	 * Once the islands sorted, the container is not usable anymore and need to be reset.
