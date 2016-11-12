@@ -47,14 +47,7 @@ namespace urchin
 					break;
 				}
 
-				if(body->isActive())
-				{
-					islandLinkedToStaticElement = islandLinkedToStaticElement || islandElementsLink[startElementIndex+j].linkedToStaticElement;
-				}else
-				{ //inactive elements are always linked to a static element
-					islandLinkedToStaticElement = true;
-				}
-
+				islandLinkedToStaticElement = islandLinkedToStaticElement || islandElementsLink[startElementIndex+j].linkedToStaticElement;
 			}
 			islandBodiesCanSleep = islandBodiesCanSleep && islandLinkedToStaticElement; //one element of the island must be in contact with a static element to sleep the island
 

@@ -35,6 +35,7 @@ namespace urchin
 			islandElements[i]->setIslandElementId(i);
 
 			islandElementsLink[i].element = islandElements[i];
+			islandElementsLink[i].linkedToStaticElement = !islandElements[i]->isActive();
 			islandElementsLink[i].islandIdRef = i;
 		}
 	}

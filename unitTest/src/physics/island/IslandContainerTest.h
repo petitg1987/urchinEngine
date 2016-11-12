@@ -30,6 +30,11 @@ class TestBody : public urchin::IslandElement
 			return id;
 		}
 
+		bool isActive() const
+		{
+			return true;
+		}
+
 	private:
 		unsigned int id;
 };
