@@ -59,7 +59,8 @@ namespace urchin
 		
 			//attributes for Image
 			unsigned int width, height;
-			int format, internalFormat;
+			unsigned int componentsCount;
+			Image::ImageFormat format;
 			unsigned char *texels;
 	};
 

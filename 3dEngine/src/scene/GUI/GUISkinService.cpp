@@ -52,12 +52,12 @@ namespace urchin
 		}
 
 		//creates the image width*height
-		int internalFormat = imgWidget->getInternalFormat(); //shortcut
-		unsigned char *texels = new unsigned char[height*width*internalFormat];
+		unsigned int componentsCount = imgWidget->getComponentsCount(); //shortcut
+		unsigned char *texels = new unsigned char[height*width*componentsCount];
 
 		unsigned int widthMinusRight = std::max(0, (int)width-(int)right);
 		unsigned int heightMinusBottom = std::max(0, (int)height-(int)bottom);
-		unsigned int leftMultiplyInternalFormat = std::min(width, left*internalFormat);
+		unsigned int leftMultiplyInternalFormat = std::min(width, left*componentsCount);
 		unsigned int topAdjusted = std::min(height, top);
 
 		//copy corner top left
@@ -65,52 +65,52 @@ namespace urchin
 		{
 			for(unsigned int j=0;j<leftMultiplyInternalFormat;++j)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*internalFormat + j];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*componentsCount + j];
 			}
 		}
 
 		//copy top
 		for(unsigned int i=0;i<topAdjusted;++i)
 		{
-			for(unsigned int j=left*internalFormat, k=0;j<widthMinusRight*internalFormat;++j, ++k)
+			for(unsigned int j=left*componentsCount, k=0;j<widthMinusRight*componentsCount;++j, ++k)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*internalFormat + k%((imgWidget->getWidth()-(right+left))*internalFormat) + left*internalFormat];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*componentsCount + k%((imgWidget->getWidth()-(right+left))*componentsCount) + left*componentsCount];
 			}
 		}
 
 		//copy corner top right
 		for(unsigned int i=0;i<topAdjusted;++i)
 		{
-			for(unsigned int j=widthMinusRight*internalFormat, k=(imgWidget->getWidth()-right)*internalFormat;j<width*internalFormat;++j, ++k)
+			for(unsigned int j=widthMinusRight*componentsCount, k=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++k)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*internalFormat + k];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[i*imgWidget->getWidth()*componentsCount + k];
 			}
 		}
 
 		//copy right
 		for(unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k)
 		{
-			for(unsigned int j=widthMinusRight*internalFormat, l=(imgWidget->getWidth()-right)*internalFormat;j<width*internalFormat;++j, ++l)
+			for(unsigned int j=widthMinusRight*componentsCount, l=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++l)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*internalFormat + l];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*componentsCount + l];
 			}
 		}
 
 		//copy corner bottom right
 		for(unsigned int i=heightMinusBottom, k=imgWidget->getHeight()-bottom;i<height;++i, ++k)
 		{
-			for(unsigned int j=widthMinusRight*internalFormat, l=(imgWidget->getWidth()-right)*internalFormat;j<width*internalFormat;++j, ++l)
+			for(unsigned int j=widthMinusRight*componentsCount, l=(imgWidget->getWidth()-right)*componentsCount;j<width*componentsCount;++j, ++l)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[k*imgWidget->getWidth()*internalFormat + l];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[k*imgWidget->getWidth()*componentsCount + l];
 			}
 		}
 
 		//copy bottom
 		for(unsigned int i=heightMinusBottom, k=imgWidget->getHeight()-bottom;i<height;++i, ++k)
 		{
-			for(unsigned int j=left*internalFormat, l=0;j<widthMinusRight*internalFormat;++j, ++l)
+			for(unsigned int j=left*componentsCount, l=0;j<widthMinusRight*componentsCount;++j, ++l)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[k*imgWidget->getWidth()*internalFormat + l%((imgWidget->getWidth()-(left+right))*internalFormat) + left*internalFormat];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[k*imgWidget->getWidth()*componentsCount + l%((imgWidget->getWidth()-(left+right))*componentsCount) + left*componentsCount];
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace urchin
 		{
 			for(unsigned int j=0;j<leftMultiplyInternalFormat;++j)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[(k + imgWidget->getHeight()-bottom)*imgWidget->getWidth()*internalFormat + j];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k + imgWidget->getHeight()-bottom)*imgWidget->getWidth()*componentsCount + j];
 			}
 		}
 
@@ -128,21 +128,21 @@ namespace urchin
 		{
 			for(unsigned int j=0;j<leftMultiplyInternalFormat;++j)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*internalFormat + j];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*componentsCount + j];
 			}
 		}
 
 		//copy middle
 		for(unsigned int i=top, k=0;i<heightMinusBottom;++i, ++k)
 		{
-			for(unsigned int j=leftMultiplyInternalFormat, l=0;j<widthMinusRight*internalFormat;++j, ++l)
+			for(unsigned int j=leftMultiplyInternalFormat, l=0;j<widthMinusRight*componentsCount;++j, ++l)
 			{
-				texels[i*width*internalFormat + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*internalFormat + l%((imgWidget->getWidth()-(left+right))*internalFormat) + left*internalFormat];
+				texels[i*width*componentsCount + j] = imgWidget->getTexels()[(k%(imgWidget->getHeight()-(top+bottom)) + top)*imgWidget->getWidth()*componentsCount + l%((imgWidget->getWidth()-(left+right))*componentsCount) + left*componentsCount];
 			}
 		}
 
 		//create the texture
-		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(imgWidget->getInternalFormat(), width, height, imgWidget->getFormat(), texels), Resource::ResourceDeleter());
+		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(componentsCount, width, height, imgWidget->getImageFormat(), texels), Resource::ResourceDeleter());
 		texWidget->toTexture(false, false);
 
 		imgWidget->release();

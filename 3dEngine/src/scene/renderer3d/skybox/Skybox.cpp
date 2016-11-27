@@ -18,12 +18,12 @@ namespace urchin
 			offsetY(0.0)
 	{
 		texSkybox = new Image*[6];
-		texSkybox[0] = new Image(GL_RGB, 1, 1, GL_RGB, new unsigned char[3]{0, 0, 0});
-		texSkybox[1] = new Image(GL_RGB, 1, 1, GL_RGB, new unsigned char[3]{0, 0, 0});
-		texSkybox[2] = new Image(GL_RGB, 1, 1, GL_RGB, new unsigned char[3]{0, 0, 0});
-		texSkybox[3] = new Image(GL_RGB, 1, 1, GL_RGB, new unsigned char[3]{0, 0, 0});
-		texSkybox[4] = new Image(GL_RGB, 1, 1, GL_RGB, new unsigned char[3]{0, 0, 0});
-		texSkybox[5] = new Image(GL_RGB, 1, 1, GL_RGB, new unsigned char[3]{0, 0, 0});
+		texSkybox[0] = new Image(3, 1, 1, Image::IMAGE_RGB, new unsigned char[3]{0, 0, 0});
+		texSkybox[1] = new Image(3, 1, 1, Image::IMAGE_RGB, new unsigned char[3]{0, 0, 0});
+		texSkybox[2] = new Image(3, 1, 1, Image::IMAGE_RGB, new unsigned char[3]{0, 0, 0});
+		texSkybox[3] = new Image(3, 1, 1, Image::IMAGE_RGB, new unsigned char[3]{0, 0, 0});
+		texSkybox[4] = new Image(3, 1, 1, Image::IMAGE_RGB, new unsigned char[3]{0, 0, 0});
+		texSkybox[5] = new Image(3, 1, 1, Image::IMAGE_RGB, new unsigned char[3]{0, 0, 0});
 
 		initialize();
 	}
@@ -73,7 +73,7 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 		for (int i=0; i<6; i++)
 		{
-			glTexImage2D(cubeMapTarget[i], 0, texSkybox[i]->getInternalFormat(), texSkybox[i]->getWidth(), texSkybox[i]->getHeight(), 0, texSkybox[i]->getFormat(), GL_UNSIGNED_BYTE, texSkybox[i]->getTexels());
+			glTexImage2D(cubeMapTarget[i], 0, texSkybox[i]->retrieveInternalFormat(), texSkybox[i]->getWidth(), texSkybox[i]->getHeight(), 0, texSkybox[i]->retrieveFormat(), GL_UNSIGNED_BYTE, texSkybox[i]->getTexels());
 			texSkybox[i]->release();
 		}
 		delete [] texSkybox;

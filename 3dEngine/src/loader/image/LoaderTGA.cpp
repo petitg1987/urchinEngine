@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-#include <GL/gl.h>
 #include <fstream>
 #include <stdexcept>
 #include "UrchinCommon.h"
@@ -14,8 +12,8 @@ namespace urchin
 			data(nullptr),
 			width(0),
 			height(0),
-			format(0),
-			internalFormat(0),
+			componentsCount(0),
+			format(Image::IMAGE_RGB),
 			texels(nullptr)
 	{
 
@@ -61,7 +59,7 @@ namespace urchin
 
 		//memory allocation for pixel data
 		getImageInfo(header);
-		texels = new unsigned char[width*height*internalFormat];
+		texels = new unsigned char[width*height*componentsCount];
 
 		//reads image data
 		switch(header.imageType)
@@ -155,13 +153,13 @@ namespace urchin
 		short origin = ((int)header.imageDescriptor & 0x20)>>5; //0:origin bottom, 1:origin top
 		if(origin==0)
 		{ //inverses the texels
-			unsigned char *texelsInverse = new unsigned char[width*height*internalFormat];
+			unsigned char *texelsInverse = new unsigned char[width*height*componentsCount];
 			
 			for(unsigned int i=0, iInverse=height-1;i<height;i++, iInverse--)
 			{
-				for(unsigned int j=0;j<width*internalFormat;j++)
+				for(unsigned int j=0;j<width*componentsCount;j++)
 				{
-					texelsInverse[i*(width*internalFormat) + j] = texels[iInverse*(width*internalFormat) + j];
+					texelsInverse[i*(width*componentsCount) + j] = texels[iInverse*(width*componentsCount) + j];
 				}
 			}
 			
@@ -170,7 +168,7 @@ namespace urchin
 		}
 		
 		
-		return (new Image(internalFormat, width, height, format, texels));
+		return (new Image(componentsCount, width, height, format, texels));
 	}
 
 	void LoaderTGA::getImageInfo(const TgaHeader &header)
@@ -185,12 +183,12 @@ namespace urchin
 			{
 				if(header.pixelDepth==8)
 				{
-					format = GL_LUMINANCE;
-					internalFormat = 1;
+					format = Image::IMAGE_LUMINANCE;
+					componentsCount = 1;
 				}else //16 bits
 				{
-					format = GL_LUMINANCE_ALPHA;
-					internalFormat = 2;
+					format = Image::IMAGE_LUMINANCE_ALPHA;
+					componentsCount = 2;
 				}
 
 				break;
@@ -204,12 +202,12 @@ namespace urchin
 				//8 bits and 16 bits images will be converted to 24 bits
 				if(header.pixelDepth<=24)
 				{
-					format = GL_RGB;
-					internalFormat = 3;
+					format = Image::IMAGE_RGB;
+					componentsCount = 3;
 				}else //32 bits
 				{
-					format = GL_RGBA;
-					internalFormat = 4;
+					format = Image::IMAGE_RGBA;
+					componentsCount = 4;
 				}
 
 				break;

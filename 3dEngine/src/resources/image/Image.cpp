@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <stdexcept>
+#include <cassert>
 
 #include "resources/image/Image.h"
 #include "texture/TextureManager.h"
@@ -8,8 +9,8 @@
 namespace urchin
 {
 
-	Image::Image(int internalFormat, unsigned int width, unsigned int height, int format, unsigned char *texels) : Resource(),
-			internalFormat(internalFormat),
+	Image::Image(unsigned int componentsCount, unsigned int width, unsigned int height, ImageFormat format, unsigned char *texels) : Resource(),
+			componentsCount(componentsCount),
 			width(width),
 			height(height),
 			format(format),
@@ -17,7 +18,9 @@ namespace urchin
 			isTexture(false),
 			textureID(0)
 	{
-
+		#ifdef _DEBUG
+			assert(componentsCount >=0 && componentsCount<=4);
+		#endif
 	}
 
 	Image::~Image()
@@ -31,9 +34,9 @@ namespace urchin
 		}
 	}
 
-	int Image::getInternalFormat() const
+	unsigned int Image::getComponentsCount() const
 	{
-		return internalFormat;
+		return componentsCount;
 	}
 
 	unsigned int Image::getWidth() const
@@ -46,7 +49,7 @@ namespace urchin
 		return height;
 	}
 
-	int Image::getFormat() const
+	Image::ImageFormat Image::getImageFormat() const
 	{
 		return format;
 	}
@@ -58,6 +61,46 @@ namespace urchin
 			throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
 		}
 		return texels;
+	}
+
+	int Image::retrieveInternalFormat() const
+	{
+		if(componentsCount==1)
+		{
+			return GL_R;
+		}else if(componentsCount==2)
+		{
+			return GL_RG;
+		}else if(componentsCount==3)
+		{
+			return GL_RGB;
+		}else if(componentsCount==4)
+		{
+			return GL_RGBA;
+		}else
+		{
+			throw std::runtime_error("Unknown image components count: " + std::to_string(componentsCount) + ".");
+		}
+	}
+
+	int Image::retrieveFormat() const
+	{
+		if(format==Image::IMAGE_LUMINANCE)
+		{
+			return GL_LUMINANCE;
+		}else if(format==Image::IMAGE_LUMINANCE_ALPHA)
+		{
+			return GL_LUMINANCE_ALPHA;
+		}else if(format==Image::IMAGE_RGB)
+		{
+			return GL_RGB;
+		}else if(format==Image::IMAGE_RGBA)
+		{
+			return GL_RGBA;
+		}else
+		{
+			throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
+		}
 	}
 
 	unsigned int Image::toTexture(bool needMipmaps, bool needAnisotropy)
@@ -86,7 +129,7 @@ namespace urchin
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, texels);
+		glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, texels);
 
 		if(needMipmaps)
 		{

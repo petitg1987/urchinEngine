@@ -9,24 +9,35 @@ namespace urchin
 	class Image : public Resource
 	{
 		public:
-			Image(int, unsigned int, unsigned int, int, unsigned char *);
+			enum ImageFormat
+			{
+				IMAGE_RGB,
+				IMAGE_RGBA,
+				IMAGE_LUMINANCE,
+				IMAGE_LUMINANCE_ALPHA
+			};
+
+			Image(unsigned int, unsigned int, unsigned int, ImageFormat, unsigned char *);
 			~Image();
-			
-			int getInternalFormat() const;
+
+			unsigned int getComponentsCount() const;
 			unsigned int getWidth() const;
 			unsigned int getHeight() const;
-			int getFormat() const;
+			ImageFormat getImageFormat() const;
 			unsigned char *getTexels() const;
+
+			int retrieveInternalFormat() const;
+			int retrieveFormat() const;
 		
 			unsigned int toTexture(bool, bool);
 			unsigned int getTextureID() const;
 			
 		private:
-			int internalFormat;	//number of component of the image
-			unsigned int width;	//width
-			unsigned int height; //height
-			int format; //RGB, RGBA, LUMINANCE or LUMINANCE_ALPHA
-			unsigned char *texels; //picture data
+			unsigned int componentsCount;
+			unsigned int width;
+			unsigned int height;
+			ImageFormat format;
+			unsigned char *texels;
 			
 			bool isTexture;
 			unsigned int textureID;

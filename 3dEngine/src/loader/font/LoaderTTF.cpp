@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -165,7 +163,7 @@ namespace urchin
 			}
 		}
 
-		Image *texAlphabet = new Image(GL_RGBA, dimensionTexture, dimensionTexture, GL_RGBA, texels);
+		Image *texAlphabet = new Image(4, dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, texels);
 		texAlphabet->toTexture(false, false);
 		
 		//clears buffers of letters
