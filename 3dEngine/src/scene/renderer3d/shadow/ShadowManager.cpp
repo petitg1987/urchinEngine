@@ -13,6 +13,7 @@
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "utils/filter/TextureFilter.h"
 #include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
+#include "utils/filter/downsample/DownSampleFilterBuilder.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5
@@ -602,7 +603,7 @@ namespace urchin
 		shadowDatas[light]->setDepthTextureID(textureIDs[0]);
 		shadowDatas[light]->setShadowMapTextureID(textureIDs[1]);
 
-		//blur shadow map
+		//add shadow map filter
 		if(blurShadow!=BlurShadow::NO_BLUR)
 		{
 			std::shared_ptr<TextureFilter> verticalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
@@ -614,7 +615,6 @@ namespace urchin
 					->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
 					->blurSize(static_cast<int>(blurShadow))
 					->build();
-			shadowDatas[light]->setVerticalBlurFilter(verticalBlurFilter);
 
 			std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
 					->textureSize(shadowMapResolution, shadowMapResolution)
@@ -625,7 +625,20 @@ namespace urchin
 					->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
 					->blurSize(static_cast<int>(blurShadow))
 					->build();
-			shadowDatas[light]->setHorizontalBlurFilter(horizontalBlurFilter);
+
+			shadowDatas[light]->addTextureFilter(verticalBlurFilter);
+			shadowDatas[light]->addTextureFilter(horizontalBlurFilter);
+		}else
+		{ //null filter necessary because it allow to store cached shadow map in a texture which is not cleared with a glClear().
+			std::shared_ptr<TextureFilter> nullFilter = std::make_unique<DownSampleFilterBuilder>()
+					->textureSize(shadowMapResolution, shadowMapResolution)
+					->textureType(GL_TEXTURE_2D_ARRAY)
+					->textureNumberLayer(nbShadowMaps)
+					->textureInternalFormat(GL_RG32F)
+					->textureFormat(GL_RG)
+					->build();
+
+			shadowDatas[light]->addTextureFilter(nullFilter);
 		}
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
@@ -677,20 +690,7 @@ namespace urchin
 			shadowModelDisplayer->setModels(shadowData->retrieveModels());
 			shadowModelDisplayer->display(shadowData->getLightViewMatrix());
 
-			if(blurShadow!=BlurShadow::NO_BLUR)
-			{
-				unsigned int layersToUpdate = 0;
-				for(unsigned int i=0; i<shadowData->getNbFrustumShadowData(); ++i)
-				{
-					if(shadowData->getFrustumShadowData(i)->needShadowMapUpdate())
-					{
-						layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
-					}
-				}
-
-				shadowData->getVerticalBlurFilter()->applyOn(shadowData->getShadowMapTextureID(), layersToUpdate);
-				shadowData->getHorizontalBlurFilter()->applyOn(shadowData->getVerticalBlurFilter()->getTextureID(), layersToUpdate);
-			}
+			shadowData->applyTextureFilters();
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
@@ -710,9 +710,7 @@ namespace urchin
 
 				unsigned int shadowMapTextureUnit = shadowMapTextureUnitStart + i;
 				glActiveTexture(GL_TEXTURE0 + shadowMapTextureUnit);
-				unsigned int shadowMapTextureID = (blurShadow==BlurShadow::NO_BLUR)
-						? shadowData->getShadowMapTextureID() : shadowData->getHorizontalBlurFilter()->getTextureID();
-				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowMapTextureID);
+				glBindTexture(GL_TEXTURE_2D_ARRAY, shadowData->getFilteredShadowMapTextureID());
 
 				glUniform1i(lightsLocation[i].shadowMapTexLoc, shadowMapTextureUnit);
 

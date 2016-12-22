@@ -8,6 +8,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common/Debug"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common/debug"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common/targetLinux"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="urchinCommon" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
@@ -62,6 +63,9 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>

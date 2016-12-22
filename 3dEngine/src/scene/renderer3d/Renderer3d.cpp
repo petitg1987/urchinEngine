@@ -524,14 +524,15 @@ namespace urchin
 	void Renderer3d::lightingPassRendering()
 	{
 		ShaderManager::instance()->bind(deferredShadingShader);
+		unsigned int nextTextureUnit = 0;
 
-		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]);
 
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]);
 
-		glActiveTexture(GL_TEXTURE2);
+		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]);
 
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
@@ -542,16 +543,15 @@ namespace urchin
 			lightManager->loadLights();
 		}
 
-		unsigned int shadowMapTextureUnitStart = 3;
 		if(isShadowActivated)
 		{
-			shadowManager->loadShadowMaps(camera->getViewMatrix(), shadowMapTextureUnitStart);
+			shadowManager->loadShadowMaps(camera->getViewMatrix(), nextTextureUnit);
+			nextTextureUnit += shadowManager->getNumberShadowMaps();
 		}
 
 		if(isAmbientOcclusionActivated)
 		{
-			unsigned int ambientOcclusionTexrtureUnitStart = shadowMapTextureUnitStart + shadowManager->getNumberShadowMaps();
-			ambientOcclusionManager->loadAOTexture(ambientOcclusionTexrtureUnitStart);
+			ambientOcclusionManager->loadAOTexture(nextTextureUnit++);
 		}
 
 		lightingPassQuadDisplayer->display();

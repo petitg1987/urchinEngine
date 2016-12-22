@@ -13,9 +13,7 @@ namespace urchin
 			light(light),
 			fboID(0),
 			depthTextureID(0),
-			shadowMapTextureID(0),
-			verticalBlurFilter(nullptr),
-			horizontalBlurFilter(nullptr)
+			shadowMapTextureID(0)
 	{
 		for(unsigned int frustumSplitIndex =0; frustumSplitIndex<nbFrustumsplit; ++frustumSplitIndex)
 		{
@@ -71,24 +69,39 @@ namespace urchin
 		return shadowMapTextureID;
 	}
 
-	void ShadowData::setVerticalBlurFilter(const std::shared_ptr<const TextureFilter> &verticalBlurFilter)
+	void ShadowData::addTextureFilter(const std::shared_ptr<const TextureFilter> &textureFilter)
 	{
-		this->verticalBlurFilter = verticalBlurFilter;
+		textureFilters.push_back(textureFilter);
 	}
 
-	std::shared_ptr<const TextureFilter> ShadowData::getVerticalBlurFilter() const
+	void ShadowData::applyTextureFilters()
 	{
-		return verticalBlurFilter;
+		unsigned int layersToUpdate = 0;
+		for(unsigned int i=0; i<getNbFrustumShadowData(); ++i)
+		{
+			if(getFrustumShadowData(i)->needShadowMapUpdate())
+			{
+				layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
+			}
+		}
+
+		unsigned int textureId = shadowMapTextureID;
+		for(auto &textureFilter : textureFilters)
+		{
+			textureFilter->applyOn(textureId, layersToUpdate);
+			textureId = textureFilter->getTextureID();
+		}
 	}
 
-	void ShadowData::setHorizontalBlurFilter(const std::shared_ptr<const TextureFilter> &horizontalBlurFilter)
+	unsigned int ShadowData::getFilteredShadowMapTextureID() const
 	{
-		this->horizontalBlurFilter = horizontalBlurFilter;
-	}
+		unsigned int textureFiltersSize = textureFilters.size();
+		if(textureFiltersSize == 0)
+		{
+			return shadowMapTextureID;
+		}
 
-	std::shared_ptr<const TextureFilter> ShadowData::getHorizontalBlurFilter() const
-	{
-		return horizontalBlurFilter;
+		return textureFilters[textureFiltersSize-1]->getTextureID();
 	}
 
 	void ShadowData::setLightViewMatrix(const Matrix4<float> &lightViewMatrix)
