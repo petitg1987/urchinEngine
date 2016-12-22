@@ -5,15 +5,14 @@ namespace urchin
 
 	template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
 		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.epaMaxIteration")),
-		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance")),
-		debugRecorder(nullptr)
+		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance"))
 	{
 
 	}
 
 	template<class T> EPAAlgorithm<T>::~EPAAlgorithm()
 	{
-		delete debugRecorder;
+
 	}
 
 	template<class T> std::unique_ptr<EPAResult<T>> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D &convexObject1, const CollisionConvexObject3D &convexObject2,
@@ -60,12 +59,6 @@ namespace urchin
 		Vector3<T> normal;
 		T distanceToOrigin;
 
-		if(debugRecorder!=nullptr)
-		{
-			debugRecorder->recordPoint("Origin", Point3<T>(0.0, 0.0, 0.0));
-			debugRecorder->recordConvexHull("ConvexHull" + std::to_string(iterationNumber), convexHull);
-		}
-
 		while(true)
 		{
 			itClosestTriangleData = getClosestTriangleData(trianglesData);
@@ -89,27 +82,12 @@ namespace urchin
 
 			if(!closeEnough)
 			{ //polytope can be extended in direction of normal: add a new point
-				if(debugRecorder)
-				{
-					if(iterationNumber!=0)
-					{
-						debugRecorder->clearEntity("Point" + std::to_string(iterationNumber));
-					}
-					debugRecorder->recordPoint("Point" + std::to_string(iterationNumber+1), minkowskiDiffPoint);
-				}
-
 				std::vector<unsigned int> newTriangleIndexes;
 				std::vector<unsigned int> removedTriangleIndexes;
 				unsigned int index = convexHull.addNewPoint(minkowskiDiffPoint, newTriangleIndexes, removedTriangleIndexes);
 				if(index==0)
 				{ //finally, polytope cannot by extended in direction of normal. Cause: numerical imprecision.
 					break;
-				}
-
-				if(debugRecorder!=nullptr)
-				{
-					debugRecorder->clearEntity("ConvexHull" + std::to_string(iterationNumber));
-					debugRecorder->recordConvexHull("ConvexHull" + std::to_string(iterationNumber+1), convexHull);
 				}
 
 				//compute new triangles data
@@ -385,11 +363,6 @@ namespace urchin
 		const Vector3<T> normal = triangle.computeNormal();
 
 		return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
-	}
-
-	template<class T> void EPAAlgorithm<T>::setupDebugRecorder(DebugRecorder<T> *debugRecorder)
-	{
-		this->debugRecorder = debugRecorder;
 	}
 
 	#ifdef _DEBUG

@@ -9,7 +9,6 @@
 #include "tools/xml/XmlWriter.h"
 #include "tools/xml/XmlAttribute.h"
 #include "tools/xml/XmlChunk.h"
-#include "tools/debug/DebugRecorder.h"
 
 #include "pattern/observer/Observable.h"
 #include "pattern/observer/Observer.h"
