@@ -9,6 +9,7 @@
 #include <string>
 
 #include "ShadowManager.h"
+#include "scene/renderer3d/shadow/filter/ModelProduceShadowFilter.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "utils/filter/TextureFilter.h"
@@ -408,7 +409,7 @@ namespace urchin
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], light, shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
-				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
+				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
 				shadowData->getFrustumShadowData(i)->updateModels(models);
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
@@ -494,25 +495,20 @@ namespace urchin
 		bool boxInitialized = false;
 
 		AABBox<float> aabboxSceneIndependentViewSpace = obboxSceneIndependentViewSpace.toAABBox();
-
 		for(std::set<Model *>::iterator it = models.begin(); it!=models.end(); ++it)
 		{
-			const Model* model = *it;
-			if(model->isProduceShadow())
+			const std::vector<AABBox<float>> &splittedAABBox = (*it)->getSplittedAABBox();
+			for(unsigned int i=0; i<splittedAABBox.size(); ++i)
 			{
-				const std::vector<AABBox<float>> &splittedAABBox = model->getSplittedAABBox();
-				for(unsigned int i=0; i<splittedAABBox.size(); ++i)
+				if(splittedAABBox.size()==1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
 				{
-					if(splittedAABBox.size()==1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
+					if(boxInitialized)
 					{
-						if(boxInitialized)
-						{
-							aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splittedAABBox[i]);
-						}else
-						{
-							aabboxSceneDependent = lightViewMatrix * splittedAABBox[i];
-							boxInitialized = true;
-						}
+						aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splittedAABBox[i]);
+					}else
+					{
+						aabboxSceneDependent = lightViewMatrix * splittedAABBox[i];
+						boxInitialized = true;
 					}
 				}
 			}
@@ -742,26 +738,21 @@ namespace urchin
 			throw std::invalid_argument("shadow manager doesn't know this light.");
 		}
 
-		//scene independent (red)
 		const Matrix4<float> &lightViewMatrix = itShadowData->second->getLightViewMatrix();
 		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, light, lightViewMatrix);
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 
-		OBBoxModel sceneIndependentObboxModel(obboxSceneIndependentViewSpace);
-		sceneIndependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
-		sceneIndependentObboxModel.setColor(1.0, 0.0, 0.0);
-		sceneIndependentObboxModel.display(viewMatrix);
+		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
+		if(models.size()!=0)
+		{
+			AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, models, lightViewMatrix);
+			OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);
 
-		//scene dependent (green)
-		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace);
-		AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
-				models, lightViewMatrix);
-		OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);
-
-		OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
-		sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
-		sceneDependentObboxModel.setColor(0.0, 1.0, 0.0);
-		sceneDependentObboxModel.display(viewMatrix);
+			OBBoxModel sceneDependentObboxModel(obboxSceneDependentViewSpace);
+			sceneDependentObboxModel.onCameraProjectionUpdate(projectionMatrix);
+			sceneDependentObboxModel.setColor(0.0, 1.0, 0.0);
+			sceneDependentObboxModel.display(viewMatrix);
+		}
 	}
 #endif
 

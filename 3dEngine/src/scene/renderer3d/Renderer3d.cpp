@@ -510,10 +510,11 @@ namespace urchin
 
 			//display scene box visible from light based on splitted frustums
 //			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-//			for(Frustum<float> frustum : shadowManager->getSplittedFrustums())
+//			for(auto &frustum : shadowManager->getSplittedFrustums())
 //			{
 //				shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
 //			}
+
 		#endif
 	}
 

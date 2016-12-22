@@ -1,8 +1,6 @@
 #ifndef ENGINE_OCTREEABLEFILTER_H
 #define ENGINE_OCTREEABLEFILTER_H
 
-#include "UrchinCommon.h"
-
 namespace urchin
 {
 

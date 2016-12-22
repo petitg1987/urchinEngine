@@ -35,6 +35,3 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 - Map Editor:
   - Add > 3d model, rigid body and sound on scene
   - Debug > view light scope, hitbox, sound trigger
-  
-- Debug Visualizer:
-  - Possiblity to debug EPA algorithm visually step by step
