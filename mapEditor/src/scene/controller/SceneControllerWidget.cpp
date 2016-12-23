@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "SceneControllerWidget.h"
 
 namespace urchin
@@ -95,9 +97,21 @@ namespace urchin
 		sceneController=nullptr;
 	}
 
-	int SceneControllerWidget::getTabSelected() const
+	SceneControllerWidget::TabName SceneControllerWidget::getTabSelected() const
 	{
-		return this->currentIndex();
+		int tabIndex = this->currentIndex();
+		if(tabIndex==0)
+		{
+			return TabName::OBJECTS;
+		}else if(tabIndex==1)
+		{
+			return TabName::LIGHTS;
+		}else if(tabIndex==2)
+		{
+			return TabName::SOUNDS;
+		}
+
+		throw std::runtime_error("Unknown selected tab index: " + std::to_string(tabIndex));
 	}
 
 	void SceneControllerWidget::tabSelected()

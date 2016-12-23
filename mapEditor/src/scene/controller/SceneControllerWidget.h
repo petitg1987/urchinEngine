@@ -27,6 +27,13 @@ namespace urchin
 				TAB_SELECTED
 			};
 
+			enum TabName
+			{
+				OBJECTS,
+				LIGHTS,
+				SOUNDS
+			};
+
 			ObjectControllerWidget *getObjectControllerWidget() const;
 			LightControllerWidget *getLightControllerWidget() const;
 			SoundControllerWidget *getSoundControllerWidget() const;
@@ -39,7 +46,7 @@ namespace urchin
 			void saveMap(const std::string &);
 			void closeMap();
 
-			int getTabSelected() const;
+			TabName getTabSelected() const;
 
 		private:
 			SceneController *sceneController;

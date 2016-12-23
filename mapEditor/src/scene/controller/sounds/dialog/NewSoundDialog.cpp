@@ -7,6 +7,7 @@
 #include "UrchinCommon.h"
 #include "NewSoundDialog.h"
 #include "support/LabelStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 
 namespace urchin
 {
@@ -20,13 +21,17 @@ namespace urchin
 	{
 		this->setWindowTitle("New Sound");
 		this->resize(530, 160);
+		this->setFixedSize(this->width(),this->height());
 
-		setupNameFields();
-		setupSoundFilenameFields();
-		setupSoundTypeFields();
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 120, 475, 22));
+		setupNameFields(mainLayout);
+		setupSoundFilenameFields(mainLayout);
+		setupSoundTypeFields(mainLayout);
+
+		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 4, 0, 1, 3, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -34,37 +39,41 @@ namespace urchin
 		QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	}
 
-	void NewSoundDialog::setupNameFields()
+	void NewSoundDialog::setupNameFields(QGridLayout *mainLayout)
 	{
-		soundNameLabel = new QLabel("Sound Name:", this);
-		soundNameLabel->setGeometry(QRect(10, 20, 110, 22));
+		soundNameLabel = new QLabel("Sound Name:");
+		mainLayout->addWidget(soundNameLabel, 0, 0);
 
-		soundNameText = new QLineEdit(this);
-		soundNameText->setGeometry(QRect(120, 20, 360, 22));
+		soundNameText = new QLineEdit();
+		mainLayout->addWidget(soundNameText, 0, 1);
+		soundNameText->setFixedWidth(360);
 	}
 
-	void NewSoundDialog::setupSoundFilenameFields()
+	void NewSoundDialog::setupSoundFilenameFields(QGridLayout *mainLayout)
 	{
-		soundFilenameLabel = new QLabel("Sound File:", this);
-		soundFilenameLabel->setGeometry(QRect(10, 50, 110, 22));
+		soundFilenameLabel = new QLabel("Sound File:");
+		mainLayout->addWidget(soundFilenameLabel, 1, 0);
 
-		soundFilenameText = new QLineEdit(this);
+		soundFilenameText = new QLineEdit();
+		mainLayout->addWidget(soundFilenameText, 1, 1);
 		soundFilenameText->setReadOnly(true);
-		soundFilenameText->setGeometry(QRect(120, 50, 360, 22));
+		soundFilenameText->setFixedWidth(360);
 
-		QPushButton *selectMeshFileButton = new QPushButton("...", this);
-		selectMeshFileButton->setGeometry(QRect(485, 50, 22, 22));
+		QPushButton *selectMeshFileButton = new QPushButton("...");
+		mainLayout->addWidget(selectMeshFileButton, 1, 2);
+		ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
+		selectMeshFileButton->setFixedWidth(22);
 		connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showSoundFilenameDialog()));
 	}
 
-
-	void NewSoundDialog::setupSoundTypeFields()
+	void NewSoundDialog::setupSoundTypeFields(QGridLayout *mainLayout)
 	{
-		soundTypeLabel = new QLabel("Sound Type:", this);
-		soundTypeLabel->setGeometry(QRect(10, 80, 110, 22));
+		soundTypeLabel = new QLabel("Sound Type:");
+		mainLayout->addWidget(soundTypeLabel, 2, 0);
 
-		soundTypeComboBox = new QComboBox(this);
-		soundTypeComboBox->setGeometry(QRect(120, 80, 175, 22));
+		soundTypeComboBox = new QComboBox();
+		mainLayout->addWidget(soundTypeComboBox, 2, 1);
+		soundTypeComboBox->setFixedWidth(150);
 		soundTypeComboBox->addItem(AMBIENT_SOUND_LABEL, QVariant(Sound::SoundType::AMBIENT));
 		soundTypeComboBox->addItem(POINT_SOUND_LABEL, QVariant(Sound::SoundType::POINT));
 	}

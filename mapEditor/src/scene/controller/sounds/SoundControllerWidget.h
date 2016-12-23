@@ -64,6 +64,8 @@ namespace urchin
 
 			QGroupBox *soundPropertiesGroupBox;
 			QGroupBox *soundTriggerGroupBox;
+			QGroupBox *specificTriggerShapeGroupBox;
+			QGroupBox *specificPointSoundGroupBox;
 
 			bool disableSoundEvent;
 
@@ -72,7 +74,6 @@ namespace urchin
 			QLabel *soundType;
 
 			//sound specific properties
-			QGroupBox *specificPointSoundGroupBox;
 			QDoubleSpinBox *positionX, *positionY, *positionZ, *inaudibleDistance;
 
 			//sound behavior
@@ -81,7 +82,6 @@ namespace urchin
 			QLabel *soundTriggerType;
 
 			//sound trigger specific properties
-			QGroupBox *specificTriggerShapeGroupBox;
 			QGridLayout *triggerShapeLayout;
 			QPushButton *changeSoundTriggerTypeButton;
 			QLabel *soundShapeType;

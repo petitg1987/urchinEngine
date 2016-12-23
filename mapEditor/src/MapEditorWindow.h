@@ -59,6 +59,7 @@ namespace urchin
 			void executeExitAction();
 
 			void executeViewPropertiesChangeAction();
+			SceneControllerWidget::TabName getConcernedTabFor(SceneDisplayer::ViewProperties);
 	};
 
 }

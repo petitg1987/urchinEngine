@@ -22,7 +22,7 @@ namespace urchin
 		soundTableView = new SoundTableView();
 		mainLayout->addWidget(soundTableView);
 		soundTableView->addObserver(this, SoundTableView::SELECTION_CHANGED);
-		soundTableView->setFixedSize(QSize(375, 220));
+		soundTableView->setFixedHeight(220);
 
 		QHBoxLayout *buttonsLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonsLayout);
@@ -40,8 +40,8 @@ namespace urchin
 		connect(removeSoundButton, SIGNAL(clicked()), this, SLOT(removeSelectedSound()));
 
 		soundPropertiesGroupBox = new QGroupBox("Sound Properties");
-		soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		mainLayout->addWidget(soundPropertiesGroupBox);
+		soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
 		soundPropertiesGroupBox->hide();
 
@@ -50,13 +50,12 @@ namespace urchin
 		setupSpecificPointSoundBox(soundPropertiesLayout);
 
 		soundTriggerGroupBox = new QGroupBox("Sound Trigger");
-		soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		mainLayout->addWidget(soundTriggerGroupBox);
+		soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
 		soundTriggerGroupBox->hide();
 
 		QVBoxLayout *soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
-		soundTriggerLayout->setSizeConstraint(QLayout::SetMinimumSize);
 		setupSoundBehaviorPropertiesBox(soundTriggerLayout);
 		setupSpecificTriggerShapeBox(soundTriggerLayout);
 	}

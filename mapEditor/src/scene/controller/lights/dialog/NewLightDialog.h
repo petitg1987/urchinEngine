@@ -1,6 +1,7 @@
 #ifndef ENGINE_MAPEDITOR_NEWLIGHTDIALOG_H
 #define ENGINE_MAPEDITOR_NEWLIGHTDIALOG_H
 
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
@@ -25,8 +26,8 @@ namespace urchin
 			SceneLight *getSceneLight() const;
 
 		private:
-			void setupNameFields();
-			void setupLightTypeFields();
+			void setupNameFields(QGridLayout *);
+			void setupLightTypeFields(QGridLayout *);
 
 			void updateLightName();
 			int buildSceneLight(int);

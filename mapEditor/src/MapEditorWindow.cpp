@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <QApplication>
 #include <QMenuBar>
 #include <QtWidgets/QStatusBar>
@@ -369,12 +370,30 @@ namespace urchin
 	{
 		for(int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
 		{
-			bool isViewChecked = viewActions[i]->isChecked();
-			bool isCorrespondingTabSelected = (sceneControllerWidget==nullptr && i==0) ||
-					(sceneControllerWidget!=nullptr && i==sceneControllerWidget->getTabSelected());
+			SceneDisplayer::ViewProperties viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
-			sceneDisplayerWidget->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), isViewChecked && isCorrespondingTabSelected);
+			bool isViewChecked = viewActions[i]->isChecked();
+			bool isCorrespondingTabSelected = (sceneControllerWidget==nullptr && i==0)
+					|| (sceneControllerWidget!=nullptr && getConcernedTabFor(viewProperties)==sceneControllerWidget->getTabSelected());
+
+			sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
 		}
+	}
+
+	SceneControllerWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties)
+	{
+		if(SceneDisplayer::MODEL_PHYSICS==viewProperties)
+		{
+			return SceneControllerWidget::OBJECTS;
+		}else if(SceneDisplayer::LIGHT_SCOPE==viewProperties)
+		{
+			return SceneControllerWidget::LIGHTS;
+		}else if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
+		{
+			return SceneControllerWidget::SOUNDS;
+		}
+
+		throw new std::runtime_error("Impossible to find concerned tab for properties: " + viewProperties);
 	}
 
 }

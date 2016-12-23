@@ -2,6 +2,7 @@
 #define ENGINE_MAPEDITOR_CHANGESOUNDTRIGGERDIALOG_H
 
 #include <list>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
@@ -25,7 +26,7 @@ namespace urchin
 			SoundTrigger::TriggerType getTriggerType() const;
 
 		private:
-			void setupSoundTriggerTypeFields();
+			void setupSoundTriggerTypeFields(QGridLayout *);
 
 			void done(int);
 

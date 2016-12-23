@@ -17,12 +17,16 @@ namespace urchin
 	{
 		this->setWindowTitle("New Light");
 		this->resize(530, 130);
+		this->setFixedSize(this->width(),this->height());
 
-		setupNameFields();
-		setupLightTypeFields();
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 90, 475, 22));
+		setupNameFields(mainLayout);
+		setupLightTypeFields(mainLayout);
+
+		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -30,22 +34,24 @@ namespace urchin
 		QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	}
 
-	void NewLightDialog::setupNameFields()
+	void NewLightDialog::setupNameFields(QGridLayout *mainLayout)
 	{
-		lightNameLabel = new QLabel("Light Name:", this);
-		lightNameLabel->setGeometry(QRect(10, 20, 110, 22));
+		lightNameLabel = new QLabel("Light Name:");
+		mainLayout->addWidget(lightNameLabel, 0, 0);
 
-		lightNameText = new QLineEdit(this);
-		lightNameText->setGeometry(QRect(100, 20, 405, 22));
+		lightNameText = new QLineEdit();
+		mainLayout->addWidget(lightNameText, 0, 1);
+		lightNameText->setFixedWidth(405);
 	}
 
-	void NewLightDialog::setupLightTypeFields()
+	void NewLightDialog::setupLightTypeFields(QGridLayout *mainLayout)
 	{
-		lightTypeLabel = new QLabel("Light Type:", this);
-		lightTypeLabel->setGeometry(QRect(10, 50, 90, 22));
+		lightTypeLabel = new QLabel("Light Type:");
+		mainLayout->addWidget(lightTypeLabel, 1, 0);
 
-		lightTypeComboBox = new QComboBox(this);
-		lightTypeComboBox->setGeometry(QRect(100, 50, 175, 22));
+		lightTypeComboBox = new QComboBox();
+		mainLayout->addWidget(lightTypeComboBox, 1, 1);
+		lightTypeComboBox->setFixedWidth(150);
 		lightTypeComboBox->addItem(OMNIDIRECTIONAL_LIGHT_LABEL, QVariant(Light::LightType::OMNIDIRECTIONAL));
 		lightTypeComboBox->addItem(SUN_LIGHT_LABEL, QVariant(Light::LightType::SUN));
 	}

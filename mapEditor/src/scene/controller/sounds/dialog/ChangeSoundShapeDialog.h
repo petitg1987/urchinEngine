@@ -2,6 +2,7 @@
 #define ENGINE_MAPEDITOR_CHANGESOUNDSHAPEDIALOG_H
 
 #include <list>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
@@ -22,7 +23,7 @@ namespace urchin
 			SoundShape::ShapeType getShapeType() const;
 
 		private:
-			void setupSoundShapeTypeFields();
+			void setupSoundShapeTypeFields(QGridLayout *);
 
 			void done(int);
 

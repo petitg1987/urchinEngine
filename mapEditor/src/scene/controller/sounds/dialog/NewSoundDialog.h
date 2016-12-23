@@ -1,6 +1,7 @@
 #ifndef ENGINE_MAPEDITOR_NEWSOUNDDIALOG_H
 #define ENGINE_MAPEDITOR_NEWSOUNDDIALOG_H
 
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
@@ -25,9 +26,9 @@ namespace urchin
 			SceneSound *getSceneSound() const;
 
 		private:
-			void setupNameFields();
-			void setupSoundFilenameFields();
-			void setupSoundTypeFields();
+			void setupNameFields(QGridLayout *);
+			void setupSoundFilenameFields(QGridLayout *);
+			void setupSoundTypeFields(QGridLayout *);
 
 			void updateSoundName();
 			int buildSceneSound(int);

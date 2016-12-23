@@ -1,6 +1,7 @@
 #include "LightControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 #include "scene/controller/lights/dialog/NewLightDialog.h"
 
 namespace urchin
@@ -10,26 +11,32 @@ namespace urchin
 			lightController(nullptr),
 			disableLightEvent(false)
 	{
-		lightTableView = new LightTableView(this);
-		lightTableView->addObserver(this, LightTableView::SELECTION_CHANGED);
-		lightTableView->setGeometry(QRect(0, 0, 375, 220));
+		QVBoxLayout *mainLayout = new QVBoxLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 
-		addLightButton = new QPushButton("New Light", this);
-		addLightButton->setGeometry(QRect(0, 221, 90, 22));
+		lightTableView = new LightTableView();
+		mainLayout->addWidget(lightTableView);
+		lightTableView->addObserver(this, LightTableView::SELECTION_CHANGED);
+		lightTableView->setFixedHeight(220);
+
+		QHBoxLayout *buttonsLayout = new QHBoxLayout();
+		mainLayout->addLayout(buttonsLayout);
+		buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+		addLightButton = new QPushButton("New Light");
+		buttonsLayout->addWidget(addLightButton);
+		ButtonStyleHelper::applyNormalStyle(addLightButton);
 		connect(addLightButton, SIGNAL(clicked()), this, SLOT(showAddLightDialog()));
 
-		removeLightButton = new QPushButton("Remove Light", this);
-		removeLightButton->setGeometry(QRect(91, 221, 90, 22));
+		removeLightButton = new QPushButton("Remove Light");
+		buttonsLayout->addWidget(removeLightButton);
+		ButtonStyleHelper::applyNormalStyle(removeLightButton);
 		removeLightButton->setEnabled(false);
 		connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeSelectedLight()));
 
-		lightGroupBox = new QGroupBox("Light", this);
-		lightGroupBox->setGeometry(QRect(0, 250, 375, 600));
-		GroupBoxStyleHelper::applyNormalStyle(lightGroupBox);
-		lightGroupBox->hide();
-
-		setupGeneralPropertiesBox(lightGroupBox);
-		setupSpecificPropertiesBox(lightGroupBox);
+		setupGeneralPropertiesBox(mainLayout);
+		setupSpecificOmnidirectionalLightBox(mainLayout);
+		setupSpecificSunLightBox(mainLayout);
 	}
 
 	LightControllerWidget::~LightControllerWidget()
@@ -37,107 +44,116 @@ namespace urchin
 
 	}
 
-	void LightControllerWidget::setupGeneralPropertiesBox(QWidget *lightBox)
+	void LightControllerWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
 	{
-		QGroupBox *generalPropertiesGroupBox = new QGroupBox("General Properties", lightBox);
-		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 365, 65));
+		generalPropertiesGroupBox = new QGroupBox("General Properties");
+		mainLayout->addWidget(generalPropertiesGroupBox);
+		generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+		generalPropertiesGroupBox->hide();
 
-		QLabel *ambientLabel= new QLabel("Ambient:", generalPropertiesGroupBox);
-		ambientLabel->setGeometry(QRect(5, 15, 55, 22));
+		QGridLayout *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-		ambientR = new QDoubleSpinBox(generalPropertiesGroupBox);
-		ambientR->setGeometry(QRect(85, 15, 80, 22));
+		QLabel *ambientLabel= new QLabel("Ambient:");
+		generalPropertiesLayout->addWidget(ambientLabel, 0, 0);
+
+		QHBoxLayout *ambientLayout = new QHBoxLayout();
+		generalPropertiesLayout->addLayout(ambientLayout, 0, 1);
+		ambientR = new QDoubleSpinBox();
+		ambientLayout->addWidget(ambientR);
 		SpinBoxStyleHelper::applyDefaultStyleOn(ambientR);
 		ambientR->setMinimum(0.0);
 		ambientR->setMaximum(1.0);
 		connect(ambientR, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
-		ambientG = new QDoubleSpinBox(generalPropertiesGroupBox);
-		ambientG->setGeometry(QRect(165, 15, 80, 22));
+		ambientG = new QDoubleSpinBox();
+		ambientLayout->addWidget(ambientG);
 		SpinBoxStyleHelper::applyDefaultStyleOn(ambientG);
 		ambientG->setMinimum(0.0);
 		ambientG->setMaximum(1.0);
 		connect(ambientG, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
-		ambientB = new QDoubleSpinBox(generalPropertiesGroupBox);
-		ambientB->setGeometry(QRect(245, 15, 80, 22));
+		ambientB = new QDoubleSpinBox();
+		ambientLayout->addWidget(ambientB);
 		SpinBoxStyleHelper::applyDefaultStyleOn(ambientB);
 		ambientB->setMinimum(0.0);
 		ambientB->setMaximum(1.0);
 		connect(ambientB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
 
-		produceShadowCheckBox = new QCheckBox("Product Shadow", generalPropertiesGroupBox);
+		produceShadowCheckBox = new QCheckBox("Product Shadow");
+		generalPropertiesLayout->addWidget(produceShadowCheckBox, 1, 0, 1, 2);
 		produceShadowCheckBox->setGeometry(QRect(5, 40, 110, 22));
 		connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
+
+		QLabel *lightTypeLabel= new QLabel("Light Type:");
+		generalPropertiesLayout->addWidget(lightTypeLabel, 2, 0);
+
+		lightType = new QLabel();
+		generalPropertiesLayout->addWidget(lightType, 2, 1);
 	}
 
-	void LightControllerWidget::setupSpecificPropertiesBox(QWidget *lightBox)
+	void LightControllerWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout *mainLayout)
 	{
-		QGroupBox *specificPropertiesGroupBox = new QGroupBox("Specific Properties", lightBox);
-		specificPropertiesGroupBox->setGeometry(QRect(5, 85, 365, 95));
-		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
+		specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
+		mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
+		specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+		GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
+		specificOmnidirectionalLightGroupBox->hide();
 
-		QLabel *lightTypeLabel= new QLabel("Light Type:", specificPropertiesGroupBox);
-		lightTypeLabel->setGeometry(QRect(5, 15, 65, 22));
+		QGridLayout *omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
-		lightType = new QLabel(specificPropertiesGroupBox);
-		lightType->setGeometry(QRect(85, 15, 80, 22));
+		QLabel *positionLabel= new QLabel("Position:");
+		omniLightLayout->addWidget(positionLabel, 0, 0);
 
-		setupOmnidirectionalLightBox(specificPropertiesGroupBox);
-		setupSunLightBox(specificPropertiesGroupBox);
-	}
-
-	void LightControllerWidget::setupOmnidirectionalLightBox(QWidget *specificPropertiesGroupBox)
-	{
-		omnidirectionalLightWidget = new QWidget(specificPropertiesGroupBox);
-		omnidirectionalLightWidget->setGeometry(QRect(5, 40, 365, 85));
-		omnidirectionalLightWidget->hide();
-
-		QLabel *positionLabel= new QLabel("Position:", omnidirectionalLightWidget);
-		positionLabel->setGeometry(QRect(0, 0, 55, 22));
-
-		positionX = new QDoubleSpinBox(omnidirectionalLightWidget);
-		positionX->setGeometry(QRect(85, 0, 80, 22));
+		QHBoxLayout *positionLayout = new QHBoxLayout();
+		omniLightLayout->addLayout(positionLayout, 0, 1);
+		positionX = new QDoubleSpinBox();
+		positionLayout->addWidget(positionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-		positionY = new QDoubleSpinBox(omnidirectionalLightWidget);
-		positionY->setGeometry(QRect(165, 0, 80, 22));
+		positionY = new QDoubleSpinBox();
+		positionLayout->addWidget(positionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-		positionZ = new QDoubleSpinBox(omnidirectionalLightWidget);
-		positionZ->setGeometry(QRect(245, 0, 80, 22));
+		positionZ = new QDoubleSpinBox();
+		positionLayout->addWidget(positionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-		QLabel *attenuationLabel= new QLabel("Expo. Att.:", omnidirectionalLightWidget);
-		attenuationLabel->setGeometry(QRect(0, 25, 55, 22));
+		QLabel *attenuationLabel= new QLabel("Expo. Att.:");
+		omniLightLayout->addWidget(attenuationLabel, 1, 0);
 
-		attenuation = new QDoubleSpinBox(omnidirectionalLightWidget);
-		attenuation->setGeometry(QRect(85, 25, 80, 22));
+		attenuation = new QDoubleSpinBox();
+		omniLightLayout->addWidget(attenuation, 1, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(attenuation);
 		attenuation->setMinimum(0.0);
 		attenuation->setSingleStep(0.05);
 		connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 	}
 
-	void LightControllerWidget::setupSunLightBox(QWidget *specificPropertiesGroupBox)
+	void LightControllerWidget::setupSpecificSunLightBox(QVBoxLayout *mainLayout)
 	{
-		sunLightWidget = new QWidget(specificPropertiesGroupBox);
-		sunLightWidget->setGeometry(QRect(5, 40, 365, 85));
-		sunLightWidget->hide();
+		specificSunLightGroupBox = new QGroupBox("Sun Light");
+		mainLayout->addWidget(specificSunLightGroupBox);
+		specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+		GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
+		specificSunLightGroupBox->hide();
 
-		QLabel *directionLabel= new QLabel("Direction:", sunLightWidget);
-		directionLabel->setGeometry(QRect(0, 0, 55, 22));
+		QGridLayout *sunLightLayout = new QGridLayout(specificSunLightGroupBox);
 
-		directionX = new QDoubleSpinBox(sunLightWidget);
-		directionX->setGeometry(QRect(85, 0, 80, 22));
+		QLabel *directionLabel= new QLabel("Direction:");
+		sunLightLayout->addWidget(directionLabel, 0, 0);
+
+		QHBoxLayout *directionLayout = new QHBoxLayout();
+		sunLightLayout->addLayout(directionLayout, 0, 1);
+		directionX = new QDoubleSpinBox();
+		directionLayout->addWidget(directionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(directionX);
 		connect(directionX, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-		directionY = new QDoubleSpinBox(sunLightWidget);
-		directionY->setGeometry(QRect(165, 0, 80, 22));
+		directionY = new QDoubleSpinBox();
+		directionLayout->addWidget(directionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(directionY);
 		connect(directionY, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
-		directionZ = new QDoubleSpinBox(sunLightWidget);
-		directionZ->setGeometry(QRect(245, 0, 80, 22));
+		directionZ = new QDoubleSpinBox();
+		directionLayout->addWidget(directionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(directionZ);
 		connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 	}
@@ -178,11 +194,11 @@ namespace urchin
 						setupLightDataFrom(sceneLight);
 
 						removeLightButton->setEnabled(true);
-						lightGroupBox->show();
+						generalPropertiesGroupBox->show();
 					}else
 					{
 						removeLightButton->setEnabled(false);
-						lightGroupBox->hide();
+						generalPropertiesGroupBox->hide();
 					}
 					break;
 			}
@@ -218,8 +234,8 @@ namespace urchin
 
 	void LightControllerWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *light)
 	{
-		omnidirectionalLightWidget->show();
-		sunLightWidget->hide();
+		specificOmnidirectionalLightGroupBox->show();
+		specificSunLightGroupBox->hide();
 
 		lightType->setText(OMNIDIRECTIONAL_LIGHT_LABEL);
 
@@ -232,8 +248,8 @@ namespace urchin
 
 	void LightControllerWidget::setupSunLightDataFrom(const SunLight *light)
 	{
-		sunLightWidget->show();
-		omnidirectionalLightWidget->hide();
+		specificSunLightGroupBox->show();
+		specificOmnidirectionalLightGroupBox->hide();
 
 		lightType->setText(SUN_LIGHT_LABEL);
 

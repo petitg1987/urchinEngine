@@ -13,12 +13,16 @@ namespace urchin
 		QDialog(parent)
 	{
 		this->setWindowTitle("Select Sound Trigger Shape");
-		this->resize(290, 100);
+		this->resize(245, 80);
+		this->setFixedSize(this->width(),this->height());
 
-		setupSoundShapeTypeFields();
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 60, 245, 22));
+		setupSoundShapeTypeFields(mainLayout);
+
+		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 1, 0, 1, 2, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -26,13 +30,14 @@ namespace urchin
 		QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	}
 
-	void ChangeSoundShapeDialog::setupSoundShapeTypeFields()
+	void ChangeSoundShapeDialog::setupSoundShapeTypeFields(QGridLayout *mainLayout)
 	{
-		soundShapeTypeLabel = new QLabel("Shape Type:", this);
-		soundShapeTypeLabel->setGeometry(QRect(10, 20, 90, 22));
+		soundShapeTypeLabel = new QLabel("Shape Type:");
+		mainLayout->addWidget(soundShapeTypeLabel, 0, 0);
 
-		soundShapeTypeComboBox = new QComboBox(this);
-		soundShapeTypeComboBox->setGeometry(QRect(100, 20, 175, 22));
+		soundShapeTypeComboBox = new QComboBox();
+		mainLayout->addWidget(soundShapeTypeComboBox, 0, 1);
+		soundShapeTypeComboBox->setFixedWidth(150);
 		soundShapeTypeComboBox->addItem(SPHERE_SHAPE_LABEL, QVariant(SoundShape::ShapeType::SPHERE_SHAPE));
 		soundShapeTypeComboBox->addItem(BOX_SHAPE_LABEL, QVariant(SoundShape::ShapeType::BOX_SHAPE));
 	}

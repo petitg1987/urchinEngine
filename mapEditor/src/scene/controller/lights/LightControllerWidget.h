@@ -3,6 +3,8 @@
 
 #include <string>
 #include <memory>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
@@ -32,10 +34,9 @@ namespace urchin
 			bool isModified() const;
 
 		private:
-			void setupGeneralPropertiesBox(QWidget *);
-			void setupSpecificPropertiesBox(QWidget *);
-			void setupOmnidirectionalLightBox(QWidget *);
-			void setupSunLightBox(QWidget *);
+			void setupGeneralPropertiesBox(QVBoxLayout *);
+			void setupSpecificOmnidirectionalLightBox(QVBoxLayout *);
+			void setupSpecificSunLightBox(QVBoxLayout *);
 
 			void notify(Observable *, int);
 			void setupLightDataFrom(const SceneLight *);
@@ -48,19 +49,19 @@ namespace urchin
 			QPushButton *addLightButton;
 			QPushButton *removeLightButton;
 
-			QGroupBox *lightGroupBox;
+			QGroupBox *generalPropertiesGroupBox;
+			QGroupBox *specificOmnidirectionalLightGroupBox;
+			QGroupBox *specificSunLightGroupBox;
 
 			bool disableLightEvent;
 
 			//general properties
 			QDoubleSpinBox *ambientR, *ambientG, *ambientB;
 			QCheckBox *produceShadowCheckBox;
+			QLabel *lightType;
 
 			//specific properties
-			QLabel *lightType;
-			QWidget *omnidirectionalLightWidget;
 			QDoubleSpinBox *positionX, *positionY, *positionZ, *attenuation;
-			QWidget *sunLightWidget;
 			QDoubleSpinBox *directionX, *directionY, *directionZ;
 
 		private slots:
