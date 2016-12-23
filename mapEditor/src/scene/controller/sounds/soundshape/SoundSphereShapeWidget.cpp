@@ -1,4 +1,5 @@
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
 
 #include "SoundSphereShapeWidget.h"
 #include "support/SpinBoxStyleHelper.h"

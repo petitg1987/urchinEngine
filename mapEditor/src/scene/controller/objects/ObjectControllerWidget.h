@@ -3,6 +3,8 @@
 
 #include <string>
 #include <memory>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
@@ -42,15 +44,15 @@ namespace urchin
 			bool isModified() const;
 
 		private:
-			void setupTransformBox(QWidget *);
-			void setupPosition(QGroupBox *);
-			void setupOrientation(QGroupBox *);
-			void setupScale(QGroupBox *);
-			void setupFlagsBox(QWidget *);
-			void setupPhysicsBox(QWidget *);
-			void setupPhysicsGeneralPropertiesBox();
-			void setupPhysicsDampingPropertiesBox();
-			void setupPhysicsFactorPropertiesBox();
+			void setupTransformBox(QVBoxLayout *);
+			void setupPosition(QGridLayout *);
+			void setupOrientation(QGridLayout *);
+			void setupScale(QGridLayout *);
+			void setupFlagsBox(QVBoxLayout *);
+			void setupPhysicsBox(QVBoxLayout *);
+			void setupPhysicsGeneralPropertiesBox(QVBoxLayout *);
+			void setupPhysicsDampingPropertiesBox(QVBoxLayout *);
+			void setupPhysicsFactorPropertiesBox(QVBoxLayout *);
 			void setupPhysicsShapeBox();
 
 			void notify(Observable *, int);
@@ -78,7 +80,7 @@ namespace urchin
 			//physics
 			QCheckBox *hasRigidBody;
 			QTabWidget *tabPhysicsRigidBody;
-			QWidget *tabPhysicsProperties, *tabPhysicsShape;
+			QWidget *tabPhysicsShape;
 			QDoubleSpinBox *mass, *restitution, *friction, *rollingFriction;
 			QDoubleSpinBox *linearDamping, *angularDamping;
 			QDoubleSpinBox *linearFactorX, *linearFactorY, *linearFactorZ;

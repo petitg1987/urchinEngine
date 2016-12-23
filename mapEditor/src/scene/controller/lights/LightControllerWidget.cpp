@@ -1,3 +1,5 @@
+#include <QtWidgets/QHBoxLayout>
+
 #include "LightControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
@@ -13,6 +15,7 @@ namespace urchin
 	{
 		QVBoxLayout *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		mainLayout->setContentsMargins(1, 1, 1, 1);
 
 		lightTableView = new LightTableView();
 		mainLayout->addWidget(lightTableView);
@@ -48,8 +51,8 @@ namespace urchin
 	{
 		generalPropertiesGroupBox = new QGroupBox("General Properties");
 		mainLayout->addWidget(generalPropertiesGroupBox);
-		generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+		generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		generalPropertiesGroupBox->hide();
 
 		QGridLayout *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
@@ -80,7 +83,6 @@ namespace urchin
 
 		produceShadowCheckBox = new QCheckBox("Product Shadow");
 		generalPropertiesLayout->addWidget(produceShadowCheckBox, 1, 0, 1, 2);
-		produceShadowCheckBox->setGeometry(QRect(5, 40, 110, 22));
 		connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
 
 		QLabel *lightTypeLabel= new QLabel("Light Type:");
@@ -94,8 +96,8 @@ namespace urchin
 	{
 		specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
 		mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
-		specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(specificOmnidirectionalLightGroupBox);
+		specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		specificOmnidirectionalLightGroupBox->hide();
 
 		QGridLayout *omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
@@ -133,8 +135,8 @@ namespace urchin
 	{
 		specificSunLightGroupBox = new QGroupBox("Sun Light");
 		mainLayout->addWidget(specificSunLightGroupBox);
-		specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(specificSunLightGroupBox);
+		specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		specificSunLightGroupBox->hide();
 
 		QGridLayout *sunLightLayout = new QGridLayout(specificSunLightGroupBox);

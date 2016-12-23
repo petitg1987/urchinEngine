@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 #include "NewDialog.h"
 #include "support/LabelStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 
 namespace urchin
 {
@@ -14,13 +15,17 @@ namespace urchin
 	{
 		this->setWindowTitle("New Map File");
 		this->resize(530, 195);
+		this->setFixedSize(this->width(),this->height());
 
-		setupNameFields();
-		setupDirectoryFields();
-		setupWorkingDirectoryFields();
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 155, 475, 22));
+		setupNameFields(mainLayout);
+		setupDirectoryFields(mainLayout);
+		setupWorkingDirectoryFields(mainLayout);
+
+		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 5, 0, 1, 3, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -28,48 +33,56 @@ namespace urchin
 		QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	}
 
-	void NewDialog::setupNameFields()
+	void NewDialog::setupNameFields(QGridLayout *mainLayout)
 	{
-		mapNameLabel = new QLabel("Name (*.xml):", this);
-		mapNameLabel->setGeometry(QRect(10, 20, 110, 22));
+		mapNameLabel = new QLabel("Name (*.xml):");
+		mainLayout->addWidget(mapNameLabel, 0, 0);
 
-		mapNameText = new QLineEdit(this);
-		mapNameText->setGeometry(QRect(120, 20, 360, 22));
+		mapNameText = new QLineEdit();
+		mainLayout->addWidget(mapNameText, 0, 1);
+		mapNameText->setFixedWidth(360);
 	}
 
-	void NewDialog::setupDirectoryFields()
+	void NewDialog::setupDirectoryFields(QGridLayout *mainLayout)
 	{
-		mapDirectoryLabel = new QLabel("Directory:", this);
-		mapDirectoryLabel->setGeometry(QRect(10, 50, 110, 22));
+		mapDirectoryLabel = new QLabel("Directory:");
+		mainLayout->addWidget(mapDirectoryLabel, 1, 0);
 
-		mapDirectoryText = new QLineEdit(this);
+		mapDirectoryText = new QLineEdit();
+		mainLayout->addWidget(mapDirectoryText, 1, 1);
 		mapDirectoryText->setReadOnly(true);
-		mapDirectoryText->setGeometry(QRect(120, 50, 360, 22));
+		mapDirectoryText->setFixedWidth(360);
 
-		QPushButton *selectMapDirButton = new QPushButton("...", this);
-		selectMapDirButton->setGeometry(QRect(485, 50, 22, 22));
+		QPushButton *selectMapDirButton = new QPushButton("...");
+		mainLayout->addWidget(selectMapDirButton, 1, 2);
+		ButtonStyleHelper::applyNormalStyle(selectMapDirButton);
+		selectMapDirButton->setFixedWidth(22);
 		connect(selectMapDirButton, SIGNAL(clicked()), this, SLOT(showMapDirectoryDialog()));
 	}
 
-	void NewDialog::setupWorkingDirectoryFields()
+	void NewDialog::setupWorkingDirectoryFields(QGridLayout *mainLayout)
 	{
-		mapWorkingDirectoryLabel = new QLabel("Working Directory:", this);
-		mapWorkingDirectoryLabel->setGeometry(QRect(10, 80, 140, 22));
+		mapWorkingDirectoryLabel = new QLabel("Working Directory:");
+		mainLayout->addWidget(mapWorkingDirectoryLabel, 2, 0);
 
-		mapWorkingDirectoryText = new QLineEdit(this);
+		mapWorkingDirectoryText = new QLineEdit();
+		mainLayout->addWidget(mapWorkingDirectoryText, 2, 1);
 		mapWorkingDirectoryText->setReadOnly(true);
-		mapWorkingDirectoryText->setGeometry(QRect(120, 80, 360, 22));
+		mapWorkingDirectoryText->setFixedWidth(360);
 
-		QPushButton *selectMapWorkingDirButton = new QPushButton("...", this);
-		selectMapWorkingDirButton->setGeometry(QRect(485, 80, 22, 22));
+		QPushButton *selectMapWorkingDirButton = new QPushButton("...");
+		mainLayout->addWidget(selectMapWorkingDirButton, 2, 2);
+		ButtonStyleHelper::applyNormalStyle(selectMapWorkingDirButton);
+		selectMapWorkingDirButton->setFixedWidth(22);
 		connect(selectMapWorkingDirButton, SIGNAL(clicked()), this, SLOT(showMapWorkingDirectoryDialog()));
 
 		//relative working directory
-		QLabel *mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:", this);
-		mapRelWorkingDirectoryLabel->setGeometry(QRect(10, 115, 140, 22));
+		QLabel *mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:");
+		mainLayout->addWidget(mapRelWorkingDirectoryLabel, 3, 0);
 
-		mapRelWorkingDirectoryText = new QLabel(this);
-		mapRelWorkingDirectoryText->setGeometry(QRect(120, 115, 360, 22));
+		mapRelWorkingDirectoryText = new QLabel();
+		mainLayout->addWidget(mapRelWorkingDirectoryText, 3, 1);
+		mapRelWorkingDirectoryText->setFixedWidth(360);
 	}
 
 	std::string NewDialog::getFilename() const

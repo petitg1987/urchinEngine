@@ -1,6 +1,7 @@
 #ifndef ENGINE_MAPEDITOR_NEWDIALOG_H
 #define ENGINE_MAPEDITOR_NEWDIALOG_H
 
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
@@ -19,9 +20,9 @@ namespace urchin
 			std::string getRelativeWorkingDirectory() const;
 
 		private:
-			void setupNameFields();
-			void setupDirectoryFields();
-			void setupWorkingDirectoryFields();
+			void setupNameFields(QGridLayout *);
+			void setupDirectoryFields(QGridLayout *);
+			void setupWorkingDirectoryFields(QGridLayout *);
 
 			void updateMapFilename();
 			void updateRelativeWorkingDirectory();

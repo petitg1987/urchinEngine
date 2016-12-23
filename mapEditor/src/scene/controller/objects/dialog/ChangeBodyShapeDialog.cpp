@@ -14,12 +14,16 @@ namespace urchin
 		excludeCompoundShape(excludeCompoundShape)
 	{
 		this->setWindowTitle("Select Body Shape");
-		this->resize(290, 100);
+		this->resize(245, 80);
+		this->setFixedSize(this->width(),this->height());
 
-		setupBodyShapeTypeFields();
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 60, 245, 22));
+		setupBodyShapeTypeFields(mainLayout);
+
+		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 1, 0, 1, 2, Qt::AlignmentFlag::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -27,13 +31,14 @@ namespace urchin
 		QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	}
 
-	void ChangeBodyShapeDialog::setupBodyShapeTypeFields()
+	void ChangeBodyShapeDialog::setupBodyShapeTypeFields(QGridLayout *mainLayout)
 	{
-		bodyShapeTypeLabel = new QLabel("Shape Type:", this);
-		bodyShapeTypeLabel->setGeometry(QRect(10, 20, 90, 22));
+		bodyShapeTypeLabel = new QLabel("Shape Type:");
+		mainLayout->addWidget(bodyShapeTypeLabel, 0, 0);
 
-		bodyShapeTypeComboBox = new QComboBox(this);
-		bodyShapeTypeComboBox->setGeometry(QRect(100, 20, 175, 22));
+		bodyShapeTypeComboBox = new QComboBox();
+		mainLayout->addWidget(bodyShapeTypeComboBox, 0, 1);
+		bodyShapeTypeComboBox->setFixedWidth(150);
 		bodyShapeTypeComboBox->addItem(SPHERE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::SPHERE_SHAPE));
 		bodyShapeTypeComboBox->addItem(BOX_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::BOX_SHAPE));
 		bodyShapeTypeComboBox->addItem(CAPSULE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CAPSULE_SHAPE));

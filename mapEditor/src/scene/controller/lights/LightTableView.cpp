@@ -14,7 +14,7 @@ namespace urchin
 		setModel(lightsListModel);
 
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
-		horizontalHeader()->resizeSection(0, 340);
+		horizontalHeader()->resizeSection(0, 355);
 		verticalHeader()->hide();
 
 		setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);

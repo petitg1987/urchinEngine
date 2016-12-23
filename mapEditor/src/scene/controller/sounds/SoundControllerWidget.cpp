@@ -1,4 +1,4 @@
-#include <QtWidgets/QSizePolicy>
+#include <QtWidgets/QHBoxLayout>
 
 #include "SoundControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
@@ -18,6 +18,7 @@ namespace urchin
 	{
 		QVBoxLayout *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		mainLayout->setContentsMargins(1, 1, 1, 1);
 
 		soundTableView = new SoundTableView();
 		mainLayout->addWidget(soundTableView);
@@ -41,8 +42,8 @@ namespace urchin
 
 		soundPropertiesGroupBox = new QGroupBox("Sound Properties");
 		mainLayout->addWidget(soundPropertiesGroupBox);
-		soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
+		soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		soundPropertiesGroupBox->hide();
 
 		QVBoxLayout *soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
@@ -51,8 +52,8 @@ namespace urchin
 
 		soundTriggerGroupBox = new QGroupBox("Sound Trigger");
 		mainLayout->addWidget(soundTriggerGroupBox);
-		soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
+		soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		soundTriggerGroupBox->hide();
 
 		QVBoxLayout *soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);

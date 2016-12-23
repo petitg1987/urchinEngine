@@ -2,6 +2,7 @@
 #define ENGINE_MAPEDITOR_NEWOBJECTDIALOG_H
 
 #include <list>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
@@ -22,8 +23,8 @@ namespace urchin
 			SceneObject *getSceneObject() const;
 
 		private:
-			void setupNameFields();
-			void setupMeshFilenameFields();
+			void setupNameFields(QGridLayout *);
+			void setupMeshFilenameFields(QGridLayout *);
 
 			void updateObjectName();
 			int buildSceneObject(int);

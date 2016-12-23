@@ -1,3 +1,4 @@
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 
@@ -12,14 +13,18 @@ namespace urchin
 		bNeedSave(false)
 	{
 		this->setWindowTitle("Save Map");
-		this->resize(350, 120);
+		this->resize(300, 120);
+		this->setFixedSize(this->width(),this->height());
+
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		QLabel *saveMapLabel = new QLabel("A map is currently open but not saved.\n"
-				"Would you like to save it ?", this);
-		saveMapLabel->setGeometry(QRect(10, 20, 400, 50));
+				"Would you like to save it ?");
+		mainLayout->addWidget(saveMapLabel, 0, 0);
 
-		buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 80, 310, 22));
+		buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 1, 0, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Yes|QDialogButtonBox::No|QDialogButtonBox::Cancel);
 

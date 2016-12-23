@@ -7,6 +7,7 @@
 #include "UrchinCommon.h"
 #include "NewObjectDialog.h"
 #include "support/LabelStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 
 namespace urchin
 {
@@ -20,12 +21,16 @@ namespace urchin
 	{
 		this->setWindowTitle("New Object");
 		this->resize(530, 130);
+		this->setFixedSize(this->width(),this->height());
 
-		setupNameFields();
-		setupMeshFilenameFields();
+		QGridLayout *mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-		buttonBox->setGeometry(QRect(30, 90, 475, 22));
+		setupNameFields(mainLayout);
+		setupMeshFilenameFields(mainLayout);
+
+		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		mainLayout->addWidget(buttonBox, 2, 0, 1, 3);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
 
@@ -33,26 +38,30 @@ namespace urchin
 		QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	}
 
-	void NewObjectDialog::setupNameFields()
+	void NewObjectDialog::setupNameFields(QGridLayout *mainLayout)
 	{
-		objectNameLabel = new QLabel("Object Name:", this);
-		objectNameLabel->setGeometry(QRect(10, 20, 110, 22));
+		objectNameLabel = new QLabel("Object Name:");
+		mainLayout->addWidget(objectNameLabel, 0, 0);
 
-		objectNameText = new QLineEdit(this);
-		objectNameText->setGeometry(QRect(120, 20, 360, 22));
+		objectNameText = new QLineEdit();
+		mainLayout->addWidget(objectNameText, 0, 1);
+		objectNameText->setFixedWidth(360);
 	}
 
-	void NewObjectDialog::setupMeshFilenameFields()
+	void NewObjectDialog::setupMeshFilenameFields(QGridLayout *mainLayout)
 	{
-		meshFilenameLabel = new QLabel("Mesh File:", this);
-		meshFilenameLabel->setGeometry(QRect(10, 50, 110, 22));
+		meshFilenameLabel = new QLabel("Mesh File:");
+		mainLayout->addWidget(meshFilenameLabel, 1, 0);
 
-		meshFilenameText = new QLineEdit(this);
+		meshFilenameText = new QLineEdit();
+		mainLayout->addWidget(meshFilenameText, 1, 1);
 		meshFilenameText->setReadOnly(true);
-		meshFilenameText->setGeometry(QRect(120, 50, 360, 22));
+		meshFilenameText->setFixedWidth(360);
 
-		QPushButton *selectMeshFileButton = new QPushButton("...", this);
-		selectMeshFileButton->setGeometry(QRect(485, 50, 22, 22));
+		QPushButton *selectMeshFileButton = new QPushButton("...");
+		mainLayout->addWidget(selectMeshFileButton, 1, 2);
+		ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
+		selectMeshFileButton->setFixedWidth(22);
 		connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showMeshFilenameDialog()));
 	}
 

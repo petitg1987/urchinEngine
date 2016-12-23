@@ -1,4 +1,5 @@
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
 
 #include "SoundBoxShapeWidget.h"
 #include "support/SpinBoxStyleHelper.h"
@@ -57,18 +58,18 @@ namespace urchin
 		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", this);
 		mainLayout->addWidget(eulerAngleLabel, 4, 0);
 
-		QHBoxLayout *eulerLayout = new QHBoxLayout();
-		mainLayout->addLayout(eulerLayout, 4, 1);
+		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
+		mainLayout->addLayout(eulerAxisLayout, 4, 1);
 		eulerAxis0 = new QDoubleSpinBox();
-		eulerLayout->addWidget(eulerAxis0);
+		eulerAxisLayout->addWidget(eulerAxis0);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
 		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 		eulerAxis1 = new QDoubleSpinBox();
-		eulerLayout->addWidget(eulerAxis1);
+		eulerAxisLayout->addWidget(eulerAxis1);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
 		connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 		eulerAxis2 = new QDoubleSpinBox();
-		eulerLayout->addWidget(eulerAxis2);
+		eulerAxisLayout->addWidget(eulerAxis2);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
 		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 	}

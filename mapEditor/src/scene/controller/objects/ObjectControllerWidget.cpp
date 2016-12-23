@@ -1,6 +1,9 @@
+#include <QtWidgets/QHBoxLayout>
+
 #include "ObjectControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 #include "support/ComboBoxStyleHelper.h"
 #include "scene/controller/objects/dialog/NewObjectDialog.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
@@ -13,30 +16,49 @@ namespace urchin
 			objectController(nullptr),
 			disableObjectEvent(false)
 	{
-		objectTableView = new ObjectTableView(this);
-		objectTableView->addObserver(this, ObjectTableView::SELECTION_CHANGED);
-		objectTableView->setGeometry(QRect(0, 0, 375, 220));
+		QVBoxLayout *mainLayout = new QVBoxLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		mainLayout->setContentsMargins(1, 1, 1, 1);
 
-		addObjectButton = new QPushButton("New Object", this);
-		addObjectButton->setGeometry(QRect(0, 221, 90, 22));
+		objectTableView = new ObjectTableView();
+		mainLayout->addWidget(objectTableView);
+		objectTableView->addObserver(this, ObjectTableView::SELECTION_CHANGED);
+		objectTableView->setFixedHeight(220);
+
+		QHBoxLayout *buttonsLayout = new QHBoxLayout();
+		mainLayout->addLayout(buttonsLayout);
+		buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+		addObjectButton = new QPushButton("New Object");
+		buttonsLayout->addWidget(addObjectButton);
+		ButtonStyleHelper::applyNormalStyle(addObjectButton);
 		connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
-		removeObjectButton = new QPushButton("Remove Object", this);
-		removeObjectButton->setGeometry(QRect(91, 221, 90, 22));
+		removeObjectButton = new QPushButton("Remove Object");
+		buttonsLayout->addWidget(removeObjectButton);
+		ButtonStyleHelper::applyNormalStyle(removeObjectButton);
 		removeObjectButton->setEnabled(false);
 		connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
 
-		tabWidget = new QTabWidget(this);
-		tabWidget->setGeometry(QRect(0, 250, 375, 600));
+		tabWidget = new QTabWidget();
+		mainLayout->addWidget(tabWidget);
 		tabWidget->hide();
 
+		//general properties
 		QWidget *tabGeneral = new QWidget();
-		setupTransformBox(tabGeneral);
-		setupFlagsBox(tabGeneral);
+		QVBoxLayout *generalLayout = new QVBoxLayout(tabGeneral);
+		generalLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		generalLayout->setContentsMargins(1, 1, 1, 1);
+		setupTransformBox(generalLayout);
+		setupFlagsBox(generalLayout);
 		tabWidget->addTab(tabGeneral, "General");
 
+		//physics properties
 		QWidget *tabPhysics = new QWidget();
-		setupPhysicsBox(tabPhysics);
+		QVBoxLayout *physicsLayout = new QVBoxLayout(tabPhysics);
+		physicsLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		physicsLayout->setContentsMargins(1, 1, 1, 1);
+		setupPhysicsBox(physicsLayout);
 		tabWidget->addTab(tabPhysics, "Physics");
 	}
 
@@ -55,101 +77,112 @@ namespace urchin
 		return bodyShapeWidget;
 	}
 
-	void ObjectControllerWidget::setupTransformBox(QWidget *tabGeneral)
+	void ObjectControllerWidget::setupTransformBox(QVBoxLayout *generalLayout)
 	{
-		QGroupBox *transformGroupBox = new QGroupBox("Transform", tabGeneral);
-		transformGroupBox->setGeometry(QRect(0, 5, 370, 120));
+		QGroupBox *transformGroupBox = new QGroupBox("Transform");
+		generalLayout->addWidget(transformGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+		transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		setupPosition(transformGroupBox);
-		setupOrientation(transformGroupBox);
-		setupScale(transformGroupBox);
+		QGridLayout *transformLayout = new QGridLayout(transformGroupBox);
+
+		setupPosition(transformLayout);
+		setupOrientation(transformLayout);
+		setupScale(transformLayout);
 	}
 
-	void ObjectControllerWidget::setupPosition(QGroupBox *transformGroupBox)
+	void ObjectControllerWidget::setupPosition(QGridLayout *transformLayout)
 	{
-		QLabel *positionLabel= new QLabel("Position:", transformGroupBox);
-		positionLabel->setGeometry(QRect(5, 15, 55, 22));
+		QLabel *positionLabel= new QLabel("Position:");
+		transformLayout->addWidget(positionLabel, 0, 0);
 
-		positionX = new QDoubleSpinBox(transformGroupBox);
-		positionX->setGeometry(QRect(85, 15, 80, 22));
+		QHBoxLayout *positionLayout = new QHBoxLayout();
+		transformLayout->addLayout(positionLayout, 0, 1);
+		positionX = new QDoubleSpinBox();
+		positionLayout->addWidget(positionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
-		positionY = new QDoubleSpinBox(transformGroupBox);
-		positionY->setGeometry(QRect(165, 15, 80, 22));
+		positionY = new QDoubleSpinBox();
+		positionLayout->addWidget(positionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
-		positionZ = new QDoubleSpinBox(transformGroupBox);
-		positionZ->setGeometry(QRect(245, 15, 80, 22));
+		positionZ = new QDoubleSpinBox();
+		positionLayout->addWidget(positionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 	}
 
-	void ObjectControllerWidget::setupOrientation(QGroupBox *transformGroupBox)
+	void ObjectControllerWidget::setupOrientation(QGridLayout *transformLayout)
 	{
-		QLabel *orientationTypeLabel = new QLabel("Orient. Type:", transformGroupBox);
-		orientationTypeLabel->setGeometry(QRect(5, 40, 80, 22));
+		QLabel *orientationTypeLabel = new QLabel("Orient. Type:");
+		transformLayout->addWidget(orientationTypeLabel, 1, 0);
 
-		orientationType = new QComboBox(transformGroupBox);
-		orientationType->setGeometry(QRect(85, 40, 160, 22));
+		orientationType = new QComboBox();
+		transformLayout->addWidget(orientationType, 1, 1);
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", transformGroupBox);
-		eulerAngleLabel->setGeometry(QRect(5, 65, 80, 22));
+		QLabel *eulerAngleLabel = new QLabel("Euler Angle:");
+		transformLayout->addWidget(eulerAngleLabel, 2, 0);
 
-		eulerAxis0 = new QDoubleSpinBox(transformGroupBox);
-		eulerAxis0->setGeometry(QRect(85, 65, 80, 22));
+		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
+		transformLayout->addLayout(eulerAxisLayout, 2, 1);
+		eulerAxis0 = new QDoubleSpinBox();
+		eulerAxisLayout->addWidget(eulerAxis0);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
 		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
-
-		eulerAxis1 = new QDoubleSpinBox(transformGroupBox);
-		eulerAxis1->setGeometry(QRect(165, 65, 80, 22));
+		eulerAxis1 = new QDoubleSpinBox();
+		eulerAxisLayout->addWidget(eulerAxis1);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
 		connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
-
-		eulerAxis2 = new QDoubleSpinBox(transformGroupBox);
-		eulerAxis2->setGeometry(QRect(245, 65, 80, 22));
+		eulerAxis2 = new QDoubleSpinBox();
+		eulerAxisLayout->addWidget(eulerAxis2);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
 		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 	}
 
-	void ObjectControllerWidget::setupScale(QGroupBox *transformGroupBox)
+	void ObjectControllerWidget::setupScale(QGridLayout *transformLayout)
 	{
-		QLabel *angleLabel = new QLabel("Scale:", transformGroupBox);
-		angleLabel->setGeometry(QRect(5, 90, 80, 22));
+		QLabel *angleLabel = new QLabel("Scale:");
+		transformLayout->addWidget(angleLabel, 3, 0);
 
-		scale = new QDoubleSpinBox(transformGroupBox);
-		scale->setGeometry(QRect(85, 90, 80, 22));
+		scale = new QDoubleSpinBox();
+		transformLayout->addWidget(scale, 3, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(scale);
 		scale->setMinimum(0.0);
 		connect(scale, SIGNAL(valueChanged(double)), this, SLOT(updateObjectScale()));
 	}
 
-	void ObjectControllerWidget::setupFlagsBox(QWidget *tabGeneral)
+	void ObjectControllerWidget::setupFlagsBox(QVBoxLayout *generalLayout)
 	{
-		QGroupBox *flagsGroupBox = new QGroupBox("Flags", tabGeneral);
-		flagsGroupBox->setGeometry(QRect(0, 135, 370, 45));
+		QGroupBox *flagsGroupBox = new QGroupBox("Flags");
+		generalLayout->addWidget(flagsGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
+		flagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		produceShadowCheckBox = new QCheckBox("Product Shadow", flagsGroupBox);
-		produceShadowCheckBox->setGeometry(QRect(5, 15, 110, 22));
+		QGridLayout *flagsLayout = new QGridLayout(flagsGroupBox);
+
+		produceShadowCheckBox = new QCheckBox("Product Shadow");
+		flagsLayout->addWidget(produceShadowCheckBox);
 		connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateObjectFlags()));
 	}
 
-	void ObjectControllerWidget::setupPhysicsBox(QWidget *tabPhysics)
+	void ObjectControllerWidget::setupPhysicsBox(QVBoxLayout *physicsLayout)
 	{
-		hasRigidBody = new QCheckBox("Rigid Body", tabPhysics);
-		hasRigidBody->setGeometry(QRect(0, 10, 85, 15));
+		hasRigidBody = new QCheckBox("Rigid Body");
+		physicsLayout->addWidget(hasRigidBody);
 		connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
 
-		tabPhysicsRigidBody = new QTabWidget(tabPhysics);
-		tabPhysicsRigidBody->setGeometry(QRect(0, 35, 370, 595));
+		tabPhysicsRigidBody = new QTabWidget();
+		physicsLayout->addWidget(tabPhysicsRigidBody);
 
-		tabPhysicsProperties = new QWidget();
-		setupPhysicsGeneralPropertiesBox();
-		setupPhysicsDampingPropertiesBox();
-		setupPhysicsFactorPropertiesBox();
+		QWidget *tabPhysicsProperties = new QWidget();
+		QVBoxLayout *physicsPropertiesLayout = new QVBoxLayout(tabPhysicsProperties);
+		physicsPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		physicsPropertiesLayout->setContentsMargins(1, 1, 1, 1);
+		setupPhysicsGeneralPropertiesBox(physicsPropertiesLayout);
+		setupPhysicsDampingPropertiesBox(physicsPropertiesLayout);
+		setupPhysicsFactorPropertiesBox(physicsPropertiesLayout);
 		tabPhysicsRigidBody->addTab(tabPhysicsProperties, "Properties");
 
 		tabPhysicsShape = new QWidget();
@@ -157,128 +190,137 @@ namespace urchin
 		tabPhysicsRigidBody->addTab(tabPhysicsShape, "Shape");
 	}
 
-	void ObjectControllerWidget::setupPhysicsGeneralPropertiesBox()
+	void ObjectControllerWidget::setupPhysicsGeneralPropertiesBox(QVBoxLayout *physicsPropertiesLayout)
 	{
-		QGroupBox *rigidBodyGeneralBox = new QGroupBox("General", tabPhysicsProperties);
-		rigidBodyGeneralBox->setGeometry(QRect(0, 5, 365, 70));
+		QGroupBox *rigidBodyGeneralBox = new QGroupBox("General");
+		physicsPropertiesLayout->addWidget(rigidBodyGeneralBox);
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
+		rigidBodyGeneralBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QLabel *massLabel = new QLabel("Mass:", rigidBodyGeneralBox);
-		massLabel->setGeometry(QRect(5, 15, 70, 22));
+		QGridLayout *rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
 
-		mass = new QDoubleSpinBox(rigidBodyGeneralBox);
-		mass->setGeometry(QRect(75, 15, 80, 22));
+		QLabel *massLabel = new QLabel("Mass:");
+		rigidBodyGeneralLayout->addWidget(massLabel, 0, 0);
+
+		mass = new QDoubleSpinBox();
+		rigidBodyGeneralLayout->addWidget(mass, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(mass);
 		mass->setMinimum(0.0);
 		connect(mass, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *restitutionLabel = new QLabel("Restitution:", rigidBodyGeneralBox);
-		restitutionLabel->setGeometry(QRect(175, 15, 60, 22));
+		QLabel *restitutionLabel = new QLabel("Restitution:");
+		rigidBodyGeneralLayout->addWidget(restitutionLabel, 0, 2);
 
-		restitution = new QDoubleSpinBox(rigidBodyGeneralBox);
-		restitution->setGeometry(QRect(255, 15, 80, 22));
+		restitution = new QDoubleSpinBox();
+		rigidBodyGeneralLayout->addWidget(restitution, 0, 3);
 		SpinBoxStyleHelper::applyDefaultStyleOn(restitution);
 		restitution->setMinimum(0.0);
 		restitution->setMaximum(1.0);
 		connect(restitution, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *frictionLabel = new QLabel("Friction:", rigidBodyGeneralBox);
-		frictionLabel->setGeometry(QRect(5, 40, 70, 22));
+		QLabel *frictionLabel = new QLabel("Friction:");
+		rigidBodyGeneralLayout->addWidget(frictionLabel, 1, 0);
 
-		friction = new QDoubleSpinBox(rigidBodyGeneralBox);
-		friction->setGeometry(QRect(75, 40, 80, 22));
+		friction = new QDoubleSpinBox();
+		rigidBodyGeneralLayout->addWidget(friction, 1, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(friction);
 		friction->setMinimum(0.0);
 		friction->setMaximum(1.0);
 		connect(friction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *rollingFrictionLabel = new QLabel("Rolling Friction:", rigidBodyGeneralBox);
-		rollingFrictionLabel->setGeometry(QRect(175, 40, 80, 22));
+		QLabel *rollingFrictionLabel = new QLabel("Rolling Friction:");
+		rigidBodyGeneralLayout->addWidget(rollingFrictionLabel, 1, 2);
 
-		rollingFriction = new QDoubleSpinBox(rigidBodyGeneralBox);
-		rollingFriction->setGeometry(QRect(255, 40, 80, 22));
+		rollingFriction = new QDoubleSpinBox();
+		rigidBodyGeneralLayout->addWidget(rollingFriction, 1, 3);
 		SpinBoxStyleHelper::applyDefaultStyleOn(rollingFriction);
 		rollingFriction->setMinimum(0.0);
 		rollingFriction->setMaximum(1.0);
 		connect(rollingFriction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 	}
 
-	void ObjectControllerWidget::setupPhysicsDampingPropertiesBox()
+	void ObjectControllerWidget::setupPhysicsDampingPropertiesBox(QVBoxLayout *physicsPropertiesLayout)
 	{
-		QGroupBox *rigidBodyDampingBox = new QGroupBox("Damping", tabPhysicsProperties);
-		rigidBodyDampingBox->setGeometry(QRect(0, 80, 365, 45));
+		QGroupBox *rigidBodyDampingBox = new QGroupBox("Damping");
+		physicsPropertiesLayout->addWidget(rigidBodyDampingBox);
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
+		rigidBodyDampingBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QLabel *linearDampingLabel = new QLabel("Linear:", rigidBodyDampingBox);
-		linearDampingLabel->setGeometry(QRect(5, 15, 70, 22));
+		QGridLayout *rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
 
-		linearDamping = new QDoubleSpinBox(rigidBodyDampingBox);
-		linearDamping->setGeometry(QRect(75, 15, 80, 22));
+		QLabel *linearDampingLabel = new QLabel("Linear:");
+		rigidBodyDampingLayout->addWidget(linearDampingLabel, 0, 0);
+
+		linearDamping = new QDoubleSpinBox();
+		rigidBodyDampingLayout->addWidget(linearDamping, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(linearDamping);
 		linearDamping->setMinimum(0.0);
 		linearDamping->setMaximum(1.0);
 		connect(linearDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *angularDampingLabel = new QLabel("Angular:", rigidBodyDampingBox);
-		angularDampingLabel->setGeometry(QRect(175, 15, 60, 22));
+		QLabel *angularDampingLabel = new QLabel("Angular:");
+		rigidBodyDampingLayout->addWidget(angularDampingLabel, 0, 2);
 
-		angularDamping = new QDoubleSpinBox(rigidBodyDampingBox);
-		angularDamping->setGeometry(QRect(255, 15, 80, 22));
+		angularDamping = new QDoubleSpinBox();
+		rigidBodyDampingLayout->addWidget(angularDamping, 0, 3);
 		SpinBoxStyleHelper::applyDefaultStyleOn(angularDamping);
 		angularDamping->setMinimum(0.0);
 		angularDamping->setMaximum(1.0);
 		connect(angularDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 	}
 
-	void ObjectControllerWidget::setupPhysicsFactorPropertiesBox()
+	void ObjectControllerWidget::setupPhysicsFactorPropertiesBox(QVBoxLayout *physicsPropertiesLayout)
 	{
-		QGroupBox *rigidBodyFactorBox = new QGroupBox("Factor", tabPhysicsProperties);
-		rigidBodyFactorBox->setGeometry(QRect(0, 130, 365, 70));
+		QGroupBox *rigidBodyFactorBox = new QGroupBox("Factor");
+		physicsPropertiesLayout->addWidget(rigidBodyFactorBox);
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
+		rigidBodyFactorBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QLabel *linearFactorLabel = new QLabel("Linear:", rigidBodyFactorBox);
-		linearFactorLabel->setGeometry(QRect(5, 15, 70, 22));
+		QGridLayout *rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
 
-		linearFactorX = new QDoubleSpinBox(rigidBodyFactorBox);
-		linearFactorX->setGeometry(QRect(75, 15, 80, 22));
+		QLabel *linearFactorLabel = new QLabel("Linear:");
+		rigidBodyFactorLayout->addWidget(linearFactorLabel, 0, 0);
+
+		QHBoxLayout *linearFactorLayout = new QHBoxLayout();
+		rigidBodyFactorLayout->addLayout(linearFactorLayout, 0, 1);
+		linearFactorX = new QDoubleSpinBox();
+		linearFactorLayout->addWidget(linearFactorX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorX);
 		linearFactorX->setMinimum(0.0);
 		linearFactorX->setMaximum(1.0);
 		connect(linearFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-		linearFactorY = new QDoubleSpinBox(rigidBodyFactorBox);
-		linearFactorY->setGeometry(QRect(155, 15, 80, 22));
+		linearFactorY = new QDoubleSpinBox();
+		linearFactorLayout->addWidget(linearFactorY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorY);
 		linearFactorY->setMinimum(0.0);
 		linearFactorY->setMaximum(1.0);
 		connect(linearFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-		linearFactorZ = new QDoubleSpinBox(rigidBodyFactorBox);
-		linearFactorZ->setGeometry(QRect(235, 15, 80, 22));
+		linearFactorZ = new QDoubleSpinBox();
+		linearFactorLayout->addWidget(linearFactorZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(linearFactorZ);
 		linearFactorZ->setMinimum(0.0);
 		linearFactorZ->setMaximum(1.0);
 		connect(linearFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *angularFactorLabel = new QLabel("Angular:", rigidBodyFactorBox);
-		angularFactorLabel->setGeometry(QRect(5, 40, 70, 22));
+		QLabel *angularFactorLabel = new QLabel("Angular:");
+		rigidBodyFactorLayout->addWidget(angularFactorLabel, 1, 0);
 
-		angularFactorX = new QDoubleSpinBox(rigidBodyFactorBox);
-		angularFactorX->setGeometry(QRect(75, 40, 80, 22));
+		QHBoxLayout *angularFactorLayout = new QHBoxLayout();
+		rigidBodyFactorLayout->addLayout(angularFactorLayout, 1, 1);
+		angularFactorX = new QDoubleSpinBox();
+		angularFactorLayout->addWidget(angularFactorX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorX);
 		angularFactorX->setMinimum(0.0);
 		angularFactorX->setMaximum(1.0);
 		connect(angularFactorX, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-		angularFactorY = new QDoubleSpinBox(rigidBodyFactorBox);
-		angularFactorY->setGeometry(QRect(155, 40, 80, 22));
+		angularFactorY = new QDoubleSpinBox();
+		angularFactorLayout->addWidget(angularFactorY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorY);
 		angularFactorY->setMinimum(0.0);
 		angularFactorY->setMaximum(1.0);
 		connect(angularFactorY, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
-
-		angularFactorZ = new QDoubleSpinBox(rigidBodyFactorBox);
-		angularFactorZ->setGeometry(QRect(235, 40, 80, 22));
+		angularFactorZ = new QDoubleSpinBox();
+		angularFactorLayout->addWidget(angularFactorZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(angularFactorZ);
 		angularFactorZ->setMinimum(0.0);
 		angularFactorZ->setMaximum(1.0);

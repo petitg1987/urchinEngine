@@ -2,6 +2,7 @@
 #define ENGINE_MAPEDITOR_CHANGEBODYSHAPEDIALOG_H
 
 #include <list>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
@@ -22,7 +23,7 @@ namespace urchin
 			CollisionShape3D::ShapeType getShapeType() const;
 
 		private:
-			void setupBodyShapeTypeFields();
+			void setupBodyShapeTypeFields(QGridLayout *);
 
 			void done(int);
 
