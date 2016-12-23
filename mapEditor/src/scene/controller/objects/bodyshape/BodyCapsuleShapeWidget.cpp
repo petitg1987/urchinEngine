@@ -9,8 +9,7 @@ namespace urchin
 	BodyCapsuleShapeWidget::BodyCapsuleShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
 			BodyShapeWidget(parent, sceneObject)
 	{
-		QLabel *radiusLabel = new QLabel(this);
-		radiusLabel->setText("Radius:");
+		QLabel *radiusLabel = new QLabel("Radius:", this);
 		radiusLabel->setGeometry(QRect(5, 0, 80, 22));
 
 		radius = new QDoubleSpinBox(this);
@@ -19,8 +18,7 @@ namespace urchin
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *cylinderHeightLabel = new QLabel(this);
-		cylinderHeightLabel->setText("Cylinder Height:");
+		QLabel *cylinderHeightLabel = new QLabel("Cylinder Height:", this);
 		cylinderHeightLabel->setGeometry(QRect(5, 25, 80, 22));
 
 		cylinderHeight = new QDoubleSpinBox(this);
@@ -29,8 +27,7 @@ namespace urchin
 		cylinderHeight->setMinimum(0.0);
 		connect(cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *orientationLabel = new QLabel(this);
-		orientationLabel->setText("Orientation:");
+		QLabel *orientationLabel = new QLabel("Orientation:", this);
 		orientationLabel->setGeometry(QRect(5, 50, 80, 22));
 
 		orientation = new QComboBox(this);

@@ -29,8 +29,7 @@ namespace urchin
 
 	void ChangeBodyShapeDialog::setupBodyShapeTypeFields()
 	{
-		bodyShapeTypeLabel = new QLabel(this);
-		bodyShapeTypeLabel->setText("Shape Type:");
+		bodyShapeTypeLabel = new QLabel("Shape Type:", this);
 		bodyShapeTypeLabel->setGeometry(QRect(10, 20, 90, 22));
 
 		bodyShapeTypeComboBox = new QComboBox(this);

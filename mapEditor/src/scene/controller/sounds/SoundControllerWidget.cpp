@@ -1,6 +1,9 @@
+#include <QtWidgets/QSizePolicy>
+
 #include "SoundControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 #include "scene/controller/sounds/dialog/NewSoundDialog.h"
 #include "scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h"
 #include "scene/controller/sounds/dialog/ChangeSoundShapeDialog.h"
@@ -13,38 +16,49 @@ namespace urchin
 			soundController(nullptr),
 			disableSoundEvent(false)
 	{
-		soundTableView = new SoundTableView(this);
-		soundTableView->addObserver(this, SoundTableView::SELECTION_CHANGED);
-		soundTableView->setGeometry(QRect(0, 0, 375, 220));
+		QVBoxLayout *mainLayout = new QVBoxLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 
-		addSoundButton = new QPushButton(this);
-		addSoundButton->setText("New Sound");
-		addSoundButton->setGeometry(QRect(0, 221, 90, 22));
+		soundTableView = new SoundTableView();
+		mainLayout->addWidget(soundTableView);
+		soundTableView->addObserver(this, SoundTableView::SELECTION_CHANGED);
+		soundTableView->setFixedSize(QSize(375, 220));
+
+		QHBoxLayout *buttonsLayout = new QHBoxLayout();
+		mainLayout->addLayout(buttonsLayout);
+		buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+		addSoundButton = new QPushButton("New Sound");
+		buttonsLayout->addWidget(addSoundButton);
+		ButtonStyleHelper::applyNormalStyle(addSoundButton);
 		connect(addSoundButton, SIGNAL(clicked()), this, SLOT(showAddSoundDialog()));
 
-		removeSoundButton = new QPushButton(this);
-		removeSoundButton->setText("Remove Sound");
-		removeSoundButton->setGeometry(QRect(91, 221, 90, 22));
+		removeSoundButton = new QPushButton("Remove Sound");
+		buttonsLayout->addWidget(removeSoundButton);
+		ButtonStyleHelper::applyNormalStyle(removeSoundButton);
 		removeSoundButton->setEnabled(false);
 		connect(removeSoundButton, SIGNAL(clicked()), this, SLOT(removeSelectedSound()));
 
-		soundGroupBox = new QGroupBox(this);
-		soundGroupBox->setTitle("Sound");
-		soundGroupBox->setGeometry(QRect(0, 250, 375, 160));
-		GroupBoxStyleHelper::applyNormalStyle(soundGroupBox);
-		soundGroupBox->hide();
+		soundPropertiesGroupBox = new QGroupBox("Sound Properties");
+		soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+		mainLayout->addWidget(soundPropertiesGroupBox);
+		GroupBoxStyleHelper::applyNormalStyle(soundPropertiesGroupBox);
+		soundPropertiesGroupBox->hide();
 
-		setupSoundGeneralPropertiesBox(soundGroupBox);
-		setupSoundSpecificPropertiesBox(soundGroupBox);
+		QVBoxLayout *soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
+		setupSoundGeneralPropertiesBox(soundPropertiesLayout);
+		setupSpecificPointSoundBox(soundPropertiesLayout);
 
-		soundTriggerGroupBox = new QGroupBox(this);
-		soundTriggerGroupBox->setTitle("Sound Trigger");
-		soundTriggerGroupBox->setGeometry(QRect(0, 415, 375, 435));
+		soundTriggerGroupBox = new QGroupBox("Sound Trigger");
+		soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+		mainLayout->addWidget(soundTriggerGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(soundTriggerGroupBox);
 		soundTriggerGroupBox->hide();
 
-		setupSoundBehaviorPropertiesBox(soundTriggerGroupBox);
-		setupSoundTriggerSpecificPropertiesBox(soundTriggerGroupBox);
+		QVBoxLayout *soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
+		soundTriggerLayout->setSizeConstraint(QLayout::SetMinimumSize);
+		setupSoundBehaviorPropertiesBox(soundTriggerLayout);
+		setupSpecificTriggerShapeBox(soundTriggerLayout);
 	}
 
 	SoundControllerWidget::~SoundControllerWidget()
@@ -52,168 +66,137 @@ namespace urchin
 
 	}
 
-	void SoundControllerWidget::setupSoundGeneralPropertiesBox(QWidget *lightBox)
+	void SoundControllerWidget::setupSoundGeneralPropertiesBox(QVBoxLayout *soundPropertiesLayout)
 	{
-		QGroupBox *generalPropertiesGroupBox = new QGroupBox(lightBox);
-		generalPropertiesGroupBox->setTitle("General Properties");
-		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 365, 40));
-		GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
+		QGroupBox *generalGroupBox = new QGroupBox("General");
+		soundPropertiesLayout->addWidget(generalGroupBox);
+		GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
 
-		QLabel *volumeLabel= new QLabel(generalPropertiesGroupBox);
-		volumeLabel->setText("Volume:");
-		volumeLabel->setGeometry(QRect(5, 15, 55, 22));
+		QGridLayout *generalPropertiesLayout = new QGridLayout(generalGroupBox);
+		generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		volume = new QDoubleSpinBox(generalPropertiesGroupBox);
-		volume->setGeometry(QRect(85, 15, 80, 22));
+		QLabel *volumeLabel= new QLabel("Volume:");
+		generalPropertiesLayout->addWidget(volumeLabel, 0, 0);
+
+		volume = new QDoubleSpinBox();
+		generalPropertiesLayout->addWidget(volume, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(volume);
 		volume->setMinimum(0.0);
 		connect(volume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
+
+		QLabel *soundTypeLabel= new QLabel("Sound Type:");
+		generalPropertiesLayout->addWidget(soundTypeLabel, 1, 0);
+
+		soundType = new QLabel();
+		generalPropertiesLayout->addWidget(soundType, 1, 1);
 	}
 
-	void SoundControllerWidget::setupSoundSpecificPropertiesBox(QWidget *soundBox)
+	void SoundControllerWidget::setupSpecificPointSoundBox(QVBoxLayout *soundPropertiesLayout)
 	{
-		QGroupBox *specificPropertiesGroupBox = new QGroupBox(soundBox);
-		specificPropertiesGroupBox->setTitle("Specific Properties");
-		specificPropertiesGroupBox->setGeometry(QRect(5, 60, 365, 95));
-		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
+		specificPointSoundGroupBox = new QGroupBox("Point Sound");
+		soundPropertiesLayout->addWidget(specificPointSoundGroupBox);
+		GroupBoxStyleHelper::applyNormalStyle(specificPointSoundGroupBox);
+		specificPointSoundGroupBox->hide();
 
-		QLabel *soundTypeLabel= new QLabel(specificPropertiesGroupBox);
-		soundTypeLabel->setText("Sound Type:");
-		soundTypeLabel->setGeometry(QRect(5, 15, 65, 22));
+		QGridLayout *pointSoundLayout = new QGridLayout(specificPointSoundGroupBox);
+		pointSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		soundType = new QLabel(specificPropertiesGroupBox);
-		soundType->setGeometry(QRect(85, 15, 80, 22));
+		QLabel *positionLabel= new QLabel("Position:");
+		pointSoundLayout->addWidget(positionLabel, 0, 0);
 
-		setupAmbientSoundBox(specificPropertiesGroupBox);
-		setupPointSoundBox(specificPropertiesGroupBox);
-	}
-
-	void SoundControllerWidget::setupAmbientSoundBox(QWidget *specificPropertiesGroupBox)
-	{
-		ambientSoundWidget = new QWidget(specificPropertiesGroupBox);
-		ambientSoundWidget->setGeometry(QRect(5, 40, 365, 85));
-		ambientSoundWidget->hide();
-	}
-
-	void SoundControllerWidget::setupPointSoundBox(QWidget *specificPropertiesGroupBox)
-	{
-		pointSoundWidget = new QWidget(specificPropertiesGroupBox);
-		pointSoundWidget->setGeometry(QRect(5, 40, 365, 85));
-		pointSoundWidget->hide();
-
-		QLabel *positionLabel= new QLabel(pointSoundWidget);
-		positionLabel->setText("Position:");
-		positionLabel->setGeometry(QRect(0, 0, 55, 22));
-
-		positionX = new QDoubleSpinBox(pointSoundWidget);
-		positionX->setGeometry(QRect(85, 0, 80, 22));
+		QHBoxLayout *positionLayout = new QHBoxLayout();
+		pointSoundLayout->addLayout(positionLayout, 0, 1);
+		positionX = new QDoubleSpinBox();
+		positionLayout->addWidget(positionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
-		positionY = new QDoubleSpinBox(pointSoundWidget);
-		positionY->setGeometry(QRect(165, 0, 80, 22));
+		positionY = new QDoubleSpinBox();
+		positionLayout->addWidget(positionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
-		positionZ = new QDoubleSpinBox(pointSoundWidget);
-		positionZ->setGeometry(QRect(245, 0, 80, 22));
+		positionZ = new QDoubleSpinBox();
+		positionLayout->addWidget(positionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
-		QLabel *inaudibleDistanceLabel= new QLabel(pointSoundWidget);
-		inaudibleDistanceLabel->setText("Inaudible Dis.:");
-		inaudibleDistanceLabel->setGeometry(QRect(0, 25, 85, 22));
+		QLabel *inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
+		pointSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
 
-		inaudibleDistance = new QDoubleSpinBox(pointSoundWidget);
-		inaudibleDistance->setGeometry(QRect(85, 25, 80, 22));
+		inaudibleDistance = new QDoubleSpinBox();
+		pointSoundLayout->addWidget(inaudibleDistance, 1, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(inaudibleDistance);
 		inaudibleDistance->setMinimum(0.0);
 		connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 	}
 
-	void SoundControllerWidget::setupSoundBehaviorPropertiesBox(QWidget *soundTriggerGroupBox)
+	void SoundControllerWidget::setupSoundBehaviorPropertiesBox(QVBoxLayout *soundTriggerLayout)
 	{
-		QGroupBox *soundBehaviorGroupBox = new QGroupBox(soundTriggerGroupBox);
-		soundBehaviorGroupBox->setTitle("Sound Behavior");
-		soundBehaviorGroupBox->setGeometry(QRect(5, 15, 365, 95));
+		QGroupBox *soundBehaviorGroupBox = new QGroupBox("Sound Behavior");
+		soundTriggerLayout->addWidget(soundBehaviorGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(soundBehaviorGroupBox);
 
-		QLabel *playBehaviorLabel= new QLabel(soundBehaviorGroupBox);
-		playBehaviorLabel->setText("Play Behavior:");
-		playBehaviorLabel->setGeometry(QRect(5, 15, 95, 22));
+		QGridLayout *behaviorLayout = new QGridLayout(soundBehaviorGroupBox);
+		behaviorLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		playBehavior = new QComboBox(soundBehaviorGroupBox);
-		playBehavior->setGeometry(QRect(110, 15, 130, 22));
+		QLabel *playBehaviorLabel= new QLabel("Play Behavior:");
+		behaviorLayout->addWidget(playBehaviorLabel, 0, 0);
+
+		playBehavior = new QComboBox();
+		behaviorLayout->addWidget(playBehavior, 0, 1, 1, 3);
 		playBehavior->addItem(PLAY_ONCE_LABEL, QVariant(SoundBehavior::PLAY_ONCE));
 		playBehavior->addItem(PLAY_LOOP_LABEL, QVariant(SoundBehavior::PLAY_LOOP));
 		connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
 
-		QLabel *stopBehaviorLabel= new QLabel(soundBehaviorGroupBox);
-		stopBehaviorLabel->setText("Stop Behavior:");
-		stopBehaviorLabel->setGeometry(QRect(5, 40, 95, 22));
+		QLabel *stopBehaviorLabel= new QLabel("Stop Behavior:");
+		behaviorLayout->addWidget(stopBehaviorLabel, 1, 0);
 
-		stopBehavior = new QComboBox(soundBehaviorGroupBox);
-		stopBehavior->setGeometry(QRect(110, 40, 130, 22));
+		stopBehavior = new QComboBox();
+		behaviorLayout->addWidget(stopBehavior, 1, 1, 1, 3);
 		stopBehavior->addItem(INSTANT_STOP_LABEL, QVariant(SoundBehavior::INSTANT_STOP));
 		stopBehavior->addItem(SMOOTH_STOP_LABEL, QVariant(SoundBehavior::SMOOTH_STOP));
 		connect(stopBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
 
-		QLabel *volumeDecreasePercentageOnStopLabel= new QLabel(soundBehaviorGroupBox);
-		volumeDecreasePercentageOnStopLabel->setText("Vol. Decrease:");
-		volumeDecreasePercentageOnStopLabel->setGeometry(QRect(5, 65, 95, 22));
+		QLabel *volumeDecreasePercentageOnStopLabel= new QLabel("Vol. Decrease:");
+		behaviorLayout->addWidget(volumeDecreasePercentageOnStopLabel, 2, 0);
 
-		volumeDecreasePercentageOnStop = new QDoubleSpinBox(soundBehaviorGroupBox);
-		volumeDecreasePercentageOnStop->setGeometry(QRect(110, 65, 80, 22));
+		volumeDecreasePercentageOnStop = new QDoubleSpinBox();
+		behaviorLayout->addWidget(volumeDecreasePercentageOnStop, 2, 1, 1, 3);
 		SpinBoxStyleHelper::applyDefaultStyleOn(volumeDecreasePercentageOnStop);
 		volumeDecreasePercentageOnStop->setMinimum(0.0);
 		volumeDecreasePercentageOnStop->setMaximum(1.0);
 		connect(volumeDecreasePercentageOnStop, SIGNAL(valueChanged(double)), this, SLOT(updateSoundBehaviorProperties()));
-	}
 
-	void SoundControllerWidget::setupSoundTriggerSpecificPropertiesBox(QWidget *soundTriggerBox)
-	{
-		QGroupBox *specificPropertiesGroupBox = new QGroupBox(soundTriggerBox);
-		specificPropertiesGroupBox->setTitle("Specific Properties");
-		specificPropertiesGroupBox->setGeometry(QRect(5, 115, 365, 240));
-		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
+		QLabel *soundTriggerTypeLabel= new QLabel("Trigger:");
+		behaviorLayout->addWidget(soundTriggerTypeLabel, 3, 0);
 
-		QLabel *soundTriggerTypeLabel= new QLabel(specificPropertiesGroupBox);
-		soundTriggerTypeLabel->setText("Trigger:");
-		soundTriggerTypeLabel->setGeometry(QRect(5, 15, 65, 22));
+		soundTriggerType = new QLabel();
+		behaviorLayout->addWidget(soundTriggerType, 3, 1);
 
-		soundTriggerType = new QLabel(specificPropertiesGroupBox);
-		soundTriggerType->setGeometry(QRect(85, 15, 80, 22));
-
-		changeSoundTriggerTypeButton = new QPushButton(specificPropertiesGroupBox);
-		changeSoundTriggerTypeButton->setText("Change");
-		changeSoundTriggerTypeButton->setGeometry(QRect(180, 15, 85, 22));
+		changeSoundTriggerTypeButton = new QPushButton("Change");
+		behaviorLayout->addWidget(changeSoundTriggerTypeButton, 3, 2);
+		ButtonStyleHelper::applyNormalStyle(changeSoundTriggerTypeButton);
 		connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
-
-		setupManuelTriggerBox(specificPropertiesGroupBox);
-		setupShapeTriggerBox(specificPropertiesGroupBox);
 	}
 
-	void SoundControllerWidget::setupManuelTriggerBox(QWidget *specificPropertiesGroupBox)
+	void SoundControllerWidget::setupSpecificTriggerShapeBox(QVBoxLayout *soundTriggerLayout)
 	{
-		manualTriggerWidget = new QWidget(specificPropertiesGroupBox);
-		manualTriggerWidget->setGeometry(QRect(5, 40, 365, 235));
-		manualTriggerWidget->hide();
-	}
+		specificTriggerShapeGroupBox = new QGroupBox("Trigger Shape");
+		soundTriggerLayout->addWidget(specificTriggerShapeGroupBox);
+		GroupBoxStyleHelper::applyNormalStyle(specificTriggerShapeGroupBox);
+		specificTriggerShapeGroupBox->hide();
 
-	void SoundControllerWidget::setupShapeTriggerBox(QWidget *specificPropertiesGroupBox)
-	{
-		shapeTriggerWidget = new QWidget(specificPropertiesGroupBox);
-		shapeTriggerWidget->setGeometry(QRect(5, 40, 365, 235));
-		shapeTriggerWidget->hide();
+		triggerShapeLayout = new QGridLayout(specificTriggerShapeGroupBox);
+		triggerShapeLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QLabel *soundShapeTypeLabel= new QLabel(shapeTriggerWidget);
-		soundShapeTypeLabel->setText("Shape:");
-		soundShapeTypeLabel->setGeometry(QRect(0, 0, 65, 22));
+		QLabel *soundShapeTypeLabel= new QLabel("Shape:");
+		triggerShapeLayout->addWidget(soundShapeTypeLabel, 0, 0);
 
-		soundShapeType = new QLabel(shapeTriggerWidget);
-		soundShapeType->setGeometry(QRect(80, 0, 80, 22));
+		soundShapeType = new QLabel();
+		triggerShapeLayout->addWidget(soundShapeType, 0, 1);
 
-		changeSoundShapeTypeButton = new QPushButton(shapeTriggerWidget);
-		changeSoundShapeTypeButton->setText("Change");
-		changeSoundShapeTypeButton->setGeometry(QRect(175, 0, 85, 22));
+		changeSoundShapeTypeButton = new QPushButton("Change");
+		triggerShapeLayout->addWidget(changeSoundShapeTypeButton, 0, 2);
+		ButtonStyleHelper::applyNormalStyle(changeSoundShapeTypeButton);
 		connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeDialog()));
 
 		soundShapeWidget = nullptr;
@@ -255,12 +238,12 @@ namespace urchin
 						setupSoundDataFrom(sceneSound);
 
 						removeSoundButton->setEnabled(true);
-						soundGroupBox->show();
+						soundPropertiesGroupBox->show();
 						soundTriggerGroupBox->show();
 					}else
 					{
 						removeSoundButton->setEnabled(false);
-						soundGroupBox->hide();
+						soundPropertiesGroupBox->hide();
 						soundTriggerGroupBox->hide();
 					}
 					break;
@@ -309,16 +292,14 @@ namespace urchin
 
 	void SoundControllerWidget::setupAmbientSoundDataFrom(const AmbientSound *)
 	{
-		ambientSoundWidget->show();
-		pointSoundWidget->hide();
+		specificPointSoundGroupBox->hide();
 
 		soundType->setText(AMBIENT_SOUND_LABEL);
 	}
 
 	void SoundControllerWidget::setupPointSoundDataFrom(const PointSound *pointSound)
 	{
-		pointSoundWidget->show();
-		ambientSoundWidget->hide();
+		specificPointSoundGroupBox->show();
 
 		soundType->setText(POINT_SOUND_LABEL);
 
@@ -350,17 +331,13 @@ namespace urchin
 
 	void SoundControllerWidget::setupManualTriggerDataFrom(const SceneSound *)
 	{
-		manualTriggerWidget->show();
-		shapeTriggerWidget->hide();
-
+		specificTriggerShapeGroupBox->hide();
 		soundTriggerType->setText(MANUAL_TRIGGER_LABEL);
 	}
 
 	void SoundControllerWidget::setupShapeTriggerDataFrom(const SceneSound *sceneSound)
 	{
-		shapeTriggerWidget->show();
-		manualTriggerWidget->hide();
-
+		specificTriggerShapeGroupBox->show();
 		soundTriggerType->setText(SHAPE_TRIGGER_LABEL);
 
 		const ShapeTrigger *shapeTrigger = static_cast<const ShapeTrigger *>(sceneSound->getSoundTrigger());
@@ -374,11 +351,12 @@ namespace urchin
 	SoundShapeWidget *SoundControllerWidget::retrieveSoundShapeWidget(const SoundShape *shape, const SceneSound *sceneSound)
 	{
 		delete soundShapeWidget;
-		soundShapeWidget = SoundShapeWidgetRetriever(shapeTriggerWidget, sceneSound).retrieveShapeWidget(shape);
+
+		soundShapeWidget = SoundShapeWidgetRetriever(sceneSound).retrieveShapeWidget(shape);
+		triggerShapeLayout->addWidget(soundShapeWidget, 1, 0, 1, 5);
+		soundShapeWidget->show();
 		connect(soundShapeWidget, SIGNAL(soundShapeChange(const SoundShape *)), this, SLOT(soundShapeChanged(const SoundShape *)));
 
-		soundShapeWidget->setGeometry(QRect(0, 30, 339, 230));
-		soundShapeWidget->show();
 		return soundShapeWidget;
 	}
 

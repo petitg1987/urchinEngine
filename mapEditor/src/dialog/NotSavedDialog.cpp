@@ -14,9 +14,8 @@ namespace urchin
 		this->setWindowTitle("Save Map");
 		this->resize(350, 120);
 
-		QLabel *saveMapLabel = new QLabel(this);
-		saveMapLabel->setText("A map is currently open but not saved.\n"
-				"Would you like to save it ?");
+		QLabel *saveMapLabel = new QLabel("A map is currently open but not saved.\n"
+				"Would you like to save it ?", this);
 		saveMapLabel->setGeometry(QRect(10, 20, 400, 50));
 
 		buttonBox = new QDialogButtonBox(this);

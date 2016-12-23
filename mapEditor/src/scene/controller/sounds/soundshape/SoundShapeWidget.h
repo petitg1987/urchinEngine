@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGridLayout>
 
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
@@ -20,7 +21,7 @@ namespace urchin
 		#define BOX_SHAPE_LABEL "Box"
 
 		public:
-			SoundShapeWidget(QWidget *, const SceneSound *);
+			SoundShapeWidget(const SceneSound *);
 			virtual ~SoundShapeWidget();
 
 			const SceneSound *getSceneSound() const;
@@ -36,6 +37,7 @@ namespace urchin
 			void updateSoundShape();
 
 		protected:
+			QGridLayout *mainLayout;
 			bool disableShapeEvent;
 
 			float getMarginValue() const;

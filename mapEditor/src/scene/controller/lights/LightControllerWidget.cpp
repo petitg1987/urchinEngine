@@ -14,19 +14,16 @@ namespace urchin
 		lightTableView->addObserver(this, LightTableView::SELECTION_CHANGED);
 		lightTableView->setGeometry(QRect(0, 0, 375, 220));
 
-		addLightButton = new QPushButton(this);
-		addLightButton->setText("New Light");
+		addLightButton = new QPushButton("New Light", this);
 		addLightButton->setGeometry(QRect(0, 221, 90, 22));
 		connect(addLightButton, SIGNAL(clicked()), this, SLOT(showAddLightDialog()));
 
-		removeLightButton = new QPushButton(this);
-		removeLightButton->setText("Remove Light");
+		removeLightButton = new QPushButton("Remove Light", this);
 		removeLightButton->setGeometry(QRect(91, 221, 90, 22));
 		removeLightButton->setEnabled(false);
 		connect(removeLightButton, SIGNAL(clicked()), this, SLOT(removeSelectedLight()));
 
-		lightGroupBox = new QGroupBox(this);
-		lightGroupBox->setTitle("Light");
+		lightGroupBox = new QGroupBox("Light", this);
 		lightGroupBox->setGeometry(QRect(0, 250, 375, 600));
 		GroupBoxStyleHelper::applyNormalStyle(lightGroupBox);
 		lightGroupBox->hide();
@@ -42,13 +39,11 @@ namespace urchin
 
 	void LightControllerWidget::setupGeneralPropertiesBox(QWidget *lightBox)
 	{
-		QGroupBox *generalPropertiesGroupBox = new QGroupBox(lightBox);
-		generalPropertiesGroupBox->setTitle("General Properties");
+		QGroupBox *generalPropertiesGroupBox = new QGroupBox("General Properties", lightBox);
 		generalPropertiesGroupBox->setGeometry(QRect(5, 15, 365, 65));
 		GroupBoxStyleHelper::applyNormalStyle(generalPropertiesGroupBox);
 
-		QLabel *ambientLabel= new QLabel(generalPropertiesGroupBox);
-		ambientLabel->setText("Ambient:");
+		QLabel *ambientLabel= new QLabel("Ambient:", generalPropertiesGroupBox);
 		ambientLabel->setGeometry(QRect(5, 15, 55, 22));
 
 		ambientR = new QDoubleSpinBox(generalPropertiesGroupBox);
@@ -70,21 +65,18 @@ namespace urchin
 		ambientB->setMaximum(1.0);
 		connect(ambientB, SIGNAL(valueChanged(double)), this, SLOT(updateLightGeneralProperties()));
 
-		produceShadowCheckBox = new QCheckBox(generalPropertiesGroupBox);
-		produceShadowCheckBox->setText("Product Shadow");
+		produceShadowCheckBox = new QCheckBox("Product Shadow", generalPropertiesGroupBox);
 		produceShadowCheckBox->setGeometry(QRect(5, 40, 110, 22));
 		connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
 	}
 
 	void LightControllerWidget::setupSpecificPropertiesBox(QWidget *lightBox)
 	{
-		QGroupBox *specificPropertiesGroupBox = new QGroupBox(lightBox);
-		specificPropertiesGroupBox->setTitle("Specific Properties");
+		QGroupBox *specificPropertiesGroupBox = new QGroupBox("Specific Properties", lightBox);
 		specificPropertiesGroupBox->setGeometry(QRect(5, 85, 365, 95));
 		GroupBoxStyleHelper::applyNormalStyle(specificPropertiesGroupBox);
 
-		QLabel *lightTypeLabel= new QLabel(specificPropertiesGroupBox);
-		lightTypeLabel->setText("Light Type:");
+		QLabel *lightTypeLabel= new QLabel("Light Type:", specificPropertiesGroupBox);
 		lightTypeLabel->setGeometry(QRect(5, 15, 65, 22));
 
 		lightType = new QLabel(specificPropertiesGroupBox);
@@ -100,8 +92,7 @@ namespace urchin
 		omnidirectionalLightWidget->setGeometry(QRect(5, 40, 365, 85));
 		omnidirectionalLightWidget->hide();
 
-		QLabel *positionLabel= new QLabel(omnidirectionalLightWidget);
-		positionLabel->setText("Position:");
+		QLabel *positionLabel= new QLabel("Position:", omnidirectionalLightWidget);
 		positionLabel->setGeometry(QRect(0, 0, 55, 22));
 
 		positionX = new QDoubleSpinBox(omnidirectionalLightWidget);
@@ -117,8 +108,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-		QLabel *attenuationLabel= new QLabel(omnidirectionalLightWidget);
-		attenuationLabel->setText("Expo. Att.:");
+		QLabel *attenuationLabel= new QLabel("Expo. Att.:", omnidirectionalLightWidget);
 		attenuationLabel->setGeometry(QRect(0, 25, 55, 22));
 
 		attenuation = new QDoubleSpinBox(omnidirectionalLightWidget);
@@ -135,8 +125,7 @@ namespace urchin
 		sunLightWidget->setGeometry(QRect(5, 40, 365, 85));
 		sunLightWidget->hide();
 
-		QLabel *directionLabel= new QLabel(sunLightWidget);
-		directionLabel->setText("Direction:");
+		QLabel *directionLabel= new QLabel("Direction:", sunLightWidget);
 		directionLabel->setGeometry(QRect(0, 0, 55, 22));
 
 		directionX = new QDoubleSpinBox(sunLightWidget);

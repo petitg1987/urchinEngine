@@ -32,8 +32,7 @@ namespace urchin
 
 	void NewLightDialog::setupNameFields()
 	{
-		lightNameLabel = new QLabel(this);
-		lightNameLabel->setText("Light Name:");
+		lightNameLabel = new QLabel("Light Name:", this);
 		lightNameLabel->setGeometry(QRect(10, 20, 110, 22));
 
 		lightNameText = new QLineEdit(this);
@@ -42,8 +41,7 @@ namespace urchin
 
 	void NewLightDialog::setupLightTypeFields()
 	{
-		lightTypeLabel = new QLabel(this);
-		lightTypeLabel->setText("Light Type:");
+		lightTypeLabel = new QLabel("Light Type:", this);
 		lightTypeLabel->setGeometry(QRect(10, 50, 90, 22));
 
 		lightTypeComboBox = new QComboBox(this);

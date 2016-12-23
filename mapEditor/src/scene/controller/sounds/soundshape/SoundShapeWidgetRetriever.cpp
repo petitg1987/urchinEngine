@@ -8,8 +8,7 @@
 namespace urchin
 {
 
-	SoundShapeWidgetRetriever::SoundShapeWidgetRetriever(QWidget *parentWidget, const SceneSound *sceneSound) :
-			parentWidget(parentWidget),
+	SoundShapeWidgetRetriever::SoundShapeWidgetRetriever(const SceneSound *sceneSound) :
 			sceneSound(sceneSound)
 	{
 
@@ -31,10 +30,10 @@ namespace urchin
 
 		if(shapeType==SoundShape::ShapeType::SPHERE_SHAPE)
 		{
-			soundShapeWidget = new SoundSphereShapeWidget(parentWidget, sceneSound);
+			soundShapeWidget = new SoundSphereShapeWidget(sceneSound);
 		}else if(shapeType==SoundShape::ShapeType::BOX_SHAPE)
 		{
-			soundShapeWidget = new SoundBoxShapeWidget(parentWidget, sceneSound);
+			soundShapeWidget = new SoundBoxShapeWidget(sceneSound);
 		}else
 		{
 			throw new std::invalid_argument("Unknown shape type to retrieve sound shape widget: " + shapeType);

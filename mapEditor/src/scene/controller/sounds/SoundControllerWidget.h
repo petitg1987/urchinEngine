@@ -3,6 +3,8 @@
 
 #include <string>
 #include <memory>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
@@ -39,14 +41,10 @@ namespace urchin
 			bool isModified() const;
 
 		private:
-			void setupSoundGeneralPropertiesBox(QWidget *);
-			void setupSoundSpecificPropertiesBox(QWidget *);
-			void setupAmbientSoundBox(QWidget *);
-			void setupPointSoundBox(QWidget *);
-			void setupSoundBehaviorPropertiesBox(QWidget *);
-			void setupSoundTriggerSpecificPropertiesBox(QWidget *);
-			void setupManuelTriggerBox(QWidget *);
-			void setupShapeTriggerBox(QWidget *);
+			void setupSoundGeneralPropertiesBox(QVBoxLayout *);
+			void setupSpecificPointSoundBox(QVBoxLayout *);
+			void setupSoundBehaviorPropertiesBox(QVBoxLayout *);
+			void setupSpecificTriggerShapeBox(QVBoxLayout *);
 
 			void notify(Observable *, int);
 			void setupSoundDataFrom(const SceneSound *);
@@ -64,29 +62,28 @@ namespace urchin
 			QPushButton *addSoundButton;
 			QPushButton *removeSoundButton;
 
-			QGroupBox *soundGroupBox;
+			QGroupBox *soundPropertiesGroupBox;
 			QGroupBox *soundTriggerGroupBox;
 
 			bool disableSoundEvent;
 
 			//sound general properties
 			QDoubleSpinBox *volume;
+			QLabel *soundType;
 
 			//sound specific properties
-			QLabel *soundType;
-			QWidget *ambientSoundWidget;
-			QWidget *pointSoundWidget;
+			QGroupBox *specificPointSoundGroupBox;
 			QDoubleSpinBox *positionX, *positionY, *positionZ, *inaudibleDistance;
 
 			//sound behavior
 			QComboBox *playBehavior, *stopBehavior;
 			QDoubleSpinBox *volumeDecreasePercentageOnStop;
+			QLabel *soundTriggerType;
 
 			//sound trigger specific properties
-			QLabel *soundTriggerType;
+			QGroupBox *specificTriggerShapeGroupBox;
+			QGridLayout *triggerShapeLayout;
 			QPushButton *changeSoundTriggerTypeButton;
-			QWidget *manualTriggerWidget;
-			QWidget *shapeTriggerWidget;
 			QLabel *soundShapeType;
 			QPushButton *changeSoundShapeTypeButton;
 			SoundShapeWidget *soundShapeWidget;

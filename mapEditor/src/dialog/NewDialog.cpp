@@ -30,8 +30,7 @@ namespace urchin
 
 	void NewDialog::setupNameFields()
 	{
-		mapNameLabel = new QLabel(this);
-		mapNameLabel->setText("Name (*.xml):");
+		mapNameLabel = new QLabel("Name (*.xml):", this);
 		mapNameLabel->setGeometry(QRect(10, 20, 110, 22));
 
 		mapNameText = new QLineEdit(this);
@@ -40,38 +39,33 @@ namespace urchin
 
 	void NewDialog::setupDirectoryFields()
 	{
-		mapDirectoryLabel = new QLabel(this);
-		mapDirectoryLabel->setText("Directory:");
+		mapDirectoryLabel = new QLabel("Directory:", this);
 		mapDirectoryLabel->setGeometry(QRect(10, 50, 110, 22));
 
 		mapDirectoryText = new QLineEdit(this);
 		mapDirectoryText->setReadOnly(true);
 		mapDirectoryText->setGeometry(QRect(120, 50, 360, 22));
 
-		QPushButton *selectMapDirButton = new QPushButton(this);
-		selectMapDirButton->setText("...");
+		QPushButton *selectMapDirButton = new QPushButton("...", this);
 		selectMapDirButton->setGeometry(QRect(485, 50, 22, 22));
 		connect(selectMapDirButton, SIGNAL(clicked()), this, SLOT(showMapDirectoryDialog()));
 	}
 
 	void NewDialog::setupWorkingDirectoryFields()
 	{
-		mapWorkingDirectoryLabel = new QLabel(this);
-		mapWorkingDirectoryLabel->setText("Working Directory:");
+		mapWorkingDirectoryLabel = new QLabel("Working Directory:", this);
 		mapWorkingDirectoryLabel->setGeometry(QRect(10, 80, 140, 22));
 
 		mapWorkingDirectoryText = new QLineEdit(this);
 		mapWorkingDirectoryText->setReadOnly(true);
 		mapWorkingDirectoryText->setGeometry(QRect(120, 80, 360, 22));
 
-		QPushButton *selectMapWorkingDirButton = new QPushButton(this);
-		selectMapWorkingDirButton->setText("...");
+		QPushButton *selectMapWorkingDirButton = new QPushButton("...", this);
 		selectMapWorkingDirButton->setGeometry(QRect(485, 80, 22, 22));
 		connect(selectMapWorkingDirButton, SIGNAL(clicked()), this, SLOT(showMapWorkingDirectoryDialog()));
 
 		//relative working directory
-		QLabel *mapRelWorkingDirectoryLabel = new QLabel(this);
-		mapRelWorkingDirectoryLabel->setText("Relative Working Dir.:");
+		QLabel *mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:", this);
 		mapRelWorkingDirectoryLabel->setGeometry(QRect(10, 115, 140, 22));
 
 		mapRelWorkingDirectoryText = new QLabel(this);

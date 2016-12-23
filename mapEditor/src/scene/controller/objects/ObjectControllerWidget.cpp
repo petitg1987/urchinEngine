@@ -17,13 +17,11 @@ namespace urchin
 		objectTableView->addObserver(this, ObjectTableView::SELECTION_CHANGED);
 		objectTableView->setGeometry(QRect(0, 0, 375, 220));
 
-		addObjectButton = new QPushButton(this);
-		addObjectButton->setText("New Object");
+		addObjectButton = new QPushButton("New Object", this);
 		addObjectButton->setGeometry(QRect(0, 221, 90, 22));
 		connect(addObjectButton, SIGNAL(clicked()), this, SLOT(showAddObjectDialog()));
 
-		removeObjectButton = new QPushButton(this);
-		removeObjectButton->setText("Remove Object");
+		removeObjectButton = new QPushButton("Remove Object", this);
 		removeObjectButton->setGeometry(QRect(91, 221, 90, 22));
 		removeObjectButton->setEnabled(false);
 		connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
@@ -59,8 +57,7 @@ namespace urchin
 
 	void ObjectControllerWidget::setupTransformBox(QWidget *tabGeneral)
 	{
-		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
-		transformGroupBox->setTitle("Transform");
+		QGroupBox *transformGroupBox = new QGroupBox("Transform", tabGeneral);
 		transformGroupBox->setGeometry(QRect(0, 5, 370, 120));
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 
@@ -71,8 +68,7 @@ namespace urchin
 
 	void ObjectControllerWidget::setupPosition(QGroupBox *transformGroupBox)
 	{
-		QLabel *positionLabel= new QLabel(transformGroupBox);
-		positionLabel->setText("Position:");
+		QLabel *positionLabel= new QLabel("Position:", transformGroupBox);
 		positionLabel->setGeometry(QRect(5, 15, 55, 22));
 
 		positionX = new QDoubleSpinBox(transformGroupBox);
@@ -91,8 +87,7 @@ namespace urchin
 
 	void ObjectControllerWidget::setupOrientation(QGroupBox *transformGroupBox)
 	{
-		QLabel *orientationTypeLabel = new QLabel(transformGroupBox);
-		orientationTypeLabel->setText("Orient. Type:");
+		QLabel *orientationTypeLabel = new QLabel("Orient. Type:", transformGroupBox);
 		orientationTypeLabel->setGeometry(QRect(5, 40, 80, 22));
 
 		orientationType = new QComboBox(transformGroupBox);
@@ -100,8 +95,7 @@ namespace urchin
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateObjectOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel(transformGroupBox);
-		eulerAngleLabel->setText("Euler Angle:");
+		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", transformGroupBox);
 		eulerAngleLabel->setGeometry(QRect(5, 65, 80, 22));
 
 		eulerAxis0 = new QDoubleSpinBox(transformGroupBox);
@@ -122,8 +116,7 @@ namespace urchin
 
 	void ObjectControllerWidget::setupScale(QGroupBox *transformGroupBox)
 	{
-		QLabel *angleLabel = new QLabel(transformGroupBox);
-		angleLabel->setText("Scale:");
+		QLabel *angleLabel = new QLabel("Scale:", transformGroupBox);
 		angleLabel->setGeometry(QRect(5, 90, 80, 22));
 
 		scale = new QDoubleSpinBox(transformGroupBox);
@@ -135,21 +128,18 @@ namespace urchin
 
 	void ObjectControllerWidget::setupFlagsBox(QWidget *tabGeneral)
 	{
-		QGroupBox *flagsGroupBox = new QGroupBox(tabGeneral);
-		flagsGroupBox->setTitle("Flags");
+		QGroupBox *flagsGroupBox = new QGroupBox("Flags", tabGeneral);
 		flagsGroupBox->setGeometry(QRect(0, 135, 370, 45));
 		GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
 
-		produceShadowCheckBox = new QCheckBox(flagsGroupBox);
-		produceShadowCheckBox->setText("Product Shadow");
+		produceShadowCheckBox = new QCheckBox("Product Shadow", flagsGroupBox);
 		produceShadowCheckBox->setGeometry(QRect(5, 15, 110, 22));
 		connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateObjectFlags()));
 	}
 
 	void ObjectControllerWidget::setupPhysicsBox(QWidget *tabPhysics)
 	{
-		hasRigidBody = new QCheckBox(tabPhysics);
-		hasRigidBody->setText("Rigid Body");
+		hasRigidBody = new QCheckBox("Rigid Body", tabPhysics);
 		hasRigidBody->setGeometry(QRect(0, 10, 85, 15));
 		connect(hasRigidBody, SIGNAL(stateChanged(int)), this, SLOT(rigidBodyToggled(int)));
 
@@ -169,13 +159,11 @@ namespace urchin
 
 	void ObjectControllerWidget::setupPhysicsGeneralPropertiesBox()
 	{
-		QGroupBox *rigidBodyGeneralBox = new QGroupBox(tabPhysicsProperties);
-		rigidBodyGeneralBox->setTitle("General");
+		QGroupBox *rigidBodyGeneralBox = new QGroupBox("General", tabPhysicsProperties);
 		rigidBodyGeneralBox->setGeometry(QRect(0, 5, 365, 70));
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
 
-		QLabel *massLabel = new QLabel(rigidBodyGeneralBox);
-		massLabel->setText("Mass:");
+		QLabel *massLabel = new QLabel("Mass:", rigidBodyGeneralBox);
 		massLabel->setGeometry(QRect(5, 15, 70, 22));
 
 		mass = new QDoubleSpinBox(rigidBodyGeneralBox);
@@ -184,9 +172,8 @@ namespace urchin
 		mass->setMinimum(0.0);
 		connect(mass, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *resitutionLabel = new QLabel(rigidBodyGeneralBox);
-		resitutionLabel->setText("Restitution:");
-		resitutionLabel->setGeometry(QRect(175, 15, 60, 22));
+		QLabel *restitutionLabel = new QLabel("Restitution:", rigidBodyGeneralBox);
+		restitutionLabel->setGeometry(QRect(175, 15, 60, 22));
 
 		restitution = new QDoubleSpinBox(rigidBodyGeneralBox);
 		restitution->setGeometry(QRect(255, 15, 80, 22));
@@ -195,8 +182,7 @@ namespace urchin
 		restitution->setMaximum(1.0);
 		connect(restitution, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *frictionLabel = new QLabel(rigidBodyGeneralBox);
-		frictionLabel->setText("Friction:");
+		QLabel *frictionLabel = new QLabel("Friction:", rigidBodyGeneralBox);
 		frictionLabel->setGeometry(QRect(5, 40, 70, 22));
 
 		friction = new QDoubleSpinBox(rigidBodyGeneralBox);
@@ -206,8 +192,7 @@ namespace urchin
 		friction->setMaximum(1.0);
 		connect(friction, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *rollingFrictionLabel = new QLabel(rigidBodyGeneralBox);
-		rollingFrictionLabel->setText("Rolling Friction:");
+		QLabel *rollingFrictionLabel = new QLabel("Rolling Friction:", rigidBodyGeneralBox);
 		rollingFrictionLabel->setGeometry(QRect(175, 40, 80, 22));
 
 		rollingFriction = new QDoubleSpinBox(rigidBodyGeneralBox);
@@ -220,13 +205,11 @@ namespace urchin
 
 	void ObjectControllerWidget::setupPhysicsDampingPropertiesBox()
 	{
-		QGroupBox *rigidBodyDampingBox = new QGroupBox(tabPhysicsProperties);
-		rigidBodyDampingBox->setTitle("Damping");
+		QGroupBox *rigidBodyDampingBox = new QGroupBox("Damping", tabPhysicsProperties);
 		rigidBodyDampingBox->setGeometry(QRect(0, 80, 365, 45));
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
 
-		QLabel *linearDampingLabel = new QLabel(rigidBodyDampingBox);
-		linearDampingLabel->setText("Linear:");
+		QLabel *linearDampingLabel = new QLabel("Linear:", rigidBodyDampingBox);
 		linearDampingLabel->setGeometry(QRect(5, 15, 70, 22));
 
 		linearDamping = new QDoubleSpinBox(rigidBodyDampingBox);
@@ -236,8 +219,7 @@ namespace urchin
 		linearDamping->setMaximum(1.0);
 		connect(linearDamping, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *angularDampingLabel = new QLabel(rigidBodyDampingBox);
-		angularDampingLabel->setText("Angular:");
+		QLabel *angularDampingLabel = new QLabel("Angular:", rigidBodyDampingBox);
 		angularDampingLabel->setGeometry(QRect(175, 15, 60, 22));
 
 		angularDamping = new QDoubleSpinBox(rigidBodyDampingBox);
@@ -250,13 +232,11 @@ namespace urchin
 
 	void ObjectControllerWidget::setupPhysicsFactorPropertiesBox()
 	{
-		QGroupBox *rigidBodyFactorBox = new QGroupBox(tabPhysicsProperties);
-		rigidBodyFactorBox->setTitle("Factor");
+		QGroupBox *rigidBodyFactorBox = new QGroupBox("Factor", tabPhysicsProperties);
 		rigidBodyFactorBox->setGeometry(QRect(0, 130, 365, 70));
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
 
-		QLabel *linearFactorLabel = new QLabel(rigidBodyFactorBox);
-		linearFactorLabel->setText("Linear:");
+		QLabel *linearFactorLabel = new QLabel("Linear:", rigidBodyFactorBox);
 		linearFactorLabel->setGeometry(QRect(5, 15, 70, 22));
 
 		linearFactorX = new QDoubleSpinBox(rigidBodyFactorBox);
@@ -280,8 +260,7 @@ namespace urchin
 		linearFactorZ->setMaximum(1.0);
 		connect(linearFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 
-		QLabel *angularFactorLabel = new QLabel(rigidBodyFactorBox);
-		angularFactorLabel->setText("Angular:");
+		QLabel *angularFactorLabel = new QLabel("Angular:", rigidBodyFactorBox);
 		angularFactorLabel->setGeometry(QRect(5, 40, 70, 22));
 
 		angularFactorX = new QDoubleSpinBox(rigidBodyFactorBox);
@@ -308,15 +287,13 @@ namespace urchin
 
 	void ObjectControllerWidget::setupPhysicsShapeBox()
 	{
-		QLabel *shapeTypeLabel = new QLabel(tabPhysicsShape);
-		shapeTypeLabel->setText("Shape Type:");
+		QLabel *shapeTypeLabel = new QLabel("Shape Type:", tabPhysicsShape);
 		shapeTypeLabel->setGeometry(QRect(5, 5, 80, 22));
 
 		shapeTypeValueLabel = new QLabel(tabPhysicsShape);
 		shapeTypeValueLabel->setGeometry(QRect(85, 5, 100, 22));
 
-		changeBodyShapeButton = new QPushButton(tabPhysicsShape);
-		changeBodyShapeButton->setText("Change");
+		changeBodyShapeButton = new QPushButton("Change", tabPhysicsShape);
 		changeBodyShapeButton->setGeometry(QRect(190, 5, 85, 22));
 		connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
 

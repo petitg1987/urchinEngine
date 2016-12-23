@@ -16,6 +16,7 @@ namespace urchin
 		tabSounds = new SoundControllerWidget();
 		addTab(tabSounds, "Sounds");
 
+		connect(this, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
 		setCurrentIndex(0);
 		setEnabled(false);
 	}
@@ -94,4 +95,13 @@ namespace urchin
 		sceneController=nullptr;
 	}
 
+	int SceneControllerWidget::getTabSelected() const
+	{
+		return this->currentIndex();
+	}
+
+	void SceneControllerWidget::tabSelected()
+	{
+		notifyObservers(this, NotificationType::TAB_SELECTED);
+	}
 }

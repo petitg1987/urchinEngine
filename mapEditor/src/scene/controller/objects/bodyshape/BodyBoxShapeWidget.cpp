@@ -9,8 +9,7 @@ namespace urchin
 	BodyBoxShapeWidget::BodyBoxShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
 			BodyShapeWidget(parent, sceneObject)
 	{
-		QLabel *halfSizesLabel = new QLabel(this);
-		halfSizesLabel->setText("Half Sizes:");
+		QLabel *halfSizesLabel = new QLabel("Half Sizes:", this);
 		halfSizesLabel->setGeometry(QRect(5, 0, 80, 22));
 
 		halfSizeX = new QDoubleSpinBox(this);

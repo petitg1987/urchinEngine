@@ -9,8 +9,7 @@ namespace urchin
 	BodySphereShapeWidget::BodySphereShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
 			BodyShapeWidget(parent, sceneObject)
 	{
-		QLabel *radiusLabel = new QLabel(this);
-		radiusLabel->setText("Radius:");
+		QLabel *radiusLabel = new QLabel("Radius:", this);
 		radiusLabel->setGeometry(QRect(5, 0, 80, 22));
 
 		radius = new QDoubleSpinBox(this);

@@ -28,8 +28,7 @@ namespace urchin
 
 	void ChangeSoundShapeDialog::setupSoundShapeTypeFields()
 	{
-		soundShapeTypeLabel = new QLabel(this);
-		soundShapeTypeLabel->setText("Shape Type:");
+		soundShapeTypeLabel = new QLabel("Shape Type:", this);
 		soundShapeTypeLabel->setGeometry(QRect(10, 20, 90, 22));
 
 		soundShapeTypeComboBox = new QComboBox(this);

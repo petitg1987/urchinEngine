@@ -36,8 +36,7 @@ namespace urchin
 
 	void NewSoundDialog::setupNameFields()
 	{
-		soundNameLabel = new QLabel(this);
-		soundNameLabel->setText("Sound Name:");
+		soundNameLabel = new QLabel("Sound Name:", this);
 		soundNameLabel->setGeometry(QRect(10, 20, 110, 22));
 
 		soundNameText = new QLineEdit(this);
@@ -46,16 +45,14 @@ namespace urchin
 
 	void NewSoundDialog::setupSoundFilenameFields()
 	{
-		soundFilenameLabel = new QLabel(this);
-		soundFilenameLabel->setText("Sound File:");
+		soundFilenameLabel = new QLabel("Sound File:", this);
 		soundFilenameLabel->setGeometry(QRect(10, 50, 110, 22));
 
 		soundFilenameText = new QLineEdit(this);
 		soundFilenameText->setReadOnly(true);
 		soundFilenameText->setGeometry(QRect(120, 50, 360, 22));
 
-		QPushButton *selectMeshFileButton = new QPushButton(this);
-		selectMeshFileButton->setText("...");
+		QPushButton *selectMeshFileButton = new QPushButton("...", this);
 		selectMeshFileButton->setGeometry(QRect(485, 50, 22, 22));
 		connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showSoundFilenameDialog()));
 	}
@@ -63,8 +60,7 @@ namespace urchin
 
 	void NewSoundDialog::setupSoundTypeFields()
 	{
-		soundTypeLabel = new QLabel(this);
-		soundTypeLabel->setText("Sound Type:");
+		soundTypeLabel = new QLabel("Sound Type:", this);
 		soundTypeLabel->setGeometry(QRect(10, 80, 110, 22));
 
 		soundTypeComboBox = new QComboBox(this);

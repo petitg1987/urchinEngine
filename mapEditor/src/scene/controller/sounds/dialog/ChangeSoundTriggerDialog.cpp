@@ -27,8 +27,7 @@ namespace urchin
 
 	void ChangeSoundTriggerDialog::setupSoundTriggerTypeFields()
 	{
-		soundTriggerTypeLabel = new QLabel(this);
-		soundTriggerTypeLabel->setText("Trigger Type:");
+		soundTriggerTypeLabel = new QLabel("Trigger Type:", this);
 		soundTriggerTypeLabel->setGeometry(QRect(10, 20, 90, 22));
 
 		soundTriggerTypeComboBox = new QComboBox(this);

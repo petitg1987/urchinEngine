@@ -7,18 +7,22 @@
 namespace urchin
 {
 
-	SoundShapeWidget::SoundShapeWidget(QWidget *parent, const SceneSound *sceneSound) :
-			QWidget(parent),
+	SoundShapeWidget::SoundShapeWidget(const SceneSound *sceneSound) :
 			disableShapeEvent(false),
 			sceneSound(sceneSound),
 			shape(nullptr)
 	{
-		QLabel *marginLabel = new QLabel(this);
-		marginLabel->setText("Margin:");
-		marginLabel->setGeometry(QRect(5, 0, 80, 22));
+		setContentsMargins(0, 0, 0, 0);
+
+		mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
+		mainLayout->setContentsMargins(0, 0, 0, 0);
+
+		QLabel *marginLabel = new QLabel("Margin:", this);
+		mainLayout->addWidget(marginLabel, 0, 0);
 
 		margin = new QDoubleSpinBox(this);
-		margin->setGeometry(QRect(85, 0, 80, 22));
+		mainLayout->addWidget(margin, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
 		margin->setMinimum(0.0);
 		connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));

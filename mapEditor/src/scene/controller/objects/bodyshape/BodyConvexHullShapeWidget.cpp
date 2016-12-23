@@ -14,8 +14,7 @@ namespace urchin
 	BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
 			BodyShapeWidget(parent, sceneObject)
 	{
-		pointsLabel = new QLabel(this);
-		pointsLabel->setText("Points:");
+		pointsLabel = new QLabel("Points:", this);
 		pointsLabel->setGeometry(QRect(5, 0, 80, 22));
 
 		pointsTableModel = new QStandardItemModel(0, 3, this);
@@ -37,13 +36,11 @@ namespace urchin
 		SpinBoxDelegate *delegate = new SpinBoxDelegate(NULL, this, pointsTable, pointsTableModel);
 		pointsTable->setItemDelegate(delegate);
 
-		addPointButton = new QPushButton(this);
-		addPointButton->setText("New Point");
+		addPointButton = new QPushButton("New Point", this);
 		addPointButton->setGeometry(QRect(5, 136, 85, 22));
 		connect(addPointButton, SIGNAL(clicked()), this, SLOT(addNewPoint()));
 
-		removePointButton = new QPushButton(this);
-		removePointButton->setText("Remove Point");
+		removePointButton = new QPushButton("Remove Point", this);
 		removePointButton->setGeometry(QRect(91, 136, 85, 22));
 		connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
 	}

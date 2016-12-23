@@ -6,34 +6,32 @@
 namespace urchin
 {
 
-	SoundSphereShapeWidget::SoundSphereShapeWidget(QWidget *parent, const SceneSound *sceneSound) :
-			SoundShapeWidget(parent, sceneSound)
+	SoundSphereShapeWidget::SoundSphereShapeWidget(const SceneSound *sceneSound) :
+			SoundShapeWidget(sceneSound)
 	{
-		QLabel *positionLabel = new QLabel(this);
-		positionLabel->setText("Position:");
-		positionLabel->setGeometry(QRect(5, 25, 80, 22));
+		QLabel *positionLabel = new QLabel("Position:");
+		mainLayout->addWidget(positionLabel, 1, 0);
 
-		positionX = new QDoubleSpinBox(this);
-		positionX->setGeometry(QRect(85, 25, 80, 22));
+		QHBoxLayout *positionLayout = new QHBoxLayout();
+		mainLayout->addLayout(positionLayout, 1, 1);
+		positionX = new QDoubleSpinBox();
+		positionLayout->addWidget(positionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		positionY = new QDoubleSpinBox(this);
-		positionY->setGeometry(QRect(165, 25, 80, 22));
+		positionY = new QDoubleSpinBox();
+		positionLayout->addWidget(positionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		positionZ = new QDoubleSpinBox(this);
-		positionZ->setGeometry(QRect(245, 25, 80, 22));
+		positionZ = new QDoubleSpinBox();
+		positionLayout->addWidget(positionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-		QLabel *radiusLabel = new QLabel(this);
-		radiusLabel->setText("Radius:");
-		radiusLabel->setGeometry(QRect(5, 50, 80, 22));
+		QLabel *radiusLabel = new QLabel("Radius:");
+		mainLayout->addWidget(radiusLabel, 2, 0);
 
-		radius = new QDoubleSpinBox(this);
-		radius->setGeometry(QRect(85, 50, 80, 22));
+		radius = new QDoubleSpinBox();
+		mainLayout->addWidget(radius, 2, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(radius);
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));

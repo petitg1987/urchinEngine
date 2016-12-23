@@ -17,7 +17,9 @@ namespace urchin
 
 	MapEditorWindow::MapEditorWindow(const std::string &mapEditorPath) :
 		mapEditorPath(mapEditorPath),
-		preferredMapPath("./")
+		preferredMapPath("./"),
+		sceneDisplayerWidget(nullptr),
+		sceneControllerWidget(nullptr)
 	{
 		this->setAttribute(Qt::WA_DeleteOnClose);
 		this->setWindowTitle(WINDOW_TITLE);
@@ -48,34 +50,29 @@ namespace urchin
 
 		QMenu* fileMenu = new QMenu("File");
 
-		QAction *newAction = new QAction(this);
-		newAction->setText("New...");
+		QAction *newAction = new QAction("New...", this);
 		newAction->setShortcut(QKeySequence("Ctrl+N"));
 		fileMenu->addAction(newAction);
 		connect(newAction, SIGNAL(triggered()), this, SLOT(showNewDialog()));
 
-		QAction *openAction = new QAction(this);
-		openAction->setText("Open...");
+		QAction *openAction = new QAction("Open...", this);
 		openAction->setShortcut(QKeySequence("Ctrl+O"));
 		fileMenu->addAction(openAction);
 		connect(openAction, SIGNAL(triggered()), this, SLOT(showOpenDialog()));
 
-		saveAction = new QAction(this);
-		saveAction->setText("Save");
+		saveAction = new QAction("Save", this);
 		saveAction->setEnabled(false);
 		saveAction->setShortcut(QKeySequence("Ctrl+S"));
 		fileMenu->addAction(saveAction);
 		connect(saveAction, SIGNAL(triggered()), this, SLOT(executeSaveAction()));
 
-		saveAsAction = new QAction(this);
-		saveAsAction->setText("Save as...");
+		saveAsAction = new QAction("Save as...", this);
 		saveAsAction->setEnabled(false);
 		saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
 		fileMenu->addAction(saveAsAction);
 		connect(saveAsAction, SIGNAL(triggered()), this, SLOT(showSaveAsDialog()));
 
-		closeAction = new QAction(this);
-		closeAction->setText("Close");
+		closeAction = new QAction("Close", this);
 		closeAction->setEnabled(false);
 		closeAction->setShortcut(QKeySequence("Ctrl+W"));
 		fileMenu->addAction(closeAction);
@@ -83,35 +80,34 @@ namespace urchin
 
 		fileMenu->addSeparator();
 
-		QAction *exitAction = new QAction(this);
-		exitAction->setText("Exit");
+		QAction *exitAction = new QAction("Exit", this);
 		fileMenu->addAction(exitAction);
 		connect(exitAction, SIGNAL(triggered()), this, SLOT(executeExitAction()));
 
 		QMenu* viewMenu = new QMenu("View");
 
-		viewPhysicsShapeAction = new QAction(this);
-		viewPhysicsShapeAction->setText("Physics Shape");
+		QAction *viewPhysicsShapeAction = new QAction("Physics Shape", this);
 		viewPhysicsShapeAction->setEnabled(false);
 		viewPhysicsShapeAction->setCheckable(true);
 		viewPhysicsShapeAction->setChecked(true);
 		viewMenu->addAction(viewPhysicsShapeAction);
+		viewActions.push_back(viewPhysicsShapeAction);
 		connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-		viewLightScopeAction = new QAction(this);
-		viewLightScopeAction->setText("Light Scope");
+		QAction *viewLightScopeAction = new QAction("Light Scope", this);
 		viewLightScopeAction->setEnabled(false);
 		viewLightScopeAction->setCheckable(true);
 		viewLightScopeAction->setChecked(true);
 		viewMenu->addAction(viewLightScopeAction);
+		viewActions.push_back(viewLightScopeAction);
 		connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-		viewSoundTriggerAction = new QAction(this);
-		viewSoundTriggerAction->setText("Sound Trigger");
+		QAction *viewSoundTriggerAction = new QAction("Sound Trigger", this);
 		viewSoundTriggerAction->setEnabled(false);
 		viewSoundTriggerAction->setCheckable(true);
 		viewSoundTriggerAction->setChecked(true);
 		viewMenu->addAction(viewSoundTriggerAction);
+		viewActions.push_back(viewSoundTriggerAction);
 		connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
 		menu->addMenu(fileMenu);
@@ -155,13 +151,22 @@ namespace urchin
 		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::BODY_SHAPE_INITIALIZED);
 		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::SELECTION_CHANGED);
 		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SELECTION_CHANGED);
+		sceneControllerWidget->addObserver(this, SceneControllerWidget::TAB_SELECTED);
 
 		horizontalLayout->addWidget(sceneControllerWidget);
 	}
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
 	{
-		if(ObjectTableView *objectTableView = dynamic_cast<ObjectTableView *>(observable))
+		if(dynamic_cast<SceneControllerWidget *>(observable))
+		{
+			switch(notificationType)
+			{
+				case SceneControllerWidget::TAB_SELECTED:
+					executeViewPropertiesChangeAction();
+					break;
+			}
+		}else if(ObjectTableView *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -338,9 +343,10 @@ namespace urchin
 		saveAction->setEnabled(hasMapOpen);
 		saveAsAction->setEnabled(hasMapOpen);
 		closeAction->setEnabled(hasMapOpen);
-		viewPhysicsShapeAction->setEnabled(hasMapOpen);
-		viewLightScopeAction->setEnabled(hasMapOpen);
-		viewSoundTriggerAction->setEnabled(hasMapOpen);
+		for(auto &viewAction : viewActions)
+		{
+			viewAction->setEnabled(hasMapOpen);
+		}
 	}
 
 	void MapEditorWindow::updateMapFilename(QString qMapFilename)
@@ -361,9 +367,14 @@ namespace urchin
 
 	void MapEditorWindow::executeViewPropertiesChangeAction()
 	{
-		sceneDisplayerWidget->setViewProperties(SceneDisplayer::MODEL_PHYSICS, viewPhysicsShapeAction->isChecked());
-		sceneDisplayerWidget->setViewProperties(SceneDisplayer::LIGHT_SCOPE, viewLightScopeAction->isChecked());
-		sceneDisplayerWidget->setViewProperties(SceneDisplayer::SOUND_TRIGGER, viewSoundTriggerAction->isChecked());
+		for(int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
+		{
+			bool isViewChecked = viewActions[i]->isChecked();
+			bool isCorrespondingTabSelected = (sceneControllerWidget==nullptr && i==0) ||
+					(sceneControllerWidget!=nullptr && i==sceneControllerWidget->getTabSelected());
+
+			sceneDisplayerWidget->setViewProperties(static_cast<SceneDisplayer::ViewProperties>(i), isViewChecked && isCorrespondingTabSelected);
+		}
 	}
 
 }

@@ -12,6 +12,7 @@ namespace urchin
 		spinBox->setKeyboardTracking(true);
 		spinBox->setAccelerated(true);
 		spinBox->setLocale(QLocale::English);
+		spinBox->setFixedSize(QSize(80, 22));
 	}
 
 	void SpinBoxStyleHelper::applyAngleStyleOn(QDoubleSpinBox *spinBox)
@@ -23,6 +24,7 @@ namespace urchin
 		spinBox->setKeyboardTracking(true);
 		spinBox->setAccelerated(true);
 		spinBox->setLocale(QLocale::English);
+		spinBox->setFixedSize(QSize(80, 22));
 	}
 
 }

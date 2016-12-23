@@ -7,75 +7,70 @@
 namespace urchin
 {
 
-	SoundBoxShapeWidget::SoundBoxShapeWidget(QWidget *parent, const SceneSound *sceneSound) :
-			SoundShapeWidget(parent, sceneSound)
+	SoundBoxShapeWidget::SoundBoxShapeWidget(const SceneSound *sceneSound) :
+			SoundShapeWidget(sceneSound)
 	{
-		QLabel *positionLabel = new QLabel(this);
-		positionLabel->setText("Position:");
-		positionLabel->setGeometry(QRect(5, 25, 80, 22));
+		QLabel *positionLabel = new QLabel("Position:", this);
+		mainLayout->addWidget(positionLabel, 1, 0);
 
-		positionX = new QDoubleSpinBox(this);
-		positionX->setGeometry(QRect(85, 25, 80, 22));
+		QHBoxLayout *positionLayout = new QHBoxLayout();
+		mainLayout->addLayout(positionLayout, 1, 1);
+		positionX = new QDoubleSpinBox();
+		positionLayout->addWidget(positionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		positionY = new QDoubleSpinBox(this);
-		positionY->setGeometry(QRect(165, 25, 80, 22));
+		positionY = new QDoubleSpinBox();
+		positionLayout->addWidget(positionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		positionZ = new QDoubleSpinBox(this);
-		positionZ->setGeometry(QRect(245, 25, 80, 22));
+		positionZ = new QDoubleSpinBox();
+		positionLayout->addWidget(positionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-		QLabel *halfSizesLabel = new QLabel(this);
-		halfSizesLabel->setText("Half Sizes:");
-		halfSizesLabel->setGeometry(QRect(5, 50, 80, 22));
+		QLabel *halfSizesLabel = new QLabel("Half Sizes:");
+		mainLayout->addWidget(halfSizesLabel, 2, 0);
 
-		halfSizeX = new QDoubleSpinBox(this);
-		halfSizeX->setGeometry(QRect(85, 50, 80, 22));
+		QHBoxLayout *halfSizeLayout = new QHBoxLayout();
+		mainLayout->addLayout(halfSizeLayout, 2, 1);
+		halfSizeX = new QDoubleSpinBox();
+		halfSizeLayout->addWidget(halfSizeX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX);
 		connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		halfSizeY = new QDoubleSpinBox(this);
-		halfSizeY->setGeometry(QRect(165, 50, 80, 22));
+		halfSizeY = new QDoubleSpinBox();
+		halfSizeLayout->addWidget(halfSizeY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY);
 		connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		halfSizeZ = new QDoubleSpinBox(this);
-		halfSizeZ->setGeometry(QRect(245, 50, 80, 22));
+		halfSizeZ = new QDoubleSpinBox();
+		halfSizeLayout->addWidget(halfSizeZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-		QLabel *orientationTypeLabel = new QLabel(this);
-		orientationTypeLabel->setText("Orient. Type:");
-		orientationTypeLabel->setGeometry(QRect(5, 75, 80, 22));
+		QLabel *orientationTypeLabel = new QLabel("Orient. Type:", this);
+		mainLayout->addWidget(orientationTypeLabel, 3, 0);
 
-		orientationType = new QComboBox(this);
-		orientationType->setGeometry(QRect(85, 75, 160, 22));
+		orientationType = new QComboBox();
+		mainLayout->addWidget(orientationType, 3, 1);
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateShapeOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel(this);
-		eulerAngleLabel->setText("Euler Angle:");
-		eulerAngleLabel->setGeometry(QRect(5, 100, 80, 22));
+		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", this);
+		mainLayout->addWidget(eulerAngleLabel, 4, 0);
 
-		eulerAxis0 = new QDoubleSpinBox(this);
-		eulerAxis0->setGeometry(QRect(85, 100, 80, 22));
+		QHBoxLayout *eulerLayout = new QHBoxLayout();
+		mainLayout->addLayout(eulerLayout, 4, 1);
+		eulerAxis0 = new QDoubleSpinBox();
+		eulerLayout->addWidget(eulerAxis0);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
 		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		eulerAxis1 = new QDoubleSpinBox(this);
-		eulerAxis1->setGeometry(QRect(165, 100, 80, 22));
+		eulerAxis1 = new QDoubleSpinBox();
+		eulerLayout->addWidget(eulerAxis1);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
 		connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
-		eulerAxis2 = new QDoubleSpinBox(this);
-		eulerAxis2->setGeometry(QRect(245, 100, 80, 22));
+		eulerAxis2 = new QDoubleSpinBox();
+		eulerLayout->addWidget(eulerAxis2);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
 		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-
 	}
 
 	SoundBoxShapeWidget::~SoundBoxShapeWidget()

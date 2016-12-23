@@ -14,13 +14,18 @@
 namespace urchin
 {
 
-	class SceneControllerWidget : public QTabWidget
+	class SceneControllerWidget : public QTabWidget, public Observable
 	{
 		Q_OBJECT
 
 		public:
 			SceneControllerWidget(QWidget *parent);
 			virtual ~SceneControllerWidget();
+
+			enum NotificationType
+			{
+				TAB_SELECTED
+			};
 
 			ObjectControllerWidget *getObjectControllerWidget() const;
 			LightControllerWidget *getLightControllerWidget() const;
@@ -34,12 +39,17 @@ namespace urchin
 			void saveMap(const std::string &);
 			void closeMap();
 
+			int getTabSelected() const;
+
 		private:
 			SceneController *sceneController;
 
 			ObjectControllerWidget *tabObjects;
 			LightControllerWidget *tabLights;
 			SoundControllerWidget *tabSounds;
+
+		private slots:
+			void tabSelected();
 	};
 
 }

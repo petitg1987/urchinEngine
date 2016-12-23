@@ -15,21 +15,18 @@ namespace urchin
 	BodyCompoundShapeWidget::BodyCompoundShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
 			BodyShapeWidget(parent, sceneObject)
 	{
-		shapesLabel = new QLabel(this);
-		shapesLabel->setText("Shapes:");
+		shapesLabel = new QLabel("Shapes:", this);
 		shapesLabel->setGeometry(QRect(5, 0, 80, 22));
 
 		localizedShapeTableView = new LocalizedShapeTableView(this);
 		localizedShapeTableView->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
 		localizedShapeTableView->setGeometry(QRect(5, 25, 220, 100));
 
-		addShapeButton = new QPushButton(this);
-		addShapeButton->setText("New Shape");
+		addShapeButton = new QPushButton("New Shape", this);
 		addShapeButton->setGeometry(QRect(5, 126, 90, 22));
 		connect(addShapeButton, SIGNAL(clicked()), this, SLOT(addNewLocalizedShape()));
 
-		removeShapeButton = new QPushButton(this);
-		removeShapeButton->setText("Remove Shape");
+		removeShapeButton = new QPushButton("Remove Shape", this);
 		removeShapeButton->setGeometry(QRect(96, 126, 90, 22));
 		connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
 
@@ -116,8 +113,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupTransformBox(QWidget *tabGeneral, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
 	{
-		QGroupBox *transformGroupBox = new QGroupBox(tabGeneral);
-		transformGroupBox->setTitle("Transform");
+		QGroupBox *transformGroupBox = new QGroupBox("Transform", tabGeneral);
 		transformGroupBox->setGeometry(QRect(5, 0, 350, 95));
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 
@@ -127,8 +123,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupPosition(QGroupBox *transformGroupBox, const Point3<float> &position)
 	{
-		QLabel *positionLabel= new QLabel(transformGroupBox);
-		positionLabel->setText("Position:");
+		QLabel *positionLabel= new QLabel("Position:", transformGroupBox);
 		positionLabel->setGeometry(QRect(5, 15, 55, 22));
 
 		positionX = new QDoubleSpinBox(transformGroupBox);
@@ -152,8 +147,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupOrientation(QGroupBox *transformGroupBox, const Quaternion<float> &orientation)
 	{
-		QLabel *orientationTypeLabel = new QLabel(transformGroupBox);
-		orientationTypeLabel->setText("Orient. Type:");
+		QLabel *orientationTypeLabel = new QLabel("Orient. Type:", transformGroupBox);
 		orientationTypeLabel->setGeometry(QRect(5, 40, 80, 22));
 
 		orientationType = new QComboBox(transformGroupBox);
@@ -161,8 +155,7 @@ namespace urchin
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLocalizedShapeOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel(transformGroupBox);
-		eulerAngleLabel->setText("Euler Angle:");
+		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", transformGroupBox);
 		eulerAngleLabel->setGeometry(QRect(5, 65, 80, 22));
 
 		QVariant variant = orientationType->currentData();
@@ -190,8 +183,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupShapeBox(QWidget *tabGeneral, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
 	{
-		QGroupBox *shapeGroupBox = new QGroupBox(tabGeneral);
-		shapeGroupBox->setTitle("Shape");
+		QGroupBox *shapeGroupBox = new QGroupBox("Shape", tabGeneral);
 		shapeGroupBox->setGeometry(QRect(5, 105, 350, 210));
 		GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
 

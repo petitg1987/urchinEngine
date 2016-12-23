@@ -14,13 +14,12 @@ namespace urchin
 	class SoundShapeWidgetRetriever
 	{
 		public:
-			SoundShapeWidgetRetriever(QWidget *, const SceneSound *);
+			SoundShapeWidgetRetriever(const SceneSound *);
 
 			SoundShapeWidget *retrieveShapeWidget(const SoundShape *);
 			SoundShapeWidget *retrieveShapeWidget(SoundShape::ShapeType);
 
 		private:
-			QWidget *parentWidget;
 			const SceneSound *sceneSound;
 	};
 

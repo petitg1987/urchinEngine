@@ -18,7 +18,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SoundBoxShapeWidget(QWidget *, const SceneSound *);
+			SoundBoxShapeWidget(const SceneSound *);
 			virtual ~SoundBoxShapeWidget();
 
 			std::string getSoundShapeName() const;

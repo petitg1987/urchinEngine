@@ -4,7 +4,7 @@
 - UI
 	- (2) [NEW FEATURE] Allow CTRL+Y to return in previous value
 	- (2) [NEW FEATURE] When save (CTRL+S): change window title from "(not saved)" to "(saved)"
-	- (3) [QUALITY IMPROVEMENT] Disable/enable the wireframe view in function of tab selected: Object, Light or Sound
+	- (2) [IMPROVEMENT] Use QT layout for "Object" tab, "Light" tab and "Sound" tab pop-up.
 - SCENE OBJECTS
 	- (2) [NEW FEATURE] Allow picking objects
 

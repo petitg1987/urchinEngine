@@ -2,6 +2,7 @@
 #define ENGINE_MAPEDITOR_MAPEDITORWINDOW_H
 
 #include <string>
+#include <vector>
 #include <QMainWindow>
 #include <QtWidgets/QHBoxLayout>
 
@@ -40,9 +41,7 @@ namespace urchin
 			QAction *saveAction;
 			QAction *saveAsAction;
 			QAction *closeAction;
-			QAction *viewPhysicsShapeAction;
-			QAction *viewLightScopeAction;
-			QAction *viewSoundTriggerAction;
+			std::vector<QAction *> viewActions;
 
 			std::string mapEditorPath;
 			std::string mapFilename;

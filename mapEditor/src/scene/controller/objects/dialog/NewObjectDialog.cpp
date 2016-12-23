@@ -35,8 +35,7 @@ namespace urchin
 
 	void NewObjectDialog::setupNameFields()
 	{
-		objectNameLabel = new QLabel(this);
-		objectNameLabel->setText("Object Name:");
+		objectNameLabel = new QLabel("Object Name:", this);
 		objectNameLabel->setGeometry(QRect(10, 20, 110, 22));
 
 		objectNameText = new QLineEdit(this);
@@ -45,16 +44,14 @@ namespace urchin
 
 	void NewObjectDialog::setupMeshFilenameFields()
 	{
-		meshFilenameLabel = new QLabel(this);
-		meshFilenameLabel->setText("Mesh File:");
+		meshFilenameLabel = new QLabel("Mesh File:", this);
 		meshFilenameLabel->setGeometry(QRect(10, 50, 110, 22));
 
 		meshFilenameText = new QLineEdit(this);
 		meshFilenameText->setReadOnly(true);
 		meshFilenameText->setGeometry(QRect(120, 50, 360, 22));
 
-		QPushButton *selectMeshFileButton = new QPushButton(this);
-		selectMeshFileButton->setText("...");
+		QPushButton *selectMeshFileButton = new QPushButton("...", this);
 		selectMeshFileButton->setGeometry(QRect(485, 50, 22, 22));
 		connect(selectMeshFileButton, SIGNAL(clicked()), this, SLOT(showMeshFilenameDialog()));
 	}
