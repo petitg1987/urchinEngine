@@ -2,8 +2,6 @@
 #define ENGINE_MAPEDITOR_SOUNDCONTROLLER_H
 
 #include <list>
-#include <memory>
-
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"

@@ -1,4 +1,6 @@
 #include <stdexcept>
+#include <memory>
+#include "Urchin3dEngine.h"
 
 #include "ObjectController.h"
 #include "scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h"

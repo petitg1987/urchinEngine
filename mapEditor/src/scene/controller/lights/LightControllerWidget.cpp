@@ -14,7 +14,7 @@ namespace urchin
 			disableLightEvent(false)
 	{
 		QVBoxLayout *mainLayout = new QVBoxLayout(this);
-		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		mainLayout->setAlignment(Qt::AlignTop);
 		mainLayout->setContentsMargins(1, 1, 1, 1);
 
 		lightTableView = new LightTableView();

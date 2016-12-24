@@ -10,6 +10,7 @@
 #include "scene/controller/objects/ObjectControllerWidget.h"
 #include "scene/controller/lights/LightControllerWidget.h"
 #include "scene/controller/sounds/SoundControllerWidget.h"
+#include "scene/controller/ai/AIControllerWidget.h"
 
 namespace urchin
 {
@@ -31,12 +32,14 @@ namespace urchin
 			{
 				OBJECTS,
 				LIGHTS,
-				SOUNDS
+				SOUNDS,
+				AI
 			};
 
 			ObjectControllerWidget *getObjectControllerWidget() const;
 			LightControllerWidget *getLightControllerWidget() const;
 			SoundControllerWidget *getSoundControllerWidget() const;
+			AIControllerWidget *getAIControllerWidget() const;
 
 			bool isModified() const;
 			bool hasMapOpen() const;
@@ -54,6 +57,7 @@ namespace urchin
 			ObjectControllerWidget *tabObjects;
 			LightControllerWidget *tabLights;
 			SoundControllerWidget *tabSounds;
+			AIControllerWidget *tabAI;
 
 		private slots:
 			void tabSelected();

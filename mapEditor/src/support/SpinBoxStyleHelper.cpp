@@ -27,4 +27,16 @@ namespace urchin
 		spinBox->setFixedSize(QSize(80, 22));
 	}
 
+	void SpinBoxStyleHelper::applyPercentageStyleOn(QDoubleSpinBox *spinBox)
+	{
+		spinBox->setDecimals(0);
+		spinBox->setMinimum(0);
+		spinBox->setMaximum(100);
+		spinBox->setSingleStep(5);
+		spinBox->setKeyboardTracking(true);
+		spinBox->setAccelerated(true);
+		spinBox->setLocale(QLocale::English);
+		spinBox->setFixedSize(QSize(80, 22));
+	}
+
 }

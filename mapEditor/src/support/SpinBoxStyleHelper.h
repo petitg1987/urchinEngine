@@ -11,6 +11,7 @@ namespace urchin
 		public:
 			static void applyDefaultStyleOn(QDoubleSpinBox *);
 			static void applyAngleStyleOn(QDoubleSpinBox *);
+			static void applyPercentageStyleOn(QDoubleSpinBox *);
 	};
 
 }

@@ -41,8 +41,6 @@ namespace urchin
 			void load(ObjectController *);
 			void unload();
 
-			bool isModified() const;
-
 		private:
 			void setupTransformBox(QVBoxLayout *);
 			void setupPosition(QGridLayout *);

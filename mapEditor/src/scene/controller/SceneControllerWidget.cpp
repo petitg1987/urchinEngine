@@ -18,6 +18,9 @@ namespace urchin
 		tabSounds = new SoundControllerWidget();
 		addTab(tabSounds, "Sounds");
 
+		tabAI = new AIControllerWidget();
+		addTab(tabAI, "AI");
+
 		connect(this, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
 		setCurrentIndex(0);
 		setEnabled(false);
@@ -43,6 +46,11 @@ namespace urchin
 		return tabSounds;
 	}
 
+	AIControllerWidget *SceneControllerWidget::getAIControllerWidget() const
+	{
+		return tabAI;
+	}
+
 	bool SceneControllerWidget::isModified() const
 	{
 		return hasMapOpen() && sceneController->isModified();
@@ -64,6 +72,7 @@ namespace urchin
 		tabObjects->load(sceneController->getObjectController());
 		tabLights->load(sceneController->getLightController());
 		tabSounds->load(sceneController->getSoundController());
+		tabAI->load(sceneController->getAIController());
 	}
 
 	void SceneControllerWidget::openMap(MapHandler *mapHandler)
@@ -76,6 +85,7 @@ namespace urchin
 		tabObjects->load(sceneController->getObjectController());
 		tabLights->load(sceneController->getLightController());
 		tabSounds->load(sceneController->getSoundController());
+		tabAI->load(sceneController->getAIController());
 	}
 
 	void SceneControllerWidget::saveMap(const std::string &mapFilename)
@@ -91,6 +101,7 @@ namespace urchin
 		tabObjects->unload();
 		tabLights->unload();
 		tabSounds->unload();
+		tabAI->unload();
 		setEnabled(false);
 
 		delete sceneController;
@@ -109,6 +120,9 @@ namespace urchin
 		}else if(tabIndex==2)
 		{
 			return TabName::SOUNDS;
+		}else if(tabIndex==3)
+		{
+			return TabName::AI;
 		}
 
 		throw std::runtime_error("Unknown selected tab index: " + std::to_string(tabIndex));

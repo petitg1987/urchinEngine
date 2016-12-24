@@ -18,7 +18,7 @@ namespace urchin
 			disableSoundEvent(false)
 	{
 		QVBoxLayout *mainLayout = new QVBoxLayout(this);
-		mainLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		mainLayout->setAlignment(Qt::AlignTop);
 		mainLayout->setContentsMargins(1, 1, 1, 1);
 
 		soundTableView = new SoundTableView();
@@ -157,14 +157,12 @@ namespace urchin
 		stopBehavior->addItem(SMOOTH_STOP_LABEL, QVariant(SoundBehavior::SMOOTH_STOP));
 		connect(stopBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
 
-		QLabel *volumeDecreasePercentageOnStopLabel= new QLabel("Vol. Decrease:");
+		QLabel *volumeDecreasePercentageOnStopLabel= new QLabel("Vol. Decrease (%)\nper second:");
 		behaviorLayout->addWidget(volumeDecreasePercentageOnStopLabel, 2, 0);
 
 		volumeDecreasePercentageOnStop = new QDoubleSpinBox();
 		behaviorLayout->addWidget(volumeDecreasePercentageOnStop, 2, 1, 1, 3);
-		SpinBoxStyleHelper::applyDefaultStyleOn(volumeDecreasePercentageOnStop);
-		volumeDecreasePercentageOnStop->setMinimum(0.0);
-		volumeDecreasePercentageOnStop->setMaximum(1.0);
+		SpinBoxStyleHelper::applyPercentageStyleOn(volumeDecreasePercentageOnStop);
 		connect(volumeDecreasePercentageOnStop, SIGNAL(valueChanged(double)), this, SLOT(updateSoundBehaviorProperties()));
 
 		QLabel *soundTriggerTypeLabel= new QLabel("Trigger:");
@@ -335,7 +333,7 @@ namespace urchin
 			stopBehavior->setCurrentIndex(stopBehaviorIndex);
 		}
 
-		this->volumeDecreasePercentageOnStop->setValue(soundBehavior.getVolumeDecreasePercentageOnStop());
+		this->volumeDecreasePercentageOnStop->setValue(soundBehavior.getVolumeDecreasePercentageOnStop() * 100.0);
 	}
 
 	void SoundControllerWidget::setupManualTriggerDataFrom(const SceneSound *)
@@ -442,7 +440,7 @@ namespace urchin
 			QVariant stopVariant = stopBehavior->currentData();
 			SoundBehavior::StopBehavior stopBehavior = static_cast<SoundBehavior::StopBehavior>(stopVariant.toInt());
 
-			float volumeDecreasePercentageOnStop = this->volumeDecreasePercentageOnStop->value();
+			float volumeDecreasePercentageOnStop = this->volumeDecreasePercentageOnStop->value() / 100.0;
 
 			soundController->updateSceneSoundBehaviorProperties(sceneSound, playBehavior, stopBehavior, volumeDecreasePercentageOnStop);
 		}

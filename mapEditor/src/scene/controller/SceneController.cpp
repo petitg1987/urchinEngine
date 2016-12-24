@@ -12,6 +12,7 @@ namespace urchin
 		objectController = new ObjectController(mapHandler);
 		lightController = new LightController(mapHandler);
 		soundController = new SoundController(mapHandler);
+		aiController = new AIController(mapHandler);
 	}
 
 	SceneController::~SceneController()
@@ -19,6 +20,7 @@ namespace urchin
 		delete objectController;
 		delete lightController;
 		delete soundController;
+		delete aiController;
 	}
 
 	void SceneController::setRelativeWorkingDirectory(const std::string &relativeWorkingDirectory)
@@ -30,7 +32,11 @@ namespace urchin
 
 	bool SceneController::isModified() const
 	{
-		return bIsModified || objectController->isModified() || lightController->isModified() || soundController->isModified();
+		return bIsModified
+				|| objectController->isModified()
+				|| lightController->isModified()
+				|| soundController->isModified()
+				|| aiController->isModified();
 	}
 
 	void SceneController::markModified()
@@ -44,6 +50,7 @@ namespace urchin
 		objectController->resetModified();
 		lightController->resetModified();
 		soundController->resetModified();
+		aiController->resetModified();
 	}
 
 	void SceneController::saveMapOnFile(const std::string &mapFilename)
@@ -69,6 +76,11 @@ namespace urchin
 	SoundController *SceneController::getSoundController()
 	{
 		return soundController;
+	}
+
+	AIController *SceneController::getAIController()
+	{
+		return aiController;
 	}
 
 }

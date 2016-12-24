@@ -2,10 +2,9 @@
 #define ENGINE_MAPEDITOR_LIGHTCONTROLLER_H
 
 #include <list>
-#include <memory>
-
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
+#include "Urchin3dEngine.h"
 
 namespace urchin
 {

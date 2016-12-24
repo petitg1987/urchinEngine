@@ -2,8 +2,6 @@
 #define ENGINE_MAPEDITOR_OBJECTCONTROLLER_H
 
 #include <list>
-#include <memory>
-
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
 #include "UrchinMapHandler.h"

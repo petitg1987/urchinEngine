@@ -12,7 +12,7 @@ namespace urchin
 
 	void NavMeshGenerator::generate()
 	{
-
+		std::cout<<"Generate Nav Mesh"<<std::endl;
 	}
 
 }

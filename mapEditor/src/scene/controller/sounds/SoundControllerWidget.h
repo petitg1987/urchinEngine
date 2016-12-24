@@ -2,7 +2,6 @@
 #define ENGINE_MAPEDITOR_SOUNDCONTROLLERWIDGET_H
 
 #include <string>
-#include <memory>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
@@ -37,8 +36,6 @@ namespace urchin
 
 			void load(SoundController *);
 			void unload();
-
-			bool isModified() const;
 
 		private:
 			void setupSoundGeneralPropertiesBox(QVBoxLayout *);

@@ -3,7 +3,9 @@
 namespace urchin
 {
 
-	NavMeshConfig::NavMeshConfig()
+	NavMeshConfig::NavMeshConfig(float agentHeight, float agentRadius) :
+		agentHeight(agentHeight),
+		agentRadius(agentRadius)
 	{
 
 	}

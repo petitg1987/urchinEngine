@@ -2,7 +2,6 @@
 #define ENGINE_MAPEDITOR_LIGHTCONTROLLERWIDGET_H
 
 #include <string>
-#include <memory>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
@@ -30,8 +29,6 @@ namespace urchin
 
 			void load(LightController *);
 			void unload();
-
-			bool isModified() const;
 
 		private:
 			void setupGeneralPropertiesBox(QVBoxLayout *);

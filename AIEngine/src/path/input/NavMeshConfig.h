@@ -7,8 +7,11 @@ namespace urchin
 	class NavMeshConfig
 	{
 		public:
-			NavMeshConfig();
+			NavMeshConfig(float, float);
 
+		private:
+			float agentHeight;
+			float agentRadius;
 	};
 
 }
