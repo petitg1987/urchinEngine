@@ -6,32 +6,32 @@
 namespace urchin
 {
 
-	BodyCapsuleShapeWidget::BodyCapsuleShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	BodyCapsuleShapeWidget::BodyCapsuleShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
-		QLabel *radiusLabel = new QLabel("Radius:", this);
-		radiusLabel->setGeometry(QRect(5, 0, 80, 22));
+		QLabel *radiusLabel = new QLabel("Radius:");
+		mainLayout->addWidget(radiusLabel, 0, 0);
 
-		radius = new QDoubleSpinBox(this);
-		radius->setGeometry(QRect(85, 0, 80, 22));
+		radius = new QDoubleSpinBox();
+		mainLayout->addWidget(radius, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(radius);
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *cylinderHeightLabel = new QLabel("Cylinder Height:", this);
-		cylinderHeightLabel->setGeometry(QRect(5, 25, 80, 22));
+		QLabel *cylinderHeightLabel = new QLabel("Cylinder Height:");
+		mainLayout->addWidget(cylinderHeightLabel, 1, 0);
 
-		cylinderHeight = new QDoubleSpinBox(this);
-		cylinderHeight->setGeometry(QRect(85, 25, 80, 22));
+		cylinderHeight = new QDoubleSpinBox();
+		mainLayout->addWidget(cylinderHeight, 1, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(cylinderHeight);
 		cylinderHeight->setMinimum(0.0);
 		connect(cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *orientationLabel = new QLabel("Orientation:", this);
-		orientationLabel->setGeometry(QRect(5, 50, 80, 22));
+		QLabel *orientationLabel = new QLabel("Orientation:");
+		mainLayout->addWidget(orientationLabel, 2, 0);
 
-		orientation = new QComboBox(this);
-		orientation->setGeometry(QRect(85, 50, 80, 22));
+		orientation = new QComboBox();
+		mainLayout->addWidget(orientation, 2, 1);
 		orientation->addItem("X", QVariant(CapsuleShape<float>::CapsuleOrientation::CAPSULE_X));
 		orientation->addItem("Y", QVariant(CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y));
 		orientation->addItem("Z", QVariant(CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z));

@@ -53,7 +53,7 @@ namespace urchin
 			void setupPhysicsGeneralPropertiesBox(QVBoxLayout *);
 			void setupPhysicsDampingPropertiesBox(QVBoxLayout *);
 			void setupPhysicsFactorPropertiesBox(QVBoxLayout *);
-			void setupPhysicsShapeBox();
+			void setupPhysicsShapeBox(QVBoxLayout *);
 
 			void notify(Observable *, int);
 			void setupObjectDataFrom(const SceneObject *);
@@ -80,7 +80,7 @@ namespace urchin
 			//physics
 			QCheckBox *hasRigidBody;
 			QTabWidget *tabPhysicsRigidBody;
-			QWidget *tabPhysicsShape;
+			QVBoxLayout *physicsShapeLayout;
 			QDoubleSpinBox *mass, *restitution, *friction, *rollingFriction;
 			QDoubleSpinBox *linearDamping, *angularDamping;
 			QDoubleSpinBox *linearFactorX, *linearFactorY, *linearFactorZ;

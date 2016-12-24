@@ -6,14 +6,14 @@
 namespace urchin
 {
 
-	BodySphereShapeWidget::BodySphereShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	BodySphereShapeWidget::BodySphereShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
-		QLabel *radiusLabel = new QLabel("Radius:", this);
-		radiusLabel->setGeometry(QRect(5, 0, 80, 22));
+		QLabel *radiusLabel = new QLabel("Radius:");
+		mainLayout->addWidget(radiusLabel, 0, 0);
 
-		radius = new QDoubleSpinBox(this);
-		radius->setGeometry(QRect(85, 0, 80, 22));
+		radius = new QDoubleSpinBox();
+		mainLayout->addWidget(radius, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(radius);
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));

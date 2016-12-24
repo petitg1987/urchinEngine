@@ -13,8 +13,7 @@
 namespace urchin
 {
 
-	BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(QWidget *parentWidget, const SceneObject *sceneObject) :
-			parentWidget(parentWidget),
+	BodyShapeWidgetRetriever::BodyShapeWidgetRetriever(const SceneObject *sceneObject) :
 			sceneObject(sceneObject)
 	{
 
@@ -27,7 +26,7 @@ namespace urchin
 			return retrieveShapeWidget(shape->getShapeType());
 		}
 
-		return new NoBodyShapeWidget(parentWidget, sceneObject);
+		return new NoBodyShapeWidget(sceneObject);
 	}
 
 	BodyShapeWidget *BodyShapeWidgetRetriever::retrieveShapeWidget(CollisionShape3D::ShapeType shapeType)
@@ -36,22 +35,22 @@ namespace urchin
 
 		if(shapeType==CollisionShape3D::ShapeType::SPHERE_SHAPE)
 		{
-			bodyShapeWidget = new BodySphereShapeWidget(parentWidget, sceneObject);
+			bodyShapeWidget = new BodySphereShapeWidget(sceneObject);
 		}else if(shapeType==CollisionShape3D::ShapeType::BOX_SHAPE)
 		{
-			bodyShapeWidget = new BodyBoxShapeWidget(parentWidget, sceneObject);
+			bodyShapeWidget = new BodyBoxShapeWidget(sceneObject);
 		}else if(shapeType==CollisionShape3D::ShapeType::CAPSULE_SHAPE)
 		{
-			bodyShapeWidget = new BodyCapsuleShapeWidget(parentWidget, sceneObject);
+			bodyShapeWidget = new BodyCapsuleShapeWidget(sceneObject);
 		}else if(shapeType==CollisionShape3D::ShapeType::CYLINDER_SHAPE)
 		{
-			bodyShapeWidget = new BodyCylinderShapeWidget(parentWidget, sceneObject);
+			bodyShapeWidget = new BodyCylinderShapeWidget(sceneObject);
 		}else if(shapeType==CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE)
 		{
-			bodyShapeWidget = new BodyConvexHullShapeWidget(parentWidget, sceneObject);
+			bodyShapeWidget = new BodyConvexHullShapeWidget(sceneObject);
 		}else if(shapeType==CollisionShape3D::ShapeType::COMPOUND_SHAPE)
 		{
-			bodyShapeWidget = new BodyCompoundShapeWidget(parentWidget, sceneObject);
+			bodyShapeWidget = new BodyCompoundShapeWidget(sceneObject);
 		}else
 		{
 			throw new std::invalid_argument("Unknown shape type to retrieve body shape widget: " + shapeType);

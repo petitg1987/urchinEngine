@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QGridLayout>
 
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
@@ -24,7 +25,7 @@ namespace urchin
 		#define COMPOUND_SHAPE_LABEL "Compound Shape"
 
 		public:
-			BodyShapeWidget(QWidget *, const SceneObject *);
+			BodyShapeWidget(const SceneObject *);
 			virtual ~BodyShapeWidget();
 
 			const SceneObject *getSceneObject() const;
@@ -40,6 +41,7 @@ namespace urchin
 			void updateBodyShape();
 
 		protected:
+			QGridLayout *mainLayout;
 			bool disableShapeEvent;
 
 			virtual void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) = 0;

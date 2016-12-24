@@ -19,7 +19,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			BodyConvexHullShapeWidget(QWidget *, const SceneObject *);
+			BodyConvexHullShapeWidget(const SceneObject *);
 			virtual ~BodyConvexHullShapeWidget();
 
 			std::string getBodyShapeName() const;

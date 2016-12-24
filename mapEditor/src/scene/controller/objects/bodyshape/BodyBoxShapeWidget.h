@@ -17,7 +17,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			BodyBoxShapeWidget(QWidget *, const SceneObject *);
+			BodyBoxShapeWidget(const SceneObject *);
 			virtual ~BodyBoxShapeWidget();
 
 			std::string getBodyShapeName() const;

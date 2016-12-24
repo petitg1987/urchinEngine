@@ -6,26 +6,26 @@
 namespace urchin
 {
 
-	BodyBoxShapeWidget::BodyBoxShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	BodyBoxShapeWidget::BodyBoxShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
 		QLabel *halfSizesLabel = new QLabel("Half Sizes:", this);
-		halfSizesLabel->setGeometry(QRect(5, 0, 80, 22));
+		mainLayout->addWidget(halfSizesLabel, 0, 0);
 
-		halfSizeX = new QDoubleSpinBox(this);
-		halfSizeX->setGeometry(QRect(85, 0, 80, 22));
+		QHBoxLayout *halfSizeLayout = new QHBoxLayout();
+		mainLayout->addLayout(halfSizeLayout, 0, 1);
+		halfSizeX = new QDoubleSpinBox();
+		halfSizeLayout->addWidget(halfSizeX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeX);
 		halfSizeX->setMinimum(0.0);
 		connect(halfSizeX, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
-
-		halfSizeY = new QDoubleSpinBox(this);
-		halfSizeY->setGeometry(QRect(165, 0, 80, 22));
+		halfSizeY = new QDoubleSpinBox();
+		halfSizeLayout->addWidget(halfSizeY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeY);
 		halfSizeY->setMinimum(0.0);
 		connect(halfSizeY, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
-
-		halfSizeZ = new QDoubleSpinBox(this);
-		halfSizeZ->setGeometry(QRect(245, 0, 80, 22));
+		halfSizeZ = new QDoubleSpinBox();
+		halfSizeLayout->addWidget(halfSizeZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
 		halfSizeZ->setMinimum(0.0);
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));

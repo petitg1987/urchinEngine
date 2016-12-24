@@ -4,6 +4,7 @@
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
 #include "support/ButtonStyleHelper.h"
+#include "support/FrameStyleHelper.h"
 #include "scene/controller/sounds/dialog/NewSoundDialog.h"
 #include "scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h"
 #include "scene/controller/sounds/dialog/ChangeSoundShapeDialog.h"
@@ -185,19 +186,27 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(specificTriggerShapeGroupBox);
 		specificTriggerShapeGroupBox->hide();
 
-		triggerShapeLayout = new QGridLayout(specificTriggerShapeGroupBox);
-		triggerShapeLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+		triggerShapeLayout = new QVBoxLayout(specificTriggerShapeGroupBox);
+
+		QHBoxLayout *shapeTypeLayout = new QHBoxLayout();
+		shapeTypeLayout->setAlignment(Qt::AlignLeft);
+		shapeTypeLayout->setSpacing(15);
+		triggerShapeLayout->addLayout(shapeTypeLayout);
 
 		QLabel *soundShapeTypeLabel= new QLabel("Shape:");
-		triggerShapeLayout->addWidget(soundShapeTypeLabel, 0, 0);
+		shapeTypeLayout->addWidget(soundShapeTypeLabel);
 
 		soundShapeType = new QLabel();
-		triggerShapeLayout->addWidget(soundShapeType, 0, 1);
+		shapeTypeLayout->addWidget(soundShapeType);
 
 		changeSoundShapeTypeButton = new QPushButton("Change");
-		triggerShapeLayout->addWidget(changeSoundShapeTypeButton, 0, 2);
+		shapeTypeLayout->addWidget(changeSoundShapeTypeButton);
 		ButtonStyleHelper::applyNormalStyle(changeSoundShapeTypeButton);
 		connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeDialog()));
+
+		QFrame *frameLine = new QFrame();
+		triggerShapeLayout->addWidget(frameLine);
+		FrameStyleHelper::applyLineStyle(frameLine);
 
 		soundShapeWidget = nullptr;
 	}
@@ -353,7 +362,8 @@ namespace urchin
 		delete soundShapeWidget;
 
 		soundShapeWidget = SoundShapeWidgetRetriever(sceneSound).retrieveShapeWidget(shape);
-		triggerShapeLayout->addWidget(soundShapeWidget, 1, 0, 1, 5);
+		triggerShapeLayout->addWidget(soundShapeWidget);
+		soundShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		soundShapeWidget->show();
 		connect(soundShapeWidget, SIGNAL(soundShapeChange(const SoundShape *)), this, SLOT(soundShapeChanged(const SoundShape *)));
 

@@ -5,27 +5,29 @@
 #include "BodyConvexHullShapeWidget.h"
 #include "support/SpinBoxStyleHelper.h"
 #include "support/LabelStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 #include "scene/controller/objects/bodyshape/support/SpinBoxDelegate.h"
 #include "scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h"
 
 namespace urchin
 {
 
-	BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	BodyConvexHullShapeWidget::BodyConvexHullShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
-		pointsLabel = new QLabel("Points:", this);
-		pointsLabel->setGeometry(QRect(5, 0, 80, 22));
+		pointsLabel = new QLabel("Points:");
+		mainLayout->addWidget(pointsLabel, 0, 0);
 
-		pointsTableModel = new QStandardItemModel(0, 3, this);
+		pointsTableModel = new QStandardItemModel(0, 3);
 		pointsTableModel->setHorizontalHeaderItem(0, new QStandardItem("X"));
 		pointsTableModel->setHorizontalHeaderItem(1, new QStandardItem("Y"));
 		pointsTableModel->setHorizontalHeaderItem(2, new QStandardItem("Z"));
 		connect(pointsTableModel, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(updateBodyShape()));
 
-		pointsTable = new QTableView(this);
+		pointsTable = new QTableView();
+		mainLayout->addWidget(pointsTable, 1, 0);
 		pointsTable->setModel(pointsTableModel);
-		pointsTable->setGeometry(QRect(5, 25, 310, 110));
+		pointsTable->setFixedHeight(185);
 		pointsTable->horizontalHeader()->resizeSection(0, 90);
 		pointsTable->horizontalHeader()->resizeSection(1, 90);
 		pointsTable->horizontalHeader()->resizeSection(2, 90);
@@ -36,12 +38,18 @@ namespace urchin
 		SpinBoxDelegate *delegate = new SpinBoxDelegate(NULL, this, pointsTable, pointsTableModel);
 		pointsTable->setItemDelegate(delegate);
 
-		addPointButton = new QPushButton("New Point", this);
-		addPointButton->setGeometry(QRect(5, 136, 85, 22));
+		QHBoxLayout *buttonLayout = new QHBoxLayout();
+		mainLayout->addLayout(buttonLayout, 2, 0);
+		buttonLayout->setAlignment(Qt::AlignLeft);
+
+		addPointButton = new QPushButton("New Point");
+		buttonLayout->addWidget(addPointButton);
+		ButtonStyleHelper::applyNormalStyle(addPointButton);
 		connect(addPointButton, SIGNAL(clicked()), this, SLOT(addNewPoint()));
 
-		removePointButton = new QPushButton("Remove Point", this);
-		removePointButton->setGeometry(QRect(91, 136, 85, 22));
+		removePointButton = new QPushButton("Remove Point");
+		buttonLayout->addWidget(removePointButton);
+		ButtonStyleHelper::applyNormalStyle(removePointButton);
 		connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
 	}
 

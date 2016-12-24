@@ -5,6 +5,7 @@
 #include "support/SpinBoxStyleHelper.h"
 #include "support/ButtonStyleHelper.h"
 #include "support/ComboBoxStyleHelper.h"
+#include "support/FrameStyleHelper.h"
 #include "scene/controller/objects/dialog/NewObjectDialog.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
@@ -185,8 +186,11 @@ namespace urchin
 		setupPhysicsFactorPropertiesBox(physicsPropertiesLayout);
 		tabPhysicsRigidBody->addTab(tabPhysicsProperties, "Properties");
 
-		tabPhysicsShape = new QWidget();
-		setupPhysicsShapeBox();
+		QWidget *tabPhysicsShape = new QWidget();
+		physicsShapeLayout = new QVBoxLayout(tabPhysicsShape);
+		physicsShapeLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
+		physicsShapeLayout->setContentsMargins(1, 1, 1, 1);
+		setupPhysicsShapeBox(physicsShapeLayout);
 		tabPhysicsRigidBody->addTab(tabPhysicsShape, "Shape");
 	}
 
@@ -327,17 +331,27 @@ namespace urchin
 		connect(angularFactorZ, SIGNAL(valueChanged(double)), this, SLOT(updateObjectPhysicsProperties()));
 	}
 
-	void ObjectControllerWidget::setupPhysicsShapeBox()
+	void ObjectControllerWidget::setupPhysicsShapeBox(QVBoxLayout *physicsShapeLayout)
 	{
-		QLabel *shapeTypeLabel = new QLabel("Shape Type:", tabPhysicsShape);
-		shapeTypeLabel->setGeometry(QRect(5, 5, 80, 22));
+		QHBoxLayout *shapeTypeLayout = new QHBoxLayout();
+		shapeTypeLayout->setAlignment(Qt::AlignLeft);
+		shapeTypeLayout->setSpacing(15);
+		physicsShapeLayout->addLayout(shapeTypeLayout);
 
-		shapeTypeValueLabel = new QLabel(tabPhysicsShape);
-		shapeTypeValueLabel->setGeometry(QRect(85, 5, 100, 22));
+		QLabel *shapeTypeLabel = new QLabel("Shape Type:");
+		shapeTypeLayout->addWidget(shapeTypeLabel);
 
-		changeBodyShapeButton = new QPushButton("Change", tabPhysicsShape);
-		changeBodyShapeButton->setGeometry(QRect(190, 5, 85, 22));
+		shapeTypeValueLabel = new QLabel();
+		shapeTypeLayout->addWidget(shapeTypeValueLabel);
+
+		changeBodyShapeButton = new QPushButton("Change");
+		shapeTypeLayout->addWidget(changeBodyShapeButton);
+		ButtonStyleHelper::applyNormalStyle(changeBodyShapeButton);
 		connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
+
+		QFrame *frameLine = new QFrame();
+		physicsShapeLayout->addWidget(frameLine);
+		FrameStyleHelper::applyLineStyle(frameLine);
 
 		bodyShapeWidget = nullptr;
 	}
@@ -447,11 +461,12 @@ namespace urchin
 	BodyShapeWidget *ObjectControllerWidget::retrieveBodyShapeWidget(std::shared_ptr<const CollisionShape3D> shape, const SceneObject *sceneObject)
 	{
 		delete bodyShapeWidget;
-		bodyShapeWidget = BodyShapeWidgetRetriever(tabPhysicsShape, sceneObject).retrieveShapeWidget(shape);
-		connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(bodyShapeChanged(std::shared_ptr<const CollisionShape3D>)));
 
-		bodyShapeWidget->setGeometry(QRect(0, 30, 369, 470));
+		bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).retrieveShapeWidget(shape);
+		physicsShapeLayout->addWidget(bodyShapeWidget);
+		bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		bodyShapeWidget->show();
+		connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(bodyShapeChanged(std::shared_ptr<const CollisionShape3D>)));
 
 		notifyObservers(this, NotificationType::BODY_SHAPE_INITIALIZED);
 

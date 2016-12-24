@@ -6,8 +6,9 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
 
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
@@ -22,7 +23,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			BodyCompoundShapeWidget(QWidget *, const SceneObject *);
+			BodyCompoundShapeWidget(const SceneObject *);
 			virtual ~BodyCompoundShapeWidget();
 
 			std::string getBodyShapeName() const;
@@ -35,10 +36,10 @@ namespace urchin
 		private:
 			void notify(Observable *, int);
 
-			void setupTransformBox(QWidget *, std::shared_ptr<const LocalizedCollisionShape>);
-			void setupPosition(QGroupBox *, const Point3<float> &);
-			void setupOrientation(QGroupBox *, const Quaternion<float> &);
-			void setupShapeBox(QWidget *, std::shared_ptr<const LocalizedCollisionShape>);
+			void setupTransformBox(QVBoxLayout *, std::shared_ptr<const LocalizedCollisionShape>);
+			void setupPosition(QGridLayout *, const Point3<float> &);
+			void setupOrientation(QGridLayout *, const Quaternion<float> &);
+			void setupShapeBox(QVBoxLayout *, std::shared_ptr<const LocalizedCollisionShape>);
 
 			QLabel *shapesLabel;
 			LocalizedShapeTableView *localizedShapeTableView;

@@ -1,9 +1,11 @@
 #include <stdexcept>
+#include <QtWidgets/QGroupBox>
 
 #include "BodyCompoundShapeWidget.h"
 #include "support/LabelStyleHelper.h"
 #include "support/GroupBoxStyleHelper.h"
 #include "support/SpinBoxStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
 #include "support/ComboBoxStyleHelper.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
@@ -12,22 +14,29 @@
 namespace urchin
 {
 
-	BodyCompoundShapeWidget::BodyCompoundShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	BodyCompoundShapeWidget::BodyCompoundShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
-		shapesLabel = new QLabel("Shapes:", this);
-		shapesLabel->setGeometry(QRect(5, 0, 80, 22));
+		shapesLabel = new QLabel("Shapes:");
+		mainLayout->addWidget(shapesLabel, 0, 0);
 
-		localizedShapeTableView = new LocalizedShapeTableView(this);
+		localizedShapeTableView = new LocalizedShapeTableView();
+		mainLayout->addWidget(localizedShapeTableView, 1, 0);
+		localizedShapeTableView->setFixedHeight(100);
 		localizedShapeTableView->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
-		localizedShapeTableView->setGeometry(QRect(5, 25, 220, 100));
 
-		addShapeButton = new QPushButton("New Shape", this);
-		addShapeButton->setGeometry(QRect(5, 126, 90, 22));
+		QHBoxLayout *buttonLayout = new QHBoxLayout();
+		mainLayout->addLayout(buttonLayout, 2, 0);
+		buttonLayout->setAlignment(Qt::AlignLeft);
+
+		addShapeButton = new QPushButton("New Shape");
+		buttonLayout->addWidget(addShapeButton);
+		ButtonStyleHelper::applyNormalStyle(addShapeButton);
 		connect(addShapeButton, SIGNAL(clicked()), this, SLOT(addNewLocalizedShape()));
 
-		removeShapeButton = new QPushButton("Remove Shape", this);
-		removeShapeButton->setGeometry(QRect(96, 126, 90, 22));
+		removeShapeButton = new QPushButton("Remove Shape");
+		buttonLayout->addWidget(removeShapeButton);
+		ButtonStyleHelper::applyNormalStyle(removeShapeButton);
 		connect(removeShapeButton, SIGNAL(clicked()), this, SLOT(removeSelectedLocalizedShape()));
 
 		localizedShapeDetails = nullptr;
@@ -94,11 +103,12 @@ namespace urchin
 						std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
 						delete localizedShapeDetails;
-						localizedShapeDetails = new QWidget(this);
-						localizedShapeDetails->setGeometry(QRect(10, 155, 358, 315));
+						localizedShapeDetails = new QWidget();
+						mainLayout->addWidget(localizedShapeDetails, 3, 0);
 
-						setupTransformBox(localizedShapeDetails, localizedShape);
-						setupShapeBox(localizedShapeDetails, localizedShape);
+						QVBoxLayout *localizedShapeLayout = new QVBoxLayout(localizedShapeDetails);
+						setupTransformBox(localizedShapeLayout, localizedShape);
+						setupShapeBox(localizedShapeLayout, localizedShape);
 
 						localizedShapeDetails->show();
 					}else
@@ -111,85 +121,89 @@ namespace urchin
 		}
 	}
 
-	void BodyCompoundShapeWidget::setupTransformBox(QWidget *tabGeneral, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout *localizedShapeLayout, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
 	{
-		QGroupBox *transformGroupBox = new QGroupBox("Transform", tabGeneral);
-		transformGroupBox->setGeometry(QRect(5, 0, 350, 95));
+		QGroupBox *transformGroupBox = new QGroupBox("Transform");
+		localizedShapeLayout->addWidget(transformGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
+		transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		setupPosition(transformGroupBox, localizedShape->transform.getPosition());
-		setupOrientation(transformGroupBox,localizedShape->transform.getOrientation());
+		QGridLayout *transformLayout = new QGridLayout(transformGroupBox);
+		setupPosition(transformLayout, localizedShape->transform.getPosition());
+		setupOrientation(transformLayout,localizedShape->transform.getOrientation());
 	}
 
-	void BodyCompoundShapeWidget::setupPosition(QGroupBox *transformGroupBox, const Point3<float> &position)
+	void BodyCompoundShapeWidget::setupPosition(QGridLayout *transformLayout, const Point3<float> &position)
 	{
-		QLabel *positionLabel= new QLabel("Position:", transformGroupBox);
-		positionLabel->setGeometry(QRect(5, 15, 55, 22));
+		QLabel *positionLabel= new QLabel("Position:");
+		transformLayout->addWidget(positionLabel, 0, 0);
 
-		positionX = new QDoubleSpinBox(transformGroupBox);
-		positionX->setGeometry(QRect(85, 15, 80, 22));
+		QHBoxLayout *positionLayout = new QHBoxLayout();
+		transformLayout->addLayout(positionLayout, 0, 1);
+		positionX = new QDoubleSpinBox();
+		positionLayout->addWidget(positionX);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionX);
 		positionX->setValue(position.X);
 		connect(positionX, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-
-		positionY = new QDoubleSpinBox(transformGroupBox);
-		positionY->setGeometry(QRect(165, 15, 80, 22));
+		positionY = new QDoubleSpinBox();
+		positionLayout->addWidget(positionY);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionY);
 		positionY->setValue(position.Y);
 		connect(positionY, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-
-		positionZ = new QDoubleSpinBox(transformGroupBox);
-		positionZ->setGeometry(QRect(245, 15, 80, 22));
+		positionZ = new QDoubleSpinBox();
+		positionLayout->addWidget(positionZ);
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		positionZ->setValue(position.Z);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
 	}
 
-	void BodyCompoundShapeWidget::setupOrientation(QGroupBox *transformGroupBox, const Quaternion<float> &orientation)
+	void BodyCompoundShapeWidget::setupOrientation(QGridLayout *transformLayout, const Quaternion<float> &orientation)
 	{
-		QLabel *orientationTypeLabel = new QLabel("Orient. Type:", transformGroupBox);
-		orientationTypeLabel->setGeometry(QRect(5, 40, 80, 22));
+		QLabel *orientationTypeLabel = new QLabel("Orient. Type:");
+		transformLayout->addWidget(orientationTypeLabel, 1, 0);
 
-		orientationType = new QComboBox(transformGroupBox);
-		orientationType->setGeometry(QRect(85, 40, 160, 22));
+		orientationType = new QComboBox();
+		transformLayout->addWidget(orientationType, 1, 1);
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLocalizedShapeOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", transformGroupBox);
-		eulerAngleLabel->setGeometry(QRect(5, 65, 80, 22));
+		QLabel *eulerAngleLabel = new QLabel("Euler Angle:");
+		transformLayout->addWidget(eulerAngleLabel, 2, 0);
 
 		QVariant variant = orientationType->currentData();
 		Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 		Vector3<float> eulerAngle = orientation.toEulerAngle(newRotationSequence);
 
-		eulerAxis0 = new QDoubleSpinBox(transformGroupBox);
-		eulerAxis0->setGeometry(QRect(85, 65, 80, 22));
+		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
+		transformLayout->addLayout(eulerAxisLayout, 2, 1);
+		eulerAxis0 = new QDoubleSpinBox();
+		eulerAxisLayout->addWidget(eulerAxis0);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
 		eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
 		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-
-		eulerAxis1 = new QDoubleSpinBox(transformGroupBox);
-		eulerAxis1->setGeometry(QRect(165, 65, 80, 22));
+		eulerAxis1 = new QDoubleSpinBox();
+		eulerAxisLayout->addWidget(eulerAxis1);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis1);
 		eulerAxis1->setValue(AngleConverter<float>::toDegree(eulerAngle.Y));
 		connect(eulerAxis1, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
-
-		eulerAxis2 = new QDoubleSpinBox(transformGroupBox);
-		eulerAxis2->setGeometry(QRect(245, 65, 80, 22));
+		eulerAxis2 = new QDoubleSpinBox();
+		eulerAxisLayout->addWidget(eulerAxis2);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis2);
 		eulerAxis2->setValue(AngleConverter<float>::toDegree(eulerAngle.Z));
 		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
 	}
 
-	void BodyCompoundShapeWidget::setupShapeBox(QWidget *tabGeneral, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout *localizedShapeLayout, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
 	{
-		QGroupBox *shapeGroupBox = new QGroupBox("Shape", tabGeneral);
-		shapeGroupBox->setGeometry(QRect(5, 105, 350, 210));
+		QGroupBox *shapeGroupBox = new QGroupBox("Shape");
+		localizedShapeLayout->addWidget(shapeGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
+		shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		BodyShapeWidgetRetriever shapeWidgetRetriever(shapeGroupBox, getSceneObject());
-		bodyShapeWidget = shapeWidgetRetriever.retrieveShapeWidget(localizedShape->shape->getShapeType());
-		bodyShapeWidget->setGeometry(QRect(5, 15, 338, 165));
+		QGridLayout *shapeLayout = new QGridLayout(shapeGroupBox);
+		bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).retrieveShapeWidget(localizedShape->shape->getShapeType());
+		shapeLayout->addWidget(bodyShapeWidget, 0, 0);
+		bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		bodyShapeWidget->setupShapePropertiesFrom(localizedShape->shape);
 		connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(updateSelectedLocalizedShape()));
 	}

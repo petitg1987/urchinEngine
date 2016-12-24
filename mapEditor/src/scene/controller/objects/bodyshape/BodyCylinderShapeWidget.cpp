@@ -6,32 +6,32 @@
 namespace urchin
 {
 
-	BodyCylinderShapeWidget::BodyCylinderShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	BodyCylinderShapeWidget::BodyCylinderShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
-		QLabel *radiusLabel = new QLabel("Radius:", this);
-		radiusLabel->setGeometry(QRect(5, 0, 80, 22));
+		QLabel *radiusLabel = new QLabel("Radius:");
+		mainLayout->addWidget(radiusLabel, 0, 0);
 
-		radius = new QDoubleSpinBox(this);
-		radius->setGeometry(QRect(85, 0, 80, 22));
+		radius = new QDoubleSpinBox();
+		mainLayout->addWidget(radius, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(radius);
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *heightLabel = new QLabel("Height:", this);
-		heightLabel->setGeometry(QRect(5, 25, 80, 22));
+		QLabel *heightLabel = new QLabel("Height:");
+		mainLayout->addWidget(heightLabel, 1, 0);
 
-		height = new QDoubleSpinBox(this);
-		height->setGeometry(QRect(85, 25, 80, 22));
+		height = new QDoubleSpinBox();
+		mainLayout->addWidget(height, 1, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(height);
 		height->setMinimum(0.0);
 		connect(height, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *orientationLabel = new QLabel("Orientation:", this);
-		orientationLabel->setGeometry(QRect(5, 50, 80, 22));
+		QLabel *orientationLabel = new QLabel("Orientation:");
+		mainLayout->addWidget(orientationLabel, 2, 0);
 
-		orientation = new QComboBox(this);
-		orientation->setGeometry(QRect(85, 50, 80, 22));
+		orientation = new QComboBox();
+		mainLayout->addWidget(orientation, 2, 1);
 		orientation->addItem("X", QVariant(CylinderShape<float>::CylinderOrientation::CYLINDER_X));
 		orientation->addItem("Y", QVariant(CylinderShape<float>::CylinderOrientation::CYLINDER_Y));
 		orientation->addItem("Z", QVariant(CylinderShape<float>::CylinderOrientation::CYLINDER_Z));

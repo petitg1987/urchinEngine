@@ -5,12 +5,15 @@
 namespace urchin
 {
 
-	BodyShapeWidget::BodyShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			QWidget(parent),
+	BodyShapeWidget::BodyShapeWidget(const SceneObject *sceneObject) :
 			disableShapeEvent(false),
 			sceneObject(sceneObject)
 	{
+		setContentsMargins(0, 0, 0, 0);
 
+		mainLayout = new QGridLayout(this);
+		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
+		mainLayout->setContentsMargins(0, 0, 0, 0);
 	}
 
 	BodyShapeWidget::~BodyShapeWidget()

@@ -18,10 +18,10 @@ namespace urchin
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
 		mainLayout->setContentsMargins(0, 0, 0, 0);
 
-		QLabel *marginLabel = new QLabel("Margin:", this);
+		QLabel *marginLabel = new QLabel("Margin:");
 		mainLayout->addWidget(marginLabel, 0, 0);
 
-		margin = new QDoubleSpinBox(this);
+		margin = new QDoubleSpinBox();
 		mainLayout->addWidget(margin, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
 		margin->setMinimum(0.0);

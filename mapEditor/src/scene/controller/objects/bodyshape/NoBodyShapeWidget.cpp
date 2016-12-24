@@ -5,8 +5,8 @@
 namespace urchin
 {
 
-	NoBodyShapeWidget::NoBodyShapeWidget(QWidget *parent, const SceneObject *sceneObject) :
-			BodyShapeWidget(parent, sceneObject)
+	NoBodyShapeWidget::NoBodyShapeWidget(const SceneObject *sceneObject) :
+			BodyShapeWidget(sceneObject)
 	{
 
 	}

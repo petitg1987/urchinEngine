@@ -82,7 +82,7 @@ namespace urchin
 			QLabel *soundTriggerType;
 
 			//sound trigger specific properties
-			QGridLayout *triggerShapeLayout;
+			QVBoxLayout *triggerShapeLayout;
 			QPushButton *changeSoundTriggerTypeButton;
 			QLabel *soundShapeType;
 			QPushButton *changeSoundShapeTypeButton;

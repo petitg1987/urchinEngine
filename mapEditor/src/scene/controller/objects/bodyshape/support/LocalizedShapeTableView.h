@@ -21,7 +21,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			LocalizedShapeTableView(QWidget *parent = 0);
+			LocalizedShapeTableView(QWidget *parent = nullptr);
 
 			enum NotificationType
 			{

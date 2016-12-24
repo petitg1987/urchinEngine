@@ -16,7 +16,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			NoBodyShapeWidget(QWidget *, const SceneObject *);
+			NoBodyShapeWidget(const SceneObject *);
 			virtual ~NoBodyShapeWidget();
 
 			std::string getBodyShapeName() const;

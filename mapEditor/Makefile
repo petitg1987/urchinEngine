@@ -52,6 +52,7 @@ SOURCES       = src/Main.cpp \
 		src/MapEditorWindow.cpp \
 		src/support/ButtonStyleHelper.cpp \
 		src/support/ComboBoxStyleHelper.cpp \
+		src/support/FrameStyleHelper.cpp \
 		src/support/GroupBoxStyleHelper.cpp \
 		src/support/LabelStyleHelper.cpp \
 		src/support/SpinBoxStyleHelper.cpp \
@@ -130,6 +131,7 @@ OBJECTS       = targetLinux/Main.o \
 		targetLinux/MapEditorWindow.o \
 		targetLinux/ButtonStyleHelper.o \
 		targetLinux/ComboBoxStyleHelper.o \
+		targetLinux/FrameStyleHelper.o \
 		targetLinux/GroupBoxStyleHelper.o \
 		targetLinux/LabelStyleHelper.o \
 		targetLinux/SpinBoxStyleHelper.o \
@@ -266,6 +268,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/MapEditorWindow.h \
 		src/support/ButtonStyleHelper.h \
 		src/support/ComboBoxStyleHelper.h \
+		src/support/FrameStyleHelper.h \
 		src/support/GroupBoxStyleHelper.h \
 		src/support/LabelStyleHelper.h \
 		src/support/SpinBoxStyleHelper.h \
@@ -314,6 +317,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/MapEditorWindow.cpp \
 		src/support/ButtonStyleHelper.cpp \
 		src/support/ComboBoxStyleHelper.cpp \
+		src/support/FrameStyleHelper.cpp \
 		src/support/GroupBoxStyleHelper.cpp \
 		src/support/LabelStyleHelper.cpp \
 		src/support/SpinBoxStyleHelper.cpp \
@@ -509,8 +513,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.h src/MapEditorWindow.h src/support/ButtonStyleHelper.h src/support/ComboBoxStyleHelper.h src/support/GroupBoxStyleHelper.h src/support/LabelStyleHelper.h src/support/SpinBoxStyleHelper.h src/dialog/NewDialog.h src/dialog/NotSavedDialog.h src/scene/controller/SceneController.h src/scene/controller/SceneControllerWidget.h src/scene/controller/objects/ObjectController.h src/scene/controller/objects/ObjectControllerWidget.h src/scene/controller/objects/ObjectTableView.h src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h src/scene/controller/objects/dialog/NewObjectDialog.h src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h src/scene/controller/lights/LightController.h src/scene/controller/lights/LightControllerWidget.h src/scene/controller/lights/LightTableView.h src/scene/controller/lights/dialog/NewLightDialog.h src/scene/controller/sounds/SoundController.h src/scene/controller/sounds/SoundControllerWidget.h src/scene/controller/sounds/SoundTableView.h src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h src/scene/controller/sounds/dialog/NewSoundDialog.h src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/displayer/objects/BodyShapeDisplayer.h src/scene/displayer/lights/LightScopeDisplayer.h src/scene/displayer/sounds/SoundTriggerDisplayer.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.cpp src/MapEditorWindow.cpp src/support/ButtonStyleHelper.cpp src/support/ComboBoxStyleHelper.cpp src/support/GroupBoxStyleHelper.cpp src/support/LabelStyleHelper.cpp src/support/SpinBoxStyleHelper.cpp src/dialog/NewDialog.cpp src/dialog/NotSavedDialog.cpp src/scene/controller/SceneController.cpp src/scene/controller/SceneControllerWidget.cpp src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp src/scene/controller/objects/dialog/NewObjectDialog.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/NoBodyShapeWidget.cpp src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/dialog/NewLightDialog.cpp src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp src/scene/controller/sounds/dialog/NewSoundDialog.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/objects/BodyShapeDisplayer.cpp src/scene/displayer/lights/LightScopeDisplayer.cpp src/scene/displayer/sounds/SoundTriggerDisplayer.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.h src/MapEditorWindow.h src/support/ButtonStyleHelper.h src/support/ComboBoxStyleHelper.h src/support/FrameStyleHelper.h src/support/GroupBoxStyleHelper.h src/support/LabelStyleHelper.h src/support/SpinBoxStyleHelper.h src/dialog/NewDialog.h src/dialog/NotSavedDialog.h src/scene/controller/SceneController.h src/scene/controller/SceneControllerWidget.h src/scene/controller/objects/ObjectController.h src/scene/controller/objects/ObjectControllerWidget.h src/scene/controller/objects/ObjectTableView.h src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h src/scene/controller/objects/dialog/NewObjectDialog.h src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h src/scene/controller/lights/LightController.h src/scene/controller/lights/LightControllerWidget.h src/scene/controller/lights/LightTableView.h src/scene/controller/lights/dialog/NewLightDialog.h src/scene/controller/sounds/SoundController.h src/scene/controller/sounds/SoundControllerWidget.h src/scene/controller/sounds/SoundTableView.h src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h src/scene/controller/sounds/dialog/NewSoundDialog.h src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/displayer/objects/BodyShapeDisplayer.h src/scene/displayer/lights/LightScopeDisplayer.h src/scene/displayer/sounds/SoundTriggerDisplayer.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.cpp src/MapEditorWindow.cpp src/support/ButtonStyleHelper.cpp src/support/ComboBoxStyleHelper.cpp src/support/FrameStyleHelper.cpp src/support/GroupBoxStyleHelper.cpp src/support/LabelStyleHelper.cpp src/support/SpinBoxStyleHelper.cpp src/dialog/NewDialog.cpp src/dialog/NotSavedDialog.cpp src/scene/controller/SceneController.cpp src/scene/controller/SceneControllerWidget.cpp src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp src/scene/controller/objects/dialog/NewObjectDialog.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/NoBodyShapeWidget.cpp src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/dialog/NewLightDialog.cpp src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp src/scene/controller/sounds/dialog/NewSoundDialog.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/objects/BodyShapeDisplayer.cpp src/scene/displayer/lights/LightScopeDisplayer.cpp src/scene/displayer/sounds/SoundTriggerDisplayer.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -7992,6 +7996,9 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/math/trigonometry/AngleConverter.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ComboBoxStyleHelper.o src/support/ComboBoxStyleHelper.cpp
 
+targetLinux/FrameStyleHelper.o: src/support/FrameStyleHelper.cpp src/support/FrameStyleHelper.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/FrameStyleHelper.o src/support/FrameStyleHelper.cpp
+
 targetLinux/GroupBoxStyleHelper.o: src/support/GroupBoxStyleHelper.cpp src/support/GroupBoxStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/GroupBoxStyleHelper.o src/support/GroupBoxStyleHelper.cpp
 
@@ -8066,7 +8073,8 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
 		src/dialog/NewDialog.h \
-		../mapEditor/src/support/LabelStyleHelper.h
+		../mapEditor/src/support/LabelStyleHelper.h \
+		../mapEditor/src/support/ButtonStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/NewDialog.o src/dialog/NewDialog.cpp
 
 targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/UrchinCommon.h \
@@ -9122,7 +9130,9 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
+		../mapEditor/src/support/ButtonStyleHelper.h \
 		../mapEditor/src/support/ComboBoxStyleHelper.h \
+		../mapEditor/src/support/FrameStyleHelper.h \
 		../mapEditor/src/scene/controller/objects/dialog/NewObjectDialog.h \
 		../mapEditor/src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h
@@ -9855,7 +9865,8 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
-		../mapEditor/src/support/LabelStyleHelper.h
+		../mapEditor/src/support/LabelStyleHelper.h \
+		../mapEditor/src/support/ButtonStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/NewObjectDialog.o src/scene/controller/objects/dialog/NewObjectDialog.cpp
 
 targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h \
@@ -13285,6 +13296,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
+		../mapEditor/src/support/ButtonStyleHelper.h \
 		../mapEditor/src/scene/controller/lights/dialog/NewLightDialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LightControllerWidget.o src/scene/controller/lights/LightControllerWidget.cpp
 
@@ -14266,6 +14278,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
 		../mapEditor/src/support/ButtonStyleHelper.h \
+		../mapEditor/src/support/FrameStyleHelper.h \
 		../mapEditor/src/scene/controller/sounds/dialog/NewSoundDialog.h \
 		../mapEditor/src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h \
 		../mapEditor/src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h \
@@ -15240,7 +15253,8 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../mapHandler/src/resources/light/SceneLight.h \
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
-		../mapEditor/src/support/LabelStyleHelper.h
+		../mapEditor/src/support/LabelStyleHelper.h \
+		../mapEditor/src/support/ButtonStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/NewSoundDialog.o src/scene/controller/sounds/dialog/NewSoundDialog.cpp
 
 targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h \

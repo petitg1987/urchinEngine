@@ -11,7 +11,7 @@ namespace urchin
 	SoundBoxShapeWidget::SoundBoxShapeWidget(const SceneSound *sceneSound) :
 			SoundShapeWidget(sceneSound)
 	{
-		QLabel *positionLabel = new QLabel("Position:", this);
+		QLabel *positionLabel = new QLabel("Position:");
 		mainLayout->addWidget(positionLabel, 1, 0);
 
 		QHBoxLayout *positionLayout = new QHBoxLayout();
@@ -47,7 +47,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-		QLabel *orientationTypeLabel = new QLabel("Orient. Type:", this);
+		QLabel *orientationTypeLabel = new QLabel("Orient. Type:");
 		mainLayout->addWidget(orientationTypeLabel, 3, 0);
 
 		orientationType = new QComboBox();
@@ -55,7 +55,7 @@ namespace urchin
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateShapeOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel("Euler Angle:", this);
+		QLabel *eulerAngleLabel = new QLabel("Euler Angle:");
 		mainLayout->addWidget(eulerAngleLabel, 4, 0);
 
 		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
