@@ -4,14 +4,27 @@ namespace urchin
 {
 
 	/**
+	 * @param pointsWithMargin Points including margin used to construct the convex hull. Points inside the convex hull are accepted but will unused.
+	 * @param pointsWithoutMargin Points without margin used to construct the convex hull. Points inside the convex hull are accepted but will unused.
 	 * @param outerMargin Collision outer margin. Collision margin must match with convex hulls arguments.
-	 * @param pointsWithoutMargin Points without margin used to construct the convex hull
-	 * @param pointsWithMargin Points with margin used to construct the convex hull
 	 */
-	CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin, ConvexHull3D<float> convexHullWithMargin, ConvexHull3D<float> convexHullWithoutMargin) :
+	CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin, const std::vector<Point3<float>> &pointsWithMargin, const std::vector<Point3<float>> &pointsWithoutMargin) :
 			CollisionConvexObject3D(outerMargin),
-			convexHullObjectWithMargin(convexHullWithMargin),
-			convexHullObjectWithoutMargin(convexHullWithoutMargin)
+			convexHullObjectWithMargin(ConvexHull3D<float>(pointsWithMargin)),
+			convexHullObjectWithoutMargin(ConvexHull3D<float>(pointsWithoutMargin))
+	{
+
+	}
+
+	/**
+	 * @param outerMargin Collision outer margin. Collision margin must match with convex hulls arguments.
+	 */
+	CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin,
+			const std::map<unsigned int, Point3<float>> &indexedPointsWithMargin, const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTrianglesWithMargin,
+			const std::map<unsigned int, Point3<float>> &indexedPointsWithoutMargin, const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTrainglesWithoutMargin) :
+			CollisionConvexObject3D(outerMargin),
+			convexHullObjectWithMargin(ConvexHull3D<float>(indexedPointsWithMargin, indexedTrianglesWithMargin)),
+			convexHullObjectWithoutMargin(ConvexHull3D<float>(indexedPointsWithoutMargin, indexedTrainglesWithoutMargin))
 	{
 
 	}

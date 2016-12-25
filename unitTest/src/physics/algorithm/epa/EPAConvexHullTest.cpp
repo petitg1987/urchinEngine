@@ -23,8 +23,8 @@ void EPAConvexHullTest::identicalBox()
 	};
 	std::vector<Point3<float>> obbPoints2(obbPointsTab2, obbPointsTab2+sizeof(obbPointsTab2)/sizeof(Point3<float>));
 
-	CollisionConvexHullObject ch1(0.0, ConvexHull3D<float>(obbPoints1), ConvexHull3D<float>(obbPoints1));
-	CollisionConvexHullObject ch2(0.0, ConvexHull3D<float>(obbPoints2), ConvexHull3D<float>(obbPoints2));
+	CollisionConvexHullObject ch1(0.0, obbPoints1, obbPoints1);
+	CollisionConvexHullObject ch2(0.0, obbPoints2, obbPoints2);
 	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
 	AssertHelper::assertTrue(resultEpa->isCollide());
@@ -46,8 +46,8 @@ void EPAConvexHullTest::cornerInsideBox()
 	};
 	std::vector<Point3<float>> obbPoints(obbPointsTab, obbPointsTab+sizeof(obbPointsTab)/sizeof(Point3<float>));
 
-	CollisionConvexHullObject ch1(0.0, ConvexHull3D<float>(aabbPoints), ConvexHull3D<float>(aabbPoints));
-	CollisionConvexHullObject ch2(0.0, ConvexHull3D<float>(obbPoints), ConvexHull3D<float>(obbPoints));
+	CollisionConvexHullObject ch1(0.0, aabbPoints, aabbPoints);
+	CollisionConvexHullObject ch2(0.0, obbPoints, obbPoints);
 	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
 	AssertHelper::assertTrue(resultEpa->isCollide());
@@ -75,8 +75,8 @@ void EPAConvexHullTest::faceInsideTrapeze()
 	};
 	std::vector<Point3<float>> trapezePoints2(trapezePointsTab2, trapezePointsTab2+sizeof(trapezePointsTab2)/sizeof(Point3<float>));
 
-	CollisionConvexHullObject ch1(0.0, ConvexHull3D<float>(trapezePoints1), ConvexHull3D<float>(trapezePoints1));
-	CollisionConvexHullObject ch2(0.0, ConvexHull3D<float>(trapezePoints2), ConvexHull3D<float>(trapezePoints2));
+	CollisionConvexHullObject ch1(0.0, trapezePoints1, trapezePoints1);
+	CollisionConvexHullObject ch2(0.0, trapezePoints2, trapezePoints2);
 	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
 	AssertHelper::assertTrue(resultEpa->isCollide());
@@ -104,8 +104,8 @@ void EPAConvexHullTest::cornerInsideHexagon()
 	};
 	std::vector<Point3<float>> hexagonPoints2(hexagonPointsTab2, hexagonPointsTab2+sizeof(hexagonPointsTab2)/sizeof(Point3<float>));
 
-	CollisionConvexHullObject ch1(0.0, ConvexHull3D<float>(hexagonPoints1), ConvexHull3D<float>(hexagonPoints1));
-	CollisionConvexHullObject ch2(0.0, ConvexHull3D<float>(hexagonPoints2), ConvexHull3D<float>(hexagonPoints2));
+	CollisionConvexHullObject ch1(0.0, hexagonPoints1, hexagonPoints1);
+	CollisionConvexHullObject ch2(0.0, hexagonPoints2, hexagonPoints2);
 	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(ch1, ch2);
 
 	AssertHelper::assertTrue(resultEpa->isCollide());

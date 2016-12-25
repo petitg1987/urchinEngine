@@ -1,4 +1,5 @@
 #include "ConvexHull3D.h"
+#include "math/geometry/3d/util/ResizeConvexHullService.h"
 
 namespace urchin
 {
@@ -64,6 +65,11 @@ namespace urchin
 	template<class T> Point3<T> ConvexHull3D<T>::getSupportPoint(const Vector3<T> &direction) const
 	{
 		return localizedConvexHullShape.getSupportPoint(direction);
+	}
+
+	template<class T> std::unique_ptr<ConvexHull3D<T>> ConvexHull3D<T>::resize(T distance) const
+	{
+		return ResizeConvexHullService<T>::instance()->resizeConvexHull(*this, distance);
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHull3D<T> &ch)

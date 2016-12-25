@@ -6,6 +6,7 @@
 #include <set>
 #include <stdexcept>
 #include <sstream>
+#include <memory>
 
 #include "math/geometry/3d/shape/ConvexShape3D.h"
 #include "math/geometry/3d/IndexedTriangle3D.h"
@@ -29,6 +30,8 @@ namespace urchin
 			unsigned int addNewPoint(const Point3<T> &, std::vector<unsigned int> &, std::vector<unsigned int> &);
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
+
+			std::unique_ptr<ConvexHullShape3D<T>> resize(T) const;
 
 		private:
 			unsigned int addTriangle(const IndexedTriangle3D<T> &);

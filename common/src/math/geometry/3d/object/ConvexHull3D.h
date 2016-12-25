@@ -16,6 +16,8 @@ namespace urchin
 	template<class T> class ConvexHull3D : public ConvexObject3D<T>
 	{
 		public:
+			template<class U> friend class ResizeConvexHullService;
+
 			ConvexHull3D(const std::vector<Point3<T>> &);
 			ConvexHull3D(const std::map<unsigned int, Point3<T>> &, const std::map<unsigned int, IndexedTriangle3D<T>> &);
 			~ConvexHull3D();
@@ -28,6 +30,8 @@ namespace urchin
 			unsigned int addNewPoint(const Point3<T> &, std::vector<unsigned int> &, std::vector<unsigned int> &);
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
+
+			std::unique_ptr<ConvexHull3D<T>> resize(T) const;
 
 		private:
 			ConvexHullShape3D<T> localizedConvexHullShape;

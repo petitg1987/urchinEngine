@@ -1,7 +1,6 @@
 #include <limits>
 
 #include "shape/CollisionConvexHullShape.h"
-#include "shape/util/ResizeConvexHullService.h"
 #include "shape/CollisionSphereShape.h"
 #include "object/CollisionConvexHullObject.h"
 
@@ -13,7 +12,7 @@ namespace urchin
 	*/
 	CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>> &points) :
 			CollisionShape3D(),
-			convexHull(ConvexHull3D<float>(points))
+			convexHullShape(ConvexHullShape3D<float>(points))
 	{
 		initialize();
 	}
@@ -23,7 +22,7 @@ namespace urchin
 	*/
 	CollisionConvexHullShape::CollisionConvexHullShape(float innerMargin, const std::vector<Point3<float>> &points) :
 			CollisionShape3D(innerMargin),
-			convexHull(ConvexHull3D<float>(points))
+			convexHullShape(ConvexHullShape3D<float>(points))
 	{
 		initialize();
 	}
@@ -41,9 +40,9 @@ namespace urchin
 
 	void CollisionConvexHullShape::initializeConvexHullReduced()
 	{
-		convexHullReduced = ResizeConvexHullService::instance()->resizeConvexHull(convexHull, -getInnerMargin());
+		convexHullShapeReduced = convexHullShape.resize(-getInnerMargin());
 
-		if(convexHullReduced.get()==nullptr)
+		if(!convexHullShapeReduced)
 		{ //impossible to shrink the convex hull correctly
 			refreshInnerMargin(0.0);
 		}
@@ -63,12 +62,12 @@ namespace urchin
 
 	const std::map<unsigned int, IndexedTriangle3D<float>> &CollisionConvexHullShape::getIndexedTriangles() const
 	{
-		return convexHull.getIndexedTriangles();
+		return convexHullShape.getIndexedTriangles();
 	}
 
 	const std::map<unsigned int, Point3<float>> &CollisionConvexHullShape::getIndexedPoints() const
 	{
-		return convexHull.getIndexedPoints();
+		return convexHullShape.getIndexedPoints();
 	}
 
 	/**
@@ -76,12 +75,12 @@ namespace urchin
 	 */
 	std::vector<Point3<float>> CollisionConvexHullShape::getPoints() const
 	{
-		return convexHull.getPoints();
+		return convexHullShape.getPoints();
 	}
 
 	std::shared_ptr<CollisionShape3D> CollisionConvexHullShape::scale(float scale) const
 	{
-		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
+		const std::vector<Point3<float>> &convexHullPoints = convexHullShape.getPoints();
 
 		std::vector<Point3<float>> newPoints;
 		newPoints.reserve(convexHullPoints.size());
@@ -102,8 +101,8 @@ namespace urchin
 		//build AABBox
 		Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 		Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-		const std::vector<Point3<float>> &convexHullPoints = convexHull.getPoints();
-		for(std::vector<Point3<float>>::const_iterator it=convexHullPoints.begin(); it!=convexHullPoints.end(); ++it)
+		const std::vector<Point3<float>> &convexHullShapePoints = convexHullShape.getPoints();
+		for(std::vector<Point3<float>>::const_iterator it=convexHullShapePoints.begin(); it!=convexHullShapePoints.end(); ++it)
 		{
 			const Point3<float> point = orientation.rotatePoint(*it);
 
@@ -139,26 +138,30 @@ namespace urchin
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
-		ConvexHull3D<float> convexHullWithMargin = transformConvexHull(convexHull, physicsTransform);
+		ConvexHullShape3D<float> convexHullShapeWithMargin = transformConvexHull(convexHullShape, physicsTransform);
 
-		if(convexHullReduced.get()==nullptr)
+		if(!convexHullShapeReduced)
 		{ //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
-			return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithMargin);
+			return std::make_shared<CollisionConvexHullObject>(getInnerMargin(),
+					convexHullShapeWithMargin.getIndexedPoints(), convexHullShapeWithMargin.getIndexedTriangles(),
+					convexHullShapeWithMargin.getIndexedPoints(), convexHullShapeWithMargin.getIndexedTriangles());
 		}
 
-		ConvexHull3D<float> convexHullWithoutMargin = transformConvexHull(*convexHullReduced.get(), physicsTransform);
-		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+		ConvexHullShape3D<float> convexHullShapeWithoutMargin = transformConvexHull(*convexHullShapeReduced.get(), physicsTransform);
+		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(),
+				convexHullShapeWithMargin.getIndexedPoints(), convexHullShapeWithMargin.getIndexedTriangles(),
+				convexHullShapeWithoutMargin.getIndexedPoints(), convexHullShapeWithoutMargin.getIndexedTriangles());
 	}
 
-	ConvexHull3D<float> CollisionConvexHullShape::transformConvexHull(const ConvexHull3D<float> &convexHullToTransform, const PhysicsTransform &physicsTransform) const
+	ConvexHullShape3D<float> CollisionConvexHullShape::transformConvexHull(const ConvexHullShape3D<float> &convexHullShapeToTransform, const PhysicsTransform &physicsTransform) const
 	{
 		std::map<unsigned int, Point3<float>> transformedIndexedPoints;
-		for(std::map<unsigned int, Point3<float>>::const_iterator it = convexHullToTransform.getIndexedPoints().begin(); it!=convexHullToTransform.getIndexedPoints().end(); ++it)
+		for(std::map<unsigned int, Point3<float>>::const_iterator it = convexHullShapeToTransform.getIndexedPoints().begin(); it!=convexHullShapeToTransform.getIndexedPoints().end(); ++it)
 		{
 			transformedIndexedPoints[it->first] = physicsTransform.transform(it->second);
 		}
 
-		return ConvexHull3D<float>(transformedIndexedPoints, convexHullToTransform.getIndexedTriangles());
+		return ConvexHullShape3D<float>(transformedIndexedPoints, convexHullShapeToTransform.getIndexedTriangles());
 	}
 
 	Vector3<float> CollisionConvexHullShape::computeLocalInertia(float mass) const

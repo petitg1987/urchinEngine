@@ -16,10 +16,10 @@ namespace urchin
 			if(rigidBody!=nullptr)
 			{
 				//TODO common:
-				// 1) Use ConvexHull3DShape in physics engine: CollisionConvexHullShape
-				// 2) Allow to convert ConvexShape3D into ConvexObject3D with a Transform (to use in physics engine ?)
+				//1) Allow to convert ConvexShape3D into ConvexObject3D with a Transform
+				//2) Use this above method in physics engine ?
 
-				//std::shared_ptr<const CollisionShape3D> collisionShape3D = rigidBody->getScaledShape(); //TODO transform into ConvexShape3D ?
+				//std::shared_ptr<const CollisionShape3D> collisionShape3D = rigidBody->getScaledShape(); //TODO transform/get ConvexShape3D ?
 				//const Transform<float> &transform = rigidBody->getTransform(); //TODO: create AITransform without scale ?
 			}
 		}

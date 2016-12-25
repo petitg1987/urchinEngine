@@ -1,6 +1,8 @@
 #include "ConvexHullShape3D.h"
+#include "math/geometry/3d/util/ResizeConvexHullService.h"
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"
+
 
 namespace urchin
 {
@@ -160,6 +162,16 @@ namespace urchin
 		}
 
 		return maxPoint;
+	}
+
+	/**
+	 * @param distance All planes of convex hull shape will be moved along their normal to the specified distance.
+	 * Positive distance will extend convex hull shape and negative distance will shrink the convex hull shape.
+	 * @return Convex hull shape resized. If resize is impossible to keep plane normal outside convex hull shape: nullptr is returned.
+	 */
+	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ConvexHullShape3D<T>::resize(T distance) const
+	{
+		return ResizeConvexHullService<T>::instance()->resizeConvexHullShape(*this, distance);
 	}
 
 	template<class T> unsigned int ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T> &indexedTriangle)

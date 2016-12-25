@@ -4,8 +4,9 @@
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
 
+#include "math/geometry/ShrinkConvexHullTest.h"
 #include "AssertHelper.h"
-#include "physics/shape/ShrinkConvexHullTest.h"
+
 using namespace urchin;
 
 void ShrinkConvexHullTest::shrinkConvexHullBox()
@@ -17,7 +18,7 @@ void ShrinkConvexHullTest::shrinkConvexHullBox()
 	std::vector<Point3<float>> aabbPoints(aabbPointsTab, aabbPointsTab+sizeof(aabbPointsTab)/sizeof(Point3<float>));
 	ConvexHull3D<float> convexHull(aabbPoints);
 
-	std::unique_ptr<ConvexHull3D<float>> convexHullResult = ResizeConvexHullService::instance()->resizeConvexHull(convexHull, -0.1f);
+	std::unique_ptr<ConvexHull3D<float>> convexHullResult = convexHull.resize(-0.1f);
 
 	AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(1.0, 1.0, -1.0)), Point3<float>(0.9, 0.9, -0.9));
 	AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(1.0, 1.0, 1.0)), Point3<float>(0.9, 0.9, -0.1));

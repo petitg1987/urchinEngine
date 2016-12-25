@@ -38,10 +38,10 @@ namespace urchin
 			void initializeConvexHullReduced();
 			void initializeDistances();
 
-			ConvexHull3D<float> transformConvexHull(const ConvexHull3D<float> &, const PhysicsTransform &) const;
+			ConvexHullShape3D<float> transformConvexHull(const ConvexHullShape3D<float> &, const PhysicsTransform &) const;
 
-			const ConvexHull3D<float> convexHull; //shape including margin
-			std::unique_ptr<ConvexHull3D<float>> convexHullReduced; //shape where margin has been subtracted
+			const ConvexHullShape3D<float> convexHullShape; //shape including margin
+			std::unique_ptr<ConvexHullShape3D<float>> convexHullShapeReduced; //shape where margin has been subtracted
 
 			float minDistanceToCenter;
 			float maxDistanceToCenter;

@@ -672,7 +672,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -1049,7 +1048,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -1209,7 +1207,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -1568,7 +1565,6 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -1822,7 +1818,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -2071,7 +2066,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -2218,7 +2212,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -2468,7 +2461,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -2718,7 +2710,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -2974,7 +2965,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -3224,7 +3214,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -3577,7 +3566,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -3723,7 +3711,6 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -3973,7 +3960,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -4326,7 +4312,6 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -4581,7 +4566,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -4831,7 +4815,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -5085,7 +5068,6 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -5339,7 +5321,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -5590,7 +5571,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -5845,7 +5825,6 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -6099,7 +6078,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -6348,7 +6326,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -6597,7 +6574,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -6848,7 +6824,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -7097,7 +7072,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -7347,7 +7321,6 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -7597,7 +7570,6 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -7744,7 +7716,6 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -8015,7 +7986,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -8285,7 +8255,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -8885,7 +8854,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -9138,7 +9106,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -9375,7 +9342,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -9548,7 +9514,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -9915,7 +9880,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -10169,7 +10133,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -10419,7 +10382,6 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -10568,7 +10530,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -10819,7 +10780,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -11070,7 +11030,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -11334,7 +11293,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -11589,7 +11547,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -11943,7 +11900,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -12089,7 +12045,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -12352,7 +12307,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -12603,7 +12557,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -12956,7 +12909,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -13205,7 +13157,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -13462,7 +13413,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -13712,7 +13662,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -13962,7 +13911,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -14220,7 +14168,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -14474,7 +14421,6 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -14725,7 +14671,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -14976,7 +14921,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -15239,7 +15183,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -15493,7 +15436,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -15743,7 +15685,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -15992,7 +15933,6 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -16245,7 +16185,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -16496,7 +16435,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -16746,7 +16684,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -16999,7 +16936,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -17249,7 +17185,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -17498,7 +17433,6 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -17748,7 +17682,6 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -17897,7 +17830,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -18151,7 +18083,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -18549,7 +18480,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -18902,7 +18832,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
@@ -19151,7 +19080,6 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
-		../physicsEngine/src/shape/util/ResizeConvexHullService.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
