@@ -43,6 +43,11 @@ namespace urchin
 		return CollisionShape3D::COMPOUND_SHAPE;
 	}
 
+	std::shared_ptr<ConvexShape3D<float>> CollisionCompoundShape::getSingleShape() const
+	{
+		throw std::runtime_error("Retrieve of single shape unsupported for compound shape");
+	}
+
 	const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &CollisionCompoundShape::getLocalizedShapes() const
 	{
 		return localizedShapes;

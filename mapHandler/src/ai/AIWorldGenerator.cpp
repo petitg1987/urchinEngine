@@ -1,4 +1,5 @@
-#include "UrchinPhysicsEngine.h"
+#include <vector>
+#include <cassert>
 
 #include "AIWorldGenerator.h"
 
@@ -13,14 +14,49 @@ namespace urchin
 		for(auto sceneObject : sceneObjects)
 		{
 			RigidBody *rigidBody = sceneObject->getRigidBody();
-			if(rigidBody!=nullptr)
+			std::vector<LocalizedShape> localizedShapes = extractionLocalizedShapes(rigidBody);
+			for(auto localizedShape : localizedShapes)
 			{
-				//std::shared_ptr<const CollisionShape3D> collisionShape3D = rigidBody->getScaledShape(); //TODO add getConvexShape3D() ?
-				//const Transform<float> &transform = rigidBody->getTransform(); //TODO combine with transform of compound shape
+				AIObject aiObject(localizedShape.shape, localizedShape.worldTransform);
+				aiWorld->addObject(aiObject);
 			}
 		}
 
 		return aiWorld;
+	}
+
+	std::vector<LocalizedShape> AIWorldGenerator::extractionLocalizedShapes(RigidBody *rigidBody)
+	{
+		std::vector<LocalizedShape> localizedShapes;
+		if(rigidBody!=nullptr)
+		{
+			std::shared_ptr<const CollisionShape3D> scaledCollisionShape3D = rigidBody->getScaledShape();
+			if(scaledCollisionShape3D->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
+			{
+				std::shared_ptr<const CollisionCompoundShape> collisionCompoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(scaledCollisionShape3D);
+				for(auto collisionLocalizedShape : collisionCompoundShape->getLocalizedShapes())
+				{
+					PhysicsTransform worldPhysicsTransform = collisionLocalizedShape->transform * PhysicsTransform(rigidBody->getTransform().getPosition(), rigidBody->getTransform().getOrientation());
+					LocalizedShape localizedShape;
+					localizedShape.shape = scaledCollisionShape3D->getSingleShape();
+					localizedShape.worldTransform = worldPhysicsTransform.toTransform();
+
+					localizedShapes.push_back(localizedShape);
+				}
+			}else
+			{
+				Transform<float> unscaledTransform = rigidBody->getTransform();
+				unscaledTransform.setScale(1.0); //scale not needed because shape is already scaled.
+
+				LocalizedShape localizedShape;
+				localizedShape.shape = scaledCollisionShape3D->getSingleShape();
+				localizedShape.worldTransform = unscaledTransform;
+
+				localizedShapes.push_back(localizedShape);
+			}
+		}
+
+		return localizedShapes;
 	}
 
 }

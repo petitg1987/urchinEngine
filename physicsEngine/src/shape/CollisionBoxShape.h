@@ -20,6 +20,7 @@ namespace urchin
 			~CollisionBoxShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
+			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
 			float getHalfSize(unsigned int) const;
 			const Vector3<float> &getHalfSizes() const;
 
@@ -35,7 +36,7 @@ namespace urchin
 		private:
 			void computeSafeMargin();
 
-			const BoxShape<float> boxShape; //shape including margin
+			const std::shared_ptr<BoxShape<float>> boxShape; //shape including margin
 	};
 
 }

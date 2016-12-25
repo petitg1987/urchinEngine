@@ -20,6 +20,7 @@ namespace urchin
 			~CollisionConvexHullShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
+			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
 			const std::map<unsigned int, IndexedTriangle3D<float>> &getIndexedTriangles() const;
 			const std::map<unsigned int, Point3<float>> &getIndexedPoints() const;
 			std::vector<Point3<float>> getPoints() const;
@@ -38,7 +39,7 @@ namespace urchin
 			void initializeConvexHullReduced();
 			void initializeDistances();
 
-			const ConvexHullShape3D<float> convexHullShape; //shape including margin
+			const std::shared_ptr<ConvexHullShape3D<float>> convexHullShape; //shape including margin
 			std::unique_ptr<ConvexHullShape3D<float>> convexHullShapeReduced; //shape where margin has been subtracted
 
 			float minDistanceToCenter;

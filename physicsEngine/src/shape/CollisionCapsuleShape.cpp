@@ -7,14 +7,14 @@ namespace urchin
 
 	CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
 			CollisionShape3D(),
-			capsuleShape(CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation))
+			capsuleShape(std::make_shared<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation))
 	{
 		computeSafeMargin();
 	}
 
 	CollisionCapsuleShape::CollisionCapsuleShape(float innerMargin, float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
 			CollisionShape3D(innerMargin),
-			capsuleShape(CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation))
+			capsuleShape(std::make_shared<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation))
 	{
 		computeSafeMargin();
 	}
@@ -37,25 +37,30 @@ namespace urchin
 		return CollisionShape3D::CAPSULE_SHAPE;
 	}
 
+	std::shared_ptr<ConvexShape3D<float>> CollisionCapsuleShape::getSingleShape() const
+	{
+		return capsuleShape;
+	}
+
 	float CollisionCapsuleShape::getRadius() const
 	{
-		return capsuleShape.getRadius();
+		return capsuleShape->getRadius();
 	}
 
 	float CollisionCapsuleShape::getCylinderHeight() const
 	{
-		return capsuleShape.getCylinderHeight();
+		return capsuleShape->getCylinderHeight();
 	}
 
 	CapsuleShape<float>::CapsuleOrientation CollisionCapsuleShape::getCapsuleOrientation() const
 	{
-		return capsuleShape.getCapsuleOrientation();
+		return capsuleShape->getCapsuleOrientation();
 	}
 
 	std::shared_ptr<CollisionShape3D> CollisionCapsuleShape::scale(float scale) const
 	{
-		return std::make_shared<CollisionCapsuleShape>(capsuleShape.getRadius() * scale,
-				capsuleShape.getCylinderHeight() * scale, capsuleShape.getCapsuleOrientation());
+		return std::make_shared<CollisionCapsuleShape>(capsuleShape->getRadius() * scale,
+				capsuleShape->getCylinderHeight() * scale, capsuleShape->getCapsuleOrientation());
 	}
 
 	AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const
@@ -101,12 +106,12 @@ namespace urchin
 
 	float CollisionCapsuleShape::getMaxDistanceToCenter() const
 	{
-		return capsuleShape.getCylinderHeight()/2.0f + capsuleShape.getRadius();
+		return capsuleShape->getCylinderHeight()/2.0f + capsuleShape->getRadius();
 	}
 
 	float CollisionCapsuleShape::getMinDistanceToCenter() const
 	{
-		return capsuleShape.getRadius();
+		return capsuleShape->getRadius();
 	}
 
 }

@@ -34,6 +34,7 @@ namespace urchin
 
 			float getInnerMargin() const;
 			virtual CollisionShape3D::ShapeType getShapeType() const = 0;
+			virtual std::shared_ptr<ConvexShape3D<float>> getSingleShape() const = 0;
 
 			virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
 

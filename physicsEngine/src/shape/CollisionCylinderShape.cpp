@@ -7,14 +7,14 @@ namespace urchin
 
 	CollisionCylinderShape::CollisionCylinderShape(float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
 			CollisionShape3D(),
-			cylinderShape(CylinderShape<float>(radius, height, cylinderOrientation))
+			cylinderShape(std::make_shared<CylinderShape<float>>(radius, height, cylinderOrientation))
 	{
 		computeSafeMargin();
 	}
 
 	CollisionCylinderShape::CollisionCylinderShape(float innerMargin, float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
 			CollisionShape3D(innerMargin),
-			cylinderShape(CylinderShape<float>(radius, height, cylinderOrientation))
+			cylinderShape(std::make_shared<CylinderShape<float>>(radius, height, cylinderOrientation))
 	{
 		computeSafeMargin();
 	}
@@ -38,25 +38,30 @@ namespace urchin
 		return CollisionShape3D::CYLINDER_SHAPE;
 	}
 
+	std::shared_ptr<ConvexShape3D<float>> CollisionCylinderShape::getSingleShape() const
+	{
+		return cylinderShape;
+	}
+
 	float CollisionCylinderShape::getRadius() const
 	{
-		return cylinderShape.getRadius();
+		return cylinderShape->getRadius();
 	}
 
 	float CollisionCylinderShape::getHeight() const
 	{
-		return cylinderShape.getHeight();
+		return cylinderShape->getHeight();
 	}
 
 	CylinderShape<float>::CylinderOrientation CollisionCylinderShape::getCylinderOrientation() const
 	{
-		return cylinderShape.getCylinderOrientation();
+		return cylinderShape->getCylinderOrientation();
 	}
 
 	std::shared_ptr<CollisionShape3D> CollisionCylinderShape::scale(float scale) const
 	{
-		return std::make_shared<CollisionCylinderShape>(cylinderShape.getRadius() * scale,
-				cylinderShape.getHeight() * scale, cylinderShape.getCylinderOrientation());
+		return std::make_shared<CollisionCylinderShape>(cylinderShape->getRadius() * scale,
+				cylinderShape->getHeight() * scale, cylinderShape->getCylinderOrientation());
 	}
 
 	AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const
@@ -98,12 +103,12 @@ namespace urchin
 
 	float CollisionCylinderShape::getMaxDistanceToCenter() const
 	{
-		return std::max(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius());
+		return std::max(cylinderShape->getHeight()/2.0f, cylinderShape->getRadius());
 	}
 
 	float CollisionCylinderShape::getMinDistanceToCenter() const
 	{
-		return std::min(cylinderShape.getHeight()/2.0f, cylinderShape.getRadius());
+		return std::min(cylinderShape->getHeight()/2.0f, cylinderShape->getRadius());
 	}
 
 }

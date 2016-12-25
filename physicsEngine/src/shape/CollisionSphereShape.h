@@ -19,6 +19,7 @@ namespace urchin
 			~CollisionSphereShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
+			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
 			float getRadius() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
@@ -31,7 +32,7 @@ namespace urchin
 			float getMinDistanceToCenter() const;
 
 		private:
-			const SphereShape<float> sphereShape; //shape including margin
+			const std::shared_ptr<SphereShape<float>> sphereShape; //shape including margin
 	};
 
 }

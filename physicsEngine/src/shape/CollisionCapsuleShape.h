@@ -20,6 +20,7 @@ namespace urchin
 			~CollisionCapsuleShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
+			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
 			float getRadius() const;
 			float getCylinderHeight() const;
 			CapsuleShape<float>::CapsuleOrientation getCapsuleOrientation() const;
@@ -36,7 +37,7 @@ namespace urchin
 		private:
 			void computeSafeMargin();
 
-			const CapsuleShape<float> capsuleShape; //shape including margin
+			const std::shared_ptr<CapsuleShape<float>> capsuleShape; //shape including margin
 	};
 
 }

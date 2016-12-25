@@ -9,7 +9,7 @@ namespace urchin
 	*/
 	CollisionSphereShape::CollisionSphereShape(float innerMargin) :
 			CollisionShape3D(innerMargin),
-			sphereShape(SphereShape<float>(innerMargin))
+			sphereShape(std::make_shared<SphereShape<float>>(innerMargin))
 	{
 
 	}
@@ -24,20 +24,25 @@ namespace urchin
 		return CollisionShape3D::SPHERE_SHAPE;
 	}
 
+	std::shared_ptr<ConvexShape3D<float>> CollisionSphereShape::getSingleShape() const
+	{
+		return sphereShape;
+	}
+
 	float CollisionSphereShape::getRadius() const
 	{
-		return sphereShape.getRadius();
+		return sphereShape->getRadius();
 	}
 
 	std::shared_ptr<CollisionShape3D> CollisionSphereShape::scale(float scale) const
 	{
-		return std::make_shared<CollisionSphereShape>(sphereShape.getRadius() * scale);
+		return std::make_shared<CollisionSphereShape>(sphereShape->getRadius() * scale);
 	}
 
 	AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
-		return AABBox<float>(position - sphereShape.getRadius(), position + sphereShape.getRadius());
+		return AABBox<float>(position - sphereShape->getRadius(), position + sphereShape->getRadius());
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionSphereShape::toConvexObject(const PhysicsTransform &physicsTransform) const
@@ -48,18 +53,18 @@ namespace urchin
 
 	Vector3<float> CollisionSphereShape::computeLocalInertia(float mass) const
 	{
-		float localInertia = (2.0/5.0) * mass * sphereShape.getRadius() * sphereShape.getRadius();
+		float localInertia = (2.0/5.0) * mass * sphereShape->getRadius() * sphereShape->getRadius();
 		return Vector3<float>(localInertia, localInertia, localInertia);
 	}
 
 	float CollisionSphereShape::getMaxDistanceToCenter() const
 	{
-		return sphereShape.getRadius();
+		return sphereShape->getRadius();
 	}
 
 	float CollisionSphereShape::getMinDistanceToCenter() const
 	{
-		return sphereShape.getRadius();
+		return sphereShape->getRadius();
 	}
 
 }

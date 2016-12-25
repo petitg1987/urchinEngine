@@ -26,6 +26,7 @@ namespace urchin
 			~CollisionCompoundShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
+			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
 			const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &getLocalizedShapes() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
