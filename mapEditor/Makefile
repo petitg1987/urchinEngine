@@ -602,12 +602,12 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -876,12 +876,12 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1138,12 +1138,12 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1393,12 +1393,12 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1648,12 +1648,12 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1896,12 +1896,12 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2143,12 +2143,12 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2392,12 +2392,12 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2641,12 +2641,12 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2896,12 +2896,12 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3145,12 +3145,12 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3394,12 +3394,12 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3642,12 +3642,12 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3893,12 +3893,12 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4140,12 +4140,12 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4394,12 +4394,12 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4642,12 +4642,12 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4896,12 +4896,12 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5151,12 +5151,12 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5398,12 +5398,12 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5653,12 +5653,12 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5908,12 +5908,12 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6156,12 +6156,12 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6404,12 +6404,12 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6651,12 +6651,12 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6900,12 +6900,12 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7148,12 +7148,12 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7398,12 +7398,12 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7646,12 +7646,12 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7916,12 +7916,12 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8185,12 +8185,12 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8461,12 +8461,12 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8541,12 +8541,12 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8612,12 +8612,12 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8684,12 +8684,12 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8934,12 +8934,12 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9197,12 +9197,12 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9445,12 +9445,12 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9708,12 +9708,12 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9960,12 +9960,12 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10209,12 +10209,12 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10461,12 +10461,12 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10711,12 +10711,12 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10961,12 +10961,12 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11224,12 +11224,12 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11478,12 +11478,12 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11728,12 +11728,12 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11978,12 +11978,12 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12238,12 +12238,12 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12490,12 +12490,12 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12739,12 +12739,12 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12985,12 +12985,12 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13241,12 +13241,12 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13490,12 +13490,12 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13738,12 +13738,12 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13996,12 +13996,12 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14248,12 +14248,12 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14499,12 +14499,12 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14748,12 +14748,12 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15011,12 +15011,12 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15263,12 +15263,12 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15512,12 +15512,12 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15760,12 +15760,12 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16012,12 +16012,12 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16263,12 +16263,12 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16514,12 +16514,12 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16763,12 +16763,12 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17015,12 +17015,12 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17263,12 +17263,12 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17510,12 +17510,12 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17761,12 +17761,12 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18013,12 +18013,12 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18266,12 +18266,12 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18411,12 +18411,12 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18659,12 +18659,12 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18907,12 +18907,12 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
 		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
-		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \

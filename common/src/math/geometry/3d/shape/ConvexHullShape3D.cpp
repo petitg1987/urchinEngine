@@ -1,8 +1,9 @@
 #include "ConvexHullShape3D.h"
 #include "math/geometry/3d/util/ResizeConvexHullService.h"
+#include "math/geometry/3d/object/ConvexHull3D.h"
+#include "math/algebra/point/Point4.h"
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"
-
 
 namespace urchin
 {
@@ -172,6 +173,17 @@ namespace urchin
 	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ConvexHullShape3D<T>::resize(T distance) const
 	{
 		return ResizeConvexHullService<T>::instance()->resizeConvexHullShape(*this, distance);
+	}
+
+	template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T> &transform) const
+	{
+		std::map<unsigned int, Point3<T>> transformedIndexedPoints;
+		for(typename std::map<unsigned int, Point3<T>>::const_iterator it = getIndexedPoints().begin(); it!=getIndexedPoints().end(); ++it)
+		{
+			transformedIndexedPoints[it->first] = (transform.getTransformMatrix() * Point4<T>(it->second)).toPoint3();
+		}
+
+		return std::make_unique<ConvexHull3D<T>>(transformedIndexedPoints, getIndexedTriangles());
 	}
 
 	template<class T> unsigned int ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T> &indexedTriangle)

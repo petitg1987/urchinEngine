@@ -15,12 +15,8 @@ namespace urchin
 			RigidBody *rigidBody = sceneObject->getRigidBody();
 			if(rigidBody!=nullptr)
 			{
-				//TODO common:
-				//1) Allow to convert ConvexShape3D into ConvexObject3D with a Transform
-				//2) Use this above method in physics engine ?
-
-				//std::shared_ptr<const CollisionShape3D> collisionShape3D = rigidBody->getScaledShape(); //TODO transform/get ConvexShape3D ?
-				//const Transform<float> &transform = rigidBody->getTransform(); //TODO: create AITransform without scale ?
+				//std::shared_ptr<const CollisionShape3D> collisionShape3D = rigidBody->getScaledShape(); //TODO add getConvexShape3D() ?
+				//const Transform<float> &transform = rigidBody->getTransform(); //TODO combine with transform of compound shape
 			}
 		}
 

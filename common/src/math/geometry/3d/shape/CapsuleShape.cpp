@@ -1,4 +1,5 @@
 #include "CapsuleShape.h"
+#include "math/geometry/3d/object/Capsule.h"
 
 namespace urchin
 {
@@ -29,6 +30,12 @@ namespace urchin
 	template<class T> T CapsuleShape<T>::computeHeight() const
 	{
 		return cylinderHeight + 2.0 * radius;
+	}
+
+	template<class T> std::unique_ptr<ConvexObject3D<T>> CapsuleShape<T>::toConvexObject(const Transform<T> &transform) const
+	{
+		return std::make_unique<Capsule<T>>(radius*transform.getScale(), cylinderHeight*transform.getScale(),
+				capsuleOrientation, transform.getPosition(), transform.getOrientation());
 	}
 
 	//explicit template

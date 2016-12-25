@@ -15,7 +15,7 @@
 namespace urchin
 {
 
-	template<class T> class ConvexHullShape3D : public ConvexShape3D
+	template<class T> class ConvexHullShape3D : public ConvexShape3D<T>
 	{
 		public:
 			ConvexHullShape3D(const std::vector<Point3<T>> &);
@@ -32,6 +32,7 @@ namespace urchin
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 
 			std::unique_ptr<ConvexHullShape3D<T>> resize(T) const;
+			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const;
 
 		private:
 			unsigned int addTriangle(const IndexedTriangle3D<T> &);

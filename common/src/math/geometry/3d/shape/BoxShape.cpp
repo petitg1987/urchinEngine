@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "BoxShape.h"
+#include "math/geometry/3d/object/OBBox.h"
 
 namespace urchin
 {
@@ -74,6 +75,11 @@ namespace urchin
 	template<class T> T BoxShape<T>::getVolume() const
 	{
 		return halfSizes.X * halfSizes.Y * halfSizes.Z * 8.0;
+	}
+
+	template<class T> std::unique_ptr<ConvexObject3D<T>> BoxShape<T>::toConvexObject(const Transform<T> &transform) const
+	{
+		return std::make_unique<OBBox<T>>(halfSizes*transform.getScale(), transform.getPosition(), transform.getOrientation());
 	}
 
 	//explicit template

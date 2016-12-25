@@ -1,4 +1,6 @@
 #include "TriangleShape3D.h"
+#include "math/geometry/3d/object/Triangle3D.h"
+#include "math/algebra/point/Point4.h"
 
 namespace urchin
 {
@@ -20,6 +22,14 @@ namespace urchin
 	template<class T> const Point3<T> *TriangleShape3D<T>::getPoints() const
 	{
 		return points;
+	}
+
+	template<class T> std::unique_ptr<ConvexObject3D<T>> TriangleShape3D<T>::toConvexObject(const Transform<T> &transform) const
+	{
+		return std::make_unique<Triangle3D<T>>(
+				(transform.getTransformMatrix() * Point4<T>(points[0])).toPoint3(),
+				(transform.getTransformMatrix() * Point4<T>(points[1])).toPoint3(),
+				(transform.getTransformMatrix() * Point4<T>(points[2])).toPoint3());
 	}
 
 	//explicit template
