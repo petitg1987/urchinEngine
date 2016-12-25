@@ -1,12 +1,12 @@
 #ifndef ENGINE_CYLINDERSHAPE_H
 #define ENGINE_CYLINDERSHAPE_H
 
-#include "Shape3D.h"
+#include "math/geometry/3d/shape/ConvexShape3D.h"
 
 namespace urchin
 {
 
-	template<class T> class CylinderShape : public Shape3D
+	template<class T> class CylinderShape : public ConvexShape3D
 	{
 		public:
 			enum CylinderOrientation

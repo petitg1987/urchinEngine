@@ -1,12 +1,12 @@
 #ifndef ENGINE_SPHERESHAPE_H
 #define ENGINE_SPHERESHAPE_H
 
-#include "Shape3D.h"
+#include "math/geometry/3d/shape/ConvexShape3D.h"
 
 namespace urchin
 {
 
-	template<class T> class SphereShape : public Shape3D
+	template<class T> class SphereShape : public ConvexShape3D
 	{
 		public:
 			SphereShape(T);

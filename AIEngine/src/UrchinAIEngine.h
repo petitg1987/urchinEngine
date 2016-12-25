@@ -1,10 +1,11 @@
 #ifndef ENGINE_URCHINAIENGINE_H
 #define ENGINE_URCHINAIENGINE_H
 
-#include "path/NavMeshGenerator.h"
+#include "input/AIWorld.h"
+#include "input/AIObject.h"
 
-#include "path/input/InputWorld.h"
-#include "path/input/InputObject.h"
-#include "path/input/NavMeshConfig.h"
+#include "path/navmesh/NavMeshGenerator.h"
+#include "path/navmesh/NavMeshConfig.h"
+#include "path/navmesh/NavMesh.h"
 
 #endif

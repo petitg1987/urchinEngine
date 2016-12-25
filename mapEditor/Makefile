@@ -590,8 +590,9 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -600,15 +601,16 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -791,6 +793,12 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../soundEngine/src/trigger/shape/SoundSphere.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -804,6 +812,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/ObjectControllerWidget.h \
 		../mapEditor/src/scene/controller/objects/ObjectTableView.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
@@ -812,6 +821,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../mapEditor/src/scene/controller/sounds/SoundControllerWidget.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
+		../mapEditor/src/scene/controller/ai/AIControllerWidget.h \
 		src/MapEditorWindow.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/MapEditorWindow.h -o targetLinux/moc_MapEditorWindow.cpp
 
@@ -855,8 +865,9 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -865,15 +876,16 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -980,6 +992,12 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1063,6 +1081,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/ObjectControllerWidget.h \
 		../mapEditor/src/scene/controller/objects/ObjectTableView.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
@@ -1071,6 +1090,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/sounds/SoundControllerWidget.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
+		../mapEditor/src/scene/controller/ai/AIControllerWidget.h \
 		src/scene/controller/SceneControllerWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/SceneControllerWidget.h -o targetLinux/moc_SceneControllerWidget.cpp
 
@@ -1108,8 +1128,9 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -1118,15 +1139,16 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1309,6 +1331,12 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -1317,6 +1345,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		src/scene/controller/objects/ObjectControllerWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/ObjectControllerWidget.h -o targetLinux/moc_ObjectControllerWidget.cpp
@@ -1355,8 +1384,9 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -1365,15 +1395,16 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1480,6 +1511,12 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1563,6 +1600,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/objects/ObjectTableView.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/ObjectTableView.h -o targetLinux/moc_ObjectTableView.cpp
 
@@ -1602,8 +1640,9 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -1612,15 +1651,16 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1725,6 +1765,12 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1843,8 +1889,9 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -1853,15 +1900,16 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -1966,6 +2014,12 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -2083,8 +2137,9 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -2093,15 +2148,16 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2284,6 +2340,12 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2325,8 +2387,9 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -2335,15 +2398,16 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2526,6 +2590,12 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2567,8 +2637,9 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -2577,15 +2648,16 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -2768,6 +2840,12 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2777,6 +2855,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h -o targetLinux/moc_BodyCompoundShapeWidget.cpp
 
@@ -2814,8 +2893,9 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -2824,15 +2904,16 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3015,6 +3096,12 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3056,8 +3143,9 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -3066,15 +3154,16 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3257,6 +3346,12 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3298,8 +3393,9 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -3308,15 +3404,16 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3423,6 +3520,12 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -3539,8 +3642,9 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -3549,15 +3653,16 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3740,6 +3845,12 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3783,8 +3894,9 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -3793,15 +3905,16 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -3982,6 +4095,12 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -4023,8 +4142,9 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -4033,15 +4153,16 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4148,6 +4269,12 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4231,6 +4358,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h -o targetLinux/moc_LocalizedShapeTableView.cpp
 
@@ -4269,8 +4397,9 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -4279,15 +4408,16 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4394,6 +4524,12 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4510,8 +4646,9 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -4520,15 +4657,16 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4636,6 +4774,12 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4719,6 +4863,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/lights/LightControllerWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/lights/LightControllerWidget.h -o targetLinux/moc_LightControllerWidget.cpp
 
@@ -4756,8 +4901,9 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -4766,15 +4912,16 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -4881,6 +5028,12 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4964,6 +5117,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/lights/LightTableView.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/lights/LightTableView.h -o targetLinux/moc_LightTableView.cpp
 
@@ -5003,8 +5157,9 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -5013,15 +5168,16 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5126,6 +5282,12 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5243,8 +5405,9 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -5253,15 +5416,16 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5369,6 +5533,12 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5452,6 +5622,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
 		src/scene/controller/sounds/SoundControllerWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/SoundControllerWidget.h -o targetLinux/moc_SoundControllerWidget.cpp
@@ -5490,8 +5661,9 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -5500,15 +5672,16 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5615,6 +5788,12 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5698,6 +5877,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/sounds/SoundTableView.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/sounds/SoundTableView.h -o targetLinux/moc_SoundTableView.cpp
 
@@ -5737,8 +5917,9 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -5747,15 +5928,16 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -5860,6 +6042,12 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5978,8 +6166,9 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -5988,15 +6177,16 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6101,6 +6291,12 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6219,8 +6415,9 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -6229,15 +6426,16 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6342,6 +6540,12 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6459,8 +6663,9 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -6469,15 +6674,16 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6585,6 +6791,12 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6701,8 +6913,9 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -6711,15 +6924,16 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -6826,6 +7040,12 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6942,8 +7162,9 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -6952,15 +7173,16 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7068,6 +7290,12 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7185,8 +7413,9 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -7195,15 +7424,16 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7310,6 +7540,12 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7426,8 +7662,9 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -7436,15 +7673,16 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7627,6 +7865,12 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -7689,8 +7933,9 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -7699,15 +7944,16 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -7890,6 +8136,12 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -7903,6 +8155,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/ObjectControllerWidget.h \
 		../mapEditor/src/scene/controller/objects/ObjectTableView.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
@@ -7910,7 +8163,8 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../mapEditor/src/scene/controller/lights/LightTableView.h \
 		../mapEditor/src/scene/controller/sounds/SoundControllerWidget.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
-		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h
+		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
+		../mapEditor/src/scene/controller/ai/AIControllerWidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/Main.o src/Main.cpp
 
 targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
@@ -7949,8 +8203,9 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -7959,15 +8214,16 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8150,6 +8406,12 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -8163,6 +8425,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/ObjectControllerWidget.h \
 		../mapEditor/src/scene/controller/objects/ObjectTableView.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
@@ -8171,6 +8434,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../mapEditor/src/scene/controller/sounds/SoundControllerWidget.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
+		../mapEditor/src/scene/controller/ai/AIControllerWidget.h \
 		src/dialog/NewDialog.h \
 		src/dialog/NotSavedDialog.h \
 		src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h \
@@ -8216,8 +8480,9 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -8226,15 +8491,16 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8294,8 +8560,9 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -8304,15 +8571,16 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8363,8 +8631,9 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -8373,15 +8642,16 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8433,8 +8703,9 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -8443,15 +8714,16 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8556,6 +8828,12 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -8637,7 +8915,8 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../mapHandler/src/resources/sound/SceneSound.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
-		../mapEditor/src/scene/controller/sounds/SoundController.h
+		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneController.o src/scene/controller/SceneController.cpp
 
 targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.cpp src/scene/controller/SceneControllerWidget.h \
@@ -8675,8 +8954,9 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -8685,15 +8965,16 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8800,6 +9081,12 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -8883,6 +9170,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/ObjectControllerWidget.h \
 		../mapEditor/src/scene/controller/objects/ObjectTableView.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
@@ -8890,10 +9178,12 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../mapEditor/src/scene/controller/lights/LightTableView.h \
 		../mapEditor/src/scene/controller/sounds/SoundControllerWidget.h \
 		../mapEditor/src/scene/controller/sounds/SoundTableView.h \
-		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h
+		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
+		../mapEditor/src/scene/controller/ai/AIControllerWidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SceneControllerWidget.o src/scene/controller/SceneControllerWidget.cpp
 
-targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectController.h \
+targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cpp ../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
@@ -8928,8 +9218,9 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -8938,15 +9229,16 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -8958,6 +9250,82 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		src/scene/controller/objects/ObjectController.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
 		../physicsEngine/src/PhysicsWorld.h \
 		../physicsEngine/src/body/AbstractBody.h \
@@ -9035,83 +9403,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/processable/character/CharacterController.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
-		../3dEngine/src/Urchin3dEngine.h \
-		../3dEngine/src/scene/SceneManager.h \
-		../3dEngine/src/scene/renderer3d/Renderer3d.h \
-		../3dEngine/src/scene/Renderer.h \
-		../3dEngine/src/scene/renderer3d/camera/Camera.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
-		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
-		../3dEngine/src/scene/renderer3d/model/Model.h \
-		../3dEngine/src/scene/renderer3d/model/Meshes.h \
-		../3dEngine/src/resources/model/ConstMeshes.h \
-		../3dEngine/src/resources/model/ConstMesh.h \
-		../3dEngine/src/resources/material/Material.h \
-		../3dEngine/src/resources/Resource.h \
-		../3dEngine/src/resources/image/Image.h \
-		../3dEngine/src/scene/renderer3d/model/Mesh.h \
-		../3dEngine/src/scene/renderer3d/model/Animation.h \
-		../3dEngine/src/resources/model/ConstAnimation.h \
-		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
-		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
-		../3dEngine/src/utils/display/geometry/GeometryModel.h \
-		../3dEngine/src/scene/renderer3d/octree/Octree.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
-		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
-		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
-		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
-		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
-		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
-		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
-		../3dEngine/src/utils/shader/ShaderManager.h \
-		../3dEngine/src/utils/shader/TokenReplacerShader.h \
-		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
-		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
-		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
-		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
-		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
-		../3dEngine/src/scene/renderer3d/light/Light.h \
-		../3dEngine/src/utils/filter/TextureFilter.h \
-		../3dEngine/src/utils/filter/TextureFilter.inl \
-		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
-		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
-		../3dEngine/src/scene/renderer3d/light/LightManager.h \
-		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
-		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
-		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
-		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
-		../3dEngine/src/scene/GUI/GUIRenderer.h \
-		../3dEngine/src/scene/GUI/widget/Widget.h \
-		../3dEngine/src/scene/GUI/widget/Position.h \
-		../3dEngine/src/scene/GUI/widget/Size.h \
-		../3dEngine/src/scene/GUI/EventListener.h \
-		../3dEngine/src/texture/TextureManager.h \
-		../3dEngine/src/scene/InputDevice.h \
-		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
-		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
-		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
-		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
-		../3dEngine/src/scene/GUI/widget/container/Container.h \
-		../3dEngine/src/scene/GUI/widget/window/Window.h \
-		../3dEngine/src/scene/GUI/widget/text/Text.h \
-		../3dEngine/src/resources/font/Font.h \
-		../3dEngine/src/scene/GUI/GUISkinService.h \
-		../3dEngine/src/scene/GUI/widget/button/Button.h \
-		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
-		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
-		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
-		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
-		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
-		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
-		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
-		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
-		../3dEngine/src/utils/display/geometry/line/LineModel.h \
-		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
-		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
 		../soundEngine/src/UrchinSoundEngine.h \
 		../soundEngine/src/SoundManager.h \
 		../soundEngine/src/AudioController.h \
@@ -9128,6 +9419,12 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -9170,8 +9467,9 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -9180,15 +9478,16 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9371,6 +9670,12 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -9379,6 +9684,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
@@ -9425,8 +9731,9 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -9435,15 +9742,16 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9550,6 +9858,12 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -9632,7 +9946,8 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
-		../mapEditor/src/scene/controller/sounds/SoundController.h
+		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/ObjectTableView.o src/scene/controller/objects/ObjectTableView.cpp
 
 targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp ../common/src/UrchinCommon.h \
@@ -9669,8 +9984,9 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -9679,15 +9995,16 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -9795,6 +10112,12 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -9911,8 +10234,9 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -9921,15 +10245,16 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10037,6 +10362,12 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -10156,8 +10487,9 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -10166,15 +10498,16 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10357,6 +10690,12 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -10399,8 +10738,9 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -10409,15 +10749,16 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10600,6 +10941,12 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -10642,8 +10989,9 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -10652,15 +11000,16 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -10843,6 +11192,12 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -10852,6 +11207,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/support/LabelStyleHelper.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
@@ -10897,8 +11253,9 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -10907,15 +11264,16 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11098,6 +11456,12 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11144,8 +11508,9 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -11154,15 +11519,16 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11345,6 +11711,12 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11387,8 +11759,9 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -11397,15 +11770,16 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11512,6 +11886,12 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -11630,8 +12010,9 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -11640,15 +12021,16 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -11828,6 +12210,12 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11844,7 +12232,8 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
-		../mapEditor/src/scene/controller/sounds/SoundController.h
+		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/BodyShapeWidgetRetriever.o src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp
 
 targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h \
@@ -11882,8 +12271,9 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -11892,15 +12282,16 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12083,6 +12474,12 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12127,8 +12524,9 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -12137,15 +12535,16 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12326,6 +12725,12 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12369,8 +12774,9 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -12379,15 +12785,16 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12492,6 +12899,12 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -12608,8 +13021,9 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -12618,15 +13032,16 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12733,6 +13148,12 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -12816,6 +13237,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LocalizedShapeTableView.o src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp
@@ -12856,8 +13278,9 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -12866,15 +13289,16 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -12981,6 +13405,12 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13098,8 +13528,9 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -13108,15 +13539,16 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13223,6 +13655,12 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13339,8 +13777,9 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -13349,15 +13788,16 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13465,6 +13905,12 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13548,6 +13994,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
 		../mapEditor/src/support/ButtonStyleHelper.h \
@@ -13589,8 +14036,9 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -13599,15 +14047,16 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13714,6 +14163,12 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13796,7 +14251,8 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
-		../mapEditor/src/scene/controller/sounds/SoundController.h
+		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/LightTableView.o src/scene/controller/lights/LightTableView.cpp
 
 targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.cpp ../common/src/UrchinCommon.h \
@@ -13833,8 +14289,9 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -13843,15 +14300,16 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -13959,6 +14417,12 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14077,8 +14541,9 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -14087,15 +14552,16 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14202,6 +14668,12 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14319,8 +14791,9 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -14329,15 +14802,16 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14445,6 +14919,12 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14528,6 +15008,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h \
 		../mapEditor/src/scene/controller/sounds/soundshape/SoundShapeWidget.h \
 		../mapEditor/src/support/GroupBoxStyleHelper.h \
 		../mapEditor/src/support/SpinBoxStyleHelper.h \
@@ -14574,8 +15055,9 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -14584,15 +15066,16 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14699,6 +15182,12 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14781,7 +15270,8 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../mapEditor/src/scene/controller/SceneController.h \
 		../mapEditor/src/scene/controller/objects/ObjectController.h \
 		../mapEditor/src/scene/controller/lights/LightController.h \
-		../mapEditor/src/scene/controller/sounds/SoundController.h
+		../mapEditor/src/scene/controller/sounds/SoundController.h \
+		../mapEditor/src/scene/controller/ai/AIController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/SoundTableView.o src/scene/controller/sounds/SoundTableView.cpp
 
 targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp ../common/src/UrchinCommon.h \
@@ -14818,8 +15308,9 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -14828,15 +15319,16 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -14944,6 +15436,12 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15060,8 +15558,9 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -15070,15 +15569,16 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15186,6 +15686,12 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15301,8 +15807,9 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -15311,15 +15818,16 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15427,6 +15935,12 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15546,8 +16060,9 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -15556,15 +16071,16 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15672,6 +16188,12 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15790,8 +16312,9 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -15800,15 +16323,16 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -15915,6 +16439,12 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16034,8 +16564,9 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -16044,15 +16575,16 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16157,6 +16689,12 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16276,8 +16814,9 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -16286,15 +16825,16 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16402,6 +16942,12 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16521,8 +17067,9 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -16531,15 +17078,16 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16644,6 +17192,12 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16725,7 +17279,9 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../mapHandler/src/resources/sound/SceneSound.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/DefaultSoundShapeCreator.o src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp
 
-targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp src/scene/controller/ai/AIController.h \
+targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
@@ -16760,8 +17316,9 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp src/scene/c
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -16770,15 +17327,16 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp src/scene/c
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -16790,6 +17348,10 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp src/scene/c
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
+		src/scene/controller/ai/AIController.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
 		../3dEngine/src/Urchin3dEngine.h \
@@ -17002,8 +17564,9 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -17012,15 +17575,16 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -17127,6 +17691,12 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17205,7 +17775,10 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
 		../physicsEngine/src/processable/character/CharacterController.h \
 		../mapHandler/src/resources/light/SceneLight.h \
-		../mapHandler/src/resources/sound/SceneSound.h
+		../mapHandler/src/resources/sound/SceneSound.h \
+		../mapEditor/src/support/GroupBoxStyleHelper.h \
+		../mapEditor/src/support/SpinBoxStyleHelper.h \
+		../mapEditor/src/support/ButtonStyleHelper.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/AIControllerWidget.o src/scene/controller/ai/AIControllerWidget.cpp
 
 targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayer.h \
@@ -17243,8 +17816,9 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -17253,15 +17827,16 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -17443,6 +18018,12 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../soundEngine/src/trigger/shape/SoundSphere.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -17488,8 +18069,9 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -17498,15 +18080,16 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -17689,6 +18272,12 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../soundEngine/src/trigger/shape/SoundSphere.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -17734,8 +18323,9 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -17744,15 +18334,16 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -17877,8 +18468,9 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -17887,15 +18479,16 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -18078,6 +18671,12 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -18118,8 +18717,9 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -18128,15 +18728,16 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -18244,6 +18845,12 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../soundEngine/src/trigger/shape/SoundShape.h \
 		../soundEngine/src/trigger/shape/SoundBox.h \
 		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -18359,8 +18966,9 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/algebra/Transform.h \
 		../common/src/math/algebra/MathValue.h \
 		../common/src/math/geometry/2d/Line2D.h \
-		../common/src/math/geometry/2d/shape/Shape2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
 		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
 		../common/src/math/geometry/2d/object/ConvexObject2D.h \
 		../common/src/math/geometry/2d/object/ConvexHull2D.h \
 		../common/src/math/geometry/2d/object/LineSegment2D.h \
@@ -18369,15 +18977,16 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/3d/Ray.h \
 		../common/src/math/geometry/3d/Plane.h \
 		../common/src/math/geometry/3d/IndexedTriangle3D.h \
-		../common/src/math/geometry/3d/shape/Shape3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
 		../common/src/math/geometry/3d/shape/BoxShape.h \
 		../common/src/math/geometry/3d/shape/SphereShape.h \
-		../common/src/math/geometry/3d/shape/Triangle3DShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
 		../common/src/math/geometry/3d/object/ConvexObject3D.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
 		../common/src/math/geometry/3d/object/Frustum.h \
 		../common/src/math/geometry/3d/object/Sphere.h \
 		../common/src/math/geometry/3d/object/LineSegment3D.h \
@@ -18485,6 +19094,12 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/utils/display/geometry/line/LineModel.h \
 		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
 		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/NavMesh.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \

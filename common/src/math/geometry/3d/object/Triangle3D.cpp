@@ -4,13 +4,13 @@ namespace urchin
 {
 
 	template<class T> Triangle3D<T>::Triangle3D(const Point3<T> *points):
-		triangleShape(Triangle3DShape<T>(points))
+		triangleShape(TriangleShape3D<T>(points))
 	{
 
 	}
 
 	template<class T> Triangle3D<T>::Triangle3D(const Point3<T> &point1, const Point3<T> &point2, const Point3<T> &point3):
-			triangleShape(Triangle3DShape<T>(point1, point2, point3))
+			triangleShape(TriangleShape3D<T>(point1, point2, point3))
 	{
 
 	}

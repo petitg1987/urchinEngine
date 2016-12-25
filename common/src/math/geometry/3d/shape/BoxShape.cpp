@@ -9,7 +9,6 @@ namespace urchin
 	 * @param halfSizes Half sizes (width, height and depth) of box
 	 */
 	template<class T> BoxShape<T>::BoxShape(const Vector3<T> &halfSizes) :
-			Shape3D(),
 			halfSizes(halfSizes)
 	{
 

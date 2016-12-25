@@ -34,17 +34,17 @@ namespace urchin
 			Map(Renderer3d *, PhysicsWorld *, SoundManager *);
 			~Map();
 
-			std::list<SceneObject *> getSceneObjects() const;
+			const std::list<SceneObject *> &getSceneObjects() const;
 			SceneObject *getSceneObject(const std::string &) const;
 			void addSceneObject(SceneObject *);
 			void removeSceneObject(SceneObject *);
 
-			std::list<SceneLight *> getSceneLights() const;
+			const std::list<SceneLight *> &getSceneLights() const;
 			SceneLight *getSceneLight(const std::string &) const;
 			void addSceneLight(SceneLight *);
 			void removeSceneLight(SceneLight *);
 
-			std::list<SceneSound *> getSceneSounds() const;
+			const std::list<SceneSound *> &getSceneSounds() const;
 			SceneSound *getSceneSound(const std::string &) const;
 			void addSceneSound(SceneSound *);
 			void removeSceneSound(SceneSound *);

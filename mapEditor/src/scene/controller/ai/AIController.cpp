@@ -36,9 +36,10 @@ namespace urchin
 	void AIController::generateNavMesh(float agentHeight, float agentRadius)
 	{
 		NavMeshConfig navMeshConfig(agentHeight, agentRadius);
-		std::shared_ptr<InputWorld> inputWorld = std::make_shared<InputWorld>();
+		std::shared_ptr<AIWorld> aiWorld = mapHandler->generateAIWorld();
 
-		NavMeshGenerator(inputWorld, navMeshConfig).generate();
+		NavMeshGenerator navMeshGenerator(aiWorld, navMeshConfig);
+		std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate();
 
 		markModified();
 	}

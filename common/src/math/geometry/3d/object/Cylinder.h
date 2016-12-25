@@ -4,7 +4,7 @@
 #include <map>
 #include <cmath>
 
-#include "ConvexObject3D.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
 #include "math/geometry/3d/shape/CylinderShape.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"

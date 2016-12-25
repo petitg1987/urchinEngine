@@ -3,9 +3,9 @@
 
 #include <sstream>
 
-#include "ConvexObject3D.h"
-#include "AABBox.h"
-#include "Sphere.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
+#include "math/geometry/3d/object/AABBox.h"
+#include "math/geometry/3d/object/Sphere.h"
 #include "math/geometry/3d/shape/BoxShape.h"
 #include "math/algebra/matrix/Matrix4.h"
 #include "math/algebra/point/Point3.h"

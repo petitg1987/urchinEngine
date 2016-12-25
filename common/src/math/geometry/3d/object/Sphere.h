@@ -1,7 +1,7 @@
 #ifndef ENGINE_SPHERE_H
 #define ENGINE_SPHERE_H
 
-#include "ConvexObject3D.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
 #include "math/geometry/3d/shape/SphereShape.h"
 #include "math/algebra/point/Point3.h"
 

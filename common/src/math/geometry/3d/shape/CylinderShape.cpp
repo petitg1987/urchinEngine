@@ -4,7 +4,6 @@ namespace urchin
 {
 
 	template<class T> CylinderShape<T>::CylinderShape(T radius, T height, CylinderOrientation cylinderOrientation) :
-		Shape3D(),
 		radius(radius),
 		height(height),
 		cylinderOrientation(cylinderOrientation)

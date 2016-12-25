@@ -1,6 +1,7 @@
 #include <stdexcept>
 
 #include "MapHandler.h"
+#include "ai/AIWorldGenerator.h"
 
 namespace urchin
 {
@@ -78,6 +79,12 @@ namespace urchin
 	Map *MapHandler::getMap() const
 	{
 		return map;
+	}
+
+	std::shared_ptr<AIWorld> MapHandler::generateAIWorld() const
+	{
+		AIWorldGenerator aiWorldGenerator;
+		return aiWorldGenerator.generate(map);
 	}
 
 }

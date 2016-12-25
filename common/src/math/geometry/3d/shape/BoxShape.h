@@ -3,13 +3,13 @@
 
 #include <vector>
 
-#include "Shape3D.h"
+#include "math/geometry/3d/shape/ConvexShape3D.h"
 #include "math/algebra/vector/Vector3.h"
 
 namespace urchin
 {
 
-	template<class T> class BoxShape : public Shape3D
+	template<class T> class BoxShape : public ConvexShape3D
 	{
 		public:
 			BoxShape(const Vector3<T> &);

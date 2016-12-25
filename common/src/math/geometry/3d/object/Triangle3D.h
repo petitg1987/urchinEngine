@@ -1,8 +1,8 @@
 #ifndef ENGINE_TRIANGLE3D_H
 #define ENGINE_TRIANGLE3D_H
 
-#include "ConvexObject3D.h"
-#include "math/geometry/3d/shape/Triangle3DShape.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
+#include "math/geometry/3d/shape/TriangleShape3D.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
@@ -22,7 +22,7 @@ namespace urchin
 			Point3<T> closestPoint(const Point3<T> &, T [3]) const;
 
 		private:
-			Triangle3DShape<T> triangleShape;
+			TriangleShape3D<T> triangleShape;
 	};
 
 }

@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "ConvexObject3D.h"
-#include "Sphere.h"
-#include "AABBox.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
+#include "math/geometry/3d/object/Sphere.h"
+#include "math/geometry/3d/object/AABBox.h"
 #include "math/geometry/3d/Plane.h"
 #include "math/algebra/matrix/Matrix4.h"
 #include "math/algebra/vector/Vector3.h"

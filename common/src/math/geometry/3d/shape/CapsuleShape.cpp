@@ -4,7 +4,6 @@ namespace urchin
 {
 
 	template<class T> CapsuleShape<T>::CapsuleShape(T radius, T cylinderHeight, CapsuleOrientation capsuleOrientation) :
-		Shape3D(),
 		radius(radius),
 		cylinderHeight(cylinderHeight),
 		capsuleOrientation(capsuleOrientation)

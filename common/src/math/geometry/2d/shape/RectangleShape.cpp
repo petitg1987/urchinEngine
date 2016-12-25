@@ -4,7 +4,6 @@ namespace urchin
 {
 
 	template<class T> RectangleShape<T>::RectangleShape(const Vector2<T> &diagonal)	:
-		Shape2D(),
 		diagonal(diagonal)
 	{
 

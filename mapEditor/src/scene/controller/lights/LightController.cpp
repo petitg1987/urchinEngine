@@ -34,7 +34,7 @@ namespace urchin
 
 	std::list<const SceneLight *> LightController::getSceneLights() const
 	{
-		std::list<SceneLight *> sceneLights = mapHandler->getMap()->getSceneLights();
+		const std::list<SceneLight *> &sceneLights = mapHandler->getMap()->getSceneLights();
 		std::list<const SceneLight *> constSceneLights;
 		constSceneLights.insert(constSceneLights.begin(), sceneLights.begin(), sceneLights.end());
 
@@ -98,8 +98,8 @@ namespace urchin
 
 	SceneLight *LightController::findSceneLight(const SceneLight *constSceneLight)
 	{
-		std::list<SceneLight *> sceneLights = mapHandler->getMap()->getSceneLights();
-		std::list<SceneLight *>::iterator it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
+		const std::list<SceneLight *> &sceneLights = mapHandler->getMap()->getSceneLights();
+		std::list<SceneLight *>::const_iterator it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
 
 		if(it!=sceneLights.end())
 		{

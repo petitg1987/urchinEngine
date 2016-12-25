@@ -1,7 +1,7 @@
 #ifndef ENGINE_RECTANGLESHAPE_H
 #define ENGINE_RECTANGLESHAPE_H
 
-#include "math/geometry/2d/shape/Shape2D.h"
+#include "math/geometry/2d/shape/ConvexShape2D.h"
 #include "math/algebra/vector/Vector2.h"
 
 namespace urchin
@@ -10,7 +10,7 @@ namespace urchin
 	/**
 	* Represents a rectangle aligned on axis
 	*/
-	template<class T> class RectangleShape : public Shape2D
+	template<class T> class RectangleShape : public ConvexShape2D
 	{
 		public:
 			RectangleShape(const Vector2<T> &);

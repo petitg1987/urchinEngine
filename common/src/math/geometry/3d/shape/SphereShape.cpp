@@ -4,7 +4,6 @@ namespace urchin
 {
 
 	template<class T> SphereShape<T>::SphereShape(T radius) :
-		Shape3D(),
 		radius(radius)
 	{
 

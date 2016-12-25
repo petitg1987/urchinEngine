@@ -4,7 +4,7 @@
 #include <vector>
 #include <limits>
 
-#include "ConvexObject3D.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
 #include "math/geometry/3d/shape/BoxShape.h"
 #include "math/geometry/3d/Ray.h"
 #include "math/algebra/matrix/Matrix4.h"

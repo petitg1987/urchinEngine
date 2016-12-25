@@ -1,12 +1,12 @@
 #ifndef ENGINE_CAPSULESHAPE_H
 #define ENGINE_CAPSULESHAPE_H
 
-#include "Shape3D.h"
+#include "math/geometry/3d/shape/ConvexShape3D.h"
 
 namespace urchin
 {
 
-	template<class T> class CapsuleShape : public Shape3D
+	template<class T> class CapsuleShape : public ConvexShape3D
 	{
 		public:
 			enum CapsuleOrientation

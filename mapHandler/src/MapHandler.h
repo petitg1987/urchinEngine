@@ -3,10 +3,12 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 #include "UrchinSoundEngine.h"
+#include "UrchinAIEngine.h"
 #include "resources/Map.h"
 
 namespace urchin
@@ -36,6 +38,8 @@ namespace urchin
 
 			void refreshMap();
 			Map *getMap() const;
+
+			std::shared_ptr<AIWorld> generateAIWorld() const;
 
 		private:
 			std::string relativeWorkingDirectory;

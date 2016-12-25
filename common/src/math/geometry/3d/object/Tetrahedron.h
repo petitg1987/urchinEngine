@@ -3,7 +3,7 @@
 
 #include <limits>
 
-#include "ConvexObject3D.h"
+#include "math/geometry/3d/object/ConvexObject3D.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
