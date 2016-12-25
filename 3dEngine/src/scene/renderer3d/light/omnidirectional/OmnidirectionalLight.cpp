@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <memory>
+#include <limits>
 
 #include "OmnidirectionalLight.h"
 #include "utils/display/geometry/sphere/SphereModel.h"
@@ -70,9 +71,9 @@ namespace urchin
 
 	void OmnidirectionalLight::setAttenuation(float exponentialAttenuation)
 	{
-		if(exponentialAttenuation < 0.0f)
+		if(exponentialAttenuation < std::numeric_limits<float>::epsilon())
 		{
-			throw std::domain_error("Exponential attenuation must be greater or equals to zero.");
+			throw std::domain_error("Exponential attenuation must be greater than zero.");
 		}
 		this->exponentialAttenuation = exponentialAttenuation;
 
