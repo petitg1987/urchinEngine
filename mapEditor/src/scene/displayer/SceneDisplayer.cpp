@@ -17,6 +17,7 @@ namespace urchin
 		bodyShapeDisplayer(nullptr),
 		lightScopeDisplayer(nullptr),
 		soundTriggerDisplayer(nullptr),
+		navMeshDisplayer(nullptr),
 		highlightSceneObject(nullptr),
 		highlightSceneLight(nullptr),
 		highlightSceneSound(nullptr)
@@ -30,6 +31,7 @@ namespace urchin
 		delete bodyShapeDisplayer;
 		delete lightScopeDisplayer;
 		delete soundTriggerDisplayer;
+		delete navMeshDisplayer;
 		delete sceneManager;
 		delete soundManager;
 
@@ -95,6 +97,7 @@ namespace urchin
 		bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
 		lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
 		soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
+		navMeshDisplayer = new NavMeshDisplayer(sceneManager);
 
 		//3d scene configuration
 		camera = new SceneFreeCamera(50.0f, 0.1f, 250.0f, parentWidget);
@@ -162,6 +165,18 @@ namespace urchin
 		}
 	}
 
+
+	void SceneDisplayer::refreshNavMeshModel()
+	{
+		if(viewProperties[NAV_MESH])
+		{
+			navMeshDisplayer->displayNavMesh(mapHandler->getMap()->getNavMesh());
+		}else
+		{
+			navMeshDisplayer->displayNavMesh(nullptr);
+		}
+	}
+
 	void SceneDisplayer::paint()
 	{
 		try
@@ -171,6 +186,7 @@ namespace urchin
 				refreshRigidBodyShapeModel();
 				refreshLightScopeModel();
 				refreshSoundTriggerModel();
+				refreshNavMeshModel();
 
 				sceneManager->display();
 			}

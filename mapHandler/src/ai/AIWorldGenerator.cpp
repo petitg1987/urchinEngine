@@ -38,7 +38,7 @@ namespace urchin
 				{
 					PhysicsTransform worldPhysicsTransform = collisionLocalizedShape->transform * PhysicsTransform(rigidBody->getTransform().getPosition(), rigidBody->getTransform().getOrientation());
 					LocalizedShape localizedShape;
-					localizedShape.shape = scaledCollisionShape3D->getSingleShape();
+					localizedShape.shape = collisionLocalizedShape->shape->getSingleShape();
 					localizedShape.worldTransform = worldPhysicsTransform.toTransform();
 
 					localizedShapes.push_back(localizedShape);

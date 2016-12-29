@@ -6,7 +6,8 @@
 #include "math/geometry/OrthogonalProjectionTest.h"
 #include "math/geometry/ClosestPointTest.h"
 #include "math/geometry/AABBoxCollisionTest.h"
-#include "math/geometry/ShrinkConvexHullTest.h"
+#include "math/geometry/ResizeConvexHullTest.h"
+#include "math/geometry/SortPointsTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
 #include "physics/object/SupportPointTest.h"
@@ -39,11 +40,12 @@ int main()
 	runner.addTest(OrthogonalProjectionTest::suite());
 	runner.addTest(ClosestPointTest::suite());
 	runner.addTest(AABBoxCollissionTest::suite());
+	runner.addTest(ResizeConvexHullTest::suite());
+	runner.addTest(SortPointsTest::suite());
 
 	//physics - shape
 	runner.addTest(ShapeToAABBoxTest::suite());
 	runner.addTest(ShapeToConvexObjectTest::suite());
-	runner.addTest(ShrinkConvexHullTest::suite());
 
 	//physics - object
 	runner.addTest(SupportPointTest::suite());

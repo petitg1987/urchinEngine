@@ -35,6 +35,7 @@ HEADERS += src/scene/displayer/*.h
 HEADERS += src/scene/displayer/objects/*.h
 HEADERS += src/scene/displayer/lights/*.h
 HEADERS += src/scene/displayer/sounds/*.h
+HEADERS += src/scene/displayer/ai/*.h
     
 SOURCES += src/*.cpp
 SOURCES += src/support/*.cpp
@@ -55,6 +56,7 @@ SOURCES += src/scene/displayer/*.cpp
 SOURCES += src/scene/displayer/objects/*.cpp
 SOURCES += src/scene/displayer/lights/*.cpp
 SOURCES += src/scene/displayer/sounds/*.cpp
+SOURCES += src/scene/displayer/ai/*.cpp
     
 FORMS += 
 

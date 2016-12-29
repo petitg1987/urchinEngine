@@ -13,6 +13,7 @@
 #include "scene/displayer/objects/BodyShapeDisplayer.h"
 #include "scene/displayer/lights/LightScopeDisplayer.h"
 #include "scene/displayer/sounds/SoundTriggerDisplayer.h"
+#include "scene/displayer/ai/NavMeshDisplayer.h"
 
 namespace urchin
 {
@@ -25,6 +26,7 @@ namespace urchin
 				MODEL_PHYSICS = 0,
 				LIGHT_SCOPE,
 				SOUND_TRIGGER,
+				NAV_MESH,
 
 				LAST_VIEW_PROPERTIES
 			};
@@ -54,6 +56,7 @@ namespace urchin
 			void refreshRigidBodyShapeModel();
 			void refreshLightScopeModel();
 			void refreshSoundTriggerModel();
+			void refreshNavMeshModel();
 
 			bool isInitialized;
 			QWidget *parentWidget;
@@ -66,6 +69,7 @@ namespace urchin
 			BodyShapeDisplayer *bodyShapeDisplayer;
 			LightScopeDisplayer *lightScopeDisplayer;
 			SoundTriggerDisplayer *soundTriggerDisplayer;
+			NavMeshDisplayer *navMeshDisplayer;
 
 			bool viewProperties[LAST_VIEW_PROPERTIES];
 			const SceneObject *highlightSceneObject;

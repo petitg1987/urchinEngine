@@ -28,6 +28,7 @@ namespace urchin
 
 			QDoubleSpinBox *agentHeight;
 			QDoubleSpinBox *agentRadius;
+			QDoubleSpinBox *maxSlope;
 			QPushButton *generateNavMeshButton;
 
 		private slots:

@@ -33,13 +33,16 @@ namespace urchin
 		bIsModified = false;
 	}
 
-	void AIController::generateNavMesh(float agentHeight, float agentRadius)
+	void AIController::generateNavMesh(float agentHeight, float agentRadius, float maxSlopeInDegree)
 	{
 		NavMeshConfig navMeshConfig(agentHeight, agentRadius);
+		navMeshConfig.setMaxSlope(maxSlopeInDegree/(180.0/PI_VALUE));
 		std::shared_ptr<AIWorld> aiWorld = mapHandler->generateAIWorld();
 
 		NavMeshGenerator navMeshGenerator(aiWorld, navMeshConfig);
 		std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate();
+
+		mapHandler->getMap()->setNavMesh(navMesh);
 
 		markModified();
 	}

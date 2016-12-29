@@ -8,7 +8,7 @@ namespace urchin
 {
 
 	template<class T> ResizeConvexHullService<T>::ResizeConvexHullService() :
-			Singleton<ResizeConvexHullService>()
+			Singleton<ResizeConvexHullService<T>>()
 	{
 
 	}

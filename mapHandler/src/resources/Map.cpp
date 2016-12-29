@@ -211,6 +211,16 @@ namespace urchin
 		delete sceneSound;
 	}
 
+	std::shared_ptr<NavMesh> Map::getNavMesh() const
+	{
+		return navMesh;
+	}
+
+	void Map::setNavMesh(std::shared_ptr<NavMesh> navMesh)
+	{
+		this->navMesh = navMesh;
+	}
+
 	void Map::refreshMap()
 	{
 		for(std::list<SceneObject *>::const_iterator it=sceneObjects.begin(); it!=sceneObjects.end(); ++it)

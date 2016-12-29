@@ -1,15 +1,15 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
+#include <vector>
 #include <memory>
 #include "UrchinCommon.h"
-#include "UrchinPhysicsEngine.h"
 
-#include "math/geometry/ShrinkConvexHullTest.h"
+#include "math/geometry/ResizeConvexHullTest.h"
 #include "AssertHelper.h"
 
 using namespace urchin;
 
-void ShrinkConvexHullTest::shrinkConvexHullBox()
+void ResizeConvexHullTest::reduceConvexHullBox()
 {
 	Point3<float> aabbPointsTab[] = {
 			Point3<float>(0.0, 1.0, 0.0), Point3<float>(1.0, 1.0, 0.0), Point3<float>(1.0, -1.0, 0.0), Point3<float>(0.0, -1.0, 0.0),
@@ -30,11 +30,11 @@ void ShrinkConvexHullTest::shrinkConvexHullBox()
 	AssertHelper::assertPoint3FloatEquals(convexHullResult->getSupportPoint(Vector3<float>(-1.0, -1.0, 1.0)), Point3<float>(0.1, -0.9, -0.1));
 }
 
-CppUnit::Test *ShrinkConvexHullTest::suite()
+CppUnit::Test *ResizeConvexHullTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("ShrinkConvexHullTest");
+	CppUnit::TestSuite *suite = new CppUnit::TestSuite("ResizeConvexHullTest");
 
-	suite->addTest(new CppUnit::TestCaller<ShrinkConvexHullTest>("shrinkConvexHullBox", &ShrinkConvexHullTest::shrinkConvexHullBox));
+	suite->addTest(new CppUnit::TestCaller<ResizeConvexHullTest>("reduceConvexHullBox", &ResizeConvexHullTest::reduceConvexHullBox));
 
 	return suite;
 }

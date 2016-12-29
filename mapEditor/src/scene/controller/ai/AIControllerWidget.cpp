@@ -32,6 +32,7 @@ namespace urchin
 		//TODO load AI
 		agentHeight->setValue(1.9);
 		agentRadius->setValue(0.3);
+		maxSlope->setValue(45.0);
 	}
 
 	void AIControllerWidget::unload()
@@ -46,9 +47,9 @@ namespace urchin
 		QGroupBox *generateNavMeshGroupBox = new QGroupBox("Generate Nav Mesh");
 		mainLayout->addWidget(generateNavMeshGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(generateNavMeshGroupBox);
+		generateNavMeshGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
 		QGridLayout *generateNavMeshLayout = new QGridLayout(generateNavMeshGroupBox);
-		generateNavMeshLayout->setAlignment(Qt::AlignLeft);
 
 		QLabel *agentHeightLabel= new QLabel("Agent Height:");
 		generateNavMeshLayout->addWidget(agentHeightLabel, 0, 0);
@@ -59,22 +60,31 @@ namespace urchin
 		agentHeight->setMinimum(0.0);
 
 		QLabel *agentRadiusLabel= new QLabel("Agent Radius:");
-		generateNavMeshLayout->addWidget(agentRadiusLabel, 1, 0);
+		generateNavMeshLayout->addWidget(agentRadiusLabel, 0, 2);
 
 		agentRadius = new QDoubleSpinBox();
-		generateNavMeshLayout->addWidget(agentRadius, 1, 1);
+		generateNavMeshLayout->addWidget(agentRadius, 0, 3);
 		SpinBoxStyleHelper::applyDefaultStyleOn(agentRadius);
 		agentRadius->setMinimum(0.0);
 
+		QLabel *maxSlopeLabel= new QLabel("Max Slope (degree):");
+		generateNavMeshLayout->addWidget(maxSlopeLabel, 1, 0);
+
+		maxSlope = new QDoubleSpinBox();
+		generateNavMeshLayout->addWidget(maxSlope, 1, 1);
+		SpinBoxStyleHelper::applyAngleStyleOn(maxSlope);
+		maxSlope->setMinimum(5.0);
+		maxSlope->setMaximum(85.0);
+
 		generateNavMeshButton = new QPushButton("Generate");
-		generateNavMeshLayout->addWidget(generateNavMeshButton, 2, 0, 1, 2);
+		generateNavMeshLayout->addWidget(generateNavMeshButton, 2, 0, 1, 4);
 		ButtonStyleHelper::applyNormalStyle(generateNavMeshButton);
 		connect(generateNavMeshButton, SIGNAL(clicked()), this, SLOT(generateNavMesh()));
 	}
 
 	void AIControllerWidget::generateNavMesh()
 	{
-		aiController->generateNavMesh(agentHeight->value(), agentRadius->value());
+		aiController->generateNavMesh(agentHeight->value(), agentRadius->value(), maxSlope->value());
 	}
 
 }

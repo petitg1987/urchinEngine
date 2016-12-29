@@ -8,6 +8,7 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 #include "UrchinSoundEngine.h"
+#include "UrchinAIEngine.h"
 #include "resources/object/SceneObject.h"
 #include "resources/light/SceneLight.h"
 #include "resources/sound/SceneSound.h"
@@ -49,6 +50,9 @@ namespace urchin
 			void addSceneSound(SceneSound *);
 			void removeSceneSound(SceneSound *);
 
+			std::shared_ptr<NavMesh> getNavMesh() const;
+			void setNavMesh(std::shared_ptr<NavMesh>);
+
 			void refreshMap();
 
 		private:
@@ -69,6 +73,7 @@ namespace urchin
 			std::list<SceneObject *> sceneObjects;
 			std::list<SceneLight *> sceneLights;
 			std::list<SceneSound *> sceneSounds;
+			std::shared_ptr<NavMesh> navMesh; //TODO load/unload
 	};
 
 }

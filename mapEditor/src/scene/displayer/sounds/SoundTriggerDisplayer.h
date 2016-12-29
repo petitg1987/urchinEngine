@@ -1,6 +1,7 @@
 #ifndef ENGINE_MAPEDITOR_SOUNDTRIGGERDISPLAYER_H
 #define ENGINE_MAPEDITOR_SOUNDTRIGGERDISPLAYER_H
 
+#include "Urchin3dEngine.h"
 #include "UrchinSoundEngine.h"
 #include "UrchinMapHandler.h"
 

@@ -9,9 +9,14 @@ namespace urchin
 		public:
 			NavMeshConfig(float, float);
 
+			void setMaxSlope(float);
+			float getMaxSlope() const;
+
 		private:
 			float agentHeight;
 			float agentRadius;
+
+			float maxSlopeInRadian;
 	};
 
 }

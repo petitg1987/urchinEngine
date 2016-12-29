@@ -111,6 +111,14 @@ namespace urchin
 		viewActions.push_back(viewSoundTriggerAction);
 		connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
+		QAction *viewNavMeshAction = new QAction("Navigation Mesh", this);
+		viewNavMeshAction->setEnabled(false);
+		viewNavMeshAction->setCheckable(true);
+		viewNavMeshAction->setChecked(true);
+		viewMenu->addAction(viewNavMeshAction);
+		viewActions.push_back(viewNavMeshAction);
+		connect(viewNavMeshAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
+
 		menu->addMenu(fileMenu);
 		menu->addMenu(viewMenu);
 		this->setMenuBar(menu);
@@ -391,6 +399,9 @@ namespace urchin
 		}else if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
 		{
 			return SceneControllerWidget::SOUNDS;
+		}else if(SceneDisplayer::NAV_MESH==viewProperties)
+		{
+			return SceneControllerWidget::AI;
 		}
 
 		throw new std::runtime_error("Impossible to find concerned tab for properties: " + viewProperties);

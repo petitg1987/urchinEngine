@@ -16,7 +16,7 @@ namespace urchin
 			bool isModified() const;
 			void resetModified();
 
-			void generateNavMesh(float, float);
+			void generateNavMesh(float, float, float);
 
 		private:
 			void markModified();
