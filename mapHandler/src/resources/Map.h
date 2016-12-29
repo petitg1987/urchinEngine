@@ -73,7 +73,7 @@ namespace urchin
 			std::list<SceneObject *> sceneObjects;
 			std::list<SceneLight *> sceneLights;
 			std::list<SceneSound *> sceneSounds;
-			std::shared_ptr<NavMesh> navMesh; //TODO load/unload
+			std::shared_ptr<NavMesh> navMesh;
 	};
 
 }

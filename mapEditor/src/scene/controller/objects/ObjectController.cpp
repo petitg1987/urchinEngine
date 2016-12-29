@@ -94,6 +94,10 @@ namespace urchin
 		Model *model = sceneObject->getModel();
 
 		model->setTransform(transform);
+		if(sceneObject->getRigidBody()!=nullptr)
+		{
+			sceneObject->getRigidBody()->setTransform(transform);
+		}
 
 		markModified();
 		return sceneObject;

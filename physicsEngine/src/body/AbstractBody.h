@@ -32,6 +32,7 @@ namespace urchin
 			virtual void update(AbstractWorkBody *);
 			virtual void apply(const AbstractWorkBody *);
 
+			void setTransform(const Transform<float> &);
 			const Transform<float> &getTransform() const;
 			const Point3<float> &getPosition() const;
 			const Quaternion<float> &getOrientation() const;
@@ -67,6 +68,7 @@ namespace urchin
 
 			//body representation data
 			Transform<float> transform;
+			bool newTransformToApply;
 
 			//body description data
 			std::shared_ptr<const CollisionShape3D> originalShape;

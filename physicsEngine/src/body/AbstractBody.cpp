@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <limits>
 
 #include "body/AbstractBody.h"
 
@@ -8,6 +9,7 @@ namespace urchin
 	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			workBody(nullptr),
 			transform(transform),
+			newTransformToApply(false),
 			originalShape(shape),
 			id(id)
 	{
@@ -76,6 +78,12 @@ namespace urchin
 		workBody->setFriction(friction);
 		workBody->setRollingFriction(rollingFriction);
 		workBody->setCcdMotionThreshold(ccdMotionThreshold);
+		if(newTransformToApply)
+		{
+			workBody->setPosition(transform.getPosition());
+			workBody->setOrientation(transform.getOrientation());
+			newTransformToApply = false;
+		}
 	}
 
 	void AbstractBody::apply(const AbstractWorkBody *workBody)
@@ -88,10 +96,26 @@ namespace urchin
 				}
 			#endif
 
-			transform.setPosition(workBody->getPosition());
-			transform.setOrientation(workBody->getOrientation());
+			if(!newTransformToApply)
+			{
+				transform.setPosition(workBody->getPosition());
+				transform.setOrientation(workBody->getOrientation());
+			}
 		}
 		bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
+	}
+
+	void AbstractBody::setTransform(const Transform<float> &transform)
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		if(std::fabs(this->transform.getScale()-transform.getScale()) > std::numeric_limits<float>::epsilon())
+		{
+			throw new std::runtime_error("Impossible to change scale of transform on already constructed rigid body.");
+		}
+
+		this->newTransformToApply = true;
+		this->transform = transform;
 	}
 
 	const Transform<float> &AbstractBody::getTransform() const

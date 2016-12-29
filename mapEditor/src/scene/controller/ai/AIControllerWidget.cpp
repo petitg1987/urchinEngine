@@ -29,7 +29,7 @@ namespace urchin
 	{
 		this->aiController = aiController;
 
-		//TODO load AI
+		//TODO load AI from map file
 		agentHeight->setValue(1.9);
 		agentRadius->setValue(0.3);
 		maxSlope->setValue(45.0);
@@ -37,8 +37,6 @@ namespace urchin
 
 	void AIControllerWidget::unload()
 	{
-		//TODO unload AI
-
 		aiController = nullptr;
 	}
 

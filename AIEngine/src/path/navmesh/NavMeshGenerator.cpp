@@ -34,7 +34,7 @@ namespace urchin
 			if(OBBox<float> *box = dynamic_cast<OBBox<float>*>(object.get()))
 			{
 				createNavPolygonFor(box, navMesh);
-			} //TODO
+			} //TODO others shape types
 		}
 	}
 
@@ -44,11 +44,10 @@ namespace urchin
 		for(unsigned int axisIndex=0; axisIndex<3; ++axisIndex)
 		{
 			bool invertAxis = box->getAxis(axisIndex).Y < 0.0f;
-			Vector3<float> boxAxis = invertAxis ? box->getAxis(axisIndex) : -box->getAxis(axisIndex);
+			Vector3<float> boxAxis = invertAxis ? -box->getAxis(axisIndex) : box->getAxis(axisIndex);
 
 			float angleToHorizontal = std::acos(boxAxis.dotProduct(upVector));
-
-			if(true||angleToHorizontal < navMeshConfig.getMaxSlope()) //TODO remove true and fix problem
+			if(std::fabs(angleToHorizontal) < navMeshConfig.getMaxSlope())
 			{
 				unsigned int nextAxisIndex = (axisIndex+1)%3;
 				unsigned int previousAxisIndex = (axisIndex+2)%3;
@@ -72,7 +71,7 @@ namespace urchin
 				std::vector<Point3<float>> unsortedPoints({point1, point2, point3, point4});
 				std::vector<Point3<float>> sortedPoints = SortPointsService<float>::instance()->sortPointsClockwise(unsortedPoints, boxAxis);
 
-				navMesh->addPolygon(NavPolygon(sortedPoints)); //TODO problem: no all polygons displayed in map editor
+				navMesh->addPolygon(NavPolygon(sortedPoints));
 			}
 		}
 	}

@@ -3,9 +3,18 @@
 namespace urchin
 {
 
-	NavMesh::NavMesh()
+	//static
+	unsigned int NavMesh::nextId = 0;
+
+	NavMesh::NavMesh()	:
+		id(nextId++)
 	{
 
+	}
+
+	unsigned int NavMesh::getId() const
+	{
+		return id;
 	}
 
 	unsigned int NavMesh::addPolygon(const NavPolygon &polygon)

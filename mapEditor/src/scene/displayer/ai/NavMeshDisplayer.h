@@ -21,6 +21,8 @@ namespace urchin
 
 			SceneManager *sceneManager;
 			std::vector<GeometryModel *> navMeshModels;
+
+			unsigned int loadedNavMeshId;
 	};
 
 }

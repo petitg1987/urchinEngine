@@ -1,10 +1,13 @@
+#include <limits>
+
 #include "NavMeshDisplayer.h"
 
 namespace urchin
 {
 
 	NavMeshDisplayer::NavMeshDisplayer(SceneManager *sceneManager) :
-			sceneManager(sceneManager)
+			sceneManager(sceneManager),
+			loadedNavMeshId(std::numeric_limits<unsigned int>::max())
 	{
 
 	}
@@ -18,8 +21,8 @@ namespace urchin
 	{
 		cleanCurrentDisplay();
 
-		if(navMesh)
-		{ //TODO: avoid continuously reconstruction of models
+		if(navMesh && loadedNavMeshId!=navMesh->getId())
+		{
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
 				unsigned int nbPoints = navPolygon.getPoints().size();
@@ -27,7 +30,7 @@ namespace urchin
 				{
 					unsigned nextI = (i+1)%nbPoints;
 					Line3D<float> line(navPolygon.getPoint(i), navPolygon.getPoint(nextI));
-					navMeshModels.push_back(new LineModel(line, 5.0));
+					navMeshModels.push_back(new LineModel(line, 3.0));
 				}
 			}
 

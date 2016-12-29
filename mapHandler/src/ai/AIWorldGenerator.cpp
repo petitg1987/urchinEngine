@@ -15,7 +15,7 @@ namespace urchin
 		{
 			RigidBody *rigidBody = sceneObject->getRigidBody();
 			std::vector<LocalizedShape> localizedShapes = extractionLocalizedShapes(rigidBody);
-			for(auto localizedShape : localizedShapes)
+			for(const auto &localizedShape : localizedShapes)
 			{
 				AIObject aiObject(localizedShape.shape, localizedShape.worldTransform);
 				aiWorld->addObject(aiObject);
@@ -36,7 +36,7 @@ namespace urchin
 				std::shared_ptr<const CollisionCompoundShape> collisionCompoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(scaledCollisionShape3D);
 				for(auto collisionLocalizedShape : collisionCompoundShape->getLocalizedShapes())
 				{
-					PhysicsTransform worldPhysicsTransform = collisionLocalizedShape->transform * PhysicsTransform(rigidBody->getTransform().getPosition(), rigidBody->getTransform().getOrientation());
+					PhysicsTransform worldPhysicsTransform = PhysicsTransform(rigidBody->getTransform().getPosition(), rigidBody->getTransform().getOrientation()) * collisionLocalizedShape->transform;
 					LocalizedShape localizedShape;
 					localizedShape.shape = collisionLocalizedShape->shape->getSingleShape();
 					localizedShape.worldTransform = worldPhysicsTransform.toTransform();
