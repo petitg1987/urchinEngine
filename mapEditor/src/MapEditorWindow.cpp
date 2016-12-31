@@ -85,38 +85,46 @@ namespace urchin
 		fileMenu->addAction(exitAction);
 		connect(exitAction, SIGNAL(triggered()), this, SLOT(executeExitAction()));
 
-		QMenu* viewMenu = new QMenu("View");
+		QMenu *viewMenu = new QMenu("View");
 
+		QMenu *viewObjectMenu = new QMenu("Object");
+		viewMenu->addMenu(viewObjectMenu);
 		QAction *viewPhysicsShapeAction = new QAction("Physics Shape", this);
 		viewPhysicsShapeAction->setEnabled(false);
 		viewPhysicsShapeAction->setCheckable(true);
 		viewPhysicsShapeAction->setChecked(true);
-		viewMenu->addAction(viewPhysicsShapeAction);
-		viewActions.push_back(viewPhysicsShapeAction);
+		viewObjectMenu->addAction(viewPhysicsShapeAction);
+		viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
 		connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
+		QMenu *viewLightMenu = new QMenu("Light");
+		viewMenu->addMenu(viewLightMenu);
 		QAction *viewLightScopeAction = new QAction("Light Scope", this);
 		viewLightScopeAction->setEnabled(false);
 		viewLightScopeAction->setCheckable(true);
 		viewLightScopeAction->setChecked(true);
-		viewMenu->addAction(viewLightScopeAction);
-		viewActions.push_back(viewLightScopeAction);
+		viewLightMenu->addAction(viewLightScopeAction);
+		viewActions[SceneDisplayer::LIGHT_SCOPE] = viewLightScopeAction;
 		connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
+		QMenu *viewSoundMenu = new QMenu("Sound");
+		viewMenu->addMenu(viewSoundMenu);
 		QAction *viewSoundTriggerAction = new QAction("Sound Trigger", this);
 		viewSoundTriggerAction->setEnabled(false);
 		viewSoundTriggerAction->setCheckable(true);
 		viewSoundTriggerAction->setChecked(true);
-		viewMenu->addAction(viewSoundTriggerAction);
-		viewActions.push_back(viewSoundTriggerAction);
+		viewSoundMenu->addAction(viewSoundTriggerAction);
+		viewActions[SceneDisplayer::SOUND_TRIGGER] = viewSoundTriggerAction;
 		connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
+		QMenu *viewAIMenu = new QMenu("AI");
+		viewMenu->addMenu(viewAIMenu);
 		QAction *viewNavMeshAction = new QAction("Navigation Mesh", this);
 		viewNavMeshAction->setEnabled(false);
 		viewNavMeshAction->setCheckable(true);
 		viewNavMeshAction->setChecked(true);
-		viewMenu->addAction(viewNavMeshAction);
-		viewActions.push_back(viewNavMeshAction);
+		viewAIMenu->addAction(viewNavMeshAction);
+		viewActions[SceneDisplayer::NAV_MESH] = viewNavMeshAction;
 		connect(viewNavMeshAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
 		menu->addMenu(fileMenu);
@@ -354,7 +362,7 @@ namespace urchin
 		closeAction->setEnabled(hasMapOpen);
 		for(auto &viewAction : viewActions)
 		{
-			viewAction->setEnabled(hasMapOpen);
+			viewAction.second->setEnabled(hasMapOpen);
 		}
 	}
 
@@ -380,7 +388,7 @@ namespace urchin
 		{
 			SceneDisplayer::ViewProperties viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
-			bool isViewChecked = viewActions[i]->isChecked();
+			bool isViewChecked = viewActions[viewProperties]->isChecked();
 			bool isCorrespondingTabSelected = (sceneControllerWidget==nullptr && i==0)
 					|| (sceneControllerWidget!=nullptr && getConcernedTabFor(viewProperties)==sceneControllerWidget->getTabSelected());
 

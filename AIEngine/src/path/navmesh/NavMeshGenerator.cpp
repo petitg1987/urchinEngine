@@ -1,4 +1,7 @@
+#include <cmath>
+
 #include "NavMeshGenerator.h"
+#include "path/navmesh/polyhedron/Face.h"
 
 namespace urchin
 {
@@ -12,43 +15,54 @@ namespace urchin
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate()
 	{
+		std::vector<Polyhedron> polyhedrons = createPolyhedrons();
+
 		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
+		extractWalkablePolygons(polyhedrons, navMesh);
 
-		createNavPolygons(navMesh);
-
-		//1. decompose AIObject in faces/planes
-		//2. expand these plane
-		//3. eliminate unnecessary faces/planes (CSG)
-		//4. create links
-		//5. triangulation (delaunay triangulation c++ 3d)
+		//TODO High level algorithm:
+		//1. Prepare (static & dynamic objects)
+		//1.1 Create polyhedrons: list<Face> & Face: list<Point3> (coplanar & clockwise oriented ?)
+		//1.2 Expand polyhedrons OR expand walkable polygon (bonus: create bevel planes)
+		//2. Generate (to repeat each time a dynamic objects move)
+		//2.1 Perform CSG (combine objects, create new polygon)
+		//2.2 Find walkable faces
+		//2.3 Creates links
+		//2.4 Triangulation (Delaunay triangulation c++ 3d)
 
 		return navMesh;
 	}
 
-	void NavMeshGenerator::createNavPolygons(std::shared_ptr<NavMesh> navMesh)
+
+	std::vector<Polyhedron> NavMeshGenerator::createPolyhedrons()
 	{
+		std::vector<Polyhedron> polyhedrons;
+		polyhedrons.reserve(aiWorld->getObjects().size());
+
 		for(auto &aiObject : aiWorld->getObjects())
 		{
 			std::unique_ptr<ConvexObject3D<float>> object = aiObject.getShape()->toConvexObject(aiObject.getTransform());
 
 			if(OBBox<float> *box = dynamic_cast<OBBox<float>*>(object.get()))
 			{
-				createNavPolygonFor(box, navMesh);
+				polyhedrons.push_back(createPolyhedronFor(box));
 			} //TODO others shape types
 		}
+
+		return polyhedrons;
 	}
 
-	void NavMeshGenerator::createNavPolygonFor(OBBox<float> *box, std::shared_ptr<NavMesh> navMesh)
+	Polyhedron NavMeshGenerator::createPolyhedronFor(OBBox<float> *box)
 	{
+		std::vector<Face> faces;
+
 		Vector3<float> upVector(0.0, 1.0, 0.0);
 		for(unsigned int axisIndex=0; axisIndex<3; ++axisIndex)
 		{
-			bool invertAxis = box->getAxis(axisIndex).Y < 0.0f;
-			Vector3<float> boxAxis = invertAxis ? -box->getAxis(axisIndex) : box->getAxis(axisIndex);
-
-			float angleToHorizontal = std::acos(boxAxis.dotProduct(upVector));
-			if(std::fabs(angleToHorizontal) < navMeshConfig.getMaxSlope())
+			for(unsigned int axisDirection=0; axisDirection<2; ++axisDirection)
 			{
+				Vector3<float> boxAxis = axisDirection==0 ? box->getAxis(axisIndex) : -box->getAxis(axisIndex);
+
 				unsigned int nextAxisIndex = (axisIndex+1)%3;
 				unsigned int previousAxisIndex = (axisIndex+2)%3;
 
@@ -69,10 +83,30 @@ namespace urchin
 						- box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
 
 				std::vector<Point3<float>> unsortedPoints({point1, point2, point3, point4});
-				std::vector<Point3<float>> sortedPoints = SortPointsService<float>::instance()->sortPointsClockwise(unsortedPoints, boxAxis);
+				std::vector<Point3<float>> sortedPoints = SortPointsService<float>::instance()->sortPointsCounterClockwise(unsortedPoints, boxAxis);
 
-				navMesh->addPolygon(NavPolygon(sortedPoints));
+				faces.push_back(Face(sortedPoints));
+			}
+		}
+
+		return Polyhedron(faces);
+	}
+
+	void NavMeshGenerator::extractWalkablePolygons(const std::vector<Polyhedron> &polyhedrons, std::shared_ptr<NavMesh> navMesh)
+	{
+		Vector3<float> upVector(0.0, 1.0, 0.0);
+		for(const auto &polyhedron : polyhedrons)
+		{
+			for(const auto &face : polyhedron.getFaces())
+			{
+				float angleToHorizontal = std::acos(face.getNormal().dotProduct(upVector));
+				if(std::fabs(angleToHorizontal) < navMeshConfig.getMaxSlope())
+				{
+					navMesh->addPolygon(NavPolygon(face.getPoints()));
+				}
 			}
 		}
 	}
+
+
 }

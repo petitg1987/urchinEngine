@@ -1,6 +1,8 @@
 #ifndef ENGINE_NAVMESHCONFIG_H
 #define ENGINE_NAVMESHCONFIG_H
 
+#include "UrchinCommon.h"
+
 namespace urchin
 {
 
@@ -8,6 +10,8 @@ namespace urchin
 	{
 		public:
 			NavMeshConfig(float, float);
+
+			Cylinder<float> getAgent() const;
 
 			void setMaxSlope(float);
 			float getMaxSlope() const;

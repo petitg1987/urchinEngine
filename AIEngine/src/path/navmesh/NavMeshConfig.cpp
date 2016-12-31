@@ -13,6 +13,11 @@ namespace urchin
 
 	}
 
+	Cylinder<float> NavMeshConfig::getAgent() const
+	{
+		return Cylinder<float>(agentRadius, agentHeight, CylinderShape<float>::CYLINDER_Y, Point3<float>(0.0, 0.0, 0.0), Quaternion<float>());
+	}
+
 	void NavMeshConfig::setMaxSlope(float maxSlopeInRadian)
 	{
 		this->maxSlopeInRadian = maxSlopeInRadian;

@@ -20,6 +20,8 @@ namespace urchin
 		private:
 			std::vector<Point3<float>> points;
 
+			//links
+
 			//bool crouch
 			//bool water
 
