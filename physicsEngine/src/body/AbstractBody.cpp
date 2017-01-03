@@ -9,7 +9,6 @@ namespace urchin
 	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			workBody(nullptr),
 			transform(transform),
-			newTransformToApply(false),
 			originalShape(shape),
 			id(id)
 	{
@@ -26,6 +25,8 @@ namespace urchin
 
 		bIsNew.store(false, std::memory_order_relaxed);
 		bIsDeleted.store(false, std::memory_order_relaxed);
+		bNeedFullRefresh.store(false, std::memory_order_relaxed);
+		blockApply = false;
 		bIsStatic.store(true, std::memory_order_relaxed);
 		bIsActive.store(false, std::memory_order_relaxed);
 	}
@@ -55,6 +56,16 @@ namespace urchin
 		return bIsDeleted.load(std::memory_order_relaxed);
 	}
 
+	void AbstractBody::setNeedFullRefresh(bool needFullRefresh)
+	{
+		this->bNeedFullRefresh.store(needFullRefresh, std::memory_order_relaxed);
+	}
+
+	bool AbstractBody::needFullRefresh() const
+	{
+		return bNeedFullRefresh.load(std::memory_order_relaxed);
+	}
+
 	void AbstractBody::setWorkBody(AbstractWorkBody *workBody)
 	{
 		this->workBody = workBody;
@@ -78,44 +89,36 @@ namespace urchin
 		workBody->setFriction(friction);
 		workBody->setRollingFriction(rollingFriction);
 		workBody->setCcdMotionThreshold(ccdMotionThreshold);
-		if(newTransformToApply)
-		{
-			workBody->setPosition(transform.getPosition());
-			workBody->setOrientation(transform.getOrientation());
-			newTransformToApply = false;
-		}
+		blockApply = false;
 	}
 
 	void AbstractBody::apply(const AbstractWorkBody *workBody)
 	{
-		{
-			#ifdef _DEBUG
-				if(bodyMutex.try_lock())
-				{
-					throw std::runtime_error("Body mutex should be locked before call this method.");
-				}
-			#endif
-
-			if(!newTransformToApply)
-			{
-				transform.setPosition(workBody->getPosition());
-				transform.setOrientation(workBody->getOrientation());
-			}
-		}
 		bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
+
+		#ifdef _DEBUG
+			if(bodyMutex.try_lock())
+			{
+				throw std::runtime_error("Body mutex should be locked before call this method.");
+			}
+		#endif
+
+		if(!blockApply)
+		{
+			transform.setPosition(workBody->getPosition());
+			transform.setOrientation(workBody->getOrientation());
+		}
 	}
 
 	void AbstractBody::setTransform(const Transform<float> &transform)
 	{
+		this->bNeedFullRefresh.store(true, std::memory_order_relaxed);
+
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		if(std::fabs(this->transform.getScale()-transform.getScale()) > std::numeric_limits<float>::epsilon())
-		{
-			throw new std::runtime_error("Impossible to change scale of transform on already constructed rigid body.");
-		}
-
-		this->newTransformToApply = true;
+		this->blockApply = true;
 		this->transform = transform;
+		this->scaledShape = originalShape->scale(transform.getScale());
 	}
 
 	const Transform<float> &AbstractBody::getTransform() const

@@ -25,6 +25,9 @@ namespace urchin
 			void markAsDeleted();
 			bool isDeleted() const;
 
+			void setNeedFullRefresh(bool);
+			bool needFullRefresh() const;
+
 			virtual AbstractWorkBody *createWorkBody() const = 0;
 			void setWorkBody(AbstractWorkBody *);
 			AbstractWorkBody *getWorkBody() const;
@@ -64,11 +67,12 @@ namespace urchin
 			//technical data
 			std::atomic_bool bIsNew;
 			std::atomic_bool bIsDeleted;
+			std::atomic_bool bNeedFullRefresh;
+			bool blockApply;
 			AbstractWorkBody *workBody;
 
 			//body representation data
 			Transform<float> transform;
-			bool newTransformToApply;
 
 			//body description data
 			std::shared_ptr<const CollisionShape3D> originalShape;

@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <stdexcept>
+#include <limits>
 
 #include "resources/model/ConstMesh.h"
 #include "resources/model/MeshService.h"
@@ -140,11 +141,14 @@ namespace urchin
 
 	void ConstMesh::defineTextureWrap()
 	{ //GL_CLAMP_TO_EDGE should be used when it's possible: give better result on edge.
+		const float ONE = 1.0f + std::numeric_limits<float>::epsilon();
+		const float ZERO = 0.0f - std::numeric_limits<float>::epsilon();
+
 		bool needRepeatTexture = false;
 		for(unsigned int i=0; i<numVertices; ++i)
 		{
-			if(textureCoordinates[i].s > 1.0f || textureCoordinates[i].s < 0.0f
-					|| textureCoordinates[i].t > 1.0f || textureCoordinates[i].t < 0.0f)
+			if(textureCoordinates[i].s > ONE || textureCoordinates[i].s < ZERO
+					|| textureCoordinates[i].t > ONE || textureCoordinates[i].t < ZERO)
 			{
 				needRepeatTexture = true;
 				break;
@@ -157,14 +161,14 @@ namespace urchin
 			glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
 			float textureWrapValue = needRepeatTexture ? GL_REPEAT : GL_CLAMP_TO_EDGE;
 
-			if(material->getRefCount()>1)
+			if(material->getRefCount()>1 || texture->getRefCount()>1)
 			{
 				float currentTextureWrapValue = 0.0f;
 				glGetTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &currentTextureWrapValue);
 				if(textureWrapValue!=currentTextureWrapValue)
 				{
-					const std::string &materialName = material->getDiffuseTexture()->getName();
-					throw std::runtime_error("Unsupported two different configurations for same material: " + materialName + ".");
+					const std::string &textureName = texture->getName();
+					throw std::runtime_error("Unsupported two different configurations for same texture (" + textureName + "). Please duplicate texture.");
 				}
 			}
 

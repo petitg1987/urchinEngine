@@ -35,6 +35,10 @@ namespace urchin
 			const std::vector<AbstractWorkBody *> &getWorkBodies() const;
 
 		private:
+			void createNewWorkBody(AbstractBody *);
+			std::vector<AbstractBody *>::iterator deleteBody(AbstractBody *, const std::vector<AbstractBody *>::iterator &);
+			void deleteWorkBody(AbstractBody *body);
+
 			std::vector<AbstractBody *> bodies;
 			std::vector<AbstractWorkBody *> workBodies;
 

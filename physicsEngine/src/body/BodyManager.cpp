@@ -58,52 +58,73 @@ namespace urchin
 		std::vector<AbstractBody *>::iterator it = bodies.begin();
 		while(it!=bodies.end())
 		{
-			bool bodyDeleted = false;
 			AbstractBody *body = *it;
-			AbstractWorkBody *workBody = (*it)->getWorkBody();
 
 			if(body->isNew())
 			{
-				//create new work body
-				workBody = body->createWorkBody();
-				body->setWorkBody(workBody);
-				body->setIsNew(false);
-				workBodies.push_back(workBody);
-
-				//update work body
-				body->update(workBody);
-
-				//add notification
-				lastUpdatedWorkBody = workBody;
-				notifyObservers(this, ADD_WORK_BODY);
+				createNewWorkBody(body);
+				++it;
 			}else if(body->isDeleted())
 			{
-				std::vector<AbstractWorkBody *>::iterator itFind = std::find(workBodies.begin(), workBodies.end(), workBody);
-				if(itFind!=workBodies.end())
-				{
-					//remove notification
-					lastUpdatedWorkBody = workBody;
-					notifyObservers(this, REMOVE_WORK_BODY);
-
-					//delete work body
-					delete workBody;
-					workBodies.erase(itFind);
-				}
-
-				//delete body
-				it = bodies.erase(it);
-				delete body;
-				bodyDeleted = true;
+				it = deleteBody(body, it);
+			}else if(body->needFullRefresh())
+			{
+				deleteWorkBody(body);
+				createNewWorkBody(body);
 			}else
 			{
-				//update work body
-				body->update(workBody);
-			}
-
-			if(!bodyDeleted)
-			{
+				body->update(body->getWorkBody()); //update work body
 				++it;
 			}
+		}
+	}
+
+	void BodyManager::createNewWorkBody(AbstractBody *body)
+	{
+		//create new work body
+		AbstractWorkBody *workBody = body->createWorkBody();
+		body->setWorkBody(workBody);
+		body->setIsNew(false);
+		body->setNeedFullRefresh(false);
+		workBodies.push_back(workBody);
+
+		//update work body
+		body->update(workBody);
+
+		//add notification
+		lastUpdatedWorkBody = workBody;
+		notifyObservers(this, ADD_WORK_BODY);
+	}
+
+	std::vector<AbstractBody *>::iterator BodyManager::deleteBody(AbstractBody *body, const std::vector<AbstractBody *>::iterator &it)
+	{
+		//delete work body
+		deleteWorkBody(body);
+
+		//delete body
+		std::vector<AbstractBody *>::iterator newIt = bodies.erase(it);
+		delete body;
+
+		return newIt;
+	}
+
+	void BodyManager::deleteWorkBody(AbstractBody *body)
+	{
+		AbstractWorkBody *workBody = body->getWorkBody();
+
+		std::vector<AbstractWorkBody *>::iterator itFind = std::find(workBodies.begin(), workBodies.end(), workBody);
+		if(itFind!=workBodies.end())
+		{
+			//remove notification
+			lastUpdatedWorkBody = workBody;
+			notifyObservers(this, REMOVE_WORK_BODY);
+
+			//delete reference
+			body->setWorkBody(nullptr);
+
+			//delete work body
+			delete workBody;
+			workBodies.erase(itFind);
 		}
 	}
 

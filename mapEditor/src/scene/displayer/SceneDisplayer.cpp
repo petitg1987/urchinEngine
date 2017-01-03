@@ -105,6 +105,7 @@ namespace urchin
 		camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
 		sceneManager->getActiveRenderer3d()->setCamera(camera);
 		sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
+		sceneManager->getActiveRenderer3d()->getShadowManager()->setShadowMapFrequencyUpdate(1.0f); //always update shadow for better result when moving objects
 	}
 
 	void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)
