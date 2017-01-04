@@ -15,7 +15,7 @@ namespace urchin
 			Mesh(const ConstMesh *const);
 			~Mesh();
 
-			void update(const Bone *const);
+			void update(const std::vector<Bone> &);
 
 			void display(const MeshParameter &) const;
 

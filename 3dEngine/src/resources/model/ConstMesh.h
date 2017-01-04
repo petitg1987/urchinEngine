@@ -57,27 +57,26 @@ namespace urchin
 	class ConstMesh
 	{
 		public:
-			ConstMesh(const std::string &, unsigned int, const Vertex *const, const TextureCoordinate *const,
-					unsigned int, const Triangle *const, unsigned int, const Weight *const, unsigned int,
-					const Bone *const, void *);
+			ConstMesh(const std::string &, const std::vector<Vertex> &, const std::vector<TextureCoordinate> &,
+					const std::vector<Triangle> &, const std::vector<Weight> &, const std::vector<Bone> &, void *);
 			~ConstMesh();
 
 			const Material *getMaterial() const;
 
 			unsigned int getNumberVertices() const;
 			const Vertex &getStructVertex(unsigned int) const;
-			const TextureCoordinate *getTextureCoordinates() const;
+			const std::vector<TextureCoordinate> &getTextureCoordinates() const;
 			std::vector<unsigned int> getLinkedVertices(unsigned int) const;
 
 			unsigned int getNumberTriangles() const;
-			const Triangle *getTriangles() const;
+			const std::vector<Triangle> &getTriangles() const;
 			const Triangle &getTriangle(unsigned int) const;
 
 			unsigned int getNumberWeights() const;
 			const Weight &getWeight(unsigned int) const;
 
 			unsigned int getNumberBones() const;
-			const Bone *getBaseSkeleton() const;
+			const std::vector<Bone> &getBaseSkeleton() const;
 			const Bone &getBaseBone(unsigned int) const;
 			const Point3<float> *getBaseVertices() const;
 			const DataVertex *getBaseDataVertices() const;
@@ -87,20 +86,16 @@ namespace urchin
 
 			Material *material;
 
-			const unsigned int numVertices;
-			const Vertex *const vertices;
-			const TextureCoordinate *const textureCoordinates;
+			std::vector<Vertex> vertices;
+			std::vector<TextureCoordinate> textureCoordinates;
 			std::map<unsigned int, std::vector<unsigned int>> linkedVertices;
 
-			const unsigned int numTriangles;
-			const Triangle *const triangles;
+			std::vector<Triangle> triangles;
 
-			const unsigned int numWeights;
-			const Weight *const weights;
+			std::vector<Weight> weights;
 
 			//mesh information in bind-pose
-			const unsigned int numBones;
-			const Bone *const baseSkeleton; //bind-pose skeleton
+			std::vector<Bone> baseSkeleton; //bind-pose skeleton
 			Point3<float> *const baseVertices;
 			DataVertex *const baseDataVertices; //additional informations for the vertex
 	};

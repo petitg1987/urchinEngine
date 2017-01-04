@@ -1,5 +1,6 @@
 #include <locale>
 #include <stdexcept>
+#include <memory>
 #include "UrchinCommon.h"
 
 #include "loader/model/LoaderUrchinMesh.h"
@@ -58,7 +59,7 @@ namespace urchin
 		iss >> sdata >> numMeshes;
 
 		//bones
-		Bone *baseSkeleton = new Bone[numBones];
+		std::vector<Bone> baseSkeleton(numBones);
 		nextLine(file, buffer); //buffer = "joints {"
 		for(unsigned int i=0;i<numBones;i++)
 		{
@@ -72,11 +73,6 @@ namespace urchin
 		nextLine(file, buffer); //buffer = "}"
 
 		//mesh
-		Vertex *vertices;
-		TextureCoordinate *textureCoordinates;
-		Triangle *triangles;
-		Weight *weights;
-		
 		std::vector<const ConstMesh *> constMeshes;
 		for(unsigned int ii=0; ii<numMeshes; ii++)
 		{
@@ -95,8 +91,8 @@ namespace urchin
 			iss >> sdata >> numVertices;
 			
 			//vertices
-			vertices = new Vertex[numVertices];
-			textureCoordinates = new TextureCoordinate[numVertices];
+			std::vector<Vertex> vertices(numVertices);
+			std::vector<TextureCoordinate> textureCoordinates(numVertices);
 			for(unsigned int i=0;i<numVertices;i++)
 			{
 				nextLine(file, buffer);
@@ -112,7 +108,7 @@ namespace urchin
 			iss >> sdata >> numTriangles;
 
 			//triangles
-			triangles = new Triangle[numTriangles];
+			std::vector<Triangle> triangles(numTriangles);
 			for(unsigned int i=0;i<numTriangles;i++)
 			{
 				nextLine(file, buffer);
@@ -127,7 +123,7 @@ namespace urchin
 			iss >> sdata >> numWeights;
 			
 			//weights
-			weights = new Weight[numWeights];
+			std::vector<Weight> weights(numWeights);
 			for(unsigned int i=0;i<numWeights;i++)
 			{
 				nextLine(file, buffer);
@@ -136,13 +132,12 @@ namespace urchin
 			}
 			nextLine(file, buffer); //buffer= "}"
 			
-			constMeshes.push_back(new ConstMesh(materialFilename, numVertices, vertices, textureCoordinates, numTriangles, triangles,
-					numWeights, weights, numBones, baseSkeleton, params));
+			constMeshes.push_back(new ConstMesh(materialFilename, vertices, textureCoordinates, triangles, weights, baseSkeleton, params));
 		}
 		
 		file.close();
 		
-		return 	new ConstMeshes(filename, constMeshes);
+		return new ConstMeshes(filename, constMeshes);
 	}
 
 }

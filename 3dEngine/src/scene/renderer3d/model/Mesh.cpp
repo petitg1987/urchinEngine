@@ -25,7 +25,7 @@ namespace urchin
 		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*2, constMesh->getTextureCoordinates(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*2, &constMesh->getTextureCoordinates()[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_TEX_COORD);
 		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, false, 0, 0);
 
@@ -37,7 +37,7 @@ namespace urchin
 		glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, false, sizeof(DataVertex), (char*)(sizeof(float)*3));
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(int),  constMesh->getTriangles(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(int),  &constMesh->getTriangles()[0], GL_STATIC_DRAW);
 	}
 
 	Mesh::~Mesh()
@@ -49,7 +49,7 @@ namespace urchin
 		glDeleteBuffers(4, bufferIDs);
 	}
 
-	void Mesh::update(const Bone *const skeleton)
+	void Mesh::update(const std::vector<Bone> &skeleton)
 	{
 		//recompute the vertices and normals
 		MeshService::instance()->computeVertices(constMesh, skeleton, vertices);

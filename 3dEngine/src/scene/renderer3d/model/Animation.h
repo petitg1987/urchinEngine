@@ -16,7 +16,7 @@ namespace urchin
 			Animation(const ConstAnimation *const, Meshes *const);
 			~Animation();
 
-			const Bone *getSkeleton() const;
+			const std::vector<Bone> &getSkeleton() const;
 			const AABBox<float> &getGlobalAABBox() const;
 			const std::vector<AABBox<float>> &getGlobalSplittedAABBox() const;
 			const AABBox<float> &getGlobalLocalAABBox() const;
@@ -30,7 +30,7 @@ namespace urchin
 			Meshes *const meshes;
 			
 			AnimationInformation animationInformation;
-			Bone *const skeleton;
+			std::vector<Bone> skeleton;
 			AABBox<float> globalBBox; //bounding box transformed by the transformation of the model
 			std::vector<AABBox<float>> globalSplittedBBox;
 	};

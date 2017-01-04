@@ -10,23 +10,18 @@
 namespace urchin
 {
 
-	ConstMesh::ConstMesh(const std::string &materialFilename, unsigned int numVertices, const Vertex *const vertices,
-			const TextureCoordinate *const textureCoordinates, unsigned int numTriangles, const Triangle *const triangles, unsigned int numWeights,
-			const Weight *const weights, unsigned int numBones, const Bone *const baseSkeleton, void *loaderParams) :
-		numVertices(numVertices),
+	ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, const std::vector<TextureCoordinate> &textureCoordinates,
+			const std::vector<Triangle> &triangles, const std::vector<Weight> &weights, const std::vector<Bone> &baseSkeleton, void *loaderParams) :
 		vertices(vertices),
 		textureCoordinates(textureCoordinates),
-		numTriangles(numTriangles),
 		triangles(triangles),
-		numWeights(numWeights),
 		weights(weights),
-		numBones(numBones),
 		baseSkeleton(baseSkeleton),
-		baseVertices(new Point3<float>[numVertices]),
-		baseDataVertices(new DataVertex[numVertices])
+		baseVertices(new Point3<float>[vertices.size()]),
+		baseDataVertices(new DataVertex[vertices.size()])
 	{
 		//regroup duplicate vertex due to their different texture coordinates
-		for(unsigned int i=0;i<numVertices;++i)
+		for(unsigned int i=0;i<vertices.size();++i)
 		{
 			linkedVertices[vertices[i].linkedVerticesGroupId].push_back(i);
 		}
@@ -42,12 +37,6 @@ namespace urchin
 
 	ConstMesh::~ConstMesh()
 	{
-		delete [] vertices;
-		delete [] textureCoordinates;
-		delete [] triangles;
-		delete [] weights;
-		delete [] baseSkeleton;
-
 		delete [] baseVertices;
 		delete [] baseDataVertices;
 
@@ -61,7 +50,7 @@ namespace urchin
 
 	unsigned int ConstMesh::getNumberVertices() const
 	{
-		return numVertices;
+		return vertices.size();
 	}
 
 	const Vertex &ConstMesh::getStructVertex(unsigned int index) const
@@ -69,7 +58,7 @@ namespace urchin
 		return vertices[index];
 	}
 
-	const TextureCoordinate *ConstMesh::getTextureCoordinates() const
+	const std::vector<TextureCoordinate> &ConstMesh::getTextureCoordinates() const
 	{
 		return textureCoordinates;
 	}
@@ -91,10 +80,10 @@ namespace urchin
 
 	unsigned int ConstMesh::getNumberTriangles() const
 	{
-		return numTriangles;
+		return triangles.size();
 	}
 
-	const Triangle *ConstMesh::getTriangles() const
+	const std::vector<Triangle> &ConstMesh::getTriangles() const
 	{
 		return triangles;
 	}
@@ -106,7 +95,7 @@ namespace urchin
 
 	unsigned int ConstMesh::getNumberWeights() const
 	{
-		return numWeights;
+		return weights.size();
 	}
 
 	const Weight &ConstMesh::getWeight(unsigned int index) const
@@ -116,10 +105,10 @@ namespace urchin
 
 	unsigned int ConstMesh::getNumberBones() const
 	{
-		return numBones;
+		return baseSkeleton.size();
 	}
 
-	const Bone *ConstMesh::getBaseSkeleton() const
+	const std::vector<Bone> &ConstMesh::getBaseSkeleton() const
 	{
 		return baseSkeleton;
 	}
@@ -145,7 +134,7 @@ namespace urchin
 		const float ZERO = 0.0f - std::numeric_limits<float>::epsilon();
 
 		bool needRepeatTexture = false;
-		for(unsigned int i=0; i<numVertices; ++i)
+		for(unsigned int i=0; i<vertices.size(); ++i)
 		{
 			if(textureCoordinates[i].s > ONE || textureCoordinates[i].s < ZERO
 					|| textureCoordinates[i].t > ONE || textureCoordinates[i].t < ZERO)

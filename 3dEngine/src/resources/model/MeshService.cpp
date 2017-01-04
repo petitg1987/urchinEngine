@@ -15,7 +15,7 @@ namespace urchin
 
 	}
 
-	void MeshService::computeVertices(const ConstMesh *const constMesh, const Bone *const skeleton, Point3<float> *const vertices)
+	void MeshService::computeVertices(const ConstMesh *const constMesh, const std::vector<Bone> &skeleton, Point3<float> *const vertices)
 	{
 		//setup vertices
 		for(unsigned int i=0;i<constMesh->getNumberVertices();++i)

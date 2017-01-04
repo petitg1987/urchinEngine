@@ -5,9 +5,10 @@ namespace urchin
 
 	Animation::Animation(const ConstAnimation *const constAnimation, Meshes *const meshes) :
 		constAnimation(constAnimation),
-		meshes(meshes),
-		skeleton(new Bone[constAnimation->getNumberBones()])
+		meshes(meshes)
 	{
+		skeleton.resize(constAnimation->getNumberBones());
+
 		animationInformation.currFrame = 0;
 		animationInformation.nextFrame = 1;
 		animationInformation.lastTime = 0;
@@ -16,10 +17,10 @@ namespace urchin
 
 	Animation::~Animation()
 	{
-		delete [] skeleton;
+
 	}
 
-	const Bone *Animation::getSkeleton() const
+	const std::vector<Bone> &Animation::getSkeleton() const
 	{
 		return skeleton;
 	}
