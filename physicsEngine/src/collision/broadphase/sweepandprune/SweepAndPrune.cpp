@@ -105,11 +105,11 @@ namespace urchin
 
 		//remove overlapping pairs
 		defaultPairContainer->removeOverlappingPairs(body);
-		for(std::map<AbstractWorkBody *, BodyBox *>::iterator it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
+		for(auto &bodyBox : bodiesBox)
 		{
-			if(it->second->hasAlternativePairContainer())
+			if(bodyBox.second->hasAlternativePairContainer())
 			{
-				it->second->getAlternativePairContainer()->removeOverlappingPairs(body);
+				bodyBox.second->getAlternativePairContainer()->removeOverlappingPairs(body);
 			}
 		}
 

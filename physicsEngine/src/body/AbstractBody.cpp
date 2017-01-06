@@ -12,21 +12,16 @@ namespace urchin
 			originalShape(shape),
 			id(id)
 	{
-		this->scaledShape = originalShape->scale(transform.getScale());
-		#ifdef _DEBUG
-			this->scaledShape->checkInnerMarginQuality(id);
-		#endif
+		setupScaledShape(originalShape, transform);
 
 		//default values
 		restitution = 0.2f;
 		friction = 0.5f;
 		rollingFriction = 0.0f;
-		ccdMotionThreshold = (getScaledShape()->getMinDistanceToCenter() * 2.0f) * ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor");
 
 		bIsNew.store(false, std::memory_order_relaxed);
 		bIsDeleted.store(false, std::memory_order_relaxed);
 		bNeedFullRefresh.store(false, std::memory_order_relaxed);
-		blockApply = false;
 		bIsStatic.store(true, std::memory_order_relaxed);
 		bIsActive.store(false, std::memory_order_relaxed);
 	}
@@ -34,6 +29,16 @@ namespace urchin
 	AbstractBody::~AbstractBody()
 	{
 
+	}
+
+	void AbstractBody::setupScaledShape(const std::shared_ptr<const CollisionShape3D> &originalShape, const Transform<float> &transform)
+	{
+		this->scaledShape = originalShape->scale(transform.getScale());
+		#ifdef _DEBUG
+			this->scaledShape->checkInnerMarginQuality(id);
+		#endif
+
+		this->ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor");
 	}
 
 	void AbstractBody::setIsNew(bool isNew)
@@ -76,7 +81,7 @@ namespace urchin
 		return workBody;
 	}
 
-	void AbstractBody::update(AbstractWorkBody *workBody)
+	void AbstractBody::updateTo(AbstractWorkBody *workBody)
 	{
 		#ifdef _DEBUG
 			if(bodyMutex.try_lock())
@@ -89,13 +94,10 @@ namespace urchin
 		workBody->setFriction(friction);
 		workBody->setRollingFriction(rollingFriction);
 		workBody->setCcdMotionThreshold(ccdMotionThreshold);
-		blockApply = false;
 	}
 
-	void AbstractBody::apply(const AbstractWorkBody *workBody)
+	void AbstractBody::applyFrom(const AbstractWorkBody *workBody)
 	{
-		bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
-
 		#ifdef _DEBUG
 			if(bodyMutex.try_lock())
 			{
@@ -103,8 +105,10 @@ namespace urchin
 			}
 		#endif
 
-		if(!blockApply)
+		if(!bNeedFullRefresh)
 		{
+			bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
+
 			transform.setPosition(workBody->getPosition());
 			transform.setOrientation(workBody->getOrientation());
 		}
@@ -112,13 +116,14 @@ namespace urchin
 
 	void AbstractBody::setTransform(const Transform<float> &transform)
 	{
-		this->bNeedFullRefresh.store(true, std::memory_order_relaxed);
-
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		this->blockApply = true;
+		if(std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon())
+		{
+			setupScaledShape(originalShape, transform);
+		}
+		this->setNeedFullRefresh(true);
 		this->transform = transform;
-		this->scaledShape = originalShape->scale(transform.getScale());
 	}
 
 	const Transform<float> &AbstractBody::getTransform() const

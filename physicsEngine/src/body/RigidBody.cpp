@@ -31,11 +31,11 @@ namespace urchin
 		return new WorkRigidBody(getId(), physicsTransform, getScaledShape());
 	}
 
-	void RigidBody::update(AbstractWorkBody *workBody)
+	void RigidBody::updateTo(AbstractWorkBody *workBody)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		AbstractBody::update(workBody);
+		AbstractBody::updateTo(workBody);
 
 		WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
 		if(workRigidBody!=nullptr)
@@ -54,11 +54,11 @@ namespace urchin
 		}
 	}
 
-	void RigidBody::apply(const AbstractWorkBody *workBody)
+	void RigidBody::applyFrom(const AbstractWorkBody *workBody)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		AbstractBody::apply(workBody);
+		AbstractBody::applyFrom(workBody);
 
 		const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
 		if(workRigidBody!=nullptr)

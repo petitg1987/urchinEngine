@@ -78,7 +78,7 @@ namespace urchin
 		Point3<T> spherePos2 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
 		Point3<T> supportPoint2 = spherePos2.translate(normalizedDirection * getRadius());
 
-		if(normalizedDirection.dotProduct(supportPoint1.toVector()) > normalizedDirection.dotProduct(supportPoint2.toVector()))
+		if(centerPosition.vector(supportPoint1).squareLength() > centerPosition.vector(supportPoint2).squareLength())
 		{
 			return supportPoint1;
 		}

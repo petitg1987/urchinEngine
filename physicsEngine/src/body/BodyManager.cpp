@@ -71,9 +71,10 @@ namespace urchin
 			{
 				deleteWorkBody(body);
 				createNewWorkBody(body);
+				++it;
 			}else
 			{
-				body->update(body->getWorkBody()); //update work body
+				body->updateTo(body->getWorkBody());
 				++it;
 			}
 		}
@@ -89,7 +90,7 @@ namespace urchin
 		workBodies.push_back(workBody);
 
 		//update work body
-		body->update(workBody);
+		body->updateTo(workBody);
 
 		//add notification
 		lastUpdatedWorkBody = workBody;
@@ -141,7 +142,7 @@ namespace urchin
 				continue;
 			}
 
-			body->apply(workBody);
+			body->applyFrom(workBody);
 		}
 	}
 

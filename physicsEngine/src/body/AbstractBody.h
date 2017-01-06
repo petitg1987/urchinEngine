@@ -32,8 +32,8 @@ namespace urchin
 			void setWorkBody(AbstractWorkBody *);
 			AbstractWorkBody *getWorkBody() const;
 
-			virtual void update(AbstractWorkBody *);
-			virtual void apply(const AbstractWorkBody *);
+			virtual void updateTo(AbstractWorkBody *);
+			virtual void applyFrom(const AbstractWorkBody *);
 
 			void setTransform(const Transform<float> &);
 			const Transform<float> &getTransform() const;
@@ -64,11 +64,12 @@ namespace urchin
 			mutable std::mutex bodyMutex;
 
 		private:
+			void setupScaledShape(const std::shared_ptr<const CollisionShape3D> &, const Transform<float> &);
+
 			//technical data
 			std::atomic_bool bIsNew;
 			std::atomic_bool bIsDeleted;
 			std::atomic_bool bNeedFullRefresh;
-			bool blockApply;
 			AbstractWorkBody *workBody;
 
 			//body representation data

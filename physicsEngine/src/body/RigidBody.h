@@ -19,8 +19,8 @@ namespace urchin
 
 			AbstractWorkBody *createWorkBody() const;
 
-			void update(AbstractWorkBody *);
-			void apply(const AbstractWorkBody *);
+			void updateTo(AbstractWorkBody *);
+			void applyFrom(const AbstractWorkBody *);
 
 			const Vector3<float> &getLinearVelocity() const;
 			const Vector3<float> &getAngularVelocity() const;

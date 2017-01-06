@@ -71,7 +71,7 @@ namespace urchin
 		{
 			normalizedDirection = direction.normalize();
 		}
-		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(getAxis(getCylinderOrientation()))) * getAxis(getCylinderOrientation());
+		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(axis[getCylinderOrientation()]) * axis[getCylinderOrientation()]);
 		projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 
 		Point3<T> cirlcePos1 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
@@ -80,7 +80,7 @@ namespace urchin
 		Point3<T> cirlcePos2 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
 		Point3<T> supportPoint2 = cirlcePos2.translate(projectedDirectionOnCircle * getRadius());
 
-		if(normalizedDirection.dotProduct(supportPoint1.toVector()) > normalizedDirection.dotProduct(supportPoint2.toVector()))
+		if(normalizedDirection.dotProduct(centerPosition.vector(supportPoint1).normalize()) > normalizedDirection.dotProduct(centerPosition.vector(supportPoint2).normalize()))
 		{
 			return supportPoint1;
 		}
