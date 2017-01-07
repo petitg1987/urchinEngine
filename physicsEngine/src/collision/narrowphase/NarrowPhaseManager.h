@@ -28,7 +28,7 @@ namespace urchin
 			void process(float, const std::vector<OverlappingPair *> &, std::vector<ManifoldResult> &);
 			void processGhostBody(WorkGhostBody *, std::vector<ManifoldResult> &);
 
-			ccd_set continuousCollissionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
+			ccd_set continuousCollisionTest(const TemporalObject &,  const std::vector<AbstractWorkBody *> &) const;
 			ccd_set rayTest(const Ray<float> &, const std::vector<AbstractWorkBody *> &) const;
 
 		private:

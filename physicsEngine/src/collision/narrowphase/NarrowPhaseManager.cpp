@@ -58,9 +58,9 @@ namespace urchin
 				CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
 				collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
 
-				if(constCollisionAlgorithm->getManifoldResult().getNumContactPoints()!=0)
+				if(constCollisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0)
 				{
-					manifoldResults.push_back(constCollisionAlgorithm->getManifoldResult());
+					manifoldResults.push_back(constCollisionAlgorithm->getConstManifoldResult());
 				}
 			}
 		}
@@ -117,7 +117,7 @@ namespace urchin
 				for(const auto &localizedShape : localizedShapes)
 				{
 					TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
-					ccd_set localizedShapeCcdResults = continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+					ccd_set localizedShapeCcdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 
 					for(auto &localizedShapeCcdResult : localizedShapeCcdResults)
 					{
@@ -127,7 +127,7 @@ namespace urchin
 			}else
 			{
 				TemporalObject temporalObject(body->getShape(), from, to);
-				ccdResults = continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+				ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 			}
 
 			if(ccdResults.size() > 0)
@@ -147,7 +147,7 @@ namespace urchin
 		}
 	}
 
-	ccd_set NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const
+	ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const
 	{
 		ccd_set continuousCollisionResults;
 
@@ -199,7 +199,7 @@ namespace urchin
 		PhysicsTransform to = PhysicsTransform(ray.computeTo());
 		TemporalObject rayCastObject(&pointShape, from, to);
 
-		return continuousCollissionTest(rayCastObject, bodiesAABBoxHitRay);
+		return continuousCollisionTest(rayCastObject, bodiesAABBoxHitRay);
 	}
 
 }

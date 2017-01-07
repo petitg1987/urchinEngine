@@ -41,7 +41,7 @@ namespace urchin
 
 			collisionAlgorithm->processCollisionAlgorithm(subObject1, subObject2, false);
 
-			const ManifoldResult &algorithmManifoldResult = constCollisionAlgorithm->getManifoldResult();
+			const ManifoldResult &algorithmManifoldResult = constCollisionAlgorithm->getConstManifoldResult();
 			addContactPointsToManifold(algorithmManifoldResult, constCollisionAlgorithm->isObjectSwapped());
 		}
 	}

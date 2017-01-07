@@ -60,7 +60,7 @@ namespace urchin
 		{
 			auto bodyEncompassedSphereShape = std::make_shared<CollisionSphereShape>(body->getShape()->getMinDistanceToCenter());
 			TemporalObject temporalObject(bodyEncompassedSphereShape.get(), from, to);
-			ccd_set ccdResults = narrowPhaseManager->continuousCollissionTest(temporalObject, bodiesAABBoxHitBody);
+			ccd_set ccdResults = narrowPhaseManager->continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 
 			if(ccdResults.size() > 0)
 			{

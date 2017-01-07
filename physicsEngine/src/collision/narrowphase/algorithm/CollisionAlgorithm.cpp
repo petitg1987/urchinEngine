@@ -31,7 +31,7 @@ namespace urchin
 		}
 	}
 
-	const ManifoldResult &CollisionAlgorithm::getManifoldResult() const
+	const ManifoldResult &CollisionAlgorithm::getConstManifoldResult() const
 	{
 		return manifoldResult;
 	}

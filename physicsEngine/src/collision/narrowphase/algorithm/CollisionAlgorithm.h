@@ -15,7 +15,7 @@ namespace urchin
 
 			void processCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &, bool);
 
-			const ManifoldResult &getManifoldResult() const;
+			const ManifoldResult &getConstManifoldResult() const;
 			bool isObjectSwapped() const;
 
 		protected:
