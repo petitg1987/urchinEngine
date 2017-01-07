@@ -37,8 +37,7 @@ namespace urchin
 
 			void setTransform(const Transform<float> &);
 			const Transform<float> &getTransform() const;
-			const Point3<float> &getPosition() const;
-			const Quaternion<float> &getOrientation() const;
+
 			void setShape(const std::shared_ptr<const CollisionShape3D> &);
 			std::shared_ptr<const CollisionShape3D> getOriginalShape() const;
 			std::shared_ptr<const CollisionShape3D> getScaledShape() const;
@@ -59,14 +58,15 @@ namespace urchin
 			bool isActive() const;
 
 		protected:
+			virtual void refreshScaledShape();
+			Vector3<float> computeScaledShapeLocalInertia(float) const;
+
 			void setIsStatic(bool);
 
 			//mutex for attributes modifiable from external
 			mutable std::mutex bodyMutex;
 
 		private:
-			void setupScaledShape();
-
 			//technical data
 			const float ccdMotionThresholdFactor;
 			std::atomic_bool bIsNew;

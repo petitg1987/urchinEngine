@@ -32,7 +32,7 @@ namespace urchin
 			const Vector3<float> &getTotalTorque() const;
 			void applyTorque(const Vector3<float> &);
 
-			void setMassProperties(float, const Vector3<float> &);
+			void setMass(float);
 			float getMass() const;
 			const Vector3<float> &getLocalInertia() const;
 
@@ -46,6 +46,9 @@ namespace urchin
 			const Vector3<float> &getAngularFactor() const;
 
 		private:
+			void refreshScaledShape();
+			void refreshLocalInteria();
+
 			//rigid body representation data
 			Vector3<float> linearVelocity;
 			Vector3<float> angularVelocity;

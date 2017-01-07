@@ -11,7 +11,7 @@ namespace urchin
 			AbstractBody(id, transform, shape)
 	{
 		//default values
-		mass = 0.0f;
+		setMass(0.0f);
 		linearDamping = 0.0f;
 		angularDamping = 0.0f;
 		linearFactor.setValues(1.0, 1.0, 1.0);
@@ -21,6 +21,18 @@ namespace urchin
 	RigidBody::~RigidBody()
 	{
 
+	}
+
+	void RigidBody::refreshScaledShape()
+	{
+		AbstractBody::refreshScaledShape();
+
+		refreshLocalInteria();
+	}
+
+	void RigidBody::refreshLocalInteria()
+	{
+		this->localInertia = computeScaledShapeLocalInertia(mass);
 	}
 
 	AbstractWorkBody *RigidBody::createWorkBody() const
@@ -121,12 +133,12 @@ namespace urchin
 		totalTorque += torque;
 	}
 
-	void RigidBody::setMassProperties(float mass, const Vector3<float> &localInertia)
+	void RigidBody::setMass(float mass)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->mass = mass;
-		this->localInertia = localInertia;
+		refreshLocalInteria();
 
 		setIsStatic(mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon());
 	}

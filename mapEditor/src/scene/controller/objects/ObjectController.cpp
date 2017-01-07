@@ -121,7 +121,7 @@ namespace urchin
 		SceneObject *sceneObject = findSceneObject(constSceneObject);
 		RigidBody *rigidBody = sceneObject->getRigidBody();
 
-		rigidBody->setMassProperties(mass, rigidBody->getScaledShape()->computeLocalInertia(mass));
+		rigidBody->setMass(mass);
 		rigidBody->setRestitution(restitution);
 		rigidBody->setFriction(friction);
 		rigidBody->setRollingFriction(rollingFriction);
@@ -144,7 +144,7 @@ namespace urchin
 		Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
 		RigidBody *newRigidBody = new RigidBody(bodyId, modelTransform, newCollisionShape);
 
-		newRigidBody->setMassProperties(rigidBody->getMass(), newRigidBody->getScaledShape()->computeLocalInertia(rigidBody->getMass()));
+		newRigidBody->setMass(rigidBody->getMass());
 		newRigidBody->setRestitution(rigidBody->getRestitution());
 		newRigidBody->setFriction(rigidBody->getFriction());
 		newRigidBody->setRollingFriction(rigidBody->getRollingFriction());

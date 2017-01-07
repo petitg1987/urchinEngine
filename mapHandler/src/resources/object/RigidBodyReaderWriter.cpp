@@ -41,7 +41,7 @@ namespace urchin
 	{
 		std::shared_ptr<XmlChunk> massChunk = xmlParser.getUniqueChunk(true, MASS_TAG, XmlAttribute(), physicsChunk);
 		float bodyMass = massChunk->getFloatValue();
-		rigidBody->setMassProperties(bodyMass, rigidBody->getScaledShape()->computeLocalInertia(bodyMass));
+		rigidBody->setMass(bodyMass);
 
 		std::shared_ptr<XmlChunk> restitutionChunk = xmlParser.getUniqueChunk(true, RESTITUTION_TAG, XmlAttribute(), physicsChunk);
 		rigidBody->setRestitution(restitutionChunk->getFloatValue());

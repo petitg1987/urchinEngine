@@ -21,7 +21,7 @@ namespace urchin
 		bIsActive.store(false, std::memory_order_relaxed);
 
 		//body description data
-		setupScaledShape();
+		refreshScaledShape();
 		restitution = 0.2f;
 		friction = 0.5f;
 		rollingFriction = 0.0f;
@@ -32,7 +32,7 @@ namespace urchin
 
 	}
 
-	void AbstractBody::setupScaledShape()
+	void AbstractBody::refreshScaledShape()
 	{
 		scaledShape = originalShape->scale(transform.getScale());
 		#ifdef _DEBUG
@@ -106,7 +106,7 @@ namespace urchin
 			}
 		#endif
 
-		if(!bNeedFullRefresh.load(std::memory_order_relaxed))
+		if(true||!bNeedFullRefresh.load(std::memory_order_relaxed))
 		{
 			bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
 
@@ -122,7 +122,7 @@ namespace urchin
 		if(std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon())
 		{
 			this->transform = transform;
-			setupScaledShape();
+			refreshScaledShape();
 		}else
 		{
 			this->transform = transform;
@@ -137,26 +137,12 @@ namespace urchin
 		return transform;
 	}
 
-	const Point3<float> &AbstractBody::getPosition() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
-
-		return transform.getPosition();
-	}
-
-	const Quaternion<float> &AbstractBody::getOrientation() const
-	{
-		std::lock_guard<std::mutex> lock(bodyMutex);
-
-		return transform.getOrientation();
-	}
-
 	void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D> &shape)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->originalShape = shape;
-		setupScaledShape();
+		refreshScaledShape();
 		this->setNeedFullRefresh(true);
 	}
 
@@ -176,6 +162,18 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return scaledShape;
+	}
+
+	Vector3<float> AbstractBody::computeScaledShapeLocalInertia(float mass) const
+	{
+		#ifdef _DEBUG
+			if(bodyMutex.try_lock())
+			{
+				throw std::runtime_error("Body mutex should be locked before call this method.");
+			}
+		#endif
+
+		return scaledShape->computeLocalInertia(mass);
 	}
 
 	const std::string &AbstractBody::getId() const
