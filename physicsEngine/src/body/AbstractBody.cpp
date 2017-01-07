@@ -7,23 +7,24 @@ namespace urchin
 {
 
 	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
+			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
 			workBody(nullptr),
 			transform(transform),
-			originalShape(shape),
-			id(id)
+			id(id),
+			originalShape(shape)
 	{
-		setupScaledShape(originalShape, transform);
-
-		//default values
-		restitution = 0.2f;
-		friction = 0.5f;
-		rollingFriction = 0.0f;
-
+		//technical data
 		bIsNew.store(false, std::memory_order_relaxed);
 		bIsDeleted.store(false, std::memory_order_relaxed);
 		bNeedFullRefresh.store(false, std::memory_order_relaxed);
 		bIsStatic.store(true, std::memory_order_relaxed);
 		bIsActive.store(false, std::memory_order_relaxed);
+
+		//body description data
+		setupScaledShape();
+		restitution = 0.2f;
+		friction = 0.5f;
+		rollingFriction = 0.0f;
 	}
 
 	AbstractBody::~AbstractBody()
@@ -31,14 +32,14 @@ namespace urchin
 
 	}
 
-	void AbstractBody::setupScaledShape(const std::shared_ptr<const CollisionShape3D> &originalShape, const Transform<float> &transform)
+	void AbstractBody::setupScaledShape()
 	{
-		this->scaledShape = originalShape->scale(transform.getScale());
+		scaledShape = originalShape->scale(transform.getScale());
 		#ifdef _DEBUG
-			this->scaledShape->checkInnerMarginQuality(id);
+			scaledShape->checkInnerMarginQuality(id);
 		#endif
 
-		this->ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor");
+		ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
 	}
 
 	void AbstractBody::setIsNew(bool isNew)
@@ -120,10 +121,13 @@ namespace urchin
 
 		if(std::abs(transform.getScale()-this->transform.getScale()) > std::numeric_limits<float>::epsilon())
 		{
-			setupScaledShape(originalShape, transform);
+			this->transform = transform;
+			setupScaledShape();
+		}else
+		{
+			this->transform = transform;
 		}
 		this->setNeedFullRefresh(true);
-		this->transform = transform;
 	}
 
 	const Transform<float> &AbstractBody::getTransform() const
@@ -145,6 +149,15 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return transform.getOrientation();
+	}
+
+	void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D> &shape)
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		this->originalShape = shape;
+		setupScaledShape();
+		this->setNeedFullRefresh(true);
 	}
 
 	std::shared_ptr<const CollisionShape3D> AbstractBody::getOriginalShape() const

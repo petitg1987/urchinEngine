@@ -119,18 +119,8 @@ namespace urchin
 
 	void AABBTree::removeBody(AbstractWorkBody *body)
 	{
-		//remove overlapping pairs
-		defaultPairContainer->removeOverlappingPairs(body);
-		for(auto &bodyNode : bodiesNode)
-		{
-			if(bodyNode.second->getBodyNodeData()->hasAlternativePairContainer())
-			{
-				bodyNode.second->getBodyNodeData()->getAlternativePairContainer()->removeOverlappingPairs(body);
-			}
-		}
-
-		//remove body from bodies node
 		std::map<AbstractWorkBody *, AABBNode *>::iterator it = bodiesNode.find(body);
+
 		removeNode(it->second);
 		bodiesNode.erase(it);
 	}

@@ -39,6 +39,7 @@ namespace urchin
 			const Transform<float> &getTransform() const;
 			const Point3<float> &getPosition() const;
 			const Quaternion<float> &getOrientation() const;
+			void setShape(const std::shared_ptr<const CollisionShape3D> &);
 			std::shared_ptr<const CollisionShape3D> getOriginalShape() const;
 			std::shared_ptr<const CollisionShape3D> getScaledShape() const;
 
@@ -64,9 +65,10 @@ namespace urchin
 			mutable std::mutex bodyMutex;
 
 		private:
-			void setupScaledShape(const std::shared_ptr<const CollisionShape3D> &, const Transform<float> &);
+			void setupScaledShape();
 
 			//technical data
+			const float ccdMotionThresholdFactor;
 			std::atomic_bool bIsNew;
 			std::atomic_bool bIsDeleted;
 			std::atomic_bool bNeedFullRefresh;
@@ -76,9 +78,9 @@ namespace urchin
 			Transform<float> transform;
 
 			//body description data
+			std::string id;
 			std::shared_ptr<const CollisionShape3D> originalShape;
 			std::shared_ptr<const CollisionShape3D> scaledShape;
-			std::string id;
 			float restitution;
 			float friction;
 			float rollingFriction;

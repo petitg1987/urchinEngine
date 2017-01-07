@@ -7,7 +7,6 @@
 	- (2) [OPTIMIZATION] Implement double AABBox trees: static and dynamic (see Bullet)
 	- (2) [OPTIMIZATION] Rebalance AABBox tree for better performance
 - NARROWPHASE
-	- (2) [NEW FEATURE] Allow changing shape on body for animated objects & allow to retrieve dynamic bound box on animated object
 	- (2) [NEW FEATURE] Support joints between shapes
 	- (2) [OPTIMIZATION] Use a memory pool when transfom a shape to object (i.e.: CollisionBoxShape#toConvexObject)
 	- (3) [OPTIMIZATION] GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC).
