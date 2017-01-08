@@ -1,10 +1,12 @@
 ############################################
 # To do :
 ############################################
+- RENDERER
+	- (1) Handle heightmap
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - AMBIENT OCCLUSION
-	- (3) [NEW FEATURE] Replace HBAO by VXAO technique
+	- (1) [QUALITY IMPROVEMENT] Improve AO to get better results
 - SHADOW
 	- (2) [OPTIMIZATION] Blur variance shadow map with 'summed area' technique.
 			- Note 1: decreased light bleeding to improve quality.
@@ -27,14 +29,11 @@
 	- (3) [NEW FEATURE] Reflects
 	- (3) [NEW FEATURE] Smoke
 	- (3) [NEW FEATURE] Fire & explosion
-	- (3) [NEW FEATURE] Trees & wind (http://http.developer.nvidia.com/GPUGems3/gpugems3_ch06.html)
 	- (3) [NEW FEATURE] Alpha management
 	- (3) [OPTIMIZATION] Textures compression
 - SCENE
 	- (3) [OPTIMIZATION] LOD
 	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
-- MODEL
-	- (2) [NEW FEATURE] Improve model file: add physics shape
 - GLOBAL
 	- (3) [OPTIMIZATION] Use PGO in g++
 
