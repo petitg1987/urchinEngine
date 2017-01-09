@@ -65,7 +65,7 @@ void SupportPointTest::coneSupportPoint()
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.0, 1.0, 0.0), false), Point3<float>(-0.5, 2.0, 0.0));
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, 0.0, 0.0), false), Point3<float>(-0.5, 1.0, 0.0));
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.0, 1.0, 1.0), false), Point3<float>(-0.5, 1.707107, 0.707107));
-	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, -2.0, 0.0), false), Point3<float>(-0.5, 0.0, 0.0)); //TODO fix me
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, -2.0, 0.0), false), Point3<float>(-0.5, 0.0, 0.0));
 }
 
 void SupportPointTest::convexHullSupportPoint()

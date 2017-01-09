@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "Cone.h"
 
 namespace urchin
@@ -87,6 +89,11 @@ namespace urchin
 		}
 
 		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(axis[getConeOrientation()]) * axis[getConeOrientation()]);
+		if(projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon())
+		{
+			projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
+		}
+
 		Point3<T> bottomPosition = centerPosition.translate(axis[getConeOrientation()] * (-halfHeight));
 		return bottomPosition.translate(projectedDirectionOnCircle * getRadius());
 	}
