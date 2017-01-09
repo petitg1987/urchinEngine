@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include <limits>
 
-#include "shape/CollisionSphereShape.h"
 #include "shape/CollisionCompoundShape.h"
 
 namespace urchin

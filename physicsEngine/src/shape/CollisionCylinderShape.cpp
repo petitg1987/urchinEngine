@@ -1,5 +1,4 @@
 #include "shape/CollisionCylinderShape.h"
-#include "shape/CollisionSphereShape.h"
 #include "object/CollisionCylinderObject.h"
 
 namespace urchin
@@ -67,7 +66,7 @@ namespace urchin
 	AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-		boxHalfSizes[getCylinderOrientation()] += getHeight() / 2.0;
+		boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0;
 
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();

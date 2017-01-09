@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "object/CollisionConvexHullObject.h"
 
 namespace urchin

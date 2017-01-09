@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONCYLINDERSHAPE_H
-#define ENGINE_COLLISIONCYLINDERSHAPE_H
+#ifndef ENGINE_COLLISIONCONESHAPE_H
+#define ENGINE_COLLISIONCONESHAPE_H
 
 #include <memory>
 #include "UrchinCommon.h"
@@ -11,18 +11,18 @@
 namespace urchin
 {
 
-	class CollisionCylinderShape : public CollisionShape3D
+	class CollisionConeShape : public CollisionShape3D
 	{
 		public:
-			CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
-			CollisionCylinderShape(float, float, float, CylinderShape<float>::CylinderOrientation);
-			~CollisionCylinderShape();
+			CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
+			CollisionConeShape(float, float, float, ConeShape<float>::ConeOrientation);
+			~CollisionConeShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
 			float getRadius() const;
 			float getHeight() const;
-			CylinderShape<float>::CylinderOrientation getCylinderOrientation() const;
+			ConeShape<float>::ConeOrientation getConeOrientation() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;
 
@@ -36,7 +36,8 @@ namespace urchin
 		private:
 			void computeSafeMargin();
 
-			const std::shared_ptr<CylinderShape<float>> cylinderShape; //shape including margin
+			const std::shared_ptr<ConeShape<float>> coneShape; //shape including margin
+
 	};
 
 }

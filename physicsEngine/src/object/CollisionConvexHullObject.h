@@ -1,7 +1,7 @@
 #ifndef ENGINE_COLLISIONCONVEXHULLOBJECT_H
 #define ENGINE_COLLISIONCONVEXHULLOBJECT_H
 
-#include <sstream>
+#include <string>
 #include <map>
 #include <vector>
 #include "UrchinCommon.h"

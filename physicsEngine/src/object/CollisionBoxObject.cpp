@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "object/CollisionBoxObject.h"
 
 namespace urchin

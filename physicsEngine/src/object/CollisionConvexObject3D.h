@@ -1,7 +1,7 @@
 #ifndef ENGINE_COLLISIONCONVEXOBJECT3D_H
 #define ENGINE_COLLISIONCONVEXOBJECT3D_H
 
-#include <sstream>
+#include <string>
 #include "UrchinCommon.h"
 
 namespace urchin

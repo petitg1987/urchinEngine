@@ -1,7 +1,6 @@
 #include <limits>
 
 #include "shape/CollisionConvexHullShape.h"
-#include "shape/CollisionSphereShape.h"
 #include "object/CollisionConvexHullObject.h"
 
 namespace urchin

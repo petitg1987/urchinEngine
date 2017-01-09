@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "object/CollisionCapsuleObject.h"
 
 namespace urchin

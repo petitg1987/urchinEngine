@@ -54,6 +54,20 @@ void SupportPointTest::cylinderSupportPoint()
 	AssertHelper::assertPoint3FloatEquals(cylinderObject.getSupportPoint(Vector3<float>(1.0, 1.1, 0.0), true), Point3<float>(2.41421356237, 3.17788888605, 1.0));
 }
 
+void SupportPointTest::coneSupportPoint()
+{
+	CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y, Point3<float>(1.0, 1.0, 0.0),
+			Quaternion<float>(Vector3<float>(0.0, 0.0, -1.0), PI_VALUE/2.0f));
+
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(1.0, 0.0, 0.0), false), Point3<float>(2.5, 1.0, 0.0));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(2.0, -1.0, 0.0), false), Point3<float>(2.5, 1.0, 0.0));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.0, -1.0, 0.0), false), Point3<float>(-0.5, 0.0, 0.0));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.0, 1.0, 0.0), false), Point3<float>(-0.5, 2.0, 0.0));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, 0.0, 0.0), false), Point3<float>(-0.5, 1.0, 0.0));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.0, 1.0, 1.0), false), Point3<float>(-0.5, 1.707107, 0.707107));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, -2.0, 0.0), false), Point3<float>(-0.5, 0.0, 0.0)); //TODO fix me
+}
+
 void SupportPointTest::convexHullSupportPoint()
 {
 	Point3<float> obbPointsWithMarginTab[] = {
@@ -83,6 +97,7 @@ CppUnit::Test *SupportPointTest::suite()
 	suite->addTest(new CppUnit::TestCaller<SupportPointTest>("boxSupportPoint", &SupportPointTest::boxSupportPoint));
 	suite->addTest(new CppUnit::TestCaller<SupportPointTest>("capsuleSupportPoint", &SupportPointTest::capsuleSupportPoint));
 	suite->addTest(new CppUnit::TestCaller<SupportPointTest>("cylinderSupportPoint", &SupportPointTest::cylinderSupportPoint));
+	suite->addTest(new CppUnit::TestCaller<SupportPointTest>("coneSupportPoint", &SupportPointTest::coneSupportPoint));
 	suite->addTest(new CppUnit::TestCaller<SupportPointTest>("convexHullSupportPoint", &SupportPointTest::convexHullSupportPoint));
 
 	return suite;

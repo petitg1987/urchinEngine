@@ -2,7 +2,6 @@
 #define ENGINE_COLLISIONCAPSULESHAPE_H
 
 #include <memory>
-#include <vector>
 #include "UrchinCommon.h"
 
 #include "shape/CollisionShape3D.h"

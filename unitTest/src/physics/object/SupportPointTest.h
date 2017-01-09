@@ -13,6 +13,7 @@ class SupportPointTest : public CppUnit::TestFixture
 		void boxSupportPoint();
 		void capsuleSupportPoint();
 		void cylinderSupportPoint();
+		void coneSupportPoint();
 		void convexHullSupportPoint();
 };
 

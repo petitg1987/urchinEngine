@@ -72,11 +72,11 @@ namespace urchin
 			normalizedDirection = direction.normalize();
 		}
 
-		Point3<T> spherePos1 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
-		Point3<T> supportPoint1 = spherePos1.translate(normalizedDirection * getRadius());
+		Point3<T> spherePosition1 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
+		Point3<T> supportPoint1 = spherePosition1.translate(normalizedDirection * getRadius());
 
-		Point3<T> spherePos2 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
-		Point3<T> supportPoint2 = spherePos2.translate(normalizedDirection * getRadius());
+		Point3<T> spherePosition2 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
+		Point3<T> supportPoint2 = spherePosition2.translate(normalizedDirection * getRadius());
 
 		if(centerPosition.vector(supportPoint1).squareLength() > centerPosition.vector(supportPoint2).squareLength())
 		{

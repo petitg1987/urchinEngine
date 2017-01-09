@@ -1,7 +1,7 @@
 #ifndef ENGINE_COLLISIONSPHEREOBJECT_H
 #define ENGINE_COLLISIONSPHEREOBJECT_H
 
-#include <sstream>
+#include <string>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"

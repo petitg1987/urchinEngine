@@ -1,5 +1,4 @@
 #include "shape/CollisionBoxShape.h"
-#include "shape/CollisionSphereShape.h"
 #include "object/CollisionBoxObject.h"
 
 namespace urchin

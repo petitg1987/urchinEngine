@@ -26,6 +26,7 @@ namespace urchin
 				BOX_SHAPE,
 				CAPSULE_SHAPE,
 				CYLINDER_SHAPE,
+				CONE_SHAPE,
 				CONVEX_HULL_SHAPE,
 				COMPOUND_SHAPE,
 
