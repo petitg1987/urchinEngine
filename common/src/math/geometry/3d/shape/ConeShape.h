@@ -12,10 +12,15 @@ namespace urchin
 	{
 		public:
 			enum ConeOrientation
-			{
-				CONE_X,
-				CONE_Y,
-				CONE_Z
+			{ //define direction of top
+				CONE_X_POSITIVE,
+				CONE_X_NEGATIVE,
+
+				CONE_Y_POSITIVE,
+				CONE_Y_NEGATIVE,
+
+				CONE_Z_POSITIVE,
+				CONE_Z_NEGATIVE
 			};
 
 			ConeShape(T, T, ConeOrientation);

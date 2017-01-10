@@ -2,7 +2,6 @@
 #define ENGINE_COLLISIONSHAPEREADERWRITER_H
 
 #include <memory>
-
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
 
@@ -18,6 +17,7 @@ namespace urchin
 		#define SPHERE_VALUE "SPHERE"
 		#define CAPSULE_VALUE "CAPSULE"
 		#define CYLINDER_VALUE "CYLINDER"
+		#define CONE_VALUE "CONE"
 		#define BOX_VALUE "BOX"
 		#define CONVEX_HULL_VALUE "CONVEX_HULL"
 		#define COMPOUND_SHAPE_VALUE "COMPOUND_SHAPE"

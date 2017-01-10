@@ -32,6 +32,7 @@
 #include "utils/display/geometry/aabbox/AABBoxModel.h"
 #include "utils/display/geometry/capsule/CapsuleModel.h"
 #include "utils/display/geometry/cylinder/CylinderModel.h"
+#include "utils/display/geometry/cone/ConeModel.h"
 #include "utils/display/geometry/frustum/FrustumModel.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 #include "utils/display/geometry/points/PointsModel.h"

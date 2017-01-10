@@ -6,7 +6,7 @@ namespace urchin
 {
 
 	template<class T> Cone<T>::Cone() :
-			coneShape(ConeShape<T>(0.0, 0.0, ConeShape<T>::CONE_Y)),
+			coneShape(ConeShape<T>(0.0, 0.0, ConeShape<T>::CONE_X_POSITIVE)),
 			centerPosition(Point3<T>(0.0, 0.0, 0.0)),
 			baseSinAngleRadian(0.0)
 	{
@@ -82,19 +82,21 @@ namespace urchin
 			normalizedDirection = direction.normalize();
 		}
 
-		T axisDirectionCosAngle = axis[getConeOrientation()].dotProduct(normalizedDirection);
+		Vector3<T> baseToTopAxis = axis[getConeOrientation()/2] * ((getConeOrientation()%2==0) ? (T)1.0 : (T)-1.0);
+
+		T axisDirectionCosAngle = baseToTopAxis.dotProduct(normalizedDirection);
 		if(1.0-axisDirectionCosAngle < baseSinAngleRadian)
 		{ //support point = top of cone
-			return centerPosition.translate(axis[getConeOrientation()] * halfHeight);
+			return centerPosition.translate(baseToTopAxis * halfHeight);
 		}
 
-		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(axis[getConeOrientation()]) * axis[getConeOrientation()]);
+		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(baseToTopAxis) * baseToTopAxis);
 		if(projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon())
 		{
 			projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 		}
 
-		Point3<T> bottomPosition = centerPosition.translate(axis[getConeOrientation()] * (-halfHeight));
+		Point3<T> bottomPosition = centerPosition.translate(baseToTopAxis * (-halfHeight));
 		return bottomPosition.translate(projectedDirectionOnCircle * getRadius());
 	}
 

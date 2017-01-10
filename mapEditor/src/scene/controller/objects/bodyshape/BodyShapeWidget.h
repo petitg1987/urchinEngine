@@ -21,6 +21,7 @@ namespace urchin
 		#define BOX_SHAPE_LABEL "Box"
 		#define CAPSULE_SHAPE_LABEL "Capsule"
 		#define CYLINDER_SHAPE_LABEL "Cylinder"
+		#define CONE_SHAPE_LABEL "Cone"
 		#define CONVEX_HULL_SHAPE_LABEL "Convex Hull"
 		#define COMPOUND_SHAPE_LABEL "Compound Shape"
 

@@ -84,6 +84,9 @@ namespace urchin
 		}else if(shapeType==CollisionShape3D::CYLINDER_SHAPE)
 		{
 			return retrieveCylinderGeometry(bodyObject);
+		}else if(shapeType==CollisionShape3D::CONE_SHAPE)
+		{
+			return retrieveConeGeometry(bodyObject);
 		}else if(shapeType==CollisionShape3D::CAPSULE_SHAPE)
 		{
 			return retrieveCapsuleGeometry(bodyObject);
@@ -114,6 +117,12 @@ namespace urchin
 	{
 		const CollisionCylinderObject *cylinderObject = static_cast<const CollisionCylinderObject *>(bodyObject);
 		return new CylinderModel(cylinderObject->retrieveCylinder(), 15);
+	}
+
+	GeometryModel *BodyShapeDisplayer::retrieveConeGeometry(const CollisionConvexObject3D *bodyObject) const
+	{
+		const CollisionConeObject *coneObject = static_cast<const CollisionConeObject *>(bodyObject);
+		return new ConeModel(coneObject->retrieveCone(), 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const CollisionConvexObject3D *bodyObject) const

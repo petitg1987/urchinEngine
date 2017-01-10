@@ -43,6 +43,7 @@ namespace urchin
 		bodyShapeTypeComboBox->addItem(BOX_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::BOX_SHAPE));
 		bodyShapeTypeComboBox->addItem(CAPSULE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CAPSULE_SHAPE));
 		bodyShapeTypeComboBox->addItem(CYLINDER_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CYLINDER_SHAPE));
+		bodyShapeTypeComboBox->addItem(CONE_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONE_SHAPE));
 		bodyShapeTypeComboBox->addItem(CONVEX_HULL_SHAPE_LABEL, QVariant(CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE));
 		if(!excludeCompoundShape)
 		{

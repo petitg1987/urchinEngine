@@ -23,6 +23,7 @@ namespace urchin
 			GeometryModel *retrieveSphereGeometry(const CollisionConvexObject3D *) const;
 			GeometryModel *retrieveBoxGeometry(const CollisionConvexObject3D *) const;
 			GeometryModel *retrieveCylinderGeometry(const CollisionConvexObject3D *) const;
+			GeometryModel *retrieveConeGeometry(const CollisionConvexObject3D *) const;
 			GeometryModel *retrieveCapsuleGeometry(const CollisionConvexObject3D *) const;
 			GeometryModel *retrieveConvexHullGeometry(const CollisionConvexObject3D *) const;
 

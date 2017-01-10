@@ -56,7 +56,7 @@ void SupportPointTest::cylinderSupportPoint()
 
 void SupportPointTest::coneSupportPoint()
 {
-	CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y, Point3<float>(1.0, 1.0, 0.0),
+	CollisionConeObject coneObject(0.04f, 1.0f, 3.0f, ConeShape<float>::CONE_Y_POSITIVE, Point3<float>(1.0, 1.0, 0.0),
 			Quaternion<float>(Vector3<float>(0.0, 0.0, -1.0), PI_VALUE/2.0f));
 
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(1.0, 0.0, 0.0), false), Point3<float>(2.5, 1.0, 0.0));
@@ -66,6 +66,7 @@ void SupportPointTest::coneSupportPoint()
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, 0.0, 0.0), false), Point3<float>(-0.5, 1.0, 0.0));
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.0, 1.0, 1.0), false), Point3<float>(-0.5, 1.707107, 0.707107));
 	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(-1.0, -2.0, 0.0), false), Point3<float>(-0.5, 0.0, 0.0));
+	AssertHelper::assertPoint3FloatEquals(coneObject.getSupportPoint(Vector3<float>(0.1, 1.0, 0.0), false), Point3<float>(-0.5, 2.0, 0.0));
 }
 
 void SupportPointTest::convexHullSupportPoint()

@@ -22,16 +22,22 @@ namespace urchin
 			shape = new CollisionSphereShape(modelAABBox.getMaxHalfSize());
 		}else if(shapeType==CollisionShape3D::ShapeType::CAPSULE_SHAPE)
 		{
-			float radius = std::max(modelAABBox.getHalfSizes()[1]*2.0f,  modelAABBox.getHalfSizes()[2]*2.0f);
+			float radius = std::max(modelAABBox.getHalfSizes()[1],  modelAABBox.getHalfSizes()[2]);
 			float cylinderHeight = modelAABBox.getHalfSizes()[0]*2.0f;
 
 			shape = new CollisionCapsuleShape(radius, cylinderHeight, CapsuleShape<float>::CAPSULE_X);
 		}else if(shapeType==CollisionShape3D::ShapeType::CYLINDER_SHAPE)
 		{
-			float radius = std::max(modelAABBox.getHalfSizes()[1]*2.0f,  modelAABBox.getHalfSizes()[2]*2.0f);
+			float radius = std::max(modelAABBox.getHalfSizes()[1],  modelAABBox.getHalfSizes()[2]);
 			float height = modelAABBox.getHalfSizes()[0]*2.0f;
 
 			shape = new CollisionCylinderShape(radius, height, CylinderShape<float>::CYLINDER_X);
+		}else if(shapeType==CollisionShape3D::ShapeType::CONE_SHAPE)
+		{
+			float radius = std::max(modelAABBox.getHalfSizes()[1],  modelAABBox.getHalfSizes()[2]);
+			float height = modelAABBox.getHalfSizes()[0]*2.0f;
+
+			shape = new CollisionConeShape(radius, height, ConeShape<float>::CONE_X_POSITIVE);
 		}else if(shapeType==CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE)
 		{
 			shape = new CollisionConvexHullShape(modelAABBox.getEightPoints());

@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONCYLINDERREADERWRITER_H
-#define ENGINE_COLLISIONCYLINDERREADERWRITER_H
+#ifndef ENGINE_COLLISIONCONEREADERWRITER_H
+#define ENGINE_COLLISIONCONEREADERWRITER_H
 
 #include <memory>
 #include "UrchinCommon.h"
@@ -10,7 +10,7 @@
 namespace urchin
 {
 
-	class CollisionCylinderReaderWriter : public CollisionShapeReaderWriter
+	class CollisionConeReaderWriter : public CollisionShapeReaderWriter
 	{
 		//XML tags
 		#define ORIENTATION_TAG "orientation"
@@ -18,13 +18,16 @@ namespace urchin
 		#define HEIGHT_TAG "height"
 
 		//XML value
-		#define X_VALUE "X"
-		#define Y_VALUE "Y"
-		#define Z_VALUE "Z"
+		#define X_POSITIVE_VALUE "XPositive"
+		#define X_NEGATIVE_VALUE "XNegative"
+		#define Y_POSITIVE_VALUE "YPositive"
+		#define Y_NEGATIVE_VALUE "YNegative"
+		#define Z_POSITIVE_VALUE "ZPositive"
+		#define Z_NEGATIVE_VALUE "ZNegative"
 
 		public:
-			CollisionCylinderReaderWriter();
-			virtual ~CollisionCylinderReaderWriter();
+			CollisionConeReaderWriter();
+			virtual ~CollisionConeReaderWriter();
 
 			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
 			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const;

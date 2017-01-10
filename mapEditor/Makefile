@@ -68,6 +68,7 @@ SOURCES       = src/Main.cpp \
 		src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp \
+		src/scene/controller/objects/bodyshape/BodyConeShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp \
@@ -111,6 +112,7 @@ SOURCES       = src/Main.cpp \
 		targetLinux/moc_BodyBoxShapeWidget.cpp \
 		targetLinux/moc_BodyCapsuleShapeWidget.cpp \
 		targetLinux/moc_BodyCompoundShapeWidget.cpp \
+		targetLinux/moc_BodyConeShapeWidget.cpp \
 		targetLinux/moc_BodyConvexHullShapeWidget.cpp \
 		targetLinux/moc_BodyCylinderShapeWidget.cpp \
 		targetLinux/moc_BodyShapeWidget.cpp \
@@ -151,6 +153,7 @@ OBJECTS       = targetLinux/Main.o \
 		targetLinux/BodyBoxShapeWidget.o \
 		targetLinux/BodyCapsuleShapeWidget.o \
 		targetLinux/BodyCompoundShapeWidget.o \
+		targetLinux/BodyConeShapeWidget.o \
 		targetLinux/BodyConvexHullShapeWidget.o \
 		targetLinux/BodyCylinderShapeWidget.o \
 		targetLinux/BodyShapeWidget.o \
@@ -195,6 +198,7 @@ OBJECTS       = targetLinux/Main.o \
 		targetLinux/moc_BodyBoxShapeWidget.o \
 		targetLinux/moc_BodyCapsuleShapeWidget.o \
 		targetLinux/moc_BodyCompoundShapeWidget.o \
+		targetLinux/moc_BodyConeShapeWidget.o \
 		targetLinux/moc_BodyConvexHullShapeWidget.o \
 		targetLinux/moc_BodyCylinderShapeWidget.o \
 		targetLinux/moc_BodyShapeWidget.o \
@@ -292,6 +296,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h \
 		src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h \
 		src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h \
+		src/scene/controller/objects/bodyshape/BodyConeShapeWidget.h \
 		src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h \
 		src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h \
 		src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
@@ -344,6 +349,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp \
+		src/scene/controller/objects/bodyshape/BodyConeShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp \
 		src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp \
@@ -527,8 +533,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.h src/MapEditorWindow.h src/support/ButtonStyleHelper.h src/support/ComboBoxStyleHelper.h src/support/FrameStyleHelper.h src/support/GroupBoxStyleHelper.h src/support/LabelStyleHelper.h src/support/SpinBoxStyleHelper.h src/dialog/NewDialog.h src/dialog/NotSavedDialog.h src/scene/controller/SceneController.h src/scene/controller/SceneControllerWidget.h src/scene/controller/objects/ObjectController.h src/scene/controller/objects/ObjectControllerWidget.h src/scene/controller/objects/ObjectTableView.h src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h src/scene/controller/objects/dialog/NewObjectDialog.h src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h src/scene/controller/lights/LightController.h src/scene/controller/lights/LightControllerWidget.h src/scene/controller/lights/LightTableView.h src/scene/controller/lights/dialog/NewLightDialog.h src/scene/controller/sounds/SoundController.h src/scene/controller/sounds/SoundControllerWidget.h src/scene/controller/sounds/SoundTableView.h src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h src/scene/controller/sounds/dialog/NewSoundDialog.h src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h src/scene/controller/ai/AIController.h src/scene/controller/ai/AIControllerWidget.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/displayer/objects/BodyShapeDisplayer.h src/scene/displayer/lights/LightScopeDisplayer.h src/scene/displayer/sounds/SoundTriggerDisplayer.h src/scene/displayer/ai/NavMeshDisplayer.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.cpp src/MapEditorWindow.cpp src/support/ButtonStyleHelper.cpp src/support/ComboBoxStyleHelper.cpp src/support/FrameStyleHelper.cpp src/support/GroupBoxStyleHelper.cpp src/support/LabelStyleHelper.cpp src/support/SpinBoxStyleHelper.cpp src/dialog/NewDialog.cpp src/dialog/NotSavedDialog.cpp src/scene/controller/SceneController.cpp src/scene/controller/SceneControllerWidget.cpp src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp src/scene/controller/objects/dialog/NewObjectDialog.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/NoBodyShapeWidget.cpp src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/dialog/NewLightDialog.cpp src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp src/scene/controller/sounds/dialog/NewSoundDialog.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp src/scene/controller/ai/AIController.cpp src/scene/controller/ai/AIControllerWidget.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/objects/BodyShapeDisplayer.cpp src/scene/displayer/lights/LightScopeDisplayer.cpp src/scene/displayer/sounds/SoundTriggerDisplayer.cpp src/scene/displayer/ai/NavMeshDisplayer.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.h src/MapEditorWindow.h src/support/ButtonStyleHelper.h src/support/ComboBoxStyleHelper.h src/support/FrameStyleHelper.h src/support/GroupBoxStyleHelper.h src/support/LabelStyleHelper.h src/support/SpinBoxStyleHelper.h src/dialog/NewDialog.h src/dialog/NotSavedDialog.h src/scene/controller/SceneController.h src/scene/controller/SceneControllerWidget.h src/scene/controller/objects/ObjectController.h src/scene/controller/objects/ObjectControllerWidget.h src/scene/controller/objects/ObjectTableView.h src/scene/controller/objects/dialog/ChangeBodyShapeDialog.h src/scene/controller/objects/dialog/NewObjectDialog.h src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h src/scene/controller/objects/bodyshape/BodyConeShapeWidget.h src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidget.h src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h src/scene/controller/objects/bodyshape/BodySphereShapeWidget.h src/scene/controller/objects/bodyshape/NoBodyShapeWidget.h src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h src/scene/controller/lights/LightController.h src/scene/controller/lights/LightControllerWidget.h src/scene/controller/lights/LightTableView.h src/scene/controller/lights/dialog/NewLightDialog.h src/scene/controller/sounds/SoundController.h src/scene/controller/sounds/SoundControllerWidget.h src/scene/controller/sounds/SoundTableView.h src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.h src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h src/scene/controller/sounds/dialog/NewSoundDialog.h src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidget.h src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.h src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.h src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.h src/scene/controller/ai/AIController.h src/scene/controller/ai/AIControllerWidget.h src/scene/displayer/SceneDisplayer.h src/scene/displayer/SceneDisplayerWidget.h src/scene/displayer/SceneFreeCamera.h src/scene/displayer/objects/BodyShapeDisplayer.h src/scene/displayer/lights/LightScopeDisplayer.h src/scene/displayer/sounds/SoundTriggerDisplayer.h src/scene/displayer/ai/NavMeshDisplayer.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.cpp src/MapEditorWindow.cpp src/support/ButtonStyleHelper.cpp src/support/ComboBoxStyleHelper.cpp src/support/FrameStyleHelper.cpp src/support/GroupBoxStyleHelper.cpp src/support/LabelStyleHelper.cpp src/support/SpinBoxStyleHelper.cpp src/dialog/NewDialog.cpp src/dialog/NotSavedDialog.cpp src/scene/controller/SceneController.cpp src/scene/controller/SceneControllerWidget.cpp src/scene/controller/objects/ObjectController.cpp src/scene/controller/objects/ObjectControllerWidget.cpp src/scene/controller/objects/ObjectTableView.cpp src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp src/scene/controller/objects/dialog/NewObjectDialog.cpp src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConeShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.cpp src/scene/controller/objects/bodyshape/BodySphereShapeWidget.cpp src/scene/controller/objects/bodyshape/NoBodyShapeWidget.cpp src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.cpp src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.cpp src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp src/scene/controller/lights/LightController.cpp src/scene/controller/lights/LightControllerWidget.cpp src/scene/controller/lights/LightTableView.cpp src/scene/controller/lights/dialog/NewLightDialog.cpp src/scene/controller/sounds/SoundController.cpp src/scene/controller/sounds/SoundControllerWidget.cpp src/scene/controller/sounds/SoundTableView.cpp src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp src/scene/controller/sounds/dialog/NewSoundDialog.cpp src/scene/controller/sounds/soundshape/SoundBoxShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidget.cpp src/scene/controller/sounds/soundshape/SoundShapeWidgetRetriever.cpp src/scene/controller/sounds/soundshape/SoundSphereShapeWidget.cpp src/scene/controller/sounds/soundshape/support/DefaultSoundShapeCreator.cpp src/scene/controller/ai/AIController.cpp src/scene/controller/ai/AIControllerWidget.cpp src/scene/displayer/SceneDisplayer.cpp src/scene/displayer/SceneDisplayerWidget.cpp src/scene/displayer/SceneFreeCamera.cpp src/scene/displayer/objects/BodyShapeDisplayer.cpp src/scene/displayer/lights/LightScopeDisplayer.cpp src/scene/displayer/sounds/SoundTriggerDisplayer.cpp src/scene/displayer/ai/NavMeshDisplayer.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -556,9 +562,9 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: targetLinux/moc_MapEditorWindow.cpp targetLinux/moc_NewDialog.cpp targetLinux/moc_NotSavedDialog.cpp targetLinux/moc_SceneControllerWidget.cpp targetLinux/moc_ObjectControllerWidget.cpp targetLinux/moc_ObjectTableView.cpp targetLinux/moc_ChangeBodyShapeDialog.cpp targetLinux/moc_NewObjectDialog.cpp targetLinux/moc_BodyBoxShapeWidget.cpp targetLinux/moc_BodyCapsuleShapeWidget.cpp targetLinux/moc_BodyCompoundShapeWidget.cpp targetLinux/moc_BodyConvexHullShapeWidget.cpp targetLinux/moc_BodyCylinderShapeWidget.cpp targetLinux/moc_BodyShapeWidget.cpp targetLinux/moc_BodySphereShapeWidget.cpp targetLinux/moc_NoBodyShapeWidget.cpp targetLinux/moc_LocalizedShapeTableView.cpp targetLinux/moc_SpinBoxDelegate.cpp targetLinux/moc_LightControllerWidget.cpp targetLinux/moc_LightTableView.cpp targetLinux/moc_NewLightDialog.cpp targetLinux/moc_SoundControllerWidget.cpp targetLinux/moc_SoundTableView.cpp targetLinux/moc_ChangeSoundShapeDialog.cpp targetLinux/moc_ChangeSoundTriggerDialog.cpp targetLinux/moc_NewSoundDialog.cpp targetLinux/moc_SoundBoxShapeWidget.cpp targetLinux/moc_SoundShapeWidget.cpp targetLinux/moc_SoundSphereShapeWidget.cpp targetLinux/moc_AIControllerWidget.cpp targetLinux/moc_SceneDisplayerWidget.cpp
+compiler_moc_header_make_all: targetLinux/moc_MapEditorWindow.cpp targetLinux/moc_NewDialog.cpp targetLinux/moc_NotSavedDialog.cpp targetLinux/moc_SceneControllerWidget.cpp targetLinux/moc_ObjectControllerWidget.cpp targetLinux/moc_ObjectTableView.cpp targetLinux/moc_ChangeBodyShapeDialog.cpp targetLinux/moc_NewObjectDialog.cpp targetLinux/moc_BodyBoxShapeWidget.cpp targetLinux/moc_BodyCapsuleShapeWidget.cpp targetLinux/moc_BodyCompoundShapeWidget.cpp targetLinux/moc_BodyConeShapeWidget.cpp targetLinux/moc_BodyConvexHullShapeWidget.cpp targetLinux/moc_BodyCylinderShapeWidget.cpp targetLinux/moc_BodyShapeWidget.cpp targetLinux/moc_BodySphereShapeWidget.cpp targetLinux/moc_NoBodyShapeWidget.cpp targetLinux/moc_LocalizedShapeTableView.cpp targetLinux/moc_SpinBoxDelegate.cpp targetLinux/moc_LightControllerWidget.cpp targetLinux/moc_LightTableView.cpp targetLinux/moc_NewLightDialog.cpp targetLinux/moc_SoundControllerWidget.cpp targetLinux/moc_SoundTableView.cpp targetLinux/moc_ChangeSoundShapeDialog.cpp targetLinux/moc_ChangeSoundTriggerDialog.cpp targetLinux/moc_NewSoundDialog.cpp targetLinux/moc_SoundBoxShapeWidget.cpp targetLinux/moc_SoundShapeWidget.cpp targetLinux/moc_SoundSphereShapeWidget.cpp targetLinux/moc_AIControllerWidget.cpp targetLinux/moc_SceneDisplayerWidget.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) targetLinux/moc_MapEditorWindow.cpp targetLinux/moc_NewDialog.cpp targetLinux/moc_NotSavedDialog.cpp targetLinux/moc_SceneControllerWidget.cpp targetLinux/moc_ObjectControllerWidget.cpp targetLinux/moc_ObjectTableView.cpp targetLinux/moc_ChangeBodyShapeDialog.cpp targetLinux/moc_NewObjectDialog.cpp targetLinux/moc_BodyBoxShapeWidget.cpp targetLinux/moc_BodyCapsuleShapeWidget.cpp targetLinux/moc_BodyCompoundShapeWidget.cpp targetLinux/moc_BodyConvexHullShapeWidget.cpp targetLinux/moc_BodyCylinderShapeWidget.cpp targetLinux/moc_BodyShapeWidget.cpp targetLinux/moc_BodySphereShapeWidget.cpp targetLinux/moc_NoBodyShapeWidget.cpp targetLinux/moc_LocalizedShapeTableView.cpp targetLinux/moc_SpinBoxDelegate.cpp targetLinux/moc_LightControllerWidget.cpp targetLinux/moc_LightTableView.cpp targetLinux/moc_NewLightDialog.cpp targetLinux/moc_SoundControllerWidget.cpp targetLinux/moc_SoundTableView.cpp targetLinux/moc_ChangeSoundShapeDialog.cpp targetLinux/moc_ChangeSoundTriggerDialog.cpp targetLinux/moc_NewSoundDialog.cpp targetLinux/moc_SoundBoxShapeWidget.cpp targetLinux/moc_SoundShapeWidget.cpp targetLinux/moc_SoundSphereShapeWidget.cpp targetLinux/moc_AIControllerWidget.cpp targetLinux/moc_SceneDisplayerWidget.cpp
+	-$(DEL_FILE) targetLinux/moc_MapEditorWindow.cpp targetLinux/moc_NewDialog.cpp targetLinux/moc_NotSavedDialog.cpp targetLinux/moc_SceneControllerWidget.cpp targetLinux/moc_ObjectControllerWidget.cpp targetLinux/moc_ObjectTableView.cpp targetLinux/moc_ChangeBodyShapeDialog.cpp targetLinux/moc_NewObjectDialog.cpp targetLinux/moc_BodyBoxShapeWidget.cpp targetLinux/moc_BodyCapsuleShapeWidget.cpp targetLinux/moc_BodyCompoundShapeWidget.cpp targetLinux/moc_BodyConeShapeWidget.cpp targetLinux/moc_BodyConvexHullShapeWidget.cpp targetLinux/moc_BodyCylinderShapeWidget.cpp targetLinux/moc_BodyShapeWidget.cpp targetLinux/moc_BodySphereShapeWidget.cpp targetLinux/moc_NoBodyShapeWidget.cpp targetLinux/moc_LocalizedShapeTableView.cpp targetLinux/moc_SpinBoxDelegate.cpp targetLinux/moc_LightControllerWidget.cpp targetLinux/moc_LightTableView.cpp targetLinux/moc_NewLightDialog.cpp targetLinux/moc_SoundControllerWidget.cpp targetLinux/moc_SoundTableView.cpp targetLinux/moc_ChangeSoundShapeDialog.cpp targetLinux/moc_ChangeSoundTriggerDialog.cpp targetLinux/moc_NewSoundDialog.cpp targetLinux/moc_SoundBoxShapeWidget.cpp targetLinux/moc_SoundShapeWidget.cpp targetLinux/moc_SoundSphereShapeWidget.cpp targetLinux/moc_AIControllerWidget.cpp targetLinux/moc_SceneDisplayerWidget.cpp
 targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
@@ -612,6 +618,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -623,6 +630,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -675,12 +683,14 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -773,6 +783,7 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -804,6 +815,8 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -889,6 +902,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -900,6 +914,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -977,6 +992,7 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -1006,6 +1022,8 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1055,12 +1073,14 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -1153,6 +1173,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1164,6 +1185,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -1215,12 +1237,14 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -1316,6 +1340,7 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -1345,6 +1370,8 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -1410,6 +1437,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1421,6 +1449,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -1498,6 +1527,7 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -1527,6 +1557,8 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1576,12 +1608,14 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -1667,6 +1701,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1678,6 +1713,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -1753,6 +1789,7 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -1782,6 +1819,8 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1831,12 +1870,14 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -1917,6 +1958,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -1928,6 +1970,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -2003,6 +2046,7 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -2032,6 +2076,8 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -2081,12 +2127,14 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -2166,6 +2214,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2177,6 +2226,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -2228,12 +2278,14 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -2329,6 +2381,7 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -2358,6 +2411,8 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2417,6 +2472,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2428,6 +2484,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -2479,12 +2536,14 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -2580,6 +2639,7 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -2609,6 +2669,8 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2668,6 +2730,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2679,6 +2742,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -2730,12 +2794,14 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -2831,6 +2897,7 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -2860,6 +2927,8 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2872,6 +2941,264 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../mapEditor/src/scene/controller/ai/AIController.h \
 		src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h -o targetLinux/moc_BodyCompoundShapeWidget.cpp
+
+targetLinux/moc_BodyConeShapeWidget.cpp: ../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
+		../common/src/math/geometry/3d/util/SortPointsService.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../physicsEngine/src/UrchinPhysicsEngine.h \
+		../physicsEngine/src/PhysicsWorld.h \
+		../physicsEngine/src/body/AbstractBody.h \
+		../physicsEngine/src/body/work/AbstractWorkBody.h \
+		../physicsEngine/src/shape/CollisionShape3D.h \
+		../physicsEngine/src/utils/math/PhysicsTransform.h \
+		../physicsEngine/src/object/CollisionConvexObject3D.h \
+		../physicsEngine/src/collision/island/IslandElement.h \
+		../physicsEngine/src/body/BodyManager.h \
+		../physicsEngine/src/collision/CollisionWorld.h \
+		../physicsEngine/src/collision/ManifoldResult.h \
+		../physicsEngine/src/collision/ManifoldContactPoint.h \
+		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
+		../physicsEngine/src/collision/OverlappingPair.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
+		../physicsEngine/src/collision/broadphase/PairContainer.h \
+		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
+		../physicsEngine/src/utils/pool/FixedSizePool.h \
+		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/object/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
+		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
+		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
+		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
+		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
+		../physicsEngine/src/body/work/WorkRigidBody.h \
+		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
+		../physicsEngine/src/collision/island/IslandManager.h \
+		../physicsEngine/src/collision/island/IslandContainer.h \
+		../physicsEngine/src/collision/island/IslandElementLink.h \
+		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
+		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/visualizer/CollisionVisualizer.h \
+		../physicsEngine/src/body/RigidBody.h \
+		../physicsEngine/src/body/InertiaCalculation.h \
+		../physicsEngine/src/shape/CollisionSphereShape.h \
+		../physicsEngine/src/shape/CollisionBoxShape.h \
+		../physicsEngine/src/shape/CollisionCapsuleShape.h \
+		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
+		../physicsEngine/src/shape/CollisionConvexHullShape.h \
+		../physicsEngine/src/shape/CollisionCompoundShape.h \
+		../physicsEngine/src/object/CollisionSphereObject.h \
+		../physicsEngine/src/object/CollisionBoxObject.h \
+		../physicsEngine/src/object/CollisionCapsuleObject.h \
+		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
+		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/utils/Simplex.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
+		../physicsEngine/src/processable/character/CharacterController.h \
+		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
+		../mapHandler/src/UrchinMapHandler.h \
+		../mapHandler/src/MapHandler.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../soundEngine/src/UrchinSoundEngine.h \
+		../soundEngine/src/SoundManager.h \
+		../soundEngine/src/AudioController.h \
+		../soundEngine/src/sound/Sound.h \
+		../soundEngine/src/trigger/SoundTrigger.h \
+		../soundEngine/src/behavior/SoundBehavior.h \
+		../soundEngine/src/behavior/SmoothStopAction.h \
+		../soundEngine/src/player/AudioPlayer.h \
+		../soundEngine/src/device/DeviceManager.h \
+		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
+		../soundEngine/src/trigger/ManualTrigger.h \
+		../soundEngine/src/trigger/ShapeTrigger.h \
+		../soundEngine/src/trigger/shape/SoundShape.h \
+		../soundEngine/src/trigger/shape/SoundBox.h \
+		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../mapHandler/src/resources/Map.h \
+		../mapHandler/src/resources/object/SceneObject.h \
+		../mapHandler/src/resources/light/SceneLight.h \
+		../mapHandler/src/resources/sound/SceneSound.h \
+		src/scene/controller/objects/bodyshape/BodyConeShapeWidget.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/greg/Project/VideoGame/urchinEngine/mapEditor -I/home/greg/Project/VideoGame/urchinEngine/mapEditor/src -I/home/greg/Project/VideoGame/urchinEngine/common/src -I/home/greg/Project/VideoGame/urchinEngine/3dEngine/src -I/home/greg/Project/VideoGame/urchinEngine/physicsEngine/src -I/home/greg/Project/VideoGame/urchinEngine/AIEngine/src -I/home/greg/Project/VideoGame/urchinEngine/soundEngine/src -I/home/greg/Project/VideoGame/urchinEngine/mapHandler/src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include src/scene/controller/objects/bodyshape/BodyConeShapeWidget.h -o targetLinux/moc_BodyConeShapeWidget.cpp
 
 targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
@@ -2925,6 +3252,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -2936,6 +3264,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -2987,12 +3316,14 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -3088,6 +3419,7 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -3117,6 +3449,8 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3176,6 +3510,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3187,6 +3522,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -3238,12 +3574,14 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -3339,6 +3677,7 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -3368,6 +3707,8 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3427,6 +3768,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3438,6 +3780,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -3515,6 +3858,7 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -3544,6 +3888,8 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -3593,12 +3939,14 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -3677,6 +4025,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3688,6 +4037,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -3739,12 +4089,14 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -3840,6 +4192,7 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -3869,6 +4222,8 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3930,6 +4285,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -3941,6 +4297,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -3990,12 +4347,14 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -4091,6 +4450,7 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -4120,6 +4480,8 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -4179,6 +4541,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4190,6 +4553,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -4267,6 +4631,7 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -4296,6 +4661,8 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4345,12 +4712,14 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -4435,6 +4804,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4446,6 +4816,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -4523,6 +4894,7 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -4552,6 +4924,8 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4601,12 +4975,14 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -4685,6 +5061,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4696,6 +5073,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -4774,6 +5152,7 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -4803,6 +5182,8 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4852,12 +5233,14 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -4941,6 +5324,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -4952,6 +5336,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -5029,6 +5414,7 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -5058,6 +5444,8 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5107,12 +5495,14 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -5198,6 +5588,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5209,6 +5600,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -5284,6 +5676,7 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -5313,6 +5706,8 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5362,12 +5757,14 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -5447,6 +5844,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5458,6 +5856,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -5536,6 +5935,7 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -5565,6 +5965,8 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5614,12 +6016,14 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -5704,6 +6108,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5715,6 +6120,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -5792,6 +6198,7 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -5821,6 +6228,8 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5870,12 +6279,14 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -5961,6 +6372,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -5972,6 +6384,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -6047,6 +6460,7 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -6076,6 +6490,8 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6125,12 +6541,14 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -6211,6 +6629,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6222,6 +6641,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -6297,6 +6717,7 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -6326,6 +6747,8 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6375,12 +6798,14 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -6461,6 +6886,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6472,6 +6898,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -6547,6 +6974,7 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -6576,6 +7004,8 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6625,12 +7055,14 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -6710,6 +7142,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6721,6 +7154,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -6815,6 +7249,7 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -6828,6 +7263,8 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6877,12 +7314,14 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -6961,6 +7400,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -6972,6 +7412,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -7049,6 +7490,7 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -7078,6 +7520,8 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7127,12 +7571,14 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -7211,6 +7657,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7222,6 +7669,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -7316,6 +7764,7 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -7329,6 +7778,8 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7378,12 +7829,14 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -7463,6 +7916,7 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7474,6 +7928,7 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -7551,6 +8006,7 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -7580,6 +8036,8 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7629,12 +8087,14 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -7713,6 +8173,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7724,6 +8185,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -7776,12 +8238,14 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -7874,6 +8338,7 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -7905,6 +8370,8 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -7986,6 +8453,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -7997,6 +8465,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -8049,12 +8518,14 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -8147,6 +8618,7 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -8178,6 +8650,8 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -8258,6 +8732,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8269,6 +8744,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -8321,12 +8797,14 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -8419,6 +8897,7 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -8450,6 +8929,8 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -8537,6 +9018,7 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8548,6 +9030,7 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -8618,6 +9101,7 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8629,6 +9113,7 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -8690,6 +9175,7 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8701,6 +9187,7 @@ targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/Urchin
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -8763,6 +9250,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -8774,6 +9262,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -8849,6 +9338,7 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -8878,6 +9368,8 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -8927,12 +9419,14 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -9015,6 +9509,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9026,6 +9521,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -9103,6 +9599,7 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -9132,6 +9629,8 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -9181,12 +9680,14 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -9280,6 +9781,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9291,6 +9793,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -9364,6 +9867,7 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -9418,12 +9922,14 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -9470,6 +9976,8 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -9530,6 +10038,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9541,6 +10050,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -9592,12 +10102,14 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -9693,6 +10205,7 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -9722,6 +10235,8 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -9795,6 +10310,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -9806,6 +10322,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -9883,6 +10400,7 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -9912,6 +10430,8 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -9961,12 +10481,14 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -10049,6 +10571,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10060,6 +10583,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -10138,6 +10662,7 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -10167,6 +10692,8 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -10216,12 +10743,14 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -10300,6 +10829,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10311,6 +10841,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -10389,6 +10920,7 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -10418,6 +10950,8 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -10467,12 +11001,14 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -10554,6 +11090,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10565,6 +11102,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -10616,12 +11154,14 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -10717,6 +11257,7 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -10746,6 +11287,8 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -10806,6 +11349,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -10817,6 +11361,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -10868,12 +11413,14 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -10969,6 +11516,7 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -10998,6 +11546,8 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11058,6 +11608,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11069,6 +11620,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -11120,12 +11672,14 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -11221,6 +11775,7 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -11250,6 +11805,8 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11269,6 +11826,265 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/BodyCompoundShapeWidget.o src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp
+
+targetLinux/BodyConeShapeWidget.o: src/scene/controller/objects/bodyshape/BodyConeShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConeShapeWidget.h \
+		../common/src/UrchinCommon.h \
+		../common/src/tools/file/PropertyFileHandler.h \
+		../common/src/tools/logger/Logger.h \
+		../common/src/tools/logger/Logger.inl \
+		../common/src/tools/logger/FileLogger.h \
+		../common/src/tools/ConfigService.h \
+		../common/src/pattern/singleton/Singleton.h \
+		../common/src/pattern/singleton/SingletonManager.h \
+		../common/src/pattern/singleton/SingletonInterface.h \
+		../common/src/pattern/singleton/Singleton.inl \
+		../common/src/tools/xml/XmlParser.h \
+		../common/src/tools/xml/tinyxml/tinyxml.h \
+		../common/src/tools/xml/XmlAttribute.h \
+		../common/src/tools/xml/XmlChunk.h \
+		../common/src/math/algebra/point/Point2.h \
+		../common/src/math/algebra/vector/Vector2.h \
+		../common/src/math/algebra/matrix/Matrix2.h \
+		../common/src/math/algebra/point/Point3.h \
+		../common/src/math/algebra/vector/Vector3.h \
+		../common/src/math/algebra/matrix/Matrix3.h \
+		../common/src/math/algebra/point/Point4.h \
+		../common/src/math/algebra/vector/Vector4.h \
+		../common/src/math/algebra/matrix/Matrix4.h \
+		../common/src/tools/xml/XmlWriter.h \
+		../common/src/pattern/observer/Observable.h \
+		../common/src/pattern/observer/Observer.h \
+		../common/src/io/Converter.h \
+		../common/src/io/StringUtil.h \
+		../common/src/system/FileSystem.h \
+		../common/src/system/FileHandler.h \
+		../common/src/math/algebra/Quaternion.h \
+		../common/src/math/algebra/Transform.h \
+		../common/src/math/algebra/MathValue.h \
+		../common/src/math/geometry/2d/Line2D.h \
+		../common/src/math/geometry/2d/shape/ConvexShape2D.h \
+		../common/src/math/geometry/2d/shape/RectangleShape.h \
+		../common/src/math/geometry/2d/shape/ConvexHullShape2D.h \
+		../common/src/math/geometry/2d/object/ConvexObject2D.h \
+		../common/src/math/geometry/2d/object/ConvexHull2D.h \
+		../common/src/math/geometry/2d/object/LineSegment2D.h \
+		../common/src/math/geometry/2d/object/Rectangle.h \
+		../common/src/math/geometry/3d/Line3D.h \
+		../common/src/math/geometry/3d/Ray.h \
+		../common/src/math/geometry/3d/Plane.h \
+		../common/src/math/geometry/3d/IndexedTriangle3D.h \
+		../common/src/math/geometry/3d/shape/ConvexShape3D.h \
+		../common/src/math/geometry/3d/object/ConvexObject3D.h \
+		../common/src/math/geometry/3d/shape/BoxShape.h \
+		../common/src/math/geometry/3d/shape/SphereShape.h \
+		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
+		../common/src/math/geometry/3d/shape/CapsuleShape.h \
+		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
+		../common/src/math/geometry/3d/object/AABBox.h \
+		../common/src/math/geometry/3d/object/ConvexHull3D.h \
+		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
+		../common/src/math/geometry/3d/object/Frustum.h \
+		../common/src/math/geometry/3d/object/Sphere.h \
+		../common/src/math/geometry/3d/object/LineSegment3D.h \
+		../common/src/math/geometry/3d/object/OBBox.h \
+		../common/src/math/geometry/3d/object/Triangle3D.h \
+		../common/src/math/geometry/3d/object/Tetrahedron.h \
+		../common/src/math/geometry/3d/object/Capsule.h \
+		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
+		../common/src/math/geometry/3d/util/SortPointsService.h \
+		../common/src/math/algorithm/MathAlgorithm.h \
+		../common/src/math/algorithm/PascalTriangle.h \
+		../common/src/math/trigonometry/AngleConverter.h \
+		../physicsEngine/src/UrchinPhysicsEngine.h \
+		../physicsEngine/src/PhysicsWorld.h \
+		../physicsEngine/src/body/AbstractBody.h \
+		../physicsEngine/src/body/work/AbstractWorkBody.h \
+		../physicsEngine/src/shape/CollisionShape3D.h \
+		../physicsEngine/src/utils/math/PhysicsTransform.h \
+		../physicsEngine/src/object/CollisionConvexObject3D.h \
+		../physicsEngine/src/collision/island/IslandElement.h \
+		../physicsEngine/src/body/BodyManager.h \
+		../physicsEngine/src/collision/CollisionWorld.h \
+		../physicsEngine/src/collision/ManifoldResult.h \
+		../physicsEngine/src/collision/ManifoldContactPoint.h \
+		../physicsEngine/src/collision/constraintsolver/solvingdata/AccumulatedSolvingData.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseManager.h \
+		../physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h \
+		../physicsEngine/src/collision/OverlappingPair.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/CollisionObjectWrapper.h \
+		../physicsEngine/src/collision/broadphase/PairContainer.h \
+		../physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h \
+		../physicsEngine/src/utils/pool/FixedSizePool.h \
+		../physicsEngine/src/utils/pool/FixedSizePool.inl \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h \
+		../physicsEngine/src/object/TemporalObject.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h \
+		../physicsEngine/src/body/work/WorkGhostBody.h \
+		../physicsEngine/src/collision/integration/IntegrateVelocityManager.h \
+		../physicsEngine/src/collision/constraintsolver/ConstraintSolverManager.h \
+		../physicsEngine/src/collision/constraintsolver/ConstraintSolving.h \
+		../physicsEngine/src/collision/constraintsolver/solvingdata/CommonSolvingData.h \
+		../physicsEngine/src/body/work/WorkRigidBody.h \
+		../physicsEngine/src/collision/constraintsolver/solvingdata/ImpulseSolvingData.h \
+		../physicsEngine/src/collision/island/IslandManager.h \
+		../physicsEngine/src/collision/island/IslandContainer.h \
+		../physicsEngine/src/collision/island/IslandElementLink.h \
+		../physicsEngine/src/collision/integration/IntegrateTransformManager.h \
+		../physicsEngine/src/processable/Processable.h \
+		../physicsEngine/src/processable/raytest/RayTestResult.h \
+		../physicsEngine/src/visualizer/CollisionVisualizer.h \
+		../physicsEngine/src/body/RigidBody.h \
+		../physicsEngine/src/body/InertiaCalculation.h \
+		../physicsEngine/src/shape/CollisionSphereShape.h \
+		../physicsEngine/src/shape/CollisionBoxShape.h \
+		../physicsEngine/src/shape/CollisionCapsuleShape.h \
+		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
+		../physicsEngine/src/shape/CollisionConvexHullShape.h \
+		../physicsEngine/src/shape/CollisionCompoundShape.h \
+		../physicsEngine/src/object/CollisionSphereObject.h \
+		../physicsEngine/src/object/CollisionBoxObject.h \
+		../physicsEngine/src/object/CollisionCapsuleObject.h \
+		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
+		../physicsEngine/src/object/CollisionConvexHullObject.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
+		../physicsEngine/src/collision/broadphase/sweepandprune/BodyBox.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h \
+		../physicsEngine/src/collision/broadphase/aabbtree/BodyNodeData.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPATriangleData.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResult.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/utils/Simplex.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h \
+		../physicsEngine/src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h \
+		../physicsEngine/src/processable/character/CharacterController.h \
+		../mapEditor/src/scene/controller/objects/bodyshape/BodyShapeWidget.h \
+		../mapHandler/src/UrchinMapHandler.h \
+		../mapHandler/src/MapHandler.h \
+		../3dEngine/src/Urchin3dEngine.h \
+		../3dEngine/src/scene/SceneManager.h \
+		../3dEngine/src/scene/renderer3d/Renderer3d.h \
+		../3dEngine/src/scene/Renderer.h \
+		../3dEngine/src/scene/renderer3d/camera/Camera.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/ModelDisplayer.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/MeshParameter.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomUniform.h \
+		../3dEngine/src/scene/renderer3d/model/displayer/CustomModelUniform.h \
+		../3dEngine/src/scene/renderer3d/model/Model.h \
+		../3dEngine/src/scene/renderer3d/model/Meshes.h \
+		../3dEngine/src/resources/model/ConstMeshes.h \
+		../3dEngine/src/resources/model/ConstMesh.h \
+		../3dEngine/src/resources/material/Material.h \
+		../3dEngine/src/resources/Resource.h \
+		../3dEngine/src/resources/image/Image.h \
+		../3dEngine/src/scene/renderer3d/model/Mesh.h \
+		../3dEngine/src/scene/renderer3d/model/Animation.h \
+		../3dEngine/src/resources/model/ConstAnimation.h \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.h \
+		../3dEngine/src/utils/display/geometry/aabbox/AABBoxModel.h \
+		../3dEngine/src/utils/display/geometry/GeometryModel.h \
+		../3dEngine/src/scene/renderer3d/octree/Octree.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/OctreeableFilter.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octree.inl \
+		../3dEngine/src/scene/renderer3d/octree/Octreeable.inl \
+		../3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.h \
+		../3dEngine/src/utils/display/quad/QuadDisplayer.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.h \
+		../3dEngine/src/scene/renderer3d/octree/filter/AcceptAllFilter.inl \
+		../3dEngine/src/utils/shader/ShaderManager.h \
+		../3dEngine/src/utils/shader/TokenReplacerShader.h \
+		../3dEngine/src/utils/shader/LoopUnrollerShader.h \
+		../3dEngine/src/scene/renderer3d/octree/OctreeManager.inl \
+		../3dEngine/src/scene/renderer3d/shadow/ShadowManager.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h \
+		../3dEngine/src/scene/renderer3d/shadow/data/FrustumShadowData.h \
+		../3dEngine/src/scene/renderer3d/light/Light.h \
+		../3dEngine/src/utils/filter/TextureFilter.h \
+		../3dEngine/src/utils/filter/TextureFilter.inl \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.h \
+		../3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.h \
+		../3dEngine/src/scene/renderer3d/light/LightManager.h \
+		../3dEngine/src/scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h \
+		../3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.h \
+		../3dEngine/src/scene/renderer3d/skybox/Skybox.h \
+		../3dEngine/src/utils/display/geometry/GeometryDisplayer.h \
+		../3dEngine/src/scene/GUI/GUIRenderer.h \
+		../3dEngine/src/scene/GUI/widget/Widget.h \
+		../3dEngine/src/scene/GUI/widget/Position.h \
+		../3dEngine/src/scene/GUI/widget/Size.h \
+		../3dEngine/src/scene/GUI/EventListener.h \
+		../3dEngine/src/texture/TextureManager.h \
+		../3dEngine/src/scene/InputDevice.h \
+		../3dEngine/src/scene/renderer3d/camera/FpsCamera.h \
+		../3dEngine/src/scene/renderer3d/camera/FreeCamera.h \
+		../3dEngine/src/scene/renderer3d/light/sun/SunLight.h \
+		../3dEngine/src/scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h \
+		../3dEngine/src/scene/GUI/widget/container/Container.h \
+		../3dEngine/src/scene/GUI/widget/window/Window.h \
+		../3dEngine/src/scene/GUI/widget/text/Text.h \
+		../3dEngine/src/resources/font/Font.h \
+		../3dEngine/src/scene/GUI/GUISkinService.h \
+		../3dEngine/src/scene/GUI/widget/button/Button.h \
+		../3dEngine/src/scene/GUI/widget/staticbitmap/StaticBitmap.h \
+		../3dEngine/src/scene/GUI/widget/textbox/TextBox.h \
+		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
+		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
+		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
+		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
+		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
+		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
+		../3dEngine/src/utils/display/geometry/line/LineModel.h \
+		../3dEngine/src/utils/display/geometry/sphere/SphereModel.h \
+		../3dEngine/src/utils/display/geometry/convexhull/ConvexHullModel.h \
+		../soundEngine/src/UrchinSoundEngine.h \
+		../soundEngine/src/SoundManager.h \
+		../soundEngine/src/AudioController.h \
+		../soundEngine/src/sound/Sound.h \
+		../soundEngine/src/trigger/SoundTrigger.h \
+		../soundEngine/src/behavior/SoundBehavior.h \
+		../soundEngine/src/behavior/SmoothStopAction.h \
+		../soundEngine/src/player/AudioPlayer.h \
+		../soundEngine/src/device/DeviceManager.h \
+		../soundEngine/src/sound/ambient/AmbientSound.h \
+		../soundEngine/src/sound/spatial/PointSound.h \
+		../soundEngine/src/trigger/ManualTrigger.h \
+		../soundEngine/src/trigger/ShapeTrigger.h \
+		../soundEngine/src/trigger/shape/SoundShape.h \
+		../soundEngine/src/trigger/shape/SoundBox.h \
+		../soundEngine/src/trigger/shape/SoundSphere.h \
+		../AIEngine/src/UrchinAIEngine.h \
+		../AIEngine/src/input/AIWorld.h \
+		../AIEngine/src/input/AIObject.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
+		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
+		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../mapHandler/src/resources/Map.h \
+		../mapHandler/src/resources/object/SceneObject.h \
+		../mapHandler/src/resources/light/SceneLight.h \
+		../mapHandler/src/resources/sound/SceneSound.h \
+		../mapEditor/src/support/SpinBoxStyleHelper.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/BodyConeShapeWidget.o src/scene/controller/objects/bodyshape/BodyConeShapeWidget.cpp
 
 targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.cpp src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h \
 		../common/src/UrchinCommon.h \
@@ -11323,6 +12139,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11334,6 +12151,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -11385,12 +12203,14 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -11486,6 +12306,7 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -11515,6 +12336,8 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11579,6 +12402,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11590,6 +12414,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -11641,12 +12466,14 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -11742,6 +12569,7 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -11771,6 +12599,8 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11831,6 +12661,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -11842,6 +12673,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -11919,6 +12751,7 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -11948,6 +12781,8 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -11997,12 +12832,14 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -12083,6 +12920,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12094,6 +12932,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -12143,12 +12982,14 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -12243,6 +13084,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -12272,6 +13114,8 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12282,6 +13126,7 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyBoxShapeWidget.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyCapsuleShapeWidget.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyCylinderShapeWidget.h \
+		../mapEditor/src/scene/controller/objects/bodyshape/BodyConeShapeWidget.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyConvexHullShapeWidget.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h \
 		../mapEditor/src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h \
@@ -12345,6 +13190,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12356,6 +13202,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -12407,12 +13254,14 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -12508,6 +13357,7 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -12537,6 +13387,8 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12599,6 +13451,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12610,6 +13463,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -12659,12 +13513,14 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -12760,6 +13616,7 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -12789,6 +13646,8 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12850,6 +13709,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -12861,6 +13721,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -12936,6 +13797,7 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -12965,6 +13827,8 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13014,12 +13878,14 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -13098,6 +13964,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13109,6 +13976,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -13186,6 +14054,7 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -13215,6 +14084,8 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13264,12 +14135,14 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -13356,6 +14229,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13367,6 +14241,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -13444,6 +14319,7 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -13473,6 +14349,8 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13522,12 +14400,14 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -13607,6 +14487,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13618,6 +14499,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -13695,6 +14577,7 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -13724,6 +14607,8 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13773,12 +14658,14 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -13857,6 +14744,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -13868,6 +14756,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -13946,6 +14835,7 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -13975,6 +14865,8 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14024,12 +14916,14 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -14117,6 +15011,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14128,6 +15023,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -14205,6 +15101,7 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -14234,6 +15131,8 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14283,12 +15182,14 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -14371,6 +15272,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14382,6 +15284,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -14460,6 +15363,7 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -14489,6 +15393,8 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14538,12 +15444,14 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -14624,6 +15532,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14635,6 +15544,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -14712,6 +15622,7 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -14741,6 +15652,8 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14790,12 +15703,14 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -14875,6 +15790,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -14886,6 +15802,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -14964,6 +15881,7 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -14993,6 +15911,8 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15042,12 +15962,14 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -15140,6 +16062,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15151,6 +16074,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -15228,6 +16152,7 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -15257,6 +16182,8 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15306,12 +16233,14 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -15394,6 +16323,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15405,6 +16335,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -15483,6 +16414,7 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -15512,6 +16444,8 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15561,12 +16495,14 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -15645,6 +16581,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15656,6 +16593,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -15734,6 +16672,7 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -15763,6 +16702,8 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15812,12 +16753,14 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -15895,6 +16838,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -15906,6 +16850,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -15984,6 +16929,7 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -16013,6 +16959,8 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16062,12 +17010,14 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -16149,6 +17099,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16160,6 +17111,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -16254,6 +17206,7 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -16267,6 +17220,8 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16316,12 +17271,14 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -16402,6 +17359,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16413,6 +17371,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -16490,6 +17449,7 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -16519,6 +17479,8 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16568,12 +17530,14 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -16655,6 +17619,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16666,6 +17631,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -16757,6 +17723,7 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -16770,6 +17737,8 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16819,12 +17788,14 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -16906,6 +17877,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -16917,6 +17889,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -17011,6 +17984,7 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -17024,6 +17998,8 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17073,12 +18049,14 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -17160,6 +18138,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17171,6 +18150,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -17246,6 +18226,7 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -17275,6 +18256,8 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17324,12 +18307,14 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -17410,6 +18395,7 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17421,6 +18407,7 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -17429,6 +18416,8 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		src/scene/controller/ai/AIController.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -17503,6 +18492,7 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -17574,12 +18564,14 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -17659,6 +18651,7 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17670,6 +18663,7 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -17747,6 +18741,7 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -17776,6 +18771,8 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17825,12 +18822,14 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -17912,6 +18911,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -17923,6 +18923,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -17974,12 +18975,14 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -18072,6 +19075,7 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -18103,6 +19107,8 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -18167,6 +19173,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18178,6 +19185,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -18230,12 +19238,14 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -18328,6 +19338,7 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -18359,6 +19370,8 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -18423,6 +19436,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18434,6 +19448,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -18509,6 +19524,7 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -18569,6 +19585,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18580,6 +19597,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -18631,12 +19649,14 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -18730,6 +19750,7 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -18761,6 +19782,8 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -18819,6 +19842,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -18830,6 +19854,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -18906,6 +19931,7 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -18937,6 +19963,8 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -18986,12 +20014,14 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -19069,6 +20099,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -19080,6 +20111,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -19156,6 +20188,7 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -19187,6 +20220,8 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -19236,12 +20271,14 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -19322,6 +20359,7 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../common/src/math/geometry/3d/shape/TriangleShape3D.h \
 		../common/src/math/geometry/3d/shape/CapsuleShape.h \
 		../common/src/math/geometry/3d/shape/CylinderShape.h \
+		../common/src/math/geometry/3d/shape/ConeShape.h \
 		../common/src/math/geometry/3d/object/AABBox.h \
 		../common/src/math/geometry/3d/object/ConvexHull3D.h \
 		../common/src/math/geometry/3d/shape/ConvexHullShape3D.h \
@@ -19333,6 +20371,7 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../common/src/math/geometry/3d/object/Tetrahedron.h \
 		../common/src/math/geometry/3d/object/Capsule.h \
 		../common/src/math/geometry/3d/object/Cylinder.h \
+		../common/src/math/geometry/3d/object/Cone.h \
 		../common/src/math/geometry/3d/util/SortPointsService.h \
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
@@ -19406,6 +20445,7 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../3dEngine/src/scene/GUI/widget/slider/Slider.h \
 		../3dEngine/src/utils/display/geometry/capsule/CapsuleModel.h \
 		../3dEngine/src/utils/display/geometry/cylinder/CylinderModel.h \
+		../3dEngine/src/utils/display/geometry/cone/ConeModel.h \
 		../3dEngine/src/utils/display/geometry/frustum/FrustumModel.h \
 		../3dEngine/src/utils/display/geometry/obbox/OBBoxModel.h \
 		../3dEngine/src/utils/display/geometry/points/PointsModel.h \
@@ -19437,6 +20477,8 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
+		../AIEngine/src/path/navmesh/polyhedron/Face.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -19486,12 +20528,14 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../physicsEngine/src/shape/CollisionBoxShape.h \
 		../physicsEngine/src/shape/CollisionCapsuleShape.h \
 		../physicsEngine/src/shape/CollisionCylinderShape.h \
+		../physicsEngine/src/shape/CollisionConeShape.h \
 		../physicsEngine/src/shape/CollisionConvexHullShape.h \
 		../physicsEngine/src/shape/CollisionCompoundShape.h \
 		../physicsEngine/src/object/CollisionSphereObject.h \
 		../physicsEngine/src/object/CollisionBoxObject.h \
 		../physicsEngine/src/object/CollisionCapsuleObject.h \
 		../physicsEngine/src/object/CollisionCylinderObject.h \
+		../physicsEngine/src/object/CollisionConeObject.h \
 		../physicsEngine/src/object/CollisionConvexHullObject.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/SweepAndPrune.h \
 		../physicsEngine/src/collision/broadphase/sweepandprune/BodyEndPoint.h \
@@ -19549,6 +20593,9 @@ targetLinux/moc_BodyCapsuleShapeWidget.o: targetLinux/moc_BodyCapsuleShapeWidget
 
 targetLinux/moc_BodyCompoundShapeWidget.o: targetLinux/moc_BodyCompoundShapeWidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/moc_BodyCompoundShapeWidget.o targetLinux/moc_BodyCompoundShapeWidget.cpp
+
+targetLinux/moc_BodyConeShapeWidget.o: targetLinux/moc_BodyConeShapeWidget.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/moc_BodyConeShapeWidget.o targetLinux/moc_BodyConeShapeWidget.cpp
 
 targetLinux/moc_BodyConvexHullShapeWidget.o: targetLinux/moc_BodyConvexHullShapeWidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o targetLinux/moc_BodyConvexHullShapeWidget.o targetLinux/moc_BodyConvexHullShapeWidget.cpp

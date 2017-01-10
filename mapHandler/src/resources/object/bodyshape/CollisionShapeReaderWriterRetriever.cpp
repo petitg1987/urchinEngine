@@ -4,6 +4,7 @@
 #include "resources/object/bodyshape/CollisionSphereReaderWriter.h"
 #include "resources/object/bodyshape/CollisionCapsuleReaderWriter.h"
 #include "resources/object/bodyshape/CollisionCylinderReaderWriter.h"
+#include "resources/object/bodyshape/CollisionConeReaderWriter.h"
 #include "resources/object/bodyshape/CollisionBoxReaderWriter.h"
 #include "resources/object/bodyshape/CollisionConvexHullReaderWriter.h"
 #include "resources/object/bodyshape/CollisionCompoundShapeReaderWriter.h"
@@ -23,6 +24,9 @@ namespace urchin
 		}else if(shapeType.compare(CYLINDER_VALUE)==0)
 		{
 			return std::make_shared<CollisionCylinderReaderWriter>();
+		}else if(shapeType.compare(CONE_VALUE)==0)
+		{
+			return std::make_shared<CollisionConeReaderWriter>();
 		}else if(shapeType.compare(BOX_VALUE)==0)
 		{
 			return std::make_shared<CollisionBoxReaderWriter>();
@@ -49,6 +53,9 @@ namespace urchin
 		}else if(shapeType==CollisionShape3D::CYLINDER_SHAPE)
 		{
 			return std::make_shared<CollisionCylinderReaderWriter>();
+		}else if(shapeType==CollisionShape3D::CONE_SHAPE)
+		{
+			return std::make_shared<CollisionConeReaderWriter>();
 		}else if(shapeType==CollisionShape3D::BOX_SHAPE)
 		{
 			return std::make_shared<CollisionBoxReaderWriter>();

@@ -2,9 +2,9 @@
 #define ENGINE_COLLISIONCAPSULEREADERWRITER_H
 
 #include <memory>
-
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
+
 #include "CollisionShapeReaderWriter.h"
 
 namespace urchin
