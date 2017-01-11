@@ -34,7 +34,7 @@ namespace urchin
 			Quaternion<T> orientation;
 
 			Vector3<T> axis[3]; //3 vectors of normalized axis
-			T baseSinAngleRadian;
+			T baseSideCosAngle;
 	};
 
 }

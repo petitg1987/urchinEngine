@@ -92,7 +92,7 @@ namespace urchin
 
 	Vector3<float> CollisionCylinderShape::computeLocalInertia(float mass) const
 	{
-		float interiaValue = (1.0/12.0) * mass * (3*getRadius() + getHeight()*getHeight());
+		float interiaValue = (1.0/12.0) * mass * (3*getRadius()*getRadius() + getHeight()*getHeight());
 
 		Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
 		inertia[getCylinderOrientation()] = 0.5 * mass * getRadius() * getRadius();

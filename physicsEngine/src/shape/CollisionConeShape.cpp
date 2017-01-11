@@ -66,7 +66,7 @@ namespace urchin
 	AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-		boxHalfSizes[getConeOrientation()] = getHeight() / 2.0;
+		boxHalfSizes[getConeOrientation()/2] = getHeight() / 2.0;
 
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
@@ -95,7 +95,7 @@ namespace urchin
 		float interiaValue = ((3.0 * mass)/20.0) * (getRadius()*getRadius() + 4.0*getHeight()*getHeight());
 
 		Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
-		inertia[getConeOrientation()] = (3.0 * mass * getRadius() * getRadius()) / 10.0;
+		inertia[getConeOrientation()/2] = (3.0 * mass * getRadius() * getRadius()) / 10.0;
 
 		return inertia;
 	}
