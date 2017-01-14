@@ -1,5 +1,3 @@
-#include <limits>
-
 #include "Cylinder.h"
 
 namespace urchin
@@ -74,7 +72,7 @@ namespace urchin
 			normalizedDirection = direction.normalize();
 		}
 		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(axis[getCylinderOrientation()]) * axis[getCylinderOrientation()]);
-		if(projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon())
+		if(projectedDirectionOnCircle.squareLength() > 0.0)
 		{
 			projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 		}

@@ -65,7 +65,7 @@ namespace urchin
 	AABBox<float> CollisionCapsuleShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-		boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0;
+		boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
 
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
@@ -90,16 +90,16 @@ namespace urchin
 
 	Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const
 	{ //approximative local inertia computed based on box including capsule.
-		Vector3<float> boxSizes(getRadius()*2.0, getRadius()*2.0, getRadius()*2.0);
+		Vector3<float> boxSizes(getRadius()*2.0f, getRadius()*2.0f, getRadius()*2.0f);
 		boxSizes[getCapsuleOrientation()] += getCylinderHeight();
 
 		float widthSquare = boxSizes.X * boxSizes.X;
 		float heightSquare = boxSizes.Y * boxSizes.Y;
 		float depthSquare = boxSizes.Z * boxSizes.Z;
 
-		float localInertia1 = (1.0/12.0) * mass * (heightSquare + depthSquare);
-		float localInertia2 = (1.0/12.0) * mass * (widthSquare + depthSquare);
-		float localInertia3 = (1.0/12.0) * mass * (widthSquare + heightSquare);
+		float localInertia1 = (1.0f/12.0f) * mass * (heightSquare + depthSquare);
+		float localInertia2 = (1.0f/12.0f) * mass * (widthSquare + depthSquare);
+		float localInertia3 = (1.0f/12.0f) * mass * (widthSquare + heightSquare);
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 

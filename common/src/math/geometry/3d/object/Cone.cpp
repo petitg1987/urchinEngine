@@ -1,4 +1,3 @@
-#include <limits>
 #include <cmath>
 
 #include "Cone.h"
@@ -91,7 +90,7 @@ namespace urchin
 		}
 
 		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(centralAxis) * centralAxis);
-		if(projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon())
+		if(projectedDirectionOnCircle.squareLength() > 0.0)
 		{
 			projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 		}

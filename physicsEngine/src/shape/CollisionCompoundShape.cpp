@@ -92,13 +92,13 @@ namespace urchin
 	Vector3<float> CollisionCompoundShape::computeLocalInertia(float mass) const
 	{
 		AABBox<float> aabbox = toAABBox(PhysicsTransform());
-		float width = 2.0 * aabbox.getHalfSize(0);
-		float height = 2.0 * aabbox.getHalfSize(1);
-		float depth = 2.0 * aabbox.getHalfSize(2);
+		float width = 2.0f * aabbox.getHalfSize(0);
+		float height = 2.0f * aabbox.getHalfSize(1);
+		float depth = 2.0f * aabbox.getHalfSize(2);
 
-		float localInertia1 = (1.0/12.0) * mass * (height*height + depth*depth);
-		float localInertia2 = (1.0/12.0) * mass * (width*width + depth*depth);
-		float localInertia3 = (1.0/12.0) * mass * (width*width + height*height);
+		float localInertia1 = (1.0f/12.0f) * mass * (height*height + depth*depth);
+		float localInertia2 = (1.0f/12.0f) * mass * (width*width + depth*depth);
+		float localInertia3 = (1.0f/12.0f) * mass * (width*width + height*height);
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 

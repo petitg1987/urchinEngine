@@ -81,13 +81,13 @@ namespace urchin
 
 	Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const
 	{
-		float width = 2.0 * boxShape->getHalfSize(0);
-		float height = 2.0 * boxShape->getHalfSize(1);
-		float depth = 2.0 * boxShape->getHalfSize(2);
+		float width = 2.0f * boxShape->getHalfSize(0);
+		float height = 2.0f * boxShape->getHalfSize(1);
+		float depth = 2.0f * boxShape->getHalfSize(2);
 
-		float localInertia1 = (1.0/12.0) * mass * (height*height + depth*depth);
-		float localInertia2 = (1.0/12.0) * mass * (width*width + depth*depth);
-		float localInertia3 = (1.0/12.0) * mass * (width*width + height*height);
+		float localInertia1 = (1.0f/12.0f) * mass * (height*height + depth*depth);
+		float localInertia2 = (1.0f/12.0f) * mass * (width*width + depth*depth);
+		float localInertia3 = (1.0f/12.0f) * mass * (width*width + height*height);
 		return Vector3<float>(localInertia1, localInertia2, localInertia3);
 	}
 

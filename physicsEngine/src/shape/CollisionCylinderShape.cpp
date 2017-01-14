@@ -66,7 +66,7 @@ namespace urchin
 	AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-		boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0;
+		boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
 
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
@@ -92,10 +92,10 @@ namespace urchin
 
 	Vector3<float> CollisionCylinderShape::computeLocalInertia(float mass) const
 	{
-		float interiaValue = (1.0/12.0) * mass * (3*getRadius()*getRadius() + getHeight()*getHeight());
+		float interiaValue = (1.0f/12.0f) * mass * (3.0f*getRadius()*getRadius() + getHeight()*getHeight());
 
 		Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
-		inertia[getCylinderOrientation()] = 0.5 * mass * getRadius() * getRadius();
+		inertia[getCylinderOrientation()] = 0.5f * mass * getRadius() * getRadius();
 
 		return inertia;
 	}
