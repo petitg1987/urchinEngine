@@ -5,7 +5,7 @@ namespace urchin
 
 	template<class T> Capsule<T>::Capsule():
 		capsuleShape(CapsuleShape<T>(0.0, 0.0, CapsuleShape<T>::CAPSULE_X)),
-		centerPosition(Point3<T>(0.0, 0.0, 0.0))
+		centerOfMass(Point3<T>(0.0, 0.0, 0.0))
 	{
 		axis[0] = Vector3<T>(0.0, 0.0, 0.0);
 		axis[1] = Vector3<T>(0.0, 0.0, 0.0);
@@ -15,7 +15,7 @@ namespace urchin
 	template<class T> Capsule<T>::Capsule(T radius, T cylinderHeight, typename CapsuleShape<T>::CapsuleOrientation capsuleOrientation,
 			const Point3<T> &centerPosition, const Quaternion<T> &orientation) :
 		capsuleShape(CapsuleShape<T>(radius, cylinderHeight, capsuleOrientation)),
-		centerPosition(centerPosition),
+		centerOfMass(centerPosition),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
@@ -43,9 +43,9 @@ namespace urchin
 		return capsuleShape.getCapsuleOrientation();
 	}
 
-	template<class T> const Point3<T> &Capsule<T>::getCenterPosition() const
+	template<class T> const Point3<T> &Capsule<T>::getCenterOfMass() const
 	{
-		return centerPosition;
+		return centerOfMass;
 	}
 
 	template<class T> const Quaternion<T> &Capsule<T>::getOrientation() const
@@ -72,13 +72,13 @@ namespace urchin
 			normalizedDirection = direction.normalize();
 		}
 
-		Point3<T> spherePosition1 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
+		Point3<T> spherePosition1 = centerOfMass.translate(axis[getCapsuleOrientation()] * (T)(getCylinderHeight() / (T)2.0));
 		Point3<T> supportPoint1 = spherePosition1.translate(normalizedDirection * getRadius());
 
-		Point3<T> spherePosition2 = centerPosition.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
+		Point3<T> spherePosition2 = centerOfMass.translate(axis[getCapsuleOrientation()] * (T)(-getCylinderHeight() / (T)2.0));
 		Point3<T> supportPoint2 = spherePosition2.translate(normalizedDirection * getRadius());
 
-		if(centerPosition.vector(supportPoint1).squareLength() > centerPosition.vector(supportPoint2).squareLength())
+		if(centerOfMass.vector(supportPoint1).squareLength() > centerOfMass.vector(supportPoint2).squareLength())
 		{
 			return supportPoint1;
 		}
@@ -92,7 +92,7 @@ namespace urchin
 		stream << std::setw(20) << "Shape radius: " << capsule.getRadius() << std::endl;
 		stream << std::setw(20) << "Shape height: " << capsule.getCylinderHeight() << std::endl;
 		stream << std::setw(20) << "Shape orientation: " << capsule.getCapsuleOrientation() << std::endl;
-		stream << std::setw(20) << "Center position: " << capsule.getCenterPosition() << std::endl;
+		stream << std::setw(20) << "Center of mass: " << capsule.getCenterOfMass() << std::endl;
 		stream << std::setw(20) << "Orientation: " << capsule.getOrientation() << std::endl;
 
 		return stream;

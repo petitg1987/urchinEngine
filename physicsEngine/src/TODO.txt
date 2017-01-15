@@ -3,11 +3,10 @@
 ############################################
 - GLOBAL
 	- (1) [NEW FEATURE] Create new shape type: heighfield mesh
-	- (1) [NEW FEATURE] Create new shape type: cone
 	- (3) [OPTIMIZATION] Use PGO in g++
 - BROADPHASE
 	- (2) [OPTIMIZATION] Use a memory pool when create new OverlappingPair
-- BROADPHASE
+	- (2) [OPTIMIZATION] Avoid to recompute objects AABBox at each frame: store pre-computed AABBox valid for any rotation
 	- (2) [OPTIMIZATION] Implement double AABBox trees: static and dynamic (see Bullet)
 	- (2) [OPTIMIZATION] Rebalance AABBox tree for better performance
 - NARROWPHASE
@@ -24,7 +23,9 @@
 # Bug :
 ############################################
 - CONSTRAINT SOLVER
-	- (2) A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision.
+	- (2) A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
+- ISLAND
+	- (2) A body balancing from one side to the other side (ex: cone on his base) could sleep when velocity reach zero
 
 ############################################
 # Notes :

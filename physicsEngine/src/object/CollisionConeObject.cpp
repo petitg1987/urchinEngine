@@ -6,9 +6,9 @@ namespace urchin
 {
 
 	CollisionConeObject::CollisionConeObject(float outerMargin, float radius, float height,
-			typename ConeShape<float>::ConeOrientation coneOrientation,	const Point3<float> &centerPosition, const Quaternion<float> &orientation) :
+			typename ConeShape<float>::ConeOrientation coneOrientation,	const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
 		CollisionConvexObject3D(outerMargin),
-		coneObject(Cone<float>(radius, height, coneOrientation, centerPosition, orientation))
+		coneObject(Cone<float>(radius, height, coneOrientation, centerOfMass, orientation))
 	{
 
 	}
@@ -36,9 +36,9 @@ namespace urchin
 		return coneObject.getConeOrientation();
 	}
 
-	const Point3<float> &CollisionConeObject::getCenterPosition() const
+	const Point3<float> &CollisionConeObject::getCenterOfMass() const
 	{
-		return coneObject.getCenterPosition();
+		return coneObject.getCenterOfMass();
 	}
 
 	const Quaternion<float> &CollisionConeObject::getOrientation() const
@@ -69,7 +69,7 @@ namespace urchin
 
 	const Cone<float> CollisionConeObject::retrieveCone() const
 	{
-		return Cone<float>(getRadius(), getHeight(), getConeOrientation(), getCenterPosition(), getOrientation());
+		return Cone<float>(getRadius(), getHeight(), getConeOrientation(), getCenterOfMass(), getOrientation());
 	}
 
 	std::string CollisionConeObject::toString() const
@@ -82,7 +82,7 @@ namespace urchin
 		ss << std::setw(20) << std::left << " - Radius: " << coneObject.getRadius() << std::endl;
 		ss << std::setw(20) << std::left << " - Height: " << coneObject.getHeight() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation type: " << getConeOrientation() << std::endl;
-		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
+		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
 
 		return ss.str();

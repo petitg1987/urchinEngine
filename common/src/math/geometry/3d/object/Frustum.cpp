@@ -255,7 +255,7 @@ namespace urchin
 	{
 		for(int i=0; i < 6; i++)
 		{
-			if (planes[i].distance(sphere.getPosition()) > sphere.getRadius())
+			if (planes[i].distance(sphere.getCenterOfMass()) > sphere.getRadius())
 			{
 				return false;
 			}

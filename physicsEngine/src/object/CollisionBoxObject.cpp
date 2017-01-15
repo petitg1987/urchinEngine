@@ -5,9 +5,9 @@
 namespace urchin
 {
 
-	CollisionBoxObject::CollisionBoxObject(float outerMargin, const Vector3<float> &halfSize, const Point3<float> &centerPosition, const Quaternion<float> &orientation) :
+	CollisionBoxObject::CollisionBoxObject(float outerMargin, const Vector3<float> &halfSize, const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
 			CollisionConvexObject3D(outerMargin),
-			boxObject(OBBox<float>(halfSize, centerPosition, orientation))
+			boxObject(OBBox<float>(halfSize, centerOfMass, orientation))
 	{
 
 	}
@@ -27,9 +27,9 @@ namespace urchin
 		return boxObject.getHalfSizes() + Vector3<float>(getOuterMargin(), getOuterMargin(), getOuterMargin());
 	}
 
-	const Point3<float> &CollisionBoxObject::getCenterPosition() const
+	const Point3<float> &CollisionBoxObject::getCenterOfMass() const
 	{
-		return boxObject.getCenterPosition();
+		return boxObject.getCenterOfMass();
 	}
 
 	const Quaternion<float> &CollisionBoxObject::getOrientation() const
@@ -55,7 +55,7 @@ namespace urchin
 			for(unsigned int i=0; i<3; ++i)
 			{ //for each axis
 				const Vector3<float> &axis = boxObject.getAxis(i);
-				if(axis.dotProduct(boxObject.getCenterPosition().vector(supportPoint)) > 0.0f)
+				if(axis.dotProduct(boxObject.getCenterOfMass().vector(supportPoint)) > 0.0f)
 				{
 					supportPointWithMargin = supportPointWithMargin.translate(axis * getOuterMargin());
 				}else
@@ -72,7 +72,7 @@ namespace urchin
 
 	const OBBox<float> CollisionBoxObject::retrieveOBBox() const
 	{
-		return OBBox<float>(getHalfSizes(), getCenterPosition(), getOrientation());
+		return OBBox<float>(getHalfSizes(), getCenterOfMass(), getOrientation());
 	}
 
 	std::string CollisionBoxObject::toString() const
@@ -83,7 +83,7 @@ namespace urchin
 		ss << "Collision box:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
 		ss << std::setw(20) << std::left << " - Half size: " << boxObject.getHalfSizes() << std::endl;
-		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
+		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
 
 		return ss.str();

@@ -15,7 +15,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - Skybox
 
 - Physics Engine:
-  - Supported shapes: sphere, box, cylinder, capsule, convex hull, compound shape
+  - Supported shapes: sphere, box, cylinder, capsule, cone, convex hull, compound shape
   - Supported body: rigid body
   - Algorithms:
     - Broadphase: sweep and prune & AABB Tree

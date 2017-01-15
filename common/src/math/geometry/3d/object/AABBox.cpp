@@ -74,7 +74,7 @@ namespace urchin
 		return max;
 	}
 
-	template<class T> Point3<T> AABBox<T>::getCenterPoint() const
+	template<class T> Point3<T> AABBox<T>::getCenterOfMass() const
 	{
 		return min.translate(boxShape.getHalfSizes());
 	}

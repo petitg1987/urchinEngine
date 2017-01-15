@@ -41,7 +41,7 @@ namespace urchin
 
 	const Point3<float> SoundSphere::getPosition() const
 	{
-		return playTriggerSphere.getPosition();
+		return playTriggerSphere.getCenterOfMass();
 	}
 
 	bool SoundSphere::pointInsidePlayShape(const Point3<float> &point) const

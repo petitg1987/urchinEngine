@@ -20,7 +20,7 @@ namespace urchin
 			T getRadius() const;
 			T getHeight() const;
 			typename CylinderShape<T>::CylinderOrientation getCylinderOrientation() const;
-			const Point3<T> &getCenterPosition() const;
+			const Point3<T> &getCenterOfMass() const;
 			const Quaternion<T> &getOrientation() const;
 			const Vector3<T> &getAxis(unsigned int) const;
 
@@ -28,7 +28,7 @@ namespace urchin
 
 		private:
 			CylinderShape<T> cylinderShape;
-			Point3<T> centerPosition;
+			Point3<T> centerOfMass;
 			Quaternion<T> orientation;
 
 			Vector3<T> axis[3]; //3 vectors of normalized axis

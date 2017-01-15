@@ -66,15 +66,14 @@ namespace urchin
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
 		boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
-
-		const Point3<float> &position = physicsTransform.getPosition();
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
-
 		Point3<float> extend(
 			boxHalfSizes.X * std::abs(orientation[0]) + boxHalfSizes.Y * std::abs(orientation[3]) + boxHalfSizes.Z * std::abs(orientation[6]),
 			boxHalfSizes.X * std::abs(orientation[1]) + boxHalfSizes.Y * std::abs(orientation[4]) + boxHalfSizes.Z * std::abs(orientation[7]),
 			boxHalfSizes.X * std::abs(orientation[2]) + boxHalfSizes.Y * std::abs(orientation[5]) + boxHalfSizes.Z * std::abs(orientation[8])
 		);
+
+		const Point3<float> &position = physicsTransform.getPosition();
 
 		return AABBox<float>(position - extend, position + extend);
 	}

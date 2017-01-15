@@ -5,9 +5,9 @@
 namespace urchin
 {
 
-	CollisionSphereObject::CollisionSphereObject(float radius, const Point3<float> &position) :
+	CollisionSphereObject::CollisionSphereObject(float radius, const Point3<float> &centerOfMass) :
 			CollisionConvexObject3D(radius),
-			sphereObject(Sphere<float>(radius, position))
+			sphereObject(Sphere<float>(radius, centerOfMass))
 	{
 
 	}
@@ -22,9 +22,9 @@ namespace urchin
 		return getOuterMargin();
 	}
 
-	const Point3<float> &CollisionSphereObject::getPosition() const
+	const Point3<float> &CollisionSphereObject::getCenterOfMass() const
 	{
-		return sphereObject.getPosition();
+		return sphereObject.getCenterOfMass();
 	}
 
 	/**
@@ -37,12 +37,12 @@ namespace urchin
 			return retrieveSphere().getSupportPoint(direction);
 		}
 
-		return sphereObject.getPosition();
+		return sphereObject.getCenterOfMass();
 	}
 
 	const Sphere<float> CollisionSphereObject::retrieveSphere() const
 	{
-		return Sphere<float>(getRadius(), getPosition());
+		return Sphere<float>(getRadius(), getCenterOfMass());
 	}
 
 	std::string CollisionSphereObject::toString() const
@@ -53,7 +53,7 @@ namespace urchin
 		ss << "Collision sphere:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
 		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;
-		ss << std::setw(20) << std::left << " - Position: " << getPosition() << std::endl;
+		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
 
 		return ss.str();
 	}

@@ -23,7 +23,7 @@ namespace urchin
 	Matrix4<float> CapsuleModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;
-		modelMatrix.buildTranslation(capsule.getCenterPosition().X, capsule.getCenterPosition().Y, capsule.getCenterPosition().Z);
+		modelMatrix.buildTranslation(capsule.getCenterOfMass().X, capsule.getCenterOfMass().Y, capsule.getCenterOfMass().Z);
 
 		return modelMatrix;
 	}

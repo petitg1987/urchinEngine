@@ -41,7 +41,7 @@ namespace urchin
 
 	const Point3<float> &SoundBox::getCenterPosition() const
 	{
-		return playTriggerBox.getCenterPosition();
+		return playTriggerBox.getCenterOfMass();
 	}
 
 	const Quaternion<float> &SoundBox::getOrientation() const
@@ -69,7 +69,7 @@ namespace urchin
 
 	bool SoundBox::pointInsideShape(const Point3<float> &point, const OBBox<float> &box) const
 	{
-		Vector3<float> localPointTranslation = box.getCenterPosition().vector(point);
+		Vector3<float> localPointTranslation = box.getCenterOfMass().vector(point);
 
 		return std::fabs(localPointTranslation.dotProduct(box.getAxis(0))) <= box.getHalfSize(0) &&
 				std::fabs(localPointTranslation.dotProduct(box.getAxis(1))) <= box.getHalfSize(1) &&

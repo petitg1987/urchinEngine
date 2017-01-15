@@ -22,7 +22,7 @@ namespace urchin
 	Matrix4<float> ConeModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;
-		modelMatrix.buildTranslation(cone.getCenterPosition().X, cone.getCenterPosition().Y, cone.getCenterPosition().Z);
+		modelMatrix.buildTranslation(cone.getCenterOfMass().X, cone.getCenterOfMass().Y, cone.getCenterOfMass().Z);
 
 		return modelMatrix;
 	}
@@ -33,7 +33,6 @@ namespace urchin
 		vertexArray.reserve(1+(slices+1));
 
 		float radius = cone.getRadius();
-		float halfHeight = cone.getHeight() / 2.0;
 		float angle = (2.0*PI_VALUE) / slices;
 
 		Quaternion<float> qConeOrientation;
@@ -59,14 +58,14 @@ namespace urchin
 		}
 
 		Quaternion<float> localOrientation = cone.getOrientation() * qConeOrientation;
-		Point3<float> topPoint = localOrientation.rotatePoint(Point3<float>(0.0, halfHeight, 0.0));
+		Point3<float> topPoint = localOrientation.rotatePoint(Point3<float>(0.0, cone.getHeight()*(3.0/4.0), 0.0));
 		vertexArray.push_back(topPoint);
 		for (int i = 0; i <= slices; i++)
 		{
 		    float x = std::cos(i*angle) * radius;
 		    float z = std::sin(i*angle) * radius;
 
-		    Point3<float> bottomPoint = localOrientation.rotatePoint(Point3<float>(x, -halfHeight, z));
+		    Point3<float> bottomPoint = localOrientation.rotatePoint(Point3<float>(x, -cone.getHeight()*(1.0/4.0), z));
 		    vertexArray.push_back(bottomPoint);
 		}
 

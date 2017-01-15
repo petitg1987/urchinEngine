@@ -22,7 +22,7 @@ namespace urchin
 			T getRadius() const;
 			T getCylinderHeight() const;
 			typename CapsuleShape<T>::CapsuleOrientation getCapsuleOrientation() const;
-			const Point3<T> &getCenterPosition() const;
+			const Point3<T> &getCenterOfMass() const;
 			const Quaternion<T> &getOrientation() const;
 			const Vector3<T> &getAxis(unsigned int) const;
 
@@ -30,7 +30,7 @@ namespace urchin
 
 		private:
 			CapsuleShape<T> capsuleShape;
-			Point3<T> centerPosition;
+			Point3<T> centerOfMass;
 			Quaternion<T> orientation;
 
 			Vector3<T> axis[3]; //3 vectors of normalized axis

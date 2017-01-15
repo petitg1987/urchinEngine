@@ -15,7 +15,7 @@ namespace urchin
 			Sphere(T, const Point3<T> &);
 
 			T getRadius() const;
-			const Point3<T> &getPosition() const;
+			const Point3<T> &getCenterOfMass() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 
@@ -24,7 +24,7 @@ namespace urchin
 
 		private:
 			SphereShape<T> sphereShape;
-			Point3<T> position;
+			Point3<T> centerOfMass;
 	};
 
 }

@@ -66,19 +66,19 @@ namespace urchin
 				unsigned int nextAxisIndex = (axisIndex+1)%3;
 				unsigned int previousAxisIndex = (axisIndex+2)%3;
 
-				Point3<float> point1 = box->getCenterPosition().translate(box->getHalfSize(axisIndex) * boxAxis
+				Point3<float> point1 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
 						+ box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
 						+ box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
 
-				Point3<float> point2 = box->getCenterPosition().translate(box->getHalfSize(axisIndex) * boxAxis
+				Point3<float> point2 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
 						+ box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
 						- box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
 
-				Point3<float> point3 = box->getCenterPosition().translate(box->getHalfSize(axisIndex) * boxAxis
+				Point3<float> point3 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
 						- box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
 						+ box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
 
-				Point3<float> point4 = box->getCenterPosition().translate(box->getHalfSize(axisIndex) * boxAxis
+				Point3<float> point4 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
 						- box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
 						- box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
 

@@ -11,7 +11,7 @@ namespace urchin
 
 	template<class T> OBBox<T>::OBBox():
 		boxShape(BoxShape<T>(Vector3<T>(0.0, 0.0, 0.0))),
-		centerPosition(Point3<T>(0.0, 0.0, 0.0))
+		centerOfMass(Point3<T>(0.0, 0.0, 0.0))
 	{
 		axis[0] = Vector3<T>(0.0, 0.0, 0.0);
 		axis[1] = Vector3<T>(0.0, 0.0, 0.0);
@@ -20,7 +20,7 @@ namespace urchin
 
 	template<class T> OBBox<T>::OBBox(const Vector3<T> &halfSizes, const Point3<T> &centerPosition, const Quaternion<T> &orientation):
 		boxShape(BoxShape<T>(halfSizes)),
-		centerPosition(centerPosition),
+		centerOfMass(centerPosition),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
@@ -30,7 +30,7 @@ namespace urchin
 
 	template<class T> OBBox<T>::OBBox(const AABBox<T> &aabb) :
 		boxShape(BoxShape<T>(Vector3<T>((aabb.getMax().X - aabb.getMin().X) / 2.0, (aabb.getMax().Y - aabb.getMin().Y) / 2.0, (aabb.getMax().Z - aabb.getMin().Z) / 2.0))),
-		centerPosition((aabb.getMin() + aabb.getMax()) / (T)2.0)
+		centerOfMass((aabb.getMin() + aabb.getMax()) / (T)2.0)
 	{
 		axis[0] = Vector3<T>(1.0, 0.0, 0.0);
 		axis[1] = Vector3<T>(0.0, 1.0, 0.0);
@@ -39,7 +39,7 @@ namespace urchin
 
 	template<class T> OBBox<T>::OBBox(const Sphere<T> &sphere) :
 		boxShape(BoxShape<T>(Vector3<T>(sphere.getRadius(), sphere.getRadius(), sphere.getRadius()))),
-		centerPosition(sphere.getPosition())
+		centerOfMass(sphere.getCenterOfMass())
 	{
 		axis[0] = Vector3<T>(1.0, 0.0, 0.0);
 		axis[1] = Vector3<T>(0.0, 1.0, 0.0);
@@ -81,9 +81,9 @@ namespace urchin
 		return boxShape.getMinHalfSizeIndex();
 	}
 
-	template<class T> const Point3<T> &OBBox<T>::getCenterPosition() const
+	template<class T> const Point3<T> &OBBox<T>::getCenterOfMass() const
 	{
-		return centerPosition;
+		return centerOfMass;
 	}
 
 	template<class T> const Quaternion<T> &OBBox<T>::getOrientation() const
@@ -104,21 +104,21 @@ namespace urchin
 		switch(index)
 		{
 			case 0:
-				return centerPosition.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
 			case 1:
-				return centerPosition.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
 			case 2:
-				return centerPosition.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
 			case 3:
-				return centerPosition.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
 			case 4:
-				return centerPosition.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
 			case 5:
-				return centerPosition.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
 			case 6:
-				return centerPosition.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
 			case 7:
-				return centerPosition.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
 		}
 
 		std::stringstream errorMessage;
@@ -176,14 +176,14 @@ namespace urchin
 	{ //Separated axis theorem (see http://jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf)
 
 		//test spheres collide
-		Sphere<T> thisSphere(getPoint(0).distance(centerPosition), centerPosition);
-		Sphere<T> bboxSphere(bbox.getPoint(0).distance(bbox.getCenterPosition()), bbox.getCenterPosition());
+		Sphere<T> thisSphere(getPoint(0).distance(centerOfMass), centerOfMass);
+		Sphere<T> bboxSphere(bbox.getPoint(0).distance(bbox.getCenterOfMass()), bbox.getCenterOfMass());
 		if(!thisSphere.collideWithSphere(bboxSphere))
 		{
 			return false;
 		}
 
-		Vector3<T> distCenterPoint = getCenterPosition().vector(bbox.getCenterPosition());
+		Vector3<T> distCenterPoint = getCenterOfMass().vector(bbox.getCenterOfMass());
 		const T AdotB[3][3] = {
 				{axis[0].dotProduct(bbox.getAxis(0)), axis[0].dotProduct(bbox.getAxis(1)), axis[0].dotProduct(bbox.getAxis(2))},
 				{axis[1].dotProduct(bbox.getAxis(0)), axis[1].dotProduct(bbox.getAxis(1)), axis[1].dotProduct(bbox.getAxis(2))},
@@ -334,10 +334,10 @@ namespace urchin
 				(m3 * obb.getAxis(1) * obb.getHalfSize(1)).length(),
 				(m3 * obb.getAxis(2) * obb.getHalfSize(2)).length()
 		);
-		Point3<T> centerPosition = (m * Point4<T>(obb.getCenterPosition())).toPoint3();
+		Point3<T> centerOfMass = (m * Point4<T>(obb.getCenterOfMass())).toPoint3();
 		Quaternion<T> orientation(m3);
 
-		return OBBox<T>(halfSizes, centerPosition, orientation);
+		return OBBox<T>(halfSizes, centerOfMass, orientation);
 	}
 
 	template<class T> OBBox<T> operator *(const OBBox<T> &obb, const Matrix4<T> &m)

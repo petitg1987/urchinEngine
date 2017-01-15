@@ -33,7 +33,7 @@ namespace urchin
 			unsigned int getMaxHalfSizeIndex() const;
 			const T getMinHalfSize() const;
 			unsigned int getMinHalfSizeIndex() const;
-			const Point3<T> &getCenterPosition() const;
+			const Point3<T> &getCenterOfMass() const;
 			const Vector3<T> &getAxis(unsigned int) const;
 			const Quaternion<T> &getOrientation() const;
 			const Point3<T> getPoint(unsigned int) const;
@@ -46,7 +46,7 @@ namespace urchin
 
 		private:
 			BoxShape<T> boxShape;
-			Point3<T> centerPosition;
+			Point3<T> centerOfMass;
 			Quaternion<T> orientation;
 
 			Vector3<T> axis[3]; //3 vectors of normalized axis

@@ -1,4 +1,5 @@
 #include <cmath>
+#include <limits>
 
 #include "Cone.h"
 
@@ -7,7 +8,7 @@ namespace urchin
 
 	template<class T> Cone<T>::Cone() :
 			coneShape(ConeShape<T>(0.0, 0.0, ConeShape<T>::CONE_X_POSITIVE)),
-			centerPosition(Point3<T>(0.0, 0.0, 0.0))
+			centerOfMass(Point3<T>(0.0, 0.0, 0.0))
 	{
 		axis[0] = Vector3<T>(0.0, 0.0, 0.0);
 		axis[1] = Vector3<T>(0.0, 0.0, 0.0);
@@ -19,7 +20,7 @@ namespace urchin
 	template<class T> Cone<T>::Cone(T radius, T height, typename ConeShape<T>::ConeOrientation coneOrientation,
 			const Point3<T> &centerPosition, const Quaternion<T> &orientation) :
 		coneShape(ConeShape<T>(radius, height, coneOrientation)),
-		centerPosition(centerPosition),
+		centerOfMass(centerPosition),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
@@ -49,12 +50,9 @@ namespace urchin
 		return coneShape.getConeOrientation();
 	}
 
-	/**
-	 * @return Point at middle height of the cone
-	 */
-	template<class T> const Point3<T> &Cone<T>::getCenterPosition() const
+	template<class T> const Point3<T> &Cone<T>::getCenterOfMass() const
 	{
-		return centerPosition;
+		return centerOfMass;
 	}
 
 	template<class T> const Quaternion<T> &Cone<T>::getOrientation() const
@@ -72,7 +70,6 @@ namespace urchin
 
 	template<class T> Point3<T> Cone<T>::getSupportPoint(const Vector3<T> &direction) const
 	{
-		T halfHeight = (T)(getHeight() / (T)2.0);
 		Vector3<T> centralAxis = axis[getConeOrientation()/2] * ((getConeOrientation()%2==0) ? (T)1.0 : (T)-1.0); //axis from base to top
 		Vector3<T> normalizedDirection;
 		if(direction.X==0.0 && direction.Y==0.0 && direction.Z==0.0)
@@ -86,16 +83,18 @@ namespace urchin
 		T centralDirectionCosAngle = centralAxis.dotProduct(normalizedDirection);
 		if(centralDirectionCosAngle > baseSideCosAngle)
 		{ //support point = top of cone
-			return centerPosition.translate(centralAxis * halfHeight);
+			T shiftUpHeight = getHeight()* static_cast<T>(3.0/4.0);
+			return centerOfMass.translate(centralAxis * shiftUpHeight);
 		}
 
 		Vector3<T> projectedDirectionOnCircle = normalizedDirection - (normalizedDirection.dotProduct(centralAxis) * centralAxis);
-		if(projectedDirectionOnCircle.squareLength() > 0.0)
+		if(projectedDirectionOnCircle.squareLength() > std::numeric_limits<T>::epsilon())
 		{
 			projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 		}
 
-		Point3<T> bottomPosition = centerPosition.translate(centralAxis * (-halfHeight));
+		T shiftDownHeight = - (getHeight()* static_cast<T>(1.0/4.0));
+		Point3<T> bottomPosition = centerOfMass.translate(centralAxis * shiftDownHeight);
 		return bottomPosition.translate(projectedDirectionOnCircle * getRadius());
 	}
 

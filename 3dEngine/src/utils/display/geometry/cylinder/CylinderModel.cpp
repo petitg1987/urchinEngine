@@ -22,7 +22,7 @@ namespace urchin
 	Matrix4<float> CylinderModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;
-		modelMatrix.buildTranslation(cylinder.getCenterPosition().X, cylinder.getCenterPosition().Y, cylinder.getCenterPosition().Z);
+		modelMatrix.buildTranslation(cylinder.getCenterOfMass().X, cylinder.getCenterOfMass().Y, cylinder.getCenterOfMass().Z);
 
 		return modelMatrix;
 	}

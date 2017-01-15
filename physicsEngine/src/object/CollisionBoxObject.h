@@ -17,7 +17,7 @@ namespace urchin
 
 			float getHalfSize(unsigned int) const;
 			Vector3<float> getHalfSizes() const;
-			const Point3<float> &getCenterPosition() const;
+			const Point3<float> &getCenterOfMass() const;
 			const Quaternion<float> &getOrientation() const;
 			const Vector3<float> &getAxis(unsigned int) const;
 

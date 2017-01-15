@@ -67,17 +67,20 @@ namespace urchin
 	{
 		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
 		boxHalfSizes[getConeOrientation()/2] = getHeight() / 2.0f;
-
-		const Point3<float> &position = physicsTransform.getPosition();
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
-
 		Point3<float> extend(
 			boxHalfSizes.X * std::abs(orientation[0]) + boxHalfSizes.Y * std::abs(orientation[3]) + boxHalfSizes.Z * std::abs(orientation[6]),
 			boxHalfSizes.X * std::abs(orientation[1]) + boxHalfSizes.Y * std::abs(orientation[4]) + boxHalfSizes.Z * std::abs(orientation[7]),
 			boxHalfSizes.X * std::abs(orientation[2]) + boxHalfSizes.Y * std::abs(orientation[5]) + boxHalfSizes.Z * std::abs(orientation[8])
 		);
 
-		return AABBox<float>(position - extend, position + extend);
+		const Point3<float> &centerOfMass = physicsTransform.getPosition();
+		Point3<float> localCentralAxis(0.0, 0.0, 0.0);
+		localCentralAxis[getConeOrientation()/2] = (getConeOrientation()%2==0) ? 1.0f : -1.0f;
+		Vector3<float> centralAxis = physicsTransform.getOrientation().rotatePoint(localCentralAxis).toVector();
+		Point3<float> centerPosition = centerOfMass.translate(centralAxis * (1.0f/4.0f)*getHeight());
+
+		return AABBox<float>(centerPosition - extend, centerPosition + extend);
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const

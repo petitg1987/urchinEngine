@@ -22,7 +22,7 @@ namespace urchin
 	Matrix4<float> SphereModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;
-		modelMatrix.buildTranslation(sphere.getPosition().X, sphere.getPosition().Y, sphere.getPosition().Z);
+		modelMatrix.buildTranslation(sphere.getCenterOfMass().X, sphere.getCenterOfMass().Y, sphere.getCenterOfMass().Z);
 
 		return modelMatrix;
 	}

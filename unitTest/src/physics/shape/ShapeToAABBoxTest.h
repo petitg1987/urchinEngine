@@ -10,6 +10,7 @@ class ShapeToAABBoxTest : public CppUnit::TestFixture
 		static CppUnit::Test *suite();
 
 		void boxConversion();
+		void coneConversion();
 		void convexHullConversion();
 };
 

@@ -6,9 +6,9 @@ namespace urchin
 {
 
 	CollisionCylinderObject::CollisionCylinderObject(float outerMargin, float radius, float height,
-			typename CylinderShape<float>::CylinderOrientation cylinderOrientation,	const Point3<float> &centerPosition, const Quaternion<float> &orientation) :
+			typename CylinderShape<float>::CylinderOrientation cylinderOrientation,	const Point3<float> &centerOfMass, const Quaternion<float> &orientation) :
 		CollisionConvexObject3D(outerMargin),
-		cylinderObject(Cylinder<float>(radius, height, cylinderOrientation, centerPosition, orientation))
+		cylinderObject(Cylinder<float>(radius, height, cylinderOrientation, centerOfMass, orientation))
 	{
 
 	}
@@ -36,9 +36,9 @@ namespace urchin
 		return cylinderObject.getCylinderOrientation();
 	}
 
-	const Point3<float> &CollisionCylinderObject::getCenterPosition() const
+	const Point3<float> &CollisionCylinderObject::getCenterOfMass() const
 	{
-		return cylinderObject.getCenterPosition();
+		return cylinderObject.getCenterOfMass();
 	}
 
 	const Quaternion<float> &CollisionCylinderObject::getOrientation() const
@@ -69,7 +69,7 @@ namespace urchin
 
 	const Cylinder<float> CollisionCylinderObject::retrieveCylinder() const
 	{
-		return Cylinder<float>(getRadius(), getHeight(), getCylinderOrientation(), getCenterPosition(), getOrientation());
+		return Cylinder<float>(getRadius(), getHeight(), getCylinderOrientation(), getCenterOfMass(), getOrientation());
 	}
 
 	std::string CollisionCylinderObject::toString() const
@@ -82,7 +82,7 @@ namespace urchin
 		ss << std::setw(20) << std::left << " - Radius: " << cylinderObject.getRadius() << std::endl;
 		ss << std::setw(20) << std::left << " - Height: " << cylinderObject.getHeight() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation type: " << getCylinderOrientation() << std::endl;
-		ss << std::setw(20) << std::left << " - Center position: " << getCenterPosition() << std::endl;
+		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
 
 		return ss.str();

@@ -18,7 +18,7 @@ namespace urchin
 			float getRadius() const;
 			float getHeight() const;
 			typename ConeShape<float>::ConeOrientation getConeOrientation() const;
-			const Point3<float> &getCenterPosition() const;
+			const Point3<float> &getCenterOfMass() const;
 			const Quaternion<float> &getOrientation() const;
 			const Vector3<float> &getAxis(unsigned int) const;
 

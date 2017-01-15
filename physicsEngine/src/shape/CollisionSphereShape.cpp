@@ -42,6 +42,7 @@ namespace urchin
 	AABBox<float> CollisionSphereShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
+
 		return AABBox<float>(position - sphereShape->getRadius(), position + sphereShape->getRadius());
 	}
 

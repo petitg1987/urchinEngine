@@ -16,7 +16,7 @@ namespace urchin
 			~CollisionSphereObject();
 
 			float getRadius() const;
-			const Point3<float> &getPosition() const;
+			const Point3<float> &getCenterOfMass() const;
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 

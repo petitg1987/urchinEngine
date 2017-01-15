@@ -5,7 +5,7 @@ namespace urchin
 
 	template<class T> Cylinder<T>::Cylinder():
 		cylinderShape(CylinderShape<T>(0.0, 0.0, CylinderShape<T>::CYLINDER_X)),
-		centerPosition(Point3<T>(0.0, 0.0, 0.0))
+		centerOfMass(Point3<T>(0.0, 0.0, 0.0))
 	{
 		axis[0] = Vector3<T>(0.0, 0.0, 0.0);
 		axis[1] = Vector3<T>(0.0, 0.0, 0.0);
@@ -15,7 +15,7 @@ namespace urchin
 	template<class T> Cylinder<T>::Cylinder(T radius, T height, typename CylinderShape<T>::CylinderOrientation cylinderOrientation,
 			const Point3<T> &centerPosition, const Quaternion<T> &orientation) :
 		cylinderShape(CylinderShape<T>(radius, height, cylinderOrientation)),
-		centerPosition(centerPosition),
+		centerOfMass(centerPosition),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
@@ -43,9 +43,9 @@ namespace urchin
 		return cylinderShape.getCylinderOrientation();
 	}
 
-	template<class T> const Point3<T> &Cylinder<T>::getCenterPosition() const
+	template<class T> const Point3<T> &Cylinder<T>::getCenterOfMass() const
 	{
-		return centerPosition;
+		return centerOfMass;
 	}
 
 	template<class T> const Quaternion<T> &Cylinder<T>::getOrientation() const
@@ -77,13 +77,13 @@ namespace urchin
 			projectedDirectionOnCircle = projectedDirectionOnCircle.normalize();
 		}
 
-		Point3<T> cirlcePosition1 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
+		Point3<T> cirlcePosition1 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(getHeight() / (T)2.0));
 		Point3<T> supportPoint1 = cirlcePosition1.translate(projectedDirectionOnCircle * getRadius());
 
-		Point3<T> cirlcePosition2 = centerPosition.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
+		Point3<T> cirlcePosition2 = centerOfMass.translate(axis[getCylinderOrientation()] * (T)(-getHeight() / (T)2.0));
 		Point3<T> supportPoint2 = cirlcePosition2.translate(projectedDirectionOnCircle * getRadius());
 
-		if(normalizedDirection.dotProduct(centerPosition.vector(supportPoint1).normalize()) > normalizedDirection.dotProduct(centerPosition.vector(supportPoint2).normalize()))
+		if(normalizedDirection.dotProduct(centerOfMass.vector(supportPoint1).normalize()) > normalizedDirection.dotProduct(centerOfMass.vector(supportPoint2).normalize()))
 		{
 			return supportPoint1;
 		}
