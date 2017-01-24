@@ -20,15 +20,15 @@ namespace urchin
 		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
 		extractWalkablePolygons(polyhedrons, navMesh);
 
-		//TODO High level algorithm:
-		//1. Prepare (static & dynamic objects)
-		//1.1 Create polyhedrons: list<Face> & Face: list<Point3> (coplanar & clockwise oriented ?)
-		//1.2 Expand polyhedrons OR expand walkable polygon (bonus: create bevel planes)
-		//2. Generate (to repeat each time a dynamic objects move)
-		//2.1 Perform CSG (combine objects, create new polygon)
-		//2.2 Find walkable faces
-		//2.3 Creates links
-		//2.4 Triangulation (Delaunay triangulation c++ 3d)
+		//TODO High level algorithm v2
+		//1. Create polyhedrons: list<Face> & Face: list<Point3> (coplanar & clockwise oriented)
+		//2. Expand polyhedrons. Bonus: create bevel planes
+		//3. Find walkable faces (dot product with up vector)
+		//4. For each walkable faces:
+		//		- Create new object containing points of walkable faces
+		//		- Find expanded polyhedrons which create holes on current walkable face. Add holes points on new object
+		//		- Find walkable faces which can be linked to this one and add points to new objects
+		//		- Triangulate new object by taking into account: walkable faces points, holes points and links points. Use: constrained delaunay triangulation.
 
 		return navMesh;
 	}

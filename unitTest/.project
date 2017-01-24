@@ -3,6 +3,7 @@
 	<name>unitTest</name>
 	<comment></comment>
 	<projects>
+		<project>AIEngine</project>
 		<project>common</project>
 		<project>physicsEngine</project>
 	</projects>
