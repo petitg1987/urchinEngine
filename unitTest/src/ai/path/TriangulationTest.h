@@ -9,7 +9,8 @@ class TriangulationTest : public CppUnit::TestFixture
 	public:
 		static CppUnit::Test *suite();
 
-		void simpleTriangulation();
+		void uniqueSplitVertex();
+		void uniqueMergeVertex();
 };
 
 #endif
