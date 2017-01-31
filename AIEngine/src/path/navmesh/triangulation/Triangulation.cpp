@@ -89,18 +89,18 @@ namespace urchin
 
 			if(ccwPolygonPoints[i].Y > ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)
 			{
-				Vector2<float> originToPrevious = ccwPolygonPoints[i].vector(ccwPolygonPoints[previousIndex]);
-				Vector2<float> originToPreviousNormal = Vector2<float>(-originToPrevious.Y, originToPrevious.X).normalize(); //TODO normalize mandatory ?
+				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
+				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
+				float dotResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
 
-				Vector2<float> upVector = Vector2<float>(0.0, 1.0);
-				typedPoint.type = (originToPreviousNormal.dotProduct(upVector) >= 0.0) ? PointType::START_VERTEX : PointType::SPLIT_VERTEX;
+				typedPoint.type = dotResult>=0.0 ? PointType::START_VERTEX : PointType::SPLIT_VERTEX;
 			}else if(ccwPolygonPoints[i].Y < ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].Y < ccwPolygonPoints[nextIndex].Y)
 			{
-				Vector2<float> originToPrevious = ccwPolygonPoints[i].vector(ccwPolygonPoints[previousIndex]);
-				Vector2<float> originToPreviousNormal = Vector2<float>(-originToPrevious.Y, originToPrevious.X).normalize(); //TODO normalize mandatory ?
+				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
+				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
+				float dotResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
 
-				Vector2<float> downVector = Vector2<float>(0.0, -1.0);
-				typedPoint.type = (originToPreviousNormal.dotProduct(downVector) >= 0.0) ? PointType::END_VERTEX : PointType::MERGE_VERTEX; //TODO wrong ???
+				typedPoint.type = dotResult>=0.0 ? PointType::END_VERTEX : PointType::MERGE_VERTEX;
 			}else
 			{
 				if(ccwPolygonPoints[i].Y < ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)

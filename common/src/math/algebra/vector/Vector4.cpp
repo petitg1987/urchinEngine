@@ -19,12 +19,10 @@ namespace urchin
 
 	}
 
-	template<class T> Vector4<T>::Vector4(const Vector3<T> &v, T Wu)
+	template<class T> Vector4<T>::Vector4(const Vector3<T> &v, T Wu) :
+		X(v.X), Y(v.Y), Z(v.Z), W(Wu)
 	{
-		X = v.X;
-		Y = v.Y;
-		Z = v.Z;
-		W = Wu;
+
 	}
 
 	template<class T> void Vector4<T>::setValues(T Xu, T Yu, T Zu, T Wu)

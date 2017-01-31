@@ -9,8 +9,10 @@ class TriangulationTest : public CppUnit::TestFixture
 	public:
 		static CppUnit::Test *suite();
 
-		void uniqueSplitVertex();
-		void uniqueMergeVertex();
+		void oneSplitVertex();
+		void oneMergeVertex();
+		void twoRegularVertex();
+		void splitAndMergeVertex();
 };
 
 #endif

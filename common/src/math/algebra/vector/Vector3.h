@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 
+#include "math/algebra/vector/Vector2.h"
 #include "math/algebra/matrix/Matrix3.h"
 
 namespace urchin
@@ -15,6 +16,7 @@ namespace urchin
 			Vector3();
 			explicit Vector3(T Xu, T Yu, T Zu);
 			Vector3(const Vector3<T> &);
+			explicit Vector3(const Vector2<T> &, T Zu=0);
 		
 			void setValues(T, T, T);
 			void setNull();
