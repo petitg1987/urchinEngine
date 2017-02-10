@@ -185,12 +185,10 @@ namespace urchin
 
 	void ModelDisplayer::display(const Matrix4<float> &viewMatrix)
 	{
-		#ifdef _DEBUG
-			if(!isInitialized)
-			{
-				throw std::runtime_error("Model displayer must be initialized before displayed.");
-			}
-		#endif
+		if(!isInitialized)
+		{
+			throw std::runtime_error("Model displayer must be initialized before displayed.");
+		}
 
 		ShaderManager::instance()->bind(modelShader);
 		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)viewMatrix);

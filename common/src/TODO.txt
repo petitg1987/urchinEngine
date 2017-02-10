@@ -1,7 +1,8 @@
 ############################################
 # To do :
 ############################################
-- 
+- GLOBAL
+	- (1) [NEW FEATURE] Create Makefile file and include optimized build in release
 
 ############################################
 # Bug :

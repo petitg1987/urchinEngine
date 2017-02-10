@@ -292,13 +292,11 @@ namespace urchin
 			}
 		}
 
-		#ifdef _DEBUG
-			GLenum err = GL_NO_ERROR;
-			while((err = glGetError()) != GL_NO_ERROR)
-			{
-				std::cout<<"OpenGL error: "<<err<<std::endl;
-			}
-		#endif
+		GLenum err;
+		while((err = glGetError()) != GL_NO_ERROR)
+		{
+			Logger::logger().logError("OpenGL error: " + err);
+		}
 	}
 
 }

@@ -83,6 +83,8 @@ namespace urchin
 			std::vector<std::pair<int, ItDiagonals>> retrievePossibleNextPoints(unsigned int);
 			void markDiagonalProcessed(ItDiagonals);
 
+			void logImpossibleToClosePolygon() const;
+
 			const std::vector<Point2<float>> &ccwPolygonPoints;
 
 			std::vector<EdgeHelper> edgeHelpers;

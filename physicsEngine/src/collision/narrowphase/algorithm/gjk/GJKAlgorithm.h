@@ -25,9 +25,7 @@ namespace urchin
 			std::unique_ptr<GJKResult<T>> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
 		private:
-			#ifdef _DEBUG
-				void logMaximumIterationReach() const;
-			#endif
+			void logMaximumIterationReach(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
 			const unsigned int maxIteration;
 			const float relativeTerminationTolerance;

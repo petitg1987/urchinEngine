@@ -1,4 +1,5 @@
 #include <limits>
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h"
@@ -95,9 +96,7 @@ namespace urchin
 			}
 		}
 
-		#ifdef _DEBUG
-			logMaximumIterationReach();
-		#endif
+		logMaximumIterationReach();
 
 		return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
 	}
@@ -120,16 +119,13 @@ namespace urchin
 				invertedInterpolatePercentage * from.Z + interpolatePercentage * to.Z);
 	}
 
-	#ifdef _DEBUG
-		template<class T, class OUT> void GJKContinuousCollisionAlgorithm<T, OUT>::logMaximumIterationReach() const
-		{
-			Logger::setLogger(new FileLogger());
-			Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-			Logger::logger()<<"Maximum of iteration reached on GJK continuous collision algorithm ("<<maxIteration<<")."<<"\n";
-			Logger::logger()<<" - Termination tolerance: "<<terminationTolerance<<"\n";
-			Logger::setLogger(nullptr);
-		}
-	#endif
+	template<class T, class OUT> void GJKContinuousCollisionAlgorithm<T, OUT>::logMaximumIterationReach() const
+	{
+		std::stringstream logStream;
+		logStream<<"Maximum of iteration reached on GJK continuous collision algorithm ("<<maxIteration<<")."<<std::endl;
+		logStream<<" - Termination tolerance: "<<terminationTolerance;
+		Logger::logger().logWarning(logStream.str());
+	}
 
 	//explicit template
 	template class GJKContinuousCollisionAlgorithm<float, float>;

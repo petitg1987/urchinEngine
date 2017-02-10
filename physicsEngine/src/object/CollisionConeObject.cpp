@@ -83,7 +83,7 @@ namespace urchin
 		ss << std::setw(20) << std::left << " - Height: " << coneObject.getHeight() << std::endl;
 		ss << std::setw(20) << std::left << " - Orientation type: " << getConeOrientation() << std::endl;
 		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
-		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
+		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation();
 
 		return ss.str();
 	}

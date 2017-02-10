@@ -35,9 +35,7 @@ namespace urchin
 	void AbstractBody::refreshScaledShape()
 	{
 		scaledShape = originalShape->scale(transform.getScale());
-		#ifdef _DEBUG
-			scaledShape->checkInnerMarginQuality(id);
-		#endif
+		scaledShape->checkInnerMarginQuality(id);
 
 		ccdMotionThreshold = (scaledShape->getMinDistanceToCenter() * 2.0f) * ccdMotionThresholdFactor;
 	}

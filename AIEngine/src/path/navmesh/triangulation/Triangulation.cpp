@@ -22,6 +22,6 @@ namespace urchin
 	void Triangulation::triangulate() const
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		MonotonePolygon monotonePolygon(ccwPolygonPoints);
-		monotonePolygon.createYMonotonePolygons();
+		std::vector<std::vector<Point2<float>>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 	}
 }

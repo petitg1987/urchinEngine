@@ -37,10 +37,6 @@ namespace urchin
 			EPATriangleData<T> createTriangleData(const ConvexHull3D<T> &, unsigned int);
 			typename std::map<unsigned int, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<unsigned int, EPATriangleData<T>> &) const;
 
-			#ifdef _DEBUG
-				void logMaximumIterationReach() const;
-			#endif
-
 			const unsigned int maxIteration;
 			const float terminationTolerance;
 	};

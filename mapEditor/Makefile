@@ -569,7 +569,6 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -811,12 +810,14 @@ targetLinux/moc_MapEditorWindow.cpp: src/scene/displayer/SceneDisplayerWidget.h 
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -853,7 +854,6 @@ targetLinux/moc_NotSavedDialog.cpp: src/dialog/NotSavedDialog.h
 targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -1018,12 +1018,14 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1124,7 +1126,6 @@ targetLinux/moc_SceneControllerWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -1366,12 +1367,14 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -1388,7 +1391,6 @@ targetLinux/moc_ObjectControllerWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -1553,12 +1555,14 @@ targetLinux/moc_ObjectTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1652,7 +1656,6 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -1815,12 +1818,14 @@ targetLinux/moc_ChangeBodyShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h 
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -1909,7 +1914,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -2072,12 +2076,14 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -2165,7 +2171,6 @@ targetLinux/moc_NewObjectDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -2407,12 +2412,14 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2423,7 +2430,6 @@ targetLinux/moc_BodyBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -2665,12 +2671,14 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2681,7 +2689,6 @@ targetLinux/moc_BodyCapsuleShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -2923,12 +2930,14 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -2945,7 +2954,6 @@ targetLinux/moc_BodyCompoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodyConeShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -3187,12 +3195,14 @@ targetLinux/moc_BodyConeShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3203,7 +3213,6 @@ targetLinux/moc_BodyConeShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -3445,12 +3454,14 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3461,7 +3472,6 @@ targetLinux/moc_BodyConvexHullShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -3703,12 +3713,14 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -3719,7 +3731,6 @@ targetLinux/moc_BodyCylinderShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -3884,12 +3895,14 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -3976,7 +3989,6 @@ targetLinux/moc_BodyShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -4218,12 +4230,14 @@ targetLinux/moc_BodySphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -4236,7 +4250,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -4476,12 +4489,14 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -4492,7 +4507,6 @@ targetLinux/moc_NoBodyShapeWidget.cpp: ../physicsEngine/src/UrchinPhysicsEngine.
 targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -4657,12 +4671,14 @@ targetLinux/moc_LocalizedShapeTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -4755,7 +4771,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -4920,12 +4935,14 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5012,7 +5029,6 @@ targetLinux/moc_SpinBoxDelegate.cpp: ../mapEditor/src/scene/controller/objects/b
 targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -5178,12 +5194,14 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5275,7 +5293,6 @@ targetLinux/moc_LightControllerWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -5440,12 +5457,14 @@ targetLinux/moc_LightTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5539,7 +5558,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -5702,12 +5720,14 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -5795,7 +5815,6 @@ targetLinux/moc_NewLightDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -5961,12 +5980,14 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6059,7 +6080,6 @@ targetLinux/moc_SoundControllerWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -6224,12 +6244,14 @@ targetLinux/moc_SoundTableView.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6323,7 +6345,6 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -6486,12 +6507,14 @@ targetLinux/moc_ChangeSoundShapeDialog.cpp: ../mapHandler/src/UrchinMapHandler.h
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6580,7 +6603,6 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -6743,12 +6765,14 @@ targetLinux/moc_ChangeSoundTriggerDialog.cpp: ../mapHandler/src/UrchinMapHandler
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -6837,7 +6861,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -7000,12 +7023,14 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7093,7 +7118,6 @@ targetLinux/moc_NewSoundDialog.cpp: ../mapHandler/src/UrchinMapHandler.h \
 targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -7259,12 +7283,14 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7351,7 +7377,6 @@ targetLinux/moc_SoundBoxShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -7516,12 +7541,14 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7608,7 +7635,6 @@ targetLinux/moc_SoundShapeWidget.cpp: ../common/src/UrchinCommon.h \
 targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -7774,12 +7800,14 @@ targetLinux/moc_SoundSphereShapeWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -7867,7 +7895,6 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -8032,12 +8059,14 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -8124,7 +8153,6 @@ targetLinux/moc_AIControllerWidget.cpp: ../mapEditor/src/scene/controller/ai/AIC
 targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -8366,12 +8394,14 @@ targetLinux/moc_SceneDisplayerWidget.cpp: ../common/src/UrchinCommon.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -8404,7 +8434,6 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -8646,12 +8675,14 @@ targetLinux/Main.o: src/Main.cpp src/Main.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -8683,7 +8714,6 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -8925,12 +8955,14 @@ targetLinux/MapEditorWindow.o: src/MapEditorWindow.cpp src/MapEditorWindow.h \
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -8969,7 +9001,6 @@ targetLinux/ComboBoxStyleHelper.o: src/support/ComboBoxStyleHelper.cpp src/suppo
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -9052,7 +9083,6 @@ targetLinux/SpinBoxStyleHelper.o: src/support/SpinBoxStyleHelper.cpp src/support
 targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -9126,7 +9156,6 @@ targetLinux/NewDialog.o: src/dialog/NewDialog.cpp ../common/src/UrchinCommon.h \
 targetLinux/NotSavedDialog.o: src/dialog/NotSavedDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -9201,7 +9230,6 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -9364,12 +9392,14 @@ targetLinux/SceneController.o: src/scene/controller/SceneController.cpp src/scen
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -9460,7 +9490,6 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -9625,12 +9654,14 @@ targetLinux/SceneControllerWidget.o: src/scene/controller/SceneControllerWidget.
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -9732,7 +9763,6 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -9972,12 +10002,14 @@ targetLinux/ObjectController.o: src/scene/controller/objects/ObjectController.cp
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -9989,7 +10021,6 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -10231,12 +10262,14 @@ targetLinux/ObjectControllerWidget.o: src/scene/controller/objects/ObjectControl
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -10261,7 +10294,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -10426,12 +10458,14 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -10522,7 +10556,6 @@ targetLinux/ObjectTableView.o: src/scene/controller/objects/ObjectTableView.cpp 
 targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeBodyShapeDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -10688,12 +10721,14 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -10780,7 +10815,6 @@ targetLinux/ChangeBodyShapeDialog.o: src/scene/controller/objects/dialog/ChangeB
 targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -10946,12 +10980,14 @@ targetLinux/NewObjectDialog.o: src/scene/controller/objects/dialog/NewObjectDial
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -11041,7 +11077,6 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -11283,12 +11318,14 @@ targetLinux/BodyBoxShapeWidget.o: src/scene/controller/objects/bodyshape/BodyBox
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11300,7 +11337,6 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -11542,12 +11578,14 @@ targetLinux/BodyCapsuleShapeWidget.o: src/scene/controller/objects/bodyshape/Bod
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11559,7 +11597,6 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -11801,12 +11838,14 @@ targetLinux/BodyCompoundShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -11831,7 +11870,6 @@ targetLinux/BodyConeShapeWidget.o: src/scene/controller/objects/bodyshape/BodyCo
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -12073,12 +12111,14 @@ targetLinux/BodyConeShapeWidget.o: src/scene/controller/objects/bodyshape/BodyCo
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12090,7 +12130,6 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -12332,12 +12371,14 @@ targetLinux/BodyConvexHullShapeWidget.o: src/scene/controller/objects/bodyshape/
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12353,7 +12394,6 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -12595,12 +12635,14 @@ targetLinux/BodyCylinderShapeWidget.o: src/scene/controller/objects/bodyshape/Bo
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -12612,7 +12654,6 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -12777,12 +12818,14 @@ targetLinux/BodyShapeWidget.o: src/scene/controller/objects/bodyshape/BodyShapeW
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -12871,7 +12914,6 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -13110,12 +13152,14 @@ targetLinux/BodyShapeWidgetRetriever.o: src/scene/controller/objects/bodyshape/B
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -13141,7 +13185,6 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -13383,12 +13426,14 @@ targetLinux/BodySphereShapeWidget.o: src/scene/controller/objects/bodyshape/Body
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -13402,7 +13447,6 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -13642,12 +13686,14 @@ targetLinux/NoBodyShapeWidget.o: src/scene/controller/objects/bodyshape/NoBodySh
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -13660,7 +13706,6 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -13823,12 +13868,14 @@ targetLinux/DefaultBodyShapeCreator.o: src/scene/controller/objects/bodyshape/su
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -13915,7 +13962,6 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -14080,12 +14126,14 @@ targetLinux/LocalizedShapeTableView.o: src/scene/controller/objects/bodyshape/su
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14180,7 +14228,6 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -14345,12 +14392,14 @@ targetLinux/SpinBoxDelegate.o: src/scene/controller/objects/bodyshape/support/Sp
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14438,7 +14487,6 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -14603,12 +14651,14 @@ targetLinux/LightController.o: src/scene/controller/lights/LightController.cpp s
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14695,7 +14745,6 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -14861,12 +14910,14 @@ targetLinux/LightControllerWidget.o: src/scene/controller/lights/LightController
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -14962,7 +15013,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -15127,12 +15177,14 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15223,7 +15275,6 @@ targetLinux/LightTableView.o: src/scene/controller/lights/LightTableView.cpp src
 targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -15389,12 +15440,14 @@ targetLinux/NewLightDialog.o: src/scene/controller/lights/dialog/NewLightDialog.
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15483,7 +15536,6 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -15648,12 +15700,14 @@ targetLinux/SoundController.o: src/scene/controller/sounds/SoundController.cpp s
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -15741,7 +15795,6 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -15907,12 +15960,14 @@ targetLinux/SoundControllerWidget.o: src/scene/controller/sounds/SoundController
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16013,7 +16068,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -16178,12 +16232,14 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16274,7 +16330,6 @@ targetLinux/SoundTableView.o: src/scene/controller/sounds/SoundTableView.cpp src
 targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeSoundShapeDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -16440,12 +16495,14 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16532,7 +16589,6 @@ targetLinux/ChangeSoundShapeDialog.o: src/scene/controller/sounds/dialog/ChangeS
 targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/ChangeSoundTriggerDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -16698,12 +16754,14 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -16789,7 +16847,6 @@ targetLinux/ChangeSoundTriggerDialog.o: src/scene/controller/sounds/dialog/Chang
 targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -16955,12 +17012,14 @@ targetLinux/NewSoundDialog.o: src/scene/controller/sounds/dialog/NewSoundDialog.
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17050,7 +17109,6 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -17216,12 +17274,14 @@ targetLinux/SoundBoxShapeWidget.o: src/scene/controller/sounds/soundshape/SoundB
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17310,7 +17370,6 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -17475,12 +17534,14 @@ targetLinux/SoundShapeWidget.o: src/scene/controller/sounds/soundshape/SoundShap
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17570,7 +17631,6 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -17733,12 +17793,14 @@ targetLinux/SoundShapeWidgetRetriever.o: src/scene/controller/sounds/soundshape/
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -17828,7 +17890,6 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -17994,12 +18055,14 @@ targetLinux/SoundSphereShapeWidget.o: src/scene/controller/sounds/soundshape/Sou
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -18089,7 +18152,6 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -18252,12 +18314,14 @@ targetLinux/DefaultSoundShapeCreator.o: src/scene/controller/sounds/soundshape/s
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -18346,7 +18410,6 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -18412,12 +18475,14 @@ targetLinux/AIController.o: src/scene/controller/ai/AIController.cpp ../AIEngine
 		../common/src/math/algorithm/MathAlgorithm.h \
 		../common/src/math/algorithm/PascalTriangle.h \
 		../common/src/math/trigonometry/AngleConverter.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		src/scene/controller/ai/AIController.h \
 		../mapHandler/src/UrchinMapHandler.h \
 		../mapHandler/src/MapHandler.h \
@@ -18602,7 +18667,6 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -18767,12 +18831,14 @@ targetLinux/AIControllerWidget.o: src/scene/controller/ai/AIControllerWidget.cpp
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -18862,7 +18928,6 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -19103,12 +19168,14 @@ targetLinux/SceneDisplayer.o: src/scene/displayer/SceneDisplayer.cpp src/scene/d
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -19124,7 +19191,6 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -19366,12 +19432,14 @@ targetLinux/SceneDisplayerWidget.o: src/scene/displayer/SceneDisplayerWidget.cpp
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -19387,7 +19455,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -19536,7 +19603,6 @@ targetLinux/SceneFreeCamera.o: src/scene/displayer/SceneFreeCamera.cpp src/scene
 targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -19778,12 +19844,14 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../mapHandler/src/resources/light/SceneLight.h \
@@ -19793,7 +19861,6 @@ targetLinux/BodyShapeDisplayer.o: src/scene/displayer/objects/BodyShapeDisplayer
 targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplayer.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -19959,12 +20026,14 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -20050,7 +20119,6 @@ targetLinux/LightScopeDisplayer.o: src/scene/displayer/lights/LightScopeDisplaye
 targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisplayer.cpp ../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -20216,12 +20284,14 @@ targetLinux/SoundTriggerDisplayer.o: src/scene/displayer/sounds/SoundTriggerDisp
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \
@@ -20310,7 +20380,6 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../common/src/UrchinCommon.h \
 		../common/src/tools/file/PropertyFileHandler.h \
 		../common/src/tools/logger/Logger.h \
-		../common/src/tools/logger/Logger.inl \
 		../common/src/tools/logger/FileLogger.h \
 		../common/src/tools/ConfigService.h \
 		../common/src/pattern/singleton/Singleton.h \
@@ -20473,12 +20542,14 @@ targetLinux/NavMeshDisplayer.o: src/scene/displayer/ai/NavMeshDisplayer.cpp src/
 		../AIEngine/src/UrchinAIEngine.h \
 		../AIEngine/src/input/AIWorld.h \
 		../AIEngine/src/input/AIObject.h \
-		../AIEngine/src/path/navmesh/model/NavMesh.h \
-		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/NavMeshGenerator.h \
 		../AIEngine/src/path/navmesh/NavMeshConfig.h \
+		../AIEngine/src/path/navmesh/model/NavMesh.h \
+		../AIEngine/src/path/navmesh/model/NavPolygon.h \
 		../AIEngine/src/path/navmesh/polyhedron/Polyhedron.h \
 		../AIEngine/src/path/navmesh/polyhedron/Face.h \
+		../AIEngine/src/path/navmesh/triangulation/MonotonePolygon.h \
+		../AIEngine/src/path/navmesh/triangulation/Triangulation.h \
 		../mapHandler/src/resources/Map.h \
 		../mapHandler/src/resources/object/SceneObject.h \
 		../physicsEngine/src/UrchinPhysicsEngine.h \

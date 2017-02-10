@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <cmath>
-#include <cassert>
+#include <sstream>
 
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
 
@@ -70,25 +70,23 @@ namespace urchin
 			minimumToleranceMultiplicator += percentageIncreaseOfMinimumTolerance;
 		}
 
-		#ifdef _DEBUG
-			logMaximumIterationReach();
-		#endif
-
+		logMaximumIterationReach(convexObject1, convexObject2, includeMargin);
 		return std::make_unique<GJKResultInvalid<T>>();
 	}
 
-	#ifdef _DEBUG
-		template<class T> void GJKAlgorithm<T>::logMaximumIterationReach() const
-		{
-			Logger::setLogger(new FileLogger());
-			Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-			Logger::logger()<<"Maximum of iteration reached on GJK algorithm ("<<maxIteration<<")."<<"\n";
-			Logger::logger()<<" - Relative termination tolerance: "<<relativeTerminationTolerance<<"\n";
-			Logger::logger()<<" - Minimum termination tolerance: "<<minimumTerminationTolerance<<"\n";
-			Logger::logger()<<" - Percentage increase of minimum tolerance: "<<percentageIncreaseOfMinimumTolerance<<"\n\n";
-			Logger::setLogger(nullptr);
-		}
-	#endif
+	template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D &convexObject1,
+			const CollisionConvexObject3D &convexObject2, bool includeMargin) const
+	{
+		std::stringstream logStream;
+		logStream<<"Maximum of iteration reached on GJK algorithm ("<<maxIteration<<")."<<std::endl;
+		logStream<<" - Relative termination tolerance: "<<relativeTerminationTolerance<<std::endl;
+		logStream<<" - Minimum termination tolerance: "<<minimumTerminationTolerance<<std::endl;
+		logStream<<" - Percentage increase of minimum tolerance: "<<percentageIncreaseOfMinimumTolerance<<std::endl;
+		logStream<<" - Include margin: "<<includeMargin<<std::endl;
+		logStream<<" - Convex object 1: "<<std::endl<<convexObject1.toString()<<std::endl;
+		logStream<<" - Convex object 2: "<<std::endl<<convexObject2.toString();
+		Logger::logger().logWarning(logStream.str());
+	}
 
 	//explicit template
 	template class GJKAlgorithm<float>;

@@ -20,21 +20,23 @@ namespace urchin
 				LOG_WARNING,
 				LOG_ERROR
 			};
-
-			static void setLogger(Logger *);
 			
 			static Logger& logger();
-			template<class T> Logger& operator <<(const T& toLog);
 
-			static std::string prefix(LoggerCriticalityLevel);
+			void logInfo(const std::string &);
+			void logWarning(const std::string &);
+			void logError(const std::string &);
+
 		private:
+			void log(LoggerCriticalityLevel, const std::string &);
+
+			std::string prefix(LoggerCriticalityLevel);
+			std::string getCriticalityString(LoggerCriticalityLevel);
+
 			virtual void write(const std::string &) = 0;
-			static std::string getCriticalityString(LoggerCriticalityLevel);
 
 			static Logger *instance;
 	};
-
-	#include "Logger.inl"
 
 }
 

@@ -1,3 +1,4 @@
+#include <sstream>
 #include "UrchinCommon.h"
 
 #include "resources/ResourceManager.h"
@@ -14,14 +15,13 @@ namespace urchin
 	{
 		if (!mResources.empty())
 		{
-			Logger::setLogger(new FileLogger());
-			Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-			Logger::logger()<<"Resources not released:\n";
+			std::stringstream logStream;
+			logStream<<"Resources not released:"<<std::endl;
 			for (std::map<std::string, Resource *>::const_iterator i = mResources.begin(); i != mResources.end(); ++i)
 			{
-				Logger::logger()<< " - " << i->second->getName() << "\n\n";
+				logStream<< " - " << i->second->getName() << std::endl;
 			}
-			Logger::setLogger(nullptr);
+			Logger::logger().logError(logStream.str());
 		}
 	}
 

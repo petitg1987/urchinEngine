@@ -24,9 +24,8 @@ namespace urchin
 		private:
 			Point3<T> getWorldSupportPoint(const TemporalObject &, const Vector3<T> &, const PhysicsTransform &) const;
 			Point3<float> interpolate(const Point3<float> &, const Point3<float> &, T) const;
-			#ifdef _DEBUG
-				void logMaximumIterationReach() const;
-			#endif
+
+			void logMaximumIterationReach() const;
 
 			const T squareEpsilon;
 			const unsigned int maxIteration;

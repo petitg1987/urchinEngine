@@ -49,9 +49,7 @@ template<class BaseType> inline void* FixedSizePool<BaseType>::allocate(unsigned
 	}
 	
 	//pool is full: allocate new memory location
-	#ifdef _DEBUG
-		logPoolIsFull();
-	#endif
+	logPoolIsFull();
 	return operator new(elementSize);
 }
 
@@ -73,16 +71,13 @@ template<class BaseType> inline void FixedSizePool<BaseType>::free(BaseType *ptr
 		delete ptr;
 	}
 }
-	
-#ifdef _DEBUG
-	template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull() const
-	{
-		Logger::setLogger(new FileLogger());
-		Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-		Logger::logger()<<"Pool is full of elements."<<"\n";
-		Logger::logger()<<" - Element size: "<<maxElementSize<<"\n";
-		Logger::logger()<<" - Maximum elements: "<<maxElements<<"\n\n";
-		Logger::setLogger(nullptr);
-	}
-#endif
+
+template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull() const
+{
+	std::stringstream logStream;
+	logStream<<"Pool is full of elements."<<std::endl;
+	logStream<<" - Element size: "<<maxElementSize<<std::endl;
+	logStream<<" - Maximum elements: "<<maxElements;
+	Logger::logger().logWarning(logStream.str());
+}
 

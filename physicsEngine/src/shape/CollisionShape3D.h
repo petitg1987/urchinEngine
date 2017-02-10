@@ -46,9 +46,7 @@ namespace urchin
 			virtual float getMaxDistanceToCenter() const = 0;
 			virtual float getMinDistanceToCenter() const = 0;
 
-			#ifdef _DEBUG
-				void checkInnerMarginQuality(const std::string &) const;
-			#endif
+			void checkInnerMarginQuality(const std::string &) const;
 
 		protected:
 			void refreshInnerMargin(float);

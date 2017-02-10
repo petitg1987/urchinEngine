@@ -84,7 +84,7 @@ namespace urchin
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
 		ss << std::setw(20) << std::left << " - Half size: " << boxObject.getHalfSizes() << std::endl;
 		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
-		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation() << std::endl;
+		ss << std::setw(20) << std::left << " - Orientation: " << getOrientation();
 
 		return ss.str();
 	}

@@ -365,17 +365,6 @@ namespace urchin
 		return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
 	}
 
-	#ifdef _DEBUG
-		template<class T> void EPAAlgorithm<T>::logMaximumIterationReach() const
-		{
-			Logger::setLogger(new FileLogger());
-			Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-			Logger::logger()<<"Maximum of iteration reached on EPA algorithm ("<<maxIteration<<")."<<"\n";
-			Logger::logger()<<" - Termination tolerance: "<<terminationTolerance<<"\n\n";
-			Logger::setLogger(nullptr);
-		}
-	#endif
-
 	//explicit template
 	template class EPAAlgorithm<float>;
 	template class EPAAlgorithm<double>;

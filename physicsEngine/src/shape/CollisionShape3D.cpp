@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "shape/CollisionShape3D.h"
 
 #define DEFAULT_INNER_MARGIN 0.04
@@ -43,27 +45,23 @@ namespace urchin
 		return innerMargin;
 	}
 
-	#ifdef _DEBUG
-		void CollisionShape3D::checkInnerMarginQuality(const std::string &shapeId) const
+	void CollisionShape3D::checkInnerMarginQuality(const std::string &shapeId) const
+	{
+		if(initialInnerMargin > innerMargin)
 		{
-			if(initialInnerMargin > innerMargin)
-			{
-				AABBox<float> aabbox = toAABBox(PhysicsTransform());
-				float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
-				bool isBigShape = shapeLength > initialInnerMargin * 20.0;
+			AABBox<float> aabbox = toAABBox(PhysicsTransform());
+			float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
+			bool isBigShape = shapeLength > initialInnerMargin * 20.0;
 
-				if(isBigShape)
-				{
-					Logger::setLogger(new FileLogger());
-					Logger::logger()<<Logger::prefix(Logger::LOG_WARNING);
-					Logger::logger()<<"Not optimal margin on shape id "<<shapeId<<".\n";
-					Logger::logger()<<" - Current margin: "<<innerMargin<<"\n";
-					Logger::logger()<<" - Expected margin: "<<initialInnerMargin<<"\n";
-					Logger::logger()<<" - Shape length: "<<shapeLength<<"\n\n";
-					Logger::setLogger(nullptr);
-				}
+			if(isBigShape)
+			{
+				std::stringstream logStream;
+				logStream<<"Not optimal margin on shape id "<<shapeId<<"."<<std::endl;
+				logStream<<" - Current margin: "<<innerMargin<<std::endl;
+				logStream<<" - Expected margin: "<<initialInnerMargin<<std::endl;
+				logStream<<" - Shape length: "<<shapeLength;
+				Logger::logger().logWarning(logStream.str());
 			}
 		}
-	#endif
-
+	}
 }

@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <utility>
 #include <limits>
+#include <sstream>
 
 #include "MonotonePolygon.h"
 
@@ -61,6 +62,12 @@ namespace urchin
 
 						previousPointIndex = currentPointIndex;
 						currentPointIndex = nextPointIndex;
+
+						if(yMonotonePolygons[polygonIndex].size() > ccwPolygonPoints.size())
+						{
+							logImpossibleToClosePolygon();
+							break;
+						}
 					}
 
 					startDiagonal.isProcessed = true;
@@ -374,6 +381,17 @@ namespace urchin
 		{
 			itDiagonal->second.isProcessed = true;
 		}
+	}
+
+	void MonotonePolygon::logImpossibleToClosePolygon() const
+	{
+		std::stringstream logStream;
+		logStream<<"Impossible to determine monotone polygons from points:"<<std::endl;
+		for(const auto &polygonPoint : ccwPolygonPoints)
+		{
+			logStream<<" - "<<polygonPoint<<std::endl;
+		}
+		Logger::logger().logError(logStream.str());
 	}
 
 }

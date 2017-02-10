@@ -2,12 +2,13 @@
 #include <stdexcept>
 
 #include "tools/logger/Logger.h"
+#include "tools/logger/FileLogger.h"
 
 namespace urchin
 {
 	
 	//static
-	Logger *Logger::instance = nullptr;
+	Logger *Logger::instance = new FileLogger();
 
 	Logger::Logger()
 	{
@@ -16,7 +17,8 @@ namespace urchin
 
 	Logger::~Logger()
 	{
-
+		delete instance;
+		instance = nullptr;
 	}
 
 	Logger& Logger::logger()
@@ -24,10 +26,31 @@ namespace urchin
 		return *instance;
 	}
 
-	void Logger::setLogger(Logger *newLogger)
+	void Logger::logInfo(const std::string &toLog)
 	{
-		delete instance;
-		instance = newLogger;
+		log(LOG_INFO, toLog);
+	}
+
+	void Logger::logWarning(const std::string &toLog)
+	{
+		log(LOG_WARNING, toLog);
+	}
+
+	void Logger::logError(const std::string &toLog)
+	{
+		log(LOG_ERROR, toLog);
+	}
+
+	void Logger::log(LoggerCriticalityLevel criticalityLevel, const std::string &toLog)
+	{
+		#ifdef _DEBUG
+			write(prefix(criticalityLevel) + toLog + "\n");
+		#else
+			if(criticalityLevel >= LOG_ERROR)
+			{
+				write(prefix(criticalityLevel) + toLog + "\n");
+			}
+		#endif
 	}
 
 	/**

@@ -2,6 +2,7 @@
 #define ENGINE_FIXEDSIZEPOOL_H
 
 #include <cassert>
+#include <sstream>
 #include "UrchinCommon.h"
 
 namespace urchin
@@ -21,9 +22,7 @@ namespace urchin
 			void free(BaseType *ptr);
 
 		private:
-			#ifdef _DEBUG
-				void logPoolIsFull() const;
-			#endif
+			void logPoolIsFull() const;
 
 			unsigned int maxElementSize;
 			unsigned int maxElements;

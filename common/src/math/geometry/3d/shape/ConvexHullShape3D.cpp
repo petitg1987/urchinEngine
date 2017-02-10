@@ -345,21 +345,19 @@ namespace urchin
 		}
 
 		//log points in error log file
-		Logger::setLogger(new FileLogger());
-		Logger::logger()<<Logger::prefix(Logger::LOG_ERROR);
+		std::stringstream logStream;
 		if(points.size()>0)
 		{
-			Logger::logger()<<"Impossible to build a convex hull shape with following points:\n";
+			logStream<<"Impossible to build a convex hull shape with following points:"<<std::endl;
 			for (unsigned int i=0; i<points.size(); ++i)
 			{
-				Logger::logger()<< " - " << points[i] << "\n";
+				logStream << " - " << points[i] << std::endl;
 			}
 		}else
 		{
-			Logger::logger()<<"Impossible to build a convex hull shape with zero point.\n";
+			logStream<<"Impossible to build a convex hull shape with zero point.";
 		}
-		Logger::logger()<<"\n";
-		Logger::setLogger(nullptr);
+		Logger::logger().logError(logStream.str());
 
 		return std::invalid_argument("Impossible to build the convex hull shape. All points form a " + formName + ".");
 	}

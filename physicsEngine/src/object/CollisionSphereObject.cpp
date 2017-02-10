@@ -53,7 +53,7 @@ namespace urchin
 		ss << "Collision sphere:" << std::endl;
 		ss << std::setw(20) << std::left << " - Outer margin: " << getOuterMargin() << std::endl;
 		ss << std::setw(20) << std::left << " - Radius: " << getRadius() << std::endl;
-		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass() << std::endl;
+		ss << std::setw(20) << std::left << " - Center of mass: " << getCenterOfMass();
 
 		return ss.str();
 	}
