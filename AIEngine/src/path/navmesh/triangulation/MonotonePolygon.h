@@ -59,8 +59,11 @@ namespace urchin
 		public:
 			MonotonePolygon(const std::vector<Point2<float>> &);
 
-			void createYMonotonePolygons();
+			std::vector<std::vector<Point2<float>>> createYMonotonePolygons();
+
 		private:
+			typedef std::multimap<unsigned int, Edge>::iterator ItDiagonals;
+
 			void createYMonotonePolygonsDiagonals();
 			typed_points_queue buildTypedPointsQueue() const;
 
@@ -76,8 +79,9 @@ namespace urchin
 			std::vector<EdgeHelper>::iterator findNearestLeftEdgeHelper(unsigned int);
 			void createDiagonals(unsigned int, unsigned int);
 
-			unsigned int findNextPointIndex(unsigned int, unsigned int) const;
-			void markDiagonalProcessedIfExist(unsigned int, unsigned int);
+			unsigned int retrieveNextPointIndex(unsigned int, unsigned int);
+			std::vector<std::pair<int, ItDiagonals>> retrievePossibleNextPoints(unsigned int);
+			void markDiagonalProcessed(ItDiagonals);
 
 			const std::vector<Point2<float>> &ccwPolygonPoints;
 

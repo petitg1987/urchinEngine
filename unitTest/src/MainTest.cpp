@@ -22,7 +22,7 @@
 #include "physics/algorithm/epa/EPAConvexObjectTest.h"
 #include "physics/algorithm/inertia/InertiaCalculationTest.h"
 #include "physics/island/IslandContainerTest.h"
-#include "ai/path/TriangulationTest.h"
+#include "ai/path/MonotonePolygonTest.h"
 
 int main()
 {
@@ -71,7 +71,7 @@ int main()
 	runner.addTest(IslandContainerTest::suite());
 
 	//ai - path
-	runner.addTest(TriangulationTest::suite());
+	runner.addTest(MonotonePolygonTest::suite());
 
 	runner.run();
 

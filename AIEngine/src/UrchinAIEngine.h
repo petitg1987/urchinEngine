@@ -8,6 +8,7 @@
 #include "path/navmesh/NavMeshConfig.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
+#include "path/navmesh/triangulation/MonotonePolygon.h"
 #include "path/navmesh/triangulation/Triangulation.h"
 
 #endif

@@ -1,15 +1,16 @@
-#ifndef ENGINE_TRIANGULATIONTEST_H
-#define ENGINE_TRIANGULATIONTEST_H
+#ifndef ENGINE_MONOTONEPOLYGONTEST_H
+#define ENGINE_MONOTONEPOLYGONTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
-class TriangulationTest : public CppUnit::TestFixture
+class MonotonePolygonTest : public CppUnit::TestFixture
 {
 	public:
 		static CppUnit::Test *suite();
 
 		void oneSplitVertex();
+		void twoSplitVertex();
 		void oneMergeVertex();
 		void twoRegularVertex();
 		void splitAndMergeVertex();

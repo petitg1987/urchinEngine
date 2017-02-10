@@ -20,7 +20,7 @@ void SweepAndPruneTest::moveBodyCollide()
 	sweepAndPrune.updateBodies();
 
 	const std::vector<OverlappingPair *> &overlappingPairs = sweepAndPrune.getOverlappingPairs();
-	AssertHelper::assertTrue(overlappingPairs.size()==1);
+	AssertHelper::assertUnsignedInt(overlappingPairs.size(), 1);
 }
 
 void SweepAndPruneTest::moveBodyNotCollide()
@@ -35,7 +35,7 @@ void SweepAndPruneTest::moveBodyNotCollide()
 	sweepAndPrune.updateBodies();
 
 	const std::vector<OverlappingPair *> &overlappingPairs = sweepAndPrune.getOverlappingPairs();
-	AssertHelper::assertTrue(overlappingPairs.size()==0);
+	AssertHelper::assertUnsignedInt(overlappingPairs.size(), 0);
 }
 
 CppUnit::Test *SweepAndPruneTest::suite()

@@ -18,6 +18,16 @@ void AssertHelper::assertTrue(bool b)
 	CPPUNIT_ASSERT(b);
 }
 
+void AssertHelper::assertInt(int i1, int i2)
+{
+	CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(i1) + ", value 2: " + std::to_string(i2), i1==i2);
+}
+
+void AssertHelper::assertUnsignedInt(unsigned int ui1, unsigned int ui2)
+{
+	CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(ui1) + ", value 2: " + std::to_string(ui2), ui1==ui2);
+}
+
 void AssertHelper::assertFloatEquals(float f1, float f2, float epsilon)
 {
 	CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(f1) + ", value 2: " + std::to_string(f2),

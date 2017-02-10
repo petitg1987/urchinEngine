@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <utility>
+#include <limits>
 
 #include "MonotonePolygon.h"
 
@@ -24,12 +25,12 @@ namespace urchin
 	 * Create Y-monotone polygons.
 	 * Y-monotone polygon: any lines on X-axis should intersect the polygon once (point/line) or not at all.
 	 */
-	void MonotonePolygon::createYMonotonePolygons()
+	std::vector<std::vector<Point2<float>>> MonotonePolygon::createYMonotonePolygons()
 	{
 		createYMonotonePolygonsDiagonals();
 
 		std::vector<std::vector<Point2<float>>> yMonotonePolygons;
-		yMonotonePolygons.resize(diagonals.size() + 1);
+		yMonotonePolygons.resize(diagonals.size()/2 + 1);
 
 		if(diagonals.size()==0)
 		{
@@ -50,9 +51,7 @@ namespace urchin
 
 					while(true)
 					{
-						unsigned int nextPointIndex = findNextPointIndex(previousPointIndex, currentPointIndex);
-						markDiagonalProcessedIfExist(currentPointIndex, nextPointIndex);
-
+						unsigned int nextPointIndex = retrieveNextPointIndex(previousPointIndex, currentPointIndex);
 						if(nextPointIndex==startDiagonal.startIndex)
 						{
 							break;
@@ -69,6 +68,8 @@ namespace urchin
 				}
 			}
 		}
+
+		return yMonotonePolygons;
 	}
 
 	void MonotonePolygon::createYMonotonePolygonsDiagonals()
@@ -124,23 +125,28 @@ namespace urchin
 			unsigned int previousIndex = (i-1)%ccwPolygonPoints.size();
 			unsigned int nextIndex = (i+1)%ccwPolygonPoints.size();
 
-			if(ccwPolygonPoints[i].Y > ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)
+			bool currentAbovePrevious = (ccwPolygonPoints[i].Y > ccwPolygonPoints[previousIndex].Y)
+					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].X > ccwPolygonPoints[previousIndex].X);
+			bool currentAboveNext = (ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)
+					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[nextIndex].Y && ccwPolygonPoints[i].X > ccwPolygonPoints[nextIndex].X);
+
+			if(currentAbovePrevious && currentAboveNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
-				float dotResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
+				float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
 
-				typedPoint.type = dotResult>=0.0 ? PointType::START_VERTEX : PointType::SPLIT_VERTEX;
-			}else if(ccwPolygonPoints[i].Y < ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].Y < ccwPolygonPoints[nextIndex].Y)
+				typedPoint.type = orientationResult>=0.0 ? PointType::START_VERTEX : PointType::SPLIT_VERTEX;
+			}else if(!currentAbovePrevious && !currentAboveNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
-				float dotResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
+				float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
 
-				typedPoint.type = dotResult>=0.0 ? PointType::END_VERTEX : PointType::MERGE_VERTEX;
+				typedPoint.type = orientationResult>=0.0 ? PointType::END_VERTEX : PointType::MERGE_VERTEX;
 			}else
 			{
-				if(ccwPolygonPoints[i].Y < ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)
+				if(!currentAbovePrevious && currentAboveNext)
 				{
 					typedPoint.type = PointType::REGULAR_DOWN_VERTEX;
 				}else
@@ -295,37 +301,78 @@ namespace urchin
 		diagonals.insert(std::make_pair(index2, diagonal2));
 	}
 
-	unsigned int MonotonePolygon::findNextPointIndex(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
+	/**
+	 * Returns the next point after edge [edgeStartIndex, edgeEndIndex] in order to form a monotone polygon.
+	 * If edge [edgeEndIndex, nextPointIndex] is a diagonal: mark the diagonal as processed.
+	 */
+	unsigned int MonotonePolygon::retrieveNextPointIndex(unsigned int edgeStartIndex, unsigned int edgeEndIndex)
 	{
-		std::vector<int> possibleNextPoints;
-
-		possibleNextPoints.push_back((edgeEndIndex + 1) % ccwPolygonPoints.size());
-		auto range =diagonals.equal_range(edgeEndIndex);
-		for(auto it = range.first; it != range.second; ++it)
-		{
-			possibleNextPoints.push_back(it->second.endIndex);
+		std::vector<std::pair<int, ItDiagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
+		if(possibleNextPoints.size()==1)
+		{ //only one possible edge
+			return possibleNextPoints[0].first;
 		}
+
+		int bestCCWPointIndex = -1;
+		int bestCWPointIndex = -1;
+		float minAngleCCW = std::numeric_limits<float>::max();
+		float maxAngleCW = -std::numeric_limits<float>::max();
 
 		Vector3<float> edgeVector = Vector3<float>(ccwPolygonPoints[edgeStartIndex].vector(ccwPolygonPoints[edgeEndIndex]), 0.0f);
 		for(unsigned int i=0; i<possibleNextPoints.size(); ++i)
 		{
-			Vector3<float> nextEdgeVector = Vector3<float>(ccwPolygonPoints[edgeEndIndex].vector(ccwPolygonPoints[possibleNextPoints[i]]), 0.0f);
-			float dotResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(edgeVector.crossProduct(nextEdgeVector));
+			unsigned int testPointIndex = possibleNextPoints[i].first;
+			Vector3<float> nextEdgeVector = Vector3<float>(ccwPolygonPoints[edgeEndIndex].vector(ccwPolygonPoints[testPointIndex]), 0.0f);
+			float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(edgeVector.crossProduct(nextEdgeVector));
+			float angle = edgeVector.normalize().dotProduct(nextEdgeVector.normalize());
 
-			//TODO ...
+			if(orientationResult > 0.0)
+			{ //counter clockwise
+				if(angle < minAngleCCW)
+				{
+					minAngleCCW = angle;
+					bestCCWPointIndex = i;
+				}
+			}else
+			{ //clockwise
+				if(angle > maxAngleCW)
+				{
+					maxAngleCW = angle;
+					bestCWPointIndex = i;
+				}
+			}
 		}
+
+		auto nextPoint = possibleNextPoints[bestCCWPointIndex!=-1 ? bestCCWPointIndex : bestCWPointIndex];
+		markDiagonalProcessed(nextPoint.second);
+
+		return nextPoint.first;
 	}
 
-	void MonotonePolygon::markDiagonalProcessedIfExist(unsigned int edgeStartIndex, unsigned int edgeEndIndex)
-	{ //TODO move this source code in findNextPointIndex for better performance...
-		auto range = diagonals.equal_range(edgeStartIndex);
+	std::vector<std::pair<int, MonotonePolygon::ItDiagonals>> MonotonePolygon::retrievePossibleNextPoints(unsigned int edgeEndIndex)
+	{
+		std::vector<std::pair<int, ItDiagonals>> possibleNextPoints;
+
+		unsigned int nextPolygonPointIndex = (edgeEndIndex + 1) % ccwPolygonPoints.size();
+		possibleNextPoints.push_back(std::make_pair(nextPolygonPointIndex, diagonals.end()));
+
+		auto range = diagonals.equal_range(edgeEndIndex);
 		for(auto it = range.first; it != range.second; ++it)
 		{
-			if(edgeEndIndex == it->second.endIndex)
+			if(!it->second.isProcessed)
 			{
-				it->second.isProcessed = true;
-				break;
+				possibleNextPoints.push_back(std::make_pair(it->second.endIndex, it));
 			}
+		}
+
+		return possibleNextPoints;
+	}
+
+	void MonotonePolygon::markDiagonalProcessed(MonotonePolygon::ItDiagonals itDiagonal)
+	{
+		if(itDiagonal!=diagonals.end())
+		{
+			itDiagonal->second.isProcessed = true;
 		}
 	}
 
