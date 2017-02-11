@@ -16,11 +16,16 @@ namespace urchin
 
 	bool SidedPointCmp::operator()(const SidedPoint &left, const SidedPoint &right) const
 	{
-		if(ccwPolygonPoints[left.pointIndex].Y == ccwPolygonPoints[right.pointIndex].Y)
+		return isAbove(left.pointIndex, right.pointIndex);
+	}
+
+	bool SidedPointCmp::isAbove(unsigned int index1, unsigned int index2) const
+	{
+		if(ccwPolygonPoints[index1].Y == ccwPolygonPoints[index2].Y)
 		{
-			return ccwPolygonPoints[left.pointIndex].X < ccwPolygonPoints[right.pointIndex].X;
+			return ccwPolygonPoints[index1].X < ccwPolygonPoints[index2].X;
 		}
-		return ccwPolygonPoints[left.pointIndex].Y > ccwPolygonPoints[right.pointIndex].Y;
+		return ccwPolygonPoints[index1].Y > ccwPolygonPoints[index2].Y;
 	}
 
 	Triangulation::Triangulation(const std::vector<Point2<float>> &ccwPolygonPoints) :
@@ -29,18 +34,26 @@ namespace urchin
 
 	}
 
-	void Triangulation::triangulate() const //TODO return vector of IndexedTriangle...
+	std::vector<IndexedTriangle2D<float>> Triangulation::triangulate() const
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		MonotonePolygon monotonePolygon(ccwPolygonPoints);
-		std::vector<std::vector<Point2<float>>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
+		std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
+
+		std::vector<IndexedTriangle2D<float>> triangles;
+		triangles.reserve(ccwPolygonPoints.size());
 
 		for(unsigned monotonePolygonIndex = 0; monotonePolygonIndex<monotonePolygons.size(); ++monotonePolygonIndex)
 		{
-			triangulateMonotonePolygon(monotonePolygons[monotonePolygonIndex]);
+			triangulateMonotonePolygon(monotonePolygons[monotonePolygonIndex], triangles);
 		}
+
+		return triangles;
 	}
 
-	void Triangulation::triangulateMonotonePolygon(const std::vector<Point2<float>> &monotonePolygonPoints) const
+	/**
+	 * @param triangles [out] Triangles of monotone polygon are added to this vector
+	 */
+	void Triangulation::triangulateMonotonePolygon(const std::vector<unsigned int> &monotonePolygonPoints, std::vector<IndexedTriangle2D<float>> &triangles) const
 	{
 		std::vector<SidedPoint> sidedPointsVector = buildSidedPointsVector(monotonePolygonPoints);
 
@@ -60,7 +73,7 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-					std::cout<<"Create triangle A: "<<currentPoint.pointIndex<<", "<<topPoint.pointIndex<<", "<<top2Point.pointIndex<<std::endl;
+					triangles.push_back(IndexedTriangle2D<float>(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
 				}
 				stack.pop();
 				stack.push(sidedPointsVector[j-1]);
@@ -74,12 +87,13 @@ namespace urchin
 					SidedPoint top2Point = stack.top();
 					stack.push(topPoint);
 
-					Vector3<float> diagonalVector = Vector3<float>(monotonePolygonPoints[currentPoint.pointIndex].vector(monotonePolygonPoints[top2Point.pointIndex]), 0.0f);
-					Vector3<float> stackVector = Vector3<float>(monotonePolygonPoints[topPoint.pointIndex].vector(monotonePolygonPoints[top2Point.pointIndex]), 0.0f);
+					Vector3<float> diagonalVector = Vector3<float>(ccwPolygonPoints[currentPoint.pointIndex].vector(ccwPolygonPoints[top2Point.pointIndex]), 0.0f);
+					Vector3<float> stackVector = Vector3<float>(ccwPolygonPoints[topPoint.pointIndex].vector(ccwPolygonPoints[top2Point.pointIndex]), 0.0f);
 					float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(diagonalVector.crossProduct(stackVector));
 
-					if((orientationResult < 0.0 && topPoint.onLeft) || (orientationResult > 0.0 && !topPoint.onLeft)) {
-						std::cout<<"Create triangle B: "<<currentPoint.pointIndex<<", "<<top2Point.pointIndex<<", "<<topPoint.pointIndex<<std::endl;
+					if((orientationResult < 0.0 && topPoint.onLeft) || (orientationResult > 0.0 && !topPoint.onLeft))
+					{
+						triangles.push_back(IndexedTriangle2D<float>(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
 						stack.pop();
 					}else
 					{
@@ -98,13 +112,13 @@ namespace urchin
 			stack.pop();
 			SidedPoint top2Point = stack.top();
 
-			std::cout<<"Create triangle C: "<<currentPoint.pointIndex<<", "<<top2Point.pointIndex<<", "<<topPoint.pointIndex<<std::endl;
+			triangles.push_back(IndexedTriangle2D<float>(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
 		}
 	}
 
-	std::vector<SidedPoint> Triangulation::buildSidedPointsVector(const std::vector<Point2<float>> &monotonePolygonPoints) const
+	std::vector<SidedPoint> Triangulation::buildSidedPointsVector(const std::vector<unsigned int> &monotonePolygonPoints) const
 	{
-		SidedPointCmp sidedPointCmp(monotonePolygonPoints);
+		SidedPointCmp sidedPointCmp(ccwPolygonPoints);
 
 		std::vector<SidedPoint> sidedPointsVector;
 		sidedPointsVector.reserve(monotonePolygonPoints.size());
@@ -112,11 +126,12 @@ namespace urchin
 		for(unsigned int i=0; i<monotonePolygonPoints.size(); ++i)
 		{
 			SidedPoint sidedPoint;
-			sidedPoint.pointIndex = i;
 
-			unsigned int nextIndex = (i+1)%monotonePolygonPoints.size();
-			sidedPoint.onLeft = (monotonePolygonPoints[i].Y > monotonePolygonPoints[nextIndex].Y)
-										|| (monotonePolygonPoints[i].Y == monotonePolygonPoints[nextIndex].Y && monotonePolygonPoints[i].X < monotonePolygonPoints[nextIndex].X); //TODO use SidedPointCmp
+			unsigned int currentIndex = monotonePolygonPoints[i];
+			sidedPoint.pointIndex = currentIndex;
+
+			unsigned int nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
+			sidedPoint.onLeft = sidedPointCmp.isAbove(currentIndex, nextIndex);
 
 			sidedPointsVector.push_back(sidedPoint);
 		}

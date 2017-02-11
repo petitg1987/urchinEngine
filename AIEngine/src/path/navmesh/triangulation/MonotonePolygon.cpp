@@ -16,11 +16,16 @@ namespace urchin
 
 	bool TypedPointCmp::operator()(const TypedPoint &left, const TypedPoint &right) const
 	{
-		if(ccwPolygonPoints[left.pointIndex].Y == ccwPolygonPoints[right.pointIndex].Y)
+		return isBelow(left.pointIndex, right.pointIndex);
+	}
+
+	bool TypedPointCmp::isBelow(unsigned int index1, unsigned int index2) const
+	{
+		if(ccwPolygonPoints[index1].Y == ccwPolygonPoints[index2].Y)
 		{
-			return ccwPolygonPoints[left.pointIndex].X > ccwPolygonPoints[right.pointIndex].X;
+			return ccwPolygonPoints[index1].X > ccwPolygonPoints[index2].X;
 		}
-		return ccwPolygonPoints[left.pointIndex].Y < ccwPolygonPoints[right.pointIndex].Y;
+		return ccwPolygonPoints[index1].Y < ccwPolygonPoints[index2].Y;
 	}
 
 	MonotonePolygon::MonotonePolygon(const std::vector<Point2<float>> &ccwPolygonPoints) :
@@ -33,16 +38,20 @@ namespace urchin
 	 * Create Y-monotone polygons.
 	 * Y-monotone polygon: any lines on X-axis should intersect the polygon once (point/line) or not at all.
 	 */
-	std::vector<std::vector<Point2<float>>> MonotonePolygon::createYMonotonePolygons() //TODO return index of points
+	std::vector<std::vector<unsigned int>> MonotonePolygon::createYMonotonePolygons()
 	{
 		createYMonotonePolygonsDiagonals();
 
-		std::vector<std::vector<Point2<float>>> yMonotonePolygons;
+		std::vector<std::vector<unsigned int>> yMonotonePolygons;
 		yMonotonePolygons.resize(diagonals.size()/2 + 1);
 
 		if(diagonals.size()==0)
 		{
-			yMonotonePolygons[0] = ccwPolygonPoints;
+			yMonotonePolygons[0].reserve(ccwPolygonPoints.size());
+			for(unsigned int i=0; i<ccwPolygonPoints.size(); ++i)
+			{
+				yMonotonePolygons[0].push_back(i);
+			}
 		}else
 		{
 			unsigned int polygonIndex = 0;
@@ -51,8 +60,8 @@ namespace urchin
 				Edge startDiagonal = it->second;
 				if(!startDiagonal.isProcessed)
 				{
-					yMonotonePolygons[polygonIndex].push_back(ccwPolygonPoints[startDiagonal.startIndex]);
-					yMonotonePolygons[polygonIndex].push_back(ccwPolygonPoints[startDiagonal.endIndex]);
+					yMonotonePolygons[polygonIndex].push_back(startDiagonal.startIndex);
+					yMonotonePolygons[polygonIndex].push_back(startDiagonal.endIndex);
 
 					unsigned int previousPointIndex = startDiagonal.startIndex;
 					unsigned int currentPointIndex = startDiagonal.endIndex;
@@ -65,7 +74,7 @@ namespace urchin
 							break;
 						}
 
-						yMonotonePolygons[polygonIndex].push_back(ccwPolygonPoints[nextPointIndex]);
+						yMonotonePolygons[polygonIndex].push_back(nextPointIndex);
 
 						previousPointIndex = currentPointIndex;
 						currentPointIndex = nextPointIndex;
@@ -91,7 +100,13 @@ namespace urchin
 		edgeHelpers.clear();
 		diagonals.clear();
 
-		typed_points_queue typedPointsQueue = buildTypedPointsQueue();
+		bool isMonotonePolygon;
+		typed_points_queue typedPointsQueue = buildTypedPointsQueue(isMonotonePolygon);
+		if(isMonotonePolygon)
+		{ //polygon is already monotone: no diagonal to create
+			return;
+		}
+
 		edgeHelpers.reserve(5);
 
 		while(!typedPointsQueue.empty())
@@ -126,11 +141,15 @@ namespace urchin
 		}
 	}
 
-	MonotonePolygon::typed_points_queue MonotonePolygon::buildTypedPointsQueue() const
+	/**
+	 * @param isMonotonePolygon [out] Returns true if polygon is already monotone
+	 */
+	MonotonePolygon::typed_points_queue MonotonePolygon::buildTypedPointsQueue(bool &isMonotonePolygon) const
 	{
 		TypedPointCmp typedPointCmp(ccwPolygonPoints);
 		typed_points_queue typedPointsQueue(typedPointCmp);
 
+		isMonotonePolygon = true;
 		for(unsigned int i=0; i<ccwPolygonPoints.size(); ++i)
 		{
 			TypedPoint typedPoint;
@@ -139,28 +158,40 @@ namespace urchin
 			unsigned int previousIndex = (i+ccwPolygonPoints.size()-1)%ccwPolygonPoints.size();
 			unsigned int nextIndex = (i+1)%ccwPolygonPoints.size();
 
-			bool currentAbovePrevious = (ccwPolygonPoints[i].Y > ccwPolygonPoints[previousIndex].Y)
-					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].X < ccwPolygonPoints[previousIndex].X); //TODO use TypedPointCmp ?
-			bool currentAboveNext = (ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)
-					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[nextIndex].Y && ccwPolygonPoints[i].X < ccwPolygonPoints[nextIndex].X);
+			bool currentBelowPrevious = typedPointCmp.isBelow(i, previousIndex);
+			bool currentBelowNext = typedPointCmp.isBelow(i, nextIndex);
 
-			if(currentAbovePrevious && currentAboveNext)
+			if(!currentBelowPrevious && !currentBelowNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
 				float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
 
-				typedPoint.type = orientationResult>=0.0 ? PointType::START_VERTEX : PointType::SPLIT_VERTEX;
-			}else if(!currentAbovePrevious && !currentAboveNext)
+				if(orientationResult>=0.0)
+				{
+					typedPoint.type = PointType::START_VERTEX;
+				}else
+				{
+					typedPoint.type = PointType::SPLIT_VERTEX;
+					isMonotonePolygon = false;
+				}
+			}else if(currentBelowPrevious && currentBelowNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
 				float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
 
-				typedPoint.type = orientationResult>=0.0 ? PointType::END_VERTEX : PointType::MERGE_VERTEX;
+				if(orientationResult>=0.0)
+				{
+					typedPoint.type = PointType::END_VERTEX;
+				}else
+				{
+					typedPoint.type = PointType::MERGE_VERTEX;
+					isMonotonePolygon = false;
+				}
 			}else
 			{
-				if(!currentAbovePrevious && currentAboveNext)
+				if(currentBelowPrevious && !currentBelowNext)
 				{
 					typedPoint.type = PointType::REGULAR_DOWN_VERTEX;
 				}else

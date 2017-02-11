@@ -33,6 +33,7 @@
 #include "math/algebra/Transform.h"
 #include "math/algebra/MathValue.h"
 #include "math/geometry/2d/Line2D.h"
+#include "math/geometry/2d/IndexedTriangle2D.h"
 #include "math/geometry/2d/shape/ConvexShape2D.h"
 #include "math/geometry/2d/shape/RectangleShape.h"
 #include "math/geometry/2d/shape/ConvexHullShape2D.h"

@@ -19,6 +19,7 @@ namespace urchin
 			SidedPointCmp(const std::vector<Point2<float>> &);
 
 			bool operator()(const SidedPoint &, const SidedPoint &) const;
+			bool isAbove(unsigned int, unsigned int) const;
 
 		private:
 			const std::vector<Point2<float>> &ccwPolygonPoints;
@@ -29,11 +30,11 @@ namespace urchin
 		public:
 			Triangulation(const std::vector<Point2<float>> &);
 
-			void triangulate() const;
+			std::vector<IndexedTriangle2D<float>> triangulate() const;
 
 		private:
-			void triangulateMonotonePolygon(const std::vector<Point2<float>> &) const;
-			std::vector<SidedPoint> buildSidedPointsVector(const std::vector<Point2<float>> &) const;
+			void triangulateMonotonePolygon(const std::vector<unsigned int> &, std::vector<IndexedTriangle2D<float>> &) const;
+			std::vector<SidedPoint> buildSidedPointsVector(const std::vector<unsigned int> &) const;
 
 			std::vector<Point2<float>> ccwPolygonPoints;
 	};

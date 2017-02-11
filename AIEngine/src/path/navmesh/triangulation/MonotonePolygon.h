@@ -31,6 +31,7 @@ namespace urchin
 			TypedPointCmp(const std::vector<Point2<float>> &);
 
 			bool operator()(const TypedPoint &, const TypedPoint &) const;
+			bool isBelow(unsigned int, unsigned int) const;
 
 		private:
 			const std::vector<Point2<float>> &ccwPolygonPoints;
@@ -57,14 +58,14 @@ namespace urchin
 		public:
 			MonotonePolygon(const std::vector<Point2<float>> &);
 
-			std::vector<std::vector<Point2<float>>> createYMonotonePolygons();
+			std::vector<std::vector<unsigned int>> createYMonotonePolygons();
 
 		private:
 			typedef std::priority_queue<TypedPoint, std::vector<TypedPoint>, TypedPointCmp> typed_points_queue;
 			typedef std::multimap<unsigned int, Edge>::iterator it_diagonals;
 
 			void createYMonotonePolygonsDiagonals();
-			typed_points_queue buildTypedPointsQueue() const;
+			typed_points_queue buildTypedPointsQueue(bool &) const;
 
 			void handleStartVertex(unsigned int);
 			void handleSplitVertex(unsigned int);
