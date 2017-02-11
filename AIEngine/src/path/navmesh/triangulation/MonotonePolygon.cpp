@@ -7,11 +7,18 @@
 
 namespace urchin
 {
+
+	TypedPointCmp::TypedPointCmp(const std::vector<Point2<float>> &ccwPolygonPoints) :
+		ccwPolygonPoints(ccwPolygonPoints)
+	{
+
+	}
+
 	bool TypedPointCmp::operator()(const TypedPoint &left, const TypedPoint &right) const
 	{
 		if(ccwPolygonPoints[left.pointIndex].Y == ccwPolygonPoints[right.pointIndex].Y)
 		{
-			return ccwPolygonPoints[left.pointIndex].X < ccwPolygonPoints[right.pointIndex].X;
+			return ccwPolygonPoints[left.pointIndex].X > ccwPolygonPoints[right.pointIndex].X;
 		}
 		return ccwPolygonPoints[left.pointIndex].Y < ccwPolygonPoints[right.pointIndex].Y;
 	}
@@ -26,7 +33,7 @@ namespace urchin
 	 * Create Y-monotone polygons.
 	 * Y-monotone polygon: any lines on X-axis should intersect the polygon once (point/line) or not at all.
 	 */
-	std::vector<std::vector<Point2<float>>> MonotonePolygon::createYMonotonePolygons()
+	std::vector<std::vector<Point2<float>>> MonotonePolygon::createYMonotonePolygons() //TODO return index of points
 	{
 		createYMonotonePolygonsDiagonals();
 
@@ -119,7 +126,7 @@ namespace urchin
 		}
 	}
 
-	typed_points_queue MonotonePolygon::buildTypedPointsQueue() const
+	MonotonePolygon::typed_points_queue MonotonePolygon::buildTypedPointsQueue() const
 	{
 		TypedPointCmp typedPointCmp(ccwPolygonPoints);
 		typed_points_queue typedPointsQueue(typedPointCmp);
@@ -129,13 +136,13 @@ namespace urchin
 			TypedPoint typedPoint;
 			typedPoint.pointIndex = i;
 
-			unsigned int previousIndex = (i-1)%ccwPolygonPoints.size();
+			unsigned int previousIndex = (i+ccwPolygonPoints.size()-1)%ccwPolygonPoints.size();
 			unsigned int nextIndex = (i+1)%ccwPolygonPoints.size();
 
 			bool currentAbovePrevious = (ccwPolygonPoints[i].Y > ccwPolygonPoints[previousIndex].Y)
-					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].X > ccwPolygonPoints[previousIndex].X);
+					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[previousIndex].Y && ccwPolygonPoints[i].X < ccwPolygonPoints[previousIndex].X); //TODO use TypedPointCmp ?
 			bool currentAboveNext = (ccwPolygonPoints[i].Y > ccwPolygonPoints[nextIndex].Y)
-					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[nextIndex].Y && ccwPolygonPoints[i].X > ccwPolygonPoints[nextIndex].X);
+					|| (ccwPolygonPoints[i].Y == ccwPolygonPoints[nextIndex].Y && ccwPolygonPoints[i].X < ccwPolygonPoints[nextIndex].X);
 
 			if(currentAbovePrevious && currentAboveNext)
 			{
@@ -187,7 +194,7 @@ namespace urchin
 
 	void MonotonePolygon::handleEndVertex(unsigned int i)
 	{
-		unsigned int previousEdgeIndex = i-1;
+		unsigned int previousEdgeIndex = (i+ccwPolygonPoints.size()-1)%ccwPolygonPoints.size();
 		std::vector<EdgeHelper>::const_iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
@@ -198,7 +205,7 @@ namespace urchin
 
 	void MonotonePolygon::handleMergeVertex(unsigned int i)
 	{
-		unsigned int previousEdgeIndex = i-1;
+		unsigned int previousEdgeIndex = (i+ccwPolygonPoints.size()-1)%ccwPolygonPoints.size();
 		std::vector<EdgeHelper>::const_iterator edgeHelperConstIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperConstIt->helperPointType==PointType::MERGE_VERTEX)
 		{
@@ -217,7 +224,7 @@ namespace urchin
 
 	void MonotonePolygon::handleRegularDownVertex(unsigned int i)
 	{
-		unsigned int previousEdgeIndex = i-1;
+		unsigned int previousEdgeIndex = (i+ccwPolygonPoints.size()-1)%ccwPolygonPoints.size();
 		std::vector<EdgeHelper>::const_iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
@@ -314,7 +321,7 @@ namespace urchin
 	 */
 	unsigned int MonotonePolygon::retrieveNextPointIndex(unsigned int edgeStartIndex, unsigned int edgeEndIndex)
 	{
-		std::vector<std::pair<int, ItDiagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
+		std::vector<std::pair<int, it_diagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
 		if(possibleNextPoints.size()==1)
 		{ //only one possible edge
 			return possibleNextPoints[0].first;
@@ -356,9 +363,9 @@ namespace urchin
 		return nextPoint.first;
 	}
 
-	std::vector<std::pair<int, MonotonePolygon::ItDiagonals>> MonotonePolygon::retrievePossibleNextPoints(unsigned int edgeEndIndex)
+	std::vector<std::pair<int, MonotonePolygon::it_diagonals>> MonotonePolygon::retrievePossibleNextPoints(unsigned int edgeEndIndex)
 	{
-		std::vector<std::pair<int, ItDiagonals>> possibleNextPoints;
+		std::vector<std::pair<int, it_diagonals>> possibleNextPoints;
 
 		unsigned int nextPolygonPointIndex = (edgeEndIndex + 1) % ccwPolygonPoints.size();
 		possibleNextPoints.push_back(std::make_pair(nextPolygonPointIndex, diagonals.end()));
@@ -375,7 +382,7 @@ namespace urchin
 		return possibleNextPoints;
 	}
 
-	void MonotonePolygon::markDiagonalProcessed(MonotonePolygon::ItDiagonals itDiagonal)
+	void MonotonePolygon::markDiagonalProcessed(MonotonePolygon::it_diagonals itDiagonal)
 	{
 		if(itDiagonal!=diagonals.end())
 		{

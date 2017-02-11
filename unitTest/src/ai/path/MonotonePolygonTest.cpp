@@ -3,8 +3,8 @@
 #include "UrchinCommon.h"
 #include "UrchinAIEngine.h"
 
-#include "AssertHelper.h"
 #include "MonotonePolygonTest.h"
+#include "AssertHelper.h"
 using namespace urchin;
 
 void MonotonePolygonTest::oneSplitVertex()
@@ -41,15 +41,15 @@ void MonotonePolygonTest::twoSplitVertex()
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 3);
 	AssertHelper::assertUnsignedInt(monotonePolygons[0].size(), 4);
-	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][0], Point2<float>(1.0, 3.0));
-	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][1], Point2<float>(3.0, 1.0));
-	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][2], Point2<float>(4.0, 0.0));
-	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][3], Point2<float>(3.0, 3.0));
+	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][0], Point2<float>(1.0, 1.0));
+	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][1], Point2<float>(3.0, 3.0));
+	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][2], Point2<float>(1.0, 3.0));
+	AssertHelper::assertPoint2FloatEquals(monotonePolygons[0][3], Point2<float>(0.0, 0.0));
 	AssertHelper::assertUnsignedInt(monotonePolygons[1].size(), 4);
 	AssertHelper::assertPoint2FloatEquals(monotonePolygons[1][0], Point2<float>(1.0, 1.0));
 	AssertHelper::assertPoint2FloatEquals(monotonePolygons[1][1], Point2<float>(3.0, 1.0));
-	AssertHelper::assertPoint2FloatEquals(monotonePolygons[1][2], Point2<float>(1.0, 3.0));
-	AssertHelper::assertPoint2FloatEquals(monotonePolygons[1][3], Point2<float>(0.0, 0.0));
+	AssertHelper::assertPoint2FloatEquals(monotonePolygons[1][2], Point2<float>(4.0, 0.0));
+	AssertHelper::assertPoint2FloatEquals(monotonePolygons[1][3], Point2<float>(3.0, 3.0));
 	AssertHelper::assertUnsignedInt(monotonePolygons[2].size(), 3);
 	AssertHelper::assertPoint2FloatEquals(monotonePolygons[2][0], Point2<float>(3.0, 1.0));
 	AssertHelper::assertPoint2FloatEquals(monotonePolygons[2][1], Point2<float>(1.0, 1.0));

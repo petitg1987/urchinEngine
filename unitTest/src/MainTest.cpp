@@ -23,6 +23,7 @@
 #include "physics/algorithm/inertia/InertiaCalculationTest.h"
 #include "physics/island/IslandContainerTest.h"
 #include "ai/path/MonotonePolygonTest.h"
+#include "ai/path/TriangulationTest.h"
 
 int main()
 {
@@ -72,6 +73,7 @@ int main()
 
 	//ai - path
 	runner.addTest(MonotonePolygonTest::suite());
+	runner.addTest(TriangulationTest::suite());
 
 	runner.run();
 

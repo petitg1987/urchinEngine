@@ -52,8 +52,6 @@ namespace urchin
 		PointType helperPointType;
 	};
 
-	typedef std::priority_queue<TypedPoint, std::vector<TypedPoint>, TypedPointCmp> typed_points_queue;
-
 	class MonotonePolygon
 	{
 		public:
@@ -62,7 +60,8 @@ namespace urchin
 			std::vector<std::vector<Point2<float>>> createYMonotonePolygons();
 
 		private:
-			typedef std::multimap<unsigned int, Edge>::iterator ItDiagonals;
+			typedef std::priority_queue<TypedPoint, std::vector<TypedPoint>, TypedPointCmp> typed_points_queue;
+			typedef std::multimap<unsigned int, Edge>::iterator it_diagonals;
 
 			void createYMonotonePolygonsDiagonals();
 			typed_points_queue buildTypedPointsQueue() const;
@@ -80,8 +79,8 @@ namespace urchin
 			void createDiagonals(unsigned int, unsigned int);
 
 			unsigned int retrieveNextPointIndex(unsigned int, unsigned int);
-			std::vector<std::pair<int, ItDiagonals>> retrievePossibleNextPoints(unsigned int);
-			void markDiagonalProcessed(ItDiagonals);
+			std::vector<std::pair<int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
+			void markDiagonalProcessed(it_diagonals);
 
 			void logImpossibleToClosePolygon() const;
 
