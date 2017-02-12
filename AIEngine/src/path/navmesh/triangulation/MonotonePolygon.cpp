@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <utility>
+#include <algorithm>
 #include <limits>
 #include <sstream>
 
@@ -8,30 +9,10 @@
 namespace urchin
 {
 
-	TypedPointCmp::TypedPointCmp(const std::vector<Point2<float>> &ccwPolygonPoints) :
-		ccwPolygonPoints(ccwPolygonPoints)
-	{
-
-	}
-
-	bool TypedPointCmp::operator()(const TypedPoint &left, const TypedPoint &right) const
-	{
-		return isBelow(left.pointIndex, right.pointIndex);
-	}
-
-	bool TypedPointCmp::isBelow(unsigned int index1, unsigned int index2) const
-	{
-		if(ccwPolygonPoints[index1].Y == ccwPolygonPoints[index2].Y)
-		{
-			return ccwPolygonPoints[index1].X > ccwPolygonPoints[index2].X;
-		}
-		return ccwPolygonPoints[index1].Y < ccwPolygonPoints[index2].Y;
-	}
-
 	MonotonePolygon::MonotonePolygon(const std::vector<Point2<float>> &ccwPolygonPoints) :
 			ccwPolygonPoints(ccwPolygonPoints)
 	{
-
+		edgeHelpers.reserve(5);
 	}
 
 	/**
@@ -101,53 +82,47 @@ namespace urchin
 		diagonals.clear();
 
 		bool isMonotonePolygon;
-		typed_points_queue typedPointsQueue = buildTypedPointsQueue(isMonotonePolygon);
+		std::vector<TypedPoint> sortedTypedPoints = buildSortedTypedPoints(isMonotonePolygon);
 		if(isMonotonePolygon)
 		{ //polygon is already monotone: no diagonal to create
 			return;
 		}
 
-		edgeHelpers.reserve(5);
-
-		while(!typedPointsQueue.empty())
+		for(const auto &typedPoint : sortedTypedPoints)
 		{
-			PointType pointType = typedPointsQueue.top().type;
-			unsigned int i = typedPointsQueue.top().pointIndex;
-			switch(pointType)
+			switch(typedPoint.type)
 			{
 				case PointType::START_VERTEX:
-					handleStartVertex(i);
+					handleStartVertex(typedPoint.pointIndex);
 					break;
 				case PointType::SPLIT_VERTEX:
-					handleSplitVertex(i);
+					handleSplitVertex(typedPoint.pointIndex);
 					break;
 				case PointType::END_VERTEX:
-					handleEndVertex(i);
+					handleEndVertex(typedPoint.pointIndex);
 					break;
 				case PointType::MERGE_VERTEX:
-					handleMergeVertex(i);
+					handleMergeVertex(typedPoint.pointIndex);
 					break;
 				case PointType::REGULAR_DOWN_VERTEX:
-					handleRegularDownVertex(i);
+					handleRegularDownVertex(typedPoint.pointIndex);
 					break;
 				case PointType::REGULAR_UP_VERTEX:
-					handleRegularUpVertex(i);
+					handleRegularUpVertex(typedPoint.pointIndex);
 					break;
 				default:
-					throw std::runtime_error("Unknown type of the point: " + pointType);
+					throw std::runtime_error("Unknown type of the point: " + typedPoint.type);
 			}
-
-			typedPointsQueue.pop();
 		}
 	}
 
 	/**
 	 * @param isMonotonePolygon [out] Returns true if polygon is already monotone
 	 */
-	MonotonePolygon::typed_points_queue MonotonePolygon::buildTypedPointsQueue(bool &isMonotonePolygon) const
+	std::vector<TypedPoint> MonotonePolygon::buildSortedTypedPoints(bool &isMonotonePolygon) const
 	{
-		TypedPointCmp typedPointCmp(ccwPolygonPoints);
-		typed_points_queue typedPointsQueue(typedPointCmp);
+		std::vector<TypedPoint> sortedTypedPoints;
+		sortedTypedPoints.reserve(ccwPolygonPoints.size());
 
 		isMonotonePolygon = true;
 		for(unsigned int i=0; i<ccwPolygonPoints.size(); ++i)
@@ -158,10 +133,10 @@ namespace urchin
 			unsigned int previousIndex = (i+ccwPolygonPoints.size()-1)%ccwPolygonPoints.size();
 			unsigned int nextIndex = (i+1)%ccwPolygonPoints.size();
 
-			bool currentBelowPrevious = typedPointCmp.isBelow(i, previousIndex);
-			bool currentBelowNext = typedPointCmp.isBelow(i, nextIndex);
+			bool currentBelowPrevious = isFirstPointAboveSecond(i, previousIndex);
+			bool currentBelowNext = isFirstPointAboveSecond(i, nextIndex);
 
-			if(!currentBelowPrevious && !currentBelowNext)
+			if(currentBelowPrevious && currentBelowNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
@@ -175,7 +150,7 @@ namespace urchin
 					typedPoint.type = PointType::SPLIT_VERTEX;
 					isMonotonePolygon = false;
 				}
-			}else if(currentBelowPrevious && currentBelowNext)
+			}else if(!currentBelowPrevious && !currentBelowNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(ccwPolygonPoints[previousIndex].vector(ccwPolygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(ccwPolygonPoints[i].vector(ccwPolygonPoints[nextIndex]), 0.0f);
@@ -191,7 +166,7 @@ namespace urchin
 				}
 			}else
 			{
-				if(currentBelowPrevious && !currentBelowNext)
+				if(!currentBelowPrevious && currentBelowNext)
 				{
 					typedPoint.type = PointType::REGULAR_DOWN_VERTEX;
 				}else
@@ -200,10 +175,27 @@ namespace urchin
 				}
 			}
 
-			typedPointsQueue.push(typedPoint);
+			sortedTypedPoints.push_back(typedPoint);
 		}
 
-		return typedPointsQueue;
+		std::sort(sortedTypedPoints.begin(), sortedTypedPoints.end(), [&](const TypedPoint &left, const TypedPoint &right)
+						{return isFirstPointAboveSecond(left.pointIndex, right.pointIndex);});
+
+		if(!sortedTypedPoints.empty() && sortedTypedPoints[0].type!=PointType::START_VERTEX)
+		{
+			throw std::runtime_error("First point in the vector should be a start vertex. Point type: " + sortedTypedPoints[0].type);
+		}
+
+		return sortedTypedPoints;
+	}
+
+	bool MonotonePolygon::isFirstPointAboveSecond(unsigned int firstIndex, unsigned int secondIndex) const
+	{
+		if(ccwPolygonPoints[firstIndex].Y == ccwPolygonPoints[secondIndex].Y)
+		{
+			return ccwPolygonPoints[firstIndex].X < ccwPolygonPoints[secondIndex].X;
+		}
+		return ccwPolygonPoints[firstIndex].Y > ccwPolygonPoints[secondIndex].Y;
 	}
 
 	void MonotonePolygon::handleStartVertex(unsigned int i)
