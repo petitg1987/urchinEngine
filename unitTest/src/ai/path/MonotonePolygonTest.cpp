@@ -10,8 +10,9 @@ using namespace urchin;
 void MonotonePolygonTest::oneSplitVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0, 2.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0)};
+	std::vector<unsigned int> endContourIndexes = {(unsigned int)ccwPolygonPoints.size()};
 
-	MonotonePolygon monotonePolygon(ccwPolygonPoints);
+	MonotonePolygon monotonePolygon(ccwPolygonPoints, endContourIndexes);
 	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -27,10 +28,12 @@ void MonotonePolygonTest::oneSplitVertex()
 
 void MonotonePolygonTest::twoSplitVertex()
 {
-	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0),
-			Point2<float>(3.0, 1.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 3.0)};
+	std::vector<Point2<float>> ccwPolygonPoints = {
+			Point2<float>(1.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0), Point2<float>(3.0, 1.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 3.0)
+	};
+	std::vector<unsigned int> endContourIndexes = {(unsigned int)ccwPolygonPoints.size()};
 
-	MonotonePolygon monotonePolygon(ccwPolygonPoints);
+	MonotonePolygon monotonePolygon(ccwPolygonPoints, endContourIndexes);
 	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 3);
@@ -53,8 +56,9 @@ void MonotonePolygonTest::twoSplitVertex()
 void MonotonePolygonTest::oneMergeVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 0.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0)};
+	std::vector<unsigned int> endContourIndexes = {(unsigned int)ccwPolygonPoints.size()};
 
-	MonotonePolygon monotonePolygon(ccwPolygonPoints);
+	MonotonePolygon monotonePolygon(ccwPolygonPoints, endContourIndexes);
 	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -71,8 +75,9 @@ void MonotonePolygonTest::oneMergeVertex()
 void MonotonePolygonTest::twoRegularVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.0), Point2<float>(0.0, 0.0), Point2<float>(2.0, 1.0)};
+	std::vector<unsigned int> endContourIndexes = {(unsigned int)ccwPolygonPoints.size()};
 
-	MonotonePolygon monotonePolygon(ccwPolygonPoints);
+	MonotonePolygon monotonePolygon(ccwPolygonPoints, endContourIndexes);
 	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
@@ -84,10 +89,12 @@ void MonotonePolygonTest::twoRegularVertex()
 
 void MonotonePolygonTest::splitAndMergeVertex()
 {
-	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0),
-			Point2<float>(2.0, 3.0), Point2<float>(1.0, 2.0)};
+	std::vector<Point2<float>> ccwPolygonPoints = {
+			Point2<float>(0.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0), Point2<float>(2.0, 3.0), Point2<float>(1.0, 2.0)
+	};
+	std::vector<unsigned int> endContourIndexes = {(unsigned int)ccwPolygonPoints.size()};
 
-	MonotonePolygon monotonePolygon(ccwPolygonPoints);
+	MonotonePolygon monotonePolygon(ccwPolygonPoints, endContourIndexes);
 	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -103,6 +110,67 @@ void MonotonePolygonTest::splitAndMergeVertex()
 	AssertHelper::assertUnsignedInt(monotonePolygons[1][3], 4);
 }
 
+void MonotonePolygonTest::polygonOneHole()
+{
+	std::vector<Point2<float>> polygonPoints = {
+		Point2<float>(0.0, 0.0), Point2<float>(3.0, 0.0), Point2<float>(3.0, 3.0), Point2<float>(0.0, 3.0), //polygon points
+		Point2<float>(1.0, 1.0), Point2<float>(1.0, 2.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0) //hole points
+	};
+	std::vector<unsigned int> endContourIndexes = {4, (unsigned int)polygonPoints.size()};
+
+	MonotonePolygon monotonePolygon(polygonPoints, endContourIndexes);
+	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
+
+	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0].size(), 6);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][0], 0);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][1], 7);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][2], 4);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][3], 5);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][4], 2);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][5], 3);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1].size(), 6);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][0], 2);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][1], 5);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][2], 6);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][3], 7);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][4], 0);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][5], 1);
+}
+
+void MonotonePolygonTest::polygonTwoHoles()
+{
+	std::vector<Point2<float>> polygonPoints = {
+		Point2<float>(0.0, 0.0), Point2<float>(5.0, 0.0), Point2<float>(5.0, 5.0), Point2<float>(0.0, 5.0), //polygon points
+		Point2<float>(1.0, 1.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0), //hole 1 points
+		Point2<float>(4.0, 3.0), Point2<float>(3.0, 4.0), Point2<float>(4.0, 4.0) //hole 2 points
+	};
+	std::vector<unsigned int> endContourIndexes = {4, 7, (unsigned int)polygonPoints.size()};
+
+	MonotonePolygon monotonePolygon(polygonPoints, endContourIndexes);
+	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
+
+	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0].size(), 8);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][0], 0);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][1], 6);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][2], 4);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][3], 5);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][4], 7);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][5], 8);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][6], 2);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][7], 3);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1].size(), 8);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][0], 2);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][1], 8);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][2], 9);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][3], 7);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][4], 5);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][5], 6);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][6], 0);
+	AssertHelper::assertUnsignedInt(monotonePolygons[1][7], 1);
+}
+
 CppUnit::Test *MonotonePolygonTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("MonotonePolygonTest");
@@ -112,6 +180,9 @@ CppUnit::Test *MonotonePolygonTest::suite()
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("oneMergeVertex", &MonotonePolygonTest::oneMergeVertex));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("twoRegularVertex", &MonotonePolygonTest::twoRegularVertex));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("splitAndMergeVertex", &MonotonePolygonTest::splitAndMergeVertex));
+
+	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonOneHole", &MonotonePolygonTest::polygonOneHole));
+	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles", &MonotonePolygonTest::polygonTwoHoles));
 
 	return suite;
 }

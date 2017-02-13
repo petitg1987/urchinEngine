@@ -18,7 +18,11 @@ namespace urchin
 		public:
 			Triangulation(const std::vector<Point2<float>> &);
 
-			const std::vector<Point2<float>> &getPolygonPoints() const;
+			std::vector<Point2<float>> getPolygonPoints() const;
+
+			unsigned int addHolePoints(const std::vector<Point2<float>> &);
+			unsigned int getHolesSize() const;
+			std::vector<Point2<float>> getHolePoints(unsigned int) const;
 
 			std::vector<IndexedTriangle2D<float>> triangulate() const;
 
@@ -27,7 +31,8 @@ namespace urchin
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
 			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
 
-			std::vector<Point2<float>> ccwPolygonPoints;
+			std::vector<Point2<float>> polygonPoints;
+			std::vector<unsigned int> endContourIndexes; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndexes' will have values: 5 and 9.
 	};
 
 }

@@ -8,24 +8,58 @@
 namespace urchin
 {
 
+	/**
+	 * @param ccwPolygonPoints Polygon points in counter clockwise order.
+	 */
 	Triangulation::Triangulation(const std::vector<Point2<float>> &ccwPolygonPoints) :
-			ccwPolygonPoints(ccwPolygonPoints)
+			polygonPoints(ccwPolygonPoints)
 	{
-
+		endContourIndexes.push_back(ccwPolygonPoints.size());
 	}
 
-	const std::vector<Point2<float>> &Triangulation::getPolygonPoints() const
+	/**
+	 * @return Polygon points in counter clockwise order.
+	 */
+	std::vector<Point2<float>> Triangulation::getPolygonPoints() const
 	{
-		return ccwPolygonPoints;
+		return std::vector<Point2<float>>(polygonPoints.begin(), polygonPoints.begin() + endContourIndexes[0]);
+	}
+
+	/**
+	 * @param cwHolePoints Hole points in clockwise order.
+	 * @return Hole index (start to 0).
+	 */
+	unsigned int Triangulation::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
+	{
+		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
+		endContourIndexes.push_back(polygonPoints.size());
+
+		return endContourIndexes.size() - 2;
+	}
+
+	/**
+	 * @return Number of holes
+	 */
+	unsigned int Triangulation::getHolesSize() const
+	{
+		return endContourIndexes.size() - 1;
+	}
+
+	/**
+	 * @return Hole points in clockwise order.
+	 */
+	std::vector<Point2<float>> Triangulation::getHolePoints(unsigned int holeIndex) const
+	{
+		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndexes[holeIndex], polygonPoints.begin() + endContourIndexes[holeIndex+1]);
 	}
 
 	std::vector<IndexedTriangle2D<float>> Triangulation::triangulate() const
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
-		MonotonePolygon monotonePolygon(ccwPolygonPoints);
+		MonotonePolygon monotonePolygon(polygonPoints, endContourIndexes);
 		std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 		std::vector<IndexedTriangle2D<float>> triangles;
-		triangles.reserve(ccwPolygonPoints.size() - 2);
+		triangles.reserve(polygonPoints.size() - 2);
 
 		for(unsigned monotonePolygonIndex = 0; monotonePolygonIndex<monotonePolygons.size(); ++monotonePolygonIndex)
 		{
@@ -72,8 +106,8 @@ namespace urchin
 					SidedPoint top2Point = stack.top();
 					stack.push(topPoint);
 
-					Vector3<float> diagonalVector = Vector3<float>(ccwPolygonPoints[currentPoint.pointIndex].vector(ccwPolygonPoints[top2Point.pointIndex]), 0.0f);
-					Vector3<float> stackVector = Vector3<float>(ccwPolygonPoints[topPoint.pointIndex].vector(ccwPolygonPoints[top2Point.pointIndex]), 0.0f);
+					Vector3<float> diagonalVector = Vector3<float>(polygonPoints[currentPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]), 0.0f);
+					Vector3<float> stackVector = Vector3<float>(polygonPoints[topPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]), 0.0f);
 					float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(diagonalVector.crossProduct(stackVector));
 
 					if((orientationResult < 0.0 && topPoint.onLeft) || (orientationResult > 0.0 && !topPoint.onLeft))
@@ -127,10 +161,10 @@ namespace urchin
 
 	bool Triangulation::isFirstPointAboveSecond(unsigned int firstIndex, unsigned int secondIndex) const
 	{
-		if(ccwPolygonPoints[firstIndex].Y == ccwPolygonPoints[secondIndex].Y)
+		if(polygonPoints[firstIndex].Y == polygonPoints[secondIndex].Y)
 		{
-			return ccwPolygonPoints[firstIndex].X < ccwPolygonPoints[secondIndex].X;
+			return polygonPoints[firstIndex].X < polygonPoints[secondIndex].X;
 		}
-		return ccwPolygonPoints[firstIndex].Y > ccwPolygonPoints[secondIndex].Y;
+		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 }

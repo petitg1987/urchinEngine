@@ -43,7 +43,7 @@ namespace urchin
 	class MonotonePolygon
 	{
 		public:
-			MonotonePolygon(const std::vector<Point2<float>> &);
+			MonotonePolygon(const std::vector<Point2<float>> &, const std::vector<unsigned int> &);
 
 			std::vector<std::vector<unsigned int>> createYMonotonePolygons();
 
@@ -61,6 +61,9 @@ namespace urchin
 			void handleRegularDownVertex(unsigned int);
 			void handleRegularUpVertex(unsigned int);
 
+			unsigned int nextPointIndex(unsigned int) const;
+			unsigned int previousPointIndex(unsigned int) const;
+
 			void createEdgeHelper(unsigned int, unsigned int, PointType);
 			std::vector<EdgeHelper>::const_iterator findEdgeHelper(unsigned int) const;
 			std::vector<EdgeHelper>::iterator findNearestLeftEdgeHelper(unsigned int);
@@ -72,7 +75,8 @@ namespace urchin
 
 			void logImpossibleToClosePolygon() const;
 
-			const std::vector<Point2<float>> &ccwPolygonPoints;
+			const std::vector<Point2<float>> &polygonPoints;
+			const std::vector<unsigned int> &endContourIndexes; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndexes' will have values: 5 and 9.
 
 			std::vector<EdgeHelper> edgeHelpers;
 			std::multimap<unsigned int, Edge> diagonals;
