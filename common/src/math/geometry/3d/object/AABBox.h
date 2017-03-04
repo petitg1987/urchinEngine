@@ -37,7 +37,7 @@ namespace urchin
 			Point3<T> getCenterOfMass() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
-			const std::vector<Point3<T>> getEightPoints() const;
+			const std::vector<Point3<T>> getPoints() const;
 			T getVolume() const;
 
 			AABBox<T> moveAABBox(const Transform<T> &) const;

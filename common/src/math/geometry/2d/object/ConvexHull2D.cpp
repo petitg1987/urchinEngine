@@ -5,6 +5,7 @@ namespace urchin
 
 	/**
 	 * @param points Points used to construct the convex hull. Points inside the convex hull are accepted but will unused.
+	 * Duplicate points are supported.
 	 */
 	template<class T> ConvexHull2D<T>::ConvexHull2D(const std::vector<Point2<T>> &points) :
 		localizedConvexHullShape(ConvexHullShape2D<T>(points))

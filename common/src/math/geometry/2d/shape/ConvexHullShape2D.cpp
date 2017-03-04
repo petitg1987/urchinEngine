@@ -8,6 +8,7 @@ namespace urchin
 
 	/**
 	 * @param points Points used to construct the convex hull shape. Points inside the convex hull shape are accepted but will unused.
+	 * Duplicate points are supported.
 	 */
 	template<class T> ConvexHullShape2D<T>::ConvexHullShape2D(const std::vector<Point2<T>> &points)
 	{
@@ -26,7 +27,7 @@ namespace urchin
 		//build lower convex hull
 		for (unsigned int i=0; i<nbPoints; i++)
 		{
-			while (k>=2 && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0)
+			while (k>=2 && (convexHullPoints[k-2]==convexHullPoints[k-1] || Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0))
 			{ //clockwise detected, we remove the point
 				k--;
 			}
@@ -37,7 +38,7 @@ namespace urchin
 		unsigned int t = k+1;
 		for (int i=nbPoints-2; i>=0; i--)
 		{
-			while (k>=t && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0)
+			while (k>=t && (convexHullPoints[k-2]==convexHullPoints[k-1] || Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0))
 			{ //clockwise detected, we remove the point
 				k--;
 			}

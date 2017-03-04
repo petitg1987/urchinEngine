@@ -2,6 +2,7 @@
 #define ENGINE_OBBOX_H
 
 #include <sstream>
+#include <vector>
 
 #include "math/geometry/3d/object/ConvexObject3D.h"
 #include "math/geometry/3d/object/AABBox.h"
@@ -36,6 +37,7 @@ namespace urchin
 			const Point3<T> &getCenterOfMass() const;
 			const Vector3<T> &getAxis(unsigned int) const;
 			const Quaternion<T> &getOrientation() const;
+			const std::vector<Point3<T>> getPoints() const;
 			const Point3<T> getPoint(unsigned int) const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;

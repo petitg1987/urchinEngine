@@ -126,6 +126,19 @@ namespace urchin
 		throw std::invalid_argument(errorMessage.str());
 	}
 
+	template<class T> const std::vector<Point3<T>> OBBox<T>::getPoints() const
+	{
+		std::vector<Point3<T>> points;
+		points.resize(8);
+
+		for(unsigned int i=0; i<8; ++i)
+		{
+			points[i] = getPoint(i);
+		}
+
+		return points;
+	}
+
 	template<class T> Point3<T> OBBox<T>::getSupportPoint(const Vector3<T> &direction) const
 	{
 		T maxPointDotDirection = getPoint(0).toVector().dotProduct(direction);

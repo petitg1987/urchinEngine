@@ -12,13 +12,18 @@ namespace urchin
 		public:
 			Face(const std::vector<Point3<float>> &);
 
-			const std::vector<Point3<float>> &getPoints() const;
+			const std::vector<Point3<float>> &getCcwPoints() const;
+			const std::vector<Point3<float>> getCwPoints() const;
+
 			const Vector3<float> &getNormal() const;
 
+			float getAngleToHorizontal() const;
+
 		private:
-			std::vector<Point3<float>> points;
+			std::vector<Point3<float>> ccwPoints;
 			Vector3<float> normal;
 
+			float angleToHorizontalInRadian;
 	};
 
 }

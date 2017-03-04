@@ -80,7 +80,7 @@ namespace urchin
 		}
 	}
 
-	std::string SceneObject::getName() const
+	const std::string &SceneObject::getName() const
 	{
 		return name;
 	}

@@ -9,6 +9,7 @@
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
 #include "path/navmesh/polyhedron/Polyhedron.h"
+#include "path/navmesh/triangulation/Triangulation.h"
 
 namespace urchin
 {
@@ -22,9 +23,10 @@ namespace urchin
 
 		private:
 			std::vector<Polyhedron> createPolyhedrons();
-			Polyhedron createPolyhedronFor(OBBox<float> *);
+			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
 
-			void extractWalkablePolygons(const std::vector<Polyhedron> &, std::shared_ptr<NavMesh>);
+			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &);
+			void addObstacles(const std::vector<Polyhedron> &, unsigned int, Triangulation &);
 
 			std::shared_ptr<AIWorld> aiWorld;
 			NavMeshConfig navMeshConfig;

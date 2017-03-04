@@ -9,7 +9,7 @@ namespace urchin
 {
 
 	/**
-	 * @param ccwPolygonPoints Polygon points in counter clockwise order.
+	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
 	Triangulation::Triangulation(const std::vector<Point2<float>> &ccwPolygonPoints) :
 			polygonPoints(ccwPolygonPoints)
@@ -26,7 +26,7 @@ namespace urchin
 	}
 
 	/**
-	 * @param cwHolePoints Hole points in clockwise order.
+	 * @param cwHolePoints Hole points in clockwise order. Points must be unique and not go outside the polygon contour.
 	 * @return Hole index (start to 0).
 	 */
 	unsigned int Triangulation::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
@@ -59,7 +59,7 @@ namespace urchin
 		std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 		std::vector<IndexedTriangle2D<float>> triangles;
-		triangles.reserve(polygonPoints.size() - 2);
+		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
 
 		for(unsigned monotonePolygonIndex = 0; monotonePolygonIndex<monotonePolygons.size(); ++monotonePolygonIndex)
 		{

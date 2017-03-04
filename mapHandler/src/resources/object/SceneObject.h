@@ -29,7 +29,7 @@ namespace urchin
 
 			void setObjectManagers(Renderer3d *, PhysicsWorld *);
 
-			std::string getName() const;
+			const std::string &getName() const;
 			void setName(const std::string &);
 
 			Model *getModel() const;

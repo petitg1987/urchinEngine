@@ -40,7 +40,7 @@ namespace urchin
 			shape = new CollisionConeShape(radius, height, ConeShape<float>::CONE_X_POSITIVE);
 		}else if(shapeType==CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE)
 		{
-			shape = new CollisionConvexHullShape(modelAABBox.getEightPoints());
+			shape = new CollisionConvexHullShape(modelAABBox.getPoints());
 		} else if(shapeType==CollisionShape3D::ShapeType::COMPOUND_SHAPE)
 		{
 			std::vector<std::shared_ptr<const LocalizedCollisionShape>> localizedCollisionShapes;

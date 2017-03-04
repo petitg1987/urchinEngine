@@ -17,7 +17,7 @@ namespace urchin
 			std::vector<LocalizedShape> localizedShapes = extractionLocalizedShapes(rigidBody);
 			for(const auto &localizedShape : localizedShapes)
 			{
-				AIObject aiObject(localizedShape.shape, localizedShape.worldTransform);
+				AIObject aiObject(sceneObject->getName(), localizedShape.shape, localizedShape.worldTransform);
 				aiWorld->addObject(aiObject);
 			}
 		}
