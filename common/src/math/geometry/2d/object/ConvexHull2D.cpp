@@ -19,7 +19,7 @@ namespace urchin
 	}
 
 	/**
-	 * @return Points of the convex hull in clockwise direction
+	 * @return Points of the convex hull in counter clockwise direction
 	 */
 	template<class T> const std::vector<Point2<T>> &ConvexHull2D<T>::getPoints() const
 	{

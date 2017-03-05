@@ -11,11 +11,9 @@ using namespace urchin;
 
 void ResizeConvexHullTest::reduceConvexHullBox()
 {
-	Point3<float> aabbPointsTab[] = {
+	std::vector<Point3<float>> aabbPoints = {
 			Point3<float>(0.0, 1.0, 0.0), Point3<float>(1.0, 1.0, 0.0), Point3<float>(1.0, -1.0, 0.0), Point3<float>(0.0, -1.0, 0.0),
-			Point3<float>(0.0, 1.0, -1.0), Point3<float>(1.0, 1.0, -1.0), Point3<float>(1.0, -1.0, -1.0), Point3<float>(0.0, -1.0, -1.0)
-	};
-	std::vector<Point3<float>> aabbPoints(aabbPointsTab, aabbPointsTab+sizeof(aabbPointsTab)/sizeof(Point3<float>));
+			Point3<float>(0.0, 1.0, -1.0), Point3<float>(1.0, 1.0, -1.0), Point3<float>(1.0, -1.0, -1.0), Point3<float>(0.0, -1.0, -1.0)};
 	ConvexHull3D<float> convexHull(aabbPoints);
 
 	std::unique_ptr<ConvexHull3D<float>> convexHullResult = convexHull.resize(-0.1f);

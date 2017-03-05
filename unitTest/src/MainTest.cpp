@@ -7,6 +7,7 @@
 #include "math/geometry/ClosestPointTest.h"
 #include "math/geometry/AABBoxCollisionTest.h"
 #include "math/geometry/ResizeConvexHullTest.h"
+#include "math/geometry/ConvexHullShape2DTest.h"
 #include "math/geometry/SortPointsTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
@@ -43,6 +44,7 @@ int main()
 	runner.addTest(ClosestPointTest::suite());
 	runner.addTest(AABBoxCollissionTest::suite());
 	runner.addTest(ResizeConvexHullTest::suite());
+	runner.addTest(ConvexHullShape2DTest::suite());
 	runner.addTest(SortPointsTest::suite());
 
 	//physics - shape

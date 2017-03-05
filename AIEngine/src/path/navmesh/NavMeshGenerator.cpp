@@ -109,7 +109,7 @@ namespace urchin
 		return Polyhedron(name, faces, box->getPoints());
 	}
 
-	std::vector<Point2<float>> NavMeshGenerator::flatPointsOnYAxis(const std::vector<Point3<float>> &points)
+	std::vector<Point2<float>> NavMeshGenerator::flatPointsOnYAxis(const std::vector<Point3<float>> &points) const
 	{
 		std::vector<Point2<float>> flatPoints;
 		flatPoints.reserve(points.size());
@@ -128,7 +128,7 @@ namespace urchin
 		{
 			if(i!=processingPolyhedron)
 			{
-				triangulation.addHolePoints(polyhedrons[i].getCwFootprintPoints());
+				triangulation.addHolePoints(polyhedrons[i].computeCwFootprintPoints());
 			}
 		}
 	}

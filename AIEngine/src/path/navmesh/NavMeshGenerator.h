@@ -25,7 +25,7 @@ namespace urchin
 			std::vector<Polyhedron> createPolyhedrons();
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
 
-			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &);
+			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 			void addObstacles(const std::vector<Polyhedron> &, unsigned int, Triangulation &);
 
 			std::shared_ptr<AIWorld> aiWorld;

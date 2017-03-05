@@ -27,22 +27,30 @@ namespace urchin
 		//build lower convex hull
 		for (unsigned int i=0; i<nbPoints; i++)
 		{
-			while (k>=2 && (convexHullPoints[k-2]==convexHullPoints[k-1] || Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0))
+			while (k>=2 && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0)
 			{ //clockwise detected, we remove the point
 				k--;
 			}
-			convexHullPoints[k++] = sortedPoints[i];
+
+			if(k==0 || convexHullPoints[k-1]!=sortedPoints[i])
+			{
+				convexHullPoints[k++] = sortedPoints[i];
+			}
 		}
 
 		//build upper convex hull
 		unsigned int t = k+1;
 		for (int i=nbPoints-2; i>=0; i--)
 		{
-			while (k>=t && (convexHullPoints[k-2]==convexHullPoints[k-1] || Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0))
+			while (k>=t && Line2D<T>(convexHullPoints[k-2], convexHullPoints[k-1]).ccw(sortedPoints[i]) <= 0.0)
 			{ //clockwise detected, we remove the point
 				k--;
 			}
-			convexHullPoints[k++] = sortedPoints[i];
+
+			if(k==0 || convexHullPoints[k-1]!=sortedPoints[i])
+			{
+				convexHullPoints[k++] = sortedPoints[i];
+			}
 		}
 
 		convexHullPoints.resize(k-1); //k-1: remove the last point which is the same that the first point of lower list
@@ -54,7 +62,7 @@ namespace urchin
 	}
 
 	/**
-	 * @return Points of the convex hull shape in clockwise direction
+	 * @return Points of the convex hull shape in counter clockwise direction
 	 */
 	template<class T> const std::vector<Point2<T>> &ConvexHullShape2D<T>::getPoints() const
 	{

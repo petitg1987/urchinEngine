@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Polyhedron.h"
 
 namespace urchin
@@ -12,7 +14,7 @@ namespace urchin
 			faces(faces),
 			points(points)
 	{
-		footprintConvexHull = std::make_unique<ConvexHull2D<float>>(flatPointsOnYAxis(points));
+
 	}
 
 	const std::string Polyhedron::getName() const
@@ -25,12 +27,17 @@ namespace urchin
 		return faces;
 	}
 
-	const std::vector<Point2<float>> &Polyhedron::getCwFootprintPoints() const
+	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints() const
 	{
-		return footprintConvexHull->getPoints();
+		ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis(points));
+
+		std::vector<Point2<float>> points(footprintConvexHull.getPoints());
+		std::reverse(points.begin(), points.end());
+
+		return points;
 	}
 
-	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis(const std::vector<Point3<float>> &points)
+	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis(const std::vector<Point3<float>> &points) const
 	{ //TODO filter points to take only those which can bother the character
 		std::vector<Point2<float>> flatPoints;
 		flatPoints.reserve(points.size());
