@@ -139,10 +139,10 @@ namespace urchin
 			unsigned int previousIndex = previousPointIndex(i);
 			unsigned int nextIndex = nextPointIndex(i);
 
-			bool currentBelowPrevious = isFirstPointAboveSecond(i, previousIndex);
-			bool currentBelowNext = isFirstPointAboveSecond(i, nextIndex);
+			bool currentAbovePrevious = isFirstPointAboveSecond(i, previousIndex);
+			bool currentAboveNext = isFirstPointAboveSecond(i, nextIndex);
 
-			if(currentBelowPrevious && currentBelowNext)
+			if(currentAbovePrevious && currentAboveNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(polygonPoints[previousIndex].vector(polygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(polygonPoints[i].vector(polygonPoints[nextIndex]), 0.0f);
@@ -156,7 +156,7 @@ namespace urchin
 					typedPoint.type = PointType::SPLIT_VERTEX;
 					isMonotonePolygon = false;
 				}
-			}else if(!currentBelowPrevious && !currentBelowNext)
+			}else if(!currentAbovePrevious && !currentAboveNext)
 			{
 				Vector3<float> previousToOrigin = Vector3<float>(polygonPoints[previousIndex].vector(polygonPoints[i]), 0.0f);
 				Vector3<float> originToNext = Vector3<float>(polygonPoints[i].vector(polygonPoints[nextIndex]), 0.0f);
@@ -172,7 +172,7 @@ namespace urchin
 				}
 			}else
 			{
-				if(!currentBelowPrevious && currentBelowNext)
+				if(!currentAbovePrevious && currentAboveNext)
 				{
 					typedPoint.type = PointType::REGULAR_DOWN_VERTEX;
 				}else

@@ -9,6 +9,8 @@ class MonotonePolygonTest : public CppUnit::TestFixture
 	public:
 		static CppUnit::Test *suite();
 
+		void singleTriangle();
+
 		void oneSplitVertex();
 		void twoSplitVertex();
 		void oneMergeVertex();

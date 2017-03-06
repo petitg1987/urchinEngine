@@ -18,7 +18,7 @@ namespace urchin
 			throw std::runtime_error("A face must be composed of at least three points. Number of points: " + ccwPoints.size());
 		}
 
-		Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[1]);
+		Vector3<float> v1 = ccwPoints[1].vector(ccwPoints[0]);
 		Vector3<float> v2 = ccwPoints[0].vector(ccwPoints[2]);
 		normal = v1.crossProduct(v2).normalize();
 

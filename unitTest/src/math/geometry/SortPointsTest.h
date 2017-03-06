@@ -13,8 +13,8 @@ class SortPointsTest : public CppUnit::TestFixture
 		void threePointsCounterClockwise();
 
 		void fourPointsClockwise();
-		void fourPointsCounterClockwise();
-
+		void fourPointsCounterClockwiseZNormal();
+		void fourPointsCounterClockwiseYNormal();
 };
 
 #endif

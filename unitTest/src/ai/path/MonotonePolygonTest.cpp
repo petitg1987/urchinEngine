@@ -7,6 +7,21 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
+void MonotonePolygonTest::singleTriangle()
+{
+	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(-1.0, -1.0), Point2<float>(1.0, 1.0), Point2<float>(-1.0, 1.0)};
+	std::vector<unsigned int> endContourIndexes = {(unsigned int)ccwPolygonPoints.size()};
+
+	MonotonePolygon monotonePolygon(ccwPolygonPoints, endContourIndexes);
+	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
+
+	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0].size(), 3);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][0], 0);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][1], 1);
+	AssertHelper::assertUnsignedInt(monotonePolygons[0][2], 2);
+}
+
 void MonotonePolygonTest::oneSplitVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0, 2.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0)};
@@ -174,6 +189,8 @@ void MonotonePolygonTest::polygonTwoHoles()
 CppUnit::Test *MonotonePolygonTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("MonotonePolygonTest");
+
+	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("singleTriangle", &MonotonePolygonTest::singleTriangle));
 
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("oneSplitVertex", &MonotonePolygonTest::oneSplitVertex));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("twoSplitVertex", &MonotonePolygonTest::twoSplitVertex));

@@ -67,7 +67,7 @@ namespace urchin
 			Vector3<T> vectorFirstSecond = points[firstPointIndex].vector(points[secondPointIndex]);
 			Vector3<T> vectorSecondThird = points[secondPointIndex].vector(points[thirdPointIndex]);
 			float dotResult = normal.dotProduct(vectorFirstSecond.crossProduct(vectorSecondThird));
-			if( (sortDirection==SortDirection::CLOCKWISE && dotResult>0.0f) || (sortDirection==SortDirection::COUNTER_CLOCKWISE && dotResult<0.0f) )
+			if( (sortDirection==SortDirection::CLOCKWISE && dotResult<0.0f) || (sortDirection==SortDirection::COUNTER_CLOCKWISE && dotResult>0.0f) )
 			{ //wrong direction
 				return false;
 			}

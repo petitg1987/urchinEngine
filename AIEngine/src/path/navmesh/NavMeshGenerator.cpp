@@ -100,9 +100,9 @@ namespace urchin
 						- box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
 
 				std::vector<Point3<float>> unsortedPoints({point1, point2, point3, point4});
-				std::vector<Point3<float>> sortedPoints = SortPointsService<float>::instance()->sortPointsCounterClockwise(unsortedPoints, boxAxis);
+				std::vector<Point3<float>> ccwPoints = SortPointsService<float>::instance()->sortPointsCounterClockwise(unsortedPoints, boxAxis);
 
-				faces.push_back(Face(sortedPoints));
+				faces.push_back(Face(ccwPoints));
 			}
 		}
 
