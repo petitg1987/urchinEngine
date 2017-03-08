@@ -27,6 +27,16 @@ namespace urchin
 		return faces;
 	}
 
+	unsigned int Polyhedron::getFaceSize() const
+	{
+		return faces.size();
+	}
+
+	const Face &Polyhedron::getFace(unsigned int faceIndex) const
+	{
+		return faces[faceIndex];
+	}
+
 	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints() const
 	{
 		ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis(points));

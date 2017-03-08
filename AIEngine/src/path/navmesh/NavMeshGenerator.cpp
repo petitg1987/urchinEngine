@@ -16,37 +16,25 @@ namespace urchin
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate()
 	{
 		std::vector<Polyhedron> polyhedrons = createPolyhedrons();
+		std::vector<PolyhedronFace> walkableFaces = findWalkableFaces(polyhedrons);
+		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
 
-		for(unsigned int i=0; i<polyhedrons.size(); ++i)
+		for(const auto &walkableFace : walkableFaces)
 		{
-			if(polyhedrons[i].getName().compare("ground")!=0)
-				continue; //TODO remove me...
-
-			for(const auto &face : polyhedrons[i].getFaces())
-			{
-				if(std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
-				{ //is walkable face
-					Triangulation triangulation(flatPointsOnYAxis(face.getCcwPoints()));
-					addObstacles(polyhedrons, i, triangulation);
-
-					std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
-
-					std::cout<<"Walkable: "<<polyhedrons[i].getName()<<", Num triangles: "<<triangles.size()<<std::endl;
-				}
-			}
+			NavPolygon navPolygon = createNavigationPolygonFor(walkableFace, polyhedrons);
+			navMesh->addPolygon(navPolygon);
 		}
 
 		//TODO High level algorithm v2
-		//1. Create polyhedrons: list<Face> & Face: list<Point3> (coplanar & clockwise oriented)
+		//1. (OK) Create polyhedrons: list<Face> & Face: list<Point3> (coplanar & clockwise oriented)
 		//2. Expand polyhedrons. Bonus: create bevel planes
-		//3. Find walkable faces (dot product with up vector)
+		//3. (OK) Find walkable faces (dot product with up vector)
 		//4. For each walkable faces:
-		//		- Create new object containing points of walkable faces
+		//		- (OK) Create new object containing points of walkable faces
 		//		- Find expanded polyhedrons which create holes on current walkable face. Add holes points on new object
 		//		- Find walkable faces which can be linked to this one and add points to new objects
-		//		- Triangulate new object by taking into account: walkable faces points, holes points and links points. Use: constrained delaunay triangulation.
+		//		- Triangulate new object by taking into account: walkable faces points, holes points and links points.
 
-		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
 		return navMesh;
 	}
 
@@ -109,6 +97,49 @@ namespace urchin
 		return Polyhedron(name, faces, box->getPoints());
 	}
 
+	std::vector<PolyhedronFace> NavMeshGenerator::findWalkableFaces(const std::vector<Polyhedron> &polyhedrons)
+	{
+		std::vector<PolyhedronFace> walkableFaces;
+
+		for(unsigned int polyhedronIndex=0; polyhedronIndex<polyhedrons.size(); ++polyhedronIndex)
+		{
+			const Polyhedron &polyhedron = polyhedrons[polyhedronIndex];
+
+			if(polyhedron.getName().compare("ground")!=0)
+				continue; //TODO remove me...
+
+			for(unsigned int faceIndex=0; faceIndex<polyhedron.getFaceSize(); ++faceIndex)
+			{
+				const Face &face = polyhedron.getFace(faceIndex);
+
+				if(std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
+				{
+					PolyhedronFace polyhedronFace;
+					polyhedronFace.polyhedronIndex = polyhedronIndex;
+					polyhedronFace.faceIndex = faceIndex;
+
+					walkableFaces.push_back(polyhedronFace);
+				}
+			}
+		}
+
+		return walkableFaces;
+	}
+
+	NavPolygon NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFace &polyhedronFace, const std::vector<Polyhedron> &polyhedrons)
+	{
+		const Polyhedron &polydedron = polyhedrons[polyhedronFace.polyhedronIndex];
+		const Face &face = polydedron.getFace(polyhedronFace.faceIndex);
+
+		Triangulation triangulation(flatPointsOnYAxis(face.getCcwPoints()));
+		addObstacles(polyhedrons, polyhedronFace.polyhedronIndex, triangulation);
+
+		std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, face);
+		std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
+
+		return NavPolygon(points, triangles);
+	}
+
 	std::vector<Point2<float>> NavMeshGenerator::flatPointsOnYAxis(const std::vector<Point3<float>> &points) const
 	{
 		std::vector<Point2<float>> flatPoints;
@@ -131,6 +162,24 @@ namespace urchin
 				triangulation.addHolePoints(polyhedrons[i].computeCwFootprintPoints());
 			}
 		}
+	}
+
+	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const Face &walkableFace)
+	{
+		std::vector<Point3<float>> elevatedPoints = walkableFace.getCcwPoints();
+		elevatedPoints.reserve(triangulation.getAllPointsSize());
+
+		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
+		{
+			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
+			for(const auto &holePoint : holePoints)
+			{
+				float yValue = walkableFace.getCcwPoints()[0].Y + 0.01f; //TODO handle no-horizontal walkable face
+				elevatedPoints.push_back(Point3<float>(holePoint.X, yValue, holePoint.Y));
+			}
+		}
+
+		return elevatedPoints;
 	}
 
 }

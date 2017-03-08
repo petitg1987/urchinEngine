@@ -3,11 +3,11 @@
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
 
-uniform vec3 color;
+uniform vec4 color;
 
 void main(){
 	//diffuse
-	fragColor = vec4(color.r, color.g, color.b, 0.0);
+	fragColor = vec4(color.r, color.g, color.b, color.a);
 
 	//material
 	fragNormalAndAmbient.a = 1.0; //no lighting

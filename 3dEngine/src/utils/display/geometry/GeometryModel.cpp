@@ -10,7 +10,9 @@ namespace urchin
 	GeometryModel::GeometryModel() :
 			red(0.0),
 			green(1.0),
-			blue(0.0)
+			blue(0.0),
+			alpha(1.0),
+			polygonMode(WIREFRAME)
 	{
 		shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "displayGeometry.frag");
 
@@ -35,9 +37,9 @@ namespace urchin
 		this->projectionMatrix = projectionMatrix;
 	}
 
-	Vector3<float> GeometryModel::getColor() const
+	Vector4<float> GeometryModel::getColor() const
 	{
-		return Vector3<float>(red, green, blue);
+		return Vector4<float>(red, green, blue, alpha);
 	}
 
 	void GeometryModel::setColor(float red, float green, float blue)
@@ -45,6 +47,21 @@ namespace urchin
 		this->red = red;
 		this->green = green;
 		this->blue = blue;
+	}
+
+	void GeometryModel::setAlpha(float alpha) //TODO move in setColor method...
+	{
+		this->alpha = alpha;
+	}
+
+	GeometryModel::PolygonMode GeometryModel::getPolygonMode() const
+	{
+		return polygonMode;
+	}
+
+	void GeometryModel::setPolygonMode(PolygonMode polygonMode)
+	{
+		this->polygonMode = polygonMode;
 	}
 
 	void GeometryModel::initialize()
@@ -67,7 +84,7 @@ namespace urchin
 
 		glUniformMatrix4fv(mProjectionLoc, 1, false, (const float*)projectionMatrix);
 		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)(viewMatrix * modelMatrix));
-		glUniform3fv(colorLoc, 1, (const float*)Vector3<float>(red, green, blue));
+		glUniform4fv(colorLoc, 1, (const float*)getColor());
 
 		glBindVertexArray(vertexArrayObject);
 		GLboolean cullFaceActive;
@@ -76,7 +93,7 @@ namespace urchin
 		{
 			glDisable(GL_CULL_FACE);
 		}
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, polygonMode==WIREFRAME ? GL_LINE : GL_FILL);
 		glLineWidth(1.3);
 
 		drawGeometry();

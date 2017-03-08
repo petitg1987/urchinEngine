@@ -5,6 +5,7 @@
 
 namespace urchin
 {
+
 	PointsModel::PointsModel(const std::vector<Point3<float>> &points, int pointsSize):
 			points(points),
 			pointsSize(pointsSize)

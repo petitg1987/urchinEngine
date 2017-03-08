@@ -24,6 +24,8 @@ namespace urchin
 			unsigned int getHolesSize() const;
 			std::vector<Point2<float>> getHolePoints(unsigned int) const;
 
+			unsigned int getAllPointsSize() const;
+
 			std::vector<IndexedTriangle2D<float>> triangulate() const;
 
 		private:

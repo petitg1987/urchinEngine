@@ -25,13 +25,16 @@ namespace urchin
 		{
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				unsigned int nbPoints = navPolygon.getPoints().size();
-				for(unsigned int i=0; i<nbPoints; ++i)
-				{
-					unsigned nextI = (i+1)%nbPoints;
-					Line3D<float> line(navPolygon.getPoint(i), navPolygon.getPoint(nextI));
-					navMeshModels.push_back(new LineModel(line, 3.0));
-				}
+				TrianglesModel *triangleModel = new TrianglesModel(navPolygon.getPoints(), navPolygon.getTriangles());
+				triangleModel->setAlpha(0.5f);
+				triangleModel->setPolygonMode(GeometryModel::FILL);
+				navMeshModels.push_back(triangleModel);
+			}
+
+			for(const auto &navPolygon : navMesh->getPolygons())
+			{
+				TrianglesModel *triangleModel = new TrianglesModel(navPolygon.getPoints(), navPolygon.getTriangles());
+				navMeshModels.push_back(triangleModel);
 			}
 
 			for(unsigned int i=0; i<navMeshModels.size(); ++i)

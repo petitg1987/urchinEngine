@@ -14,6 +14,12 @@
 namespace urchin
 {
 
+	struct PolyhedronFace
+	{
+		unsigned int polyhedronIndex;
+		unsigned int faceIndex;
+	};
+
 	class NavMeshGenerator
 	{
 		public:
@@ -25,8 +31,12 @@ namespace urchin
 			std::vector<Polyhedron> createPolyhedrons();
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
 
+			std::vector<PolyhedronFace> findWalkableFaces(const std::vector<Polyhedron> &);
+
+			NavPolygon createNavigationPolygonFor(const PolyhedronFace &, const std::vector<Polyhedron> &);
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 			void addObstacles(const std::vector<Polyhedron> &, unsigned int, Triangulation &);
+			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const Face &);
 
 			std::shared_ptr<AIWorld> aiWorld;
 			NavMeshConfig navMeshConfig;

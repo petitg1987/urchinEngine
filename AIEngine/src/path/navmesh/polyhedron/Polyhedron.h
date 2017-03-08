@@ -17,6 +17,9 @@ namespace urchin
 			const std::string getName() const;
 
 			const std::vector<Face> &getFaces() const;
+			unsigned int getFaceSize() const;
+			const Face &getFace(unsigned int) const;
+
 			std::vector<Point2<float>> computeCwFootprintPoints() const;
 
 		private:

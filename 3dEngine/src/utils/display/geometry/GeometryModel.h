@@ -12,10 +12,20 @@ namespace urchin
 			GeometryModel();
 			virtual ~GeometryModel();
 
+			enum PolygonMode
+			{
+				WIREFRAME,
+				FILL
+			};
+
 			void onCameraProjectionUpdate(const Matrix4<float> &);
 
-			Vector3<float> getColor() const;
+			Vector4<float> getColor() const;
 			void setColor(float, float, float);
+			void setAlpha(float);
+
+			PolygonMode getPolygonMode() const;
+			void setPolygonMode(PolygonMode);
 
 			void display(const Matrix4<float> &) const;
 
@@ -41,7 +51,8 @@ namespace urchin
 			int mProjectionLoc, mViewLoc, colorLoc;
 
 			Matrix4<float> projectionMatrix;
-			float red, green, blue;
+			float red, green, blue, alpha;
+			PolygonMode polygonMode;
 
 			Matrix4<float> modelMatrix;
 	};

@@ -10,15 +10,17 @@ namespace urchin
 	class NavPolygon
 	{
 		public:
-			NavPolygon();
-			NavPolygon(const std::vector<Point3<float>> &);
+			NavPolygon(const std::vector<Point3<float>> &, const std::vector<IndexedTriangle2D<float>> &);
 
-			unsigned int addPoint(const Point3<float> &);
 			const std::vector<Point3<float>> &getPoints() const;
 			const Point3<float> &getPoint(unsigned int) const;
 
+			const std::vector<IndexedTriangle2D<float>> &getTriangles() const;
+			const IndexedTriangle2D<float> &getTriangle(unsigned int) const;
+
 		private:
 			std::vector<Point3<float>> points;
+			std::vector<IndexedTriangle2D<float>> triangles;
 
 			//links
 

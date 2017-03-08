@@ -70,6 +70,14 @@ namespace urchin
 	}
 
 	/**
+	 * Return points size for all points: point of main polygon + points of holes
+	 */
+	unsigned int Triangulation::getAllPointsSize() const
+	{
+		return polygonPoints.size();
+	}
+
+	/**
 	 * @param triangles [out] Triangles of monotone polygon are added to this vector
 	 */
 	void Triangulation::triangulateMonotonePolygon(const std::vector<unsigned int> &monotonePolygonPoints, std::vector<IndexedTriangle2D<float>> &triangles) const
