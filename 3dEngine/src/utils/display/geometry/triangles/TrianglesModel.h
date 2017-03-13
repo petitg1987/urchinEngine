@@ -12,7 +12,7 @@ namespace urchin
 	class TrianglesModel : public GeometryModel
 	{
 		public:
-			TrianglesModel(const std::vector<Point3<float>> &, const std::vector<IndexedTriangle2D<float>> &);
+			TrianglesModel(const std::vector<Point3<float>> &, const std::vector<IndexedTriangle3D<float>> &);
 			~TrianglesModel();
 
 		protected:
@@ -23,7 +23,7 @@ namespace urchin
 
 		private:
 			std::vector<Point3<float>> points;
-			std::vector<IndexedTriangle2D<float>> triangles;
+			std::vector<IndexedTriangle3D<float>> triangles;
 	};
 
 }

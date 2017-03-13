@@ -21,8 +21,7 @@ namespace urchin
 			void onCameraProjectionUpdate(const Matrix4<float> &);
 
 			Vector4<float> getColor() const;
-			void setColor(float, float, float);
-			void setAlpha(float);
+			void setColor(float, float, float, float alpha = 1.0f);
 
 			PolygonMode getPolygonMode() const;
 			void setPolygonMode(PolygonMode);

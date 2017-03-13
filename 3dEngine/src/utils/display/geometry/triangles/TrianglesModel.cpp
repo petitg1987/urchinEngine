@@ -6,7 +6,7 @@
 namespace urchin
 {
 
-	TrianglesModel::TrianglesModel(const std::vector<Point3<float>> &points, const std::vector<IndexedTriangle2D<float>> &triangles):
+	TrianglesModel::TrianglesModel(const std::vector<Point3<float>> &points, const std::vector<IndexedTriangle3D<float>> &triangles):
 			points(points),
 			triangles(triangles)
 	{
@@ -39,9 +39,8 @@ namespace urchin
 
 	void TrianglesModel::drawGeometry() const
 	{
-		//TODO change it
-		glLineWidth(4.0);
-		glEnable(GL_BLEND);
+		glLineWidth(4.0); //TODO allow user to choose size
+		glEnable(GL_BLEND);	//TODO allow user to choose blend function
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glDrawArrays(GL_TRIANGLES, 0, triangles.size()*3);

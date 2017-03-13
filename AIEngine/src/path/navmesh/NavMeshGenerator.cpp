@@ -1,4 +1,5 @@
 #include <cmath>
+#include <chrono>
 
 #include "NavMeshGenerator.h"
 #include "path/navmesh/polyhedron/Face.h"
@@ -15,6 +16,9 @@ namespace urchin
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate()
 	{
+		//TODO remove counter:
+		auto frameStartTime = std::chrono::high_resolution_clock::now();
+
 		std::vector<Polyhedron> polyhedrons = createPolyhedrons();
 		std::vector<PolyhedronFace> walkableFaces = findWalkableFaces(polyhedrons);
 		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
@@ -25,15 +29,9 @@ namespace urchin
 			navMesh->addPolygon(navPolygon);
 		}
 
-		//TODO High level algorithm v2
-		//1. (OK) Create polyhedrons: list<Face> & Face: list<Point3> (coplanar & clockwise oriented)
-		//2. Expand polyhedrons. Bonus: create bevel planes
-		//3. (OK) Find walkable faces (dot product with up vector)
-		//4. For each walkable faces:
-		//		- (OK) Create new object containing points of walkable faces
-		//		- Find expanded polyhedrons which create holes on current walkable face. Add holes points on new object
-		//		- Find walkable faces which can be linked to this one and add points to new objects
-		//		- Triangulate new object by taking into account: walkable faces points, holes points and links points.
+		auto frameEndTime = std::chrono::high_resolution_clock::now();
+		auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+		std::cout<<"Nav mesh generation time (ms): "<<diffTimeMicroSeconds/1000.0<<std::endl;
 
 		return navMesh;
 	}
@@ -135,7 +133,7 @@ namespace urchin
 		addObstacles(polyhedrons, polyhedronFace.polyhedronIndex, triangulation);
 
 		std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, face);
-		std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
+		const std::vector<IndexedTriangle3D<float>> &triangles = toIndexedTriangle3D(triangulation.triangulate());
 
 		return NavPolygon(points, triangles);
 	}
@@ -158,7 +156,7 @@ namespace urchin
 		for(unsigned int i=0; i<polyhedrons.size(); ++i)
 		{
 			if(i!=processingPolyhedron)
-			{
+			{ //TODO enlarge footprint points: based on clipper.cpp: DoMiter(...) method or better: DoSquare(...) method
 				triangulation.addHolePoints(polyhedrons[i].computeCwFootprintPoints());
 			}
 		}
@@ -174,12 +172,25 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				float yValue = walkableFace.getCcwPoints()[0].Y + 0.01f; //TODO handle no-horizontal walkable face
+				float yValue = walkableFace.getCcwPoints()[0].Y + 0.05f; //TODO handle no-horizontal walkable face
 				elevatedPoints.push_back(Point3<float>(holePoint.X, yValue, holePoint.Y));
 			}
 		}
 
 		return elevatedPoints;
+	}
+
+	std::vector<IndexedTriangle3D<float>> NavMeshGenerator::toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &indexedTriangles2D)
+	{
+		std::vector<IndexedTriangle3D<float>> indexedTriangles3D;
+		indexedTriangles3D.reserve(indexedTriangles2D.size());
+
+		for(const auto &indexedTriangle2D : indexedTriangles2D)
+		{
+			indexedTriangles3D.push_back(IndexedTriangle3D<float>(indexedTriangle2D.getIndexes()));
+		}
+
+		return indexedTriangles3D;
 	}
 
 }

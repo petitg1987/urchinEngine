@@ -26,7 +26,7 @@ namespace urchin
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
 				TrianglesModel *triangleModel = new TrianglesModel(navPolygon.getPoints(), navPolygon.getTriangles());
-				triangleModel->setAlpha(0.5f);
+				triangleModel->setColor(0.0, 0.0, 1.0, 0.5);
 				triangleModel->setPolygonMode(GeometryModel::FILL);
 				navMeshModels.push_back(triangleModel);
 			}
@@ -34,12 +34,13 @@ namespace urchin
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
 				TrianglesModel *triangleModel = new TrianglesModel(navPolygon.getPoints(), navPolygon.getTriangles());
+				triangleModel->setColor(0.0, 0.0, 1.0, 1.0);
+				triangleModel->setPolygonMode(GeometryModel::WIREFRAME);
 				navMeshModels.push_back(triangleModel);
 			}
 
 			for(unsigned int i=0; i<navMeshModels.size(); ++i)
 			{
-				navMeshModels[i]->setColor(0.0, 1.0, 0.0);
 				sceneManager->getActiveRenderer3d()->addGeometry(navMeshModels[i]);
 			}
 		}

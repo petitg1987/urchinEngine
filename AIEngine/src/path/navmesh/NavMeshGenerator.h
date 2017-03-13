@@ -37,6 +37,7 @@ namespace urchin
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 			void addObstacles(const std::vector<Polyhedron> &, unsigned int, Triangulation &);
 			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const Face &);
+			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &);
 
 			std::shared_ptr<AIWorld> aiWorld;
 			NavMeshConfig navMeshConfig;

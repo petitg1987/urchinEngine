@@ -42,15 +42,11 @@ namespace urchin
 		return Vector4<float>(red, green, blue, alpha);
 	}
 
-	void GeometryModel::setColor(float red, float green, float blue)
+	void GeometryModel::setColor(float red, float green, float blue, float alpha)
 	{
 		this->red = red;
 		this->green = green;
 		this->blue = blue;
-	}
-
-	void GeometryModel::setAlpha(float alpha) //TODO move in setColor method...
-	{
 		this->alpha = alpha;
 	}
 
