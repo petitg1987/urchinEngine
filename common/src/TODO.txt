@@ -4,7 +4,11 @@
 - GLOBAL
 	- (1) [NEW FEATURE] Create Makefile file and include optimized build in release
 	- (3) [OPTIMIZATION] Use PGO in g++
-	- (3) [QUALITY IMPROVEMENT] Use tool "clang-tidy file.cpp -checks='-*, modernize-*' -fix -std=c++14"
+	- (3) [QUALITY IMPROVEMENT] Use fully c++14 (tips: use tool "clang-tidy file.cpp -checks='-*, modernize-*' -fix -std=c++14")
+			=> Use "override" keyword
+			=> Use "Cons(std::string name) : name(std::move(name))" instead of "Cons(const std::string &name) : name(name)"
+			=> Use "auto a = new A()" instead of "A *a = new A()"
+			=> Create move constructors when necessary
 
 ############################################
 # Bug :
