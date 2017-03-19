@@ -3,6 +3,8 @@
 ############################################
 - GLOBAL
 	- (1) [NEW FEATURE] Create Makefile file and include optimized build in release
+	- (3) [OPTIMIZATION] Use PGO in g++
+	- (3) [QUALITY IMPROVEMENT] Use tool "clang-tidy file.cpp -checks='-*, modernize-*' -fix -std=c++14"
 
 ############################################
 # Bug :

@@ -34,8 +34,6 @@
 - SCENE
 	- (3) [OPTIMIZATION] LOD
 	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
-- GLOBAL
-	- (3) [OPTIMIZATION] Use PGO in g++
 
 ############################################
 # Bug :
