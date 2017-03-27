@@ -1,5 +1,5 @@
-#ifndef ENGINE_RESIZECONVEXHULLSERVICE_H
-#define ENGINE_RESIZECONVEXHULLSERVICE_H
+#ifndef ENGINE_RESIZECONVEXHULL3DSERVICE_H
+#define ENGINE_RESIZECONVEXHULL3DSERVICE_H
 
 #include <memory>
 #include <vector>
@@ -13,17 +13,17 @@
 namespace urchin
 {
 
-	template<class T> class ResizeConvexHullService : public Singleton<ResizeConvexHullService<T>>
+	template<class T> class ResizeConvexHull3DService : public Singleton<ResizeConvexHull3DService<T>>
 	{
 		public:
-			friend class Singleton<ResizeConvexHullService<T>>;
+			friend class Singleton<ResizeConvexHull3DService<T>>;
 
 			std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T> &, T) const;
 			std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T> &, T) const;
 
 		private:
-			ResizeConvexHullService();
-			virtual ~ResizeConvexHullService();
+			ResizeConvexHull3DService();
+			virtual ~ResizeConvexHull3DService();
 
 			void buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &, std::vector<Plane<T>> &) const;
 			bool isPlaneAlreadyExist(const std::vector<Plane<T>> &, const Plane<T> &) const;

@@ -18,8 +18,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> halfSizeChunk = xmlParser.getUniqueChunk(true, HALF_SIZE_TAG, XmlAttribute(), shapeChunk);
 		Vector3<float> halfSize = halfSizeChunk->getVector3Value();
 
-		CollisionShape3D *collisionShape = new CollisionBoxShape(halfSize);
-		return collisionShape;
+		return new CollisionBoxShape(halfSize);
 	}
 
 	void CollisionBoxReaderWriter::writeOn(std::shared_ptr<XmlChunk> shapeChunk, const CollisionShape3D *collisionShape, XmlWriter &xmlWriter) const

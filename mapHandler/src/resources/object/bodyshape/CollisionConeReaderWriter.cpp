@@ -49,8 +49,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> heightChunk = xmlParser.getUniqueChunk(true, HEIGHT_TAG, XmlAttribute(), shapeChunk);
 		float height = heightChunk->getFloatValue();
 
-		CollisionShape3D *collisionShape = new CollisionConeShape(radius, height, orientation);
-		return collisionShape;
+		return new CollisionConeShape(radius, height, orientation);
 	}
 
 	void CollisionConeReaderWriter::writeOn(std::shared_ptr<XmlChunk> shapeChunk, const CollisionShape3D *collisionShape, XmlWriter &xmlWriter) const

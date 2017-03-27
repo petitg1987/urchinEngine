@@ -18,8 +18,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> radiusChunk = xmlParser.getUniqueChunk(true, RADIUS_TAG, XmlAttribute(), shapeChunk);
 		float radius = radiusChunk->getFloatValue();
 
-		CollisionShape3D *collisionShape = new CollisionSphereShape(radius);
-		return collisionShape;
+		return new CollisionSphereShape(radius);
 	}
 
 	void CollisionSphereReaderWriter::writeOn(std::shared_ptr<XmlChunk> shapeChunk, const CollisionShape3D *collisionShape, XmlWriter &xmlWriter) const

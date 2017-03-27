@@ -1,19 +1,19 @@
 #include <limits>
 #include <map>
 
-#include "ResizeConvexHullService.h"
+#include "ResizeConvexHull3DService.h"
 #include "math/geometry/3d/IndexedTriangle3D.h"
 
 namespace urchin
 {
 
-	template<class T> ResizeConvexHullService<T>::ResizeConvexHullService() :
-			Singleton<ResizeConvexHullService<T>>()
+	template<class T> ResizeConvexHull3DService<T>::ResizeConvexHull3DService() :
+			Singleton<ResizeConvexHull3DService<T>>()
 	{
 
 	}
 
-	template<class T> ResizeConvexHullService<T>::~ResizeConvexHullService()
+	template<class T> ResizeConvexHull3DService<T>::~ResizeConvexHull3DService()
 	{
 
 	}
@@ -23,7 +23,7 @@ namespace urchin
 	 * Positive distance will extend convex hull shape and negative distance will shrink the convex hull shape.
 	 * @return Convex hull shape resized. If resize is impossible to keep plane normal outside convex hull shape: nullptr is returned.
 	 */
-	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHullService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, T distance) const
+	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, T distance) const
 	{
 		const T SQUARE_EPSILON = std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon();
 
@@ -90,14 +90,14 @@ namespace urchin
 
 		try
 		{
-			return std::unique_ptr<ConvexHullShape3D<T>>(new ConvexHullShape3D<T>(newVertices));
+			return std::make_unique<ConvexHullShape3D<T>>(newVertices);
 		}catch(std::invalid_argument &ia)
 		{ //due to resize and float precision, points doesn't form anymore a convex hull but a plane, line or point.
 			return std::unique_ptr<ConvexHullShape3D<T>>(nullptr);
 		}
 	}
 
-	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHullService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, T distance) const
+	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, T distance) const
 	{
 		std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, distance);
 		if(convexHullShapeResized)
@@ -108,7 +108,7 @@ namespace urchin
 		return std::unique_ptr<ConvexHull3D<T>>(nullptr);
 	}
 
-	template<class T> void ResizeConvexHullService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull, std::vector<Plane<T>> &planes) const
+	template<class T> void ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull, std::vector<Plane<T>> &planes) const
 	{
 		const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles = convexHull.getIndexedTriangles();
 		const std::map<unsigned int, Point3<T>> &indexedPoints = convexHull.getIndexedPoints();
@@ -129,7 +129,7 @@ namespace urchin
 		}
 	}
 
-	template<class T> bool ResizeConvexHullService<T>::isPlaneAlreadyExist(const std::vector<Plane<T>> &planes, const Plane<T> &plane) const
+	template<class T> bool ResizeConvexHull3DService<T>::isPlaneAlreadyExist(const std::vector<Plane<T>> &planes, const Plane<T> &plane) const
 	{
 		const T EPSILON = 0.001;
 		for(unsigned int i=0; i<planes.size(); ++i)
@@ -161,7 +161,7 @@ namespace urchin
 	/**
 	 * Shift planes to given distance
 	 */
-	template<class T> void ResizeConvexHullService<T>::shiftPlanes(const std::vector<Plane<T>> &planes, std::vector<Plane<T>> &shiftedPlanes, T distance) const
+	template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(const std::vector<Plane<T>> &planes, std::vector<Plane<T>> &shiftedPlanes, T distance) const
 	{
 		shiftedPlanes.reserve(planes.size());
 		for(unsigned int i=0; i<planes.size(); ++i)
@@ -174,7 +174,7 @@ namespace urchin
 	/**
 	 * @return True if point is inside all the planes. An error of '0.01' is allowed.
 	 */
-	template<class T> bool ResizeConvexHullService<T>::isPointInsidePlanes(const std::vector<Plane<T>> &planes, const Point3<T> &point) const
+	template<class T> bool ResizeConvexHull3DService<T>::isPointInsidePlanes(const std::vector<Plane<T>> &planes, const Point3<T> &point) const
 	{
 		const T EPSILON = 0.01;
 		for(unsigned int i=0; i<planes.size(); ++i)
@@ -190,8 +190,8 @@ namespace urchin
 	}
 
 	//explicit template
-	template class ResizeConvexHullService<float>;
+	template class ResizeConvexHull3DService<float>;
 
-	template class ResizeConvexHullService<double>;
+	template class ResizeConvexHull3DService<double>;
 
 }

@@ -37,11 +37,12 @@ namespace urchin
 		return faces[faceIndex];
 	}
 
-	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints() const
+	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(float characterHalfSize) const
 	{
 		ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis(points));
+		std::unique_ptr<ConvexHull2D<float>> expandedFootprintConvexHull = footprintConvexHull.resize(characterHalfSize);
 
-		std::vector<Point2<float>> points(footprintConvexHull.getPoints());
+		std::vector<Point2<float>> points(expandedFootprintConvexHull->getPoints());
 		std::reverse(points.begin(), points.end());
 
 		return points;

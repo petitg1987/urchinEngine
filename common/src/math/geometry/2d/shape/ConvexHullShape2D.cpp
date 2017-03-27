@@ -1,10 +1,16 @@
 #include <algorithm>
 
 #include "ConvexHullShape2D.h"
+#include "math/geometry/2d/util/ResizeConvexHull2DService.h"
 #include "math/geometry/2d/Line2D.h"
 
 namespace urchin
 {
+
+	template<class T> ConvexHullShape2D<T>::ConvexHullShape2D()
+	{
+
+	}
 
 	/**
 	 * @param points Points used to construct the convex hull shape. Points inside the convex hull shape are accepted but will unused.
@@ -61,6 +67,14 @@ namespace urchin
 
 	}
 
+	template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>> &ccwConvexPoints)
+	{
+		std::unique_ptr<ConvexHullShape2D<T>> convexHullShape = std::make_unique<ConvexHullShape2D<T>>();
+		convexHullShape->convexHullPoints = ccwConvexPoints;
+
+		return convexHullShape;
+	}
+
 	/**
 	 * @return Points of the convex hull shape in counter clockwise direction
 	 */
@@ -103,7 +117,18 @@ namespace urchin
 		return std::fabs(area);
 	}
 
+	/**
+	 * @param distance All edge of convex hull shape will be moved along their normal to the specified distance.
+	 * Positive distance will extend convex hull shape. Negative distance are not supported by this algorithm.
+	 */
+	template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::resize(T distance) const
+	{
+		return ResizeConvexHull2DService<T>::instance()->resizeConvexHullShape(*this, distance);
+	}
+
 	//explicit template
 	template class ConvexHullShape2D<float>;
+
+	template class ConvexHullShape2D<double>;
 
 }

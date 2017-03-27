@@ -1,5 +1,5 @@
 #include "ConvexHullShape3D.h"
-#include "math/geometry/3d/util/ResizeConvexHullService.h"
+#include "math/geometry/3d/util/ResizeConvexHull3DService.h"
 #include "math/geometry/3d/object/ConvexHull3D.h"
 #include "math/algebra/point/Point4.h"
 #include "tools/logger/Logger.h"
@@ -172,7 +172,7 @@ namespace urchin
 	 */
 	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ConvexHullShape3D<T>::resize(T distance) const
 	{
-		return ResizeConvexHullService<T>::instance()->resizeConvexHullShape(*this, distance);
+		return ResizeConvexHull3DService<T>::instance()->resizeConvexHullShape(*this, distance);
 	}
 
 	template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T> &transform) const

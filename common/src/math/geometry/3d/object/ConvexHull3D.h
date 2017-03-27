@@ -16,7 +16,7 @@ namespace urchin
 	template<class T> class ConvexHull3D : public ConvexObject3D<T>
 	{
 		public:
-			template<class U> friend class ResizeConvexHullService;
+			template<class U> friend class ResizeConvexHull3DService;
 
 			ConvexHull3D(const std::vector<Point3<T>> &);
 			ConvexHull3D(const std::map<unsigned int, Point3<T>> &, const std::map<unsigned int, IndexedTriangle3D<T>> &);

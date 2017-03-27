@@ -1,4 +1,5 @@
 #include <memory>
+#include <stdexcept>
 #include <QMessageBox>
 #include <QWidget>
 
@@ -27,6 +28,8 @@ namespace urchin
 
 	SceneDisplayer::~SceneDisplayer()
 	{
+		delete mapHandler;
+
 		delete camera;
 		delete bodyShapeDisplayer;
 		delete lightScopeDisplayer;
@@ -89,6 +92,13 @@ namespace urchin
 
 	void SceneDisplayer::initializeScene()
 	{
+		#ifdef _DEBUG
+			if(isInitialized)
+			{
+				throw std::runtime_error("Scene displayer is already initialized.");
+			}
+		#endif
+
 		sceneManager = new SceneManager();
 		soundManager = new SoundManager();
 

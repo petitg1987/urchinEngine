@@ -153,11 +153,13 @@ namespace urchin
 
 	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &polyhedrons, unsigned int processingPolyhedron, Triangulation &triangulation)
 	{
+		float characterHalfSize = 0.3f; //TODO should use character properties
 		for(unsigned int i=0; i<polyhedrons.size(); ++i)
 		{
 			if(i!=processingPolyhedron)
-			{ //TODO enlarge footprint points: based on clipper.cpp: DoMiter(...) method or better: DoSquare(...) method
-				triangulation.addHolePoints(polyhedrons[i].computeCwFootprintPoints());
+			{
+				std::vector<Point2<float>> cwFootprintPoints = polyhedrons[i].computeCwFootprintPoints(characterHalfSize);
+				triangulation.addHolePoints(cwFootprintPoints); //TODO should do an union of polygons before triangulation
 			}
 		}
 	}

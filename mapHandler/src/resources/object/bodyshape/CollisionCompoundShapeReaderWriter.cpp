@@ -38,8 +38,7 @@ namespace urchin
 			compoundShapes.push_back(localizedShape);
 		}
 
-		CollisionShape3D *collisionShape = new CollisionCompoundShape(compoundShapes);
-		return collisionShape;
+		return new CollisionCompoundShape(compoundShapes);
 	}
 
 	void CollisionCompoundShapeReaderWriter::writeOn(std::shared_ptr<XmlChunk> shapeChunk, const CollisionShape3D *collisionShape, XmlWriter &xmlWriter) const

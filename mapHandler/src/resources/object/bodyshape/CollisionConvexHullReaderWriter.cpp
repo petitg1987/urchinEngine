@@ -28,8 +28,7 @@ namespace urchin
 
 		}
 
-		CollisionShape3D *collisionShape = new CollisionConvexHullShape(points);
-		return collisionShape;
+		return new CollisionConvexHullShape(points);
 	}
 
 	void CollisionConvexHullReaderWriter::writeOn(std::shared_ptr<XmlChunk> shapeChunk, const CollisionShape3D *collisionShape, XmlWriter &xmlWriter) const
