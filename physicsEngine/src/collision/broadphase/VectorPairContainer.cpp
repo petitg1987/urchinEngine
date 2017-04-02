@@ -46,7 +46,7 @@ namespace urchin
 			if((*it)->getBodiesId()==bodiesId)
 			{
 				delete *it;
-				overlappingPairs.erase(it);
+				VectorEraser::erase(overlappingPairs, it);
 				break;
 			}
 		}

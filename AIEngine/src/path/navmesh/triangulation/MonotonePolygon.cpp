@@ -29,6 +29,7 @@ namespace urchin
 		createYMonotonePolygonsDiagonals();
 
 		std::vector<std::vector<unsigned int>> yMonotonePolygons;
+		yMonotonePolygons.reserve(diagonals.size());
 
 		if(diagonals.size()==0)
 		{
@@ -47,6 +48,7 @@ namespace urchin
 				if(!startDiagonal.isProcessed)
 				{
 					std::vector<unsigned int> monotonePointsIndexes;
+					monotonePointsIndexes.reserve(polygonPoints.size()/2 + 1); //estimated memory size
 					monotonePointsIndexes.push_back(startDiagonal.startIndex);
 					monotonePointsIndexes.push_back(startDiagonal.endIndex);
 
@@ -224,42 +226,42 @@ namespace urchin
 	void MonotonePolygon::handleEndVertex(unsigned int i)
 	{
 		unsigned int previousEdgeIndex = previousPointIndex(i);
-		std::vector<EdgeHelper>::const_iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
+		std::vector<EdgeHelper>::iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
 			createDiagonals(i, edgeHelperIt->helperPointIndex);
 		}
-		edgeHelpers.erase(edgeHelperIt);
+		VectorEraser::erase(edgeHelpers, edgeHelperIt);
 	}
 
 	void MonotonePolygon::handleMergeVertex(unsigned int i)
 	{
 		unsigned int previousEdgeIndex = previousPointIndex(i);
-		std::vector<EdgeHelper>::const_iterator edgeHelperConstIt = findEdgeHelper(previousEdgeIndex);
-		if(edgeHelperConstIt->helperPointType==PointType::MERGE_VERTEX)
-		{
-			createDiagonals(i, edgeHelperConstIt->helperPointIndex);
-		}
-		edgeHelpers.erase(edgeHelperConstIt);
-
-		std::vector<EdgeHelper>::iterator edgeHelperIt = findNearestLeftEdgeHelper(i);
+		std::vector<EdgeHelper>::iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
 			createDiagonals(i, edgeHelperIt->helperPointIndex);
 		}
-		edgeHelperIt->helperPointIndex = i;
-		edgeHelperIt->helperPointType = PointType::MERGE_VERTEX;
+		VectorEraser::erase(edgeHelpers, edgeHelperIt);
+
+		std::vector<EdgeHelper>::iterator nearestLeftEdgeHelperIt = findNearestLeftEdgeHelper(i);
+		if(nearestLeftEdgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
+		{
+			createDiagonals(i, nearestLeftEdgeHelperIt->helperPointIndex);
+		}
+		nearestLeftEdgeHelperIt->helperPointIndex = i;
+		nearestLeftEdgeHelperIt->helperPointType = PointType::MERGE_VERTEX;
 	}
 
 	void MonotonePolygon::handleRegularDownVertex(unsigned int i)
 	{
 		unsigned int previousEdgeIndex = previousPointIndex(i);
-		std::vector<EdgeHelper>::const_iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
+		std::vector<EdgeHelper>::iterator edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
 			createDiagonals(i, edgeHelperIt->helperPointIndex);
 		}
-		edgeHelpers.erase(edgeHelperIt);
+		VectorEraser::erase(edgeHelpers, edgeHelperIt);
 
 		createEdgeHelper(i, i, PointType::REGULAR_DOWN_VERTEX);
 	}
@@ -320,9 +322,9 @@ namespace urchin
 		edgeHelpers.push_back(edgeHelper);
 	}
 
-	std::vector<EdgeHelper>::const_iterator MonotonePolygon::findEdgeHelper(unsigned int edgeIndex) const
+	std::vector<EdgeHelper>::iterator MonotonePolygon::findEdgeHelper(unsigned int edgeIndex)
 	{
-		for(std::vector<EdgeHelper>::const_iterator it=edgeHelpers.begin(); it!=edgeHelpers.end(); ++it)
+		for(std::vector<EdgeHelper>::iterator it=edgeHelpers.begin(); it!=edgeHelpers.end(); ++it)
 		{
 			if(it->edge.startIndex==edgeIndex)
 			{
@@ -429,6 +431,7 @@ namespace urchin
 	std::vector<std::pair<int, MonotonePolygon::it_diagonals>> MonotonePolygon::retrievePossibleNextPoints(unsigned int edgeEndIndex)
 	{
 		std::vector<std::pair<int, it_diagonals>> possibleNextPoints;
+		possibleNextPoints.reserve(diagonals.size());
 
 		unsigned int nextPolygonPointIndex = nextPointIndex(edgeEndIndex);
 		possibleNextPoints.push_back(std::make_pair(nextPolygonPointIndex, diagonals.end()));

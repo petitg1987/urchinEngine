@@ -65,7 +65,7 @@ namespace urchin
 			unsigned int previousPointIndex(unsigned int) const;
 
 			void createEdgeHelper(unsigned int, unsigned int, PointType);
-			std::vector<EdgeHelper>::const_iterator findEdgeHelper(unsigned int) const;
+			std::vector<EdgeHelper>::iterator findEdgeHelper(unsigned int);
 			std::vector<EdgeHelper>::iterator findNearestLeftEdgeHelper(unsigned int);
 			void createDiagonals(unsigned int, unsigned int);
 

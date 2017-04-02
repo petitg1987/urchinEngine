@@ -78,7 +78,11 @@ namespace urchin
 	template<class T> unsigned int ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint)
 	{
 		std::vector<unsigned int> newTriangleIndexes;
+		newTriangleIndexes.reserve(4);
+
 		std::vector<unsigned int> removedTriangleIndexes;
+		removedTriangleIndexes.reserve(4);
+
 		return addNewPoint(newPoint, newTriangleIndexes, removedTriangleIndexes);
 	}
 

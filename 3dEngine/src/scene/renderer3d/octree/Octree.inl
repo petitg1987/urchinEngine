@@ -116,7 +116,7 @@ template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeab
 		typename std::vector<TOctreeable *>::iterator it = std::find(octreeables.begin(), octreeables.end(), octreeable);
 		if(it!=octreeables.end())
 		{
-			octreeables.erase(it);
+			VectorEraser::erase(octreeables, it);
 			if(removeRef)
 			{
 				octreeable->removeRefOctree(this);
