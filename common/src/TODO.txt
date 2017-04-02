@@ -8,7 +8,7 @@
 			=> Use "override" keyword
 			=> Use "Cons(std::string name) : name(std::move(name))" instead of "Cons(const std::string &name) : name(name)"
 			=> Use "auto a = new A()" instead of "A *a = new A()"
-			=> Create move constructors when necessary
+			=> Create 'move constructor' and 'assign move operator' methods when necessary
 
 ############################################
 # Bug :

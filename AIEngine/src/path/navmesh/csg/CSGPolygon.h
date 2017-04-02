@@ -11,6 +11,9 @@ namespace urchin
 	{
 		public:
 			CSGPolygon(const std::vector<Point2<float>> &);
+			CSGPolygon(const CSGPolygon &);
+			CSGPolygon(CSGPolygon &&);
+			CSGPolygon& operator=(CSGPolygon &&);
 
 			const std::vector<Point2<float>> &getCwPoints() const;
 

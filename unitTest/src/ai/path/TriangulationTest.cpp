@@ -7,7 +7,6 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-
 void TriangulationTest::triangleTriangulation()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(2.0, 0.0), Point2<float>(1.0, 1.0)};

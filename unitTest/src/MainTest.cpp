@@ -25,6 +25,7 @@
 #include "physics/island/IslandContainerTest.h"
 #include "ai/path/MonotonePolygonTest.h"
 #include "ai/path/TriangulationTest.h"
+#include "ai/path/PolygonsUnionTest.h"
 
 int main()
 {
@@ -76,6 +77,7 @@ int main()
 	//ai - path
 	runner.addTest(MonotonePolygonTest::suite());
 	runner.addTest(TriangulationTest::suite());
+	runner.addTest(PolygonsUnionTest::suite());
 
 	runner.run();
 

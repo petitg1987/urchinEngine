@@ -10,7 +10,7 @@ namespace urchin
 		std::vector<CSGPolygon> mergedPolygons;
 		mergedPolygons.reserve(polygons.size()/2 + 1); //estimated memory size
 
-		std::vector<CSGPolygon> allPolygons = polygons; //TODO check and improve performance on copy constructor
+		std::vector<CSGPolygon> allPolygons = polygons;
 		allPolygons.reserve(allPolygons.size() + mergedPolygons.size());
 
 		while(allPolygons.size() > 0)
@@ -23,7 +23,7 @@ namespace urchin
 				{
 					isPolygonsMerged = true;
 
-					VectorEraser::erase(allPolygons, i); //TODO check and improve performance on copy constructor
+					VectorEraser::erase(allPolygons, i);
 					VectorEraser::erase(allPolygons, 0);
 
 					allPolygons.push_back(result[0]);
