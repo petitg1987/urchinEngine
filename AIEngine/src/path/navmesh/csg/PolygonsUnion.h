@@ -9,6 +9,13 @@
 namespace urchin
 {
 
+	struct CSGIntersection
+	{
+		bool hasIntersection;
+		Point2<float> intersectionPoint;
+		unsigned int edgeEndPointIndex;
+	};
+
 	class PolygonsUnion
 	{
 		public:
@@ -16,6 +23,9 @@ namespace urchin
 
 		private:
 			std::vector<CSGPolygon> unionTwoPolygons(const CSGPolygon &, const CSGPolygon &) const;
+			unsigned int findStartPoint(const CSGPolygon &, const CSGPolygon &, const CSGPolygon *&) const;
+			unsigned int findLowestPointIndex(const CSGPolygon &) const;
+			CSGIntersection findFirstIntersectionOnEdge(const LineSegment2D<float> &, const CSGPolygon *) const;
 	};
 
 }

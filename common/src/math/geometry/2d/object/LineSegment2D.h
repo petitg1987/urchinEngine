@@ -1,9 +1,6 @@
 #ifndef ENGINE_LINESEGMENT2D_H
 #define ENGINE_LINESEGMENT2D_H
 
-#include <cmath>
-#include <vector>
-
 #include "math/geometry/2d/object/ConvexObject2D.h"
 #include "math/algebra/point/Point2.h"
 #include "math/algebra/vector/Vector2.h"
@@ -22,6 +19,8 @@ namespace urchin
 			Point2<T> getSupportPoint(const Vector2<T> &) const;
 			Point2<T> closestPoint(const Point2<T> &, T[2]) const;
 			T squareDistance(const Point2<T> &) const;
+
+			Point2<T> intersectPoint(const LineSegment2D<T> &) const;
 
 		private:
 			Point2<T> a, b;

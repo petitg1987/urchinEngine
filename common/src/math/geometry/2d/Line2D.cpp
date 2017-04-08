@@ -70,12 +70,15 @@ namespace urchin
 		return (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
 	}
 
-	template<class T> Point2<T> Line2D<T>::intersectPoint(const Line2D<T> &l2) const
+	template<class T> Point2<T> Line2D<T>::intersectPoint(const Line2D<T> &other) const
 	{
-		T d = (a.X - b.X)*(l2.getA().Y - l2.getB().Y) - (a.Y - b.Y)*(l2.getA().X - l2.getB().X);
+		T subX = a.X - b.X;
+		T subY = a.Y - b.Y;
+		T subXOther = other.getA().X - other.getB().X;
+		T subYOther = other.getA().Y - other.getB().Y;
 
-		T intersectX = ((l2.getA().X - l2.getB().X) * (a.X*b.Y - a.Y*b.X) - (a.X - b.X) * (l2.getA().X*l2.getB().Y - l2.getA().Y*l2.getB().X)) / d;
-		T intersectY = ((l2.getA().Y - l2.getB().Y) * (a.X*b.Y - a.Y*b.X) - (a.Y - b.Y) * (l2.getA().X*l2.getB().Y - l2.getA().Y*l2.getB().X)) / d;
+		T intersectX = (subXOther * (a.X*b.Y - a.Y*b.X) - subX * (other.getA().X*other.getB().Y - other.getA().Y*other.getB().X)) / (subX*subYOther - subY*subXOther);
+		T intersectY = (subYOther * (a.X*b.Y - a.Y*b.X) - subY * (other.getA().X*other.getB().Y - other.getA().Y*other.getB().X)) / (subX*subYOther - subY*subXOther);
 
 		return Point2<T>(intersectX, intersectY);
 	}

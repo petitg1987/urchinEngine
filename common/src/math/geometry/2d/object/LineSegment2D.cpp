@@ -1,9 +1,12 @@
+#include <limits>
+#include <cmath>
+
 #include "math/geometry/2d/object/LineSegment2D.h"
 
 namespace urchin
 {
 
-	template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T> &a,  const Point2<T> &b) :
+	template<class T> LineSegment2D<T>::LineSegment2D(const Point2<T> &a, const Point2<T> &b) :
 		a(a), b(b)
 	{
 
@@ -79,6 +82,24 @@ namespace urchin
 		}
 
 		return ap.dotProduct(ap) - ((e * e) / f);
+	}
+
+	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other) const
+	{
+		T subX = b.X - a.X;
+		T subY = b.Y - a.Y;
+		T subXOther = other.getB().X - other.getA().X;
+		T subYOther = other.getB().Y - other.getA().Y;
+
+		T s = (-subY * (a.X - other.getA().X) + subX * (a.Y - other.getA().Y)) / (-subXOther * subY + subX * subYOther);
+		T t = (subXOther * (a.Y - other.getA().Y) - subYOther * (a.X - other.getA().X)) / (-subXOther * subY + subX * subYOther);
+
+		if(s>=0.0 && s<=1.0 && t>=0.0 && t<=1.0)
+		{ //intersection
+			return Point2<float>(a.X+(t*subX), a.Y+(t*subY));
+		}
+
+		return Point2<float>(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l)
