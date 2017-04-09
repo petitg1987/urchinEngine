@@ -142,11 +142,14 @@ namespace urchin
 			if(!std::isnan(intersectionPoint.X))
 			{ //intersection found
 				float distanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-				if(distanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
-				{
-					nearestDistanceEdgeStartPoint = distanceEdgeStartPoint;
-					nearestIntersectionPoint = intersectionPoint;
-					edgeEndPointIndex = i;
+				if(distanceEdgeStartPoint > std::numeric_limits<float>::epsilon())
+				{ //as edge.getA() could be an intersection point, we don't want to find it again
+					if(distanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
+					{
+						nearestDistanceEdgeStartPoint = distanceEdgeStartPoint;
+						nearestIntersectionPoint = intersectionPoint;
+						edgeEndPointIndex = i;
+					}
 				}
 			}
 		}
