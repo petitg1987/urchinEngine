@@ -44,46 +44,45 @@ namespace urchin
 
 	std::vector<CSGPolygon> PolygonsUnion::unionTwoPolygons(const CSGPolygon &polygon1, const CSGPolygon &polygon2) const
 	{
-		const CSGPolygon *currentPolygon = nullptr;
-		unsigned int startPointIndex = findStartPoint(polygon1, polygon2, currentPolygon);
-		unsigned int pointIndex = startPointIndex;
-		unsigned int nextPointIndex = (startPointIndex+1) % currentPolygon->getCwPoints().size();
+		const CSGPolygon *startPolygon = nullptr;
+		unsigned int startPointIndex = findStartPoint(polygon1, polygon2, startPolygon);
+		unsigned int nextPointIndex = (startPointIndex+1) % startPolygon->getCwPoints().size();
 
+		const CSGPolygon *currentPolygon = startPolygon;
+		const CSGPolygon *otherPolygon = currentPolygon==&polygon1 ? &polygon2 : &polygon1;
+
+		Point2<float> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
 		bool foundIntersection = false;
 
 		std::vector<Point2<float>> mergedPolygonPoints;
 		mergedPolygonPoints.reserve(polygon1.getCwPoints().size() + polygon2.getCwPoints().size());
-		mergedPolygonPoints.push_back(currentPolygon->getCwPoints()[startPointIndex]);
+		mergedPolygonPoints.push_back(edgeStartPoint);
 
 		do
 		{
-			Point2<float> edgeStartPoint = currentPolygon->getCwPoints()[pointIndex];
 			Point2<float> edgeEndPoint = currentPolygon->getCwPoints()[nextPointIndex];
-
-			const CSGPolygon *otherPolygon = currentPolygon==&polygon1 ? &polygon2 : &polygon1;
 			CSGIntersection csgIntersection = findFirstIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), otherPolygon);
 
 			if(csgIntersection.hasIntersection)
 			{
 				mergedPolygonPoints.push_back(csgIntersection.intersectionPoint);
+				std::swap(currentPolygon, otherPolygon);
 
-				currentPolygon = otherPolygon;
-				pointIndex = csgIntersection.edgeEndPointIndex;
-				nextPointIndex = (pointIndex+1) % currentPolygon->getCwPoints().size();
+				edgeStartPoint = csgIntersection.intersectionPoint;
+				nextPointIndex = csgIntersection.edgeEndPointIndex;
 
 				foundIntersection = true;
 			}else
 			{
 				mergedPolygonPoints.push_back(edgeEndPoint);
 
-				pointIndex = nextPointIndex;
-				nextPointIndex = (pointIndex+1) % currentPolygon->getCwPoints().size();
+				edgeStartPoint = currentPolygon->getCwPoints()[nextPointIndex];
+				nextPointIndex = (nextPointIndex+1) % currentPolygon->getCwPoints().size();
 			}
-
-		}while(nextPointIndex!=startPointIndex);
+		}while(nextPointIndex!=startPointIndex || currentPolygon!=startPolygon);
 
 		std::vector<CSGPolygon> mergedPolygons;
-		if(foundIntersection || true) //TODO replace 'true' by: currentPolygon contains otherPolygon
+		if(foundIntersection || pointInsidePolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
 		{
 			mergedPolygons.push_back(CSGPolygon(mergedPolygonPoints));
 		}else
@@ -130,15 +129,14 @@ namespace urchin
 
 	CSGIntersection PolygonsUnion::findFirstIntersectionOnEdge(const LineSegment2D<float> &edge, const CSGPolygon *polygon) const
 	{
-		float nearestDistanceEdgeStartPoint = -1.0f;
+		float nearestDistanceEdgeStartPoint = std::numeric_limits<float>::max();
 		Point2<float> nearestIntersectionPoint(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
 		unsigned int edgeEndPointIndex;
 
 		const std::vector<Point2<float>> &points = polygon->getCwPoints();
-		for(unsigned int i=0; i<points.size(); ++i)
+		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
 		{
-			unsigned int nextI = (i+1)%points.size();
-			LineSegment2D<float> polygonEdge(points[i], points[nextI]);
+			LineSegment2D<float> polygonEdge(points[previousI], points[i]);
 
 			Point2<float> intersectionPoint = edge.intersectPoint(polygonEdge);
 			if(!std::isnan(intersectionPoint.X))
@@ -148,7 +146,7 @@ namespace urchin
 				{
 					nearestDistanceEdgeStartPoint = distanceEdgeStartPoint;
 					nearestIntersectionPoint = intersectionPoint;
-					edgeEndPointIndex = nextI;
+					edgeEndPointIndex = i;
 				}
 			}
 		}
@@ -159,6 +157,26 @@ namespace urchin
 		csgIntersection.edgeEndPointIndex = edgeEndPointIndex;
 
 		return csgIntersection;
+	}
+
+	bool PolygonsUnion::pointInsidePolygon(const CSGPolygon *polygon, const Point2<float> &point) const
+	{ //see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
+		bool inside = false;
+
+		const std::vector<Point2<float>> &points = polygon->getCwPoints();
+		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
+		{
+			Point2<float> point1 = points[previousI];
+			Point2<float> point2 = points[i];
+
+			if (((point1.Y<=point.Y && point.Y<point2.Y) || (point2.Y<=point.Y && point.Y<point1.Y))
+					&& (point.X < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y) + point1.X))
+			{
+				inside = !inside;
+			}
+		}
+
+		return inside;
 	}
 
 }

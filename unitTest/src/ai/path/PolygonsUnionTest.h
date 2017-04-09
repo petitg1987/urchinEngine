@@ -9,7 +9,11 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 	public:
 		static CppUnit::Test *suite();
 
+		void twoPolygonsNoUnion();
+		void polygonInsideAnother();
+		void twoPolygonsUnion();
 		void threePolygonsUnion();
+		void twoPolygonsUnionAndSeparatePolygon();
 
 };
 

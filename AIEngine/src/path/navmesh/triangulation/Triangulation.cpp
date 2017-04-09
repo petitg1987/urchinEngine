@@ -148,15 +148,13 @@ namespace urchin
 		std::vector<SidedPoint> sortedSidedPoints;
 		sortedSidedPoints.reserve(monotonePolygonPoints.size());
 
-		for(unsigned int i=0; i<monotonePolygonPoints.size(); ++i)
+		for(unsigned int i=0, previousI=monotonePolygonPoints.size()-1; i<monotonePolygonPoints.size(); previousI=i++)
 		{
 			SidedPoint sidedPoint;
 
 			unsigned int currentIndex = monotonePolygonPoints[i];
 			sidedPoint.pointIndex = currentIndex;
-
-			unsigned int nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
-			sidedPoint.onLeft = isFirstPointAboveSecond(currentIndex, nextIndex);
+			sidedPoint.onLeft = isFirstPointAboveSecond(monotonePolygonPoints[previousI], currentIndex);
 
 			sortedSidedPoints.push_back(sidedPoint);
 		}
