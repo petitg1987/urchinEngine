@@ -3,6 +3,8 @@
 
 #include "NavMeshGenerator.h"
 #include "path/navmesh/polyhedron/Face.h"
+#include "path/navmesh/csg/CSGPolygon.h"
+#include "path/navmesh/csg/PolygonsUnion.h"
 
 namespace urchin
 {
@@ -154,13 +156,21 @@ namespace urchin
 	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &polyhedrons, unsigned int processingPolyhedron, Triangulation &triangulation)
 	{
 		float characterHalfSize = 0.3f; //TODO should use character properties
+
+		std::vector<CSGPolygon> holePolygons; //TODO reserve
 		for(unsigned int i=0; i<polyhedrons.size(); ++i)
-		{
+		{ //TODO select only polygons above 'processingPolyhedron'
 			if(i!=processingPolyhedron)
 			{
 				std::vector<Point2<float>> cwFootprintPoints = polyhedrons[i].computeCwFootprintPoints(characterHalfSize);
-				triangulation.addHolePoints(cwFootprintPoints); //TODO should do an union of polygons before triangulation
+				holePolygons.push_back(CSGPolygon(polyhedrons[i].getName(), cwFootprintPoints));
 			}
+		}
+
+		std::vector<CSGPolygon> mergedPolygons = PolygonsUnion().unionPolygons(holePolygons);
+		for(const auto &mergedPolygon : mergedPolygons)
+		{
+			triangulation.addHolePoints(mergedPolygon.getCwPoints());
 		}
 	}
 

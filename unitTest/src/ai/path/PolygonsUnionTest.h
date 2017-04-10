@@ -13,7 +13,10 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsNoUnion();
 		void polygonInsideAnother();
 		void twoPolygonsUnion();
-		void twoIdenticalPolygons();
+		void twoPolygonsUnionAxisAligned();
+		void twoPolygonsSameEndPoint();
+		void twoIdenticalTriangles();
+		void twoIdenticalSquares();
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();
 
