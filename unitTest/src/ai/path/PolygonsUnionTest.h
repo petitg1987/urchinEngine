@@ -10,14 +10,19 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		static CppUnit::Test *suite();
 
 		void onePolygonUnion();
+
 		void twoPolygonsNoUnion();
 		void polygonInsideAnother();
+
 		void twoPolygonsUnion();
 		void twoPolygonsUnionAxisAligned();
 		void twoPolygonsSameEndPoint();
-		void twoPolygonsIdenticalPoint();
+		void twoPolygonsTouchInOnePoint();
+		void twoPolygonsNestedTouchInOnePoint();
+
 		void twoIdenticalTriangles();
 		void twoIdenticalSquares();
+
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();
 };

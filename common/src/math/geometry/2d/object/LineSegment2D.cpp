@@ -93,7 +93,7 @@ namespace urchin
 
 		T s = (-subY * (a.X - other.getA().X) + subX * (a.Y - other.getA().Y)) / (-subXOther * subY + subX * subYOther);
 		T t = (subXOther * (a.Y - other.getA().Y) - subYOther * (a.X - other.getA().X)) / (-subXOther * subY + subX * subYOther);
-
+//TODO see comment on stackoverflow: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 		if(s>=0.0 && s<=1.0 && t>=0.0 && t<=1.0)
 		{ //intersection
 			return Point2<float>(a.X+(t*subX), a.Y+(t*subY));

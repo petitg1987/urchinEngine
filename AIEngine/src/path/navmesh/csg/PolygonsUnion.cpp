@@ -203,7 +203,7 @@ namespace urchin
 			Point2<float> point2 = points[i];
 
 			if(point1.X==point.X && point1.Y==point.Y)
-			{
+			{ //TODO check if useful (remove and unit tests)
 				return true;
 			}
 
