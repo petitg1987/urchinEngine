@@ -6,6 +6,12 @@
 namespace urchin
 {
 
+	PolygonsUnion::PolygonsUnion() :
+		epsilon(std::numeric_limits<float>::epsilon())
+	{
+
+	}
+
 	std::vector<CSGPolygon> PolygonsUnion::unionPolygons(const std::vector<CSGPolygon> &polygons) const
 	{
 		std::vector<CSGPolygon> mergedPolygons;
@@ -59,6 +65,9 @@ namespace urchin
 		Point2<float> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
 		bool foundIntersection = false;
 
+		unsigned int maxIteration = polygon1.getCwPoints().size() + polygon2.getCwPoints().size() * 2;
+		unsigned int currentIteration = 0;
+
 		std::vector<Point2<float>> mergedPolygonPoints;
 		mergedPolygonPoints.reserve(polygon1.getCwPoints().size() + polygon2.getCwPoints().size());
 		mergedPolygonPoints.push_back(edgeStartPoint);
@@ -81,13 +90,16 @@ namespace urchin
 			{
 				mergedPolygonPoints.push_back(edgeEndPoint);
 
-				edgeStartPoint = currentPolygon->getCwPoints()[nextPointIndex];
+				edgeStartPoint = edgeEndPoint;
 				nextPointIndex = (nextPointIndex+1) % currentPolygon->getCwPoints().size();
 			}
-		}while(nextPointIndex!=startPointIndex || currentPolygon!=startPolygon); //TODO probably wrong if only end point is common between 2 polygons
+		}while(!areSamePoints(startPolygon, startPointIndex, currentPolygon, nextPointIndex) && ++currentIteration < maxIteration);
 
 		std::vector<CSGPolygon> mergedPolygons;
-		if(foundIntersection || pointInsideOrOnPolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
+		if(currentIteration >= maxIteration)
+		{
+			logMaximumIterationReach(polygon1, polygon2);
+		}else if(foundIntersection || pointInsideOrOnPolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
 		{
 			mergedPolygons.push_back(CSGPolygon(polygon1.getName() + "-" + polygon2.getName(), mergedPolygonPoints));
 		}else
@@ -147,9 +159,8 @@ namespace urchin
 			if(!std::isnan(intersectionPoint.X))
 			{ //intersection found
 				float distanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-				float distanceEdgeEndPoint = edge.getB().squareDistance(intersectionPoint);
-				if(distanceEdgeStartPoint > std::numeric_limits<float>::epsilon() && distanceEdgeEndPoint > std::numeric_limits<float>::epsilon())
-				{ //as edge.getA/B() could be an intersection point, we don't want to find it again
+				if(distanceEdgeStartPoint>epsilon && polygonEdge.getB().squareDistance(intersectionPoint)>epsilon)
+				{ //intersection is useful and allow a progression
 					if(distanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
 					{
 						nearestDistanceEdgeStartPoint = distanceEdgeStartPoint;
@@ -166,6 +177,19 @@ namespace urchin
 		csgIntersection.edgeEndPointIndex = edgeEndPointIndex;
 
 		return csgIntersection;
+	}
+
+	bool PolygonsUnion::areSamePoints(const CSGPolygon *polygonPoint1, unsigned int point1Index, const CSGPolygon *polygonPoint2, unsigned int point2Index) const
+	{
+		if(polygonPoint1==polygonPoint2)
+		{
+			return point1Index==point2Index;
+		}
+
+		Point2<float> p1 = polygonPoint1->getCwPoints()[point1Index];
+		Point2<float> p2 = polygonPoint2->getCwPoints()[point2Index];
+
+		return ((p1.X-epsilon) <= p2.X) && ((p1.X+epsilon) >= p2.X) && ((p1.Y-epsilon) <= p2.Y) && ((p1.Y+epsilon) >= p2.Y);
 	}
 
 	bool PolygonsUnion::pointInsideOrOnPolygon(const CSGPolygon *polygon, const Point2<float> &point) const
@@ -191,6 +215,15 @@ namespace urchin
 		}
 
 		return inside;
+	}
+
+	void PolygonsUnion::logMaximumIterationReach(const CSGPolygon &polygon1, const CSGPolygon &polygon2) const
+	{
+		std::stringstream logStream;
+		logStream<<"Maximum of iteration reached on polygons union algorithm."<<std::endl;
+		logStream<<" - Polygon 1: "<<std::endl<<polygon1<<std::endl;
+		logStream<<" - Polygon 2: "<<std::endl<<polygon2;
+		Logger::logger().logWarning(logStream.str());
 	}
 
 }

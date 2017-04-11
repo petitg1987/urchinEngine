@@ -15,11 +15,11 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsUnion();
 		void twoPolygonsUnionAxisAligned();
 		void twoPolygonsSameEndPoint();
+		void twoPolygonsIdenticalPoint();
 		void twoIdenticalTriangles();
 		void twoIdenticalSquares();
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();
-
 };
 
 #endif

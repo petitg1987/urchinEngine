@@ -43,12 +43,12 @@ namespace urchin
 
 	std::ostream& operator <<(std::ostream &stream, const CSGPolygon &polygon)
 	{
-		stream << polygon.getName() << std::endl;
+		stream << "Name:" << polygon.getName() << std::endl;
+		stream << "Points (CW):" << std::endl;
 		for(auto point : polygon.getCwPoints())
 		{
-			stream << "- " << point << std::endl;
+			stream << point << std::endl;
 		}
-		stream<<std::endl;
 		return stream;
 	}
 
