@@ -146,10 +146,10 @@ namespace urchin
 
 	CSGIntersection PolygonsUnion::findFirstIntersectionOnEdge(const LineSegment2D<float> &edge, const CSGPolygon *polygon) const
 	{
-		float nearestDistanceEdgeStartPoint = std::numeric_limits<float>::max();
-		Point2<float> nearestIntersectionPoint(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
-		unsigned int edgeEndPointIndex;
+		CSGIntersection csgIntersection;
+		csgIntersection.intersectionPoint = Point2<float>(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
 
+		float nearestDistanceEdgeStartPoint = std::numeric_limits<float>::max();
 		const std::vector<Point2<float>> &points = polygon->getCwPoints();
 		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
 		{
@@ -164,18 +164,14 @@ namespace urchin
 					if(distanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
 					{
 						nearestDistanceEdgeStartPoint = distanceEdgeStartPoint;
-						nearestIntersectionPoint = intersectionPoint;
-						edgeEndPointIndex = i;
+						csgIntersection.intersectionPoint = intersectionPoint;
+						csgIntersection.edgeEndPointIndex = i;
 					}
 				}
 			}
 		}
 
-		CSGIntersection csgIntersection;
-		csgIntersection.hasIntersection = !std::isnan(nearestIntersectionPoint.X);
-		csgIntersection.intersectionPoint = nearestIntersectionPoint;
-		csgIntersection.edgeEndPointIndex = edgeEndPointIndex;
-
+		csgIntersection.hasIntersection = !std::isnan(csgIntersection.intersectionPoint.X);
 		return csgIntersection;
 	}
 

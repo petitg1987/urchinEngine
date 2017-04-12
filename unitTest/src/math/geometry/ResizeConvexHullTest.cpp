@@ -6,7 +6,6 @@
 
 #include "math/geometry/ResizeConvexHullTest.h"
 #include "AssertHelper.h"
-
 using namespace urchin;
 
 void ResizeConvexHullTest::reduceConvexHullBox()

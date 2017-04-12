@@ -1,5 +1,6 @@
 #include <limits>
 #include <cmath>
+#include <cassert>
 
 #include "math/geometry/2d/object/LineSegment2D.h"
 
@@ -84,22 +85,57 @@ namespace urchin
 		return ap.dotProduct(ap) - ((e * e) / f);
 	}
 
+	/**
+	 * Returns the intersection point of the two lines segment. If intersection doesn't exist: return a Point2<T> of NAN.
+	 * When line are collinear and intersect: return the nearest intersection point between this->getA() and this->getB()
+	 */
 	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other) const
-	{
-		T subX = b.X - a.X;
-		T subY = b.Y - a.Y;
-		T subXOther = other.getB().X - other.getA().X;
-		T subYOther = other.getB().Y - other.getA().Y;
+	{ //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 
-		T s = (-subY * (a.X - other.getA().X) + subX * (a.Y - other.getA().Y)) / (-subXOther * subY + subX * subYOther);
-		T t = (subXOther * (a.Y - other.getA().Y) - subYOther * (a.X - other.getA().X)) / (-subXOther * subY + subX * subYOther);
-//TODO see comment on stackoverflow: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-		if(s>=0.0 && s<=1.0 && t>=0.0 && t<=1.0)
-		{ //intersection
-			return Point2<float>(a.X+(t*subX), a.Y+(t*subY));
+		Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
+		Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
+
+		T rCrossS = r.crossProduct(s);
+		Vector2<T> thisToOther = a.vector(other.getA());
+		T startPointsCrossS = thisToOther.crossProduct(r);
+
+		if(rCrossS==0.0)
+		{ //line segments are collinear/parallel
+			if(startPointsCrossS==0.0)
+			{ //line segments are collinear
+				T t0 = thisToOther.dotProduct(r) / r.dotProduct(r);
+				T t1 = t0 + s.dotProduct(r) / r.dotProduct(r);
+
+				if(s.dotProduct(r) < 0.0)
+				{
+					std::swap(t0, t1);
+				}
+				#ifdef _DEBUG
+					assert(t0 <= t1);
+				#endif
+
+				if(t0>=0.0 && t0<=1.0 && t1>=1.0)
+				{ //collinear with intersection
+					return a.translate(t0*r);
+				}else if(t0<=0.0 && t1>=0.0 && t1<=1.0)
+				{ //collinear with intersection
+					return a.translate(t1*r);
+				}
+			}
+
+			return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
 		}
 
-		return Point2<float>(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+		//line segments not parallel
+		T t = thisToOther.crossProduct(s) / rCrossS;
+		T u = startPointsCrossS / r.crossProduct(s);
+		if(t>=0.0 && t<=1.0 && u>=0.0 && u<=1.0)
+		{ //intersection
+			return a.translate(t*r);
+		}
+
+		//no intersection
+		return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l)

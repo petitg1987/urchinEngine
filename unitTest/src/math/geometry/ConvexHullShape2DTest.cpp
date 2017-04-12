@@ -5,7 +5,6 @@
 
 #include "math/geometry/ConvexHullShape2DTest.h"
 #include "AssertHelper.h"
-
 using namespace urchin;
 
 void ConvexHullShape2DTest::convexHullBox()

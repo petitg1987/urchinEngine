@@ -57,10 +57,9 @@ namespace urchin
 		return (X*v.X + Y*v.Y);
 	}
 
-	template<class T> Vector2<T> Vector2<T>::crossProduct(const Vector2<T> &v) const
+	template<class T> T Vector2<T>::crossProduct(const Vector2<T> &v) const
 	{
-		return Vector2<T>(	Y*v.X - X*v.Y,
-					X*v.Y - Y*v.X);
+		return (X*v.Y - Y*v.X);
 	}
 
 	template<class T> Vector2<T> Vector2<T>::operator +() const

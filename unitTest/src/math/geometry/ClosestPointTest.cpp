@@ -1,4 +1,5 @@
 #include <cppunit/extensions/HelperMacros.h>
+#include "UrchinCommon.h"
 
 #include "math/geometry/ClosestPointTest.h"
 #include "AssertHelper.h"

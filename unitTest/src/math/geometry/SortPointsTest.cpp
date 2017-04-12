@@ -5,7 +5,6 @@
 
 #include "math/geometry/SortPointsTest.h"
 #include "AssertHelper.h"
-
 using namespace urchin;
 
 void SortPointsTest::threePointsClockwise()

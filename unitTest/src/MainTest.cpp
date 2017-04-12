@@ -6,6 +6,7 @@
 #include "math/geometry/OrthogonalProjectionTest.h"
 #include "math/geometry/ClosestPointTest.h"
 #include "math/geometry/AABBoxCollisionTest.h"
+#include "math/geometry/LineSegment2DCollisionTest.h"
 #include "math/geometry/ResizeConvexHullTest.h"
 #include "math/geometry/ConvexHullShape2DTest.h"
 #include "math/geometry/SortPointsTest.h"
@@ -44,6 +45,7 @@ int main()
 	runner.addTest(OrthogonalProjectionTest::suite());
 	runner.addTest(ClosestPointTest::suite());
 	runner.addTest(AABBoxCollissionTest::suite());
+	runner.addTest(LineSegment2DCollisionTest::suite());
 	runner.addTest(ResizeConvexHullTest::suite());
 	runner.addTest(ConvexHullShape2DTest::suite());
 	runner.addTest(SortPointsTest::suite());
