@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cassert>
+#include <limits>
 
 #include "math/geometry/2d/Line2D.h"
 #include "math/algebra/vector/Vector2.h"
@@ -70,17 +71,31 @@ namespace urchin
 		return (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
 	}
 
+	/**
+	 * Returns the intersection point of the two lines. If intersection doesn't exist: return a Point2<T> of NAN.
+	 * When lines are collinear and intersect: returns this->getA().
+	 */
 	template<class T> Point2<T> Line2D<T>::intersectPoint(const Line2D<T> &other) const
-	{
-		T subX = a.X - b.X;
-		T subY = a.Y - b.Y;
-		T subXOther = other.getA().X - other.getB().X;
-		T subYOther = other.getA().Y - other.getB().Y;
+	{ //see LineSegment2D.intersectPoint()
+		Vector2<T> r(b.X - a.X, b.Y - a.Y);
+		Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
 
-		T intersectX = (subXOther * (a.X*b.Y - a.Y*b.X) - subX * (other.getA().X*other.getB().Y - other.getA().Y*other.getB().X)) / (subX*subYOther - subY*subXOther);
-		T intersectY = (subYOther * (a.X*b.Y - a.Y*b.X) - subY * (other.getA().X*other.getB().Y - other.getA().Y*other.getB().X)) / (subX*subYOther - subY*subXOther);
+		T rCrossS = r.crossProduct(s);
+		T startPointsCrossR = a.vector(other.getA()).crossProduct(r);
 
-		return Point2<T>(intersectX, intersectY);
+		if(rCrossS==0.0)
+		{ //lines are parallel
+			if(startPointsCrossR==0.0)
+			{ //lines are collinear
+				return a;
+			}
+
+			return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
+		}
+
+		//lines not parallel
+		T u = startPointsCrossR / rCrossS;
+		return other.getA().translate(u*s);
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Line2D<T> &l)

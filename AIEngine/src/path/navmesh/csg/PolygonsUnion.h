@@ -27,7 +27,8 @@ namespace urchin
 
 			unsigned int findStartPoint(const CSGPolygon &, const CSGPolygon &, const CSGPolygon *&) const;
 			unsigned int findLowestPointIndex(const CSGPolygon &) const;
-			CSGIntersection findFirstIntersectionOnEdge(const LineSegment2D<float> &, const CSGPolygon *) const;
+			CSGIntersection findFirstValidIntersectionOnEdge(const LineSegment2D<float> &, const CSGPolygon *) const;
+			bool isExteriorAngleLess180(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
 
 			bool areSamePoints(const CSGPolygon *, unsigned int, const CSGPolygon *, unsigned int) const;
 			bool pointInsideOrOnPolygon(const CSGPolygon *, const Point2<float> &) const;

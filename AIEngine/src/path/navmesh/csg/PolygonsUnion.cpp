@@ -75,7 +75,7 @@ namespace urchin
 		do
 		{
 			Point2<float> edgeEndPoint = currentPolygon->getCwPoints()[nextPointIndex];
-			CSGIntersection csgIntersection = findFirstIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), otherPolygon);
+			CSGIntersection csgIntersection = findFirstValidIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), otherPolygon);
 
 			if(csgIntersection.hasIntersection)
 			{
@@ -144,10 +144,10 @@ namespace urchin
 		return lowestPointIndex;
 	}
 
-	CSGIntersection PolygonsUnion::findFirstIntersectionOnEdge(const LineSegment2D<float> &edge, const CSGPolygon *polygon) const
+	CSGIntersection PolygonsUnion::findFirstValidIntersectionOnEdge(const LineSegment2D<float> &edge, const CSGPolygon *polygon) const
 	{
 		CSGIntersection csgIntersection;
-		csgIntersection.intersectionPoint = Point2<float>(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+		csgIntersection.hasIntersection = false;
 
 		float nearestDistanceEdgeStartPoint = std::numeric_limits<float>::max();
 		const std::vector<Point2<float>> &points = polygon->getCwPoints();
@@ -157,13 +157,15 @@ namespace urchin
 
 			Point2<float> intersectionPoint = edge.intersectPoint(polygonEdge);
 			if(!std::isnan(intersectionPoint.X))
-			{ //intersection found
-				float distanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-				if(distanceEdgeStartPoint>epsilon && polygonEdge.getB().squareDistance(intersectionPoint)>epsilon)
-				{ //intersection is useful and allow a progression
-					if(distanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
+			{
+				float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
+				if(squareDistanceEdgeStartPoint>epsilon && polygonEdge.getB().squareDistance(intersectionPoint)>epsilon //exclude intersections which don't allow to progress
+						&& isExteriorAngleLess180(edge.getA(), intersectionPoint, polygon->getCwPoints()[i])) //exclude intersection worst as edge.getA()
+				{
+					if(squareDistanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
 					{
-						nearestDistanceEdgeStartPoint = distanceEdgeStartPoint;
+						nearestDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
+						csgIntersection.hasIntersection = true;
 						csgIntersection.intersectionPoint = intersectionPoint;
 						csgIntersection.edgeEndPointIndex = i;
 					}
@@ -171,8 +173,12 @@ namespace urchin
 			}
 		}
 
-		csgIntersection.hasIntersection = !std::isnan(csgIntersection.intersectionPoint.X);
 		return csgIntersection;
+	}
+
+	bool PolygonsUnion::isExteriorAngleLess180(const Point2<float> &point1, const Point2<float> &point2, const Point2<float> &point3) const
+	{
+		return true; //TODO ...
 	}
 
 	bool PolygonsUnion::areSamePoints(const CSGPolygon *polygonPoint1, unsigned int point1Index, const CSGPolygon *polygonPoint2, unsigned int point2Index) const

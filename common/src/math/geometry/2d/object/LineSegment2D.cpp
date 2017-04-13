@@ -87,21 +87,20 @@ namespace urchin
 
 	/**
 	 * Returns the intersection point of the two lines segment. If intersection doesn't exist: return a Point2<T> of NAN.
-	 * When line are collinear and intersect: return the nearest intersection point between this->getA() and this->getB()
+	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
 	 */
 	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other) const
 	{ //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-
 		Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
 		Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
 
 		T rCrossS = r.crossProduct(s);
 		Vector2<T> thisToOther = a.vector(other.getA());
-		T startPointsCrossS = thisToOther.crossProduct(r);
+		T startPointsCrossR = thisToOther.crossProduct(r);
 
 		if(rCrossS==0.0)
-		{ //line segments are collinear/parallel
-			if(startPointsCrossS==0.0)
+		{ //line segments are parallel
+			if(startPointsCrossR==0.0)
 			{ //line segments are collinear
 				T t0 = thisToOther.dotProduct(r) / r.dotProduct(r);
 				T t1 = t0 + s.dotProduct(r) / r.dotProduct(r);
@@ -128,7 +127,7 @@ namespace urchin
 
 		//line segments not parallel
 		T t = thisToOther.crossProduct(s) / rCrossS;
-		T u = startPointsCrossS / r.crossProduct(s);
+		T u = startPointsCrossR / rCrossS;
 		if(t>=0.0 && t<=1.0 && u>=0.0 && u<=1.0)
 		{ //intersection
 			return a.translate(t*r);
