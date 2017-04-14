@@ -146,9 +146,9 @@ namespace urchin
 
 			if(currentAbovePrevious && currentAboveNext)
 			{
-				Vector3<float> previousToOrigin = Vector3<float>(polygonPoints[previousIndex].vector(polygonPoints[i]), 0.0f);
-				Vector3<float> originToNext = Vector3<float>(polygonPoints[i].vector(polygonPoints[nextIndex]), 0.0f);
-				float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
+				Vector2<float> previousToOrigin = polygonPoints[previousIndex].vector(polygonPoints[i]);
+				Vector2<float> originToNext = polygonPoints[i].vector(polygonPoints[nextIndex]);
+				float orientationResult = previousToOrigin.crossProduct(originToNext);
 
 				if(orientationResult>=0.0)
 				{
@@ -160,9 +160,9 @@ namespace urchin
 				}
 			}else if(!currentAbovePrevious && !currentAboveNext)
 			{
-				Vector3<float> previousToOrigin = Vector3<float>(polygonPoints[previousIndex].vector(polygonPoints[i]), 0.0f);
-				Vector3<float> originToNext = Vector3<float>(polygonPoints[i].vector(polygonPoints[nextIndex]), 0.0f);
-				float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(previousToOrigin.crossProduct(originToNext));
+				Vector2<float> previousToOrigin = polygonPoints[previousIndex].vector(polygonPoints[i]);
+				Vector2<float> originToNext = polygonPoints[i].vector(polygonPoints[nextIndex]);
+				float orientationResult = previousToOrigin.crossProduct(originToNext);
 
 				if(orientationResult>=0.0)
 				{
@@ -397,12 +397,12 @@ namespace urchin
 		float minAngleCCW = std::numeric_limits<float>::max();
 		float maxAngleCW = -std::numeric_limits<float>::max();
 
-		Vector3<float> edgeVector = Vector3<float>(polygonPoints[edgeStartIndex].vector(polygonPoints[edgeEndIndex]), 0.0f);
+		Vector2<float> edgeVector = polygonPoints[edgeStartIndex].vector(polygonPoints[edgeEndIndex]);
 		for(unsigned int i=0; i<possibleNextPoints.size(); ++i)
 		{
 			unsigned int testPointIndex = possibleNextPoints[i].first;
-			Vector3<float> nextEdgeVector = Vector3<float>(polygonPoints[edgeEndIndex].vector(polygonPoints[testPointIndex]), 0.0f);
-			float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(edgeVector.crossProduct(nextEdgeVector));
+			Vector2<float> nextEdgeVector = polygonPoints[edgeEndIndex].vector(polygonPoints[testPointIndex]);
+			float orientationResult = edgeVector.crossProduct(nextEdgeVector);
 			float angle = edgeVector.normalize().dotProduct(nextEdgeVector.normalize());
 
 			if(orientationResult > 0.0)

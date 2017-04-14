@@ -19,6 +19,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsTouchInOnePoint();
 		void twoPolygonsNestedTouchInOnePoint();
+		void twoPolygonsIntersectionLastEdge();
 
 		void twoIdenticalTriangles();
 		void twoIdenticalSquares();

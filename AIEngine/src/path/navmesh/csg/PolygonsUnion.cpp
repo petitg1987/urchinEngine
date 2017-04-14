@@ -69,10 +69,10 @@ namespace urchin
 		unsigned int currentIteration = 0;
 
 		std::vector<Point2<float>> mergedPolygonPoints;
-		mergedPolygonPoints.reserve(polygon1.getCwPoints().size() + polygon2.getCwPoints().size());
+		mergedPolygonPoints.reserve(polygon1.getCwPoints().size() + polygon2.getCwPoints().size()); //estimated memory size
 		mergedPolygonPoints.push_back(edgeStartPoint);
 
-		do
+		while(currentIteration++ < maxIteration)
 		{
 			Point2<float> edgeEndPoint = currentPolygon->getCwPoints()[nextPointIndex];
 			CSGIntersection csgIntersection = findFirstValidIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), otherPolygon);
@@ -88,12 +88,17 @@ namespace urchin
 				foundIntersection = true;
 			}else
 			{
+				if(areSamePoints(startPolygon, startPointIndex, currentPolygon, nextPointIndex))
+				{
+					break;
+				}
+
 				mergedPolygonPoints.push_back(edgeEndPoint);
 
 				edgeStartPoint = edgeEndPoint;
 				nextPointIndex = (nextPointIndex+1) % currentPolygon->getCwPoints().size();
 			}
-		}while(!areSamePoints(startPolygon, startPointIndex, currentPolygon, nextPointIndex) && ++currentIteration < maxIteration);
+		}
 
 		std::vector<CSGPolygon> mergedPolygons;
 		if(currentIteration >= maxIteration)
@@ -119,13 +124,32 @@ namespace urchin
 	unsigned int PolygonsUnion::findStartPoint(const CSGPolygon &polygon1, const CSGPolygon &polygon2, const CSGPolygon *&startPolygon) const
 	{
 		unsigned int lowestPointIndexPolygon1 = findLowestPointIndex(polygon1);
-		float lowestPointPolygon1Value = polygon1.getCwPoints()[lowestPointIndexPolygon1].Y;
+		Point2<float> lowestPointPolygon1 = polygon1.getCwPoints()[lowestPointIndexPolygon1];
 
 		unsigned int lowestPointIndexPolygon2 = findLowestPointIndex(polygon2);
-		float lowestPointPolygon2Value = polygon2.getCwPoints()[lowestPointIndexPolygon2].Y;
+		Point2<float> lowestPointPolygon2 = polygon2.getCwPoints()[lowestPointIndexPolygon2];
 
-		startPolygon = lowestPointPolygon1Value < lowestPointPolygon2Value ? &polygon1 : &polygon2;
-		return lowestPointPolygon1Value < lowestPointPolygon2Value ? lowestPointIndexPolygon1 : lowestPointIndexPolygon2;
+		if(lowestPointPolygon1.Y == lowestPointPolygon2.Y)
+		{
+			unsigned int nextPointIndexPolygon1 = (lowestPointIndexPolygon1+1)%polygon1.getCwPoints().size();
+			float verticalDot1 = Vector2<float>(0.0, 1.0).dotProduct(lowestPointPolygon1.vector(polygon1.getCwPoints()[nextPointIndexPolygon1]).normalize());
+
+			unsigned int nextPointIndexPolygon2 = (lowestPointIndexPolygon2+1)%polygon2.getCwPoints().size();
+			float verticalDot2 = Vector2<float>(0.0, 1.0).dotProduct(lowestPointPolygon2.vector(polygon2.getCwPoints()[nextPointIndexPolygon2]).normalize());
+
+			if(verticalDot1 < verticalDot2)
+			{
+				startPolygon = &polygon1;
+				return lowestPointIndexPolygon1;
+			}
+		}else if(lowestPointPolygon1.Y < lowestPointPolygon2.Y)
+		{
+			startPolygon = &polygon1;
+			return lowestPointIndexPolygon1;
+		}
+
+		startPolygon = &polygon2;
+		return lowestPointIndexPolygon2;
 	}
 
 	unsigned int PolygonsUnion::findLowestPointIndex(const CSGPolygon &polygon) const
@@ -178,7 +202,9 @@ namespace urchin
 
 	bool PolygonsUnion::isExteriorAngleLess180(const Point2<float> &point1, const Point2<float> &point2, const Point2<float> &point3) const
 	{
-		return true; //TODO ...
+		Vector2<float> firstVector = point1.vector(point2);
+		Vector2<float> secondVector = point2.vector(point3);
+		return firstVector.crossProduct(secondVector) >= 0.0;
 	}
 
 	bool PolygonsUnion::areSamePoints(const CSGPolygon *polygonPoint1, unsigned int point1Index, const CSGPolygon *polygonPoint2, unsigned int point2Index) const
@@ -205,7 +231,7 @@ namespace urchin
 			Point2<float> point2 = points[i];
 
 			if(point1.X==point.X && point1.Y==point.Y)
-			{ //TODO check if useful (remove and unit tests)
+			{
 				return true;
 			}
 

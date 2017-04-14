@@ -114,9 +114,9 @@ namespace urchin
 					SidedPoint top2Point = stack.top();
 					stack.push(topPoint);
 
-					Vector3<float> diagonalVector = Vector3<float>(polygonPoints[currentPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]), 0.0f);
-					Vector3<float> stackVector = Vector3<float>(polygonPoints[topPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]), 0.0f);
-					float orientationResult = Vector3<float>(0.0, 0.0, 1.0).dotProduct(diagonalVector.crossProduct(stackVector));
+					Vector2<float> diagonalVector =polygonPoints[currentPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]);
+					Vector2<float> stackVector = polygonPoints[topPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]);
+					float orientationResult = diagonalVector.crossProduct(stackVector);
 
 					if((orientationResult < 0.0 && topPoint.onLeft) || (orientationResult > 0.0 && !topPoint.onLeft))
 					{
