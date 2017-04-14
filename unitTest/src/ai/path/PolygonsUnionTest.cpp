@@ -219,7 +219,12 @@ void PolygonsUnionTest::twoPolygonsIntersectionLastEdge()
 
 	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
 	AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 6);
-	//TODO complete
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(2.0, -0.5));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[1], Point2<float>(0.0, 0.0));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(0.0, 2.0));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[3], Point2<float>(0.90909, 0.863636));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(2.0, 0.5));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[5], Point2<float>(1.2, 0.5));
 }
 
 void PolygonsUnionTest::twoIdenticalTriangles()

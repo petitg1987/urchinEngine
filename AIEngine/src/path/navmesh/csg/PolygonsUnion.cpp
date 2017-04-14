@@ -183,7 +183,7 @@ namespace urchin
 			if(!std::isnan(intersectionPoint.X))
 			{
 				float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-				if(squareDistanceEdgeStartPoint>epsilon && polygonEdge.getB().squareDistance(intersectionPoint)>epsilon //exclude intersections which don't allow to progress
+				if(squareDistanceEdgeStartPoint>0.0 && polygonEdge.getB().squareDistance(intersectionPoint)>0.0 //exclude intersections which don't allow to progress
 						&& isExteriorAngleLess180(edge.getA(), intersectionPoint, polygon->getCwPoints()[i])) //exclude intersection worst as edge.getA()
 				{
 					if(squareDistanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
