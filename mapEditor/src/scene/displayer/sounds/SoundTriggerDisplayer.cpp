@@ -51,7 +51,7 @@ namespace urchin
 			return retrieveBoxGeometry(soundShape);
 		}
 
-		throw std::invalid_argument("Unknown shape type to retrieve geometry: " + shapeType);
+		throw std::invalid_argument("Unknown shape type to retrieve geometry: " + std::to_string(shapeType));
 	}
 
 	GeometryModel *SoundTriggerDisplayer::retrieveSphereGeometry(const SoundShape *soundShape) const

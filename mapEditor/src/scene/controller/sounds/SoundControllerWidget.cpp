@@ -275,7 +275,7 @@ namespace urchin
 			setupPointSoundDataFrom(static_cast<const PointSound *>(sound));
 		}else
 		{
-			throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + sound->getSoundType());
+			throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
 		}
 
 		//sound trigger
@@ -291,7 +291,7 @@ namespace urchin
 			setupShapeTriggerDataFrom(sceneSound);
 		}else
 		{
-			throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + soundTrigger->getTriggerType());
+			throw std::invalid_argument("Impossible to setup specific sound trigger data for sound trigger of type: " + std::to_string(soundTrigger->getTriggerType()));
 		}
 
 		disableSoundEvent = false;
@@ -423,7 +423,7 @@ namespace urchin
 				soundController->updateScenePointSoundProperties(sceneSound, position, inaudibleDistance);
 			}else
 			{
-				throw std::invalid_argument("Unknown sound type to update specific properties: " + sound->getSoundType());
+				throw std::invalid_argument("Unknown sound type to update specific properties: " + std::to_string(sound->getSoundType()));
 			}
 		}
 	}

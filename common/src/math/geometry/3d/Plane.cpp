@@ -101,8 +101,8 @@ namespace urchin
 	{
 		Point3<T> planePoint = Point3<T>(normal * -d);
 		Vector3<T> planePointToP = planePoint.vector(p);
-
-		return p.translate(-(planePointToP.dotProduct(normal) * normal));
+		T distanceFromPlane = planePointToP.dotProduct(normal);
+		return p.translate(-distanceFromPlane*normal);
 	}
 
 	template<class T> Point3<T> Plane<T>::intersectPoint(const Line3D<T> &line) const

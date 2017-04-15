@@ -75,7 +75,7 @@ namespace urchin
 			return it->second;
 		}
 
-		throw std::runtime_error("Impossible to find linked vertices for group ID: " + linkedVerticesGroupId);
+		throw std::runtime_error("Impossible to find linked vertices for group ID: " + std::to_string(linkedVerticesGroupId));
 	}
 
 	unsigned int ConstMesh::getNumberTriangles() const

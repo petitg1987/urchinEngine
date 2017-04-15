@@ -110,7 +110,7 @@ namespace urchin
 				sound = new PointSound(relativeSoundFilename, Point3<float>(0.0, 0.0, 0.0));
 			}else
 			{
-				throw std::invalid_argument("Unknown the sound type to create a new sound: " + soundType);
+				throw std::invalid_argument("Unknown the sound type to create a new sound: " + std::to_string(soundType));
 			}
 
 			SoundTrigger *soundTrigger = new ManualTrigger(SoundBehavior(SoundBehavior::PLAY_ONCE, SoundBehavior::INSTANT_STOP));

@@ -73,7 +73,8 @@ namespace urchin
 			std::vector<std::pair<int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
 			void markDiagonalProcessed(it_diagonals);
 
-			void logImpossibleToClosePolygon() const;
+			void logInputData(const std::string &) const;
+			std::runtime_error logInputDataAndThrowError(const std::string &) const;
 
 			const std::vector<Point2<float>> &polygonPoints;
 			const std::vector<unsigned int> &endContourIndexes; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndexes' will have values: 5 and 9.

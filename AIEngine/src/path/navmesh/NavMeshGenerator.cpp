@@ -184,8 +184,14 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				float yValue = walkableFace.getCcwPoints()[0].Y + 0.05f; //TODO handle no-horizontal walkable face
-				elevatedPoints.push_back(Point3<float>(holePoint.X, yValue, holePoint.Y));
+				//TODO improve perf of the following source code:
+				Plane<float> plane(walkableFace.getCcwPoints()[0], walkableFace.getCcwPoints()[1], walkableFace.getCcwPoints()[2]);
+				Point3<float> p(holePoint.X, 10.0, holePoint.Y);
+				Point3<float> p2(holePoint.X, 15.0, holePoint.Y);
+				Point3<float> projectedPoint = plane.intersectPoint(Line3D<float>(p, p2));
+
+				projectedPoint.Y += 0.05f; //TODO use constant ?
+				elevatedPoints.push_back(projectedPoint);
 			}
 		}
 

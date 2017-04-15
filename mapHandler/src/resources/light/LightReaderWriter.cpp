@@ -74,7 +74,7 @@ namespace urchin
 			directionChunk->setVector3Value(sunLight->getDirections()[0]);
 		}else
 		{
-			throw std::invalid_argument("Unknown light type to write in map: " + light->getLightType());
+			throw std::invalid_argument("Unknown light type to write in map: " + std::to_string(light->getLightType()));
 		}
 	}
 

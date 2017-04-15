@@ -30,6 +30,6 @@ namespace urchin
 			return new SoundBox(halfSizes, position, orientation, 0.0);
 		}
 
-		throw std::invalid_argument("Unknown shape type to create default sound shape: " + shapeType);
+		throw std::invalid_argument("Unknown shape type to create default sound shape: " + std::to_string(shapeType));
 	}
 }

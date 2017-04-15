@@ -83,7 +83,7 @@ namespace urchin
 			light = new SunLight(Vector3<float>(1.0, -1.0, 0.0));
 		}else
 		{
-			throw std::invalid_argument("Unknown the light type to create a new light: " + lightType);
+			throw std::invalid_argument("Unknown the light type to create a new light: " + std::to_string(lightType));
 		}
 
 		sceneLight->setLight(light);

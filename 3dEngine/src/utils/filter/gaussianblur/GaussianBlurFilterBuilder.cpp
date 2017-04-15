@@ -44,7 +44,7 @@ namespace urchin
 			textureFilter = std::make_shared<GaussianBlurFilter>(this, GaussianBlurFilter::VERTICAL);
 		}else
 		{
-			throw std::invalid_argument("Unknown blur direction type: " + pBlurDirection);
+			throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
 		}
 
 		textureFilter->initialize();

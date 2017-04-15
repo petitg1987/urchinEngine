@@ -63,7 +63,7 @@ namespace urchin
 			soundShapeReaderWriter->writeOn(soundShapeChunk, shapeTrigger->getSoundShape(), xmlWriter);
 		}else
 		{
-			throw std::invalid_argument("Unknown sound trigger type to write in map: " + soundTrigger->getTriggerType());
+			throw std::invalid_argument("Unknown sound trigger type to write in map: " + std::to_string(soundTrigger->getTriggerType()));
 		}
 
 		std::shared_ptr<XmlChunk> soundBehaviorChunk = xmlWriter.createChunk(SOUND_BEHAVIOR_TAG, XmlAttribute(), soundTriggerChunk);
@@ -119,7 +119,7 @@ namespace urchin
 			playBehaviorChunk->setStringValue(PLAY_LOOP_VALUE);
 		}else
 		{
-			throw std::invalid_argument("Unknown play behavior to write in map: " + soundBehavior.getPlayBehavior());
+			throw std::invalid_argument("Unknown play behavior to write in map: " + std::to_string(soundBehavior.getPlayBehavior()));
 		}
 
 		std::shared_ptr<XmlChunk> stopBehaviorChunk = xmlWriter.createChunk(STOP_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
@@ -131,7 +131,7 @@ namespace urchin
 			stopBehaviorChunk->setStringValue(SMOOTH_STOP_VALUE);
 		}else
 		{
-			throw std::invalid_argument("Unknown stop behavior to write in map: " + soundBehavior.getStopBehavior());
+			throw std::invalid_argument("Unknown stop behavior to write in map: " + std::to_string(soundBehavior.getStopBehavior()));
 		}
 
 		std::shared_ptr<XmlChunk> volumeDecreasePercentageOnStopChunk = xmlWriter.createChunk(VOLUME_DECREASE_PERCENTAGE_ON_STOP_TAG, XmlAttribute(), soundBehaviorChunk);

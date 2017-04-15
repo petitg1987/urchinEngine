@@ -54,7 +54,7 @@ namespace urchin
 			shape = new CollisionCompoundShape(localizedCollisionShapes);
 		}else
 		{
-			throw std::invalid_argument("Unknown shape type to create default body shape: " + shapeType);
+			throw std::invalid_argument("Unknown shape type to create default body shape: " + std::to_string(shapeType));
 		}
 
 		if(scaled)

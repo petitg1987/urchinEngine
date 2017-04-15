@@ -72,7 +72,7 @@ namespace urchin
 			soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, AMBIENT_VALUE));
 		}else
 		{
-			throw std::invalid_argument("Unknown sound type to write in map: " + sound->getSoundType());
+			throw std::invalid_argument("Unknown sound type to write in map: " + std::to_string(sound->getSoundType()));
 		}
 	}
 

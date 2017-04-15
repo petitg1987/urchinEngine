@@ -98,7 +98,7 @@ namespace urchin
 			throw std::invalid_argument("Impossible to return a simple geometry from a compound shape");
 		}
 
-		throw std::invalid_argument("Unknown shape type to retrieve geometry: " + shapeType);
+		throw std::invalid_argument("Unknown shape type to retrieve geometry: " + std::to_string(shapeType));
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const CollisionConvexObject3D *bodyObject) const

@@ -248,6 +248,8 @@ namespace urchin
 	void PolygonsUnion::logMaximumIterationReach(const CSGPolygon &polygon1, const CSGPolygon &polygon2) const
 	{
 		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
 		logStream<<"Maximum of iteration reached on polygons union algorithm."<<std::endl;
 		logStream<<" - Polygon 1: "<<std::endl<<polygon1<<std::endl;
 		logStream<<" - Polygon 2: "<<std::endl<<polygon2;

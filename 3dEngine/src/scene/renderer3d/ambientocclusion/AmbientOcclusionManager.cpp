@@ -316,7 +316,7 @@ namespace urchin
 			return 2;
 		}
 
-		throw std::invalid_argument("Unknown texture size value: " + textureSize);
+		throw std::invalid_argument("Unknown texture size value: " + std::to_string(textureSize));
 	}
 
 	unsigned int AmbientOcclusionManager::getAmbientOcclusionTextureID() const

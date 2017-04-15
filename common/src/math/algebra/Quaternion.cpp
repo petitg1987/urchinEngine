@@ -137,7 +137,7 @@ namespace urchin
 						Quaternion(Vector3<T>(0.0, 0.0, 1.0), eulerAngles[0]);
 				break;
 			default:
-				throw std::invalid_argument("Unknown quaternion rotation sequence: " + rotationSequence);
+				throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string(rotationSequence));
 		}
 
 		X = finalQuaternion.X;
@@ -371,7 +371,7 @@ namespace urchin
 			case RotationSequence::ZYZ:
 				return twoAxisEulerRotation(2, 1, 0);
 			default:
-				throw std::invalid_argument("Unknown quaternion rotation sequence: " + rotationSequence);
+				throw std::invalid_argument("Unknown quaternion rotation sequence: " + std::to_string(rotationSequence));
 		}
 	}
 

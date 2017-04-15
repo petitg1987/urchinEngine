@@ -56,7 +56,7 @@ namespace urchin
 			shaderTokens["SOURCE_TEX_COMPONENTS"] = "r";
 		}else
 		{
-			throw std::invalid_argument("Unsupported texture format for filter: " + textureFormat);
+			throw std::invalid_argument("Unsupported texture format for filter: " + std::to_string(textureFormat));
 		}
 
 		this->completeShaderTokens(shaderTokens);
@@ -74,7 +74,7 @@ namespace urchin
 			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+".frag", shaderTokens);
 		}else
 		{
-			throw std::invalid_argument("Unsupported texture type for filter: " + textureType);
+			throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
 		}
 
 		ShaderManager::instance()->bind(textureFilterShader);
@@ -108,7 +108,7 @@ namespace urchin
 			glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormat, textureWidth, textureHeight, 0, textureFormat, GL_FLOAT, 0);
 		}else
 		{
-			throw std::invalid_argument("Unsupported texture type for filter: " + textureType);
+			throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));
 		}
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureID, 0);
 

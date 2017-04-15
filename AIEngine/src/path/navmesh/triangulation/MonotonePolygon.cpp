@@ -70,7 +70,7 @@ namespace urchin
 
 						if(monotonePointsIndexes.size() > polygonPoints.size())
 						{
-							logImpossibleToClosePolygon();
+							logInputData("Impossible to close monotone polygon.");
 							break;
 						}
 					}
@@ -119,7 +119,7 @@ namespace urchin
 					handleRegularUpVertex(typedPoint.pointIndex);
 					break;
 				default:
-					throw std::runtime_error("Unknown type of the point: " + typedPoint.type);
+					throw std::runtime_error("Unknown type of the point: " + std::to_string(typedPoint.type));
 			}
 		}
 	}
@@ -191,7 +191,7 @@ namespace urchin
 
 		if(!sortedTypedPoints.empty() && sortedTypedPoints[0].type!=PointType::START_VERTEX)
 		{
-			throw std::runtime_error("First point in the vector should be a start vertex. Point type: " + sortedTypedPoints[0].type);
+			throw logInputDataAndThrowError("First point in the vector should be a start vertex. Point type: " + std::to_string(sortedTypedPoints[0].type));
 		}
 
 		return sortedTypedPoints;
@@ -332,7 +332,7 @@ namespace urchin
 			}
 		}
 
-		throw std::runtime_error("Impossible to find edge and his helper for edge index: " + edgeIndex);
+		throw logInputDataAndThrowError("Impossible to find edge and his helper for edge index: " + std::to_string(edgeIndex));
 	}
 
 	std::vector<EdgeHelper>::iterator MonotonePolygon::findNearestLeftEdgeHelper(unsigned int pointIndex)
@@ -359,7 +359,7 @@ namespace urchin
 
 		if(nearestLeftEdgeHelperIt==edgeHelpers.end())
 		{
-			throw std::runtime_error("Impossible to find edge on left for point index: " + std::to_string(pointIndex));
+			throw logInputDataAndThrowError("Impossible to find edge on left for point index: " + std::to_string(pointIndex));
 		}
 
 		return nearestLeftEdgeHelperIt;
@@ -456,10 +456,13 @@ namespace urchin
 		}
 	}
 
-	void MonotonePolygon::logImpossibleToClosePolygon() const
+	void MonotonePolygon::logInputData(const std::string &message) const
 	{
 		std::stringstream logStream;
-		logStream<<"Impossible to determine monotone polygons from points:"<<std::endl;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
+		logStream<<message<<std::endl;
+		logStream<<"Monotone polygon input data:"<<std::endl;
 		for(unsigned int i=0; i<polygonPoints.size(); ++i)
 		{
 			logStream<<" - "<<polygonPoints[i]<<std::endl;
@@ -470,6 +473,12 @@ namespace urchin
 			}
 		}
 		Logger::logger().logError(logStream.str());
+	}
+
+	std::runtime_error MonotonePolygon::logInputDataAndThrowError(const std::string &message) const
+	{
+		logInputData(message);
+		return std::runtime_error(message);
 	}
 
 }

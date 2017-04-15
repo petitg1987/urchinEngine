@@ -228,7 +228,7 @@ namespace urchin
 			this->produceShadowCheckBox->setDisabled(false);
 		}else
 		{
-			throw std::invalid_argument("Impossible to setup specific light data for light of type: " + light->getLightType());
+			throw std::invalid_argument("Impossible to setup specific light data for light of type: " + std::to_string(light->getLightType()));
 		}
 
 		disableLightEvent = false;
@@ -318,7 +318,7 @@ namespace urchin
 				lightController->updateSceneSunLightProperties(sceneLight, direction);
 			}else
 			{
-				throw std::invalid_argument("Unknown light type to update specific properties: " + light->getLightType());
+				throw std::invalid_argument("Unknown light type to update specific properties: " + std::to_string(light->getLightType()));
 			}
 		}
 	}

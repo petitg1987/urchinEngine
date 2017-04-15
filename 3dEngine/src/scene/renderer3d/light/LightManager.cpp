@@ -183,7 +183,7 @@ namespace urchin
 					glUniform1f(lightsInfo[i].exponentialAttLoc, omnidirectionalLight->getExponentialAttenuation());
 				}else
 				{
-					throw std::invalid_argument("Unknown light type to load uniform: " + light->getLightType());
+					throw std::invalid_argument("Unknown light type to load uniform: " + std::to_string(light->getLightType()));
 				}
 
 				glUniform3fv(lightsInfo[i].lightAmbientLoc, 1, (const float *)light->getAmbientColor());

@@ -61,10 +61,10 @@ namespace urchin
 	{
 		if(getTextureType()!=GL_TEXTURE_2D)
 		{
-			throw std::invalid_argument("Unsupported texture type for bilateral blur filter: " + getTextureType());
+			throw std::invalid_argument("Unsupported texture type for bilateral blur filter: " + std::to_string(getTextureType()));
 		}else if(getTextureFormat()!=GL_RED)
 		{
-			throw std::invalid_argument("Unsupported texture format for bilateral blur filter: " + getTextureType());
+			throw std::invalid_argument("Unsupported texture format for bilateral blur filter: " + std::to_string(getTextureType()));
 		}
 
 		std::shared_ptr<TextureFilter> textureFilter;
@@ -76,7 +76,7 @@ namespace urchin
 			textureFilter = std::make_shared<BilateralBlurFilter>(this, BilateralBlurFilter::VERTICAL);
 		}else
 		{
-			throw std::invalid_argument("Unknown blur direction type: " + pBlurDirection);
+			throw std::invalid_argument("Unknown blur direction type: " + std::to_string(pBlurDirection));
 		}
 
 		textureFilter->initialize();

@@ -20,10 +20,10 @@ namespace urchin
 	{
 		if(vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT)
 		{
-			throw std::invalid_argument("Vertex data type not supported: " + vertexDataType);
+			throw std::invalid_argument("Vertex data type not supported: " + std::to_string(vertexDataType));
 		}else if(textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT)
 		{
-			throw std::invalid_argument("Texture data type not supported: " + textureDataType);
+			throw std::invalid_argument("Texture data type not supported: " + std::to_string(textureDataType));
 		}
 
 		initializeDisplay();
