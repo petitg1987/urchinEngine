@@ -33,7 +33,7 @@ namespace urchin
 			bool areSamePoints(const CSGPolygon *, unsigned int, const CSGPolygon *, unsigned int) const;
 			bool pointInsideOrOnPolygon(const CSGPolygon *, const Point2<float> &) const;
 
-			void logMaximumIterationReach(const CSGPolygon &, const CSGPolygon &) const;
+			void logInputData(const CSGPolygon &, const CSGPolygon &, const std::string &, Logger::CriticalityLevel) const;
 
 			const float epsilon;
 	};

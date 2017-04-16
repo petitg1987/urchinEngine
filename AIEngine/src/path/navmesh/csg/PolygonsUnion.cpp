@@ -26,7 +26,11 @@ namespace urchin
 			for(unsigned int i=1; i<allPolygons.size(); ++i)
 			{
 				std::vector<CSGPolygon> result = unionTwoPolygons(allPolygons[0], allPolygons[i]);
-				if(result.size()==1)
+				if(result.size()==0)
+				{ //error: returns empty std::vector
+					mergedPolygons.clear();
+					return mergedPolygons;
+				}else if(result.size()==1)
 				{
 					isPolygonsMerged = true;
 
@@ -51,8 +55,7 @@ namespace urchin
 	std::vector<CSGPolygon> PolygonsUnion::unionTwoPolygons(const CSGPolygon &polygon1, const CSGPolygon &polygon2) const
 	{
 		#ifdef _DEBUG
-			//std::cout<<"Polygon 1: "<<polygon1<<std::endl;
-			//std::cout<<"Polygon 2: "<<polygon2<<std::endl;
+			//logInputData(polygon1, polygon2, "Debug polygons union.", Logger::INFO);
 		#endif
 
 		const CSGPolygon *startPolygon = nullptr;
@@ -103,7 +106,7 @@ namespace urchin
 		std::vector<CSGPolygon> mergedPolygons;
 		if(currentIteration >= maxIteration)
 		{
-			logMaximumIterationReach(polygon1, polygon2);
+			logInputData(polygon1, polygon2, "Maximum of iteration reached on polygons union algorithm.", Logger::ERROR);
 		}else if(foundIntersection || pointInsideOrOnPolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
 		{
 			mergedPolygons.push_back(CSGPolygon(polygon1.getName() + "-" + polygon2.getName(), mergedPolygonPoints));
@@ -245,15 +248,16 @@ namespace urchin
 		return inside;
 	}
 
-	void PolygonsUnion::logMaximumIterationReach(const CSGPolygon &polygon1, const CSGPolygon &polygon2) const
+	void PolygonsUnion::logInputData(const CSGPolygon &polygon1, const CSGPolygon &polygon2, const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
 
-		logStream<<"Maximum of iteration reached on polygons union algorithm."<<std::endl;
+		logStream<<message<<std::endl;
 		logStream<<" - Polygon 1: "<<std::endl<<polygon1<<std::endl;
 		logStream<<" - Polygon 2: "<<std::endl<<polygon2;
-		Logger::logger().logWarning(logStream.str());
+
+		Logger::logger().log(logLevel, logStream.str());
 	}
 
 }

@@ -28,25 +28,25 @@ namespace urchin
 
 	void Logger::logInfo(const std::string &toLog)
 	{
-		log(LOG_INFO, toLog);
+		log(INFO, toLog);
 	}
 
 	void Logger::logWarning(const std::string &toLog)
 	{
-		log(LOG_WARNING, toLog);
+		log(WARNING, toLog);
 	}
 
 	void Logger::logError(const std::string &toLog)
 	{
-		log(LOG_ERROR, toLog);
+		log(ERROR, toLog);
 	}
 
-	void Logger::log(LoggerCriticalityLevel criticalityLevel, const std::string &toLog)
+	void Logger::log(CriticalityLevel criticalityLevel, const std::string &toLog)
 	{
 		#ifdef _DEBUG
 			write(prefix(criticalityLevel) + toLog + "\n");
 		#else
-			if(criticalityLevel >= LOG_ERROR)
+			if(criticalityLevel >= ERROR)
 			{
 				write(prefix(criticalityLevel) + toLog + "\n");
 			}
@@ -56,7 +56,7 @@ namespace urchin
 	/**
 	 * @return Prefix composed of date/time and criticality
 	 */
-	std::string Logger::prefix(LoggerCriticalityLevel criticalityLevel)
+	std::string Logger::prefix(CriticalityLevel criticalityLevel)
 	{
 	    time_t now = time(0);
 	    struct tm tstruct;
@@ -72,15 +72,15 @@ namespace urchin
 	    return result;
 	}
 
-	std::string Logger::getCriticalityString(LoggerCriticalityLevel criticalityLevel)
+	std::string Logger::getCriticalityString(CriticalityLevel criticalityLevel)
 	{
-		if(criticalityLevel == LOG_INFO)
+		if(criticalityLevel == INFO)
 		{
 			return "II";
-		}else if(criticalityLevel == LOG_WARNING)
+		}else if(criticalityLevel == WARNING)
 		{
 			return "WW";
-		}else if(criticalityLevel == LOG_ERROR)
+		}else if(criticalityLevel == ERROR)
 		{
 			return "EE";
 		}

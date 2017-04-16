@@ -15,7 +15,9 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void polygonInsideAnother();
 
 		void twoPolygonsUnion();
-		void twoPolygonsUnionAxisAligned();
+		void twoPolygonsUnionXAligned();
+		void twoPolygonsUnionYAligned();
+		void twoPolygonsUnionYAlmostAligned();
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsTouchInOnePoint();
 		void twoPolygonsNestedTouchInOnePoint();

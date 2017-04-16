@@ -14,11 +14,11 @@ namespace urchin
 			Logger();
 			virtual ~Logger();
 
-			enum LoggerCriticalityLevel
+			enum CriticalityLevel
 			{
-				LOG_INFO,
-				LOG_WARNING,
-				LOG_ERROR
+				INFO,
+				WARNING,
+				ERROR
 			};
 			
 			static Logger& logger();
@@ -27,11 +27,11 @@ namespace urchin
 			void logWarning(const std::string &);
 			void logError(const std::string &);
 
-		private:
-			void log(LoggerCriticalityLevel, const std::string &);
+			void log(CriticalityLevel, const std::string &);
 
-			std::string prefix(LoggerCriticalityLevel);
-			std::string getCriticalityString(LoggerCriticalityLevel);
+		private:
+			std::string prefix(CriticalityLevel);
+			std::string getCriticalityString(CriticalityLevel);
 
 			virtual void write(const std::string &) = 0;
 

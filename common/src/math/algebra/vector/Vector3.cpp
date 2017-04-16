@@ -216,7 +216,7 @@ namespace urchin
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Vector3<T> &v)
 	{
-		return stream << v.X << " " << v.Y << " " << v.Z;
+		return stream << v.X << ", " << v.Y << ", " << v.Z;
 	}
 
 	//explicit template
