@@ -13,14 +13,16 @@ class AssertHelper
 		static void assertUnsignedInt(unsigned int, unsigned int);
 		static void assertFloatEquals(float, float, float epsilon = 0.001f);
 
-		static void assertPoint2FloatEquals(const urchin::Point2<float> &, const urchin::Point2<float> &, float epsilon = 0.001f);
-		static void assertPoint3FloatEquals(const urchin::Point3<float> &, const urchin::Point3<float> &, float epsilon = 0.001f);
-		static void assertVector3FloatEquals(const urchin::Vector3<float> &, const urchin::Vector3<float> &, float epsilon = 0.001f);
-		static void assertQuaternionFloatEquals(const urchin::Quaternion<float> &, const urchin::Quaternion<float> &, float epsilon = 0.001f);
+		static void assertPoint2FloatEquals(const urchin::Point2<float> &, const urchin::Point2<float> &, double epsilon = 0.001);
+		static void assertPoint3FloatEquals(const urchin::Point3<float> &, const urchin::Point3<float> &, double epsilon = 0.001);
+		static void assertVector3FloatEquals(const urchin::Vector3<float> &, const urchin::Vector3<float> &, double epsilon = 0.001);
+		static void assertQuaternionFloatEquals(const urchin::Quaternion<float> &, const urchin::Quaternion<float> &, double epsilon = 0.001);
 
 	private:
 		AssertHelper();
 		~AssertHelper();
+
+		static std::string floatToString(float);
 };
 
 #endif

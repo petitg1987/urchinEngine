@@ -137,6 +137,11 @@ namespace urchin
 		return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
 	}
 
+	template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const
+	{
+		return LineSegment2D<NEW_TYPE>(a.cast<NEW_TYPE>(), b.cast<NEW_TYPE>());
+	}
+
 	template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment2D<T> &l)
 	{
 		return stream << l.getA().X << " " << l.getA().Y << " - " << l.getB().X << " " << l.getB().Y;
@@ -144,6 +149,13 @@ namespace urchin
 
 	//explicit template
 	template class LineSegment2D<float>;
+	template LineSegment2D<float> LineSegment2D<float>::cast() const;
+	template LineSegment2D<double> LineSegment2D<float>::cast() const;
 	template std::ostream& operator <<<float>(std::ostream & , const LineSegment2D<float> &);
+
+	template class LineSegment2D<double>;
+	template LineSegment2D<float> LineSegment2D<double>::cast() const;
+	template LineSegment2D<double> LineSegment2D<double>::cast() const;
+	template std::ostream& operator <<<double>(std::ostream & , const LineSegment2D<double> &);
 
 }

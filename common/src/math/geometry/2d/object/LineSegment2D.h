@@ -22,6 +22,8 @@ namespace urchin
 
 			Point2<T> intersectPoint(const LineSegment2D<T> &) const;
 
+			template<class NEW_TYPE> LineSegment2D<NEW_TYPE> cast() const;
+
 		private:
 			Point2<T> a, b;
 	};

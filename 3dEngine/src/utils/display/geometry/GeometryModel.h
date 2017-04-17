@@ -18,6 +18,12 @@ namespace urchin
 				FILL
 			};
 
+			enum BlendMode
+			{
+				NONE,
+				ONE_MINUS_SRC_ALPHA
+			};
+
 			void onCameraProjectionUpdate(const Matrix4<float> &);
 
 			Vector4<float> getColor() const;
@@ -25,6 +31,10 @@ namespace urchin
 
 			PolygonMode getPolygonMode() const;
 			void setPolygonMode(PolygonMode);
+			void setLineSize(float);
+
+			BlendMode getBlendMode() const;
+			void setBlendMode(BlendMode);
 
 			void display(const Matrix4<float> &) const;
 
@@ -50,10 +60,14 @@ namespace urchin
 			int mProjectionLoc, mViewLoc, colorLoc;
 
 			Matrix4<float> projectionMatrix;
-			float red, green, blue, alpha;
-			PolygonMode polygonMode;
-
 			Matrix4<float> modelMatrix;
+
+			Vector4<float> color;
+
+			PolygonMode polygonMode;
+			float lineSize;
+
+			BlendMode blendMode;
 	};
 
 }

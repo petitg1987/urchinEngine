@@ -25,7 +25,8 @@ namespace urchin
 		{
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(navPolygon.getPoints(), navPolygon.getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints()), navPolygon.getTriangles());
+				triangleModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
 				triangleModel->setColor(0.0, 0.0, 1.0, 0.5);
 				triangleModel->setPolygonMode(GeometryModel::FILL);
 				navMeshModels.push_back(triangleModel);
@@ -33,8 +34,9 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(navPolygon.getPoints(), navPolygon.getTriangles());
-				triangleModel->setColor(0.0, 0.0, 1.0, 1.0);
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints()), navPolygon.getTriangles());
+				triangleModel->setLineSize(4.0);
+				triangleModel->setColor(0.3, 0.3, 1.0, 1.0);
 				triangleModel->setPolygonMode(GeometryModel::WIREFRAME);
 				navMeshModels.push_back(triangleModel);
 			}
@@ -55,6 +57,22 @@ namespace urchin
 		}
 
 		navMeshModels.clear();
+	}
+
+	std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>> &points)
+	{
+		constexpr float Y_ELEVATION = 0.001f;
+
+		std::vector<Point3<float>> displayPoints;
+		displayPoints.reserve(points.size());
+
+		for(const auto &point : points)
+		{
+			//avoid Y fighting with walkable face
+			displayPoints.push_back(Point3<float>(point.X, point.Y + Y_ELEVATION, point.Z));
+		}
+
+		return displayPoints;
 	}
 
 }

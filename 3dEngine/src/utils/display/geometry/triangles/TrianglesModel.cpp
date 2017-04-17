@@ -39,13 +39,7 @@ namespace urchin
 
 	void TrianglesModel::drawGeometry() const
 	{
-		glLineWidth(4.0); //TODO allow user to choose size
-		glEnable(GL_BLEND);	//TODO allow user to choose blend function
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 		glDrawArrays(GL_TRIANGLES, 0, triangles.size()*3);
-
-		glDisable(GL_BLEND);
 	}
 
 }

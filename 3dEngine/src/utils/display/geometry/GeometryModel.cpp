@@ -8,11 +8,10 @@ namespace urchin
 {
 
 	GeometryModel::GeometryModel() :
-			red(0.0),
-			green(1.0),
-			blue(0.0),
-			alpha(1.0),
-			polygonMode(WIREFRAME)
+			color(Vector4<float>(0.0, 1.0, 0.0, 1.0)),
+			polygonMode(WIREFRAME),
+			lineSize(1.3),
+			blendMode(NONE)
 	{
 		shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "displayGeometry.frag");
 
@@ -39,15 +38,12 @@ namespace urchin
 
 	Vector4<float> GeometryModel::getColor() const
 	{
-		return Vector4<float>(red, green, blue, alpha);
+		return color;
 	}
 
 	void GeometryModel::setColor(float red, float green, float blue, float alpha)
 	{
-		this->red = red;
-		this->green = green;
-		this->blue = blue;
-		this->alpha = alpha;
+		this->color = Vector4<float>(red, green, blue, alpha);
 	}
 
 	GeometryModel::PolygonMode GeometryModel::getPolygonMode() const
@@ -58,6 +54,21 @@ namespace urchin
 	void GeometryModel::setPolygonMode(PolygonMode polygonMode)
 	{
 		this->polygonMode = polygonMode;
+	}
+
+	void GeometryModel::setLineSize(float lineSize)
+	{
+		this->lineSize = lineSize;
+	}
+
+	GeometryModel::BlendMode GeometryModel::getBlendMode() const
+	{
+		return blendMode;
+	}
+
+	void GeometryModel::setBlendMode(BlendMode blendMode)
+	{
+		this->blendMode = blendMode;
 	}
 
 	void GeometryModel::initialize()
@@ -80,24 +91,26 @@ namespace urchin
 
 		glUniformMatrix4fv(mProjectionLoc, 1, false, (const float*)projectionMatrix);
 		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)(viewMatrix * modelMatrix));
-		glUniform4fv(colorLoc, 1, (const float*)getColor());
+		glUniform4fv(colorLoc, 1, (const float*)color);
 
 		glBindVertexArray(vertexArrayObject);
-		GLboolean cullFaceActive;
-		glGetBooleanv(GL_CULL_FACE, &cullFaceActive);
-		if(cullFaceActive)
-		{
-			glDisable(GL_CULL_FACE);
-		}
+
+		glDisable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, polygonMode==WIREFRAME ? GL_LINE : GL_FILL);
-		glLineWidth(1.3);
+		glLineWidth(lineSize);
+		if(blendMode==ONE_MINUS_SRC_ALPHA)
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
 
 		drawGeometry();
 
-		if(cullFaceActive)
+		if(blendMode!=NONE)
 		{
-			glEnable(GL_CULL_FACE);
+			glDisable(GL_BLEND);
 		}
+		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		ShaderManager::instance()->bind(shaderSaved);

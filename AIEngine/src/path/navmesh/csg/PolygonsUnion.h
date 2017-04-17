@@ -31,6 +31,7 @@ namespace urchin
 			bool isExteriorAngleLess180(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
 
 			bool areSamePoints(const CSGPolygon *, unsigned int, const CSGPolygon *, unsigned int) const;
+			bool areSamePoints(const Point2<float> &, const Point2<float> &) const;
 			bool pointInsideOrOnPolygon(const CSGPolygon *, const Point2<float> &) const;
 
 			void logInputData(const CSGPolygon &, const CSGPolygon &, const std::string &, Logger::CriticalityLevel) const;

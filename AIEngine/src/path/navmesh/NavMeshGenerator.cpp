@@ -176,6 +176,9 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const Face &walkableFace)
 	{
+		Vector3<float> verticalVector(0.0, 1.0, 0.0);
+		float numerator = walkableFace.getNormal().dotProduct(verticalVector);
+
 		std::vector<Point3<float>> elevatedPoints = walkableFace.getCcwPoints();
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
 
@@ -184,13 +187,10 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				//TODO improve perf of the following source code:
-				Plane<float> plane(walkableFace.getCcwPoints()[0], walkableFace.getCcwPoints()[1], walkableFace.getCcwPoints()[2]);
-				Point3<float> p(holePoint.X, 10.0, holePoint.Y);
-				Point3<float> p2(holePoint.X, 15.0, holePoint.Y);
-				Point3<float> projectedPoint = plane.intersectPoint(Line3D<float>(p, p2));
+				Point3<float> holePoint3D(holePoint.X, 0.0, holePoint.Y);
+				float t = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0])) / numerator;
+				Point3<float> projectedPoint = holePoint3D.translate(t * verticalVector);
 
-				projectedPoint.Y += 0.05f; //TODO use constant ?
 				elevatedPoints.push_back(projectedPoint);
 			}
 		}

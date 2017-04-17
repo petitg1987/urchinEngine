@@ -10,17 +10,16 @@ namespace urchin
 	 * @param planeNormal Plane normal normalized
 	 * @param distanceToOrigin Distance to the origin. Positive if dot product between a vector from plane to origin and the normal is positive.
 	 */
-	template<class T> Plane<T>::Plane(const Vector3<T> &normal, T distanceToOrigin) :
-		normal(normal),
+	template<class T> Plane<T>::Plane(const Vector3<T> &normalizedNormal, T distanceToOrigin) :
+		normal(normalizedNormal),
 		d(distanceToOrigin)
 	{
-		const T normalLength = normal.length();
-		if(normalLength < 0.9999f || normalLength > (T)1.0001)
-		{
-			std::ostringstream normalLengthStr;
-			normalLengthStr << normal.length();
-			throw std::invalid_argument("Impossible to build a plane. Wrong normal length: " + normalLengthStr.str() + ".");
-		}
+		#ifdef _DEBUG
+			if(normal.length() < 0.9998f || normal.length() > (T)1.0002)
+			{
+				throw std::invalid_argument("Impossible to build a plane. Wrong normal length: " + std::to_string(normal.length()) + ".");
+			}
+		#endif
 	}
 
 	template<class T> Plane<T>::Plane(const Point3<T> &p1, const Point3<T> &p2, const Point3<T> &p3)
@@ -28,9 +27,9 @@ namespace urchin
 		buildFrom3Points(p1, p2, p3);
 	}
 
-	template<class T> Plane<T>::Plane(const Vector3<T> &normal, const Point3<T> &point)
+	template<class T> Plane<T>::Plane(const Vector3<T> &normalizedNormal, const Point3<T> &point)
 	{
-		buildFromNormalAndPoint(normal, point);
+		buildFromNormalAndPoint(normalizedNormal, point);
 	}
 
 	template<class T> Plane<T>::Plane(T a, T b, T c, T d)
@@ -46,10 +45,17 @@ namespace urchin
 		d = normal.dotProduct(-Vector3<T>(p2.X, p2.Y, p2.Z));
 	}
 
-	template<class T> void Plane<T>::buildFromNormalAndPoint(const Vector3<T> &normal, const Point3<T> &point)
+	template<class T> void Plane<T>::buildFromNormalAndPoint(const Vector3<T> &normalizedNormal, const Point3<T> &point)
 	{
-		this->normal = normal.normalize();
-		d = this->normal.dotProduct(-Vector3<T>(point.X, point.Y, point.Z));
+		#ifdef _DEBUG
+			if(normalizedNormal.length() < 0.9998f || normalizedNormal.length() > (T)1.0002)
+			{
+				throw std::invalid_argument("Impossible to build a plane. Wrong normal length: " + std::to_string(normalizedNormal.length()) + ".");
+			}
+		#endif
+
+		this->normal = normalizedNormal;
+		this->d = this->normal.dotProduct(-Vector3<T>(point.X, point.Y, point.Z));
 	}
 
 	/**
@@ -110,10 +116,9 @@ namespace urchin
 		Point3<T> planePoint = Point3<T>(normal * -d);
 		Vector3<T> lineVector = line.getA().vector(line.getB());
 
-		T numerator = normal.dotProduct(lineVector);
 		Vector3<T> lineAToPlanePoint = line.getA().vector(planePoint);
-		T t = normal.dotProduct(lineAToPlanePoint) / numerator;
-		return (line.getA() + Point3<T>(t * lineVector));
+		T t = normal.dotProduct(lineAToPlanePoint) / normal.dotProduct(lineVector);
+		return line.getA().translate(t * lineVector);
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Plane<T> &p)

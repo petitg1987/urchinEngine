@@ -82,6 +82,11 @@ namespace urchin
 
 			if(csgIntersection.hasIntersection)
 			{
+				if(areSamePoints(startPolygon->getCwPoints()[startPointIndex], csgIntersection.intersectionPoint))
+				{
+					break;
+				}
+
 				mergedPolygonPoints.push_back(csgIntersection.intersectionPoint);
 				std::swap(currentPolygon, otherPolygon);
 
@@ -176,26 +181,28 @@ namespace urchin
 		CSGIntersection csgIntersection;
 		csgIntersection.hasIntersection = false;
 
-		float nearestDistanceEdgeStartPoint = std::numeric_limits<float>::max();
+		float nearestSquareDistanceEdgeStartPoint = std::numeric_limits<float>::max();
 		const std::vector<Point2<float>> &points = polygon->getCwPoints();
 		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
 		{
 			LineSegment2D<float> polygonEdge(points[previousI], points[i]);
 
-			Point2<float> intersectionPoint = edge.intersectPoint(polygonEdge);
-			if(!std::isnan(intersectionPoint.X))
+			//NOTE: the computation of intersection point is done in 'double' because due to float imprecision,
+			//the intersection could be slightly different of the real one and tests below will not work correctly.
+			Point2<float> intersectionPoint = (edge.cast<double>()).intersectPoint(polygonEdge.cast<double>()).cast<float>();
+
+			if(!std::isnan(intersectionPoint.X) //exclude when no intersection exist
+					&& (edge.getA().X!=intersectionPoint.X || edge.getA().Y!=intersectionPoint.Y) //exclude intersections which don't allow to progress
+					&& (polygonEdge.getB().X!=intersectionPoint.X || polygonEdge.getB().Y!=intersectionPoint.Y) //exclude intersections which don't allow to progress
+					&& isExteriorAngleLess180(edge.getA(), intersectionPoint, polygon->getCwPoints()[i])) //exclude intersection worst as edge.getA()
 			{
 				float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-				if(squareDistanceEdgeStartPoint>0.0 && polygonEdge.getB().squareDistance(intersectionPoint)>0.0 //exclude intersections which don't allow to progress
-						&& isExteriorAngleLess180(edge.getA(), intersectionPoint, polygon->getCwPoints()[i])) //exclude intersection worst as edge.getA()
+				if(squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint)
 				{
-					if(squareDistanceEdgeStartPoint < nearestDistanceEdgeStartPoint)
-					{
-						nearestDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
-						csgIntersection.hasIntersection = true;
-						csgIntersection.intersectionPoint = intersectionPoint;
-						csgIntersection.edgeEndPointIndex = i;
-					}
+					nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
+					csgIntersection.hasIntersection = true;
+					csgIntersection.intersectionPoint = intersectionPoint;
+					csgIntersection.edgeEndPointIndex = i;
 				}
 			}
 		}
@@ -217,9 +224,11 @@ namespace urchin
 			return point1Index==point2Index;
 		}
 
-		Point2<float> p1 = polygonPoint1->getCwPoints()[point1Index];
-		Point2<float> p2 = polygonPoint2->getCwPoints()[point2Index];
+		return areSamePoints(polygonPoint1->getCwPoints()[point1Index], polygonPoint2->getCwPoints()[point2Index]);
+	}
 
+	bool PolygonsUnion::areSamePoints(const Point2<float> &p1, const Point2<float> &p2) const
+	{
 		return ((p1.X-epsilon) <= p2.X) && ((p1.X+epsilon) >= p2.X) && ((p1.Y-epsilon) <= p2.Y) && ((p1.Y+epsilon) >= p2.Y);
 	}
 
