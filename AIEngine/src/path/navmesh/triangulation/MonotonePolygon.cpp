@@ -18,6 +18,10 @@ namespace urchin
 			endContourIndexes(endContourIndexes)
 	{
 		edgeHelpers.reserve(5);
+
+		#ifdef _DEBUG
+			//logInputData("Debug monotone polygon.", Logger::INFO);
+		#endif
 	}
 
 	/**
@@ -70,7 +74,7 @@ namespace urchin
 
 						if(monotonePointsIndexes.size() > polygonPoints.size())
 						{
-							logInputData("Impossible to close monotone polygon.");
+							logInputData("Impossible to close monotone polygon.", Logger::ERROR);
 							break;
 						}
 					}
@@ -80,6 +84,10 @@ namespace urchin
 				}
 			}
 		}
+
+		#ifdef _DEBUG
+			//logOutputData("Debug monotone polygon.", yMonotonePolygons, Logger::INFO);
+		#endif
 
 		return yMonotonePolygons;
 	}
@@ -456,7 +464,7 @@ namespace urchin
 		}
 	}
 
-	void MonotonePolygon::logInputData(const std::string &message) const
+	void MonotonePolygon::logInputData(const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
@@ -472,13 +480,31 @@ namespace urchin
 				logStream<<" - Hole:"<<std::endl;
 			}
 		}
-		Logger::logger().logError(logStream.str());
+		Logger::logger().log(logLevel, logStream.str());
 	}
 
 	std::runtime_error MonotonePolygon::logInputDataAndThrowError(const std::string &message) const
 	{
-		logInputData(message);
+		logInputData(message, Logger::ERROR);
 		return std::runtime_error(message);
+	}
+
+	void MonotonePolygon::logOutputData(const std::string &message, const std::vector<std::vector<unsigned int>> &yMonotonePolygons, Logger::CriticalityLevel logLevel) const
+	{
+		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
+		logStream<<message<<std::endl;
+		logStream<<"Monotone polygon output data:"<<std::endl;
+		for(unsigned int i=0; i<yMonotonePolygons.size(); ++i)
+		{
+			logStream<<" - Monotone polygon "<<i<<":"<<std::endl;
+			for(unsigned int pointIndex : yMonotonePolygons[i])
+			{
+				logStream<<" - "<<polygonPoints[pointIndex]<<std::endl;
+			}
+		}
+		Logger::logger().log(logLevel, logStream.str());
 	}
 
 }

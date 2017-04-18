@@ -12,6 +12,7 @@ class TriangulationTest : public CppUnit::TestFixture
 		void triangleTriangulation();
 		void cubeTriangulation();
 		void cavityTriangulation();
+		void twoNearPoints();
 };
 
 #endif

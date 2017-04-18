@@ -33,6 +33,8 @@ namespace urchin
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
 			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
 
+			void logOutputData(const std::string &, const std::vector<IndexedTriangle2D<float>> &, Logger::CriticalityLevel) const;
+
 			std::vector<Point2<float>> polygonPoints;
 			std::vector<unsigned int> endContourIndexes; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndexes' will have values: 5 and 9.
 	};

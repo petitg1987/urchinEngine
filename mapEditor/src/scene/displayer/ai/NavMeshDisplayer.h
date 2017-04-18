@@ -18,7 +18,7 @@ namespace urchin
 
 		private:
 			void cleanCurrentDisplay();
-			std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>> &);
+			std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>> &, float);
 
 			SceneManager *sceneManager;
 			std::vector<GeometryModel *> navMeshModels;

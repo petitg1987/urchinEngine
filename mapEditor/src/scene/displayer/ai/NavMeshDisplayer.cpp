@@ -23,9 +23,12 @@ namespace urchin
 
 		if(navMesh && loadedNavMeshId!=navMesh->getId())
 		{
+			constexpr float Y_ELEVATION_FILL = 0.01f;
+			constexpr float Y_ELEVATION_WIREFRAME = 0.015f;
+
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints()), navPolygon.getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints(), Y_ELEVATION_FILL), navPolygon.getTriangles());
 				triangleModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
 				triangleModel->setColor(0.0, 0.0, 1.0, 0.5);
 				triangleModel->setPolygonMode(GeometryModel::FILL);
@@ -34,7 +37,7 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints()), navPolygon.getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints(), Y_ELEVATION_WIREFRAME), navPolygon.getTriangles());
 				triangleModel->setLineSize(4.0);
 				triangleModel->setColor(0.3, 0.3, 1.0, 1.0);
 				triangleModel->setPolygonMode(GeometryModel::WIREFRAME);
@@ -59,17 +62,15 @@ namespace urchin
 		navMeshModels.clear();
 	}
 
-	std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>> &points)
+	std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>> &points, float yElevation)
 	{
-		constexpr float Y_ELEVATION = 0.001f;
-
 		std::vector<Point3<float>> displayPoints;
 		displayPoints.reserve(points.size());
 
 		for(const auto &point : points)
 		{
 			//avoid Y fighting with walkable face
-			displayPoints.push_back(Point3<float>(point.X, point.Y + Y_ELEVATION, point.Z));
+			displayPoints.push_back(Point3<float>(point.X, point.Y + yElevation, point.Z));
 		}
 
 		return displayPoints;

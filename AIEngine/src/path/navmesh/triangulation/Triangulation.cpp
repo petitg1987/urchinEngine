@@ -63,7 +63,15 @@ namespace urchin
 
 		for(unsigned monotonePolygonIndex = 0; monotonePolygonIndex<monotonePolygons.size(); ++monotonePolygonIndex)
 		{
-			triangulateMonotonePolygon(monotonePolygons[monotonePolygonIndex], triangles);
+			#ifdef _DEBUG
+				std::vector<IndexedTriangle2D<float>> monotonePolygonTriangles;
+				monotonePolygonTriangles.reserve(monotonePolygons[monotonePolygonIndex].size());
+				triangulateMonotonePolygon(monotonePolygons[monotonePolygonIndex], monotonePolygonTriangles);
+				triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
+				//logOutputData("Debug monotone polygon " + std::to_string(monotonePolygonIndex) + " triangulation.", monotonePolygonTriangles, Logger::INFO);
+			#else
+				triangulateMonotonePolygon(monotonePolygons[monotonePolygonIndex], triangles);
+			#endif
 		}
 
 		return triangles;
@@ -114,11 +122,11 @@ namespace urchin
 					SidedPoint top2Point = stack.top();
 					stack.push(topPoint);
 
-					Vector2<float> diagonalVector =polygonPoints[currentPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]);
+					Vector2<float> diagonalVector = polygonPoints[currentPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]);
 					Vector2<float> stackVector = polygonPoints[topPoint.pointIndex].vector(polygonPoints[top2Point.pointIndex]);
-					float orientationResult = diagonalVector.crossProduct(stackVector);
+					float orientationResult = diagonalVector.crossProduct(stackVector); //note: orientation could be 0.0 if currentPoint.pointIndex and topPoint.pointIndex are very close due to float imprecision
 
-					if((orientationResult < 0.0 && topPoint.onLeft) || (orientationResult > 0.0 && !topPoint.onLeft))
+					if((orientationResult <= 0.0 && topPoint.onLeft) || (orientationResult >= 0.0 && !topPoint.onLeft))
 					{
 						triangles.push_back(IndexedTriangle2D<float>(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
 						stack.pop();
@@ -148,13 +156,15 @@ namespace urchin
 		std::vector<SidedPoint> sortedSidedPoints;
 		sortedSidedPoints.reserve(monotonePolygonPoints.size());
 
-		for(unsigned int i=0, previousI=monotonePolygonPoints.size()-1; i<monotonePolygonPoints.size(); previousI=i++)
+		for(unsigned int i=0; i<monotonePolygonPoints.size(); ++i)
 		{
 			SidedPoint sidedPoint;
 
 			unsigned int currentIndex = monotonePolygonPoints[i];
 			sidedPoint.pointIndex = currentIndex;
-			sidedPoint.onLeft = isFirstPointAboveSecond(monotonePolygonPoints[previousI], currentIndex);
+
+			unsigned int nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
+			sidedPoint.onLeft = isFirstPointAboveSecond(currentIndex, nextIndex);
 
 			sortedSidedPoints.push_back(sidedPoint);
 		}
@@ -172,5 +182,19 @@ namespace urchin
 			return polygonPoints[firstIndex].X < polygonPoints[secondIndex].X;
 		}
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
+	}
+
+	void Triangulation::logOutputData(const std::string &message, const std::vector<IndexedTriangle2D<float>> &triangles, Logger::CriticalityLevel logLevel) const
+	{
+		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
+		logStream<<message<<std::endl;
+		logStream<<"Monotone polygon triangles output data:"<<std::endl;
+		for(const auto &triangle : triangles)
+		{
+			logStream<<" - {"<<polygonPoints[triangle.getIndexes()[0]]<<"}, {"<<polygonPoints[triangle.getIndexes()[1]]<<"}, {"<<polygonPoints[triangle.getIndexes()[2]]<<"}"<<std::endl;
+		}
+		Logger::logger().log(logLevel, logStream.str());
 	}
 }
