@@ -30,6 +30,11 @@ namespace urchin
 		private:
 			std::vector<Polyhedron> createPolyhedrons();
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
+			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *);
+			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *);
+			Polyhedron createPolyhedronFor(const std::string &, ConvexHull3D<float> *);
+			Polyhedron createPolyhedronFor(const std::string &, Cylinder<float> *);
+			Polyhedron createPolyhedronFor(const std::string &, Sphere<float> *);
 
 			std::vector<PolyhedronFace> findWalkableFaces(const std::vector<Polyhedron> &);
 

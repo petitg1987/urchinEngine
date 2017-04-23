@@ -49,16 +49,25 @@ namespace urchin
 
 	}
 
+	/**
+	 * Triangles of convex hull shape where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
+	 */
 	template<class T> const typename std::map<unsigned int, IndexedTriangle3D<T>> &ConvexHullShape3D<T>::getIndexedTriangles() const
 	{
 		return indexedTriangles;
 	}
 
+	/**
+	 * Points of convex hull shape indexed to be used with indexed triangles.
+	 */
 	template<class T> const typename std::map<unsigned int, Point3<T>> &ConvexHullShape3D<T>::getIndexedPoints() const
 	{
 		return points;
 	}
 
+	/**
+	 * Points of convex hull shape. Order of points is undetermined.
+	 */
 	template<class T> std::vector<Point3<T>> ConvexHullShape3D<T>::getPoints() const
 	{
 		std::vector<Point3<T>> result;

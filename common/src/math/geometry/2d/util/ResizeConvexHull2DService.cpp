@@ -26,17 +26,16 @@ namespace urchin
 	template<class T> std::unique_ptr<ConvexHullShape2D<T>> ResizeConvexHull2DService<T>::resizeConvexHullShape(const ConvexHullShape2D<T> &originalConvexHullShape, T distance) const
 	{
 		#ifdef DEBUG
-			assert(distance > (0.0f - std::numeric_limits<T>::epsilon()));
+			assert(distance > (0.0 - std::numeric_limits<T>::epsilon()));
 		#endif
 
 		const std::vector<Point2<T>> &ccwPoints = originalConvexHullShape.getPoints();
 
 		std::vector<Point2<T>> offsetPoints;
-		offsetPoints.resize(ccwPoints.size());
+		offsetPoints.reserve(ccwPoints.size());
 
-		for(unsigned int i=0; i<ccwPoints.size(); ++i)
+		for(unsigned int i=0, previousI=ccwPoints.size()-1; i<ccwPoints.size(); previousI=i++)
 		{
-			unsigned int previousI = (i==0) ? (ccwPoints.size()-1) : (i-1);
 			unsigned int nextI = (i+1) % ccwPoints.size();
 
 			Vector2<T> toPreviousPoint = ccwPoints[i].vector(ccwPoints[previousI]).normalize();
@@ -45,10 +44,10 @@ namespace urchin
 			Vector2<T> fromNextPoint = ccwPoints[nextI].vector(ccwPoints[i]).normalize();
 			Vector2<T> secondNormal = Vector2<T>(-fromNextPoint.Y, fromNextPoint.X);
 
-			T moveLength = distance / (1.0f + (firstNormal.X*secondNormal.X + firstNormal.Y*secondNormal.Y));
-			offsetPoints[i] = Point2<T>(
+			T moveLength = distance / (1.0 + firstNormal.dotProduct(secondNormal));
+			offsetPoints.push_back(Point2<T>(
 					ccwPoints[i].X + (firstNormal.X + secondNormal.X)*moveLength,
-					ccwPoints[i].Y + (firstNormal.Y + secondNormal.Y)*moveLength);
+					ccwPoints[i].Y + (firstNormal.Y + secondNormal.Y)*moveLength));
 		}
 
 		return ConvexHullShape2D<T>::createFromCcwConvexPoints(offsetPoints);

@@ -20,7 +20,7 @@ namespace urchin
 			unsigned int getFaceSize() const;
 			const Face &getFace(unsigned int) const;
 
-			std::vector<Point2<float>> computeCwFootprintPoints(float) const;
+			std::vector<Point2<float>> computeCwFootprintPoints(const BoxShape<float> &) const;
 
 		private:
 			std::string name;

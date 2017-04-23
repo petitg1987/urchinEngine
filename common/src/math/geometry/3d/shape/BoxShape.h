@@ -23,6 +23,7 @@ namespace urchin
 			const T getMinHalfSize() const;
 			unsigned int getMinHalfSizeIndex() const;
 
+			Point3<T> getSupportPoint(const Vector3<T> &) const;
 			T getVolume() const;
 
 			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const;

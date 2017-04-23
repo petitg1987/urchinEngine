@@ -18,8 +18,7 @@ namespace urchin
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate()
 	{
-		//TODO remove counter:
-		auto frameStartTime = std::chrono::high_resolution_clock::now();
+		auto frameStartTime = std::chrono::high_resolution_clock::now(); //TODO remove counter:
 
 		std::vector<Polyhedron> polyhedrons = createPolyhedrons();
 		std::vector<PolyhedronFace> walkableFaces = findWalkableFaces(polyhedrons);
@@ -38,7 +37,6 @@ namespace urchin
 		return navMesh;
 	}
 
-
 	std::vector<Polyhedron> NavMeshGenerator::createPolyhedrons()
 	{
 		std::vector<Polyhedron> polyhedrons;
@@ -51,7 +49,25 @@ namespace urchin
 			if(OBBox<float> *box = dynamic_cast<OBBox<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), box));
-			} //TODO others shape types
+			}else if(Capsule<float> *capsule = dynamic_cast<Capsule<float>*>(object.get()))
+			{
+				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), capsule));
+			}else if(Cone<float> *cone = dynamic_cast<Cone<float>*>(object.get()))
+			{
+				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cone));
+			}else if(ConvexHull3D<float> *convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
+			{
+				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), convexHull));
+			}else if(Cylinder<float> *cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
+			{
+				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cylinder));
+			}else if(Sphere<float> *sphere = dynamic_cast<Sphere<float>*>(object.get()))
+			{
+				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), sphere));
+			} else
+			{
+				throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object.get()).name()));
+			}
 		}
 
 		return polyhedrons;
@@ -60,41 +76,58 @@ namespace urchin
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, OBBox<float> *box)
 	{
 		std::vector<Face> faces;
+		faces.reserve(6);
 
-		Vector3<float> upVector(0.0, 1.0, 0.0);
-		for(unsigned int axisIndex=0; axisIndex<3; ++axisIndex)
-		{
-			for(unsigned int axisDirection=0; axisDirection<2; ++axisDirection)
-			{
-				Vector3<float> boxAxis = axisDirection==0 ? box->getAxis(axisIndex) : -box->getAxis(axisIndex);
-
-				unsigned int nextAxisIndex = (axisIndex+1)%3;
-				unsigned int previousAxisIndex = (axisIndex+2)%3;
-
-				Point3<float> point1 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
-						+ box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
-						+ box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
-
-				Point3<float> point2 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
-						+ box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
-						- box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
-
-				Point3<float> point3 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
-						- box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
-						+ box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
-
-				Point3<float> point4 = box->getCenterOfMass().translate(box->getHalfSize(axisIndex) * boxAxis
-						- box->getHalfSize(nextAxisIndex) * box->getAxis(nextAxisIndex)
-						- box->getHalfSize(previousAxisIndex) * box->getAxis(previousAxisIndex));
-
-				std::vector<Point3<float>> unsortedPoints({point1, point2, point3, point4});
-				std::vector<Point3<float>> ccwPoints = SortPointsService<float>::instance()->sortPointsCounterClockwise(unsortedPoints, boxAxis);
-
-				faces.push_back(Face(ccwPoints));
-			}
-		}
+		std::vector<Point3<float>> points = box->getPoints();
+		faces.push_back(Face({points[0], points[2], points[3], points[1]}));
+		faces.push_back(Face({points[3], points[2], points[6], points[7]}));
+		faces.push_back(Face({points[0], points[1], points[5], points[4]}));
+		faces.push_back(Face({points[0], points[4], points[6], points[2]}));
+		faces.push_back(Face({points[1], points[3], points[7], points[5]}));
+		faces.push_back(Face({points[4], points[5], points[7], points[6]}));
 
 		return Polyhedron(name, faces, box->getPoints());
+	}
+
+	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Capsule<float> *capsule)
+	{
+		//TODO handle it
+	}
+
+	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Cone<float> *cone)
+	{
+		//TODO handle it
+	}
+
+	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, ConvexHull3D<float> *convexHull)
+	{
+		const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTriangles = convexHull->getIndexedTriangles();
+		const std::map<unsigned int, Point3<float>> &points = convexHull->getIndexedPoints();
+
+		std::vector<Face> faces;
+		faces.reserve(indexedTriangles.size());
+
+		for(const auto &indexedTriangle : indexedTriangles)
+		{
+			const unsigned int *indexes = indexedTriangle.second.getIndexes();
+			Point3<float> point1 = points.find(indexes[0])->second;
+			Point3<float> point2 = points.find(indexes[1])->second;
+			Point3<float> point3 = points.find(indexes[2])->second;
+
+			faces.push_back(Face({point1, point2, point3}));
+		}
+
+		return Polyhedron(name, faces, convexHull->getPoints());
+	}
+
+	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Cylinder<float> *cylinder)
+	{
+		//TODO handle it
+	}
+
+	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Sphere<float> *sphere)
+	{
+		//TODO handle it
 	}
 
 	std::vector<PolyhedronFace> NavMeshGenerator::findWalkableFaces(const std::vector<Polyhedron> &polyhedrons)
@@ -131,7 +164,7 @@ namespace urchin
 		const Polyhedron &polydedron = polyhedrons[polyhedronFace.polyhedronIndex];
 		const Face &face = polydedron.getFace(polyhedronFace.faceIndex);
 
-		Triangulation triangulation(flatPointsOnYAxis(face.getCcwPoints()));
+		Triangulation triangulation(flatPointsOnYAxis(face.getCcwPoints())); //TODO when replace ground by compound shape of one convex hull -> crash
 		addObstacles(polyhedrons, polyhedronFace.polyhedronIndex, triangulation);
 
 		std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, face);
@@ -147,7 +180,7 @@ namespace urchin
 
 		for(const auto &point : points)
 		{
-			flatPoints.push_back(Point2<float>(point.X, point.Z));
+			flatPoints.push_back(Point2<float>(point.X, -point.Z));
 		}
 
 		return flatPoints;
@@ -155,14 +188,12 @@ namespace urchin
 
 	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &polyhedrons, unsigned int processingPolyhedron, Triangulation &triangulation)
 	{
-		float characterHalfSize = 0.3f; //TODO should use character properties
-
 		std::vector<CSGPolygon> holePolygons; //TODO reserve
 		for(unsigned int i=0; i<polyhedrons.size(); ++i)
 		{ //TODO select only polygons above 'processingPolyhedron'
 			if(i!=processingPolyhedron)
 			{
-				std::vector<Point2<float>> cwFootprintPoints = polyhedrons[i].computeCwFootprintPoints(characterHalfSize);
+				std::vector<Point2<float>> cwFootprintPoints = polyhedrons[i].computeCwFootprintPoints(navMeshConfig.getAgentBox());
 				holePolygons.push_back(CSGPolygon(polyhedrons[i].getName(), cwFootprintPoints));
 			}
 		}
@@ -187,7 +218,7 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				Point3<float> holePoint3D(holePoint.X, 0.0, holePoint.Y);
+				Point3<float> holePoint3D(holePoint.X, 0.0, -holePoint.Y);
 				float t = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0])) / numerator;
 				Point3<float> projectedPoint = holePoint3D.translate(t * verticalVector);
 

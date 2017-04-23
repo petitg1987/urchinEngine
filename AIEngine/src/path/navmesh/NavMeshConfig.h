@@ -11,7 +11,8 @@ namespace urchin
 		public:
 			NavMeshConfig(float, float);
 
-			Cylinder<float> getAgent() const;
+			CylinderShape<float> getAgent() const;
+			BoxShape<float> getAgentBox() const;
 
 			void setMaxSlope(float);
 			float getMaxSlope() const;

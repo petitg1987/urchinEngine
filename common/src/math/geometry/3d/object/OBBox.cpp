@@ -99,41 +99,45 @@ namespace urchin
 		return axis[index];
 	}
 
+	/**
+	 * Points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
+	 */
 	template<class T> const Point3<T> OBBox<T>::getPoint(unsigned int index) const
 	{
 		switch(index)
 		{
 			case 0:
-				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
-			case 1:
-				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
-			case 2:
-				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
-			case 3:
-				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
-			case 4:
-				return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
-			case 5:
-				return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
-			case 6:
-				return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
-			case 7:
 				return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+			case 1:
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+			case 2:
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+			case 3:
+				return centerOfMass.translate(this->getHalfSize(0) * axis[0] - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+			case 4:
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+			case 5:
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) + this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+			case 6:
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
+			case 7:
+				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
 		}
 
-		std::stringstream errorMessage;
-		errorMessage<< "Invalid index: " << index <<".";
-		throw std::invalid_argument(errorMessage.str());
+		throw std::invalid_argument("Invalid index: " + std::to_string(index));
 	}
 
+	/**
+	 * Points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
+	 */
 	template<class T> const std::vector<Point3<T>> OBBox<T>::getPoints() const
 	{
 		std::vector<Point3<T>> points;
-		points.resize(8);
+		points.reserve(8);
 
 		for(unsigned int i=0; i<8; ++i)
 		{
-			points[i] = getPoint(i);
+			points.push_back(getPoint(i));
 		}
 
 		return points;

@@ -72,6 +72,14 @@ namespace urchin
 		return 2;
 	}
 
+	template<class T> Point3<T> BoxShape<T>::getSupportPoint(const Vector3<T> &direction) const
+	{
+		return Point3<T>(
+				direction.X < 0.0 ? -halfSizes[0] : halfSizes[0],
+				direction.Y < 0.0 ? -halfSizes[1] : halfSizes[1],
+				direction.Z < 0.0 ? -halfSizes[2] : halfSizes[2]);
+	}
+
 	template<class T> T BoxShape<T>::getVolume() const
 	{
 		return halfSizes.X * halfSizes.Y * halfSizes.Z * 8.0;

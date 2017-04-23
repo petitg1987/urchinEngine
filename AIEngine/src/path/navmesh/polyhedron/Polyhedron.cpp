@@ -37,10 +37,14 @@ namespace urchin
 		return faces[faceIndex];
 	}
 
-	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(float characterHalfSize) const
+	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(const BoxShape<float> &agentBound) const
 	{
+		//TODO:
+		//1) expand 'this' polyhedron (not to be done in this method ?)
+		//2) take only points below the walkable surface
+		//3) create 2d convex hull with these points
 		ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis(points));
-		std::unique_ptr<ConvexHull2D<float>> expandedFootprintConvexHull = footprintConvexHull.resize(characterHalfSize);
+		std::unique_ptr<ConvexHull2D<float>> expandedFootprintConvexHull = footprintConvexHull.resize(agentBound.getHalfSize(0));
 
 		std::vector<Point2<float>> points(expandedFootprintConvexHull->getPoints());
 		std::reverse(points.begin(), points.end());
@@ -49,13 +53,13 @@ namespace urchin
 	}
 
 	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis(const std::vector<Point3<float>> &points) const
-	{ //TODO filter points to take only those which can bother the character
+	{
 		std::vector<Point2<float>> flatPoints;
 		flatPoints.reserve(points.size());
 
 		for(const auto &point : points)
 		{
-			flatPoints.push_back(Point2<float>(point.X, point.Z));
+			flatPoints.push_back(Point2<float>(point.X, -point.Z));
 		}
 
 		return flatPoints;
