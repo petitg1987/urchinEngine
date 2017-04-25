@@ -9,6 +9,7 @@
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
 #include "path/navmesh/polyhedron/Polyhedron.h"
+#include "path/navmesh/polyhedron/Face.h"
 #include "path/navmesh/triangulation/Triangulation.h"
 
 namespace urchin
@@ -29,6 +30,7 @@ namespace urchin
 
 		private:
 			std::vector<Polyhedron> createPolyhedrons();
+			std::vector<Face> createPolyhedronFaces(OBBox<float> *);
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
 			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *);
 			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *);

@@ -20,6 +20,9 @@ namespace urchin
 			unsigned int getFaceSize() const;
 			const Face &getFace(unsigned int) const;
 
+			void setWalkableCandidate(bool);
+			bool isWalkableCandidate() const;
+
 			std::vector<Point2<float>> computeCwFootprintPoints(const BoxShape<float> &) const;
 
 		private:
@@ -27,6 +30,8 @@ namespace urchin
 
 			std::vector<Face> faces;
 			std::vector<Point3<float>> points;
+
+			bool walkableCandidate;
 
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 	};

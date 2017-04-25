@@ -17,11 +17,16 @@ namespace urchin
 
 			const Vector3<float> &getNormal() const;
 
+			void setWalkableCandidate(bool);
+			bool isWalkableCandidate() const;
+
 			float getAngleToHorizontal() const;
 
 		private:
 			std::vector<Point3<float>> ccwPoints;
 			Vector3<float> normal;
+
+			bool walkableCandidate;
 
 			float angleToHorizontalInRadian;
 	};

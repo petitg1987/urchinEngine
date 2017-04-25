@@ -13,9 +13,9 @@ namespace urchin
 	}
 
 	template<class T> Capsule<T>::Capsule(T radius, T cylinderHeight, typename CapsuleShape<T>::CapsuleOrientation capsuleOrientation,
-			const Point3<T> &centerPosition, const Quaternion<T> &orientation) :
+			const Point3<T> &centerOfMass, const Quaternion<T> &orientation) :
 		capsuleShape(CapsuleShape<T>(radius, cylinderHeight, capsuleOrientation)),
-		centerOfMass(centerPosition),
+		centerOfMass(centerOfMass),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();

@@ -13,7 +13,7 @@ namespace urchin
 
 	}
 
-	template<class T> AABBox<T>::AABBox(const Point3<T> &min,  const Point3<T> &max):
+	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Point3<T> &max):
 		boxShape(BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0))),
 		min(min),
 		max(max)
@@ -21,7 +21,7 @@ namespace urchin
 
 	}
 
-	template<class T> AABBox<T>::AABBox(const Point3<T> &min,  const Vector3<T> &diagonal):
+	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal):
 		boxShape(BoxShape<T>(Vector3<T>(diagonal.X/2.0, diagonal.Y/2.0, diagonal.Z/2.0))),
 		min(min),
 		max(min.translate(diagonal))

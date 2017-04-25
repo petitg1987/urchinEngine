@@ -11,7 +11,8 @@ namespace urchin
 	 * @param points Points of the plane which must be coplanar and counter clockwise oriented
 	 */
 	Face::Face(const std::vector<Point3<float>> &ccwPoints) :
-		ccwPoints(ccwPoints)
+		ccwPoints(ccwPoints),
+		walkableCandidate(true)
 	{
 		if(ccwPoints.size()<3)
 		{
@@ -44,9 +45,18 @@ namespace urchin
 		return normal;
 	}
 
+	void Face::setWalkableCandidate(bool walkableCandidate)
+	{
+		this->walkableCandidate = walkableCandidate;
+	}
+
+	bool Face::isWalkableCandidate() const
+	{
+		return walkableCandidate;
+	}
+
 	float Face::getAngleToHorizontal() const
 	{
 		return angleToHorizontalInRadian;
 	}
-
 }

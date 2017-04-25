@@ -13,9 +13,9 @@ namespace urchin
 	}
 
 	template<class T> Cylinder<T>::Cylinder(T radius, T height, typename CylinderShape<T>::CylinderOrientation cylinderOrientation,
-			const Point3<T> &centerPosition, const Quaternion<T> &orientation) :
+			const Point3<T> &centerOfMass, const Quaternion<T> &orientation) :
 		cylinderShape(CylinderShape<T>(radius, height, cylinderOrientation)),
-		centerOfMass(centerPosition),
+		centerOfMass(centerOfMass),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();

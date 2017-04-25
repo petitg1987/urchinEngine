@@ -18,9 +18,9 @@ namespace urchin
 		axis[2] = Vector3<T>(0.0, 0.0, 0.0);
 	}
 
-	template<class T> OBBox<T>::OBBox(const Vector3<T> &halfSizes, const Point3<T> &centerPosition, const Quaternion<T> &orientation):
+	template<class T> OBBox<T>::OBBox(const Vector3<T> &halfSizes, const Point3<T> &centerOfMass, const Quaternion<T> &orientation):
 		boxShape(BoxShape<T>(halfSizes)),
-		centerOfMass(centerPosition),
+		centerOfMass(centerOfMass),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();

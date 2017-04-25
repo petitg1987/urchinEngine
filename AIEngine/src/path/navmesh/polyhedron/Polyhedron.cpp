@@ -12,7 +12,8 @@ namespace urchin
 	Polyhedron::Polyhedron(const std::string &name, const std::vector<Face> &faces, const std::vector<Point3<float>> &points) :
 			name(name),
 			faces(faces),
-			points(points)
+			points(points),
+			walkableCandidate(true)
 	{
 
 	}
@@ -37,9 +38,19 @@ namespace urchin
 		return faces[faceIndex];
 	}
 
+	void Polyhedron::setWalkableCandidate(bool walkableCandidate)
+	{
+		this->walkableCandidate = walkableCandidate;
+	}
+
+	bool Polyhedron::isWalkableCandidate() const
+	{
+		return walkableCandidate;
+	}
+
 	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(const BoxShape<float> &agentBound) const
 	{
-		//TODO:
+		//TODO :
 		//1) expand 'this' polyhedron (not to be done in this method ?)
 		//2) take only points below the walkable surface
 		//3) create 2d convex hull with these points

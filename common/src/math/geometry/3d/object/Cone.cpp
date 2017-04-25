@@ -18,9 +18,9 @@ namespace urchin
 	}
 
 	template<class T> Cone<T>::Cone(T radius, T height, typename ConeShape<T>::ConeOrientation coneOrientation,
-			const Point3<T> &centerPosition, const Quaternion<T> &orientation) :
+			const Point3<T> &centerOfMass, const Quaternion<T> &orientation) :
 		coneShape(ConeShape<T>(radius, height, coneOrientation)),
-		centerOfMass(centerPosition),
+		centerOfMass(centerOfMass),
 		orientation(orientation)
 	{
 		axis[0] = orientation.rotatePoint(Point3<T>(1.0, 0.0, 0.0)).toVector();
@@ -66,6 +66,13 @@ namespace urchin
 	template<class T> const Vector3<T> &Cone<T>::getAxis(unsigned int index) const
 	{
 		return axis[index];
+	}
+
+	template<class T> Point3<T> Cone<T>::getCenter() const
+	{
+		constexpr T quarter = 1.0/4.0;
+		T sign = (getConeOrientation()%2==0) ? 1.0 : -1.0;
+		return centerOfMass.translate((axis[getConeOrientation()/2])*coneShape.getHeight()*quarter*sign);
 	}
 
 	template<class T> Point3<T> Cone<T>::getSupportPoint(const Vector3<T> &direction) const

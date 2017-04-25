@@ -51,19 +51,19 @@ namespace urchin
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), box));
 			}else if(Capsule<float> *capsule = dynamic_cast<Capsule<float>*>(object.get()))
 			{
-				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), capsule));
+				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), capsule));
 			}else if(Cone<float> *cone = dynamic_cast<Cone<float>*>(object.get()))
 			{
-				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cone));
+				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cone));
 			}else if(ConvexHull3D<float> *convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), convexHull));
 			}else if(Cylinder<float> *cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
 			{
-				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cylinder));
+				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cylinder));
 			}else if(Sphere<float> *sphere = dynamic_cast<Sphere<float>*>(object.get()))
 			{
-				//polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), sphere));
+				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), sphere));
 			} else
 			{
 				throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object.get()).name()));
@@ -73,30 +73,52 @@ namespace urchin
 		return polyhedrons;
 	}
 
-	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, OBBox<float> *box)
+	/**
+	 * Returne box faces. Faces are guaranteed to be in the following order: right, left, top, bottom, front, back.
+	 */
+	std::vector<Face> NavMeshGenerator::createPolyhedronFaces(OBBox<float> *box)
 	{
 		std::vector<Face> faces;
 		faces.reserve(6);
 
 		std::vector<Point3<float>> points = box->getPoints();
-		faces.push_back(Face({points[0], points[2], points[3], points[1]}));
-		faces.push_back(Face({points[3], points[2], points[6], points[7]}));
-		faces.push_back(Face({points[0], points[1], points[5], points[4]}));
-		faces.push_back(Face({points[0], points[4], points[6], points[2]}));
-		faces.push_back(Face({points[1], points[3], points[7], points[5]}));
-		faces.push_back(Face({points[4], points[5], points[7], points[6]}));
+		faces.push_back(Face({points[0], points[2], points[3], points[1]})); //right
+		faces.push_back(Face({points[4], points[5], points[7], points[6]})); //left
+		faces.push_back(Face({points[0], points[1], points[5], points[4]})); //top
+		faces.push_back(Face({points[3], points[2], points[6], points[7]})); //bottom
+		faces.push_back(Face({points[0], points[4], points[6], points[2]})); //front
+		faces.push_back(Face({points[1], points[3], points[7], points[5]})); //back
 
-		return Polyhedron(name, faces, box->getPoints());
+		return faces;
+	}
+
+	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, OBBox<float> *box)
+	{
+		return Polyhedron(name, createPolyhedronFaces(box), box->getPoints());
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Capsule<float> *capsule)
 	{
-		//TODO handle it
+		Vector3<float> boxHalfSizes(capsule->getRadius(), capsule->getRadius(), capsule->getRadius());
+		boxHalfSizes[capsule->getCapsuleOrientation()] += capsule->getCylinderHeight() / 2.0f;
+
+		OBBox<float> capsuleBox(boxHalfSizes, capsule->getCenterOfMass(), capsule->getOrientation());
+		Polyhedron polyhedron = createPolyhedronFor(name, &capsuleBox);
+		polyhedron.setWalkableCandidate(false);
+
+		return polyhedron;
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Cone<float> *cone)
 	{
-		//TODO handle it
+		Vector3<float> boxHalfSizes(cone->getRadius(), cone->getRadius(), cone->getRadius());
+		boxHalfSizes[cone->getConeOrientation()/2] = cone->getHeight() / 2.0f;
+
+		OBBox<float> coneBox(boxHalfSizes, cone->getCenter(), cone->getOrientation());
+		Polyhedron polyhedron = createPolyhedronFor(name, &coneBox);
+		polyhedron.setWalkableCandidate(false);
+
+		return polyhedron;
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, ConvexHull3D<float> *convexHull)
@@ -122,36 +144,53 @@ namespace urchin
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Cylinder<float> *cylinder)
 	{
-		//TODO handle it
+		Vector3<float> boxHalfSizes(cylinder->getRadius(), cylinder->getRadius(), cylinder->getRadius());
+		boxHalfSizes[cylinder->getCylinderOrientation()] = cylinder->getHeight() / 2.0f;
+
+		OBBox<float> cylinderBox(boxHalfSizes, cylinder->getCenterOfMass(), cylinder->getOrientation());
+		std::vector<Face> faces = createPolyhedronFaces(&cylinderBox);
+		for(unsigned int i=0; i<faces.size(); ++i)
+		{
+			faces[i].setWalkableCandidate(cylinder->getCylinderOrientation()==i/2);
+		}
+
+		return Polyhedron(name, faces, cylinderBox.getPoints());
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Sphere<float> *sphere)
 	{
-		//TODO handle it
+		OBBox<float> sphereBox(*sphere);
+		Polyhedron polyhedron = createPolyhedronFor(name, &sphereBox);
+		polyhedron.setWalkableCandidate(false);
+
+		return polyhedron;
 	}
 
 	std::vector<PolyhedronFace> NavMeshGenerator::findWalkableFaces(const std::vector<Polyhedron> &polyhedrons)
 	{
 		std::vector<PolyhedronFace> walkableFaces;
+		walkableFaces.reserve(polyhedrons.size()/2); //estimated memory size
 
 		for(unsigned int polyhedronIndex=0; polyhedronIndex<polyhedrons.size(); ++polyhedronIndex)
 		{
 			const Polyhedron &polyhedron = polyhedrons[polyhedronIndex];
-
-			if(polyhedron.getName().compare("ground")!=0)
-				continue; //TODO remove me...
-
-			for(unsigned int faceIndex=0; faceIndex<polyhedron.getFaceSize(); ++faceIndex)
+			if(polyhedron.isWalkableCandidate())
 			{
-				const Face &face = polyhedron.getFace(faceIndex);
+				if(polyhedron.getName().compare("ground")!=0)
+					continue; //TODO remove me...
 
-				if(std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
+				for(unsigned int faceIndex=0; faceIndex<polyhedron.getFaceSize(); ++faceIndex)
 				{
-					PolyhedronFace polyhedronFace;
-					polyhedronFace.polyhedronIndex = polyhedronIndex;
-					polyhedronFace.faceIndex = faceIndex;
+					const Face &face = polyhedron.getFace(faceIndex);
 
-					walkableFaces.push_back(polyhedronFace);
+					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
+					{
+						PolyhedronFace polyhedronFace;
+						polyhedronFace.polyhedronIndex = polyhedronIndex;
+						polyhedronFace.faceIndex = faceIndex;
+
+						walkableFaces.push_back(polyhedronFace);
+					}
 				}
 			}
 		}
@@ -164,7 +203,7 @@ namespace urchin
 		const Polyhedron &polydedron = polyhedrons[polyhedronFace.polyhedronIndex];
 		const Face &face = polydedron.getFace(polyhedronFace.faceIndex);
 
-		Triangulation triangulation(flatPointsOnYAxis(face.getCcwPoints())); //TODO when replace ground by compound shape of one convex hull -> crash
+		Triangulation triangulation(flatPointsOnYAxis(face.getCcwPoints()));
 		addObstacles(polyhedrons, polyhedronFace.polyhedronIndex, triangulation);
 
 		std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, face);
@@ -198,7 +237,7 @@ namespace urchin
 			}
 		}
 
-		std::vector<CSGPolygon> mergedPolygons = PolygonsUnion().unionPolygons(holePolygons);
+		std::vector<CSGPolygon> mergedPolygons = PolygonsUnion().unionPolygons(holePolygons); //TODO union only if polygons boxes collide
 		for(const auto &mergedPolygon : mergedPolygons)
 		{
 			triangulation.addHolePoints(mergedPolygon.getCwPoints());
