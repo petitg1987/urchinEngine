@@ -13,12 +13,8 @@ namespace urchin
 
 	}
 
-	/**
-	 * @param points Points of the convex hull (all points must belong to the convex hull and indexes should start from 0 to points size - 1)
-	 * @param indexedTriangles Triangles of the convex hull (the triangles must form a convex and indexes should start from 0 to triangle size - 1)
-	 */
-	template<class T> ConvexHull3D<T>::ConvexHull3D(const std::map<unsigned int, Point3<T>> &points, const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles) :
-		localizedConvexHullShape(ConvexHullShape3D<T>(points, indexedTriangles))
+	template<class T> ConvexHull3D<T>::ConvexHull3D(const ConvexHullShape3D<T> &localizedConvexHullShape) :
+		localizedConvexHullShape(localizedConvexHullShape)
 	{
 
 	}
@@ -50,6 +46,14 @@ namespace urchin
 	template<class T> std::vector<Point3<T>> ConvexHull3D<T>::getPoints() const
 	{
 		return localizedConvexHullShape.getPoints();
+	}
+
+	/**
+	 * Number of triangles associate at each point.
+	 */
+	template<class T> const std::map<unsigned int, unsigned int> &ConvexHull3D<T>::getNbTrianglesByPoint() const
+	{
+		return localizedConvexHullShape.getNbTrianglesByPoint();
 	}
 
 	/**

@@ -146,15 +146,11 @@ namespace urchin
 
 		if(!convexHullShapeReduced)
 		{ //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
-			return std::make_shared<CollisionConvexHullObject>(getInnerMargin(),
-					convexHullWithMargin->getIndexedPoints(), convexHullWithMargin->getIndexedTriangles(),
-					convexHullWithMargin->getIndexedPoints(), convexHullWithMargin->getIndexedTriangles());
+			return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), *convexHullWithMargin, *convexHullWithMargin);
 		}
 
-		ConvexHull3D<float> * convexHullWithoutMargin = static_cast<ConvexHull3D<float> *>(convexHullShapeReduced->toConvexObject(transform).release());
-		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(),
-				convexHullWithMargin->getIndexedPoints(), convexHullWithMargin->getIndexedTriangles(),
-				convexHullWithoutMargin->getIndexedPoints(), convexHullWithoutMargin->getIndexedTriangles());
+		ConvexHull3D<float> *convexHullWithoutMargin = static_cast<ConvexHull3D<float> *>(convexHullShapeReduced->toConvexObject(transform).release());
+		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), *convexHullWithMargin, *convexHullWithoutMargin);
 	}
 
 	Vector3<float> CollisionConvexHullShape::computeLocalInertia(float mass) const

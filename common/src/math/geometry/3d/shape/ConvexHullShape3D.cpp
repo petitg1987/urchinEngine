@@ -31,17 +31,16 @@ namespace urchin
 	/**
 	 * @param points Points of the convex hull shape (all points must belong to the convex hull shape and indexes should start from 0 to points size - 1)
 	 * @param indexedTriangles Triangles of the convex hull shape (the triangles must form a convex and indexes should start from 0 to triangle size - 1)
+	 * @param nbTrianglesByPoint Number of triangles by point
 	 */
-	template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<unsigned int, Point3<T>> &points, const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles) :
+	template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<unsigned int, Point3<T>> &points, const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles, const std::map<unsigned int, unsigned int> &nbTrianglesByPoint) :
 		nextPointIndex(points.size()),
-		nextTriangleIndex(0)
+		nextTriangleIndex(indexedTriangles.size()),
+		points(points),
+		indexedTriangles(indexedTriangles),
+		nbTrianglesByPoint(nbTrianglesByPoint)
 	{
-		this->points = points;
 
-		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it)
-		{
-			addTriangle(it->second);
-		}
 	}
 
 	template<class T> ConvexHullShape3D<T>::~ConvexHullShape3D()
@@ -79,6 +78,14 @@ namespace urchin
 		}
 
 		return result;
+	}
+
+	/**
+	 * Number of triangles associate at each point.
+	 */
+	template<class T> const std::map<unsigned int, unsigned int> &ConvexHullShape3D<T>::getNbTrianglesByPoint() const
+	{
+		return nbTrianglesByPoint;
 	}
 
 	/**
@@ -196,7 +203,7 @@ namespace urchin
 			transformedIndexedPoints[it->first] = (transform.getTransformMatrix() * Point4<T>(it->second)).toPoint3();
 		}
 
-		return std::make_unique<ConvexHull3D<T>>(transformedIndexedPoints, getIndexedTriangles());
+		return std::make_unique<ConvexHull3D<T>>(ConvexHullShape3D<T>(transformedIndexedPoints, indexedTriangles, nbTrianglesByPoint));
 	}
 
 	template<class T> unsigned int ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T> &indexedTriangle)

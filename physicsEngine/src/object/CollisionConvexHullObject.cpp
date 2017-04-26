@@ -21,12 +21,10 @@ namespace urchin
 	/**
 	 * @param outerMargin Collision outer margin. Collision margin must match with convex hulls arguments.
 	 */
-	CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin,
-			const std::map<unsigned int, Point3<float>> &indexedPointsWithMargin, const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTrianglesWithMargin,
-			const std::map<unsigned int, Point3<float>> &indexedPointsWithoutMargin, const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTrainglesWithoutMargin) :
+	CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin, const ConvexHull3D<float> &convexHullObjectWithMargin, const ConvexHull3D<float> &convexHullObjectWithoutMargin) :
 			CollisionConvexObject3D(outerMargin),
-			convexHullObjectWithMargin(ConvexHull3D<float>(indexedPointsWithMargin, indexedTrianglesWithMargin)),
-			convexHullObjectWithoutMargin(ConvexHull3D<float>(indexedPointsWithoutMargin, indexedTrainglesWithoutMargin))
+			convexHullObjectWithMargin(convexHullObjectWithMargin),
+			convexHullObjectWithoutMargin(convexHullObjectWithoutMargin)
 	{
 
 	}

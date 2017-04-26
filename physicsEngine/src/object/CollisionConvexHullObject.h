@@ -15,9 +15,7 @@ namespace urchin
 	{
 		public:
 			CollisionConvexHullObject(float, const std::vector<Point3<float>> &, const std::vector<Point3<float>> &);
-			CollisionConvexHullObject(float,
-					const std::map<unsigned int, Point3<float>> &, const std::map<unsigned int, IndexedTriangle3D<float>> &,
-					const std::map<unsigned int, Point3<float>> &, const std::map<unsigned int, IndexedTriangle3D<float>> &);
+			CollisionConvexHullObject(float, const ConvexHull3D<float> &, const ConvexHull3D<float> &);
 			~CollisionConvexHullObject();
 
 			std::vector<Point3<float>> getPointsWithoutMargin() const;

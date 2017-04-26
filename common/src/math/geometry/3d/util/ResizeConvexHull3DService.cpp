@@ -102,7 +102,7 @@ namespace urchin
 		std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, distance);
 		if(convexHullShapeResized)
 		{
-			return std::make_unique<ConvexHull3D<T>>(convexHullShapeResized->getIndexedPoints(), convexHullShapeResized->getIndexedTriangles());
+			return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
 		}
 
 		return std::unique_ptr<ConvexHull3D<T>>(nullptr);
