@@ -37,7 +37,7 @@ namespace urchin
 
 		//3. brute force algorithm: find intersection point of three planes not parallel
 		std::vector<Point3<T>> newVertices;
-		newVertices.reserve(originalConvexHullShape.getIndexedPoints().size());
+		newVertices.reserve(originalConvexHullShape.getConvexHullPoints().size());
 
 		for(unsigned int i=0; i<shiftedPlanes.size(); ++i)
 		{
@@ -111,15 +111,15 @@ namespace urchin
 	template<class T> void ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull, std::vector<Plane<T>> &planes) const
 	{
 		const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles = convexHull.getIndexedTriangles();
-		const std::map<unsigned int, Point3<T>> &indexedPoints = convexHull.getIndexedPoints();
+		const std::map<unsigned int, ConvexHullPoint<T>> &indexedPoints = convexHull.getConvexHullPoints();
 
 		planes.reserve(indexedTriangles.size());
 		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it)
 		{
 			const IndexedTriangle3D<T> &indexedTriangle = it->second;
-			const Point3<T> &point1 = indexedPoints.find(indexedTriangle.getIndexes()[0])->second;
-			const Point3<T> &point2 = indexedPoints.find(indexedTriangle.getIndexes()[1])->second;
-			const Point3<T> &point3 = indexedPoints.find(indexedTriangle.getIndexes()[2])->second;
+			const Point3<T> &point1 = indexedPoints.at(indexedTriangle.getIndexes()[0]).point;
+			const Point3<T> &point2 = indexedPoints.at(indexedTriangle.getIndexes()[1]).point;
+			const Point3<T> &point3 = indexedPoints.at(indexedTriangle.getIndexes()[2]).point;
 
 			Plane<T> plane(point1, point2, point3); //build plane with normal outside convex hull
 			if(!isPlaneAlreadyExist(planes, plane))

@@ -64,7 +64,8 @@ namespace urchin
 		return convexHullShape;
 	}
 
-	const std::map<unsigned int, IndexedTriangle3D<float>> &CollisionConvexHullShape::getIndexedTriangles() const
+	//TODO remove ...
+/*	const std::map<unsigned int, IndexedTriangle3D<float>> &CollisionConvexHullShape::getIndexedTriangles() const
 	{
 		return convexHullShape->getIndexedTriangles();
 	}
@@ -72,7 +73,7 @@ namespace urchin
 	const std::map<unsigned int, Point3<float>> &CollisionConvexHullShape::getIndexedPoints() const
 	{
 		return convexHullShape->getIndexedPoints();
-	}
+	}*/
 
 	/**
 	 * @return Points including margin of the convex hull

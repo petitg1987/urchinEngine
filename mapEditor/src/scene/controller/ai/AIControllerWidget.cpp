@@ -65,7 +65,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(agentRadius);
 		agentRadius->setMinimum(0.0);
 
-		QLabel *maxSlopeLabel= new QLabel("Max Slope (degree):");
+		QLabel *maxSlopeLabel= new QLabel("Max Slope (°):");
 		generateNavMeshLayout->addWidget(maxSlopeLabel, 1, 0);
 
 		maxSlope = new QDoubleSpinBox();

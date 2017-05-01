@@ -25,19 +25,11 @@ namespace urchin
 	}
 
 	/**
-	 * Triangles of convex hull where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
-	 */
-	template<class T> const typename std::map<unsigned int, IndexedTriangle3D<T>> &ConvexHull3D<T>::getIndexedTriangles() const
-	{
-		return localizedConvexHullShape.getIndexedTriangles();
-	}
-
-	/**
 	 * Points of convex hull indexed to be used with indexed triangles.
 	 */
-	template<class T> const typename std::map<unsigned int, Point3<T>> &ConvexHull3D<T>::getIndexedPoints() const
+	template<class T> const typename std::map<unsigned int, ConvexHullPoint<T>> &ConvexHull3D<T>::getConvexHullPoints() const
 	{
-		return localizedConvexHullShape.getIndexedPoints();
+		return localizedConvexHullShape.getConvexHullPoints();
 	}
 
 	/**
@@ -49,11 +41,11 @@ namespace urchin
 	}
 
 	/**
-	 * Number of triangles associate at each point.
+	 * Triangles of convex hull where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
 	 */
-	template<class T> const std::map<unsigned int, unsigned int> &ConvexHull3D<T>::getNbTrianglesByPoint() const
+	template<class T> const typename std::map<unsigned int, IndexedTriangle3D<T>> &ConvexHull3D<T>::getIndexedTriangles() const
 	{
-		return localizedConvexHullShape.getNbTrianglesByPoint();
+		return localizedConvexHullShape.getIndexedTriangles();
 	}
 
 	/**
@@ -65,14 +57,12 @@ namespace urchin
 	}
 
 	/**
-	* @param newTriangleIndexes [out] Indexes of new triangles added to convex hull
 	* @param removedTriangleIndexes [out] Indexes of removed triangles from convex hull
 	* @return Returns index of point added. If point doesn't make part of convex, result is zero.
 	*/
-	template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint,
-			std::vector<unsigned int> &newTriangleIndexes, std::vector<unsigned int> &removedTriangleIndexes)
+	template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<unsigned int> &removedTriangleIndexes)
 	{
-		return localizedConvexHullShape.addNewPoint(newPoint, newTriangleIndexes, removedTriangleIndexes);
+		return localizedConvexHullShape.addNewPoint(newPoint, removedTriangleIndexes);
 	}
 
 	template<class T> Point3<T> ConvexHull3D<T>::getSupportPoint(const Vector3<T> &direction) const
@@ -87,15 +77,7 @@ namespace urchin
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHull3D<T> &ch)
 	{
-		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it)
-		{
-			stream << "Triangle "<< it->first <<": "
-				<<"("<<ch.getIndexedPoints().find(it->second.getIndexes()[0])->second<<") "
-				<<"("<<ch.getIndexedPoints().find(it->second.getIndexes()[1])->second<<") "
-				<<"("<<ch.getIndexedPoints().find(it->second.getIndexes()[2])->second<<") "
-				<<std::endl;
-		}
-
+		stream << ch.localizedConvexHullShape;
 		return stream;
 	}
 

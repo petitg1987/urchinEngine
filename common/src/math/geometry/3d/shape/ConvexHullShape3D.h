@@ -15,20 +15,25 @@
 namespace urchin
 {
 
+	template<class T> struct ConvexHullPoint
+	{
+		Point3<T> point;
+		std::vector<unsigned int> triangles; //indexes of triangles attached to this point
+	};
+
 	template<class T> class ConvexHullShape3D : public ConvexShape3D<T>
 	{
 		public:
 			ConvexHullShape3D(const std::vector<Point3<T>> &);
-			ConvexHullShape3D(const std::map<unsigned int, Point3<T>> &, const std::map<unsigned int, IndexedTriangle3D<T>> &, const std::map<unsigned int, unsigned int> &);
+			ConvexHullShape3D(const std::map<unsigned int, ConvexHullPoint<T>> &, const std::map<unsigned int, IndexedTriangle3D<T>> &);
 			~ConvexHullShape3D();
 
-			const typename std::map<unsigned int, IndexedTriangle3D<T>> &getIndexedTriangles() const;
-			const typename std::map<unsigned int, Point3<T>> &getIndexedPoints() const;
+			const typename std::map<unsigned int, ConvexHullPoint<T>> &getConvexHullPoints() const;
 			std::vector<Point3<T>> getPoints() const;
-			const std::map<unsigned int, unsigned int> &getNbTrianglesByPoint() const;
+			const typename std::map<unsigned int, IndexedTriangle3D<T>> &getIndexedTriangles() const;
 
 			unsigned int addNewPoint(const Point3<T> &);
-			unsigned int addNewPoint(const Point3<T> &, std::vector<unsigned int> &, std::vector<unsigned int> &);
+			unsigned int addNewPoint(const Point3<T> &, std::vector<unsigned int> &);
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 
@@ -36,7 +41,7 @@ namespace urchin
 			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const;
 
 		private:
-			unsigned int addTriangle(const IndexedTriangle3D<T> &);
+			void addTriangle(const IndexedTriangle3D<T> &);
 			void removeTriangle(const typename std::map<unsigned int, IndexedTriangle3D<T>>::iterator &);
 			std::set<unsigned int> buildTetrahedron(const std::vector<Point3<T>> &);
 			std::invalid_argument buildException(const std::vector<Point3<T>> &, const std::set<unsigned int> &);
@@ -44,9 +49,8 @@ namespace urchin
 			unsigned int nextPointIndex; //next index to use to store points in 'points' map
 			unsigned int nextTriangleIndex; //next index to use to store triangles in 'indexedTriangles' map
 
-			std::map<unsigned int, Point3<T>> points; //first: point index, second: point
+			std::map<unsigned int, ConvexHullPoint<T>> points; //first: point index, second: convex hull point
 			std::map<unsigned int, IndexedTriangle3D<T>> indexedTriangles; //first: triangle index, second: triangle representing the convex hull
-			std::map<unsigned int, unsigned int> nbTrianglesByPoint; //first: point index, second: number of triangles attached to the point
 	};
 
 	template<class T> std::ostream& operator <<(std::ostream &, const ConvexHullShape3D<T> &);

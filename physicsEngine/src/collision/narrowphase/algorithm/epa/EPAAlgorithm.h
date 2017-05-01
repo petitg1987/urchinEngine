@@ -31,8 +31,8 @@ namespace urchin
 
 		private:
 			void determineInitialPoints(const Simplex<T> &, const CollisionConvexObject3D &, const CollisionConvexObject3D &,
-					std::map<unsigned int, Point3<T>> &, std::map<unsigned int, Point3<T>> &, std::map<unsigned int, Point3<T>> &) const;
-			void determineInitialTriangles(const std::map<unsigned int, Point3<T>> &, std::map<unsigned int, IndexedTriangle3D<T>> &, std::map<unsigned int, unsigned int> &) const;
+					std::map<unsigned int, ConvexHullPoint<T>> &, std::map<unsigned int, Point3<T>> &, std::map<unsigned int, Point3<T>> &) const;
+			void determineInitialTriangles(std::map<unsigned int, ConvexHullPoint<T>> &, std::map<unsigned int, IndexedTriangle3D<T>> &) const;
 
 			EPATriangleData<T> createTriangleData(const ConvexHullShape3D<T> &, unsigned int) const;
 			typename std::map<unsigned int, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<unsigned int, EPATriangleData<T>> &) const;

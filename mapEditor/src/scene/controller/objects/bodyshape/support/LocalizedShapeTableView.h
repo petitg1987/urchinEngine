@@ -45,7 +45,6 @@ namespace urchin
 
 			void addLocalizedShapeInMap(std::shared_ptr<const LocalizedCollisionShape>);
 			void removeSelectedLocalizedShapeFromMap();
-			std::shared_ptr<const LocalizedCollisionShape> findLocalizedShapeInMap(const LocalizedCollisionShape *) const;
 	};
 
 }

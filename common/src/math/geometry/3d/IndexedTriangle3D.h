@@ -18,7 +18,7 @@ namespace urchin
 
 			const unsigned int *getIndexes() const;
 			Vector3<T> computeNormal(const std::vector<Point3<T>> &) const;
-			Vector3<T> computeNormal(const std::map<unsigned int, Point3<T>> &) const;
+			Vector3<T> computeNormal(const Point3<T> &, const Point3<T> &, const Point3<T> &) const;
 
 		private:
 			unsigned int indexes[3];

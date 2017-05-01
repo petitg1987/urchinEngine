@@ -28,12 +28,8 @@ namespace urchin
 		return aux.crossProduct(trianglePoints[indexes[1]].vector(trianglePoints[indexes[0]])).normalize();
 	}
 
-	template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const std::map<unsigned int, Point3<T>> &indexedTrianglePoints) const
+	template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const Point3<T> &point0, const Point3<T> &point1, const Point3<T> &point2) const
 	{
-		const Point3<T> &point0 = indexedTrianglePoints.find(indexes[0])->second;
-		const Point3<T> &point1 = indexedTrianglePoints.find(indexes[1])->second;
-		const Point3<T> &point2 = indexedTrianglePoints.find(indexes[2])->second;
-
 		const Vector3<T> &aux = point1.vector(point2);
 		return aux.crossProduct(point1.vector(point0)).normalize();
 	}

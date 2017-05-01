@@ -124,7 +124,7 @@ namespace urchin
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, ConvexHull3D<float> *convexHull)
 	{
 		const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTriangles = convexHull->getIndexedTriangles();
-		const std::map<unsigned int, Point3<float>> &points = convexHull->getIndexedPoints();
+		const std::map<unsigned int, ConvexHullPoint<float>> &points = convexHull->getConvexHullPoints();
 
 		std::vector<Face> faces;
 		faces.reserve(indexedTriangles.size());
@@ -132,9 +132,9 @@ namespace urchin
 		for(const auto &indexedTriangle : indexedTriangles)
 		{
 			const unsigned int *indexes = indexedTriangle.second.getIndexes();
-			Point3<float> point1 = points.find(indexes[0])->second;
-			Point3<float> point2 = points.find(indexes[1])->second;
-			Point3<float> point3 = points.find(indexes[2])->second;
+			Point3<float> point1 = points.at(indexes[0]).point;
+			Point3<float> point2 = points.at(indexes[1]).point;
+			Point3<float> point3 = points.at(indexes[2]).point;
 
 			faces.push_back(Face({point1, point2, point3}));
 		}

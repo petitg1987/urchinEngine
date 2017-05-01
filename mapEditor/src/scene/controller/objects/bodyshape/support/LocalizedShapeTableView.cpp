@@ -38,7 +38,7 @@ namespace urchin
 			QModelIndex selectedIndex = this->currentIndex();
 
 			const LocalizedCollisionShape *selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
-			return findLocalizedShapeInMap(selectLocalizedShape);
+			return localizedShapesMap.at(selectLocalizedShape);
 		}
 		return std::shared_ptr<const LocalizedCollisionShape>(nullptr);
 	}
@@ -51,7 +51,7 @@ namespace urchin
 			QModelIndex shapeIndex = localizedShapesTableModel->index(row, 0);
 
 			const LocalizedCollisionShape *localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
-			localizedCollisionShapes.push_back(findLocalizedShapeInMap(localizedCollisionShape));
+			localizedCollisionShapes.push_back(localizedShapesMap.at(localizedCollisionShape));
 		}
 
 		return localizedCollisionShapes;
@@ -130,17 +130,5 @@ namespace urchin
 
 			localizedShapesMap.erase(localizedShape);
 		}
-	}
-
-	std::shared_ptr<const LocalizedCollisionShape> LocalizedShapeTableView::findLocalizedShapeInMap(const LocalizedCollisionShape *localizedShape) const
-	{
-		std::map<const urchin::LocalizedCollisionShape *, std::shared_ptr<const LocalizedCollisionShape>>::const_iterator itFind;
-		itFind = localizedShapesMap.find(localizedShape);
-		if(itFind==localizedShapesMap.end())
-		{
-			throw std::invalid_argument("Impossible to find localized shape in map.");
-		}
-
-		return itFind->second;
 	}
 }
