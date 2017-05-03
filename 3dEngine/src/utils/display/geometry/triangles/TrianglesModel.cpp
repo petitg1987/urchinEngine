@@ -29,9 +29,9 @@ namespace urchin
 
 		for(const auto &triangle : triangles)
 		{
-			vertexArray.push_back(points[triangle.getIndexes()[0]]);
-			vertexArray.push_back(points[triangle.getIndexes()[1]]);
-			vertexArray.push_back(points[triangle.getIndexes()[2]]);
+			vertexArray.push_back(points[triangle.getIndex(0)]);
+			vertexArray.push_back(points[triangle.getIndex(1)]);
+			vertexArray.push_back(points[triangle.getIndex(2)]);
 		}
 
 		return vertexArray;

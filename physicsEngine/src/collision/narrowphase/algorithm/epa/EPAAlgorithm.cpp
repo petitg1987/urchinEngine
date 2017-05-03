@@ -115,9 +115,9 @@ namespace urchin
 		//5. compute EPA result: normal, penetration depth and contact points of collision
 		const EPATriangleData<T> &closestTriangleData = itClosestTriangleData->second;
 		const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(itClosestTriangleData->first);
-		const unsigned int pointIndex1 = indexedTriangle.getIndexes()[0];
-		const unsigned int pointIndex2 = indexedTriangle.getIndexes()[1];
-		const unsigned int pointIndex3 = indexedTriangle.getIndexes()[2];
+		const unsigned int pointIndex1 = indexedTriangle.getIndex(0);
+		const unsigned int pointIndex2 = indexedTriangle.getIndex(1);
+		const unsigned int pointIndex3 = indexedTriangle.getIndex(2);
 
 		const Point3<T> contactPointA = closestTriangleData.getBarycentric(0) * supportPointsA[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsA[pointIndex2]
 				+ closestTriangleData.getBarycentric(2) * supportPointsA[pointIndex3];
@@ -354,9 +354,9 @@ namespace urchin
 	template<class T> EPATriangleData<T> EPAAlgorithm<T>::createTriangleData(const ConvexHullShape3D<T> &convexHullShape, unsigned int triangleIndex) const
 	{
 		const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(triangleIndex);
-		const unsigned int pointIndex1 = indexedTriangle.getIndexes()[0];
-		const unsigned int pointIndex2 = indexedTriangle.getIndexes()[1];
-		const unsigned int pointIndex3 = indexedTriangle.getIndexes()[2];
+		const unsigned int pointIndex1 = indexedTriangle.getIndex(0);
+		const unsigned int pointIndex2 = indexedTriangle.getIndex(1);
+		const unsigned int pointIndex3 = indexedTriangle.getIndex(2);
 
 		const Point3<T> &point1 = convexHullShape.getConvexHullPoints().at(pointIndex1).point;
 		const Point3<T> &point2 = convexHullShape.getConvexHullPoints().at(pointIndex2).point;

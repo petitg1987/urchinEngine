@@ -22,6 +22,11 @@ namespace urchin
 		return indexes;
 	}
 
+	template<class T> unsigned int IndexedTriangle3D<T>::getIndex(unsigned int index) const
+	{
+		return indexes[index];
+	}
+
 	template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const std::vector<Point3<T>> &trianglePoints) const
 	{
 		const Vector3<T> &aux = trianglePoints[indexes[1]].vector(trianglePoints[indexes[2]]);

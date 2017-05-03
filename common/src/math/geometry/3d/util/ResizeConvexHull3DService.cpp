@@ -1,5 +1,4 @@
 #include <limits>
-#include <map>
 
 #include "ResizeConvexHull3DService.h"
 #include "math/geometry/3d/IndexedTriangle3D.h"
@@ -25,76 +24,44 @@ namespace urchin
 	 */
 	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, T distance) const
 	{
-		const T SQUARE_EPSILON = std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon();
+		std::map<unsigned int, Plane<T>> planes = buildPlanesFromConvexHullShape(originalConvexHullShape);
+		shiftPlanes(planes, distance);
 
-		//1. create Plane object from convex hull
-		std::vector<Plane<T>> planes;
-		buildPlanesFromConvexHullShape(originalConvexHullShape, planes);
-
-		//2. shift planes
-		std::vector<Plane<T>> shiftedPlanes;
-		shiftPlanes(planes, shiftedPlanes, distance);
-
-		//3. brute force algorithm: find intersection point of three planes not parallel
-		std::vector<Point3<T>> newVertices;
-		newVertices.reserve(originalConvexHullShape.getConvexHullPoints().size());
-
-		for(unsigned int i=0; i<shiftedPlanes.size(); ++i)
+		std::map<unsigned int, ConvexHullPoint<T>> newConvexHullPoints;
+		for(const auto itPoint : originalConvexHullShape.getConvexHullPoints())
 		{
-			const Vector3<T> &normal1 = shiftedPlanes[i].getNormal();
-
-			for(unsigned int j=i+1; j<shiftedPlanes.size(); ++j)
+			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangles, planes);
+			if(threePlanes.size()!=3)
 			{
-				const Vector3<T> &normal2 = shiftedPlanes[j].getNormal();
-				const Vector3<T> n1CrossN2 = normal1.crossProduct(normal2);
-
-				if(n1CrossN2.squareLength() < SQUARE_EPSILON)
-				{ //planes are parallel: continue on next plane
-					continue;
-				}
-
-				for(unsigned int k=j+1; k<shiftedPlanes.size(); ++k)
-				{
-					const Vector3<T> &normal3 = shiftedPlanes[k].getNormal();
-					const Vector3<T> n2CrossN3 = normal2.crossProduct(normal3);
-					const Vector3<T> n3CrossN1 = normal3.crossProduct(normal1);
-
-					if(n2CrossN3.squareLength() < SQUARE_EPSILON || n3CrossN1.squareLength() < SQUARE_EPSILON)
-					{ //planes are parallel: continue on next plane
-						continue;
-					}
-
-					//three planes found not parallel between them
-					T quotient = normal1.dotProduct(n2CrossN3);
-					if (std::fabs(quotient) > std::numeric_limits<T>::epsilon())
-					{
-						quotient = -1.0 / quotient;
-						Point3<T> potentialVertex(n2CrossN3 * shiftedPlanes[i].getDistanceToOrigin());
-						potentialVertex += Point3<T>(n3CrossN1 * shiftedPlanes[j].getDistanceToOrigin());
-						potentialVertex += Point3<T>(n1CrossN2 * shiftedPlanes[k].getDistanceToOrigin());
-						potentialVertex *= quotient;
-
-						if (isPointInsidePlanes(shiftedPlanes, potentialVertex))
-						{
-							newVertices.push_back(potentialVertex);
-						}
-					}
-				}
+				break;
 			}
+
+			Vector3<T> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
+			Vector3<T> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
+			Vector3<T> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
+
+			Point3<T> newPoint(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
+			newPoint += Point3<T>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
+			newPoint += Point3<T>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
+			newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+
+			if(distance<0.0 && !isPointInsidePlanes(planes, newPoint))
+			{ //too big negative distance induced wrong resized convex hull
+				break;
+			}
+
+			ConvexHullPoint<T> convexHullPoint;
+			convexHullPoint.point = newPoint;
+			convexHullPoint.triangles = itPoint.second.triangles;
+			newConvexHullPoints.insert(std::pair<unsigned int, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
 		}
 
-		if(newVertices.size() < originalConvexHullShape.getPoints().size())
+		if(newConvexHullPoints.size() != originalConvexHullShape.getConvexHullPoints().size())
 		{ //impossible to resize convex hull.
 			return std::unique_ptr<ConvexHullShape3D<T>>(nullptr);
 		}
 
-		try
-		{
-			return std::make_unique<ConvexHullShape3D<T>>(newVertices);
-		}catch(std::invalid_argument &ia)
-		{ //due to resize and float precision, points doesn't form anymore a convex hull but a plane, line or point.
-			return std::unique_ptr<ConvexHullShape3D<T>>(nullptr);
-		}
+		return std::make_unique<ConvexHullShape3D<T>>(newConvexHullPoints, originalConvexHullShape.getIndexedTriangles());
 	}
 
 	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, T distance) const
@@ -108,79 +75,74 @@ namespace urchin
 		return std::unique_ptr<ConvexHull3D<T>>(nullptr);
 	}
 
-	template<class T> void ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull, std::vector<Plane<T>> &planes) const
+	template<class T> std::map<unsigned int, Plane<T>> ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull) const
 	{
-		const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles = convexHull.getIndexedTriangles();
-		const std::map<unsigned int, ConvexHullPoint<T>> &indexedPoints = convexHull.getConvexHullPoints();
+		std::map<unsigned int, Plane<T>> planes;
 
-		planes.reserve(indexedTriangles.size());
-		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it)
+		for(const auto &itTriangles : convexHull.getIndexedTriangles())
 		{
-			const IndexedTriangle3D<T> &indexedTriangle = it->second;
-			const Point3<T> &point1 = indexedPoints.at(indexedTriangle.getIndexes()[0]).point;
-			const Point3<T> &point2 = indexedPoints.at(indexedTriangle.getIndexes()[1]).point;
-			const Point3<T> &point3 = indexedPoints.at(indexedTriangle.getIndexes()[2]).point;
+			const IndexedTriangle3D<T> &indexedTriangle = itTriangles.second;
+			const Point3<T> &point1 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(0)).point;
+			const Point3<T> &point2 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(1)).point;
+			const Point3<T> &point3 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(2)).point;
 
-			Plane<T> plane(point1, point2, point3); //build plane with normal outside convex hull
-			if(!isPlaneAlreadyExist(planes, plane))
+			planes.insert(std::pair<unsigned int, Plane<T>>(itTriangles.first, Plane<T>(point1, point2, point3))); //plane is built with normal outside convex hull
+		}
+
+		return planes;
+	}
+
+	template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(std::map<unsigned int, Plane<T>> &planes, T distance) const
+	{
+		for(auto &itPlanes : planes)
+		{
+			itPlanes.second.setDistanceToOrigin(itPlanes.second.getDistanceToOrigin() - distance);
+		}
+	}
+
+	template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndexes, const std::map<unsigned int, Plane<T>> &allPlanes) const
+	{
+		std::vector<Plane<T>> nonParallelPlanes;
+		nonParallelPlanes.reserve(3);
+
+		Plane<T> plane1 = allPlanes.at(planeIndexes[0]);
+		for(unsigned int i=1; i<planeIndexes.size(); ++i)
+		{
+			Plane<T> plane2 = allPlanes.at(planeIndexes[i]);
+			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < 0.0)
+			{ //planes are parallel: continue on next plane
+				continue;
+			}
+
+			for(unsigned int j=i+1; j<planeIndexes.size(); ++j)
 			{
-				planes.push_back(plane);
+				Plane<T> plane3 = allPlanes.at(planeIndexes[j]);
+
+				Vector3<T> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
+				if(n2CrossN3.squareLength() < 0.0
+						|| plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < 0.0
+						|| plane1.getNormal().dotProduct(n2CrossN3)==0.0) //additional check due to float imprecision
+				{ //planes are parallel: continue on next plane
+					continue;
+				}
+
+				nonParallelPlanes = {plane1, plane2, plane3};
+				return nonParallelPlanes;
 			}
 		}
-	}
 
-	template<class T> bool ResizeConvexHull3DService<T>::isPlaneAlreadyExist(const std::vector<Plane<T>> &planes, const Plane<T> &plane) const
-	{
-		const T EPSILON = 0.001;
-		for(unsigned int i=0; i<planes.size(); ++i)
-		{
-			//1. test distances to origin
-			T d1 = planes[i].getDistanceToOrigin();
-			T d2 = plane.getDistanceToOrigin();
-			if( (d1 - EPSILON) > d2 || (d1 + EPSILON) < d2)
-			{ //distances to origin are different
-				continue;
-			}
-
-			//2. test normals
-			Vector3<T> normal1 = planes[i].getNormal();
-			Vector3<T> normal2 = plane.getNormal();
-			if( (normal1[0] - EPSILON) > normal2[0] || (normal1[0] + EPSILON) < normal2[0] //axis X
-					|| (normal1[1] - EPSILON) > normal2[1] || (normal1[1] + EPSILON) < normal2[1] //axis Y
-					|| (normal1[2] - EPSILON) > normal2[2] || (normal1[2] + EPSILON) < normal2[2]) //axis Z
-			{ //normals are different
-				continue;
-			}
-
-			return true; //same planes
-		}
-
-		return false;
+		return nonParallelPlanes;
 	}
 
 	/**
-	 * Shift planes to given distance
+	 * @return True if point is inside all the planes.
 	 */
-	template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(const std::vector<Plane<T>> &planes, std::vector<Plane<T>> &shiftedPlanes, T distance) const
+	template<class T> bool ResizeConvexHull3DService<T>::isPointInsidePlanes(const std::map<unsigned int, Plane<T>> &planes, const Point3<T> &point) const
 	{
-		shiftedPlanes.reserve(planes.size());
-		for(unsigned int i=0; i<planes.size(); ++i)
+		constexpr T EPSILON = std::numeric_limits<T>::epsilon();
+		for(const auto itPlane : planes)
 		{
-			T shiftedDistanceToOrigin = planes[i].getDistanceToOrigin() - distance;
-			shiftedPlanes.push_back(Plane<T>(planes[i].getNormal(), shiftedDistanceToOrigin));
-		}
-	}
-
-	/**
-	 * @return True if point is inside all the planes. An error of '0.01' is allowed.
-	 */
-	template<class T> bool ResizeConvexHull3DService<T>::isPointInsidePlanes(const std::vector<Plane<T>> &planes, const Point3<T> &point) const
-	{
-		const T EPSILON = 0.01;
-		for(unsigned int i=0; i<planes.size(); ++i)
-		{
-			T distToPlane = planes[i].distance(point);
-			if((distToPlane - EPSILON) > 0.0)
+			if(itPlane.second.distance(point) > EPSILON)
 			{
 				return false;
 			}

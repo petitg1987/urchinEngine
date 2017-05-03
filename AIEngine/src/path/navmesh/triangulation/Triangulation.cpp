@@ -193,7 +193,7 @@ namespace urchin
 		logStream<<"Monotone polygon triangles output data:"<<std::endl;
 		for(const auto &triangle : triangles)
 		{
-			logStream<<" - {"<<polygonPoints[triangle.getIndexes()[0]]<<"}, {"<<polygonPoints[triangle.getIndexes()[1]]<<"}, {"<<polygonPoints[triangle.getIndexes()[2]]<<"}"<<std::endl;
+			logStream<<" - {"<<polygonPoints[triangle.getIndex(0)]<<"}, {"<<polygonPoints[triangle.getIndex(1)]<<"}, {"<<polygonPoints[triangle.getIndex(2)]<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

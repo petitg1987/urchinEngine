@@ -83,9 +83,19 @@ namespace urchin
 		return normal;
 	}
 
+	template<class T> void Plane<T>::setNormal(const Vector3<T> &normal)
+	{
+		this->normal = normal;
+	}
+
 	template<class T> T Plane<T>::getDistanceToOrigin() const
 	{
 		return d;
+	}
+
+	template<class T> void Plane<T>::setDistanceToOrigin(T d)
+	{
+		this->d = d;
 	}
 
 	/**

@@ -15,7 +15,7 @@ namespace urchin
 			Plane(const Vector3<T> &, T);
 			Plane(const Point3<T> &, const Point3<T> &, const Point3<T> &);
 			Plane(const Vector3<T> &, const Point3<T> &);
-			Plane(T a=0.0, T b=1.0, T c=0.0, T d=0.0);
+			explicit Plane(T a=0.0, T b=1.0, T c=0.0, T d=0.0);
 		
 			void buildFrom3Points(const Point3<T> &, const Point3<T> &, const Point3<T> &);
 			void buildFromNormalAndPoint(const Vector3<T> &, const Point3<T> &);
@@ -23,7 +23,9 @@ namespace urchin
 			void reverse();
 		
 			const Vector3<T> &getNormal() const;
+			void setNormal(const Vector3<T> &);
 			T getDistanceToOrigin() const;
+			void setDistanceToOrigin(T);
 		
 			T distance(const Point3<T> &) const;
 			T distance(const Point4<T> &) const;

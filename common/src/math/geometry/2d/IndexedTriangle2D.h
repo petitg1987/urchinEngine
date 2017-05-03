@@ -13,10 +13,11 @@ namespace urchin
 	template<class T> class IndexedTriangle2D
 	{
 		public:
-			IndexedTriangle2D(const unsigned int *);
-			IndexedTriangle2D(unsigned int, unsigned int, unsigned int);
+			explicit IndexedTriangle2D(const unsigned int *);
+			explicit IndexedTriangle2D(unsigned int, unsigned int, unsigned int);
 
 			const unsigned int *getIndexes() const;
+			unsigned int getIndex(unsigned int) const;
 
 		private:
 			unsigned int indexes[3];

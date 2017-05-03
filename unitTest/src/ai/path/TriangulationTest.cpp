@@ -15,9 +15,9 @@ void TriangulationTest::triangleTriangulation()
 	std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[0], 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[1], 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[2], 0);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 1);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 2);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 0);
 }
 
 void TriangulationTest::cubeTriangulation()
@@ -28,13 +28,13 @@ void TriangulationTest::cubeTriangulation()
 	std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[0], 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[1], 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[2], 3);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 0);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 2);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 3);
 
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[0], 1);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[1], 2);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[2], 0);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 1);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 2);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 0);
 }
 
 void TriangulationTest::cavityTriangulation()
@@ -45,17 +45,17 @@ void TriangulationTest::cavityTriangulation()
 	std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 3);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[0], 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[2], 1);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 2);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 1);
 
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[0], 4);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[1], 2);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[2], 3);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 4);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 2);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 3);
 
-	AssertHelper::assertUnsignedInt(triangles[2].getIndexes()[0], 4);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndexes()[2], 2);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 4);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 2);
 }
 
 void TriangulationTest::twoNearPoints()
@@ -67,33 +67,33 @@ void TriangulationTest::twoNearPoints()
 	std::vector<IndexedTriangle2D<float>> triangles = triangulation.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 7);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[0], 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndexes()[2], 1);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 2);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 1);
 
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[0], 3);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndexes()[2], 2);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 3);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 2);
 
-	AssertHelper::assertUnsignedInt(triangles[2].getIndexes()[0], 4);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndexes()[2], 3);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 4);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 3);
 
-	AssertHelper::assertUnsignedInt(triangles[3].getIndexes()[0], 5);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndexes()[2], 4);
+	AssertHelper::assertUnsignedInt(triangles[3].getIndex(0), 5);
+	AssertHelper::assertUnsignedInt(triangles[3].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[3].getIndex(2), 4);
 
-	AssertHelper::assertUnsignedInt(triangles[4].getIndexes()[0], 6);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndexes()[2], 5);
+	AssertHelper::assertUnsignedInt(triangles[4].getIndex(0), 6);
+	AssertHelper::assertUnsignedInt(triangles[4].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[4].getIndex(2), 5);
 
-	AssertHelper::assertUnsignedInt(triangles[5].getIndexes()[0], 8);
-	AssertHelper::assertUnsignedInt(triangles[5].getIndexes()[1], 6);
-	AssertHelper::assertUnsignedInt(triangles[5].getIndexes()[2], 7);
+	AssertHelper::assertUnsignedInt(triangles[5].getIndex(0), 8);
+	AssertHelper::assertUnsignedInt(triangles[5].getIndex(1), 6);
+	AssertHelper::assertUnsignedInt(triangles[5].getIndex(2), 7);
 
-	AssertHelper::assertUnsignedInt(triangles[6].getIndexes()[0], 8);
-	AssertHelper::assertUnsignedInt(triangles[6].getIndexes()[1], 0);
-	AssertHelper::assertUnsignedInt(triangles[6].getIndexes()[2], 6);
+	AssertHelper::assertUnsignedInt(triangles[6].getIndex(0), 8);
+	AssertHelper::assertUnsignedInt(triangles[6].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[6].getIndex(2), 6);
 }
 
 CppUnit::Test *TriangulationTest::suite()

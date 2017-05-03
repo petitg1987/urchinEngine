@@ -33,9 +33,9 @@ namespace urchin
 		{
 			IndexedTriangle3D<float> triangle = it.second;
 
-			Point3<float> point1 = convexHullPoints.at(triangle.getIndexes()[0]).point;
-			Point3<float> point2 = convexHullPoints.at(triangle.getIndexes()[1]).point;
-			Point3<float> point3 = convexHullPoints.at(triangle.getIndexes()[2]).point;
+			Point3<float> point1 = convexHullPoints.at(triangle.getIndex(0)).point;
+			Point3<float> point2 = convexHullPoints.at(triangle.getIndex(1)).point;
+			Point3<float> point3 = convexHullPoints.at(triangle.getIndex(2)).point;
 
 			vertexArray.push_back(point1);
 			vertexArray.push_back(point2);

@@ -104,11 +104,11 @@ namespace urchin
 		{
 			const IndexedTriangle3D<T> indexedTriangle = itTriangle->second;
 			const Vector3<T> &triangleNormal = indexedTriangle.computeNormal(
-					points.at(indexedTriangle.getIndexes()[0]).point,
-					points.at(indexedTriangle.getIndexes()[1]).point,
-					points.at(indexedTriangle.getIndexes()[2]).point);
+					points.at(indexedTriangle.getIndex(0)).point,
+					points.at(indexedTriangle.getIndex(1)).point,
+					points.at(indexedTriangle.getIndex(2)).point);
 
-			const Point3<T> &point0 = points.at(indexedTriangle.getIndexes()[0]).point;
+			const Point3<T> &point0 = points.at(indexedTriangle.getIndex(0)).point;
 			const Vector3<T> &triangleToPoint = point0.vector(newPoint);
 
 			if(triangleNormal.dotProduct(triangleToPoint) > 0.0)
@@ -195,23 +195,22 @@ namespace urchin
 
 	template<class T> void ConvexHullShape3D<T>::addTriangle(const IndexedTriangle3D<T> &indexedTriangle)
 	{
-		//add indexed triangles to triangle map
+		//add indexed triangles to triangles map
 		unsigned int triangleIndex = nextTriangleIndex++;
 		indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(triangleIndex, indexedTriangle));
 
-		//increment counter of number of triangle by point
-		const unsigned int *indexes = indexedTriangle.getIndexes();
-		for(int i=0; i<3; i++)
+		//add triangles reference on points
+		for(unsigned int i=0; i<3; i++)
 		{
-			points[indexes[i]].triangles.push_back(triangleIndex);
+			points[indexedTriangle.getIndex(i)].triangles.push_back(triangleIndex);
 		}
 	}
 
 	template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<unsigned int, IndexedTriangle3D<T>>::iterator &itTriangle)
 	{
-		//decrement counter of number of triangle by point
+		//remove reference of triangles on points
 		const unsigned int *indexes = itTriangle->second.getIndexes();
-		for(int i=0;i<3;i++)
+		for(unsigned int i=0;i<3;i++)
 		{
 			std::vector<unsigned int> &pointTriangles = points[indexes[i]].triangles;
 			pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
@@ -290,9 +289,9 @@ namespace urchin
 		//5. build tetrahedron (find a no coplanar point to the triangle)
 		const IndexedTriangle3D<T> firstIndexedTriangle = this->indexedTriangles.at(0);
 		const Vector3<T> &firstTriangleNormal = firstIndexedTriangle.computeNormal(
-				this->points.at(firstIndexedTriangle.getIndexes()[0]).point,
-				this->points.at(firstIndexedTriangle.getIndexes()[1]).point,
-				this->points.at(firstIndexedTriangle.getIndexes()[2]).point);
+				this->points.at(firstIndexedTriangle.getIndex(0)).point,
+				this->points.at(firstIndexedTriangle.getIndex(1)).point,
+				this->points.at(firstIndexedTriangle.getIndex(2)).point);
 		const Point3<T> &firstPoint = this->points.at(0).point;
 		for(unsigned int i=1;i<points.size();i++)
 		{
@@ -368,9 +367,9 @@ namespace urchin
 		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it)
 		{
 			stream << "Triangle "<< it->first <<": "
-				<<"("<<ch.getConvexHullPoints().at(it->second.getIndexes()[0]).point<<") "
-				<<"("<<ch.getConvexHullPoints().at(it->second.getIndexes()[1]).point<<") "
-				<<"("<<ch.getConvexHullPoints().at(it->second.getIndexes()[2]).point<<") "
+				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "
+				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(1)).point<<") "
+				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(2)).point<<") "
 				<<std::endl;
 		}
 

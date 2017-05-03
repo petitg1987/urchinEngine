@@ -2,6 +2,7 @@
 #define ENGINE_RESIZECONVEXHULL3DSERVICE_H
 
 #include <memory>
+#include <map>
 #include <vector>
 
 #include "pattern/singleton/Singleton.h"
@@ -25,10 +26,10 @@ namespace urchin
 			ResizeConvexHull3DService();
 			virtual ~ResizeConvexHull3DService();
 
-			void buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &, std::vector<Plane<T>> &) const;
-			bool isPlaneAlreadyExist(const std::vector<Plane<T>> &, const Plane<T> &) const;
-			void shiftPlanes(const std::vector<Plane<T>> &, std::vector<Plane<T>> &, T) const;
-			bool isPointInsidePlanes(const std::vector<Plane<T>> &, const Point3<T> &) const;
+			std::map<unsigned int, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &) const;
+			void shiftPlanes(std::map<unsigned int, Plane<T>> &, T) const;
+			std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::map<unsigned int, Plane<T>> &) const;
+			bool isPointInsidePlanes(const std::map<unsigned int, Plane<T>> &, const Point3<T> &) const;
 	};
 
 }
