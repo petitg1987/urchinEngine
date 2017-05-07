@@ -112,14 +112,14 @@ namespace urchin
 
 			//visual
 			unsigned int *fboIDs;
-			enum //FBO IDs indexes
+			enum //FBO IDs indices
 			{
 				FBO_SCENE = 0
 			};
 
 			unsigned int fboAttachments[3];
 			unsigned int *textureIDs;
-			enum //texture IDs indexes
+			enum //texture IDs indices
 			{
 				TEX_DEPTH = 0,
 				TEX_DIFFUSE,

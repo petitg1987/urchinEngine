@@ -9,15 +9,20 @@
 namespace urchin
 {
 
+	struct PolyhedronPoint
+	{
+		Point3<float> point;
+		std::vector<unsigned int> faceIndices;
+	};
+
 	class Polyhedron
 	{
 		public:
-			Polyhedron(const std::string &, const std::vector<Face> &, const std::vector<Point3<float>> &);
+			Polyhedron(const std::string &, const std::vector<Face> &, const std::vector<PolyhedronPoint> &);
 
 			const std::string getName() const;
 
 			const std::vector<Face> &getFaces() const;
-			unsigned int getFaceSize() const;
 			const Face &getFace(unsigned int) const;
 
 			void setWalkableCandidate(bool);
@@ -27,13 +32,12 @@ namespace urchin
 
 		private:
 			std::string name;
-
 			std::vector<Face> faces;
-			std::vector<Point3<float>> points;
+			std::vector<PolyhedronPoint> points;
 
 			bool walkableCandidate;
 
-			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
+			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<PolyhedronPoint> &) const;
 	};
 
 }

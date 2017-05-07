@@ -36,7 +36,7 @@ namespace urchin
 			void logOutputData(const std::string &, const std::vector<IndexedTriangle2D<float>> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
-			std::vector<unsigned int> endContourIndexes; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndexes' will have values: 5 and 9.
+			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 	};
 
 }

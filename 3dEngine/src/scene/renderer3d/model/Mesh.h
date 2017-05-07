@@ -26,7 +26,7 @@ namespace urchin
 			DataVertex *const dataVertices; //additional informations for the vertex
 
 			unsigned int bufferIDs[4], vertexArrayObject;
-			enum //buffer IDs indexes
+			enum //buffer IDs indices
 			{
 				VAO_VERTEX_POSITION = 0,
 				VAO_TEX_COORD,

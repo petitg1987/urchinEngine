@@ -57,12 +57,12 @@ namespace urchin
 	}
 
 	/**
-	* @param removedTriangleIndexes [out] Indexes of removed triangles from convex hull
+	* @param removedTriangleIndices [out] Indices of removed triangles from convex hull
 	* @return Returns index of point added. If point doesn't make part of convex, result is zero.
 	*/
-	template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<unsigned int> &removedTriangleIndexes)
+	template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<unsigned int> &removedTriangleIndices)
 	{
-		return localizedConvexHullShape.addNewPoint(newPoint, removedTriangleIndexes);
+		return localizedConvexHullShape.addNewPoint(newPoint, removedTriangleIndices);
 	}
 
 	template<class T> Point3<T> ConvexHull3D<T>::getSupportPoint(const Vector3<T> &direction) const

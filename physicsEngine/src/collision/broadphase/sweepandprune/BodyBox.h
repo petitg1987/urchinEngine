@@ -23,7 +23,7 @@ namespace urchin
 			bool hasAlternativePairContainer() const;
 			PairContainer *getAlternativePairContainer() const;
 
-			//indexes into the sorted end point arrays
+			//indices into the sorted end point arrays
 			unsigned int min[3];
 			unsigned int max[3];
 

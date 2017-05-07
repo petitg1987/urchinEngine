@@ -48,7 +48,7 @@ namespace urchin
 
 		private:
 			unsigned int bufferIDs[1], vertexArrayObject;
-			enum //buffer IDs indexes
+			enum //buffer IDs indices
 			{
 				VAO_VERTEX_POSITION = 0,
 			};

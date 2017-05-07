@@ -11,11 +11,11 @@ namespace urchin
 
 	/**
 	 * @param polygonPoints Polygon points are in CCW order and holes in CW order.
-	 * @param endContourIndexes Delimiter between polygon points and holes points.
+	 * @param endContourIndices Delimiter between polygon points and holes points.
 	 */
-	MonotonePolygon::MonotonePolygon(const std::vector<Point2<float>> &polygonPoints, const std::vector<unsigned int> &endContourIndexes) :
+	MonotonePolygon::MonotonePolygon(const std::vector<Point2<float>> &polygonPoints, const std::vector<unsigned int> &endContourIndices) :
 			polygonPoints(polygonPoints),
-			endContourIndexes(endContourIndexes)
+			endContourIndices(endContourIndices)
 	{
 		edgeHelpers.reserve(5);
 
@@ -37,13 +37,13 @@ namespace urchin
 
 		if(diagonals.size()==0)
 		{
-			std::vector<unsigned int> monotonePointsIndexes;
-			monotonePointsIndexes.reserve(polygonPoints.size());
+			std::vector<unsigned int> monotonePointsIndices;
+			monotonePointsIndices.reserve(polygonPoints.size());
 			for(unsigned int i=0; i<polygonPoints.size(); ++i)
 			{
-				monotonePointsIndexes.push_back(i);
+				monotonePointsIndices.push_back(i);
 			}
-			yMonotonePolygons.push_back(monotonePointsIndexes);
+			yMonotonePolygons.push_back(monotonePointsIndices);
 		}else
 		{
 			for(std::multimap<unsigned int, Edge>::iterator it = diagonals.begin(); it!=diagonals.end(); ++it)
@@ -51,10 +51,10 @@ namespace urchin
 				Edge startDiagonal = it->second;
 				if(!startDiagonal.isProcessed)
 				{
-					std::vector<unsigned int> monotonePointsIndexes;
-					monotonePointsIndexes.reserve(polygonPoints.size()/2 + 1); //estimated memory size
-					monotonePointsIndexes.push_back(startDiagonal.startIndex);
-					monotonePointsIndexes.push_back(startDiagonal.endIndex);
+					std::vector<unsigned int> monotonePointsIndices;
+					monotonePointsIndices.reserve(polygonPoints.size()/2 + 1); //estimated memory size
+					monotonePointsIndices.push_back(startDiagonal.startIndex);
+					monotonePointsIndices.push_back(startDiagonal.endIndex);
 
 					unsigned int previousPointIndex = startDiagonal.startIndex;
 					unsigned int currentPointIndex = startDiagonal.endIndex;
@@ -67,12 +67,12 @@ namespace urchin
 							break;
 						}
 
-						monotonePointsIndexes.push_back(nextPointIndex);
+						monotonePointsIndices.push_back(nextPointIndex);
 
 						previousPointIndex = currentPointIndex;
 						currentPointIndex = nextPointIndex;
 
-						if(monotonePointsIndexes.size() > polygonPoints.size())
+						if(monotonePointsIndices.size() > polygonPoints.size())
 						{
 							logInputData("Impossible to close monotone polygon.", Logger::ERROR);
 							break;
@@ -80,7 +80,7 @@ namespace urchin
 					}
 
 					startDiagonal.isProcessed = true;
-					yMonotonePolygons.push_back(monotonePointsIndexes);
+					yMonotonePolygons.push_back(monotonePointsIndices);
 				}
 			}
 		}
@@ -289,11 +289,11 @@ namespace urchin
 	{
 		unsigned int nextPointIndex = pointIndex + 1;
 
-		auto it = std::find(endContourIndexes.begin(), endContourIndexes.end(), nextPointIndex);
-		if(it==endContourIndexes.begin())
+		auto it = std::find(endContourIndices.begin(), endContourIndices.end(), nextPointIndex);
+		if(it==endContourIndices.begin())
 		{
 			nextPointIndex = 0;
-		}else if(it!=endContourIndexes.end())
+		}else if(it!=endContourIndices.end())
 		{
 			nextPointIndex = *(--it);
 		}
@@ -306,11 +306,11 @@ namespace urchin
 		unsigned int previousPointIndex = pointIndex - 1;
 		if(pointIndex==0)
 		{
-			previousPointIndex = endContourIndexes[0] - 1;
+			previousPointIndex = endContourIndices[0] - 1;
 		}else
 		{
-			auto it = std::find(endContourIndexes.begin(), endContourIndexes.end(), pointIndex);
-			if(it!=endContourIndexes.end())
+			auto it = std::find(endContourIndices.begin(), endContourIndices.end(), pointIndex);
+			if(it!=endContourIndices.end())
 			{
 				previousPointIndex = (*(++it)) - 1;
 			}
@@ -475,7 +475,7 @@ namespace urchin
 		{
 			logStream<<" - "<<polygonPoints[i]<<std::endl;
 
-			if((i+1)!=polygonPoints.size() && std::find(endContourIndexes.begin(), endContourIndexes.end(), i+1) != endContourIndexes.end())
+			if((i+1)!=polygonPoints.size() && std::find(endContourIndices.begin(), endContourIndices.end(), i+1) != endContourIndices.end())
 			{
 				logStream<<" - Hole:"<<std::endl;
 			}

@@ -14,7 +14,7 @@ namespace urchin
 	Triangulation::Triangulation(const std::vector<Point2<float>> &ccwPolygonPoints) :
 			polygonPoints(ccwPolygonPoints)
 	{
-		endContourIndexes.push_back(ccwPolygonPoints.size());
+		endContourIndices.push_back(ccwPolygonPoints.size());
 	}
 
 	/**
@@ -22,7 +22,7 @@ namespace urchin
 	 */
 	std::vector<Point2<float>> Triangulation::getPolygonPoints() const
 	{
-		return std::vector<Point2<float>>(polygonPoints.begin(), polygonPoints.begin() + endContourIndexes[0]);
+		return std::vector<Point2<float>>(polygonPoints.begin(), polygonPoints.begin() + endContourIndices[0]);
 	}
 
 	/**
@@ -32,9 +32,9 @@ namespace urchin
 	unsigned int Triangulation::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
 	{
 		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
-		endContourIndexes.push_back(polygonPoints.size());
+		endContourIndices.push_back(polygonPoints.size());
 
-		return endContourIndexes.size() - 2;
+		return endContourIndices.size() - 2;
 	}
 
 	/**
@@ -42,7 +42,7 @@ namespace urchin
 	 */
 	unsigned int Triangulation::getHolesSize() const
 	{
-		return endContourIndexes.size() - 1;
+		return endContourIndices.size() - 1;
 	}
 
 	/**
@@ -50,12 +50,12 @@ namespace urchin
 	 */
 	std::vector<Point2<float>> Triangulation::getHolePoints(unsigned int holeIndex) const
 	{
-		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndexes[holeIndex], polygonPoints.begin() + endContourIndexes[holeIndex+1]);
+		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
 	std::vector<IndexedTriangle2D<float>> Triangulation::triangulate() const
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
-		MonotonePolygon monotonePolygon(polygonPoints, endContourIndexes);
+		MonotonePolygon monotonePolygon(polygonPoints, endContourIndices);
 		std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
 
 		std::vector<IndexedTriangle2D<float>> triangles;

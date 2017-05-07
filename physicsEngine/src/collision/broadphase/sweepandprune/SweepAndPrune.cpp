@@ -212,7 +212,7 @@ namespace urchin
 
 		while(endPoint->getValue() < prevEndPoint->getValue())
 		{
-			//update indexes in bodies
+			//update indices in bodies
 			if(prevEndPoint->isMin())
 			{
 				prevEndPoint->getBodyBox()->min[axis]++;
@@ -249,7 +249,7 @@ namespace urchin
 
 		while(endPoint->getValue() < prevEndPoint->getValue())
 		{
-			//update indexes in bodies
+			//update indices in bodies
 			if(prevEndPoint->isMin())
 			{
 				const int axis1 = (1  << axis) & 3;
@@ -286,7 +286,7 @@ namespace urchin
 
 		while(endPoint->getValue() > nextEndPoint->getValue())
 		{
-			//update indexes in bodies
+			//update indices in bodies
 			if(nextEndPoint->isMin())
 			{
 				nextEndPoint->getBodyBox()->min[axis]--;
@@ -323,7 +323,7 @@ namespace urchin
 
 		while(endPoint->getValue() > nextEndPoint->getValue())
 		{
-			//update indexes in bodies
+			//update indices in bodies
 			if(nextEndPoint->isMin())
 			{
 				const int axis1 = (1  << axis) & 3;
@@ -355,7 +355,7 @@ namespace urchin
 	 */
 	bool SweepAndPrune::isOverlap(const BodyBox *body1, const BodyBox *body2, unsigned int axis1, unsigned int axis2)
 	{
-		//comparing indexes is more faster that values
+		//comparing indices is more faster that values
 		if (body1->max[axis1] < body2->min[axis1] ||
 				body2->max[axis1] < body1->min[axis1] ||
 				body1->max[axis2] < body2->min[axis2] ||

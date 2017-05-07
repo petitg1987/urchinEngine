@@ -3,34 +3,34 @@
 namespace urchin
 {
 
-	template<class T> IndexedTriangle3D<T>::IndexedTriangle3D(const unsigned int *indexes)
+	template<class T> IndexedTriangle3D<T>::IndexedTriangle3D(const unsigned int *indices)
 	{
-		this->indexes[0] = indexes[0];
-		this->indexes[1] = indexes[1];
-		this->indexes[2] = indexes[2];
+		this->indices[0] = indices[0];
+		this->indices[1] = indices[1];
+		this->indices[2] = indices[2];
 	}
 
 	template<class T> IndexedTriangle3D<T>::IndexedTriangle3D(unsigned int index1, unsigned int index2, unsigned int index3)
 	{
-		this->indexes[0] = index1;
-		this->indexes[1] = index2;
-		this->indexes[2] = index3;
+		this->indices[0] = index1;
+		this->indices[1] = index2;
+		this->indices[2] = index3;
 	}
 
-	template<class T> const unsigned int *IndexedTriangle3D<T>::getIndexes() const
+	template<class T> const unsigned int *IndexedTriangle3D<T>::getIndices() const
 	{
-		return indexes;
+		return indices;
 	}
 
 	template<class T> unsigned int IndexedTriangle3D<T>::getIndex(unsigned int index) const
 	{
-		return indexes[index];
+		return indices[index];
 	}
 
 	template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const std::vector<Point3<T>> &trianglePoints) const
 	{
-		const Vector3<T> &aux = trianglePoints[indexes[1]].vector(trianglePoints[indexes[2]]);
-		return aux.crossProduct(trianglePoints[indexes[1]].vector(trianglePoints[indexes[0]])).normalize();
+		const Vector3<T> &aux = trianglePoints[indices[1]].vector(trianglePoints[indices[2]]);
+		return aux.crossProduct(trianglePoints[indices[1]].vector(trianglePoints[indices[0]])).normalize();
 	}
 
 	template<class T> Vector3<T> IndexedTriangle3D<T>::computeNormal(const Point3<T> &point0, const Point3<T> &point1, const Point3<T> &point2) const

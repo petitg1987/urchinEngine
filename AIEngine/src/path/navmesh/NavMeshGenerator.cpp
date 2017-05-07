@@ -74,7 +74,7 @@ namespace urchin
 	}
 
 	/**
-	 * Returne box faces. Faces are guaranteed to be in the following order: right, left, top, bottom, front, back.
+	 * Return box faces. Faces are guaranteed to be in the following order: right, left, top, bottom, front, back.
 	 */
 	std::vector<Face> NavMeshGenerator::createPolyhedronFaces(OBBox<float> *box)
 	{
@@ -92,9 +92,31 @@ namespace urchin
 		return faces;
 	}
 
+	/**
+	 * Return box points. This method suppose that faces index (0 to 5) are in the following order: right, left, top, bottom, front, back.
+	 */
+	std::vector<PolyhedronPoint> NavMeshGenerator::createPolyhedronPoints(OBBox<float> *box)
+	{
+		std::vector<PolyhedronPoint> polyhedronPoints;
+		polyhedronPoints.reserve(8);
+
+		std::vector<Point3<float>> points = box->getPoints();
+		constexpr unsigned int faceIndicesTab[8][3] = {{0, 2, 4}, {0, 2, 5}, {0, 3, 4}, {0, 3, 5}, {1, 2, 4}, {1, 2, 5}, {1, 3, 4}, {1, 3, 5}};
+		for(unsigned int i=0; i<8; ++i)
+		{
+			PolyhedronPoint polyhedronPoint;
+			polyhedronPoint.point = points[i];
+			polyhedronPoint.faceIndices.reserve(3);
+			polyhedronPoint.faceIndices.insert(polyhedronPoint.faceIndices.end(), &faceIndicesTab[i][0], &faceIndicesTab[i][3]);
+			polyhedronPoints.push_back(polyhedronPoint);
+		}
+
+		return polyhedronPoints;
+	}
+
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, OBBox<float> *box)
 	{
-		return Polyhedron(name, createPolyhedronFaces(box), box->getPoints());
+		return Polyhedron(name, createPolyhedronFaces(box), createPolyhedronPoints(box));
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Capsule<float> *capsule)
@@ -124,22 +146,43 @@ namespace urchin
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, ConvexHull3D<float> *convexHull)
 	{
 		const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTriangles = convexHull->getIndexedTriangles();
-		const std::map<unsigned int, ConvexHullPoint<float>> &points = convexHull->getConvexHullPoints();
+		const std::map<unsigned int, ConvexHullPoint<float>> &convexHullPoints = convexHull->getConvexHullPoints();
+
+		std::vector<PolyhedronPoint> polyhedronPoints;
+		polyhedronPoints.reserve(convexHullPoints.size());
+		for(const auto &convexHullPoint : convexHullPoints)
+		{
+			PolyhedronPoint polyhedronPoint;
+			polyhedronPoint.point = convexHullPoint.second.point;
+			polyhedronPoint.faceIndices.reserve(convexHullPoint.second.triangleIndices.size());
+
+			polyhedronPoints.push_back(polyhedronPoint);
+		}
 
 		std::vector<Face> faces;
 		faces.reserve(indexedTriangles.size());
-
+		unsigned int i=0;
 		for(const auto &indexedTriangle : indexedTriangles)
 		{
-			const unsigned int *indexes = indexedTriangle.second.getIndexes();
-			Point3<float> point1 = points.at(indexes[0]).point;
-			Point3<float> point2 = points.at(indexes[1]).point;
-			Point3<float> point3 = points.at(indexes[2]).point;
+			const unsigned int *indices = indexedTriangle.second.getIndices();
 
-			faces.push_back(Face({point1, point2, point3}));
+			auto itPoint0 = convexHullPoints.find(indices[0]);
+			Point3<float> point0 = itPoint0->second.point;
+			polyhedronPoints[std::distance(convexHullPoints.begin(), itPoint0)].faceIndices.push_back(i);
+
+			auto itPoint1 = convexHullPoints.find(indices[1]);
+			Point3<float> point1 = itPoint1->second.point;
+			polyhedronPoints[std::distance(convexHullPoints.begin(), itPoint1)].faceIndices.push_back(i);
+
+			auto itPoint2 = convexHullPoints.find(indices[2]);
+			Point3<float> point2 = itPoint2->second.point;
+			polyhedronPoints[std::distance(convexHullPoints.begin(), itPoint2)].faceIndices.push_back(i);
+
+			faces.push_back(Face({point0, point1, point2}));
+			i++;
 		}
 
-		return Polyhedron(name, faces, convexHull->getPoints());
+		return Polyhedron(name, faces, polyhedronPoints);
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Cylinder<float> *cylinder)
@@ -154,7 +197,7 @@ namespace urchin
 			faces[i].setWalkableCandidate(cylinder->getCylinderOrientation()==i/2);
 		}
 
-		return Polyhedron(name, faces, cylinderBox.getPoints());
+		return Polyhedron(name, faces, createPolyhedronPoints(&cylinderBox));
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Sphere<float> *sphere)
@@ -179,7 +222,7 @@ namespace urchin
 				if(polyhedron.getName().compare("ground")!=0)
 					continue; //TODO remove me...
 
-				for(unsigned int faceIndex=0; faceIndex<polyhedron.getFaceSize(); ++faceIndex)
+				for(unsigned int faceIndex=0; faceIndex<polyhedron.getFaces().size(); ++faceIndex)
 				{
 					const Face &face = polyhedron.getFace(faceIndex);
 
@@ -275,7 +318,7 @@ namespace urchin
 
 		for(const auto &indexedTriangle2D : indexedTriangles2D)
 		{
-			indexedTriangles3D.push_back(IndexedTriangle3D<float>(indexedTriangle2D.getIndexes()));
+			indexedTriangles3D.push_back(IndexedTriangle3D<float>(indexedTriangle2D.getIndices()));
 		}
 
 		return indexedTriangles3D;

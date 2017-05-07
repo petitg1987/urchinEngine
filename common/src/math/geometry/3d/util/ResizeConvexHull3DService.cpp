@@ -30,7 +30,7 @@ namespace urchin
 		std::map<unsigned int, ConvexHullPoint<T>> newConvexHullPoints;
 		for(const auto itPoint : originalConvexHullShape.getConvexHullPoints())
 		{
-			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangles, planes);
+			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangleIndices, planes);
 			if(threePlanes.size()!=3)
 			{
 				break;
@@ -52,7 +52,7 @@ namespace urchin
 
 			ConvexHullPoint<T> convexHullPoint;
 			convexHullPoint.point = newPoint;
-			convexHullPoint.triangles = itPoint.second.triangles;
+			convexHullPoint.triangleIndices = itPoint.second.triangleIndices;
 			newConvexHullPoints.insert(std::pair<unsigned int, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
 		}
 
@@ -100,23 +100,23 @@ namespace urchin
 		}
 	}
 
-	template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndexes, const std::map<unsigned int, Plane<T>> &allPlanes) const
+	template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::map<unsigned int, Plane<T>> &allPlanes) const
 	{
 		std::vector<Plane<T>> nonParallelPlanes;
 		nonParallelPlanes.reserve(3);
 
-		Plane<T> plane1 = allPlanes.at(planeIndexes[0]);
-		for(unsigned int i=1; i<planeIndexes.size(); ++i)
+		Plane<T> plane1 = allPlanes.at(planeIndices[0]);
+		for(unsigned int i=1; i<planeIndices.size(); ++i)
 		{
-			Plane<T> plane2 = allPlanes.at(planeIndexes[i]);
+			Plane<T> plane2 = allPlanes.at(planeIndices[i]);
 			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < 0.0)
 			{ //planes are parallel: continue on next plane
 				continue;
 			}
 
-			for(unsigned int j=i+1; j<planeIndexes.size(); ++j)
+			for(unsigned int j=i+1; j<planeIndices.size(); ++j)
 			{
-				Plane<T> plane3 = allPlanes.at(planeIndexes[j]);
+				Plane<T> plane3 = allPlanes.at(planeIndices[j]);
 
 				Vector3<T> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
 				if(n2CrossN3.squareLength() < 0.0

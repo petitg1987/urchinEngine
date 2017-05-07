@@ -18,7 +18,7 @@ namespace urchin
 	template<class T> struct ConvexHullPoint
 	{
 		Point3<T> point;
-		std::vector<unsigned int> triangles; //indexes of triangles attached to this point
+		std::vector<unsigned int> triangleIndices; //indices of triangles attached to this point
 	};
 
 	template<class T> class ConvexHullShape3D : public ConvexShape3D<T>

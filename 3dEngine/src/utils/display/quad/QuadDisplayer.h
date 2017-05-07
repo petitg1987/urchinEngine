@@ -29,7 +29,7 @@ namespace urchin
 			void *textureCoord;
 
 			unsigned int bufferIDs[2], vertexArrayObject;
-			enum //buffer IDs indexes
+			enum //buffer IDs indices
 			{
 				VAO_VERTEX_POSITION = 0,
 				VAO_TEX_COORD

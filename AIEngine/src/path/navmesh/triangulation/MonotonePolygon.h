@@ -78,7 +78,7 @@ namespace urchin
 			void logOutputData(const std::string &, const std::vector<std::vector<unsigned int>> &, Logger::CriticalityLevel) const;
 
 			const std::vector<Point2<float>> &polygonPoints;
-			const std::vector<unsigned int> &endContourIndexes; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndexes' will have values: 5 and 9.
+			const std::vector<unsigned int> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 
 			std::vector<EdgeHelper> edgeHelpers;
 			std::multimap<unsigned int, Edge> diagonals;

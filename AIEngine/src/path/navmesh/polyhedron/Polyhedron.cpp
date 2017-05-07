@@ -9,7 +9,7 @@ namespace urchin
 	 * @param faces Faces of the polyhedron. Faces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
 	 * @param points All points of the polyhedrons
 	 */
-	Polyhedron::Polyhedron(const std::string &name, const std::vector<Face> &faces, const std::vector<Point3<float>> &points) :
+	Polyhedron::Polyhedron(const std::string &name, const std::vector<Face> &faces, const std::vector<PolyhedronPoint> &points) :
 			name(name),
 			faces(faces),
 			points(points),
@@ -26,11 +26,6 @@ namespace urchin
 	const std::vector<Face> &Polyhedron::getFaces() const
 	{
 		return faces;
-	}
-
-	unsigned int Polyhedron::getFaceSize() const
-	{
-		return faces.size();
 	}
 
 	const Face &Polyhedron::getFace(unsigned int faceIndex) const
@@ -63,14 +58,14 @@ namespace urchin
 		return points;
 	}
 
-	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis(const std::vector<Point3<float>> &points) const
+	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis(const std::vector<PolyhedronPoint> &polyhedronPoints) const
 	{
 		std::vector<Point2<float>> flatPoints;
-		flatPoints.reserve(points.size());
+		flatPoints.reserve(polyhedronPoints.size());
 
-		for(const auto &point : points)
+		for(const auto &polyhedronPoint : polyhedronPoints)
 		{
-			flatPoints.push_back(Point2<float>(point.X, -point.Z));
+			flatPoints.push_back(Point2<float>(polyhedronPoint.point.X, -polyhedronPoint.point.Z));
 		}
 
 		return flatPoints;

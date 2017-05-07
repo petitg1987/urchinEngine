@@ -31,6 +31,7 @@ namespace urchin
 		private:
 			std::vector<Polyhedron> createPolyhedrons();
 			std::vector<Face> createPolyhedronFaces(OBBox<float> *);
+			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *);
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
 			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *);
 			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *);

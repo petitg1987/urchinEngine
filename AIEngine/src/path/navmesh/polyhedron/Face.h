@@ -7,28 +7,30 @@
 namespace urchin
 {
 
+	class PolyhedronPoint;
+
 	class Face
 	{
 		public:
-			Face(const std::vector<Point3<float>> &);
+			Face(const std::vector<Point3<float>> &); //TODO use indices
 
 			const std::vector<Point3<float>> &getCcwPoints() const;
 			const std::vector<Point3<float>> getCwPoints() const;
 
 			const Vector3<float> &getNormal() const;
 
+			float getAngleToHorizontal() const;
+
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
 
-			float getAngleToHorizontal() const;
-
 		private:
 			std::vector<Point3<float>> ccwPoints;
+
 			Vector3<float> normal;
+			float angleToHorizontalInRadian;
 
 			bool walkableCandidate;
-
-			float angleToHorizontalInRadian;
 	};
 
 }

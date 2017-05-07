@@ -82,24 +82,24 @@ namespace urchin
 
 			if(!closeEnough)
 			{ //polytope can be extended in direction of normal: add a new point
-				std::vector<unsigned int> removedTriangleIndexes;
-				unsigned int index = convexHullShape.addNewPoint(minkowskiDiffPoint, removedTriangleIndexes);
+				std::vector<unsigned int> removedTriangleIndices;
+				unsigned int index = convexHullShape.addNewPoint(minkowskiDiffPoint, removedTriangleIndices);
 				if(index==0)
 				{ //finally, polytope cannot by extended in direction of normal. Cause: numerical imprecision.
 					break;
 				}
 
 				//compute new triangles data
-				const std::vector<unsigned int> &newTriangleIndexes = convexHullShape.getConvexHullPoints().at(index).triangles;
-				for(unsigned int i=0; i<newTriangleIndexes.size(); ++i)
+				const std::vector<unsigned int> &newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
+				for(unsigned int i=0; i<newTriangleIndices.size(); ++i)
 				{
-					trianglesData.insert(std::pair<unsigned int, EPATriangleData<T>>(newTriangleIndexes[i], createTriangleData(convexHullShape, newTriangleIndexes[i])));
+					trianglesData.insert(std::pair<unsigned int, EPATriangleData<T>>(newTriangleIndices[i], createTriangleData(convexHullShape, newTriangleIndices[i])));
 				}
 
 				//remove triangle data not used anymore
-				for(unsigned int i=0; i<removedTriangleIndexes.size(); ++i)
+				for(unsigned int i=0; i<removedTriangleIndices.size(); ++i)
 				{
-					trianglesData.erase(removedTriangleIndexes[i]);
+					trianglesData.erase(removedTriangleIndices[i]);
 				}
 
 				//save support points
@@ -285,16 +285,16 @@ namespace urchin
 			}
 		}
 
-		constexpr unsigned int indexes[4][3] = 		{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
-		constexpr unsigned int revIndexes[4][3] = 	{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
+		constexpr unsigned int indices[4][3] = 		{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
+		constexpr unsigned int revIndices[4][3] = 	{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
 		for(unsigned int i=0; i<4; ++i)
 		{
-			const unsigned int pointOutsideTriangle = 6 - (indexes[i][0] + indexes[i][1] + indexes[i][2]);
-			const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indexes[i]).computeNormal(
-					convexHullPoints.at(indexes[i][0]).point,
-					convexHullPoints.at(indexes[i][1]).point,
-					convexHullPoints.at(indexes[i][2]).point);
-			const Vector3<T> trianglePointToOutsidePoint = convexHullPoints.at(indexes[i][0]).point.vector(convexHullPoints.at(pointOutsideTriangle).point);
+			const unsigned int pointOutsideTriangle = 6 - (indices[i][0] + indices[i][1] + indices[i][2]);
+			const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indices[i]).computeNormal(
+					convexHullPoints.at(indices[i][0]).point,
+					convexHullPoints.at(indices[i][1]).point,
+					convexHullPoints.at(indices[i][2]).point);
+			const Vector3<T> trianglePointToOutsidePoint = convexHullPoints.at(indices[i][0]).point.vector(convexHullPoints.at(pointOutsideTriangle).point);
 			T dotProduct = normalTriangle.dotProduct(trianglePointToOutsidePoint);
 
 			T trianglePointToOutsidePointLength = trianglePointToOutsidePoint.length();
@@ -302,17 +302,17 @@ namespace urchin
 
 			if(dotProduct < -dotProductTolerance)
 			{
-				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indexes[i])));
+				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indices[i])));
 				for(unsigned int pointI=0; pointI<3; ++pointI)
 				{
-					convexHullPoints.at(indexes[i][pointI]).triangles.push_back(i);
+					convexHullPoints.at(indices[i][pointI]).triangleIndices.push_back(i);
 				}
 			}else if(dotProduct > dotProductTolerance)
 			{
-				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndexes[i])));
+				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndices[i])));
 				for(unsigned int pointI=0; pointI<3; ++pointI)
 				{
-					convexHullPoints.at(revIndexes[i][pointI]).triangles.push_back(i);
+					convexHullPoints.at(revIndices[i][pointI]).triangleIndices.push_back(i);
 				}
 			}else
 			{

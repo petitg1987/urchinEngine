@@ -21,8 +21,6 @@ namespace urchin
 
 			CollisionShape3D::ShapeType getShapeType() const;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
-//TODO			const std::map<unsigned int, IndexedTriangle3D<float>> &getIndexedTriangles() const;
-//			const std::map<unsigned int, Point3<float>> &getIndexedPoints() const;
 			std::vector<Point3<float>> getPoints() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const;

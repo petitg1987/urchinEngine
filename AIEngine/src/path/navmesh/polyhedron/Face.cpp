@@ -3,15 +3,17 @@
 #include <cmath>
 
 #include "Face.h"
+#include "Polyhedron.h"
 
 namespace urchin
 {
 
 	/**
-	 * @param points Points of the plane which must be coplanar and counter clockwise oriented
+	 * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
 	 */
 	Face::Face(const std::vector<Point3<float>> &ccwPoints) :
 		ccwPoints(ccwPoints),
+		angleToHorizontalInRadian(0.0),
 		walkableCandidate(true)
 	{
 		if(ccwPoints.size()<3)
