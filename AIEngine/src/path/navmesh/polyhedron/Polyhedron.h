@@ -28,7 +28,8 @@ namespace urchin
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
 
-			std::vector<Point2<float>> computeCwFootprintPoints(const BoxShape<float> &) const;
+			void expand(const BoxShape<float> &);
+			std::vector<Point2<float>> computeCwFootprintPoints(const Face &) const;
 
 		private:
 			std::string name;

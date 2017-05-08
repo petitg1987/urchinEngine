@@ -43,16 +43,21 @@ namespace urchin
 		return walkableCandidate;
 	}
 
-	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(const BoxShape<float> &agentBound) const
+	void Polyhedron::expand(const BoxShape<float> &agentBound)
 	{
-		//TODO :
-		//1) expand 'this' polyhedron (not to be done in this method ?)
-		//2) take only points below the walkable surface
-		//3) create 2d convex hull with these points
-		ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis(points));
-		std::unique_ptr<ConvexHull2D<float>> expandedFootprintConvexHull = footprintConvexHull.resize(agentBound.getHalfSize(0));
+		//TODO expand faces & points + bevel planes in TODO.txt
+		for(auto &face : faces)
+		{
+			face.preComputeValues(points);
+		}
+	}
 
-		std::vector<Point2<float>> points(expandedFootprintConvexHull->getPoints());
+	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(const Face &walkableFace) const
+	{
+		//TODO Take only points below the 'walkableFace'
+		//TODO Create 2d convex hull with these points
+		ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis(points));
+		std::vector<Point2<float>> points(footprintConvexHull.getPoints());
 		std::reverse(points.begin(), points.end());
 
 		return points;

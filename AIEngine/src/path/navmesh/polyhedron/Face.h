@@ -12,21 +12,24 @@ namespace urchin
 	class Face
 	{
 		public:
-			Face(const std::vector<Point3<float>> &); //TODO use indices
+			Face(const std::vector<unsigned int> &);
+
+			void preComputeValues(const std::vector<PolyhedronPoint> &);
 
 			const std::vector<Point3<float>> &getCcwPoints() const;
-			const std::vector<Point3<float>> getCwPoints() const;
-
 			const Vector3<float> &getNormal() const;
-
 			float getAngleToHorizontal() const;
 
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
 
 		private:
-			std::vector<Point3<float>> ccwPoints;
+			#ifdef _DEBUG
+				bool valuesPrecomputed;
+			#endif
+			std::vector<unsigned int> ccwPointIndices;
 
+			std::vector<Point3<float>> ccwPoints;
 			Vector3<float> normal;
 			float angleToHorizontalInRadian;
 

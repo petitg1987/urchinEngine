@@ -26,26 +26,28 @@ namespace urchin
 		public:
 			NavMeshGenerator(std::shared_ptr<AIWorld>, NavMeshConfig);
 
-			std::shared_ptr<NavMesh> generate();
+			std::shared_ptr<NavMesh> generate() const;
 
 		private:
-			std::vector<Polyhedron> createPolyhedrons();
-			std::vector<Face> createPolyhedronFaces(OBBox<float> *);
-			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *);
-			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *);
-			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *);
-			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *);
-			Polyhedron createPolyhedronFor(const std::string &, ConvexHull3D<float> *);
-			Polyhedron createPolyhedronFor(const std::string &, Cylinder<float> *);
-			Polyhedron createPolyhedronFor(const std::string &, Sphere<float> *);
+			std::vector<Polyhedron> createExpandedPolyhedrons() const;
+			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *) const;
+			std::vector<Face> createPolyhedronFaces() const;
+			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *) const;
+			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *) const;
+			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *) const;
+			Polyhedron createPolyhedronFor(const std::string &, ConvexHull3D<float> *) const;
+			Polyhedron createPolyhedronFor(const std::string &, Cylinder<float> *) const;
+			Polyhedron createPolyhedronFor(const std::string &, Sphere<float> *) const;
 
-			std::vector<PolyhedronFace> findWalkableFaces(const std::vector<Polyhedron> &);
+			void expandPolyhedrons(std::vector<Polyhedron> &) const;
 
-			NavPolygon createNavigationPolygonFor(const PolyhedronFace &, const std::vector<Polyhedron> &);
+			std::vector<PolyhedronFace> findWalkableFaces(const std::vector<Polyhedron> &) const;
+
+			NavPolygon createNavigationPolygonFor(const PolyhedronFace &, const std::vector<Polyhedron> &) const;
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
-			void addObstacles(const std::vector<Polyhedron> &, unsigned int, Triangulation &);
-			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const Face &);
-			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &);
+			void addObstacles(const std::vector<Polyhedron> &, unsigned int, const Face &, Triangulation &) const;
+			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const Face &) const;
+			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;
 
 			std::shared_ptr<AIWorld> aiWorld;
 			NavMeshConfig navMeshConfig;
