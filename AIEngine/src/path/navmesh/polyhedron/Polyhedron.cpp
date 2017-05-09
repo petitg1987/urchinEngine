@@ -6,10 +6,10 @@ namespace urchin
 {
 
 	/**
-	 * @param faces Faces of the polyhedron. Faces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
+	 * @param faces Indexed faces of the polyhedron. Faces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
 	 * @param points All points of the polyhedrons
 	 */
-	Polyhedron::Polyhedron(const std::string &name, const std::vector<Face> &faces, const std::vector<PolyhedronPoint> &points) :
+	Polyhedron::Polyhedron(const std::string &name, std::vector<PolyhedronFace> &faces, const std::vector<PolyhedronPoint> &points) :
 			name(name),
 			faces(faces),
 			points(points),
@@ -23,12 +23,12 @@ namespace urchin
 		return name;
 	}
 
-	const std::vector<Face> &Polyhedron::getFaces() const
+	const std::vector<PolyhedronFace> &Polyhedron::getFaces() const
 	{
 		return faces;
 	}
 
-	const Face &Polyhedron::getFace(unsigned int faceIndex) const
+	const PolyhedronFace &Polyhedron::getFace(unsigned int faceIndex) const
 	{
 		return faces[faceIndex];
 	}
@@ -46,13 +46,14 @@ namespace urchin
 	void Polyhedron::expand(const BoxShape<float> &agentBound)
 	{
 		//TODO expand faces & points + bevel planes in TODO.txt
+
 		for(auto &face : faces)
 		{
-			face.preComputeValues(points);
+			face.refreshWith(points);
 		}
 	}
 
-	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(const Face &walkableFace) const
+	std::vector<Point2<float>> Polyhedron::computeCwFootprintPoints(const PolyhedronFace &walkableFace) const
 	{
 		//TODO Take only points below the 'walkableFace'
 		//TODO Create 2d convex hull with these points

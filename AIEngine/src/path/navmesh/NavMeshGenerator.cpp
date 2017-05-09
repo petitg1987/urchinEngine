@@ -2,7 +2,6 @@
 #include <chrono>
 
 #include "NavMeshGenerator.h"
-#include "path/navmesh/polyhedron/Face.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 
@@ -21,7 +20,7 @@ namespace urchin
 		auto frameStartTime = std::chrono::high_resolution_clock::now(); //TODO remove counter:
 
 		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons();
-		std::vector<PolyhedronFace> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
+		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
 		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
 
 		for(const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
@@ -79,17 +78,17 @@ namespace urchin
 	 * Return box faces. Faces are guaranteed to be in the following order: right, left, top, bottom, front, back when
 	 * points are sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
 	 */
-	std::vector<Face> NavMeshGenerator::createPolyhedronFaces() const
+	std::vector<PolyhedronFace> NavMeshGenerator::createPolyhedronFaces() const
 	{
-		std::vector<Face> faces;
+		std::vector<PolyhedronFace> faces;
 		faces.reserve(6);
 
-		faces.push_back(Face({0, 2, 3, 1})); //right
-		faces.push_back(Face({4, 5, 7, 6})); //left
-		faces.push_back(Face({0, 1, 5, 4})); //top
-		faces.push_back(Face({3, 2, 6, 7})); //bottom
-		faces.push_back(Face({0, 4, 6, 2})); //front
-		faces.push_back(Face({1, 3, 7, 5})); //back
+		faces.push_back(PolyhedronFace({0, 2, 3, 1})); //right
+		faces.push_back(PolyhedronFace({4, 5, 7, 6})); //left
+		faces.push_back(PolyhedronFace({0, 1, 5, 4})); //top
+		faces.push_back(PolyhedronFace({3, 2, 6, 7})); //bottom
+		faces.push_back(PolyhedronFace({0, 4, 6, 2})); //front
+		faces.push_back(PolyhedronFace({1, 3, 7, 5})); //back
 
 		return faces;
 	}
@@ -118,7 +117,8 @@ namespace urchin
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, OBBox<float> *box) const
 	{
-		return Polyhedron(name, createPolyhedronFaces(), createPolyhedronPoints(box));
+		std::vector<PolyhedronFace> polyhedronFaces = createPolyhedronFaces();
+		return Polyhedron(name, polyhedronFaces, createPolyhedronPoints(box));
 	}
 
 	Polyhedron NavMeshGenerator::createPolyhedronFor(const std::string &name, Capsule<float> *capsule) const
@@ -161,7 +161,7 @@ namespace urchin
 			polyhedronPoints.push_back(polyhedronPoint);
 		}
 
-		std::vector<Face> faces;
+		std::vector<PolyhedronFace> faces;
 		faces.reserve(indexedTriangles.size());
 		unsigned int i=0;
 		for(const auto &indexedTriangle : indexedTriangles)
@@ -177,7 +177,7 @@ namespace urchin
 			unsigned int polyhedronPoint2Index = std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[2]));
 			polyhedronPoints[polyhedronPoint2Index].faceIndices.push_back(i);
 
-			faces.push_back(Face({polyhedronPoint0Index, polyhedronPoint1Index, polyhedronPoint2Index}));
+			faces.push_back(PolyhedronFace({polyhedronPoint0Index, polyhedronPoint1Index, polyhedronPoint2Index}));
 			i++;
 		}
 
@@ -190,7 +190,7 @@ namespace urchin
 		boxHalfSizes[cylinder->getCylinderOrientation()] = cylinder->getHeight() / 2.0f;
 
 		OBBox<float> cylinderBox(boxHalfSizes, cylinder->getCenterOfMass(), cylinder->getOrientation());
-		std::vector<Face> faces = createPolyhedronFaces();
+		std::vector<PolyhedronFace> faces = createPolyhedronFaces();
 		for(unsigned int i=0; i<faces.size(); ++i)
 		{
 			faces[i].setWalkableCandidate(cylinder->getCylinderOrientation()==i/2);
@@ -216,9 +216,9 @@ namespace urchin
 		}
 	}
 
-	std::vector<PolyhedronFace> NavMeshGenerator::findWalkableFaces(const std::vector<Polyhedron> &expandedPolyhedrons) const
+	std::vector<PolyhedronFaceIndex> NavMeshGenerator::findWalkableFaces(const std::vector<Polyhedron> &expandedPolyhedrons) const
 	{
-		std::vector<PolyhedronFace> walkableFaces;
+		std::vector<PolyhedronFaceIndex> walkableFaces;
 		walkableFaces.reserve(expandedPolyhedrons.size()/2); //estimated memory size
 
 		for(unsigned int polyhedronIndex=0; polyhedronIndex<expandedPolyhedrons.size(); ++polyhedronIndex)
@@ -231,15 +231,15 @@ namespace urchin
 
 				for(unsigned int faceIndex=0; faceIndex<expandedPolyhedron.getFaces().size(); ++faceIndex)
 				{
-					const Face &face = expandedPolyhedron.getFace(faceIndex);
+					const PolyhedronFace &face = expandedPolyhedron.getFace(faceIndex);
 
 					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
 					{
-						PolyhedronFace polyhedronFace;
-						polyhedronFace.polyhedronIndex = polyhedronIndex;
-						polyhedronFace.faceIndex = faceIndex;
+						PolyhedronFaceIndex polyhedronFaceIndex;
+						polyhedronFaceIndex.polyhedronIndex = polyhedronIndex;
+						polyhedronFaceIndex.faceIndex = faceIndex;
 
-						walkableFaces.push_back(polyhedronFace);
+						walkableFaces.push_back(polyhedronFaceIndex);
 					}
 				}
 			}
@@ -248,10 +248,10 @@ namespace urchin
 		return walkableFaces;
 	}
 
-	NavPolygon NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFace &polyhedronWalkableFaces, const std::vector<Polyhedron> &expandedPolyhedrons) const
+	NavPolygon NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFaces, const std::vector<Polyhedron> &expandedPolyhedrons) const
 	{
 		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFaces.polyhedronIndex];
-		const Face &walkableFace = polydedron.getFace(polyhedronWalkableFaces.faceIndex);
+		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFaces.faceIndex);
 
 		Triangulation triangulation(flatPointsOnYAxis(walkableFace.getCcwPoints()));
 		addObstacles(expandedPolyhedrons, polyhedronWalkableFaces.polyhedronIndex, walkableFace, triangulation);
@@ -275,7 +275,7 @@ namespace urchin
 		return flatPoints;
 	}
 
-	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, unsigned int processingPolyhedron, const Face &walkableFace, Triangulation &triangulation) const
+	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, unsigned int processingPolyhedron, const PolyhedronFace &walkableFace, Triangulation &triangulation) const
 	{
 		std::vector<CSGPolygon> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
@@ -294,7 +294,7 @@ namespace urchin
 		}
 	}
 
-	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const Face &walkableFace) const
+	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const PolyhedronFace &walkableFace) const
 	{
 		Vector3<float> verticalVector(0.0, 1.0, 0.0);
 		float numerator = walkableFace.getNormal().dotProduct(verticalVector);

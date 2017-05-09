@@ -1,21 +1,22 @@
-#ifndef ENGINE_FACE_H
-#define ENGINE_FACE_H
+#ifndef ENGINE_POLYHEDRONFACE_H
+#define ENGINE_POLYHEDRONFACE_H
 
 #include <vector>
 #include "UrchinCommon.h"
 
+#include "path/navmesh/polyhedron/PolyhedronPoint.h"
+
 namespace urchin
 {
 
-	class PolyhedronPoint;
-
-	class Face
+	class PolyhedronFace
 	{
 		public:
-			Face(const std::vector<unsigned int> &);
+			PolyhedronFace(const std::vector<unsigned int> &);
 
-			void preComputeValues(const std::vector<PolyhedronPoint> &);
+			void refreshWith(const std::vector<PolyhedronPoint> &);
 
+			const std::vector<unsigned int> &getCcwPointIndices() const;
 			const std::vector<Point3<float>> &getCcwPoints() const;
 			const Vector3<float> &getNormal() const;
 			float getAngleToHorizontal() const;
@@ -24,9 +25,6 @@ namespace urchin
 			bool isWalkableCandidate() const;
 
 		private:
-			#ifdef _DEBUG
-				bool valuesPrecomputed;
-			#endif
 			std::vector<unsigned int> ccwPointIndices;
 
 			std::vector<Point3<float>> ccwPoints;

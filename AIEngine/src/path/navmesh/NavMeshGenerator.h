@@ -9,13 +9,14 @@
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
 #include "path/navmesh/polyhedron/Polyhedron.h"
-#include "path/navmesh/polyhedron/Face.h"
+#include "path/navmesh/polyhedron/PolyhedronFace.h"
+#include "path/navmesh/polyhedron/PolyhedronPoint.h"
 #include "path/navmesh/triangulation/Triangulation.h"
 
 namespace urchin
 {
 
-	struct PolyhedronFace
+	struct PolyhedronFaceIndex
 	{
 		unsigned int polyhedronIndex;
 		unsigned int faceIndex;
@@ -31,7 +32,7 @@ namespace urchin
 		private:
 			std::vector<Polyhedron> createExpandedPolyhedrons() const;
 			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *) const;
-			std::vector<Face> createPolyhedronFaces() const;
+			std::vector<PolyhedronFace> createPolyhedronFaces() const;
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *) const;
 			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *) const;
 			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *) const;
@@ -41,12 +42,12 @@ namespace urchin
 
 			void expandPolyhedrons(std::vector<Polyhedron> &) const;
 
-			std::vector<PolyhedronFace> findWalkableFaces(const std::vector<Polyhedron> &) const;
+			std::vector<PolyhedronFaceIndex> findWalkableFaces(const std::vector<Polyhedron> &) const;
 
-			NavPolygon createNavigationPolygonFor(const PolyhedronFace &, const std::vector<Polyhedron> &) const;
+			NavPolygon createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
-			void addObstacles(const std::vector<Polyhedron> &, unsigned int, const Face &, Triangulation &) const;
-			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const Face &) const;
+			void addObstacles(const std::vector<Polyhedron> &, unsigned int, const PolyhedronFace &, Triangulation &) const;
+			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const PolyhedronFace &) const;
 			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;
 
 			std::shared_ptr<AIWorld> aiWorld;
