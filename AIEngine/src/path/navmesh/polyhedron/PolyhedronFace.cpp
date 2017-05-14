@@ -11,6 +11,7 @@ namespace urchin
 	 * @param ccwPointIndices Point indices of the plane which must be coplanar and counter clockwise oriented
 	 */
 	PolyhedronFace::PolyhedronFace(const std::vector<unsigned int> &ccwPointIndices) :
+		isInitialized(false),
 		ccwPointIndices(ccwPointIndices),
 		angleToHorizontalInRadian(std::numeric_limits<float>::max()),
 		walkableCandidate(true)
@@ -37,6 +38,18 @@ namespace urchin
 
 		Vector3<float> upVector(0.0, 1.0, 0.0);
 		angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
+
+		isInitialized = true;
+	}
+
+	void PolyhedronFace::checkInitialization() const
+	{
+		#ifdef _DEBUG
+			if(!isInitialized)
+			{
+				throw std::runtime_error("Impossible to access to this data because polyhedron face not initialized.");
+			}
+		#endif
 	}
 
 	const std::vector<unsigned int> &PolyhedronFace::getCcwPointIndices() const
@@ -46,16 +59,19 @@ namespace urchin
 
 	const std::vector<Point3<float>> &PolyhedronFace::getCcwPoints() const
 	{
+		checkInitialization();
 		return ccwPoints;
 	}
 
 	const Vector3<float> &PolyhedronFace::getNormal() const
 	{
+		checkInitialization();
 		return normal;
 	}
 
 	float PolyhedronFace::getAngleToHorizontal() const
 	{
+		checkInitialization();
 		return angleToHorizontalInRadian;
 	}
 
@@ -67,5 +83,33 @@ namespace urchin
 	bool PolyhedronFace::isWalkableCandidate() const
 	{
 		return walkableCandidate;
+	}
+
+	CSGConvexPolygon PolyhedronFace::computeCSGConvexPolygon(const std::string &name) const
+	{
+		checkInitialization();
+		if(normal.dotProduct(Vector3<float>(0.0, 1.0, 0.0)) > 0.0)
+		{
+			std::vector<Point2<float>> faceCwPoints(flatPointsOnYAxis());
+			std::reverse(faceCwPoints.begin(), faceCwPoints.end());
+			return CSGConvexPolygon(name, faceCwPoints);
+		}else
+		{
+			std::vector<Point2<float>> faceCwPoints(flatPointsOnYAxis());
+			return CSGConvexPolygon(name, faceCwPoints);
+		}
+	}
+
+	std::vector<Point2<float>> PolyhedronFace::flatPointsOnYAxis() const
+	{
+		std::vector<Point2<float>> flatPoints;
+		flatPoints.reserve(ccwPoints.size());
+
+		for(const auto &ccwPoint : ccwPoints)
+		{
+			flatPoints.push_back(Point2<float>(ccwPoint.X, -ccwPoint.Z));
+		}
+
+		return flatPoints;
 	}
 }

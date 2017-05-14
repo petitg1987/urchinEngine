@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "path/navmesh/polyhedron/PolyhedronPoint.h"
+#include "path/navmesh/csg/CSGConvexPolygon.h"
 
 namespace urchin
 {
@@ -24,7 +25,15 @@ namespace urchin
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
 
+			CSGConvexPolygon computeCSGConvexPolygon(const std::string &) const;
+
 		private:
+			void checkInitialization() const;
+
+			std::vector<Point2<float>> flatPointsOnYAxis() const;
+
+			bool isInitialized;
+
 			std::vector<unsigned int> ccwPointIndices;
 
 			std::vector<Point3<float>> ccwPoints;

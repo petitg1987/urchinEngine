@@ -113,6 +113,15 @@ namespace urchin
 		return normal.X*p.X + normal.Y*p.Y + normal.Z*p.Z + d*p.W;
 	}
 
+	/**
+	 * @return Vertical distance between the plane and the point 3D. If negative result: the point is on the same side as the normal.
+	 */
+	template<class T> T Plane<T>::verticalDistance(const Point3<T> &p) const
+	{
+		Point3<T> planePoint = Point3<T>(normal * -d);
+		return normal.dotProduct(p.vector(planePoint)) / normal.Y;
+	}
+
 	template<class T> Point3<T> Plane<T>::orthogonalProjection(const Point3<T> &p) const
 	{
 		Point3<T> planePoint = Point3<T>(normal * -d);

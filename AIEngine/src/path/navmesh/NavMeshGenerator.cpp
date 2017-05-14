@@ -1,9 +1,12 @@
 #include <cmath>
 #include <chrono>
+#include <algorithm>
 
 #include "NavMeshGenerator.h"
 #include "path/navmesh/csg/CSGPolygon.h"
+#include "path/navmesh/csg/CSGConvexPolygon.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
+#include "path/navmesh/csg/PolygonsIntersection.h"
 
 namespace urchin
 {
@@ -248,13 +251,13 @@ namespace urchin
 		return walkableFaces;
 	}
 
-	NavPolygon NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFaces, const std::vector<Polyhedron> &expandedPolyhedrons) const
+	NavPolygon NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace, const std::vector<Polyhedron> &expandedPolyhedrons) const
 	{
-		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFaces.polyhedronIndex];
-		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFaces.faceIndex);
+		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
+		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
 
 		Triangulation triangulation(flatPointsOnYAxis(walkableFace.getCcwPoints()));
-		addObstacles(expandedPolyhedrons, polyhedronWalkableFaces.polyhedronIndex, walkableFace, triangulation);
+		addObstacles(expandedPolyhedrons, polyhedronWalkableFace, triangulation);
 
 		std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
 		const std::vector<IndexedTriangle3D<float>> &triangles = toIndexedTriangle3D(triangulation.triangulate());
@@ -275,15 +278,23 @@ namespace urchin
 		return flatPoints;
 	}
 
-	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, unsigned int processingPolyhedron, const PolyhedronFace &walkableFace, Triangulation &triangulation) const
+	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, const PolyhedronFaceIndex &polyhedronWalkableFace, Triangulation &triangulation) const
 	{
+		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
+		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
+		CSGConvexPolygon walkableFacePolygon = walkableFace.computeCSGConvexPolygon(polydedron.getName());
+
 		std::vector<CSGPolygon> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
 		{ //TODO select only polygons AABBox above 'walkFace' and reserve 'holePolygons'
-			if(i!=processingPolyhedron)
+			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
-				std::vector<Point2<float>> cwFootprintPoints = expandedPolyhedrons[i].computeCwFootprintPoints(walkableFace);
-				holePolygons.push_back(CSGPolygon(expandedPolyhedrons[i].getName(), cwFootprintPoints));
+				CSGConvexPolygon *footprintPolygon = expandedPolyhedrons[i].getOrComputeCSGConvexPolygon().get();
+				CSGPolygon footprintPolygonOnWalkableFace = PolygonsIntersection().intersectionPolygons(*footprintPolygon, walkableFacePolygon);
+				if(footprintPolygonOnWalkableFace.getCwPoints().size() >= 3)
+				{
+					holePolygons.push_back(footprintPolygonOnWalkableFace);
+				}
 			}
 		}
 
@@ -296,9 +307,6 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const PolyhedronFace &walkableFace) const
 	{
-		Vector3<float> verticalVector(0.0, 1.0, 0.0);
-		float numerator = walkableFace.getNormal().dotProduct(verticalVector);
-
 		std::vector<Point3<float>> elevatedPoints = walkableFace.getCcwPoints();
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
 
@@ -308,8 +316,8 @@ namespace urchin
 			for(const auto &holePoint : holePoints)
 			{
 				Point3<float> holePoint3D(holePoint.X, 0.0, -holePoint.Y);
-				float t = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0])) / numerator;
-				Point3<float> projectedPoint = holePoint3D.translate(t * verticalVector);
+				float t = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0])) / walkableFace.getNormal().Y;
+				Point3<float> projectedPoint = holePoint3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
 
 				elevatedPoints.push_back(projectedPoint);
 			}

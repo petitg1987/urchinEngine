@@ -20,6 +20,7 @@ namespace urchin
 	{
 		public:
 			PolygonsUnion();
+
 			std::vector<CSGPolygon> unionPolygons(const std::vector<CSGPolygon> &) const;
 
 		private:

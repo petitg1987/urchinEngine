@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 
 #include "ConvexHullShape2D.h"
 #include "math/geometry/2d/util/ResizeConvexHull2DService.h"
@@ -59,7 +60,7 @@ namespace urchin
 			}
 		}
 
-		convexHullPoints.resize(k-1); //k-1: remove the last point which is the same that the first point of lower list
+		convexHullPoints.resize(std::max(((int)k)-1, 0)); //k-1: remove the last point which is the same that the first point of lower list
 	}
 
 	template<class T> ConvexHullShape2D<T>::~ConvexHullShape2D()

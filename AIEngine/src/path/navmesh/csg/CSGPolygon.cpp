@@ -24,16 +24,16 @@ namespace urchin
 
 	}
 
-	const std::string &CSGPolygon::getName() const
-	{
-		return name;
-	}
-
 	CSGPolygon& CSGPolygon::operator=(CSGPolygon &&polygon)
 	{
 		this->name = std::move(polygon.name);
 		this->cwPoints = std::move(polygon.cwPoints);
 		return *this;
+	}
+
+	const std::string &CSGPolygon::getName() const
+	{
+		return name;
 	}
 
 	const std::vector<Point2<float>> &CSGPolygon::getCwPoints() const

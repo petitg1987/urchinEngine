@@ -31,19 +31,22 @@ namespace urchin
 		for(const auto itPoint : originalConvexHullShape.getConvexHullPoints())
 		{
 			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangleIndices, planes);
-			if(threePlanes.size()!=3)
+			Point3<T> newPoint;
+			if(threePlanes.size()==3)
 			{
-				break;
+				Vector3<T> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
+				Vector3<T> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
+				Vector3<T> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
+
+				newPoint = Point3<T>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
+				newPoint += Point3<T>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
+				newPoint += Point3<T>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
+				newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+			}else
+			{ //all planes should be parallel
+				Plane<T> firstPlane = planes[itPoint.second.triangleIndices[0]];
+				newPoint = itPoint.second.point.translate(firstPlane.getNormal() * distance);
 			}
-
-			Vector3<T> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
-			Vector3<T> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
-			Vector3<T> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
-
-			Point3<T> newPoint(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
-			newPoint += Point3<T>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
-			newPoint += Point3<T>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-			newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
 
 			if(distance<0.0 && !isPointInsidePlanes(planes, newPoint))
 			{ //too big negative distance induced wrong resized convex hull
