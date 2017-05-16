@@ -7,7 +7,7 @@
 
 #include "path/navmesh/polyhedron/PolyhedronFace.h"
 #include "path/navmesh/polyhedron/PolyhedronPoint.h"
-#include "path/navmesh/csg/CSGConvexPolygon.h"
+#include "path/navmesh/csg/CSGPolygon.h"
 
 namespace urchin
 {
@@ -22,7 +22,7 @@ namespace urchin
 			const std::vector<PolyhedronFace> &getFaces() const;
 			const PolyhedronFace &getFace(unsigned int) const;
 
-			std::shared_ptr<CSGConvexPolygon> getOrComputeCSGConvexPolygon() const;
+			std::shared_ptr<CSGPolygon> getOrComputeCSGPolygon() const;
 
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
@@ -40,7 +40,7 @@ namespace urchin
 			std::string name;
 			std::vector<PolyhedronFace> faces;
 			std::vector<PolyhedronPoint> points;
-			mutable std::shared_ptr<CSGConvexPolygon> csgConvexPolygon;
+			mutable std::shared_ptr<CSGPolygon> csgPolygon;
 
 			bool walkableCandidate;
 	};

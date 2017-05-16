@@ -27,6 +27,7 @@
 #include "ai/path/MonotonePolygonTest.h"
 #include "ai/path/TriangulationTest.h"
 #include "ai/path/PolygonsUnionTest.h"
+#include "ai/path/PolygonsIntersectionTest.h"
 
 int main()
 {
@@ -80,6 +81,7 @@ int main()
 	runner.addTest(MonotonePolygonTest::suite());
 	runner.addTest(TriangulationTest::suite());
 	runner.addTest(PolygonsUnionTest::suite());
+	runner.addTest(PolygonsIntersectionTest::suite());
 
 	runner.run();
 

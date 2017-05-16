@@ -34,17 +34,17 @@ namespace urchin
 		return faces[faceIndex];
 	}
 
-	std::shared_ptr<CSGConvexPolygon> Polyhedron::getOrComputeCSGConvexPolygon() const
+	std::shared_ptr<CSGPolygon> Polyhedron::getOrComputeCSGPolygon() const
 	{
-		if(!csgConvexPolygon)
+		if(!csgPolygon)
 		{
 			ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis());
 			std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
 			std::reverse(cwPoints.begin(), cwPoints.end());
-			csgConvexPolygon = std::make_shared<CSGConvexPolygon>(name, cwPoints);
+			csgPolygon = std::make_shared<CSGPolygon>(name, cwPoints);
 		}
 
-		return csgConvexPolygon;
+		return csgPolygon;
 	}
 
 	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis() const
@@ -104,7 +104,7 @@ namespace urchin
 			face.refreshWith(points);
 		}
 
-		csgConvexPolygon.reset();
+		csgPolygon.reset();
 	}
 
 	std::vector<Plane<float>> Polyhedron::buildPlanesFromFaces() const

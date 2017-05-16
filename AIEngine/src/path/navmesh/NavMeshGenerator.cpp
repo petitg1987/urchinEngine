@@ -4,7 +4,6 @@
 
 #include "NavMeshGenerator.h"
 #include "path/navmesh/csg/CSGPolygon.h"
-#include "path/navmesh/csg/CSGConvexPolygon.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsIntersection.h"
 
@@ -282,14 +281,14 @@ namespace urchin
 	{
 		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
-		CSGConvexPolygon walkableFacePolygon = walkableFace.computeCSGConvexPolygon(polydedron.getName());
+		CSGPolygon walkableFacePolygon = walkableFace.computeCSGPolygon(polydedron.getName());
 
 		std::vector<CSGPolygon> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
 		{ //TODO select only polygons AABBox above 'walkFace' and reserve 'holePolygons'
 			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
-				CSGConvexPolygon *footprintPolygon = expandedPolyhedrons[i].getOrComputeCSGConvexPolygon().get();
+				CSGPolygon *footprintPolygon = expandedPolyhedrons[i].getOrComputeCSGPolygon().get();
 				CSGPolygon footprintPolygonOnWalkableFace = PolygonsIntersection().intersectionPolygons(*footprintPolygon, walkableFacePolygon);
 				if(footprintPolygonOnWalkableFace.getCwPoints().size() >= 3)
 				{

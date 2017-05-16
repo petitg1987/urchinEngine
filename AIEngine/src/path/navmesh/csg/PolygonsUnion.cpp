@@ -68,7 +68,7 @@ namespace urchin
 		Point2<float> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
 		bool foundIntersection = false;
 
-		unsigned int maxIteration = polygon1.getCwPoints().size() + polygon2.getCwPoints().size() * 2;
+		unsigned int maxIteration = (polygon1.getCwPoints().size() + polygon2.getCwPoints().size()) * 2;
 		unsigned int currentIteration = 0;
 
 		std::vector<Point2<float>> mergedPolygonPoints;
