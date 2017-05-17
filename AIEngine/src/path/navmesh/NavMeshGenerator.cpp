@@ -228,9 +228,6 @@ namespace urchin
 			const Polyhedron &expandedPolyhedron = expandedPolyhedrons[polyhedronIndex];
 			if(expandedPolyhedron.isWalkableCandidate())
 			{
-				if(expandedPolyhedron.getName().compare("ground")!=0)
-					continue; //TODO remove me...
-
 				for(unsigned int faceIndex=0; faceIndex<expandedPolyhedron.getFaces().size(); ++faceIndex)
 				{
 					const PolyhedronFace &face = expandedPolyhedron.getFace(faceIndex);
@@ -282,6 +279,7 @@ namespace urchin
 		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
 		CSGPolygon walkableFacePolygon = walkableFace.computeCSGPolygon(polydedron.getName());
+		CSGPolygon reducedWalkableFacePolygon = walkableFacePolygon.expand(-0.1f);
 
 		std::vector<CSGPolygon> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
@@ -289,7 +287,7 @@ namespace urchin
 			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
 				CSGPolygon *footprintPolygon = expandedPolyhedrons[i].getOrComputeCSGPolygon().get();
-				CSGPolygon footprintPolygonOnWalkableFace = PolygonsIntersection().intersectionPolygons(*footprintPolygon, walkableFacePolygon);
+				CSGPolygon footprintPolygonOnWalkableFace = PolygonsIntersection().intersectionPolygons(*footprintPolygon, reducedWalkableFacePolygon);
 				if(footprintPolygonOnWalkableFace.getCwPoints().size() >= 3)
 				{
 					holePolygons.push_back(footprintPolygonOnWalkableFace);

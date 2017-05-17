@@ -20,6 +20,8 @@ namespace urchin
 
 			const std::vector<Point2<float>> &getCwPoints() const;
 
+			CSGPolygon expand(float) const;
+
 		private:
 			std::string name;
 			std::vector<Point2<float>> cwPoints;

@@ -41,6 +41,11 @@ namespace urchin
 		return cwPoints;
 	}
 
+	CSGPolygon CSGPolygon::expand(float distance) const
+	{
+		return CSGPolygon(name, ResizePolygon2DService<float>::instance()->resizePolygon(cwPoints, -distance));
+	}
+
 	std::ostream& operator <<(std::ostream &stream, const CSGPolygon &polygon)
 	{
 		stream << "Name:" << polygon.getName() << std::endl;
