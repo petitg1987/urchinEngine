@@ -275,19 +275,19 @@ namespace urchin
 	}
 
 	void NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, const PolyhedronFaceIndex &polyhedronWalkableFace, Triangulation &triangulation) const
-	{
+	{//TODO improve method readability
 		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
 		CSGPolygon walkableFacePolygon = walkableFace.computeCSGPolygon(polydedron.getName());
-		CSGPolygon reducedWalkableFacePolygon = walkableFacePolygon.expand(-0.1f);
+		CSGPolygon reducedWalkableFacePolygon = walkableFacePolygon.expand(-0.1f); //TODO use contant ?
 
 		std::vector<CSGPolygon> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
-		{ //TODO select only polygons AABBox above 'walkFace' and reserve 'holePolygons'
+		{ //TODO 3. Select only polygons AABBox above 'walkFace' and reserve 'holePolygons'
 			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
-				CSGPolygon *footprintPolygon = expandedPolyhedrons[i].getOrComputeCSGPolygon().get();
-				CSGPolygon footprintPolygonOnWalkableFace = PolygonsIntersection().intersectionPolygons(*footprintPolygon, reducedWalkableFacePolygon);
+				std::shared_ptr<CSGPolygon> footprintPolygon = expandedPolyhedrons[i].getOrComputeCSGPolygon(); //TODO 2. Only take points above the walkable surface
+				CSGPolygon footprintPolygonOnWalkableFace = PolygonsIntersection::instance()->intersectionPolygons(*footprintPolygon, reducedWalkableFacePolygon);
 				if(footprintPolygonOnWalkableFace.getCwPoints().size() >= 3)
 				{
 					holePolygons.push_back(footprintPolygonOnWalkableFace);
@@ -295,7 +295,7 @@ namespace urchin
 			}
 		}
 
-		std::vector<CSGPolygon> mergedPolygons = PolygonsUnion().unionPolygons(holePolygons);
+		std::vector<CSGPolygon> mergedPolygons = PolygonsUnion::instance()->unionPolygons(holePolygons);
 		for(const auto &mergedPolygon : mergedPolygons)
 		{
 			triangulation.addHolePoints(mergedPolygon.getCwPoints());

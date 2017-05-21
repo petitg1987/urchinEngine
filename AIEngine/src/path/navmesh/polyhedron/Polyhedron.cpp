@@ -34,7 +34,7 @@ namespace urchin
 		return faces[faceIndex];
 	}
 
-	std::shared_ptr<CSGPolygon> Polyhedron::getOrComputeCSGPolygon() const
+	std::shared_ptr<CSGPolygon> Polyhedron::getOrComputeCSGPolygon() const //TODO rename method: getOrComputeFootprint() ?
 	{
 		if(!csgPolygon)
 		{

@@ -85,12 +85,30 @@ namespace urchin
 		return ap.dotProduct(ap) - ((e * e) / f);
 	}
 
+	template<class T> Vector2<T> LineSegment2D<T>::toVector() const
+	{
+		return a.vector(b);
+	}
+
 	/**
 	 * Returns the intersection point of the two lines segment. If intersection doesn't exist: return a Point2<T> of NAN.
 	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
 	 */
 	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other) const
 	{ //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+		Point2<T> farthestIntersectionPoint;
+		return intersectPoint(other, farthestIntersectionPoint);
+	}
+
+	/**
+	 * Returns the intersection point of the two lines segment. If intersection doesn't exist: return a Point2<T> of NAN.
+	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
+	 * @farthestIntersectionPoint Contains the farthest intersection point between this->getA() and this->getB() when line segments are collinear and intersect.
+	 */
+	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, Point2<T> &farthestIntersectionPoint) const
+	{
+		farthestIntersectionPoint = Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
+
 		Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
 		Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
 
@@ -106,19 +124,26 @@ namespace urchin
 				T t1 = t0 + s.dotProduct(r) / r.dotProduct(r);
 
 				if(s.dotProduct(r) < 0.0)
-				{
+				{ //lines in opposite direction
 					std::swap(t0, t1);
 				}
+
 				#ifdef _DEBUG
-					assert(t0 <= t1);
+					assert(std::isnan(t0) || t0 <= t1);
 				#endif
 
 				if(t0>=0.0 && t0<=1.0 && t1>=1.0)
 				{ //collinear with intersection
+					farthestIntersectionPoint = b;
 					return a.translate(t0*r);
 				}else if(t0<=0.0 && t1>=0.0 && t1<=1.0)
 				{ //collinear with intersection
-					return a.translate(t1*r);
+					farthestIntersectionPoint = a.translate(t1*r);
+					return a;
+				}else if(t0>=0.0 && t0<=1.0 && t1>=0.0 && t1<=1.0)
+				{ //collinear intersection (other is totally covered by this)
+					farthestIntersectionPoint = a.translate(t1*r);
+					return a.translate(t0*r);
 				}
 			}
 

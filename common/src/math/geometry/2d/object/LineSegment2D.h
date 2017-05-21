@@ -20,7 +20,10 @@ namespace urchin
 			Point2<T> closestPoint(const Point2<T> &, T[2]) const;
 			T squareDistance(const Point2<T> &) const;
 
+			Vector2<T> toVector() const;
+
 			Point2<T> intersectPoint(const LineSegment2D<T> &) const;
+			Point2<T> intersectPoint(const LineSegment2D<T> &, Point2<T> &) const;
 
 			template<class NEW_TYPE> LineSegment2D<NEW_TYPE> cast() const;
 

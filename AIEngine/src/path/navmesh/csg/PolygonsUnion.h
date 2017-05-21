@@ -16,28 +16,29 @@ namespace urchin
 		unsigned int edgeEndPointIndex;
 	};
 
-	class PolygonsUnion
+	class PolygonsUnion : public Singleton<PolygonsUnion>
 	{
 		public:
-			PolygonsUnion();
+			friend class Singleton<PolygonsUnion>;
 
 			std::vector<CSGPolygon> unionPolygons(const std::vector<CSGPolygon> &) const;
 
 		private:
+			PolygonsUnion();
+			virtual ~PolygonsUnion();
+
 			std::vector<CSGPolygon> unionTwoPolygons(const CSGPolygon &, const CSGPolygon &) const;
 
 			unsigned int findStartPoint(const CSGPolygon &, const CSGPolygon &, const CSGPolygon *&) const;
 			unsigned int findLowestPointIndex(const CSGPolygon &) const;
-			CSGIntersection findFirstValidIntersectionOnEdge(const LineSegment2D<float> &, const CSGPolygon *) const;
-			bool isExteriorAngleLess180(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
+			CSGIntersection findFirstValidIntersectionOnEdge(const LineSegment2D<float> &, const Point2<float> &, const CSGPolygon *) const;
+			bool hasBetterAngleWithIntersectionPoint(const Point2<float> &, const LineSegment2D<float> &, const LineSegment2D<float> &) const;
 
 			bool areSamePoints(const CSGPolygon *, unsigned int, const CSGPolygon *, unsigned int) const;
 			bool areSamePoints(const Point2<float> &, const Point2<float> &) const;
 			bool pointInsideOrOnPolygon(const CSGPolygon *, const Point2<float> &) const;
 
 			void logInputData(const CSGPolygon &, const CSGPolygon &, const std::string &, Logger::CriticalityLevel) const;
-
-			const float epsilon;
 	};
 
 }

@@ -20,7 +20,11 @@ class LineSegment2DCollisionTest : public CppUnit::TestFixture
 		void collinearLinesNoIntersectionOppositeDirection();
 
 		void collinearLinesIntersectionSameDirection();
+		void collinearLinesIntersectionSameDirection2();
 		void collinearLinesIntersectionOppositeDirection();
+		void collinearLinesIntersectionOppositeDirection2();
+		void collinearLinesFullIntersectionSameDirection();
+		void collinearLinesFullIntersectionOppositeDirection();
 };
 
 #endif

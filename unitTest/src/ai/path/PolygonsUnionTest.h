@@ -26,6 +26,8 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 
 		void twoIdenticalTriangles();
 		void twoIdenticalSquares();
+		void twoAlmostIdenticalSquares();
+		void twoAlmostIdenticalSquares2();
 
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();

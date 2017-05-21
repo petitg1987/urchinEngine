@@ -1,5 +1,4 @@
 #include <cmath>
-#include "UrchinCommon.h"
 
 #include "PolygonsIntersection.h"
 
@@ -7,6 +6,11 @@ namespace urchin
 {
 
 	PolygonsIntersection::PolygonsIntersection()
+	{
+
+	}
+
+	PolygonsIntersection::~PolygonsIntersection()
 	{
 
 	}
