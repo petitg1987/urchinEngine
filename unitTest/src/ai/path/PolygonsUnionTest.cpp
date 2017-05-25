@@ -72,6 +72,27 @@ void PolygonsUnionTest::polygonInsideAnother()
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(3.0, 0.0));
 }
 
+void PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint()
+{
+	std::vector<Point2<float>> polyPoints1;
+	polyPoints1.push_back(Point2<float>(1.0, 0.0));
+	polyPoints1.push_back(Point2<float>(2.0, -0.01));
+	polyPoints1.push_back(Point2<float>(2.0, -1.0));
+
+	std::vector<Point2<float>> polyPoints2;
+	polyPoints2.push_back(Point2<float>(0.0, 0.0));
+	polyPoints2.push_back(Point2<float>(3.0, 0.0));
+	polyPoints2.push_back(Point2<float>(0.0, -5.0));
+
+	std::vector<CSGPolygon> allPolygons = {CSGPolygon("p1", polyPoints1), CSGPolygon("p2", polyPoints2)};
+	std::vector<CSGPolygon> polygonUnion = PolygonsUnion::instance()->unionPolygons(allPolygons);
+
+	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(0.0, -5.0));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[1], Point2<float>(0.0, 0.0));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(3.0, 0.0));
+}
+
 void PolygonsUnionTest::twoPolygonsUnion()
 {
 	std::vector<Point2<float>> polyPoints1;
@@ -237,6 +258,35 @@ void PolygonsUnionTest::twoPolygonsIntersectionIsEndPoint()
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[3], Point2<float>(-0.225821018, 5.9758215));
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(1.12582099, 5.9758215));
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[5], Point2<float>(1.12582099, 4.62417889));
+}
+
+void PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEdgeA()
+{
+	//In (-0.224820852, 5.97340727), there is a start point and also an intersection point.
+	//Using double is necessary to distinct them.
+	std::vector<Point2<float>> polyPoints1;
+	polyPoints1.push_back(Point2<float>(-0.224820852, -5.97340727));
+	polyPoints1.push_back(Point2<float>(-0.224821016, -4.62517881));
+	polyPoints1.push_back(Point2<float>(1.12340569, -4.62517881));
+
+	std::vector<Point2<float>> polyPoints2;
+	polyPoints2.push_back(Point2<float>(-0.224821031, -5.97340727));
+	polyPoints2.push_back(Point2<float>(-0.224821031, -4.62517881));
+	polyPoints2.push_back(Point2<float>(0.194670022, -4.62517881));
+	polyPoints2.push_back(Point2<float>(0.194670022, -5.55391598));
+
+	std::vector<CSGPolygon> allPolygons = {CSGPolygon("p1", polyPoints1), CSGPolygon("p2", polyPoints2)};
+	std::vector<CSGPolygon> polygonUnion = PolygonsUnion::instance()->unionPolygons(allPolygons);
+
+	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+	AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 7);
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(-0.224821031, -5.97340727));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[1], Point2<float>(-0.224821031, -4.62517881));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(-0.224821016, -4.62517881));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[3], Point2<float>(1.12340569, -4.62517881));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(0.194670022, -5.55391598));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[5], Point2<float>(-0.0135459732, -5.76213217));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[6], Point2<float>(-0.224820852, -5.97340727));
 }
 
 void PolygonsUnionTest::twoPolygonsTouchInOnePoint()
@@ -475,6 +525,7 @@ CppUnit::Test *PolygonsUnionTest::suite()
 
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsNoUnion", &PolygonsUnionTest::twoPolygonsNoUnion));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("polygonInsideAnother", &PolygonsUnionTest::polygonInsideAnother));
+	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("polygonInsideAnotherTouchInOnePoint", &PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint));
 
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnion", &PolygonsUnionTest::twoPolygonsUnion));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionXAligned", &PolygonsUnionTest::twoPolygonsUnionXAligned));
@@ -482,6 +533,7 @@ CppUnit::Test *PolygonsUnionTest::suite()
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionYAlmostAligned", &PolygonsUnionTest::twoPolygonsUnionYAlmostAligned));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsSameEndPoint", &PolygonsUnionTest::twoPolygonsSameEndPoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionIsEndPoint", &PolygonsUnionTest::twoPolygonsIntersectionIsEndPoint));
+	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionIsAlmostEdgeA", &PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEdgeA));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsTouchInOnePoint", &PolygonsUnionTest::twoPolygonsTouchInOnePoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsNestedTouchInOnePoint", &PolygonsUnionTest::twoPolygonsNestedTouchInOnePoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionLastEdge", &PolygonsUnionTest::twoPolygonsIntersectionLastEdge));

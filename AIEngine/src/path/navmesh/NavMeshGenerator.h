@@ -11,6 +11,7 @@
 #include "path/navmesh/polyhedron/Polyhedron.h"
 #include "path/navmesh/polyhedron/PolyhedronFace.h"
 #include "path/navmesh/polyhedron/PolyhedronPoint.h"
+#include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/triangulation/Triangulation.h"
 
 namespace urchin
@@ -47,6 +48,8 @@ namespace urchin
 			NavPolygon createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 			void addObstacles(const std::vector<Polyhedron> &, const PolyhedronFaceIndex &, Triangulation &) const;
+			CSGPolygon computeWalkablePolygon(const PolyhedronFace &, const std::string &) const;
+			CSGPolygon computePolyhedronFootprint(const Polyhedron &, const PolyhedronFace &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const PolyhedronFace &) const;
 			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;
 

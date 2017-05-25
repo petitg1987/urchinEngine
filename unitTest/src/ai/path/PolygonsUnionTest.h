@@ -13,6 +13,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 
 		void twoPolygonsNoUnion();
 		void polygonInsideAnother();
+		void polygonInsideAnotherTouchInOnePoint();
 
 		void twoPolygonsUnion();
 		void twoPolygonsUnionXAligned();
@@ -20,6 +21,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsUnionYAlmostAligned();
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsIntersectionIsEndPoint();
+		void twoPolygonsIntersectionIsAlmostEdgeA();
 		void twoPolygonsTouchInOnePoint();
 		void twoPolygonsNestedTouchInOnePoint();
 		void twoPolygonsIntersectionLastEdge();

@@ -84,32 +84,4 @@ namespace urchin
 	{
 		return walkableCandidate;
 	}
-
-	CSGPolygon PolyhedronFace::computeCSGPolygon(const std::string &name) const
-	{
-		checkInitialization();
-		if(normal.dotProduct(Vector3<float>(0.0, 1.0, 0.0)) > 0.0)
-		{
-			std::vector<Point2<float>> faceCwPoints(flatPointsOnYAxis());
-			std::reverse(faceCwPoints.begin(), faceCwPoints.end());
-			return CSGPolygon(name, faceCwPoints);
-		}else
-		{
-			std::vector<Point2<float>> faceCwPoints(flatPointsOnYAxis());
-			return CSGPolygon(name, faceCwPoints);
-		}
-	}
-
-	std::vector<Point2<float>> PolyhedronFace::flatPointsOnYAxis() const
-	{
-		std::vector<Point2<float>> flatPoints;
-		flatPoints.reserve(ccwPoints.size());
-
-		for(const auto &ccwPoint : ccwPoints)
-		{
-			flatPoints.push_back(Point2<float>(ccwPoint.X, -ccwPoint.Z));
-		}
-
-		return flatPoints;
-	}
 }

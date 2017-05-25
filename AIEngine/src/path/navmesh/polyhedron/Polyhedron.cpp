@@ -34,30 +34,9 @@ namespace urchin
 		return faces[faceIndex];
 	}
 
-	std::shared_ptr<CSGPolygon> Polyhedron::getOrComputeCSGPolygon() const //TODO rename method: getOrComputeFootprint() ?
+	const std::vector<PolyhedronPoint> &Polyhedron::getPoints() const
 	{
-		if(!csgPolygon)
-		{
-			ConvexHull2D<float> footprintConvexHull(flatPointsOnYAxis());
-			std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
-			std::reverse(cwPoints.begin(), cwPoints.end());
-			csgPolygon = std::make_shared<CSGPolygon>(name, cwPoints);
-		}
-
-		return csgPolygon;
-	}
-
-	std::vector<Point2<float>> Polyhedron::flatPointsOnYAxis() const
-	{
-		std::vector<Point2<float>> flatPoints;
-		flatPoints.reserve(points.size());
-
-		for(const auto &polyhedronPoint : points)
-		{
-			flatPoints.push_back(Point2<float>(polyhedronPoint.point.X, -polyhedronPoint.point.Z));
-		}
-
-		return flatPoints;
+		return points;
 	}
 
 	void Polyhedron::setWalkableCandidate(bool walkableCandidate)
@@ -103,8 +82,6 @@ namespace urchin
 		{
 			face.refreshWith(points);
 		}
-
-		csgPolygon.reset();
 	}
 
 	std::vector<Plane<float>> Polyhedron::buildPlanesFromFaces() const

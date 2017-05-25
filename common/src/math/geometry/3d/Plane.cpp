@@ -37,6 +37,12 @@ namespace urchin
 		buildFromCoefficients(a, b, c, d);
 	}
 
+	template<class T> Plane<T>::Plane(const Plane<T> &plane)
+	{
+		normal = plane.getNormal();
+		d = plane.getDistanceToOrigin();
+	}
+
 	template<class T> void Plane<T>::buildFrom3Points(const Point3<T> &p1, const Point3<T> &p2, const Point3<T> &p3)
 	{
 		const Vector3<T> &aux = p2.vector(p3);

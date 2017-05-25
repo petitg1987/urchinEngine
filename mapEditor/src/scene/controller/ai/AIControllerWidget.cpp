@@ -31,7 +31,7 @@ namespace urchin
 
 		//TODO load AI from map file
 		agentHeight->setValue(1.9);
-		agentRadius->setValue(0.3);
+		agentRadius->setValue(0.25);
 		maxSlope->setValue(45.0);
 	}
 
