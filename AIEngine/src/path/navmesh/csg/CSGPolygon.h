@@ -17,14 +17,14 @@ namespace urchin
 			CSGPolygon& operator=(CSGPolygon &&);
 
 			const std::string &getName() const;
-
 			const std::vector<Point2<float>> &getCwPoints() const;
+			float computeArea() const;
 
 			CSGPolygon expand(float) const;
 
 		private:
 			std::string name;
-			std::vector<Point2<float>> cwPoints;
+			mutable std::vector<Point2<float>> cwPoints;
 
 	};
 

@@ -46,7 +46,7 @@ void ShapeToAABBoxTest::convexHullConversion()
 	};
 	std::vector<Point3<float>> boxPoints(boxPointsTab, boxPointsTab+sizeof(boxPointsTab)/sizeof(Point3<float>));
 
-	CollisionConvexHullShape collisionConvexHull(0.0, boxPoints);
+	CollisionConvexHullShape collisionConvexHull(boxPoints);
 	PhysicsTransform transform(urchin::Point3<float>(0.0, 0.0, 0.0), //move 0 unit on X, Y and Z axis
 			urchin::Quaternion<float>(urchin::Vector3<float>(0.0, 0.0, -1.0), PI_VALUE/4)); //rotate 45° on Z axis
 

@@ -11,13 +11,6 @@ namespace urchin
 		computeSafeMargin();
 	}
 
-	CollisionCapsuleShape::CollisionCapsuleShape(float innerMargin, float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
-			CollisionShape3D(innerMargin),
-			capsuleShape(std::make_shared<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation))
-	{
-		computeSafeMargin();
-	}
-
 	CollisionCapsuleShape::~CollisionCapsuleShape()
 	{
 

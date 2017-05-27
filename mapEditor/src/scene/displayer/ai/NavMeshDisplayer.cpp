@@ -28,7 +28,7 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints(), Y_ELEVATION_FILL), navPolygon.getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL), navPolygon->getTriangles());
 				triangleModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
 				triangleModel->setColor(0.0, 0.0, 1.0, 0.5);
 				triangleModel->setPolygonMode(GeometryModel::FILL);
@@ -37,7 +37,7 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon.getPoints(), Y_ELEVATION_WIREFRAME), navPolygon.getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME), navPolygon->getTriangles());
 				triangleModel->setLineSize(4.0);
 				triangleModel->setColor(0.3, 0.3, 1.0, 1.0);
 				triangleModel->setPolygonMode(GeometryModel::WIREFRAME);

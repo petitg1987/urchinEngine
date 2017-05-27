@@ -41,6 +41,25 @@ namespace urchin
 		return cwPoints;
 	}
 
+	float CSGPolygon::computeArea() const
+	{
+		unsigned int n = cwPoints.size();
+		cwPoints.reserve(n+2);
+		cwPoints.push_back(cwPoints[0]);
+		cwPoints.push_back(cwPoints[1]);
+
+		float area = 0.0;
+	    for (unsigned int i=1; i<=n; i++)
+	    {
+	        area -= cwPoints[i].X * (cwPoints[i+1].Y - cwPoints[i-1].Y);
+	    }
+
+		cwPoints.pop_back();
+	    cwPoints.pop_back();
+
+	    return area / 2.0f;
+	}
+
 	CSGPolygon CSGPolygon::expand(float distance) const
 	{
 		return CSGPolygon(name, ResizePolygon2DService<float>::instance()->resizePolygon(cwPoints, -distance));

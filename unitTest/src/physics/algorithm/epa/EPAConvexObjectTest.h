@@ -10,8 +10,6 @@ class EPAConvexObjectTest : public CppUnit::TestFixture
 		static CppUnit::Test *suite();
 
 		void overlapSphereAndBox();
-		void lightlyContactBoxAndCapsule();
-		void lightlyContactBoxAndCapsule2();
 };
 
 #endif

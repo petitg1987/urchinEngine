@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
-			CollisionCylinderShape(float, float, float, CylinderShape<float>::CylinderOrientation);
 			~CollisionCylinderShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;

@@ -2,6 +2,7 @@
 #define ENGINE_NAVMESH_H
 
 #include <vector>
+#include <memory>
 
 #include "path/navmesh/model/NavPolygon.h"
 
@@ -18,15 +19,14 @@ namespace urchin
 
 			unsigned int getId() const;
 
-			unsigned int addPolygon(const NavPolygon &);
-			const std::vector<NavPolygon> &getPolygons() const;
-			const NavPolygon &getPolygon(unsigned int) const;
+			unsigned int addPolygon(std::shared_ptr<NavPolygon>);
+			const std::vector<std::shared_ptr<NavPolygon>> &getPolygons() const;
 
 		private:
 			static unsigned int nextId;
 			unsigned int id;
 
-			std::vector<NavPolygon> polygons;
+			std::vector<std::shared_ptr<NavPolygon>> polygons;
 	};
 
 }

@@ -2,23 +2,16 @@
 
 #include "shape/CollisionShape3D.h"
 
-#define DEFAULT_INNER_MARGIN 0.04
-
 namespace urchin
 {
 
 	CollisionShape3D::CollisionShape3D() :
-			innerMargin(DEFAULT_INNER_MARGIN),
-			initialInnerMargin(DEFAULT_INNER_MARGIN)
+			innerMargin(ConfigService::instance()->getUnsignedIntValue("collisionShape.innerMargin")),
+			initialInnerMargin(innerMargin)
 	{
 
 	}
 
-	/**
-	 * @param innerMargin This value is to avoid doing costly penetration depth calculation.
-	 * - if define too small, the performance degrades
-	 * - if define too big, the objects will be too rounded
-	 */
 	CollisionShape3D::CollisionShape3D(float innerMargin) :
 			innerMargin(innerMargin),
 			initialInnerMargin(innerMargin)
@@ -37,7 +30,6 @@ namespace urchin
 		{
 			this->innerMargin = maximumInnerMargin;
 		}
-
 	}
 
 	float CollisionShape3D::getInnerMargin() const
@@ -49,9 +41,10 @@ namespace urchin
 	{
 		if(initialInnerMargin > innerMargin)
 		{
+			constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 20.0;
 			AABBox<float> aabbox = toAABBox(PhysicsTransform());
 			float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
-			bool isBigShape = shapeLength > initialInnerMargin * 20.0;
+			bool isBigShape = shapeLength > initialInnerMargin * RELATIVE_MARGIN_FACTOR_BIG_SHAPE;
 
 			if(isBigShape)
 			{

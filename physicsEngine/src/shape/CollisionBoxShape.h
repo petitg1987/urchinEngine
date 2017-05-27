@@ -16,7 +16,6 @@ namespace urchin
 	{
 		public:
 			CollisionBoxShape(const Vector3<float> &);
-			CollisionBoxShape(float, const Vector3<float> &);
 			~CollisionBoxShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;

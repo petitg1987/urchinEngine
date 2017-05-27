@@ -11,13 +11,6 @@ namespace urchin
 		computeSafeMargin();
 	}
 
-	CollisionCylinderShape::CollisionCylinderShape(float innerMargin, float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
-			CollisionShape3D(innerMargin),
-			cylinderShape(std::make_shared<CylinderShape<float>>(radius, height, cylinderOrientation))
-	{
-		computeSafeMargin();
-	}
-
 	CollisionCylinderShape::~CollisionCylinderShape()
 	{
 

@@ -28,9 +28,7 @@ namespace urchin
 			void logMaximumIterationReach(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
 			const unsigned int maxIteration;
-			const float relativeTerminationTolerance;
-			const float minimumTerminationTolerance;
-			const float percentageIncreaseOfMinimumTolerance;
+			const float terminationTolerance;
 	};
 
 }

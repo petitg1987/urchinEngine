@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
-			CollisionConeShape(float, float, float, ConeShape<float>::ConeOrientation);
 			~CollisionConeShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;

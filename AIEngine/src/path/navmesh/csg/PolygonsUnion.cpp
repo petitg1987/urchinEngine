@@ -271,8 +271,8 @@ namespace urchin
 
 	bool PolygonsUnion::areSamePoints(const Point2<float> &p1, const Point2<float> &p2) const
 	{
-		constexpr float epsilon = std::numeric_limits<float>::epsilon();
-		return ((p1.X-epsilon) <= p2.X) && ((p1.X+epsilon) >= p2.X) && ((p1.Y-epsilon) <= p2.Y) && ((p1.Y+epsilon) >= p2.Y);
+		constexpr float EPSILON = std::numeric_limits<float>::epsilon();
+		return ((p1.X-EPSILON) <= p2.X) && ((p1.X+EPSILON) >= p2.X) && ((p1.Y-EPSILON) <= p2.Y) && ((p1.Y+EPSILON) >= p2.Y);
 	}
 
 	bool PolygonsUnion::pointInsideOrOnPolygon(const CSGPolygon *polygon, const Point2<float> &point) const

@@ -11,13 +11,6 @@ namespace urchin
 		computeSafeMargin();
 	}
 
-	CollisionBoxShape::CollisionBoxShape(float innerMargin, const Vector3<float> &halfSizes) :
-			CollisionShape3D(innerMargin),
-			boxShape(std::make_shared<BoxShape<float>>(halfSizes))
-	{
-		computeSafeMargin();
-	}
-
 	CollisionBoxShape::~CollisionBoxShape()
 	{
 

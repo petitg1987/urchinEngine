@@ -9,9 +9,7 @@ namespace urchin
 
 	template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
 		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkMaxIteration")),
-		relativeTerminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkRelativeTerminationTolerance")),
-		minimumTerminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkMinimumTerminationTolerance")),
-		percentageIncreaseOfMinimumTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkPercentageIncreaseOfMinimumTolerance"))
+		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkTerminationTolerance"))
 	{
 
 	}
@@ -38,8 +36,6 @@ namespace urchin
 		Simplex<T> simplex;
 		simplex.addPoint(initialSupportPointA, initialSupportPointB);
 
-		T minimumToleranceMultiplicator = (T)1.0;
-
 		for(unsigned int iterationNumber=0; iterationNumber<maxIteration; ++iterationNumber)
 		{
 			Point3<T> supportPointA = convexObject1.getSupportPoint(direction.template cast<float>(), includeMargin).template cast<T>();
@@ -51,8 +47,7 @@ namespace urchin
 			T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
 			//check termination conditions: new point is not more extreme that existing ones OR new point already exist in simplex
-			T distanceTolerance = std::max(minimumTerminationTolerance*minimumToleranceMultiplicator, relativeTerminationTolerance*closestPointSquareDistance);
-			if((closestPointSquareDistance-closestPointDotNewPoint) <= distanceTolerance || simplex.isPointInSimplex(newPoint))
+			if((closestPointSquareDistance-closestPointDotNewPoint) <= terminationTolerance || simplex.isPointInSimplex(newPoint))
 			{
 				if(closestPointDotNewPoint <= 0.0)
 				{ //collision detected
@@ -66,8 +61,6 @@ namespace urchin
 			simplex.addPoint(supportPointA, supportPointB);
 
 			direction = (-simplex.getClosestPointToOrigin()).toVector();
-
-			minimumToleranceMultiplicator += percentageIncreaseOfMinimumTolerance;
 		}
 
 		logMaximumIterationReach(convexObject1, convexObject2, includeMargin);
@@ -79,9 +72,7 @@ namespace urchin
 	{
 		std::stringstream logStream;
 		logStream<<"Maximum of iteration reached on GJK algorithm ("<<maxIteration<<")."<<std::endl;
-		logStream<<" - Relative termination tolerance: "<<relativeTerminationTolerance<<std::endl;
-		logStream<<" - Minimum termination tolerance: "<<minimumTerminationTolerance<<std::endl;
-		logStream<<" - Percentage increase of minimum tolerance: "<<percentageIncreaseOfMinimumTolerance<<std::endl;
+		logStream<<" - Termination tolerance: "<<terminationTolerance<<std::endl;
 		logStream<<" - Include margin: "<<includeMargin<<std::endl;
 		logStream<<" - Convex object 1: "<<std::endl<<convexObject1.toString()<<std::endl;
 		logStream<<" - Convex object 2: "<<std::endl<<convexObject2.toString();

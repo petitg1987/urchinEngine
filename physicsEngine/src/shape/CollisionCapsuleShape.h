@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			CollisionCapsuleShape(float, float, CapsuleShape<float>::CapsuleOrientation);
-			CollisionCapsuleShape(float, float, float, CapsuleShape<float>::CapsuleOrientation);
 			~CollisionCapsuleShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;

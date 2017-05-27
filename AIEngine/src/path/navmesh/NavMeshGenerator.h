@@ -45,9 +45,9 @@ namespace urchin
 
 			std::vector<PolyhedronFaceIndex> findWalkableFaces(const std::vector<Polyhedron> &) const;
 
-			NavPolygon createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
+			std::shared_ptr<NavPolygon> createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
-			void addObstacles(const std::vector<Polyhedron> &, const PolyhedronFaceIndex &, Triangulation &) const;
+			bool addObstacles(const std::vector<Polyhedron> &, const PolyhedronFaceIndex &, Triangulation &) const;
 			CSGPolygon computeWalkablePolygon(const PolyhedronFace &, const std::string &) const;
 			CSGPolygon computePolyhedronFootprint(const Polyhedron &, const PolyhedronFace &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const PolyhedronFace &) const;

@@ -17,19 +17,14 @@ namespace urchin
 		return id;
 	}
 
-	unsigned int NavMesh::addPolygon(const NavPolygon &polygon)
+	unsigned int NavMesh::addPolygon(std::shared_ptr<NavPolygon> polygon)
 	{
 		polygons.push_back(polygon);
 		return polygons.size()-1;
 	}
 
-	const std::vector<NavPolygon> &NavMesh::getPolygons() const
+	const std::vector<std::shared_ptr<NavPolygon>> &NavMesh::getPolygons() const
 	{
 		return polygons;
-	}
-
-	const NavPolygon &NavMesh::getPolygon(unsigned int index) const
-	{
-		return polygons[index];
 	}
 }

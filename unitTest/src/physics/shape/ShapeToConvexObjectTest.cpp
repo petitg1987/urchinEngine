@@ -68,7 +68,7 @@ void ShapeToConvexObjectTest::convexHullConversion()
 	};
 	std::vector<Point3<float>> trapezePoints(trapezePointsTab, trapezePointsTab+sizeof(trapezePointsTab)/sizeof(Point3<float>));
 
-	CollisionConvexHullShape collisionConvexHull(0.0, trapezePoints);
+	CollisionConvexHullShape collisionConvexHull(trapezePoints);
 	PhysicsTransform transform(urchin::Point3<float>(0.0, 0.0, 0.0), //move 0 unit on X, Y and Z axis
 			urchin::Quaternion<float>(urchin::Vector3<float>(0.0, 0.0, 1.0), -PI_VALUE/4)); //rotate 45° on Z axis
 

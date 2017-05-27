@@ -13,28 +13,13 @@ namespace urchin
 			CollisionShape3D(),
 			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points))
 	{
-		initialize();
-	}
-
-	/**
-	* @param points Points used to construct the convex hull
-	*/
-	CollisionConvexHullShape::CollisionConvexHullShape(float innerMargin, const std::vector<Point3<float>> &points) :
-			CollisionShape3D(innerMargin),
-			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points))
-	{
-		initialize();
+		initializeConvexHullReduced();
+		initializeDistances();
 	}
 
 	CollisionConvexHullShape::~CollisionConvexHullShape()
 	{
 
-	}
-
-	void CollisionConvexHullShape::initialize()
-	{
-		initializeConvexHullReduced();
-		initializeDistances();
 	}
 
 	void CollisionConvexHullShape::initializeConvexHullReduced()

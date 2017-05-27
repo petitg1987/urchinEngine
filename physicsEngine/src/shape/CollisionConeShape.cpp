@@ -11,13 +11,6 @@ namespace urchin
 		computeSafeMargin();
 	}
 
-	CollisionConeShape::CollisionConeShape(float innerMargin, float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
-			CollisionShape3D(innerMargin),
-			coneShape(std::make_shared<ConeShape<float>>(radius, height, coneOrientation))
-	{
-		computeSafeMargin();
-	}
-
 	CollisionConeShape::~CollisionConeShape()
 	{
 
