@@ -6,5 +6,10 @@ debug:
 rel:
 	cd .build/release && make
 
-clean:
-	cd .build/debug && make clean && cd ../release && make clean
+clean: clean-debug clean-rel
+
+clean-debug:
+	cd .build/debug && make clean
+
+clean-rel:
+	cd .build/release && make clean
