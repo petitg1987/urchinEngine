@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.7)
 project(urchinMapHandler)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
@@ -59,12 +57,7 @@ set(SOURCE_FILES
         src/MapHandler.h
         src/UrchinMapHandler.h)
 
-include_directories(src)
-include_directories(../common/src)
-include_directories(../3dEngine/src)
-include_directories(../physicsEngine/src)
-include_directories(../soundEngine/src)
-include_directories(../AIEngine/src)
+include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src)
 
 add_library(urchinMapHandler SHARED ${SOURCE_FILES})
 target_link_libraries(urchinMapHandler urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine -static-libstdc++)

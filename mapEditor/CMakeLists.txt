@@ -123,14 +123,11 @@ set(SOURCE_FILES
         src/MapEditorWindow.cpp
         src/MapEditorWindow.h)
 
-include_directories(src)
-include_directories(../common/src)
-include_directories(../3dEngine/src)
-include_directories(../physicsEngine/src)
-include_directories(../soundEngine/src)
-include_directories(../AIEngine/src)
-include_directories(../mapHandler/src)
+include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
+
+add_custom_target(copyShaders rsync -r ${CMAKE_CURRENT_SOURCE_DIR}/../3dEngine/resources/shaders/* ${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/)
 
 add_executable(urchinMapEditor ${SOURCE_FILES})
+add_dependencies(urchinMapEditor copyShaders)
 qt5_use_modules(urchinMapEditor Widgets OpenGL)
 target_link_libraries(urchinMapEditor ${QT_LIBRARIES} ${OPENGL_LIBRARIES} urchinCommon urchin3dEngine urchinPhysicsEngine urchinSoundEngine urchinAIEngine urchinMapHandler)

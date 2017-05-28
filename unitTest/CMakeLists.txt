@@ -70,10 +70,7 @@ set(SOURCE_FILES
         src/AssertHelper.h
         src/MainTest.cpp)
 
-include_directories(src)
-include_directories(../common/src)
-include_directories(../physicsEngine/src)
-include_directories(../AIEngine/src)
+include_directories(src ../common/src ../physicsEngine/src ../AIEngine/src)
 
 add_executable(unitTest ${SOURCE_FILES})
 target_link_libraries(unitTest pthread cppunit urchinCommon urchinPhysicsEngine urchinAIEngine)

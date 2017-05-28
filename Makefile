@@ -1,9 +1,9 @@
-all: release
+all: rel
 
 debug:
 	cd .build/debug && make
 
-release:
+rel:
 	cd .build/release && make
 
 clean:
