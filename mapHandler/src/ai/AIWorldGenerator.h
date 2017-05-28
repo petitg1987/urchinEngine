@@ -1,5 +1,5 @@
 #ifndef ENGINE_AIWORLDGENERATOR_H
-#define ENGINE_MAPNAVMESHGENERATOR_H
+#define ENGINE_AIWORLDGENERATOR_H
 
 #include <memory>
 #include "UrchinCommon.h"
@@ -24,7 +24,6 @@ namespace urchin
 
 		private:
 			std::vector<LocalizedShape> extractionLocalizedShapes(RigidBody *);
-
 	};
 
 }

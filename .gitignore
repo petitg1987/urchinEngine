@@ -1,5 +1,4 @@
-targetLinux/
-targetWindows/
+.build/
+lib/
 mapEditor/urchinMapEditor
 unitTest/unitTest
-debugVisualizer/urchinDebugVisualizer
