@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(urchinSoundEngine)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
-
-find_package(OpenAL)
 
 set(SOURCE_FILES
         src/behavior/SmoothStopAction.cpp
@@ -49,7 +47,13 @@ set(SOURCE_FILES
         src/SoundManager.h
         src/UrchinSoundEngine.h)
 
+if (WIN32)
+    SET(OPENAL_LIB openal32)
+else()
+    SET(OPENAL_LIB openal)
+endif()
+
 include_directories(src ../common/src)
 
 add_library(urchinSoundEngine SHARED ${SOURCE_FILES})
-target_link_libraries(urchinSoundEngine pthread openal sndfile urchinCommon -static-libstdc++)
+target_link_libraries(urchinSoundEngine pthread ${OPENAL_LIB} sndfile urchinCommon -static-libstdc++)

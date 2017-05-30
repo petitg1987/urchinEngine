@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(urchin3dEngine)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
 add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES)
@@ -192,5 +192,11 @@ set(SOURCE_FILES
 
 include_directories(src ../common/src /usr/include/freetype2)
 
+if (WIN32)
+    SET(OPENGL_LIB glew32 opengl32)
+else()
+    SET(OPENGL_LIB GLEW)
+endif()
+
 add_library(urchin3dEngine SHARED ${SOURCE_FILES})
-target_link_libraries(urchin3dEngine freetype GLEW urchinCommon -static-libstdc++)
+target_link_libraries(urchin3dEngine freetype ${OPENGL_LIB} urchinCommon -static-libstdc++)
