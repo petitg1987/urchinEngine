@@ -29,4 +29,5 @@ namespace urchin
 	{
 		return triangles[index];
 	}
+
 }

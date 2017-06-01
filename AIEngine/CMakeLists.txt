@@ -15,6 +15,8 @@ set(SOURCE_FILES
         src/path/navmesh/csg/PolygonsIntersection.h
         src/path/navmesh/csg/PolygonsUnion.cpp
         src/path/navmesh/csg/PolygonsUnion.h
+        src/path/navmesh/model/NavMeshConfig.cpp
+        src/path/navmesh/model/NavMeshConfig.h
         src/path/navmesh/model/NavMesh.cpp
         src/path/navmesh/model/NavMesh.h
         src/path/navmesh/model/NavPolygon.cpp
@@ -29,11 +31,9 @@ set(SOURCE_FILES
         src/path/navmesh/triangulation/MonotonePolygon.h
         src/path/navmesh/triangulation/Triangulation.cpp
         src/path/navmesh/triangulation/Triangulation.h
-        src/path/navmesh/NavMeshConfig.cpp
-        src/path/navmesh/NavMeshConfig.h
         src/path/navmesh/NavMeshGenerator.cpp
         src/path/navmesh/NavMeshGenerator.h
-        src/UrchinAIEngine.h)
+        src/UrchinAIEngine.h src/path/navmesh/model/NavMeshAgent.cpp src/path/navmesh/model/NavMeshAgent.h)
 
 include_directories(src ../common/src)
 

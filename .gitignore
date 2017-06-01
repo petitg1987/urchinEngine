@@ -1,3 +1,4 @@
 .build/
 mapEditor/urchinMapEditor
 unitTest/unitTest
+.idea/workspace.xml

@@ -172,13 +172,13 @@ namespace urchin
 		{
 			const unsigned int *indices = indexedTriangle.second.getIndices();
 
-			unsigned int polyhedronPoint0Index = std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[0]));
+			unsigned int polyhedronPoint0Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[0])));
 			polyhedronPoints[polyhedronPoint0Index].faceIndices.push_back(i);
 
-			unsigned int polyhedronPoint1Index = std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[1]));
+			unsigned int polyhedronPoint1Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[1])));
 			polyhedronPoints[polyhedronPoint1Index].faceIndices.push_back(i);
 
-			unsigned int polyhedronPoint2Index = std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[2]));
+			unsigned int polyhedronPoint2Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[2])));
 			polyhedronPoints[polyhedronPoint2Index].faceIndices.push_back(i);
 
 			faces.push_back(PolyhedronFace({polyhedronPoint0Index, polyhedronPoint1Index, polyhedronPoint2Index}));
@@ -216,7 +216,7 @@ namespace urchin
 	{
 		for(auto &polyhedron : polyhedrons)
 		{
-			polyhedron.expand(navMeshConfig.getAgentBox());
+			polyhedron.expand(navMeshConfig.getAgent());
 		}
 	}
 
@@ -251,8 +251,8 @@ namespace urchin
 
 	std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace, const std::vector<Polyhedron> &expandedPolyhedrons) const
 	{
-		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
-		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
+		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
+		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
 
 		Triangulation triangulation(flatPointsOnYAxis(walkableFace.getCcwPoints()));
 		bool hasOnlyHoles = addObstacles(expandedPolyhedrons, polyhedronWalkableFace, triangulation);
@@ -282,9 +282,9 @@ namespace urchin
 
 	bool NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, const PolyhedronFaceIndex &polyhedronWalkableFace, Triangulation &triangulation) const
 	{
-		const Polyhedron &polydedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
-		const PolyhedronFace &walkableFace = polydedron.getFace(polyhedronWalkableFace.faceIndex);
-		CSGPolygon walkableFacePolygon = computeWalkablePolygon(walkableFace, polydedron.getName());
+		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
+		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
+		CSGPolygon walkableFacePolygon = computeWalkablePolygon(walkableFace, polyhedron.getName());
 
 		std::vector<CSGPolygon> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
@@ -354,8 +354,15 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const PolyhedronFace &walkableFace) const
 	{
-		std::vector<Point3<float>> elevatedPoints = walkableFace.getCcwPoints();
+        float shiftDistance = -navMeshConfig.getAgent().computeExpandDistance(walkableFace.getNormal());
+
+		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
+
+        for(auto walkableFacePoint : walkableFace.getCcwPoints())
+        {
+            elevatedPoints.push_back(Point3<float>(walkableFacePoint.X, walkableFacePoint.Y+shiftDistance, walkableFacePoint.Z));
+        }
 
 		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
 		{
@@ -363,7 +370,8 @@ namespace urchin
 			for(const auto &holePoint : holePoints)
 			{
 				Point3<float> holePoint3D(holePoint.X, 0.0, -holePoint.Y);
-				float t = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0])) / walkableFace.getNormal().Y;
+				float shortestFaceDistance = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0]));
+				float t = (shortestFaceDistance+shiftDistance) / walkableFace.getNormal().Y;
 				Point3<float> projectedPoint = holePoint3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
 
 				elevatedPoints.push_back(projectedPoint);

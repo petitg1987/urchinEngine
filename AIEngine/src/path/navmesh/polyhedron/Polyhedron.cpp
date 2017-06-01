@@ -49,10 +49,10 @@ namespace urchin
 		return walkableCandidate;
 	}
 
-	void Polyhedron::expand(const BoxShape<float> &agentBound)
+	void Polyhedron::expand(const NavMeshAgent &agent)
 	{
 		std::vector<Plane<float>> planes = buildPlanesFromFaces();
-		shiftPlanes(planes, agentBound);
+		shiftPlanes(planes, agent);
 
 		for(auto &point : points)
 		{
@@ -71,7 +71,7 @@ namespace urchin
 			}else
 			{ //all planes should be parallel
 				Plane<float> firstPlane = planes[point.faceIndices[0]];
-				float distance = computeShiftDistance(firstPlane.getNormal(), agentBound);
+				float distance = agent.computeExpandDistance(firstPlane.getNormal());
 				newPoint = point.point.translate(firstPlane.getNormal() * distance);
 			}
 
@@ -97,19 +97,13 @@ namespace urchin
 		return planes;
 	}
 
-	void Polyhedron::shiftPlanes(std::vector<Plane<float>> &planes, const BoxShape<float> &agentBound) const
+	void Polyhedron::shiftPlanes(std::vector<Plane<float>> &planes, const NavMeshAgent &agent) const
 	{
 		for(auto &plane : planes)
 		{
-			float distance = computeShiftDistance(plane.getNormal(), agentBound);
+			float distance = agent.computeExpandDistance(plane.getNormal());
 			plane.setDistanceToOrigin(plane.getDistanceToOrigin() - distance);
 		}
-	}
-
-	float Polyhedron::computeShiftDistance(const Vector3<float> &normal, const BoxShape<float> &agentBound) const
-	{
-		Vector3<float> supportPoint = Point3<float>().vector(agentBound.getSupportPoint(-normal));
-		return supportPoint.dotProduct(-normal);
 	}
 
 	std::vector<Plane<float>> Polyhedron::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::vector<Plane<float>> &allPlanes) const

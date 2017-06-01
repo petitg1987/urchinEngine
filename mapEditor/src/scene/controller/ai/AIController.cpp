@@ -35,7 +35,7 @@ namespace urchin
 
 	void AIController::generateNavMesh(float agentHeight, float agentRadius, float maxSlopeInDegree)
 	{
-		NavMeshConfig navMeshConfig(agentHeight, agentRadius);
+		NavMeshConfig navMeshConfig(NavMeshAgent(agentHeight, agentRadius));
 		navMeshConfig.setMaxSlope(maxSlopeInDegree/(180.0/PI_VALUE));
 		std::shared_ptr<AIWorld> aiWorld = mapHandler->generateAIWorld();
 

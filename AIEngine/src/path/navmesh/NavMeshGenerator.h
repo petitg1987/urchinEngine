@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "input/AIWorld.h"
-#include "path/navmesh/NavMeshConfig.h"
+#include "path/navmesh/model/NavMeshConfig.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
 #include "path/navmesh/polyhedron/Polyhedron.h"

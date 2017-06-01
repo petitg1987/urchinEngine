@@ -3,24 +3,23 @@
 
 #include "UrchinCommon.h"
 
+#include "path/navmesh/model/NavMeshAgent.h"
+
 namespace urchin
 {
 
 	class NavMeshConfig
 	{
 		public:
-			NavMeshConfig(float, float);
+			NavMeshConfig(const NavMeshAgent &);
 
-			CylinderShape<float> getAgent() const;
-			BoxShape<float> getAgentBox() const;
+			const NavMeshAgent &getAgent() const;
 
 			void setMaxSlope(float);
 			float getMaxSlope() const;
 
 		private:
-			float agentHeight;
-			float agentRadius;
-
+            NavMeshAgent navMeshAgent;
 			float maxSlopeInRadian;
 	};
 

@@ -7,6 +7,7 @@
 
 #include "path/navmesh/polyhedron/PolyhedronFace.h"
 #include "path/navmesh/polyhedron/PolyhedronPoint.h"
+#include "path/navmesh/model/NavMeshAgent.h"
 
 namespace urchin
 {
@@ -25,12 +26,11 @@ namespace urchin
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
 
-			void expand(const BoxShape<float> &);
+			void expand(const NavMeshAgent &);
 
 		private:
 			std::vector<Plane<float>> buildPlanesFromFaces() const;
-			void shiftPlanes(std::vector<Plane<float>> &, const BoxShape<float> &) const;
-			float computeShiftDistance(const Vector3<float> &, const BoxShape<float> &) const;
+			void shiftPlanes(std::vector<Plane<float>> &, const NavMeshAgent &) const;
 			std::vector<Plane<float>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::vector<Plane<float>> &) const;
 
 			std::string name;
