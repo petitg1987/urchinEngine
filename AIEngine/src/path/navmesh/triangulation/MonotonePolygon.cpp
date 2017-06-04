@@ -486,7 +486,7 @@ namespace urchin
 	std::runtime_error MonotonePolygon::logInputDataAndThrowError(const std::string &message) const
 	{
 		logInputData(message, Logger::ERROR);
-		return std::runtime_error(message);
+		return std::runtime_error(message); //TODO don't throw exception ?
 	}
 
 	void MonotonePolygon::logOutputData(const std::string &message, const std::vector<std::vector<unsigned int>> &yMonotonePolygons, Logger::CriticalityLevel logLevel) const

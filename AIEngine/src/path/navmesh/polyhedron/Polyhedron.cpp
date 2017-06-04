@@ -56,7 +56,7 @@ namespace urchin
 
 		for(auto &point : points)
 		{
-			std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(point.faceIndices, planes);
+			std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(point.faceIndices, planes); //TODO not handle point having two four planes with each pair parallel (point is on edge)
 			Point3<float> newPoint;
 			if(threePlanes.size()==3)
 			{
@@ -108,6 +108,8 @@ namespace urchin
 
 	std::vector<Plane<float>> Polyhedron::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::vector<Plane<float>> &allPlanes) const
 	{
+        constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f; //TODO add this constant on convex hull resize() !
+
 		std::vector<Plane<float>> nonParallelPlanes;
 		nonParallelPlanes.reserve(3);
 
@@ -115,7 +117,7 @@ namespace urchin
 		for(unsigned int i=1; i<planeIndices.size(); ++i)
 		{
 			Plane<float> plane2 = allPlanes.at(planeIndices[i]);
-			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < 0.0)
+			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE)
 			{ //planes are parallel: continue on next plane
 				continue;
 			}
@@ -126,7 +128,7 @@ namespace urchin
 
 				Vector3<float> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
 				if(n2CrossN3.squareLength() < 0.0
-						|| plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < 0.0
+						|| plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE
 						|| plane1.getNormal().dotProduct(n2CrossN3)==0.0) //additional check due to float imprecision
 				{ //planes are parallel: continue on next plane
 					continue;

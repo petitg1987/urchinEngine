@@ -263,7 +263,6 @@ void PolygonsUnionTest::twoPolygonsIntersectionIsEndPoint()
 void PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEdgeA()
 {
 	//In (-0.224820852, 5.97340727), there is a start point and also an intersection point.
-	//Using double is necessary to distinct them.
 	std::vector<Point2<float>> polyPoints1;
 	polyPoints1.push_back(Point2<float>(-0.224820852, -5.97340727));
 	polyPoints1.push_back(Point2<float>(-0.224821016, -4.62517881));
@@ -279,14 +278,12 @@ void PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEdgeA()
 	std::vector<CSGPolygon> polygonUnion = PolygonsUnion::instance()->unionPolygons(allPolygons);
 
 	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
-	AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 7);
+	AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 5);
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(-0.224821031, -5.97340727));
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[1], Point2<float>(-0.224821031, -4.62517881));
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(-0.224821016, -4.62517881));
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[3], Point2<float>(1.12340569, -4.62517881));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(0.194670022, -5.55391598));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[5], Point2<float>(-0.0135459732, -5.76213217));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[6], Point2<float>(-0.224820852, -5.97340727));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(-0.224820852, -5.97340727));
 }
 
 void PolygonsUnionTest::twoPolygonsTouchInOnePoint()

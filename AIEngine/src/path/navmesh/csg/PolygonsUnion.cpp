@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
 
 #include "PolygonsUnion.h"
 
@@ -70,6 +71,7 @@ namespace urchin
 		const CSGPolygon *otherPolygon = currentPolygon==&polygon1 ? &polygon2 : &polygon1;
 
 		Point2<float> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
+        Point2<float> previousEdgeStartPoint(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
 		bool foundIntersection = false;
 
 		unsigned int maxIteration = (polygon1.getCwPoints().size() + polygon2.getCwPoints().size()) * 2;
@@ -82,11 +84,11 @@ namespace urchin
 		while(currentIteration++ < maxIteration)
 		{
 			Point2<float> edgeEndPoint = currentPolygon->getCwPoints()[nextPointIndex];
-			Point2<float> nextPointToEdge = currentPolygon->getCwPoints()[(nextPointIndex+1)% currentPolygon->getCwPoints().size()];
-			CSGIntersection csgIntersection = findFirstValidIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), nextPointToEdge, otherPolygon);
+			CSGIntersection csgIntersection = findFirstValidIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), previousEdgeStartPoint, otherPolygon);
 
 			if(csgIntersection.hasIntersection)
 			{
+                foundIntersection = true;
 				if(areSamePoints(startPolygon->getCwPoints()[startPointIndex], csgIntersection.intersectionPoint))
 				{
 					break;
@@ -95,13 +97,14 @@ namespace urchin
 				if(mergedPolygonPoints.size()==0 || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=csgIntersection.intersectionPoint)
 				{
 					mergedPolygonPoints.push_back(csgIntersection.intersectionPoint);
+
+                    previousEdgeStartPoint = edgeStartPoint;
 				}
-				std::swap(currentPolygon, otherPolygon);
 
 				edgeStartPoint = csgIntersection.intersectionPoint;
 				nextPointIndex = csgIntersection.edgeEndPointIndex;
 
-				foundIntersection = true;
+                std::swap(currentPolygon, otherPolygon);
 			}else
 			{
 				if(areSamePoints(startPolygon, startPointIndex, currentPolygon, nextPointIndex))
@@ -112,8 +115,9 @@ namespace urchin
 				if(mergedPolygonPoints.size()==0 || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=edgeEndPoint)
 				{
 					mergedPolygonPoints.push_back(edgeEndPoint);
-				}
 
+                    previousEdgeStartPoint = edgeStartPoint;
+				}
 				edgeStartPoint = edgeEndPoint;
 				nextPointIndex = (nextPointIndex+1) % currentPolygon->getCwPoints().size();
 			}
@@ -187,7 +191,7 @@ namespace urchin
 		return lowestPointIndex;
 	}
 
-	CSGIntersection PolygonsUnion::findFirstValidIntersectionOnEdge(const LineSegment2D<float> &edge, const Point2<float> &nextPointToEdge, const CSGPolygon *polygon) const
+	CSGIntersection PolygonsUnion::findFirstValidIntersectionOnEdge(const LineSegment2D<float> &edge, const Point2<float> &previousEdgePoint, const CSGPolygon *polygon) const
 	{
 		CSGIntersection csgIntersection;
 		csgIntersection.hasIntersection = false;
@@ -206,13 +210,18 @@ namespace urchin
 
 			for(unsigned int interIndex=0; interIndex<2; ++interIndex)
 			{
-				if(!std::isnan(intersectionPoints[interIndex].X) && edge.getA().cast<double>()!=intersectionPoints[interIndex])
+                if(std::isnan(intersectionPoints[interIndex].X))
+                {
+                    continue;
+                }
+
+                Point2<float> intersectionPoint = intersectionPoints[interIndex].cast<float>();
+                float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
+
+				if(squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB()!=intersectionPoint)
 				{
-					Point2<float> intersectionPoint = intersectionPoints[interIndex].cast<float>();
-					float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-					if(squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint
-							&& hasBetterAngleWithIntersectionPoint(edge, nextPointToEdge, polygonEdge.getB())
-							&& isExteriorAngleLess180(edge.getA(), intersectionPoint, polygonEdge.getB()))
+                    if( (edge.getA()!=intersectionPoint && isIntersectionAngleBetter(edge, intersectionPoint, polygonEdge.getB()))
+                       || (edge.getA()==intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB())) )
 					{
 						nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
 						csgIntersection.hasIntersection = true;
@@ -227,37 +236,71 @@ namespace urchin
 		return csgIntersection;
 	}
 
-	bool PolygonsUnion::hasBetterAngleWithIntersectionPoint(const LineSegment2D<float> &edge, const Point2<float> &nextPointToEdge, const Point2<float> &nextIntersectionPoint) const
+	bool PolygonsUnion::isIntersectionAngleBetter(const LineSegment2D<float> &edge, const Point2<float> &intersectionPoint, const Point2<float> &nextIntersectionPoint) const
 	{
-		if(edge.getB()!=nextIntersectionPoint)
-		{
-			float nextEdgeOrientation = edge.toVector().crossProduct(edge.getB().vector(nextPointToEdge));
-			float intersectionEdgeOrientation = edge.toVector().crossProduct(edge.getB().vector(nextIntersectionPoint));
+        #ifdef _DEBUG
+            if(edge.getA()==intersectionPoint)
+            {
+                throw std::runtime_error("Vector edge.getA() to intersectionPoint could not be null.");
+            }else if(intersectionPoint==nextIntersectionPoint)
+            {
+                throw std::runtime_error("Vector intersectionPoint to nextIntersectionPoint could not be null.");
+            }
+        #endif
 
-			if(nextEdgeOrientation>0.0 && intersectionEdgeOrientation<0.0)
-			{
-				return false;
-			}else if(nextEdgeOrientation<0.0 && intersectionEdgeOrientation>0.0)
-			{
-				return true;
-			}
+		Vector2<float> firstVector = edge.getA().vector(intersectionPoint);
+		Vector2<float> secondVector = intersectionPoint.vector(nextIntersectionPoint);
+		float angle = firstVector.crossProduct(secondVector);
 
-			Vector2<float> normalizedEdgeVector = edge.toVector().normalize();
-			float nextEdgeAngle = normalizedEdgeVector.dotProduct(edge.getB().vector(nextPointToEdge).normalize());
-			float intersectionEdgeAngle = normalizedEdgeVector.dotProduct(edge.getB().vector(nextIntersectionPoint).normalize());
-
-			return nextEdgeAngle < intersectionEdgeAngle;
+		if(angle > 0.0)
+		{ //exterior angle is less than 180. Intersection point is a better candidate than edge.getB()
+			return true;
+		}else if(angle == 0.0)
+		{ //angle is 180. check which edge is the most longest
+			float lengthEdge = edge.toVector().squareLength();
+			float lengthIntersection = edge.getA().vector(nextIntersectionPoint).squareLength();
+			return lengthIntersection > lengthEdge;
 		}
 
+		//exterior angle is greater than 180. edge.getB() point is a better candidate than intersectionPoint
 		return false;
 	}
 
-	bool PolygonsUnion::isExteriorAngleLess180(const Point2<float> &point1, const Point2<float> &point2, const Point2<float> &point3) const
-	{
-		Vector2<float> firstVector = point1.vector(point2);
-		Vector2<float> secondVector = point2.vector(point3);
-		return firstVector.crossProduct(secondVector) >= 0.0;
-	}
+    bool PolygonsUnion::isIntersectionAngleBetter(const Point2<float> &previousEdgePoint, const LineSegment2D<float> &edge, const Point2<float> &nextIntersectionPoint) const
+    {
+        #ifdef _DEBUG
+                if(previousEdgePoint==edge.getA())
+                {
+                    throw std::runtime_error("Previous edge point cannot be equals to edge.getA()");
+                }
+        #endif
+
+		Vector2<float> previousEdgeVector = LineSegment2D<float>(previousEdgePoint, edge.getA()).toVector();
+		float nextEdgeOrientation = previousEdgeVector.crossProduct(edge.toVector());
+		float intersectionEdgeOrientation = previousEdgeVector.crossProduct(edge.getA().vector(nextIntersectionPoint));
+
+		if(nextEdgeOrientation>0.0 && intersectionEdgeOrientation<0.0)
+		{
+			return true;
+		}else if(nextEdgeOrientation<0.0 && intersectionEdgeOrientation>0.0)
+		{
+			return false;
+		}
+
+		Vector2<float> normalizedPreviousEdgeVector = previousEdgeVector.normalize();
+		float edgeAngle = normalizedPreviousEdgeVector.dotProduct(edge.toVector().normalize());
+		float intersectionEdgeAngle = normalizedPreviousEdgeVector.dotProduct(edge.getA().vector(nextIntersectionPoint).normalize());
+
+        if(edgeAngle==intersectionEdgeAngle)
+        {
+            return edge.getA().vector(nextIntersectionPoint).squareLength() > edge.toVector().squareLength();
+        }else if(nextEdgeOrientation <= 0.0)
+        {
+            return intersectionEdgeAngle > edgeAngle;
+        }
+
+        return intersectionEdgeAngle < edgeAngle;
+    }
 
 	bool PolygonsUnion::areSamePoints(const CSGPolygon *polygonPoint1, unsigned int point1Index, const CSGPolygon *polygonPoint2, unsigned int point2Index) const
 	{
