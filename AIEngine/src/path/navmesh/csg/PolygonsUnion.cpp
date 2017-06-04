@@ -203,21 +203,18 @@ namespace urchin
 		{
 			LineSegment2D<float> polygonEdge(points[previousI], points[i]);
 
-			//NOTE: the computation of intersection point is done in 'double' because due to float imprecision,
-			//the intersection could be slightly different of the real one and tests below will not work correctly.
-			Point2<double> intersectionPoints[2];
-			intersectionPoints[0] = edge.cast<double>().intersectPoint(polygonEdge.cast<double>(), intersectionPoints[1]);
+			Point2<float> intersectionPoints[2];
+			intersectionPoints[0] = edge.intersectPoint(polygonEdge, intersectionPoints[1]);
 
 			for(unsigned int interIndex=0; interIndex<2; ++interIndex)
 			{
-                if(std::isnan(intersectionPoints[interIndex].X))
+                Point2<float> intersectionPoint = intersectionPoints[interIndex];
+                if(std::isnan(intersectionPoint.X))
                 {
                     continue;
                 }
 
-                Point2<float> intersectionPoint = intersectionPoints[interIndex].cast<float>();
                 float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-
 				if(squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB()!=intersectionPoint)
 				{
                     if( (edge.getA()!=intersectionPoint && isIntersectionAngleBetter(edge, intersectionPoint, polygonEdge.getB()))
@@ -281,10 +278,10 @@ namespace urchin
 
 		if(nextEdgeOrientation>0.0 && intersectionEdgeOrientation<0.0)
 		{
-			return true;
+			return false;
 		}else if(nextEdgeOrientation<0.0 && intersectionEdgeOrientation>0.0)
 		{
-			return false;
+			return true;
 		}
 
 		Vector2<float> normalizedPreviousEdgeVector = previousEdgeVector.normalize();

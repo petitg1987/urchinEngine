@@ -321,7 +321,7 @@ namespace urchin
 		std::reverse(faceCwPoints.begin(), faceCwPoints.end());
 		CSGPolygon walkableFacePolygon(name, faceCwPoints);
 
-		constexpr float REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND = 0.0001f; //TODO increase the value to 0.001f ?
+		constexpr float REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND = 0.001f;
 		return walkableFacePolygon.expand(-REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND);
 	}
 

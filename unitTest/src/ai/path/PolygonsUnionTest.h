@@ -33,6 +33,8 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();
+
+		void test();
 };
 
 #endif
