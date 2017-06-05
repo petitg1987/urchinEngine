@@ -202,32 +202,23 @@ namespace urchin
 		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
 		{
 			LineSegment2D<float> polygonEdge(points[previousI], points[i]);
+            Point2<float> intersectionPoint = edge.intersectPoint(polygonEdge);
 
-			Point2<float> intersectionPoints[2];
-			intersectionPoints[0] = edge.intersectPoint(polygonEdge, intersectionPoints[1]);
-
-			for(unsigned int interIndex=0; interIndex<2; ++interIndex)
-			{
-                Point2<float> intersectionPoint = intersectionPoints[interIndex];
-                if(std::isnan(intersectionPoint.X))
-                {
-                    continue;
-                }
-
+            if(!std::isnan(intersectionPoint.X))
+            {
                 float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-				if(squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB()!=intersectionPoint)
-				{
-                    if( (edge.getA()!=intersectionPoint && isIntersectionAngleBetter(edge, intersectionPoint, polygonEdge.getB()))
-                       || (edge.getA()==intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB())) )
-					{
-						nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
-						csgIntersection.hasIntersection = true;
-						csgIntersection.intersectionPoint = intersectionPoint;
-						csgIntersection.edgeEndPointIndex = i;
-						break;
-					}
-				}
-			}
+                if (squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB() != intersectionPoint)
+                {
+                    if ((edge.getA() != intersectionPoint && isIntersectionAngleBetter(edge, intersectionPoint, polygonEdge.getB()))
+                        || (edge.getA() == intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB())))
+                    {
+                        nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
+                        csgIntersection.hasIntersection = true;
+                        csgIntersection.intersectionPoint = intersectionPoint;
+                        csgIntersection.edgeEndPointIndex = i;
+                    }
+                }
+            }
 		}
 
 		return csgIntersection;
@@ -247,12 +238,12 @@ namespace urchin
 
 		Vector2<float> firstVector = edge.getA().vector(intersectionPoint);
 		Vector2<float> secondVector = intersectionPoint.vector(nextIntersectionPoint);
-		float angle = firstVector.crossProduct(secondVector);
+		float orientation = firstVector.crossProduct(secondVector);
 
-		if(angle > 0.0)
+		if(orientation > 0.0)
 		{ //exterior angle is less than 180. Intersection point is a better candidate than edge.getB()
 			return true;
-		}else if(angle == 0.0)
+		}else if(orientation==0.0)
 		{ //angle is 180. check which edge is the most longest
 			float lengthEdge = edge.toVector().squareLength();
 			float lengthIntersection = edge.getA().vector(nextIntersectionPoint).squareLength();
@@ -266,10 +257,10 @@ namespace urchin
     bool PolygonsUnion::isIntersectionAngleBetter(const Point2<float> &previousEdgePoint, const LineSegment2D<float> &edge, const Point2<float> &nextIntersectionPoint) const
     {
         #ifdef _DEBUG
-                if(previousEdgePoint==edge.getA())
-                {
-                    throw std::runtime_error("Previous edge point cannot be equals to edge.getA()");
-                }
+        	if(previousEdgePoint==edge.getA())
+			{
+				throw std::runtime_error("Previous edge point cannot be equals to edge.getA()");
+			}
         #endif
 
 		Vector2<float> previousEdgeVector = LineSegment2D<float>(previousEdgePoint, edge.getA()).toVector();

@@ -515,7 +515,7 @@ void PolygonsUnionTest::twoPolygonsUnionAndSeparatePolygon()
 }
 
 void PolygonsUnionTest::test()
-{ //TODO ...
+{ //TODO due to float imprecision: error in isIntersectionAngleBetter(edge...): angle is negative instead of positive
     std::vector<Point2<float>> polyPoints1;
     polyPoints1.push_back(Point2<float>(0.5, -5.23956585));
     polyPoints1.push_back(Point2<float>(0.5, -5.5));
