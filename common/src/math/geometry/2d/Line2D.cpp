@@ -75,7 +75,7 @@ namespace urchin
 	 * Returns the intersection point of the two lines. If intersection doesn't exist: return a Point2<T> of NAN.
 	 * When lines are collinear and intersect: returns this->getA().
 	 */
-	template<class T> Point2<T> Line2D<T>::intersectPoint(const Line2D<T> &other) const
+	template<class T> Point2<T> Line2D<T>::intersectPoint(const Line2D<T> &other, bool &hasIntersection) const
 	{ //see LineSegment2D.intersectPoint()
 		Vector2<T> r(b.X - a.X, b.Y - a.Y);
 		Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
@@ -87,13 +87,16 @@ namespace urchin
 		{ //lines are parallel
 			if(startPointsCrossR==0.0)
 			{ //lines are collinear
+				hasIntersection = true;
 				return a;
 			}
 
-			return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
+			hasIntersection = false;
+			return Point2<T>(0, 0);
 		}
 
 		//lines not parallel
+		hasIntersection = true;
 		T u = startPointsCrossR / rCrossS;
 		return other.getA().translate(u*s);
 	}
@@ -109,5 +112,8 @@ namespace urchin
 
 	template class Line2D<double>;
 	template std::ostream& operator <<<double>(std::ostream &, const Line2D<double> &);
+
+	template class Line2D<int>;
+	template std::ostream& operator <<<int>(std::ostream &, const Line2D<int> &);
 
 }

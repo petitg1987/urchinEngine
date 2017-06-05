@@ -20,7 +20,7 @@ namespace urchin
 			Line2D<T> parallelLine(const Point2<T> &) const;
 			T ccw(const Point2<T> &) const;
 
-			Point2<T> intersectPoint(const Line2D<T> &) const;
+			Point2<T> intersectPoint(const Line2D<T> &, bool &) const;
 
 		private:
 			Point2<T> a, b;

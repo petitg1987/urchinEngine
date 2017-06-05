@@ -8,27 +8,27 @@
 namespace urchin
 {
 
-	class CSGPolygon
+	template<class T> class CSGPolygon
 	{
 		public:
-			CSGPolygon(std::string name, const std::vector<Point2<float>> &);
+			CSGPolygon(std::string name, const std::vector<Point2<T>> &);
 			CSGPolygon(const CSGPolygon &);
 			CSGPolygon(CSGPolygon &&);
 			CSGPolygon& operator=(CSGPolygon &&);
 
 			const std::string &getName() const;
-			const std::vector<Point2<float>> &getCwPoints() const;
-			float computeArea() const;
+			const std::vector<Point2<T>> &getCwPoints() const;
+			T computeArea() const;
 
-			CSGPolygon expand(float) const;
+			CSGPolygon expand(T) const;
 
 		private:
 			std::string name;
-			mutable std::vector<Point2<float>> cwPoints;
+			mutable std::vector<Point2<T>> cwPoints;
 
 	};
 
-	std::ostream& operator <<(std::ostream &, const CSGPolygon &);
+	template<class T> std::ostream& operator <<(std::ostream &, const CSGPolygon<T> &);
 
 }
 

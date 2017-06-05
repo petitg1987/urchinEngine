@@ -94,10 +94,11 @@ namespace urchin
 	 * Returns the intersection point of the two lines segment. If intersection doesn't exist: return a Point2<T> of NAN.
 	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
 	 */
-	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other) const
+	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection) const
 	{ //see http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+		bool hasCollinearIntersection;
 		Point2<T> farthestIntersectionPoint;
-		return intersectPoint(other, farthestIntersectionPoint);
+		return intersectPoint(other, hasIntersection, farthestIntersectionPoint, hasCollinearIntersection);
 	}
 
 	/**
@@ -105,10 +106,8 @@ namespace urchin
 	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().
 	 * @farthestIntersectionPoint Contains the farthest intersection point between this->getA() and this->getB() when line segments are collinear and intersect.
 	 */
-	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, Point2<T> &farthestIntersectionPoint) const
+	template<class T> Point2<T> LineSegment2D<T>::intersectPoint(const LineSegment2D<T> &other, bool &hasIntersection, Point2<T> &farthestIntersectionPoint, bool &hasCollinearIntersection) const
 	{
-		farthestIntersectionPoint = Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
-
 		Vector2<T> r(b.X - a.X, b.Y - a.Y); //note: a+1.0*r = b;
 		Vector2<T> s(other.getB().X - other.getA().X, other.getB().Y - other.getA().Y);
 
@@ -116,14 +115,14 @@ namespace urchin
 		Vector2<T> thisToOther = a.vector(other.getA());
 		T startPointsCrossR = thisToOther.crossProduct(r);
 
-		if(rCrossS==0.0)
+		if(rCrossS==0)
 		{ //line segments are parallel
-			if(startPointsCrossR==0.0)
+			if(startPointsCrossR==0)
 			{ //line segments are collinear
 				T t0 = thisToOther.dotProduct(r) / r.dotProduct(r);
 				T t1 = t0 + s.dotProduct(r) / r.dotProduct(r);
 
-				if(s.dotProduct(r) < 0.0)
+				if(s.dotProduct(r) < 0)
 				{ //lines in opposite direction
 					std::swap(t0, t1);
 				}
@@ -132,22 +131,30 @@ namespace urchin
 					assert(std::isnan(t0) || t0 <= t1);
 				#endif
 
-				if(t0>=0.0 && t0<=1.0 && t1>=1.0)
+				if(t0>=0 && t0<=1 && t1>=1)
 				{ //collinear with intersection
+					hasIntersection = true;
+					hasCollinearIntersection = true;
 					farthestIntersectionPoint = b;
 					return a.translate(t0*r);
-				}else if(t0<=0.0 && t1>=0.0 && t1<=1.0)
+				}else if(t0<=0 && t1>=0 && t1<=1)
 				{ //collinear with intersection
+					hasIntersection = true;
+					hasCollinearIntersection = true;
 					farthestIntersectionPoint = a.translate(t1*r);
 					return a;
-				}else if(t0>=0.0 && t0<=1.0 && t1>=0.0 && t1<=1.0)
+				}else if(t0>=0 && t0<=1 && t1>=0 && t1<=1)
 				{ //collinear intersection (other is totally covered by this)
+					hasIntersection = true;
+					hasCollinearIntersection = true;
 					farthestIntersectionPoint = a.translate(t1*r);
 					return a.translate(t0*r);
 				}
 			}
 
-			return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
+			hasIntersection = false;
+			hasCollinearIntersection = false;
+			return Point2<T>(0, 0);
 		}
 
 		//line segments not parallel
@@ -155,11 +162,15 @@ namespace urchin
 		T u = startPointsCrossR / rCrossS;
 		if(t>=0.0 && t<=1.0 && u>=0.0 && u<=1.0)
 		{ //intersection
+			hasIntersection = true;
+			hasCollinearIntersection = false;
 			return a.translate(t*r);
 		}
 
 		//no intersection
-		return Point2<T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN());
+		hasIntersection = false;
+		hasCollinearIntersection = false;
+		return Point2<T>(0, 0);
 	}
 
 	template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const
@@ -176,11 +187,19 @@ namespace urchin
 	template class LineSegment2D<float>;
 	template LineSegment2D<float> LineSegment2D<float>::cast() const;
 	template LineSegment2D<double> LineSegment2D<float>::cast() const;
+	template LineSegment2D<int> LineSegment2D<float>::cast() const;
 	template std::ostream& operator <<<float>(std::ostream & , const LineSegment2D<float> &);
 
 	template class LineSegment2D<double>;
 	template LineSegment2D<float> LineSegment2D<double>::cast() const;
 	template LineSegment2D<double> LineSegment2D<double>::cast() const;
+	template LineSegment2D<int> LineSegment2D<double>::cast() const;
 	template std::ostream& operator <<<double>(std::ostream & , const LineSegment2D<double> &);
+
+	template class LineSegment2D<int>;
+	template LineSegment2D<float> LineSegment2D<int>::cast() const;
+	template LineSegment2D<double> LineSegment2D<int>::cast() const;
+	template LineSegment2D<int> LineSegment2D<int>::cast() const;
+	template std::ostream& operator <<<int>(std::ostream & , const LineSegment2D<int> &);
 
 }

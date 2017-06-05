@@ -7,22 +7,22 @@
 namespace urchin
 {
 
-	PolygonsUnion::PolygonsUnion()
+    template<class T> PolygonsUnion<T>::PolygonsUnion()
 	{
 
 	}
 
-	PolygonsUnion::~PolygonsUnion()
+    template<class T> PolygonsUnion<T>::~PolygonsUnion()
 	{
 
 	}
 
-	std::vector<CSGPolygon> PolygonsUnion::unionPolygons(const std::vector<CSGPolygon> &polygons) const
+    template<class T> std::vector<CSGPolygon<T>> PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
 	{
-		std::vector<CSGPolygon> mergedPolygons;
+		std::vector<CSGPolygon<T>> mergedPolygons;
 		mergedPolygons.reserve(polygons.size()/2 + 1); //estimated memory size
 
-		std::vector<CSGPolygon> allPolygons = polygons;
+		std::vector<CSGPolygon<T>> allPolygons = polygons;
 		allPolygons.reserve(allPolygons.size() + mergedPolygons.size());
 
 		while(allPolygons.size() > 0)
@@ -30,7 +30,7 @@ namespace urchin
 			bool isPolygonsMerged = false;
 			for(unsigned int i=1; i<allPolygons.size(); ++i)
 			{
-				std::vector<CSGPolygon> result = unionTwoPolygons(allPolygons[0], allPolygons[i]);
+				std::vector<CSGPolygon<T>> result = unionTwoPolygons(allPolygons[0], allPolygons[i]);
 				if(result.size()==0)
 				{ //error: returns empty std::vector
 					mergedPolygons.clear();
@@ -57,34 +57,35 @@ namespace urchin
 		return mergedPolygons;
 	}
 
-	std::vector<CSGPolygon> PolygonsUnion::unionTwoPolygons(const CSGPolygon &polygon1, const CSGPolygon &polygon2) const
+    template<class T> std::vector<CSGPolygon<T>> PolygonsUnion<T>::unionTwoPolygons(const CSGPolygon<T> &polygon1, const CSGPolygon<T> &polygon2) const
 	{
 		#ifdef _DEBUG
 			//logInputData(polygon1, polygon2, "Debug polygons union.", Logger::INFO);
 		#endif
 
-		const CSGPolygon *startPolygon = nullptr;
+		const CSGPolygon<T> *startPolygon = nullptr;
 		unsigned int startPointIndex = findStartPoint(polygon1, polygon2, startPolygon);
 		unsigned int nextPointIndex = (startPointIndex+1) % startPolygon->getCwPoints().size();
+		unsigned int previousPointIndex = (startPointIndex+startPolygon->getCwPoints().size()-1) % startPolygon->getCwPoints().size();
 
-		const CSGPolygon *currentPolygon = startPolygon;
-		const CSGPolygon *otherPolygon = currentPolygon==&polygon1 ? &polygon2 : &polygon1;
+		const CSGPolygon<T> *currentPolygon = startPolygon;
+		const CSGPolygon<T> *otherPolygon = currentPolygon==&polygon1 ? &polygon2 : &polygon1;
 
-		Point2<float> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
-        Point2<float> previousEdgeStartPoint(std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+		Point2<T> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
+        Point2<T> previousEdgeStartPoint = currentPolygon->getCwPoints()[previousPointIndex];
 		bool foundIntersection = false;
 
 		unsigned int maxIteration = (polygon1.getCwPoints().size() + polygon2.getCwPoints().size()) * 2;
 		unsigned int currentIteration = 0;
 
-		std::vector<Point2<float>> mergedPolygonPoints;
+		std::vector<Point2<T>> mergedPolygonPoints;
 		mergedPolygonPoints.reserve(polygon1.getCwPoints().size() + polygon2.getCwPoints().size()); //estimated memory size
 		mergedPolygonPoints.push_back(edgeStartPoint);
 
 		while(currentIteration++ < maxIteration)
 		{
-			Point2<float> edgeEndPoint = currentPolygon->getCwPoints()[nextPointIndex];
-			CSGIntersection csgIntersection = findFirstValidIntersectionOnEdge(LineSegment2D<float>(edgeStartPoint, edgeEndPoint), previousEdgeStartPoint, otherPolygon);
+			Point2<T> edgeEndPoint = currentPolygon->getCwPoints()[nextPointIndex];
+			CSGIntersection<T> csgIntersection = findFirstValidIntersectionOnEdge(LineSegment2D<T>(edgeStartPoint, edgeEndPoint), previousEdgeStartPoint, otherPolygon);
 
 			if(csgIntersection.hasIntersection)
 			{
@@ -123,13 +124,13 @@ namespace urchin
 			}
 		}
 
-		std::vector<CSGPolygon> mergedPolygons;
+		std::vector<CSGPolygon<T>> mergedPolygons;
 		if(currentIteration >= maxIteration)
 		{
 			logInputData(polygon1, polygon2, "Maximum of iteration reached on polygons union algorithm.", Logger::ERROR);
 		}else if(foundIntersection || pointInsideOrOnPolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
 		{
-			mergedPolygons.push_back(CSGPolygon(polygon1.getName() + "-" + polygon2.getName(), mergedPolygonPoints));
+			mergedPolygons.push_back(CSGPolygon<T>(polygon1.getName() + "-" + polygon2.getName(), mergedPolygonPoints));
 		}else
 		{
 			mergedPolygons.reserve(2);
@@ -144,21 +145,21 @@ namespace urchin
 	 * @param startPolygon [OUT] Start polygon to use for merge algorithm
 	 * @return Start point to use for merge algorithm
 	 */
-	unsigned int PolygonsUnion::findStartPoint(const CSGPolygon &polygon1, const CSGPolygon &polygon2, const CSGPolygon *&startPolygon) const
+    template<class T> unsigned int PolygonsUnion<T>::findStartPoint(const CSGPolygon<T> &polygon1, const CSGPolygon<T> &polygon2, const CSGPolygon<T> *&startPolygon) const
 	{
 		unsigned int lowestPointIndexPolygon1 = findLowestPointIndex(polygon1);
-		Point2<float> lowestPointPolygon1 = polygon1.getCwPoints()[lowestPointIndexPolygon1];
+		Point2<T> lowestPointPolygon1 = polygon1.getCwPoints()[lowestPointIndexPolygon1];
 
 		unsigned int lowestPointIndexPolygon2 = findLowestPointIndex(polygon2);
-		Point2<float> lowestPointPolygon2 = polygon2.getCwPoints()[lowestPointIndexPolygon2];
+		Point2<T> lowestPointPolygon2 = polygon2.getCwPoints()[lowestPointIndexPolygon2];
 
 		if(lowestPointPolygon1.Y == lowestPointPolygon2.Y)
 		{
 			unsigned int nextPointIndexPolygon1 = (lowestPointIndexPolygon1+1)%polygon1.getCwPoints().size();
-			float verticalDot1 = Vector2<float>(0.0, 1.0).dotProduct(lowestPointPolygon1.vector(polygon1.getCwPoints()[nextPointIndexPolygon1]).normalize());
+			T verticalDot1 = Vector2<T>(0, 1).dotProduct(lowestPointPolygon1.vector(polygon1.getCwPoints()[nextPointIndexPolygon1]).normalize());
 
 			unsigned int nextPointIndexPolygon2 = (lowestPointIndexPolygon2+1)%polygon2.getCwPoints().size();
-			float verticalDot2 = Vector2<float>(0.0, 1.0).dotProduct(lowestPointPolygon2.vector(polygon2.getCwPoints()[nextPointIndexPolygon2]).normalize());
+			T verticalDot2 = Vector2<T>(0, 1).dotProduct(lowestPointPolygon2.vector(polygon2.getCwPoints()[nextPointIndexPolygon2]).normalize());
 
 			if(verticalDot1 < verticalDot2)
 			{
@@ -175,11 +176,11 @@ namespace urchin
 		return lowestPointIndexPolygon2;
 	}
 
-	unsigned int PolygonsUnion::findLowestPointIndex(const CSGPolygon &polygon) const
+    template<class T> unsigned int PolygonsUnion<T>::findLowestPointIndex(const CSGPolygon<T> &polygon) const
 	{
 		unsigned int lowestPointIndex = 0;
 
-		const std::vector<Point2<float>> &points = polygon.getCwPoints();
+		const std::vector<Point2<T>> &points = polygon.getCwPoints();
 		for(unsigned int i=1; i<points.size(); ++i)
 		{
 			if(points[i].Y < points[lowestPointIndex].Y)
@@ -191,22 +192,23 @@ namespace urchin
 		return lowestPointIndex;
 	}
 
-	CSGIntersection PolygonsUnion::findFirstValidIntersectionOnEdge(const LineSegment2D<float> &edge, const Point2<float> &previousEdgePoint, const CSGPolygon *polygon) const
+    template<class T> CSGIntersection<T> PolygonsUnion<T>::findFirstValidIntersectionOnEdge(const LineSegment2D<T> &edge, const Point2<T> &previousEdgePoint, const CSGPolygon<T> *polygon) const
 	{
-		CSGIntersection csgIntersection;
+		CSGIntersection<T> csgIntersection;
 		csgIntersection.hasIntersection = false;
 
-		float nearestSquareDistanceEdgeStartPoint = std::numeric_limits<float>::max();
+		T nearestSquareDistanceEdgeStartPoint = std::numeric_limits<T>::max();
 
-		const std::vector<Point2<float>> &points = polygon->getCwPoints();
+		const std::vector<Point2<T>> &points = polygon->getCwPoints();
 		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
 		{
-			LineSegment2D<float> polygonEdge(points[previousI], points[i]);
-            Point2<float> intersectionPoint = edge.intersectPoint(polygonEdge);
+			LineSegment2D<T> polygonEdge(points[previousI], points[i]);
+			bool hasIntersection;
+            Point2<T> intersectionPoint = edge.intersectPoint(polygonEdge, hasIntersection);
 
-            if(!std::isnan(intersectionPoint.X))
+            if(hasIntersection)
             {
-                float squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
+                T squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
                 if (squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB() != intersectionPoint)
                 {
                     if ((edge.getA() != intersectionPoint && isIntersectionAngleBetter(edge, intersectionPoint, polygonEdge.getB()))
@@ -224,7 +226,7 @@ namespace urchin
 		return csgIntersection;
 	}
 
-	bool PolygonsUnion::isIntersectionAngleBetter(const LineSegment2D<float> &edge, const Point2<float> &intersectionPoint, const Point2<float> &nextIntersectionPoint) const
+    template<class T> bool PolygonsUnion<T>::isIntersectionAngleBetter(const LineSegment2D<T> &edge, const Point2<T> &intersectionPoint, const Point2<T> &nextIntersectionPoint) const
 	{
         #ifdef _DEBUG
             if(edge.getA()==intersectionPoint)
@@ -236,17 +238,17 @@ namespace urchin
             }
         #endif
 
-		Vector2<float> firstVector = edge.getA().vector(intersectionPoint);
-		Vector2<float> secondVector = intersectionPoint.vector(nextIntersectionPoint);
-		float orientation = firstVector.crossProduct(secondVector);
+		Vector2<T> firstVector = edge.getA().vector(intersectionPoint);
+		Vector2<T> secondVector = intersectionPoint.vector(nextIntersectionPoint);
+		T orientation = firstVector.crossProduct(secondVector);
 
 		if(orientation > 0.0)
 		{ //exterior angle is less than 180. Intersection point is a better candidate than edge.getB()
 			return true;
 		}else if(orientation==0.0)
 		{ //angle is 180. check which edge is the most longest
-			float lengthEdge = edge.toVector().squareLength();
-			float lengthIntersection = edge.getA().vector(nextIntersectionPoint).squareLength();
+			T lengthEdge = edge.toVector().squareLength();
+			T lengthIntersection = edge.getA().vector(nextIntersectionPoint).squareLength();
 			return lengthIntersection > lengthEdge;
 		}
 
@@ -254,7 +256,7 @@ namespace urchin
 		return false;
 	}
 
-    bool PolygonsUnion::isIntersectionAngleBetter(const Point2<float> &previousEdgePoint, const LineSegment2D<float> &edge, const Point2<float> &nextIntersectionPoint) const
+    template<class T> bool PolygonsUnion<T>::isIntersectionAngleBetter(const Point2<T> &previousEdgePoint, const LineSegment2D<T> &edge, const Point2<T> &nextIntersectionPoint) const
     {
         #ifdef _DEBUG
         	if(previousEdgePoint==edge.getA())
@@ -263,9 +265,9 @@ namespace urchin
 			}
         #endif
 
-		Vector2<float> previousEdgeVector = LineSegment2D<float>(previousEdgePoint, edge.getA()).toVector();
-		float nextEdgeOrientation = previousEdgeVector.crossProduct(edge.toVector());
-		float intersectionEdgeOrientation = previousEdgeVector.crossProduct(edge.getA().vector(nextIntersectionPoint));
+		Vector2<T> previousEdgeVector = LineSegment2D<T>(previousEdgePoint, edge.getA()).toVector();
+		T nextEdgeOrientation = previousEdgeVector.crossProduct(edge.toVector());
+		T intersectionEdgeOrientation = previousEdgeVector.crossProduct(edge.getA().vector(nextIntersectionPoint));
 
 		if(nextEdgeOrientation>0.0 && intersectionEdgeOrientation<0.0)
 		{
@@ -275,9 +277,9 @@ namespace urchin
 			return true;
 		}
 
-		Vector2<float> normalizedPreviousEdgeVector = previousEdgeVector.normalize();
-		float edgeAngle = normalizedPreviousEdgeVector.dotProduct(edge.toVector().normalize());
-		float intersectionEdgeAngle = normalizedPreviousEdgeVector.dotProduct(edge.getA().vector(nextIntersectionPoint).normalize());
+		Vector2<T> normalizedPreviousEdgeVector = previousEdgeVector.normalize();
+		T edgeAngle = normalizedPreviousEdgeVector.dotProduct(edge.toVector().normalize());
+		T intersectionEdgeAngle = normalizedPreviousEdgeVector.dotProduct(edge.getA().vector(nextIntersectionPoint).normalize());
 
         if(edgeAngle==intersectionEdgeAngle)
         {
@@ -290,7 +292,7 @@ namespace urchin
         return intersectionEdgeAngle < edgeAngle;
     }
 
-	bool PolygonsUnion::areSamePoints(const CSGPolygon *polygonPoint1, unsigned int point1Index, const CSGPolygon *polygonPoint2, unsigned int point2Index) const
+    template<class T> bool PolygonsUnion<T>::areSamePoints(const CSGPolygon<T> *polygonPoint1, unsigned int point1Index, const CSGPolygon<T> *polygonPoint2, unsigned int point2Index) const
 	{
 		if(polygonPoint1==polygonPoint2)
 		{
@@ -300,27 +302,27 @@ namespace urchin
 		return areSamePoints(polygonPoint1->getCwPoints()[point1Index], polygonPoint2->getCwPoints()[point2Index]);
 	}
 
-	bool PolygonsUnion::areSamePoints(const Point2<float> &p1, const Point2<float> &p2) const
+    template<class T> bool PolygonsUnion<T>::areSamePoints(const Point2<T> &p1, const Point2<T> &p2) const
 	{
-		constexpr float EPSILON = std::numeric_limits<float>::epsilon();
+		constexpr T EPSILON = std::numeric_limits<T>::epsilon();
 		return ((p1.X-EPSILON) <= p2.X) && ((p1.X+EPSILON) >= p2.X) && ((p1.Y-EPSILON) <= p2.Y) && ((p1.Y+EPSILON) >= p2.Y);
 	}
 
-	bool PolygonsUnion::pointInsideOrOnPolygon(const CSGPolygon *polygon, const Point2<float> &point) const
+    template<class T> bool PolygonsUnion<T>::pointInsideOrOnPolygon(const CSGPolygon<T> *polygon, const Point2<T> &point) const
 	{ //see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
 		bool inside = false;
 
-		const std::vector<Point2<float>> &points = polygon->getCwPoints();
+		const std::vector<Point2<T>> &points = polygon->getCwPoints();
 		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
 		{
-			Point2<float> point1 = points[previousI];
-			Point2<float> point2 = points[i];
+			Point2<T> point1 = points[previousI];
+			Point2<T> point2 = points[i];
 
 			if (((point1.Y<=point.Y && point.Y<point2.Y) || (point2.Y<=point.Y && point.Y<point1.Y))
 					&& (point.X < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y) + point1.X))
 			{
 				inside = !inside;
-			}else if(LineSegment2D<float>(point1, point2).squareDistance(point)==0.0)
+			}else if(LineSegment2D<T>(point1, point2).squareDistance(point)==0.0)
 			{
 				return true;
 			}
@@ -329,10 +331,10 @@ namespace urchin
 		return inside;
 	}
 
-	void PolygonsUnion::logInputData(const CSGPolygon &polygon1, const CSGPolygon &polygon2, const std::string &message, Logger::CriticalityLevel logLevel) const
+    template<class T> void PolygonsUnion<T>::logInputData(const CSGPolygon<T> &polygon1, const CSGPolygon<T> &polygon2, const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
-		logStream.precision(std::numeric_limits<float>::max_digits10);
+		logStream.precision(std::numeric_limits<T>::max_digits10);
 
 		logStream<<message<<std::endl;
 		logStream<<" - Polygon 1: "<<std::endl<<polygon1<<std::endl;
@@ -341,4 +343,10 @@ namespace urchin
 		Logger::logger().log(logLevel, logStream.str());
 	}
 
+    //explicit template
+    template class PolygonsUnion<float>;
+
+    template class PolygonsUnion<double>;
+
+	template class PolygonsUnion<int>;
 }

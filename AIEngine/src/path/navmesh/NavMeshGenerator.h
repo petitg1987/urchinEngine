@@ -48,8 +48,8 @@ namespace urchin
 			std::shared_ptr<NavPolygon> createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
 			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 			bool addObstacles(const std::vector<Polyhedron> &, const PolyhedronFaceIndex &, Triangulation &) const;
-			CSGPolygon computeWalkablePolygon(const PolyhedronFace &, const std::string &) const;
-			CSGPolygon computePolyhedronFootprint(const Polyhedron &, const PolyhedronFace &) const;
+			CSGPolygon<float> computeWalkablePolygon(const PolyhedronFace &, const std::string &) const;
+			CSGPolygon<float> computePolyhedronFootprint(const Polyhedron &, const PolyhedronFace &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const PolyhedronFace &) const;
 			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;
 

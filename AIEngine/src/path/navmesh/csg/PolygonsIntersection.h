@@ -8,19 +8,19 @@
 namespace urchin
 {
 
-	class PolygonsIntersection : public Singleton<PolygonsIntersection>
+	template<class T> class PolygonsIntersection : public Singleton<PolygonsIntersection<T>>
 	{
 		public:
-			friend class Singleton<PolygonsIntersection>;
+			friend class Singleton<PolygonsIntersection<T>>;
 
-			CSGPolygon intersectionPolygons(const CSGPolygon &, const CSGPolygon &) const;
+			CSGPolygon<T> intersectionPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
 
 		private:
 			PolygonsIntersection();
 			virtual ~PolygonsIntersection();
 
-			bool isPointInside(const Line2D<float> &, const Point2<float> &) const;
-			void addIntersection(const Line2D<float> &, const Line2D<float> &, std::vector<Point2<float>> &) const;
+			bool isPointInside(const Line2D<T> &, const Point2<T> &) const;
+			void addIntersection(const Line2D<T> &, const Line2D<T> &, std::vector<Point2<T>> &) const;
 	};
 
 }

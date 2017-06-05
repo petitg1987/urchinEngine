@@ -9,37 +9,37 @@
 namespace urchin
 {
 
-	struct CSGIntersection
+	template<class T> struct CSGIntersection
 	{
 		bool hasIntersection;
-		Point2<float> intersectionPoint;
+		Point2<T> intersectionPoint;
 		unsigned int edgeEndPointIndex;
 	};
 
-	class PolygonsUnion : public Singleton<PolygonsUnion>
+	template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>>
 	{
 		public:
-			friend class Singleton<PolygonsUnion>;
+			friend class Singleton<PolygonsUnion<T>>;
 
-			std::vector<CSGPolygon> unionPolygons(const std::vector<CSGPolygon> &) const;
+			std::vector<CSGPolygon<T>> unionPolygons(const std::vector<CSGPolygon<T>> &) const;
 
 		private:
 			PolygonsUnion();
 			virtual ~PolygonsUnion();
 
-			std::vector<CSGPolygon> unionTwoPolygons(const CSGPolygon &, const CSGPolygon &) const;
+			std::vector<CSGPolygon<T>> unionTwoPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
 
-			unsigned int findStartPoint(const CSGPolygon &, const CSGPolygon &, const CSGPolygon *&) const;
-			unsigned int findLowestPointIndex(const CSGPolygon &) const;
-			CSGIntersection findFirstValidIntersectionOnEdge(const LineSegment2D<float> &, const Point2<float> &, const CSGPolygon *) const;
-			bool isIntersectionAngleBetter(const LineSegment2D<float> &, const Point2<float> &, const Point2<float> &) const;
-			bool isIntersectionAngleBetter(const Point2<float> &, const LineSegment2D<float> &, const Point2<float> &) const;
+			unsigned int findStartPoint(const CSGPolygon<T> &, const CSGPolygon<T> &, const CSGPolygon<T> *&) const;
+			unsigned int findLowestPointIndex(const CSGPolygon<T> &) const;
+			CSGIntersection<T> findFirstValidIntersectionOnEdge(const LineSegment2D<T> &, const Point2<T> &, const CSGPolygon<T> *) const;
+			bool isIntersectionAngleBetter(const LineSegment2D<T> &, const Point2<T> &, const Point2<T> &) const;
+			bool isIntersectionAngleBetter(const Point2<T> &, const LineSegment2D<T> &, const Point2<T> &) const;
 
-			bool areSamePoints(const CSGPolygon *, unsigned int, const CSGPolygon *, unsigned int) const;
-			bool areSamePoints(const Point2<float> &, const Point2<float> &) const;
-			bool pointInsideOrOnPolygon(const CSGPolygon *, const Point2<float> &) const;
+			bool areSamePoints(const CSGPolygon<T> *, unsigned int, const CSGPolygon<T> *, unsigned int) const;
+			bool areSamePoints(const Point2<T> &, const Point2<T> &) const;
+			bool pointInsideOrOnPolygon(const CSGPolygon<T> *, const Point2<T> &) const;
 
-			void logInputData(const CSGPolygon &, const CSGPolygon &, const std::string &, Logger::CriticalityLevel) const;
+			void logInputData(const CSGPolygon<T> &, const CSGPolygon<T> &, const std::string &, Logger::CriticalityLevel) const;
 	};
 
 }

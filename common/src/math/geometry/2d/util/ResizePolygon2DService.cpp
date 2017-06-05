@@ -34,7 +34,7 @@ namespace urchin
 			Vector2<T> fromNextPoint = polygonPoints[nextI].vector(polygonPoints[i]).normalize();
 			Vector2<T> secondNormal = Vector2<T>(-fromNextPoint.Y, fromNextPoint.X);
 
-			T moveLength = distance / (1.0 + firstNormal.dotProduct(secondNormal));
+			T moveLength = distance / (1 + firstNormal.dotProduct(secondNormal));
 			offsetPoints.push_back(Point2<T>(
 					polygonPoints[i].X + (firstNormal.X + secondNormal.X)*moveLength,
 					polygonPoints[i].Y + (firstNormal.Y + secondNormal.Y)*moveLength));
@@ -47,4 +47,6 @@ namespace urchin
 	template class ResizePolygon2DService<float>;
 
 	template class ResizePolygon2DService<double>;
+
+	template class ResizePolygon2DService<int>;
 }

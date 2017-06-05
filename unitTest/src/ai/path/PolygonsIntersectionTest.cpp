@@ -20,7 +20,8 @@ void PolygonsIntersectionTest::subjectCoverClipper()
 	clipperPoly.push_back(Point2<float>(3.0, 3.0));
 	clipperPoly.push_back(Point2<float>(3.0, 1.0));
 
-	CSGPolygon polygonIntersection = PolygonsIntersection::instance()->intersectionPolygons(CSGPolygon("subject", subjectPoly), CSGPolygon("clipper", clipperPoly));
+	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
+			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
 
 	AssertHelper::assertUnsignedInt(polygonIntersection.getCwPoints().size(), 4);
 	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[0], Point2<float>(3.0, 3.0));
@@ -42,7 +43,8 @@ void PolygonsIntersectionTest::clipperCoverSubject()
 	clipperPoly.push_back(Point2<float>(3.0, 3.0));
 	clipperPoly.push_back(Point2<float>(3.0, 1.0));
 
-	CSGPolygon polygonIntersection = PolygonsIntersection::instance()->intersectionPolygons(CSGPolygon("subject", subjectPoly), CSGPolygon("clipper", clipperPoly));
+	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
+			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
 
 	AssertHelper::assertUnsignedInt(polygonIntersection.getCwPoints().size(), 3);
 	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[0], Point2<float>(1.5, 1.5));
@@ -63,7 +65,8 @@ void PolygonsIntersectionTest::subjectClippedByBox()
 	clipperPoly.push_back(Point2<float>(3.0, 3.0));
 	clipperPoly.push_back(Point2<float>(3.0, 1.0));
 
-	CSGPolygon polygonIntersection = PolygonsIntersection::instance()->intersectionPolygons(CSGPolygon("subject", subjectPoly), CSGPolygon("clipper", clipperPoly));
+	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
+			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
 
 	AssertHelper::assertUnsignedInt(polygonIntersection.getCwPoints().size(), 3);
 	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[0], Point2<float>(1.5, 1.0));

@@ -22,8 +22,8 @@ namespace urchin
 
 			Vector2<T> toVector() const;
 
-			Point2<T> intersectPoint(const LineSegment2D<T> &) const;
-			Point2<T> intersectPoint(const LineSegment2D<T> &, Point2<T> &) const;
+			Point2<T> intersectPoint(const LineSegment2D<T> &, bool &) const;
+			Point2<T> intersectPoint(const LineSegment2D<T> &, bool &, Point2<T> &, bool &) const;
 
 			template<class NEW_TYPE> LineSegment2D<NEW_TYPE> cast() const;
 

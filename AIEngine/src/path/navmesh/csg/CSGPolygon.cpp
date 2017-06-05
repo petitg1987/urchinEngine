@@ -3,52 +3,52 @@
 namespace urchin
 {
 
-	CSGPolygon::CSGPolygon(std::string name, const std::vector<Point2<float>> &cwPoints) :
+	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
 		name(std::move(name)),
 		cwPoints(cwPoints)
 	{
 
 	}
 
-	CSGPolygon::CSGPolygon(const CSGPolygon &polygon) :
+	template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :
 		name(polygon.name),
 		cwPoints(polygon.cwPoints)
 	{
 
 	}
 
-	CSGPolygon::CSGPolygon(CSGPolygon &&polygon) :
+	template<class T> CSGPolygon<T>::CSGPolygon(CSGPolygon &&polygon) :
 		name(std::move(polygon.name)),
 		cwPoints(std::move(polygon.cwPoints))
 	{
 
 	}
 
-	CSGPolygon& CSGPolygon::operator=(CSGPolygon &&polygon)
+	template<class T> CSGPolygon<T>& CSGPolygon<T>::operator=(CSGPolygon<T> &&polygon)
 	{
 		this->name = std::move(polygon.name);
 		this->cwPoints = std::move(polygon.cwPoints);
 		return *this;
 	}
 
-	const std::string &CSGPolygon::getName() const
+	template<class T> const std::string &CSGPolygon<T>::getName() const
 	{
 		return name;
 	}
 
-	const std::vector<Point2<float>> &CSGPolygon::getCwPoints() const
+	template<class T> const std::vector<Point2<T>> &CSGPolygon<T>::getCwPoints() const
 	{
 		return cwPoints;
 	}
 
-	float CSGPolygon::computeArea() const
+	template<class T> T CSGPolygon<T>::computeArea() const
 	{
 		unsigned int n = cwPoints.size();
 		cwPoints.reserve(n+2);
 		cwPoints.push_back(cwPoints[0]);
 		cwPoints.push_back(cwPoints[1]);
 
-		float area = 0.0;
+		T area = (T)0;
 	    for (unsigned int i=1; i<=n; i++)
 	    {
 	        area -= cwPoints[i].X * (cwPoints[i+1].Y - cwPoints[i-1].Y);
@@ -57,15 +57,15 @@ namespace urchin
 		cwPoints.pop_back();
 	    cwPoints.pop_back();
 
-	    return area / 2.0f;
+	    return area / (T)2;
 	}
 
-	CSGPolygon CSGPolygon::expand(float distance) const
+	template<class T> CSGPolygon<T> CSGPolygon<T>::expand(T distance) const
 	{
-		return CSGPolygon(name, ResizePolygon2DService<float>::instance()->resizePolygon(cwPoints, -distance));
+		return CSGPolygon<T>(name, ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance));
 	}
 
-	std::ostream& operator <<(std::ostream &stream, const CSGPolygon &polygon)
+	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
 	{
 		stream << "Name:" << polygon.getName() << std::endl;
 		stream << "Points (CW):" << std::endl;
@@ -75,5 +75,15 @@ namespace urchin
 		}
 		return stream;
 	}
+
+	//explicit template
+	template class CSGPolygon<float>;
+	template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float> &);
+
+	template class CSGPolygon<double>;
+	template std::ostream& operator <<<double>(std::ostream &, const CSGPolygon<double> &);
+
+	template class CSGPolygon<int>;
+	template std::ostream& operator <<<int>(std::ostream &, const CSGPolygon<int> &);
 
 }
