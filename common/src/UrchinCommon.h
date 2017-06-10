@@ -21,6 +21,7 @@
 #include "io/StringUtil.h"
 #include "system/FileSystem.h"
 #include "system/FileHandler.h"
+#include "system/NumericalCheck.h"
 #include "math/algebra/matrix/Matrix2.h"
 #include "math/algebra/matrix/Matrix3.h"
 #include "math/algebra/matrix/Matrix4.h"

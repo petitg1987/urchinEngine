@@ -17,6 +17,7 @@ namespace urchin
 	class Converter
 	{
 		#define FLOAT_DELIMITOR ' '
+		#define FLOAT_INT_SCALE 1024.0
 
 		public:
 			static int toInt(const std::string &);
@@ -24,6 +25,9 @@ namespace urchin
 			static float toFloat(const std::string &);
 			static double toDouble(const std::string &);
 			static char toChar(const std::string &);
+
+			static long long toInteger(float, float scale=FLOAT_INT_SCALE);
+			static float toFloat(long long, float scale=FLOAT_INT_SCALE);
 
 			static Point2<float> toPoint2(const std::string &);
 			static Point3<float> toPoint3(const std::string &);

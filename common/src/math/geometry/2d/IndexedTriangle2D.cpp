@@ -29,6 +29,7 @@ namespace urchin
 
 	//explicit template
 	template class IndexedTriangle2D<float>;
+
 	template class IndexedTriangle2D<double>;
 
 }

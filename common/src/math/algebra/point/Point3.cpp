@@ -279,8 +279,8 @@ namespace urchin
 	template std::ostream& operator <<<float>(std::ostream &, const Point3<float> &);
 
 	template class Point3<double>;
-	template Point3<double> Point3<double>::cast() const;
 	template Point3<float> Point3<double>::cast() const;
+	template Point3<double> Point3<double>::cast() const;
 	template Point3<double> operator *<double>(const Point3<double> &, double);
 	template Point3<double> operator *<double>(double t, const Point3<double> &);
 	template Point3<double> operator /<double>(const Point3<double> &, double);

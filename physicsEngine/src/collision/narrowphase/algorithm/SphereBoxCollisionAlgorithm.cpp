@@ -64,7 +64,7 @@ namespace urchin
 				}
 
 				//project sphere point on found axis
-				closestPointOnBox[minAxis] = spherePosLocalBox[minAxis] + minDistToAxis * MathAlgorithm::sign(spherePosLocalBox[minAxis]);
+				closestPointOnBox[minAxis] = spherePosLocalBox[minAxis] + minDistToAxis * MathAlgorithm::sign<float>(spherePosLocalBox[minAxis]);
 
 				//normal computation
 				normalFromObject2 = spherePosLocalBox.vector(closestPointOnBox);

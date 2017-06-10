@@ -46,7 +46,7 @@ namespace urchin
 		#ifdef _DEBUG
 			write(prefix(criticalityLevel) + toLog + "\n");
 		#else
-			if(criticalityLevel >= ERROR)
+			if(criticalityLevel >= WARNING)
 			{
 				write(prefix(criticalityLevel) + toLog + "\n");
 			}

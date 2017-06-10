@@ -1,8 +1,10 @@
 #include <iostream>
 #include <sstream>
+#include <limits>
 
 #include "io/Converter.h"
 #include "io/StringUtil.h"
+#include "tools/logger/Logger.h"
 
 namespace urchin
 {
@@ -54,6 +56,34 @@ namespace urchin
 	char Converter::toChar(const std::string &str)
 	{
 		return str[0];
+	}
+
+	long long Converter::toInteger(float value, float scale)
+	{
+		const float minValue = std::numeric_limits<long long>::min() / scale;
+		const float maxValue = std::numeric_limits<long long>::max() / scale;
+
+		if(value < 0.0)
+		{
+			if(value < minValue)
+			{
+				Logger::logger().log(Logger::ERROR, "Impossible to convert float " + std::to_string(value) + " in long long type.");
+			}
+			return static_cast<long long>(value * scale - 0.5);
+		}
+		else
+		{
+			if(value > maxValue)
+			{
+				Logger::logger().log(Logger::ERROR, "Impossible to convert float " + std::to_string(value) + " in long long type.");
+			}
+			return static_cast<long long>(value * scale + 0.5);
+		}
+	}
+
+	float Converter::toFloat(long long value, float scale)
+	{
+		return value / scale;
 	}
 
 	Point2<float> Converter::toPoint2(const std::string &str)

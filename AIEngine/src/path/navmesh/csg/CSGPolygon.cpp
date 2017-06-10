@@ -86,4 +86,6 @@ namespace urchin
 	template class CSGPolygon<int>;
 	template std::ostream& operator <<<int>(std::ostream &, const CSGPolygon<int> &);
 
+	template class CSGPolygon<long long>;
+	template std::ostream& operator <<<long long>(std::ostream &, const CSGPolygon<long long> &);
 }

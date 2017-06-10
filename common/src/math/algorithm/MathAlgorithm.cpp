@@ -17,16 +17,11 @@ namespace urchin
 	}
 
 	/**
-	 * @return -1 if value is negative otherwise 1
+	 * @return -1 if value is negative, 0 if value is 0, otherwise 1
 	 */
 	template<class T> T MathAlgorithm::sign(T value)
 	{
-		if(value < (T)0)
-		{
-			return (T)-1;
-		}
-
-		return (T)1;
+		return ((T)0 < value) - (value < (T)0);
 	}
 
 	int MathAlgorithm::nextPowerOfTwo(int val)
@@ -56,4 +51,10 @@ namespace urchin
 
 	template double MathAlgorithm::clamp<double>(double, double, double);
 	template double MathAlgorithm::sign<double>(double);
+
+	template int MathAlgorithm::clamp<int>(int, int, int);
+	template int MathAlgorithm::sign<int>(int);
+
+	template long long MathAlgorithm::clamp<long long>(long long, long long, long long);
+	template long long MathAlgorithm::sign<long long>(long long);
 }

@@ -18,7 +18,9 @@ namespace urchin
 	{
 		#ifdef _DEBUG
 			collisionVisualizer = new CollisionVisualizer(collisionWorld);
-		#endif
+        #endif
+
+		NumericalCheck::instance()->perform();
 	}
 
 	PhysicsWorld::~PhysicsWorld()

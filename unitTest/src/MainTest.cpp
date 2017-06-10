@@ -8,6 +8,7 @@
 #include "math/geometry/AABBoxCollisionTest.h"
 #include "math/geometry/LineSegment2DCollisionTest.h"
 #include "math/geometry/ResizeConvexHull3DTest.h"
+#include "math/geometry/ResizePolygon2DServiceTest.h"
 #include "math/geometry/ConvexHullShape2DTest.h"
 #include "math/geometry/SortPointsTest.h"
 #include "physics/shape/ShapeToAABBoxTest.h"
@@ -48,6 +49,7 @@ int main()
 	runner.addTest(AABBoxCollissionTest::suite());
 	runner.addTest(LineSegment2DCollisionTest::suite());
 	runner.addTest(ResizeConvexHull3DTest::suite());
+	runner.addTest(ResizePolygon2DServiceTest::suite());
 	runner.addTest(ConvexHullShape2DTest::suite());
 	runner.addTest(SortPointsTest::suite());
 

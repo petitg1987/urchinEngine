@@ -68,7 +68,7 @@ set(SOURCE_FILES
         src/system/FileHandlerTest.h
         src/AssertHelper.cpp
         src/AssertHelper.h
-        src/MainTest.cpp)
+        src/MainTest.cpp src/math/geometry/ResizePolygon2DServiceTest.cpp src/math/geometry/ResizePolygon2DServiceTest.h)
 
 include_directories(src ../common/src ../physicsEngine/src ../AIEngine/src)
 

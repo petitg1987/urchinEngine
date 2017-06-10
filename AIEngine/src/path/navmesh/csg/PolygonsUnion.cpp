@@ -304,7 +304,7 @@ namespace urchin
 
     template<class T> bool PolygonsUnion<T>::areSamePoints(const Point2<T> &p1, const Point2<T> &p2) const
 	{
-		constexpr T EPSILON = std::numeric_limits<T>::epsilon();
+		constexpr T EPSILON = std::numeric_limits<T>::epsilon(); //TODO remove epsilon
 		return ((p1.X-EPSILON) <= p2.X) && ((p1.X+EPSILON) >= p2.X) && ((p1.Y-EPSILON) <= p2.Y) && ((p1.Y+EPSILON) >= p2.Y);
 	}
 
@@ -349,4 +349,6 @@ namespace urchin
     template class PolygonsUnion<double>;
 
 	template class PolygonsUnion<int>;
+
+	template class PolygonsUnion<long long>;
 }

@@ -237,8 +237,8 @@ namespace urchin
 	template std::ostream& operator <<<float>(std::ostream &, const Vector4<float> &);
 
 	template class Vector4<double>;
-	template Vector4<double> Vector4<double>::cast() const;
 	template Vector4<float> Vector4<double>::cast() const;
+	template Vector4<double> Vector4<double>::cast() const;
 	template Vector4<double> operator *<double>(const Vector4<double> &, double);
 	template Vector4<double> operator *<double>(double, const Vector4<double> &);
 	template Vector4<double> operator /<double>(const Vector4<double> &, double);

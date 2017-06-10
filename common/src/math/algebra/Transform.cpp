@@ -85,6 +85,7 @@ namespace urchin
 
 	//explicit template
 	template class Transform<float>;
+
 	template class Transform<double>;
 
 }

@@ -14,6 +14,7 @@ class LineSegment2DCollisionTest : public CppUnit::TestFixture
 		void intersection();
 
 		void intersectionOnOnePoint();
+		void intersectionOnOnePointInt();
 		void collinearIntersectionOnOnePoint();
 
 		void collinearLinesNoIntersectionSameDirection();

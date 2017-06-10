@@ -65,4 +65,6 @@ namespace urchin
 
 	template class PolygonsIntersection<int>;
 
+	template class PolygonsIntersection<long long>;
+
 }

@@ -227,6 +227,7 @@ namespace urchin
 	template Point2<float> Point2<float>::cast() const;
 	template Point2<double> Point2<float>::cast() const;
 	template Point2<int> Point2<float>::cast() const;
+	template Point2<long long> Point2<float>::cast() const;
 	template Point2<float> operator *<float>(const Point2<float> &, float);
 	template Point2<float> operator *<float>(float, const Point2<float> &);
 	template Point2<float> operator /<float>(const Point2<float> &, float);
@@ -237,9 +238,10 @@ namespace urchin
 	template std::ostream& operator <<<float>(std::ostream &, const Point2<float> &);
 
 	template class Point2<double>;
-	template Point2<double> Point2<double>::cast() const;
 	template Point2<float> Point2<double>::cast() const;
+	template Point2<double> Point2<double>::cast() const;
 	template Point2<int> Point2<double>::cast() const;
+	template Point2<long long> Point2<double>::cast() const;
 	template Point2<double> operator *<double>(const Point2<double> &, double);
 	template Point2<double> operator *<double>(double, const Point2<double> &);
 	template Point2<double> operator /<double>(const Point2<double> &, double);
@@ -250,9 +252,10 @@ namespace urchin
 	template std::ostream& operator <<<double>(std::ostream &, const Point2<double> &);
 
 	template class Point2<int>;
-	template Point2<double> Point2<int>::cast() const;
 	template Point2<float> Point2<int>::cast() const;
+	template Point2<double> Point2<int>::cast() const;
 	template Point2<int> Point2<int>::cast() const;
+	template Point2<long long> Point2<int>::cast() const;
 	template Point2<int> operator *<int>(const Point2<int> &, int);
 	template Point2<int> operator *<int>(int, const Point2<int> &);
 	template Point2<int> operator /<int>(const Point2<int> &, int);
@@ -261,4 +264,19 @@ namespace urchin
 	template Point2<int> operator *<int>(const Matrix2<int> &, const Point2<int> &);
 	template Point2<int> operator *<int>(const Point2<int> &, const Matrix2<int> &);
 	template std::ostream& operator <<<int>(std::ostream &, const Point2<int> &);
+
+	template class Point2<long long>;
+	template Point2<float> Point2<long long>::cast() const;
+	template Point2<double> Point2<long long>::cast() const;
+	template Point2<int> Point2<long long>::cast() const;
+	template Point2<long long > Point2<long long>::cast() const;
+	template Point2<long long> operator *<long long>(const Point2<long long> &, long long);
+	template Point2<long long> operator *<long long>(long long, const Point2<long long> &);
+	template Point2<long long> operator /<long long>(const Point2<long long> &, long long);
+	template Point2<long long> operator +<long long>(const Point2<long long> &, long long);
+	template Point2<long long> operator -<long long>(const Point2<long long> &, long long);
+	template Point2<long long> operator *<long long>(const Matrix2<long long> &, const Point2<long long> &);
+	template Point2<long long> operator *<long long>(const Point2<long long> &, const Matrix2<long long> &);
+	template std::ostream& operator <<<long long>(std::ostream &, const Point2<long long> &);
+
 }

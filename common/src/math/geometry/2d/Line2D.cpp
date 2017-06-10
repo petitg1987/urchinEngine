@@ -97,8 +97,7 @@ namespace urchin
 
 		//lines not parallel
 		hasIntersection = true;
-		T u = startPointsCrossR / rCrossS;
-		return other.getA().translate(u*s);
+		return other.getA().translate((startPointsCrossR*s) / rCrossS);
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Line2D<T> &l)
@@ -115,5 +114,8 @@ namespace urchin
 
 	template class Line2D<int>;
 	template std::ostream& operator <<<int>(std::ostream &, const Line2D<int> &);
+
+	template class Line2D<long long>;
+	template std::ostream& operator <<<long long>(std::ostream &, const Line2D<long long> &);
 
 }
