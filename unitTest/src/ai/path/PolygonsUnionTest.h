@@ -19,6 +19,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsUnionXAligned();
 		void twoPolygonsUnionYAligned();
 		void twoPolygonsUnionYAlmostAligned();
+		void twoPolygonsUnionAlmostSameEdge();
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsIntersectionIsEndPoint();
 		void twoPolygonsIntersectionIsAlmostEdgeA();

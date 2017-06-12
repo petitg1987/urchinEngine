@@ -202,6 +202,34 @@ void PolygonsUnionTest::twoPolygonsUnionYAlmostAligned()
 	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[7], Point2<float>(2.61617994, 1.71957302), 0.0000001);
 }
 
+void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge()
+{
+	std::vector<Point2<int>> polyPoints1;
+	polyPoints1.push_back(Point2<int>(-419, -5371));
+	polyPoints1.push_back(Point2<int>(912, -5200));
+	polyPoints1.push_back(Point2<int>(912, -5780));
+	polyPoints1.push_back(Point2<int>(-419, -5780));
+
+	std::vector<Point2<int>> polyPoints2;
+	polyPoints2.push_back(Point2<int>(-51, -5324));
+	polyPoints2.push_back(Point2<int>(973, -5192));
+	polyPoints2.push_back(Point2<int>(973, -5939));
+	polyPoints2.push_back(Point2<int>(-51, -5939));
+
+	std::vector<CSGPolygon<int>> allPolygons = {CSGPolygon<int>("p1", polyPoints1), CSGPolygon<int>("p2", polyPoints2)};
+	std::vector<CSGPolygon<int>> polygonUnion = PolygonsUnion<int>::instance()->unionPolygons(allPolygons);
+
+	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+	AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 7);
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[0], Point2<int>(973, -5939));
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[1], Point2<int>(-51, -5939));
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[2], Point2<int>(-51, -5780));
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[3], Point2<int>(-419, -5780));
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[4], Point2<int>(-419, -5371));
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[5], Point2<int>(595, -5241));
+	AssertHelper::assertPoint2IntEquals(polygonUnion[0].getCwPoints()[6], Point2<int>(973, -5192));
+}
+
 void PolygonsUnionTest::twoPolygonsSameEndPoint()
 {
 	std::vector<Point2<float>> polyPoints1;
@@ -528,6 +556,7 @@ CppUnit::Test *PolygonsUnionTest::suite()
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionXAligned", &PolygonsUnionTest::twoPolygonsUnionXAligned));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionYAligned", &PolygonsUnionTest::twoPolygonsUnionYAligned));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionYAlmostAligned", &PolygonsUnionTest::twoPolygonsUnionYAlmostAligned));
+	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsSameEndPoint", &PolygonsUnionTest::twoPolygonsSameEndPoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionIsEndPoint", &PolygonsUnionTest::twoPolygonsIntersectionIsEndPoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionIsAlmostEdgeA", &PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEdgeA));
