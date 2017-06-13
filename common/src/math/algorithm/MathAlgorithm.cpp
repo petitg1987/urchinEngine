@@ -1,6 +1,7 @@
 #include <limits>
 #include <cassert>
 #include <algorithm>
+#include <typeinfo>
 
 #include "math/algorithm/MathAlgorithm.h"
 
@@ -34,27 +35,43 @@ namespace urchin
 		return valPow2;
 	}
 
-	bool MathAlgorithm::isZero(float value)
-	{
-		return value > -std::numeric_limits<float>::epsilon() && value < std::numeric_limits<float>::epsilon();
-	}
-
 	unsigned int MathAlgorithm::powerOfTwo(unsigned int exponent)
 	{
 		unsigned int result = 1;
 		return result << exponent;
 	}
 
+	bool MathAlgorithm::isZero(float value)
+	{
+		return value > -std::numeric_limits<float>::epsilon() && value < std::numeric_limits<float>::epsilon();
+	}
+
+	/**
+	 * Perform a division of two integers with a classical rounding.
+	 */
+	template<class T> T MathAlgorithm::roundDivision(T dividend, T divisor)
+	{ //see https://stackoverflow.com/questions/17005364/dividing-two-integers-and-rounding-up-the-result-without-using-floating-point
+		#ifdef _DEBUG
+			assert(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T));
+    	#endif
+
+		return (dividend + (divisor / 2)) / divisor;
+	}
+
 	//explicit template
 	template float MathAlgorithm::clamp<float>(float, float, float);
 	template float MathAlgorithm::sign<float>(float);
+	template float MathAlgorithm::roundDivision<float>(float, float);
 
 	template double MathAlgorithm::clamp<double>(double, double, double);
 	template double MathAlgorithm::sign<double>(double);
+	template double MathAlgorithm::roundDivision<double>(double, double);
 
 	template int MathAlgorithm::clamp<int>(int, int, int);
 	template int MathAlgorithm::sign<int>(int);
+	template int MathAlgorithm::roundDivision<int>(int, int);
 
 	template long long MathAlgorithm::clamp<long long>(long long, long long, long long);
 	template long long MathAlgorithm::sign<long long>(long long);
+	template long long MathAlgorithm::roundDivision<long long>(long long, long long);
 }

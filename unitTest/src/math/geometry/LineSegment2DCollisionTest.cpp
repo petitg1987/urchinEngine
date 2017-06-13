@@ -57,7 +57,7 @@ void LineSegment2DCollisionTest::intersectionOnOnePointInt()
 	bool hasIntersection;
 	Point2<int> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
-	AssertHelper::assertPoint2IntEquals(intersectionPoint, Point2<int>(-180, -6063));
+	AssertHelper::assertPoint2IntEquals(intersectionPoint, Point2<int>(-180, -6062));
 }
 
 void LineSegment2DCollisionTest::collinearIntersectionOnOnePoint()

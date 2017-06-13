@@ -9,9 +9,13 @@ namespace urchin
 		public:
 			template<class T> static T clamp(T, T, T);
 			template<class T> static T sign(T);
+
 			static int nextPowerOfTwo(int);
-			static bool isZero(float);
 			static unsigned int powerOfTwo(unsigned int);
+
+			static bool isZero(float);
+
+			template<class T> static T roundDivision(T, T);
 	};
 
 }

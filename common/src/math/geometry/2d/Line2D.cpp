@@ -1,9 +1,11 @@
 #include <cmath>
 #include <cassert>
 #include <limits>
+#include <typeinfo>
 
 #include "math/geometry/2d/Line2D.h"
 #include "math/algebra/vector/Vector2.h"
+#include "math/algorithm/MathAlgorithm.h"
 
 namespace urchin
 {
@@ -97,6 +99,12 @@ namespace urchin
 
 		//lines not parallel
 		hasIntersection = true;
+		if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
+		{
+			T xTranslate = MathAlgorithm::roundDivision<T>(startPointsCrossR*s.X, rCrossS);
+			T yTranslate = MathAlgorithm::roundDivision<T>(startPointsCrossR*s.Y, rCrossS);
+			return other.getA().translate(Vector2<T>(xTranslate, yTranslate));
+		}
 		return other.getA().translate((startPointsCrossR*s) / rCrossS);
 	}
 

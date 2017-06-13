@@ -1,6 +1,7 @@
 #include <limits>
 #include <cmath>
 #include <cassert>
+#include <typeinfo>
 
 #include "math/geometry/2d/object/LineSegment2D.h"
 #include "math/algorithm/MathAlgorithm.h"
@@ -149,6 +150,12 @@ namespace urchin
 				&& std::abs(rCrossS) >= std::abs(startPointsCrossR))
 		{ //intersection
 			hasIntersection = true;
+			if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
+			{
+				T xTranslate = MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.X, rCrossS);
+				T yTranslate = MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.Y, rCrossS);
+				return a.translate(Vector2<T>(xTranslate, yTranslate));
+			}
 			return a.translate((thisToOtherCrossR*r)/rCrossS);
 		}
 

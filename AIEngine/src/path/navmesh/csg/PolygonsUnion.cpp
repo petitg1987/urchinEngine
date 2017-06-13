@@ -80,11 +80,10 @@ namespace urchin
 		unsigned int maxIteration = (polygon1.getCwPoints().size() + polygon2.getCwPoints().size()) * 2;
 		unsigned int currentIteration = 0;
 
+        std::set<uint_fast64_t> intersectionsProcessed;
 		std::vector<Point2<T>> mergedPolygonPoints;
 		mergedPolygonPoints.reserve(polygon1.getCwPoints().size() + polygon2.getCwPoints().size()); //estimated memory size
 		mergedPolygonPoints.push_back(edgeStartPoint);
-
-        std::set<uint_fast64_t> intersectionsProcessed;
 
 		while(currentIteration++ < maxIteration+1)
 		{
@@ -226,7 +225,7 @@ namespace urchin
                 T squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
                 if (squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB() != intersectionPoint)
                 {
-                    if ((edge.getA() != intersectionPoint && isIntersectionAngleBetter(edge, intersectionPoint, polygonEdge.getB()))
+                    if ((edge.getA() != intersectionPoint && isIntersectionAngleBetter(edge, polygonEdge))
                         || (edge.getA() == intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB())))
                     {
                         nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
@@ -243,29 +242,20 @@ namespace urchin
 		return csgIntersection;
 	}
 
-    template<class T> bool PolygonsUnion<T>::isIntersectionAngleBetter(const LineSegment2D<T> &edge, const Point2<T> &intersectionPoint, const Point2<T> &nextIntersectionPoint) const
+    template<class T> bool PolygonsUnion<T>::isIntersectionAngleBetter(const LineSegment2D<T> &edge, const LineSegment2D<T> &polygonEdge) const
 	{
-        #ifdef _DEBUG
-            if(edge.getA()==intersectionPoint)
-            {
-                throw std::runtime_error("Vector edge.getA() to intersectionPoint could not be null.");
-            }else if(intersectionPoint==nextIntersectionPoint)
-            {
-                throw std::runtime_error("Vector intersectionPoint to nextIntersectionPoint could not be null.");
-            }
-        #endif
-
-		Vector2<T> firstVector = edge.getA().vector(intersectionPoint);
-		Vector2<T> secondVector = intersectionPoint.vector(nextIntersectionPoint);
-		T orientation = firstVector.crossProduct(secondVector);
+		Vector2<T> edgeVector = edge.toVector(); //identical but with less precision: edge.getA().vector(intersectionPoint);
+		Vector2<T> polygonEdgeVector = polygonEdge.toVector(); //identical but with less precision: intersectionPoint.vector(polygonEdge.getB());
+		T orientation = edgeVector.crossProduct(polygonEdgeVector);
 
 		if(orientation > 0)
 		{ //exterior angle is less than 180. Intersection point is a better candidate than edge.getB()
 			return true;
 		}else if(orientation==0)
 		{ //angle is 180. check which edge is the most longest
-			T lengthEdge = edge.toVector().squareLength();
-			T lengthIntersection = edge.getA().vector(nextIntersectionPoint).squareLength();
+			T lengthEdge = edgeVector.squareLength();
+			T lengthIntersection = edge.getA().vector(polygonEdge.getB()).squareLength();
+
 			return lengthIntersection > lengthEdge;
 		}
 
