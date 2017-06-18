@@ -88,7 +88,8 @@ namespace urchin
 		while(currentIteration++ < maxIteration+1)
 		{
             LineSegment2D<T> edge(edgeStartPoint, currentPolygon->getCwPoints()[nextPointIndex]);
-			CSGIntersection<T> csgIntersection = findFirstValidIntersectionOnEdge(edge, previousEdgeStartPoint, otherPolygon, currentPolygon, currentPolygonEdgeId, intersectionsProcessed);
+			CSGIntersection<T> csgIntersection = findFirstIntersectionOnEdge(edge, previousEdgeStartPoint, otherPolygon, currentPolygon,
+                                                                             currentPolygonEdgeId, intersectionsProcessed);
             Point2<T> nextUnionPoint = csgIntersection.hasIntersection ? csgIntersection.intersectionPoint : edge.getB();
 
             if(areSamePoints(startPolygon->getCwPoints()[startPointIndex], nextUnionPoint))
@@ -196,10 +197,10 @@ namespace urchin
 		return lowestPointIndex;
 	}
 
-    //TODO review method signature
-    template<class T> CSGIntersection<T> PolygonsUnion<T>::findFirstValidIntersectionOnEdge(const LineSegment2D<T> &edge, const Point2<T> &previousEdgePoint,
+    template<class T> CSGIntersection<T> PolygonsUnion<T>::findFirstIntersectionOnEdge(const LineSegment2D<T> &edge, const Point2<T> &previousEdgePoint,
                                                                                             const CSGPolygon<T> *polygon, const CSGPolygon<T> *currentPolygon,
-                                                                                            unsigned int currentPolygonEdgeId, std::set<uint_fast64_t> &intersectionsProcessed) const
+                                                                                            unsigned int currentPolygonEdgeId,
+                                                                                            std::set<uint_fast64_t> &intersectionsProcessed) const
 	{
 		CSGIntersection<T> csgIntersection;
 		csgIntersection.hasIntersection = false;
@@ -222,8 +223,17 @@ namespace urchin
 
             if(hasIntersection)
             {
+                bool ignoreThisIntersection = false;
+                if(polygonEdge.getB()==intersectionPoint)
+                {
+                    //When intersection occurs on polygonEdge.B, the same intersection should occurs on nextPolygonEdge.A.
+                    //Sometimes, it's not the case due to rounding error.
+                    LineSegment2D<T> nextPolygonEdge(points[i], points[(i+1)%points.size()]);
+                    edge.intersectPoint(nextPolygonEdge, ignoreThisIntersection);
+                }
+
                 T squareDistanceEdgeStartPoint = edge.getA().squareDistance(intersectionPoint);
-                if (squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && polygonEdge.getB() != intersectionPoint)
+                if (squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && !ignoreThisIntersection)
                 {
                     if ((edge.getA() != intersectionPoint && isIntersectionAngleBetter(edge, polygonEdge))
                         || (edge.getA() == intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB())))

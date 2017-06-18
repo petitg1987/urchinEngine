@@ -33,7 +33,7 @@ namespace urchin
 
 			unsigned int findStartPoint(const CSGPolygon<T> &, const CSGPolygon<T> &, const CSGPolygon<T> *&) const;
 			unsigned int findLowestPointIndex(const CSGPolygon<T> &) const;
-			CSGIntersection<T> findFirstValidIntersectionOnEdge(const LineSegment2D<T> &, const Point2<T> &, const CSGPolygon<T> *, const CSGPolygon<T> *, unsigned int, std::set<uint_fast64_t> &) const;
+			CSGIntersection<T> findFirstIntersectionOnEdge(const LineSegment2D<T> &, const Point2<T> &, const CSGPolygon<T> *, const CSGPolygon<T> *, unsigned int, std::set<uint_fast64_t> &) const;
 			bool isIntersectionAngleBetter(const LineSegment2D<T> &, const LineSegment2D<T> &) const;
 			bool isIntersectionAngleBetter(const Point2<T> &, const LineSegment2D<T> &, const Point2<T> &) const;
             uint_fast64_t getIntersectionId(const CSGPolygon<T> *, unsigned int, const CSGPolygon<T> *, unsigned int) const;
