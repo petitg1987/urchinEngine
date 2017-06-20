@@ -48,7 +48,7 @@ namespace urchin
 		{
 			for(std::multimap<unsigned int, Edge>::iterator it = diagonals.begin(); it!=diagonals.end(); ++it)
 			{
-				Edge startDiagonal = it->second;
+				Edge &startDiagonal = it->second;
 				if(!startDiagonal.isProcessed)
 				{
 					std::vector<unsigned int> monotonePointsIndices;
@@ -75,7 +75,8 @@ namespace urchin
 						if(monotonePointsIndices.size() > polygonPoints.size())
 						{
 							logInputData("Impossible to close monotone polygon.", Logger::ERROR);
-							break;
+							yMonotonePolygons.clear();
+							return yMonotonePolygons;
 						}
 					}
 
@@ -347,13 +348,26 @@ namespace urchin
 	{
 		Point2<float> point = polygonPoints[pointIndex];
 
-		float minDistance = std::numeric_limits<float>::max();
+		float nearestDistance = -std::numeric_limits<float>::max();
 		std::vector<EdgeHelper>::iterator nearestLeftEdgeHelperIt = edgeHelpers.end();
 
 		for(std::vector<EdgeHelper>::iterator it=edgeHelpers.begin(); it!=edgeHelpers.end(); ++it)
 		{
 			Line2D<float> edge(polygonPoints[it->edge.startIndex], polygonPoints[it->edge.endIndex]);
-			Point2<float> nearestPointOnEdge = edge.orthogonalProjection(point);
+
+
+
+            float distanceToEdge = edge.horizontalDistance(point);
+            if(distanceToEdge <= 0.0 && //edge is on left of point
+                    distanceToEdge > nearestDistance)
+            {
+                nearestDistance = distanceToEdge;
+                nearestLeftEdgeHelperIt = it;
+            }
+
+/*
+
+			Point2<float> nearestPointOnEdge = edge.orthogonalProjection(point); //TODO horizontal projection ????
 			if(nearestPointOnEdge.X  < point.X)
 			{ //edge is on left of point
 				float edgePointDistance = nearestPointOnEdge.squareDistance(point);
@@ -362,7 +376,7 @@ namespace urchin
 					minDistance = edgePointDistance;
 					nearestLeftEdgeHelperIt = it;
 				}
-			}
+			} */
 		}
 
 		if(nearestLeftEdgeHelperIt==edgeHelpers.end())

@@ -325,11 +325,6 @@ namespace urchin
 		std::reverse(faceCwPoints.begin(), faceCwPoints.end());
 		CSGPolygon<long long> walkableFacePolygon(name, toLongPoints(faceCwPoints));
 
-        if(walkableFace.getCcwPoints().size()>0 && walkableFace.getCcwPoints()[0].X==1.07439423f)
-        {
-            std::cout<<"cool"<<walkableFace.getCcwPoints()[0]<<std::endl;
-        }
-
         constexpr long long REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND = 5; //TODO review value... 5 or 1 ?
 		return walkableFacePolygon.expand(-REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND);
 	}

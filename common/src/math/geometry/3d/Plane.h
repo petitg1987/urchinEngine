@@ -31,6 +31,7 @@ namespace urchin
 			T distance(const Point3<T> &) const;
 			T distance(const Point4<T> &) const;
 			T verticalDistance(const Point3<T> &) const;
+			T horizontalDistance(const Point3<T> &) const;
 			Point3<T> orthogonalProjection(const Point3<T> &) const;
 
 			Point3<T> intersectPoint(const Line3D<T> &) const;

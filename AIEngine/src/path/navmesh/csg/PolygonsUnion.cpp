@@ -92,7 +92,7 @@ namespace urchin
                                                                              currentPolygonEdgeId, intersectionsProcessed);
             Point2<T> nextUnionPoint = csgIntersection.hasIntersection ? csgIntersection.intersectionPoint : edge.getB();
 
-            if(areSamePoints(startPolygon->getCwPoints()[startPointIndex], nextUnionPoint))
+            if(areSamePoints(startPolygon->getCwPoints()[startPointIndex], nextUnionPoint) && mergedPolygonPoints.size() > 1)
             {
                 break;
             }

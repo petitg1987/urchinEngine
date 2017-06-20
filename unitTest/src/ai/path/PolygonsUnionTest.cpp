@@ -376,11 +376,11 @@ void PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEdgeA()
 
 	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
 	AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 5);
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(-0.224821031, -5.97340727));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[1], Point2<float>(-0.224821031, -4.62517881));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(-0.224821016, -4.62517881));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[3], Point2<float>(1.12340569, -4.62517881));
-	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(-0.224820852, -5.97340727));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(-0.224820852, -5.97340727));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[1], Point2<float>(-0.224821031, -5.97340727));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[2], Point2<float>(-0.224821031, -4.62517881));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[3], Point2<float>(-0.224821016, -4.62517881));
+	AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[4], Point2<float>(1.12340569, -4.62517881));
 }
 
 void PolygonsUnionTest::twoPolygonsTouchInOnePoint()

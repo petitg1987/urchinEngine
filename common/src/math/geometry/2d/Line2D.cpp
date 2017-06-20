@@ -28,6 +28,12 @@ namespace urchin
 		return b;
 	}
 
+	template<class T> Vector2<T> Line2D<T>::computeNormal() const
+	{
+		Vector2<T> ab = a.vector(b);
+		return Vector2<T>(-ab[1], ab[0]);
+	}
+
 	template<class T> Point2<T> Line2D<T>::orthogonalProjection(const Point2<T> &p) const
 	{
 		Vector2<T> ab = a.vector(b);
@@ -39,8 +45,8 @@ namespace urchin
 	}
 
 	/**
-	 * @return Minimum square distance between line and point p
-	 */
+ 	 * @return Minimum square distance between line and point p
+ 	 */
 	template<class T> T Line2D<T>::squareDistance(const Point2<T> &p) const
 	{
 		Vector2<T> ab = a.vector(b);
@@ -52,11 +58,27 @@ namespace urchin
 		return ap.dotProduct(ap) - ((e * e) / f);
 	}
 
+	/**
+  	 * @return Vertical distance between the line and the point 2D. If negative result: the point is on the same side as the normal.
+  	 */
+	template<class T> T Line2D<T>::verticalDistance(const Point2<T> &p) const
+	{
+		Vector2<T> normal = computeNormal();
+		return normal.dotProduct(p.vector(a)) / normal.Y;
+	}
+
+	/**
+  	 * @return Horizontal distance between the line and the point 2D. If negative result: the point is on the same side as the normal.
+  	 */
+	template<class T> T Line2D<T>::horizontalDistance(const Point2<T> &p) const
+	{
+		Vector2<T> normal = computeNormal();
+		return normal.dotProduct(p.vector(a)) / normal.X;
+	}
+
 	template<class T> Line2D<T> Line2D<T>::orthogonalLine() const
 	{
-		Vector2<T> ab = a.vector(b);
-		Vector2<T> orthoVector(-ab[1], ab[0]);
-		return Line2D<T>(a, a.translate(orthoVector));
+		return Line2D<T>(a, a.translate(computeNormal()));
 	}
 
 	template<class T> Line2D<T> Line2D<T>::parallelLine(const Point2<T> &p) const

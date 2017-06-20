@@ -14,8 +14,11 @@ namespace urchin
 			const Point2<T> &getA() const;
 			const Point2<T> &getB() const;
 
+			Vector2<T> computeNormal() const;
 			Point2<T> orthogonalProjection(const Point2<T> &) const;
 			T squareDistance(const Point2<T> &) const;
+			T verticalDistance(const Point2<T> &p) const;
+			T horizontalDistance(const Point2<T> &p) const;
 			Line2D<T> orthogonalLine() const;
 			Line2D<T> parallelLine(const Point2<T> &) const;
 			T ccw(const Point2<T> &) const;
