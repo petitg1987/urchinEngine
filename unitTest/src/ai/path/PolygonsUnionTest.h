@@ -19,21 +19,23 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsUnionXAligned();
 		void twoPolygonsUnionYAligned();
 		void twoPolygonsUnionYAlmostAligned();
-		void twoPolygonsUnionAlmostSameEdge();
+		void twoPolygonsUnionAlmostSameEdge1();
         void twoPolygonsUnionAlmostSameEdge2();
 		void twoPolygonsUnionAlmostSameEdge3();
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsIntersectionIsEndPoint();
 		void twoPolygonsIntersectionIsAlmostEndPoint();
-		void twoPolygonsIntersectionIsAlmostEdgeA();
+		void twoPolygonsIntersectionIsAlmostEdgeA1();
+		void twoPolygonsIntersectionIsAlmostEdgeA2();
 		void twoPolygonsTouchInOnePoint();
 		void twoPolygonsNestedTouchInOnePoint();
 		void twoPolygonsIntersectionLastEdge();
 
 		void twoIdenticalTriangles();
 		void twoIdenticalSquares();
-		void twoAlmostIdenticalSquares();
+		void twoAlmostIdenticalSquares1();
 		void twoAlmostIdenticalSquares2();
+		void twoAlmostIdenticalTrapeze();
 
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();

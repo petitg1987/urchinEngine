@@ -153,7 +153,7 @@ void MonotonePolygonTest::polygonOneHole()
 	AssertHelper::assertUnsignedInt(monotonePolygons[1][5], 1);
 }
 
-void MonotonePolygonTest::polygonTwoHoles()
+void MonotonePolygonTest::polygonTwoHoles1()
 {
 	std::vector<Point2<float>> polygonPoints = {
 		Point2<float>(0.0, 0.0), Point2<float>(5.0, 0.0), Point2<float>(5.0, 5.0), Point2<float>(0.0, 5.0), //polygon points
@@ -236,7 +236,7 @@ CppUnit::Test *MonotonePolygonTest::suite()
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("splitAndMergeVertex", &MonotonePolygonTest::splitAndMergeVertex));
 
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonOneHole", &MonotonePolygonTest::polygonOneHole));
-	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles", &MonotonePolygonTest::polygonTwoHoles));
+	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles1", &MonotonePolygonTest::polygonTwoHoles1));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles2", &MonotonePolygonTest::polygonTwoHoles2));
 
 	return suite;

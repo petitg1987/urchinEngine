@@ -286,10 +286,10 @@ namespace urchin
 		T nextEdgeOrientation = previousEdgeVector.crossProduct(edge.toVector());
 		T intersectionEdgeOrientation = previousEdgeVector.crossProduct(edge.getA().vector(nextIntersectionPoint));
 
-		if(nextEdgeOrientation>0 && intersectionEdgeOrientation<0)
+		if(nextEdgeOrientation>0 && intersectionEdgeOrientation<=0)
 		{
 			return false;
-		}else if(nextEdgeOrientation<0 && intersectionEdgeOrientation>0)
+		}else if(nextEdgeOrientation<0 && intersectionEdgeOrientation>=0)
 		{
 			return true;
 		}

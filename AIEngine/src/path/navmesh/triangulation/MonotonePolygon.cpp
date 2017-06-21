@@ -355,8 +355,6 @@ namespace urchin
 		{
 			Line2D<float> edge(polygonPoints[it->edge.startIndex], polygonPoints[it->edge.endIndex]);
 
-
-
             float distanceToEdge = edge.horizontalDistance(point);
             if(distanceToEdge <= 0.0 && //edge is on left of point
                     distanceToEdge > nearestDistance)
@@ -364,19 +362,6 @@ namespace urchin
                 nearestDistance = distanceToEdge;
                 nearestLeftEdgeHelperIt = it;
             }
-
-/*
-
-			Point2<float> nearestPointOnEdge = edge.orthogonalProjection(point); //TODO horizontal projection ????
-			if(nearestPointOnEdge.X  < point.X)
-			{ //edge is on left of point
-				float edgePointDistance = nearestPointOnEdge.squareDistance(point);
-				if(edgePointDistance < minDistance)
-				{
-					minDistance = edgePointDistance;
-					nearestLeftEdgeHelperIt = it;
-				}
-			} */
 		}
 
 		if(nearestLeftEdgeHelperIt==edgeHelpers.end())

@@ -325,7 +325,7 @@ namespace urchin
 		std::reverse(faceCwPoints.begin(), faceCwPoints.end());
 		CSGPolygon<long long> walkableFacePolygon(name, toLongPoints(faceCwPoints));
 
-        constexpr long long REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND = 5; //TODO review value... 5 or 1 ?
+        constexpr long long REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND = 5; //TODO review algorithm because it cause slim slices of nav mesh
 		return walkableFacePolygon.expand(-REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND);
 	}
 
@@ -336,7 +336,7 @@ namespace urchin
 
 		Plane<float> walkablePlane(walkableFace.getCcwPoints()[0], walkableFace.getCcwPoints()[1], walkableFace.getCcwPoints()[2]);
 		for(const auto &polyhedronFace : polyhedron.getFaces())
-		{ //TODO not optimized to find edge
+		{
 			for(unsigned int i=0, previousI=polyhedronFace.getCcwPoints().size()-1; i<polyhedronFace.getCcwPoints().size(); previousI=i++)
 			{
 				float distance1 = walkablePlane.distance(polyhedronFace.getCcwPoints()[previousI]);
