@@ -22,6 +22,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsUnionAlmostSameEdge1();
         void twoPolygonsUnionAlmostSameEdge2();
 		void twoPolygonsUnionAlmostSameEdge3();
+		void twoPolygonsUnionAlmostSameEdge4();
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsIntersectionIsEndPoint();
 		void twoPolygonsIntersectionIsAlmostEndPoint();

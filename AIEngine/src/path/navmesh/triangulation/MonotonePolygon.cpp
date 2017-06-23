@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <utility>
 #include <algorithm>
 #include <limits>
@@ -8,6 +7,12 @@
 
 namespace urchin
 {
+
+	MonotonePolygonError::MonotonePolygonError(std::string message) :
+			std::runtime_error(std::move(message))
+	{
+
+	}
 
 	/**
 	 * @param polygonPoints Polygon points are in CCW order and holes in CW order.
@@ -30,10 +35,16 @@ namespace urchin
 	 */
 	std::vector<std::vector<unsigned int>> MonotonePolygon::createYMonotonePolygons()
 	{
-		createYMonotonePolygonsDiagonals();
-
 		std::vector<std::vector<unsigned int>> yMonotonePolygons;
-		yMonotonePolygons.reserve(diagonals.size());
+
+		try
+		{
+			createYMonotonePolygonsDiagonals();
+		}catch(MonotonePolygonError error)
+		{
+			logInputData(std::string(error.what()), Logger::ERROR);
+			return yMonotonePolygons;
+		}
 
 		if(diagonals.size()==0)
 		{
@@ -46,6 +57,7 @@ namespace urchin
 			yMonotonePolygons.push_back(monotonePointsIndices);
 		}else
 		{
+			yMonotonePolygons.reserve(diagonals.size());
 			for(std::multimap<unsigned int, Edge>::iterator it = diagonals.begin(); it!=diagonals.end(); ++it)
 			{
 				Edge &startDiagonal = it->second;
@@ -200,7 +212,7 @@ namespace urchin
 
 		if(!sortedTypedPoints.empty() && sortedTypedPoints[0].type!=PointType::START_VERTEX)
 		{
-			throw logInputDataAndThrowError("First point in the vector should be a start vertex. Point type: " + std::to_string(sortedTypedPoints[0].type));
+			throw MonotonePolygonError("First point in the vector should be a start vertex. Point type: " + std::to_string(sortedTypedPoints[0].type));
 		}
 
 		return sortedTypedPoints;
@@ -341,7 +353,7 @@ namespace urchin
 			}
 		}
 
-		throw logInputDataAndThrowError("Impossible to find edge and his helper for edge index: " + std::to_string(edgeIndex));
+		throw MonotonePolygonError("Impossible to find edge and his helper for edge index: " + std::to_string(edgeIndex));
 	}
 
 	std::vector<EdgeHelper>::iterator MonotonePolygon::findNearestLeftEdgeHelper(unsigned int pointIndex)
@@ -366,7 +378,7 @@ namespace urchin
 
 		if(nearestLeftEdgeHelperIt==edgeHelpers.end())
 		{
-			throw logInputDataAndThrowError("Impossible to find edge on left for point index: " + std::to_string(pointIndex));
+			throw MonotonePolygonError("Impossible to find edge on left for point index: " + std::to_string(pointIndex));
 		}
 
 		return nearestLeftEdgeHelperIt;
@@ -480,12 +492,6 @@ namespace urchin
 			}
 		}
 		Logger::logger().log(logLevel, logStream.str());
-	}
-
-	std::runtime_error MonotonePolygon::logInputDataAndThrowError(const std::string &message) const
-	{
-		logInputData(message, Logger::ERROR);
-		return std::runtime_error(message); //TODO don't throw exception ?
 	}
 
 	void MonotonePolygon::logOutputData(const std::string &message, const std::vector<std::vector<unsigned int>> &yMonotonePolygons, Logger::CriticalityLevel logLevel) const

@@ -2,6 +2,7 @@
 #define ENGINE_MONOTONEPOLYGON_H
 
 #include <vector>
+#include <stdexcept>
 #include <map>
 #include "UrchinCommon.h"
 
@@ -40,6 +41,12 @@ namespace urchin
 		PointType helperPointType;
 	};
 
+	class MonotonePolygonError : public std::runtime_error
+	{
+		public:
+			MonotonePolygonError(std::string message);
+	};
+
 	class MonotonePolygon
 	{
 		public:
@@ -74,7 +81,6 @@ namespace urchin
 			void markDiagonalProcessed(it_diagonals);
 
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;
-			std::runtime_error logInputDataAndThrowError(const std::string &) const;
 			void logOutputData(const std::string &, const std::vector<std::vector<unsigned int>> &, Logger::CriticalityLevel) const;
 
 			const std::vector<Point2<float>> &polygonPoints;

@@ -40,8 +40,15 @@ namespace urchin
 
 		T abSquareLength = ab.dotProduct(ab);
 		Vector2<T> ap = a.vector(p);
-		const T t = ap.dotProduct(ab) / abSquareLength;
-		return ((b-a)*t) + a;
+
+		T apDotAb = ap.dotProduct(ab);
+		if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
+		{
+			Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(ab.X * apDotAb, abSquareLength),
+								  MathAlgorithm::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
+			return a.translate(vTranslate);
+		}
+		return a.translate((ab * ap.dotProduct(ab)) / abSquareLength);
 	}
 
 	/**
@@ -55,6 +62,10 @@ namespace urchin
 		T e = ap.dotProduct(ab);
 		T f = ab.dotProduct(ab);
 
+		if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
+		{
+			return ap.dotProduct(ap) - MathAlgorithm::roundDivision<T>(e * e, f);
+		}
 		return ap.dotProduct(ap) - ((e * e) / f);
 	}
 
@@ -123,9 +134,9 @@ namespace urchin
 		hasIntersection = true;
 		if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
 		{
-			T xTranslate = MathAlgorithm::roundDivision<T>(startPointsCrossR*s.X, rCrossS);
-			T yTranslate = MathAlgorithm::roundDivision<T>(startPointsCrossR*s.Y, rCrossS);
-			return other.getA().translate(Vector2<T>(xTranslate, yTranslate));
+			Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(startPointsCrossR*s.X, rCrossS),
+								  MathAlgorithm::roundDivision<T>(startPointsCrossR*s.Y, rCrossS));
+			return other.getA().translate(vTranslate);
 		}
 		return other.getA().translate((startPointsCrossR*s) / rCrossS);
 	}

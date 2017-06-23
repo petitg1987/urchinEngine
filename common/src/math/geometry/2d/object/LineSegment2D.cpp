@@ -84,6 +84,10 @@ namespace urchin
 			return bp.dotProduct(bp);
 		}
 
+        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
+        {
+            return ap.dotProduct(ap) - MathAlgorithm::roundDivision<T>(e * e, f);
+        }
 		return ap.dotProduct(ap) - ((e * e) / f);
 	}
 
@@ -152,9 +156,9 @@ namespace urchin
 			hasIntersection = true;
 			if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
 			{
-				T xTranslate = MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.X, rCrossS);
-				T yTranslate = MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.Y, rCrossS);
-				return a.translate(Vector2<T>(xTranslate, yTranslate));
+                Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.X, rCrossS),
+                                      MathAlgorithm::roundDivision<T>(thisToOtherCrossR*r.Y, rCrossS));
+				return a.translate(vTranslate);
 			}
 			return a.translate((thisToOtherCrossR*r)/rCrossS);
 		}

@@ -49,3 +49,23 @@ Monotone polygon input data:
  - 0.950195312, -5.79980469
  - 0.490234375, -5.79980469
 
+[2017-06-23 22:35:42] (EE) Maximum of iteration reached on polygons union algorithm.
+ - Polygon 1: 
+Name:p1
+Points (CW):
+-198, -6084
+-214, -4811
+148, -4806
+148, -5728
+
+ - Polygon 2: 
+Name:p2
+Points (CW):
+-199, -6084
+-214, -4811
+-203, -4811
+511, -4801
+1061, -4795
+417, -5454
+244, -5632
+
