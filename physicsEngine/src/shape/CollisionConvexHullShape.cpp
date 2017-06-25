@@ -117,15 +117,16 @@ namespace urchin
 	std::shared_ptr<CollisionConvexObject3D> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		Transform<float> transform = physicsTransform.toTransform();
-		ConvexHull3D<float> *convexHullWithMargin = static_cast<ConvexHull3D<float> *>(convexHullShape->toConvexObject(transform).release());
+        auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(static_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
 
 		if(!convexHullShapeReduced)
 		{ //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
-			return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), *convexHullWithMargin, *convexHullWithMargin);
+            std::shared_ptr<ConvexHull3D<float>> convexHullWithoutMargin(convexHullWithMargin);
+            return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
 		}
 
-		ConvexHull3D<float> *convexHullWithoutMargin = static_cast<ConvexHull3D<float> *>(convexHullShapeReduced->toConvexObject(transform).release());
-		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), *convexHullWithMargin, *convexHullWithoutMargin);
+        auto convexHullWithoutMargin = std::shared_ptr<ConvexHull3D<float>>(static_cast<ConvexHull3D<float>*>(convexHullShapeReduced->toConvexObject(transform).release()));
+		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
 	}
 
 	Vector3<float> CollisionConvexHullShape::computeLocalInertia(float mass) const

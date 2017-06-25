@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <memory>
 #include "UrchinCommon.h"
 
 #include "object/CollisionConvexObject3D.h"
@@ -15,19 +16,19 @@ namespace urchin
 	{
 		public:
 			CollisionConvexHullObject(float, const std::vector<Point3<float>> &, const std::vector<Point3<float>> &);
-			CollisionConvexHullObject(float, const ConvexHull3D<float> &, const ConvexHull3D<float> &);
+			CollisionConvexHullObject(float, std::shared_ptr<ConvexHull3D<float>>, std::shared_ptr<ConvexHull3D<float>>);
 			~CollisionConvexHullObject();
 
 			std::vector<Point3<float>> getPointsWithoutMargin() const;
+            std::vector<Point3<float>> getPointsWithMargin() const;
 
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
 
-			const ConvexHull3D<float> retrieveConvexHull() const;
 			std::string toString() const;
 
 		private:
-			const ConvexHull3D<float> convexHullObjectWithMargin;
-			const ConvexHull3D<float> convexHullObjectWithoutMargin;
+			std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithMargin;
+			std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithoutMargin;
 	};
 
 }

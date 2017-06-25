@@ -134,7 +134,7 @@ namespace urchin
 	GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
 		const CollisionConvexHullObject *convexHullObject = static_cast<const CollisionConvexHullObject *>(bodyObject);
-		return new PointsModel(convexHullObject->retrieveConvexHull().getPoints(), 5.0);
+		return new PointsModel(convexHullObject->getPointsWithMargin(), 5.0);
 	}
 
 	void BodyShapeDisplayer::cleanCurrentDisplay()

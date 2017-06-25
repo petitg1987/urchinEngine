@@ -9,16 +9,9 @@ using namespace urchin;
 
 void PolygonsIntersectionTest::subjectCoverClipper()
 {
-	std::vector<Point2<float>> subjectPoly;
-	subjectPoly.push_back(Point2<float>(4.0, -4.0));
-	subjectPoly.push_back(Point2<float>(-4.0, 4.0));
-	subjectPoly.push_back(Point2<float>(4.0, 4.0));
-
-	std::vector<Point2<float>> clipperPoly;
-	clipperPoly.push_back(Point2<float>(1.0, 1.0));
-	clipperPoly.push_back(Point2<float>(1.0, 3.0));
-	clipperPoly.push_back(Point2<float>(3.0, 3.0));
-	clipperPoly.push_back(Point2<float>(3.0, 1.0));
+	std::vector<Point2<float>> subjectPoly = {Point2<float>(4.0, -4.0), Point2<float>(-4.0, 4.0), Point2<float>(4.0, 4.0)};
+	std::vector<Point2<float>> clipperPoly = {Point2<float>(1.0, 1.0), Point2<float>(1.0, 3.0),
+											  Point2<float>(3.0, 3.0), Point2<float>(3.0, 1.0)};
 
 	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
 			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
@@ -32,16 +25,9 @@ void PolygonsIntersectionTest::subjectCoverClipper()
 
 void PolygonsIntersectionTest::clipperCoverSubject()
 {
-	std::vector<Point2<float>> subjectPoly;
-	subjectPoly.push_back(Point2<float>(1.5, 1.5));
-	subjectPoly.push_back(Point2<float>(1.5, 2.5));
-	subjectPoly.push_back(Point2<float>(2.5, 1.5));
-
-	std::vector<Point2<float>> clipperPoly;
-	clipperPoly.push_back(Point2<float>(1.0, 1.0));
-	clipperPoly.push_back(Point2<float>(1.0, 3.0));
-	clipperPoly.push_back(Point2<float>(3.0, 3.0));
-	clipperPoly.push_back(Point2<float>(3.0, 1.0));
+	std::vector<Point2<float>> subjectPoly = {Point2<float>(1.5, 1.5), Point2<float>(1.5, 2.5), Point2<float>(2.5, 1.5)};
+	std::vector<Point2<float>> clipperPoly = {Point2<float>(1.0, 1.0), Point2<float>(1.0, 3.0),
+											  Point2<float>(3.0, 3.0), Point2<float>(3.0, 1.0)};
 
 	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
 			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
@@ -54,16 +40,9 @@ void PolygonsIntersectionTest::clipperCoverSubject()
 
 void PolygonsIntersectionTest::subjectClippedByBox()
 {
-	std::vector<Point2<float>> subjectPoly;
-	subjectPoly.push_back(Point2<float>(1.0, 0.0));
-	subjectPoly.push_back(Point2<float>(2.0, 2.0));
-	subjectPoly.push_back(Point2<float>(3.0, 0.0));
-
-	std::vector<Point2<float>> clipperPoly;
-	clipperPoly.push_back(Point2<float>(1.0, 1.0));
-	clipperPoly.push_back(Point2<float>(1.0, 3.0));
-	clipperPoly.push_back(Point2<float>(3.0, 3.0));
-	clipperPoly.push_back(Point2<float>(3.0, 1.0));
+	std::vector<Point2<float>> subjectPoly = {Point2<float>(1.0, 0.0), Point2<float>(2.0, 2.0), Point2<float>(3.0, 0.0)};
+	std::vector<Point2<float>> clipperPoly = {Point2<float>(1.0, 1.0), Point2<float>(1.0, 3.0),
+											  Point2<float>(3.0, 3.0), Point2<float>(3.0, 1.0)};
 
 	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
 			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));

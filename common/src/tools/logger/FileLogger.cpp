@@ -6,9 +6,11 @@
 namespace urchin
 {
 	
-	FileLogger::FileLogger(const std::string &filename) : Logger()
+	FileLogger::FileLogger(std::string filename) :
+		Logger(),
+		filename(std::move(filename))
 	{
-		this->filename = filename;
+
 	}
 
 	void FileLogger::write(const std::string &msg)

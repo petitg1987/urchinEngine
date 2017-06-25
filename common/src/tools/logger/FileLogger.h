@@ -13,7 +13,7 @@ namespace urchin
 	class FileLogger : public Logger
 	{
 		public:
-			FileLogger(const std::string & = DEFAULT_LOG_FILENAME);
+			FileLogger(std::string filename = DEFAULT_LOG_FILENAME);
 
 		private:
 			void write(const std::string &);
