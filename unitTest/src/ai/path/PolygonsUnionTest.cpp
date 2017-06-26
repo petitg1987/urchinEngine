@@ -216,6 +216,20 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4()
     //no points check
 }
 
+void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5()
+{ //see twoPolygonsUnionAlmostSameEdge5.ggb
+	std::vector<Point2<int>> polyPoints1 = {Point2<int>(829, -2960), Point2<int>(1029, -2872), Point2<int>(882, -3304)};
+	std::vector<Point2<int>> polyPoints2 = {Point2<int>(829, -2961), Point2<int>(2379, -2275),
+											Point2<int>(1994, -3397), Point2<int>(896, -3397)};
+
+	std::vector<CSGPolygon<int>> allPolygons = {CSGPolygon<int>("p1", polyPoints1), CSGPolygon<int>("p2", polyPoints2)};
+	std::vector<CSGPolygon<int>> polygonUnion = PolygonsUnion<int>::instance()->unionPolygons(allPolygons);
+
+	AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 6);
+	//no points check
+}
+
 void PolygonsUnionTest::twoPolygonsSameEndPoint()
 {
 	std::vector<Point2<float>> polyPoints1 = {Point2<float>(0.0, 1.0), Point2<float>(2.0, 1.0), Point2<float>(1.0, -1.0)};
@@ -510,6 +524,7 @@ CppUnit::Test *PolygonsUnionTest::suite()
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge2", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge2));
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge3", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge3));
     suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge4", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4));
+	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionAlmostSameEdge5", &PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsSameEndPoint", &PolygonsUnionTest::twoPolygonsSameEndPoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionIsEndPoint", &PolygonsUnionTest::twoPolygonsIntersectionIsEndPoint));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsIntersectionIsAlmostEndPoint", &PolygonsUnionTest::twoPolygonsIntersectionIsAlmostEndPoint));

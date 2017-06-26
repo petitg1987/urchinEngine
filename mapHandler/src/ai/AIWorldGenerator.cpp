@@ -15,10 +15,17 @@ namespace urchin
 		{
 			RigidBody *rigidBody = sceneObject->getRigidBody();
 			std::vector<LocalizedShape> localizedShapes = extractionLocalizedShapes(rigidBody);
+
+			unsigned int localizedShapesId = 0;
 			for(const auto &localizedShape : localizedShapes)
 			{
-				AIObject aiObject(sceneObject->getName(), localizedShape.shape, localizedShape.worldTransform);
-				aiWorld->addObject(aiObject);
+                std::string aiObjectName = sceneObject->getName();
+				if(localizedShapes.size()>1)
+                {
+                    aiObjectName = sceneObject->getName() + "[" + std::to_string(localizedShapesId++) + "]";
+				}
+                AIObject aiObject(aiObjectName, localizedShape.shape, localizedShape.worldTransform);
+                aiWorld->addObject(aiObject);
 			}
 		}
 

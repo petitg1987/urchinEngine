@@ -40,7 +40,7 @@ namespace urchin
 			}
 		}
 
-		return CSGPolygon<T>(subjectPolygon.getName() + "-clipBy-" + clipPolygon.getName(), outputList);
+		return CSGPolygon<T>("(" + subjectPolygon.getName() + "-clipBy-" + clipPolygon.getName() + ")", outputList);
 	}
 
 	template<class T> bool PolygonsIntersection<T>::isPointInside(const Line2D<T> &line, const Point2<T> &point) const

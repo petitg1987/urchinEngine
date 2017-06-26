@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include <cassert>
 #include <stdexcept>
 #include <set>
 
@@ -99,10 +100,9 @@ namespace urchin
 
             if(csgIntersection.hasIntersection)
             {
+				foundIntersection = true;
                 if(mergedPolygonPoints.size()==0 || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=nextUnionPoint)
                 {
-                    foundIntersection = true;
-
                     mergedPolygonPoints.push_back(nextUnionPoint);
                     previousEdgeStartPoint = edgeStartPoint;
 
@@ -133,7 +133,7 @@ namespace urchin
 			logInputData(polygon1, polygon2, "Maximum of iteration reached on polygons union algorithm.", Logger::ERROR);
 		}else if(foundIntersection || pointInsideOrOnPolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
 		{
-			mergedPolygons.push_back(CSGPolygon<T>(polygon1.getName() + "-" + polygon2.getName(), mergedPolygonPoints));
+			mergedPolygons.push_back(CSGPolygon<T>("{" + polygon1.getName() + "-" + polygon2.getName() + "}", mergedPolygonPoints));
 		}else
 		{
 			mergedPolygons.reserve(2);
@@ -276,10 +276,7 @@ namespace urchin
     template<class T> bool PolygonsUnion<T>::isIntersectionAngleBetter(const Point2<T> &previousEdgePoint, const LineSegment2D<T> &edge, const Point2<T> &nextIntersectionPoint) const
     {
         #ifdef _DEBUG
-        	if(previousEdgePoint==edge.getA())
-			{
-				throw std::runtime_error("Previous edge point cannot be equals to edge.getA()");
-			}
+        	assert(previousEdgePoint!=edge.getA());
         #endif
 
 		Vector2<T> previousEdgeVector = LineSegment2D<T>(previousEdgePoint, edge.getA()).toVector();
@@ -310,8 +307,17 @@ namespace urchin
     }
 
     template<class T> uint_fast64_t PolygonsUnion<T>::getIntersectionId(const CSGPolygon<T> *polygon1, unsigned int edgeIdPolygon1,
-                                                                     const CSGPolygon<T> *polygon2, unsigned int edgeIdPolygon2) const {
-        if(polygon1->getName().compare(polygon2->getName())>0)
+                                                                        const CSGPolygon<T> *polygon2, unsigned int edgeIdPolygon2) const {
+        int nameCompare = polygon1->getName().compare(polygon2->getName());
+
+        #ifdef _DEBUG
+            if(nameCompare==0)
+            {
+                throw std::runtime_error("Impossible to determine unique id for two polygons having same name: " + polygon1->getName());
+            }
+        #endif
+
+        if(nameCompare>0)
         {
             std::swap(edgeIdPolygon1, edgeIdPolygon2);
         }
