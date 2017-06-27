@@ -2,6 +2,7 @@
 #define ENGINE_POLYHEDRON_H
 
 #include <vector>
+#include <sstream>
 #include <memory>
 #include "UrchinCommon.h"
 
@@ -39,6 +40,8 @@ namespace urchin
 
 			bool walkableCandidate;
 	};
+
+	std::ostream& operator <<(std::ostream &, const Polyhedron &);
 
 }
 

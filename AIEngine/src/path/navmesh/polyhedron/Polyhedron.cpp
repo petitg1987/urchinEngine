@@ -56,7 +56,7 @@ namespace urchin
 
 		for(auto &point : points)
 		{
-			std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(point.faceIndices, planes); //TODO not handle point having two four planes with each pair parallel (point is on edge)
+			std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(point.faceIndices, planes);
 			Point3<float> newPoint;
 			if(threePlanes.size()==3)
 			{
@@ -69,10 +69,12 @@ namespace urchin
 				newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
 				newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
 			}else
-			{ //all planes should be parallel
-				Plane<float> firstPlane = planes[point.faceIndices[0]];
-				float distance = agent.computeExpandDistance(firstPlane.getNormal());
-				newPoint = point.point.translate(firstPlane.getNormal() * distance);
+			{ //useless point found on polyhedron (could be removed from polyhedron without impact)
+                std::stringstream logStream;
+                logStream.precision(std::numeric_limits<float>::max_digits10);
+                logStream<<"Impossible to resize polyhedron because of useless point."<<std::endl;
+                logStream<<" - Polyhedron: "<<std::endl<<(*this)<<std::endl;
+                Logger::logger().logError(logStream.str());
 			}
 
 			point.point = newPoint;
@@ -108,7 +110,7 @@ namespace urchin
 
 	std::vector<Plane<float>> Polyhedron::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::vector<Plane<float>> &allPlanes) const
 	{
-        constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f; //TODO add this constant on convex hull resize() !
+        constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
 
 		std::vector<Plane<float>> nonParallelPlanes;
 		nonParallelPlanes.reserve(3);
@@ -141,4 +143,20 @@ namespace urchin
 
 		return nonParallelPlanes;
 	}
+
+    std::ostream& operator <<(std::ostream &stream, const Polyhedron &polyhedron)
+    {
+        unsigned int faceIndex = 0;
+        for(PolyhedronFace face : polyhedron.getFaces())
+        {
+            stream<<"Face "<<faceIndex++<<" ";
+            for(unsigned int pointIndex : face.getCcwPointIndices())
+            {
+                stream<<"("<<polyhedron.getPoints()[pointIndex].point<<") ";
+            }
+            stream<<std::endl;
+        }
+
+        return stream;
+    }
 }

@@ -11,7 +11,6 @@ class ResizeConvexHull3DTest : public CppUnit::TestFixture
 
 		void reduceBox();
 		void tooMuchReduceBox();
-		void increaseBoxWithParallelPlanes();
 
 		void nullExpandTetrahedron();
 		void expandTetrahedron();

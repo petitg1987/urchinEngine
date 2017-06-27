@@ -2,6 +2,7 @@
 
 #include "ResizeConvexHull3DService.h"
 #include "math/geometry/3d/IndexedTriangle3D.h"
+#include "tools/logger/Logger.h"
 
 namespace urchin
 {
@@ -31,37 +32,36 @@ namespace urchin
 		for(const auto itPoint : originalConvexHullShape.getConvexHullPoints())
 		{
 			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangleIndices, planes);
-			Point3<T> newPoint;
 			if(threePlanes.size()==3)
 			{
 				Vector3<T> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
 				Vector3<T> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
 				Vector3<T> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
 
-				newPoint = Point3<T>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
+				Point3<T> newPoint = Point3<T>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
 				newPoint += Point3<T>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
 				newPoint += Point3<T>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
 				newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+
+				if(distance<0.0 && !isPointInsidePlanes(planes, newPoint))
+				{ //too big negative distance induced wrong resize of convex hull
+					return std::unique_ptr<ConvexHullShape3D<T>>(nullptr);
+				}
+
+				ConvexHullPoint<T> convexHullPoint;
+				convexHullPoint.point = newPoint;
+				convexHullPoint.triangleIndices = itPoint.second.triangleIndices;
+				newConvexHullPoints.insert(std::pair<unsigned int, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
 			}else
-			{ //all planes should be parallel
-				Plane<T> firstPlane = planes[itPoint.second.triangleIndices[0]];
-				newPoint = itPoint.second.point.translate(firstPlane.getNormal() * distance);
+			{ //useless point found on convex hull (could be removed from convex hull without impact)
+				std::stringstream logStream;
+				logStream.precision(std::numeric_limits<T>::max_digits10);
+				logStream<<"Impossible to resize convex hull because of useless point (distance: "<<std::to_string(distance)<<")."<<std::endl;
+				logStream<<" - Convex hull: "<<std::endl<<originalConvexHullShape<<std::endl;
+				Logger::logger().logError(logStream.str());
+
+				return std::unique_ptr<ConvexHullShape3D<T>>(nullptr);
 			}
-
-			if(distance<0.0 && !isPointInsidePlanes(planes, newPoint))
-			{ //too big negative distance induced wrong resized convex hull
-				break;
-			}
-
-			ConvexHullPoint<T> convexHullPoint;
-			convexHullPoint.point = newPoint;
-			convexHullPoint.triangleIndices = itPoint.second.triangleIndices;
-			newConvexHullPoints.insert(std::pair<unsigned int, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
-		}
-
-		if(newConvexHullPoints.size() != originalConvexHullShape.getConvexHullPoints().size())
-		{ //impossible to resize convex hull.
-			return std::unique_ptr<ConvexHullShape3D<T>>(nullptr);
 		}
 
 		return std::make_unique<ConvexHullShape3D<T>>(newConvexHullPoints, originalConvexHullShape.getIndexedTriangles());
@@ -105,6 +105,8 @@ namespace urchin
 
 	template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::map<unsigned int, Plane<T>> &allPlanes) const
 	{
+		constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
+
 		std::vector<Plane<T>> nonParallelPlanes;
 		nonParallelPlanes.reserve(3);
 
@@ -112,7 +114,7 @@ namespace urchin
 		for(unsigned int i=1; i<planeIndices.size(); ++i)
 		{
 			Plane<T> plane2 = allPlanes.at(planeIndices[i]);
-			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < 0.0)
+			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE)
 			{ //planes are parallel: continue on next plane
 				continue;
 			}
@@ -123,7 +125,7 @@ namespace urchin
 
 				Vector3<T> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
 				if(n2CrossN3.squareLength() < 0.0
-						|| plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < 0.0
+						|| plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE
 						|| plane1.getNormal().dotProduct(n2CrossN3)==0.0) //additional check due to float imprecision
 				{ //planes are parallel: continue on next plane
 					continue;
