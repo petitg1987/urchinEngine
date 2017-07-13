@@ -33,7 +33,7 @@ set(SOURCE_FILES
         src/path/navmesh/triangulation/Triangulation.h
         src/path/navmesh/NavMeshGenerator.cpp
         src/path/navmesh/NavMeshGenerator.h
-        src/UrchinAIEngine.h src/path/navmesh/model/NavMeshAgent.cpp src/path/navmesh/model/NavMeshAgent.h)
+        src/UrchinAIEngine.h src/path/navmesh/model/NavMeshAgent.cpp src/path/navmesh/model/NavMeshAgent.h src/path/navmesh/csg/PolygonsSubtraction.cpp src/path/navmesh/csg/PolygonsSubtraction.h)
 
 include_directories(src ../common/src)
 
