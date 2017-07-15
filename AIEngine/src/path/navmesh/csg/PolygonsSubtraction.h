@@ -48,6 +48,8 @@ namespace urchin
             int computeCrossPointIndex(const Point2<T> &, const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
             Point2<T> determineMiddlePoint(const Point2<T> &, const Point2<T> &) const;
 
+            int findNextPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
+
             void logSubtractionPoints(const std::string &, const std::vector<SubtractionPoint<T>> &,
                                       const std::string &, const std::vector<SubtractionPoint<T>> &) const;
             void logInputData(const CSGPolygon<T> &, const CSGPolygon<T> &, const std::string &, Logger::CriticalityLevel) const;

@@ -50,7 +50,52 @@ namespace urchin
             //logSubtractionPoints(minuendPolygon.getName(), minuendPoints, subtrahendPolygon.getName(), subtrahendPoints);
         #endif
 
-        //TODO implement algo loop
+        int startPointIndex;
+        while((startPointIndex = findNextPointIndex(minuendPoints))!=-1)
+        {
+            std::vector<Point2<T>> polygonCwPoints;
+            polygonCwPoints.reserve(minuendPoints.size()); //estimated memory size
+
+            bool onMinuendPolygon = true;
+            int currentPointIndex = startPointIndex;
+            while(true) //TODO add a limit + handle error...
+            {
+                if(onMinuendPolygon) //TODO handle same edge
+                {
+                    polygonCwPoints.push_back(minuendPoints[currentPointIndex].point);
+                    minuendPoints[currentPointIndex].isProcessed = true;
+
+                    if(minuendPoints[currentPointIndex].crossPointIndex!=-1)
+                    {
+                        onMinuendPolygon = false;
+                        currentPointIndex = (minuendPoints[currentPointIndex].crossPointIndex + subtrahendPoints.size() - 1) % subtrahendPoints.size();
+                    }else
+                    {
+                        currentPointIndex = (currentPointIndex + 1) % minuendPoints.size();
+                    }
+                }else
+                {
+                    polygonCwPoints.push_back(subtrahendPoints[currentPointIndex].point);
+
+                    if(subtrahendPoints[currentPointIndex].crossPointIndex!=-1)
+                    {
+                        onMinuendPolygon = true;
+                        currentPointIndex = (subtrahendPoints[currentPointIndex].crossPointIndex + 1) % minuendPoints.size();
+                    }else
+                    {
+                        currentPointIndex = (currentPointIndex + subtrahendPoints.size() - 1) % subtrahendPoints.size();
+                    }
+                }
+
+                if( (onMinuendPolygon && currentPointIndex==startPointIndex)
+                    || (!onMinuendPolygon && subtrahendPoints[currentPointIndex].crossPointIndex==startPointIndex))
+                {
+                    break;
+                }
+            }
+
+            result.push_back(CSGPolygon<T>("TODO", polygonCwPoints)); //TODO rename
+        }
 
         return result;
     }
@@ -132,7 +177,7 @@ namespace urchin
                 IntersectionPoint<T> intersectionPoint = intersectionsPoints[intersectionI];
                 int crossPointIndex = computeCrossPointIndex(intersectionPoint.point, otherIntersections);
                 if(crossPointIndex==-1)
-                {
+                { //TODO fix this error.
                     logInputData(polygon, otherPolygon, "Impossible to find cross point index on intersection point.", Logger::ERROR);
                     std::vector<SubtractionPoint<T>> emptySubtractionPoints;
                     return emptySubtractionPoints;
@@ -187,6 +232,18 @@ namespace urchin
         }
 
         return Point2<T>(summedPoint.X/2.0, summedPoint.Y/2.0);
+    }
+
+    template<class T> int PolygonsSubtraction<T>::findNextPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const
+    {
+        for(unsigned int i=0; i<subtractionPoint.size(); ++i)
+        {
+            if(!subtractionPoint[i].isProcessed && subtractionPoint[i].isOutside)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     template<class T> void PolygonsSubtraction<T>::logSubtractionPoints(const std::string &minuendName, const std::vector<SubtractionPoint<T>> &minuendPoints,
