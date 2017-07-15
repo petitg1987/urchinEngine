@@ -15,6 +15,10 @@ namespace urchin
 
 	}
 
+	/**
+	 * Perform an intersection of polygons.
+	 * @param clipPolygon Clip polygon must be convex
+	 */
 	template<class T> CSGPolygon<T> PolygonsIntersection<T>::intersectionPolygons(const CSGPolygon<T> &subjectPolygon, const CSGPolygon<T> &clipPolygon) const
 	{ //Sutherland–Hodgman algorithm
 		std::vector<Point2<T>> outputList(subjectPolygon.getCwPoints());

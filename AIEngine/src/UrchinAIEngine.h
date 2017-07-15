@@ -13,6 +13,7 @@
 #include "path/navmesh/triangulation/Triangulation.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsIntersection.h"
+#include "path/navmesh/csg/PolygonsSubtraction.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 
 #endif

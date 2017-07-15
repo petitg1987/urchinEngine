@@ -29,6 +29,7 @@
 #include "ai/path/TriangulationTest.h"
 #include "ai/path/PolygonsUnionTest.h"
 #include "ai/path/PolygonsIntersectionTest.h"
+#include "ai/path/PolygonsSubtractionTest.h"
 
 int main()
 {
@@ -84,6 +85,7 @@ int main()
 	runner.addTest(TriangulationTest::suite());
 	runner.addTest(PolygonsUnionTest::suite());
 	runner.addTest(PolygonsIntersectionTest::suite());
+	runner.addTest(PolygonsSubtractionTest::suite());
 
 	runner.run();
 

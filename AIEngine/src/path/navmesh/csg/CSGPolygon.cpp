@@ -60,6 +60,39 @@ namespace urchin
 	    return area / (T)2;
 	}
 
+	template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point) const
+	{
+		return pointInsidePolygon(point, false);
+	}
+
+	template<class T> bool CSGPolygon<T>::pointInsideOrOnPolygon(const Point2<T> &point) const
+	{
+		return pointInsidePolygon(point, true);
+	}
+
+	template<class T> bool CSGPolygon<T>::pointInsidePolygon(const Point2<T> &point, bool onEdgeIsInside) const
+	{//see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
+		bool inside = false;
+
+		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
+		{
+			Point2<T> point1 = cwPoints[previousI];
+			Point2<T> point2 = cwPoints[i];
+
+			if (((point1.Y<=point.Y && point.Y<point2.Y) || (point2.Y<=point.Y && point.Y<point1.Y))
+				//same but without division: ((point.X-point1.X) < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y))
+				&& ((point.X-point1.X)*std::abs(point2.Y-point1.Y) < (point2.X-point1.X) * (point.Y-point1.Y) * MathAlgorithm::sign<T>(point2.Y-point1.Y)))
+			{
+				inside = !inside;
+			}else if(onEdgeIsInside && LineSegment2D<T>(point1, point2).squareDistance(point)==0)
+			{
+				return true;
+			}
+		}
+
+		return inside;
+	}
+
 	template<class T> CSGPolygon<T> CSGPolygon<T>::expand(T distance) const
 	{
 		return CSGPolygon<T>(name, ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance));

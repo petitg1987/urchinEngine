@@ -19,6 +19,10 @@ namespace urchin
 
 	}
 
+	/**
+  	 * Perform an union of polygons.
+  	 * When polygons cannot be put together because there is no contact: there are returned apart.
+  	 */
     template<class T> std::vector<CSGPolygon<T>> PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
 	{
 		std::vector<CSGPolygon<T>> mergedPolygons;
@@ -131,7 +135,7 @@ namespace urchin
 		if(currentIteration > maxIteration)
 		{
 			logInputData(polygon1, polygon2, "Maximum of iteration reached on polygons union algorithm.", Logger::ERROR);
-		}else if(foundIntersection || pointInsideOrOnPolygon(currentPolygon, otherPolygon->getCwPoints()[0]))
+		}else if(foundIntersection || currentPolygon->pointInsideOrOnPolygon(otherPolygon->getCwPoints()[0]))
 		{
 			mergedPolygons.push_back(CSGPolygon<T>("{" + polygon1.getName() + "-" + polygon2.getName() + "}", mergedPolygonPoints));
 		}else
@@ -332,30 +336,6 @@ namespace urchin
 	{
 		constexpr T EPSILON = std::numeric_limits<T>::epsilon();
 		return ((p1.X-EPSILON) <= p2.X) && ((p1.X+EPSILON) >= p2.X) && ((p1.Y-EPSILON) <= p2.Y) && ((p1.Y+EPSILON) >= p2.Y);
-	}
-
-    template<class T> bool PolygonsUnion<T>::pointInsideOrOnPolygon(const CSGPolygon<T> *polygon, const Point2<T> &point) const
-	{ //see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
-		bool inside = false;
-
-		const std::vector<Point2<T>> &points = polygon->getCwPoints();
-		for(unsigned int i=0, previousI=points.size()-1; i<points.size(); previousI=i++)
-		{
-			Point2<T> point1 = points[previousI];
-			Point2<T> point2 = points[i];
-
-			if (((point1.Y<=point.Y && point.Y<point2.Y) || (point2.Y<=point.Y && point.Y<point1.Y))
-                    //same but without division: ((point.X-point1.X) < (point2.X-point1.X) * (point.Y-point1.Y) / (point2.Y-point1.Y))
-					&& ((point.X-point1.X)*std::abs(point2.Y-point1.Y) < (point2.X-point1.X) * (point.Y-point1.Y) * MathAlgorithm::sign<T>(point2.Y-point1.Y)))
-			{
-				inside = !inside;
-			}else if(LineSegment2D<T>(point1, point2).squareDistance(point)==0)
-			{
-				return true;
-			}
-		}
-
-		return inside;
 	}
 
     template<class T> void PolygonsUnion<T>::logInputData(const CSGPolygon<T> &polygon1, const CSGPolygon<T> &polygon2, const std::string &message, Logger::CriticalityLevel logLevel) const

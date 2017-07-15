@@ -39,7 +39,6 @@ namespace urchin
             uint_fast64_t getIntersectionId(const CSGPolygon<T> *, unsigned int, const CSGPolygon<T> *, unsigned int) const;
 
 			bool areSamePoints(const Point2<T> &, const Point2<T> &) const;
-			bool pointInsideOrOnPolygon(const CSGPolygon<T> *, const Point2<T> &) const;
 
 			void logInputData(const CSGPolygon<T> &, const CSGPolygon<T> &, const std::string &, Logger::CriticalityLevel) const;
 	};
