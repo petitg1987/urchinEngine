@@ -34,7 +34,7 @@ namespace urchin
      */
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
     { //see http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-SA-97135.pdf
-        std::vector<CSGPolygon<T>> result;
+        std::vector<CSGPolygon<T>> subtractedPolygons;
 
         std::map<unsigned int, std::vector<IntersectionPoint<T>>> minuendIntersectionsPolygon, subtrahendIntersectionsPolygon;
         buildIntersectionPoints(minuendPolygon, minuendIntersectionsPolygon, subtrahendPolygon, subtrahendIntersectionsPolygon);
@@ -43,7 +43,7 @@ namespace urchin
         std::vector<SubtractionPoint<T>> subtrahendPoints = buildSubtractionPoints(subtrahendPolygon, minuendPolygon, subtrahendIntersectionsPolygon, minuendIntersectionsPolygon);
         if(minuendPoints.size()==0 || subtrahendPoints.size()==0)
         {
-            return result;
+            return subtractedPolygons;
         }
 
         #ifdef _DEBUG
@@ -56,9 +56,12 @@ namespace urchin
             std::vector<Point2<T>> polygonCwPoints;
             polygonCwPoints.reserve(minuendPoints.size()); //estimated memory size
 
+            unsigned int maxIteration = (minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size());
+            unsigned int currentIteration = 0;
+
             bool onMinuendPolygon = true;
             int currentPointIndex = startPointIndex;
-            while(true) //TODO add a limit + handle error...
+            while(currentIteration++ < maxIteration+1)
             {
                 if(onMinuendPolygon) //TODO handle same edge
                 {
@@ -87,6 +90,11 @@ namespace urchin
                     }
                 }
 
+                if(onMinuendPolygon)
+                {
+
+                }
+
                 if( (onMinuendPolygon && currentPointIndex==startPointIndex)
                     || (!onMinuendPolygon && subtrahendPoints[currentPointIndex].crossPointIndex==startPointIndex))
                 {
@@ -94,10 +102,17 @@ namespace urchin
                 }
             }
 
-            result.push_back(CSGPolygon<T>("TODO", polygonCwPoints)); //TODO rename
+            if(currentIteration > maxIteration)
+            {
+                logInputData(minuendPolygon, subtrahendPolygon, "Maximum of iteration reached on polygons subtraction algorithm.", Logger::ERROR);
+                break;
+            }else
+            {
+                subtractedPolygons.push_back(CSGPolygon<T>("(" + minuendPolygon.getName() + "-subBy-" + subtrahendPolygon.getName()+ ")", polygonCwPoints));
+            }
         }
 
-        return result;
+        return subtractedPolygons;
     }
 
     template<class T> void PolygonsSubtraction<T>::buildIntersectionPoints(const CSGPolygon<T> &polygon1, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &intersectionsPolygon1,
@@ -113,36 +128,18 @@ namespace urchin
                 unsigned int nextJ = (j+1)%polygon2.getCwPoints().size();
                 LineSegment2D<T> edge2(polygon2.getCwPoints()[j], polygon2.getCwPoints()[nextJ]);
 
-                bool endPointUsed = false;
-                if(edge1.squareDistance(edge2.getA())==0)
+                bool hasIntersection, hasFarthestIntersection;
+                Point2<T> farthestIntersectionPoint;
+                Point2<T> intersectionPoint = edge1.intersectPoint(edge2, hasIntersection, farthestIntersectionPoint, hasFarthestIntersection);
+                if(hasIntersection)
                 {
-                    intersectionsPolygon1[i].push_back(IntersectionPoint<T>(edge2.getA(), edge1.getA().squareDistance(edge2.getA())));
-                    endPointUsed = true;
-                }
-                if(edge1.squareDistance(edge2.getB())==0)
-                {
-                    intersectionsPolygon1[i].push_back(IntersectionPoint<T>(edge2.getB(), edge1.getA().squareDistance(edge2.getB())));
-                    endPointUsed = true;
-                }
-                if(edge2.squareDistance(edge1.getA())==0)
-                {
-                    intersectionsPolygon2[j].push_back(IntersectionPoint<T>(edge1.getA(), edge2.getA().squareDistance(edge1.getA())));
-                    endPointUsed = true;
-                }
-                if(edge2.squareDistance(edge1.getB())==0)
-                {
-                    intersectionsPolygon2[j].push_back(IntersectionPoint<T>(edge1.getB(), edge2.getA().squareDistance(edge1.getB())));
-                    endPointUsed = true;
-                }
+                    intersectionsPolygon1[i].push_back(IntersectionPoint<T>(intersectionPoint, edge1.getA().squareDistance(intersectionPoint)));
+                    intersectionsPolygon2[j].push_back(IntersectionPoint<T>(intersectionPoint, edge2.getA().squareDistance(intersectionPoint)));
 
-                if(!endPointUsed)
-                {
-                    bool hasIntersection;
-                    Point2<T> intersectionPoint = edge1.intersectPoint(edge2, hasIntersection);
-                    if(hasIntersection)
+                    if(hasFarthestIntersection)
                     {
-                        intersectionsPolygon1[i].push_back(IntersectionPoint<T>(intersectionPoint, edge1.getA().squareDistance(intersectionPoint)));
-                        intersectionsPolygon2[j].push_back(IntersectionPoint<T>(intersectionPoint, edge2.getA().squareDistance(intersectionPoint)));
+                        intersectionsPolygon1[i].push_back(IntersectionPoint<T>(farthestIntersectionPoint, edge1.getA().squareDistance(farthestIntersectionPoint)));
+                        intersectionsPolygon2[j].push_back(IntersectionPoint<T>(farthestIntersectionPoint, edge2.getA().squareDistance(farthestIntersectionPoint)));
                     }
                 }
             }
@@ -171,24 +168,28 @@ namespace urchin
             bool isOutside = !otherPolygon.pointInsidePolygon(point);
             subtractionPoints.push_back(SubtractionPoint<T>(point, isOutside, -1));
 
-            const std::vector<IntersectionPoint<T>> &intersectionsPoints = intersections.find(i)->second;
-            for(unsigned int intersectionI=0; intersectionI<intersectionsPoints.size(); ++intersectionI)
+            const auto &intersectionsPointsIt = intersections.find(i);
+            if(intersectionsPointsIt!=intersections.end())
             {
-                IntersectionPoint<T> intersectionPoint = intersectionsPoints[intersectionI];
-                int crossPointIndex = computeCrossPointIndex(intersectionPoint.point, otherIntersections);
-                if(crossPointIndex==-1)
-                { //TODO fix this error.
-                    logInputData(polygon, otherPolygon, "Impossible to find cross point index on intersection point.", Logger::ERROR);
-                    std::vector<SubtractionPoint<T>> emptySubtractionPoints;
-                    return emptySubtractionPoints;
-                }
-
-                subtractionPoints.push_back(SubtractionPoint<T>(intersectionPoint.point, false, crossPointIndex));
-
-                if(intersectionI%2==1 && intersectionI!=intersectionsPoints.size()-1)
+                const std::vector<IntersectionPoint<T>> &intersectionsPoints = intersectionsPointsIt->second;
+                for (unsigned int intersectionI = 0; intersectionI < intersectionsPoints.size(); ++intersectionI)
                 {
-                    Point2<T> middlePoint = determineMiddlePoint(intersectionPoint.point, intersectionsPoints[intersectionI + 1].point);
-                    subtractionPoints.push_back(SubtractionPoint<T>(middlePoint, true, -1));
+                    IntersectionPoint<T> intersectionPoint = intersectionsPoints[intersectionI];
+                    int crossPointIndex = computeCrossPointIndex(intersectionPoint.point, otherIntersections);
+                    if (crossPointIndex == -1)
+                    {
+                        logInputData(polygon, otherPolygon, "Impossible to find cross point index on intersection point.", Logger::ERROR);
+                        std::vector<SubtractionPoint<T>> emptySubtractionPoints;
+                        return emptySubtractionPoints;
+                    }
+
+                    subtractionPoints.push_back(SubtractionPoint<T>(intersectionPoint.point, false, crossPointIndex));
+
+                    if (intersectionI % 2 == 1 && intersectionI != intersectionsPoints.size() - 1)
+                    {
+                        Point2<T> middlePoint = determineMiddlePoint(intersectionPoint.point, intersectionsPoints[intersectionI + 1].point);
+                        subtractionPoints.push_back(SubtractionPoint<T>(middlePoint, true, -1));
+                    }
                 }
             }
         }
@@ -257,14 +258,14 @@ namespace urchin
         unsigned int i=0;
         for(SubtractionPoint<T> p : minuendPoints)
         {
-            logStream<<std::setw(4)<<i++<<")"<<std::setw(5)<<p.isOutside <<std::setw(5)<<p.crossPointIndex<<std::setw(15)<<p.point<<std::endl;
+            logStream<<std::setw(5)<<i++<<")"<<std::setw(5)<<p.isOutside <<std::setw(5)<<p.crossPointIndex<<std::setw(15)<<p.point<<std::endl;
         }
 
         logStream<<subtrahendName<<":"<<std::endl;
         unsigned int j=0;
         for(SubtractionPoint<T> p : subtrahendPoints)
         {
-            logStream<<std::setw(4)<<j++<<")"<<std::setw(5)<<p.isOutside <<std::setw(5)<<p.crossPointIndex<<std::setw(15)<<p.point<<std::endl;
+            logStream<<std::setw(5)<<j++<<")"<<std::setw(5)<<p.isOutside <<std::setw(5)<<p.crossPointIndex<<std::setw(15)<<p.point<<std::endl;
         }
 
         Logger::logger().logInfo(logStream.str());
