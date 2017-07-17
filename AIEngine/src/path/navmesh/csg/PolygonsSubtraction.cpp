@@ -34,7 +34,6 @@ namespace urchin
      */
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
     { //see http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-SA-97135.pdf
-std::cout<<"---"<<std::endl;
         std::vector<CSGPolygon<T>> subtractedPolygons;
 
         SubtractionPoints<T> subtractionPoints = buildIntersectionPoints(minuendPolygon, subtrahendPolygon);
@@ -44,7 +43,7 @@ std::cout<<"---"<<std::endl;
         }
 
         #ifdef _DEBUG
-            logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
+            //logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
         #endif
 
         int startPointIndex;
@@ -114,8 +113,8 @@ std::cout<<"---"<<std::endl;
         buildIntersectionPoints(minuendPolygon, minuendIntersectionsPolygon, subtrahendPolygon, subtrahendIntersectionsPolygon);
 
         SubtractionPoints<T> subtractionPoints;
-        subtractionPoints.minuend = buildSubtractionPoints(minuendPolygon, subtrahendPolygon, minuendIntersectionsPolygon, subtrahendIntersectionsPolygon);
-        subtractionPoints.subtrahend = buildSubtractionPoints(subtrahendPolygon, minuendPolygon, subtrahendIntersectionsPolygon, minuendIntersectionsPolygon);
+        subtractionPoints.minuend = buildSubtractionPoints(minuendPolygon, subtrahendPolygon, minuendIntersectionsPolygon);
+        subtractionPoints.subtrahend = buildSubtractionPoints(subtrahendPolygon, minuendPolygon, subtrahendIntersectionsPolygon);
 
         computeCrossPointIndex(subtractionPoints.minuend, subtractionPoints.subtrahend);
 
@@ -140,13 +139,13 @@ std::cout<<"---"<<std::endl;
                 Point2<T> intersectionPoint = edge1.intersectPoint(edge2, hasIntersection, farthestIntersectionPoint, hasFarthestIntersection);
                 if(hasIntersection)
                 {
-                    pushIntersectionPoint(edge1, intersectionPoint, intersectionsPolygon1[i]);
-                    pushIntersectionPoint(edge2, intersectionPoint, intersectionsPolygon2[j]);
+                    pushIntersectionPoint(edge1, edge2, intersectionPoint, intersectionsPolygon1[i]);
+                    pushIntersectionPoint(edge2, edge1, intersectionPoint, intersectionsPolygon2[j]);
 
                     if(hasFarthestIntersection)
                     {
-                        pushIntersectionPoint(edge1, farthestIntersectionPoint, intersectionsPolygon1[i]);
-                        pushIntersectionPoint(edge2, farthestIntersectionPoint, intersectionsPolygon2[j]);
+                        pushIntersectionPoint(edge1, edge2, farthestIntersectionPoint, intersectionsPolygon1[i]);
+                        pushIntersectionPoint(edge2, edge1, farthestIntersectionPoint, intersectionsPolygon2[j]);
                     }
                 }
             }
@@ -162,20 +161,19 @@ std::cout<<"---"<<std::endl;
         }
     }
 
-    template<class T> void PolygonsSubtraction<T>::pushIntersectionPoint(const LineSegment2D<T> edge, Point2<T> intersectionPoint,
+    template<class T> void PolygonsSubtraction<T>::pushIntersectionPoint(const LineSegment2D<T> &edge, const LineSegment2D<T> &otherEdge, const Point2<T> &intersectionPoint,
                                                                          std::vector<IntersectionPoint<T>> &intersectionPointsVector) const
     {
         T distanceEdgeA = edge.getA().squareDistance(intersectionPoint);
-        T distanceEdgeB = edge.getB().squareDistance(intersectionPoint);
-        if(distanceEdgeA!=0 && distanceEdgeB!=0)
+        if(distanceEdgeA!=0 && edge.getB().squareDistance(intersectionPoint)!=0 //avoid intersection point equals to a polygon point
+           && otherEdge.getB().squareDistance(intersectionPoint) != 0) //avoid duplicate intersection point (same intersection in nextEdge(otherEdge).getA())
         {
-            intersectionPointsVector.push_back(IntersectionPoint<T>(intersectionPoint, distanceEdgeA)); //TODO duplicate points inserted !
+            intersectionPointsVector.push_back(IntersectionPoint<T>(intersectionPoint, distanceEdgeA));
         }
     }
 
     template<class T> std::vector<SubtractionPoint<T>> PolygonsSubtraction<T>::buildSubtractionPoints(const CSGPolygon<T> &polygon, const CSGPolygon<T> &otherPolygon,
-                                                                                                      const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &intersections,
-                                                                                                      const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &otherIntersections) const
+                                                                                                      const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &intersections) const
     {
         std::vector<SubtractionPoint<T>> subtractionPoints;
         subtractionPoints.reserve(polygon.getCwPoints().size() + intersections.size());

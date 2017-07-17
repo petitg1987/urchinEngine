@@ -48,9 +48,8 @@ namespace urchin
             SubtractionPoints<T> buildIntersectionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
             void buildIntersectionPoints(const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &,
                                          const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
-            void pushIntersectionPoint(const LineSegment2D<T>, Point2<T>, std::vector<IntersectionPoint<T>> &) const;
+            void pushIntersectionPoint(const LineSegment2D<T> &, const LineSegment2D<T> &, const Point2<T> &, std::vector<IntersectionPoint<T>> &) const;
             std::vector<SubtractionPoint<T>> buildSubtractionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &,
-                                                                    const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &,
                                                                     const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
             void computeCrossPointIndex(std::vector<SubtractionPoint<T>> &, std::vector<SubtractionPoint<T>> &) const;
             Point2<T> determineMiddlePoint(const Point2<T> &, const Point2<T> &) const;
