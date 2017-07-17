@@ -10,6 +10,13 @@
 
 namespace urchin
 {
+    template<class T> struct IntersectionPoint
+    {
+        IntersectionPoint(const Point2<T> &, unsigned int);
+
+        Point2<T> point;
+        unsigned int squareDistanceToStartEdge;
+    };
 
     template<class T> struct SubtractionPoint
     {
@@ -21,12 +28,10 @@ namespace urchin
         int crossPointIndex; //-1 if not exist.
     };
 
-    template<class T> struct IntersectionPoint
+    template<class T> struct SubtractionPoints
     {
-        IntersectionPoint(const Point2<T> &, unsigned int);
-
-        Point2<T> point;
-        unsigned int squareDistanceToStartEdge;
+        std::vector<SubtractionPoint<T>> minuend;
+        std::vector<SubtractionPoint<T>> subtrahend;
     };
 
     template<class T> class PolygonsSubtraction : public Singleton<PolygonsSubtraction<T>>
@@ -40,12 +45,14 @@ namespace urchin
             PolygonsSubtraction();
             virtual ~PolygonsSubtraction();
 
+            SubtractionPoints<T> buildIntersectionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
             void buildIntersectionPoints(const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &,
                                          const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
+            void pushIntersectionPoint(const LineSegment2D<T>, Point2<T>, std::vector<IntersectionPoint<T>> &) const;
             std::vector<SubtractionPoint<T>> buildSubtractionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &,
                                                                     const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &,
                                                                     const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
-            int computeCrossPointIndex(const Point2<T> &, const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
+            void computeCrossPointIndex(std::vector<SubtractionPoint<T>> &, std::vector<SubtractionPoint<T>> &) const;
             Point2<T> determineMiddlePoint(const Point2<T> &, const Point2<T> &) const;
 
             int findNextPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
