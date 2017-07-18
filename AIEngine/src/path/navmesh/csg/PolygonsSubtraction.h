@@ -30,8 +30,16 @@ namespace urchin
 
     template<class T> struct SubtractionPoints
     {
+        enum PolygonType
+        {
+            MINUEND = 0,
+            SUBTRAHEND
+        };
+
         std::vector<SubtractionPoint<T>> minuend;
         std::vector<SubtractionPoint<T>> subtrahend;
+
+        std::vector<SubtractionPoint<T>> &operator [](PolygonType);
     };
 
     template<class T> class PolygonsSubtraction : public Singleton<PolygonsSubtraction<T>>
@@ -54,7 +62,8 @@ namespace urchin
             void computeCrossPointIndex(std::vector<SubtractionPoint<T>> &, std::vector<SubtractionPoint<T>> &) const;
             Point2<T> determineMiddlePoint(const Point2<T> &, const Point2<T> &) const;
 
-            int findNextPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
+            int findNextStartPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
+            int computeNextPointOffset(typename SubtractionPoints<T>::PolygonType, const SubtractionPoints<T> &) const;
 
             void logSubtractionPoints(const std::string &, const std::vector<SubtractionPoint<T>> &,
                                       const std::string &, const std::vector<SubtractionPoint<T>> &) const;

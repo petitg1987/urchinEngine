@@ -18,6 +18,11 @@ namespace urchin
     {
     }
 
+    template<class T> std::vector<SubtractionPoint<T>> &SubtractionPoints<T>::operator [](SubtractionPoints<T>::PolygonType polygonType)
+    {
+        return (polygonType==SubtractionPoints<T>::MINUEND) ? minuend : subtrahend;
+    }
+
     template<class T> PolygonsSubtraction<T>::PolygonsSubtraction()
     {
 
@@ -47,7 +52,7 @@ namespace urchin
         #endif
 
         int startPointIndex;
-        while((startPointIndex = findNextPointIndex(subtractionPoints.minuend))!=-1)
+        while((startPointIndex = findNextStartPointIndex(subtractionPoints.minuend))!=-1)
         {
             std::vector<Point2<T>> polygonCwPoints;
             polygonCwPoints.reserve(subtractionPoints.minuend.size()); //estimated memory size
@@ -55,39 +60,28 @@ namespace urchin
             unsigned int maxIteration = (minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size());
             unsigned int currentIteration = 0;
 
-            bool onMinuendPolygon = true;
+            typename SubtractionPoints<T>::PolygonType currentPolygon = SubtractionPoints<T>::MINUEND;
             int currentPointIndex = startPointIndex;
             while(currentIteration++ < maxIteration+1)
             {
-                if(onMinuendPolygon) //TODO handle same edge
-                {
-                    polygonCwPoints.push_back(subtractionPoints.minuend[currentPointIndex].point);
-                    subtractionPoints.minuend[currentPointIndex].isProcessed = true;
+                polygonCwPoints.push_back(subtractionPoints[currentPolygon][currentPointIndex].point);
+                subtractionPoints[currentPolygon][currentPointIndex].isProcessed = true;
 
-                    if(subtractionPoints.minuend[currentPointIndex].crossPointIndex!=-1)
-                    {
-                        onMinuendPolygon = false;
-                        currentPointIndex = (subtractionPoints.minuend[currentPointIndex].crossPointIndex + subtractionPoints.subtrahend.size() - 1) % subtractionPoints.subtrahend.size();
-                    }else
-                    {
-                        currentPointIndex = (currentPointIndex + 1) % subtractionPoints.minuend.size();
-                    }
+                if(subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex!=-1) //TODO handle same edge
+                {
+                    int polygonIndex = subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex;
+                    currentPolygon = (currentPolygon==SubtractionPoints<T>::MINUEND) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;
+
+                    int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
+                    currentPointIndex = (polygonIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
                 }else
                 {
-                    polygonCwPoints.push_back(subtractionPoints.subtrahend[currentPointIndex].point);
-
-                    if(subtractionPoints.subtrahend[currentPointIndex].crossPointIndex!=-1)
-                    {
-                        onMinuendPolygon = true;
-                        currentPointIndex = (subtractionPoints.subtrahend[currentPointIndex].crossPointIndex + 1) % subtractionPoints.minuend.size();
-                    }else
-                    {
-                        currentPointIndex = (currentPointIndex + subtractionPoints.subtrahend.size() - 1) % subtractionPoints.subtrahend.size();
-                    }
+                    int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
+                    currentPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
                 }
 
-                if( (onMinuendPolygon && currentPointIndex==startPointIndex)
-                    || (!onMinuendPolygon && subtractionPoints.subtrahend[currentPointIndex].crossPointIndex==startPointIndex))
+                if( (SubtractionPoints<T>::MINUEND==currentPolygon && currentPointIndex==startPointIndex)
+                    || (SubtractionPoints<T>::MINUEND!=currentPolygon && subtractionPoints.subtrahend[currentPointIndex].crossPointIndex==startPointIndex))
                 {
                     break;
                 }
@@ -233,7 +227,7 @@ namespace urchin
         return Point2<T>(summedPoint.X/2.0, summedPoint.Y/2.0);
     }
 
-    template<class T> int PolygonsSubtraction<T>::findNextPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const
+    template<class T> int PolygonsSubtraction<T>::findNextStartPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const
     {
         for(unsigned int i=0; i<subtractionPoint.size(); ++i)
         {
@@ -243,6 +237,16 @@ namespace urchin
             }
         }
         return -1;
+    }
+
+    template<class T> int PolygonsSubtraction<T>::computeNextPointOffset(typename SubtractionPoints<T>::PolygonType polygonType, const SubtractionPoints<T> &subtractionPoints) const
+    {
+        if(SubtractionPoints<T>::MINUEND==polygonType)
+        {
+            return 1; //CW
+        }
+
+        return subtractionPoints.subtrahend.size() - 1; //CCW
     }
 
     template<class T> void PolygonsSubtraction<T>::logSubtractionPoints(const std::string &minuendName, const std::vector<SubtractionPoint<T>> &minuendPoints,
