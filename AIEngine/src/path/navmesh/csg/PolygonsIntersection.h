@@ -16,8 +16,8 @@ namespace urchin
 			CSGPolygon<T> intersectionPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
 
 		private:
-			PolygonsIntersection();
-			virtual ~PolygonsIntersection();
+			PolygonsIntersection() = default;
+			virtual ~PolygonsIntersection() = default;
 
 			bool isPointInside(const Line2D<T> &, const Point2<T> &) const;
 			void addIntersection(const Line2D<T> &, const Line2D<T> &, std::vector<Point2<T>> &) const;

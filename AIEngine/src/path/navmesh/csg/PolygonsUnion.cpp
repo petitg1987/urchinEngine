@@ -9,16 +9,6 @@
 namespace urchin
 {
 
-    template<class T> PolygonsUnion<T>::PolygonsUnion()
-	{
-
-	}
-
-    template<class T> PolygonsUnion<T>::~PolygonsUnion()
-	{
-
-	}
-
 	/**
   	 * Perform an union of polygons.
   	 * When polygons cannot be put together because there is no contact: there are returned apart.
@@ -31,17 +21,18 @@ namespace urchin
 		std::vector<CSGPolygon<T>> allPolygons = polygons;
 		allPolygons.reserve(allPolygons.size() + mergedPolygons.size());
 
-		while(allPolygons.size() > 0)
+		while(!allPolygons.empty())
 		{
 			bool isPolygonsMerged = false;
 			for(unsigned int i=1; i<allPolygons.size(); ++i)
 			{
 				std::vector<CSGPolygon<T>> result = unionTwoPolygons(allPolygons[0], allPolygons[i]);
-				if(result.size()==0)
+				if(result.empty())
 				{ //error: returns empty std::vector
 					mergedPolygons.clear();
 					return mergedPolygons;
-				}else if(result.size()==1)
+				}
+				if(result.size()==1)
 				{
 					isPolygonsMerged = true;
 
@@ -105,7 +96,7 @@ namespace urchin
             if(csgIntersection.hasIntersection)
             {
 				foundIntersection = true;
-                if(mergedPolygonPoints.size()==0 || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=nextUnionPoint)
+                if(mergedPolygonPoints.empty() || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=nextUnionPoint)
                 {
                     mergedPolygonPoints.push_back(nextUnionPoint);
                     previousEdgeStartPoint = edgeStartPoint;
@@ -119,7 +110,7 @@ namespace urchin
                 std::swap(currentPolygon, otherPolygon);
             }else
             {
-                if(mergedPolygonPoints.size()==0 || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=nextUnionPoint)
+                if(mergedPolygonPoints.empty() || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=nextUnionPoint)
                 {
                     mergedPolygonPoints.push_back(nextUnionPoint);
                     previousEdgeStartPoint = edgeStartPoint;
@@ -265,7 +256,8 @@ namespace urchin
 		if(orientation > 0)
 		{ //exterior angle is less than 180. Intersection point is a better candidate than edge.getB()
 			return true;
-		}else if(orientation==0)
+		}
+		if(orientation==0)
 		{ //angle is 180. check which edge is the most longest
 			T lengthEdge = edgeVector.squareLength();
 			T lengthIntersection = edge.getA().vector(polygonEdge.getB()).squareLength();
@@ -290,7 +282,8 @@ namespace urchin
 		if(nextEdgeOrientation>0 && intersectionEdgeOrientation<=0)
 		{
 			return false;
-		}else if(nextEdgeOrientation<0 && intersectionEdgeOrientation>0)
+		}
+		if(nextEdgeOrientation<0 && intersectionEdgeOrientation>0)
 		{
 			return true;
 		}
@@ -302,7 +295,8 @@ namespace urchin
         if(edgeAngle==intersectionEdgeAngle)
         {
             return edge.getA().vector(nextIntersectionPoint).squareLength() > edge.toVector().squareLength();
-        }else if(nextEdgeOrientation <= 0)
+        }
+		if(nextEdgeOrientation <= 0)
         {
             return intersectionEdgeAngle > edgeAngle;
         }
@@ -326,7 +320,7 @@ namespace urchin
             std::swap(edgeIdPolygon1, edgeIdPolygon2);
         }
 
-        uint_fast64_t intersectionId = static_cast<uint_fast64_t>(edgeIdPolygon1);
+        auto intersectionId = static_cast<uint_fast64_t>(edgeIdPolygon1);
         intersectionId = intersectionId << 32;
         intersectionId += edgeIdPolygon2;
         return intersectionId;

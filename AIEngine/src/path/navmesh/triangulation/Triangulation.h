@@ -9,6 +9,8 @@ namespace urchin
 
 	struct SidedPoint
 	{
+		SidedPoint(unsigned int, bool);
+
 		unsigned int pointIndex;
 		bool onLeft; //indicate if point is on left of monotone polygon or right
 	};

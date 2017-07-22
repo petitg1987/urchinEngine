@@ -11,8 +11,6 @@ namespace urchin
 	class AIWorld
 	{
 		public:
-			AIWorld();
-
 			void addObject(const AIObject &);
 			const std::vector<AIObject> &getObjects() const;
 

@@ -5,16 +5,6 @@
 namespace urchin
 {
 
-	template<class T> PolygonsIntersection<T>::PolygonsIntersection()
-	{
-
-	}
-
-	template<class T> PolygonsIntersection<T>::~PolygonsIntersection()
-	{
-
-	}
-
 	/**
 	 * Perform an intersection of polygons.
 	 * @param clipPolygon Clip polygon must be convex

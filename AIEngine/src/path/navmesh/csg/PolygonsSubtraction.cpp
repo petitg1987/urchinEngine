@@ -23,16 +23,6 @@ namespace urchin
         return (polygonType==SubtractionPoints<T>::MINUEND) ? minuend : subtrahend;
     }
 
-    template<class T> PolygonsSubtraction<T>::PolygonsSubtraction()
-    {
-
-    }
-
-    template<class T> PolygonsSubtraction<T>::~PolygonsSubtraction()
-    {
-
-    }
-
     /**
      * Perform a subtraction of polygons.
      * In case of subtrahendPolygon is totally included in minuendPolygon: the minuendPolygon is returned without hole inside.
@@ -42,7 +32,7 @@ namespace urchin
         std::vector<CSGPolygon<T>> subtractedPolygons;
 
         SubtractionPoints<T> subtractionPoints = buildIntersectionPoints(minuendPolygon, subtrahendPolygon);
-        if(subtractionPoints.minuend.size()==0 || subtractionPoints.subtrahend.size()==0)
+        if(subtractionPoints.minuend.empty() || subtractionPoints.subtrahend.empty())
         {
             return subtractedPolygons;
         }
@@ -67,21 +57,38 @@ namespace urchin
                 polygonCwPoints.push_back(subtractionPoints[currentPolygon][currentPointIndex].point);
                 subtractionPoints[currentPolygon][currentPointIndex].isProcessed = true;
 
-                if(subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex!=-1) //TODO handle same edge
+                if(subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex!=-1)
                 {
+                    typename SubtractionPoints<T>::PolygonType otherPolygon = (currentPolygon==SubtractionPoints<T>::MINUEND) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;;
+                    int otherPointIndex = subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex;
+                    int nextOtherPointOffset = computeNextPointOffset(otherPolygon, subtractionPoints);
+                    int nextOtherPointIndex = (otherPointIndex + nextOtherPointOffset) % subtractionPoints[otherPolygon].size();
+
+                    int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
+                    int nextPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
+
+                    if(nextPointIndex==nextOtherPointIndex && subtractionPoints[otherPolygon][currentPointIndex].crossPointIndex!=-1)
+                    { //special case of collinear edge: don't perform polygon switch
+                        currentPointIndex = nextPointIndex;
+                    }else
+                    { //polygon switch
+                        currentPolygon = otherPolygon;
+                        currentPointIndex = nextOtherPointIndex;
+                    }
+
+                    /*
                     int polygonIndex = subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex;
                     currentPolygon = (currentPolygon==SubtractionPoints<T>::MINUEND) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;
 
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
-                    currentPointIndex = (polygonIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
+                    currentPointIndex = (polygonIndex + nextPointOffset) % subtractionPoints[currentPolygon].size(); */
                 }else
                 {
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
                     currentPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
                 }
 
-                if( (SubtractionPoints<T>::MINUEND==currentPolygon && currentPointIndex==startPointIndex)
-                    || (SubtractionPoints<T>::MINUEND!=currentPolygon && subtractionPoints.subtrahend[currentPointIndex].crossPointIndex==startPointIndex))
+                if(SubtractionPoints<T>::MINUEND==currentPolygon && currentPointIndex==startPointIndex)
                 {
                     break;
                 }
@@ -92,10 +99,9 @@ namespace urchin
                 logInputData(minuendPolygon, subtrahendPolygon, "Maximum of iteration reached on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
                 break;
-            }else
-            {
-                subtractedPolygons.push_back(CSGPolygon<T>("(" + minuendPolygon.getName() + "-subBy-" + subtrahendPolygon.getName()+ ")", polygonCwPoints));
             }
+
+            subtractedPolygons.push_back(CSGPolygon<T>("(" + minuendPolygon.getName() + "-subBy-" + subtrahendPolygon.getName()+ ")", polygonCwPoints));
         }
 
         return subtractedPolygons;
@@ -290,11 +296,6 @@ namespace urchin
     template class SubtractionPoint<double>;
     template class SubtractionPoint<int>;
     template class SubtractionPoint<long long>;
-
-    template class IntersectionPoint<float>;
-    template class IntersectionPoint<double>;
-    template class IntersectionPoint<int>;
-    template class IntersectionPoint<long long>;
 
     template class PolygonsSubtraction<float>;
     template class PolygonsSubtraction<double>;

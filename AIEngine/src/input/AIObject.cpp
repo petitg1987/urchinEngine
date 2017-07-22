@@ -5,7 +5,7 @@ namespace urchin
 
 	AIObject::AIObject(const std::string &name, std::shared_ptr<const ConvexShape3D<float>> shape, const Transform<float> &transform) :
 			name(name),
-			shape(shape),
+			shape(std::move(shape)),
 			transform(transform)
 	{
 

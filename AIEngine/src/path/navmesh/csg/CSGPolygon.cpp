@@ -17,14 +17,14 @@ namespace urchin
 
 	}
 
-	template<class T> CSGPolygon<T>::CSGPolygon(CSGPolygon &&polygon) :
+	template<class T> CSGPolygon<T>::CSGPolygon(CSGPolygon &&polygon) noexcept :
 		name(std::move(polygon.name)),
 		cwPoints(std::move(polygon.cwPoints))
 	{
 
 	}
 
-	template<class T> CSGPolygon<T>& CSGPolygon<T>::operator=(CSGPolygon<T> &&polygon)
+	template<class T> CSGPolygon<T>& CSGPolygon<T>::operator=(CSGPolygon<T> &&polygon) noexcept
 	{
 		this->name = std::move(polygon.name);
 		this->cwPoints = std::move(polygon.cwPoints);
@@ -48,7 +48,7 @@ namespace urchin
 		cwPoints.push_back(cwPoints[0]);
 		cwPoints.push_back(cwPoints[1]);
 
-		T area = (T)0;
+		auto area = (T)0;
 	    for (unsigned int i=1; i<=n; i++)
 	    {
 	        area -= cwPoints[i].X * (cwPoints[i+1].Y - cwPoints[i-1].Y);
@@ -102,7 +102,7 @@ namespace urchin
 	{
 		stream << "Name:" << polygon.getName() << std::endl;
 		stream << "Points (CW):" << std::endl;
-		for(auto point : polygon.getCwPoints())
+		for(const auto &point : polygon.getCwPoints())
 		{
 			stream << point << std::endl;
 		}

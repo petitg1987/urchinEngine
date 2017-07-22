@@ -3,11 +3,6 @@
 namespace urchin
 {
 
-	AIWorld::AIWorld()
-	{
-
-	}
-
 	void AIWorld::addObject(const AIObject &aiObject)
 	{
 		objects.push_back(aiObject);

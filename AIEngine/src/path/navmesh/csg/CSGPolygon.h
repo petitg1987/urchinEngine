@@ -13,8 +13,8 @@ namespace urchin
 		public:
 			CSGPolygon(std::string name, const std::vector<Point2<T>> &);
 			CSGPolygon(const CSGPolygon &);
-			CSGPolygon(CSGPolygon &&);
-			CSGPolygon& operator=(CSGPolygon &&);
+			CSGPolygon(CSGPolygon &&) noexcept;
+			CSGPolygon& operator=(CSGPolygon &&) noexcept;
 
 			const std::string &getName() const;
 			const std::vector<Point2<T>> &getCwPoints() const;

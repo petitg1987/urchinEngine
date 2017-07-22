@@ -9,8 +9,14 @@
 namespace urchin
 {
 
+	PolyhedronFaceIndex::PolyhedronFaceIndex(unsigned int polyhedronIndex, unsigned int faceIndex) :
+			polyhedronIndex(polyhedronIndex), faceIndex(faceIndex)
+	{
+
+	}
+
 	NavMeshGenerator::NavMeshGenerator(std::shared_ptr<AIWorld> aiWorld, NavMeshConfig navMeshConfig) :
-		aiWorld(aiWorld),
+		aiWorld(std::move(aiWorld)),
 		navMeshConfig(navMeshConfig)
 	{
         NumericalCheck::instance()->perform();
@@ -49,27 +55,27 @@ namespace urchin
 		{
 			std::unique_ptr<ConvexObject3D<float>> object = aiObject.getShape()->toConvexObject(aiObject.getTransform());
 
-			if(OBBox<float> *box = dynamic_cast<OBBox<float>*>(object.get()))
+			if(auto box = dynamic_cast<OBBox<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), box));
-			}else if(Capsule<float> *capsule = dynamic_cast<Capsule<float>*>(object.get()))
+			}else if(auto capsule = dynamic_cast<Capsule<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), capsule));
-			}else if(Cone<float> *cone = dynamic_cast<Cone<float>*>(object.get()))
+			}else if(auto cone = dynamic_cast<Cone<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cone));
-			}else if(ConvexHull3D<float> *convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
+			}else if(auto convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), convexHull));
-			}else if(Cylinder<float> *cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
+			}else if(auto cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cylinder));
-			}else if(Sphere<float> *sphere = dynamic_cast<Sphere<float>*>(object.get()))
+			}else if(auto sphere = dynamic_cast<Sphere<float>*>(object.get()))
 			{
 				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), sphere));
 			} else
 			{
-				throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object.get()).name()));
+				throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));
 			}
 		}
 
@@ -236,11 +242,7 @@ namespace urchin
 
 					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
 					{
-						PolyhedronFaceIndex polyhedronFaceIndex;
-						polyhedronFaceIndex.polyhedronIndex = polyhedronIndex;
-						polyhedronFaceIndex.faceIndex = faceIndex;
-
-						walkableFaces.push_back(polyhedronFaceIndex);
+						walkableFaces.emplace_back(PolyhedronFaceIndex(polyhedronIndex, faceIndex));
 					}
 				}
 			}
@@ -274,7 +276,7 @@ namespace urchin
 
 		for(const auto &point : points)
 		{
-			flatPoints.push_back(Point2<float>(point.X, -point.Z));
+			flatPoints.emplace_back(Point2<float>(point.X, -point.Z));
 		}
 
 		return flatPoints;
@@ -345,7 +347,7 @@ namespace urchin
 				{
 					Line3D<float> polyhedronEdgeLine(polyhedronFace.getCcwPoints()[previousI], polyhedronFace.getCcwPoints()[i]);
 					Point3<float> intersectionPoint = walkablePlane.intersectPoint(polyhedronEdgeLine);
-					footprintPoints.push_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
+					footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
 				}
 			}
 		}
@@ -365,7 +367,7 @@ namespace urchin
 
         for(auto walkableFacePoint : walkableFace.getCcwPoints())
         {
-            elevatedPoints.push_back(Point3<float>(walkableFacePoint.X, walkableFacePoint.Y+shiftDistance, walkableFacePoint.Z));
+            elevatedPoints.emplace_back(Point3<float>(walkableFacePoint.X, walkableFacePoint.Y+shiftDistance, walkableFacePoint.Z));
         }
 
 		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
@@ -392,7 +394,7 @@ namespace urchin
 
 		for(const auto &indexedTriangle2D : indexedTriangles2D)
 		{
-			indexedTriangles3D.push_back(IndexedTriangle3D<float>(indexedTriangle2D.getIndices()));
+			indexedTriangles3D.emplace_back(IndexedTriangle3D<float>(indexedTriangle2D.getIndices()));
 		}
 
 		return indexedTriangles3D;
@@ -406,12 +408,12 @@ namespace urchin
 		for(Point2<float> point : orientedFloatPoints)
         {
             Point2<long long> pointIn(Converter::toInteger(point.X), Converter::toInteger(point.Y));
-            if (points.size() == 0 || pointIn != points[points.size() - 1])
+            if (points.empty() || pointIn != points[points.size() - 1])
             {
 				points.push_back(pointIn);
             }
 		}
-        if(points.size()>0 && points[0]==points[points.size() - 1])
+        if(!points.empty() && points[0]==points[points.size() - 1])
 		{
 			points.erase(--points.end());
 		}
@@ -427,12 +429,12 @@ namespace urchin
 		for(Point2<long long> point : orientedLongPoints)
 		{
             Point2<float> pointFloat(Converter::toFloat(point.X), Converter::toFloat(point.Y));
-            if (points.size() == 0 || pointFloat != points[points.size() - 1])
+            if (points.empty() || pointFloat != points[points.size() - 1])
             {
 				points.push_back(pointFloat);
             }
 		}
-        if(points.size()>0 && points[0]==points[points.size() - 1])
+        if(!points.empty() && points[0]==points[points.size() - 1])
         {
             points.erase(--points.end());
         }

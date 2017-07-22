@@ -21,12 +21,16 @@ namespace urchin
 
 	struct TypedPoint
 	{
+		TypedPoint(unsigned int, PointType);
+
 		unsigned int pointIndex;
 		PointType type;
 	};
 
 	struct Edge
 	{
+		Edge(unsigned int, unsigned int);
+
 		unsigned int startIndex;
 		unsigned int endIndex;
 
@@ -35,6 +39,8 @@ namespace urchin
 
 	struct EdgeHelper
 	{
+		EdgeHelper(Edge, unsigned int, PointType);
+
 		Edge edge;
 
 		unsigned int helperPointIndex;
@@ -44,7 +50,7 @@ namespace urchin
 	class MonotonePolygonError : public std::runtime_error
 	{
 		public:
-			MonotonePolygonError(std::string message);
+			MonotonePolygonError(const std::string &message);
 	};
 
 	class MonotonePolygon
@@ -77,7 +83,7 @@ namespace urchin
 			void createDiagonals(unsigned int, unsigned int);
 
 			unsigned int retrieveNextPointIndex(unsigned int, unsigned int);
-			std::vector<std::pair<int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
+			std::vector<std::pair<unsigned int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
 			void markDiagonalProcessed(it_diagonals);
 
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;

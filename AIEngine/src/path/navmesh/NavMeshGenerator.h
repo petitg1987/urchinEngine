@@ -20,6 +20,8 @@ namespace urchin
 
 	struct PolyhedronFaceIndex
 	{
+		PolyhedronFaceIndex(unsigned int, unsigned int);
+
 		unsigned int polyhedronIndex;
 		unsigned int faceIndex;
 	};

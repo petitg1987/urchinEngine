@@ -93,7 +93,7 @@ namespace urchin
 
 		for(const auto &face : faces)
 		{
-			planes.push_back(Plane<float>(points[face.getCcwPointIndices()[0]].point, points[face.getCcwPointIndices()[1]].point, points[face.getCcwPointIndices()[2]].point));
+			planes.emplace_back(Plane<float>(points[face.getCcwPointIndices()[0]].point, points[face.getCcwPointIndices()[1]].point, points[face.getCcwPointIndices()[2]].point));
 		}
 
 		return planes;
@@ -147,7 +147,7 @@ namespace urchin
     std::ostream& operator <<(std::ostream &stream, const Polyhedron &polyhedron)
     {
         unsigned int faceIndex = 0;
-        for(PolyhedronFace face : polyhedron.getFaces())
+        for(const auto &face : polyhedron.getFaces())
         {
             stream<<"Face "<<faceIndex++<<" ";
             for(unsigned int pointIndex : face.getCcwPointIndices())
