@@ -67,7 +67,7 @@ namespace urchin
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
                     int nextPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
 
-                    if(nextPointIndex==nextOtherPointIndex && subtractionPoints[otherPolygon][currentPointIndex].crossPointIndex!=-1)
+                    if(subtractionPoints[otherPolygon][nextOtherPointIndex].crossPointIndex==nextPointIndex)
                     { //special case of collinear edge: don't perform polygon switch
                         currentPointIndex = nextPointIndex;
                     }else
@@ -75,13 +75,6 @@ namespace urchin
                         currentPolygon = otherPolygon;
                         currentPointIndex = nextOtherPointIndex;
                     }
-
-                    /*
-                    int polygonIndex = subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex;
-                    currentPolygon = (currentPolygon==SubtractionPoints<T>::MINUEND) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;
-
-                    int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
-                    currentPointIndex = (polygonIndex + nextPointOffset) % subtractionPoints[currentPolygon].size(); */
                 }else
                 {
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
@@ -197,7 +190,8 @@ namespace urchin
                     if (intersectionI % 2 == 1 && intersectionI != intersectionsPoints.size() - 1)
                     {
                         Point2<T> middlePoint = determineMiddlePoint(intersectionPoint.point, intersectionsPoints[intersectionI + 1].point);
-                        subtractionPoints.push_back(SubtractionPoint<T>(middlePoint, true, -1));
+                        bool isMiddlePointOutside = !otherPolygon.pointInsidePolygon(middlePoint);
+                        subtractionPoints.push_back(SubtractionPoint<T>(middlePoint, isMiddlePointOutside, -1));
                     }
                 }
             }

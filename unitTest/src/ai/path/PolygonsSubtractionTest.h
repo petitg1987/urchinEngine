@@ -11,6 +11,8 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
 
         void polygonsSubtractionMiddlePoint();
         void polygonsSubtractionSameEdge();
+        void polygonsSubtractionTwoSameEdge();
+        void polygonsSubtractionCorner();
 };
 
 #endif
