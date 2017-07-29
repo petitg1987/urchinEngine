@@ -30,6 +30,8 @@ namespace urchin
 
     template<class T> struct SubtractionPoints
     {
+        SubtractionPoints(const std::vector<SubtractionPoint<T>> &, const  std::vector<SubtractionPoint<T>> &);
+
         enum PolygonType
         {
             MINUEND = 0,
@@ -59,8 +61,8 @@ namespace urchin
             void pushIntersectionPoint(const LineSegment2D<T> &, const LineSegment2D<T> &, const Point2<T> &, std::vector<IntersectionPoint<T>> &) const;
             std::vector<SubtractionPoint<T>> buildSubtractionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &,
                                                                     const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
-            void computeCrossPointIndex(std::vector<SubtractionPoint<T>> &, std::vector<SubtractionPoint<T>> &) const;
             Point2<T> determineMiddlePoint(const Point2<T> &, const Point2<T> &) const;
+            void computeCrossPointIndex(std::vector<SubtractionPoint<T>> &, std::vector<SubtractionPoint<T>> &) const;
 
             int findNextStartPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
             int computeNextPointOffset(typename SubtractionPoints<T>::PolygonType, const SubtractionPoints<T> &) const;

@@ -9,9 +9,19 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
     public:
         static CppUnit::Test *suite();
 
+        void polygonsSubtractionSubtrahendInside();
+        void polygonsSubtractionSubtrahendOutside();
+
         void polygonsSubtractionMiddlePoint();
-        void polygonsSubtractionSameEdge();
-        void polygonsSubtractionTwoSameEdge();
+
+        void polygonsSubtractionSameEdge1();
+        void polygonsSubtractionSameEdge2();
+
+        void polygonsSubtractionTwoSameEdge1();
+        void polygonsSubtractionTwoSameEdge2();
+        void polygonsSubtractionTwoSameEdge3();
+        void polygonsSubtractionTwoSameEdge4();
+
         void polygonsSubtractionCorner();
 };
 
