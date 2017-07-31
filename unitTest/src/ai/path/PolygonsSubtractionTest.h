@@ -11,6 +11,7 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
 
         void polygonsSubtractionSubtrahendInside();
         void polygonsSubtractionSubtrahendOutside();
+        void polygonsSubtractionMinuendInside();
 
         void polygonsSubtractionMiddlePoint();
 

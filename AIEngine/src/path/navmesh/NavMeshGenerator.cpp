@@ -4,7 +4,7 @@
 
 #include "NavMeshGenerator.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
-#include "path/navmesh/csg/PolygonsIntersection.h"
+#include "path/navmesh/csg/PolygonsSubtraction.h"
 
 namespace urchin
 {
@@ -32,8 +32,8 @@ namespace urchin
 
 		for(const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
 		{
-			std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygonFor(polyhedronWalkableFace, expandedPolyhedrons);
-			if(navPolygon)
+			std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polyhedronWalkableFace, expandedPolyhedrons);
+			for(const auto &navPolygon : navPolygons)
 			{
 				navMesh->addPolygon(navPolygon);
 			}
@@ -251,84 +251,116 @@ namespace urchin
 		return walkableFaces;
 	}
 
-	std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace, const std::vector<Polyhedron> &expandedPolyhedrons) const
+	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace, const std::vector<Polyhedron> &expandedPolyhedrons) const
 	{
 		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
+		std::string walkableName = "W-" + polyhedron.getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
+		std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName + polyhedron.getName(), reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints()))};
 
-		Triangulation triangulation(flatPointsOnYAxis(walkableFace.getCcwPoints()));
-		bool hasOnlyHoles = addObstacles(expandedPolyhedrons, polyhedronWalkableFace, triangulation);
-		if(!hasOnlyHoles)
+		std::vector<CSGPolygon<float>> obstaclePolygons = computeObstacles(expandedPolyhedrons, polyhedronWalkableFace);
+		std::vector<CSGPolygon<float>> remainingObstaclePolygons;
+		remainingObstaclePolygons.reserve(2); //estimated memory size
+
+		for(const auto &obstaclePolygon : obstaclePolygons)
 		{
-			std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
+			unsigned int savedWalkablePolygonsSize = walkablePolygons.size();
+			for(unsigned int i=0; i<savedWalkablePolygonsSize; ++i)
+			{
+				const CSGPolygon<float> &walkablePolygon = walkablePolygons[i];
+
+				std::vector<CSGPolygon<float>> subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(walkablePolygon, obstaclePolygon);
+				walkablePolygons.erase(walkablePolygons.begin()+i);
+				for(const auto &subtractedPolygon : subtractedPolygons)
+				{
+					walkablePolygons.push_back(subtractedPolygon);
+				}
+
+				if(subtractedPolygons.size()==1 && walkablePolygon.pointInsidePolygon(obstaclePolygon.getCwPoints()[0])
+						&& obstaclePolygon.getCwPoints().size()>=3)
+				{ //obstacle fully inside walkable polygon
+					remainingObstaclePolygons.push_back(obstaclePolygon);
+				}
+			}
+		}
+
+		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
+		navPolygons.reserve(walkablePolygons.size());
+		for(const auto &walkablePolygon : walkablePolygons)
+		{
+			Triangulation triangulation(reversePoints(walkablePolygon.getCwPoints()));
+
+			for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
+			{
+				if(walkablePolygon.pointInsidePolygon(remainingObstaclePolygon.getCwPoints()[0]))
+				{ //obstacle fully inside walkable polygon
+					triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints());
+				}
+			}
+
 			const std::vector<IndexedTriangle3D<float>> &triangles = toIndexedTriangle3D(triangulation.triangulate());
-
-			return std::make_shared<NavPolygon>(points, triangles);
+			std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
+			navPolygons.push_back(std::make_shared<NavPolygon>(points, triangles));
 		}
 
-		return std::shared_ptr<NavPolygon>();
+		return navPolygons;
 	}
 
-	std::vector<Point2<float>> NavMeshGenerator::flatPointsOnYAxis(const std::vector<Point3<float>> &points) const
+	std::vector<Point2<float>> NavMeshGenerator::reversePoints(const std::vector<Point2<float>> &points) const
 	{
-		std::vector<Point2<float>> flatPoints;
-		flatPoints.reserve(points.size());
+		std::vector<Point2<float>> reversePoints;
+		reversePoints.reserve(points.size());
 
-		for(const auto &point : points)
+		for(auto it = points.rbegin(); it!=points.rend(); ++it)
 		{
-			flatPoints.emplace_back(Point2<float>(point.X, -point.Z));
+			reversePoints.emplace_back(*it);
 		}
 
-		return flatPoints;
+		return reversePoints;
 	}
 
-	bool NavMeshGenerator::addObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, const PolyhedronFaceIndex &polyhedronWalkableFace, Triangulation &triangulation) const
+	std::vector<Point2<float>> NavMeshGenerator::reverseAndFlatPointsOnYAxis(const std::vector<Point3<float>> &points) const
+	{
+		std::vector<Point2<float>> reverseFlatPoints;
+		reverseFlatPoints.reserve(points.size());
+
+		for(auto it = points.rbegin(); it!=points.rend(); ++it)
+		{
+			reverseFlatPoints.emplace_back(Point2<float>(it->X, -it->Z));
+		}
+
+		return reverseFlatPoints;
+	}
+
+	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, const PolyhedronFaceIndex &polyhedronWalkableFace) const
 	{
 		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
-		CSGPolygon<long long> walkableFacePolygon = computeWalkablePolygon(walkableFace, polyhedron.getName());
 
 		std::vector<CSGPolygon<long long>> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
-		{ //TODO select only polygons AABBox above 'walkFace' and reserve 'holePolygons'
+		{ //TODO select only polygons AABBox above 'walkableFace' and reserve 'holePolygons'
 			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
 				CSGPolygon<long long> footprintPolygon = computePolyhedronFootprint(expandedPolyhedrons[i], walkableFace);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
-					CSGPolygon<long long> footprintPolygonOnWalkableFace = PolygonsIntersection<long long>::instance()->intersectionPolygons(footprintPolygon, walkableFacePolygon);
-					if(footprintPolygonOnWalkableFace.getCwPoints().size() >= 3)
-					{
-						holePolygons.push_back(footprintPolygonOnWalkableFace);
-					}
+					holePolygons.push_back(footprintPolygon);
 				}
 			}
 		}
 
-		long long holeArea = 0;
 		std::vector<CSGPolygon<long long>> mergedPolygons = PolygonsUnion<long long>::instance()->unionPolygons(holePolygons);
+
+		std::vector<CSGPolygon<float>> mergedPolygonsFloat;
+		mergedPolygonsFloat.reserve(mergedPolygons.size());
 		for(const auto &mergedPolygon : mergedPolygons)
 		{
 			std::vector<Point2<float>> holeFloatPoints = toFloatPoints(mergedPolygon.getCwPoints());
-            if(holeFloatPoints.size() >= 3)
-            {
-                triangulation.addHolePoints(holeFloatPoints);
-                holeArea += mergedPolygon.computeArea();
-            }
+			mergedPolygonsFloat.emplace_back(CSGPolygon<float>(mergedPolygon.getName(), holeFloatPoints));
 		}
 
-        constexpr long long AREA_COMPARISON_TOLERANCE = 1; //TODO review value
-		return holeArea+AREA_COMPARISON_TOLERANCE >= walkableFacePolygon.computeArea();
-	}
-
-	CSGPolygon<long long> NavMeshGenerator::computeWalkablePolygon(const PolyhedronFace &walkableFace, const std::string &name) const
-	{
-		std::vector<Point2<float>> faceCwPoints(flatPointsOnYAxis(walkableFace.getCcwPoints()));
-		std::reverse(faceCwPoints.begin(), faceCwPoints.end());
-		CSGPolygon<long long> walkableFacePolygon(name, toLongPoints(faceCwPoints));
-
-        constexpr long long REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND = 5; //TODO review algorithm because it cause slim slices of nav mesh
-		return walkableFacePolygon.expand(-REDUCE_DISTANCE_TO_AVOID_POINTS_ON_BOUND);
+		return mergedPolygonsFloat;
 	}
 
 	CSGPolygon<long long> NavMeshGenerator::computePolyhedronFootprint(const Polyhedron &polyhedron, const PolyhedronFace &walkableFace) const

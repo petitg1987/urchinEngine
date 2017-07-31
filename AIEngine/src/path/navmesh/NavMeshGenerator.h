@@ -48,10 +48,10 @@ namespace urchin
 
 			std::vector<PolyhedronFaceIndex> findWalkableFaces(const std::vector<Polyhedron> &) const;
 
-			std::shared_ptr<NavPolygon> createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
-			std::vector<Point2<float>> flatPointsOnYAxis(const std::vector<Point3<float>> &) const;
-			bool addObstacles(const std::vector<Polyhedron> &, const PolyhedronFaceIndex &, Triangulation &) const;
-			CSGPolygon<long long> computeWalkablePolygon(const PolyhedronFace &, const std::string &) const;
+			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygonFor(const PolyhedronFaceIndex &, const std::vector<Polyhedron> &) const;
+			std::vector<Point2<float>> reversePoints(const std::vector<Point2<float>> &) const;
+			std::vector<Point2<float>> reverseAndFlatPointsOnYAxis(const std::vector<Point3<float>> &) const;
+			std::vector<CSGPolygon<float>> computeObstacles(const std::vector<Polyhedron> &, const PolyhedronFaceIndex &) const;
 			CSGPolygon<long long> computePolyhedronFootprint(const Polyhedron &, const PolyhedronFace &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const PolyhedronFace &) const;
 			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;

@@ -45,6 +45,20 @@ void PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside()
     AssertHelper::assertPoint2FloatEquals(polygonSubtraction[0].getCwPoints()[3], Point2<float>(0.0, 0.0));
 }
 
+void PolygonsSubtractionTest::polygonsSubtractionMinuendInside()
+{
+    std::vector<Point2<float>> minuendPoly = {Point2<float>(1.0, 3.0), Point2<float>(3.0, 3.0),
+                                              Point2<float>(3.0, 1.0), Point2<float>(1.0, 1.0)};
+
+    std::vector<Point2<float>> subtrahendPoly = {Point2<float>(0.0, 4.0), Point2<float>(4.0, 4.0),
+                                                 Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
+
+    std::vector<CSGPolygon<float>> polygonSubtraction = PolygonsSubtraction<float>::instance()->subtractPolygons(
+            CSGPolygon<float>("minuend", minuendPoly), CSGPolygon<float>("subtrahend", subtrahendPoly));
+
+    AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 0);
+}
+
 void PolygonsSubtractionTest::polygonsSubtractionMiddlePoint()
 {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(1.0, 2.0), Point2<float>(5.0, 2.0), Point2<float>(6.0, 1.0),
@@ -249,6 +263,7 @@ CppUnit::Test *PolygonsSubtractionTest::suite()
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInside));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendOutside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside));
+    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMinuendInside", &PolygonsSubtractionTest::polygonsSubtractionMinuendInside));
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMiddlePoint", &PolygonsSubtractionTest::polygonsSubtractionMiddlePoint));
 
