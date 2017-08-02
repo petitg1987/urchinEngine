@@ -255,8 +255,8 @@ namespace urchin
 	{
 		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
-		std::string walkableName = "W-" + polyhedron.getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
-		std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName + polyhedron.getName(), reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints()))};
+		std::string walkableName = polyhedron.getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
+		std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints()))};
 
 		std::vector<CSGPolygon<float>> obstaclePolygons = computeObstacles(expandedPolyhedrons, polyhedronWalkableFace);
 		std::vector<CSGPolygon<float>> remainingObstaclePolygons;
@@ -350,7 +350,7 @@ namespace urchin
 			}
 		}
 
-		std::vector<CSGPolygon<long long>> mergedPolygons = PolygonsUnion<long long>::instance()->unionPolygons(holePolygons);
+		std::vector<CSGPolygon<long long>> mergedPolygons = PolygonsUnion<long long>::instance()->unionPolygons(holePolygons); //TODO can we use directly float ???
 
 		std::vector<CSGPolygon<float>> mergedPolygonsFloat;
 		mergedPolygonsFloat.reserve(mergedPolygons.size());

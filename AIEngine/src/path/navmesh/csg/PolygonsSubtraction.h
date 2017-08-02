@@ -12,10 +12,10 @@ namespace urchin
 {
     template<class T> struct IntersectionPoint
     {
-        IntersectionPoint(const Point2<T> &, unsigned int);
+        IntersectionPoint(const Point2<T> &, T);
 
         Point2<T> point;
-        unsigned int squareDistanceToStartEdge;
+        T squareDistanceToStartEdge;
     };
 
     template<class T> struct SubtractionPoint

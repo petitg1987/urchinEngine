@@ -4,7 +4,7 @@
 
 namespace urchin
 {
-    template<class T> IntersectionPoint<T>::IntersectionPoint(const Point2<T> &point, unsigned int squareDistanceToStartEdge) :
+    template<class T> IntersectionPoint<T>::IntersectionPoint(const Point2<T> &point, T squareDistanceToStartEdge) :
             point(point),
             squareDistanceToStartEdge(squareDistanceToStartEdge)
     {
@@ -53,7 +53,7 @@ namespace urchin
             std::vector<Point2<T>> polygonCwPoints;
             polygonCwPoints.reserve(subtractionPoints.minuend.size()); //estimated memory size
 
-            unsigned int maxIteration = (minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size());
+            unsigned int maxIteration = (minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size()) + 1;
             unsigned int currentIteration = 0;
 
             typename SubtractionPoints<T>::PolygonType currentPolygon = SubtractionPoints<T>::MINUEND;
@@ -286,14 +286,14 @@ namespace urchin
         Logger::logger().logInfo(logStream.str());
     }
 
-    template<class T> void PolygonsSubtraction<T>::logInputData(const CSGPolygon<T> &polygon1, const CSGPolygon<T> &polygon2, const std::string &message, Logger::CriticalityLevel logLevel) const
+    template<class T> void PolygonsSubtraction<T>::logInputData(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, const std::string &message, Logger::CriticalityLevel logLevel) const
     {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
         logStream<<message<<std::endl;
-        logStream<<" - Polygon 1: "<<std::endl<<polygon1<<std::endl;
-        logStream<<" - Polygon 2: "<<std::endl<<polygon2;
+        logStream<<" - Minuend polygon: "<<std::endl<<minuendPolygon<<std::endl;
+        logStream<<" - Subtrahend Polygon: "<<std::endl<<subtrahendPolygon;
 
         Logger::logger().log(logLevel, logStream.str());
     }
