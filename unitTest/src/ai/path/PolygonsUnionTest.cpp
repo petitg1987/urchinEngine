@@ -236,14 +236,14 @@ void PolygonsUnionTest::twoPolygonsSameEndPoint()
 	std::vector<Point2<float>> polyPoints2 = {Point2<float>(0.0, 0.0), Point2<float>(1.0, 0.0), Point2<float>(1.0, -1.0)};
 
 	std::vector<CSGPolygon<float>> allPolygons[2];
-	allPolygons[0].push_back(CSGPolygon<float>("p1", polyPoints1));
-	allPolygons[0].push_back(CSGPolygon<float>("p2", polyPoints2));
+	allPolygons[0].emplace_back(CSGPolygon<float>("p1", polyPoints1));
+	allPolygons[0].emplace_back(CSGPolygon<float>("p2", polyPoints2));
 
-	allPolygons[1].push_back(CSGPolygon<float>("p2", polyPoints2));
-	allPolygons[1].push_back(CSGPolygon<float>("p1", polyPoints1));
-	for(unsigned int i=0; i<2; ++i)
+	allPolygons[1].emplace_back(CSGPolygon<float>("p2", polyPoints2));
+	allPolygons[1].emplace_back(CSGPolygon<float>("p1", polyPoints1));
+	for(const auto &allPolygon : allPolygons)
 	{
-		std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons[i]);
+		std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygon);
 		AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
 		AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 5);
 		AssertHelper::assertPoint2FloatEquals(polygonUnion[0].getCwPoints()[0], Point2<float>(1.0, -1.0));

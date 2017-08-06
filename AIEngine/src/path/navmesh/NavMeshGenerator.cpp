@@ -264,21 +264,24 @@ namespace urchin
 
 		for(const auto &obstaclePolygon : obstaclePolygons)
 		{
-			unsigned int savedWalkablePolygonsSize = walkablePolygons.size();
-			for(unsigned int i=0; i<savedWalkablePolygonsSize; ++i)
+			auto walkablePolygonsCounter = static_cast<int>(walkablePolygons.size());
+			while(walkablePolygonsCounter--!=0)
 			{
-				const CSGPolygon<float> &walkablePolygon = walkablePolygons[i];
+				const CSGPolygon<float> &walkablePolygon = walkablePolygons[0];
 
-				std::vector<CSGPolygon<float>> subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(walkablePolygon, obstaclePolygon);
-				walkablePolygons.erase(walkablePolygons.begin()+i);
+				bool obstacleInsideWalkable;
+				std::vector<CSGPolygon<float>> subtractedPolygons = PolygonsSubtraction<float>::instance()
+						->subtractPolygons(walkablePolygon, obstaclePolygon, obstacleInsideWalkable);
+
+				//replace 'walkablePolygon' by 'subtractedPolygons'
+				walkablePolygons.erase(walkablePolygons.begin());
 				for(const auto &subtractedPolygon : subtractedPolygons)
 				{
 					walkablePolygons.push_back(subtractedPolygon);
 				}
 
-				if(subtractedPolygons.size()==1 && walkablePolygon.pointInsidePolygon(obstaclePolygon.getCwPoints()[0])
-						&& obstaclePolygon.getCwPoints().size()>=3)
-				{ //obstacle fully inside walkable polygon
+				if(obstacleInsideWalkable)
+				{
 					remainingObstaclePolygons.push_back(obstaclePolygon);
 				}
 			}
@@ -294,7 +297,7 @@ namespace urchin
 			{
 				if(walkablePolygon.pointInsidePolygon(remainingObstaclePolygon.getCwPoints()[0]))
 				{ //obstacle fully inside walkable polygon
-					triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints());
+					triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints()); //TODO wrong result if remainingObstaclePolygon touch walkablePolygon !
 				}
 			}
 
@@ -397,9 +400,9 @@ namespace urchin
 		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
 
-        for(auto walkableFacePoint : walkableFace.getCcwPoints())
+        for(const auto &walkablePoint : triangulation.getPolygonPoints())
         {
-            elevatedPoints.emplace_back(Point3<float>(walkableFacePoint.X, walkableFacePoint.Y+shiftDistance, walkableFacePoint.Z));
+            elevatedPoints.push_back(elevatePoints(walkablePoint, shiftDistance, walkableFace));
         }
 
 		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
@@ -407,17 +410,20 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				Point3<float> holePoint3D(holePoint.X, 0.0, -holePoint.Y);
-				float shortestFaceDistance = walkableFace.getNormal().dotProduct(holePoint3D.vector(walkableFace.getCcwPoints()[0]));
-				float t = (shortestFaceDistance+shiftDistance) / walkableFace.getNormal().Y;
-				Point3<float> projectedPoint = holePoint3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
-
-				elevatedPoints.push_back(projectedPoint);
+				elevatedPoints.push_back(elevatePoints(holePoint, shiftDistance, walkableFace));
 			}
 		}
 
 		return elevatedPoints;
 	}
+
+    Point3<float> NavMeshGenerator::elevatePoints(const Point2<float> &point, float shiftDistance, const PolyhedronFace &walkableFace) const
+    {
+        Point3<float> point3D(point.X, 0.0, -point.Y);
+        float shortestFaceDistance = walkableFace.getNormal().dotProduct(point3D.vector(walkableFace.getCcwPoints()[0]));
+        float t = (shortestFaceDistance+shiftDistance) / walkableFace.getNormal().Y;
+        return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
+    }
 
 	std::vector<IndexedTriangle3D<float>> NavMeshGenerator::toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &indexedTriangles2D) const
 	{

@@ -28,23 +28,38 @@ namespace urchin
     {
         return (polygonType==SubtractionPoints<T>::MINUEND) ? minuend : subtrahend;
     }
+//TODO review comment in function of algorithm adaptation
+    /**
+     * Perform a subtraction of polygons.
+     * In case of subtrahendPolygon is totally included in minuendPolygon or touch edge: the minuendPolygon is returned without hole inside
+     */
+    template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
+    {
+        bool subtrahendInside;
+        return subtractPolygons(minuendPolygon, subtrahendPolygon, subtrahendInside);
+    }
 
     /**
      * Perform a subtraction of polygons.
-     * In case of subtrahendPolygon is totally included in minuendPolygon: the minuendPolygon is returned without hole inside.
+     * In case of subtrahendPolygon is totally included in minuendPolygon or touch edge: the minuendPolygon is returned without hole inside and 'subtrahendInside' flag is true
      */
-    template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
+    template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside) const
     { //see http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-SA-97135.pdf
         std::vector<CSGPolygon<T>> subtractedPolygons;
 
-        SubtractionPoints<T> subtractionPoints = buildIntersectionPoints(minuendPolygon, subtrahendPolygon);
+        SubtractionPoints<T> subtractionPoints = buildSubtractionPoints(minuendPolygon, subtrahendPolygon);
+        subtrahendInside = isSubtrahendInsideMinuend(subtractionPoints.subtrahend);
         if(subtractionPoints.minuend.empty() || subtractionPoints.subtrahend.empty())
         {
+            return subtractedPolygons;
+        }else if(subtrahendInside)
+        {
+            subtractedPolygons.emplace_back(minuendPolygon);
             return subtractedPolygons;
         }
 
         #ifdef _DEBUG
-            //logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
+            logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
         #endif
 
         int startPointIndex;
@@ -108,7 +123,7 @@ namespace urchin
         return subtractedPolygons;
     }
 
-    template<class T> SubtractionPoints<T> PolygonsSubtraction<T>::buildIntersectionPoints(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
+    template<class T> SubtractionPoints<T> PolygonsSubtraction<T>::buildSubtractionPoints(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
     {
         std::map<unsigned int, std::vector<IntersectionPoint<T>>> minuendIntersections, subtrahendIntersections;
         buildIntersectionPoints(minuendPolygon, minuendIntersections, subtrahendPolygon, subtrahendIntersections);
@@ -238,6 +253,18 @@ namespace urchin
                 }
             }
         }
+    }
+
+    template<class T> bool PolygonsSubtraction<T>::isSubtrahendInsideMinuend(const std::vector<SubtractionPoint<T>> &subtrahendPoints) const
+    {
+        for(const auto &subtrahendPoint : subtrahendPoints)
+        {
+            if(subtrahendPoint.isOutside)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     template<class T> int PolygonsSubtraction<T>::findNextStartPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const

@@ -50,12 +50,13 @@ namespace urchin
             friend class Singleton<PolygonsSubtraction<T>>;
 
             std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
+            std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &, bool &) const;
 
         private:
             PolygonsSubtraction() = default;
             virtual ~PolygonsSubtraction() = default;
 
-            SubtractionPoints<T> buildIntersectionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
+            SubtractionPoints<T> buildSubtractionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
             void buildIntersectionPoints(const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &,
                                          const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
             void pushIntersectionPoint(const LineSegment2D<T> &, const LineSegment2D<T> &, const Point2<T> &, std::vector<IntersectionPoint<T>> &) const;
@@ -63,6 +64,7 @@ namespace urchin
                                                                     const std::map<unsigned int, std::vector<IntersectionPoint<T>>> &) const;
             Point2<T> determineMiddlePoint(const Point2<T> &, const Point2<T> &) const;
             void computeCrossPointIndex(std::vector<SubtractionPoint<T>> &, std::vector<SubtractionPoint<T>> &) const;
+            bool isSubtrahendInsideMinuend(const std::vector<SubtractionPoint<T>> &) const;
 
             int findNextStartPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
             int computeNextPointOffset(typename SubtractionPoints<T>::PolygonType, const SubtractionPoints<T> &) const;

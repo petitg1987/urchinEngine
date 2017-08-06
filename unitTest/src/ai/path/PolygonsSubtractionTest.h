@@ -10,6 +10,8 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
         static CppUnit::Test *suite();
 
         void polygonsSubtractionSubtrahendInside();
+        void polygonsSubtractionSubtrahendInsideContactPoint();
+        void polygonsSubtractionSubtrahendInsideContactEdge();
         void polygonsSubtractionSubtrahendOutside();
         void polygonsSubtractionMinuendInside();
 
@@ -17,6 +19,7 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
 
         void polygonsSubtractionSameEdge1();
         void polygonsSubtractionSameEdge2();
+        void polygonsSubtractionAlmostSamePoint();
 
         void polygonsSubtractionTwoSameEdge1();
         void polygonsSubtractionTwoSameEdge2();
