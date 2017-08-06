@@ -19,7 +19,6 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
 
         void polygonsSubtractionSameEdge1();
         void polygonsSubtractionSameEdge2();
-        void polygonsSubtractionAlmostSamePoint();
 
         void polygonsSubtractionTwoSameEdge1();
         void polygonsSubtractionTwoSameEdge2();
@@ -30,6 +29,9 @@ class PolygonsSubtractionTest : public CppUnit::TestFixture
         void polygonsSubtractionTwoIntersectionsOnEdge();
 
         void polygonsSubtractionMaxIteration();
+
+        void polygonsSubtractionTwoCut1();
+        void polygonsSubtractionTwoCut2();
 };
 
 #endif
