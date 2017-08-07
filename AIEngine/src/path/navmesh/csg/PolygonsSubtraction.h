@@ -69,6 +69,9 @@ namespace urchin
             int findNextStartPointIndex(const std::vector<SubtractionPoint<T>> &subtractionPoint) const;
             int computeNextPointOffset(typename SubtractionPoints<T>::PolygonType, const SubtractionPoints<T> &) const;
 
+            bool isMinuend(typename SubtractionPoints<T>::PolygonType) const;
+            bool isSubtrahend(typename SubtractionPoints<T>::PolygonType) const;
+
             void logSubtractionPoints(const std::string &, const std::vector<SubtractionPoint<T>> &,
                                       const std::string &, const std::vector<SubtractionPoint<T>> &) const;
             void logInputData(const CSGPolygon<T> &, const CSGPolygon<T> &, const std::string &, Logger::CriticalityLevel) const;

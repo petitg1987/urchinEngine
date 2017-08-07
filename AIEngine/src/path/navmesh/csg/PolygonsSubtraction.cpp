@@ -28,7 +28,7 @@ namespace urchin
     {
         return (polygonType==SubtractionPoints<T>::MINUEND) ? minuend : subtrahend;
     }
-//TODO review comment in function of algorithm adaptation
+
     /**
      * Perform a subtraction of polygons.
      * In case of subtrahendPolygon is totally included in minuendPolygon or touch edge: the minuendPolygon is returned without hole inside
@@ -52,14 +52,15 @@ namespace urchin
         if(subtractionPoints.minuend.empty() || subtractionPoints.subtrahend.empty())
         {
             return subtractedPolygons;
-        }else if(subtrahendInside)
+        }
+        if(subtrahendInside)
         {
             subtractedPolygons.emplace_back(minuendPolygon);
             return subtractedPolygons;
         }
 
         #ifdef _DEBUG
-            logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
+            //logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
         #endif
 
         int startPointIndex;
@@ -80,7 +81,7 @@ namespace urchin
 
                 if(subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex!=-1)
                 {
-                    typename SubtractionPoints<T>::PolygonType otherPolygon = (currentPolygon==SubtractionPoints<T>::MINUEND) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;;
+                    typename SubtractionPoints<T>::PolygonType otherPolygon = isMinuend(currentPolygon) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;;
 
                     int otherPointIndex = subtractionPoints[currentPolygon][currentPointIndex].crossPointIndex;
                     int nextOtherPointOffset = computeNextPointOffset(otherPolygon, subtractionPoints);
@@ -89,8 +90,8 @@ namespace urchin
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
                     int nextPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
 
-                    if( (currentPolygon==SubtractionPoints<T>::MINUEND && !subtractionPoints[currentPolygon][nextPointIndex].isOutside)
-                        || (currentPolygon==SubtractionPoints<T>::SUBTRAHEND && subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside))
+                    if( (isMinuend(currentPolygon) && !subtractionPoints[currentPolygon][nextPointIndex].isOutside)
+                        || (isSubtrahend(currentPolygon) && (subtractionPoints[currentPolygon][nextPointIndex].isOutside) || subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside) )
                     { //polygon switch
                         currentPointIndex = nextOtherPointIndex;
                         currentPolygon = otherPolygon;
@@ -104,7 +105,7 @@ namespace urchin
                     currentPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
                 }
 
-                if(SubtractionPoints<T>::MINUEND==currentPolygon && currentPointIndex==startPointIndex)
+                if(isMinuend(currentPolygon) && currentPointIndex==startPointIndex)
                 {
                     break;
                 }
@@ -287,6 +288,16 @@ namespace urchin
         }
 
         return subtractionPoints.subtrahend.size() - 1; //CCW
+    }
+
+    template<class T> bool PolygonsSubtraction<T>::isMinuend(typename SubtractionPoints<T>::PolygonType polygonType) const
+    {
+        return SubtractionPoints<T>::MINUEND==polygonType;
+    }
+
+    template<class T> bool PolygonsSubtraction<T>::isSubtrahend(typename SubtractionPoints<T>::PolygonType polygonType) const
+    {
+        return SubtractionPoints<T>::SUBTRAHEND==polygonType;
     }
 
     template<class T> void PolygonsSubtraction<T>::logSubtractionPoints(const std::string &minuendName, const std::vector<SubtractionPoint<T>> &minuendPoints,
