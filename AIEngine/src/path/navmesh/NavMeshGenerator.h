@@ -26,6 +26,14 @@ namespace urchin
 		unsigned int faceIndex;
 	};
 
+	struct WalkablePolygonData
+	{
+		WalkablePolygonData(const CSGPolygon<float> &, const std::vector<bool> &);
+
+		CSGPolygon<float> walkablePolygon;
+		std::vector<bool> isExternalPoints;
+	};
+
 	class NavMeshGenerator
 	{
 		public:

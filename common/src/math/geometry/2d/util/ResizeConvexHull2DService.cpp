@@ -15,11 +15,6 @@ namespace urchin
 
 	}
 
-	template<class T> ResizeConvexHull2DService<T>::~ResizeConvexHull2DService()
-	{
-
-	}
-
 	/**
 	 * @param distance All edge of convex hull shape will be moved along their normal to the specified distance.
 	 * Positive distance will extend convex hull shape. Negative distance are not supported by this algorithm.

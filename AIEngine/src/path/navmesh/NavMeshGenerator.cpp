@@ -1,10 +1,13 @@
 #include <cmath>
 #include <chrono>
 #include <algorithm>
+#include <numeric>
 
 #include "NavMeshGenerator.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
+
+#define WALKABLE_FACE_EXPAND_SIZE 0.0001f
 
 namespace urchin
 {
@@ -15,6 +18,12 @@ namespace urchin
 
 	}
 
+    WalkablePolygonData::WalkablePolygonData(const CSGPolygon<float> &walkablePolygon, const std::vector<bool> &isExternalPoints) :
+            walkablePolygon(walkablePolygon), isExternalPoints(isExternalPoints)
+    {
+
+    }
+
 	NavMeshGenerator::NavMeshGenerator(std::shared_ptr<AIWorld> aiWorld, NavMeshConfig navMeshConfig) :
 		aiWorld(std::move(aiWorld)),
 		navMeshConfig(navMeshConfig)
@@ -24,7 +33,9 @@ namespace urchin
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate() const
 	{
-		auto frameStartTime = std::chrono::high_resolution_clock::now(); //TODO create definitive counter
+		#ifdef _DEBUG
+//			auto frameStartTime = std::chrono::high_resolution_clock::now();
+		#endif
 
 		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons();
 		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
@@ -39,9 +50,11 @@ namespace urchin
 			}
 		}
 
-		auto frameEndTime = std::chrono::high_resolution_clock::now();
-		auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-		std::cout<<"Nav mesh generation time (ms): "<<diffTimeMicroSeconds/1000.0<<std::endl;
+		#ifdef _DEBUG
+//			auto frameEndTime = std::chrono::high_resolution_clock::now();
+//			auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+//			std::cout<<"Nav mesh generation time (ms): "<<diffTimeMicroSeconds/1000.0<<std::endl;
+		#endif
 
 		return navMesh;
 	}
@@ -255,29 +268,33 @@ namespace urchin
 	{
 		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
-		std::string walkableName = polyhedron.getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
-		std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints()))};
 
-		std::vector<CSGPolygon<float>> obstaclePolygons = computeObstacles(expandedPolyhedrons, polyhedronWalkableFace);
+		std::string walkableName = polyhedron.getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
+        std::vector<bool> isExternalPoints(walkableFace.getCcwPoints().size(), true);
+        std::vector<WalkablePolygonData> walkablePolygonsData = {WalkablePolygonData(
+                CSGPolygon<float>(walkableName, reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints())), isExternalPoints)};
+
+        auto obstaclePolygons = computeObstacles(expandedPolyhedrons, polyhedronWalkableFace);
 		std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 		remainingObstaclePolygons.reserve(2); //estimated memory size
 
 		for(const auto &obstaclePolygon : obstaclePolygons)
 		{
-			auto walkablePolygonsCounter = static_cast<int>(walkablePolygons.size());
+			auto walkablePolygonsCounter = static_cast<int>(walkablePolygonsData.size());
 			while(walkablePolygonsCounter--!=0)
 			{
-				const CSGPolygon<float> &walkablePolygon = walkablePolygons[0];
+				const CSGPolygon<float> &walkablePolygon = walkablePolygonsData[0].walkablePolygon;
 
 				bool obstacleInsideWalkable;
-				std::vector<CSGPolygon<float>> subtractedPolygons = PolygonsSubtraction<float>::instance()
-						->subtractPolygons(walkablePolygon, obstaclePolygon, obstacleInsideWalkable);
+                std::map<unsigned int, std::vector<bool>> isMinuendPoints;
+				std::vector<CSGPolygon<float>> subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
+                        walkablePolygon, obstaclePolygon, obstacleInsideWalkable, isMinuendPoints);
 
 				//replace 'walkablePolygon' by 'subtractedPolygons'
-				walkablePolygons.erase(walkablePolygons.begin());
-				for(const auto &subtractedPolygon : subtractedPolygons)
+                walkablePolygonsData.erase(walkablePolygonsData.begin());
+                for(unsigned int i=0; i<subtractedPolygons.size(); ++i)
 				{
-					walkablePolygons.push_back(subtractedPolygon);
+                    walkablePolygonsData.emplace_back(WalkablePolygonData(subtractedPolygons[i], isMinuendPoints[i]));
 				}
 
 				if(obstacleInsideWalkable)
@@ -288,16 +305,19 @@ namespace urchin
 		}
 
 		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
-		navPolygons.reserve(walkablePolygons.size());
-		for(const auto &walkablePolygon : walkablePolygons)
+		navPolygons.reserve(walkablePolygonsData.size());
+		for(const auto &walkablePolygonData : walkablePolygonsData)
 		{
-			Triangulation triangulation(reversePoints(walkablePolygon.getCwPoints()));
+			//slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
+			std::vector<Point2<float>> extendedWalkableCwPoints = ResizePolygon2DService<float>::instance()->resizePolygon(
+					walkablePolygonData.walkablePolygon.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE, walkablePolygonData.isExternalPoints);
+			Triangulation triangulation(reversePoints(extendedWalkableCwPoints)); //TODO check points are correctly extended + check urchinLog of testEngineSfml
 
 			for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
 			{
-				if(walkablePolygon.pointInsidePolygon(remainingObstaclePolygon.getCwPoints()[0]))
+				if(walkablePolygonData.walkablePolygon.pointInsidePolygon(remainingObstaclePolygon.getCwPoints()[0]))
 				{ //obstacle fully inside walkable polygon
-					triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints()); //TODO wrong result if remainingObstaclePolygon touch walkablePolygon !
+					triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints());
 				}
 			}
 

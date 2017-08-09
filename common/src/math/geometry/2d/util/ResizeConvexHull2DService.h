@@ -21,7 +21,7 @@ namespace urchin
 
 		private:
 			ResizeConvexHull2DService();
-			virtual ~ResizeConvexHull2DService();
+			virtual ~ResizeConvexHull2DService() = default;
 	};
 
 }

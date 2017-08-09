@@ -5,16 +5,6 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-AssertHelper::AssertHelper()
-{
-
-}
-
-AssertHelper::~AssertHelper()
-{
-
-}
-
 void AssertHelper::assertTrue(bool b)
 {
 	CPPUNIT_ASSERT(b);

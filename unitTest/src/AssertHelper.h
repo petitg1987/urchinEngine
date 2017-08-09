@@ -22,8 +22,8 @@ class AssertHelper
 		static void assertQuaternionFloatEquals(const urchin::Quaternion<float> &, const urchin::Quaternion<float> &, double epsilon = 0.001);
 
 	private:
-		AssertHelper();
-		~AssertHelper();
+		AssertHelper() = default;
+		~AssertHelper() = default;
 
 		static std::string floatToString(float);
 };

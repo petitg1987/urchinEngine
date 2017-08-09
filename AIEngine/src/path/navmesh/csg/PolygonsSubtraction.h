@@ -50,7 +50,7 @@ namespace urchin
             friend class Singleton<PolygonsSubtraction<T>>;
 
             std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
-            std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &, bool &) const;
+            std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &, bool &, std::map<unsigned int, std::vector<bool>> &) const;
 
         private:
             PolygonsSubtraction() = default;
