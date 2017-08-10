@@ -311,11 +311,11 @@ namespace urchin
 			//slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
 			std::vector<Point2<float>> extendedWalkableCwPoints = ResizePolygon2DService<float>::instance()->resizePolygon(
 					walkablePolygonData.walkablePolygon.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE, walkablePolygonData.isExternalPoints);
-			Triangulation triangulation(reversePoints(extendedWalkableCwPoints)); //TODO check points are correctly extended + check urchinLog of testEngineSfml
+			Triangulation triangulation(reversePoints(extendedWalkableCwPoints));
 
 			for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
 			{
-				if(walkablePolygonData.walkablePolygon.pointInsidePolygon(remainingObstaclePolygon.getCwPoints()[0]))
+				if(walkablePolygonData.walkablePolygon.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
 				{ //obstacle fully inside walkable polygon
 					triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints());
 				}

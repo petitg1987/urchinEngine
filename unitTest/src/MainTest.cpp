@@ -30,6 +30,7 @@
 #include "ai/path/PolygonsUnionTest.h"
 #include "ai/path/PolygonsIntersectionTest.h"
 #include "ai/path/PolygonsSubtractionTest.h"
+#include "ai/path/NavMeshGeneratorTest.h"
 
 int main()
 {
@@ -86,6 +87,7 @@ int main()
 	runner.addTest(PolygonsUnionTest::suite());
 	runner.addTest(PolygonsIntersectionTest::suite());
 	runner.addTest(PolygonsSubtractionTest::suite());
+	runner.addTest(NavMeshGeneratorTest::suite());
 
 	runner.run();
 

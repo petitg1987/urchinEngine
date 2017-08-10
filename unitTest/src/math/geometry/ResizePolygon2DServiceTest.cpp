@@ -18,11 +18,33 @@ void ResizePolygon2DServiceTest::reduceTriangle()
     AssertHelper::assertPoint2IntEquals(polygonResult[2], Point2<int>(1095, -4786));
 }
 
+void ResizePolygon2DServiceTest::reduceWithEdgesAcceptance()
+{
+    std::vector<Point2<float>> polygonPoints = {Point2<float>(0.0, 4.0), Point2<float>(1.0, 4.0), Point2<float>(1.0, 3.0),
+                                                Point2<float>(3.0, 3.0), Point2<float>(3.0, 4.0), Point2<float>(4.0, 4.0),
+                                                Point2<float>(4.0, 0.0), Point2<float>(0.0, 0.0)};
+    std::vector<bool> edgesAcceptance = {true, true, false,
+                                        false, true, true,
+                                        true, true};
+
+    std::vector<Point2<float>> polygonResult = ResizePolygon2DService<float>::instance()->resizePolygon(polygonPoints, -0.5, edgesAcceptance);
+
+    AssertHelper::assertPoint2FloatEquals(polygonResult[0], Point2<float>(-0.5, 4.5));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[1], Point2<float>(1.0, 4.5));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[2], Point2<float>(1.0, 3.0));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[3], Point2<float>(3.0, 3.0));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[4], Point2<float>(3.0, 4.5));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[5], Point2<float>(4.5, 4.5));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[6], Point2<float>(4.5, -0.5));
+    AssertHelper::assertPoint2FloatEquals(polygonResult[7], Point2<float>(-0.5, -0.5));
+}
+
 CppUnit::Test *ResizePolygon2DServiceTest::suite()
 {
     CppUnit::TestSuite *suite = new CppUnit::TestSuite("ResizePolygon2DServiceTest");
 
     suite->addTest(new CppUnit::TestCaller<ResizePolygon2DServiceTest>("reduceTriangle", &ResizePolygon2DServiceTest::reduceTriangle));
+    suite->addTest(new CppUnit::TestCaller<ResizePolygon2DServiceTest>("reduceWithEdgesAcceptance", &ResizePolygon2DServiceTest::reduceWithEdgesAcceptance));
 
     return suite;
 }

@@ -55,13 +55,13 @@ namespace urchin
 				Vector2<double> fromNextPoint = polygonPoints[nextI].vector(polygonPoints[i]).template cast<double>().normalize();
 				Vector2<T> normal = Vector2<double>(-fromNextPoint.Y, fromNextPoint.X).template cast<T>();
 
-				offsetPoints.emplace_back(polygonPoints[i].translate(normal));
+				offsetPoints.emplace_back(polygonPoints[i].translate(normal * distance));
 			}else if(edgesAcceptance[previousI] && edgesAcceptance[i])
 			{ //point moved along edge [previousI, i] only
 				Vector2<double> toPreviousPoint = polygonPoints[i].vector(polygonPoints[previousI]).template cast<double>().normalize();
 				Vector2<T> normal = Vector2<double>(-toPreviousPoint.Y, toPreviousPoint.X).template cast<T>();
 
-				offsetPoints.emplace_back(polygonPoints[i].translate(normal));
+				offsetPoints.emplace_back(polygonPoints[i].translate(normal * distance));
 			}else
 			{ //point not moved
 				offsetPoints.emplace_back(polygonPoints[i]);
