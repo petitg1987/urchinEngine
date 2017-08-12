@@ -123,14 +123,14 @@ namespace urchin
                 logInputData(minuendPolygon, subtrahendPolygon, "Maximum of iteration reached on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
                 isMinuendPoints.clear();
-                break;
+                return subtractedPolygons;
             }
             if(polygonCwPoints.size()<3)
             {
                 logInputData(minuendPolygon, subtrahendPolygon, "Degenerate polygons built on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
                 isMinuendPoints.clear();
-                break;
+                return subtractedPolygons;
             }
 
             subtractedPolygons.push_back(CSGPolygon<T>("(" + minuendPolygon.getName() + "-subBy-" + subtrahendPolygon.getName()+ ")", polygonCwPoints));
@@ -266,6 +266,10 @@ namespace urchin
                 {
                     minuendPoints[i].crossPointIndex = j;
                     subtrahendPoints[j].crossPointIndex = i;
+
+                    //because of rounding errors
+                    minuendPoints[i].isOutside = false;
+                    subtrahendPoints[j].isOutside = false;
                 }
             }
         }

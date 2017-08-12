@@ -211,21 +211,22 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge2()
 
 void PolygonsSubtractionTest::polygonsSubtractionSameEdge3()
 { //see polygonsSubtractionSameEdge3.ggb
-    std::vector<Point2<float>> minuendPoly = {Point2<float>(-0.175821006, -4.67417908), Point2<float>(0.14466998, -4.67417908),
-                                              Point2<float>(1.07581997, -4.67417908), Point2<float>(-0.175821006, -5.9258213)};
+    std::vector<Point2<float>> minuendPoly = {Point2<float>(-0.175821006, -4.67417908), Point2<float>(1.07581997, -4.67417908),
+                                              Point2<float>(-0.175821006, -5.9258213)};
 
     std::vector<Point2<float>> subtrahendPoly = {Point2<float>(0.14467001, -6.01966), Point2<float>(-1.04466999, -6.01966),
                                                  Point2<float>(-1.04466999, -4.58034039), Point2<float>(0.14467001, -4.58034039),
-                                                 Point2<float>(0.14467001, -4.67417908), Point2<float>(0.14466998, -4.67417908),
-                                                 Point2<float>(1.07581997, -4.67417908), Point2<float>(1.07582092, -4.67417908),
+                                                 Point2<float>(0.14467001, -4.67417908), Point2<float>(1.07582092, -4.67417908),
                                                  Point2<float>(1.07582092, -5.9258213), Point2<float>(0.14467001, -5.9258213)};
 
+    bool subtrahendInsideMinuend;
+    std::map<unsigned int, std::vector<bool>> isMinuendPoints;
     std::vector<CSGPolygon<float>> polygonSubtraction = PolygonsSubtraction<float>::instance()->subtractPolygons(
-            CSGPolygon<float>("minuend", minuendPoly), CSGPolygon<float>("subtrahend", subtrahendPoly));
+            CSGPolygon<float>("minuend", minuendPoly), CSGPolygon<float>("subtrahend", subtrahendPoly), subtrahendInsideMinuend, isMinuendPoints);
 
-    AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 1);
-    AssertHelper::assertUnsignedInt(polygonSubtraction[0].getCwPoints().size(), 8);
-    //TODO fix & complete...
+    AssertHelper::assertTrue(!subtrahendInsideMinuend);
+    AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 0);
+    AssertHelper::assertUnsignedInt(isMinuendPoints.size(), 0);
 }
 
 void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1()
