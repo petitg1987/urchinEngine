@@ -5,8 +5,6 @@
 
 #include "SoundManager.h"
 #include "player/stream/AudioStreamPlayer.h"
-#include "trigger/ShapeTrigger.h"
-#include "trigger/shape/SoundSphere.h"
 
 namespace urchin
 {
@@ -37,14 +35,14 @@ namespace urchin
 	{
 		if(sound!=nullptr && soundTrigger!=nullptr)
 		{
-			AudioController *audioController = new AudioController(sound, soundTrigger);
+			auto *audioController = new AudioController(sound, soundTrigger);
 			audioControllers.push_back(audioController);
 		}
 	}
 
 	void SoundManager::removeSound(const Sound *sound)
 	{
-		for(std::vector<AudioController *>::iterator it = audioControllers.begin(); it!=audioControllers.end(); ++it)
+		for(auto it = audioControllers.begin(); it!=audioControllers.end(); ++it)
 		{
 			if((*it)->getSound() == sound)
 			{
@@ -58,11 +56,11 @@ namespace urchin
 
 	void SoundManager::changeSoundTrigger(const Sound *sound, SoundTrigger *newSoundTrigger)
 	{
-		for(std::vector<AudioController *>::iterator it = audioControllers.begin(); it!=audioControllers.end(); ++it)
+		for (auto &audioController : audioControllers)
 		{
-			if((*it)->getSound() == sound)
+			if(audioController->getSound() == sound)
 			{
-				(*it)->changeSoundTrigger(newSoundTrigger);
+				audioController->changeSoundTrigger(newSoundTrigger);
 
 				break;
 			}
@@ -73,9 +71,9 @@ namespace urchin
 	{
 		std::vector<const SoundTrigger *> triggers;
 
-		for(std::vector<AudioController *>::const_iterator it=audioControllers.begin(); it!=audioControllers.end(); ++it)
+		for (const auto &audioController : audioControllers)
 		{
-			triggers.push_back((*it)->getSoundTrigger());
+			triggers.push_back(audioController->getSoundTrigger());
 		}
 
 		return triggers;
@@ -83,11 +81,11 @@ namespace urchin
 
 	SoundTrigger *SoundManager::retrieveSoundTriggerFor(const Sound *sound) const
 	{
-		for(std::vector<AudioController *>::const_iterator it = audioControllers.begin(); it!=audioControllers.end(); ++it)
+		for (const auto &audioController : audioControllers)
 		{
-			if((*it)->getSound() == sound)
+			if(audioController->getSound() == sound)
 			{
-				return (*it)->getSoundTrigger();
+				return audioController->getSoundTrigger();
 			}
 		}
 
@@ -98,13 +96,13 @@ namespace urchin
 	{
 		alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);
 
-		for(unsigned int i=0; i<audioControllers.size(); ++i)
+		for (auto &audioController : audioControllers)
 		{
-			audioControllers[i]->process(listenerPosition);
+			audioController->process(listenerPosition);
 		}
 
 		#ifdef _DEBUG
-			ALenum err = AL_NO_ERROR;
+			ALenum err;
 			while((err = alGetError()) != AL_NO_ERROR)
 			{
 				std::cout<<"OpenAL error: "<<err<<std::endl;

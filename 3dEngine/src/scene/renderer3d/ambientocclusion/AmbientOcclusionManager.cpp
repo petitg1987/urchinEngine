@@ -32,7 +32,7 @@ namespace urchin
 		farPlane(0.0f),
 		projectionScale(0.0f),
 
-		textureSize((AOTextureSize)DEFAULT_TEXTURE_SIZE),
+		textureSize(DEFAULT_TEXTURE_SIZE),
 		textureSizeX(0),
 		textureSizeY(0),
 		numDirections(DEFAULT_NUM_DIRECTIONS),
@@ -157,7 +157,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, textureSizeX, textureSizeY, 0, GL_RED, GL_FLOAT, nullptr);
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], ambientOcclusionTexID, 0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -195,7 +195,7 @@ namespace urchin
 		std::default_random_engine generator;
 		std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
-		Vector3<float> *hbaoRandom = new Vector3<float>[randomTextureSize*randomTextureSize];
+		auto *hbaoRandom = new Vector3<float>[randomTextureSize*randomTextureSize];
 		for(unsigned int i=0; i<randomTextureSize*randomTextureSize; ++i)
 		{
 			//random rotation
@@ -311,7 +311,8 @@ namespace urchin
 		if(textureSize==AOTextureSize::FULL_SIZE)
 		{
 			return 1;
-		}else if(textureSize==AOTextureSize::HALF_SIZE)
+		}
+		if(textureSize==AOTextureSize::HALF_SIZE)
 		{
 			return 2;
 		}

@@ -67,9 +67,9 @@ namespace urchin
 	{
 		//models
 		std::set<Model *> allOctreeableModels = modelOctreeManager->getOctreeables();
-		for(std::set<Model *>::const_iterator it=allOctreeableModels.begin(); it!=allOctreeableModels.end(); ++it)
+		for (auto allOctreeableModel : allOctreeableModels)
 		{
-			delete (*it);
+			delete allOctreeableModel;
 		}
 
 		//managers
@@ -144,7 +144,7 @@ namespace urchin
 		this->height = height;
 
 		//camera
-		if(camera)
+		if(camera!=nullptr)
 		{
 			camera->onResize(width, height);
 			onCameraProjectionUpdate();
@@ -199,7 +199,7 @@ namespace urchin
 
 	void Renderer3d::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<ShadowManager *>(observable))
+		if(dynamic_cast<ShadowManager *>(observable)!=nullptr)
 		{
 			switch(notificationType)
 			{
@@ -208,6 +208,8 @@ namespace urchin
 					createOrUpdateDeferredShadingShader();
 					break;
 				}
+				default:
+					;
 			}
 		}
 	}
@@ -267,7 +269,7 @@ namespace urchin
 	void Renderer3d::setCamera(Camera *camera)
 	{
 		this->camera = camera;
-		if(camera)
+		if(camera!=nullptr)
 		{
 			onCameraProjectionUpdate();
 		}
@@ -363,7 +365,7 @@ namespace urchin
 		return true;
 	}
 
-	bool Renderer3d::onChar(unsigned int)
+	bool Renderer3d::onChar(unsigned int character)
 	{
 		//nothing to do
 		return true;
@@ -385,7 +387,7 @@ namespace urchin
 
 	void Renderer3d::display(float invFrameRate)
 	{
-		if(!camera)
+		if(camera==nullptr)
 		{ //nothing to display if camera doesn't exist
 			return;
 		}

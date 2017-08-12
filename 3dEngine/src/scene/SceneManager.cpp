@@ -5,7 +5,6 @@
 #include "SceneManager.h"
 
 #define START_FPS 60
-#define NUM_RENDERER 2
 #define RENDERER_3D 0
 #define GUI_RENDERER 1
 
@@ -29,7 +28,7 @@ namespace urchin
 		previousTime = std::chrono::high_resolution_clock::now();
 
 		//renderer
-		for(unsigned int i=0; i<NUM_RENDERER; ++i)
+		for(unsigned int i=0; i < NUM_RENDERER; ++i)
 		{
 			activeRenderers[i] = nullptr;
 		}
@@ -143,7 +142,7 @@ namespace urchin
 
 	Renderer3d *SceneManager::newRenderer3d(bool enable)
 	{
-		Renderer3d *renderer3d = new Renderer3d();
+		auto *renderer3d = new Renderer3d();
 		renderers3d.push_back(renderer3d);
 
 		if(enable)
@@ -180,12 +179,12 @@ namespace urchin
 
 	Renderer3d *SceneManager::getActiveRenderer3d() const
 	{
-		return static_cast<Renderer3d *>(activeRenderers[RENDERER_3D]);
+		return dynamic_cast<Renderer3d *>(activeRenderers[RENDERER_3D]);
 	}
 
 	GUIRenderer *SceneManager::newGUIRenderer(bool enable)
 	{
-		GUIRenderer *guiRenderer = new GUIRenderer();
+		auto *guiRenderer = new GUIRenderer();
 		guiRenderers.push_back(guiRenderer);
 
 		if(enable)
@@ -222,7 +221,7 @@ namespace urchin
 
 	GUIRenderer *SceneManager::getActiveGUIRenderer() const
 	{
-		return static_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
+		return dynamic_cast<GUIRenderer *>(activeRenderers[GUI_RENDERER]);
 	}
 
 	TextureManager *SceneManager::getTextureManager() const

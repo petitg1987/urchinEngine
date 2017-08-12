@@ -82,7 +82,7 @@ namespace urchin
 			//splits handling
 			void updateViewMatrix(const Light *const);
 			void updateFrustumShadowData(const Light *const, ShadowData *const);
-			AABBox<float> createSceneIndependentBox(const Frustum<float> &, const Light *const, const Matrix4<float> &) const;
+			AABBox<float> createSceneIndependentBox(const Frustum<float> &, const Matrix4<float> &) const;
 			float computeNearZForSceneIndependentBox(const Frustum<float> &) const;
 			AABBox<float> createSceneDependentBox(const AABBox<float> &, const OBBox<float> &,
 					const std::set<Model *> &, const Matrix4<float> &) const;

@@ -24,8 +24,8 @@ namespace urchin
 
 	void AABBTree::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer)
 	{
-		BodyNodeData *nodeData = new BodyNodeData(body, alternativePairContainer);
-		AABBNode *nodeToInsert = new AABBNode(nodeData);
+		auto *nodeData = new BodyNodeData(body, alternativePairContainer);
+		auto *nodeToInsert = new AABBNode(nodeData);
 
 		if (rootNode!=nullptr)
 		{
@@ -50,7 +50,7 @@ namespace urchin
 	{
 		if (currentNode->isLeaf())
 		{
-			AABBNode *newParent = new AABBNode(nullptr);
+			auto *newParent = new AABBNode(nullptr);
 			replaceNode(currentNode, newParent);
 			newParent->setLeftChild(nodeToInsert);
 			newParent->setRightChild(currentNode);
@@ -119,7 +119,7 @@ namespace urchin
 
 	void AABBTree::removeBody(AbstractWorkBody *body)
 	{
-		std::map<AbstractWorkBody *, AABBNode *>::iterator it = bodiesNode.find(body);
+		auto it = bodiesNode.find(body);
 
 		removeNode(it->second);
 		bodiesNode.erase(it);

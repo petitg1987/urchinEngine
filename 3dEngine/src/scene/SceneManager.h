@@ -10,6 +10,8 @@
 #include "GUI/GUIRenderer.h"
 #include "texture/TextureManager.h"
 
+#define NUM_RENDERER 2
+
 namespace urchin
 {
 	class SceneManager
@@ -62,7 +64,7 @@ namespace urchin
 			//renderer
 			std::vector<Renderer3d *> renderers3d;
 			std::vector<GUIRenderer *> guiRenderers;
-			Renderer *activeRenderers[2];
+			Renderer *activeRenderers[NUM_RENDERER];
 		
 			//FPS
 			std::chrono::high_resolution_clock::time_point previousTime;

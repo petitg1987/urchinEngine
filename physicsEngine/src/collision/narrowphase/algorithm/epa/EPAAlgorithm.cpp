@@ -10,11 +10,6 @@ namespace urchin
 
 	}
 
-	template<class T> EPAAlgorithm<T>::~EPAAlgorithm()
-	{
-
-	}
-
 	template<class T> std::unique_ptr<EPAResult<T>> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D &convexObject1, const CollisionConvexObject3D &convexObject2,
 			const GJKResult<T> &gjkResult) const
 	{
@@ -91,15 +86,15 @@ namespace urchin
 
 				//compute new triangles data
 				const std::vector<unsigned int> &newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
-				for(unsigned int i=0; i<newTriangleIndices.size(); ++i)
+				for (unsigned int newTriangleIndex : newTriangleIndices)
 				{
-					trianglesData.insert(std::pair<unsigned int, EPATriangleData<T>>(newTriangleIndices[i], createTriangleData(convexHullShape, newTriangleIndices[i])));
+					trianglesData.insert(std::pair<unsigned int, EPATriangleData<T>>(newTriangleIndex, createTriangleData(convexHullShape, newTriangleIndex)));
 				}
 
 				//remove triangle data not used anymore
-				for(unsigned int i=0; i<removedTriangleIndices.size(); ++i)
+				for (unsigned int removedTriangleIndex : removedTriangleIndices)
 				{
-					trianglesData.erase(removedTriangleIndices[i]);
+					trianglesData.erase(removedTriangleIndex);
 				}
 
 				//save support points
@@ -332,7 +327,7 @@ namespace urchin
 		T minDistanceToOrigin = std::numeric_limits<T>::max();
 		typename std::map<unsigned int, EPATriangleData<T>>::const_iterator closestTriangleData;
 
-		for(typename std::map<unsigned int, EPATriangleData<T>>::const_iterator it = trianglesData.begin(); it!=trianglesData.end(); ++it)
+		for(auto it = trianglesData.begin(); it!=trianglesData.end(); ++it)
 		{
 			const EPATriangleData<T> &triangleData = it->second;
 			T distanceToOrigin = std::abs(triangleData.getDistanceToOrigin());

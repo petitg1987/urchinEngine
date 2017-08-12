@@ -17,7 +17,7 @@ namespace urchin
 	{
 		public:
 			GJKContinuousCollisionAlgorithm();
-			~GJKContinuousCollisionAlgorithm();
+			~GJKContinuousCollisionAlgorithm() = default;
 
 			std::shared_ptr<ContinuousCollisionResult<OUT>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
 

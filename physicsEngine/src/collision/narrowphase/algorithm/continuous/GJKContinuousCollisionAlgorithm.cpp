@@ -16,11 +16,6 @@ namespace urchin
 
 	}
 
-	template<class T, class OUT> GJKContinuousCollisionAlgorithm<T, OUT>::~GJKContinuousCollisionAlgorithm()
-	{
-
-	}
-
 	template<class T, class OUT> std::shared_ptr<ContinuousCollisionResult<OUT>> GJKContinuousCollisionAlgorithm<T, OUT>::calculateTimeOfImpact(const TemporalObject &object1, const TemporalObject &object2,
 			AbstractWorkBody *body2) const
 	{
@@ -61,15 +56,14 @@ namespace urchin
 				if (closestPointDotRelativeMotion >= -squareEpsilon)
 				{
 					return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
-				}else
-				{
-					timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
-
-					interpolatedTransform1.setPosition(interpolate(object1.getFrom().getPosition(), object1.getTo().getPosition(), timeToHit));
-					interpolatedTransform2.setPosition(interpolate(object2.getFrom().getPosition(), object2.getTo().getPosition(), timeToHit));
-
-					normalFromObject2 = -direction;
 				}
+
+				timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
+
+				interpolatedTransform1.setPosition(interpolate(object1.getFrom().getPosition(), object1.getTo().getPosition(), timeToHit));
+				interpolatedTransform2.setPosition(interpolate(object2.getFrom().getPosition(), object2.getTo().getPosition(), timeToHit));
+
+				normalFromObject2 = -direction;
 			}
 
 			if(!simplex.isPointInSimplex(newPoint))

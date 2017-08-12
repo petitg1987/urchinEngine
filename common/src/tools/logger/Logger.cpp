@@ -1,4 +1,4 @@
-#include <time.h>
+#include <ctime>
 #include <stdexcept>
 
 #include "tools/logger/Logger.h"
@@ -9,11 +9,6 @@ namespace urchin
 	
 	//static
 	Logger *Logger::instance = new FileLogger();
-
-	Logger::Logger()
-	{
-
-	}
 
 	Logger::~Logger()
 	{
@@ -58,10 +53,9 @@ namespace urchin
 	 */
 	std::string Logger::prefix(CriticalityLevel criticalityLevel)
 	{
-	    time_t now = time(0);
-	    struct tm tstruct;
+	    time_t now = time(nullptr);
+	    struct tm tstruct = *localtime(&now);
 	    char buf[80];
-	    tstruct = *localtime(&now);
 	    strftime(buf, sizeof(buf), "[%Y-%m-%d %X]", &tstruct);
 
 	    std::string result(buf);
@@ -77,10 +71,12 @@ namespace urchin
 		if(criticalityLevel == INFO)
 		{
 			return "II";
-		}else if(criticalityLevel == WARNING)
+		}
+		if(criticalityLevel == WARNING)
 		{
 			return "WW";
-		}else if(criticalityLevel == ERROR)
+		}
+		if(criticalityLevel == ERROR)
 		{
 			return "EE";
 		}

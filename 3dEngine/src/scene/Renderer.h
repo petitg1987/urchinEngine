@@ -7,8 +7,8 @@ namespace urchin
 	class Renderer
 	{
 		public:
-			Renderer();
-			virtual ~Renderer();
+			Renderer() = default;
+			virtual ~Renderer() = default;
 
 			virtual void onResize(unsigned int, unsigned int) = 0;
 

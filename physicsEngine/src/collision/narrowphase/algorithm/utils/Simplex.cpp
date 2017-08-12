@@ -12,11 +12,6 @@ namespace urchin
 		simplexPoints.reserve(4);
 	}
 
-	template<class T> inline Simplex<T>::~Simplex()
-	{
-
-	}
-
 	/**
 	 * Add a point to the end of the simplex
 	 * @return Point added (supportPointA - supportPointB)
@@ -69,7 +64,7 @@ namespace urchin
 
 	template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T> &p) const
 	{
-		for(typename std::vector<SupportMapping<T>>::const_iterator it = simplexPoints.begin(); it!=simplexPoints.end(); ++it)
+		for(auto it = simplexPoints.begin(); it!=simplexPoints.end(); ++it)
 		{
 			const Point3<T> &simplexPoint = it->point;
 			if(simplexPoint.X==p.X && simplexPoint.Y==p.Y && simplexPoint.Z==p.Z)

@@ -25,7 +25,7 @@ namespace urchin
 	{
 		public:
 			EPAAlgorithm();
-			~EPAAlgorithm();
+			~EPAAlgorithm() = default;
 
 			std::unique_ptr<EPAResult<T>> processEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &) const;
 

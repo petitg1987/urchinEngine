@@ -20,7 +20,7 @@ namespace urchin
 	{
 		public:
 			GJKAlgorithm();
-			~GJKAlgorithm();
+			~GJKAlgorithm() = default;
 
 			std::unique_ptr<GJKResult<T>> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 

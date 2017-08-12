@@ -28,7 +28,7 @@ namespace urchin
 	{
 		//skin informations
 		std::shared_ptr<XmlChunk> imgWidgetElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);
-		Image *imgWidget = MediaManager::instance()->getMedia<Image>(imgWidgetElem->getStringValue());
+		auto *imgWidget = MediaManager::instance()->getMedia<Image>(imgWidgetElem->getStringValue());
 
 		std::shared_ptr<XmlChunk> topElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "top"), skinXmlChunk));
 		unsigned int top = topElem->getIntValue();
@@ -43,7 +43,7 @@ namespace urchin
 		unsigned int right = rightElem->getIntValue();
 
 		//copy the informations into the outline
-		if(widgetOutline)
+		if(widgetOutline!=nullptr)
 		{
 			widgetOutline->topWidth = top;
 			widgetOutline->bottomWidth = bottom;
@@ -53,7 +53,7 @@ namespace urchin
 
 		//creates the image width*height
 		unsigned int componentsCount = imgWidget->getComponentsCount(); //shortcut
-		unsigned char *texels = new unsigned char[height*width*componentsCount];
+		auto *texels = new unsigned char[height*width*componentsCount];
 
 		unsigned int widthMinusRight = std::max(0, (int)width-(int)right);
 		unsigned int heightMinusBottom = std::max(0, (int)height-(int)bottom);

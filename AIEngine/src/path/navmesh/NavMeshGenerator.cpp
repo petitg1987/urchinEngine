@@ -360,12 +360,12 @@ namespace urchin
 		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
 
-		std::vector<CSGPolygon<long long>> holePolygons;
+		std::vector<CSGPolygon<float>> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
 		{ //TODO select only polygons AABBox above 'walkableFace' and reserve 'holePolygons'
 			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
-				CSGPolygon<long long> footprintPolygon = computePolyhedronFootprint(expandedPolyhedrons[i], walkableFace);
+				CSGPolygon<float> footprintPolygon = computePolyhedronFootprint(expandedPolyhedrons[i], walkableFace);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
 					holePolygons.push_back(footprintPolygon);
@@ -373,20 +373,10 @@ namespace urchin
 			}
 		}
 
-		std::vector<CSGPolygon<long long>> mergedPolygons = PolygonsUnion<long long>::instance()->unionPolygons(holePolygons); //TODO can we use directly float ???
-
-		std::vector<CSGPolygon<float>> mergedPolygonsFloat;
-		mergedPolygonsFloat.reserve(mergedPolygons.size());
-		for(const auto &mergedPolygon : mergedPolygons)
-		{
-			std::vector<Point2<float>> holeFloatPoints = toFloatPoints(mergedPolygon.getCwPoints());
-			mergedPolygonsFloat.emplace_back(CSGPolygon<float>(mergedPolygon.getName(), holeFloatPoints));
-		}
-
-		return mergedPolygonsFloat;
+		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
 	}
 
-	CSGPolygon<long long> NavMeshGenerator::computePolyhedronFootprint(const Polyhedron &polyhedron, const PolyhedronFace &walkableFace) const
+	CSGPolygon<float> NavMeshGenerator::computePolyhedronFootprint(const Polyhedron &polyhedron, const PolyhedronFace &walkableFace) const
 	{
 		std::vector<Point2<float>> footprintPoints;
 		footprintPoints.reserve(polyhedron.getPoints().size() / 2); //estimated memory size
@@ -410,7 +400,7 @@ namespace urchin
 		ConvexHull2D<float> footprintConvexHull(footprintPoints);
 		std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
 		std::reverse(cwPoints.begin(), cwPoints.end());
-		return CSGPolygon<long long>(polyhedron.getName(), toLongPoints(cwPoints));
+		return CSGPolygon<float>(polyhedron.getName(), cwPoints);
 	}
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const PolyhedronFace &walkableFace) const
@@ -456,48 +446,6 @@ namespace urchin
 		}
 
 		return indexedTriangles3D;
-	}
-
-	std::vector<Point2<long long>> NavMeshGenerator::toLongPoints(const std::vector<Point2<float>> &orientedFloatPoints) const
-	{
-		std::vector<Point2<long long>> points;
-		points.reserve(orientedFloatPoints.size());
-
-		for(Point2<float> point : orientedFloatPoints)
-        {
-            Point2<long long> pointIn(Converter::toInteger(point.X), Converter::toInteger(point.Y));
-            if (points.empty() || pointIn != points[points.size() - 1])
-            {
-				points.push_back(pointIn);
-            }
-		}
-        if(!points.empty() && points[0]==points[points.size() - 1])
-		{
-			points.erase(--points.end());
-		}
-
-		return points;
-	}
-
-	std::vector<Point2<float>> NavMeshGenerator::toFloatPoints(const std::vector<Point2<long long>> &orientedLongPoints) const
-	{
-		std::vector<Point2<float>> points;
-		points.reserve(orientedLongPoints.size());
-
-		for(Point2<long long> point : orientedLongPoints)
-		{
-            Point2<float> pointFloat(Converter::toFloat(point.X), Converter::toFloat(point.Y));
-            if (points.empty() || pointFloat != points[points.size() - 1])
-            {
-				points.push_back(pointFloat);
-            }
-		}
-        if(!points.empty() && points[0]==points[points.size() - 1])
-        {
-            points.erase(--points.end());
-        }
-
-		return points;
 	}
 
 }

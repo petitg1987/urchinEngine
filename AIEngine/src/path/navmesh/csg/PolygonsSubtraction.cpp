@@ -53,11 +53,11 @@ namespace urchin
         std::vector<CSGPolygon<T>> subtractedPolygons;
 
         SubtractionPoints<T> subtractionPoints = buildSubtractionPoints(minuendPolygon, subtrahendPolygon);
+        #ifdef _DEBUG
+//            logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
+        #endif
+
         subtrahendInside = isSubtrahendInsideMinuend(subtractionPoints.subtrahend);
-        if(subtractionPoints.minuend.empty() || subtractionPoints.subtrahend.empty())
-        {
-            return subtractedPolygons;
-        }
         if(subtrahendInside)
         {
             subtractedPolygons.emplace_back(minuendPolygon);
@@ -66,10 +66,6 @@ namespace urchin
             return subtractedPolygons;
         }
 
-        #ifdef _DEBUG
-            //logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
-        #endif
-
         int startPointIndex;
         while((startPointIndex = findNextStartPointIndex(subtractionPoints.minuend))!=-1)
         {
@@ -77,7 +73,7 @@ namespace urchin
             polygonCwPoints.reserve(subtractionPoints.minuend.size()); //estimated memory size
             isMinuendPoints[subtractedPolygons.size()].reserve(subtractionPoints.minuend.size()); //estimated memory size
 
-            unsigned int maxIteration = (minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size()) + 1;
+            unsigned int maxIteration = static_cast<int>((minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size()) + 1);
             unsigned int currentIteration = 0;
 
             typename SubtractionPoints<T>::PolygonType currentPolygon = SubtractionPoints<T>::MINUEND;
@@ -96,10 +92,10 @@ namespace urchin
 
                     int otherPointIndex = currSubtractionPoint.crossPointIndex;
                     int nextOtherPointOffset = computeNextPointOffset(otherPolygon, subtractionPoints);
-                    int nextOtherPointIndex = (otherPointIndex + nextOtherPointOffset) % subtractionPoints[otherPolygon].size();
+                    int nextOtherPointIndex = (otherPointIndex + nextOtherPointOffset) % static_cast<int>(subtractionPoints[otherPolygon].size());
 
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
-                    int nextPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
+                    int nextPointIndex = (currentPointIndex + nextPointOffset) % static_cast<int>(subtractionPoints[currentPolygon].size());
 
                     if( (isMinuend(currentPolygon) && !subtractionPoints[currentPolygon][nextPointIndex].isOutside)
                         || (isSubtrahend(currentPolygon) && (subtractionPoints[currentPolygon][nextPointIndex].isOutside) || subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside) )
@@ -113,7 +109,7 @@ namespace urchin
                 }else
                 {
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
-                    currentPointIndex = (currentPointIndex + nextPointOffset) % subtractionPoints[currentPolygon].size();
+                    currentPointIndex = (currentPointIndex + nextPointOffset) % static_cast<int>(subtractionPoints[currentPolygon].size());
                 }
 
                 if(isMinuend(currentPolygon) && currentPointIndex==startPointIndex)
@@ -125,6 +121,13 @@ namespace urchin
             if(currentIteration > maxIteration)
             {
                 logInputData(minuendPolygon, subtrahendPolygon, "Maximum of iteration reached on polygons subtraction algorithm.", Logger::ERROR);
+                subtractedPolygons.clear();
+                isMinuendPoints.clear();
+                break;
+            }
+            if(polygonCwPoints.size()<3)
+            {
+                logInputData(minuendPolygon, subtrahendPolygon, "Degenerate polygons built on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
                 isMinuendPoints.clear();
                 break;
@@ -154,12 +157,12 @@ namespace urchin
     {
         for(unsigned int i=0; i<minuendPolygon.getCwPoints().size(); ++i)
         {
-            unsigned int nextI = (i+1)%minuendPolygon.getCwPoints().size();
+            size_t nextI = (i+1)%minuendPolygon.getCwPoints().size();
             LineSegment2D<T> minuendEdge(minuendPolygon.getCwPoints()[i], minuendPolygon.getCwPoints()[nextI]);
 
             for(unsigned int j=0; j<subtrahendPolygon.getCwPoints().size(); ++j)
             {
-                unsigned int nextJ = (j+1)%subtrahendPolygon.getCwPoints().size();
+                size_t nextJ = (j+1)%subtrahendPolygon.getCwPoints().size();
                 LineSegment2D<T> subtrahendEdge(subtrahendPolygon.getCwPoints()[j], subtrahendPolygon.getCwPoints()[nextJ]);
 
                 bool hasIntersection, hasFarthestIntersection;
@@ -299,7 +302,7 @@ namespace urchin
             return 1; //CW
         }
 
-        return subtractionPoints.subtrahend.size() - 1; //CCW
+        return static_cast<int>(subtractionPoints.subtrahend.size()) - 1; //CCW
     }
 
     template<class T> bool PolygonsSubtraction<T>::isMinuend(typename SubtractionPoints<T>::PolygonType polygonType) const

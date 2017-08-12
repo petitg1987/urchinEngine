@@ -84,9 +84,9 @@ namespace urchin
 
 	void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult> &manifoldResults)
 	{
-		for(unsigned int i=0; i<bodyManager->getWorkBodies().size(); ++i)
+		for (auto workBody : bodyManager->getWorkBodies())
 		{
-			WorkRigidBody *body = WorkRigidBody::upCast(bodyManager->getWorkBodies()[i]);
+			WorkRigidBody *body = WorkRigidBody::upCast(workBody);
 			if(body!=nullptr && body->isActive()){
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
 				PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
@@ -96,23 +96,23 @@ namespace urchin
 
 				if(motion > ccdMotionThreshold)
 				{
-					handleContinuousCollision(dt, body, currentTransform, newTransform, manifoldResults);
+					handleContinuousCollision(body, currentTransform, newTransform, manifoldResults);
 				}
 			}
 		}
 	}
 
-	void NarrowPhaseManager::handleContinuousCollision(float dt, AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, std::vector<ManifoldResult> &manifoldResults)
+	void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, std::vector<ManifoldResult> &manifoldResults)
 	{
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
-		if(bodiesAABBoxHitBody.size() > 0)
+		if(!bodiesAABBoxHitBody.empty())
 		{
 			ccd_set ccdResults;
 
 			const CollisionShape3D *bodyShape = body->getShape();
 			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
 			{
-				const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape);
+				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
 				for(const auto &localizedShape : localizedShapes)
 				{
@@ -130,7 +130,7 @@ namespace urchin
 				ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 			}
 
-			if(ccdResults.size() > 0)
+			if(!ccdResults.empty())
 			{
 				std::shared_ptr<ContinuousCollisionResult<float>> firstCCDResult = *ccdResults.begin();
 
@@ -156,7 +156,7 @@ namespace urchin
 			const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
 			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
 			{
-				const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape);
+				const auto *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
 				for(const auto &localizedShape : localizedShapes)
 				{

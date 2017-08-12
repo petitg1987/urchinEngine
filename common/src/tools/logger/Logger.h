@@ -11,7 +11,7 @@ namespace urchin
 	class Logger
 	{
 		public:
-			Logger();
+			Logger() = default;
 			virtual ~Logger();
 
 			enum CriticalityLevel

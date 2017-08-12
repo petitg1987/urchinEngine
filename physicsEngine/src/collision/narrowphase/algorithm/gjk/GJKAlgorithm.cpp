@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	template<class T> GJKAlgorithm<T>::~GJKAlgorithm()
-	{
-
-	}
-
 	/**
 	* @param includeMargin Indicate whether algorithm operates on objects with margin
 	*/
@@ -52,10 +47,9 @@ namespace urchin
 				if(closestPointDotNewPoint <= 0.0)
 				{ //collision detected
 					return std::make_unique<GJKResultCollide<T>>(simplex);
-				}else
-				{
-					return std::make_unique<GJKResultNoCollide<T>>(std::sqrt(closestPointSquareDistance), simplex);
 				}
+
+				return std::make_unique<GJKResultNoCollide<T>>(std::sqrt(closestPointSquareDistance), simplex);
 			}
 
 			simplex.addPoint(supportPointA, supportPointB);

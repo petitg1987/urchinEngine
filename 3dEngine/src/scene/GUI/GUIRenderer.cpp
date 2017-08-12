@@ -55,13 +55,13 @@ namespace urchin
 
 	void GUIRenderer::notify(Observable *observable, int notificationType)
 	{
-		if(Widget *widget = dynamic_cast<Widget *>(observable))
+		if(auto *widget = dynamic_cast<Widget *>(observable))
 		{
 			switch(notificationType)
 			{
 				case Widget::SET_IN_FOREGROUND:
 				{
-					std::vector<Widget *>::iterator it = std::find(widgets.begin(), widgets.end(), widget);
+					auto it = std::find(widgets.begin(), widgets.end(), widget);
 					widgets.erase(it);
 					widgets.push_back(widget);
 
@@ -76,6 +76,8 @@ namespace urchin
 
 					break;
 				}
+				default:
+					;
 			}
 		}
 	}
@@ -159,7 +161,7 @@ namespace urchin
 
 	void GUIRenderer::removeWidget(Widget *widget)
 	{
-		std::vector<Widget *>::iterator it = std::find(widgets.begin(), widgets.end(), widget);
+		auto it = std::find(widgets.begin(), widgets.end(), widget);
 		delete widget;
 		widgets.erase(it);
 	}
@@ -171,14 +173,14 @@ namespace urchin
 
 		glActiveTexture(GL_TEXTURE0);
 
-		for(unsigned int i=0;i<widgets.size();++i)
+		for (auto &widget : widgets)
 		{
-			if(widgets[i]->isVisible())
+			if(widget->isVisible())
 			{
-				Vector2<int> translateVector(widgets[i]->getGlobalPositionX(), widgets[i]->getGlobalPositionY());
+				Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
 				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 
-				widgets[i]->display(translateDistanceLoc, invFrameRate);
+				widget->display(translateDistanceLoc, invFrameRate);
 			}
 		}
 

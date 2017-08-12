@@ -22,6 +22,7 @@ namespace urchin
 			throw std::invalid_argument("Cannot open the file " + filename + ".");
 		}
 		file.write(msg.c_str(), msg.length());
+		file.flush();
 		file.close();
 	}
 

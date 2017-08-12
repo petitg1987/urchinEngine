@@ -10,8 +10,6 @@
 
 #include "ShadowManager.h"
 #include "scene/renderer3d/shadow/filter/ModelProduceShadowFilter.h"
-#include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
-#include "scene/renderer3d/light/sun/SunLight.h"
 #include "utils/filter/TextureFilter.h"
 #include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "utils/filter/downsample/DownSampleFilterBuilder.h"
@@ -33,7 +31,7 @@ namespace urchin
 			shadowMapResolution(DEFAULT_SHADOW_MAP_RESOLUTION),
 			nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
 			viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
-			blurShadow((BlurShadow)DEFAULT_BLUR_SHADOW),
+			blurShadow(DEFAULT_BLUR_SHADOW),
 			shadowMapFrequencyUpdate(DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE),
 			sceneWidth(0),
 			sceneHeight(0),
@@ -75,11 +73,11 @@ namespace urchin
 
 	ShadowManager::~ShadowManager()
 	{
-		for(std::map<const Light *, ShadowData *>::iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
+		for (auto &shadowData : shadowDatas)
 		{
-			removeShadowMaps(it->first);
+			removeShadowMaps(shadowData.first);
 
-			delete it->second;
+			delete shadowData.second;
 		}
 
 		deleteLightsLocation();
@@ -93,7 +91,7 @@ namespace urchin
 	{
 		//shadow information
 		ShaderManager::instance()->bind(deferredShaderID);
-		depthSplitDistanceLoc = glGetUniformLocation(deferredShaderID, "depthSplitDistance");
+		depthSplitDistanceLoc = static_cast<unsigned int>(glGetUniformLocation(deferredShaderID, "depthSplitDistance"));
 
 		//light information
 		deleteLightsLocation();
@@ -173,7 +171,7 @@ namespace urchin
 
 	void ShadowManager::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<LightManager *>(observable))
+		if(dynamic_cast<LightManager *>(observable)!=nullptr)
 		{
 			Light *light = lightManager->getLastUpdatedLight();
 			switch(notificationType)
@@ -198,8 +196,10 @@ namespace urchin
 					}
 					break;
 				}
+				default:
+					;
 			}
-		}else if(Light *light = dynamic_cast<Light *>(observable))
+		}else if(auto *light = dynamic_cast<Light *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -219,6 +219,8 @@ namespace urchin
 					}
 					break;
 				}
+				default:
+					;
 			}
 		}
 	}
@@ -303,7 +305,7 @@ namespace urchin
 
 	const ShadowData &ShadowManager::getShadowData(const Light *const light) const
 	{
-		std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.find(light);
+		auto it = shadowDatas.find(light);
 		if(it==shadowDatas.end())
 		{
 			throw std::runtime_error("No shadow data found for this light.");
@@ -362,10 +364,10 @@ namespace urchin
 			allLights.insert(it->first);
 		}
 
-		for(std::set<const Light *>::const_iterator itLights = allLights.begin(); itLights!=allLights.end(); ++itLights)
+		for (auto allLight : allLights)
 		{
-			removeShadowLight(*itLights);
-			addShadowLight(*itLights);
+			removeShadowLight(allLight);
+			addShadowLight(allLight);
 		}
 	}
 
@@ -406,7 +408,7 @@ namespace urchin
 		{ //sun light
 			for(unsigned int i=0; i<splittedFrustums.size(); ++i)
 			{
-				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], light, shadowData->getLightViewMatrix());
+				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
 
 				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
@@ -427,8 +429,7 @@ namespace urchin
 	/**
 	 * @return Box in light space containing shadow caster and receiver (scene independent)
 	 */
-	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splittedFrustum, const Light *const light,
-			const Matrix4<float> &lightViewMatrix) const
+	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splittedFrustum, const Matrix4<float> &lightViewMatrix) const
 	{
 		const Frustum<float> &frustumLightSpace = lightViewMatrix * splittedFrustum;
 
@@ -436,13 +437,13 @@ namespace urchin
 		std::vector<Point3<float>> shadowReceiverAndCasterVertex;
 		shadowReceiverAndCasterVertex.reserve(16);
 		float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
-		for(std::vector<Point3<float>>::const_iterator it = frustumLightSpace.getFrustumPoints().begin(); it != frustumLightSpace.getFrustumPoints().end(); ++it)
+		for (const auto &frustumPoint : frustumLightSpace.getFrustumPoints())
 		{
 			//add shadow receiver points
-			shadowReceiverAndCasterVertex.push_back(*it);
+			shadowReceiverAndCasterVertex.push_back(frustumPoint);
 
 			//add shadow caster points
-			shadowReceiverAndCasterVertex.push_back(Point3<float>(it->X, it->Y, nearCapZ));
+			shadowReceiverAndCasterVertex.emplace_back(Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ));
 		}
 
 		//build shadow receiver/caster bounding box from points
@@ -495,9 +496,9 @@ namespace urchin
 		bool boxInitialized = false;
 
 		AABBox<float> aabboxSceneIndependentViewSpace = obboxSceneIndependentViewSpace.toAABBox();
-		for(std::set<Model *>::iterator it = models.begin(); it!=models.end(); ++it)
+		for (auto model : models)
 		{
-			const std::vector<AABBox<float>> &splittedAABBox = (*it)->getSplittedAABBox();
+			const std::vector<AABBox<float>> &splittedAABBox = model->getSplittedAABBox();
 			for(unsigned int i=0; i<splittedAABBox.size(); ++i)
 			{
 				if(splittedAABBox.size()==1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
@@ -551,7 +552,7 @@ namespace urchin
 		for(unsigned int i=1; i<=nbShadowMaps; ++i)
 		{
 			float uniformSplit = near + (far - near) * (i/static_cast<float>(nbShadowMaps));
-			float logarithmicSplit = near * pow(far/near, i/static_cast<float>(nbShadowMaps));
+			float logarithmicSplit = near * std::pow(far/near, i/static_cast<float>(nbShadowMaps));
 
 			float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0 - percentageUniformSplit) * logarithmicSplit);
 
@@ -584,7 +585,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, depthComponent, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, textureIDs[0], 0);
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, textureIDs[1]);
@@ -593,7 +594,7 @@ namespace urchin
 		glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RG32F, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_RG, GL_FLOAT, 0);
+		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RG32F, shadowMapResolution, shadowMapResolution, nbShadowMaps, 0, GL_RG, GL_FLOAT, nullptr);
 		glFramebufferTexture(GL_FRAMEBUFFER, fboAttachments[0], textureIDs[1], 0);
 
 		shadowDatas[light]->setDepthTextureID(textureIDs[0]);
@@ -609,7 +610,7 @@ namespace urchin
 					->textureInternalFormat(GL_RG32F)
 					->textureFormat(GL_RG)
 					->blurDirection(GaussianBlurFilterBuilder::VERTICAL_BLUR)
-					->blurSize(static_cast<int>(blurShadow))
+					->blurSize(static_cast<unsigned int>(blurShadow))
 					->build();
 
 			std::shared_ptr<TextureFilter> horizontalBlurFilter = std::make_unique<GaussianBlurFilterBuilder>()
@@ -619,7 +620,7 @@ namespace urchin
 					->textureInternalFormat(GL_RG32F)
 					->textureFormat(GL_RG)
 					->blurDirection(GaussianBlurFilterBuilder::HORIZONTAL_BLUR)
-					->blurSize(static_cast<int>(blurShadow))
+					->blurSize(static_cast<unsigned int>(blurShadow))
 					->build();
 
 			shadowDatas[light]->addTextureFilter(verticalBlurFilter);
@@ -712,18 +713,18 @@ namespace urchin
 
 				for(unsigned int j=0; j<nbShadowMaps; ++j)
 				{
-					glUniformMatrix4fv(lightsLocation[i].mLightProjectionViewLoc[j], 1, false,
-							(float *)(shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix()));
+					glUniformMatrix4fv(lightsLocation[i].mLightProjectionViewLoc[j], 1, static_cast<GLboolean>(false),
+									   (float *)(shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix()));
 				}
 			}
 			++i;
 		}
 
 		float depthSplitDistance[nbShadowMaps];
-		for(unsigned int i=0; i<nbShadowMaps; ++i)
+		for(unsigned int shadowMapIndex=0; shadowMapIndex<nbShadowMaps; ++shadowMapIndex)
 		{
-			float currSplitDistance = splittedDistance[i];
-			depthSplitDistance[i] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
+			float currSplitDistance = splittedDistance[shadowMapIndex];
+			depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
 		}
 
 		glUniform1fv(depthSplitDistanceLoc, nbShadowMaps, depthSplitDistance);
@@ -739,11 +740,11 @@ namespace urchin
 		}
 
 		const Matrix4<float> &lightViewMatrix = itShadowData->second->getLightViewMatrix();
-		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, light, lightViewMatrix);
+		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 
 		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
-		if(models.size()!=0)
+		if(!models.empty())
 		{
 			AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, models, lightViewMatrix);
 			OBBox<float> obboxSceneDependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneDependent);

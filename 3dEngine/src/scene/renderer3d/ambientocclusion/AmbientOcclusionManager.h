@@ -59,7 +59,7 @@ namespace urchin
 
 			//tweak
 			AOTextureSize textureSize;
-			int textureSizeX, textureSizeY;
+			unsigned int textureSizeX, textureSizeY;
 
 			unsigned int numDirections;
 			unsigned int numSteps;

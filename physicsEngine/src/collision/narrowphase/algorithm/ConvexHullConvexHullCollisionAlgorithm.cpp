@@ -1,5 +1,4 @@
 #include <memory>
-#include <cassert>
 
 #include "collision/narrowphase/algorithm/ConvexHullConvexHullCollisionAlgorithm.h"
 #include "object/CollisionConvexObject3D.h"
@@ -9,11 +8,6 @@ namespace urchin
 
 	ConvexHullConvexHullCollisionAlgorithm::ConvexHullConvexHullCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
 			CollisionAlgorithm(objectSwapped, result)
-	{
-
-	}
-
-	ConvexHullConvexHullCollisionAlgorithm::~ConvexHullConvexHullCollisionAlgorithm()
 	{
 
 	}
@@ -35,7 +29,7 @@ namespace urchin
 
 				if(gjkResultWithMargin->isValidResult() && gjkResultWithMargin->isCollide())
 				{
-					std::unique_ptr<EPAResult<double>> epaResult = epaAlgorithm.processEPA(*convexObject1.get(), *convexObject2.get(), *gjkResultWithMargin.get());
+					std::unique_ptr<EPAResult<double>> epaResult = epaAlgorithm.processEPA(*convexObject1.get(), *convexObject2.get(), *gjkResultWithMargin);
 
 					if(epaResult->isValidResult() && epaResult->isCollide())
 					{ //should be always true except for problems due to float imprecision
@@ -43,7 +37,7 @@ namespace urchin
 						const Point3<double> &pointOnObject2 = epaResult->getContactPointB();
 						const float penetrationDepth = -epaResult->getPenetrationDepth();
 
-						addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), (float)penetrationDepth);
+						addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), penetrationDepth);
 					}
 				}
 			}else
@@ -57,7 +51,7 @@ namespace urchin
 					const Point3<double> &pointOnObject2 = gjkResultWithoutMargin->getClosestPointB().translate(normalFromObject2 * (double)convexObject2->getOuterMargin());
 					const float penetrationDepth = vectorBALength - sumMargins;
 
-					addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), (float)penetrationDepth);
+					addNewContactPoint(normalFromObject2.cast<float>(), pointOnObject2.cast<float>(), penetrationDepth);
 				}
 			}
 		}

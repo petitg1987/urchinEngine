@@ -36,7 +36,7 @@ namespace urchin
 			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
 
 			void processPredictiveContacts(float, std::vector<ManifoldResult> &);
-			void handleContinuousCollision(float, AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &, std::vector<ManifoldResult> &);
+			void handleContinuousCollision(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &, std::vector<ManifoldResult> &);
 			void continuousCollissionTest(const TemporalObject &, const TemporalObject &, AbstractWorkBody *, ccd_set &) const;
 
 			const BodyManager *bodyManager;

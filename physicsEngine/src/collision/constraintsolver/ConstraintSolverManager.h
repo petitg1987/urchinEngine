@@ -26,7 +26,7 @@ namespace urchin
 
 		private:
 			void setupConstraints(std::vector<ManifoldResult> &, float);
-			void solveConstraints(unsigned int);
+			void solveConstraints();
 
 			CommonSolvingData fillCommonSolvingData(const ManifoldResult &, const ManifoldContactPoint &);
 			ImpulseSolvingData fillImpulseSolvingData(const CommonSolvingData &, float) const;

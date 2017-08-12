@@ -15,7 +15,7 @@ namespace urchin
 	{
 		public:
 			ConvexHullConvexHullCollisionAlgorithm(bool, const ManifoldResult &);
-			virtual ~ConvexHullConvexHullCollisionAlgorithm();
+			virtual ~ConvexHullConvexHullCollisionAlgorithm() = default;
 
 			void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &);
 

@@ -209,6 +209,25 @@ void PolygonsSubtractionTest::polygonsSubtractionSameEdge2()
     AssertHelper::assertPoint2FloatEquals(polygonSubtraction[0].getCwPoints()[7], Point2<float>(3.0, 4.0));
 }
 
+void PolygonsSubtractionTest::polygonsSubtractionSameEdge3()
+{ //see polygonsSubtractionSameEdge3.ggb
+    std::vector<Point2<float>> minuendPoly = {Point2<float>(-0.175821006, -4.67417908), Point2<float>(0.14466998, -4.67417908),
+                                              Point2<float>(1.07581997, -4.67417908), Point2<float>(-0.175821006, -5.9258213)};
+
+    std::vector<Point2<float>> subtrahendPoly = {Point2<float>(0.14467001, -6.01966), Point2<float>(-1.04466999, -6.01966),
+                                                 Point2<float>(-1.04466999, -4.58034039), Point2<float>(0.14467001, -4.58034039),
+                                                 Point2<float>(0.14467001, -4.67417908), Point2<float>(0.14466998, -4.67417908),
+                                                 Point2<float>(1.07581997, -4.67417908), Point2<float>(1.07582092, -4.67417908),
+                                                 Point2<float>(1.07582092, -5.9258213), Point2<float>(0.14467001, -5.9258213)};
+
+    std::vector<CSGPolygon<float>> polygonSubtraction = PolygonsSubtraction<float>::instance()->subtractPolygons(
+            CSGPolygon<float>("minuend", minuendPoly), CSGPolygon<float>("subtrahend", subtrahendPoly));
+
+    AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonSubtraction[0].getCwPoints().size(), 8);
+    //TODO fix & complete...
+}
+
 void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1()
 {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.0, 4.0), Point2<float>(1.5, 4.0), Point2<float>(2.0, 3.0),
@@ -454,6 +473,7 @@ CppUnit::Test *PolygonsSubtractionTest::suite()
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge1", &PolygonsSubtractionTest::polygonsSubtractionSameEdge1));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionSameEdge2));
+    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSameEdge3", &PolygonsSubtractionTest::polygonsSubtractionSameEdge3));
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge1", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge1));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2));

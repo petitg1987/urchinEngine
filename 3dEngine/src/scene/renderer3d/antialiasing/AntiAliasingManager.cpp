@@ -6,7 +6,6 @@
 
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/shader/TokenReplacerShader.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 #define DEFAULT_AA_QUALITY AntiAliasingManager::Quality::VERY_HIGH
@@ -16,8 +15,8 @@ namespace urchin
 
 	AntiAliasingManager::AntiAliasingManager() :
 		quality(DEFAULT_AA_QUALITY),
-		sceneWidth(-1),
-		sceneHeight(-1),
+		sceneWidth(0),
+		sceneHeight(0),
 		fxaaShader(0),
 		texLoc(0),
 		invSceneSizeLoc(0)

@@ -9,7 +9,7 @@ namespace urchin
 			constraintSolverIteration(ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolverIteration")),
 			biasFactor(ConfigService::instance()->getFloatValue("constraintSolver.biasFactor")),
 			useWarmStarting(ConfigService::instance()->getBoolValue("constraintSolver.useWarmStarting")),
-			restitutionVelocityThreshold(ConfigService::instance()->getBoolValue("constraintSolver.restitutionVelocityThreshold"))
+			restitutionVelocityThreshold(ConfigService::instance()->getFloatValue("constraintSolver.restitutionVelocityThreshold"))
 	{
 		unsigned int constraintSolvingPoolSize = ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
 		constraintSolvingPool = new FixedSizePool<ConstraintSolving>(sizeof(ConstraintSolving), constraintSolvingPoolSize);
@@ -17,7 +17,7 @@ namespace urchin
 
 	ConstraintSolverManager::~ConstraintSolverManager()
 	{
-		for(std::vector<ConstraintSolving *>::iterator it=constraintsSolving.begin(); it!=constraintsSolving.end(); ++it)
+		for(auto it=constraintsSolving.begin(); it!=constraintsSolving.end(); ++it)
 		{
 			constraintSolvingPool->free(*it);
 		}
@@ -38,7 +38,7 @@ namespace urchin
 		//iterative constraint solver
 		for(unsigned int i=0; i<constraintSolverIteration; ++i)
 		{
-			solveConstraints(i);
+			solveConstraints();
 		}
 	}
 
@@ -46,29 +46,29 @@ namespace urchin
 	{ //See http://en.wikipedia.org/wiki/Collision_response for formulas
 
 		//clear constraints solving
-		for(std::vector<ConstraintSolving *>::iterator it=constraintsSolving.begin(); it!=constraintsSolving.end(); ++it)
+		for (auto &constraintSolving : constraintsSolving)
 		{
-			constraintSolvingPool->free(*it);
+			constraintSolvingPool->free(constraintSolving);
 		}
 		constraintsSolving.clear();
 
 		//setup constraints solving
-		for(unsigned int i=0; i<manifoldResults.size(); ++i)
+		for (auto &manifoldResult : manifoldResults)
 		{
-			for(unsigned int j=0; j<manifoldResults[i].getNumContactPoints(); ++j)
+			for(unsigned int j=0; j< manifoldResult.getNumContactPoints(); ++j)
 			{
-				ManifoldContactPoint &contact = manifoldResults[i].getManifoldContactPoint(j);
+				ManifoldContactPoint &contact = manifoldResult.getManifoldContactPoint(j);
 				if(contact.getDepth() > 0.0 && !contact.isPredictive())
 				{
 					continue;
 				}
 
-				WorkRigidBody *body1 = WorkRigidBody::upCast(manifoldResults[i].getBody1());
-				WorkRigidBody *body2 = WorkRigidBody::upCast(manifoldResults[i].getBody2());
+				WorkRigidBody *body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
+				WorkRigidBody *body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
 				void *memPtr = constraintSolvingPool->allocate(sizeof(ConstraintSolving));
-				ConstraintSolving *constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact);
+				auto *constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact);
 
-				const CommonSolvingData &commonSolvingData = fillCommonSolvingData(manifoldResults[i], contact);
+				const CommonSolvingData &commonSolvingData = fillCommonSolvingData(manifoldResult, contact);
 				constraintSolving->setCommonData(commonSolvingData);
 
 				const ImpulseSolvingData &impulseSolvingData = fillImpulseSolvingData(commonSolvingData, dt);
@@ -88,18 +88,18 @@ namespace urchin
 		}
 	}
 
-	void ConstraintSolverManager::solveConstraints(unsigned int iterationNumber)
+	void ConstraintSolverManager::solveConstraints()
 	{
 		//solve tangent constraint first because non-penetration is more important than friction
-		for(std::vector<ConstraintSolving *>::iterator it=constraintsSolving.begin(); it!=constraintsSolving.end(); ++it)
+		for (auto &constraintSolving : constraintsSolving)
 		{
-			solveTangentConstraint(*it);
+			solveTangentConstraint(constraintSolving);
 		}
 
 		//solve normal constraint
-		for(std::vector<ConstraintSolving *>::iterator it=constraintsSolving.begin(); it!=constraintsSolving.end(); ++it)
+		for (auto &constraintSolving : constraintsSolving)
 		{
-			solveNormalConstraint(*it);
+			solveNormalConstraint(constraintSolving);
 		}
 	}
 
@@ -130,7 +130,7 @@ namespace urchin
 		ImpulseSolvingData impulseSolvingData;
 
 		//friction
-		impulseSolvingData.friction = sqrt(commonData.body1->getFriction() * commonData.body2->getFriction());
+		impulseSolvingData.friction = std::sqrt(commonData.body1->getFriction() * commonData.body2->getFriction());
 
 		//impulses
 		impulseSolvingData.normalImpulseDenominator = commonData.body1->getInvMass() + commonData.body2->getInvMass() +
