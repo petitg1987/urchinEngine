@@ -96,6 +96,15 @@ namespace urchin
 							break;
 						}
 
+						#ifdef _DEBUG
+							for(unsigned int monotonePointsIndex: monotonePointsIndices)
+							{
+								if(nextPointIndex==monotonePointsIndex)
+								{
+									logInputData("Duplicate point in monotone polygon.", Logger::ERROR);
+								}
+							}
+						#endif
 						monotonePointsIndices.push_back(nextPointIndex);
 
 						previousPointIndex = currentPointIndex;
@@ -372,15 +381,15 @@ namespace urchin
 
 		for(auto it=edgeHelpers.begin(); it!=edgeHelpers.end(); ++it)
 		{
-			Line2D<float> edge(polygonPoints[it->edge.startIndex], polygonPoints[it->edge.endIndex]);
+			Line2D<double> edge(polygonPoints[it->edge.startIndex].template cast<double>(), polygonPoints[it->edge.endIndex].template cast<double>());
 
-            float distanceToEdge = edge.horizontalDistance(point);
-            if(distanceToEdge <= 0.0 && //edge is on left of point
-                    distanceToEdge > nearestDistance)
-            {
-                nearestDistance = distanceToEdge;
-                nearestLeftEdgeHelperIt = it;
-            }
+			double edgeHorizontalDistanceToPoint = edge.horizontalDistance(point.template cast<double>());
+			bool isEdgeOnLeftOfPoint = edgeHorizontalDistanceToPoint < 0.0;
+			if(isEdgeOnLeftOfPoint && edgeHorizontalDistanceToPoint > nearestDistance)
+			{
+				nearestDistance = edgeHorizontalDistanceToPoint;
+				nearestLeftEdgeHelperIt = it;
+			}
 		}
 
 		if(nearestLeftEdgeHelperIt==edgeHelpers.end())
@@ -406,21 +415,22 @@ namespace urchin
 		std::vector<std::pair<unsigned int, it_diagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
 		if(possibleNextPoints.size()==1)
 		{ //only one possible edge
+			markDiagonalProcessed(possibleNextPoints[0].second);
 			return possibleNextPoints[0].first;
 		}
 
 		int bestCCWPointIndex = -1;
 		int bestCWPointIndex = -1;
-		float minAngleCCW = std::numeric_limits<float>::max();
-		float maxAngleCW = -std::numeric_limits<float>::max();
+		double minAngleCCW = std::numeric_limits<double>::max();
+		double maxAngleCW = -std::numeric_limits<double>::max();
 
-		Vector2<float> edgeVector = polygonPoints[edgeStartIndex].vector(polygonPoints[edgeEndIndex]);
+		Vector2<double> edgeVector = polygonPoints[edgeStartIndex].template cast<double>().vector(polygonPoints[edgeEndIndex].template cast<double>());
 		for(unsigned int i=0; i<possibleNextPoints.size(); ++i)
 		{
 			unsigned int testPointIndex = possibleNextPoints[i].first;
-			Vector2<float> nextEdgeVector = polygonPoints[edgeEndIndex].vector(polygonPoints[testPointIndex]);
-			float orientationResult = edgeVector.crossProduct(nextEdgeVector);
-			float angle = edgeVector.normalize().dotProduct(nextEdgeVector.normalize());
+			Vector2<double> nextEdgeVector = polygonPoints[edgeEndIndex].template cast<double>().vector(polygonPoints[testPointIndex].template cast<double>());
+			double orientationResult = edgeVector.crossProduct(nextEdgeVector);
+			double angle = edgeVector.normalize().dotProduct(nextEdgeVector.normalize());
 
 			if(orientationResult > 0.0)
 			{ //counter clockwise

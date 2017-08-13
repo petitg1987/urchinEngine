@@ -223,6 +223,32 @@ void MonotonePolygonTest::polygonTwoHoles2()
     AssertHelper::assertUnsignedInt(monotonePolygons[2][4], 2);
 }
 
+void MonotonePolygonTest::polygonTwoHoles3()
+{ //see polygonTwoHoles3.ggb
+	std::vector<Point2<float>> polygonPoints = {
+			//polygon points:
+			Point2<float>(70.5370255, 62.2370338), Point2<float>(-67.5370255, 62.2370338), Point2<float>(-67.5370255, -75.8370361), Point2<float>(70.5370255, -75.8370361),
+			//hole 1 points:
+			Point2<float>(2.56617999, -1.66957319), Point2<float>(-2.56617999, -1.66957319), Point2<float>(-2.56617999, 1.66957319), Point2<float>(2.56617999, 1.66957319),
+			//hole 2 points:
+			Point2<float>(0.071179986, -6.55628586), Point2<float>(0.0711799115, -6.55628586), Point2<float>(-0.076661095, -5.97861147), Point2<float>(-0.105679169, -5.97032928),
+			Point2<float>(-1.07951796, -6.02145529), Point2<float>(-1.14598572, -4.24272919), Point2<float>(0.224839747, -4.17076159), Point2<float>(0.224839762, -4.17076159),
+			Point2<float>(0.23582153, -4.46464157), Point2<float>(0.383214414, -4.46464157), Point2<float>(0.383214414, -4.6838522), Point2<float>(0.898347199, -4.83087635),
+			Point2<float>(2.76441312, -4.29339933), Point2<float>(3.20787191, -5.65283394),
+	};
+	std::vector<unsigned int> endContourIndices = {4, 8, (unsigned int)polygonPoints.size()};
+
+	MonotonePolygon monotonePolygon(polygonPoints, endContourIndices);
+	std::vector<std::vector<unsigned int>> monotonePolygons = monotonePolygon.createYMonotonePolygons();
+
+	//check duplicate points:
+	for(std::vector<unsigned int> monotonePolygonResult : monotonePolygons)
+	{
+		std::set<unsigned int> pointsSet(monotonePolygonResult.begin(), monotonePolygonResult.end());
+		AssertHelper::assertUnsignedInt(monotonePolygonResult.size(), pointsSet.size());
+	}
+}
+
 CppUnit::Test *MonotonePolygonTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("MonotonePolygonTest");
@@ -238,6 +264,7 @@ CppUnit::Test *MonotonePolygonTest::suite()
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonOneHole", &MonotonePolygonTest::polygonOneHole));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles1", &MonotonePolygonTest::polygonTwoHoles1));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles2", &MonotonePolygonTest::polygonTwoHoles2));
+	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles3", &MonotonePolygonTest::polygonTwoHoles3));
 
 	return suite;
 }

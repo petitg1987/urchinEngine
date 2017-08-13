@@ -14,8 +14,8 @@ namespace urchin
             void perform() const;
 
         private:
-            NumericalCheck();
-            virtual ~NumericalCheck();
+            NumericalCheck() = default;
+            virtual ~NumericalCheck() = default;
     };
 
 }
