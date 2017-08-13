@@ -17,9 +17,6 @@ namespace urchin
 		#define ANGLE_TAG "angle"
 
 		public:
-			OrientationReaderWriter();
-			~OrientationReaderWriter();
-
 			Quaternion<float> loadOrientation(std::shared_ptr<XmlChunk>, const XmlParser &) const;
 			void writeOrientation(std::shared_ptr<XmlChunk>, const Quaternion<float> &, XmlWriter &) const;
 	};

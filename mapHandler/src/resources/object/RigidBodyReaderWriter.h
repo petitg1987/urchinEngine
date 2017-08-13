@@ -24,9 +24,6 @@ namespace urchin
 		#define ANGULAR_FACTOR_TAG "angularFactor"
 
 		public:
-			RigidBodyReaderWriter();
-			~RigidBodyReaderWriter();
-
 			RigidBody *loadFrom(std::shared_ptr<XmlChunk>, const std::string &, const Transform<float> &, const XmlParser &) const;
 			void writeOn(std::shared_ptr<XmlChunk>, const RigidBody *, XmlWriter &) const;
 

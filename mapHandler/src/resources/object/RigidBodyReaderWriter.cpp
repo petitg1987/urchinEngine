@@ -5,16 +5,6 @@
 namespace urchin
 {
 
-	RigidBodyReaderWriter::RigidBodyReaderWriter()
-	{
-
-	}
-
-	RigidBodyReaderWriter::~RigidBodyReaderWriter()
-	{
-
-	}
-
 	RigidBody *RigidBodyReaderWriter::loadFrom(std::shared_ptr<XmlChunk> physicsChunk, const std::string &id,
 			const Transform<float> &modelTransform, const XmlParser &xmlParser) const
 	{

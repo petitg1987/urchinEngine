@@ -1,6 +1,8 @@
 #ifndef ENGINE_URCHINAIENGINE_H
 #define ENGINE_URCHINAIENGINE_H
 
+#include "AIManager.h"
+
 #include "input/AIWorld.h"
 #include "input/AIObject.h"
 

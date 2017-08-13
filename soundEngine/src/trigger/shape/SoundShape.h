@@ -18,8 +18,8 @@ namespace urchin
 				BOX_SHAPE
 			};
 
-			SoundShape(float);
-			virtual ~SoundShape();
+			explicit SoundShape(float);
+			virtual ~SoundShape() = default;
 
 			float getMargin() const;
 

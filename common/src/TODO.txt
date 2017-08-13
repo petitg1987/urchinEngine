@@ -10,7 +10,7 @@
 			=> Create 'move constructor' and 'assign move operator' methods when necessary
 
 ############################################
-# Bug :
+# Bugs :
 ############################################
 - 
 

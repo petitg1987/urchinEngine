@@ -27,7 +27,7 @@ namespace urchin
 		this->resize(1200, 675);
 		QWidget *centralWidget = new QWidget(this);
 
-		QHBoxLayout *horizontalLayout = new QHBoxLayout(centralWidget);
+		auto *horizontalLayout = new QHBoxLayout(centralWidget);
 		horizontalLayout->setSpacing(6);
 		horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -40,14 +40,9 @@ namespace urchin
 		this->setCentralWidget(centralWidget);
 	}
 
-	MapEditorWindow::~MapEditorWindow()
-	{
-
-	}
-
 	void MapEditorWindow::setupMenu()
 	{
-		QMenuBar *menu = new QMenuBar(this);
+		auto *menu = new QMenuBar(this);
 
 		QMenu* fileMenu = new QMenu("File");
 
@@ -134,7 +129,7 @@ namespace urchin
 
 	void MapEditorWindow::setupStatusBar()
 	{
-		QStatusBar *statusBar = new QStatusBar(this);
+		auto *statusBar = new QStatusBar(this);
 		this->setStatusBar(statusBar);
 	}
 
@@ -175,37 +170,45 @@ namespace urchin
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<SceneControllerWidget *>(observable))
+		if(dynamic_cast<SceneControllerWidget *>(observable)!=nullptr)
 		{
 			switch(notificationType)
 			{
 				case SceneControllerWidget::TAB_SELECTED:
 					executeViewPropertiesChangeAction();
 					break;
+				default:
+					;
 			}
-		}else if(ObjectTableView *objectTableView = dynamic_cast<ObjectTableView *>(observable))
+		}else if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
 			switch(notificationType)
 			{
 				case ObjectTableView::SELECTION_CHANGED:
 					sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
 					break;
+				default:
+					;
 			}
-		}else if(LightTableView *lightTableView = dynamic_cast<LightTableView *>(observable))
+		}else if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
 			switch(notificationType)
 			{
 				case LightTableView::SELECTION_CHANGED:
 					sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
 					break;
+				default:
+					;
 			}
-		}else if(SoundTableView *soundTableView = dynamic_cast<SoundTableView *>(observable))
+		}else if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
 			switch(notificationType)
 			{
 				case SoundTableView::SELECTION_CHANGED:
 					sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
 					break;
+				default:
+					;
 			}
 		}
 
@@ -214,19 +217,19 @@ namespace urchin
 
 	void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType)
 	{
-		if(ObjectControllerWidget *objectControllerWidget = dynamic_cast<ObjectControllerWidget *>(observable))
+		if(auto *objectControllerWidget = dynamic_cast<ObjectControllerWidget *>(observable))
 		{
 			switch(notificationType)
 			{
 				case ObjectControllerWidget::BODY_SHAPE_INITIALIZED:
 					BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
-					if(BodyCompoundShapeWidget *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
+					if(auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
 					{
 						bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
 					}
 					break;
 			}
-		}else if(LocalizedShapeTableView *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
+		}else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -259,7 +262,7 @@ namespace urchin
 	{
 		if(checkCurrentMapSaved())
 		{
-			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), preferredMapPath, "XML file (*.xml)", 0, QFileDialog::DontUseNativeDialog);
+			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), preferredMapPath, "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
 			if(!filename.isNull())
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
@@ -279,7 +282,7 @@ namespace urchin
 
 	void MapEditorWindow::showSaveAsDialog()
 	{
-		QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), preferredMapPath, "XML file (*.xml)", 0, QFileDialog::DontUseNativeDialog);
+		QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), preferredMapPath, "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull())
 		{
 			std::string filenameString = filename.toUtf8().constData();
@@ -386,7 +389,7 @@ namespace urchin
 	{
 		for(int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
 		{
-			SceneDisplayer::ViewProperties viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
+			auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
 			bool isViewChecked = viewActions[viewProperties]->isChecked();
 			bool isCorrespondingTabSelected = (sceneControllerWidget==nullptr && i==0)
@@ -401,18 +404,21 @@ namespace urchin
 		if(SceneDisplayer::MODEL_PHYSICS==viewProperties)
 		{
 			return SceneControllerWidget::OBJECTS;
-		}else if(SceneDisplayer::LIGHT_SCOPE==viewProperties)
+		}
+		if(SceneDisplayer::LIGHT_SCOPE==viewProperties)
 		{
 			return SceneControllerWidget::LIGHTS;
-		}else if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
+		}
+		if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
 		{
 			return SceneControllerWidget::SOUNDS;
-		}else if(SceneDisplayer::NAV_MESH==viewProperties)
+		}
+		if(SceneDisplayer::NAV_MESH==viewProperties)
 		{
 			return SceneControllerWidget::AI;
 		}
 
-		throw new std::runtime_error("Impossible to find concerned tab for properties: " + viewProperties);
+		throw std::runtime_error("Impossible to find concerned tab for properties: " + viewProperties);
 	}
 
 }

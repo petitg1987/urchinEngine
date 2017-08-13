@@ -9,6 +9,16 @@ namespace urchin {
 
     }
 
+    float NavMeshAgent::getAgentHeight() const
+    {
+        return agentHeight;
+    }
+
+    float NavMeshAgent::getAgentRadius() const
+    {
+        return agentRadius;
+    }
+
     CylinderShape<float> NavMeshAgent::getAgentCylinder() const
     {
         return CylinderShape<float>(agentRadius, agentHeight, CylinderShape<float>::CYLINDER_Y);

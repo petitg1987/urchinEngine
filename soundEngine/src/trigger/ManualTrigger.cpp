@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	ManualTrigger::~ManualTrigger()
-	{
-
-	}
-
 	SoundTrigger::TriggerType ManualTrigger::getTriggerType() const
 	{
 		return SoundTrigger::MANUAL_TRIGGER;

@@ -23,7 +23,7 @@ namespace urchin
 
 		public:
 			LightControllerWidget();
-			virtual ~LightControllerWidget();
+			virtual ~LightControllerWidget() = default;
 
 			LightTableView *getLightTableView() const;
 

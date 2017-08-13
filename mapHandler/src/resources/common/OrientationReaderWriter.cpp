@@ -3,16 +3,6 @@
 namespace urchin
 {
 
-	OrientationReaderWriter::OrientationReaderWriter()
-	{
-
-	}
-
-	OrientationReaderWriter::~OrientationReaderWriter()
-	{
-
-	}
-
 	Quaternion<float> OrientationReaderWriter::loadOrientation(std::shared_ptr<XmlChunk> parentChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), parentChunk);

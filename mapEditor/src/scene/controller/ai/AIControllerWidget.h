@@ -16,7 +16,7 @@ namespace urchin
 
 		public:
 			AIControllerWidget();
-			virtual ~AIControllerWidget();
+			virtual ~AIControllerWidget() = default;
 
 			void load(AIController *);
 			void unload();
@@ -29,10 +29,9 @@ namespace urchin
 			QDoubleSpinBox *agentHeight;
 			QDoubleSpinBox *agentRadius;
 			QDoubleSpinBox *maxSlope;
-			QPushButton *generateNavMeshButton;
 
 		private slots:
-			void generateNavMesh();
+			void navMeshConfigChanged();
 	};
 
 }

@@ -1,4 +1,5 @@
 #include <memory>
+#include <utility>
 #include "UrchinAIEngine.h"
 
 #include "AIController.h"
@@ -9,11 +10,6 @@ namespace urchin
 	AIController::AIController(MapHandler *mapHandler) :
 			bIsModified(false),
 			mapHandler(mapHandler)
-	{
-
-	}
-
-	AIController::~AIController()
 	{
 
 	}
@@ -33,18 +29,19 @@ namespace urchin
 		bIsModified = false;
 	}
 
-	void AIController::generateNavMesh(float agentHeight, float agentRadius, float maxSlopeInDegree)
+	const SceneAI * AIController::getSceneAI() const
 	{
-		NavMeshConfig navMeshConfig(NavMeshAgent(agentHeight, agentRadius));
-		navMeshConfig.setMaxSlope(maxSlopeInDegree/(180.0/PI_VALUE));
-		std::shared_ptr<AIWorld> aiWorld = mapHandler->generateAIWorld();
+		return mapHandler->getMap()->getSceneAI();
+	}
 
-		NavMeshGenerator navMeshGenerator(aiWorld, navMeshConfig);
-		std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate();
+	SceneAI *AIController::updateNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
+	{
+		SceneAI *sceneAI = mapHandler->getMap()->getSceneAI();
 
-		mapHandler->getMap()->setNavMesh(navMesh);
+		sceneAI->changeNavMeshConfig(std::move(navMeshConfig));
 
 		markModified();
+		return sceneAI;
 	}
 
 }

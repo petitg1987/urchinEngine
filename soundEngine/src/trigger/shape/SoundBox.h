@@ -15,7 +15,7 @@ namespace urchin
 	{
 		public:
 			SoundBox(const Vector3<float> &, const Point3<float> &, const Quaternion<float> &, float);
-			~SoundBox();
+			~SoundBox() = default;
 
 			SoundShape::ShapeType getShapeType() const;
 

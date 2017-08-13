@@ -9,11 +9,6 @@ namespace urchin
 
 	}
 
-	SoundShape::~SoundShape()
-	{
-
-	}
-
 	/**
 	 * @return Margin between shape trigger play event and trigger stop event
 	 */

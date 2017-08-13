@@ -30,7 +30,8 @@ namespace urchin
 		{
 			isPlaying = true;
 			return getPlayTriggerValue();
-		}else if(isPlaying && !soundShape->pointInsideStopShape(listenerPosition))
+		}
+		if(isPlaying && !soundShape->pointInsideStopShape(listenerPosition))
 		{
 			isPlaying = false;
 			return getStopTriggerValue();

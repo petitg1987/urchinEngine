@@ -26,9 +26,6 @@ namespace urchin
 		#define INAUDIBLE_DISTANCE_TAG "inaudibleDistance"
 
 		public:
-			SoundReaderWriter();
-			~SoundReaderWriter();
-
 			Sound *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
 			void writeOn(std::shared_ptr<XmlChunk>, const Sound *, XmlWriter &) const;
 

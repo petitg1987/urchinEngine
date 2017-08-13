@@ -14,7 +14,7 @@ namespace urchin
   	 * When polygons cannot be put together because there is no contact: there are returned apart.
   	 */
     template<class T> std::vector<CSGPolygon<T>> PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
-	{
+	{ //TODO in mapEditor: play with agentRadius, height: it will generate error in polygon union.
 		std::vector<CSGPolygon<T>> mergedPolygons;
 		mergedPolygons.reserve(polygons.size()/2 + 1); //estimated memory size
 

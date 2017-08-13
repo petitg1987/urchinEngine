@@ -1,0 +1,67 @@
+#include "SceneAI.h"
+
+#include <utility>
+#include "resources/ai/NavMeshConfigWriter.h"
+
+namespace urchin
+{
+
+    SceneAI::SceneAI() :
+            aiManager(nullptr)
+    {
+
+    }
+
+    SceneAI::~SceneAI()
+    {
+        if(aiManager!=nullptr)
+        {
+            std::shared_ptr<NavMeshConfig> nullNavMeshConfig;
+            aiManager->getNavMeshGenerator()->setNavMeshConfig(nullNavMeshConfig);
+        }
+    }
+
+    void SceneAI::setAIManager(AIManager *aiManager)
+    {
+        this->aiManager = aiManager;
+
+        if(aiManager!=nullptr)
+        {
+            aiManager->getNavMeshGenerator()->setNavMeshConfig(navMeshConfig);
+        }
+    }
+
+    std::shared_ptr<NavMeshConfig> SceneAI::getNavMeshConfig() const
+    {
+        return navMeshConfig;
+    }
+
+    void SceneAI::changeNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
+    {
+        setNavMeshConfig(std::move(navMeshConfig));
+    }
+
+    void SceneAI::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+    {
+        std::shared_ptr<XmlChunk> navMeshConfigChunk = xmlParser.getUniqueChunk(true, NAV_MESH_CONFIG_TAG, XmlAttribute(), chunk);
+
+        setNavMeshConfig(NavMeshConfigWriter().loadFrom(navMeshConfigChunk, xmlParser));
+    }
+
+    void SceneAI::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+    {
+        std::shared_ptr<XmlChunk> navMeshConfigChunk = xmlWriter.createChunk(NAV_MESH_CONFIG_TAG, XmlAttribute(), chunk);
+
+        NavMeshConfigWriter().writeOn(navMeshConfigChunk, navMeshConfig, xmlWriter);
+    }
+
+    void SceneAI::setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
+    {
+        this->navMeshConfig = navMeshConfig;
+
+        if(aiManager!=nullptr)
+        {
+            aiManager->getNavMeshGenerator()->setNavMeshConfig(navMeshConfig);
+        }
+    }
+}

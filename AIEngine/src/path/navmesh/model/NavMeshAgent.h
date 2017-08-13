@@ -10,6 +10,9 @@ namespace urchin {
         public:
             NavMeshAgent(float, float);
 
+            float getAgentHeight() const;
+            float getAgentRadius() const;
+
             CylinderShape<float> getAgentCylinder() const;
             BoxShape<float> getAgentBox() const;
 

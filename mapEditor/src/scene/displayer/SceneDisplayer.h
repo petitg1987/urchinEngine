@@ -31,7 +31,7 @@ namespace urchin
 				LAST_VIEW_PROPERTIES
 			};
 
-			SceneDisplayer(QWidget *);
+			explicit SceneDisplayer(QWidget *);
 			~SceneDisplayer();
 
 			void initializeFromExistingMap(const std::string &, const std::string &);
@@ -63,6 +63,7 @@ namespace urchin
 
 			SceneManager *sceneManager;
 			SoundManager *soundManager;
+			AIManager *aiManager;
 			SceneFreeCamera *camera;
 
 			MapHandler *mapHandler;

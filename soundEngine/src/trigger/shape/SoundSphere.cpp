@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	SoundSphere::~SoundSphere()
-	{
-
-	}
-
 	SoundShape::ShapeType SoundSphere::getShapeType() const
 	{
 		return SoundShape::SPHERE_SHAPE;

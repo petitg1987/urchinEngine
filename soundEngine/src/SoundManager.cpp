@@ -1,5 +1,4 @@
 #include <AL/al.h>
-#include <AL/alc.h>
 #include <algorithm>
 #include <stdexcept>
 
@@ -10,7 +9,7 @@ namespace urchin
 {
 
 	SoundManager::SoundManager()
-	{
+	{ //TODO sound doesn't work anymore in greenCity (probably because soundManager not handled by mapHandler)
 		deviceManager.initializeDevice();
 		AudioStreamPlayer::initializeStreamWorkerThread();
 
@@ -20,9 +19,8 @@ namespace urchin
 
 	SoundManager::~SoundManager()
 	{
-		for(unsigned int i=0; i<audioControllers.size(); ++i)
+		for (auto audioController : audioControllers)
 		{
-			AudioController *audioController  = audioControllers[i];
 			deleteAudioController(audioController);
 		}
 

@@ -26,7 +26,7 @@ namespace urchin
 		#define WORKING_DIR_ATTR "relativeWorkingDirectory"
 
 		public:
-			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *);
+			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *, AIManager *);
 			~MapHandler();
 
 			void loadMapFromFile(const std::string &);
@@ -38,8 +38,6 @@ namespace urchin
 
 			void refreshMap();
 			Map *getMap() const;
-
-			std::shared_ptr<AIWorld> generateAIWorld() const;
 
 		private:
 			std::string relativeWorkingDirectory;

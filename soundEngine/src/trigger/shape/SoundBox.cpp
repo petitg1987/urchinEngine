@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	SoundBox::~SoundBox()
-	{
-
-	}
-
 	SoundShape::ShapeType SoundBox::getShapeType() const
 	{
 		return SoundShape::BOX_SHAPE;

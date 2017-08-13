@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <QMessageBox>
 #include <QWidget>
+#include <utility>
 
 #include "SceneDisplayer.h"
 
@@ -13,6 +14,7 @@ namespace urchin
 		parentWidget(parentWidget),
 		sceneManager(nullptr),
 		soundManager(nullptr),
+		aiManager(nullptr),
 		camera(nullptr),
 		mapHandler(nullptr),
 		bodyShapeDisplayer(nullptr),
@@ -37,6 +39,7 @@ namespace urchin
 		delete navMeshDisplayer;
 		delete sceneManager;
 		delete soundManager;
+		delete aiManager;
 
 		SingletonManager::destroyAllSingletons();
 	}
@@ -52,7 +55,7 @@ namespace urchin
 
 			initializeScene();
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
 			mapHandler->loadMapFromFile(relativeMapFilename);
 			isInitialized = true;
 		}catch(std::exception &e)
@@ -72,7 +75,7 @@ namespace urchin
 			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
 			initializeScene();
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
 			isInitialized = true;
 		}catch(std::exception &e)
 		{
@@ -101,6 +104,7 @@ namespace urchin
 
 		sceneManager = new SceneManager();
 		soundManager = new SoundManager();
+		aiManager = new AIManager();
 
 		sceneManager->newRenderer3d(true);
 
@@ -130,7 +134,7 @@ namespace urchin
 
 	void SceneDisplayer::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
 	{
-		bodyShapeDisplayer->setSelectedCompoundShapeComponent(selectedCompoundShapeComponent);
+		bodyShapeDisplayer->setSelectedCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
 	}
 
 	void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight)
@@ -176,12 +180,11 @@ namespace urchin
 		}
 	}
 
-
 	void SceneDisplayer::refreshNavMeshModel()
 	{
 		if(viewProperties[NAV_MESH])
 		{
-			navMeshDisplayer->displayNavMesh(mapHandler->getMap()->getNavMesh());
+			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->getNavMesh());
 		}else
 		{
 			navMeshDisplayer->displayNavMesh(nullptr);
@@ -194,6 +197,8 @@ namespace urchin
 		{
 			if(isInitialized)
 			{
+				mapHandler->refreshMap();
+
 				refreshRigidBodyShapeModel();
 				refreshLightScopeModel();
 				refreshSoundTriggerModel();

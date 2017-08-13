@@ -9,11 +9,6 @@ namespace urchin
 
 	}
 
-	SoundTrigger::~SoundTrigger()
-	{
-
-	}
-
 	const SoundBehavior &SoundTrigger::getSoundBehavior() const
 	{
 		return soundBehavior;

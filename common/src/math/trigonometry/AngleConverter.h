@@ -16,8 +16,8 @@ namespace urchin
 			static T toRadian(T);
 
 		private:
-			AngleConverter();
-			~AngleConverter();
+			AngleConverter() = default;
+			~AngleConverter() = default;
 	};
 
 }

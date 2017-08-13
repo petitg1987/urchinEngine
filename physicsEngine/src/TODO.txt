@@ -20,7 +20,7 @@
 	- (3) [NEW FEATURE] Apply impusle on objects hit by character
 
 ############################################
-# Bug :
+# Bugs :
 ############################################
 - CONSTRAINT SOLVER
 	- (2) A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision

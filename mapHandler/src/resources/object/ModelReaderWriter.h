@@ -24,9 +24,6 @@ namespace urchin
 		#define PRODUCE_SHADOW_TAG "produceShadow"
 
 		public:
-			ModelReaderWriter();
-			~ModelReaderWriter();
-
 			Model *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
 			void writeOn(std::shared_ptr<XmlChunk>, const Model *, XmlWriter &) const;
 

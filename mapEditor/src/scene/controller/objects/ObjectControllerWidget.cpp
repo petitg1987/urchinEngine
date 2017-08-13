@@ -1,4 +1,5 @@
 #include <QtWidgets/QHBoxLayout>
+#include <utility>
 
 #include "ObjectControllerWidget.h"
 #include "support/GroupBoxStyleHelper.h"
@@ -17,7 +18,7 @@ namespace urchin
 			objectController(nullptr),
 			disableObjectEvent(false)
 	{
-		QVBoxLayout *mainLayout = new QVBoxLayout(this);
+		auto *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignTop);
 		mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -26,7 +27,7 @@ namespace urchin
 		objectTableView->addObserver(this, ObjectTableView::SELECTION_CHANGED);
 		objectTableView->setFixedHeight(220);
 
-		QHBoxLayout *buttonsLayout = new QHBoxLayout();
+		auto *buttonsLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonsLayout);
 		buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
@@ -47,7 +48,7 @@ namespace urchin
 
 		//general properties
 		QWidget *tabGeneral = new QWidget();
-		QVBoxLayout *generalLayout = new QVBoxLayout(tabGeneral);
+		auto *generalLayout = new QVBoxLayout(tabGeneral);
 		generalLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		generalLayout->setContentsMargins(1, 1, 1, 1);
 		setupTransformBox(generalLayout);
@@ -56,16 +57,11 @@ namespace urchin
 
 		//physics properties
 		QWidget *tabPhysics = new QWidget();
-		QVBoxLayout *physicsLayout = new QVBoxLayout(tabPhysics);
+		auto *physicsLayout = new QVBoxLayout(tabPhysics);
 		physicsLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		physicsLayout->setContentsMargins(1, 1, 1, 1);
 		setupPhysicsBox(physicsLayout);
 		tabWidget->addTab(tabPhysics, "Physics");
-	}
-
-	ObjectControllerWidget::~ObjectControllerWidget()
-	{
-
 	}
 
 	ObjectTableView *ObjectControllerWidget::getObjectTableView() const
@@ -85,7 +81,7 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 		transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *transformLayout = new QGridLayout(transformGroupBox);
+		auto *transformLayout = new QGridLayout(transformGroupBox);
 
 		setupPosition(transformLayout);
 		setupOrientation(transformLayout);
@@ -97,7 +93,7 @@ namespace urchin
 		QLabel *positionLabel= new QLabel("Position:");
 		transformLayout->addWidget(positionLabel, 0, 0);
 
-		QHBoxLayout *positionLayout = new QHBoxLayout();
+		auto *positionLayout = new QHBoxLayout();
 		transformLayout->addLayout(positionLayout, 0, 1);
 		positionX = new QDoubleSpinBox();
 		positionLayout->addWidget(positionX);
@@ -126,7 +122,7 @@ namespace urchin
 		QLabel *eulerAngleLabel = new QLabel("Euler Angle:");
 		transformLayout->addWidget(eulerAngleLabel, 2, 0);
 
-		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
+		auto *eulerAxisLayout = new QHBoxLayout();
 		transformLayout->addLayout(eulerAxisLayout, 2, 1);
 		eulerAxis0 = new QDoubleSpinBox();
 		eulerAxisLayout->addWidget(eulerAxis0);
@@ -161,7 +157,7 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(flagsGroupBox);
 		flagsGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *flagsLayout = new QGridLayout(flagsGroupBox);
+		auto *flagsLayout = new QGridLayout(flagsGroupBox);
 
 		produceShadowCheckBox = new QCheckBox("Product Shadow");
 		flagsLayout->addWidget(produceShadowCheckBox);
@@ -178,7 +174,7 @@ namespace urchin
 		physicsLayout->addWidget(tabPhysicsRigidBody);
 
 		QWidget *tabPhysicsProperties = new QWidget();
-		QVBoxLayout *physicsPropertiesLayout = new QVBoxLayout(tabPhysicsProperties);
+		auto *physicsPropertiesLayout = new QVBoxLayout(tabPhysicsProperties);
 		physicsPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		physicsPropertiesLayout->setContentsMargins(1, 1, 1, 1);
 		setupPhysicsGeneralPropertiesBox(physicsPropertiesLayout);
@@ -201,7 +197,7 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyGeneralBox);
 		rigidBodyGeneralBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
+		auto *rigidBodyGeneralLayout = new QGridLayout(rigidBodyGeneralBox);
 
 		QLabel *massLabel = new QLabel("Mass:");
 		rigidBodyGeneralLayout->addWidget(massLabel, 0, 0);
@@ -250,7 +246,7 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyDampingBox);
 		rigidBodyDampingBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
+		auto *rigidBodyDampingLayout = new QGridLayout(rigidBodyDampingBox);
 
 		QLabel *linearDampingLabel = new QLabel("Linear:");
 		rigidBodyDampingLayout->addWidget(linearDampingLabel, 0, 0);
@@ -280,12 +276,12 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(rigidBodyFactorBox);
 		rigidBodyFactorBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
+		auto *rigidBodyFactorLayout = new QGridLayout(rigidBodyFactorBox);
 
 		QLabel *linearFactorLabel = new QLabel("Linear:");
 		rigidBodyFactorLayout->addWidget(linearFactorLabel, 0, 0);
 
-		QHBoxLayout *linearFactorLayout = new QHBoxLayout();
+		auto *linearFactorLayout = new QHBoxLayout();
 		rigidBodyFactorLayout->addLayout(linearFactorLayout, 0, 1);
 		linearFactorX = new QDoubleSpinBox();
 		linearFactorLayout->addWidget(linearFactorX);
@@ -309,7 +305,7 @@ namespace urchin
 		QLabel *angularFactorLabel = new QLabel("Angular:");
 		rigidBodyFactorLayout->addWidget(angularFactorLabel, 1, 0);
 
-		QHBoxLayout *angularFactorLayout = new QHBoxLayout();
+		auto *angularFactorLayout = new QHBoxLayout();
 		rigidBodyFactorLayout->addLayout(angularFactorLayout, 1, 1);
 		angularFactorX = new QDoubleSpinBox();
 		angularFactorLayout->addWidget(angularFactorX);
@@ -333,7 +329,7 @@ namespace urchin
 
 	void ObjectControllerWidget::setupPhysicsShapeBox(QVBoxLayout *physicsShapeLayout)
 	{
-		QHBoxLayout *shapeTypeLayout = new QHBoxLayout();
+		auto *shapeTypeLayout = new QHBoxLayout();
 		shapeTypeLayout->setAlignment(Qt::AlignLeft);
 		shapeTypeLayout->setSpacing(15);
 		physicsShapeLayout->addLayout(shapeTypeLayout);
@@ -376,7 +372,7 @@ namespace urchin
 
 	void ObjectControllerWidget::notify(Observable *observable, int notificationType)
 	{
-		if(ObjectTableView *objectTableView = dynamic_cast<ObjectTableView *>(observable))
+		if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -394,6 +390,8 @@ namespace urchin
 						tabWidget->hide();
 					}
 					break;
+				default:
+					;
 			}
 		}
 	}
@@ -462,7 +460,7 @@ namespace urchin
 	{
 		delete bodyShapeWidget;
 
-		bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).retrieveShapeWidget(shape);
+		bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).retrieveShapeWidget(std::move(shape));
 		physicsShapeLayout->addWidget(bodyShapeWidget);
 		bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		bodyShapeWidget->show();
@@ -505,7 +503,7 @@ namespace urchin
 			const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
 
 			QVariant variant = orientationType->currentData();
-			Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
 			Quaternion<float> orientation = sceneObject->getModel()->getTransform().getOrientation();
 			Vector3<float> eulerAngle = orientation.toEulerAngle(newRotationSequence);
@@ -531,7 +529,7 @@ namespace urchin
 			);
 
 			QVariant variant = orientationType->currentData();
-			Quaternion<float>::RotationSequence rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 
 			Transform<float> newSceneObjectTransform(
 					Point3<float>(positionX->value(), positionY->value(), positionZ->value()),

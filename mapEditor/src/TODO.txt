@@ -11,7 +11,7 @@
 	- (3) [NEW FEATURE] Remove 'ifdef _DEBUG' from code and allow to display debug information in map editor
 
 ############################################
-# Bug :
+# Bugs :
 ############################################
 - 
 

@@ -29,8 +29,8 @@ namespace urchin
 				PAUSE
 			};
 
-			SoundTrigger(const SoundBehavior &);
-			virtual ~SoundTrigger();
+			explicit SoundTrigger(const SoundBehavior &);
+			virtual ~SoundTrigger() = default;
 
 			virtual TriggerType getTriggerType() const = 0;
 

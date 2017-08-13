@@ -6,7 +6,7 @@
 #include "UrchinAIEngine.h"
 #include "UrchinPhysicsEngine.h"
 
-#include "resources/Map.h"
+#include "resources/object/SceneObject.h"
 
 namespace urchin
 {
@@ -20,7 +20,7 @@ namespace urchin
 	class AIWorldGenerator
 	{
 		public:
-			std::shared_ptr<AIWorld> generate(const Map *);
+			std::shared_ptr<AIWorld> generate(const std::list<SceneObject *> &);
 
 		private:
 			std::vector<LocalizedShape> extractionLocalizedShapes(RigidBody *);

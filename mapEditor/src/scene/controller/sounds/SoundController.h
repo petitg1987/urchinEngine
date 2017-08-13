@@ -12,8 +12,8 @@ namespace urchin
 	class SoundController
 	{
 		public:
-			SoundController(MapHandler *);
-			~SoundController();
+			explicit SoundController(MapHandler *);
+			~SoundController() = default;
 
 			bool isModified() const;
 			void resetModified();

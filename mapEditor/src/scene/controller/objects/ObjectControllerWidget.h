@@ -28,7 +28,7 @@ namespace urchin
 
 		public:
 			ObjectControllerWidget();
-			virtual ~ObjectControllerWidget();
+			virtual ~ObjectControllerWidget() = default;
 
 			enum NotificationType
 			{

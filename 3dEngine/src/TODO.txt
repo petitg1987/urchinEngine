@@ -2,7 +2,7 @@
 # To do :
 ############################################
 - RENDERER
-	- (1) Handle heightmap
+	- (1) [NEW FEATURE] Handle heightmap
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - AMBIENT OCCLUSION
@@ -36,7 +36,7 @@
 	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
 
 ############################################
-# Bug :
+# Bugs :
 ############################################
 - AMBIENT OCCLUSION
 	- (2) In a wall corner, move camera to bottom or top: AO is less intensive

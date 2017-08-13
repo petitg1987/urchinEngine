@@ -1,12 +1,11 @@
 #include <stdexcept>
 
 #include "MapHandler.h"
-#include "ai/AIWorldGenerator.h"
 
 namespace urchin
 {
 
-	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager) :
+	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager, AIManager *aiManager) :
 		map(nullptr)
 	{
 		if(renderer3d==nullptr)
@@ -19,7 +18,12 @@ namespace urchin
 			throw std::invalid_argument("Sound manager cannot be null in map handler");
 		}
 
-		map = new Map(renderer3d, physicsWorld, soundManager);
+		if(aiManager==nullptr)
+		{
+			throw std::invalid_argument("AI manager cannot be null in map handler");
+		}
+
+		map = new Map(renderer3d, physicsWorld, soundManager, aiManager);
 	}
 
 	MapHandler::~MapHandler()
@@ -79,12 +83,6 @@ namespace urchin
 	Map *MapHandler::getMap() const
 	{
 		return map;
-	}
-
-	std::shared_ptr<AIWorld> MapHandler::generateAIWorld() const
-	{
-		AIWorldGenerator aiWorldGenerator;
-		return aiWorldGenerator.generate(map);
 	}
 
 }

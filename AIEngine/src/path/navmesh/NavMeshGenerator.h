@@ -37,12 +37,13 @@ namespace urchin
 	class NavMeshGenerator
 	{
 		public:
-			NavMeshGenerator(std::shared_ptr<AIWorld>, NavMeshConfig);
+			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
 
-			std::shared_ptr<NavMesh> generate() const;
+			std::shared_ptr<NavMesh> generate(std::shared_ptr<AIWorld>);
+			std::shared_ptr<NavMesh> getNavMesh() const;
 
 		private:
-			std::vector<Polyhedron> createExpandedPolyhedrons() const;
+			std::vector<Polyhedron> createExpandedPolyhedrons(std::shared_ptr<AIWorld>) const;
 			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *) const;
 			std::vector<PolyhedronFace> createPolyhedronFaces() const;
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *) const;
@@ -65,8 +66,8 @@ namespace urchin
 			Point3<float> elevatePoints(const Point2<float> &, float, const PolyhedronFace &) const;
 			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;
 
-			std::shared_ptr<AIWorld> aiWorld;
-			NavMeshConfig navMeshConfig;
+			std::shared_ptr<NavMeshConfig> navMeshConfig;
+			std::shared_ptr<NavMesh> navMesh;
 	};
 
 }

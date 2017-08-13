@@ -24,22 +24,25 @@ namespace urchin
 
     }
 
-	NavMeshGenerator::NavMeshGenerator(std::shared_ptr<AIWorld> aiWorld, NavMeshConfig navMeshConfig) :
-		aiWorld(std::move(aiWorld)),
-		navMeshConfig(navMeshConfig)
+	void NavMeshGenerator::setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
 	{
-        NumericalCheck::instance()->perform();
+		this->navMeshConfig = std::move(navMeshConfig);
 	}
 
-	std::shared_ptr<NavMesh> NavMeshGenerator::generate() const
+	std::shared_ptr<NavMesh> NavMeshGenerator::generate(std::shared_ptr<AIWorld> aiWorld)
 	{
+		if(!navMeshConfig)
+		{
+			throw std::runtime_error("Impossible to generate navigation mesh: no configuration provided.");
+		}
+
 		#ifdef _DEBUG
 //			auto frameStartTime = std::chrono::high_resolution_clock::now();
 		#endif
 
-		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons();
+		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons(std::move(aiWorld));
 		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
-		std::shared_ptr<NavMesh> navMesh = std::make_shared<NavMesh>();
+		navMesh.reset(new NavMesh());
 
 		for(const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
 		{
@@ -59,7 +62,7 @@ namespace urchin
 		return navMesh;
 	}
 
-	std::vector<Polyhedron> NavMeshGenerator::createExpandedPolyhedrons() const
+	std::vector<Polyhedron> NavMeshGenerator::createExpandedPolyhedrons(std::shared_ptr<AIWorld> aiWorld) const
 	{
 		std::vector<Polyhedron> polyhedrons;
 		polyhedrons.reserve(aiWorld->getObjects().size());
@@ -235,7 +238,7 @@ namespace urchin
 	{
 		for(auto &polyhedron : polyhedrons)
 		{
-			polyhedron.expand(navMeshConfig.getAgent());
+			polyhedron.expand(navMeshConfig->getAgent());
 		}
 	}
 
@@ -253,7 +256,7 @@ namespace urchin
 				{
 					const PolyhedronFace &face = expandedPolyhedron.getFace(faceIndex);
 
-					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig.getMaxSlope())
+					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig->getMaxSlope())
 					{
 						walkableFaces.emplace_back(PolyhedronFaceIndex(polyhedronIndex, faceIndex));
 					}
@@ -362,7 +365,7 @@ namespace urchin
 
 		std::vector<CSGPolygon<float>> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
-		{ //TODO select only polygons AABBox above 'walkableFace' and reserve 'holePolygons'
+		{
 			if(i!=polyhedronWalkableFace.polyhedronIndex)
 			{
 				CSGPolygon<float> footprintPolygon = computePolyhedronFootprint(expandedPolyhedrons[i], walkableFace);
@@ -405,7 +408,7 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const PolyhedronFace &walkableFace) const
 	{
-        float shiftDistance = -navMeshConfig.getAgent().computeExpandDistance(walkableFace.getNormal());
+        float shiftDistance = -navMeshConfig->getAgent().computeExpandDistance(walkableFace.getNormal());
 
 		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
@@ -447,5 +450,10 @@ namespace urchin
 
 		return indexedTriangles3D;
 	}
+
+    std::shared_ptr<NavMesh> NavMeshGenerator::getNavMesh() const
+    {
+        return navMesh;
+    }
 
 }

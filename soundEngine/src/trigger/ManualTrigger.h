@@ -13,7 +13,7 @@ namespace urchin
 	{
 		public:
 			ManualTrigger(const SoundBehavior &);
-			~ManualTrigger();
+			~ManualTrigger() = default;
 
 			SoundTrigger::TriggerType getTriggerType() const;
 

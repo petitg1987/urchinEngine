@@ -12,6 +12,7 @@
 #include "resources/object/SceneObject.h"
 #include "resources/light/SceneLight.h"
 #include "resources/sound/SceneSound.h"
+#include "resources/ai/SceneAI.h"
 
 namespace urchin
 {
@@ -28,11 +29,12 @@ namespace urchin
 		#define LIGHT_TAG "light"
 		#define SOUND_ELEMENTS_TAG "soundElements"
 		#define SOUND_ELEMENT_TAG "soundElement"
+		#define AI_ELEMENTS_TAG "aiElements"
 
 		public:
 			friend class MapHandler;
 
-			Map(Renderer3d *, PhysicsWorld *, SoundManager *);
+			Map(Renderer3d *, PhysicsWorld *, SoundManager *, AIManager *);
 			~Map();
 
 			const std::list<SceneObject *> &getSceneObjects() const;
@@ -50,8 +52,8 @@ namespace urchin
 			void addSceneSound(SceneSound *);
 			void removeSceneSound(SceneSound *);
 
-			std::shared_ptr<NavMesh> getNavMesh() const;
-			void setNavMesh(std::shared_ptr<NavMesh>);
+			SceneAI *getSceneAI() const;
+			void setSceneAI(SceneAI *);
 
 			void refreshMap();
 
@@ -60,20 +62,27 @@ namespace urchin
 			void loadSceneObjectsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneLightsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneSoundsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
+			void loadSceneAIFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 
 			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneObjectsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneLightsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+
+			void refreshPhysics();
+			void refreshAI();
+            void refreshSound();
 
 			Renderer3d *renderer3d;
 			PhysicsWorld *physicsWorld;
 			SoundManager *soundManager;
+			AIManager *aiManager;
 
 			std::list<SceneObject *> sceneObjects;
 			std::list<SceneLight *> sceneLights;
 			std::list<SceneSound *> sceneSounds;
-			std::shared_ptr<NavMesh> navMesh;
+			SceneAI *sceneAI;
 	};
 
 }

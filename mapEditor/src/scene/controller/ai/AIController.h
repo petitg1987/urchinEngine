@@ -11,12 +11,14 @@ namespace urchin
 	{
 		public:
 			AIController(MapHandler *);
-			~AIController();
+			~AIController() = default;
 
 			bool isModified() const;
 			void resetModified();
 
-			void generateNavMesh(float, float, float);
+			const SceneAI *getSceneAI() const;
+
+			SceneAI *updateNavMeshConfig(std::shared_ptr<NavMeshConfig>);
 
 		private:
 			void markModified();

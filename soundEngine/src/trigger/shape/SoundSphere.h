@@ -15,7 +15,7 @@ namespace urchin
 	{
 		public:
 			SoundSphere(float, const Point3<float> &, float);
-			~SoundSphere();
+			~SoundSphere() = default;
 
 			SoundShape::ShapeType getShapeType() const;
 

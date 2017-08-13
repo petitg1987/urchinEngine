@@ -30,7 +30,7 @@ namespace urchin
 
 		public:
 			SoundControllerWidget();
-			virtual ~SoundControllerWidget();
+			virtual ~SoundControllerWidget() = default;
 
 			SoundTableView *getSoundTableView() const;
 
@@ -45,10 +45,10 @@ namespace urchin
 
 			void notify(Observable *, int);
 			void setupSoundDataFrom(const SceneSound *);
-			void setupAmbientSoundDataFrom(const AmbientSound *);
+			void setupAmbientSoundDataFrom();
 			void setupPointSoundDataFrom(const PointSound *);
 			void setupSoundBehaviorDataFrom(const SoundTrigger *);
-			void setupManualTriggerDataFrom(const SceneSound *);
+			void setupManualTriggerDataFrom();
 			void setupShapeTriggerDataFrom(const SceneSound *);
 
 			SoundShapeWidget *retrieveSoundShapeWidget(const SoundShape *, const SceneSound *);

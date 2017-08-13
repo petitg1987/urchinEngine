@@ -48,8 +48,6 @@ namespace urchin
 			bool onKeyUp(unsigned int);
 			bool onChar(unsigned int);
 			void onMouseMove(int, int);
-			int getMousePositionX();
-			int getMousePositionY();
 			
 			//scene
 			void display();

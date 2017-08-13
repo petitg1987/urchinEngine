@@ -6,16 +6,6 @@
 namespace urchin
 {
 
-	ModelReaderWriter::ModelReaderWriter()
-	{
-
-	}
-
-	ModelReaderWriter::~ModelReaderWriter()
-	{
-
-	}
-
 	Model *ModelReaderWriter::loadFrom(std::shared_ptr<XmlChunk> modelChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> meshChunk = xmlParser.getUniqueChunk(true, MESH_TAG, XmlAttribute(), modelChunk);

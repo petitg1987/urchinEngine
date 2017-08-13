@@ -1,16 +1,13 @@
 #include <vector>
-#include <cassert>
 
 #include "AIWorldGenerator.h"
 
 namespace urchin
 {
 
-	std::shared_ptr<AIWorld> AIWorldGenerator::generate(const Map *map)
+	std::shared_ptr<AIWorld> AIWorldGenerator::generate(const std::list<SceneObject *> &sceneObjects)
 	{
 		std::shared_ptr<AIWorld> aiWorld = std::make_shared<AIWorld>();
-
-		const std::list<SceneObject *> &sceneObjects = map->getSceneObjects();
 		for(auto sceneObject : sceneObjects)
 		{
 			RigidBody *rigidBody = sceneObject->getRigidBody();
@@ -41,7 +38,7 @@ namespace urchin
 			if(scaledCollisionShape3D->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
 			{
 				std::shared_ptr<const CollisionCompoundShape> collisionCompoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(scaledCollisionShape3D);
-				for(auto collisionLocalizedShape : collisionCompoundShape->getLocalizedShapes())
+				for(const auto &collisionLocalizedShape : collisionCompoundShape->getLocalizedShapes())
 				{
 					PhysicsTransform worldPhysicsTransform = PhysicsTransform(rigidBody->getTransform().getPosition(), rigidBody->getTransform().getOrientation()) * collisionLocalizedShape->transform;
 					LocalizedShape localizedShape;

@@ -20,7 +20,7 @@ namespace urchin
 
 		public:
 			MapEditorWindow(const std::string &);
-			virtual ~MapEditorWindow();
+			virtual ~MapEditorWindow() = default;
 
 		protected:
 			void closeEvent(QCloseEvent *event);

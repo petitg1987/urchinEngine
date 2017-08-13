@@ -5,16 +5,6 @@
 namespace urchin
 {
 
-	SoundTriggerReaderWriter::SoundTriggerReaderWriter()
-	{
-
-	}
-
-	SoundTriggerReaderWriter::~SoundTriggerReaderWriter()
-	{
-
-	}
-
 	SoundTrigger *SoundTriggerReaderWriter::loadFrom(std::shared_ptr<XmlChunk> soundTriggerChunk, const XmlParser &xmlParser) const
 	{
 		SoundTrigger *soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);

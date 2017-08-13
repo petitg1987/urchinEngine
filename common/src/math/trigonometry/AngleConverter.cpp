@@ -3,16 +3,6 @@
 namespace urchin
 {
 
-	template<class T> AngleConverter<T>::AngleConverter()
-	{
-
-	}
-
-	template<class T> AngleConverter<T>::~AngleConverter()
-	{
-
-	}
-
 	template<class T> T AngleConverter<T>::toDegree(T radian)
 	{
 		return radian * RADIAN_TO_DEGREE_FACTOR;

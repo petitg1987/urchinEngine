@@ -55,7 +55,7 @@ set(SOURCE_FILES
         src/resources/Map.h
         src/MapHandler.cpp
         src/MapHandler.h
-        src/UrchinMapHandler.h)
+        src/UrchinMapHandler.h src/resources/ai/SceneAI.cpp src/resources/ai/SceneAI.h src/resources/ai/NavMeshConfigWriter.cpp src/resources/ai/NavMeshConfigWriter.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src)
 

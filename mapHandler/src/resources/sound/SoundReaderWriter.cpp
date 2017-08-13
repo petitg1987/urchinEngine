@@ -3,16 +3,6 @@
 namespace urchin
 {
 
-	SoundReaderWriter::SoundReaderWriter()
-	{
-
-	}
-
-	SoundReaderWriter::~SoundReaderWriter()
-	{
-
-	}
-
 	Sound *SoundReaderWriter::loadFrom(std::shared_ptr<XmlChunk> soundChunk, const XmlParser &xmlParser) const
 	{
 		Sound *sound = buildSoundFrom(soundChunk, xmlParser);

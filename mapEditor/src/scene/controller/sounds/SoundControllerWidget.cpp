@@ -17,7 +17,7 @@ namespace urchin
 			soundController(nullptr),
 			disableSoundEvent(false)
 	{
-		QVBoxLayout *mainLayout = new QVBoxLayout(this);
+		auto *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignTop);
 		mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -26,7 +26,7 @@ namespace urchin
 		soundTableView->addObserver(this, SoundTableView::SELECTION_CHANGED);
 		soundTableView->setFixedHeight(220);
 
-		QHBoxLayout *buttonsLayout = new QHBoxLayout();
+		auto *buttonsLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonsLayout);
 		buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
@@ -47,7 +47,7 @@ namespace urchin
 		soundPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		soundPropertiesGroupBox->hide();
 
-		QVBoxLayout *soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
+		auto *soundPropertiesLayout = new QVBoxLayout(soundPropertiesGroupBox);
 		setupSoundGeneralPropertiesBox(soundPropertiesLayout);
 		setupSpecificPointSoundBox(soundPropertiesLayout);
 
@@ -57,14 +57,9 @@ namespace urchin
 		soundTriggerGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		soundTriggerGroupBox->hide();
 
-		QVBoxLayout *soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
+		auto *soundTriggerLayout = new QVBoxLayout(soundTriggerGroupBox);
 		setupSoundBehaviorPropertiesBox(soundTriggerLayout);
 		setupSpecificTriggerShapeBox(soundTriggerLayout);
-	}
-
-	SoundControllerWidget::~SoundControllerWidget()
-	{
-
 	}
 
 	void SoundControllerWidget::setupSoundGeneralPropertiesBox(QVBoxLayout *soundPropertiesLayout)
@@ -73,7 +68,7 @@ namespace urchin
 		soundPropertiesLayout->addWidget(generalGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
 
-		QGridLayout *generalPropertiesLayout = new QGridLayout(generalGroupBox);
+		auto *generalPropertiesLayout = new QGridLayout(generalGroupBox);
 		generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		QLabel *volumeLabel= new QLabel("Volume:");
@@ -99,13 +94,13 @@ namespace urchin
 		GroupBoxStyleHelper::applyNormalStyle(specificPointSoundGroupBox);
 		specificPointSoundGroupBox->hide();
 
-		QGridLayout *pointSoundLayout = new QGridLayout(specificPointSoundGroupBox);
+		auto *pointSoundLayout = new QGridLayout(specificPointSoundGroupBox);
 		pointSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		QLabel *positionLabel= new QLabel("Position:");
 		pointSoundLayout->addWidget(positionLabel, 0, 0);
 
-		QHBoxLayout *positionLayout = new QHBoxLayout();
+		auto *positionLayout = new QHBoxLayout();
 		pointSoundLayout->addLayout(positionLayout, 0, 1);
 		positionX = new QDoubleSpinBox();
 		positionLayout->addWidget(positionX);
@@ -136,7 +131,7 @@ namespace urchin
 		soundTriggerLayout->addWidget(soundBehaviorGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(soundBehaviorGroupBox);
 
-		QGridLayout *behaviorLayout = new QGridLayout(soundBehaviorGroupBox);
+		auto *behaviorLayout = new QGridLayout(soundBehaviorGroupBox);
 		behaviorLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		QLabel *playBehaviorLabel= new QLabel("Play Behavior:");
@@ -186,7 +181,7 @@ namespace urchin
 
 		triggerShapeLayout = new QVBoxLayout(specificTriggerShapeGroupBox);
 
-		QHBoxLayout *shapeTypeLayout = new QHBoxLayout();
+		auto *shapeTypeLayout = new QHBoxLayout();
 		shapeTypeLayout->setAlignment(Qt::AlignLeft);
 		shapeTypeLayout->setSpacing(15);
 		triggerShapeLayout->addLayout(shapeTypeLayout);
@@ -234,7 +229,7 @@ namespace urchin
 
 	void SoundControllerWidget::notify(Observable *observable, int notificationType)
 	{
-		if(SoundTableView *soundTableView = dynamic_cast<SoundTableView *>(observable))
+		if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -254,6 +249,8 @@ namespace urchin
 						soundTriggerGroupBox->hide();
 					}
 					break;
+				default:
+					;
 			}
 		}
 	}
@@ -269,10 +266,10 @@ namespace urchin
 
 		if(sound->getSoundType()==Sound::SoundType::AMBIENT)
 		{
-			setupAmbientSoundDataFrom(static_cast<const AmbientSound *>(sound));
+			setupAmbientSoundDataFrom();
 		}else if(sound->getSoundType()==Sound::SoundType::POINT)
 		{
-			setupPointSoundDataFrom(static_cast<const PointSound *>(sound));
+			setupPointSoundDataFrom(dynamic_cast<const PointSound *>(sound));
 		}else
 		{
 			throw std::invalid_argument("Impossible to setup specific sound data for sound of type: " + std::to_string(sound->getSoundType()));
@@ -285,7 +282,7 @@ namespace urchin
 
 		if(soundTrigger->getTriggerType()==SoundTrigger::TriggerType::MANUAL_TRIGGER)
 		{
-			setupManualTriggerDataFrom(sceneSound);
+			setupManualTriggerDataFrom();
 		}else if(soundTrigger->getTriggerType()==SoundTrigger::TriggerType::SHAPE_TRIGGER)
 		{
 			setupShapeTriggerDataFrom(sceneSound);
@@ -297,7 +294,7 @@ namespace urchin
 		disableSoundEvent = false;
 	}
 
-	void SoundControllerWidget::setupAmbientSoundDataFrom(const AmbientSound *)
+	void SoundControllerWidget::setupAmbientSoundDataFrom()
 	{
 		specificPointSoundGroupBox->hide();
 
@@ -336,7 +333,7 @@ namespace urchin
 		this->volumeDecreasePercentageOnStop->setValue(soundBehavior.getVolumeDecreasePercentageOnStop() * 100.0);
 	}
 
-	void SoundControllerWidget::setupManualTriggerDataFrom(const SceneSound *)
+	void SoundControllerWidget::setupManualTriggerDataFrom()
 	{
 		specificTriggerShapeGroupBox->hide();
 		soundTriggerType->setText(MANUAL_TRIGGER_LABEL);
@@ -347,7 +344,7 @@ namespace urchin
 		specificTriggerShapeGroupBox->show();
 		soundTriggerType->setText(SHAPE_TRIGGER_LABEL);
 
-		const ShapeTrigger *shapeTrigger = static_cast<const ShapeTrigger *>(sceneSound->getSoundTrigger());
+		const auto *shapeTrigger = dynamic_cast<const ShapeTrigger *>(sceneSound->getSoundTrigger());
 		const SoundShape *soundShape = shapeTrigger->getSoundShape();
 		SoundShapeWidget *soundShapeWidget = retrieveSoundShapeWidget(soundShape, sceneSound);
 		soundShapeWidget->setupShapePropertiesFrom(soundShape);
@@ -435,10 +432,10 @@ namespace urchin
 			const SceneSound *sceneSound = soundTableView->getSelectedSceneSound();
 
 			QVariant playVariant = playBehavior->currentData();
-			SoundBehavior::PlayBehavior playBehavior = static_cast<SoundBehavior::PlayBehavior>(playVariant.toInt());
+			auto playBehavior = static_cast<SoundBehavior::PlayBehavior>(playVariant.toInt());
 
 			QVariant stopVariant = stopBehavior->currentData();
-			SoundBehavior::StopBehavior stopBehavior = static_cast<SoundBehavior::StopBehavior>(stopVariant.toInt());
+			auto stopBehavior = static_cast<SoundBehavior::StopBehavior>(stopVariant.toInt());
 
 			float volumeDecreasePercentageOnStop = this->volumeDecreasePercentageOnStop->value() / 100.0;
 

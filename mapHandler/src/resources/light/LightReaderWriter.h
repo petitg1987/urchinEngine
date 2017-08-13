@@ -23,13 +23,10 @@ namespace urchin
 		#define DIRECTION_TAG "direction"
 		#define POSITION_TAG "position"
 		#define AMBIENT_COLOR_TAG "ambientColor"
-		#define EXPENENTIAL_ATTENUATION_TAG "exponentialAttenuation"
+		#define EXPONENTIAL_ATTENUATION_TAG "exponentialAttenuation"
 		#define PRODUCE_SHADOW_TAG "produceShadow"
 
 		public:
-			LightReaderWriter();
-			~LightReaderWriter();
-
 			Light *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
 			void writeOn(std::shared_ptr<XmlChunk>, const Light *, XmlWriter &) const;
 

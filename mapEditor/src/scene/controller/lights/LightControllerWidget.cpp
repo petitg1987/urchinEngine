@@ -13,7 +13,7 @@ namespace urchin
 			lightController(nullptr),
 			disableLightEvent(false)
 	{
-		QVBoxLayout *mainLayout = new QVBoxLayout(this);
+		auto *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignTop);
 		mainLayout->setContentsMargins(1, 1, 1, 1);
 
@@ -22,7 +22,7 @@ namespace urchin
 		lightTableView->addObserver(this, LightTableView::SELECTION_CHANGED);
 		lightTableView->setFixedHeight(220);
 
-		QHBoxLayout *buttonsLayout = new QHBoxLayout();
+		auto *buttonsLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonsLayout);
 		buttonsLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
@@ -42,11 +42,6 @@ namespace urchin
 		setupSpecificSunLightBox(mainLayout);
 	}
 
-	LightControllerWidget::~LightControllerWidget()
-	{
-
-	}
-
 	void LightControllerWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
 	{
 		generalPropertiesGroupBox = new QGroupBox("General Properties");
@@ -55,12 +50,12 @@ namespace urchin
 		generalPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		generalPropertiesGroupBox->hide();
 
-		QGridLayout *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
+		auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
 		QLabel *ambientLabel= new QLabel("Ambient:");
 		generalPropertiesLayout->addWidget(ambientLabel, 0, 0);
 
-		QHBoxLayout *ambientLayout = new QHBoxLayout();
+		auto *ambientLayout = new QHBoxLayout();
 		generalPropertiesLayout->addLayout(ambientLayout, 0, 1);
 		ambientR = new QDoubleSpinBox();
 		ambientLayout->addWidget(ambientR);
@@ -100,12 +95,12 @@ namespace urchin
 		specificOmnidirectionalLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		specificOmnidirectionalLightGroupBox->hide();
 
-		QGridLayout *omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
+		auto *omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
 		QLabel *positionLabel= new QLabel("Position:");
 		omniLightLayout->addWidget(positionLabel, 0, 0);
 
-		QHBoxLayout *positionLayout = new QHBoxLayout();
+		auto *positionLayout = new QHBoxLayout();
 		omniLightLayout->addLayout(positionLayout, 0, 1);
 		positionX = new QDoubleSpinBox();
 		positionLayout->addWidget(positionX);
@@ -139,12 +134,12 @@ namespace urchin
 		specificSunLightGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		specificSunLightGroupBox->hide();
 
-		QGridLayout *sunLightLayout = new QGridLayout(specificSunLightGroupBox);
+		auto *sunLightLayout = new QGridLayout(specificSunLightGroupBox);
 
 		QLabel *directionLabel= new QLabel("Direction:");
 		sunLightLayout->addWidget(directionLabel, 0, 0);
 
-		QHBoxLayout *directionLayout = new QHBoxLayout();
+		auto *directionLayout = new QHBoxLayout();
 		sunLightLayout->addLayout(directionLayout, 0, 1);
 		directionX = new QDoubleSpinBox();
 		directionLayout->addWidget(directionX);
@@ -185,7 +180,7 @@ namespace urchin
 
 	void LightControllerWidget::notify(Observable *observable, int notificationType)
 	{
-		if(LightTableView *lightTableView = dynamic_cast<LightTableView *>(observable))
+		if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -203,6 +198,8 @@ namespace urchin
 						generalPropertiesGroupBox->hide();
 					}
 					break;
+				default:
+					;
 			}
 		}
 	}
@@ -220,11 +217,11 @@ namespace urchin
 
 		if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL)
 		{
-			setupOmnidirectionalLightDataFrom(static_cast<const OmnidirectionalLight *>(light));
+			setupOmnidirectionalLightDataFrom(dynamic_cast<const OmnidirectionalLight *>(light));
 			this->produceShadowCheckBox->setDisabled(true);
 		}else if(light->getLightType()==Light::LightType::SUN)
 		{
-			setupSunLightDataFrom(static_cast<const SunLight *>(light));
+			setupSunLightDataFrom(dynamic_cast<const SunLight *>(light));
 			this->produceShadowCheckBox->setDisabled(false);
 		}else
 		{

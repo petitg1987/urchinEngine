@@ -44,19 +44,19 @@ namespace urchin
 				navMeshModels.push_back(triangleModel);
 			}
 
-			for(unsigned int i=0; i<navMeshModels.size(); ++i)
-			{
-				sceneManager->getActiveRenderer3d()->addGeometry(navMeshModels[i]);
+			for (auto &navMeshModel : navMeshModels)
+            {
+				sceneManager->getActiveRenderer3d()->addGeometry(navMeshModel);
 			}
 		}
 	}
 
 	void NavMeshDisplayer::cleanCurrentDisplay()
 	{
-		for(unsigned int i=0; i<navMeshModels.size(); ++i)
-		{
-			sceneManager->getActiveRenderer3d()->removeGeometry(navMeshModels[i]);
-			delete navMeshModels[i];
+		for (auto &navMeshModel : navMeshModels)
+        {
+			sceneManager->getActiveRenderer3d()->removeGeometry(navMeshModel);
+			delete navMeshModel;
 		}
 
 		navMeshModels.clear();
@@ -70,7 +70,7 @@ namespace urchin
 		for(const auto &point : points)
 		{
 			//avoid Y fighting with walkable face
-			displayPoints.push_back(Point3<float>(point.X, point.Y + yElevation, point.Z));
+			displayPoints.emplace_back(Point3<float>(point.X, point.Y + yElevation, point.Z));
 		}
 
 		return displayPoints;

@@ -31,9 +31,6 @@ namespace urchin
 		#define SOUND_SHAPE_TAG "soundShape"
 
 		public:
-			SoundTriggerReaderWriter();
-			~SoundTriggerReaderWriter();
-
 			SoundTrigger *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
 			void writeOn(std::shared_ptr<XmlChunk>, const SoundTrigger *, XmlWriter &) const;
 
