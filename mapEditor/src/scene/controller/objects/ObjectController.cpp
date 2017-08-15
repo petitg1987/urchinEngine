@@ -15,11 +15,6 @@ namespace urchin
 
 	}
 
-	ObjectController::~ObjectController()
-	{
-
-	}
-
 	bool ObjectController::isModified() const
 	{
 		return bIsModified;
@@ -67,7 +62,7 @@ namespace urchin
 		Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
 		std::shared_ptr<const CollisionShape3D> bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE, false);
 
-		RigidBody *rigidBody = new RigidBody(bodyId, modelTransform, bodyShape);
+		auto *rigidBody = new RigidBody(bodyId, modelTransform, bodyShape);
 		sceneObject->setRigidBody(rigidBody);
 
 		markModified();
@@ -142,7 +137,7 @@ namespace urchin
 
 		std::string bodyId = constSceneObject->getName();
 		Transform<float> modelTransform = constSceneObject->getModel()->getTransform();
-		RigidBody *newRigidBody = new RigidBody(bodyId, modelTransform, newCollisionShape);
+		auto *newRigidBody = new RigidBody(bodyId, modelTransform, newCollisionShape);
 
 		newRigidBody->setMass(rigidBody->getMass());
 		newRigidBody->setRestitution(rigidBody->getRestitution());
@@ -158,7 +153,7 @@ namespace urchin
 	SceneObject *ObjectController::findSceneObject(const SceneObject *constSceneObject)
 	{
 		const std::list<SceneObject *> &sceneObjects = mapHandler->getMap()->getSceneObjects();
-		std::list<SceneObject *>::const_iterator it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
+		auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
 
 		if(it!=sceneObjects.end())
 		{

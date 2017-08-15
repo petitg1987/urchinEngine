@@ -14,11 +14,11 @@ namespace urchin
 	{
 		public:
 			ShapeTrigger(const SoundBehavior &, const SoundShape *);
-			~ShapeTrigger();
+			~ShapeTrigger() override;
 
-			SoundTrigger::TriggerType getTriggerType() const;
+			SoundTrigger::TriggerType getTriggerType() const override;
 
-			SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &);
+			SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &) override;
 
 			const SoundShape *getSoundShape() const;
 

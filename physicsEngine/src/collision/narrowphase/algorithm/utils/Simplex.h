@@ -19,7 +19,6 @@ namespace urchin
 	{
 		public:
 			Simplex();
-			~Simplex() = default;
 
 			void addPoint(const Point3<T> &, const Point3<T> &);
 

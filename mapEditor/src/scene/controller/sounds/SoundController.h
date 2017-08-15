@@ -13,7 +13,6 @@ namespace urchin
 	{
 		public:
 			explicit SoundController(MapHandler *);
-			~SoundController() = default;
 
 			bool isModified() const;
 			void resetModified();

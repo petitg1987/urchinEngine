@@ -9,7 +9,7 @@ namespace urchin
 {
 
 	SoundManager::SoundManager()
-	{ //TODO sound doesn't work anymore in greenCity (probably because soundManager not handled by mapHandler)
+	{
 		deviceManager.initializeDevice();
 		AudioStreamPlayer::initializeStreamWorkerThread();
 
@@ -105,7 +105,7 @@ namespace urchin
 			{
 				std::cout<<"OpenAL error: "<<err<<std::endl;
 			}
-		#endif
+        #endif
 	}
 
 	void SoundManager::process()

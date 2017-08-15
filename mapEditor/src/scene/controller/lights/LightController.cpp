@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	LightController::~LightController()
-	{
-
-	}
-
 	bool LightController::isModified() const
 	{
 		return bIsModified;
@@ -76,7 +71,7 @@ namespace urchin
 			float attenuation, const Point3<float> &position)
 	{
 		SceneLight *sceneLight = findSceneLight(constSceneLight);
-		OmnidirectionalLight *light = static_cast<OmnidirectionalLight *>(sceneLight->getLight());
+		auto *light = dynamic_cast<OmnidirectionalLight *>(sceneLight->getLight());
 
 		light->setAttenuation(attenuation);
 		light->setPosition(position);
@@ -88,7 +83,7 @@ namespace urchin
 	const SceneLight *LightController::updateSceneSunLightProperties(const SceneLight *constSceneLight, const Vector3<float> &direction)
 	{
 		SceneLight *sceneLight = findSceneLight(constSceneLight);
-		SunLight *light = static_cast<SunLight *>(sceneLight->getLight());
+		auto *light = dynamic_cast<SunLight *>(sceneLight->getLight());
 
 		light->setDirection(direction);
 
@@ -99,7 +94,7 @@ namespace urchin
 	SceneLight *LightController::findSceneLight(const SceneLight *constSceneLight)
 	{
 		const std::list<SceneLight *> &sceneLights = mapHandler->getMap()->getSceneLights();
-		std::list<SceneLight *>::const_iterator it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
+		auto it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
 
 		if(it!=sceneLights.end())
 		{

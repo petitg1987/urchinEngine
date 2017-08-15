@@ -121,6 +121,26 @@ void PolygonsSubtractionTest::polygonsSubtractionMinuendInside()
     AssertHelper::assertUnsignedInt(isMinuendPoints.size(), 0);
 }
 
+void PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge()
+{ //see polygonsSubtractionMinuendInsideContactEdge.ggb
+    std::vector<Point2<float>> minuendPoly = {Point2<float>(-5.07582092, 0.225821018), Point2<float>(5.97582006, 0.225821018),
+                                              Point2<float>(-5.07582092, -10.8258209)};
+
+    std::vector<Point2<float>> subtrahendPoly = {Point2<float>(5.0446701, -10.9196606), Point2<float>(-5.9446702, -10.9196606),
+                                                 Point2<float>(-5.9446702, 0.31965971), Point2<float>(5.0446701, 0.31965971),
+                                                 Point2<float>(5.0446701, 0.225821018), Point2<float>(5.97582102, 0.225821018),
+                                                 Point2<float>(5.97582102, -10.8258209), Point2<float>(5.0446701, -10.8258209)};
+
+    bool subtrahendInsideMinuend;
+    std::map<unsigned int, std::vector<bool>> isMinuendPoints;
+    std::vector<CSGPolygon<float>> polygonSubtraction = PolygonsSubtraction<float>::instance()->subtractPolygons(
+            CSGPolygon<float>("minuend", minuendPoly), CSGPolygon<float>("subtrahend", subtrahendPoly), subtrahendInsideMinuend, isMinuendPoints);
+
+    AssertHelper::assertTrue(!subtrahendInsideMinuend);
+    AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 0); //TODO fix it
+    AssertHelper::assertUnsignedInt(isMinuendPoints.size(), 0);
+}
+
 void PolygonsSubtractionTest::polygonsSubtractionMiddlePoint()
 {
     std::vector<Point2<float>> minuendPoly = {Point2<float>(1.0, 2.0), Point2<float>(5.0, 2.0), Point2<float>(6.0, 1.0),
@@ -469,6 +489,7 @@ CppUnit::Test *PolygonsSubtractionTest::suite()
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendInsideContactEdge", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendInsideContactEdge));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionSubtrahendOutside", &PolygonsSubtractionTest::polygonsSubtractionSubtrahendOutside));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMinuendInside", &PolygonsSubtractionTest::polygonsSubtractionMinuendInside));
+    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMinuendInsideContactEdge", &PolygonsSubtractionTest::polygonsSubtractionMinuendInsideContactEdge));
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMiddlePoint", &PolygonsSubtractionTest::polygonsSubtractionMiddlePoint));
 

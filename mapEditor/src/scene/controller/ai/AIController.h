@@ -10,8 +10,7 @@ namespace urchin
 	class AIController
 	{
 		public:
-			AIController(MapHandler *);
-			~AIController() = default;
+			explicit AIController(MapHandler *);
 
 			bool isModified() const;
 			void resetModified();

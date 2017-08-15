@@ -1,4 +1,5 @@
 #include <GL/gl.h>
+#include <utility>
 
 #include "SceneDisplayerWidget.h"
 
@@ -29,7 +30,7 @@ namespace urchin
 
 		sceneDisplayer = new SceneDisplayer(this);
 		sceneDisplayer->initializeFromNewMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
-		sceneDisplayer->resize(this->geometry().width(), this->geometry().height());
+		sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
 		updateSceneDisplayerViewProperties();
 
 		return sceneDisplayer->getMapHandler();
@@ -41,7 +42,7 @@ namespace urchin
 
 		sceneDisplayer = new SceneDisplayer(this);
 		sceneDisplayer->initializeFromExistingMap(mapEditorPath, mapFilename);
-		sceneDisplayer->resize(this->geometry().width(), this->geometry().height());
+		sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
 		updateSceneDisplayerViewProperties();
 
 		return sceneDisplayer->getMapHandler();
@@ -76,7 +77,7 @@ namespace urchin
 	{
 		if(sceneDisplayer!=nullptr)
 		{
-			sceneDisplayer->setHighlightCompoundShapeComponent(selectedCompoundShapeComponent);
+			sceneDisplayer->setHighlightCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
 		}
 	}
 
@@ -131,7 +132,7 @@ namespace urchin
 	{
 		if(sceneDisplayer!=nullptr)
 		{
-			sceneDisplayer->resize(widget, height);
+			sceneDisplayer->resize(static_cast<unsigned int>(widget), static_cast<unsigned int>(height));
 		}
 	}
 
@@ -144,8 +145,8 @@ namespace urchin
 
 		if(event->key() < 256)
 		{
-			sceneDisplayer->getSceneManager()->onKeyDown(event->key());
-			sceneDisplayer->getSceneManager()->onChar(event->text().toLatin1()[0]);
+			sceneDisplayer->getSceneManager()->onKeyDown(static_cast<unsigned int>(event->key()));
+			sceneDisplayer->getSceneManager()->onChar(static_cast<unsigned int>(event->text().toLatin1()[0]));
 		}else if(event->key() == Qt::Key_Left)
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::LEFT_ARROW);
@@ -171,7 +172,7 @@ namespace urchin
 
 		if(event->key() < 256)
 		{
-			sceneDisplayer->getSceneManager()->onKeyUp(event->key());
+			sceneDisplayer->getSceneManager()->onKeyUp(static_cast<unsigned int>(event->key()));
 		}else if(event->key() == Qt::Key_Left)
 		{
 			sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::LEFT_ARROW);

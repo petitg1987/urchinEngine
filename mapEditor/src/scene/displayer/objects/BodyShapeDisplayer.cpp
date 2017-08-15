@@ -21,7 +21,7 @@ namespace urchin
 
 	void BodyShapeDisplayer::setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
 	{
-		this->selectedCompoundShapeComponent = selectedCompoundShapeComponent;
+		this->selectedCompoundShapeComponent = std::move(selectedCompoundShapeComponent);
 	}
 
 	void BodyShapeDisplayer::displayBodyShapeFor(const SceneObject *sceneObject)
@@ -35,18 +35,16 @@ namespace urchin
 
 			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
 			{
-				const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape.get());
+				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape.get());
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
-				for(unsigned int i=0; i<localizedShapes.size(); ++i)
+				for (auto localizedShape : localizedShapes)
 				{
-					std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapes[i];
-
 					PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
 					std::shared_ptr<CollisionConvexObject3D> bodyObject = localizedShape->shape->toConvexObject(transform);
 
 					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject.get());
 
-					if(selectedCompoundShapeComponent.get()!=nullptr && selectedCompoundShapeComponent->position==localizedShape->position)
+					if(selectedCompoundShapeComponent!=nullptr && selectedCompoundShapeComponent->position==localizedShape->position)
 					{
 						geometryModel->setColor(1.0, 1.0, 1.0);
 					}else
@@ -66,9 +64,9 @@ namespace urchin
 				bodyShapeModels.push_back(geometryModel);
 			}
 
-			for(unsigned int i=0; i<bodyShapeModels.size(); ++i)
+			for (auto &bodyShapeModel : bodyShapeModels)
 			{
-				sceneManager->getActiveRenderer3d()->addGeometry(bodyShapeModels[i]);
+				sceneManager->getActiveRenderer3d()->addGeometry(bodyShapeModel);
 			}
 		}
 	}
@@ -78,22 +76,28 @@ namespace urchin
 		if(shapeType==CollisionShape3D::SPHERE_SHAPE)
 		{
 			return retrieveSphereGeometry(bodyObject);
-		}else if(shapeType==CollisionShape3D::BOX_SHAPE)
+		}
+		if(shapeType==CollisionShape3D::BOX_SHAPE)
 		{
 			return retrieveBoxGeometry(bodyObject);
-		}else if(shapeType==CollisionShape3D::CYLINDER_SHAPE)
+		}
+		if(shapeType==CollisionShape3D::CYLINDER_SHAPE)
 		{
 			return retrieveCylinderGeometry(bodyObject);
-		}else if(shapeType==CollisionShape3D::CONE_SHAPE)
+		}
+		if(shapeType==CollisionShape3D::CONE_SHAPE)
 		{
 			return retrieveConeGeometry(bodyObject);
-		}else if(shapeType==CollisionShape3D::CAPSULE_SHAPE)
+		}
+		if(shapeType==CollisionShape3D::CAPSULE_SHAPE)
 		{
 			return retrieveCapsuleGeometry(bodyObject);
-		}else if(shapeType==CollisionShape3D::CONVEX_HULL_SHAPE)
+		}
+		if(shapeType==CollisionShape3D::CONVEX_HULL_SHAPE)
 		{
 			return retrieveConvexHullGeometry(bodyObject);
-		}else if(shapeType==CollisionShape3D::COMPOUND_SHAPE)
+		}
+		if(shapeType==CollisionShape3D::COMPOUND_SHAPE)
 		{
 			throw std::invalid_argument("Impossible to return a simple geometry from a compound shape");
 		}
@@ -103,46 +107,46 @@ namespace urchin
 
 	GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
-		const CollisionSphereObject *sphereObject = static_cast<const CollisionSphereObject *>(bodyObject);
+		const auto *sphereObject = dynamic_cast<const CollisionSphereObject *>(bodyObject);
 		return new SphereModel(sphereObject->retrieveSphere(), 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveBoxGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
-		const CollisionBoxObject *boxObject = static_cast<const CollisionBoxObject *>(bodyObject);
+		const auto *boxObject = dynamic_cast<const CollisionBoxObject *>(bodyObject);
 		return new OBBoxModel(boxObject->retrieveOBBox());
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveCylinderGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
-		const CollisionCylinderObject *cylinderObject = static_cast<const CollisionCylinderObject *>(bodyObject);
+		const auto *cylinderObject = dynamic_cast<const CollisionCylinderObject *>(bodyObject);
 		return new CylinderModel(cylinderObject->retrieveCylinder(), 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveConeGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
-		const CollisionConeObject *coneObject = static_cast<const CollisionConeObject *>(bodyObject);
+		const auto *coneObject = dynamic_cast<const CollisionConeObject *>(bodyObject);
 		return new ConeModel(coneObject->retrieveCone(), 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
-		const CollisionCapsuleObject *capsuleObject = static_cast<const CollisionCapsuleObject *>(bodyObject);
+		const auto *capsuleObject = dynamic_cast<const CollisionCapsuleObject *>(bodyObject);
 		return new CapsuleModel(capsuleObject->retrieveCapsule(), 15, 15);
 	}
 
 	GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const CollisionConvexObject3D *bodyObject) const
 	{
-		const CollisionConvexHullObject *convexHullObject = static_cast<const CollisionConvexHullObject *>(bodyObject);
+		const auto *convexHullObject = dynamic_cast<const CollisionConvexHullObject *>(bodyObject);
 		return new PointsModel(convexHullObject->getPointsWithMargin(), 5.0);
 	}
 
 	void BodyShapeDisplayer::cleanCurrentDisplay()
 	{
-		for(unsigned int i=0; i<bodyShapeModels.size(); ++i)
+		for (auto &bodyShapeModel : bodyShapeModels)
 		{
-			sceneManager->getActiveRenderer3d()->removeGeometry(bodyShapeModels[i]);
-			delete bodyShapeModels[i];
+			sceneManager->getActiveRenderer3d()->removeGeometry(bodyShapeModel);
+			delete bodyShapeModel;
 		}
 
 		bodyShapeModels.clear();

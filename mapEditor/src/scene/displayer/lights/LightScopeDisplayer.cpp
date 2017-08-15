@@ -1,5 +1,4 @@
 #include <memory>
-#include <stdexcept>
 #include "UrchinCommon.h"
 
 #include "LightScopeDisplayer.h"
@@ -26,26 +25,26 @@ namespace urchin
 		{
 			const Light *light = sceneLight->getLight();
 
-			if(const OmnidirectionalLight *omnidirectionLight = dynamic_cast<const OmnidirectionalLight *>(light))
+			if(const auto *omnidirectionLight = dynamic_cast<const OmnidirectionalLight *>(light))
 			{
-				SphereModel *geometryModel = new SphereModel(omnidirectionLight->getSphereScope(), 25);
+				auto *geometryModel = new SphereModel(omnidirectionLight->getSphereScope(), 25);
 				lightScopeModels.push_back(geometryModel);
 			}
 
-			for(unsigned int i=0; i<lightScopeModels.size(); ++i)
+			for (auto &lightScopeModel : lightScopeModels)
 			{
-				lightScopeModels[i]->setColor(1.0, 0.0, 0.0);
-				sceneManager->getActiveRenderer3d()->addGeometry(lightScopeModels[i]);
+				lightScopeModel->setColor(1.0, 0.0, 0.0);
+				sceneManager->getActiveRenderer3d()->addGeometry(lightScopeModel);
 			}
 		}
 	}
 
 	void LightScopeDisplayer::cleanCurrentDisplay()
 	{
-		for(unsigned int i=0; i<lightScopeModels.size(); ++i)
+		for (auto &lightScopeModel : lightScopeModels)
 		{
-			sceneManager->getActiveRenderer3d()->removeGeometry(lightScopeModels[i]);
-			delete lightScopeModels[i];
+			sceneManager->getActiveRenderer3d()->removeGeometry(lightScopeModel);
+			delete lightScopeModel;
 		}
 
 		lightScopeModels.clear();

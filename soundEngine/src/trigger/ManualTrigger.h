@@ -12,16 +12,15 @@ namespace urchin
 	class ManualTrigger : public SoundTrigger
 	{
 		public:
-			ManualTrigger(const SoundBehavior &);
-			~ManualTrigger() = default;
+			explicit ManualTrigger(const SoundBehavior &);
 
-			SoundTrigger::TriggerType getTriggerType() const;
+			SoundTrigger::TriggerType getTriggerType() const override;
 
 			void play();
 			void stop();
 			void pause();
 
-			SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &);
+			SoundTrigger::TriggerResultValue evaluateTrigger(const Point3<float> &) override;
 
 		private:
 			enum ManualTriggerValue

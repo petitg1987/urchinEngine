@@ -12,8 +12,7 @@ namespace urchin
 	class ObjectController
 	{
 		public:
-			ObjectController(MapHandler *);
-			~ObjectController();
+			explicit ObjectController(MapHandler *);
 
 			bool isModified() const;
 			void resetModified();

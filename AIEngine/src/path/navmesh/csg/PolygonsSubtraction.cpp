@@ -133,7 +133,7 @@ namespace urchin
                 return subtractedPolygons;
             }
 
-            subtractedPolygons.push_back(CSGPolygon<T>("(" + minuendPolygon.getName() + "-subBy-" + subtrahendPolygon.getName()+ ")", polygonCwPoints));
+            subtractedPolygons.push_back(CSGPolygon<T>("[" + minuendPolygon.getName() + " - " + subtrahendPolygon.getName()+ "]", polygonCwPoints));
         }
 
         return subtractedPolygons;

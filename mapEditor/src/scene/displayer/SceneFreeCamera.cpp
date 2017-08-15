@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	SceneFreeCamera::~SceneFreeCamera()
-	{
-
-	}
-
 	void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
 	{
 		QPoint point(x, y);

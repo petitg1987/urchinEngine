@@ -12,8 +12,7 @@ namespace urchin
 	class LightController
 	{
 		public:
-			LightController(MapHandler *);
-			~LightController();
+			explicit LightController(MapHandler *);
 
 			bool isModified() const;
 			void resetModified();

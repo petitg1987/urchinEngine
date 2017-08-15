@@ -128,7 +128,7 @@ namespace urchin
 			logInputData(polygon1, polygon2, "Maximum of iteration reached on polygons union algorithm.", Logger::ERROR);
 		}else if(foundIntersection || currentPolygon->pointInsideOrOnPolygon(otherPolygon->getCwPoints()[0]))
 		{
-			mergedPolygons.push_back(CSGPolygon<T>("{" + polygon1.getName() + "-" + polygon2.getName() + "}", mergedPolygonPoints));
+			mergedPolygons.push_back(CSGPolygon<T>("{" + polygon1.getName() + " ∪ " + polygon2.getName() + "}", mergedPolygonPoints));
 		}else
 		{
 			mergedPolygons.reserve(2);
