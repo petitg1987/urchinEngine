@@ -37,6 +37,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoIdenticalSquares();
 		void twoAlmostIdenticalSquares1();
 		void twoAlmostIdenticalSquares2();
+		void twoAlmostIdenticalSquares3();
 		void twoAlmostIdenticalTrapeze();
 
 		void threePolygonsUnion();

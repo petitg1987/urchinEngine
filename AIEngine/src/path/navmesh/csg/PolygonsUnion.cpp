@@ -14,7 +14,7 @@ namespace urchin
   	 * When polygons cannot be put together because there is no contact: there are returned apart.
   	 */
     template<class T> std::vector<CSGPolygon<T>> PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
-	{ //TODO in mapEditor: play with agentRadius, height: it will generate error in polygon union.
+	{
 		std::vector<CSGPolygon<T>> mergedPolygons;
 		mergedPolygons.reserve(polygons.size()/2 + 1); //estimated memory size
 
@@ -62,6 +62,7 @@ namespace urchin
 
 		const CSGPolygon<T> *startPolygon = nullptr;
 		unsigned int startPointIndex = findStartPoint(polygon1, polygon2, startPolygon);
+		Point2<T> startPoint = startPolygon->getCwPoints()[startPointIndex];
 		unsigned int nextPointIndex = (startPointIndex+1) % startPolygon->getCwPoints().size();
 		unsigned int previousPointIndex = (startPointIndex+startPolygon->getCwPoints().size()-1) % startPolygon->getCwPoints().size();
         unsigned int currentPolygonEdgeId = startPointIndex;
@@ -83,12 +84,13 @@ namespace urchin
 
 		while(currentIteration++ < maxIteration+1)
 		{
+			Point2<T> testableStartPoint = mergedPolygonPoints.size() > 1 ? startPoint : Point2<T>(std::numeric_limits<T>::quiet_NaN(), 0.0);
             LineSegment2D<T> edge(edgeStartPoint, currentPolygon->getCwPoints()[nextPointIndex]);
 			CSGIntersection<T> csgIntersection = findFirstIntersectionOnEdge(edge, previousEdgeStartPoint, otherPolygon, currentPolygon,
-                                                                             currentPolygonEdgeId, intersectionsProcessed);
+                                                                             currentPolygonEdgeId, intersectionsProcessed, testableStartPoint);
             Point2<T> nextUnionPoint = csgIntersection.hasIntersection ? csgIntersection.intersectionPoint : edge.getB();
 
-            if(areSamePoints(startPolygon->getCwPoints()[startPointIndex], nextUnionPoint) && mergedPolygonPoints.size() > 1)
+            if(testableStartPoint==nextUnionPoint)
             {
                 break;
             }
@@ -193,9 +195,10 @@ namespace urchin
 	}
 
     template<class T> CSGIntersection<T> PolygonsUnion<T>::findFirstIntersectionOnEdge(const LineSegment2D<T> &edge, const Point2<T> &previousEdgePoint,
-                                                                                            const CSGPolygon<T> *polygon, const CSGPolygon<T> *currentPolygon,
-                                                                                            unsigned int currentPolygonEdgeId,
-                                                                                            std::set<uint_fast64_t> &intersectionsProcessed) const
+																					   const CSGPolygon<T> *polygon, const CSGPolygon<T> *currentPolygon,
+																					   unsigned int currentPolygonEdgeId,
+																					   std::set<uint_fast64_t> &intersectionsProcessed,
+																					   const Point2<T> &startPoint) const
 	{
 		CSGIntersection<T> csgIntersection;
 		csgIntersection.hasIntersection = false;
@@ -231,7 +234,8 @@ namespace urchin
                 if (squareDistanceEdgeStartPoint < nearestSquareDistanceEdgeStartPoint && !ignoreThisIntersection)
                 {
                     if ((edge.getA() != intersectionPoint && isIntersectionAngleBetter(edge, polygonEdge))
-                        || (edge.getA() == intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB())))
+                        || (edge.getA() == intersectionPoint && isIntersectionAngleBetter(previousEdgePoint, edge, polygonEdge.getB()))
+						|| intersectionPoint==startPoint)
                     {
                         nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
                         csgIntersection.hasIntersection = true;
@@ -325,12 +329,6 @@ namespace urchin
         intersectionId += edgeIdPolygon2;
         return intersectionId;
     }
-
-    template<class T> bool PolygonsUnion<T>::areSamePoints(const Point2<T> &p1, const Point2<T> &p2) const
-	{
-		constexpr T EPSILON = std::numeric_limits<T>::epsilon();
-		return ((p1.X-EPSILON) <= p2.X) && ((p1.X+EPSILON) >= p2.X) && ((p1.Y-EPSILON) <= p2.Y) && ((p1.Y+EPSILON) >= p2.Y);
-	}
 
     template<class T> void PolygonsUnion<T>::logInputData(const CSGPolygon<T> &polygon1, const CSGPolygon<T> &polygon2, const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
