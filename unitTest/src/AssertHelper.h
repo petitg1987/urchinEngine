@@ -16,6 +16,7 @@ class AssertHelper
 		static void assertPoint2FloatEquals(const urchin::Point2<float> &, const urchin::Point2<float> &, double epsilon = 0.001);
 		static void assertPoint3FloatEquals(const urchin::Point3<float> &, const urchin::Point3<float> &, double epsilon = 0.001);
 		static void assertPoint2IntEquals(const urchin::Point2<int> &, const urchin::Point2<int> &);
+		static void assertPoint2LongLongEquals(const urchin::Point2<long long> &, const urchin::Point2<long long> &);
 
 		static void assertVector3FloatEquals(const urchin::Vector3<float> &, const urchin::Vector3<float> &, double epsilon = 0.001);
 

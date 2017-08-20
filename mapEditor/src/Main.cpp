@@ -7,7 +7,7 @@
 using namespace urchin;
 
 int main(int argc, char *argv[])
-{ //TODO play with nav mesh: errors generated in urchinEngine.log to solve
+{ //TODO play with nav mesh: visual errors
 	QApplication app(argc, argv);
 
 	QFont defaultFont("Arial", 8, QFont::Normal);

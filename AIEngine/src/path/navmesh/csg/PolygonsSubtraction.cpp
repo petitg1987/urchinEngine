@@ -133,7 +133,7 @@ namespace urchin
                 return subtractedPolygons;
             }
 
-            subtractedPolygons.push_back(CSGPolygon<T>("[" + minuendPolygon.getName() + " - " + subtrahendPolygon.getName()+ "]", polygonCwPoints));
+            subtractedPolygons.push_back(CSGPolygon<T>("[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]", polygonCwPoints));
         }
 
         return subtractedPolygons;
@@ -159,24 +159,27 @@ namespace urchin
         {
             size_t nextI = (i+1)%minuendPolygon.getCwPoints().size();
             LineSegment2D<T> minuendEdge(minuendPolygon.getCwPoints()[i], minuendPolygon.getCwPoints()[nextI]);
+            LineSegment2D<double> minuendEdgeDouble = minuendEdge.template cast<double>();
 
             for(unsigned int j=0; j<subtrahendPolygon.getCwPoints().size(); ++j)
             {
                 size_t nextJ = (j+1)%subtrahendPolygon.getCwPoints().size();
                 LineSegment2D<T> subtrahendEdge(subtrahendPolygon.getCwPoints()[j], subtrahendPolygon.getCwPoints()[nextJ]);
+                LineSegment2D<double> subtrahendEdgeDouble = subtrahendEdge.template cast<double>();
 
                 bool hasIntersection, hasFarthestIntersection;
-                Point2<T> farthestIntersectionPoint;
-                Point2<T> intersectionPoint = minuendEdge.intersectPoint(subtrahendEdge, hasIntersection, farthestIntersectionPoint, hasFarthestIntersection);
+                Point2<double> farthestIntersectionPoint;
+                Point2<double> intersectionPoint = minuendEdgeDouble.intersectPoint(subtrahendEdgeDouble, hasIntersection, farthestIntersectionPoint, hasFarthestIntersection);
+
                 if(hasIntersection)
                 {
-                    pushIntersectionPoint(minuendEdge, subtrahendEdge, intersectionPoint, minuendIntersections[i]);
-                    pushIntersectionPoint(subtrahendEdge, minuendEdge, intersectionPoint, subtrahendIntersections[j]);
+                    pushIntersectionPoint(minuendEdge, subtrahendEdge, intersectionPoint.template cast<T>(), minuendIntersections[i]);
+                    pushIntersectionPoint(subtrahendEdge, minuendEdge, intersectionPoint.template cast<T>(), subtrahendIntersections[j]);
 
                     if(hasFarthestIntersection)
                     {
-                        pushIntersectionPoint(minuendEdge, subtrahendEdge, farthestIntersectionPoint, minuendIntersections[i]);
-                        pushIntersectionPoint(subtrahendEdge, minuendEdge, farthestIntersectionPoint, subtrahendIntersections[j]);
+                        pushIntersectionPoint(minuendEdge, subtrahendEdge, farthestIntersectionPoint.template cast<T>(), minuendIntersections[i]);
+                        pushIntersectionPoint(subtrahendEdge, minuendEdge, farthestIntersectionPoint.template cast<T>(), subtrahendIntersections[j]);
                     }
                 }
             }
@@ -199,7 +202,7 @@ namespace urchin
         if(distanceEdgeA!=0 && edge.getB().squareDistance(intersectionPoint)!=0 //avoid intersection point equals to a polygon point
            && otherEdge.getB().squareDistance(intersectionPoint) != 0) //avoid duplicate intersection point (same intersection in nextEdge(otherEdge).getA())
         {
-            intersectionPointsVector.push_back(IntersectionPoint<T>(intersectionPoint, distanceEdgeA));
+            intersectionPointsVector.emplace_back(IntersectionPoint<T>(intersectionPoint, distanceEdgeA));
         }
     }
 
@@ -229,11 +232,14 @@ namespace urchin
             {
                 IntersectionPoint<T> intersectionPoint = intersectionsPoints[intersectionI];
 
-                if (intersectionI!=0 && (intersectionI+1) % 2 != 0)
+                if (intersectionI!=0)
                 {
                     Point2<T> middlePoint = determineMiddlePoint(intersectionsPoints[intersectionI - 1].point, intersectionPoint.point);
                     bool isMiddlePointOutside = !otherPolygon.pointInsideOrOnPolygon(middlePoint);
-                    subtractionPoints.emplace_back(SubtractionPoint<T>(middlePoint, isMiddlePointOutside, -1));
+                    if(isMiddlePointOutside)
+                    {
+                        subtractionPoints.emplace_back(SubtractionPoint<T>(middlePoint, true, -1));
+                    }
                 }
 
                 constexpr int UNDEFINED_CROSS_POINT = -2;
@@ -357,12 +363,6 @@ namespace urchin
 
     //explicit template
     template class SubtractionPoint<float>;
-    template class SubtractionPoint<double>;
-    template class SubtractionPoint<int>;
-    template class SubtractionPoint<long long>;
 
     template class PolygonsSubtraction<float>;
-    template class PolygonsSubtraction<double>;
-    template class PolygonsSubtraction<int>;
-    template class PolygonsSubtraction<long long>;
 }

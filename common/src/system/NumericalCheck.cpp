@@ -17,7 +17,7 @@ namespace urchin
         auto longLongSize = static_cast<unsigned int>(sizeof(long long));
         if(longLongSize <= 4)
         {
-            throw std::runtime_error("Wrong number of byte for long: " + std::to_string(longLongSize));
+            throw std::runtime_error("Wrong number of byte for long long: " + std::to_string(longLongSize));
         }
 
         auto floatSize = static_cast<unsigned int>(sizeof(float));
@@ -27,12 +27,14 @@ namespace urchin
         }
 
         auto doubleSize = static_cast<unsigned int>(sizeof(double));
-        if(doubleSize < 4)
+        if(doubleSize < 8)
         {
             throw std::runtime_error("Wrong number of byte for double: " + std::to_string(doubleSize));
-        }else if(doubleSize == 4ui)
-        {
-            Logger::logger().log(Logger::WARNING, "Wrong number of byte for double: " + std::to_string(doubleSize));
+        }
+
+        if(floatSize >= doubleSize)
+        { //some float algorithms require a higher precision to work correctly
+            throw std::runtime_error("Wrong number of byte for float/double: " + std::to_string(floatSize) + "/" + std::to_string(doubleSize));
         }
     }
 

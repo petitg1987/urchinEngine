@@ -34,7 +34,7 @@ namespace urchin
 			}
 		}
 
-		return CSGPolygon<T>("(" + subjectPolygon.getName() + " ∩ " + clipPolygon.getName() + ")", outputList);
+		return CSGPolygon<T>("(" + subjectPolygon.getName() + ") ∩ (" + clipPolygon.getName() + ")", outputList);
 	}
 
 	template<class T> bool PolygonsIntersection<T>::isPointInside(const Line2D<T> &line, const Point2<T> &point) const
@@ -54,8 +54,6 @@ namespace urchin
 
 	//explicit template
 	template class PolygonsIntersection<float>;
-
-	template class PolygonsIntersection<double>;
 
 	template class PolygonsIntersection<int>;
 

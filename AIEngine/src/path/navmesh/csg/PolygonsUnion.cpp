@@ -72,7 +72,7 @@ namespace urchin
 
 		Point2<T> edgeStartPoint = currentPolygon->getCwPoints()[startPointIndex];
         Point2<T> previousEdgeStartPoint = currentPolygon->getCwPoints()[previousPointIndex];
-		bool foundIntersection = false;
+        bool foundIntersection = false;
 
 		unsigned int maxIteration = (polygon1.getCwPoints().size() + polygon2.getCwPoints().size()) * 2;
 		unsigned int currentIteration = 0;
@@ -88,16 +88,16 @@ namespace urchin
             LineSegment2D<T> edge(edgeStartPoint, currentPolygon->getCwPoints()[nextPointIndex]);
 			CSGIntersection<T> csgIntersection = findFirstIntersectionOnEdge(edge, previousEdgeStartPoint, otherPolygon, currentPolygon,
                                                                              currentPolygonEdgeId, intersectionsProcessed, testableStartPoint);
-            Point2<T> nextUnionPoint = csgIntersection.hasIntersection ? csgIntersection.intersectionPoint : edge.getB();
+            Point2<T> nextUnionPoint = csgIntersection.hasValidIntersection ? csgIntersection.intersectionPoint : edge.getB();
+            foundIntersection = foundIntersection || csgIntersection.hasIntersection;
 
             if(testableStartPoint==nextUnionPoint)
-            {
+            { //polygon is closed
                 break;
             }
 
-            if(csgIntersection.hasIntersection)
+            if(csgIntersection.hasValidIntersection)
             {
-				foundIntersection = true;
                 if(mergedPolygonPoints.empty() || mergedPolygonPoints[mergedPolygonPoints.size()-1]!=nextUnionPoint)
                 {
                     mergedPolygonPoints.push_back(nextUnionPoint);
@@ -130,7 +130,7 @@ namespace urchin
 			logInputData(polygon1, polygon2, "Maximum of iteration reached on polygons union algorithm.", Logger::ERROR);
 		}else if(foundIntersection || currentPolygon->pointInsideOrOnPolygon(otherPolygon->getCwPoints()[0]))
 		{
-			mergedPolygons.push_back(CSGPolygon<T>("{" + polygon1.getName() + " ∪ " + polygon2.getName() + "}", mergedPolygonPoints));
+			mergedPolygons.push_back(CSGPolygon<T>("{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}", mergedPolygonPoints));
 		}else
 		{
 			mergedPolygons.reserve(2);
@@ -201,6 +201,7 @@ namespace urchin
 																					   const Point2<T> &startPoint) const
 	{
 		CSGIntersection<T> csgIntersection;
+		csgIntersection.hasValidIntersection = false;
 		csgIntersection.hasIntersection = false;
 
 		T nearestSquareDistanceEdgeStartPoint = std::numeric_limits<T>::max();
@@ -221,6 +222,8 @@ namespace urchin
 
             if(hasIntersection)
             {
+                csgIntersection.hasIntersection = true;
+
                 bool ignoreThisIntersection = false;
                 if(polygonEdge.getB()==intersectionPoint)
                 {
@@ -238,8 +241,9 @@ namespace urchin
 						|| intersectionPoint==startPoint)
                     {
                         nearestSquareDistanceEdgeStartPoint = squareDistanceEdgeStartPoint;
-                        csgIntersection.hasIntersection = true;
-                        csgIntersection.intersectionPoint = intersectionPoint;
+
+                        csgIntersection.hasValidIntersection = true;
+						csgIntersection.intersectionPoint = intersectionPoint;
                         csgIntersection.intersectionId = intersectionId;
                         csgIntersection.edgeStartPointIndex = previousI;
                         csgIntersection.edgeEndPointIndex = i;
@@ -344,8 +348,6 @@ namespace urchin
 
     //explicit template
     template class PolygonsUnion<float>;
-
-    template class PolygonsUnion<double>;
 
 	template class PolygonsUnion<int>;
 

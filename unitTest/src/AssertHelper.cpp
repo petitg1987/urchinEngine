@@ -52,6 +52,14 @@ void AssertHelper::assertPoint2IntEquals(const urchin::Point2<int> &p1, const ur
 	}
 }
 
+void AssertHelper::assertPoint2LongLongEquals(const urchin::Point2<long long> &p1, const urchin::Point2<long long> &p2)
+{
+	for(unsigned int i=0; i<2; ++i)
+	{
+		CPPUNIT_ASSERT_MESSAGE("Assert fail on axis: " + std::to_string(i) + ". Value 1: " + std::to_string(p1[i]) + ", value 2: " + std::to_string(p2[i]), p1[i]==p2[i]);
+	}
+}
+
 void AssertHelper::assertVector3FloatEquals(const urchin::Vector3<float> &v1, const urchin::Vector3<float> &v2, double epsilon)
 {
 	for(unsigned int i=0; i<3; ++i)

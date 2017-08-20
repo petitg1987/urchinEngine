@@ -84,7 +84,7 @@ namespace urchin
 				&& ((point.X-point1.X)*std::abs(point2.Y-point1.Y) < (point2.X-point1.X) * (point.Y-point1.Y) * MathAlgorithm::sign<T>(point2.Y-point1.Y)))
 			{
 				inside = !inside;
-			}else if(onEdgeIsInside && LineSegment2D<T>(point1, point2).squareDistance(point)==0)
+			}else if(onEdgeIsInside && LineSegment2D<T>(point1, point2).onSegment(point))
 			{
 				return true;
 			}
@@ -112,9 +112,6 @@ namespace urchin
 	//explicit template
 	template class CSGPolygon<float>;
 	template std::ostream& operator <<<float>(std::ostream &, const CSGPolygon<float> &);
-
-	template class CSGPolygon<double>;
-	template std::ostream& operator <<<double>(std::ostream &, const CSGPolygon<double> &);
 
 	template class CSGPolygon<int>;
 	template std::ostream& operator <<<int>(std::ostream &, const CSGPolygon<int> &);

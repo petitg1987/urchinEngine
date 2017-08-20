@@ -11,6 +11,7 @@ namespace urchin
 
 	template<class T> struct CSGIntersection
 	{
+		bool hasValidIntersection;
 		bool hasIntersection;
 		Point2<T> intersectionPoint;
 		uint_fast64_t intersectionId;
