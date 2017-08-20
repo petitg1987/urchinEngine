@@ -349,7 +349,5 @@ namespace urchin
     //explicit template
     template class PolygonsUnion<float>;
 
-	template class PolygonsUnion<int>;
-
 	template class PolygonsUnion<long long>;
 }

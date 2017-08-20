@@ -253,12 +253,6 @@ namespace urchin
     template<class T> Point2<T> PolygonsSubtraction<T>::determineMiddlePoint(const Point2<T> &point1, const Point2<T> &point2) const
     {
         Point2<T> summedPoint = point1 + point2;
-        if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
-        {
-            return Point2<T>(MathAlgorithm::roundDivision<T>(summedPoint.X, 2),
-                             MathAlgorithm::roundDivision<T>(summedPoint.Y, 2));
-        }
-
         return Point2<T>(summedPoint.X/2.0, summedPoint.Y/2.0);
     }
 
