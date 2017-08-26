@@ -372,6 +372,21 @@ void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4()
     AssertHelper::assertPoint2FloatEquals(polygonSubtraction[0].getCwPoints()[8], Point2<float>(0.0, 0.0));
 }
 
+void PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5()
+{ //see polygonsSubtractionTwoSameEdge5.ggb
+    std::vector<Point2<float>> minuendPoly = {Point2<float>(4.76618004, -5.51731586), Point2<float>(-4.76618004, -5.51731586),
+                                              Point2<float>(-4.76618004, 0.517315984), Point2<float>(4.76618004, 0.517315984)};
+
+    std::vector<Point2<float>> subtrahendPoly = {Point2<float>(4.76618004, -3.86956978), Point2<float>(-4.76618004, -3.86956978),
+                                                 Point2<float>(-4.76618004, 3.86957693), Point2<float>(4.4309082, 3.86957693),
+                                                 Point2<float>(4.76617956, 3.74754858)};
+
+    std::vector<CSGPolygon<float>> polygonSubtraction = PolygonsSubtraction<float>::instance()->subtractPolygons(
+            CSGPolygon<float>("minuend", minuendPoly), CSGPolygon<float>("subtrahend", subtrahendPoly));
+
+    AssertHelper::assertUnsignedInt(polygonSubtraction.size(), 2); //TODO fix it (avoid logs)
+}
+
 void PolygonsSubtractionTest::polygonsSubtractionMaxIteration()
 { //see polygonsSubtractionMaxIteration.ggb
     std::vector<Point2<float>> minuendPoly = {Point2<float>(0.724967539, -6.26921654), Point2<float>(2.0384562, -6.03173637),
@@ -527,6 +542,7 @@ CppUnit::Test *PolygonsSubtractionTest::suite()
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge2", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge2));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge3", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge3));
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge4", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge4));
+    suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionTwoSameEdge5", &PolygonsSubtractionTest::polygonsSubtractionTwoSameEdge5));
 
     suite->addTest(new CppUnit::TestCaller<PolygonsSubtractionTest>("polygonsSubtractionMaxIteration", &PolygonsSubtractionTest::polygonsSubtractionMaxIteration));
 

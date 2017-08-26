@@ -97,7 +97,7 @@ namespace urchin
                     int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
                     int nextPointIndex = (currentPointIndex + nextPointOffset) % static_cast<int>(subtractionPoints[currentPolygon].size());
 
-                    if( (isMinuend(currentPolygon) && !subtractionPoints[currentPolygon][nextPointIndex].isOutside)
+                    if( (isMinuend(currentPolygon) && !subtractionPoints[currentPolygon][nextPointIndex].isOutside && !subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside)
                         || (isSubtrahend(currentPolygon) && (subtractionPoints[currentPolygon][nextPointIndex].isOutside) || subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside) )
                     { //polygon switch
                         currentPointIndex = nextOtherPointIndex;
