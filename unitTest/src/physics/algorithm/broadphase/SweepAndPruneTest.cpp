@@ -10,12 +10,12 @@ using namespace urchin;
 
 void SweepAndPruneTest::moveBodyCollide()
 {
-	WorkRigidBody *body1 = BodyTestHelper::createCubeRigidBody(Point3<float>(0.0, 0.0, 0.0), 2.0);
-	WorkRigidBody *body2 = BodyTestHelper::createCubeRigidBody(Point3<float>(-3.0, 0.0, 0.0), 1.0);
+	std::unique_ptr<WorkRigidBody> body1 = BodyTestHelper::createCubeRigidBody(Point3<float>(0.0, 0.0, 0.0), 2.0);
+	std::unique_ptr<WorkRigidBody> body2 = BodyTestHelper::createCubeRigidBody(Point3<float>(-3.0, 0.0, 0.0), 1.0);
 
 	SweepAndPrune sweepAndPrune;
-	sweepAndPrune.addBody(body1, nullptr);
-	sweepAndPrune.addBody(body2, nullptr);
+	sweepAndPrune.addBody(body1.get(), nullptr);
+	sweepAndPrune.addBody(body2.get(), nullptr);
 	body2->setPosition(Point3<float>(0.1, 0.0, 0.0));
 	sweepAndPrune.updateBodies();
 
@@ -25,12 +25,12 @@ void SweepAndPruneTest::moveBodyCollide()
 
 void SweepAndPruneTest::moveBodyNotCollide()
 {
-	WorkRigidBody *body1 = BodyTestHelper::createCubeRigidBody(Point3<float>(0.0, 0.0, 0.0), 2.0);
-	WorkRigidBody *body2 = BodyTestHelper::createCubeRigidBody(Point3<float>(-3.0, 0.0, 0.0), 1.0);
+	std::unique_ptr<WorkRigidBody> body1 = BodyTestHelper::createCubeRigidBody(Point3<float>(0.0, 0.0, 0.0), 2.0);
+	std::unique_ptr<WorkRigidBody> body2 = BodyTestHelper::createCubeRigidBody(Point3<float>(-3.0, 0.0, 0.0), 1.0);
 
 	SweepAndPrune sweepAndPrune;
-	sweepAndPrune.addBody(body1, nullptr);
-	sweepAndPrune.addBody(body2, nullptr);
+	sweepAndPrune.addBody(body1.get(), nullptr);
+	sweepAndPrune.addBody(body2.get(), nullptr);
 	body2->setPosition(Point3<float>(0.0, -3.0, 0.0));
 	sweepAndPrune.updateBodies();
 

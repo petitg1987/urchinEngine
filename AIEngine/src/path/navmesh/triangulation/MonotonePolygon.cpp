@@ -42,7 +42,7 @@ namespace urchin
 		edgeHelpers.reserve(5);
 
 		#ifdef _DEBUG
-			//logInputData("Debug monotone polygon.", Logger::INFO);
+//			logInputData("Debug monotone polygon.", Logger::INFO);
 		#endif
 	}
 
@@ -53,6 +53,19 @@ namespace urchin
 	std::vector<std::vector<unsigned int>> MonotonePolygon::createYMonotonePolygons()
 	{
 		std::vector<std::vector<unsigned int>> yMonotonePolygons;
+
+		#ifdef _DEBUG
+			for(unsigned int i=0; i<polygonPoints.size(); ++i)
+			{
+                for(unsigned int j=0; j<polygonPoints.size(); ++j)
+				{
+					if(i!=j && polygonPoints[i]==polygonPoints[j])
+					{
+						logInputData("Duplicate point in monotone polygon.", Logger::ERROR);
+					}
+				}
+			}
+    	#endif
 
 		try
 		{
@@ -125,7 +138,7 @@ namespace urchin
 		}
 
 		#ifdef _DEBUG
-			//logOutputData("Debug monotone polygon.", yMonotonePolygons, Logger::INFO);
+//			logOutputData("Debug monotone polygon.", yMonotonePolygons, Logger::INFO);
 		#endif
 
 		return yMonotonePolygons;

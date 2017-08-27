@@ -82,8 +82,11 @@ namespace urchin
             {
                 auto &currSubtractionPoint = subtractionPoints[currentPolygon][currentPointIndex];
 
-                polygonCwPoints.emplace_back(currSubtractionPoint.point);
-                isMinuendPoints[subtractedPolygons.size()].emplace_back(isMinuend(currentPolygon) || currSubtractionPoint.crossPointIndex!=-1);
+                if(polygonCwPoints.empty() || polygonCwPoints[polygonCwPoints.size()-1]!=currSubtractionPoint.point)
+                {
+                    polygonCwPoints.emplace_back(currSubtractionPoint.point);
+                    isMinuendPoints[subtractedPolygons.size()].emplace_back(isMinuend(currentPolygon) || currSubtractionPoint.crossPointIndex != -1);
+                }
                 currSubtractionPoint.isProcessed = true;
 
                 if(currSubtractionPoint.crossPointIndex!=-1)
@@ -199,8 +202,7 @@ namespace urchin
                                                                          std::vector<IntersectionPoint<T>> &intersectionPointsVector) const
     {
         T distanceEdgeA = edge.getA().squareDistance(intersectionPoint);
-        if(distanceEdgeA!=0 && edge.getB().squareDistance(intersectionPoint)!=0 //avoid intersection point equals to a polygon point
-           && otherEdge.getB().squareDistance(intersectionPoint) != 0) //avoid duplicate intersection point (same intersection in nextEdge(otherEdge).getA())
+        if(edge.getB().squareDistance(intersectionPoint) != 0) //avoid duplicate intersection point (same intersection in nextEdge(edge).getA())
         {
             intersectionPointsVector.emplace_back(IntersectionPoint<T>(intersectionPoint, distanceEdgeA));
         }
@@ -262,14 +264,13 @@ namespace urchin
         {
             for(unsigned int j=0; j<subtrahendPoints.size(); ++j)
             {
-                if(minuendPoints[i].point==subtrahendPoints[j].point)
+                if(minuendPoints[i].point==subtrahendPoints[j].point && minuendPoints[i].crossPointIndex < 0 && subtrahendPoints[j].crossPointIndex < 0)
                 {
                     minuendPoints[i].crossPointIndex = j;
-                    subtrahendPoints[j].crossPointIndex = i;
+                    minuendPoints[i].isOutside = false; //because of rounding errors
 
-                    //because of rounding errors
-                    minuendPoints[i].isOutside = false;
-                    subtrahendPoints[j].isOutside = false;
+                    subtrahendPoints[j].crossPointIndex = i;
+                    subtrahendPoints[j].isOutside = false; //because of rounding errors
                 }
             }
         }
