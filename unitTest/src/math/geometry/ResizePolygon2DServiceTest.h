@@ -10,7 +10,6 @@ class ResizePolygon2DServiceTest : public CppUnit::TestFixture
         static CppUnit::Test *suite();
 
         void reduceTriangle();
-        void reduceWithEdgesAcceptance();
 };
 
 #endif

@@ -36,19 +36,15 @@ namespace urchin
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
     {
         bool subtrahendInside;
-        std::map<unsigned int, std::vector<bool>> isMinuendPoints;
-
-        return subtractPolygons(minuendPolygon, subtrahendPolygon, subtrahendInside, isMinuendPoints);
+        return subtractPolygons(minuendPolygon, subtrahendPolygon, subtrahendInside);
     }
 
     /**
      * Perform a subtraction of polygons.
      * When subtrahendPolygon is totally included in minuendPolygon: the minuendPolygon is returned without hole.
      * @param subtrahendInside True when subtrahendPolygon is totally included in minuendPolygon or touch edge.
-     * @param isMinuendPoints Indicates if points of returned polygons are points which belong to minuend polygon.
      */
-    template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside,
-                                                                                          std::map<unsigned int, std::vector<bool>> &isMinuendPoints) const
+    template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside) const
     { //see http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-SA-97135.pdf
         std::vector<CSGPolygon<T>> subtractedPolygons;
 
@@ -61,8 +57,6 @@ namespace urchin
         if(subtrahendInside)
         {
             subtractedPolygons.emplace_back(minuendPolygon);
-            isMinuendPoints[0] = std::vector<bool>(minuendPolygon.getCwPoints().size(), true);
-
             return subtractedPolygons;
         }
 
@@ -71,7 +65,6 @@ namespace urchin
         {
             std::vector<Point2<T>> polygonCwPoints;
             polygonCwPoints.reserve(subtractionPoints.minuend.size()); //estimated memory size
-            isMinuendPoints[subtractedPolygons.size()].reserve(subtractionPoints.minuend.size()); //estimated memory size
 
             unsigned int maxIteration = static_cast<int>((minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size()) + 1);
             unsigned int currentIteration = 0;
@@ -85,7 +78,6 @@ namespace urchin
                 if(polygonCwPoints.empty() || polygonCwPoints[polygonCwPoints.size()-1]!=currSubtractionPoint.point)
                 {
                     polygonCwPoints.emplace_back(currSubtractionPoint.point);
-                    isMinuendPoints[subtractedPolygons.size()].emplace_back(isMinuend(currentPolygon) || currSubtractionPoint.crossPointIndex != -1);
                 }
                 currSubtractionPoint.isProcessed = true;
 
@@ -125,14 +117,12 @@ namespace urchin
             {
                 logInputData(minuendPolygon, subtrahendPolygon, "Maximum of iteration reached on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
-                isMinuendPoints.clear();
                 return subtractedPolygons;
             }
             if(polygonCwPoints.size()<3)
             {
                 logInputData(minuendPolygon, subtrahendPolygon, "Degenerate polygons built on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
-                isMinuendPoints.clear();
                 return subtractedPolygons;
             }
 

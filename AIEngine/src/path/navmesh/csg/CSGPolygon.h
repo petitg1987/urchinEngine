@@ -23,7 +23,8 @@ namespace urchin
 			bool pointInsidePolygon(const Point2<T> &) const;
 			bool pointInsideOrOnPolygon(const Point2<T> &) const;
 
-			CSGPolygon expand(T) const;
+			CSGPolygon<T> expand(T) const;
+			CSGPolygon<T> simplify(T, T) const;
 
 		private:
 			bool pointInsidePolygon(const Point2<T> &, bool) const;

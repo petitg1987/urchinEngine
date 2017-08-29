@@ -26,17 +26,11 @@ namespace urchin
 		unsigned int faceIndex;
 	};
 
-	struct WalkablePolygonData
-	{
-		WalkablePolygonData(const CSGPolygon<float> &, const std::vector<bool> &);
-
-		CSGPolygon<float> walkablePolygon;
-		std::vector<bool> isExternalPoints;
-	};
-
 	class NavMeshGenerator
 	{
 		public:
+            NavMeshGenerator();
+
 			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
 
 			std::shared_ptr<NavMesh> generate(std::shared_ptr<AIWorld>);
@@ -65,6 +59,9 @@ namespace urchin
 			std::vector<Point3<float>> elevateTriangulatedPoints(const Triangulation &, const PolyhedronFace &) const;
 			Point3<float> elevatePoints(const Point2<float> &, float, const PolyhedronFace &) const;
 			std::vector<IndexedTriangle3D<float>> toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &) const;
+
+			const float polygonMinDotProductThreshold;
+			const float polygonMergePointsDistanceThreshold;
 
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
 			std::shared_ptr<NavMesh> navMesh;

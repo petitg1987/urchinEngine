@@ -98,6 +98,51 @@ namespace urchin
 		return CSGPolygon<T>(name, ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance));
 	}
 
+	template<class T> CSGPolygon<T> CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold) const
+	{
+		std::vector<Point2<T>> simplifiedCwPoints;
+		simplifiedCwPoints.reserve(cwPoints.size());
+
+        //1. keep all angles except ones near to 180 and 0/360 degrees
+		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
+		{
+            unsigned int nextI = (i+1) % cwPoints.size();
+            Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
+            Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
+            T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
+            if(absDotProduct < polygonMinDotProductThreshold)
+            {
+                simplifiedCwPoints.emplace_back(cwPoints[i]);
+            }
+		}
+
+        //2. remove close points
+        const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
+        for(auto it = simplifiedCwPoints.begin(); it != simplifiedCwPoints.end();)
+        {
+            auto nextIt = it + 1;
+            if(nextIt==simplifiedCwPoints.end())
+            {
+                nextIt = simplifiedCwPoints.begin();
+            }
+
+            if (nextIt!=it && it->squareDistance(*nextIt) < mergePointsSquareDistance)
+            {
+                it = simplifiedCwPoints.erase(it);
+            }else
+            {
+                ++it;
+            }
+        }
+
+		if(simplifiedCwPoints.size() < 3)
+		{
+			return CSGPolygon<T>("[[null-polygon]]", std::vector<Point2<T>>());
+		}
+
+		return CSGPolygon<T>(name, simplifiedCwPoints);
+	}
+
 	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
 	{
 		stream << "Name:" << polygon.getName() << std::endl;
