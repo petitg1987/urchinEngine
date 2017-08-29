@@ -103,41 +103,32 @@ namespace urchin
 		std::vector<Point2<T>> simplifiedCwPoints;
 		simplifiedCwPoints.reserve(cwPoints.size());
 
-        //1. keep all angles except ones near to 180 and 0/360 degrees
+		const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
 		{
-            unsigned int nextI = (i+1) % cwPoints.size();
-            Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
-            Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
-            T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
-            if(absDotProduct < polygonMinDotProductThreshold)
+            if(simplifiedCwPoints.empty() || cwPoints[i].squareDistance(simplifiedCwPoints[simplifiedCwPoints.size()-1]) > mergePointsSquareDistance) //exclude points too close
             {
-                simplifiedCwPoints.emplace_back(cwPoints[i]);
+                unsigned int nextI = (i+1) % cwPoints.size();
+
+                Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
+                Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
+                T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
+
+                if(absDotProduct < polygonMinDotProductThreshold) //exclude angles near to 180 and 0/360 degrees
+                {
+                    simplifiedCwPoints.emplace_back(cwPoints[i]);
+                }
             }
 		}
 
-        //2. remove close points
-        const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
-        for(auto it = simplifiedCwPoints.begin(); it != simplifiedCwPoints.end();)
-        {
-            auto nextIt = it + 1;
-            if(nextIt==simplifiedCwPoints.end())
-            {
-                nextIt = simplifiedCwPoints.begin();
-            }
-
-            if (nextIt!=it && it->squareDistance(*nextIt) < mergePointsSquareDistance)
-            {
-                it = simplifiedCwPoints.erase(it);
-            }else
-            {
-                ++it;
-            }
-        }
+		if(simplifiedCwPoints.size() > 2 && simplifiedCwPoints[0].squareDistance(simplifiedCwPoints[simplifiedCwPoints.size()-1]) <= mergePointsSquareDistance)
+		{ //first point and last point are too close: remove last one
+			simplifiedCwPoints.resize(simplifiedCwPoints.size()-1);
+		}
 
 		if(simplifiedCwPoints.size() < 3)
 		{
-			return CSGPolygon<T>("[[null-polygon]]", std::vector<Point2<T>>());
+			return CSGPolygon<T>("[[null]]", std::vector<Point2<T>>());
 		}
 
 		return CSGPolygon<T>(name, simplifiedCwPoints);
