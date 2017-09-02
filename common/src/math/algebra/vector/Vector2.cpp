@@ -32,7 +32,7 @@ namespace urchin
 
 	template<class T> Vector2<T> Vector2<T>::normalize() const
 	{
-		const T norm = (T)sqrt(X*X + Y*Y);
+		const T norm = std::sqrt(X*X + Y*Y);
 
 		if(norm > 0.0)
 		{
@@ -44,7 +44,7 @@ namespace urchin
 
 	template<class T> T Vector2<T>::length() const
 	{
-		return (T)sqrt(X*X + Y*Y);
+		return std::sqrt(X*X + Y*Y);
 	}
 
 	template<class T> T Vector2<T>::squareLength() const

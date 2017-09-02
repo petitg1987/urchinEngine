@@ -1,5 +1,5 @@
-#ifndef ENGINE_LIGHT_H
-#define ENGINE_LIGHT_H
+#ifndef URCHINENGINE_LIGHT_H
+#define URCHINENGINE_LIGHT_H
 
 #include <vector>
 #include "UrchinCommon.h"
@@ -13,7 +13,7 @@ namespace urchin
 	{
 		public:
 			Light();
-			virtual ~Light();
+			virtual ~Light() = default;
 
 			enum LightType
 			{

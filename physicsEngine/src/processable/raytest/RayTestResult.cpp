@@ -10,11 +10,6 @@ namespace urchin
 		resultReady.store(false, std::memory_order_relaxed);
 	}
 
-	RayTestResult::~RayTestResult()
-	{
-
-	}
-
 	void RayTestResult::addResults(const ccd_set &rayTestResults)
 	{
 		this->rayTestResults = rayTestResults;

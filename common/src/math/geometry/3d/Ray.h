@@ -1,5 +1,5 @@
-#ifndef ENGINE_RAY_H
-#define ENGINE_RAY_H
+#ifndef URCHINENGINE_RAY_H
+#define URCHINENGINE_RAY_H
 
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"

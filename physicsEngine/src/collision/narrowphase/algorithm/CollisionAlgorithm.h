@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONALGORITHM_H
-#define ENGINE_COLLISIONALGORITHM_H
+#ifndef URCHINENGINE_COLLISIONALGORITHM_H
+#define URCHINENGINE_COLLISIONALGORITHM_H
 
 #include "collision/ManifoldResult.h"
 #include "collision/narrowphase/CollisionObjectWrapper.h"

@@ -1,5 +1,5 @@
-#ifndef ENGINE_VORONOIREGIONTEST_H
-#define ENGINE_VORONOIREGIONTEST_H
+#ifndef URCHINENGINE_VORONOIREGIONTEST_H
+#define URCHINENGINE_VORONOIREGIONTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

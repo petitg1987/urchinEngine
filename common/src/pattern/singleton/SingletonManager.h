@@ -1,5 +1,5 @@
-#ifndef ENGINE_SINGLETONMANAGER_H
-#define ENGINE_SINGLETONMANAGER_H
+#ifndef URCHINENGINE_SINGLETONMANAGER_H
+#define URCHINENGINE_SINGLETONMANAGER_H
 
 #include <string>
 #include <map>
@@ -34,8 +34,8 @@ namespace urchin
 			static void destroyAllSingletons();
 			
 		private:
-			SingletonManager();
-			~SingletonManager();
+			SingletonManager() = default;
+			~SingletonManager() = default;
 		
 			static std::map<std::string, SingletonInterface *> singletons;
 	};

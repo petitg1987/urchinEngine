@@ -1,5 +1,5 @@
-#ifndef ENGINE_RAYTESTER_H
-#define ENGINE_RAYTESTER_H
+#ifndef URCHINENGINE_RAYTESTER_H
+#define URCHINENGINE_RAYTESTER_H
 
 #include "UrchinCommon.h"
 
@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			RayTester(const Ray<float> &ray);
-			~RayTester();
 
 			std::shared_ptr<const RayTestResult> getRayTestResult() const;
 

@@ -1,5 +1,5 @@
-#ifndef ENGINE_ANIMATION_H
-#define ENGINE_ANIMATION_H
+#ifndef URCHINENGINE_ANIMATION_H
+#define URCHINENGINE_ANIMATION_H
 
 #include <vector>
 #include "UrchinCommon.h"
@@ -14,7 +14,6 @@ namespace urchin
 	{
 		public:
 			Animation(const ConstAnimation *const, Meshes *const);
-			~Animation();
 
 			const std::vector<Bone> &getSkeleton() const;
 			const AABBox<float> &getGlobalAABBox() const;

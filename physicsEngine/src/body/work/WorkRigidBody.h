@@ -1,5 +1,5 @@
-#ifndef ENGINE_WORKRIGIDBODY_H
-#define ENGINE_WORKRIGIDBODY_H
+#ifndef URCHINENGINE_WORKRIGIDBODY_H
+#define URCHINENGINE_WORKRIGIDBODY_H
 
 #include <string>
 #include "UrchinCommon.h"

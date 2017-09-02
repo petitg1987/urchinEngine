@@ -1,5 +1,5 @@
-#ifndef ENGINE_BOXSHAPE_H
-#define ENGINE_BOXSHAPE_H
+#ifndef URCHINENGINE_BOXSHAPE_H
+#define URCHINENGINE_BOXSHAPE_H
 
 #include <vector>
 #include <memory>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_GUIRENDERER_H
-#define ENGINE_GUIRENDERER_H
+#ifndef URCHINENGINE_GUIRENDERER_H
+#define URCHINENGINE_GUIRENDERER_H
 
 #include <set>
 #include "UrchinCommon.h"

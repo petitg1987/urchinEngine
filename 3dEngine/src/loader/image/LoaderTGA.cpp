@@ -19,11 +19,6 @@ namespace urchin
 
 	}
 
-	LoaderTGA::~LoaderTGA()
-	{
-
-	}
-
 	Image *LoaderTGA::loadFromFile(const std::string &filename, void *params)
 	{
 		//opens file
@@ -153,7 +148,7 @@ namespace urchin
 		short origin = ((int)header.imageDescriptor & 0x20)>>5; //0:origin bottom, 1:origin top
 		if(origin==0)
 		{ //inverses the texels
-			unsigned char *texelsInverse = new unsigned char[width*height*componentsCount];
+			auto *texelsInverse = new unsigned char[width*height*componentsCount];
 			
 			for(unsigned int i=0, iInverse=height-1;i<height;i++, iInverse--)
 			{
@@ -241,9 +236,9 @@ namespace urchin
 			color = data[j] + (data[j+1] << 8);
 
 			//converts BGR to RGB
-			texels[(i*3)+0] = (char)(((color & 0x7C00) >> 10) << 3);
-			texels[(i*3)+1] = (char)(((color & 0x03E0) >>  5) << 3);
-			texels[(i*3)+2] = (char)(((color & 0x001F) >>  0) << 3);
+			texels[(i*3)+0] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
+			texels[(i*3)+1] = (unsigned char)(((color & 0x03E0) >>  5) << 3);
+			texels[(i*3)+2] = (unsigned char)(((color & 0x001F) >>  0) << 3);
 		}
 	}
 
@@ -340,9 +335,9 @@ namespace urchin
 
 				for(int i=0; i<size; ++i,ptr+=3)
 				{
-					ptr[0] = (char)(((color & 0x7C00) >> 10) << 3);
-					ptr[1] = (char)(((color & 0x03E0) >>  5) << 3);
-					ptr[2] = (char)(((color & 0x001F) >>  0) << 3);
+					ptr[0] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
+					ptr[1] = (unsigned char)(((color & 0x03E0) >>  5) << 3);
+					ptr[2] = (unsigned char)(((color & 0x001F) >>  0) << 3);
 				}
 			}else
 			{
@@ -351,9 +346,9 @@ namespace urchin
 				{
 					color = data[j] + (data[j + 1] << 8);
 
-					ptr[0] = (char)(((color & 0x7C00) >> 10) << 3);
-					ptr[1] = (char)(((color & 0x03E0) >>  5) << 3);
-					ptr[2] = (char)(((color & 0x001F) >>  0) << 3);
+					ptr[0] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
+					ptr[1] = (unsigned char)(((color & 0x03E0) >> 5) << 3);
+					ptr[2] = (unsigned char)(((color & 0x001F) >> 0) << 3);
 				}
 			}
 		}

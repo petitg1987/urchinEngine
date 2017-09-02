@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONCONVEXHULLSHAPE_H
-#define ENGINE_COLLISIONCONVEXHULLSHAPE_H
+#ifndef URCHINENGINE_COLLISIONCONVEXHULLSHAPE_H
+#define URCHINENGINE_COLLISIONCONVEXHULLSHAPE_H
 
 #include <memory>
 #include <vector>
@@ -16,7 +16,6 @@ namespace urchin
 	{
 		public:
 			CollisionConvexHullShape(const std::vector<Point3<float>> &);
-			~CollisionConvexHullShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;

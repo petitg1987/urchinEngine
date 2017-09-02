@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include <stdexcept>
 #include "UrchinCommon.h"
 
 #include "TextureManager.h"
@@ -10,11 +9,6 @@ namespace urchin
 
 	TextureManager::TextureManager() : Singleton<TextureManager>(),
 		anisotropy(getMaxSupportedAnisotropy())
-	{
-
-	}
-
-	TextureManager::~TextureManager()
 	{
 
 	}

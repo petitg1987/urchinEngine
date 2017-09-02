@@ -1,4 +1,3 @@
-#include <AL/al.h>
 #include <AL/alc.h>
 #include <stdexcept>
 
@@ -6,16 +5,6 @@
 
 namespace urchin
 {
-
-	DeviceManager::DeviceManager()
-	{
-
-	}
-
-	DeviceManager::~DeviceManager()
-	{
-
-	}
 
 	/**
 	 * Initialize OpenAL: create context and make it current

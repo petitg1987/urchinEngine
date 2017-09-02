@@ -3,11 +3,6 @@
 namespace urchin
 {
 
-	Observable::Observable()
-	{
-
-	}
-
 	Observable::~Observable()
 	{
 		for(std::map<int, std::set<Observer *> *>::const_iterator it = mapObservers.begin(); it!=mapObservers.end(); ++it)
@@ -21,7 +16,7 @@ namespace urchin
 		std::map<int, std::set<Observer *> *>::const_iterator it = mapObservers.find(notificationType);
 		if(it==mapObservers.end())
 		{
-			std::set<Observer *> *observers = new std::set<Observer *>();
+			auto *observers = new std::set<Observer *>();
 			observers->insert(observer);
 			mapObservers[notificationType] = observers;
 		}else
@@ -50,9 +45,9 @@ namespace urchin
 		if(it!=mapObservers.end())
 		{
 			std::set<Observer *> *observers = it->second;
-			for(std::set<Observer *>::const_iterator itObservers=observers->begin(); itObservers!=observers->end(); ++itObservers)
+			for (auto observer : *observers)
 			{
-				(*itObservers)->notify(observable, notificationType);
+				observer->notify(observable, notificationType);
 			}
 		}
 	}

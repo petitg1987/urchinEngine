@@ -40,7 +40,7 @@ namespace urchin
 
 	template<class T> Vector4<T> Vector4<T>::normalize() const
 	{
-		const T norm = (T)sqrt(X*X + Y*Y + Z*Z + W*W);
+		const T norm = std::sqrt(X*X + Y*Y + Z*Z + W*W);
 
 		if(norm > 0.0)
 		{
@@ -52,7 +52,7 @@ namespace urchin
 
 	template<class T> T Vector4<T>::length() const
 	{
-		return (T)sqrt(X*X + Y*Y + Z*Z + W*W);
+		return std::sqrt(X*X + Y*Y + Z*Z + W*W);
 	}
 
 	template<class T> T Vector4<T>::squareLength() const

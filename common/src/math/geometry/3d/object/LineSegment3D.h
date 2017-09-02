@@ -1,5 +1,5 @@
-#ifndef ENGINE_LINESEGMENT3D_H
-#define ENGINE_LINESEGMENT3D_H
+#ifndef URCHINENGINE_LINESEGMENT3D_H
+#define URCHINENGINE_LINESEGMENT3D_H
 
 #include <cmath>
 #include <vector>

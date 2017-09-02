@@ -1,5 +1,5 @@
-#ifndef ENGINE_CIMAGE_H
-#define ENGINE_CIMAGE_H
+#ifndef URCHINENGINE_CIMAGE_H
+#define URCHINENGINE_CIMAGE_H
 
 #include "resources/Resource.h"
 

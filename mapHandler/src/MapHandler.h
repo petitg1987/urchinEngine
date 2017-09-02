@@ -1,5 +1,5 @@
-#ifndef ENGINE_MAPHANDLER_H
-#define ENGINE_MAPHANDLER_H
+#ifndef URCHINENGINE_MAPHANDLER_H
+#define URCHINENGINE_MAPHANDLER_H
 
 #include <string>
 #include <map>

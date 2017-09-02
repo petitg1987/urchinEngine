@@ -1,5 +1,5 @@
-#ifndef ENGINE_SHADOWMANAGER_H
-#define ENGINE_SHADOWMANAGER_H
+#ifndef URCHINENGINE_SHADOWMANAGER_H
+#define URCHINENGINE_SHADOWMANAGER_H
 
 #include <set>
 #include "UrchinCommon.h"

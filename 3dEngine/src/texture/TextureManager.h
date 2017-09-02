@@ -1,5 +1,5 @@
-#ifndef ENGINE_TEXTUREMANAGER_H
-#define ENGINE_TEXTUREMANAGER_H
+#ifndef URCHINENGINE_TEXTUREMANAGER_H
+#define URCHINENGINE_TEXTUREMANAGER_H
 
 #include <list>
 #include "UrchinCommon.h"
@@ -21,7 +21,7 @@ namespace urchin
 		
 		private:
 			TextureManager();
-			virtual ~TextureManager();
+			virtual ~TextureManager() = default;
 
 			void clampToMaxAnisotropy();
 

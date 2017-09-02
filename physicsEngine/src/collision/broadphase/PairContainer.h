@@ -1,5 +1,5 @@
-#ifndef ENGINE_PAIRCONTAINER_H
-#define ENGINE_PAIRCONTAINER_H
+#ifndef URCHINENGINE_PAIRCONTAINER_H
+#define URCHINENGINE_PAIRCONTAINER_H
 
 #include "collision/OverlappingPair.h"
 
@@ -12,8 +12,7 @@ namespace urchin
 	class PairContainer
 	{
 		public:
-			PairContainer();
-			virtual ~PairContainer();
+			virtual ~PairContainer() = default;
 
 			virtual void addOverlappingPair(AbstractWorkBody *, AbstractWorkBody *) = 0;
 			virtual void removeOverlappingPair(AbstractWorkBody *, AbstractWorkBody *) = 0;

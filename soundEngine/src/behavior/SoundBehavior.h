@@ -1,5 +1,5 @@
-#ifndef ENGINE_SOUNDBEHAVIOR_H
-#define ENGINE_SOUNDBEHAVIOR_H
+#ifndef URCHINENGINE_SOUNDBEHAVIOR_H
+#define URCHINENGINE_SOUNDBEHAVIOR_H
 
 namespace urchin
 {
@@ -21,7 +21,6 @@ namespace urchin
 
 			SoundBehavior(PlayBehavior, StopBehavior);
 			SoundBehavior(PlayBehavior, StopBehavior, float);
-			~SoundBehavior();
 
 			PlayBehavior getPlayBehavior() const;
 			StopBehavior getStopBehavior() const;

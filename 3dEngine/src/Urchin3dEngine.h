@@ -1,5 +1,5 @@
-#ifndef ENGINE_URCHIN3DENGINE_H
-#define ENGINE_URCHIN3DENGINE_H
+#ifndef URCHINENGINE_URCHIN3DENGINE_H
+#define URCHINENGINE_URCHIN3DENGINE_H
 
 #include "scene/SceneManager.h"
 #include "scene/InputDevice.h"

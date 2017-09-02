@@ -1,5 +1,5 @@
-#ifndef ENGINE_AABBOX_H
-#define ENGINE_AABBOX_H
+#ifndef URCHINENGINE_AABBOX_H
+#define URCHINENGINE_AABBOX_H
 
 #include <vector>
 #include <limits>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_LIGHTMANAGER_H
-#define ENGINE_LIGHTMANAGER_H
+#ifndef URCHINENGINE_LIGHTMANAGER_H
+#define URCHINENGINE_LIGHTMANAGER_H
 
 #include <vector>
 #include "UrchinCommon.h"

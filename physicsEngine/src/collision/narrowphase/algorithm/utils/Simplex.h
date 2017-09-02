@@ -1,5 +1,5 @@
-#ifndef ENGINE_SIMPLEX_H
-#define ENGINE_SIMPLEX_H
+#ifndef URCHINENGINE_SIMPLEX_H
+#define URCHINENGINE_SIMPLEX_H
 
 #include <vector>
 #include "UrchinCommon.h"

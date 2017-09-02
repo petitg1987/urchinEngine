@@ -1,5 +1,5 @@
-#ifndef ENGINE_POINT2_H
-#define ENGINE_POINT2_H
+#ifndef URCHINENGINE_POINT2_H
+#define URCHINENGINE_POINT2_H
 
 #include <iostream>
 #include <cmath>

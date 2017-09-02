@@ -1,5 +1,5 @@
-#ifndef ENGINE_POINTSOUND_H
-#define ENGINE_POINTSOUND_H
+#ifndef URCHINENGINE_POINTSOUND_H
+#define URCHINENGINE_POINTSOUND_H
 
 #include <string>
 #include "UrchinCommon.h"
@@ -18,7 +18,6 @@ namespace urchin
 		public:
 			PointSound(const std::string &, const Point3<float> &);
 			PointSound(const std::string &, const Point3<float> &, float);
-			~PointSound();
 
 			Sound::SoundType getSoundType() const;
 

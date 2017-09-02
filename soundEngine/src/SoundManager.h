@@ -1,5 +1,5 @@
-#ifndef ENGINE_SOUNDMANAGER_H
-#define ENGINE_SOUNDMANAGER_H
+#ifndef URCHINENGINE_SOUNDMANAGER_H
+#define URCHINENGINE_SOUNDMANAGER_H
 
 #include <vector>
 #include "UrchinCommon.h"

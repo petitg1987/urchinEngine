@@ -1,5 +1,5 @@
-#ifndef ENGINE_CYLINDER_H
-#define ENGINE_CYLINDER_H
+#ifndef URCHINENGINE_CYLINDER_H
+#define URCHINENGINE_CYLINDER_H
 
 #include "math/geometry/3d/object/ConvexObject3D.h"
 #include "math/geometry/3d/shape/CylinderShape.h"

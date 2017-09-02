@@ -1,5 +1,5 @@
-#ifndef ENGINE_LINE2D_H
-#define ENGINE_LINE2D_H
+#ifndef URCHINENGINE_LINE2D_H
+#define URCHINENGINE_LINE2D_H
 
 #include "math/algebra/point/Point2.h"
 

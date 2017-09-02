@@ -1,5 +1,5 @@
-#ifndef ENGINE_XMLPARSER_H
-#define ENGINE_XMLPARSER_H
+#ifndef URCHINENGINE_XMLPARSER_H
+#define URCHINENGINE_XMLPARSER_H
 
 #include <string>
 #include <memory>

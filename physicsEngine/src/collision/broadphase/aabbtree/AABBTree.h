@@ -1,5 +1,5 @@
-#ifndef ENGINE_AABBTREE_H
-#define ENGINE_AABBTREE_H
+#ifndef URCHINENGINE_AABBTREE_H
+#define URCHINENGINE_AABBTREE_H
 
 #include "UrchinCommon.h"
 

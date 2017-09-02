@@ -1,5 +1,5 @@
-#ifndef ENGINE_SUPPORTPOINTTEST_H
-#define ENGINE_SUPPORTPOINTTEST_H
+#ifndef URCHINENGINE_SUPPORTPOINTTEST_H
+#define URCHINENGINE_SUPPORTPOINTTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

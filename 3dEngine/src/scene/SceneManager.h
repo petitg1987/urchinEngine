@@ -1,5 +1,5 @@
-#ifndef ENGINE_SCENEMANAGER_H
-#define ENGINE_SCENEMANAGER_H
+#ifndef URCHINENGINE_SCENEMANAGER_H
+#define URCHINENGINE_SCENEMANAGER_H
 
 #include <chrono>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_COMMONSOLVINGDATA_H
-#define ENGINE_COMMONSOLVINGDATA_H
+#ifndef URCHINENGINE_COMMONSOLVINGDATA_H
+#define URCHINENGINE_COMMONSOLVINGDATA_H
 
 #include "UrchinCommon.h"
 
@@ -14,7 +14,6 @@ namespace urchin
 	struct CommonSolvingData
 	{
 		CommonSolvingData();
-		~CommonSolvingData();
 
 		const WorkRigidBody *body1, *body2;
 

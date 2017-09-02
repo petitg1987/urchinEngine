@@ -1,5 +1,4 @@
 #include <AL/al.h>
-#include <AL/alc.h>
 #include <thread>
 #include <iostream>
 #include <stdexcept>
@@ -25,9 +24,9 @@ namespace urchin
 
 	StreamUpdateWorker::~StreamUpdateWorker()
 	{
-		for(unsigned int i=0; i<tasks.size(); ++i)
+		for (auto &task : tasks)
 		{
-			deleteTask(tasks[i]);
+			deleteTask(task);
 		}
 	}
 
@@ -38,7 +37,7 @@ namespace urchin
 	 */
 	void StreamUpdateWorker::addTask(const Sound *sound, bool playLoop)
 	{
-		StreamUpdateTask *task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
+		auto *task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
 		//create buffers/chunks
 		ALuint bufferId[nbChunkBuffer];
@@ -66,9 +65,9 @@ namespace urchin
 	{
 		std::lock_guard<std::mutex> lock(tasksMutex);
 
-		for(unsigned int i=0; i<tasks.size(); ++i)
+		for (auto task : tasks)
 		{
-			if(tasks[i]->getSourceId() == sound->getSourceId())
+			if(task->getSourceId() == sound->getSourceId())
 			{
 				return true;
 			}
@@ -81,7 +80,7 @@ namespace urchin
 	{
 		std::lock_guard<std::mutex> lock(tasksMutex);
 
-		for(std::vector<StreamUpdateTask *>::iterator it=tasks.begin(); it!=tasks.end(); ++it)
+		for(auto it=tasks.begin(); it!=tasks.end(); ++it)
 		{
 			if((*it)->getSourceId() == sound->getSourceId())
 			{
@@ -100,7 +99,7 @@ namespace urchin
 			{
 				std::lock_guard<std::mutex> lock(tasksMutex);
 
-				for(std::vector<StreamUpdateTask *>::iterator it=tasks.begin(); it!=tasks.end();)
+				for(auto it=tasks.begin(); it!=tasks.end();)
 				{
 					bool taskFinished = processTask(*it);
 					if(taskFinished)

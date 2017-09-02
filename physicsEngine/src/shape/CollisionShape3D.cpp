@@ -19,11 +19,6 @@ namespace urchin
 
 	}
 
-	CollisionShape3D::~CollisionShape3D()
-	{
-
-	}
-
 	void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin)
 	{
 		if(this->innerMargin > maximumInnerMargin)

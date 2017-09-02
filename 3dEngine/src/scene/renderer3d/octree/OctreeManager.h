@@ -1,5 +1,5 @@
-#ifndef ENGINE_OCTREEMANAGER_H
-#define ENGINE_OCTREEMANAGER_H
+#ifndef URCHINENGINE_OCTREEMANAGER_H
+#define URCHINENGINE_OCTREEMANAGER_H
 
 #include <limits>
 #include <set>

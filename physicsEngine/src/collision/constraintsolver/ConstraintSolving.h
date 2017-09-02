@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONSTRAINTSOLVING_H
-#define ENGINE_CONSTRAINTSOLVING_H
+#ifndef URCHINENGINE_CONSTRAINTSOLVING_H
+#define URCHINENGINE_CONSTRAINTSOLVING_H
 
 #include "UrchinCommon.h"
 
@@ -18,7 +18,6 @@ namespace urchin
 	{
 		public:
 			ConstraintSolving(WorkRigidBody *, WorkRigidBody *, ManifoldContactPoint &);
-			~ConstraintSolving();
 
 			WorkRigidBody *getBody1();
 			WorkRigidBody *getBody2();

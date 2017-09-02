@@ -1,5 +1,5 @@
-#ifndef ENGINE_TEMPORALOBJECT_H
-#define ENGINE_TEMPORALOBJECT_H
+#ifndef URCHINENGINE_TEMPORALOBJECT_H
+#define URCHINENGINE_TEMPORALOBJECT_H
 
 #include "shape/CollisionShape3D.h"
 #include "utils/math/PhysicsTransform.h"

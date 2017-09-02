@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOADERMTR_H
-#define ENGINE_LOADERMTR_H
+#ifndef URCHINENGINE_LOADERMTR_H
+#define URCHINENGINE_LOADERMTR_H
 
 #include <string>
 
@@ -12,7 +12,7 @@ namespace urchin
 	class LoaderMTR : public Loader<Material>
 	{
 		public:
-			virtual ~LoaderMTR();
+			virtual ~LoaderMTR() = default;
 
 			Material *loadFromFile(const std::string &, void *);
 	};

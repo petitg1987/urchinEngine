@@ -1,5 +1,5 @@
-#ifndef ENGINE_AMBIENTSOUND_H
-#define ENGINE_AMBIENTSOUND_H
+#ifndef URCHINENGINE_AMBIENTSOUND_H
+#define URCHINENGINE_AMBIENTSOUND_H
 
 #include <string>
 
@@ -14,8 +14,7 @@ namespace urchin
 	class AmbientSound : public Sound
 	{
 		public:
-			AmbientSound(const std::string &);
-			~AmbientSound();
+			explicit AmbientSound(const std::string &);
 
 			Sound::SoundType getSoundType() const;
 	};

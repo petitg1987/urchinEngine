@@ -1,5 +1,5 @@
-#ifndef ENGINE_EPASPHERETEST_H
-#define ENGINE_EPASPHERETEST_H
+#ifndef URCHINENGINE_EPASPHERETEST_H
+#define URCHINENGINE_EPASPHERETEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

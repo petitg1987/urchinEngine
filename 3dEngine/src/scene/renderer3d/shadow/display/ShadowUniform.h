@@ -1,5 +1,5 @@
-#ifndef ENGINE_SHADOWUNIFORM_H
-#define ENGINE_SHADOWUNIFORM_H
+#ifndef URCHINENGINE_SHADOWUNIFORM_H
+#define URCHINENGINE_SHADOWUNIFORM_H
 
 #include <vector>
 #include "UrchinCommon.h"

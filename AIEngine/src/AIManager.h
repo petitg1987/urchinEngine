@@ -1,5 +1,5 @@
-#ifndef ENGINE_AIMANAGER_H
-#define ENGINE_AIMANAGER_H
+#ifndef URCHINENGINE_AIMANAGER_H
+#define URCHINENGINE_AIMANAGER_H
 
 #include "input/AIWorld.h"
 #include "path/navmesh/NavMeshGenerator.h"

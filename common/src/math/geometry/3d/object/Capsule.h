@@ -1,5 +1,5 @@
-#ifndef ENGINE_CAPSULE_H
-#define ENGINE_CAPSULE_H
+#ifndef URCHINENGINE_CAPSULE_H
+#define URCHINENGINE_CAPSULE_H
 
 #include <iostream>
 

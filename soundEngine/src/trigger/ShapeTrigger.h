@@ -1,5 +1,5 @@
-#ifndef ENGINE_SHAPETRIGGER_H
-#define ENGINE_SHAPETRIGGER_H
+#ifndef URCHINENGINE_SHAPETRIGGER_H
+#define URCHINENGINE_SHAPETRIGGER_H
 
 #include "trigger/SoundTrigger.h"
 #include "trigger/shape/SoundShape.h"

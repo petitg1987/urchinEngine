@@ -1,5 +1,5 @@
-#ifndef ENGINE_RECTANGLE_H
-#define ENGINE_RECTANGLE_H
+#ifndef URCHINENGINE_RECTANGLE_H
+#define URCHINENGINE_RECTANGLE_H
 
 #include "math/geometry/2d/object/ConvexObject2D.h"
 #include "math/algebra/point/Point2.h"

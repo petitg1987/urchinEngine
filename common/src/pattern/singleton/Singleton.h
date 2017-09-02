@@ -1,5 +1,5 @@
-#ifndef ENGINE_SINGLETON_H
-#define ENGINE_SINGLETON_H
+#ifndef URCHINENGINE_SINGLETON_H
+#define URCHINENGINE_SINGLETON_H
 
 #include <typeinfo>
 #include <iostream>

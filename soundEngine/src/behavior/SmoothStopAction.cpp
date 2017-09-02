@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	SmoothStopAction::~SmoothStopAction()
-	{
-
-	}
-
 	void SmoothStopAction::startSmoothStop()
 	{
 		startingTime = std::chrono::high_resolution_clock::now();

@@ -1,5 +1,5 @@
-#ifndef ENGINE_GJKCONVEXHULLTEST_H
-#define ENGINE_GJKCONVEXHULLTEST_H
+#ifndef URCHINENGINE_GJKCONVEXHULLTEST_H
+#define URCHINENGINE_GJKCONVEXHULLTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_STRINGUTIL_H
-#define ENGINE_STRINGUTIL_H
+#ifndef URCHINENGINE_STRINGUTIL_H
+#define URCHINENGINE_STRINGUTIL_H
 
 #include <string>
 #include <vector>
@@ -17,8 +17,8 @@ namespace urchin
 			static bool insensitiveEquals(const std::string &, const std::string &);
 
 		private:
-			StringUtil();
-			~StringUtil();
+			StringUtil() = default;
+			~StringUtil() = default;
 	};
 
 }

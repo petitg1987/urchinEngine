@@ -10,9 +10,4 @@ namespace urchin
 
 	}
 
-	StreamChunk::~StreamChunk()
-	{
-
-	}
-
 }

@@ -1,5 +1,5 @@
-#ifndef ENGINE_OBBOX_H
-#define ENGINE_OBBOX_H
+#ifndef URCHINENGINE_OBBOX_H
+#define URCHINENGINE_OBBOX_H
 
 #include <sstream>
 #include <vector>

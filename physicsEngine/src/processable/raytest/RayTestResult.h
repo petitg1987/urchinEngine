@@ -1,5 +1,5 @@
-#ifndef ENGINE_RAYTESTRESULT_H
-#define ENGINE_RAYTESTRESULT_H
+#ifndef URCHINENGINE_RAYTESTRESULT_H
+#define URCHINENGINE_RAYTESTRESULT_H
 
 #include <atomic>
 #include <memory>
@@ -17,7 +17,6 @@ namespace urchin
 	{
 		public:
 			RayTestResult();
-			~RayTestResult();
 
 			void addResults(const ccd_set &rayTestResults);
 

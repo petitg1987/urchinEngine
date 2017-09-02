@@ -1,5 +1,5 @@
-#ifndef ENGINE_SHADERMANAGER_H
-#define ENGINE_SHADERMANAGER_H
+#ifndef URCHINENGINE_SHADERMANAGER_H
+#define URCHINENGINE_SHADERMANAGER_H
 
 #include <string>
 #include <list>

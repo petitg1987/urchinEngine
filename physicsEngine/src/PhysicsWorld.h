@@ -1,5 +1,5 @@
-#ifndef ENGINE_PHYSICSWORLD_H
-#define ENGINE_PHYSICSWORLD_H
+#ifndef URCHINENGINE_PHYSICSWORLD_H
+#define URCHINENGINE_PHYSICSWORLD_H
 
 #include <vector>
 #include <atomic>

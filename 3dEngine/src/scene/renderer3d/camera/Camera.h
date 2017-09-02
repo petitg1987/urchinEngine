@@ -1,5 +1,5 @@
-#ifndef ENGINE_CAMERA_H
-#define ENGINE_CAMERA_H
+#ifndef URCHINENGINE_CAMERA_H
+#define URCHINENGINE_CAMERA_H
 
 #include "UrchinCommon.h"
 

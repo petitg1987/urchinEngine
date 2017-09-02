@@ -1,5 +1,5 @@
-#ifndef ENGINE_TRIANGULATIONTEST_H
-#define ENGINE_TRIANGULATIONTEST_H
+#ifndef URCHINENGINE_TRIANGULATIONTEST_H
+#define URCHINENGINE_TRIANGULATIONTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

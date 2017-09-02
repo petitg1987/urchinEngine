@@ -1,5 +1,5 @@
-#ifndef ENGINE_MAP_H
-#define ENGINE_MAP_H
+#ifndef URCHINENGINE_MAP_H
+#define URCHINENGINE_MAP_H
 
 #include <string>
 #include <list>

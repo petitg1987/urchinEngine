@@ -1,5 +1,5 @@
-#ifndef ENGINE_MESH_H
-#define ENGINE_MESH_H
+#ifndef URCHINENGINE_MESH_H
+#define URCHINENGINE_MESH_H
 
 #include "UrchinCommon.h"
 

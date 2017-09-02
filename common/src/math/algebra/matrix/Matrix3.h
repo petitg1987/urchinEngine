@@ -1,5 +1,5 @@
-#ifndef ENGINE_MATRIX3_H
-#define ENGINE_MATRIX3_H
+#ifndef URCHINENGINE_MATRIX3_H
+#define URCHINENGINE_MATRIX3_H
 
 #include <iostream>
 #include <cmath>

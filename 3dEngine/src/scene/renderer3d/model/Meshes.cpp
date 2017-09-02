@@ -10,7 +10,7 @@ namespace urchin
 		//create mesh
 		for(unsigned int m=0; m<numMeshes; m++)
 		{
-			Mesh *mesh = new Mesh(constMeshes->getConstMesh(m));
+			auto *mesh = new Mesh(constMeshes->getConstMesh(m));
 			meshes.push_back(mesh);
 		}
 	}

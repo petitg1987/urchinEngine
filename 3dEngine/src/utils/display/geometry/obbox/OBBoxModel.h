@@ -1,5 +1,5 @@
-#ifndef ENGINE_OBBOXMODEL_H
-#define ENGINE_OBBOXMODEL_H
+#ifndef URCHINENGINE_OBBOXMODEL_H
+#define URCHINENGINE_OBBOXMODEL_H
 
 #include "UrchinCommon.h"
 

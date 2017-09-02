@@ -1,5 +1,5 @@
-#ifndef ENGINE_XMLCHUNK_H
-#define ENGINE_XMLCHUNK_H
+#ifndef URCHINENGINE_XMLCHUNK_H
+#define URCHINENGINE_XMLCHUNK_H
 
 #include <string>
 #include <vector>

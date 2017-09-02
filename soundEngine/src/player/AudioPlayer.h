@@ -1,5 +1,5 @@
-#ifndef ENGINE_AUDIOPLAYER_H
-#define ENGINE_AUDIOPLAYER_H
+#ifndef URCHINENGINE_AUDIOPLAYER_H
+#define URCHINENGINE_AUDIOPLAYER_H
 
 #include "sound/Sound.h"
 
@@ -9,8 +9,8 @@ namespace urchin
 	class AudioPlayer
 	{
 		public:
-			AudioPlayer(const Sound *);
-			virtual ~AudioPlayer();
+			explicit AudioPlayer(const Sound *);
+			virtual ~AudioPlayer() = default;
 
 			virtual void play() = 0;
 			virtual void playLoop() = 0;

@@ -1,5 +1,5 @@
-#ifndef ENGINE_SMOOTHSTOPACTION_H
-#define ENGINE_SMOOTHSTOPACTION_H
+#ifndef URCHINENGINE_SMOOTHSTOPACTION_H
+#define URCHINENGINE_SMOOTHSTOPACTION_H
 
 #include <chrono>
 #include "UrchinCommon.h"
@@ -12,8 +12,7 @@ namespace urchin
 	class SmoothStopAction
 	{
 		public:
-			SmoothStopAction(const SoundBehavior &);
-			~SmoothStopAction();
+			explicit SmoothStopAction(const SoundBehavior &);
 
 			void startSmoothStop();
 			void endSmoothStop();

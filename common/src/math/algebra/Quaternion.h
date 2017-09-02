@@ -1,5 +1,5 @@
-#ifndef ENGINE_QUATERNION_H
-#define ENGINE_QUATERNION_H
+#ifndef URCHINENGINE_QUATERNION_H
+#define URCHINENGINE_QUATERNION_H
 
 #include <iostream>
 

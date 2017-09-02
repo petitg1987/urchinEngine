@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONEMODEL_H
-#define ENGINE_CONEMODEL_H
+#ifndef URCHINENGINE_CONEMODEL_H
+#define URCHINENGINE_CONEMODEL_H
 
 #include "UrchinCommon.h"
 

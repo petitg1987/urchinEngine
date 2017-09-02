@@ -1,5 +1,5 @@
-#ifndef ENGINE_EPARESULT_H
-#define ENGINE_EPARESULT_H
+#ifndef URCHINENGINE_EPARESULT_H
+#define URCHINENGINE_EPARESULT_H
 
 #include "UrchinCommon.h"
 

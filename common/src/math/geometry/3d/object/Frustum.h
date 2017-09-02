@@ -1,5 +1,5 @@
-#ifndef ENGINE_FRUSTUM_H
-#define ENGINE_FRUSTUM_H
+#ifndef URCHINENGINE_FRUSTUM_H
+#define URCHINENGINE_FRUSTUM_H
 
 #include <vector>
 

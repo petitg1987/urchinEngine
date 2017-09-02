@@ -11,11 +11,6 @@ namespace urchin
 		computeSafeMargin();
 	}
 
-	CollisionConeShape::~CollisionConeShape()
-	{
-
-	}
-
 	void CollisionConeShape::computeSafeMargin()
 	{
 		float minAxis = std::min(getRadius(), getHeight() / 2.0f);

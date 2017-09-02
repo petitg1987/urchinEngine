@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	CollisionSphereShape::~CollisionSphereShape()
-	{
-
-	}
-
 	CollisionShape3D::ShapeType CollisionSphereShape::getShapeType() const
 	{
 		return CollisionShape3D::SPHERE_SHAPE;

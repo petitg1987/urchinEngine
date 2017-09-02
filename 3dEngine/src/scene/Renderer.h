@@ -1,5 +1,5 @@
-#ifndef ENGINE_RENDERER_H
-#define ENGINE_RENDERER_H
+#ifndef URCHINENGINE_RENDERER_H
+#define URCHINENGINE_RENDERER_H
 
 namespace urchin
 {

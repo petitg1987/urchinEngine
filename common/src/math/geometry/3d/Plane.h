@@ -1,5 +1,5 @@
-#ifndef ENGINE_PLANE_H
-#define ENGINE_PLANE_H
+#ifndef URCHINENGINE_PLANE_H
+#define URCHINENGINE_PLANE_H
 
 #include "Line3D.h"
 #include "math/algebra/point/Point3.h"

@@ -18,19 +18,14 @@ namespace urchin
 
 	}
 
-	IntegrateTransformManager::~IntegrateTransformManager()
-	{
-
-	}
-
 	/**
 	 * @param dt Delta of time between two simulation steps
 	 */
 	void IntegrateTransformManager::integrateTransform(float dt)
 	{
-		for(unsigned int i=0; i<bodyManager->getWorkBodies().size(); ++i)
+		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
-			WorkRigidBody *body = WorkRigidBody::upCast(bodyManager->getWorkBodies()[i]);
+			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
 			if(body!=nullptr && body->isActive())
 			{
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
@@ -56,13 +51,13 @@ namespace urchin
 		PhysicsTransform updatedTargetTransform = to;
 
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody = broadPhaseManager->bodyTest(body, from, to);
-		if(bodiesAABBoxHitBody.size() > 0)
+		if(!bodiesAABBoxHitBody.empty())
 		{
 			auto bodyEncompassedSphereShape = std::make_shared<CollisionSphereShape>(body->getShape()->getMinDistanceToCenter());
 			TemporalObject temporalObject(bodyEncompassedSphereShape.get(), from, to);
 			ccd_set ccdResults = narrowPhaseManager->continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 
-			if(ccdResults.size() > 0)
+			if(!ccdResults.empty())
 			{
 				//determine new body transform to avoid collision
 				float timeToFirstHit = ccdResults.begin()->get()->getTimeToHit();

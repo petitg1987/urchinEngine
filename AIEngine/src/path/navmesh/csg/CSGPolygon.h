@@ -1,5 +1,5 @@
-#ifndef ENGINE_CSGPOLYGON_H
-#define ENGINE_CSGPOLYGON_H
+#ifndef URCHINENGINE_CSGPOLYGON_H
+#define URCHINENGINE_CSGPOLYGON_H
 
 #include <string>
 #include <vector>

@@ -83,7 +83,7 @@ namespace urchin
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 
-		std::vector<std::shared_ptr<Processable>>::iterator itFind = std::find(processables.begin(), processables.end(), processable);
+		auto itFind = std::find(processables.begin(), processables.end(), processable);
 		if(itFind!=processables.end())
 		{
 			processables.erase(itFind);
@@ -178,7 +178,7 @@ namespace urchin
 		{
 			//Compute number of sub steps to execute.
 			//Note: rest of division could be used in next steps and interpolate between steps (see http://gafferongames.com/game-physics/fix-your-timestep/)
-			unsigned int numSteps = static_cast<unsigned int>((timeStep - remainingTime) / timeStep);
+			auto numSteps = static_cast<unsigned int>((timeStep - remainingTime) / timeStep);
 			//Clamp number of sub steps to max sub step to avoid spiral of death (time of simulation increase and need to be executed increasingly).
 			unsigned int numStepsClamped = (numSteps > maxSubStep) ? maxSubStep : numSteps;
 
@@ -233,13 +233,11 @@ namespace urchin
 		//physics execution
 		if(!paused)
 		{
-			float dt = static_cast<float>(timeStep);
+			setupProcessables(processables, timeStep, gravity);
 
-			setupProcessables(processables, dt, gravity);
+			collisionWorld->process(timeStep, gravity);
 
-			collisionWorld->process(dt, gravity);
-
-			executeProcessables(processables, dt, gravity);
+			executeProcessables(processables, timeStep, gravity);
 		}
 	}
 
@@ -249,9 +247,9 @@ namespace urchin
 	 */
 	void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
-		for(unsigned int i=0; i<processables.size(); ++i)
+		for (const auto &processable : processables)
 		{
-			processables[i]->setup(dt, gravity);
+			processable->setup(dt, gravity);
 		}
 	}
 
@@ -261,9 +259,9 @@ namespace urchin
 	 */
 	void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
-		for(unsigned int i=0; i<processables.size(); ++i)
+		for (const auto &processable : processables)
 		{
-			processables[i]->execute(dt, gravity);
+			processable->execute(dt, gravity);
 		}
 	}
 

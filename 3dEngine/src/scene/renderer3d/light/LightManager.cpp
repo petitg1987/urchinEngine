@@ -24,7 +24,7 @@ namespace urchin
 	LightManager::~LightManager()
 	{
 		std::set<Light *> allOctreeableLights = lightOctreeManager->getOctreeables();
-		for(std::set<Light *>::const_iterator it=allOctreeableLights.begin(); it!=allOctreeableLights.end(); ++it)
+		for(auto it=allOctreeableLights.begin(); it!=allOctreeableLights.end(); ++it)
 		{
 			delete (*it);
 		}
@@ -125,7 +125,7 @@ namespace urchin
 		{
 			if(light->hasParallelBeams())
 			{
-				std::vector<Light *>::iterator it = std::find(parallelBeamsLights.begin(), parallelBeamsLights.end(), light);
+				auto it = std::find(parallelBeamsLights.begin(), parallelBeamsLights.end(), light);
 				parallelBeamsLights.erase(it);
 			}else
 			{
@@ -172,12 +172,12 @@ namespace urchin
 				glUniform1i(lightsInfo[i].hasParallelBeamsLoc, light->hasParallelBeams());
 				if(lights[i]->getLightType()==Light::SUN)
 				{
-					const SunLight *sunLight = static_cast<const SunLight *>(light);
+					const auto *sunLight = dynamic_cast<const SunLight *>(light);
 
 					glUniform3fv(lightsInfo[i].positionOrDirectionLoc, 1, (const float *)sunLight->getDirections()[0]);
 				}else if(lights[i]->getLightType()==Light::OMNIDIRECTIONAL)
 				{
-					const OmnidirectionalLight *omnidirectionalLight = static_cast<const OmnidirectionalLight *>(light);
+					const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
 
 					glUniform3fv(lightsInfo[i].positionOrDirectionLoc, 1, (const float *)omnidirectionalLight->getPosition());
 					glUniform1f(lightsInfo[i].exponentialAttLoc, omnidirectionalLight->getExponentialAttenuation());

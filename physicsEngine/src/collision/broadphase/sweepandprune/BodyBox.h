@@ -1,5 +1,5 @@
-#ifndef ENGINE_BODYBOX_H
-#define ENGINE_BODYBOX_H
+#ifndef URCHINENGINE_BODYBOX_H
+#define URCHINENGINE_BODYBOX_H
 
 #include "body/work/AbstractWorkBody.h"
 #include "collision/broadphase/PairContainer.h"
@@ -14,7 +14,6 @@ namespace urchin
 	{
 		public:
 			BodyBox(AbstractWorkBody *, PairContainer *);
-			~BodyBox();
 
 			AbstractWorkBody *getBody() const;
 

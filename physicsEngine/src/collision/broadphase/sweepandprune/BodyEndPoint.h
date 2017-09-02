@@ -1,5 +1,5 @@
-#ifndef ENGINE_BODYENDPOINT_H
-#define ENGINE_BODYENDPOINT_H
+#ifndef URCHINENGINE_BODYENDPOINT_H
+#define URCHINENGINE_BODYENDPOINT_H
 
 #include <iostream>
 
@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			BodyEndPoint();
-			~BodyEndPoint();
 
 			void setBodyBox(BodyBox *);
 			BodyBox *getBodyBox() const;

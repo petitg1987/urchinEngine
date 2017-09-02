@@ -1,5 +1,5 @@
-#ifndef ENGINE_NAVMESH_H
-#define ENGINE_NAVMESH_H
+#ifndef URCHINENGINE_NAVMESH_H
+#define URCHINENGINE_NAVMESH_H
 
 #include <vector>
 #include <memory>

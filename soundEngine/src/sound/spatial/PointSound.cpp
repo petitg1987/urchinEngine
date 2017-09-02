@@ -24,11 +24,6 @@ namespace urchin
 		initializeSource();
 	}
 
-	PointSound::~PointSound()
-	{
-
-	}
-
 	void PointSound::initializeSource()
 	{
 		alSourcei(getSourceId(), AL_SOURCE_RELATIVE, false);

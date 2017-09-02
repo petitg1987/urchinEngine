@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONE_H
-#define ENGINE_CONE_H
+#ifndef URCHINENGINE_CONE_H
+#define URCHINENGINE_CONE_H
 
 #include <cmath>
 

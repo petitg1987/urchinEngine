@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONFIGSERVICE_H
-#define ENGINE_CONFIGSERVICE_H
+#ifndef URCHINENGINE_CONFIGSERVICE_H
+#define URCHINENGINE_CONFIGSERVICE_H
 
 #include <string>
 #include <map>

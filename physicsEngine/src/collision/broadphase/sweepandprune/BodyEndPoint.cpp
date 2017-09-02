@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	BodyEndPoint::~BodyEndPoint()
-	{
-
-	}
-
 	void BodyEndPoint::setBodyBox(BodyBox *bodyBox)
 	{
 		this->bodyBox = bodyBox;

@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOADERTGA_H
-#define ENGINE_LOADERTGA_H
+#ifndef URCHINENGINE_LOADERTGA_H
+#define URCHINENGINE_LOADERTGA_H
 
 #include <string>
 
@@ -35,7 +35,7 @@ namespace urchin
 	{
 		public:
 			LoaderTGA();
-			virtual ~LoaderTGA();
+			virtual ~LoaderTGA() = default;
 
 			Image *loadFromFile(const std::string &, void *);
 

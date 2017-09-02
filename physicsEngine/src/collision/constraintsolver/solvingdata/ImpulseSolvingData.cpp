@@ -12,9 +12,4 @@ namespace urchin
 
 	}
 
-	ImpulseSolvingData::~ImpulseSolvingData()
-	{
-
-	}
-
 }

@@ -1,5 +1,5 @@
-#ifndef ENGINE_SWEEPANDPRUNETEST_H
-#define ENGINE_SWEEPANDPRUNETEST_H
+#ifndef URCHINENGINE_SWEEPANDPRUNETEST_H
+#define URCHINENGINE_SWEEPANDPRUNETEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

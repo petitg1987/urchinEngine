@@ -1,5 +1,5 @@
-#ifndef ENGINE_SCENEAI_H
-#define ENGINE_SCENEAI_H
+#ifndef URCHINENGINE_SCENEAI_H
+#define URCHINENGINE_SCENEAI_H
 
 #include <memory>
 

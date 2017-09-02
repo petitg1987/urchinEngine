@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONESHAPE_H
-#define ENGINE_CONESHAPE_H
+#ifndef URCHINENGINE_CONESHAPE_H
+#define URCHINENGINE_CONESHAPE_H
 
 #include <memory>
 

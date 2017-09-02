@@ -1,5 +1,5 @@
-#ifndef ENGINE_SHADOWDATA_H
-#define ENGINE_SHADOWDATA_H
+#ifndef URCHINENGINE_SHADOWDATA_H
+#define URCHINENGINE_SHADOWDATA_H
 
 #include <vector>
 #include <set>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOGGER_H
-#define ENGINE_LOGGER_H
+#ifndef URCHINENGINE_LOGGER_H
+#define URCHINENGINE_LOGGER_H
 
 #include <string>
 #include <sstream>

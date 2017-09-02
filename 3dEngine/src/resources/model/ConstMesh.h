@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONSTMESH_H
-#define ENGINE_CONSTMESH_H
+#ifndef URCHINENGINE_CONSTMESH_H
+#define URCHINENGINE_CONSTMESH_H
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_WIDGET_H
-#define ENGINE_WIDGET_H
+#ifndef URCHINENGINE_WIDGET_H
+#define URCHINENGINE_WIDGET_H
 
 #include <vector>
 #include <memory>

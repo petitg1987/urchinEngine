@@ -11,11 +11,6 @@ namespace urchin
 		computeSafeMargin();
 	}
 
-	CollisionCylinderShape::~CollisionCylinderShape()
-	{
-
-	}
-
 	void CollisionCylinderShape::computeSafeMargin()
 	{
 		float minAxis = std::min(getRadius(), getHeight() / 2.0f);

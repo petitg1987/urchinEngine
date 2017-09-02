@@ -1,5 +1,5 @@
-#ifndef ENGINE_POLYHEDRONPOINT_H
-#define ENGINE_POLYHEDRONPOINT_H
+#ifndef URCHINENGINE_POLYHEDRONPOINT_H
+#define URCHINENGINE_POLYHEDRONPOINT_H
 
 #include <vector>
 #include "UrchinCommon.h"

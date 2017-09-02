@@ -1,5 +1,5 @@
-#ifndef ENGINE_MEDIAMANAGER_H
-#define ENGINE_MEDIAMANAGER_H
+#ifndef URCHINENGINE_MEDIAMANAGER_H
+#define URCHINENGINE_MEDIAMANAGER_H
 
 #include <map>
 #include <string>

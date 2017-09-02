@@ -1,5 +1,5 @@
-#ifndef ENGINE_STATICBITMAP_H
-#define ENGINE_STATICBITMAP_H
+#ifndef URCHINENGINE_STATICBITMAP_H
+#define URCHINENGINE_STATICBITMAP_H
 
 #include <string>
 #include <memory>

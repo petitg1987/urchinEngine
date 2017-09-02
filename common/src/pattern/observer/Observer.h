@@ -1,5 +1,5 @@
-#ifndef ENGINE_OBSERVER_H
-#define ENGINE_OBSERVER_H
+#ifndef URCHINENGINE_OBSERVER_H
+#define URCHINENGINE_OBSERVER_H
 
 namespace urchin
 {
@@ -8,8 +8,7 @@ namespace urchin
 	class Observer
 	{
 		public:
-			Observer();
-			virtual ~Observer();
+			virtual ~Observer() = default;
 
 			virtual void notify(Observable *, int) = 0;
 	};

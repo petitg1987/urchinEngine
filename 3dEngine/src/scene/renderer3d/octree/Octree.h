@@ -1,5 +1,5 @@
-#ifndef ENGINE_OCTREE_H
-#define ENGINE_OCTREE_H
+#ifndef URCHINENGINE_OCTREE_H
+#define URCHINENGINE_OCTREE_H
 
 #include <vector>
 #include <set>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_LOADER_H
-#define ENGINE_LOADER_H
+#ifndef URCHINENGINE_LOADER_H
+#define URCHINENGINE_LOADER_H
 
 #include <string>
 #include <stdexcept>

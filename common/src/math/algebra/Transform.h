@@ -1,5 +1,5 @@
-#ifndef ENGINE_TRANSFORM_H
-#define ENGINE_TRANSFORM_H
+#ifndef URCHINENGINE_TRANSFORM_H
+#define URCHINENGINE_TRANSFORM_H
 
 #include "math/algebra/Quaternion.h"
 #include "math/algebra/point/Point3.h"

@@ -20,11 +20,6 @@ namespace urchin
 		}
 	};
 
-	AudioStreamPlayer::~AudioStreamPlayer()
-	{
-
-	}
-
 	void AudioStreamPlayer::initializeStreamWorkerThread()
 	{
 		streamUpdateWorker = new StreamUpdateWorker();

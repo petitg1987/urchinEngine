@@ -10,11 +10,6 @@ namespace urchin
 
 	}
 
-	IntegrateVelocityManager::~IntegrateVelocityManager()
-	{
-
-	}
-
 	/**
 	 * @param dt Delta of time (sec.) between two simulation steps
 	 * @param manifoldResults Constraints to solve
@@ -27,9 +22,9 @@ namespace urchin
 		applyRollingFrictionResistanceForce(dt, manifoldResult);
 
 		//integrate velocities and apply damping
-		for(unsigned int i=0; i<bodyManager->getWorkBodies().size(); ++i)
+		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
-			WorkRigidBody *body = WorkRigidBody::upCast(bodyManager->getWorkBodies()[i]);
+			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
 			if(body!=nullptr && body->isActive())
 			{
 				//integrate velocity
@@ -52,9 +47,9 @@ namespace urchin
 	 */
 	void IntegrateVelocityManager::applyGravityForce(const Vector3<float> &gravity)
 	{
-		for(unsigned int i=0; i<bodyManager->getWorkBodies().size(); ++i)
+		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
-			WorkRigidBody *body = WorkRigidBody::upCast(bodyManager->getWorkBodies()[i]);
+			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
 			if(body!=nullptr && body->isActive())
 			{
 				body->applyCentralForce(gravity * body->getMass());
@@ -68,9 +63,8 @@ namespace urchin
 	 */
 	void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, std::vector<ManifoldResult> &manifoldResults)
 	{
-		for(unsigned int i=0; i<manifoldResults.size(); ++i)
+		for (const auto &result : manifoldResults)
 		{
-			const ManifoldResult &result = manifoldResults[i];
 			float rollingFriction = std::max(result.getBody1()->getRollingFriction(), result.getBody2()->getRollingFriction());
 
 			for(unsigned int bodyIndex=0; bodyIndex<2; ++bodyIndex)

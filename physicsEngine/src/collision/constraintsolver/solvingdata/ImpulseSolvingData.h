@@ -1,5 +1,5 @@
-#ifndef ENGINE_IMPULSESOLVINGDATA_H
-#define ENGINE_IMPULSESOLVINGDATA_H
+#ifndef URCHINENGINE_IMPULSESOLVINGDATA_H
+#define URCHINENGINE_IMPULSESOLVINGDATA_H
 
 #include "UrchinCommon.h"
 
@@ -9,7 +9,6 @@ namespace urchin
 	struct ImpulseSolvingData
 	{
 		ImpulseSolvingData();
-		~ImpulseSolvingData();
 
 		float friction; //friction factor: 0=no friction, 1=total friction
 

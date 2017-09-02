@@ -1,5 +1,5 @@
-#ifndef ENGINE_WINDOW_H
-#define ENGINE_WINDOW_H
+#ifndef URCHINENGINE_WINDOW_H
+#define URCHINENGINE_WINDOW_H
 
 #include <string>
 #include <memory>

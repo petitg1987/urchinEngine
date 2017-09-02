@@ -1,5 +1,5 @@
-#ifndef ENGINE_BODYTESTHELPER_H
-#define ENGINE_BODYTESTHELPER_H
+#ifndef URCHINENGINE_BODYTESTHELPER_H
+#define URCHINENGINE_BODYTESTHELPER_H
 
 #include <memory>
 #include "UrchinCommon.h"

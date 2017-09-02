@@ -1,5 +1,5 @@
-#ifndef ENGINE_GJKTESTHELPER_H
-#define ENGINE_GJKTESTHELPER_H
+#ifndef URCHINENGINE_GJKTESTHELPER_H
+#define URCHINENGINE_GJKTESTHELPER_H
 
 #include <memory>
 #include "UrchinCommon.h"

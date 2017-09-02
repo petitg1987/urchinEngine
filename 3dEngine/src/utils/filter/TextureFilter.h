@@ -1,5 +1,5 @@
-#ifndef ENGINE_TEXTUREFILTER_H
-#define ENGINE_TEXTUREFILTER_H
+#ifndef URCHINENGINE_TEXTUREFILTER_H
+#define URCHINENGINE_TEXTUREFILTER_H
 
 #include <string>
 #include <memory>

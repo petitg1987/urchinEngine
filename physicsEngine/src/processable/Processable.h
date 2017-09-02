@@ -1,5 +1,5 @@
-#ifndef ENGINE_PROCESSABLE_H
-#define ENGINE_PROCESSABLE_H
+#ifndef URCHINENGINE_PROCESSABLE_H
+#define URCHINENGINE_PROCESSABLE_H
 
 #include "UrchinCommon.h"
 
@@ -15,8 +15,7 @@ namespace urchin
 	class Processable
 	{
 		public:
-			Processable();
-			virtual ~Processable();
+			virtual ~Processable() = default;
 
 			virtual void initialize(PhysicsWorld *) = 0;
 

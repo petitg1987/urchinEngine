@@ -1,5 +1,5 @@
-#ifndef ENGINE_OCTREEABLE_H
-#define ENGINE_OCTREEABLE_H
+#ifndef URCHINENGINE_OCTREEABLE_H
+#define URCHINENGINE_OCTREEABLE_H
 
 #include <vector>
 #include <stdexcept>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_POLYGONSUNIONTEST_H
-#define ENGINE_POLYGONSUNIONTEST_H
+#ifndef URCHINENGINE_POLYGONSUNIONTEST_H
+#define URCHINENGINE_POLYGONSUNIONTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

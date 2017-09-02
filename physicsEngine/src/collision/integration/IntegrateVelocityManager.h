@@ -1,5 +1,5 @@
-#ifndef ENGINE_INTEGRATEVELOCITYMANAGER_H
-#define ENGINE_INTEGRATEVELOCITYMANAGER_H
+#ifndef URCHINENGINE_INTEGRATEVELOCITYMANAGER_H
+#define URCHINENGINE_INTEGRATEVELOCITYMANAGER_H
 
 #include "UrchinCommon.h"
 #include <vector>
@@ -16,8 +16,7 @@ namespace urchin
 	class IntegrateVelocityManager
 	{
 		public:
-			IntegrateVelocityManager(const BodyManager *);
-			~IntegrateVelocityManager();
+			explicit IntegrateVelocityManager(const BodyManager *);
 
 			void integrateVelocity(float, std::vector<ManifoldResult> &, const Vector3<float> &);
 

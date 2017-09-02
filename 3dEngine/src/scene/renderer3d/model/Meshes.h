@@ -1,5 +1,5 @@
-#ifndef ENGINE_MESHES_H
-#define ENGINE_MESHES_H
+#ifndef URCHINENGINE_MESHES_H
+#define URCHINENGINE_MESHES_H
 
 #include <vector>
 #include "UrchinCommon.h"
@@ -13,7 +13,7 @@ namespace urchin
 	class Meshes
 	{
 		public:
-			Meshes(const ConstMeshes *);
+			explicit Meshes(const ConstMeshes *);
 			~Meshes();
 		
 			unsigned int getNumberMeshes() const;

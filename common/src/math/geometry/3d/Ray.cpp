@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "Ray.h"
 
 namespace urchin
@@ -27,9 +25,9 @@ namespace urchin
 	{
 		inverseDirection = Vector3<T>(1.0, 1.0, 1.0) / this->direction;
 
-		directionSigns[0] = this->direction.X < 0.0;
-		directionSigns[1] = this->direction.Y < 0.0;
-		directionSigns[2] = this->direction.Z < 0.0;
+		directionSigns[0] = this->direction.X < 0.0 ? 1 : 0;
+		directionSigns[1] = this->direction.Y < 0.0 ? 1 : 0;
+		directionSigns[2] = this->direction.Z < 0.0 ? 1 : 0;
 	}
 
 	template<class T> const Point3<T> &Ray<T>::getOrigin() const

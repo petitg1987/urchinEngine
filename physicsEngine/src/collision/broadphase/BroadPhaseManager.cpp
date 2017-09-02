@@ -22,7 +22,7 @@ namespace urchin
 
 	void BroadPhaseManager::notify(Observable *observable, int notificationType)
 	{
-		BodyManager *bodyManager = dynamic_cast<BodyManager *>(observable);
+		auto *bodyManager = dynamic_cast<BodyManager *>(observable);
 		if(bodyManager)
 		{
 			AbstractWorkBody *updatedBody = bodyManager->getLastUpdatedWorkBody();

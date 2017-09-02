@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	ConstraintSolving::~ConstraintSolving()
-	{
-
-	}
-
 	WorkRigidBody *ConstraintSolving::getBody1()
 	{
 		return body1;

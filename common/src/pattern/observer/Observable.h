@@ -1,5 +1,5 @@
-#ifndef ENGINE_OBSERVABLE_H
-#define ENGINE_OBSERVABLE_H
+#ifndef URCHINENGINE_OBSERVABLE_H
+#define URCHINENGINE_OBSERVABLE_H
 
 #include <set>
 #include <map>
@@ -12,7 +12,6 @@ namespace urchin
 	class Observable
 	{
 		public:
-			Observable();
 			virtual ~Observable();
 
 			void addObserver(Observer *, int) const;

@@ -1,5 +1,5 @@
-#ifndef ENGINE_SLIDER_H
-#define ENGINE_SLIDER_H
+#ifndef URCHINENGINE_SLIDER_H
+#define URCHINENGINE_SLIDER_H
 
 #include <string>
 #include <memory>

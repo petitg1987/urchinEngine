@@ -1,5 +1,5 @@
-#ifndef ENGINE_SHAPETOAABBOXTEST_H
-#define ENGINE_SHAPETOAABBOXTEST_H
+#ifndef URCHINENGINE_SHAPETOAABBOXTEST_H
+#define URCHINENGINE_SHAPETOAABBOXTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

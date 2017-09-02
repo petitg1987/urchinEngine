@@ -1,5 +1,5 @@
-#ifndef ENGINE_BUTTON_H
-#define ENGINE_BUTTON_H
+#ifndef URCHINENGINE_BUTTON_H
+#define URCHINENGINE_BUTTON_H
 
 #include <string>
 #include <memory>

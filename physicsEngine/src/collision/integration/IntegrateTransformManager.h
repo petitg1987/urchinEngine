@@ -1,5 +1,5 @@
-#ifndef ENGINE_INTEGRATETRANSFORMMANAGER_H
-#define ENGINE_INTEGRATETRANSFORMMANAGER_H
+#ifndef URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
+#define URCHINENGINE_INTEGRATETRANSFORMMANAGER_H
 
 #include "body/BodyManager.h"
 #include "body/work/WorkRigidBody.h"
@@ -16,7 +16,6 @@ namespace urchin
 	{
 		public:
 			IntegrateTransformManager(const BodyManager *, const BroadPhaseManager *, const NarrowPhaseManager *);
-			~IntegrateTransformManager();
 
 			void integrateTransform(float);
 

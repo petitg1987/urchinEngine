@@ -1,5 +1,5 @@
-#ifndef ENGINE_SPHEREBOXCOLLISIONALGORITHM_H
-#define ENGINE_SPHEREBOXCOLLISIONALGORITHM_H
+#ifndef URCHINENGINE_SPHEREBOXCOLLISIONALGORITHM_H
+#define URCHINENGINE_SPHEREBOXCOLLISIONALGORITHM_H
 
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"

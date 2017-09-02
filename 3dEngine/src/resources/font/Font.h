@@ -1,5 +1,5 @@
-#ifndef ENGINE_FONT_H
-#define ENGINE_FONT_H
+#ifndef URCHINENGINE_FONT_H
+#define URCHINENGINE_FONT_H
 
 #include "UrchinCommon.h"
 

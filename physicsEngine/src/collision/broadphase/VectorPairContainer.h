@@ -1,5 +1,5 @@
-#ifndef ENGINE_VECTORPAIRCONTAINER_H
-#define ENGINE_VECTORPAIRCONTAINER_H
+#ifndef URCHINENGINE_VECTORPAIRCONTAINER_H
+#define URCHINENGINE_VECTORPAIRCONTAINER_H
 
 #include <vector>
 
@@ -17,7 +17,6 @@ namespace urchin
 	class VectorPairContainer : public PairContainer
 	{
 		public:
-			VectorPairContainer();
 			~VectorPairContainer();
 
 			void addOverlappingPair(AbstractWorkBody *, AbstractWorkBody *);

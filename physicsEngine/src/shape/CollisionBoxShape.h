@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONBOXSHAPE_H
-#define ENGINE_COLLISIONBOXSHAPE_H
+#ifndef URCHINENGINE_COLLISIONBOXSHAPE_H
+#define URCHINENGINE_COLLISIONBOXSHAPE_H
 
 #include <memory>
 #include <vector>
@@ -15,8 +15,7 @@ namespace urchin
 	class CollisionBoxShape : public CollisionShape3D
 	{
 		public:
-			CollisionBoxShape(const Vector3<float> &);
-			~CollisionBoxShape();
+			explicit CollisionBoxShape(const Vector3<float> &);
 
 			CollisionShape3D::ShapeType getShapeType() const;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;

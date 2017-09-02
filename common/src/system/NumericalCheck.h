@@ -1,5 +1,5 @@
-#ifndef ENGINE_NUMERICALCHECK_H
-#define ENGINE_NUMERICALCHECK_H
+#ifndef URCHINENGINE_NUMERICALCHECK_H
+#define URCHINENGINE_NUMERICALCHECK_H
 
 #include "pattern/singleton/Singleton.h"
 

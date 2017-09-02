@@ -1,5 +1,5 @@
-#ifndef ENGINE_GJKRESULT_H
-#define ENGINE_GJKRESULT_H
+#ifndef URCHINENGINE_GJKRESULT_H
+#define URCHINENGINE_GJKRESULT_H
 
 #include "UrchinCommon.h"
 

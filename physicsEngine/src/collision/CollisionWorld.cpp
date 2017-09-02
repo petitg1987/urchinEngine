@@ -2,7 +2,6 @@
 
 #include "collision/CollisionWorld.h"
 #include "collision/OverlappingPair.h"
-#include "body/work/WorkRigidBody.h"
 
 namespace urchin
 {

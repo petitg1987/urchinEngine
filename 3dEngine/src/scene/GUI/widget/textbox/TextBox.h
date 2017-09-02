@@ -1,5 +1,5 @@
-#ifndef ENGINE_TEXTBOX_H
-#define ENGINE_TEXTBOX_H
+#ifndef URCHINENGINE_TEXTBOX_H
+#define URCHINENGINE_TEXTBOX_H
 
 #include <string>
 #include <memory>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_EPATESTHELPER_H
-#define ENGINE_EPATESTHELPER_H
+#ifndef URCHINENGINE_EPATESTHELPER_H
+#define URCHINENGINE_EPATESTHELPER_H
 
 #include <memory>
 #include "UrchinCommon.h"

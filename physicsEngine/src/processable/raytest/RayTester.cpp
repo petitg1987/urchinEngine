@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	RayTester::~RayTester()
-	{
-
-	}
-
 	std::shared_ptr<const RayTestResult> RayTester::getRayTestResult() const
 	{
 		return rayTestResult;

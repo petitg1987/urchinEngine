@@ -14,23 +14,23 @@ namespace urchin
 		defaultPairContainer(new VectorPairContainer()),
 		contactBreakingThreshold(ConfigService::instance()->getFloatValue("narrowPhase.contactBreakingThreshold"))
 	{
-		for(unsigned int axis=0; axis<3; ++axis)
+		for (auto &sortedEndPoint : sortedEndPoints)
 		{
-			sortedEndPoints[axis] = new BodyEndPoint[MAX_END_POINTS];
+			sortedEndPoint = new BodyEndPoint[MAX_END_POINTS];
 		}
 		createSentinels();
 	}
 
 	SweepAndPrune::~SweepAndPrune()
 	{
-		for(unsigned int axis=0; axis<3; ++axis)
+		for (auto &sortedEndPoint : sortedEndPoints)
 		{
-			delete [] sortedEndPoints[axis];
+			delete [] sortedEndPoint;
 		}
 
-		for(std::map<AbstractWorkBody *, BodyBox *>::iterator it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
+		for (auto &it : bodiesBox)
 		{
-			delete it->second;
+			delete it.second;
 		}
 
 		delete defaultPairContainer;
@@ -41,7 +41,7 @@ namespace urchin
 	 */
 	void SweepAndPrune::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer)
 	{
-		BodyBox *bodyBox = new BodyBox(body, alternativePairContainer);
+		auto *bodyBox = new BodyBox(body, alternativePairContainer);
 		const AABBox<float> &aabbox = bodyBox->retrieveBodyAABBox();
 
 		unsigned int limit = bodiesBox.size() * 2 + 2; //bodies size * both points (min & max) + 2 sentinels
@@ -124,12 +124,12 @@ namespace urchin
 
 	void SweepAndPrune::updateBodies()
 	{
-		for(std::map<AbstractWorkBody *, BodyBox *>::iterator it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
+		for (auto &it : bodiesBox)
 		{
-			AbstractWorkBody *body = it->first;
+			AbstractWorkBody *body = it.first;
 			if(body->isActive())
 			{
-				BodyBox *bodyBox = it->second;
+				BodyBox *bodyBox = it.second;
 				const AABBox<float> &aabbox = bodyBox->retrieveBodyAABBox();
 
 				for(unsigned int axis=0; axis<3; ++axis)
@@ -252,8 +252,8 @@ namespace urchin
 			//update indices in bodies
 			if(prevEndPoint->isMin())
 			{
-				const int axis1 = (1  << axis) & 3;
-				const int axis2 = (1  << axis1) & 3;
+				const int axis1 = (1 << axis) & 3;
+				const int axis2 = (1 << axis1) & 3;
 				if(testOverlap && isOverlap(endPoint->getBodyBox(), prevEndPoint->getBodyBox(), axis1, axis2))
 				{
 					removeOverlappingPair(endPoint->getBodyBox(), prevEndPoint->getBodyBox());
@@ -292,8 +292,8 @@ namespace urchin
 				nextEndPoint->getBodyBox()->min[axis]--;
 			}else
 			{
-				const int axis1 = (1  << axis) & 3;
-				const int axis2 = (1  << axis1) & 3;
+				const int axis1 = (1 << axis) & 3;
+				const int axis2 = (1 << axis1) & 3;
 				if(testOverlap && isOverlap(endPoint->getBodyBox(), nextEndPoint->getBodyBox(), axis1, axis2))
 				{
 					removeOverlappingPair(endPoint->getBodyBox(), nextEndPoint->getBodyBox());
@@ -326,8 +326,8 @@ namespace urchin
 			//update indices in bodies
 			if(nextEndPoint->isMin())
 			{
-				const int axis1 = (1  << axis) & 3;
-				const int axis2 = (1  << axis1) & 3;
+				const int axis1 = (1 << axis) & 3;
+				const int axis2 = (1 << axis1) & 3;
 				if(testOverlap && isOverlap(endPoint->getBodyBox(), nextEndPoint->getBodyBox(), axis1, axis2))
 				{
 					createOverlappingPair(endPoint->getBodyBox(), nextEndPoint->getBodyBox());
@@ -356,14 +356,10 @@ namespace urchin
 	bool SweepAndPrune::isOverlap(const BodyBox *body1, const BodyBox *body2, unsigned int axis1, unsigned int axis2)
 	{
 		//comparing indices is more faster that values
-		if (body1->max[axis1] < body2->min[axis1] ||
-				body2->max[axis1] < body1->min[axis1] ||
-				body1->max[axis2] < body2->min[axis2] ||
-				body2->max[axis2] < body1->min[axis2])
-		{
-			return false;
-		}
-		return true;
+		return !(body1->max[axis1] < body2->min[axis1] ||
+            body2->max[axis1] < body1->min[axis1] ||
+            body1->max[axis2] < body2->min[axis2] ||
+            body2->max[axis2] < body1->min[axis2]);
 	}
 
 	void SweepAndPrune::createOverlappingPair(const BodyBox *bodyBox1, const BodyBox *bodyBox2)

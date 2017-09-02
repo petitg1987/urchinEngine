@@ -1,5 +1,5 @@
-#ifndef ENGINE_RESOURCE_H
-#define ENGINE_RESOURCE_H
+#ifndef URCHINENGINE_RESOURCE_H
+#define URCHINENGINE_RESOURCE_H
 
 #include <string>
 

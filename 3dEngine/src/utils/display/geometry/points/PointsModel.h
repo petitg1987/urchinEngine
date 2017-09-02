@@ -1,5 +1,5 @@
-#ifndef ENGINE_POINTSMODEL_H
-#define ENGINE_POINTSMODEL_H
+#ifndef URCHINENGINE_POINTSMODEL_H
+#define URCHINENGINE_POINTSMODEL_H
 
 #include <vector>
 #include "UrchinCommon.h"

@@ -1,5 +1,5 @@
-#ifndef ENGINE_FILEHANDLERTEST_H
-#define ENGINE_FILEHANDLERTEST_H
+#ifndef URCHINENGINE_FILEHANDLERTEST_H
+#define URCHINENGINE_FILEHANDLERTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

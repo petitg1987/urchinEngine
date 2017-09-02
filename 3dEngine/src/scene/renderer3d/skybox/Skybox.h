@@ -1,5 +1,5 @@
-#ifndef ENGINE_SKYBOX_H
-#define ENGINE_SKYBOX_H
+#ifndef URCHINENGINE_SKYBOX_H
+#define URCHINENGINE_SKYBOX_H
 
 #include <string>
 #include <vector>
@@ -17,7 +17,7 @@ namespace urchin
 	{
 		public:
 			Skybox();
-			Skybox(const std::vector<std::string> &);
+			explicit Skybox(const std::vector<std::string> &);
 			~Skybox();
 
 			void onCameraProjectionUpdate(const Camera *const);

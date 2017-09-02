@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONSHAPE3D_H
-#define ENGINE_COLLISIONSHAPE3D_H
+#ifndef URCHINENGINE_COLLISIONSHAPE3D_H
+#define URCHINENGINE_COLLISIONSHAPE3D_H
 
 #include <memory>
 #include <vector>
@@ -15,8 +15,8 @@ namespace urchin
 	{
 		public:
 			CollisionShape3D();
-			CollisionShape3D(float);
-			virtual ~CollisionShape3D();
+			explicit CollisionShape3D(float);
+			virtual ~CollisionShape3D() = default;
 
 			enum ShapeType
 			{

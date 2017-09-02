@@ -11,11 +11,6 @@ namespace urchin
 		alSource3f(getSourceId(), AL_POSITION, 0.0f, 0.0f, 0.0f);
 	}
 
-	AmbientSound::~AmbientSound()
-	{
-
-	}
-
 	Sound::SoundType AmbientSound::getSoundType() const
 	{
 		return Sound::AMBIENT;

@@ -1,5 +1,5 @@
-#ifndef ENGINE_EPABOXTEST_H
-#define ENGINE_EPABOXTEST_H
+#ifndef URCHINENGINE_EPABOXTEST_H
+#define URCHINENGINE_EPABOXTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

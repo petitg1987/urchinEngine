@@ -1,5 +1,5 @@
-#ifndef ENGINE_FIXEDSIZEPOOL_H
-#define ENGINE_FIXEDSIZEPOOL_H
+#ifndef URCHINENGINE_FIXEDSIZEPOOL_H
+#define URCHINENGINE_FIXEDSIZEPOOL_H
 
 #include <cassert>
 #include <sstream>

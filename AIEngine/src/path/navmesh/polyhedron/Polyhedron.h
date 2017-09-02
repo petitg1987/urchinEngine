@@ -1,5 +1,5 @@
-#ifndef ENGINE_POLYHEDRON_H
-#define ENGINE_POLYHEDRON_H
+#ifndef URCHINENGINE_POLYHEDRON_H
+#define URCHINENGINE_POLYHEDRON_H
 
 #include <vector>
 #include <sstream>

@@ -1,5 +1,5 @@
-#ifndef ENGINE_SUNLIGHT_H
-#define ENGINE_SUNLIGHT_H
+#ifndef URCHINENGINE_SUNLIGHT_H
+#define URCHINENGINE_SUNLIGHT_H
 
 #include "UrchinCommon.h"
 

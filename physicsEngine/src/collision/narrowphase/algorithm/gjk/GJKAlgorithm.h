@@ -1,5 +1,5 @@
-#ifndef ENGINE_GJKALGORITHM_H
-#define ENGINE_GJKALGORITHM_H
+#ifndef URCHINENGINE_GJKALGORITHM_H
+#define URCHINENGINE_GJKALGORITHM_H
 
 #include <memory>
 #include "UrchinCommon.h"

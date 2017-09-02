@@ -1,5 +1,5 @@
-#ifndef ENGINE_BROADPHASEALGORITHM_H
-#define ENGINE_BROADPHASEALGORITHM_H
+#ifndef URCHINENGINE_BROADPHASEALGORITHM_H
+#define URCHINENGINE_BROADPHASEALGORITHM_H
 
 #include <vector>
 #include "UrchinCommon.h"
@@ -14,8 +14,7 @@ namespace urchin
 	class BroadPhaseAlgorithm
 	{
 		public:
-			BroadPhaseAlgorithm();
-			virtual ~BroadPhaseAlgorithm();
+			virtual ~BroadPhaseAlgorithm() = default;
 
 			virtual void addBody(AbstractWorkBody *, PairContainer *) = 0;
 			virtual void removeBody(AbstractWorkBody *) = 0;

@@ -1,5 +1,5 @@
-#ifndef ENGINE_NAVPOLYGON_H
-#define ENGINE_NAVPOLYGON_H
+#ifndef URCHINENGINE_NAVPOLYGON_H
+#define URCHINENGINE_NAVPOLYGON_H
 
 #include <vector>
 #include "UrchinCommon.h"

@@ -1,5 +1,5 @@
-#ifndef ENGINE_URCHINCOMMON_H
-#define ENGINE_URCHINCOMMON_H
+#ifndef URCHINENGINE_URCHINCOMMON_H
+#define URCHINENGINE_URCHINCOMMON_H
 
 #include "tools/file/PropertyFileHandler.h"
 #include "tools/logger/Logger.h"

@@ -1,5 +1,5 @@
-#ifndef ENGINE_GJKSPHERETEST_H
-#define ENGINE_GJKSPHERETEST_H
+#ifndef URCHINENGINE_GJKSPHERETEST_H
+#define URCHINENGINE_GJKSPHERETEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

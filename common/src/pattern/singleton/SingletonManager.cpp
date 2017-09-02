@@ -6,19 +6,9 @@ namespace urchin
 	//static
 	std::map<std::string, SingletonInterface *> SingletonManager::singletons;
 
-	SingletonManager::SingletonManager()
-	{
-
-	}
-
-	SingletonManager::~SingletonManager()
-	{
-		
-	}
-
 	void *SingletonManager::getSingleton(const std::string &name)
 	{
-		std::map<std::string, SingletonInterface *>::iterator it = singletons.find(name);
+		auto it = singletons.find(name);
 		if(it==singletons.end())
 		{
 			return nullptr;
@@ -33,9 +23,9 @@ namespace urchin
 
 	void SingletonManager::destroyAllSingletons()
 	{
-		for(std::map<std::string, SingletonInterface *>::iterator it = singletons.begin(); it!=singletons.end(); ++it)
+		for (auto &singleton : singletons)
 		{
-			delete (*it).second;
+			delete singleton.second;
 		}
 		singletons.clear();
 	}

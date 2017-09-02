@@ -1,5 +1,5 @@
-#ifndef ENGINE_AABBNODE_H
-#define ENGINE_AABBNODE_H
+#ifndef URCHINENGINE_AABBNODE_H
+#define URCHINENGINE_AABBNODE_H
 
 #include "UrchinCommon.h"
 

@@ -156,7 +156,7 @@ namespace urchin
 			const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
 			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
 			{
-				const auto *compoundShape = static_cast<const CollisionCompoundShape *>(bodyShape);
+				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
 				for(const auto &localizedShape : localizedShapes)
 				{

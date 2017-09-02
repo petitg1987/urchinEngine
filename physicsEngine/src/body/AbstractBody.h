@@ -1,5 +1,5 @@
-#ifndef ENGINE_ABSTRACTBODY_H
-#define ENGINE_ABSTRACTBODY_H
+#ifndef URCHINENGINE_ABSTRACTBODY_H
+#define URCHINENGINE_ABSTRACTBODY_H
 
 #include <string>
 #include <memory>

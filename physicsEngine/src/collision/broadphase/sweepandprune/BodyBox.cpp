@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	BodyBox::~BodyBox()
-	{
-
-	}
-
 	AbstractWorkBody *BodyBox::getBody() const
 	{
 		return body;

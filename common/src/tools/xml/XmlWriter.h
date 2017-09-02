@@ -1,5 +1,5 @@
-#ifndef ENGINE_XMLWRITER_H
-#define ENGINE_XMLWRITER_H
+#ifndef URCHINENGINE_XMLWRITER_H
+#define URCHINENGINE_XMLWRITER_H
 
 #include <string>
 #include <memory>

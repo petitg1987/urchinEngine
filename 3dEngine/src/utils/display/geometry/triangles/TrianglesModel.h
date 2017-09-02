@@ -1,5 +1,5 @@
-#ifndef ENGINE_TRIANGLESMODEL_H
-#define ENGINE_TRIANGLESMODEL_H
+#ifndef URCHINENGINE_TRIANGLESMODEL_H
+#define URCHINENGINE_TRIANGLESMODEL_H
 
 #include <vector>
 #include "UrchinCommon.h"

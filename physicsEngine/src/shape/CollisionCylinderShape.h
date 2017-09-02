@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONCYLINDERSHAPE_H
-#define ENGINE_COLLISIONCYLINDERSHAPE_H
+#ifndef URCHINENGINE_COLLISIONCYLINDERSHAPE_H
+#define URCHINENGINE_COLLISIONCYLINDERSHAPE_H
 
 #include <memory>
 #include "UrchinCommon.h"
@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
-			~CollisionCylinderShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;

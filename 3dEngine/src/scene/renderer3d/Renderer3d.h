@@ -1,5 +1,5 @@
-#ifndef ENGINE_RENDERER3D_H
-#define ENGINE_RENDERER3D_H
+#ifndef URCHINENGINE_RENDERER3D_H
+#define URCHINENGINE_RENDERER3D_H
 
 #include <string>
 #include <memory>

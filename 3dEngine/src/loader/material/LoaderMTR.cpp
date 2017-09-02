@@ -1,5 +1,4 @@
 #include <locale>
-#include <stdexcept>
 #include <memory>
 #include "UrchinCommon.h"
 
@@ -9,11 +8,6 @@
 
 namespace urchin
 {
-	
-	LoaderMTR::~LoaderMTR()
-	{
-
-	}
 
 	Material *LoaderMTR::loadFromFile(const std::string &filename, void *params)
 	{
@@ -24,7 +18,7 @@ namespace urchin
 		//diffuse data
 		Image *diffuseTex = nullptr;
 		std::shared_ptr<XmlChunk> diffuse(parserXml.getUniqueChunk(false, "diffuse"));
-		if(diffuse.get()!=nullptr)
+		if(diffuse!=nullptr)
 		{
 			std::shared_ptr<XmlChunk> diffuseTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
 			diffuseTex = MediaManager::instance()->getMedia<Image>(diffuseTexture->getStringValue());
@@ -34,7 +28,7 @@ namespace urchin
 		//normal data
 		Image *normalTex = nullptr;
 		std::shared_ptr<XmlChunk> normal(parserXml.getUniqueChunk(false, "normal"));
-		if(normal.get()!=nullptr)
+		if(normal!=nullptr)
 		{
 			std::shared_ptr<XmlChunk> normalTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
 			normalTex = MediaManager::instance()->getMedia<Image>(normalTexture->getStringValue());
@@ -44,7 +38,7 @@ namespace urchin
 		//ambient data
 		float fAmbientFactor = 0.0;
 		std::shared_ptr<XmlChunk> ambient(parserXml.getUniqueChunk(false, "ambient"));
-		if(ambient.get()!=nullptr)
+		if(ambient!=nullptr)
 		{
 			std::shared_ptr<XmlChunk> ambientFactor(parserXml.getUniqueChunk(true, "factor", XmlAttribute(), ambient));
 			fAmbientFactor = Converter::toFloat(ambientFactor->getStringValue());

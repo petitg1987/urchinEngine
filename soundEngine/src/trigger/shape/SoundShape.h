@@ -1,5 +1,5 @@
-#ifndef ENGINE_SOUNDSHAPE_H
-#define ENGINE_SOUNDSHAPE_H
+#ifndef URCHINENGINE_SOUNDSHAPE_H
+#define URCHINENGINE_SOUNDSHAPE_H
 
 #include "UrchinCommon.h"
 

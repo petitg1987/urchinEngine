@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	Light::~Light()
-	{
-
-	}
-
 	const Transform<float> &Light::getTransform() const
 	{
 		return noTransform;

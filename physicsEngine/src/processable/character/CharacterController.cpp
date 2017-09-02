@@ -164,7 +164,7 @@ namespace urchin
 			lastWalkDirection = walkDirection;
 		}else if(timeInTheAir < timeKeepMoveInAir)
 		{
-			float momentumSpeedDecrease = 1.0f - (timeInTheAir / (float)timeKeepMoveInAir);
+			float momentumSpeedDecrease = 1.0f - (timeInTheAir / timeKeepMoveInAir);
 			Vector3<float> walkDirectionInAir = lastWalkDirection*(1.0f-percentageControlInAir)
 					+ walkDirection*percentageControlInAir;
 			targetPosition = targetPosition.translate(walkDirectionInAir * momentumSpeedDecrease);

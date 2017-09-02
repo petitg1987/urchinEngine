@@ -1,5 +1,5 @@
-#ifndef ENGINE_VECTOR2_H
-#define ENGINE_VECTOR2_H
+#ifndef URCHINENGINE_VECTOR2_H
+#define URCHINENGINE_VECTOR2_H
 
 #include <iostream>
 #include <cmath>

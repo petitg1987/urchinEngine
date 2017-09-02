@@ -5,14 +5,9 @@
 namespace urchin
 {
 
-	VectorPairContainer::VectorPairContainer()
-	{
-
-	}
-
 	VectorPairContainer::~VectorPairContainer()
 	{
-		for(std::vector<OverlappingPair *>::iterator it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
+		for(auto it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
 		{
 			delete *it;
 		}
@@ -23,7 +18,7 @@ namespace urchin
 		uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
 
 		bool found = false;
-		for(std::vector<OverlappingPair *>::iterator it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
+		for(auto it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
 		{
 			if((*it)->getBodiesId()==bodiesId)
 			{
@@ -41,7 +36,7 @@ namespace urchin
 	void VectorPairContainer::removeOverlappingPair(AbstractWorkBody *body1, AbstractWorkBody *body2)
 	{
 		uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
-		for(std::vector<OverlappingPair *>::iterator it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
+		for(auto it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
 		{
 			if((*it)->getBodiesId()==bodiesId)
 			{
@@ -54,7 +49,7 @@ namespace urchin
 
 	void VectorPairContainer::removeOverlappingPairs(AbstractWorkBody *body)
 	{
-		std::vector<OverlappingPair *>::iterator it = overlappingPairs.begin();
+		auto it = overlappingPairs.begin();
 		while(it!=overlappingPairs.end())
 		{
 			OverlappingPair *pair = *it;

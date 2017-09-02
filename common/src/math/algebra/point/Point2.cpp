@@ -40,12 +40,12 @@ namespace urchin
 
 	template<class T> T Point2<T>::distance() const
 	{
-		return (T)sqrt(X*X + Y*Y);
+		return std::sqrt(X*X + Y*Y);
 	}
 
 	template<class T> T Point2<T>::distance(const Point2<T> &p) const
 	{
-		return (T)sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)));
+		return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)));
 	}
 
 	template<class T> T Point2<T>::squareDistance(const Point2<T> &p) const

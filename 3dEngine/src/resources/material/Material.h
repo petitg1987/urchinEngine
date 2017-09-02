@@ -1,5 +1,5 @@
-#ifndef ENGINE_MATERIAL_H
-#define ENGINE_MATERIAL_H
+#ifndef URCHINENGINE_MATERIAL_H
+#define URCHINENGINE_MATERIAL_H
 
 #include <vector>
 

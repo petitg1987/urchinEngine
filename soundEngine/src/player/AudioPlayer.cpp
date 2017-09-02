@@ -9,11 +9,6 @@ namespace urchin
 
 	}
 
-	AudioPlayer::~AudioPlayer()
-	{
-
-	}
-
 	const Sound *AudioPlayer::getSound() const
 	{
 		return sound;

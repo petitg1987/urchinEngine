@@ -15,11 +15,6 @@ namespace urchin
 		animationInformation.maxTime = 1.0/constAnimation->getFrameRate();
 	}
 
-	Animation::~Animation()
-	{
-
-	}
-
 	const std::vector<Bone> &Animation::getSkeleton() const
 	{
 		return skeleton;

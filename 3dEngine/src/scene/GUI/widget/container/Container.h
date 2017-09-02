@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONTAINER_H
-#define ENGINE_CONTAINER_H
+#ifndef URCHINENGINE_CONTAINER_H
+#define URCHINENGINE_CONTAINER_H
 
 #include "scene/GUI/widget/Widget.h"
 #include "scene/GUI/widget/Position.h"

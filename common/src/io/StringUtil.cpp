@@ -5,16 +5,6 @@
 namespace urchin
 {
 
-	StringUtil::StringUtil()
-	{
-
-	}
-
-	StringUtil::~StringUtil()
-	{
-
-	}
-
 	void StringUtil::replaceAll(std::string &str, const std::string &from, const std::string &to)
 	{
 	    size_t startPos = 0;
@@ -32,7 +22,7 @@ namespace urchin
 	    while(start != str.end())
 	    {
 	    	std::string::const_iterator temp = std::find(start, str.end(), delimitor);
-	        tokens.push_back(std::string(start, temp));
+	        tokens.emplace_back(std::string(start, temp));
 
 	        start = temp;
 	        while((start != str.end()) && (*start == delimitor))

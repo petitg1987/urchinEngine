@@ -1,5 +1,5 @@
-#ifndef ENGINE_FPSCAMERA_H
-#define ENGINE_FPSCAMERA_H
+#ifndef URCHINENGINE_FPSCAMERA_H
+#define URCHINENGINE_FPSCAMERA_H
 
 #include "Camera.h"
 

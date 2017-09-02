@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "Triangulation.h"
-#include "path/navmesh/triangulation/MonotonePolygon.h"
+#include "path/navmesh/triangulation/MonotonePolygonAlgorithm.h"
 
 namespace urchin
 {
@@ -61,7 +61,7 @@ namespace urchin
 
 	std::vector<IndexedTriangle2D<float>> Triangulation::triangulate() const
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
-		std::vector<std::vector<unsigned int>> monotonePolygons = MonotonePolygon(polygonPoints, endContourIndices).createYMonotonePolygons();
+		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
 
 		std::vector<IndexedTriangle2D<float>> triangles;
 		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
@@ -70,12 +70,12 @@ namespace urchin
 		{
 			#ifdef _DEBUG
 				std::vector<IndexedTriangle2D<float>> monotonePolygonTriangles;
-				monotonePolygonTriangles.reserve(monotonePolygon.size());
-				triangulateMonotonePolygon(monotonePolygon, monotonePolygonTriangles);
+				monotonePolygonTriangles.reserve(monotonePolygon.getCcwPoints().size());
+				triangulateMonotonePolygon(monotonePolygon.getCcwPoints(), monotonePolygonTriangles);
 				triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
 				//logOutputData("Debug monotone polygon " + std::to_string(monotonePolygonIndex) + " triangulation.", monotonePolygonTriangles, Logger::INFO);
 			#else
-				triangulateMonotonePolygon(monotonePolygon, triangles);
+				triangulateMonotonePolygon(monotonePolygon.getCcwPoints(), triangles);
 			#endif
 		}
 

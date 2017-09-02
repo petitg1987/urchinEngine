@@ -1,5 +1,5 @@
-#ifndef ENGINE_CONVERTER_H
-#define ENGINE_CONVERTER_H
+#ifndef URCHINENGINE_CONVERTER_H
+#define URCHINENGINE_CONVERTER_H
 
 #include "math/algebra/point/Point2.h"
 #include "math/algebra/point/Point3.h"
@@ -37,8 +37,8 @@ namespace urchin
 			static Vector4<float> toVector4(const std::string &);
 
 		private:
-			Converter();
-			~Converter();
+			Converter() = default;
+			~Converter() = default;
 
 			static std::vector<float> floatSplit(const std::string &, unsigned int);
 	};

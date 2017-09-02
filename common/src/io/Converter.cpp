@@ -9,16 +9,6 @@
 namespace urchin
 {
 
-	Converter::Converter()
-	{
-
-	}
-
-	Converter::~Converter()
-	{
-
-	}
-
 	int Converter::toInt(const std::string &str)
 	{
 		std::istringstream iss(str);

@@ -10,17 +10,12 @@ namespace urchin
 			CollisionShape3D(),
 			localizedShapes(localizedShapes)
 	{
-		if(localizedShapes.size()==0)
+		if(localizedShapes.empty())
 		{
 			throw std::invalid_argument("Compound shape must be composed of at least one shape.");
 		}
 
 		initializeDistances();
-	}
-
-	CollisionCompoundShape::~CollisionCompoundShape()
-	{
-
 	}
 
 	void CollisionCompoundShape::initializeDistances()

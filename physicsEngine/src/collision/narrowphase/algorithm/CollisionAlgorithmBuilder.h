@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONALGORITHMBUILDER_H
-#define ENGINE_COLLISIONALGORITHMBUILDER_H
+#ifndef URCHINENGINE_COLLISIONALGORITHMBUILDER_H
+#define URCHINENGINE_COLLISIONALGORITHMBUILDER_H
 
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/CollisionObjectWrapper.h"

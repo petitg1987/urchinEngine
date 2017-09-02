@@ -32,11 +32,6 @@ namespace urchin
 
 	}
 
-	SoundBehavior::~SoundBehavior()
-	{
-
-	}
-
 	SoundBehavior::PlayBehavior SoundBehavior::getPlayBehavior() const
 	{
 		return playBehavior;

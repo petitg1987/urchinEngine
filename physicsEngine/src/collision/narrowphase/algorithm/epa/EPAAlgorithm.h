@@ -1,5 +1,5 @@
-#ifndef ENGINE_EPAALGORITHM_H
-#define ENGINE_EPAALGORITHM_H
+#ifndef URCHINENGINE_EPAALGORITHM_H
+#define URCHINENGINE_EPAALGORITHM_H
 
 #include <vector>
 #include <limits>

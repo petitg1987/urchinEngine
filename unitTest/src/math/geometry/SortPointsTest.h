@@ -1,5 +1,5 @@
-#ifndef ENGINE_SORTPOINTSTEST_H
-#define ENGINE_SORTPOINTSTEST_H
+#ifndef URCHINENGINE_SORTPOINTSTEST_H
+#define URCHINENGINE_SORTPOINTSTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

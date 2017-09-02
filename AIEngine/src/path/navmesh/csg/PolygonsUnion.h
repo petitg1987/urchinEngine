@@ -1,5 +1,5 @@
-#ifndef ENGINE_POLYGONSUNION_H
-#define ENGINE_POLYGONSUNION_H
+#ifndef URCHINENGINE_POLYGONSUNION_H
+#define URCHINENGINE_POLYGONSUNION_H
 
 #include <vector>
 #include "UrchinCommon.h"

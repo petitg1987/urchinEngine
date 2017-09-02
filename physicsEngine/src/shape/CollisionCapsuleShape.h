@@ -1,5 +1,5 @@
-#ifndef ENGINE_COLLISIONCAPSULESHAPE_H
-#define ENGINE_COLLISIONCAPSULESHAPE_H
+#ifndef URCHINENGINE_COLLISIONCAPSULESHAPE_H
+#define URCHINENGINE_COLLISIONCAPSULESHAPE_H
 
 #include <memory>
 #include "UrchinCommon.h"
@@ -15,7 +15,6 @@ namespace urchin
 	{
 		public:
 			CollisionCapsuleShape(float, float, CapsuleShape<float>::CapsuleOrientation);
-			~CollisionCapsuleShape();
 
 			CollisionShape3D::ShapeType getShapeType() const;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;

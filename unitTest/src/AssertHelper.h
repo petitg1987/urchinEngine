@@ -1,5 +1,5 @@
-#ifndef ENGINE_ASSERTHELPER_H
-#define ENGINE_ASSERTHELPER_H
+#ifndef URCHINENGINE_ASSERTHELPER_H
+#define URCHINENGINE_ASSERTHELPER_H
 
 #include "UrchinCommon.h"
 using namespace urchin;

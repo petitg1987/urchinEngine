@@ -1,5 +1,5 @@
-#ifndef ENGINE_SOUND_H
-#define ENGINE_SOUND_H
+#ifndef URCHINENGINE_SOUND_H
+#define URCHINENGINE_SOUND_H
 
 #include <string>
 #include <AL/al.h>

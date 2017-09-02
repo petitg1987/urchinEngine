@@ -1,5 +1,5 @@
-#ifndef ENGINE_EPACONVEXHULLTEST_H
-#define ENGINE_EPACONVEXHULLTEST_H
+#ifndef URCHINENGINE_EPACONVEXHULLTEST_H
+#define URCHINENGINE_EPACONVEXHULLTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>

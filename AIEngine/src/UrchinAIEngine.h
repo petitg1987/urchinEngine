@@ -1,5 +1,5 @@
-#ifndef ENGINE_URCHINAIENGINE_H
-#define ENGINE_URCHINAIENGINE_H
+#ifndef URCHINENGINE_URCHINAIENGINE_H
+#define URCHINENGINE_URCHINAIENGINE_H
 
 #include "AIManager.h"
 
@@ -11,6 +11,7 @@
 #include "path/navmesh/model/NavMeshAgent.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
+#include "path/navmesh/triangulation/MonotonePolygonAlgorithm.h"
 #include "path/navmesh/triangulation/MonotonePolygon.h"
 #include "path/navmesh/triangulation/Triangulation.h"
 #include "path/navmesh/csg/PolygonsUnion.h"

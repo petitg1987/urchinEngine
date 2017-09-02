@@ -17,9 +17,9 @@ namespace urchin
 
 	ConstraintSolverManager::~ConstraintSolverManager()
 	{
-		for(auto it=constraintsSolving.begin(); it!=constraintsSolving.end(); ++it)
+		for (auto &constraintSolving : constraintsSolving)
 		{
-			constraintSolvingPool->free(*it);
+			constraintSolvingPool->free(constraintSolving);
 		}
 
 		delete constraintSolvingPool;
