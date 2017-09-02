@@ -7,14 +7,6 @@
 namespace urchin
 {
 
-    struct MonotonePolygonEdge
-    {
-        MonotonePolygonEdge(unsigned int, unsigned int);
-
-        unsigned int monotonePolygonIndex; //ref. to another monotone polygon
-        unsigned int edgeId; //TODO use unsigned int ?!
-    };
-
     class MonotonePolygon
     {
         public:
@@ -22,12 +14,12 @@ namespace urchin
 
             const std::vector<unsigned int> &getCcwPoints() const;
 
-            void addConnection(unsigned int, MonotonePolygonEdge);
-            const std::map<unsigned int, MonotonePolygonEdge> &getConnections() const;
+            void addSharedEdge(uint_fast64_t, unsigned int);
+            const std::map<uint_fast64_t, unsigned int> &getSharedEdges() const;
 
         private:
             std::vector<unsigned int> ccwPoints;
-            std::map<unsigned int, MonotonePolygonEdge> connections; //first: edge id on this monotone, second: edge on another monotone polygon //TODO use unsigned int ?!
+            std::map<uint_fast64_t, unsigned int> sharedEdges; //first: edge id, second: other monotone polygon index
     };
 
 }

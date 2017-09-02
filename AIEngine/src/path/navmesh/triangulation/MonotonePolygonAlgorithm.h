@@ -33,6 +33,8 @@ namespace urchin
 	{
 		Edge(unsigned int, unsigned int);
 
+		uint_fast64_t computeEdgeId() const;
+
 		unsigned int startIndex;
 		unsigned int endIndex;
 
@@ -84,9 +86,11 @@ namespace urchin
 			std::vector<EdgeHelper>::iterator findNearestLeftEdgeHelper(unsigned int);
 			void createDiagonals(unsigned int, unsigned int);
 
-			unsigned int retrieveNextPointIndex(unsigned int, unsigned int);
+			unsigned int retrieveNextPointIndex(unsigned int, unsigned int, unsigned int);
 			std::vector<std::pair<unsigned int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
-			void markDiagonalProcessed(it_diagonals);
+			void markDiagonalProcessed(it_diagonals, unsigned int);
+
+			void determineSharedEdges(std::vector<MonotonePolygon> &) const;
 
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;
 			void logOutputData(const std::string &, const std::vector<std::vector<unsigned int>> &, Logger::CriticalityLevel) const;
@@ -96,6 +100,7 @@ namespace urchin
 
 			std::vector<EdgeHelper> edgeHelpers;
 			std::multimap<unsigned int, Edge> diagonals;
+			std::map<uint_fast64_t, std::set<unsigned int>> sharedEdges;
 	};
 
 }

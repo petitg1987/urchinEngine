@@ -19,6 +19,13 @@ namespace urchin
 
 	}
 
+    uint_fast64_t Edge::computeEdgeId() const
+    {
+		auto edgeId = static_cast<uint_fast64_t>(std::min(startIndex, endIndex));
+		edgeId = edgeId << 32;
+		return edgeId + std::max(startIndex, endIndex);
+    }
+
 	EdgeHelper:: EdgeHelper(Edge edge, unsigned int helperPointIndex, PointType helperPointType) :
 			edge(edge), helperPointIndex(helperPointIndex), helperPointType(helperPointType)
 	{
@@ -90,6 +97,7 @@ namespace urchin
 			yMonotonePolygons.reserve(diagonals.size());
 			for(auto &diagonal : diagonals)
 			{
+				unsigned int yMonotonePolygonsIndex = yMonotonePolygons.size();
 				Edge &startDiagonal = diagonal.second;
 				if(!startDiagonal.isProcessed)
 				{
@@ -98,12 +106,14 @@ namespace urchin
 					monotonePointsIndices.push_back(startDiagonal.startIndex);
 					monotonePointsIndices.push_back(startDiagonal.endIndex);
 
+					sharedEdges[startDiagonal.computeEdgeId()].insert(yMonotonePolygonsIndex);
+
 					unsigned int previousPointIndex = startDiagonal.startIndex;
 					unsigned int currentPointIndex = startDiagonal.endIndex;
 
 					while(true)
 					{
-						unsigned int nextPointIndex = retrieveNextPointIndex(previousPointIndex, currentPointIndex);
+						unsigned int nextPointIndex = retrieveNextPointIndex(previousPointIndex, currentPointIndex, yMonotonePolygonsIndex);
 						if(nextPointIndex==startDiagonal.startIndex)
 						{
 							break;
@@ -129,12 +139,15 @@ namespace urchin
 							yMonotonePolygons.clear();
 							return yMonotonePolygons;
 						}
+
+						startDiagonal.isProcessed = true;
 					}
 
-					startDiagonal.isProcessed = true;
 					yMonotonePolygons.emplace_back(MonotonePolygon(monotonePointsIndices));
 				}
 			}
+
+			determineSharedEdges(yMonotonePolygons);
 		}
 
 		#ifdef _DEBUG
@@ -423,12 +436,12 @@ namespace urchin
 	 * Returns the next point after edge [edgeStartIndex, edgeEndIndex] in order to form a monotone polygon.
 	 * If edge [edgeEndIndex, nextPointIndex] is a diagonal: mark the diagonal as processed.
 	 */
-	unsigned int MonotonePolygonAlgorithm::retrieveNextPointIndex(unsigned int edgeStartIndex, unsigned int edgeEndIndex)
+	unsigned int MonotonePolygonAlgorithm::retrieveNextPointIndex(unsigned int edgeStartIndex, unsigned int edgeEndIndex, unsigned int yMonotonePolygonsIndex)
 	{
 		std::vector<std::pair<unsigned int, it_diagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
 		if(possibleNextPoints.size()==1)
 		{ //only one possible edge
-			markDiagonalProcessed(possibleNextPoints[0].second);
+			markDiagonalProcessed(possibleNextPoints[0].second, yMonotonePolygonsIndex);
 			return possibleNextPoints[0].first;
 		}
 
@@ -463,7 +476,7 @@ namespace urchin
 		}
 
 		auto nextPoint = possibleNextPoints[bestCCWPointIndex!=-1 ? bestCCWPointIndex : bestCWPointIndex];
-		markDiagonalProcessed(nextPoint.second);
+		markDiagonalProcessed(nextPoint.second, yMonotonePolygonsIndex);
 
 		return nextPoint.first;
 	}
@@ -488,11 +501,32 @@ namespace urchin
 		return possibleNextPoints;
 	}
 
-	void MonotonePolygonAlgorithm::markDiagonalProcessed(MonotonePolygonAlgorithm::it_diagonals itDiagonal)
+	void MonotonePolygonAlgorithm::markDiagonalProcessed(MonotonePolygonAlgorithm::it_diagonals itDiagonal, unsigned int yMonotonePolygonsIndex)
 	{
 		if(itDiagonal!=diagonals.end())
 		{
+			sharedEdges[itDiagonal->second.computeEdgeId()].insert(yMonotonePolygonsIndex);
+
 			itDiagonal->second.isProcessed = true;
+		}
+	}
+
+	void MonotonePolygonAlgorithm::determineSharedEdges(std::vector<MonotonePolygon> &yMonotonePolygons) const
+	{
+		for(const auto &it : sharedEdges)
+		{
+			uint_fast64_t edgeId = it.first;
+
+			for(unsigned int monotonePolygonIndex1 : it.second)
+			{
+				for(unsigned int monotonePolygonIndex2 : it.second)
+				{
+					if(monotonePolygonIndex1!=monotonePolygonIndex2)
+					{
+						yMonotonePolygons[monotonePolygonIndex1].addSharedEdge(edgeId, monotonePolygonIndex2);
+					}
+				}
+			}
 		}
 	}
 

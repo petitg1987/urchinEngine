@@ -3,13 +3,6 @@
 namespace urchin
 {
 
-    MonotonePolygonEdge::MonotonePolygonEdge(unsigned int monotonePolygonIndex, unsigned int edgeId) :
-        monotonePolygonIndex(monotonePolygonIndex),
-        edgeId(edgeId)
-    {
-
-    }
-
     MonotonePolygon::MonotonePolygon(const std::vector<unsigned int> &ccwPoints) :
         ccwPoints(ccwPoints)
     {
@@ -21,14 +14,14 @@ namespace urchin
         return ccwPoints;
     }
 
-    void MonotonePolygon::addConnection(unsigned int edgeId, MonotonePolygonEdge monotonePolygonEdge)
+    void MonotonePolygon::addSharedEdge(uint_fast64_t edgeId, unsigned int monotonePolygonIndex)
     {
-        connections.insert(std::make_pair(edgeId, monotonePolygonEdge));
+        sharedEdges.insert(std::make_pair(edgeId, monotonePolygonIndex));
     }
 
-    const std::map<unsigned int, MonotonePolygonEdge> &MonotonePolygon::getConnections() const
+    const std::map<uint_fast64_t, unsigned int> &MonotonePolygon::getSharedEdges() const
     {
-        return connections;
+        return sharedEdges;
     }
 
 }
