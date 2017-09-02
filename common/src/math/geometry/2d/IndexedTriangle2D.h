@@ -14,7 +14,7 @@ namespace urchin
 	{
 		public:
 			explicit IndexedTriangle2D(const unsigned int *);
-			explicit IndexedTriangle2D(unsigned int, unsigned int, unsigned int);
+			IndexedTriangle2D(unsigned int, unsigned int, unsigned int);
 
 			const unsigned int *getIndices() const;
 			unsigned int getIndex(unsigned int) const;

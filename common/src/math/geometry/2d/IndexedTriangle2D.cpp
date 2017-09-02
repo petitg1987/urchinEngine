@@ -34,6 +34,10 @@ namespace urchin
 
 	template<class T> unsigned int IndexedTriangle2D<T>::getIndex(unsigned int index) const
 	{
+		#ifdef _DEBUG
+			assert(index <= 2);
+		#endif
+
 		return indices[index];
 	}
 

@@ -2,7 +2,7 @@
 #include <stack>
 #include <algorithm>
 
-#include "Triangulation.h"
+#include "TriangulationAlgorithm.h"
 #include "path/navmesh/triangulation/MonotonePolygonAlgorithm.h"
 
 namespace urchin
@@ -17,7 +17,7 @@ namespace urchin
 	/**
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
-	Triangulation::Triangulation(const std::vector<Point2<float>> &ccwPolygonPoints) :
+	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints) :
 			polygonPoints(ccwPolygonPoints)
 	{
 		endContourIndices.push_back(ccwPolygonPoints.size());
@@ -26,7 +26,7 @@ namespace urchin
 	/**
 	 * @return Polygon points in counter clockwise order.
 	 */
-	std::vector<Point2<float>> Triangulation::getPolygonPoints() const
+	std::vector<Point2<float>> TriangulationAlgorithm::getPolygonPoints() const
 	{
 		return std::vector<Point2<float>>(polygonPoints.begin(), polygonPoints.begin() + endContourIndices[0]);
 	}
@@ -35,7 +35,7 @@ namespace urchin
 	 * @param cwHolePoints Hole points in clockwise order. Points must be unique and not go outside the polygon contour.
 	 * @return Hole index (start to 0).
 	 */
-	unsigned int Triangulation::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
+	unsigned int TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
 	{
 		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
 		endContourIndices.push_back(polygonPoints.size());
@@ -46,7 +46,7 @@ namespace urchin
 	/**
 	 * @return Number of holes
 	 */
-	unsigned int Triangulation::getHolesSize() const
+	unsigned int TriangulationAlgorithm::getHolesSize() const
 	{
 		return endContourIndices.size() - 1;
 	}
@@ -54,22 +54,22 @@ namespace urchin
 	/**
 	 * @return Hole points in clockwise order.
 	 */
-	std::vector<Point2<float>> Triangulation::getHolePoints(unsigned int holeIndex) const
+	std::vector<Point2<float>> TriangulationAlgorithm::getHolePoints(unsigned int holeIndex) const
 	{
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
-	std::vector<IndexedTriangle2D<float>> Triangulation::triangulate() const
+	std::vector<IndexedTriangleMesh> TriangulationAlgorithm::triangulate() const
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
 
-		std::vector<IndexedTriangle2D<float>> triangles;
+		std::vector<IndexedTriangleMesh> triangles;
 		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
 
 		for (const auto &monotonePolygon : monotonePolygons)
 		{
 			#ifdef _DEBUG
-				std::vector<IndexedTriangle2D<float>> monotonePolygonTriangles;
+				std::vector<IndexedTriangleMesh> monotonePolygonTriangles;
 				monotonePolygonTriangles.reserve(monotonePolygon.getCcwPoints().size());
 				triangulateMonotonePolygon(monotonePolygon.getCcwPoints(), monotonePolygonTriangles);
 				triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
@@ -85,7 +85,7 @@ namespace urchin
 	/**
 	 * Return points size for all points: point of main polygon + points of holes
 	 */
-	unsigned int Triangulation::getAllPointsSize() const
+	unsigned int TriangulationAlgorithm::getAllPointsSize() const
 	{
 		return polygonPoints.size();
 	}
@@ -93,7 +93,7 @@ namespace urchin
 	/**
 	 * @param triangles [out] Triangles of monotone polygon are added to this vector
 	 */
-	void Triangulation::triangulateMonotonePolygon(const std::vector<unsigned int> &monotonePolygonPoints, std::vector<IndexedTriangle2D<float>> &triangles) const
+	void TriangulationAlgorithm::triangulateMonotonePolygon(const std::vector<unsigned int> &monotonePolygonPoints, std::vector<IndexedTriangleMesh> &triangles) const
 	{
 		std::vector<SidedPoint> sortedSidedPoints = buildSortedSidedPoints(monotonePolygonPoints);
 
@@ -113,7 +113,8 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-					triangles.emplace_back(IndexedTriangle2D<float>(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
+					triangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
+					determineNeighbor(triangles);
 				}
 				stack.pop();
 				stack.push(sortedSidedPoints[j-1]);
@@ -133,7 +134,8 @@ namespace urchin
 
 					if((orientationResult <= 0.0 && topPoint.onLeft) || (orientationResult >= 0.0 && !topPoint.onLeft))
 					{
-						triangles.emplace_back(IndexedTriangle2D<float>(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+						triangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+						determineNeighbor(triangles);
 						stack.pop();
 					}else
 					{
@@ -152,11 +154,12 @@ namespace urchin
 			stack.pop();
 			SidedPoint top2Point = stack.top();
 
-			triangles.emplace_back(IndexedTriangle2D<float>(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+			triangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+			determineNeighbor(triangles);
 		}
 	}
 
-	std::vector<SidedPoint> Triangulation::buildSortedSidedPoints(const std::vector<unsigned int> &monotonePolygonPoints) const
+	std::vector<SidedPoint> TriangulationAlgorithm::buildSortedSidedPoints(const std::vector<unsigned int> &monotonePolygonPoints) const
 	{
 		std::vector<SidedPoint> sortedSidedPoints;
 		sortedSidedPoints.reserve(monotonePolygonPoints.size());
@@ -175,7 +178,7 @@ namespace urchin
 		return sortedSidedPoints;
 	}
 
-	bool Triangulation::isFirstPointAboveSecond(unsigned int firstIndex, unsigned int secondIndex) const
+	bool TriangulationAlgorithm::isFirstPointAboveSecond(unsigned int firstIndex, unsigned int secondIndex) const
 	{
 		if(polygonPoints[firstIndex].Y == polygonPoints[secondIndex].Y)
 		{
@@ -184,7 +187,25 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	void Triangulation::logOutputData(const std::string &message, const std::vector<IndexedTriangle2D<float>> &triangles, Logger::CriticalityLevel logLevel) const
+	void TriangulationAlgorithm::determineNeighbor(std::vector<IndexedTriangleMesh> &triangles) const
+	{
+		//others triangles neighbors
+		if(triangles.size() > 1)
+		{
+			//TODO don't work with cavityTriangulation test
+			std::cout<<std::endl;
+			std::cout<<triangles[triangles.size()-2].getIndex(0)<<" "<<triangles[triangles.size()-2].getIndex(1)<<" "<<triangles[triangles.size()-2].getIndex(2)<<std::endl;
+			std::cout<<triangles[triangles.size()-1].getIndex(0)<<" "<<triangles[triangles.size()-1].getIndex(1)<<" "<<triangles[triangles.size()-1].getIndex(2)<<std::endl;
+			std::cout<<std::endl;
+
+			triangles[triangles.size()-1].addNeighbor(1, triangles.size()-2);
+			triangles[triangles.size()-2].addNeighbor(0, triangles.size()-1);
+		}
+
+		//TODO handle monotone polygon neighbor
+	}
+
+	void TriangulationAlgorithm::logOutputData(const std::string &message, const std::vector<IndexedTriangleMesh> &triangles, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
@@ -193,7 +214,8 @@ namespace urchin
 		logStream<<"Monotone polygon triangles output data:"<<std::endl;
 		for(const auto &triangle : triangles)
 		{
-			logStream<<" - {"<<polygonPoints[triangle.getIndex(0)]<<"}, {"<<polygonPoints[triangle.getIndex(1)]<<"}, {"<<polygonPoints[triangle.getIndex(2)]<<"}"<<std::endl;
+			logStream<<" - {"<<polygonPoints[triangle.getIndex(0)]<<"}, {"<<polygonPoints[triangle.getIndex(1)]<<"}, {"<<polygonPoints[triangle.getIndex(2)]<<"}"
+                     <<" {"<<polygonPoints[triangle.getNeighbor(0)]<<"}, {"<<polygonPoints[triangle.getNeighbor(1)]<<"}, {"<<polygonPoints[triangle.getNeighbor(2)]<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

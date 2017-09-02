@@ -29,8 +29,8 @@ set(SOURCE_FILES
         src/path/navmesh/polyhedron/PolyhedronPoint.h
         src/path/navmesh/triangulation/MonotonePolygonAlgorithm.cpp
         src/path/navmesh/triangulation/MonotonePolygonAlgorithm.h
-        src/path/navmesh/triangulation/Triangulation.cpp
-        src/path/navmesh/triangulation/Triangulation.h
+        src/path/navmesh/triangulation/TriangulationAlgorithm.cpp
+        src/path/navmesh/triangulation/TriangulationAlgorithm.h
         src/path/navmesh/NavMeshGenerator.cpp
         src/path/navmesh/NavMeshGenerator.h
         src/UrchinAIEngine.h src/path/navmesh/model/NavMeshAgent.cpp
@@ -40,7 +40,7 @@ set(SOURCE_FILES
         src/AIManager.cpp
         src/AIManager.h
         src/path/navmesh/triangulation/MonotonePolygon.cpp
-        src/path/navmesh/triangulation/MonotonePolygon.h)
+        src/path/navmesh/triangulation/MonotonePolygon.h src/path/navmesh/triangulation/IndexedTriangleMesh.cpp src/path/navmesh/triangulation/IndexedTriangleMesh.h)
 
 include_directories(src ../common/src)
 

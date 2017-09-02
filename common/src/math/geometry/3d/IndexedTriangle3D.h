@@ -14,7 +14,7 @@ namespace urchin
 	{
 		public:
 			explicit IndexedTriangle3D(const unsigned int *);
-			explicit IndexedTriangle3D(unsigned int, unsigned int, unsigned int);
+			IndexedTriangle3D(unsigned int, unsigned int, unsigned int);
 
 			const unsigned int *getIndices() const;
 			unsigned int getIndex(unsigned int) const;

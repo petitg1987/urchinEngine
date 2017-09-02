@@ -1,8 +1,10 @@
-#ifndef URCHINENGINE_TRIANGULATION_H
-#define URCHINENGINE_TRIANGULATION_H
+#ifndef URCHINENGINE_TRIANGULATIONALGORITHM_H
+#define URCHINENGINE_TRIANGULATIONALGORITHM_H
 
 #include <vector>
 #include "UrchinCommon.h"
+
+#include "path/navmesh/triangulation/IndexedTriangleMesh.h"
 
 namespace urchin
 {
@@ -15,10 +17,10 @@ namespace urchin
 		bool onLeft; //indicate if point is on left of monotone polygon or right
 	};
 
-	class Triangulation
+	class TriangulationAlgorithm
 	{
 		public:
-			explicit Triangulation(const std::vector<Point2<float>> &);
+			explicit TriangulationAlgorithm(const std::vector<Point2<float>> &);
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 
@@ -28,14 +30,16 @@ namespace urchin
 
 			unsigned int getAllPointsSize() const;
 
-			std::vector<IndexedTriangle2D<float>> triangulate() const;
+			std::vector<IndexedTriangleMesh> triangulate() const;
 
 		private:
-			void triangulateMonotonePolygon(const std::vector<unsigned int> &, std::vector<IndexedTriangle2D<float>> &) const;
+			void triangulateMonotonePolygon(const std::vector<unsigned int> &, std::vector<IndexedTriangleMesh> &) const;
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
 			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
 
-			void logOutputData(const std::string &, const std::vector<IndexedTriangle2D<float>> &, Logger::CriticalityLevel) const;
+			void determineNeighbor(std::vector<IndexedTriangleMesh> &) const;
+
+			void logOutputData(const std::string &, const std::vector<IndexedTriangleMesh> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
 			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.

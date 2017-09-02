@@ -327,7 +327,7 @@ namespace urchin
                 std::vector<Point2<float>> extendedWalkableCwPoints = ResizePolygon2DService<float>::instance()->resizePolygon(
                         simplifiedWalkablePolygons.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE);
 
-                Triangulation triangulation(reversePoints(extendedWalkableCwPoints));
+				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints));
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
                 {
@@ -420,7 +420,7 @@ namespace urchin
 		return CSGPolygon<float>(polyhedron.getName(), cwPoints);
 	}
 
-	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const Triangulation &triangulation, const PolyhedronFace &walkableFace) const
+	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const PolyhedronFace &walkableFace) const
 	{
         float shiftDistance = -navMeshConfig->getAgent().computeExpandDistance(walkableFace.getNormal());
 
@@ -452,14 +452,14 @@ namespace urchin
         return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
     }
 
-	std::vector<IndexedTriangle3D<float>> NavMeshGenerator::toIndexedTriangle3D(const std::vector<IndexedTriangle2D<float>> &indexedTriangles2D) const
+	std::vector<IndexedTriangle3D<float>> NavMeshGenerator::toIndexedTriangle3D(const std::vector<IndexedTriangleMesh> &indexedTrianglesMesh) const
 	{
 		std::vector<IndexedTriangle3D<float>> indexedTriangles3D;
-		indexedTriangles3D.reserve(indexedTriangles2D.size());
+		indexedTriangles3D.reserve(indexedTrianglesMesh.size());
 
-		for(const auto &indexedTriangle2D : indexedTriangles2D)
+		for(const auto &indexedTriangleMesh : indexedTrianglesMesh)
 		{
-			indexedTriangles3D.emplace_back(IndexedTriangle3D<float>(indexedTriangle2D.getIndices()));
+			indexedTriangles3D.emplace_back(IndexedTriangle3D<float>(indexedTriangleMesh.getIndices()));
 		}
 
 		return indexedTriangles3D;
