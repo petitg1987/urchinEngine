@@ -19,13 +19,6 @@ namespace urchin
 
 	}
 
-    uint_fast64_t Edge::computeEdgeId() const
-    {
-		auto edgeId = static_cast<uint_fast64_t>(std::min(startIndex, endIndex));
-		edgeId = edgeId << 32;
-		return edgeId + std::max(startIndex, endIndex);
-    }
-
 	EdgeHelper:: EdgeHelper(Edge edge, unsigned int helperPointIndex, PointType helperPointType) :
 			edge(edge), helperPointIndex(helperPointIndex), helperPointType(helperPointType)
 	{
@@ -59,20 +52,7 @@ namespace urchin
 	 */
 	std::vector<MonotonePolygon> MonotonePolygonAlgorithm::createYMonotonePolygons()
 	{
-		std::vector<MonotonePolygon> yMonotonePolygons;
-
-		#ifdef _DEBUG
-			for(unsigned int i=0; i<polygonPoints.size(); ++i)
-			{
-                for(unsigned int j=0; j<polygonPoints.size(); ++j)
-				{
-					if(i!=j && polygonPoints[i]==polygonPoints[j])
-					{
-						logInputData("Duplicate point in monotone polygon.", Logger::ERROR);
-					}
-				}
-			}
-    	#endif
+		yMonotonePolygons.clear();
 
 		try
 		{
@@ -106,8 +86,6 @@ namespace urchin
 					monotonePointsIndices.push_back(startDiagonal.startIndex);
 					monotonePointsIndices.push_back(startDiagonal.endIndex);
 
-					sharedEdges[startDiagonal.computeEdgeId()].insert(yMonotonePolygonsIndex);
-
 					unsigned int previousPointIndex = startDiagonal.startIndex;
 					unsigned int currentPointIndex = startDiagonal.endIndex;
 
@@ -140,14 +118,12 @@ namespace urchin
 							return yMonotonePolygons;
 						}
 
-						startDiagonal.isProcessed = true;
+						markDiagonalProcessed(diagonal, yMonotonePolygonsIndex); //TODO should use diagonal iterator
 					}
 
 					yMonotonePolygons.emplace_back(MonotonePolygon(monotonePointsIndices));
 				}
 			}
-
-			determineSharedEdges(yMonotonePolygons);
 		}
 
 		#ifdef _DEBUG
@@ -505,28 +481,8 @@ namespace urchin
 	{
 		if(itDiagonal!=diagonals.end())
 		{
-			sharedEdges[itDiagonal->second.computeEdgeId()].insert(yMonotonePolygonsIndex);
-
 			itDiagonal->second.isProcessed = true;
-		}
-	}
-
-	void MonotonePolygonAlgorithm::determineSharedEdges(std::vector<MonotonePolygon> &yMonotonePolygons) const
-	{
-		for(const auto &it : sharedEdges)
-		{
-			uint_fast64_t edgeId = it.first;
-
-			for(unsigned int monotonePolygonIndex1 : it.second)
-			{
-				for(unsigned int monotonePolygonIndex2 : it.second)
-				{
-					if(monotonePolygonIndex1!=monotonePolygonIndex2)
-					{
-						yMonotonePolygons[monotonePolygonIndex1].addSharedEdge(edgeId, monotonePolygonIndex2);
-					}
-				}
-			}
+			yMonotonePolygons[yMonotonePolygonsIndex].addSharedEdge(itDiagonal->second.startIndex, itDiagonal->second.endIndex); //TODO wrong because yMonotonePolygons[yMonotonePolygonsIndex] don't exist yet
 		}
 	}
 

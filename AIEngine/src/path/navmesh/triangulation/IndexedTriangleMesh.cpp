@@ -34,15 +34,15 @@ namespace urchin
         return indices[index];
     }
 
-    void IndexedTriangleMesh::addNeighbor(unsigned int edgeIndex, int neighborIndex)
+    void IndexedTriangleMesh::addNeighbor(unsigned int edgeIndex, int triangleNeighborIndex)
     {
         #ifdef _DEBUG
             assert(edgeIndex >= 0 && edgeIndex <= 2);
             assert(neighbors[edgeIndex]==-1); //check neighbor not already provided
-            assert(neighborIndex >= 0);
+            assert(triangleNeighborIndex >= 0);
         #endif
 
-        neighbors[edgeIndex] = neighborIndex;
+        neighbors[edgeIndex] = triangleNeighborIndex;
     }
 
     int IndexedTriangleMesh::getNeighbor(unsigned int edgeIndex) const

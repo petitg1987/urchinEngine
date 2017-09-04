@@ -14,6 +14,12 @@ namespace urchin
 
 	}
 
+    TriangleEdge::TriangleEdge(unsigned int triangleIndex, unsigned int edgeIndex) :
+            triangleIndex(triangleIndex), edgeIndex(edgeIndex)
+    {
+
+    }
+
 	/**
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
@@ -59,24 +65,16 @@ namespace urchin
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
-	std::vector<IndexedTriangleMesh> TriangulationAlgorithm::triangulate() const
+	std::vector<IndexedTriangleMesh> TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
 
-		std::vector<IndexedTriangleMesh> triangles;
 		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
 
 		for (const auto &monotonePolygon : monotonePolygons)
 		{
-			#ifdef _DEBUG
-				std::vector<IndexedTriangleMesh> monotonePolygonTriangles;
-				monotonePolygonTriangles.reserve(monotonePolygon.getCcwPoints().size());
-				triangulateMonotonePolygon(monotonePolygon.getCcwPoints(), monotonePolygonTriangles);
-				triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
-				//logOutputData("Debug monotone polygon " + std::to_string(monotonePolygonIndex) + " triangulation.", monotonePolygonTriangles, Logger::INFO);
-			#else
-				triangulateMonotonePolygon(monotonePolygon.getCcwPoints(), triangles);
-			#endif
+            std::vector<IndexedTriangleMesh> monotonePolygonTriangles = triangulateMonotonePolygon(monotonePolygon);
+            triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
 		}
 
 		return triangles;
@@ -90,12 +88,14 @@ namespace urchin
 		return polygonPoints.size();
 	}
 
-	/**
-	 * @param triangles [out] Triangles of monotone polygon are added to this vector
-	 */
-	void TriangulationAlgorithm::triangulateMonotonePolygon(const std::vector<unsigned int> &monotonePolygonPoints, std::vector<IndexedTriangleMesh> &triangles) const
+    std::vector<IndexedTriangleMesh> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon &monotonePolygon)
 	{
+        missingTriangleNeighbor = 0;
+        const std::vector<unsigned int> &monotonePolygonPoints = monotonePolygon.getCcwPoints();
 		std::vector<SidedPoint> sortedSidedPoints = buildSortedSidedPoints(monotonePolygonPoints);
+
+        std::vector<IndexedTriangleMesh> monotoneTriangles;
+        monotoneTriangles.reserve(monotonePolygonPoints.size());
 
 		std::stack<SidedPoint> stack;
 		stack.push(sortedSidedPoints[0]);
@@ -113,8 +113,8 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-					triangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
-					determineNeighbor(triangles);
+                    monotoneTriangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
+                    determineNeighbors(monotoneTriangles, monotonePolygon);
 				}
 				stack.pop();
 				stack.push(sortedSidedPoints[j-1]);
@@ -134,8 +134,8 @@ namespace urchin
 
 					if((orientationResult <= 0.0 && topPoint.onLeft) || (orientationResult >= 0.0 && !topPoint.onLeft))
 					{
-						triangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
-						determineNeighbor(triangles);
+                        monotoneTriangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+                        determineNeighbors(monotoneTriangles, monotonePolygon);
 						stack.pop();
 					}else
 					{
@@ -154,9 +154,18 @@ namespace urchin
 			stack.pop();
 			SidedPoint top2Point = stack.top();
 
-			triangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
-			determineNeighbor(triangles);
+            monotoneTriangles.emplace_back(IndexedTriangleMesh(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+            determineNeighbors(monotoneTriangles, monotonePolygon);
 		}
+
+        if(missingTriangleNeighbor!=0)
+        {
+            logOutputData("Missing neighbors (" + std::to_string(missingTriangleNeighbor) + ") on monotone polygon", monotoneTriangles, Logger::ERROR);
+        }
+
+//      logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO);
+
+        return monotoneTriangles;
 	}
 
 	std::vector<SidedPoint> TriangulationAlgorithm::buildSortedSidedPoints(const std::vector<unsigned int> &monotonePolygonPoints) const
@@ -187,23 +196,86 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	void TriangulationAlgorithm::determineNeighbor(std::vector<IndexedTriangleMesh> &triangles) const
-	{
-		//others triangles neighbors
-		if(triangles.size() > 1)
-		{
-			//TODO don't work with cavityTriangulation test
-			std::cout<<std::endl;
-			std::cout<<triangles[triangles.size()-2].getIndex(0)<<" "<<triangles[triangles.size()-2].getIndex(1)<<" "<<triangles[triangles.size()-2].getIndex(2)<<std::endl;
-			std::cout<<triangles[triangles.size()-1].getIndex(0)<<" "<<triangles[triangles.size()-1].getIndex(1)<<" "<<triangles[triangles.size()-1].getIndex(2)<<std::endl;
-			std::cout<<std::endl;
+    void TriangulationAlgorithm::determineNeighbors(std::vector<IndexedTriangleMesh> &triangles, const MonotonePolygon &monotonePolygon)
+    {
+        determineNeighborsInsideMonotone(triangles);
+        determineNeighborsBetweenMonotones(triangles, monotonePolygon);
+    }
 
-			triangles[triangles.size()-1].addNeighbor(1, triangles.size()-2);
-			triangles[triangles.size()-2].addNeighbor(0, triangles.size()-1);
-		}
+    void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<IndexedTriangleMesh> &monotoneTriangles)
+    {
+        int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
+        int prevMonotoneTriangleIndex = monotoneTriangles.size()-2;
+        IndexedTriangleMesh &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
-		//TODO handle monotone polygon neighbor
-	}
+        missingTriangleNeighbor += monotoneTriangles.size()>1 ? 1 : 0; //don't expect neighbor for first triangle
+        while(prevMonotoneTriangleIndex>=0 && missingTriangleNeighbor>0)
+        {
+            IndexedTriangleMesh &prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
+
+            for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++)
+            {
+                if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1))
+                {
+                    currTriangle.addNeighbor(0, prevMonotoneTriangleIndex + triangles.size());
+                    prevTriangle.addNeighbor(prevEdgeIndex, currMonotoneTriangleIndex + triangles.size());
+                    missingTriangleNeighbor--;
+                } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 1, 2))
+                {
+                    currTriangle.addNeighbor(1, prevMonotoneTriangleIndex + triangles.size());
+                    prevTriangle.addNeighbor(prevEdgeIndex, currMonotoneTriangleIndex + triangles.size());
+                    missingTriangleNeighbor--;
+                } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 2, 0))
+                {
+                    currTriangle.addNeighbor(2, prevMonotoneTriangleIndex + triangles.size());
+                    prevTriangle.addNeighbor(prevEdgeIndex, currMonotoneTriangleIndex + triangles.size());
+                    missingTriangleNeighbor--;
+                }
+            }
+
+            prevMonotoneTriangleIndex--;
+        }
+    }
+
+    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<IndexedTriangleMesh> &monotoneTriangles, const MonotonePolygon &monotonePolygon)
+    {
+        int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
+        IndexedTriangleMesh &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
+
+        for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
+        {
+            unsigned int edgeStartIndex = currTriangle.getIndex(prevEdgeIndex);
+            unsigned int edgeEndIndex = currTriangle.getIndex(edgeIndex);
+
+            if(currTriangle.getNeighbor(prevEdgeIndex)==-1 && monotonePolygon.isSharedEdge(edgeStartIndex, edgeEndIndex))
+            {
+                uint_fast64_t edgeId = computeEdgeId(edgeStartIndex, edgeEndIndex);
+                auto itFind = sharedMonotoneEdges.find(edgeId);
+                if (itFind == sharedMonotoneEdges.end())
+                {
+                    sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(currMonotoneTriangleIndex + triangles.size(), prevEdgeIndex)));
+                } else
+                {
+                    currTriangle.addNeighbor(prevEdgeIndex, itFind->second.triangleIndex);
+                    triangles[(itFind->second.triangleIndex)].addNeighbor(itFind->second.edgeIndex, currMonotoneTriangleIndex + triangles.size());
+                }
+            }
+        }
+    }
+
+    bool TriangulationAlgorithm::areSameEdge(const IndexedTriangleMesh &triangle1, unsigned int tri1Point1, unsigned int tri1Point2,
+                                             const IndexedTriangleMesh &triangle2, unsigned int tri2Point1, unsigned int tri2Point2) const
+    {
+        return (triangle1.getIndex(tri1Point1)==triangle2.getIndex(tri2Point1) && triangle1.getIndex(tri1Point2)==triangle2.getIndex(tri2Point2))
+               || (triangle1.getIndex(tri1Point1)==triangle2.getIndex(tri2Point2) && triangle1.getIndex(tri1Point2)==triangle2.getIndex(tri2Point1));
+    }
+
+    uint_fast64_t TriangulationAlgorithm::computeEdgeId(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
+    {
+        auto edgeId = static_cast<uint_fast64_t>(std::min(edgeStartIndex, edgeEndIndex));
+        edgeId = edgeId << 32;
+        return edgeId + std::max(edgeStartIndex, edgeEndIndex);
+    }
 
 	void TriangulationAlgorithm::logOutputData(const std::string &message, const std::vector<IndexedTriangleMesh> &triangles, Logger::CriticalityLevel logLevel) const
 	{
@@ -214,8 +286,12 @@ namespace urchin
 		logStream<<"Monotone polygon triangles output data:"<<std::endl;
 		for(const auto &triangle : triangles)
 		{
-			logStream<<" - {"<<polygonPoints[triangle.getIndex(0)]<<"}, {"<<polygonPoints[triangle.getIndex(1)]<<"}, {"<<polygonPoints[triangle.getIndex(2)]<<"}"
-                     <<" {"<<polygonPoints[triangle.getNeighbor(0)]<<"}, {"<<polygonPoints[triangle.getNeighbor(1)]<<"}, {"<<polygonPoints[triangle.getNeighbor(2)]<<"}"<<std::endl;
+			logStream<<" - {"<<triangle.getIndex(0)<<":"<<polygonPoints[triangle.getIndex(0)]
+                     <<"}, {"<<triangle.getIndex(1)<<":"<<polygonPoints[triangle.getIndex(1)]
+                     <<"}, {"<<triangle.getIndex(2)<<":"<<polygonPoints[triangle.getIndex(2)]<<"}"
+                     <<" {"<<polygonPoints[triangle.getNeighbor(0)]
+                     <<"}, {"<<polygonPoints[triangle.getNeighbor(1)]
+                     <<"}, {"<<polygonPoints[triangle.getNeighbor(2)]<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

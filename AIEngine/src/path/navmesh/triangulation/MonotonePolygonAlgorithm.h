@@ -33,8 +33,6 @@ namespace urchin
 	{
 		Edge(unsigned int, unsigned int);
 
-		uint_fast64_t computeEdgeId() const;
-
 		unsigned int startIndex;
 		unsigned int endIndex;
 
@@ -90,14 +88,13 @@ namespace urchin
 			std::vector<std::pair<unsigned int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
 			void markDiagonalProcessed(it_diagonals, unsigned int);
 
-			void determineSharedEdges(std::vector<MonotonePolygon> &) const;
-
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;
 			void logOutputData(const std::string &, const std::vector<std::vector<unsigned int>> &, Logger::CriticalityLevel) const;
 
 			const std::vector<Point2<float>> &polygonPoints;
 			const std::vector<unsigned int> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 
+			std::vector<MonotonePolygon> yMonotonePolygons;
 			std::vector<EdgeHelper> edgeHelpers;
 			std::multimap<unsigned int, Edge> diagonals;
 			std::map<uint_fast64_t, std::set<unsigned int>> sharedEdges;

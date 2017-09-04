@@ -38,28 +38,6 @@ void TriangulationTest::cubeTriangulation()
 	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 0);
 }
 
-void TriangulationTest::cavityTriangulation()
-{
-	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(3.0, 4.0), Point2<float>(0.0, 3.0), Point2<float>(1.0, 2.0),
-												   Point2<float>(0.0, 1.75), Point2<float>(2.0, 0.0)};
-
-	TriangulationAlgorithm triangulationAlgorithm(ccwPolygonPoints);
-	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
-
-	AssertHelper::assertUnsignedInt(triangles.size(), 3);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 1);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 3);
-
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 2);
-}
-
 void TriangulationTest::twoNearPoints()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(500.0, 500.0), Point2<float>(0.0, 3.0), Point2<float>(2.0, 3.0), Point2<float>(2.0, 2.0),
@@ -156,16 +134,71 @@ void TriangulationTest::alternationPoints()
 	AssertHelper::assertUnsignedInt(triangles[4].getIndex(2), 4);
 }
 
-CppUnit::Test *TriangulationTest::suite()
+void TriangulationTest::cavityTriangulation1()
 {
+	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(3.0, 4.0), Point2<float>(0.0, 3.0), Point2<float>(1.0, 2.0),
+												   Point2<float>(0.0, 1.75), Point2<float>(2.0, 0.0)};
+
+	TriangulationAlgorithm triangulationAlgorithm(ccwPolygonPoints);
+	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
+
+	AssertHelper::assertUnsignedInt(triangles.size(), 3);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 2);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 1);
+
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 4);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 2);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 3);
+
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 4);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 0);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 2);
+}
+
+void TriangulationTest::cavityTriangulation2()
+{
+	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(2.0, 0.0), Point2<float>(3.0, 5.0), Point2<float>(0.0, 3.0),
+												   Point2<float>(1.0, 2.5), Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.5),
+												   Point2<float>(0.0, 1.0)};
+
+	TriangulationAlgorithm triangulationAlgorithm(ccwPolygonPoints);
+	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
+
+	AssertHelper::assertUnsignedInt(triangles.size(), 5);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 3);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 1);
+	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 2);
+
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 5);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 3);
+	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 4);
+
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 5);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 1);
+	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 3);
+
+	AssertHelper::assertUnsignedInt(triangles[3].getIndex(0), 0);
+	AssertHelper::assertUnsignedInt(triangles[3].getIndex(1), 5);
+	AssertHelper::assertUnsignedInt(triangles[3].getIndex(2), 6);
+
+	AssertHelper::assertUnsignedInt(triangles[4].getIndex(0), 0);
+	AssertHelper::assertUnsignedInt(triangles[4].getIndex(1), 1);
+	AssertHelper::assertUnsignedInt(triangles[4].getIndex(2), 5);
+}
+
+CppUnit::Test *TriangulationTest::suite()
+{ //TODO check neighbors in units tests
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("TriangulationTest");
 
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cubeTriangulation", &TriangulationTest::cubeTriangulation));
-	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation", &TriangulationTest::cavityTriangulation));
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("twoNearPoints", &TriangulationTest::twoNearPoints));
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("threeAlignedPoints", &TriangulationTest::threeAlignedPoints));
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("alternationPoints", &TriangulationTest::alternationPoints));
+
+	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation1", &TriangulationTest::cavityTriangulation1));
+	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation2", &TriangulationTest::cavityTriangulation2));
 
 	return suite;
 }

@@ -1,8 +1,9 @@
 #ifndef URCHINENGINE_MONOTONEPOLYGON_H
 #define URCHINENGINE_MONOTONEPOLYGON_H
 
+#include <cstdint>
 #include <vector>
-#include <map>
+#include <set>
 
 namespace urchin
 {
@@ -14,12 +15,14 @@ namespace urchin
 
             const std::vector<unsigned int> &getCcwPoints() const;
 
-            void addSharedEdge(uint_fast64_t, unsigned int);
-            const std::map<uint_fast64_t, unsigned int> &getSharedEdges() const;
+            void addSharedEdge(unsigned int, unsigned int);
+            bool isSharedEdge(unsigned int, unsigned int) const;
 
         private:
+            uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
+
             std::vector<unsigned int> ccwPoints;
-            std::map<uint_fast64_t, unsigned int> sharedEdges; //first: edge id, second: other monotone polygon index
+            std::set<uint_fast64_t> sharedEdges;
     };
 
 }

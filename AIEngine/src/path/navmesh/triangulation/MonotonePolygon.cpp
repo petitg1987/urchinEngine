@@ -14,14 +14,21 @@ namespace urchin
         return ccwPoints;
     }
 
-    void MonotonePolygon::addSharedEdge(uint_fast64_t edgeId, unsigned int monotonePolygonIndex)
+    void MonotonePolygon::addSharedEdge(unsigned int edgeStartIndex, unsigned int edgeEndIndex)
     {
-        sharedEdges.insert(std::make_pair(edgeId, monotonePolygonIndex));
+        sharedEdges.insert(computeEdgeId(edgeStartIndex, edgeEndIndex));
     }
 
-    const std::map<uint_fast64_t, unsigned int> &MonotonePolygon::getSharedEdges() const
+    bool MonotonePolygon::isSharedEdge(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
     {
-        return sharedEdges;
+        return sharedEdges.find(computeEdgeId(edgeStartIndex, edgeEndIndex))!=sharedEdges.end();
+    }
+
+    uint_fast64_t MonotonePolygon::computeEdgeId(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
+    {
+        auto edgeId = static_cast<uint_fast64_t>(std::min(edgeStartIndex, edgeEndIndex));
+        edgeId = edgeId << 32;
+        return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
 
 }
