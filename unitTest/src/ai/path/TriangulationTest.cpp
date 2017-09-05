@@ -140,8 +140,47 @@ void TriangulationTest::cavityTriangulation2()
 	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, 2, 3});
 }
 
+void TriangulationTest::twoMonotonePolygons()
+{
+	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 2.0),
+												   Point2<float>(2.0, 1.0), Point2<float>(1.0, 2.0)};
+
+	TriangulationAlgorithm triangulationAlgorithm(ccwPolygonPoints);
+	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
+
+	AssertHelper::assertUnsignedInt(triangles.size(), 3);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{0, 4, 3});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{1, 3, 0});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{1, 2, 3});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{-1, -1, 1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{-1, -1, 1});
+}
+
+void TriangulationTest::threeMonotonePolygons()
+{
+	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 0.0), Point2<float>(4.0, 0.0), Point2<float>(4.0, 3.0),
+												   Point2<float>(3.0, 1.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0),
+												   Point2<float>(0.0, 2.0)};
+
+	TriangulationAlgorithm triangulationAlgorithm(ccwPolygonPoints);
+	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
+
+	AssertHelper::assertUnsignedInt(triangles.size(), 5);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{0, 5, 3});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{0, 6, 5});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{1, 3, 0});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{1, 2, 3});
+	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{3, 4, 5});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, 4, 2});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{-1, -1, 0});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 0, -1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{-1, -1, 2});
+	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, -1, 0});
+}
+
 CppUnit::Test *TriangulationTest::suite()
-{ //TODO add unit tests with several monotones to control neighbor
+{
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("TriangulationTest");
 
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));
@@ -152,6 +191,9 @@ CppUnit::Test *TriangulationTest::suite()
 
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation1", &TriangulationTest::cavityTriangulation1));
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cavityTriangulation2", &TriangulationTest::cavityTriangulation2));
+
+	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("twoMonotonePolygons", &TriangulationTest::twoMonotonePolygons));
+	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("threeMonotonePolygons", &TriangulationTest::threeMonotonePolygons));
 
 	return suite;
 }

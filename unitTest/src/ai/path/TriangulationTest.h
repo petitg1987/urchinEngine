@@ -17,6 +17,9 @@ class TriangulationTest : public CppUnit::TestFixture
 
 		void cavityTriangulation1();
 		void cavityTriangulation2();
+
+		void twoMonotonePolygons();
+		void threeMonotonePolygons();
 };
 
 #endif

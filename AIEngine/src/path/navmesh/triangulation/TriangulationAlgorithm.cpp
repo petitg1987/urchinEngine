@@ -244,21 +244,24 @@ namespace urchin
 
         for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
         {
-            unsigned int edgeStartIndex = currTriangle.getIndex(prevEdgeIndex);
-            unsigned int edgeEndIndex = currTriangle.getIndex(edgeIndex);
-
-            if(currTriangle.getNeighbor(prevEdgeIndex)==-1 && monotonePolygon.isSharedEdge(edgeStartIndex, edgeEndIndex))
+            if(currTriangle.getNeighbor(prevEdgeIndex)==-1)
             {
-                uint_fast64_t edgeId = computeEdgeId(edgeStartIndex, edgeEndIndex);
-                auto itFind = sharedMonotoneEdges.find(edgeId);
-                if (itFind == sharedMonotoneEdges.end())
-                {
-                    sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(currMonotoneTriangleIndex + triangles.size(), prevEdgeIndex)));
-                } else
-                {
-                    currTriangle.addNeighbor(prevEdgeIndex, itFind->second.triangleIndex);
-                    triangles[(itFind->second.triangleIndex)].addNeighbor(itFind->second.edgeIndex, currMonotoneTriangleIndex + triangles.size());
-                }
+				unsigned int edgeStartIndex = currTriangle.getIndex(prevEdgeIndex);
+				unsigned int edgeEndIndex = currTriangle.getIndex(edgeIndex);
+
+				if(monotonePolygon.isSharedEdge(edgeStartIndex, edgeEndIndex))
+				{
+					uint_fast64_t edgeId = computeEdgeId(edgeStartIndex, edgeEndIndex);
+					auto itFind = sharedMonotoneEdges.find(edgeId);
+					if (itFind == sharedMonotoneEdges.end())
+					{
+						sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(currMonotoneTriangleIndex + triangles.size(), prevEdgeIndex)));
+					} else
+					{
+						currTriangle.addNeighbor(prevEdgeIndex, itFind->second.triangleIndex);
+						triangles[(itFind->second.triangleIndex)].addNeighbor(itFind->second.edgeIndex, currMonotoneTriangleIndex + triangles.size());
+					}
+				}
             }
         }
     }
