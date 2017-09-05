@@ -45,6 +45,11 @@ namespace urchin
         neighbors[edgeIndex] = triangleNeighborIndex;
     }
 
+    const int *IndexedTriangleMesh::getNeighbors() const
+    {
+        return neighbors;
+    }
+
     int IndexedTriangleMesh::getNeighbor(unsigned int edgeIndex) const
     {
         #ifdef _DEBUG

@@ -10,7 +10,9 @@ class AssertHelper
 		static void assertTrue(bool);
 
 		static void assertInt(int, int);
+		static void assert3Ints(const int *, const int *&&);
 		static void assertUnsignedInt(unsigned int, unsigned int);
+		static void assert3UnsignedInts(const unsigned int *, unsigned int *&&);
 		static void assertFloatEquals(float, float, float epsilon = 0.001f);
 
 		static void assertPoint2FloatEquals(const urchin::Point2<float> &, const urchin::Point2<float> &, double epsilon = 0.001);

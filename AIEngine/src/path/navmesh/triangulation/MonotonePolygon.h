@@ -11,11 +11,11 @@ namespace urchin
     class MonotonePolygon
     {
         public:
-            explicit MonotonePolygon(const std::vector<unsigned int> &);
-
+            void setCcwPoints(const std::vector<unsigned int> &);
             const std::vector<unsigned int> &getCcwPoints() const;
 
             void addSharedEdge(unsigned int, unsigned int);
+            const std::set<uint_fast64_t> &getSharedEdges() const;
             bool isSharedEdge(unsigned int, unsigned int) const;
 
         private:

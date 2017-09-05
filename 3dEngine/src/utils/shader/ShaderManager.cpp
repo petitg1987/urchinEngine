@@ -148,7 +148,7 @@ namespace urchin
 			glDeleteShader(attachedShaders[i]);
 		}
 
-		delete []attachedShaders;
+		delete [] attachedShaders;
 		glDeleteProgram(programID);
 	}
 

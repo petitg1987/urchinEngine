@@ -13,6 +13,7 @@ namespace urchin
             unsigned int getIndex(unsigned int) const;
 
             void addNeighbor(unsigned int, int);
+            const int *getNeighbors() const;
             int getNeighbor(unsigned int) const;
 
         private:

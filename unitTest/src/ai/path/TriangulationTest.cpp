@@ -15,9 +15,8 @@ void TriangulationTest::triangleTriangulation()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 0);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{1, 2, 0});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{-1, -1, -1});
 }
 
 void TriangulationTest::cubeTriangulation()
@@ -29,13 +28,10 @@ void TriangulationTest::cubeTriangulation()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 3);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 1);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 0);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{0, 2, 3});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{1, 2, 0});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, -1, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{-1, 0, -1});
 }
 
 void TriangulationTest::twoNearPoints()
@@ -48,33 +44,20 @@ void TriangulationTest::twoNearPoints()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 7);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 1);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 3);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 2);
-
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 3);
-
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(0), 5);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(2), 4);
-
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(0), 6);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(2), 5);
-
-	AssertHelper::assertUnsignedInt(triangles[5].getIndex(0), 8);
-	AssertHelper::assertUnsignedInt(triangles[5].getIndex(1), 6);
-	AssertHelper::assertUnsignedInt(triangles[5].getIndex(2), 7);
-
-	AssertHelper::assertUnsignedInt(triangles[6].getIndex(0), 8);
-	AssertHelper::assertUnsignedInt(triangles[6].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[6].getIndex(2), 6);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{2, 0, 1});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{3, 0, 2});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{4, 0, 3});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{5, 0, 4});
+	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{6, 0, 5});
+	AssertHelper::assert3UnsignedInts(triangles[5].getIndices(), new unsigned int[3]{8, 6, 7});
+	AssertHelper::assert3UnsignedInts(triangles[6].getIndices(), new unsigned int[3]{8, 0, 6});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, -1, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 1, -1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{4, 2, -1});
+	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{6, 3, -1});
+	AssertHelper::assert3Ints(triangles[5].getNeighbors(), new int[3]{6, -1, -1});
+	AssertHelper::assert3Ints(triangles[6].getNeighbors(), new int[3]{-1, 4, 5});
 }
 
 void TriangulationTest::threeAlignedPoints()
@@ -86,21 +69,14 @@ void TriangulationTest::threeAlignedPoints()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 4);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 5);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 0);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 5);
-
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 3);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 4);
-
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(0), 2);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(2), 3);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{5, 1, 0});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{4, 1, 5});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{3, 1, 4});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{2, 1, 3});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, -1, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 1, -1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{-1, 2, -1});
 }
 
 void TriangulationTest::alternationPoints()
@@ -113,25 +89,16 @@ void TriangulationTest::alternationPoints()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 6);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 0);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 5);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 6);
-
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 2);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 5);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 1);
-
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(2), 5);
-
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(0), 3);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(2), 4);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{1, 6, 0});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{5, 1, 6});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{2, 5, 1});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{4, 2, 5});
+	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{3, 2, 4});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, -1, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 1, -1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{4, 2, -1});
+	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, 3, -1});
 }
 
 void TriangulationTest::cavityTriangulation1()
@@ -143,17 +110,12 @@ void TriangulationTest::cavityTriangulation1()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 3);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 2);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 1);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 2);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 3);
-
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 4);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 0);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 2);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{2, 0, 1});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{4, 2, 3});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{4, 0, 2});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{2, -1, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, -1, -1});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{-1, 0, 1});
 }
 
 void TriangulationTest::cavityTriangulation2()
@@ -166,29 +128,20 @@ void TriangulationTest::cavityTriangulation2()
 	std::vector<IndexedTriangleMesh> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(0), 3);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[0].getIndex(2), 2);
-
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(0), 5);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(1), 3);
-	AssertHelper::assertUnsignedInt(triangles[1].getIndex(2), 4);
-
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(0), 5);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[2].getIndex(2), 3);
-
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(0), 0);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(1), 5);
-	AssertHelper::assertUnsignedInt(triangles[3].getIndex(2), 6);
-
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(0), 0);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(1), 1);
-	AssertHelper::assertUnsignedInt(triangles[4].getIndex(2), 5);
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{3, 1, 2});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{5, 3, 4});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{5, 1, 3});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{0, 5, 6});
+	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{0, 1, 5});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{2, -1, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, -1, -1});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{4, 0, 1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{4, -1, -1});
+	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, 2, 3});
 }
 
 CppUnit::Test *TriangulationTest::suite()
-{ //TODO check neighbors in units tests
+{ //TODO add unit tests with several monotones to control neighbor
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("TriangulationTest");
 
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));

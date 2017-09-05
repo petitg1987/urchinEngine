@@ -15,9 +15,27 @@ void AssertHelper::assertInt(int i1, int i2)
 	CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(i1) + ", value 2: " + std::to_string(i2), i1==i2);
 }
 
+void AssertHelper::assert3Ints(const int *i1, const int *&&i2)
+{
+	for(unsigned int i=0; i<3; ++i)
+	{
+		CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(i1[i]) + ", value 2: " + std::to_string(i2[i]), i1[i] == i2[i]);
+	}
+	delete [] i2;
+}
+
 void AssertHelper::assertUnsignedInt(unsigned int ui1, unsigned int ui2)
 {
 	CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(ui1) + ", value 2: " + std::to_string(ui2), ui1==ui2);
+}
+
+void AssertHelper::assert3UnsignedInts(const unsigned int *ui1, unsigned int *&&ui2)
+{
+	for(unsigned int i=0; i<3; ++i)
+	{
+		CPPUNIT_ASSERT_MESSAGE("Assert fail. Value 1: " + std::to_string(ui1[i]) + ", value 2: " + std::to_string(ui2[i]), ui1[i] == ui2[i]);
+	}
+	delete [] ui2;
 }
 
 void AssertHelper::assertFloatEquals(float f1, float f2, float epsilon)

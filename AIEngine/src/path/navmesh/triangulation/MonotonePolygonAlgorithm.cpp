@@ -71,16 +71,21 @@ namespace urchin
 			{
 				monotonePointsIndices.push_back(i);
 			}
-			yMonotonePolygons.emplace_back(MonotonePolygon(monotonePointsIndices));
+			MonotonePolygon monotonePolygon;
+			monotonePolygon.setCcwPoints(monotonePointsIndices);
+			yMonotonePolygons.emplace_back(monotonePolygon);
 		}else
 		{
 			yMonotonePolygons.reserve(diagonals.size());
-			for(auto &diagonal : diagonals)
+			for(auto itDiagonal = diagonals.begin(); itDiagonal!=diagonals.end(); ++itDiagonal)
 			{
-				unsigned int yMonotonePolygonsIndex = yMonotonePolygons.size();
-				Edge &startDiagonal = diagonal.second;
+				Edge &startDiagonal = itDiagonal->second;
 				if(!startDiagonal.isProcessed)
 				{
+					unsigned int yMonotonePolygonsIndex = yMonotonePolygons.size();
+					MonotonePolygon monotonePolygon;
+					yMonotonePolygons.emplace_back(monotonePolygon);
+
 					std::vector<unsigned int> monotonePointsIndices;
 					monotonePointsIndices.reserve(polygonPoints.size()/2 + 1); //estimated memory size
 					monotonePointsIndices.push_back(startDiagonal.startIndex);
@@ -118,10 +123,10 @@ namespace urchin
 							return yMonotonePolygons;
 						}
 
-						markDiagonalProcessed(diagonal, yMonotonePolygonsIndex); //TODO should use diagonal iterator
+						markDiagonalProcessed(itDiagonal, yMonotonePolygonsIndex);
 					}
 
-					yMonotonePolygons.emplace_back(MonotonePolygon(monotonePointsIndices));
+					yMonotonePolygons[yMonotonePolygonsIndex].setCcwPoints(monotonePointsIndices);
 				}
 			}
 		}
@@ -482,7 +487,7 @@ namespace urchin
 		if(itDiagonal!=diagonals.end())
 		{
 			itDiagonal->second.isProcessed = true;
-			yMonotonePolygons[yMonotonePolygonsIndex].addSharedEdge(itDiagonal->second.startIndex, itDiagonal->second.endIndex); //TODO wrong because yMonotonePolygons[yMonotonePolygonsIndex] don't exist yet
+			yMonotonePolygons[yMonotonePolygonsIndex].addSharedEdge(itDiagonal->second.startIndex, itDiagonal->second.endIndex);
 		}
 	}
 
