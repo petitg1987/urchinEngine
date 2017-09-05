@@ -16,7 +16,7 @@ namespace urchin
 			};
 
 			GaussianBlurFilterBuilder();
-			virtual ~GaussianBlurFilterBuilder();
+			virtual ~GaussianBlurFilterBuilder() = default;
 
 			GaussianBlurFilterBuilder *blurDirection(BlurDirection);
 

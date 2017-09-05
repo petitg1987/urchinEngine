@@ -337,9 +337,8 @@ namespace urchin
                     }
                 }
 
-                const std::vector<IndexedTriangle3D<float>> &triangles = toIndexedTriangle3D(triangulation.triangulate());
                 std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
-                navPolygons.push_back(std::make_shared<NavPolygon>(points, triangles));
+                navPolygons.push_back(std::make_shared<NavPolygon>(points, triangulation.triangulate()));
             }
 		}
 
@@ -451,19 +450,6 @@ namespace urchin
         float t = (shortestFaceDistance+shiftDistance) / walkableFace.getNormal().Y;
         return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
     }
-
-	std::vector<IndexedTriangle3D<float>> NavMeshGenerator::toIndexedTriangle3D(const std::vector<IndexedTriangleMesh> &indexedTrianglesMesh) const
-	{
-		std::vector<IndexedTriangle3D<float>> indexedTriangles3D;
-		indexedTriangles3D.reserve(indexedTrianglesMesh.size());
-
-		for(const auto &indexedTriangleMesh : indexedTrianglesMesh)
-		{
-			indexedTriangles3D.emplace_back(IndexedTriangle3D<float>(indexedTriangleMesh.getIndices()));
-		}
-
-		return indexedTriangles3D;
-	}
 
     std::shared_ptr<NavMesh> NavMeshGenerator::getNavMesh() const
     {

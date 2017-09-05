@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			QuadDisplayerBuilder();
-			~QuadDisplayerBuilder();
 
 			QuadDisplayerBuilder *numberOfQuad(unsigned int);
 			unsigned int getNumberOfQuad() const;

@@ -5,7 +5,7 @@
 #include <map>
 #include "UrchinCommon.h"
 
-#include "path/navmesh/triangulation/IndexedTriangleMesh.h"
+#include "path/navmesh/model/NavTriangle.h"
 #include "path/navmesh/triangulation/MonotonePolygon.h"
 
 namespace urchin
@@ -40,25 +40,25 @@ namespace urchin
 
 			unsigned int getAllPointsSize() const;
 
-			std::vector<IndexedTriangleMesh> triangulate();
+			std::vector<NavTriangle> triangulate();
 
 		private:
-			std::vector<IndexedTriangleMesh> triangulateMonotonePolygon(const MonotonePolygon &);
+			std::vector<NavTriangle> triangulateMonotonePolygon(const MonotonePolygon &);
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
 			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
 
-			void determineNeighbors(std::vector<IndexedTriangleMesh> &, const MonotonePolygon &);
-			void determineNeighborsInsideMonotone(std::vector<IndexedTriangleMesh> &);
-			void determineNeighborsBetweenMonotones(std::vector<IndexedTriangleMesh> &, const MonotonePolygon &);
-			bool areSameEdge(const IndexedTriangleMesh &, unsigned int, unsigned int, const IndexedTriangleMesh &, unsigned int, unsigned int) const;
+			void determineNeighbors(std::vector<NavTriangle> &, const MonotonePolygon &);
+			void determineNeighborsInsideMonotone(std::vector<NavTriangle> &);
+			void determineNeighborsBetweenMonotones(std::vector<NavTriangle> &, const MonotonePolygon &);
+			bool areSameEdge(const NavTriangle &, unsigned int, unsigned int, const NavTriangle &, unsigned int, unsigned int) const;
 			uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
 
-			void logOutputData(const std::string &, const std::vector<IndexedTriangleMesh> &, Logger::CriticalityLevel) const;
+			void logOutputData(const std::string &, const std::vector<NavTriangle> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
 			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 
-			std::vector<IndexedTriangleMesh> triangles;
+			std::vector<NavTriangle> triangles;
 			int missingTriangleNeighbor;
 			std::map<uint_fast64_t, TriangleEdge> sharedMonotoneEdges;
 	};

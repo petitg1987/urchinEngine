@@ -3,9 +3,7 @@
 #include <stdexcept>
 
 #include "TextureFilter.h"
-#include "TextureFilterBuilder.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/shader/TokenReplacerShader.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 namespace urchin
@@ -152,7 +150,7 @@ namespace urchin
 
 	std::string TextureFilter::toShaderVectorValues(std::vector<float> &vector) const
 	{
-		std::string vectorValuesStr = "";
+		std::string vectorValuesStr;
 		for(unsigned int i=0;i<vector.size(); ++i)
 		{
 			vectorValuesStr += std::to_string(vector[i]);

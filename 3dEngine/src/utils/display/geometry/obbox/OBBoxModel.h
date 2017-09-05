@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			OBBoxModel(const OBBox<float> &);
-			~OBBoxModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

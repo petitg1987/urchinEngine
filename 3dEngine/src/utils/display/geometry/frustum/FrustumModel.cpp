@@ -12,14 +12,9 @@ namespace urchin
 		initialize();
 	}
 
-	FrustumModel::~FrustumModel()
-	{
-
-	}
-
 	Matrix4<float> FrustumModel::retrieveModelMatrix() const
 	{
-		return Matrix4<float>();
+		return {};
 	}
 
 	std::vector<Point3<float>> FrustumModel::retrieveVertexArray() const

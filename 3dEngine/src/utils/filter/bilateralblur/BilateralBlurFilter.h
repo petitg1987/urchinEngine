@@ -21,7 +21,6 @@ namespace urchin
 			};
 
 			BilateralBlurFilter(const BilateralBlurFilterBuilder *, BlurDirection);
-			~BilateralBlurFilter();
 
 			void onCameraProjectionUpdate(float, float);
 

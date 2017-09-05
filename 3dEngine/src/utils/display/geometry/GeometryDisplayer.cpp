@@ -5,16 +5,6 @@
 namespace urchin
 {
 
-	GeometryDisplayer::GeometryDisplayer()
-	{
-
-	}
-
-	GeometryDisplayer::~GeometryDisplayer()
-	{
-
-	}
-
 	void GeometryDisplayer::addGeometry(GeometryModel *geometry)
 	{
 		geometryModels.push_back(geometry);
@@ -24,7 +14,7 @@ namespace urchin
 
 	void GeometryDisplayer::removeGeometry(GeometryModel *geometry)
 	{
-		std::vector<GeometryModel *>::iterator it = std::find(geometryModels.begin(), geometryModels.end(), geometry);
+		auto it = std::find(geometryModels.begin(), geometryModels.end(), geometry);
 		if(it!=geometryModels.end())
 		{
 			geometryModels.erase(it);
@@ -40,17 +30,17 @@ namespace urchin
 	{
 		this->projectionMatrix = camera->getProjectionMatrix();
 
-		for(std::vector<GeometryModel *>::iterator it = geometryModels.begin(); it!=geometryModels.end(); ++it)
+		for (auto &geometryModel : geometryModels)
 		{
-			(*it)->onCameraProjectionUpdate(projectionMatrix);
+			geometryModel->onCameraProjectionUpdate(projectionMatrix);
 		}
 	}
 
 	void GeometryDisplayer::display(const Matrix4<float> &viewMatrix) const
 	{
-		for(std::vector<GeometryModel *>::const_iterator it = geometryModels.begin(); it!=geometryModels.end(); ++it)
+		for (auto geometryModel : geometryModels)
 		{
-			(*it)->display(viewMatrix);
+			geometryModel->display(viewMatrix);
 		}
 	}
 

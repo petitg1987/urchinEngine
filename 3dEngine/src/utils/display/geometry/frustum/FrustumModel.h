@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			FrustumModel(const Frustum<float> &);
-			~FrustumModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

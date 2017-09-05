@@ -19,7 +19,7 @@ namespace urchin
 
 		private:
 			MeshService();
-			virtual ~MeshService();
+			virtual ~MeshService() = default;
 	};
 
 }

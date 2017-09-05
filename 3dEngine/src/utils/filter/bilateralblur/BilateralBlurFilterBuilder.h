@@ -16,7 +16,7 @@ namespace urchin
 			};
 
 			BilateralBlurFilterBuilder();
-			virtual ~BilateralBlurFilterBuilder();
+			virtual ~BilateralBlurFilterBuilder() = default;
 
 			BilateralBlurFilterBuilder *blurDirection(BlurDirection);
 

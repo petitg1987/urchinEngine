@@ -10,11 +10,6 @@ namespace urchin
 
 	}
 
-	DownSampleFilter::~DownSampleFilter()
-	{
-
-	}
-
 	std::string DownSampleFilter::getShaderName() const
 	{
 		return "downSampleTex";

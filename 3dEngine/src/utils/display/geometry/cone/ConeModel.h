@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			ConeModel(const Cone<float> &, int);
-			~ConeModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

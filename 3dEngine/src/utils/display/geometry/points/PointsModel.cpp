@@ -21,14 +21,9 @@ namespace urchin
 		initialize();
 	}
 
-	PointsModel::~PointsModel()
-	{
-
-	}
-
 	Matrix4<float> PointsModel::retrieveModelMatrix() const
 	{
-		return Matrix4<float>();
+		return {};
 	}
 
 	std::vector<Point3<float>> PointsModel::retrieveVertexArray() const

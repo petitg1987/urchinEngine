@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			ConvexHullModel(const ConvexHull3D<float> &);
-			~ConvexHullModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

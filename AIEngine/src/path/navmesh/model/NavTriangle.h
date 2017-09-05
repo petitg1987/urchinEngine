@@ -1,13 +1,13 @@
-#ifndef URCHINENGINE_INDEXEDTRIANGLEMESH_H
-#define URCHINENGINE_INDEXEDTRIANGLEMESH_H
+#ifndef URCHINENGINE_NAVTRIANGLE_H
+#define URCHINENGINE_NAVTRIANGLE_H
 
 namespace urchin
 {
 
-    class IndexedTriangleMesh
+    class NavTriangle
     {
         public:
-            IndexedTriangleMesh(unsigned int, unsigned int, unsigned int);
+            NavTriangle(unsigned int, unsigned int, unsigned int);
 
             const unsigned int *getIndices() const;
             unsigned int getIndex(unsigned int) const;

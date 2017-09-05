@@ -140,7 +140,6 @@ namespace urchin
 					break;
 				default:
 					throw std::domain_error("Unsupported coordinate X");
-					break;
 			}
 
 			switch(coordinateY)
@@ -163,7 +162,6 @@ namespace urchin
 					break;
 				default:
 					throw std::domain_error("Unsupported coordinate Y");
-					break;
 			}
 		}
 

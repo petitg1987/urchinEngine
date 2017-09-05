@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	GaussianBlurFilterBuilder::~GaussianBlurFilterBuilder()
-	{
-
-	}
-
 	GaussianBlurFilterBuilder *GaussianBlurFilterBuilder::blurDirection(BlurDirection blurDirection)
 	{
 		this->pBlurDirection = blurDirection;

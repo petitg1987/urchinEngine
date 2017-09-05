@@ -15,11 +15,6 @@ namespace urchin
 		initialize();
 	}
 
-	CapsuleModel::~CapsuleModel()
-	{
-
-	}
-
 	Matrix4<float> CapsuleModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;
@@ -35,7 +30,7 @@ namespace urchin
 
 		float radius = capsule.getRadius();
 		float halfCylinderHeight = capsule.getCylinderHeight() / 2.0;
-		float angle = (2.0*PI_VALUE) / sides;
+		float angle = (2.0*PI_VALUE) / (float)sides;
 
 		CapsuleShape<float>::CapsuleOrientation capsuleOrientation = capsule.getCapsuleOrientation();
 		Quaternion<float> qCapsuleOrientation, qCapOrientation;

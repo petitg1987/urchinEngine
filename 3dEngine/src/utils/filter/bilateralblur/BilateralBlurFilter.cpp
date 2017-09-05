@@ -33,11 +33,6 @@ namespace urchin
 		offsetsTab = toShaderVectorValues(offsets);
 	}
 
-	BilateralBlurFilter::~BilateralBlurFilter()
-	{
-
-	}
-
 	void BilateralBlurFilter::onCameraProjectionUpdate(float nearPlane, float farPlane)
 	{
 		ShaderManager::instance()->bind(getTextureFilterShader());

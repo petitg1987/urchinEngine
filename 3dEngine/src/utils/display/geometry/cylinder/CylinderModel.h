@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			CylinderModel(const Cylinder<float> &, int);
-			~CylinderModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

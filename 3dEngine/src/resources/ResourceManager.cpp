@@ -33,7 +33,7 @@ namespace urchin
 
 	void ResourceManager::removeResource(const std::string &name)
 	{
-		std::map<std::string, Resource *>::iterator it = mResources.find(name);
+		auto it = mResources.find(name);
 		if(it!=mResources.end())
 		{
 			mResources.erase(it);

@@ -1,11 +1,11 @@
 #include <cassert>
 
-#include "IndexedTriangleMesh.h"
+#include "NavTriangle.h"
 
 namespace urchin
 {
 
-    IndexedTriangleMesh::IndexedTriangleMesh(unsigned int index1, unsigned int index2, unsigned int index3)
+    NavTriangle::NavTriangle(unsigned int index1, unsigned int index2, unsigned int index3)
     {
         #ifdef _DEBUG
             assert(index1!=index2 && index1!=index3 && index2!=index3);
@@ -20,12 +20,12 @@ namespace urchin
         this->neighbors[2] = -1;
     }
 
-    const unsigned int *IndexedTriangleMesh::getIndices() const
+    const unsigned int *NavTriangle::getIndices() const
     {
         return indices;
     }
 
-    unsigned int IndexedTriangleMesh::getIndex(unsigned int index) const
+    unsigned int NavTriangle::getIndex(unsigned int index) const
     {
         #ifdef _DEBUG
             assert(index <= 2);
@@ -34,7 +34,7 @@ namespace urchin
         return indices[index];
     }
 
-    void IndexedTriangleMesh::addNeighbor(unsigned int edgeIndex, int triangleNeighborIndex)
+    void NavTriangle::addNeighbor(unsigned int edgeIndex, int triangleNeighborIndex)
     {
         #ifdef _DEBUG
             assert(edgeIndex >= 0 && edgeIndex <= 2);
@@ -45,12 +45,12 @@ namespace urchin
         neighbors[edgeIndex] = triangleNeighborIndex;
     }
 
-    const int *IndexedTriangleMesh::getNeighbors() const
+    const int *NavTriangle::getNeighbors() const
     {
         return neighbors;
     }
 
-    int IndexedTriangleMesh::getNeighbor(unsigned int edgeIndex) const
+    int NavTriangle::getNeighbor(unsigned int edgeIndex) const
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);

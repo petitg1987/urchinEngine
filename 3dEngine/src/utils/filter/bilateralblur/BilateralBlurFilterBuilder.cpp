@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	BilateralBlurFilterBuilder::~BilateralBlurFilterBuilder()
-	{
-
-	}
-
 	BilateralBlurFilterBuilder *BilateralBlurFilterBuilder::blurDirection(BlurDirection blurDirection)
 	{
 		this->pBlurDirection = blurDirection;

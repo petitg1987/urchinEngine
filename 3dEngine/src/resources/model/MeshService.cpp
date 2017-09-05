@@ -1,16 +1,10 @@
 #include "resources/model/MeshService.h"
 #include "resources/model/ConstAnimation.h"
-#include "resources/model/ConstMeshes.h"
 
 namespace urchin
 {
 
 	MeshService::MeshService() : Singleton<MeshService>()
-	{
-
-	}
-
-	MeshService::~MeshService()
 	{
 
 	}

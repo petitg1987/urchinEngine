@@ -40,7 +40,9 @@ set(SOURCE_FILES
         src/AIManager.cpp
         src/AIManager.h
         src/path/navmesh/triangulation/MonotonePolygon.cpp
-        src/path/navmesh/triangulation/MonotonePolygon.h src/path/navmesh/triangulation/IndexedTriangleMesh.cpp src/path/navmesh/triangulation/IndexedTriangleMesh.h)
+        src/path/navmesh/triangulation/MonotonePolygon.h
+        src/path/navmesh/model/NavTriangle.cpp
+        src/path/navmesh/model/NavTriangle.h)
 
 include_directories(src ../common/src)
 

@@ -22,7 +22,6 @@ namespace urchin
 			};
 
 			GaussianBlurFilter(const GaussianBlurFilterBuilder *, BlurDirection);
-			~GaussianBlurFilter();
 
 		private:
 			std::string getShaderName() const;

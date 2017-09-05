@@ -18,11 +18,6 @@ namespace urchin
 
 	}
 
-	QuadDisplayerBuilder::~QuadDisplayerBuilder()
-	{
-
-	}
-
 	QuadDisplayerBuilder *QuadDisplayerBuilder::numberOfQuad(unsigned int numberOfQuad)
 	{
 		this->pNumberOfQuad = numberOfQuad;

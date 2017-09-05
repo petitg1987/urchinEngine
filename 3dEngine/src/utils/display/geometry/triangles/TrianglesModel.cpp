@@ -13,14 +13,9 @@ namespace urchin
 		initialize();
 	}
 
-	TrianglesModel::~TrianglesModel()
-	{
-
-	}
-
 	Matrix4<float> TrianglesModel::retrieveModelMatrix() const
 	{
-		return Matrix4<float>();
+		return {};
 	}
 
 	std::vector<Point3<float>> TrianglesModel::retrieveVertexArray() const

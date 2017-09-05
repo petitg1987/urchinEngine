@@ -13,8 +13,7 @@ namespace urchin
 	class GeometryDisplayer
 	{
 		public:
-			GeometryDisplayer();
-			virtual ~GeometryDisplayer();
+			virtual ~GeometryDisplayer() = default;
 
 			void addGeometry(GeometryModel *);
 			void removeGeometry(GeometryModel *);

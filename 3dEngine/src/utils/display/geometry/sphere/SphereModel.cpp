@@ -14,11 +14,6 @@ namespace urchin
 		initialize();
 	}
 
-	SphereModel::~SphereModel()
-	{
-
-	}
-
 	Matrix4<float> SphereModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;
@@ -50,8 +45,8 @@ namespace urchin
 				float x = std::cos(longitude);
 				float y = std::sin(longitude);
 
-				vertexArray.push_back(Point3<float>(x*zr0*radius, y*zr0*radius, z0*radius));
-				vertexArray.push_back(Point3<float>(x*zr1*radius, y*zr1*radius, z1*radius));
+				vertexArray.emplace_back(Point3<float>(x*zr0*radius, y*zr0*radius, z0*radius));
+				vertexArray.emplace_back(Point3<float>(x*zr1*radius, y*zr1*radius, z1*radius));
 			}
 		}
 

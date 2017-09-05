@@ -13,14 +13,9 @@ namespace urchin
 		initialize();
 	}
 
-	LineModel::~LineModel()
-	{
-
-	}
-
 	Matrix4<float> LineModel::retrieveModelMatrix() const
 	{
-		return Matrix4<float>();
+		return {};
 	}
 
 	std::vector<Point3<float>> LineModel::retrieveVertexArray() const

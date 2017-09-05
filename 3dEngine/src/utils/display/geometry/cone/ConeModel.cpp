@@ -14,11 +14,6 @@ namespace urchin
 		initialize();
 	}
 
-	ConeModel::~ConeModel()
-	{
-
-	}
-
 	Matrix4<float> ConeModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;

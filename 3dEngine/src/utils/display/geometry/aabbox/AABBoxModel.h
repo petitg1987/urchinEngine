@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			AABBoxModel(const AABBox<float> &);
-			~AABBoxModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

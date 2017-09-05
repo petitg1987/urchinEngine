@@ -13,14 +13,9 @@ namespace urchin
 		initialize();
 	}
 
-	ConvexHullModel::~ConvexHullModel()
-	{
-
-	}
-
 	Matrix4<float> ConvexHullModel::retrieveModelMatrix() const
 	{
-		return Matrix4<float>();
+		return {};
 	}
 
 	std::vector<Point3<float>> ConvexHullModel::retrieveVertexArray() const

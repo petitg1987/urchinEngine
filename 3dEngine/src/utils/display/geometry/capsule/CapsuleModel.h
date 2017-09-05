@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			CapsuleModel(const Capsule<float> &, int, int);
-			~CapsuleModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

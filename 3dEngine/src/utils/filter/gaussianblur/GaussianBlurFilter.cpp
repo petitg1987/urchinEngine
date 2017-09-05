@@ -34,11 +34,6 @@ namespace urchin
 		offsetsTab = toShaderVectorValues(offsetsLinearSampling);
 	}
 
-	GaussianBlurFilter::~GaussianBlurFilter()
-	{
-
-	}
-
 	std::string GaussianBlurFilter::getShaderName() const
 	{
 		return "gaussianBlurTex";

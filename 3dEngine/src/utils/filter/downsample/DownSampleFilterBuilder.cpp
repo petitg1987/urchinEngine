@@ -9,11 +9,6 @@ namespace urchin
 
 	}
 
-	DownSampleFilterBuilder::~DownSampleFilterBuilder()
-	{
-
-	}
-
 	std::shared_ptr<TextureFilter> DownSampleFilterBuilder::build()
 	{
 		std::shared_ptr<TextureFilter> textureFilter = std::make_shared<DownSampleFilter>(this);

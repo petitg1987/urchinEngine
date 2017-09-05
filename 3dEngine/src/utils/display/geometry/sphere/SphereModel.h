@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			SphereModel(const Sphere<float> &, int);
-			~SphereModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

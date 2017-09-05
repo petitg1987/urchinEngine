@@ -12,7 +12,6 @@ namespace urchin
 	{
 		public:
 			LineModel(const Line3D<float> &, int);
-			~LineModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

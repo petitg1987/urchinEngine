@@ -14,7 +14,6 @@ namespace urchin
 		public:
 			PointsModel(const std::vector<Point3<float>> &, int);
 			PointsModel(const Point3<float> &, int);
-			~PointsModel();
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const;

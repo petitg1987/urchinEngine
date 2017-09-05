@@ -14,11 +14,6 @@ namespace urchin
 		initialize();
 	}
 
-	CylinderModel::~CylinderModel()
-	{
-
-	}
-
 	Matrix4<float> CylinderModel::retrieveModelMatrix() const
 	{
 		Matrix4<float> modelMatrix;

@@ -3,7 +3,7 @@
 namespace urchin
 {
 
-	NavPolygon::NavPolygon(const std::vector<Point3<float>> &points, const std::vector<IndexedTriangle3D<float>> &triangles) :
+	NavPolygon::NavPolygon(const std::vector<Point3<float>> &points, const std::vector<NavTriangle> &triangles) :
 		points(points),
 		triangles(triangles)
 	{
@@ -20,12 +20,12 @@ namespace urchin
 		return points[index];
 	}
 
-	const std::vector<IndexedTriangle3D<float>> &NavPolygon::getTriangles() const
+	const std::vector<NavTriangle> &NavPolygon::getTriangles() const
 	{
 		return triangles;
 	}
 
-	const IndexedTriangle3D<float> &NavPolygon::getTriangle(unsigned int index) const
+	const NavTriangle &NavPolygon::getTriangle(unsigned int index) const
 	{
 		return triangles[index];
 	}

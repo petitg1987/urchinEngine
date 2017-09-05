@@ -9,7 +9,7 @@ namespace urchin
 	class QuadDisplayer
 	{
 		public:
-			QuadDisplayer(const QuadDisplayerBuilder *);
+			explicit QuadDisplayer(const QuadDisplayerBuilder *);
 			~QuadDisplayer();
 
 			void display() const;

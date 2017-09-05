@@ -28,7 +28,8 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL), navPolygon->getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL),
+																   toDisplayTriangles(navPolygon->getTriangles()));
 				triangleModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
 				triangleModel->setColor(0.0, 0.0, 1.0, 0.5);
 				triangleModel->setPolygonMode(GeometryModel::FILL);
@@ -37,7 +38,8 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME), navPolygon->getTriangles());
+				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME),
+																   toDisplayTriangles(navPolygon->getTriangles()));
 				triangleModel->setLineSize(4.0);
 				triangleModel->setColor(0.3, 0.3, 1.0, 1.0);
 				triangleModel->setPolygonMode(GeometryModel::WIREFRAME);
@@ -62,7 +64,7 @@ namespace urchin
 		navMeshModels.clear();
 	}
 
-	std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>> &points, float yElevation)
+	std::vector<Point3<float>> NavMeshDisplayer::toDisplayPoints(const std::vector<Point3<float>> &points, float yElevation) const
 	{
 		std::vector<Point3<float>> displayPoints;
 		displayPoints.reserve(points.size());
@@ -74,6 +76,19 @@ namespace urchin
 		}
 
 		return displayPoints;
+	}
+
+	std::vector<IndexedTriangle3D<float>> NavMeshDisplayer::toDisplayTriangles(const std::vector<NavTriangle> &triangles) const
+	{
+		std::vector<IndexedTriangle3D<float>> displayTriangles;
+		displayTriangles.reserve(triangles.size());
+
+		for(const auto &triangle : triangles)
+		{
+			displayTriangles.emplace_back(IndexedTriangle3D<float>(triangle.getIndices()));
+		}
+
+		return displayTriangles;
 	}
 
 }

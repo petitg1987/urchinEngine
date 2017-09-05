@@ -14,8 +14,7 @@ namespace urchin
 	class DownSampleFilter : public TextureFilter
 	{
 		public:
-			DownSampleFilter(const DownSampleFilterBuilder *);
-			~DownSampleFilter();
+			explicit DownSampleFilter(const DownSampleFilterBuilder *);
 
 		private:
 			std::string getShaderName() const;
