@@ -42,7 +42,9 @@ set(SOURCE_FILES
         src/path/navmesh/triangulation/MonotonePolygon.cpp
         src/path/navmesh/triangulation/MonotonePolygon.h
         src/path/navmesh/model/NavTriangle.cpp
-        src/path/navmesh/model/NavTriangle.h)
+        src/path/navmesh/model/NavTriangle.h
+        src/path/pathfinding/AStar.cpp
+        src/path/pathfinding/AStar.h)
 
 include_directories(src ../common/src)
 
