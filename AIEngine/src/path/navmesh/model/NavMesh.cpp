@@ -27,4 +27,14 @@ namespace urchin
 	{
 		return polygons;
 	}
+
+	const std::shared_ptr<NavPolygon> &NavMesh::resolvePolygon(const NavTriangleRef &triangleRef) const
+	{
+		return polygons[triangleRef.getPolygonIndex()];
+	}
+
+	const NavTriangle &NavMesh::resolveTriangle(const NavTriangleRef &triangleRef) const
+	{
+		return polygons[triangleRef.getPolygonIndex()]->getTriangle(triangleRef.getTriangleIndex());
+	}
 }

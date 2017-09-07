@@ -59,4 +59,9 @@ namespace urchin
         return neighbors[edgeIndex];
     }
 
+    const std::vector<NavTriangleRef> &NavTriangle::getLinks() const
+    {
+        return links;
+    }
+
 }

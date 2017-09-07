@@ -22,6 +22,9 @@ namespace urchin
 			unsigned int addPolygon(std::shared_ptr<NavPolygon>);
 			const std::vector<std::shared_ptr<NavPolygon>> &getPolygons() const;
 
+			const std::shared_ptr<NavPolygon> &resolvePolygon(const NavTriangleRef &) const;
+			const NavTriangle &resolveTriangle(const NavTriangleRef &) const;
+
 		private:
 			static unsigned int nextId;
 			unsigned int id;

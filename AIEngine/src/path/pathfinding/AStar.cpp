@@ -2,14 +2,8 @@
 
 namespace urchin
 {
-    TriangleRef::TriangleRef(unsigned int polygonIndex, unsigned int triangleIndex) :
-            polygonIndex(polygonIndex),
-            triangleIndex(triangleIndex)
-    {
 
-    }
-
-    PathNode::PathNode(TriangleRef triangleRef, unsigned int gScore, unsigned int hScore) :
+    PathNode::PathNode(NavTriangleRef triangleRef, unsigned int gScore, unsigned int hScore) :
             triangleRef(triangleRef),
             gScore(gScore),
             hScore(hScore)
@@ -30,11 +24,11 @@ namespace urchin
 
     std::vector<NavTriangle> AStar::findPath(const Vector3<float> &start, const Vector3<float> &end) const
     {
-        TriangleRef startTriangle = findTriangle(start);
-        TriangleRef endTriangle = findTriangle(end);
+        NavTriangleRef startTriangle = findTriangle(start);
+        NavTriangleRef endTriangle = findTriangle(end);
         float startEndHScore = computeHScore(startTriangle, endTriangle);
 
-        std::set<std::shared_ptr<PathNode>> closedList;
+        std::set<uint_fast64_t> closedList;
         std::set<std::shared_ptr<PathNode>, PathNodeCompare> openList;
         openList.insert(std::make_shared<PathNode>(startTriangle, 0.0, startEndHScore));
 
@@ -42,31 +36,36 @@ namespace urchin
         {
             std::shared_ptr<PathNode> currentNode = *openList.begin(); //node with smallest fScore
 
-            closedList.insert(currentNode);
+            closedList.insert(computeTriangleId(currentNode->triangleRef));
             openList.erase(currentNode);
 
-            if(currentNode->triangleRef.polygonIndex==endTriangle.polygonIndex && currentNode->triangleRef.triangleIndex==endTriangle.triangleIndex)
+            if(currentNode->triangleRef.equals(endTriangle))
             { //path is found
                 //TODO return currentNode->previous->previous
             }
 
-            const NavTriangle &currTriangle = navMesh->getPolygons()[currentNode->triangleRef.polygonIndex]->getTriangle(currentNode->triangleRef.triangleIndex);
+            const NavTriangle &currTriangle = navMesh->resolveTriangle(currentNode->triangleRef);
             for(unsigned int i=0; i<3; ++i)
             {
                 if(currTriangle.getNeighbor(i)!=-1)
                 {
-                    TriangleRef neighborTriangleRef(currentNode->triangleRef.polygonIndex, static_cast<unsigned int>(currTriangle.getNeighbor(i)));
-                    std::shared_ptr<PathNode> neighborNodePath = retrievePathNode(openList, neighborTriangleRef);
+                    NavTriangleRef neighborTriangleRef(currentNode->triangleRef.getPolygonIndex(), static_cast<unsigned int>(currTriangle.getNeighbor(i)));
+                    if(closedList.find(computeTriangleId(neighborTriangleRef))!=closedList.end())
+                    { //already processed
+                        continue;
+                    }
+
+                    std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, neighborTriangleRef);
                     if(!neighborNodePath)
                     {
-                        float gScore = computeGScore(startTriangle, neighborTriangleRef);
+                        float gScore = computeGScore(currentNode, neighborTriangleRef);
                         float hScore = computeHScore(neighborTriangleRef, endTriangle);
                         neighborNodePath.reset(new PathNode(neighborTriangleRef, gScore, hScore));
                         neighborNodePath->previous = currentNode;
                         openList.insert(neighborNodePath);
                     }else
                     {
-                        float gScore = computeGScore(startTriangle, neighborTriangleRef);
+                        float gScore = computeGScore(currentNode, neighborTriangleRef);
                         if(neighborNodePath->gScore > gScore)
                         { //better path found to reach neighborNodePath: override previous values
                             neighborNodePath->gScore = gScore;
@@ -83,7 +82,7 @@ namespace urchin
         }
     }
 
-    TriangleRef AStar::findTriangle(const Vector3<float> &point) const
+    NavTriangleRef AStar::findTriangle(const Vector3<float> &point) const
     {
         for(unsigned int polyIndex=0; polyIndex<navMesh->getPolygons().size(); ++polyIndex)
         {
@@ -120,21 +119,45 @@ namespace urchin
         return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
     }
 
-    float AStar::computeGScore(const TriangleRef &start, const TriangleRef &current) const
+    uint_fast64_t AStar::computeTriangleId(const NavTriangleRef &triangle) const
     {
-        //TODO compute G
+        auto id = static_cast<uint_fast64_t>(triangle.getPolygonIndex());
+        id = id << 32;
+        return id + triangle.getTriangleIndex();
     }
 
-    float AStar::computeHScore(const TriangleRef &current, const TriangleRef &end) const
+    float AStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor) const
     {
-        //TODO compute H
+        NavTriangle currentTriangle = navMesh->resolveTriangle(currentNode->triangleRef);
+        NavTriangle neighborTriangle = navMesh->resolveTriangle(neighbor);
+
+        //TODO use triangle middle point (pre compute middle point ?)
+        Point3<float> firstCurrentPoint = navMesh->resolvePolygon(currentNode->triangleRef)->getPoint(currentTriangle.getIndex(0));
+        Point3<float> firstEndPoint = navMesh->resolvePolygon(currentNode->triangleRef)->getPoint(neighborTriangle.getIndex(0));
+
+        float gScoreCurrentToNeighbor = firstCurrentPoint.distance(firstEndPoint);
+        return currentNode->gScore + gScoreCurrentToNeighbor;
     }
 
-    std::shared_ptr<PathNode> AStar::retrievePathNode(const std::set<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes, const TriangleRef &triangleRef) const
+    float AStar::computeHScore(const NavTriangleRef &current, const NavTriangleRef &end) const
+    {
+        NavTriangle currentTriangle = navMesh->resolveTriangle(current);
+        NavTriangle endTriangle = navMesh->resolveTriangle(end);
+
+        //TODO use triangle middle point (pre compute middle point ?)
+        Point3<float> firstCurrentPoint = navMesh->resolvePolygon(current)->getPoint(currentTriangle.getIndex(0));
+        Point3<float> firstEndPoint = navMesh->resolvePolygon(current)->getPoint(endTriangle.getIndex(0));
+
+        return std::abs(firstCurrentPoint.X - firstEndPoint.X)
+                          + std::abs(firstCurrentPoint.Y - firstEndPoint.Y)
+                          + std::abs(firstCurrentPoint.Z - firstEndPoint.Z);
+    }
+
+    std::shared_ptr<PathNode> AStar::retrievePathNodeFrom(const std::set<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes, const NavTriangleRef &triangleRef) const
     {
         for(const auto &pathNode : pathNodes)
         {
-            if(pathNode->triangleRef.polygonIndex==triangleRef.polygonIndex && pathNode->triangleRef.triangleIndex==triangleRef.triangleIndex)
+            if(pathNode->triangleRef.equals(triangleRef))
             {
                 return pathNode;
             }
