@@ -5,7 +5,7 @@
 namespace urchin
 {
 
-	template<class T> Line3D<T>::Line3D(const Point3<T> &a,  const Point3<T> &b) :
+	template<class T> Line3D<T>::Line3D(const Point3<T> &a, const Point3<T> &b) :
 		a(a), b(b)
 	{
 		#ifdef _DEBUG

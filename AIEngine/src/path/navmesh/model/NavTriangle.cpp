@@ -18,6 +18,21 @@ namespace urchin
         this->neighbors[0] = -1;
         this->neighbors[1] = -1;
         this->neighbors[2] = -1;
+
+        this->centerPoint = Point3<float>(0.0, 0.0, 0.0);
+    }
+
+    void NavTriangle::computeCenterPoint(const std::vector<Point3<float>> &points)
+    {
+        for(unsigned int i=0; i<3; ++i)
+        {
+            this->centerPoint[i] = (points[indices[0]][i] + points[indices[1]][i] + points[indices[2]][i]) / 3.0;
+        }
+    }
+
+    const Point3<float> &NavTriangle::getCenterPoint() const
+    {
+        return centerPoint;
     }
 
     const unsigned int *NavTriangle::getIndices() const

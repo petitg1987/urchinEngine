@@ -2,6 +2,8 @@
 #define URCHINENGINE_NAVTRIANGLE_H
 
 #include <vector>
+#include "UrchinCommon.h"
+
 #include "path/navmesh/model/NavTriangleRef.h"
 
 namespace urchin
@@ -11,6 +13,9 @@ namespace urchin
     {
         public:
             NavTriangle(unsigned int, unsigned int, unsigned int);
+
+            void computeCenterPoint(const std::vector<Point3<float>> &);
+            const Point3<float> &getCenterPoint() const;
 
             const unsigned int *getIndices() const;
             unsigned int getIndex(unsigned int) const;
@@ -24,6 +29,8 @@ namespace urchin
         private:
             unsigned int indices[3];
             int neighbors[3];
+
+            Point3<float> centerPoint;
 
             std::vector<NavTriangleRef> links;
     };

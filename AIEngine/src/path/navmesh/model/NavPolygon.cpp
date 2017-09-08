@@ -7,7 +7,10 @@ namespace urchin
 		points(points),
 		triangles(triangles)
 	{
-
+		for(NavTriangle &triangle : this->triangles)
+		{
+			triangle.computeCenterPoint(points);
+		}
 	}
 
 	const std::vector<Point3<float>> &NavPolygon::getPoints() const
