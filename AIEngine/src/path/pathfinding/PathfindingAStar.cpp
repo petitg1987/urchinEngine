@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "AStar.h"
+#include "PathfindingAStar.h"
 
 namespace urchin
 {
@@ -18,13 +18,13 @@ namespace urchin
         return node1->gScore+node1->hScore < node2->gScore+node2->hScore;
     }
 
-    AStar::AStar(std::shared_ptr<NavMesh> navMesh) :
+    PathfindingAStar::PathfindingAStar(std::shared_ptr<NavMesh> navMesh) :
             navMesh(std::move(navMesh))
     {
 
     }
 
-    std::vector<Point3<float>> AStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
+    std::vector<Point3<float>> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
     {
         NavTriangleRef startTriangle = findTriangle(startPoint);
         NavTriangleRef endTriangle = findTriangle(endPoint);
@@ -86,7 +86,7 @@ namespace urchin
         }
     }
 
-    NavTriangleRef AStar::findTriangle(const Point3<float> &point) const
+    NavTriangleRef PathfindingAStar::findTriangle(const Point3<float> &point) const
     {
         for(unsigned int polyIndex=0; polyIndex<navMesh->getPolygons().size(); ++polyIndex)
         {
@@ -105,7 +105,7 @@ namespace urchin
         }
     }
 
-    bool AStar::isPointInsideTriangle(const Point2<float> &point, const std::shared_ptr<NavPolygon> &polygon, const NavTriangle &triangle) const
+    bool PathfindingAStar::isPointInsideTriangle(const Point2<float> &point, const std::shared_ptr<NavPolygon> &polygon, const NavTriangle &triangle) const
     {
         Point3<float> p0 = polygon->getPoint(triangle.getIndex(0));
         Point3<float> p1 = polygon->getPoint(triangle.getIndex(1));
@@ -118,20 +118,20 @@ namespace urchin
         return ((b1 == b2) && (b2 == b3));
     }
 
-    float AStar::sign(const Point2<float> &p1, const Point2<float> &p2, const Point2<float> &p3) const
+    float PathfindingAStar::sign(const Point2<float> &p1, const Point2<float> &p2, const Point2<float> &p3) const
     {
         return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
     }
 
-    uint_fast64_t AStar::computeTriangleId(const NavTriangleRef &triangle) const
+    uint_fast64_t PathfindingAStar::computeTriangleId(const NavTriangleRef &triangle) const
     {
         auto id = static_cast<uint_fast64_t>(triangle.getPolygonIndex());
         id = id << 32;
         return id + triangle.getTriangleIndex();
     }
 
-    float AStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor) const
-    {
+    float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor) const
+    { //TODO use funnel algorithm ?
         Point3<float> currentPoint = navMesh->resolveTriangle(currentNode->triangleRef).getCenterPoint();
         Point3<float> neighborPoint = navMesh->resolveTriangle(neighbor).getCenterPoint();
 
@@ -139,13 +139,13 @@ namespace urchin
         return currentNode->gScore + gScoreCurrentToNeighbor;
     }
 
-    float AStar::computeHScore(const NavTriangleRef &current, const Point3<float> &endPoint) const
+    float PathfindingAStar::computeHScore(const NavTriangleRef &current, const Point3<float> &endPoint) const
     {
         Point3<float> currentPoint = navMesh->resolveTriangle(current).getCenterPoint();
         return std::abs(currentPoint.X - endPoint.X) + std::abs(currentPoint.Y - endPoint.Y) + std::abs(currentPoint.Z - endPoint.Z);
     }
 
-    std::shared_ptr<PathNode> AStar::retrievePathNodeFrom(const std::set<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes, const NavTriangleRef &triangleRef) const
+    std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::set<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes, const NavTriangleRef &triangleRef) const
     {
         for(const auto &pathNode : pathNodes)
         {
@@ -157,7 +157,7 @@ namespace urchin
         return std::shared_ptr<PathNode>();
     }
 
-    std::vector<Point3<float>> AStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint, const Point3<float> &endPoint) const
+    std::vector<Point3<float>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint, const Point3<float> &endPoint) const
     { //TODO use funnel algorithm
         std::vector<Point3<float>> pathPoints;
         pathPoints.reserve(10); //estimated memory size

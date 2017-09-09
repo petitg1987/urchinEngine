@@ -77,6 +77,8 @@ namespace urchin
             triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
 		}
 
+		//TODO check all triangles are connected with neighbor in _DEBUG (+ intermediate: monotones)
+
 		return triangles;
 	}
 

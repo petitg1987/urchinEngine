@@ -19,8 +19,8 @@ namespace urchin
         NavTriangleRef triangleRef;
         std::shared_ptr<PathNode> previous;
 
-        unsigned int gScore;
-        unsigned int hScore;
+        float gScore;
+        float hScore;
     };
 
     struct PathNodeCompare
@@ -28,10 +28,10 @@ namespace urchin
         bool operator()(const std::shared_ptr<PathNode> &, const std::shared_ptr<PathNode> &) const;
     };
 
-    class AStar
+    class PathfindingAStar
     {
         public:
-            explicit AStar(std::shared_ptr<NavMesh>);
+            explicit PathfindingAStar(std::shared_ptr<NavMesh>);
 
             std::vector<Point3<float>> findPath(const Point3<float> &, const Point3<float> &) const;
 

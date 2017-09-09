@@ -327,6 +327,7 @@ namespace urchin
                 std::vector<Point2<float>> extendedWalkableCwPoints = ResizePolygon2DService<float>::instance()->resizePolygon(
                         simplifiedWalkablePolygons.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE);
 
+				std::string navPolygonName = "<" + simplifiedWalkablePolygons.getName() + ">";
 				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints));
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
@@ -334,11 +335,12 @@ namespace urchin
                     if(simplifiedWalkablePolygons.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
                     { //obstacle fully inside walkable polygon
                         triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints());
+						navPolygonName += " - <" + remainingObstaclePolygon.getName() + ">";
                     }
                 }
 
                 std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
-                navPolygons.push_back(std::make_shared<NavPolygon>(points, triangulation.triangulate()));
+                navPolygons.push_back(std::make_shared<NavPolygon>(navPolygonName, points, triangulation.triangulate()));
             }
 		}
 

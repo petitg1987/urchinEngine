@@ -2,7 +2,7 @@
 #include "UrchinCommon.h"
 
 #include "AIManager.h"
-#include "path/pathfinding/AStar.h"
+#include "path/pathfinding/PathfindingAStar.h"
 
 namespace urchin
 {
@@ -30,7 +30,7 @@ namespace urchin
 
     std::vector<Point3<float>> AIManager::computePath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
     {
-        AStar aStar(navMeshGenerator->getNavMesh());
-        return aStar.findPath(Point3<float>(-55.0, 0.0, 0.0), Point3<float>(55.0, 0.0, 0.0));
+        PathfindingAStar pathfindingAStar(navMeshGenerator->getNavMesh());
+        return pathfindingAStar.findPath(Point3<float>(-55.0, 0.0, 0.0), Point3<float>(55.0, 0.0, 0.0));
     }
 }

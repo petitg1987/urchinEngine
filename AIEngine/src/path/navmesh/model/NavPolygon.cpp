@@ -3,7 +3,8 @@
 namespace urchin
 {
 
-	NavPolygon::NavPolygon(const std::vector<Point3<float>> &points, const std::vector<NavTriangle> &triangles) :
+	NavPolygon::NavPolygon(std::string name, const std::vector<Point3<float>> &points, const std::vector<NavTriangle> &triangles) :
+        name(std::move(name)),
 		points(points),
 		triangles(triangles)
 	{
@@ -12,6 +13,11 @@ namespace urchin
 			triangle.computeCenterPoint(points);
 		}
 	}
+
+    const std::string &NavPolygon::getName() const
+    {
+        return name;
+    }
 
 	const std::vector<Point3<float>> &NavPolygon::getPoints() const
 	{
