@@ -45,8 +45,12 @@ set(SOURCE_FILES
         src/path/navmesh/model/NavTriangle.h
         src/path/pathfinding/PathfindingAStar.cpp
         src/path/pathfinding/PathfindingAStar.h
-        src/path/navmesh/model/NavTriangleRef.cpp
-        src/path/navmesh/model/NavTriangleRef.h)
+        src/path/navmesh/model/ref/NavTriangleRef.cpp
+        src/path/navmesh/model/ref/NavTriangleRef.h
+        src/path/navmesh/model/ref/NavEdgeRef.cpp
+        src/path/navmesh/model/ref/NavEdgeRef.h
+        src/path/pathfinding/PathNode.cpp
+        src/path/pathfinding/PathNode.h)
 
 include_directories(src ../common/src)
 

@@ -77,7 +77,10 @@ namespace urchin
             triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
 		}
 
-		//TODO check all triangles are connected with neighbor in _DEBUG (+ intermediate: monotones)
+		if(!sharedMonotoneEdges.empty())
+		{
+			logOutputData("Missing neighbors (" + std::to_string(sharedMonotoneEdges.size()) + ") between monotone polygons", triangles, Logger::ERROR);
+		}
 
 		return triangles;
 	}
@@ -165,7 +168,9 @@ namespace urchin
             logOutputData("Missing neighbors (" + std::to_string(missingTriangleNeighbor) + ") on monotone polygon", monotoneTriangles, Logger::ERROR);
         }
 
-//      logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO);
+		#ifdef _DEBUG
+//      	logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO);
+    	#endif
 
         return monotoneTriangles;
 	}
@@ -241,7 +246,7 @@ namespace urchin
 
     void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<NavTriangle> &monotoneTriangles, const MonotonePolygon &monotonePolygon)
     {
-        int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
+        unsigned int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
 		NavTriangle &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
         for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
@@ -257,11 +262,13 @@ namespace urchin
 					auto itFind = sharedMonotoneEdges.find(edgeId);
 					if (itFind == sharedMonotoneEdges.end())
 					{
-						sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(currMonotoneTriangleIndex + triangles.size(), prevEdgeIndex)));
+						sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(triangles.size() + currMonotoneTriangleIndex, prevEdgeIndex)));
 					} else
 					{
 						currTriangle.addNeighbor(prevEdgeIndex, itFind->second.triangleIndex);
-						triangles[(itFind->second.triangleIndex)].addNeighbor(itFind->second.edgeIndex, currMonotoneTriangleIndex + triangles.size());
+						triangles[(itFind->second.triangleIndex)].addNeighbor(itFind->second.edgeIndex, triangles.size() + currMonotoneTriangleIndex);
+
+						sharedMonotoneEdges.erase(itFind);
 					}
 				}
             }
@@ -291,12 +298,12 @@ namespace urchin
 		logStream<<"Monotone polygon triangles output data:"<<std::endl;
 		for(const auto &triangle : triangles)
 		{
-			logStream<<" - {"<<triangle.getIndex(0)<<":"<<polygonPoints[triangle.getIndex(0)]
-                     <<"}, {"<<triangle.getIndex(1)<<":"<<polygonPoints[triangle.getIndex(1)]
-                     <<"}, {"<<triangle.getIndex(2)<<":"<<polygonPoints[triangle.getIndex(2)]<<"}"
-                     <<" {"<<polygonPoints[triangle.getNeighbor(0)]
-                     <<"}, {"<<polygonPoints[triangle.getNeighbor(1)]
-                     <<"}, {"<<polygonPoints[triangle.getNeighbor(2)]<<"}"<<std::endl;
+			logStream<<" - {"<<triangle.getIndex(0)<<": "<<polygonPoints[triangle.getIndex(0)]
+                     <<"}, {"<<triangle.getIndex(1)<<": "<<polygonPoints[triangle.getIndex(1)]
+                     <<"}, {"<<triangle.getIndex(2)<<": "<<polygonPoints[triangle.getIndex(2)]<<"}"
+                     <<" {"<<triangle.getNeighbor(0)<<": "<<polygonPoints[triangle.getNeighbor(0)]
+                     <<"}, {"<<triangle.getNeighbor(1)<<": "<<polygonPoints[triangle.getNeighbor(1)]
+                     <<"}, {"<<triangle.getNeighbor(2)<<": "<<polygonPoints[triangle.getNeighbor(2)]<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

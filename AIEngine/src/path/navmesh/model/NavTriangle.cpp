@@ -53,7 +53,7 @@ namespace urchin
     {
         #ifdef _DEBUG
             assert(edgeIndex >= 0 && edgeIndex <= 2);
-            assert(neighbors[edgeIndex]==-1); //check neighbor not already provided
+            assert(neighbors[edgeIndex] == -1); //check neighbor not already provided
             assert(triangleNeighborIndex >= 0);
         #endif
 
@@ -74,7 +74,7 @@ namespace urchin
         return neighbors[edgeIndex];
     }
 
-    const std::vector<NavTriangleRef> &NavTriangle::getLinks() const
+    const std::vector<NavEdgeRef> &NavTriangle::getLinks() const
     {
         return links;
     }

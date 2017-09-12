@@ -4,7 +4,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "path/navmesh/model/NavTriangleRef.h"
+#include "path/navmesh/model/ref/NavEdgeRef.h"
 
 namespace urchin
 {
@@ -24,7 +24,7 @@ namespace urchin
             const int *getNeighbors() const;
             int getNeighbor(unsigned int) const;
 
-            const std::vector<NavTriangleRef> &getLinks() const;
+            const std::vector<NavEdgeRef> &getLinks() const;
 
         private:
             unsigned int indices[3];
@@ -32,7 +32,7 @@ namespace urchin
 
             Point3<float> centerPoint;
 
-            std::vector<NavTriangleRef> links;
+            std::vector<NavEdgeRef> links;
     };
 
 }

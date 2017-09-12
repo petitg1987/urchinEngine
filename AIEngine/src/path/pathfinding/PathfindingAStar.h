@@ -7,21 +7,10 @@
 
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavTriangle.h"
-#include "path/navmesh/model/NavTriangleRef.h"
+#include "path/pathfinding/PathNode.h"
 
 namespace urchin
 {
-
-    struct PathNode
-    {
-        PathNode(NavTriangleRef, unsigned int, unsigned int);
-
-        NavTriangleRef triangleRef;
-        std::shared_ptr<PathNode> previous;
-
-        float gScore;
-        float hScore;
-    };
 
     struct PathNodeCompare
     {
@@ -43,7 +32,7 @@ namespace urchin
             uint_fast64_t computeTriangleId(const NavTriangleRef &) const;
             float computeGScore(std::shared_ptr<PathNode> &, const NavTriangleRef &) const;
             float computeHScore(const NavTriangleRef &, const Point3<float> &) const;
-            std::shared_ptr<PathNode> retrievePathNodeFrom(const std::set<std::shared_ptr<PathNode>, PathNodeCompare> &, const NavTriangleRef &) const;
+            std::shared_ptr<PathNode> retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &, const NavTriangleRef &) const;
 
             std::vector<Point3<float>> determinePath(const std::shared_ptr<PathNode> &, const Point3<float> &, const Point3<float> &) const;
 
