@@ -1,3 +1,5 @@
+#include "UrchinCommon.h"
+
 #include "NavMesh.h"
 
 namespace urchin
@@ -36,5 +38,14 @@ namespace urchin
 	const NavTriangle &NavMesh::resolveTriangle(const NavTriangleRef &triangleRef) const
 	{
 		return polygons[triangleRef.getPolygonIndex()]->getTriangle(triangleRef.getTriangleIndex());
+	}
+
+	LineSegment3D<float> NavMesh::resolveEdge(const NavEdgeRef &edgeRef) const
+	{
+		const std::shared_ptr<NavPolygon> &navPolygon = resolvePolygon(edgeRef.getTriangleRef());
+		unsigned int startEdge = edgeRef.getEdgeIndex();
+		unsigned int endEdge = (startEdge + 1) % 3;
+
+		return LineSegment3D<float>(navPolygon->getPoint(startEdge), navPolygon->getPoint(endEdge));
 	}
 }

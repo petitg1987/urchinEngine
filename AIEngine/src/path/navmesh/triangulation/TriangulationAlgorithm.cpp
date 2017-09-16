@@ -65,6 +65,9 @@ namespace urchin
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
+    /**
+     * @return Triangles with points in CCW order
+     */
 	std::vector<NavTriangle> TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
@@ -118,7 +121,7 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-                    monotoneTriangles.emplace_back(NavTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
+                    monotoneTriangles.emplace_back(buildCcwTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
                     determineNeighbors(monotoneTriangles, monotonePolygon);
 				}
 				stack.pop();
@@ -139,7 +142,7 @@ namespace urchin
 
 					if((orientationResult <= 0.0 && topPoint.onLeft) || (orientationResult >= 0.0 && !topPoint.onLeft))
 					{
-                        monotoneTriangles.emplace_back(NavTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+                        monotoneTriangles.emplace_back(buildCcwTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
                         determineNeighbors(monotoneTriangles, monotonePolygon);
 						stack.pop();
 					}else
@@ -159,7 +162,7 @@ namespace urchin
 			stack.pop();
 			SidedPoint top2Point = stack.top();
 
-            monotoneTriangles.emplace_back(NavTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+            monotoneTriangles.emplace_back(buildCcwTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
             determineNeighbors(monotoneTriangles, monotonePolygon);
 		}
 
@@ -201,6 +204,21 @@ namespace urchin
 			return polygonPoints[firstIndex].X < polygonPoints[secondIndex].X;
 		}
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
+	}
+
+	NavTriangle TriangulationAlgorithm::buildCcwTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
+	{
+        Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>()).normalize();
+        Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>()).normalize();
+
+		double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
+        if(crossProductZ > 0.0)
+        {
+            return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
+        }else
+        {
+            return NavTriangle(pointIndex2, pointIndex1, pointIndex3);
+        }
 	}
 
     void TriangulationAlgorithm::determineNeighbors(std::vector<NavTriangle> &triangles, const MonotonePolygon &monotonePolygon)

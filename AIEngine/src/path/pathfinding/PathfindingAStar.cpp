@@ -59,8 +59,7 @@ namespace urchin
                         float gScore = computeGScore(currentNode, neighborTriangleRef);
                         float hScore = computeHScore(neighborTriangleRef, endPoint);
                         neighborNodePath.reset(new PathNode(neighborTriangleRef, gScore, hScore));
-                        neighborNodePath->setPrevious(currentNode);
-                        currentNode->setEdgeId(i);
+                        linkPathNodes(currentNode, neighborNodePath, i);
                         openList.insert(neighborNodePath);
                     }else
                     {
@@ -68,8 +67,7 @@ namespace urchin
                         if(neighborNodePath->getGScore() > gScore)
                         { //better path found to reach neighborNodePath: override previous values
                             neighborNodePath->setGScore(gScore);
-                            neighborNodePath->setPrevious(currentNode);
-                            currentNode->setEdgeId(i);
+                            linkPathNodes(currentNode, neighborNodePath, i);
                         }
                     }
                 }
@@ -126,6 +124,19 @@ namespace urchin
         return id + triangle.getTriangleIndex();
     }
 
+    std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes,
+                                                                     const NavTriangleRef &triangleRef) const
+    {
+        for(const auto &pathNode : pathNodes)
+        {
+            if(pathNode->getTriangleRef().equals(triangleRef))
+            {
+                return pathNode;
+            }
+        }
+        return std::shared_ptr<PathNode>();
+    }
+
     float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor) const
     { //TODO use funnel algorithm ?
         Point3<float> currentPoint = navMesh->resolveTriangle(currentNode->getTriangleRef()).getCenterPoint();
@@ -141,37 +152,35 @@ namespace urchin
         return std::abs(currentPoint.X - endPoint.X) + std::abs(currentPoint.Y - endPoint.Y) + std::abs(currentPoint.Z - endPoint.Z);
     }
 
-    std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes, const NavTriangleRef &triangleRef) const
+    void PathfindingAStar::linkPathNodes(const std::shared_ptr<PathNode> &currentNode, const std::shared_ptr<PathNode> &nextNode,
+                                         unsigned int currentNodeLinkEdgeId) const
     {
-        for(const auto &pathNode : pathNodes)
-        {
-            if(pathNode->getTriangleRef().equals(triangleRef))
-            {
-                return pathNode;
-            }
-        }
-        return std::shared_ptr<PathNode>();
+        nextNode->setPrevious(currentNode);
+        currentNode->setEdgeId(currentNodeLinkEdgeId);
     }
 
-    std::vector<Point3<float>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint, const Point3<float> &endPoint) const
-    { //TODO use funnel algorithm
-        std::vector<Point3<float>> pathPoints;
-        pathPoints.reserve(10); //estimated memory size
-        std::shared_ptr<PathNode> pathNode = endNode;
-        do
-        {
-            pathPoints.push_back(navMesh->resolveTriangle(pathNode->getTriangleRef()).getCenterPoint());
-            pathNode = pathNode->getPrevious();
-        }while(pathNode!=nullptr);
+    std::vector<Point3<float>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint,
+                                                               const Point3<float> &endPoint) const
+    {
+        std::vector<LineSegment3D<float>> portals;
+        portals.reserve(10); //estimated memory size
 
-        if(pathPoints.size() <= 2)
+        std::shared_ptr<PathNode> pathNode = endNode->getPrevious();
+        while(pathNode!=nullptr)
+        {
+            portals.push_back(navMesh->resolveEdge(pathNode->retrieveNavEdgeRef()));
+            pathNode = pathNode->getPrevious();
+        }
+        std::reverse(portals.begin(), portals.end());
+
+        if(portals.empty())
         {
             return {startPoint, endPoint};
+        }else
+        {
+            //TODO use funnel algorithm
         }
-        pathPoints[0] = endPoint;
-        pathPoints[pathPoints.size()-1] = startPoint;
 
-        std::reverse(pathPoints.begin(), pathPoints.end());
-        return pathPoints;
+        return {};
     }
 }

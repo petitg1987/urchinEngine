@@ -24,6 +24,7 @@ namespace urchin
 
 			const std::shared_ptr<NavPolygon> &resolvePolygon(const NavTriangleRef &) const;
 			const NavTriangle &resolveTriangle(const NavTriangleRef &) const;
+			LineSegment3D<float> resolveEdge(const NavEdgeRef &edgeRef) const;
 
 		private:
 			static unsigned int nextId;

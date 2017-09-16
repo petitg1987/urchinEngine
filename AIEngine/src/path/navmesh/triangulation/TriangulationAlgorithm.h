@@ -46,6 +46,7 @@ namespace urchin
 			std::vector<NavTriangle> triangulateMonotonePolygon(const MonotonePolygon &);
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
 			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
+			NavTriangle buildCcwTriangle(unsigned int, unsigned int, unsigned int) const;
 
 			void determineNeighbors(std::vector<NavTriangle> &, const MonotonePolygon &);
 			void determineNeighborsInsideMonotone(std::vector<NavTriangle> &);

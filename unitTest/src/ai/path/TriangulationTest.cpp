@@ -69,14 +69,14 @@ void TriangulationTest::threeAlignedPoints()
 	std::vector<NavTriangle> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 4);
-	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{5, 1, 0});
-	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{4, 1, 5});
-	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{3, 1, 4});
-	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{2, 1, 3});
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{1, 5, 0});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{1, 4, 5});
+	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{1, 3, 4});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{1, 2, 3});
 	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, -1, -1});
-	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
-	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 1, -1});
-	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{-1, 2, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, -1, 0});
+	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, -1, 1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{-1, -1, 2});
 }
 
 void TriangulationTest::alternationPoints()
@@ -90,15 +90,15 @@ void TriangulationTest::alternationPoints()
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
 	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{1, 6, 0});
-	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{5, 1, 6});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{1, 5, 6});
 	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{2, 5, 1});
-	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{4, 2, 5});
-	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{3, 2, 4});
+	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{2, 4, 5});
+	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{2, 3, 4});
 	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, -1, -1});
-	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, -1, 0});
 	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 1, -1});
-	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{4, 2, -1});
-	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, 3, -1});
+	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{4, -1, 2});
+	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, -1, 3});
 }
 
 void TriangulationTest::cavityTriangulation1()
@@ -149,10 +149,10 @@ void TriangulationTest::twoMonotonePolygons()
 	std::vector<NavTriangle> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 3);
-	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{0, 4, 3});
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{4, 0, 3});
 	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{1, 3, 0});
 	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{1, 2, 3});
-	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{-1, -1, 1});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{-1, 1, -1});
 	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{2, 0, -1});
 	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{-1, -1, 1});
 }
@@ -167,13 +167,13 @@ void TriangulationTest::threeMonotonePolygons()
 	std::vector<NavTriangle> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
-	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{0, 5, 3});
-	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{0, 6, 5});
+	AssertHelper::assert3UnsignedInts(triangles[0].getIndices(), new unsigned int[3]{5, 0, 3});
+	AssertHelper::assert3UnsignedInts(triangles[1].getIndices(), new unsigned int[3]{6, 0, 5});
 	AssertHelper::assert3UnsignedInts(triangles[2].getIndices(), new unsigned int[3]{1, 3, 0});
 	AssertHelper::assert3UnsignedInts(triangles[3].getIndices(), new unsigned int[3]{1, 2, 3});
 	AssertHelper::assert3UnsignedInts(triangles[4].getIndices(), new unsigned int[3]{3, 4, 5});
-	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, 4, 2});
-	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{-1, -1, 0});
+	AssertHelper::assert3Ints(triangles[0].getNeighbors(), new int[3]{1, 2, 4});
+	AssertHelper::assert3Ints(triangles[1].getNeighbors(), new int[3]{-1, 0, -1});
 	AssertHelper::assert3Ints(triangles[2].getNeighbors(), new int[3]{3, 0, -1});
 	AssertHelper::assert3Ints(triangles[3].getNeighbors(), new int[3]{-1, -1, 2});
 	AssertHelper::assert3Ints(triangles[4].getNeighbors(), new int[3]{-1, -1, 0});
