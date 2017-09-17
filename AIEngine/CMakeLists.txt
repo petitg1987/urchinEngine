@@ -50,7 +50,9 @@ set(SOURCE_FILES
         src/path/navmesh/model/ref/NavEdgeRef.cpp
         src/path/navmesh/model/ref/NavEdgeRef.h
         src/path/pathfinding/PathNode.cpp
-        src/path/pathfinding/PathNode.h)
+        src/path/pathfinding/PathNode.h
+        src/path/pathfinding/FunnelAlgorithm.cpp
+        src/path/pathfinding/FunnelAlgorithm.h)
 
 include_directories(src ../common/src)
 

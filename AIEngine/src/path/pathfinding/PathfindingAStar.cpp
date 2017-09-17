@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "PathfindingAStar.h"
+#include "path/pathfinding/FunnelAlgorithm.h"
 
 namespace urchin
 {
@@ -165,22 +166,16 @@ namespace urchin
         std::vector<LineSegment3D<float>> portals;
         portals.reserve(10); //estimated memory size
 
+        portals.emplace_back(LineSegment3D<float>(startPoint, startPoint));
         std::shared_ptr<PathNode> pathNode = endNode->getPrevious();
         while(pathNode!=nullptr)
         {
             portals.push_back(navMesh->resolveEdge(pathNode->retrieveNavEdgeRef()));
             pathNode = pathNode->getPrevious();
         }
+        portals.emplace_back(LineSegment3D<float>(endPoint, endPoint));
         std::reverse(portals.begin(), portals.end());
 
-        if(portals.empty())
-        {
-            return {startPoint, endPoint};
-        }else
-        {
-            //TODO use funnel algorithm
-        }
-
-        return {};
+        return FunnelAlgorithm().determinePath(portals);
     }
 }

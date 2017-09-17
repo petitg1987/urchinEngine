@@ -6,14 +6,14 @@ set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
-        src/ai/path/MonotonePolygonTest.cpp
-        src/ai/path/MonotonePolygonTest.h
-        src/ai/path/PolygonsIntersectionTest.cpp
-        src/ai/path/PolygonsIntersectionTest.h
-        src/ai/path/PolygonsUnionTest.cpp
-        src/ai/path/PolygonsUnionTest.h
-        src/ai/path/TriangulationTest.cpp
-        src/ai/path/TriangulationTest.h
+        src/ai/path/navmesh/MonotonePolygonTest.cpp
+        src/ai/path/navmesh/MonotonePolygonTest.h
+        src/ai/path/navmesh/PolygonsIntersectionTest.cpp
+        src/ai/path/navmesh/PolygonsIntersectionTest.h
+        src/ai/path/navmesh/PolygonsUnionTest.cpp
+        src/ai/path/navmesh/PolygonsUnionTest.h
+        src/ai/path/navmesh/TriangulationTest.cpp
+        src/ai/path/navmesh/TriangulationTest.h
         src/math/algebra/QuaternionEulerTest.cpp
         src/math/algebra/QuaternionEulerTest.h
         src/math/geometry/AABBoxCollisionTest.cpp
@@ -68,7 +68,14 @@ set(SOURCE_FILES
         src/system/FileHandlerTest.h
         src/AssertHelper.cpp
         src/AssertHelper.h
-        src/MainTest.cpp src/math/geometry/ResizePolygon2DServiceTest.cpp src/math/geometry/ResizePolygon2DServiceTest.h src/ai/path/PolygonsSubtractionTest.cpp src/ai/path/PolygonsSubtractionTest.h src/ai/path/NavMeshGeneratorTest.h src/ai/path/NavMeshGeneratorTest.cpp)
+        src/MainTest.cpp src/math/geometry/ResizePolygon2DServiceTest.cpp
+        src/math/geometry/ResizePolygon2DServiceTest.h
+        src/ai/path/navmesh/PolygonsSubtractionTest.cpp
+        src/ai/path/navmesh/PolygonsSubtractionTest.h
+        src/ai/path/navmesh/NavMeshGeneratorTest.h
+        src/ai/path/navmesh/NavMeshGeneratorTest.cpp
+        src/ai/path/pathfinding/FunnelAlgorithmTest.cpp
+        src/ai/path/pathfinding/FunnelAlgorithmTest.h)
 
 include_directories(src ../common/src ../physicsEngine/src ../AIEngine/src)
 

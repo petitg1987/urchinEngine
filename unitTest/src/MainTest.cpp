@@ -25,12 +25,13 @@
 #include "physics/algorithm/epa/EPAConvexObjectTest.h"
 #include "physics/algorithm/inertia/InertiaCalculationTest.h"
 #include "physics/island/IslandContainerTest.h"
-#include "ai/path/MonotonePolygonTest.h"
-#include "ai/path/TriangulationTest.h"
-#include "ai/path/PolygonsUnionTest.h"
-#include "ai/path/PolygonsIntersectionTest.h"
-#include "ai/path/PolygonsSubtractionTest.h"
-#include "ai/path/NavMeshGeneratorTest.h"
+#include "ai/path/navmesh/MonotonePolygonTest.h"
+#include "ai/path/navmesh/TriangulationTest.h"
+#include "ai/path/navmesh/PolygonsUnionTest.h"
+#include "ai/path/navmesh/PolygonsIntersectionTest.h"
+#include "ai/path/navmesh/PolygonsSubtractionTest.h"
+#include "ai/path/navmesh/NavMeshGeneratorTest.h"
+#include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 
 int main()
 {
@@ -81,13 +82,16 @@ int main()
 	//physics - container
 	runner.addTest(IslandContainerTest::suite());
 
-	//ai - path
+	//ai - navigation mesh
 	runner.addTest(MonotonePolygonTest::suite());
 	runner.addTest(TriangulationTest::suite());
 	runner.addTest(PolygonsUnionTest::suite());
 	runner.addTest(PolygonsIntersectionTest::suite());
 	runner.addTest(PolygonsSubtractionTest::suite());
 	runner.addTest(NavMeshGeneratorTest::suite());
+
+	//ai - pathfinding
+	runner.addTest(FunnelAlgorithmTest::suite());
 
 	runner.run();
 

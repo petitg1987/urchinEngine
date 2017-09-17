@@ -19,5 +19,6 @@
 #include "path/navmesh/csg/PolygonsIntersection.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 #include "path/navmesh/csg/CSGPolygon.h"
+#include "path/pathfinding/FunnelAlgorithm.h"
 
 #endif
