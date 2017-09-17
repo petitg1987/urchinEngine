@@ -176,6 +176,7 @@ namespace urchin
         portals.emplace_back(LineSegment3D<float>(endPoint, endPoint));
         std::reverse(portals.begin(), portals.end());
 
-        return FunnelAlgorithm().determinePath(portals);
+        FunnelAlgorithm funnelAlgorithm;
+        return funnelAlgorithm.determinePath(portals);
     }
 }
