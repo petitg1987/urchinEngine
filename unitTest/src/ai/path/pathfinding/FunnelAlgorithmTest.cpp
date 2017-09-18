@@ -8,28 +8,26 @@
 
 void FunnelAlgorithmTest::straightPath()
 {
-    const std::vector<LineSegment3D<float>> portals = {
-            LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0)), //start point
-            LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)),
-            LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)) //end point
-    };
+    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
+    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0))); //start point
+    portals->push_back(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)));
+    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0))); //end point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm().determinePath(portals);
+    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
     AssertHelper::assertUnsignedInt(path.size(), 2);
     AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(1.0, 0.0, 1.0));
     AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(1.0, 0.0, -1.0));
 }
 
-void FunnelAlgorithmTest::cornerPath()
+void FunnelAlgorithmTest::rightCornerPath()
 {
-    const std::vector<LineSegment3D<float>> portals = {
-            LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0)), //start point
-            LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)),
-            LineSegment3D<float>(Point3<float>(4.0, 0.0, -1.0), Point3<float>(4.0, 0.0, -1.0)) //end point
-    };
+    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
+    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0))); //start point
+    portals->push_back(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)));
+    portals->push_back(LineSegment3D<float>(Point3<float>(4.0, 0.0, -1.0), Point3<float>(4.0, 0.0, -1.0))); //end point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm().determinePath(portals);
+    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
     AssertHelper::assertUnsignedInt(path.size(), 3);
     AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(1.0, 0.0, 1.0));
@@ -37,12 +35,28 @@ void FunnelAlgorithmTest::cornerPath()
     AssertHelper::assertPoint3FloatEquals(path[2], Point3<float>(4.0, 0.0, -1.0));
 }
 
+void FunnelAlgorithmTest::leftCornerPath()
+{
+    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
+    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0))); //start point
+    portals->push_back(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)));
+    portals->push_back(LineSegment3D<float>(Point3<float>(-2.0, 0.0, -1.0), Point3<float>(-2.0, 0.0, -1.0))); //end point
+
+    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
+
+    AssertHelper::assertUnsignedInt(path.size(), 3);
+    AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(1.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(0.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(path[2], Point3<float>(-2.0, 0.0, -1.0));
+}
+
 CppUnit::Test *FunnelAlgorithmTest::suite()
 {
     CppUnit::TestSuite *suite = new CppUnit::TestSuite("FunnelAlgorithmTest");
 
     suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("straightPath", &FunnelAlgorithmTest::straightPath));
-    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("cornerPath", &FunnelAlgorithmTest::cornerPath));
+    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("rightCornerPath", &FunnelAlgorithmTest::rightCornerPath));
+    suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("leftCornerPath", &FunnelAlgorithmTest::leftCornerPath));
 
     return suite;
 }

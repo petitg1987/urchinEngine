@@ -163,20 +163,20 @@ namespace urchin
     std::vector<Point3<float>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint,
                                                                const Point3<float> &endPoint) const
     {
-        std::vector<LineSegment3D<float>> portals;
-        portals.reserve(10); //estimated memory size
+        auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
+        portals->reserve(10); //estimated memory size
 
-        portals.emplace_back(LineSegment3D<float>(startPoint, startPoint));
+        portals->emplace_back(LineSegment3D<float>(startPoint, startPoint));
         std::shared_ptr<PathNode> pathNode = endNode->getPrevious();
         while(pathNode!=nullptr)
         {
-            portals.push_back(navMesh->resolveEdge(pathNode->retrieveNavEdgeRef()));
+            portals->push_back(navMesh->resolveEdge(pathNode->retrieveNavEdgeRef()));
             pathNode = pathNode->getPrevious();
         }
-        portals.emplace_back(LineSegment3D<float>(endPoint, endPoint));
-        std::reverse(portals.begin(), portals.end());
+        portals->emplace_back(LineSegment3D<float>(endPoint, endPoint));
+        std::reverse(portals->begin(), portals->end());
 
-        FunnelAlgorithm funnelAlgorithm;
-        return funnelAlgorithm.determinePath(portals);
+        FunnelAlgorithm funnelAlgorithm(portals);
+        return funnelAlgorithm.findPath();
     }
 }

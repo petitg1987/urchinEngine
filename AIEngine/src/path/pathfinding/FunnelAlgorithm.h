@@ -11,7 +11,9 @@ namespace urchin
     class FunnelAlgorithm
     {
         public:
-            const std::vector<Point3<float>> &determinePath(const std::vector<LineSegment3D<float>> &);
+            FunnelAlgorithm(const std::shared_ptr<std::vector<LineSegment3D<float>>> &);
+
+            const std::vector<Point3<float>> &findPath();
 
         private:
             enum FunnelSide
@@ -20,8 +22,11 @@ namespace urchin
                 RIGHT
             };
 
-            void updateFunnelSide(FunnelSide, unsigned int, const std::vector<LineSegment3D<float>> &);
+            void updateFunnelSide(FunnelSide, unsigned int);
+            const Point3<float> &getPortalPoint(FunnelSide, unsigned int) const;
             void updateSideIndex(FunnelSide, unsigned int);
+
+            std::shared_ptr<std::vector<LineSegment3D<float>>> portals;
 
             Point3<float> apex;
             std::pair<unsigned int, unsigned int> sideIndices; //first: left index, second: right index
