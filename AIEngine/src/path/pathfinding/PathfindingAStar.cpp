@@ -166,17 +166,35 @@ namespace urchin
         auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
         portals->reserve(10); //estimated memory size
 
-        portals->emplace_back(LineSegment3D<float>(startPoint, startPoint));
+        portals->emplace_back(LineSegment3D<float>(endPoint, endPoint));
         std::shared_ptr<PathNode> pathNode = endNode->getPrevious();
         while(pathNode!=nullptr)
         {
-            portals->push_back(navMesh->resolveEdge(pathNode->retrieveNavEdgeRef()));
+            LineSegment3D<float> portal = navMesh->resolveEdge(pathNode->retrieveNavEdgeRef());
+
+            Point3<float> characterPosition = middlePoint((*portals)[portals->size()-1]);
+            Vector3<float> characterMoveDirection = characterPosition.vector(middlePoint(portal)).normalize();
+            Vector3<float> characterToPortalA = characterPosition.vector(portal.getA()).normalize();
+            float crossProductY = characterMoveDirection.Z*characterToPortalA.X - characterMoveDirection.X*characterToPortalA.Z;
+            if(crossProductY <= 0.0)
+            {
+                portals->emplace_back(portal);
+            }else
+            {
+                portals->emplace_back(LineSegment3D<float>(portal.getB(), portal.getA()));
+            }
+
             pathNode = pathNode->getPrevious();
         }
-        portals->emplace_back(LineSegment3D<float>(endPoint, endPoint));
+        portals->emplace_back(LineSegment3D<float>(startPoint, startPoint));
         std::reverse(portals->begin(), portals->end());
 
         FunnelAlgorithm funnelAlgorithm(portals);
         return funnelAlgorithm.findPath();
+    }
+
+    Point3<float> PathfindingAStar::middlePoint(const LineSegment3D<float> &lineSegment) const
+    {
+        return (lineSegment.getA() + lineSegment.getB()) / 2.0f;
     }
 }

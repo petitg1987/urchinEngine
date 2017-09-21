@@ -208,7 +208,7 @@ namespace urchin
 
 	NavTriangle TriangulationAlgorithm::buildCcwTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
 	{
-        Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>()).normalize(); //TODO normalize needed ?
+        Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>()).normalize();
         Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>()).normalize();
 
 		double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;

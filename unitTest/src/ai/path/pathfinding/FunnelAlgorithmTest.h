@@ -10,8 +10,11 @@ class FunnelAlgorithmTest : public CppUnit::TestFixture
         static CppUnit::Test *suite();
 
         void straightPath();
-        void rightCornerPath();
-        void leftCornerPath();
+
+        void cornerPath1();
+        void cornerPath2();
+        void cornerPath3();
+        void cornerPath4();
 };
 
 #endif

@@ -3,10 +3,9 @@
 ############################################
 - GLOBAL
 	- (3) [OPTIMIZATION] Use PGO in g++
-	- (3) [QUALITY IMPROVEMENT] Use fully c++14 (tips: use tool "clang-tidy file.cpp -checks='-*, modernize-*' -fix -std=c++14")
+	- (3) [QUALITY IMPROVEMENT] Use fully c++14
 			=> Use "override" keyword
 			=> Use "Cons(std::string name) : name(std::move(name))" instead of "Cons(const std::string &name) : name(name)"
-			=> Use "auto a = new A()" instead of "A *a = new A()"
 			=> Create 'move constructor' and 'assign move operator' methods when necessary
 
 ############################################
@@ -17,4 +16,7 @@
 ############################################
 # Notes :
 ############################################
-- 
+- COORDINATES
+    - X+ (left), Z- (right)
+    - Y+ (top), Y- (bottom)
+    - Z+ (near), Z- (far)

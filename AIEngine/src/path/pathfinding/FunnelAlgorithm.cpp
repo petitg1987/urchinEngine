@@ -5,6 +5,10 @@
 namespace urchin
 {
 
+    /**
+     * @param portals List of portals to cross by the character to reach his target.
+     * First point (getA()) of portal segment must be on left of character when it cross a portal.
+     */
     FunnelAlgorithm::FunnelAlgorithm(const std::shared_ptr<std::vector<LineSegment3D<float>>> &portals) :
         portals(portals)
     {

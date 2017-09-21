@@ -36,6 +36,7 @@ namespace urchin
             void linkPathNodes(const std::shared_ptr<PathNode> &, const std::shared_ptr<PathNode> &, unsigned int) const;
 
             std::vector<Point3<float>> determinePath(const std::shared_ptr<PathNode> &, const Point3<float> &, const Point3<float> &) const;
+            Point3<float> middlePoint(const LineSegment3D<float> &) const;
 
             std::shared_ptr<NavMesh> navMesh;
     };

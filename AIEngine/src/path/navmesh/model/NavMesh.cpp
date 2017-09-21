@@ -43,9 +43,14 @@ namespace urchin
 	LineSegment3D<float> NavMesh::resolveEdge(const NavEdgeRef &edgeRef) const
 	{
 		const std::shared_ptr<NavPolygon> &navPolygon = resolvePolygon(edgeRef.getTriangleRef());
-		unsigned int startEdge = edgeRef.getEdgeIndex();
-		unsigned int endEdge = (startEdge + 1) % 3;
+		const NavTriangle &navTriangle = navPolygon->getTriangle(edgeRef.getTriangleRef().getTriangleIndex());
 
-		return LineSegment3D<float>(navPolygon->getPoint(startEdge), navPolygon->getPoint(endEdge));
+		unsigned int triangleStartEdge = edgeRef.getEdgeIndex();
+		unsigned int triangleEndEdge = (triangleStartEdge + 1) % 3;
+
+		unsigned int polygonStartEdge = navTriangle.getIndex(triangleStartEdge);
+		unsigned int polygonEndEdge = navTriangle.getIndex(triangleEndEdge);
+
+		return LineSegment3D<float>(navPolygon->getPoint(polygonStartEdge), navPolygon->getPoint(polygonEndEdge));
 	}
 }
