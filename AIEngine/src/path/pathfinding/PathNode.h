@@ -15,7 +15,6 @@ namespace urchin
             PathNode(NavTriangleRef, unsigned int, unsigned int);
 
             const NavTriangleRef getTriangleRef() const;
-            void setEdgeId(unsigned int);
             NavEdgeRef retrieveNavEdgeRef() const;
 
             void setGScore(float);
@@ -23,17 +22,18 @@ namespace urchin
             float getHScore() const;
             float getFScore() const;
 
-            void setPrevious(const std::shared_ptr<PathNode> &);
-            const std::shared_ptr<PathNode> &getPrevious() const;
+            void setPreviousNode(const std::shared_ptr<PathNode> &, unsigned int);
+            const std::shared_ptr<PathNode> &getPreviousNode() const;
+            int getPreviousNodeLinkEdgeId() const;
 
         private:
             NavTriangleRef triangleRef;
-            int edgeId; //edge start ID of this PathNode leading to the next node
 
             float gScore;
             float hScore;
 
-            std::shared_ptr<PathNode> previous;
+            std::shared_ptr<PathNode> previousNode;
+            int previousNodeLinkEdgeId; //edge ID on previous node which made link with this node
     };
 
 }

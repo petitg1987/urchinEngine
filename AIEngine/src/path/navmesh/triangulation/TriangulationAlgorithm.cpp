@@ -23,10 +23,11 @@ namespace urchin
 	/**
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
-	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints) :
+	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints, TriangleOrientation triangleOrientation) :
 			polygonPoints(ccwPolygonPoints)
 	{
-		endContourIndices.push_back(ccwPolygonPoints.size());
+		this->endContourIndices.push_back(ccwPolygonPoints.size());
+		this->triangleOrientation = triangleOrientation;
 	}
 
 	/**
@@ -65,9 +66,6 @@ namespace urchin
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
-    /**
-     * @return Triangles with points in CCW order
-     */
 	std::vector<NavTriangle> TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
@@ -208,17 +206,25 @@ namespace urchin
 
 	NavTriangle TriangulationAlgorithm::buildCcwTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
 	{
-        Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>()).normalize();
-        Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>()).normalize();
+		if(triangleOrientation==TriangulationAlgorithm::NONE)
+		{
+			return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
+		}else if(triangleOrientation==TriangulationAlgorithm::CCW)
+		{
+			Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>()).normalize();
+			Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>()).normalize();
 
-		double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
-        if(crossProductZ > 0.0)
-        {
-            return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
-        }else
-        {
-            return NavTriangle(pointIndex2, pointIndex1, pointIndex3);
-        }
+			double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
+			if(crossProductZ > 0.0)
+			{
+				return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
+			}else
+			{
+				return NavTriangle(pointIndex2, pointIndex1, pointIndex3);
+			}
+		}
+
+		throw std::runtime_error("Unknown triangle orientation type: " + triangleOrientation);
 	}
 
     void TriangulationAlgorithm::determineNeighbors(std::vector<NavTriangle> &triangles, const MonotonePolygon &monotonePolygon)
@@ -319,9 +325,7 @@ namespace urchin
 			logStream<<" - {"<<triangle.getIndex(0)<<": "<<polygonPoints[triangle.getIndex(0)]
                      <<"}, {"<<triangle.getIndex(1)<<": "<<polygonPoints[triangle.getIndex(1)]
                      <<"}, {"<<triangle.getIndex(2)<<": "<<polygonPoints[triangle.getIndex(2)]<<"}"
-                     <<" {"<<triangle.getNeighbor(0)<<": "<<polygonPoints[triangle.getNeighbor(0)]
-                     <<"}, {"<<triangle.getNeighbor(1)<<": "<<polygonPoints[triangle.getNeighbor(1)]
-                     <<"}, {"<<triangle.getNeighbor(2)<<": "<<polygonPoints[triangle.getNeighbor(2)]<<"}"<<std::endl;
+                     <<" {"<<triangle.getNeighbor(0)<<", "<<triangle.getNeighbor(1)<<", "<<triangle.getNeighbor(2)<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

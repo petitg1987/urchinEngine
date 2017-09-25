@@ -53,4 +53,30 @@ namespace urchin
 
 		return LineSegment3D<float>(navPolygon->getPoint(polygonStartEdge), navPolygon->getPoint(polygonEndEdge));
 	}
+
+	void NavMesh::logNavMesh() const
+	{
+		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
+		logStream<<"Mav mesh:"<<std::endl;
+
+		for(unsigned int i=0; i<getPolygons().size(); ++i)
+		{
+			const std::shared_ptr<NavPolygon> &polygon = getPolygons()[i];
+			logStream<<" - Polygon "<<i<<": "<<polygon->getName()<<std::endl;
+
+			for(unsigned int j=0; j<polygon->getTriangles().size(); ++j)
+			{
+				const NavTriangle &triangle = polygon->getTriangle(j);
+				logStream<<"  - Triangle "<<j<<": "
+                         <<"{"<<triangle.getIndex(0)<<": "<<polygon->getPoint(triangle.getIndex(0))
+						 <<"}, {"<<triangle.getIndex(1)<<": "<<polygon->getPoint(triangle.getIndex(1))
+						 <<"}, {"<<triangle.getIndex(2)<<": "<<polygon->getPoint(triangle.getIndex(2))<<"}"
+						 <<" {"<<triangle.getNeighbor(0)<<", "<<triangle.getNeighbor(1)<<", "<<triangle.getNeighbor(2)<<"}"<<std::endl;
+			}
+		}
+
+		Logger::logger().log(Logger::INFO, logStream.str());
+	}
 }

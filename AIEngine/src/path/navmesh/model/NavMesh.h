@@ -26,6 +26,7 @@ namespace urchin
 			const NavTriangle &resolveTriangle(const NavTriangleRef &) const;
 			LineSegment3D<float> resolveEdge(const NavEdgeRef &edgeRef) const;
 
+			void logNavMesh() const;
 		private:
 			static unsigned int nextId;
 			unsigned int id;

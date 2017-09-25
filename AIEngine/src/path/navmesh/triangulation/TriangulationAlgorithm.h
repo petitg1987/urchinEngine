@@ -30,7 +30,13 @@ namespace urchin
 	class TriangulationAlgorithm
 	{
 		public:
-			explicit TriangulationAlgorithm(const std::vector<Point2<float>> &);
+			enum TriangleOrientation
+			{
+				NONE,
+				CCW
+			};
+
+			TriangulationAlgorithm(const std::vector<Point2<float>> &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 
@@ -58,6 +64,7 @@ namespace urchin
 
 			std::vector<Point2<float>> polygonPoints;
 			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
+			TriangleOrientation triangleOrientation;
 
 			std::vector<NavTriangle> triangles;
 			int missingTriangleNeighbor;
