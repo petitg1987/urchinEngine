@@ -119,7 +119,7 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-                    monotoneTriangles.emplace_back(buildCcwTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
+                    monotoneTriangles.emplace_back(buildOrientedTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
                     determineNeighbors(monotoneTriangles, monotonePolygon);
 				}
 				stack.pop();
@@ -140,7 +140,7 @@ namespace urchin
 
 					if((orientationResult <= 0.0 && topPoint.onLeft) || (orientationResult >= 0.0 && !topPoint.onLeft))
 					{
-                        monotoneTriangles.emplace_back(buildCcwTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+                        monotoneTriangles.emplace_back(buildOrientedTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
                         determineNeighbors(monotoneTriangles, monotonePolygon);
 						stack.pop();
 					}else
@@ -160,7 +160,7 @@ namespace urchin
 			stack.pop();
 			SidedPoint top2Point = stack.top();
 
-            monotoneTriangles.emplace_back(buildCcwTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+            monotoneTriangles.emplace_back(buildOrientedTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
             determineNeighbors(monotoneTriangles, monotonePolygon);
 		}
 
@@ -204,15 +204,15 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	NavTriangle TriangulationAlgorithm::buildCcwTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
+	NavTriangle TriangulationAlgorithm::buildOrientedTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
 	{
 		if(triangleOrientation==TriangulationAlgorithm::NONE)
 		{
 			return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
 		}else if(triangleOrientation==TriangulationAlgorithm::CCW)
 		{
-			Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>()).normalize();
-			Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>()).normalize();
+			Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
+			Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>());
 
 			double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
 			if(crossProductZ > 0.0)

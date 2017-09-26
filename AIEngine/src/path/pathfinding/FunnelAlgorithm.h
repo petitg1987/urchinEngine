@@ -22,7 +22,7 @@ namespace urchin
                 RIGHT
             };
 
-            void updateFunnelSide(FunnelSide, unsigned int);
+            int updateFunnelSide(FunnelSide, unsigned int);
             const Point3<float> &getPortalPoint(FunnelSide, unsigned int) const;
             void updateSideIndex(FunnelSide, unsigned int);
 

@@ -2,12 +2,11 @@
 # To do :
 ############################################
 - PATH
-	- (1) [NEW FEATURE] Handle path finding.
+	- (1) [NEW FEATURE] Use funnel algorithm to compute G score in pathfinding.
+	- (1) [NEW FEATURE] Use new thread to compute navigation mesh and path finding in 'AIManager'.
 	- (2) [NEW FEATURE] Create jump links in navigation mesh.
-	- (2) [NEW FEATURE] Use funnel algorithm to compute G score in pathfinding.
 	- (2) [OPTIMIZATION] Exclude small objects from navigation mesh.
 	- (2) [OPTIMIZATION] Exclude fast moving objects from walkable face.
-	- (2) [OPTIMIZATION] Use new thread to compute navigation mesh and path finding in 'AIManager'.
 	- (2) [OPTIMIZATION] Create 'Polyhedron' only for AIWorld objects having updated in previous frame.
 	- (2) [OPTIMIZATION] NavMeshGenerator#computeObstacles: select only 'expandedPolyhedrons' above 'walkableFace' with octree/AABBTree structure
 			- Note 1: reserve memory on vector 'holePolygons'

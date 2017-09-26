@@ -33,10 +33,17 @@ namespace urchin
         apex = startPoint;
         sideIndices = std::make_pair(1, 1);
 
-        for (unsigned int i = 2; i < portals->size(); i++)
+        for (unsigned int portalIndex = 2; portalIndex < portals->size(); portalIndex++)
         {
-            updateFunnelSide(FunnelSide::LEFT, i);
-            updateFunnelSide(FunnelSide::RIGHT, i);
+            for(FunnelSide funnelSide : {FunnelSide::LEFT, FunnelSide::RIGHT})
+            {
+                int newPortalIndex = updateFunnelSide(funnelSide, portalIndex);
+                if(newPortalIndex!=-1)
+                {
+                    portalIndex = static_cast<unsigned int>(newPortalIndex);
+                    break;
+                }
+            }
         }
 
         path.push_back(endPoint);
@@ -44,7 +51,7 @@ namespace urchin
         return path;
     }
 
-    void FunnelAlgorithm::updateFunnelSide(FunnelSide updateSide, unsigned int currentIndex)
+    int FunnelAlgorithm::updateFunnelSide(FunnelSide updateSide, unsigned int currentIndex)
     {
         FunnelSide otherSide = (updateSide==FunnelSide::LEFT) ? FunnelSide::RIGHT : FunnelSide::LEFT;
         unsigned int sideIndex = (updateSide==FunnelSide::LEFT) ? sideIndices.first : sideIndices.second;
@@ -66,22 +73,18 @@ namespace urchin
                     updateSideIndex(updateSide, currentIndex);
                 }else
                 { //cross with other side: add new point
-                    unsigned int nextOtherSideIndex = otherSideIndex;
-                    for (unsigned int j = nextOtherSideIndex+1; j < portals->size(); j++)
-                    {
-                        if (getPortalPoint(otherSide, j) != getPortalPoint(otherSide, nextOtherSideIndex))
-                        {
-                            nextOtherSideIndex = j;
-                            break;
-                        }
-                    }
-
                     path.push_back(getPortalPoint(otherSide, otherSideIndex));
                     apex = getPortalPoint(otherSide, otherSideIndex);
-                    updateSideIndex(otherSide, nextOtherSideIndex);
+
+                    updateSideIndex(otherSide, otherSideIndex+1);
+                    updateSideIndex(updateSide, otherSideIndex+1);
+
+                    return otherSideIndex+1;
                 }
             }
         }
+
+        return -1;
     }
 
     const Point3<float> &FunnelAlgorithm::getPortalPoint(FunnelSide updateSide, unsigned int index) const
