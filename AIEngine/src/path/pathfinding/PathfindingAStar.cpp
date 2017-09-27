@@ -21,14 +21,18 @@ namespace urchin
 
     std::vector<Point3<float>> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
     {
-        NavTriangleRef startTriangle = findTriangle(startPoint);
-        NavTriangleRef endTriangle = findTriangle(endPoint);
+        std::unique_ptr<NavTriangleRef> startTriangle = findTriangle(startPoint);
+        std::unique_ptr<NavTriangleRef>  endTriangle = findTriangle(endPoint);
+        if(startTriangle==nullptr || endTriangle==nullptr)
+        {
+            return {}; //no path exists
+        }
 
-        float startEndHScore = computeHScore(startTriangle, endPoint);
+        float startEndHScore = computeHScore(*startTriangle, endPoint);
 
         std::set<uint_fast64_t> closedList;
         std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> openList;
-        openList.insert(std::make_shared<PathNode>(startTriangle, 0.0, startEndHScore));
+        openList.insert(std::make_shared<PathNode>(*startTriangle, 0.0, startEndHScore));
 
         std::shared_ptr<PathNode> endNodePath = nullptr;
         while(!openList.empty())
@@ -55,7 +59,7 @@ namespace urchin
                     std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, neighborTriangleRef);
                     if(!neighborNodePath)
                     {
-                        float gScore = computeGScore(currentNode, neighborTriangleRef);
+                        float gScore = computeGScore(currentNode, neighborTriangleRef, startPoint, endPoint, i);
                         float hScore = computeHScore(neighborTriangleRef, endPoint);
                         neighborNodePath.reset(new PathNode(neighborTriangleRef, gScore, hScore));
                         neighborNodePath->setPreviousNode(currentNode, i);
@@ -65,13 +69,13 @@ namespace urchin
                             openList.insert(neighborNodePath);
                         }
 
-                        if(neighborTriangleRef.equals(endTriangle))
+                        if(neighborTriangleRef.equals(*endTriangle))
                         { //end triangle reached but continue on path nodes having a smaller F score
                             endNodePath = neighborNodePath;
                         }
                     }else
                     {
-                        float gScore = computeGScore(currentNode, neighborTriangleRef);
+                        float gScore = computeGScore(currentNode, neighborTriangleRef, startPoint, endPoint, i);
                         if(neighborNodePath->getGScore() > gScore)
                         { //better path found to reach neighborNodePath: override previous values
                             neighborNodePath->setGScore(gScore);
@@ -90,23 +94,31 @@ namespace urchin
         return {}; //no path exists
     }
 
-    NavTriangleRef PathfindingAStar::findTriangle(const Point3<float> &point) const
+    std::unique_ptr<NavTriangleRef> PathfindingAStar::findTriangle(const Point3<float> &point) const
     {
+        float bestVerticalDistance = std::numeric_limits<float>::max();
+        std::unique_ptr<NavTriangleRef> triangleRef = nullptr;
+
         for(unsigned int polyIndex=0; polyIndex<navMesh->getPolygons().size(); ++polyIndex)
         {
             std::shared_ptr<NavPolygon> polygon = navMesh->getPolygons()[polyIndex];
-            //TODO check if point inside 'polygon' (BBox or Sphere)
             for(unsigned int triIndex=0; triIndex<polygon->getTriangles().size(); ++triIndex)
             {
                 const NavTriangle &triangle = polygon->getTriangles()[triIndex];
                 Point2<float> flattenPoint(point.X, point.Z);
 
                 if(isPointInsideTriangle(flattenPoint, polygon, triangle))
-                { //TODO check the Y axis (point nearest to triangle if several triangles match)
-                    return {polyIndex, triIndex};
+                {
+                    float verticalDistance = point.Y - triangle.getCenterPoint().Y;
+                    if(verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
+                    {
+                        bestVerticalDistance = verticalDistance;
+                        triangleRef = std::make_unique<NavTriangleRef>(polyIndex, triIndex);
+                    }
                 }
             }
         }
+        return triangleRef;
     }
 
     bool PathfindingAStar::isPointInsideTriangle(const Point2<float> &point, const std::shared_ptr<NavPolygon> &polygon, const NavTriangle &triangle) const
@@ -147,13 +159,22 @@ namespace urchin
         return std::shared_ptr<PathNode>();
     }
 
-    float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor) const
+    float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor, const Point3<float> &startPoint,
+                                          const Point3<float> &endPoint, unsigned previousNodeLinkEdgeId) const
     {
-        Point3<float> currentPoint = navMesh->resolveTriangle(currentNode->getTriangleRef()).getCenterPoint();
         Point3<float> neighborPoint = navMesh->resolveTriangle(neighbor).getCenterPoint();
 
-        float gScoreCurrentToNeighbor = currentPoint.distance(neighborPoint);
-        return currentNode->getGScore() + gScoreCurrentToNeighbor;
+        std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(neighbor, 0.0, 0.0);
+        neighborNodePath->setPreviousNode(currentNode, previousNodeLinkEdgeId);
+        std::vector<Point3<float>> path = determinePath(neighborNodePath, startPoint, neighborPoint);
+
+        float pathDistance = 0.0;
+        for(unsigned int i=0; i<path.size()-1; i++)
+        {
+            pathDistance += path[i].distance(path[i+1]);
+        }
+
+        return pathDistance;
     }
 
     float PathfindingAStar::computeHScore(const NavTriangleRef &current, const Point3<float> &endPoint) const
