@@ -104,7 +104,7 @@ namespace urchin
 			}
 		#endif
 
-		if(true||!bNeedFullRefresh.load(std::memory_order_relaxed))
+		if(!bNeedFullRefresh.load(std::memory_order_relaxed))
 		{
 			bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
 

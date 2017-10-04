@@ -267,7 +267,7 @@ namespace urchin
 	void Map::refreshAI()
 	{
 		std::shared_ptr<AIWorld> aiWorld = AIWorldGenerator().generate(sceneObjects);
-		aiManager->updateAI(aiWorld);
+		aiManager->setAIWorld(aiWorld);
 	}
 
 	void Map::refreshSound()

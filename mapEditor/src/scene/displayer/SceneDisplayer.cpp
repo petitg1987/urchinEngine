@@ -104,7 +104,7 @@ namespace urchin
 
 		sceneManager = new SceneManager();
 		soundManager = new SoundManager();
-		aiManager = new AIManager();
+		aiManager = new AIManager(); //TODO never started in MapEditor ?
 
 		sceneManager->newRenderer3d(true);
 

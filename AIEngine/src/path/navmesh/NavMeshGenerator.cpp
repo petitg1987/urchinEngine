@@ -31,11 +31,17 @@ namespace urchin
 		this->navMeshConfig = std::move(navMeshConfig);
 	}
 
+	const std::shared_ptr<NavMeshConfig> &NavMeshGenerator::getNavMeshConfig() const
+	{
+		return navMeshConfig;
+	}
+
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate(std::shared_ptr<AIWorld> aiWorld)
 	{
 		if(!navMeshConfig)
-		{
-			throw std::runtime_error("Impossible to generate navigation mesh: no configuration provided.");
+		{ //impossible to generate navigation mesh: no configuration provided.
+			navMesh.reset();
+			return navMesh;
 		}
 
 		#ifdef _DEBUG

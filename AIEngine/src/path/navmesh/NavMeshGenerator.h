@@ -32,6 +32,7 @@ namespace urchin
             NavMeshGenerator();
 
 			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
+			const std::shared_ptr<NavMeshConfig> &getNavMeshConfig() const;
 
 			std::shared_ptr<NavMesh> generate(std::shared_ptr<AIWorld>);
 			std::shared_ptr<NavMesh> getNavMesh() const;

@@ -1,7 +1,6 @@
 #include <algorithm>
 
 #include "body/BodyManager.h"
-#include "body/RigidBody.h"
 
 namespace urchin
 {
@@ -14,14 +13,14 @@ namespace urchin
 
 	BodyManager::~BodyManager()
 	{
-		for(std::vector<AbstractBody *>::iterator it = bodies.begin(); it!=bodies.end(); ++it)
+		for(auto &body : bodies)
 		{
-			delete *it;
+			delete body;
 		}
 
-		for(std::vector<AbstractWorkBody *>::iterator it = workBodies.begin(); it!=workBodies.end(); ++it)
+		for(auto &workBody : workBodies)
 		{
-			delete *it;
+			delete workBody;
 		}
 	}
 
@@ -55,7 +54,7 @@ namespace urchin
 	{
 		std::lock_guard<std::mutex> lock(bodiesMutex);
 
-		std::vector<AbstractBody *>::iterator it = bodies.begin();
+		auto it = bodies.begin();
 		while(it!=bodies.end())
 		{
 			AbstractBody *body = *it;
@@ -103,7 +102,7 @@ namespace urchin
 		deleteWorkBody(body);
 
 		//delete body
-		std::vector<AbstractBody *>::iterator newIt = bodies.erase(it);
+		auto newIt = bodies.erase(it);
 		delete body;
 
 		return newIt;
@@ -113,7 +112,7 @@ namespace urchin
 	{
 		AbstractWorkBody *workBody = body->getWorkBody();
 
-		std::vector<AbstractWorkBody *>::iterator itFind = std::find(workBodies.begin(), workBodies.end(), workBody);
+		auto itFind = std::find(workBodies.begin(), workBodies.end(), workBody);
 		if(itFind!=workBodies.end())
 		{
 			//remove notification
@@ -133,10 +132,9 @@ namespace urchin
 	{
 		std::lock_guard<std::mutex> lock(bodiesMutex);
 
-		for(std::vector<AbstractBody *>::iterator it = bodies.begin(); it!=bodies.end(); ++it)
+		for (auto &body : bodies)
 		{
-			AbstractBody *body = *it;
-			AbstractWorkBody *workBody = (*it)->getWorkBody();
+			AbstractWorkBody *workBody = body->getWorkBody();
 			if(workBody==nullptr)
 			{ //work body is not created yet
 				continue;

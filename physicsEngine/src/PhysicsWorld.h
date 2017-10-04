@@ -5,6 +5,7 @@
 #include <atomic>
 #include <memory>
 #include <thread>
+#include <mutex>
 #include "UrchinCommon.h"
 
 #include "body/AbstractBody.h"
