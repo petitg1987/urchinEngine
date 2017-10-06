@@ -1,8 +1,6 @@
 #include <memory>
 #include <stdexcept>
 #include <QMessageBox>
-#include <QWidget>
-#include <utility>
 
 #include "SceneDisplayer.h"
 
@@ -104,7 +102,8 @@ namespace urchin
 
 		sceneManager = new SceneManager();
 		soundManager = new SoundManager();
-		aiManager = new AIManager(); //TODO never started in MapEditor ?
+		aiManager = new AIManager();
+		aiManager->start(1.0/4.0);
 
 		sceneManager->newRenderer3d(true);
 
@@ -184,7 +183,7 @@ namespace urchin
 	{
 		if(viewProperties[NAV_MESH])
 		{
-			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->getNavMesh());
+			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->getNavMesh()); //TODO error when playing with AI: concurrent read/write on navMesh ?
 		}else
 		{
 			navMeshDisplayer->displayNavMesh(nullptr);

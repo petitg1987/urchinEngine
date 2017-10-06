@@ -99,21 +99,24 @@ namespace urchin
         float bestVerticalDistance = std::numeric_limits<float>::max();
         std::unique_ptr<NavTriangleRef> triangleRef = nullptr;
 
-        for(unsigned int polyIndex=0; polyIndex<navMesh->getPolygons().size(); ++polyIndex)
+        if(navMesh)
         {
-            std::shared_ptr<NavPolygon> polygon = navMesh->getPolygons()[polyIndex];
-            for(unsigned int triIndex=0; triIndex<polygon->getTriangles().size(); ++triIndex)
+            for (unsigned int polyIndex = 0; polyIndex < navMesh->getPolygons().size(); ++polyIndex)
             {
-                const NavTriangle &triangle = polygon->getTriangles()[triIndex];
-                Point2<float> flattenPoint(point.X, point.Z);
-
-                if(isPointInsideTriangle(flattenPoint, polygon, triangle))
+                std::shared_ptr<NavPolygon> polygon = navMesh->getPolygons()[polyIndex];
+                for (unsigned int triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex)
                 {
-                    float verticalDistance = point.Y - triangle.getCenterPoint().Y;
-                    if(verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
+                    const NavTriangle &triangle = polygon->getTriangles()[triIndex];
+                    Point2<float> flattenPoint(point.X, point.Z);
+
+                    if (isPointInsideTriangle(flattenPoint, polygon, triangle))
                     {
-                        bestVerticalDistance = verticalDistance;
-                        triangleRef = std::make_unique<NavTriangleRef>(polyIndex, triIndex);
+                        float verticalDistance = point.Y - triangle.getCenterPoint().Y;
+                        if (verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
+                        {
+                            bestVerticalDistance = verticalDistance;
+                            triangleRef = std::make_unique<NavTriangleRef>(polyIndex, triIndex);
+                        }
                     }
                 }
             }

@@ -28,22 +28,22 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL),
-																   toDisplayTriangles(navPolygon->getTriangles()));
-				triangleModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
-				triangleModel->setColor(0.0, 0.0, 1.0, 0.5);
-				triangleModel->setPolygonMode(GeometryModel::FILL);
-				navMeshModels.push_back(triangleModel);
+				auto *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL),
+                                                          toDisplayTriangles(navPolygon->getTriangles()));
+				trianglesModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
+				trianglesModel->setColor(0.0, 0.0, 1.0, 0.5);
+				trianglesModel->setPolygonMode(GeometryModel::FILL);
+				navMeshModels.push_back(trianglesModel);
 			}
 
 			for(const auto &navPolygon : navMesh->getPolygons())
 			{
-				TrianglesModel *triangleModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME),
-																   toDisplayTriangles(navPolygon->getTriangles()));
-				triangleModel->setLineSize(4.0);
-				triangleModel->setColor(0.3, 0.3, 1.0, 1.0);
-				triangleModel->setPolygonMode(GeometryModel::WIREFRAME);
-				navMeshModels.push_back(triangleModel);
+				auto *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME),
+                                                          toDisplayTriangles(navPolygon->getTriangles()));
+				trianglesModel->setLineSize(4.0);
+				trianglesModel->setColor(0.3, 0.3, 1.0, 1.0);
+				trianglesModel->setPolygonMode(GeometryModel::WIREFRAME);
+				navMeshModels.push_back(trianglesModel);
 			}
 
 			for (auto &navMeshModel : navMeshModels)

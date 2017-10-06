@@ -52,7 +52,9 @@ set(SOURCE_FILES
         src/path/pathfinding/PathNode.cpp
         src/path/pathfinding/PathNode.h
         src/path/pathfinding/FunnelAlgorithm.cpp
-        src/path/pathfinding/FunnelAlgorithm.h src/path/PathRequest.cpp src/path/PathRequest.h)
+        src/path/pathfinding/FunnelAlgorithm.h
+        src/path/PathRequest.cpp
+        src/path/PathRequest.h)
 
 include_directories(src ../common/src)
 

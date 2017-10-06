@@ -18,12 +18,14 @@ namespace urchin
 
             void setPath(const std::vector<Point3<float>> &);
             std::vector<Point3<float>> getPath() const;
+            bool isPathReady() const;
 
         private:
             Point3<float> startPoint;
             Point3<float> endPoint;
 
             mutable std::mutex mutex;
+            std::atomic_bool bIsPathReady;
             std::vector<Point3<float>> path;
     };
 

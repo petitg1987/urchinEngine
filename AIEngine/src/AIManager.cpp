@@ -150,7 +150,7 @@ namespace urchin
             std::lock_guard<std::mutex> lock(mutex);
 
             paused = this->paused;
-            aiWorld = std::make_shared<AIWorld>(this->aiWorld); //TODO slow copy ??
+            aiWorld = std::make_shared<AIWorld>(this->aiWorld);
             pathRequests = this->pathRequests;
         }
 

@@ -146,8 +146,8 @@ set(SOURCE_FILES
         src/utils/display/geometry/cylinder/CylinderModel.h
         src/utils/display/geometry/frustum/FrustumModel.cpp
         src/utils/display/geometry/frustum/FrustumModel.h
-        src/utils/display/geometry/line/LineModel.cpp
-        src/utils/display/geometry/line/LineModel.h
+        src/utils/display/geometry/lines/LinesModel.cpp
+        src/utils/display/geometry/lines/LinesModel.h
         src/utils/display/geometry/obbox/OBBoxModel.cpp
         src/utils/display/geometry/obbox/OBBoxModel.h
         src/utils/display/geometry/points/PointsModel.cpp
