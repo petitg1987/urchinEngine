@@ -16,7 +16,7 @@ namespace urchin
 				AMBIENT
 			};
 
-			Sound(const std::string &);
+			explicit Sound(const std::string &);
 			virtual ~Sound();
 
 			virtual SoundType getSoundType() const = 0;

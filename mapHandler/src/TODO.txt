@@ -1,7 +1,7 @@
 ############################################
 # To do :
 ############################################
-- (1) [OPTIMIZATION] Update 'AIWorldGenerator' to update AI world instead of regenerate all
+- (2) [OPTIMIZATION] Update 'AIWorldGenerator' to update AI world instead of regenerate all
 
 ############################################
 # Bugs :

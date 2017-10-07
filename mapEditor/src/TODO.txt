@@ -2,7 +2,7 @@
 # To do :
 ############################################
 - SCENE OBJECTS
-	- (1) [NEW FEATURE] Allow picking objects and move them
+	- (2) [NEW FEATURE] Allow picking objects and move them
 	- (2) [NEW FEATURE] Handle physics shape as intrinsic to mesh object
 	- (2) [QUALITY IMPROVEMENT] When change orientation of cylinder/capsule: resize physics shape to fit the object size
 - UI

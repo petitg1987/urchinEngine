@@ -32,6 +32,8 @@ namespace urchin
 		{
 			delete *it;
 		}
+
+		delete sceneAI;
 	}
 
 	void Map::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
