@@ -21,45 +21,47 @@ namespace urchin
 
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygon.removeAngleThresholdInDegree")))),
-            polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold"))
+            polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold")),
+			navMeshConfig(std::make_shared<NavMeshConfig>(NavMeshAgent())),
+			navMesh(std::make_shared<NavMesh>())
     {
 
-    }
+	}
 
 	void NavMeshGenerator::setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
 	{
+		std::lock_guard<std::mutex> lock(navMeshMutex);
+
 		this->navMeshConfig = std::move(navMeshConfig);
 	}
 
-	const std::shared_ptr<NavMeshConfig> &NavMeshGenerator::getNavMeshConfig() const
-	{
-		return navMeshConfig;
-	}
+    NavMesh NavMeshGenerator::retrieveLastGeneratedNavMesh() const
+    {
+        std::lock_guard<std::mutex> lock(navMeshMutex);
+
+        return NavMesh(*navMesh);
+    }
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate(std::shared_ptr<AIWorld> aiWorld)
 	{
-		if(!navMeshConfig)
-		{ //impossible to generate navigation mesh: no configuration provided.
-			navMesh.reset();
-			return navMesh;
-		}
-
 		#ifdef _DEBUG
 //			auto frameStartTime = std::chrono::high_resolution_clock::now();
-		#endif
+        #endif
+
+        std::lock_guard<std::mutex> lock(navMeshMutex);
 
 		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons(std::move(aiWorld));
 		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
-		navMesh.reset(new NavMesh());
+        navMesh.reset(new NavMesh());
 
-		for(const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
-		{
-			std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polyhedronWalkableFace, expandedPolyhedrons);
-			for(const auto &navPolygon : navPolygons)
-			{
-				navMesh->addPolygon(navPolygon);
-			}
-		}
+        for (const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
+        {
+            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polyhedronWalkableFace, expandedPolyhedrons);
+            for (const auto &navPolygon : navPolygons)
+            {
+                navMesh->addPolygon(navPolygon);
+            }
+        }
 
 		#ifdef _DEBUG
 //			auto frameEndTime = std::chrono::high_resolution_clock::now();
@@ -457,11 +459,6 @@ namespace urchin
         float shortestFaceDistance = walkableFace.getNormal().dotProduct(point3D.vector(walkableFace.getCcwPoints()[0]));
         float t = (shortestFaceDistance+shiftDistance) / walkableFace.getNormal().Y;
         return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
-    }
-
-    std::shared_ptr<NavMesh> NavMeshGenerator::getNavMesh() const
-    {
-        return navMesh;
     }
 
 }

@@ -11,7 +11,7 @@ namespace urchin
 	class NavMeshConfig
 	{
 		public:
-			NavMeshConfig(const NavMeshAgent &);
+			explicit NavMeshConfig(const NavMeshAgent &);
 
 			const NavMeshAgent &getAgent() const;
 

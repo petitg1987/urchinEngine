@@ -214,7 +214,7 @@ namespace urchin
 
 	void PhysicsWorld::processPhysicsUpdate()
 	{
-		//shared data copy for local thread
+		//copy for local thread
 		bool paused;
 		Vector3<float> gravity;
 		std::vector<std::shared_ptr<Processable>> processables;

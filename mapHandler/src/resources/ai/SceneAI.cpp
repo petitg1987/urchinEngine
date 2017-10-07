@@ -12,15 +12,6 @@ namespace urchin
 
     }
 
-    SceneAI::~SceneAI()
-    {
-        if(aiManager!=nullptr)
-        {
-            std::shared_ptr<NavMeshConfig> nullNavMeshConfig;
-            aiManager->getNavMeshGenerator()->setNavMeshConfig(nullNavMeshConfig);
-        }
-    }
-
     void SceneAI::setAIManager(AIManager *aiManager)
     {
         this->aiManager = aiManager;

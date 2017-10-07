@@ -13,6 +13,7 @@ namespace urchin
 	{
 		public:
 			NavPolygon(std::string, const std::vector<Point3<float>> &, const std::vector<NavTriangle> &);
+			NavPolygon(const NavPolygon &);
 
 			const std::string &getName() const;
 

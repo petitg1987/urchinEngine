@@ -142,7 +142,7 @@ namespace urchin
 
     void AIManager::processAIUpdate()
     {
-        //shared data copy for local thread
+        //copy for local thread
         bool paused;
         std::shared_ptr<AIWorld> aiWorld;
         std::vector<std::shared_ptr<PathRequest>> pathRequests;
@@ -150,16 +150,19 @@ namespace urchin
             std::lock_guard<std::mutex> lock(mutex);
 
             paused = this->paused;
-            aiWorld = std::make_shared<AIWorld>(this->aiWorld);
+            if(this->aiWorld)
+            {
+                aiWorld = std::make_shared<AIWorld>(*this->aiWorld);
+            }
             pathRequests = this->pathRequests;
         }
 
         //AI execution
-        if (!paused)
+        if (!paused && aiWorld)
         {
-            navMeshGenerator->generate(aiWorld);
+            std::shared_ptr<NavMesh> navMesh = navMeshGenerator->generate(aiWorld);
 
-            PathfindingAStar pathfindingAStar(navMeshGenerator->getNavMesh());
+            PathfindingAStar pathfindingAStar(navMesh);
             for (auto &pathRequest : pathRequests)
             {
                 pathRequest->setPath(pathfindingAStar.findPath(pathRequest->getStartPoint(), pathRequest->getEndPoint()));

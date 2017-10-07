@@ -8,6 +8,7 @@ namespace urchin {
     class NavMeshAgent
     {
         public:
+            NavMeshAgent();
             NavMeshAgent(float, float);
 
             float getAgentHeight() const;

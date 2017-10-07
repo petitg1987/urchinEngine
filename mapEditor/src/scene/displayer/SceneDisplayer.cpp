@@ -183,10 +183,10 @@ namespace urchin
 	{
 		if(viewProperties[NAV_MESH])
 		{
-			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->getNavMesh()); //TODO error when playing with AI: concurrent read/write on navMesh ?
+			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->retrieveLastGeneratedNavMesh());
 		}else
 		{
-			navMeshDisplayer->displayNavMesh(nullptr);
+			navMeshDisplayer->displayNavMesh(NavMesh());
 		}
 	}
 

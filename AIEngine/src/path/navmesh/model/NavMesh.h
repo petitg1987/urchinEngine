@@ -16,6 +16,7 @@ namespace urchin
 	{
 		public:
 			NavMesh();
+			NavMesh(const NavMesh &);
 
 			unsigned int getId() const;
 

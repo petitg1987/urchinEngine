@@ -8,12 +8,9 @@ namespace urchin
         objects.reserve(50); //estimated memory size
     }
 
-	AIWorld::AIWorld(const std::shared_ptr<AIWorld> &aiWorld)
+	AIWorld::AIWorld(const AIWorld &aiWorld)
 	{
-		if(aiWorld)
-		{
-			objects = aiWorld->getObjects();
-		}
+		objects = aiWorld.getObjects();
 	}
 
 	void AIWorld::addObject(const AIObject &aiObject)

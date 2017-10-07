@@ -8,10 +8,21 @@ namespace urchin
 	//static
 	unsigned int NavMesh::nextId = 0;
 
-	NavMesh::NavMesh()	:
+	NavMesh::NavMesh() :
 		id(nextId++)
 	{
 
+	}
+
+	NavMesh::NavMesh(const NavMesh &navMesh) :
+		id(navMesh.getId()),
+		polygons(navMesh.getPolygons())
+	{
+        polygons.reserve(navMesh.getPolygons().size());
+        for(const std::shared_ptr<NavPolygon> &polygon : navMesh.getPolygons())
+        {
+            polygons.push_back(std::make_shared<NavPolygon>(*polygon));
+        }
 	}
 
 	unsigned int NavMesh::getId() const

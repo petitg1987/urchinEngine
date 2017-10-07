@@ -99,24 +99,21 @@ namespace urchin
         float bestVerticalDistance = std::numeric_limits<float>::max();
         std::unique_ptr<NavTriangleRef> triangleRef = nullptr;
 
-        if(navMesh)
+        for (unsigned int polyIndex = 0; polyIndex < navMesh->getPolygons().size(); ++polyIndex)
         {
-            for (unsigned int polyIndex = 0; polyIndex < navMesh->getPolygons().size(); ++polyIndex)
+            std::shared_ptr<NavPolygon> polygon = navMesh->getPolygons()[polyIndex];
+            for (unsigned int triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex)
             {
-                std::shared_ptr<NavPolygon> polygon = navMesh->getPolygons()[polyIndex];
-                for (unsigned int triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex)
-                {
-                    const NavTriangle &triangle = polygon->getTriangles()[triIndex];
-                    Point2<float> flattenPoint(point.X, point.Z);
+                const NavTriangle &triangle = polygon->getTriangles()[triIndex];
+                Point2<float> flattenPoint(point.X, point.Z);
 
-                    if (isPointInsideTriangle(flattenPoint, polygon, triangle))
+                if (isPointInsideTriangle(flattenPoint, polygon, triangle))
+                {
+                    float verticalDistance = point.Y - triangle.getCenterPoint().Y;
+                    if (verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
                     {
-                        float verticalDistance = point.Y - triangle.getCenterPoint().Y;
-                        if (verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
-                        {
-                            bestVerticalDistance = verticalDistance;
-                            triangleRef = std::make_unique<NavTriangleRef>(polyIndex, triIndex);
-                        }
+                        bestVerticalDistance = verticalDistance;
+                        triangleRef = std::make_unique<NavTriangleRef>(polyIndex, triIndex);
                     }
                 }
             }

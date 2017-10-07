@@ -68,7 +68,7 @@ namespace urchin
 		std::vector<std::shared_ptr<XmlChunk>> chunks;
 
 		const TiXmlNode *firstChild;
-		if(parent.get()==nullptr)
+		if(!parent)
 		{
 			firstChild = doc->FirstChild()->NextSibling()->FirstChild();
 		}else
@@ -84,7 +84,7 @@ namespace urchin
 				if(!attribute.getAttributeName().empty())
 				{
 					const std::string *attributeValue = pChild->ToElement()->Attribute(attribute.getAttributeName());
-					if(attributeValue!=nullptr && (*attributeValue).compare(attribute.getAttributeValue())==0)
+					if(attributeValue!=nullptr && (*attributeValue) == attribute.getAttributeValue())
 					{
 						chunks.push_back(std::make_shared<XmlChunk>(pChild->ToElement()));
 					}
@@ -113,7 +113,7 @@ namespace urchin
 		if(chunks.size()>1)
 		{
 			throw std::invalid_argument("More than one tag found for " + getChunkDescription(chunkName, attribute) + ".");
-		}else if(chunks.size()==0)
+		}else if(chunks.empty())
 		{
 			if(mandatory)
 			{

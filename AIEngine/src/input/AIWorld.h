@@ -12,7 +12,7 @@ namespace urchin
 	{
 		public:
             AIWorld();
-			AIWorld(const std::shared_ptr<AIWorld> &);
+			AIWorld(const AIWorld &);
 
 			void addObject(const AIObject &);
 			const std::vector<AIObject> &getObjects() const;

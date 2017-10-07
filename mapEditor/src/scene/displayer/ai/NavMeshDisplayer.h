@@ -11,10 +11,10 @@ namespace urchin
 	class NavMeshDisplayer
 	{
 		public:
-			NavMeshDisplayer(SceneManager *);
+			explicit NavMeshDisplayer(SceneManager *);
 			~NavMeshDisplayer();
 
-			void displayNavMesh(std::shared_ptr<const NavMesh>);
+			void displayNavMesh(const NavMesh &);
 
 		private:
 			void cleanCurrentDisplay();

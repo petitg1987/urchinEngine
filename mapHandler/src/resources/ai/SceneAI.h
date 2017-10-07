@@ -17,7 +17,6 @@ namespace urchin
             friend class Map;
 
             SceneAI();
-            ~SceneAI();
 
             void setAIManager(AIManager *);
 

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <mutex>
 #include "UrchinCommon.h"
 
 #include "input/AIWorld.h"
@@ -32,10 +33,9 @@ namespace urchin
             NavMeshGenerator();
 
 			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
-			const std::shared_ptr<NavMeshConfig> &getNavMeshConfig() const;
 
 			std::shared_ptr<NavMesh> generate(std::shared_ptr<AIWorld>);
-			std::shared_ptr<NavMesh> getNavMesh() const;
+			NavMesh retrieveLastGeneratedNavMesh() const;
 
 		private:
 			std::vector<Polyhedron> createExpandedPolyhedrons(std::shared_ptr<AIWorld>) const;
@@ -63,6 +63,7 @@ namespace urchin
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
 
+            mutable std::mutex navMeshMutex;
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
 			std::shared_ptr<NavMesh> navMesh;
 	};

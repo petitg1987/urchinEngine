@@ -1,6 +1,16 @@
 #include "NavMeshAgent.h"
 
+#define DEFAULT_AGENT_HEIGHT 1.8
+#define DEFAULT_AGENT_RADIUS 0.25
+
 namespace urchin {
+
+    NavMeshAgent::NavMeshAgent() :
+            agentHeight(DEFAULT_AGENT_HEIGHT),
+            agentRadius(DEFAULT_AGENT_RADIUS)
+    {
+
+    }
 
     NavMeshAgent::NavMeshAgent(float agentHeight, float agentRadius) :
             agentHeight(agentHeight),

@@ -17,16 +17,16 @@ namespace urchin
 		cleanCurrentDisplay();
 	}
 
-	void NavMeshDisplayer::displayNavMesh(std::shared_ptr<const NavMesh> navMesh)
+	void NavMeshDisplayer::displayNavMesh(const NavMesh &navMesh)
 	{
 		cleanCurrentDisplay();
 
-		if(navMesh && loadedNavMeshId!=navMesh->getId())
+		if(loadedNavMeshId!=navMesh.getId())
 		{
 			constexpr float Y_ELEVATION_FILL = 0.01f;
 			constexpr float Y_ELEVATION_WIREFRAME = 0.015f;
 
-			for(const auto &navPolygon : navMesh->getPolygons())
+			for(const auto &navPolygon : navMesh.getPolygons())
 			{
 				auto *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL),
                                                           toDisplayTriangles(navPolygon->getTriangles()));
@@ -36,7 +36,7 @@ namespace urchin
 				navMeshModels.push_back(trianglesModel);
 			}
 
-			for(const auto &navPolygon : navMesh->getPolygons())
+			for(const auto &navPolygon : navMesh.getPolygons())
 			{
 				auto *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME),
                                                           toDisplayTriangles(navPolygon->getTriangles()));
