@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 
 #include "SceneManager.h"
@@ -36,14 +35,14 @@ namespace urchin
 
 	SceneManager::~SceneManager()
 	{
-		for(unsigned int i=0; i<renderers3d.size(); ++i)
+		for (auto &renderer3d : renderers3d)
 		{
-			delete renderers3d[i];
+			delete renderer3d;
 		}
 
-		for(unsigned int i=0; i<guiRenderers.size(); ++i)
+		for (auto &guiRenderer : guiRenderers)
 		{
-			delete guiRenderers[i];
+			delete guiRenderer;
 		}
 	}
 

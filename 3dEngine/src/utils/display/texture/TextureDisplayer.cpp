@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 
 #include "utils/display/texture/TextureDisplayer.h"
@@ -170,7 +169,7 @@ namespace urchin
 		mProjection.setValues(2.0f/(float)sceneWidth, 0.0, -1.0,
 				0.0, -2.0f/(float)sceneHeight, 1.0,
 				0.0, 0.0, 1.0);
-		glUniformMatrix3fv(mProjectionLoc, 1, false, (const float*)mProjection);
+		glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
 		//update the display
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
@@ -192,19 +191,19 @@ namespace urchin
 		displayTextureShader = ShaderManager::instance()->createProgram("displayTexture.vert", fragShaderName, textureDisplayTokens);
 
 		ShaderManager::instance()->bind(displayTextureShader);
-		unsigned int colorIntensityLoc = glGetUniformLocation(displayTextureShader, "colorIntensity");
+		auto colorIntensityLoc = glGetUniformLocation(displayTextureShader, "colorIntensity");
 		glUniform1f(colorIntensityLoc, colorIntensity);
 
-		unsigned int cameraPlanesLoc = glGetUniformLocation(displayTextureShader, "cameraPlanes");
+		auto cameraPlanesLoc = glGetUniformLocation(displayTextureShader, "cameraPlanes");
 		float cameraPlanes[2] = {nearPlane, farPlane};
 		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 
-		unsigned int diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
+		auto diffuseTexLoc = glGetUniformLocation(displayTextureShader, "colorTex");
 		glUniform1i(diffuseTexLoc, GL_TEXTURE0-GL_TEXTURE0);
 
 		if(layer!=-1)
 		{
-			unsigned int layerLoc = glGetUniformLocation(displayTextureShader, "layer");
+			auto layerLoc = glGetUniformLocation(displayTextureShader, "layer");
 			glUniform1i(layerLoc, layer);
 		}
 

@@ -18,6 +18,8 @@ namespace urchin
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
+            void setAmbient(float);
+
             void display(const Matrix4<float> &) const;
 
         private:
@@ -41,8 +43,10 @@ namespace urchin
             };
             unsigned int shader;
             int mProjectionLoc, mViewLoc;
+            int ambientLoc;
 
             Matrix4<float> projectionMatrix;
+            float ambient;
 
             std::vector<Point3<float>> vertices;
             std::vector<Vector3<float>> normals;

@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <cassert>
 #include <stdexcept>
 
@@ -8,6 +7,7 @@
 #include "utils/shader/ShaderManager.h"
 
 #define RESTART_INDEX 4294967295 //(2^32)-1
+#define DEFAULT_AMBIENT 0.3
 
 namespace urchin
 {
@@ -46,6 +46,8 @@ namespace urchin
 
         mProjectionLoc = glGetUniformLocation(shader, "mProjection");
         mViewLoc = glGetUniformLocation(shader, "mView");
+        ambientLoc = glGetUniformLocation(shader, "ambient");
+        setAmbient(DEFAULT_AMBIENT);
     }
 
     Terrain::~Terrain()
@@ -61,17 +63,25 @@ namespace urchin
         this->projectionMatrix = projectionMatrix;
     }
 
+    void Terrain::setAmbient(float ambient)
+    {
+        this->ambient = ambient;
+    }
+
     std::vector<Point3<float>> Terrain::buildVertices(const Image *imgTerrain) const
     {
+        float xzScale = 0.2f; //TODO hard coded
+        float yScale = 0.02f; //TODO hard coded
+
         std::vector<Point3<float>> vertices;
         vertices.reserve(imgTerrain->getHeight() * imgTerrain->getWidth());
         for(unsigned int z=0; z<imgTerrain->getHeight(); ++z)
         {
-            float zFloat = static_cast<float>(z) / 5.0f; //TODO hard coded
+            float zFloat = static_cast<float>(z) * xzScale;
             for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
             {
-                float elevation = -2.5 + imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] / 50.0f; //TODO hard coded
-                float xFloat = static_cast<float>(x) / 5.0f; //TODO hard coded
+                float elevation = -2.5 + imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] * yScale;
+                float xFloat = static_cast<float>(x) * xzScale;
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }
         }
@@ -84,6 +94,7 @@ namespace urchin
         unsigned int totalTriangles = ((imgTerrain->getHeight() - 1) * (imgTerrain->getWidth() - 1)) * 2;
         std::vector<Vector3<float>> normalTriangles;
         normalTriangles.reserve(totalTriangles);
+
         bool isCwTriangle = true;
         for(unsigned int i=0; i<indices.size() - 2; ++i)
         {
@@ -190,6 +201,7 @@ namespace urchin
     {
         std::vector<unsigned int> indices;
         indices.reserve(((imgTerrain->getHeight()-1) * imgTerrain->getWidth() * 2) + (imgTerrain->getHeight()-1));
+
         for(unsigned int z=0; z<imgTerrain->getHeight()-1; ++z)
         {
             for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
@@ -210,12 +222,15 @@ namespace urchin
 
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
+        glUniform1f(ambientLoc, ambient);
+
+        glEnable(GL_PRIMITIVE_RESTART);
+        glPrimitiveRestartIndex(RESTART_INDEX);
 
         glBindVertexArray(vertexArrayObject);
-
-        glEnable(GL_PRIMITIVE_RESTART); //TODO general to application ?
-        glPrimitiveRestartIndex(RESTART_INDEX); //TODO general to application ?
         glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_INT, nullptr);
+
+        glDisable(GL_PRIMITIVE_RESTART);
 
         ShaderManager::instance()->bind(shaderSaved);
     }
