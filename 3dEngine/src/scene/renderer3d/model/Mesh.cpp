@@ -22,19 +22,19 @@ namespace urchin
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
 		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*3, constMesh->getBaseVertices(), GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
 		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(float)*2, &constMesh->getTextureCoordinates()[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL_TANGENT]);
 		glBufferData(GL_ARRAY_BUFFER, constMesh->getNumberVertices()*sizeof(DataVertex), constMesh->getBaseDataVertices(), GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_NORMAL);
-		glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, false, sizeof(DataVertex), 0);
+		glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(DataVertex), nullptr);
 		glEnableVertexAttribArray(SHADER_TANGENT);
-		glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, false, sizeof(DataVertex), (char*)(sizeof(float)*3));
+		glVertexAttribPointer(SHADER_TANGENT, 3, GL_FLOAT, GL_FALSE, sizeof(DataVertex), (char*)(sizeof(float)*3));
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, constMesh->getNumberTriangles()*3*sizeof(int),  &constMesh->getTriangles()[0], GL_STATIC_DRAW);
@@ -81,7 +81,7 @@ namespace urchin
 		}
 
 		glBindVertexArray(vertexArrayObject);
-		glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, nullptr);
 	}
 
 }

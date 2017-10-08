@@ -294,7 +294,7 @@ namespace urchin
 		GLenum err;
 		while((err = glGetError()) != GL_NO_ERROR)
 		{
-			Logger::logger().logError("OpenGL error: " + err);
+			Logger::logger().logError("OpenGL error: " + std::to_string(err));
 		}
 	}
 

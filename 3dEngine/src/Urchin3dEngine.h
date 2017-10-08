@@ -13,6 +13,7 @@
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
+#include "scene/renderer3d/terrain/Terrain.h"
 
 #include "scene/GUI/EventListener.h"
 #include "scene/GUI/GUIRenderer.h"

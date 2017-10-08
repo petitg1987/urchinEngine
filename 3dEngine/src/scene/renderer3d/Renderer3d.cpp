@@ -6,7 +6,6 @@
 
 #include "Renderer3d.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/shader/TokenReplacerShader.h"
 #include "utils/display/texture/TextureDisplayer.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
@@ -22,6 +21,7 @@ namespace urchin
 			geometryDisplayer(nullptr),
 			camera(nullptr),
 			skybox(nullptr),
+			terrain(nullptr),
 			fboIDs(nullptr),
 			textureIDs(nullptr),
 			deferredShadingShader(0),
@@ -83,6 +83,9 @@ namespace urchin
 
 		//skybox
 		delete skybox;
+
+		//terrain
+		delete terrain;
 
 		//deferred shading (pass 1)
 		if(fboIDs!=nullptr)
@@ -161,7 +164,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureIDs[TEX_DEPTH], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]); //diffuse buffer
@@ -279,6 +282,11 @@ namespace urchin
 	{
 		skybox->onCameraProjectionUpdate(camera);
 
+		if(terrain!=nullptr)
+		{
+			terrain->onCameraProjectionUpdate(camera->getProjectionMatrix());
+		}
+
 		modelDisplayer->onCameraProjectionUpdate(camera);
 
 		geometryDisplayer->onCameraProjectionUpdate(camera);
@@ -302,6 +310,17 @@ namespace urchin
 	Skybox *Renderer3d::getSkybox() const
 	{
 		return skybox;
+	}
+
+	void Renderer3d::setTerrain(Terrain *terrain)
+	{
+		delete this->terrain;
+		this->terrain = terrain;
+	}
+
+	Terrain *Renderer3d::getTerrain() const
+	{
+		return terrain;
 	}
 
 	Model *Renderer3d::addModel(Model *model)
@@ -490,6 +509,11 @@ namespace urchin
 
 		skybox->display(camera->getViewMatrix(), camera->getPosition());
 
+        if(terrain!=nullptr)
+        {
+            terrain->display(camera->getViewMatrix());
+        }
+
 		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
 		modelDisplayer->display(camera->getViewMatrix());
 
@@ -538,7 +562,7 @@ namespace urchin
 		glActiveTexture(GL_TEXTURE0 + nextTextureUnit++);
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]);
 
-		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
+		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
 		glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
 
 		if(isLightingActivated)

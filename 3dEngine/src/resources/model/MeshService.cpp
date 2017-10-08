@@ -19,7 +19,7 @@ namespace urchin
 			//calculate final vertex to draw with weights
 			for(int j=0;j<constMesh->getStructVertex(i).weightCount;++j)
 			{
-				const Weight *weight = &constMesh->getWeight(constMesh->getStructVertex(i).weightStart + j);
+				const Weight *weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
 
 				//calculate transformed vertex for this weight
 				Point3<float> wv = skeleton[weight->bone].orient.rotatePoint(weight->pos);
@@ -72,10 +72,8 @@ namespace urchin
 
 			Vector3<float> totalNormalsSum = Vector3<float>(0.0f, 0.0f, 0.0f);
 			int totalNbFace = 0;
-			for(unsigned int j=0; j<linkedVertices.size(); ++j)
+			for (unsigned int linkedVertexIndex : linkedVertices)
 			{
-				unsigned int linkedVertexIndex = linkedVertices[j];
-
 				totalNormalsSum += normalsSum[linkedVertexIndex];
 				totalNbFace += dataVertices[linkedVertexIndex].nbFace;
 			}

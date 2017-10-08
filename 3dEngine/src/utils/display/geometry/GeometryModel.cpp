@@ -81,7 +81,7 @@ namespace urchin
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
 		glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(Point3<float>), &vertexArray[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 	}
 
 	void GeometryModel::display(const Matrix4<float> &viewMatrix) const
@@ -89,8 +89,8 @@ namespace urchin
 		unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
 		ShaderManager::instance()->bind(shader);
 
-		glUniformMatrix4fv(mProjectionLoc, 1, false, (const float*)projectionMatrix);
-		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)(viewMatrix * modelMatrix));
+		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
+		glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)(viewMatrix * modelMatrix));
 		glUniform4fv(colorLoc, 1, (const float*)color);
 
 		glBindVertexArray(vertexArrayObject);

@@ -14,6 +14,7 @@
 #include "scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/skybox/Skybox.h"
+#include "scene/renderer3d/terrain/Terrain.h"
 #include "utils/display/geometry/GeometryDisplayer.h"
 #include "utils/display/geometry/GeometryModel.h"
 #include "utils/display/quad/QuadDisplayer.h"
@@ -53,6 +54,10 @@ namespace urchin
 			//skybox
 			void createSkybox(const std::vector<std::string> &);
 			Skybox *getSkybox() const;
+
+			//terrain
+			void setTerrain(Terrain *);
+			Terrain *getTerrain() const;
 
 			//models
 			Model *addModel(Model *);
@@ -109,6 +114,9 @@ namespace urchin
 
 			//skybox
 			Skybox *skybox;
+
+			//terrain
+			Terrain *terrain;
 
 			//visual
 			unsigned int *fboIDs;
