@@ -14,22 +14,22 @@ namespace urchin
 	{
 		public:
 			GUIRenderer();
-			virtual ~GUIRenderer();
+			~GUIRenderer() override;
 
-			void onResize(unsigned int, unsigned  int);
-			void notify(Observable *, int);
+			void onResize(unsigned int, unsigned  int) override;
+			void notify(Observable *, int) override;
 			void setupSkin(const std::string &);
 
-			bool onKeyDown(unsigned int);
-			bool onKeyUp(unsigned int);
-			bool onChar(unsigned int);
-			bool onMouseMove(int, int);
-			void onDisable();
+			bool onKeyDown(unsigned int) override;
+			bool onKeyUp(unsigned int) override;
+			bool onChar(unsigned int) override;
+			bool onMouseMove(int, int) override;
+			void onDisable() override;
 			
 			void addWidget(Widget *);
 			void removeWidget(Widget *);
 
-			void display(float);
+			void display(float) override;
 			
 		private:
 			std::vector<Widget *> widgets;

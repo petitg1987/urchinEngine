@@ -14,8 +14,7 @@ namespace urchin
 	class CustomModelUniform
 	{
 		public:
-			CustomModelUniform();
-			virtual ~CustomModelUniform();
+			virtual ~CustomModelUniform() = default;
 
 			virtual void loadCustomUniforms(const Model *) = 0;
 

@@ -12,7 +12,7 @@ namespace urchin
 	class Mesh
 	{
 		public:
-			Mesh(const ConstMesh *const);
+			explicit Mesh(const ConstMesh *);
 			~Mesh();
 
 			void update(const std::vector<Bone> &);
@@ -23,7 +23,7 @@ namespace urchin
 			const ConstMesh *const constMesh;
 
 			Point3<float> *const vertices;
-			DataVertex *const dataVertices; //additional informations for the vertex
+			DataVertex *const dataVertices; //additional information for the vertex
 
 			unsigned int bufferIDs[4], vertexArrayObject;
 			enum //buffer IDs indices

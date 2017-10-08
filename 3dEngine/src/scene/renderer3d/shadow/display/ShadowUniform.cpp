@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	ShadowUniform::~ShadowUniform()
-	{
-
-	}
-
 	void ShadowUniform::setProjectionMatricesLocation(int mModelProjectionMatrixLoc)
 	{
 		this->mModelProjectionMatrixLoc = mModelProjectionMatrixLoc;
@@ -39,7 +34,7 @@ namespace urchin
 			projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
 		}
 
-		glUniformMatrix4fv(mModelProjectionMatrixLoc, projectionMatrices.size(), false, (const float*)projectionMatrices[0]);
+		glUniformMatrix4fv(mModelProjectionMatrixLoc, projectionMatrices.size(), GL_FALSE, (const float*)projectionMatrices[0]);
 	}
 
 }

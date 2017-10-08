@@ -7,7 +7,7 @@ namespace urchin
 {
 	
 	ConstAnimation::ConstAnimation(const std::string &animationFilename, unsigned int numFrames, unsigned int numBones,
-			unsigned int frameRate,	const Bone *const *const skeletonFrames, const AABBox<float>*const *const bboxes) :
+			unsigned int frameRate,	const Bone *const * skeletonFrames, const AABBox<float>*const * bboxes) :
 		animationFilename(animationFilename),
 		numFrames(numFrames),
 		numBones(numBones),

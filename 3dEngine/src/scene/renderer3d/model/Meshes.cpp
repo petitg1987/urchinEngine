@@ -53,10 +53,9 @@ namespace urchin
 		globalBBox = constMeshes->getOriginalAABBox().moveAABBox(newTransform);
 
 		globalSplittedBBox.clear();
-		const std::vector<AABBox<float>> &originalSplittedAABBox = constMeshes->getOriginalSplittedAABBox();
-		for(unsigned int i=0; i<originalSplittedAABBox.size(); ++i)
+		for (const auto &originalSplittedAABBox : constMeshes->getOriginalSplittedAABBoxes())
 		{
-			globalSplittedBBox.push_back(originalSplittedAABBox[i].moveAABBox(newTransform));
+			globalSplittedBBox.push_back(originalSplittedAABBox.moveAABBox(newTransform));
 		}
 	}
 

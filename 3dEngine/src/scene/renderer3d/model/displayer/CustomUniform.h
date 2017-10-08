@@ -12,8 +12,7 @@ namespace urchin
 	class CustomUniform
 	{
 		public:
-			CustomUniform();
-			virtual ~CustomUniform();
+			virtual ~CustomUniform() = default;
 
 			virtual void loadCustomUniforms() = 0;
 

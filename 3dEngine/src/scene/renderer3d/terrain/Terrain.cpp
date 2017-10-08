@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <cassert>
 #include <stdexcept>
 
 #include "Terrain.h"
@@ -23,7 +24,7 @@ namespace urchin
         normals = buildNormals(imgTerrain);
         imgTerrain->release();
 
-        glGenBuffers(2, bufferIDs);
+        glGenBuffers(3, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
         glBindVertexArray(vertexArrayObject);
 
@@ -31,6 +32,11 @@ namespace urchin
         glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float)*3, &vertices[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+        glBufferData(GL_ARRAY_BUFFER, normals.size()*sizeof(float)*3, &normals[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_NORMAL);
+        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
@@ -45,7 +51,7 @@ namespace urchin
     Terrain::~Terrain()
     {
         glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(2, bufferIDs);
+        glDeleteBuffers(3, bufferIDs);
 
         ShaderManager::instance()->removeProgram(shader);
     }
@@ -64,7 +70,7 @@ namespace urchin
             float zFloat = static_cast<float>(z) / 5.0f; //TODO hard coded
             for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
             {
-                float elevation = -2.5 + imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] / 70.0f; //TODO hard coded
+                float elevation = -2.5 + imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] / 50.0f; //TODO hard coded
                 float xFloat = static_cast<float>(x) / 5.0f; //TODO hard coded
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }
@@ -75,9 +81,37 @@ namespace urchin
     std::vector<Vector3<float>> Terrain::buildNormals(const Image *imgTerrain) const
     {
         //1. compute normal of triangles
+        unsigned int totalTriangles = ((imgTerrain->getHeight() - 1) * (imgTerrain->getWidth() - 1)) * 2;
         std::vector<Vector3<float>> normalTriangles;
-        //TODO reserve
-        //TODO normal by triangle
+        normalTriangles.reserve(totalTriangles);
+        bool isCwTriangle = true;
+        for(unsigned int i=0; i<indices.size() - 2; ++i)
+        {
+            if(indices[i+2] != RESTART_INDEX)
+            {
+                Point3<float> point1 = vertices[indices[i]];
+                Point3<float> point2 = vertices[indices[i+1]];
+                Point3<float> point3 = vertices[indices[i+2]];
+
+                Vector3<float> normal;
+                if(isCwTriangle)
+                {
+                    normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
+                }else
+                {
+                    normal = (point1.vector(point2).crossProduct(point1.vector(point3)));
+                }
+
+                normalTriangles.push_back(normal.normalize());
+                isCwTriangle = !isCwTriangle;
+            }else
+            {
+                i += 2;
+            }
+        }
+        #ifdef _DEBUG
+            assert(totalTriangles == normalTriangles.size());
+        #endif
 
         //2. compute normal of vertex
         std::vector<Vector3<float>> normalVertex;
@@ -91,9 +125,8 @@ namespace urchin
             {
                 vertexNormal += normalTriangles[triangleIndex];
             }
-            vertexNormal /= triangleIndices.size(); //TODO normalize ???
-
-            normalVertex.emplace_back(vertexNormal);
+            vertexNormal /= triangleIndices.size();
+            normalVertex.emplace_back(vertexNormal.normalize());
         }
 
         return normalVertex;

@@ -10,7 +10,6 @@ namespace urchin
 	{
 		public:
 			MeshParameter();
-			~MeshParameter();
 
 			void setDiffuseTextureUnit(int);
 			int getDiffuseTextureUnit() const;

@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <memory>
 #include <algorithm>
 
@@ -44,7 +43,7 @@ namespace urchin
 		mProjection.setValues(2.0f/(float)width, 0.0, -1.0,
 			0.0, -2.0f/(float)height, 1.0,
 			0.0, 0.0, 1.0);
-		glUniformMatrix3fv(mProjectionLoc, 1, false, (const float*)mProjection);
+		glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
 		//widgets resize
 		for(int i=widgets.size()-1;i>=0;--i)

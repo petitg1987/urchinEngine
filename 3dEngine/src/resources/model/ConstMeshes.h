@@ -19,21 +19,21 @@ namespace urchin
 	{
 		public:
 			ConstMeshes(const std::string &, const std::vector<const ConstMesh *> &);
-			~ConstMeshes();
+			~ConstMeshes() override;
 		
 			const std::string &getMeshFilename() const;
 			unsigned int getNumberConstMeshes() const;
 			const ConstMesh *getConstMesh(unsigned int) const;
 
 			const AABBox<float> &getOriginalAABBox() const;
-			const std::vector<AABBox<float>> &getOriginalSplittedAABBox() const;
+			const std::vector<AABBox<float>> &getOriginalSplittedAABBoxes() const;
 		
 		private:
 			std::string meshFilename;
 			std::vector<const ConstMesh *> constMeshes;
 
 			AABBox<float> *originalBBox; //bounding box (not transformed)
-			std::vector<AABBox<float>> originalSplittedBBox;
+			std::vector<AABBox<float>> originalSplittedBBoxes;
 	};
 
 }

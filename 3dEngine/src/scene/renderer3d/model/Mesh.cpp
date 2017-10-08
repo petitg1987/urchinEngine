@@ -1,15 +1,12 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "Mesh.h"
-#include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "resources/model/MeshService.h"
-#include "utils/shader/ShaderManager.h"
 
 namespace urchin
 {
 
-	Mesh::Mesh(const ConstMesh *const constMesh) :
+	Mesh::Mesh(const ConstMesh *constMesh) :
 		constMesh(constMesh),
 		vertices(new Point3<float>[constMesh->getNumberVertices()]),
 		dataVertices(new DataVertex[constMesh->getNumberVertices()])
@@ -65,13 +62,13 @@ namespace urchin
 	{
 		if(meshParameter.getDiffuseTextureUnit()!=-1)
 		{
-			glActiveTexture(meshParameter.getDiffuseTextureUnit());
+			glActiveTexture(static_cast<GLenum>(meshParameter.getDiffuseTextureUnit()));
 			glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getDiffuseTexture()->getTextureID());
 		}
 
 		if(meshParameter.getNormalTextureUnit()!=-1)
 		{
-			glActiveTexture(meshParameter.getNormalTextureUnit());
+			glActiveTexture(static_cast<GLenum>(meshParameter.getNormalTextureUnit()));
 			glBindTexture(GL_TEXTURE_2D, constMesh->getMaterial()->getNormalTexture()->getTextureID());
 		}
 

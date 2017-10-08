@@ -3,7 +3,6 @@
 
 #include "Model.h"
 #include "resources/MediaManager.h"
-#include "utils/shader/ShaderManager.h"
 
 namespace urchin
 {
@@ -23,21 +22,21 @@ namespace urchin
 		constMeshes->release();
 		delete meshes;
 		
-		for(std::map<std::string, Animation*>::iterator it_anims=animations.begin(); it_anims!=animations.end(); ++it_anims)
+		for (auto &animation : animations)
 		{
-			delete (*it_anims).second;
+			delete animation.second;
 		}
 		
-		for(std::map<std::string, ConstAnimation *>::iterator it_anims=constAnimations.begin(); it_anims!=constAnimations.end(); ++it_anims)
+		for (auto &constAnimation : constAnimations)
 		{
-			((*it_anims).second)->release();
+			(constAnimation.second)->release();
 		}
 	}
 
 	void Model::loadAnimation(const std::string &name, const std::string &filename)
 	{
 		//load and add the anim to the std::map
-		ConstAnimation *constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
+		auto *constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
 		constAnimations[name] = constAnimation;
 		animations[name] = new Animation(constAnimation, meshes);
 		animations[name]->onMoving(transform);
@@ -58,7 +57,7 @@ namespace urchin
 			}
 
 			//bones must have the same name
-			if(constMeshes->getConstMesh(0)->getBaseBone(i).name.compare(constAnimation->getBone(0, i).name))
+			if(constMeshes->getConstMesh(0)->getBaseBone(i).name != constAnimation->getBone(0, i).name)
 			{
 				throw std::runtime_error("Bones haven't the same name. Meshes filename: " + constMeshes->getName() + ", Animation filename: " + constAnimation->getName() + ".");
 			}

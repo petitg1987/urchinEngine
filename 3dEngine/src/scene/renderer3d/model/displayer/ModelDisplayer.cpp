@@ -52,11 +52,11 @@ namespace urchin
 		{
 			//shader creation
 			std::string vertexShaderName = "model.vert";
-			if(fragmentShaderName.compare("")==0)
+			if(fragmentShaderName.empty())
 			{ //use default fragment shader
 				fragmentShaderName = "model.frag";
 			}
-			if(geometryShaderName.compare("")==0)
+			if(geometryShaderName.empty())
 			{ //use default geometry shader
 				geometryShaderName = "";
 			}
@@ -81,11 +81,11 @@ namespace urchin
 		{
 			//shader creation
 			std::string vertexShaderName = "modelDepthOnly.vert";
-			if(fragmentShaderName.compare("")==0)
+			if(fragmentShaderName.empty())
 			{ //use default fragment shader
 				fragmentShaderName = "modelDepthOnly.frag";
 			}
-			if(geometryShaderName.compare("")==0)
+			if(geometryShaderName.empty())
 			{ //use default geometry shader
 				geometryShaderName = "";
 			}
@@ -106,7 +106,7 @@ namespace urchin
 		//default matrix
 		projectionMatrix = Matrix4<float>();
 		ShaderManager::instance()->bind(modelShader);
-		glUniformMatrix4fv(mProjectionLoc, 1, false, (const float*)projectionMatrix);
+		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
 
 		isInitialized=true;
 	}
@@ -114,7 +114,7 @@ namespace urchin
 	void ModelDisplayer::createShader(const std::string &vertexShaderName, const std::string &geometryShaderName, const std::string &fragmentShaderName)
 	{
 		modelShader = ShaderManager::instance()->createProgram(vertexShaderName, fragmentShaderName, fragmentTokens);
-		if(geometryShaderName.compare("")!=0)
+		if(!geometryShaderName.empty())
 		{
 			ShaderManager::instance()->setGeometryShader(modelShader, geometryShaderName, geometryTokens);
 		}
@@ -130,7 +130,7 @@ namespace urchin
 		this->projectionMatrix = camera->getProjectionMatrix();
 
 		ShaderManager::instance()->bind(modelShader);
-		glUniformMatrix4fv(mProjectionLoc, 1, false, (const float*)projectionMatrix);
+		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
 	}
 
 	int ModelDisplayer::getUniformLocation(const std::string &name)
@@ -177,9 +177,9 @@ namespace urchin
 
 	void ModelDisplayer::updateAnimation(float invFrameRate)
 	{
-		for(std::set<Model *>::iterator it=models.begin();it!=models.end();++it)
+		for (auto model : models)
 		{
-			(*it)->updateAnimation(invFrameRate);
+			model->updateAnimation(invFrameRate);
 		}
 	}
 
@@ -191,34 +191,34 @@ namespace urchin
 		}
 
 		ShaderManager::instance()->bind(modelShader);
-		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)viewMatrix);
+		glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
 		if(customUniform!=nullptr)
 		{
 			customUniform->loadCustomUniforms();
 		}
 
-		for(std::set<Model *>::iterator it=models.begin();it!=models.end();++it)
+		for (auto model : models)
 		{
-			glUniformMatrix4fv(mModelLoc, 1, false, (const float*)(*it)->getTransform().getTransformMatrix());
+			glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) model->getTransform().getTransformMatrix());
 			if(displayMode==DEFAULT_MODE)
 			{
-				glUniformMatrix3fv(mNormalLoc, 1, true, (const float*)(*it)->getTransform().getTransformMatrix().toMatrix3().inverse());
+				glUniformMatrix3fv(mNormalLoc, 1, GL_TRUE, (const float*) model->getTransform().getTransformMatrix().toMatrix3().inverse());
 			}
 			if(customModelUniform!=nullptr)
 			{
-				customModelUniform->loadCustomUniforms(*it);
+				customModelUniform->loadCustomUniforms(model);
 			}
 
-			(*it)->display(meshParameter);
+			model->display(meshParameter);
 		}
 	}
 
 #ifdef _DEBUG
 	void ModelDisplayer::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
-		for(std::set<Model *>::iterator it=models.begin();it!=models.end();++it)
+		for (auto model : models)
 		{
-			(*it)->drawBBox(projectionMatrix, viewMatrix);
+			model->drawBBox(projectionMatrix, viewMatrix);
 		}
 	}
 #endif

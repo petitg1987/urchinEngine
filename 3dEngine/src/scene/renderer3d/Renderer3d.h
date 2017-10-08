@@ -26,11 +26,11 @@ namespace urchin
 	{
 		public:
 			Renderer3d();
-			virtual ~Renderer3d();
+			~Renderer3d() override;
 
 			//scene properties
-			void onResize(unsigned int, unsigned int);
-			void notify(Observable *, int);
+			void onResize(unsigned int, unsigned int) override;
+			void notify(Observable *, int) override;
 
 			//managers
 			OctreeManager<Model> *getModelOctreeManager() const;
@@ -70,14 +70,14 @@ namespace urchin
 			void removeAllGeometries();
 
 			//events
-			bool onKeyDown(unsigned int);
-			bool onKeyUp(unsigned int);
-			bool onChar(unsigned int);
-			bool onMouseMove(int, int);
-			void onDisable();
+			bool onKeyDown(unsigned int) override;
+			bool onKeyUp(unsigned int) override;
+			bool onChar(unsigned int) override;
+			bool onMouseMove(int, int) override;
+			void onDisable() override;
 
 			//scene
-			void display(float);
+			void display(float) override;
 
 		private:
 			void createOrUpdateDeferredShadingShader();

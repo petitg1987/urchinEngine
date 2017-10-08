@@ -69,7 +69,7 @@ namespace urchin
 	 */
 	std::vector<unsigned int> ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const
 	{
-		std::map<unsigned int, std::vector<unsigned int>>::const_iterator it = linkedVertices.find(linkedVerticesGroupId);
+		auto it = linkedVertices.find(linkedVerticesGroupId);
 		if(it!=linkedVertices.end())
 		{
 			return it->second;

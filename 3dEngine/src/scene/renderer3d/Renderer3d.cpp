@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <set>
 #include <stdexcept>
 #include <locale>
@@ -384,7 +383,7 @@ namespace urchin
 		return true;
 	}
 
-	bool Renderer3d::onChar(unsigned int character)
+	bool Renderer3d::onChar(unsigned int)
 	{
 		//nothing to do
 		return true;
@@ -509,15 +508,15 @@ namespace urchin
 
 		skybox->display(camera->getViewMatrix(), camera->getPosition());
 
-        if(terrain!=nullptr)
-        {
-            terrain->display(camera->getViewMatrix());
-        }
-
 		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
 		modelDisplayer->display(camera->getViewMatrix());
 
 		geometryDisplayer->display(camera->getViewMatrix());
+
+		if(terrain!=nullptr)
+		{
+			terrain->display(camera->getViewMatrix());
+		}
 
 		if(isAmbientOcclusionActivated)
 		{
@@ -578,7 +577,8 @@ namespace urchin
 
 		if(isAmbientOcclusionActivated)
 		{
-			ambientOcclusionManager->loadAOTexture(nextTextureUnit++);
+			ambientOcclusionManager->loadAOTexture(nextTextureUnit);
+            //nextTextureUnit++;
 		}
 
 		lightingPassQuadDisplayer->display();

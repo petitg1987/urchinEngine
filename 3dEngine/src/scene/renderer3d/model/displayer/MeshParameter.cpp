@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	MeshParameter::~MeshParameter()
-	{
-
-	}
-
 	/**
 	 * @param diffuseTextureUnit Diffuse texture unit. If -1, there is no diffuse texture.
 	 */

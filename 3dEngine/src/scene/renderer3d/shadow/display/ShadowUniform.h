@@ -17,7 +17,6 @@ namespace urchin
 	{
 		public:
 			ShadowUniform();
-			~ShadowUniform();
 
 			void setProjectionMatricesLocation(int);
 			void setUniformData(const ShadowData *);

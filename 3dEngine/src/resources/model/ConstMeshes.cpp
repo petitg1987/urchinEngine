@@ -13,10 +13,8 @@ namespace urchin
 		//determines the bounding box
 		Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 		Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-		for(unsigned int m=0; m<constMeshes.size(); ++m)
+		for (auto constMesh : constMeshes)
 		{
-			const ConstMesh *constMesh = constMeshes[m]; //shortcut
-
 			for(unsigned int i=0; i<constMesh->getNumberVertices(); i++)
 			{
 				if(min.X > constMesh->getBaseVertices()[i].X)
@@ -47,14 +45,14 @@ namespace urchin
 			}
 		}
 		originalBBox = new AABBox<float>(min, max);
-		originalSplittedBBox = SplitBoundingBox().split(*originalBBox);
+		originalSplittedBBoxes = SplitBoundingBox().split(*originalBBox);
 	}
 
 	ConstMeshes::~ConstMeshes()
 	{	
-		for(unsigned int m=0; m<constMeshes.size(); m++)
+		for (auto &constMesh : constMeshes)
 		{
-			delete constMeshes[m];
+			delete constMesh;
 		}
 		
 		delete originalBBox;
@@ -80,9 +78,9 @@ namespace urchin
 		return *originalBBox;
 	}
 
-	const std::vector<AABBox<float>> &ConstMeshes::getOriginalSplittedAABBox() const
+	const std::vector<AABBox<float>> &ConstMeshes::getOriginalSplittedAABBoxes() const
 	{
-		return originalSplittedBBox;
+		return originalSplittedBBoxes;
 	}
 
 }

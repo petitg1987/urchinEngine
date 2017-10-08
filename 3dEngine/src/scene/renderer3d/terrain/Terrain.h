@@ -27,15 +27,17 @@ namespace urchin
 
             std::vector<unsigned int> findTriangleIndices(unsigned int, const Image *) const;
 
-            unsigned int bufferIDs[2], vertexArrayObject;
+            unsigned int bufferIDs[3], vertexArrayObject;
             enum //buffer IDs indices
             {
                 VAO_VERTEX_POSITION = 0,
+                VAO_NORMAL,
                 VAO_INDEX
             };
             enum //shader input
             {
-                SHADER_VERTEX_POSITION = 0
+                SHADER_VERTEX_POSITION = 0,
+                SHADER_NORMAL
             };
             unsigned int shader;
             int mProjectionLoc, mViewLoc;
