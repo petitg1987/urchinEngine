@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	CollisionSphereObject::~CollisionSphereObject()
-	{
-
-	}
-
 	float CollisionSphereObject::getRadius() const
 	{
 		return getOuterMargin();

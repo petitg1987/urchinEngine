@@ -21,16 +21,15 @@ namespace urchin
 
 	void CompoundCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
-		const CollisionCompoundShape &compoundShape = static_cast<const CollisionCompoundShape &>(object1.getShape());
+		const auto &compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
 		const CollisionShape3D &otherShape = object2.getShape();
 
 		AbstractWorkBody *body1 = getManifoldResult().getBody1();
 		AbstractWorkBody *body2 = getManifoldResult().getBody2();
 
 		const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape.getLocalizedShapes();
-		for(unsigned int i=0; i<localizedShapes.size(); ++i)
+		for (const auto &localizedShape : localizedShapes)
 		{
-			const std::shared_ptr<const LocalizedCollisionShape> &localizedShape = localizedShapes[i];
 			std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(
 					body1, localizedShape->shape.get(), body2, &otherShape);
 			const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();

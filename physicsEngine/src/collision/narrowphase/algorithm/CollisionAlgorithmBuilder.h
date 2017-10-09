@@ -12,8 +12,7 @@ namespace urchin
 	class CollisionAlgorithmBuilder
 	{
 		public:
-			CollisionAlgorithmBuilder();
-			virtual ~CollisionAlgorithmBuilder();
+			virtual ~CollisionAlgorithmBuilder() = default;
 
 			virtual CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, void *) const = 0;
 

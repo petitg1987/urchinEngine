@@ -10,8 +10,8 @@ namespace urchin
 	class CollisionConvexObject3D
 	{
 		public:
-			CollisionConvexObject3D(float);
-			virtual ~CollisionConvexObject3D();
+			explicit CollisionConvexObject3D(float);
+			virtual ~CollisionConvexObject3D() = default;
 
 			float getOuterMargin() const;
 

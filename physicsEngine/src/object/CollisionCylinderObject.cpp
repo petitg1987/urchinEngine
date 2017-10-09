@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	CollisionCylinderObject::~CollisionCylinderObject()
-	{
-
-	}
-
 	/**
 	 * @return Radius with margin of the cylinder
 	 */

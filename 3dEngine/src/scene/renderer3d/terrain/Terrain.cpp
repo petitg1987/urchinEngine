@@ -11,7 +11,9 @@
 
 namespace urchin
 {
-    Terrain::Terrain(const std::string &filename)
+    Terrain::Terrain(const std::string &filename, float xzScale, float yScale) :
+            xzScale(xzScale),
+            yScale(yScale)
     {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(filename);
         if(imgTerrain->getImageFormat()!=Image::IMAGE_LUMINANCE)
@@ -70,9 +72,6 @@ namespace urchin
 
     std::vector<Point3<float>> Terrain::buildVertices(const Image *imgTerrain) const
     {
-        float xzScale = 0.2f; //TODO hard coded
-        float yScale = 0.02f; //TODO hard coded
-
         std::vector<Point3<float>> vertices;
         vertices.reserve(imgTerrain->getHeight() * imgTerrain->getWidth());
         for(unsigned int z=0; z<imgTerrain->getHeight(); ++z)

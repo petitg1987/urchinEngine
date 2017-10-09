@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	CollisionBoxObject::~CollisionBoxObject()
-	{
-
-	}
-
 	float CollisionBoxObject::getHalfSize(unsigned int index) const
 	{
 		return boxObject.getHalfSize(index) + getOuterMargin();

@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	template<class T> ContinuousCollisionResult<T>::~ContinuousCollisionResult()
-	{
-
-	}
-
 	template<class T> AbstractWorkBody *ContinuousCollisionResult<T>::getBody2() const
 	{
 		return body2;
@@ -44,12 +39,8 @@ namespace urchin
 
 	template<class T> bool ContinuousCollisionResultComparator<T>::operator()(std::shared_ptr<ContinuousCollisionResult<T>> result1, std::shared_ptr<ContinuousCollisionResult<T>> result2) const
 	{
-		if(result1->getTimeToHit() < result2->getTimeToHit())
-		{
-			return true;
-		}
+		return result1->getTimeToHit() < result2->getTimeToHit();
 
-		return false;
 	}
 
 	//explicit template

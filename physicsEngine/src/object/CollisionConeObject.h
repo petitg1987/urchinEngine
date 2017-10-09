@@ -13,7 +13,6 @@ namespace urchin
 	{
 		public:
 			CollisionConeObject(float, float, float, typename ConeShape<float>::ConeOrientation, const Point3<float> &, const Quaternion<float> &);
-			~CollisionConeObject();
 
 			float getRadius() const;
 			float getHeight() const;
@@ -22,10 +21,10 @@ namespace urchin
 			const Quaternion<float> &getOrientation() const;
 			const Vector3<float> &getAxis(unsigned int) const;
 
-			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
+			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
 			const Cone<float> retrieveCone() const;
-			std::string toString() const;
+			std::string toString() const override;
 
 		private:
 			const Cone<float> coneObject; //object without margin

@@ -13,7 +13,6 @@ namespace urchin
 	{
 		public:
 			CollisionCapsuleObject(float, float, float, typename CapsuleShape<float>::CapsuleOrientation, const Point3<float> &, const Quaternion<float> &);
-			~CollisionCapsuleObject();
 
 			float getRadius() const;
 			float getCylinderHeight() const;
@@ -22,10 +21,10 @@ namespace urchin
 			const Quaternion<float> &getOrientation() const;
 			const Vector3<float> &getAxis(unsigned int) const;
 
-			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
+			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
 			const Capsule<float> retrieveCapsule() const;
-			std::string toString() const;
+			std::string toString() const override;
 
 		private:
 			const Capsule<float> capsuleObject; //object without margin

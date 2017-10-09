@@ -12,11 +12,6 @@ namespace urchin
 
 	}
 
-	SphereSphereCollisionAlgorithm::~SphereSphereCollisionAlgorithm()
-	{
-
-	}
-
 	void SphereSphereCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
 		const CollisionSphereShape &sphere1 = static_cast<const CollisionSphereShape &>(object1.getShape());

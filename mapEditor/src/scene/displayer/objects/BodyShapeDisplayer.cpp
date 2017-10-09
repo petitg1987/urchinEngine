@@ -37,7 +37,7 @@ namespace urchin
 			{
 				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape.get());
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
-				for (auto localizedShape : localizedShapes)
+				for (const auto &localizedShape : localizedShapes)
 				{
 					PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
 					std::shared_ptr<CollisionConvexObject3D> bodyObject = localizedShape->shape->toConvexObject(transform);

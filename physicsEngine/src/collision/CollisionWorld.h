@@ -21,8 +21,8 @@ namespace urchin
 	class CollisionWorld : public Observable
 	{
 		public:
-			CollisionWorld(BodyManager *);
-			~CollisionWorld();
+			explicit CollisionWorld(BodyManager *);
+			~CollisionWorld() override;
 
 			enum NotificationType
 			{

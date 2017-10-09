@@ -11,7 +11,6 @@ namespace urchin
 	{
 		public:
 			TemporalObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
-			~TemporalObject();
 
 			std::shared_ptr<const CollisionConvexObject3D> getLocalObject() const;
 

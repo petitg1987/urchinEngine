@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	ManifoldResult::~ManifoldResult()
-	{
-
-	}
-
 	/**
 	 * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
 	 */
@@ -132,18 +127,18 @@ namespace urchin
 			contactPoints[i].updateDepth(newDepth);
 		}
 
-		for(int i=static_cast<int>(nbContactPoint-1); i>=0; --i)
+		for(auto i=static_cast<int>(nbContactPoint-1); i>=0; --i)
 		{ //loop from last to first in order to be able to remove contact points
 			if(contactPoints[i].getDepth() > contactBreakingThreshold)
 			{
-				removeContactPoint(i);
+				removeContactPoint(static_cast<unsigned int>(i));
 			}else
 			{
 				Point3<float> projectedPointOnObject2 = contactPoints[i].getPointOnObject1().translate(-(contactPoints[i].getNormalFromObject2() * contactPoints[i].getDepth()));
 				Vector3<float> projectedDifference = projectedPointOnObject2.vector(contactPoints[i].getPointOnObject2());
 				if(projectedDifference.squareLength() > contactBreakingThreshold * contactBreakingThreshold)
 				{
-					removeContactPoint(i);
+					removeContactPoint(static_cast<unsigned int>(i));
 				}
 			}
 		}

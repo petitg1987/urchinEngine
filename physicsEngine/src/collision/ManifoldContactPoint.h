@@ -13,7 +13,6 @@ namespace urchin
 		public:
 			ManifoldContactPoint();
 			ManifoldContactPoint(const Vector3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, const Point3<float> &, float, bool);
-			~ManifoldContactPoint();
 
 			const Vector3<float> &getNormalFromObject2() const;
 			const Point3<float> &getPointOnObject1() const;

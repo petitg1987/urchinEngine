@@ -13,7 +13,7 @@ namespace urchin
     class Terrain
     {
         public:
-            explicit Terrain(const std::string &);
+            Terrain(const std::string &, float, float);
             ~Terrain();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
@@ -45,6 +45,8 @@ namespace urchin
             int mProjectionLoc, mViewLoc;
             int ambientLoc;
 
+            float xzScale;
+            float yScale;
             Matrix4<float> projectionMatrix;
             float ambient;
 

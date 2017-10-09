@@ -13,15 +13,14 @@ namespace urchin
 	{
 		public:
 			CollisionSphereObject(float, const Point3<float> &);
-			~CollisionSphereObject();
 
 			float getRadius() const;
 			const Point3<float> &getCenterOfMass() const;
 
-			Point3<float> getSupportPoint(const Vector3<float> &, bool) const;
+			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
 			const Sphere<float> retrieveSphere() const;
-			std::string toString() const;
+			std::string toString() const override;
 
 		private:
 			const Sphere<float> sphereObject; //object without margin

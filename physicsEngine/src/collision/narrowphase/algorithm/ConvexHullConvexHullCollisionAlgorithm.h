@@ -15,17 +15,17 @@ namespace urchin
 	{
 		public:
 			ConvexHullConvexHullCollisionAlgorithm(bool, const ManifoldResult &);
-			virtual ~ConvexHullConvexHullCollisionAlgorithm() = default;
+			~ConvexHullConvexHullCollisionAlgorithm() override = default;
 
-			void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &);
+			void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
 
 			struct Builder : public CollisionAlgorithmBuilder
 			{
-				CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, void*) const;
+				CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, void*) const override;
 
-				CollisionShape3D::ShapeType getShapeType1() const;
-				CollisionShape3D::ShapeType getShapeType2() const;
-				unsigned int getAlgorithmSize() const;
+				CollisionShape3D::ShapeType getShapeType1() const override;
+				CollisionShape3D::ShapeType getShapeType2() const override;
+				unsigned int getAlgorithmSize() const override;
 			};
 
 		private:

@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	CollisionConeObject::~CollisionConeObject()
-	{
-
-	}
-
 	/**
 	 * @return Radius with margin of the cone
 	 */

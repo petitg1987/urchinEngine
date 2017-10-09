@@ -17,7 +17,6 @@ namespace urchin
 		public:
 			OverlappingPair(AbstractWorkBody *body1, AbstractWorkBody *body2);
 			OverlappingPair(AbstractWorkBody *body1, AbstractWorkBody *body2, uint_fast64_t);
-			~OverlappingPair();
 
 			AbstractWorkBody *getBody1() const;
 			AbstractWorkBody *getBody2() const;

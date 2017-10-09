@@ -24,11 +24,6 @@ namespace urchin
 
 	}
 
-	OverlappingPair::~OverlappingPair()
-	{
-
-	}
-
 	AbstractWorkBody *OverlappingPair::getBody1() const
 	{
 		return body1;

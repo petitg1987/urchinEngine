@@ -14,11 +14,6 @@ namespace urchin
 
 	}
 
-	CollisionConvexObject3D::~CollisionConvexObject3D()
-	{
-
-	}
-
 	float CollisionConvexObject3D::getOuterMargin() const
 	{
 		return outerMargin;

@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	TemporalObject::~TemporalObject()
-	{
-
-	}
-
 	std::shared_ptr<const CollisionConvexObject3D> TemporalObject::getLocalObject() const
 	{
 		return localObject;

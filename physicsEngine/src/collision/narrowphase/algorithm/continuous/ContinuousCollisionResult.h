@@ -14,7 +14,6 @@ namespace urchin
 	{
 		public:
 			ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
-			~ContinuousCollisionResult();
 
 			AbstractWorkBody *getBody2() const;
 

@@ -1,4 +1,5 @@
 #include <sstream>
+#include <utility>
 
 #include "object/CollisionConvexHullObject.h"
 
@@ -23,13 +24,8 @@ namespace urchin
 	 */
 	CollisionConvexHullObject::CollisionConvexHullObject(float outerMargin, std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithMargin, std::shared_ptr<ConvexHull3D<float>> convexHullObjectWithoutMargin) :
 			CollisionConvexObject3D(outerMargin),
-			convexHullObjectWithMargin(convexHullObjectWithMargin),
-			convexHullObjectWithoutMargin(convexHullObjectWithoutMargin)
-	{
-
-	}
-
-	CollisionConvexHullObject::~CollisionConvexHullObject()
+			convexHullObjectWithMargin(std::move(convexHullObjectWithMargin)),
+			convexHullObjectWithoutMargin(std::move(convexHullObjectWithoutMargin))
 	{
 
 	}

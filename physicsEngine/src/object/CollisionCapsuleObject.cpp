@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	CollisionCapsuleObject::~CollisionCapsuleObject()
-	{
-
-	}
-
 	/**
 	 * @return Radius with margin of the capsule
 	 */

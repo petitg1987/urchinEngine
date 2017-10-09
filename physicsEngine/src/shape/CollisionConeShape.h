@@ -16,20 +16,20 @@ namespace urchin
 		public:
 			CollisionConeShape(float, float, ConeShape<float>::ConeOrientation);
 
-			CollisionShape3D::ShapeType getShapeType() const;
-			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const;
+			CollisionShape3D::ShapeType getShapeType() const override;
+			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
 			float getRadius() const;
 			float getHeight() const;
 			ConeShape<float>::ConeOrientation getConeOrientation() const;
 
-			std::shared_ptr<CollisionShape3D> scale(float) const;
+			std::shared_ptr<CollisionShape3D> scale(float) const override;
 
-			AABBox<float> toAABBox(const PhysicsTransform &) const;
-			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const;
+			AABBox<float> toAABBox(const PhysicsTransform &) const override;
+			std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const override;
 
-			Vector3<float> computeLocalInertia(float) const;
-			float getMaxDistanceToCenter() const;
-			float getMinDistanceToCenter() const;
+			Vector3<float> computeLocalInertia(float) const override;
+			float getMaxDistanceToCenter() const override;
+			float getMinDistanceToCenter() const override;
 
 		private:
 			void computeSafeMargin();

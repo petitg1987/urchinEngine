@@ -37,11 +37,6 @@ namespace urchin
 
 	}
 
-	ManifoldContactPoint::~ManifoldContactPoint()
-	{
-
-	}
-
 	/**
 	 * @return Contact normal starting from object 2
 	 */

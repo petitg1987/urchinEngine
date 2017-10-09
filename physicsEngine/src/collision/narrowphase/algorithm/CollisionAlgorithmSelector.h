@@ -26,7 +26,7 @@ namespace urchin
 			class AlgorithmDeleter
 			{
 				public:
-					AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *);
+					explicit AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *);
 					void operator()(CollisionAlgorithm *);
 
 				private:
