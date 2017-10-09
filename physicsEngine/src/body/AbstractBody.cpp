@@ -27,11 +27,6 @@ namespace urchin
 		rollingFriction = 0.0f;
 	}
 
-	AbstractBody::~AbstractBody()
-	{
-
-	}
-
 	void AbstractBody::refreshScaledShape()
 	{
 		scaledShape = originalShape->scale(transform.getScale());

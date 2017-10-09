@@ -15,12 +15,12 @@ namespace urchin
 	{
 		public:
 			RigidBody(const std::string &, const Transform<float> &, const std::shared_ptr<const CollisionShape3D> &);
-			virtual ~RigidBody();
+			~RigidBody() override = default;
 
-			AbstractWorkBody *createWorkBody() const;
+			AbstractWorkBody *createWorkBody() const override;
 
-			void updateTo(AbstractWorkBody *);
-			void applyFrom(const AbstractWorkBody *);
+			void updateTo(AbstractWorkBody *) override;
+			void applyFrom(const AbstractWorkBody *) override;
 
 			const Vector3<float> &getLinearVelocity() const;
 			const Vector3<float> &getAngularVelocity() const;
@@ -46,8 +46,8 @@ namespace urchin
 			const Vector3<float> &getAngularFactor() const;
 
 		private:
-			void refreshScaledShape();
-			void refreshLocalInteria();
+			void refreshScaledShape() override;
+			void refreshLocalInertia();
 
 			//rigid body representation data
 			Vector3<float> linearVelocity;

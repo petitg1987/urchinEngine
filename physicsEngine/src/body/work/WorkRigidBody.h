@@ -13,7 +13,6 @@ namespace urchin
 	{
 		public:
 			WorkRigidBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
-			~WorkRigidBody();
 
 			static WorkRigidBody *upCast(AbstractWorkBody *);
 			static const WorkRigidBody *upCast(const AbstractWorkBody *);
@@ -51,7 +50,7 @@ namespace urchin
 			void setAngularFactor(const Vector3<float> &);
 			const Vector3<float> &getAngularFactor() const;
 
-			bool isGhostBody() const;
+			bool isGhostBody() const override;
 
 		private:
 			void refreshBodyActiveState();

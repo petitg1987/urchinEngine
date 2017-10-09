@@ -18,11 +18,6 @@ namespace urchin
 
 	}
 
-	WorkRigidBody::~WorkRigidBody()
-	{
-
-	}
-
 	WorkRigidBody *WorkRigidBody::upCast(AbstractWorkBody *workBody)
 	{
 		return dynamic_cast<WorkRigidBody*>(workBody);

@@ -17,7 +17,7 @@ namespace urchin
 	{
 		public:
 			BodyManager();
-			~BodyManager();
+			~BodyManager() override;
 
 			enum NotificationType
 			{

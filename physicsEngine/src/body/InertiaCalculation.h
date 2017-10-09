@@ -14,8 +14,8 @@ namespace urchin
 			static Matrix3<float> computeInverseWorldInertia(const Vector3<float> &, const PhysicsTransform &);
 
 		private:
-			InertiaCalculation();
-			~InertiaCalculation();
+			InertiaCalculation() = default;
+			~InertiaCalculation() = default;
 	};
 
 }

@@ -21,7 +21,7 @@ namespace urchin
 	{
 		public:
 			AbstractWorkBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
-			virtual ~AbstractWorkBody();
+			virtual ~AbstractWorkBody() = default;
 
 			const PhysicsTransform &getPhysicsTransform() const;
 

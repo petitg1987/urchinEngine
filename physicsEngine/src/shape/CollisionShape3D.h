@@ -29,6 +29,7 @@ namespace urchin
 				CONE_SHAPE,
 				CONVEX_HULL_SHAPE,
 				COMPOUND_SHAPE,
+				TRIANGLE_MESH_SHAPE,
 
 				SHAPE_MAX
 			};

@@ -39,7 +39,7 @@ namespace urchin
 
 	std::shared_ptr<ConvexShape3D<float>> CollisionCompoundShape::getSingleShape() const
 	{
-		throw std::runtime_error("Retrieve of single shape unsupported for compound shape");
+		throw std::runtime_error("Impossible to retrieve single convex shape for compound shape");
 	}
 
 	const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &CollisionCompoundShape::getLocalizedShapes() const
@@ -50,14 +50,15 @@ namespace urchin
 	std::shared_ptr<CollisionShape3D> CollisionCompoundShape::scale(float scale) const
 	{
 		std::vector<std::shared_ptr<const LocalizedCollisionShape>> scaledLocalizedShapes;
-		for(unsigned int i=0; i<localizedShapes.size(); ++i)
+		scaledLocalizedShapes.reserve(localizedShapes.size());
+		for (const auto &localizedShape : localizedShapes)
 		{
-			std::shared_ptr<LocalizedCollisionShape> localizedShape = std::make_shared<LocalizedCollisionShape>();
-			localizedShape->position = localizedShapes[i]->position;
-			localizedShape->shape = localizedShapes[i]->shape->scale(scale);
-			localizedShape->transform = PhysicsTransform(localizedShapes[i]->transform.getPosition() * scale, localizedShapes[i]->transform.getOrientation());
+			std::shared_ptr<LocalizedCollisionShape> scaledLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+			scaledLocalizedShape->position = localizedShape->position;
+			scaledLocalizedShape->shape = localizedShape->shape->scale(scale);
+			scaledLocalizedShape->transform = PhysicsTransform(localizedShape->transform.getPosition() * scale, localizedShape->transform.getOrientation());
 
-			scaledLocalizedShapes.push_back(localizedShape);
+			scaledLocalizedShapes.push_back(scaledLocalizedShape);
 		}
 
 		return std::make_shared<CollisionCompoundShape>(scaledLocalizedShapes);
@@ -81,7 +82,7 @@ namespace urchin
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
-		throw std::runtime_error("To convex object unsupported for compound shape");
+		throw std::runtime_error("Impossible to transform compound shape to convex object");
 	}
 
 	Vector3<float> CollisionCompoundShape::computeLocalInertia(float mass) const

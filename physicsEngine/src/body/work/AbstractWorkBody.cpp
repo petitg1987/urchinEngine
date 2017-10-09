@@ -25,11 +25,6 @@ namespace urchin
 
 	}
 
-	AbstractWorkBody::~AbstractWorkBody()
-	{
-
-	}
-
 	const PhysicsTransform &AbstractWorkBody::getPhysicsTransform() const
 	{
 		return physicsTransform;

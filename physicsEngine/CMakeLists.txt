@@ -157,6 +157,8 @@ set(SOURCE_FILES
         src/shape/CollisionShape3D.h
         src/shape/CollisionSphereShape.cpp
         src/shape/CollisionSphereShape.h
+        src/shape/CollisionTriangleMeshShape.cpp
+        src/shape/CollisionTriangleMeshShape.h
         src/utils/math/PhysicsTransform.cpp
         src/utils/math/PhysicsTransform.h
         src/utils/pool/FixedSizePool.cpp

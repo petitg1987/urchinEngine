@@ -1,8 +1,6 @@
 ############################################
 # To do :
 ############################################
-- RENDERER
-	- (1) [NEW FEATURE] Handle heightmap
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - AMBIENT OCCLUSION

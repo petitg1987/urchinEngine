@@ -11,7 +11,7 @@ namespace urchin
 {
 
     class Terrain
-    {
+    { //TODO handle: texture, shadow, map editor, AI
         public:
             Terrain(const std::string &, float, float);
             ~Terrain();

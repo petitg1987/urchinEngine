@@ -21,10 +21,7 @@ namespace urchin
 				if(collisionAlgorithmBuilderMatrix[i][j]==nullptr)
 				{
 					deleteCollisionAlgorithmBuilderMatrix();
-
-					std::ostringstream buffer;
-					buffer<<"Collision algorithm builder not initialized for shape type: "<<i<<" and "<<j<<".";
-					throw std::invalid_argument(buffer.str());
+					throw std::invalid_argument("Collision algorithm builder not initialized for shape type: " + std::to_string(i) + " and " + std::to_string(j) + ".");
 				}
 			}
 		}

@@ -2,7 +2,6 @@
 # To do :
 ############################################
 - GLOBAL
-	- (1) [NEW FEATURE] Create new shape type: heighfield mesh
 	- (3) [OPTIMIZATION] Use PGO in g++
 - BROADPHASE
 	- (2) [OPTIMIZATION] Use a memory pool when create new OverlappingPair

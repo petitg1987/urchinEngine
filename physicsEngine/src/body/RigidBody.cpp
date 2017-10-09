@@ -18,19 +18,14 @@ namespace urchin
 		angularFactor.setValues(1.0, 1.0, 1.0);
 	}
 
-	RigidBody::~RigidBody()
-	{
-
-	}
-
 	void RigidBody::refreshScaledShape()
 	{
 		AbstractBody::refreshScaledShape();
 
-		refreshLocalInteria();
+		refreshLocalInertia();
 	}
 
-	void RigidBody::refreshLocalInteria()
+	void RigidBody::refreshLocalInertia()
 	{
 		this->localInertia = computeScaledShapeLocalInertia(mass);
 	}
@@ -138,7 +133,7 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->mass = mass;
-		refreshLocalInteria();
+		refreshLocalInertia();
 
 		setIsStatic(mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon());
 	}
