@@ -7,11 +7,6 @@
 namespace urchin
 {
 
-	LoaderUrchinAnim::~LoaderUrchinAnim()
-	{
-
-	}
-
 	void LoaderUrchinAnim::nextLine(std::ifstream &file, std::string &buffer)
 	{
 		do
@@ -19,7 +14,7 @@ namespace urchin
 			std::getline(file, buffer);
 
 			//delete '\r'
-			int length = buffer.length()-1;
+			unsigned long length = buffer.length()-1;
 			if(length >=0 && buffer[length]=='\r')
 			{
 				buffer.resize(length);
@@ -69,7 +64,7 @@ namespace urchin
 		iss >> sdata >> numAnimatedComponents;
 		
 		//hierarchy
-		BoneInfo *boneInfos = new BoneInfo[numBones];
+		auto *boneInfos = new BoneInfo[numBones];
 		nextLine(file, buffer); //buffer = "hierarchy {"
 		for(unsigned int i=0;i<numBones;i++)
 		{
@@ -81,7 +76,7 @@ namespace urchin
 		nextLine(file, buffer); //buffer = "}"
 		
 		//bounds
-		AABBox<float> **bboxes = new AABBox<float>*[numFrames];
+		auto **bboxes = new AABBox<float>*[numFrames];
 		nextLine(file, buffer); //buffer = "bounds {"
 		for(unsigned int i=0;i<numFrames;i++)
 		{
@@ -95,7 +90,7 @@ namespace urchin
 		nextLine(file, buffer); //buffer = "}"
 		
 		//baseframe
-		BaseFrameBone *baseFrame = new BaseFrameBone[numBones];
+		auto *baseFrame = new BaseFrameBone[numBones];
 		nextLine(file, buffer); //buffer = "baseframe {"
 		for(unsigned int i=0;i<numBones;i++)
 		{
@@ -107,8 +102,8 @@ namespace urchin
 		nextLine(file, buffer); //buffer = "}"
 		
 		//frames
-		Bone **skeletonFrames = new Bone*[numFrames];
-		float *animFrameData = new float[numAnimatedComponents];
+		auto **skeletonFrames = new Bone*[numFrames];
+		auto *animFrameData = new float[numAnimatedComponents];
 		for(unsigned int frameIndex=0;frameIndex<numFrames;++frameIndex)
 		{
 			skeletonFrames[frameIndex] = new Bone[numBones];

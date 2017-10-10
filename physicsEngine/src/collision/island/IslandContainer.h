@@ -17,7 +17,6 @@ namespace urchin
 	{
 		public:
 			IslandContainer();
-			~IslandContainer();
 
 			void reset(const std::vector<IslandElement *> &);
 			void mergeIsland(IslandElement *, IslandElement *);

@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 
 #include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
 #include "resources/MediaManager.h"

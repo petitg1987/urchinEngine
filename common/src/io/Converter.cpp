@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <limits>
+#include <cmath>
 
 #include "io/Converter.h"
 #include "io/StringUtil.h"
@@ -59,7 +60,7 @@ namespace urchin
 			{
 				Logger::logger().log(Logger::ERROR, "Impossible to convert float " + std::to_string(value) + " in long long type.");
 			}
-			return static_cast<long long>(value * scale - 0.5);
+			return std::llround(value * scale - 0.5);
 		}
 		else
 		{
@@ -67,7 +68,7 @@ namespace urchin
 			{
 				Logger::logger().log(Logger::ERROR, "Impossible to convert float " + std::to_string(value) + " in long long type.");
 			}
-			return static_cast<long long>(value * scale + 0.5);
+			return std::llround(value * scale + 0.5);
 		}
 	}
 
@@ -132,9 +133,9 @@ namespace urchin
 
 		std::vector<float> floatValues;
 		floatValues.reserve(expectedSplit);
-		for(unsigned int i=0; i<stringValues.size(); ++i)
+		for (const auto &stringValue : stringValues)
 		{
-			floatValues.push_back(toFloat(stringValues[i]));
+			floatValues.push_back(toFloat(stringValue));
 		}
 
 		return floatValues;

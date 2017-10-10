@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/textbox/TextBox.h"
@@ -64,7 +63,7 @@ namespace urchin
 		glBindBuffer(GL_ARRAY_BUFFER, cursorLineBufferID);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(cursorLineVertexData), cursorLineVertexData, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, false, 0, 0);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, 2, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
 
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->vertexData(GL_UNSIGNED_INT, new unsigned int[8]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()})
@@ -114,22 +113,22 @@ namespace urchin
 		{
 			if(character==8 && cursorIndex>0)
 			{ //key backspace
-				std::string tmpRight = allText.substr(cursorIndex, allText.length()-cursorIndex);
-				allText = allText.substr(0, cursorIndex-1);
+				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
+				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
 				allText.append(tmpRight);
 
 				refreshText(cursorIndex-1);
 			}else if(character==127 && allText.length()>0 && cursorIndex<(int)allText.length())
 			{ //key delete
-				std::string tmpRight = allText.substr(cursorIndex+1, allText.length()-cursorIndex);
-				allText = allText.substr(0, cursorIndex);
+				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
+				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
 				allText.append(tmpRight);
 
 				refreshText(cursorIndex);
 			}else if(character<256 && character>30 && character!=127)
 			{
-				std::string tmpRight = allText.substr(cursorIndex, allText.length()-cursorIndex);
-				allText = allText.substr(0, cursorIndex);
+				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
+				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
 				allText.append(1, (char)character);
 				allText.append(tmpRight);
 
@@ -163,7 +162,7 @@ namespace urchin
 		computeCursorPosition();
 		if(cursorPosition > maxWidthText)
 		{
-			startTextIndex = (startTextIndex<=(int)allText.length()) ? startTextIndex+LETTER_SHIFT : allText.length();
+			startTextIndex = (startTextIndex<=(int)allText.length()) ? startTextIndex+LETTER_SHIFT : (int)allText.length();
 		}else if(cursorIndex <= startTextIndex)
 		{
 			startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
@@ -175,14 +174,14 @@ namespace urchin
 		int widthText=0, endTextIndex;
 		for(endTextIndex=startTextIndex; endTextIndex<(int)allText.length(); ++endTextIndex)
 		{
-			char letter = allText[endTextIndex];
+			auto letter = static_cast<unsigned char>(allText[endTextIndex]);
 			widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
 			if(widthText>maxWidthText)
 			{
 				break;
 			}
 		}
-		text->setText(allText.substr(startTextIndex, endTextIndex-startTextIndex));
+		text->setText(allText.substr(static_cast<unsigned long>(startTextIndex), static_cast<unsigned long>(endTextIndex-startTextIndex)));
 	}
 
 	void TextBox::computeCursorPosition()
@@ -192,7 +191,7 @@ namespace urchin
 
 		for(int i=startTextIndex;i<cursorIndex;++i)
 		{
-			char letter = allText[i];
+			auto letter = static_cast<unsigned char>(allText[i]);
 			cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
 		}
 
@@ -212,7 +211,7 @@ namespace urchin
 
 		for(cursorIndex=startTextIndex; cursorIndex<(int)allText.length(); ++cursorIndex)
 		{
-			char letter = allText[cursorIndex];
+			auto letter = static_cast<unsigned char>(allText[cursorIndex]);
 			widthText += (float)font->getGlyph(letter).width/2.0;
 			if(widthText > approximateCursorPosition)
 			{

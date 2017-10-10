@@ -11,7 +11,6 @@ namespace urchin
 	{
 		public:
 			SplitBoundingBox();
-			~SplitBoundingBox();
 
 			std::vector<AABBox<float>> split(const AABBox<float> &) const;
 

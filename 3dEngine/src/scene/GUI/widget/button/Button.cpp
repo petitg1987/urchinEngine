@@ -18,11 +18,6 @@ namespace urchin
 		createOrUpdateWidget();
 	}
 
-	Button::~Button()
-	{
-
-	}
-
 	void Button::createOrUpdateWidget()
 	{
 		//skin informations

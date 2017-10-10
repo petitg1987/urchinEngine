@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_CIMAGE_H
 #define URCHINENGINE_CIMAGE_H
 
+#include <GL/glew.h>
 #include "resources/Resource.h"
 
 namespace urchin
@@ -18,7 +19,7 @@ namespace urchin
 			};
 
 			Image(unsigned int, unsigned int, unsigned int, ImageFormat, unsigned char *);
-			~Image();
+			~Image() override;
 
 			unsigned int getComponentsCount() const;
 			unsigned int getWidth() const;
@@ -26,8 +27,8 @@ namespace urchin
 			ImageFormat getImageFormat() const;
 			unsigned char *getTexels() const;
 
-			int retrieveInternalFormat() const;
-			int retrieveFormat() const;
+			GLint retrieveInternalFormat() const;
+			GLenum retrieveFormat() const;
 		
 			unsigned int toTexture(bool, bool);
 			unsigned int getTextureID() const;

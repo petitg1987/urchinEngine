@@ -16,8 +16,8 @@ namespace urchin
 			static std::string simplifyDirectoryPath(const std::string &);
 
 		private:
-			FileHandler();
-			~FileHandler();
+			FileHandler() = default;
+			~FileHandler() = default;
 
 			static void checkDirectory(const std::string &);
 	};

@@ -6,22 +6,12 @@
 namespace urchin
 {
 
-	FileHandler::FileHandler()
-	{
-
-	}
-
-	FileHandler::~FileHandler()
-	{
-
-	}
-
 	/**
 	 * @return File extension. If not extension found: return empty string
 	 */
 	std::string FileHandler::getFileExtension(const std::string &filePath)
 	{
-		std::size_t found = filePath.find_last_of(".");
+		std::size_t found = filePath.find_last_of('.');
 		if(found==std::string::npos)
 		{
 			return "";
@@ -113,7 +103,7 @@ namespace urchin
 
 	void FileHandler::checkDirectory(const std::string &directory)
 	{
-		if(directory.size()==0)
+		if(directory.empty())
 		{
 			throw std::invalid_argument("Specified directory cannot be null.");
 		}

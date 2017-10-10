@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "CollisionTriangleMeshShape.h"
 
 namespace urchin
@@ -21,7 +23,12 @@ namespace urchin
 
     std::shared_ptr<CollisionShape3D> CollisionTriangleMeshShape::scale(float scale) const
     {
-        //TODO complete
+        if((scale - std::numeric_limits<float>::min()) > 1.0 || (scale + std::numeric_limits<float>::min()) < 0.0)
+        {
+            throw std::runtime_error("Scaling a triangle mesh shape is currently not supported");
+        }
+
+        return std::make_shared<CollisionTriangleMeshShape>();
     }
 
     AABBox<float> CollisionTriangleMeshShape::toAABBox(const PhysicsTransform &physicsTransform) const
@@ -49,11 +56,11 @@ namespace urchin
 
     float CollisionTriangleMeshShape::getMaxDistanceToCenter() const
     {
-        //TODO complete
+        throw std::runtime_error("Impossible to get max distance to center for triangle mesh shape. Only static bodies are supported for this shape.");
     }
 
     float CollisionTriangleMeshShape::getMinDistanceToCenter() const
     {
-        //TODO complete
+        return 0.0f;
     }
 }

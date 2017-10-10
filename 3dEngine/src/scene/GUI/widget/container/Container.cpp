@@ -9,11 +9,6 @@ namespace urchin
 
 	}
 
-	Container::~Container()
-	{
-
-	}
-
 	void Container::createOrUpdateWidget()
 	{
 

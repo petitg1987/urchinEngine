@@ -13,10 +13,10 @@ namespace urchin
 	class Container : public Widget
 	{
 		public:
-			Container(Position);
-			virtual ~Container();
+			explicit Container(Position);
+			~Container() override = default;
 
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 	};
 
 }

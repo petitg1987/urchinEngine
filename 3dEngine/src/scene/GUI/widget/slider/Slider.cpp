@@ -1,10 +1,7 @@
-#include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 
 #include "scene/GUI/widget/slider/Slider.h"
 #include "scene/GUI/GUISkinService.h"
-#include "utils/display/quad/QuadDisplayerBuilder.h"
 
 #define TIME_BEFORE_AUTO_CLICK 0.3
 #define TIME_BEFORE_AUTO_NEXT_CLICK 0.09
@@ -21,7 +18,7 @@ namespace urchin
 		timeInClickingState(0.0f),
 		timeSinceLastChange(0.0f)
 	{
-		if(values.size()==0)
+		if(values.empty())
 		{
 			throw std::runtime_error("At least one value must be provided to slider.");
 		}
@@ -43,19 +40,14 @@ namespace urchin
 		createOrUpdateWidget();
 	}
 
-	Slider::~Slider()
-	{
-
-	}
-
 	void Slider::createOrUpdateWidget()
 	{
 		//clear
 		Widget::removeChild(leftButton);
 		Widget::removeChild(rightButton);
-		for(unsigned int i=0; i<valuesText.size(); ++i)
+		for (auto &valueText : valuesText)
 		{
-			Widget::removeChild(valuesText[i]);
+			Widget::removeChild(valueText);
 		}
 		valuesText.clear();
 

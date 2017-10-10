@@ -13,11 +13,6 @@ namespace urchin
 		#endif
 	}
 
-	IslandContainer::~IslandContainer()
-	{
-
-	}
-
 	/**
 	 * Reset the container of island elements. Create islands of one element for each island elements asked.
 	 */

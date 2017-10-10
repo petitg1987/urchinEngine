@@ -15,16 +15,11 @@
 
 namespace urchin
 {
-	
-	LoaderTTF::~LoaderTTF()
-	{
-
-	}
 
 	Font *LoaderTTF::loadFromFile(const std::string &fileFont, void *params)
 	{
 		//parameters
-		FontParameters textParameters = (FontParameters)(*static_cast<FontParameters*>(params));
+		FontParameters textParameters = (*static_cast<FontParameters*>(params));
 		
 		//initialize freetype
 		std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + fileFont;
@@ -51,9 +46,9 @@ namespace urchin
 		}
 		
 		//filled the struct_glyph
-		Glyph *glyph = new Glyph[NUM_LETTERS];
-		
-		int glyphIndex = FT_Get_Char_Index(face, 65);
+		auto *glyph = new Glyph[NUM_LETTERS];
+
+		FT_UInt glyphIndex = FT_Get_Char_Index(face, 65);
 		if(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT))
 		{
 			FT_Done_Face(face);
@@ -74,7 +69,7 @@ namespace urchin
 		
 		for(int i=0;i<NUM_LETTERS;i++)
 		{
-			int glyphIndex = FT_Get_Char_Index(face, i);
+			glyphIndex = FT_Get_Char_Index(face, static_cast<FT_ULong>(i));
 			if(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT))
 			{
 				FT_Done_Face(face);
@@ -134,10 +129,10 @@ namespace urchin
 				dimensionLetters = glyph[i].height;
 			}
 		}
-		unsigned int dimensionTexture = dimensionLetters * NUM_LETTERS_BY_LINE;
+		auto dimensionTexture = static_cast<unsigned int>(dimensionLetters * NUM_LETTERS_BY_LINE);
 		
 		//texture creation
-		unsigned char *texels = new unsigned char[dimensionTexture*dimensionTexture*NUM_COLORS];
+		auto *texels = new unsigned char[dimensionTexture*dimensionTexture*NUM_COLORS];
 		
 		for(unsigned int i=0;i<dimensionTexture*dimensionTexture*NUM_COLORS;i++)
 		{
@@ -163,7 +158,7 @@ namespace urchin
 			}
 		}
 
-		Image *texAlphabet = new Image(4, dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, texels);
+		auto *texAlphabet = new Image(4, dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, texels);
 		texAlphabet->toTexture(false, false);
 		
 		//clears buffers of letters

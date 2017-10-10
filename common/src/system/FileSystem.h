@@ -18,7 +18,7 @@ namespace urchin
 
 		private:
 			FileSystem();
-			virtual ~FileSystem();
+			~FileSystem() override = default;
 
 			std::string resourcesDirectory;
 	};

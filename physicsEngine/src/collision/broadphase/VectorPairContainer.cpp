@@ -7,9 +7,9 @@ namespace urchin
 
 	VectorPairContainer::~VectorPairContainer()
 	{
-		for(auto it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
+		for (auto &overlappingPair : overlappingPairs)
 		{
-			delete *it;
+			delete overlappingPair;
 		}
 	}
 
@@ -18,9 +18,9 @@ namespace urchin
 		uint_fast64_t bodiesId = OverlappingPair::computeBodiesId(body1, body2);
 
 		bool found = false;
-		for(auto it = overlappingPairs.begin(); it!=overlappingPairs.end(); ++it)
+		for (auto &overlappingPair : overlappingPairs)
 		{
-			if((*it)->getBodiesId()==bodiesId)
+			if(overlappingPair->getBodiesId()==bodiesId)
 			{
 				found = true;
 				break;

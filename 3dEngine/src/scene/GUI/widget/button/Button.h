@@ -18,23 +18,23 @@ namespace urchin
 	{
 		public:
 			Button(Position, Size, const std::string &, const std::string &);
-			virtual ~Button();
+			~Button() override = default;
 			
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 
-			void display(int, float);
+			void display(int, float) override;
 			
 		private:
 			unsigned int getTextureId();
 
-			bool onKeyDownEvent(unsigned int);
-			bool onKeyUpEvent(unsigned int);
-			bool onMouseMoveEvent(int, int);
+			bool onKeyDownEvent(unsigned int) override;
+			bool onKeyUpEvent(unsigned int) override;
+			bool onMouseMoveEvent(int, int) override;
 
 			//properties
 			const std::string nameSkin;
 
-			//display informations
+			//display information
 			Text *text;
 			const std::string buttonText;
 

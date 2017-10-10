@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <sstream>
 #include <memory>
 
@@ -17,7 +16,7 @@ namespace urchin
 		text(""),
 		maxLength(-1)
 	{
-		//skin informations
+		//skin information
 		std::shared_ptr<XmlChunk> fontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
 		std::shared_ptr<XmlChunk> fileFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "ttf", XmlAttribute(), fontChunk);
 		std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
@@ -59,17 +58,17 @@ namespace urchin
 		}
 
 		//creates the vertex array and texture array
-		int *vertexData = new int[numLetters*8];
-		float *textureData = new float[numLetters*8];
+		auto *vertexData = new int[numLetters*8];
+		auto *textureData = new float[numLetters*8];
 		unsigned int vertexIndex = 0, stIndex = 0;
 		unsigned int width = 0;
 		int offsetY = 0;
-		for(unsigned int numLine=0; numLine<cuttedTextLines.size(); ++numLine)
+		for (auto &cuttedTextLine : cuttedTextLines)
 		{ //each lines
 			unsigned int offsetX = 0;
-			for(unsigned int numLetter=0; numLetter<cuttedTextLines[numLine].size(); ++numLetter)
+			for (char charLetter : cuttedTextLine)
 			{ //each letters
-				unsigned char letter = cuttedTextLines[numLine][numLetter];
+				auto letter = static_cast<unsigned char>(charLetter);
 
 				float t = (float)((letter)>>4)/16.0;
 				float s = (float)((letter)%16)/16.0;
@@ -119,7 +118,7 @@ namespace urchin
 
 		for(int numLetter=0; text[numLetter]!=0; numLetter++)
 		{ //each letters
-			unsigned char letter = text[numLetter];
+			auto letter = static_cast<unsigned char>(text[numLetter]);
 
 			if(letter=='\n')
 			{

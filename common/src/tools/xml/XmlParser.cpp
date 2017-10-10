@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <utility>
 
 #include "tools/xml/XmlParser.h"
 #include "system/FileSystem.h"
@@ -6,10 +7,6 @@
 namespace urchin
 {
 
-	/**
-	 * Constructor
-	 * @param filename XML filename
-	 */
 	XmlParser::XmlParser(const std::string &filename) :
 		XmlParser(filename, FileSystem::instance()->getResourcesDirectory())
 	{
@@ -17,8 +14,6 @@ namespace urchin
 	}
 
 	/**
-	 * Constructor
-	 * @param filename XML filename
 	 * @param workingDirectory Override the default working directory
 	 */
 	XmlParser::XmlParser(const std::string &filename, const std::string &workingDirectory)
@@ -33,18 +28,11 @@ namespace urchin
 		}
 	}
 
-	/**
-	 * Destructor
-	 */
 	XmlParser::~XmlParser()
 	{
 		delete doc;
 	}
 
-	/**
-	 * Return a XML chunk representing the root
-	 * @return XML chunk representing the root
-	 */
 	std::shared_ptr<XmlChunk> XmlParser::getRootChunk() const
 	{
 		const TiXmlNode *rootNode = doc->FirstChild()->NextSibling();
@@ -108,7 +96,7 @@ namespace urchin
 	 */
 	std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string &chunkName, const XmlAttribute &attribute, std::shared_ptr<XmlChunk> parent) const
 	{
-		std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, parent);
+		std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, std::move(parent));
 
 		if(chunks.size()>1)
 		{
@@ -126,12 +114,6 @@ namespace urchin
 		return chunks[0];
 	}
 
-	/**
-	 * Returns a description of the chunk
-	 * @param chunkName Name of the tag XML
-	 * @param attribute Name and value of the attribute
-	 * @return Description of the chunk
-	 */
 	std::string XmlParser::getChunkDescription(const std::string &chunkName, const XmlAttribute &attribute) const
 	{
 		if(attribute.getAttributeName().empty())

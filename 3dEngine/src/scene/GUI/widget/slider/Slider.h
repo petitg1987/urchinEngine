@@ -17,7 +17,7 @@ namespace urchin
 	{
 		public:
 			Slider(Position, Size, const std::vector<std::string> &, const std::string &);
-			virtual ~Slider();
+			~Slider() override = default;
 
 			void createOrUpdateWidget();
 

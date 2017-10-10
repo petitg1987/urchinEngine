@@ -12,6 +12,7 @@ namespace urchin
 
     class CollisionTriangleMeshShape : public CollisionShape3D
     {
+        public:
             CollisionTriangleMeshShape();
 
             CollisionShape3D::ShapeType getShapeType() const override;

@@ -16,15 +16,15 @@ namespace urchin
 	{
 		public:
 			Text(Position, const std::string &);
-			virtual ~Text();
+			~Text() override;
 		
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 
 			void setText(const std::string &, int maxLength=-1);
 			const std::string &getText() const;
 			const Font *getFont();
 			
-			void display(int, float);
+			void display(int, float) override;
 
 		private:
 			std::string cutText(const std::string &, int);

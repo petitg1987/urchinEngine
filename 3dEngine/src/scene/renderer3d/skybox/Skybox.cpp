@@ -1,9 +1,7 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 
 #include "Skybox.h"
-#include "scene/renderer3d/camera/Camera.h"
 #include "utils/shader/ShaderManager.h"
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
@@ -134,7 +132,7 @@ namespace urchin
 	void Skybox::onCameraProjectionUpdate(const Camera *const camera)
 	{
 		ShaderManager::instance()->bind(skyboxShader);
-		glUniformMatrix4fv(mProjectionLoc, 1, false, (const float*)camera->getProjectionMatrix());
+		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)camera->getProjectionMatrix());
 	}
 
 	void Skybox::setOffsetY(float offsetY)
@@ -147,7 +145,7 @@ namespace urchin
 		ShaderManager::instance()->bind(skyboxShader);
 		
 		translationMatrix.buildTranslation(cameraPosition.X, cameraPosition.Y + offsetY, cameraPosition.Z);
-		glUniformMatrix4fv(mViewLoc, 1, false, (const float*)(viewMatrix * translationMatrix));
+		glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)(viewMatrix * translationMatrix));
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);

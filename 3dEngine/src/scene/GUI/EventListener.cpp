@@ -6,16 +6,6 @@
 namespace urchin
 {
 
-	EventListener::EventListener()
-	{
-
-	}
-
-	EventListener::~EventListener()
-	{
-
-	}
-
 	void EventListener::onClick(Widget *)
 	{
 

@@ -15,11 +15,6 @@ namespace urchin
 
 	}
 
-	ConfigService::~ConfigService()
-	{
-
-	}
-	
 	void ConfigService::checkState() const
 	{
 		if(!isInitialized)
@@ -50,7 +45,7 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			return Converter::toInt(it->second);
@@ -63,7 +58,7 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			return Converter::toUnsignedInt(it->second);
@@ -76,7 +71,7 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			return Converter::toFloat(it->second);
@@ -89,7 +84,7 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			return Converter::toDouble(it->second);
@@ -102,7 +97,7 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			return it->second;
@@ -115,7 +110,7 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			return (it->second)[0];
@@ -128,11 +123,11 @@ namespace urchin
 	{
 		checkState();
 
-		std::map<std::string, std::string>::const_iterator it = properties.find(propertyName);
+		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
 			bool value = false;
-			if(it->second.compare("true")==0)
+			if(it->second == "true")
 			{
 				value = true;
 			}

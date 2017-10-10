@@ -12,9 +12,9 @@ namespace urchin
 	class LoaderTTF : public Loader<Font>
 	{
 		public:
-			virtual ~LoaderTTF();
+			~LoaderTTF() override = default;
 
-			Font *loadFromFile(const std::string &, void *);
+			Font *loadFromFile(const std::string &, void *) override;
 	};
 	
 }

@@ -28,8 +28,8 @@ namespace urchin
 			friend class XmlParser;
 			friend class XmlWriter;
 
-			XmlChunk(TiXmlElement *);
-			XmlChunk(const TiXmlElement *);
+			explicit XmlChunk(TiXmlElement *);
+			explicit XmlChunk(const TiXmlElement *);
 
 			std::string getAttributeValue(const std::string &) const;
 			void setAttribute(const XmlAttribute &);
@@ -39,6 +39,9 @@ namespace urchin
 
 			int getIntValue() const;
 			void setIntValue(int);
+
+			unsigned int getUnsignedIntValue() const;
+			void setUnsignedIntValue(unsigned int);
 
 			float getFloatValue() const;
 			void setFloatValue(float);

@@ -9,8 +9,7 @@ namespace urchin
 	class EventListener
 	{
 		public:
-			EventListener();
-			virtual ~EventListener();
+			virtual ~EventListener() = default;
 
 			virtual void onClick(Widget *);
 			virtual void onClickRelease(Widget *);

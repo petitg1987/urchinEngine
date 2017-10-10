@@ -26,23 +26,23 @@ namespace urchin
 
 	std::shared_ptr<Image> GUISkinService::createTexWidget(unsigned int width, unsigned int height, const std::shared_ptr<XmlChunk> &skinXmlChunk, WidgetOutline *widgetOutline) const
 	{
-		//skin informations
+		//skin information
 		std::shared_ptr<XmlChunk> imgWidgetElem = getXmlSkin()->getUniqueChunk(true, "image", XmlAttribute(), skinXmlChunk);
 		auto *imgWidget = MediaManager::instance()->getMedia<Image>(imgWidgetElem->getStringValue());
 
 		std::shared_ptr<XmlChunk> topElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "top"), skinXmlChunk));
-		unsigned int top = topElem->getIntValue();
+		unsigned int top = topElem->getUnsignedIntValue();
 
 		std::shared_ptr<XmlChunk> bottomElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "bottom"), skinXmlChunk));
-		unsigned int bottom = bottomElem->getIntValue();
+		unsigned int bottom = bottomElem->getUnsignedIntValue();
 
 		std::shared_ptr<XmlChunk> leftElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "left"), skinXmlChunk));
-		unsigned int left = leftElem->getIntValue();
+		unsigned int left = leftElem->getUnsignedIntValue();
 
 		std::shared_ptr<XmlChunk> rightElem(getXmlSkin()->getUniqueChunk(true, "part", XmlAttribute("zone", "right"), skinXmlChunk));
-		unsigned int right = rightElem->getIntValue();
+		unsigned int right = rightElem->getUnsignedIntValue();
 
-		//copy the informations into the outline
+		//copy the information into the outline
 		if(widgetOutline!=nullptr)
 		{
 			widgetOutline->topWidth = top;
@@ -55,8 +55,8 @@ namespace urchin
 		unsigned int componentsCount = imgWidget->getComponentsCount(); //shortcut
 		auto *texels = new unsigned char[height*width*componentsCount];
 
-		unsigned int widthMinusRight = std::max(0, (int)width-(int)right);
-		unsigned int heightMinusBottom = std::max(0, (int)height-(int)bottom);
+		unsigned int widthMinusRight = static_cast<unsigned int>(std::max(0, (int)width-(int)right));
+		unsigned int heightMinusBottom = static_cast<unsigned int>(std::max(0, (int)height-(int)bottom));
 		unsigned int leftMultiplyInternalFormat = std::min(width, left*componentsCount);
 		unsigned int topAdjusted = std::min(height, top);
 

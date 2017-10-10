@@ -13,9 +13,9 @@ namespace urchin
 	class LoaderUrchinMesh : public Loader<ConstMeshes>
 	{
 		public:
-			virtual ~LoaderUrchinMesh();
+			~LoaderUrchinMesh() override = default;
 
-			ConstMeshes *loadFromFile(const std::string &, void *);
+			ConstMeshes *loadFromFile(const std::string &, void *) override;
 			
 		private:
 			void nextLine(std::ifstream &, std::string &);

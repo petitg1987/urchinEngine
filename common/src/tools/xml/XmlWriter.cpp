@@ -15,7 +15,7 @@ namespace urchin
 		this->filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 
 		this->doc = new TiXmlDocument();
-		TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
+		auto* decl = new TiXmlDeclaration( "1.0", "", "" );
 		doc->LinkEndChild(decl);
 	}
 
@@ -36,14 +36,14 @@ namespace urchin
 	 */
 	std::shared_ptr<XmlChunk> XmlWriter::createChunk(const std::string &chunkName, const XmlAttribute &attribute, std::shared_ptr<XmlChunk> parent)
 	{
-		TiXmlElement *chunk = new TiXmlElement(chunkName);
+		auto *chunk = new TiXmlElement(chunkName);
 
 		if(!attribute.getAttributeName().empty())
 		{
 			chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
 		}
 
-		if(parent.get()!=nullptr)
+		if(parent!=nullptr)
 		{
 			parent->getChunk()->LinkEndChild(chunk);
 		}else

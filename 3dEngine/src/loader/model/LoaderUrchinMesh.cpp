@@ -7,11 +7,6 @@
 
 namespace urchin
 {
-	
-	LoaderUrchinMesh::~LoaderUrchinMesh()
-	{
-
-	}
 
 	void LoaderUrchinMesh::nextLine(std::ifstream &file, std::string &buffer)
 	{
@@ -20,7 +15,7 @@ namespace urchin
 			std::getline(file, buffer);
 
 			//delete '\r'
-			int length = buffer.length()-1;
+			unsigned long length = buffer.length()-1;
 			if(length >=0 && buffer[length]=='\r')
 			{
 				buffer.resize(length);

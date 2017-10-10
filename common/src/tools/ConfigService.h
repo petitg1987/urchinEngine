@@ -30,7 +30,7 @@ namespace urchin
 		
 		private:
 			ConfigService();
-			virtual ~ConfigService();
+			~ConfigService() override = default;
 
 			void checkState() const;
 

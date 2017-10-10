@@ -17,7 +17,7 @@ namespace urchin
 	{
 		public:
 			static T *instance();
-			virtual ~Singleton();
+			~Singleton() override;
 
 		protected:
 			Singleton();

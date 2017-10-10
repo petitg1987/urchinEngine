@@ -17,7 +17,7 @@ namespace urchin
 	class XmlWriter
 	{
 		public:
-			XmlWriter(const std::string &);
+			explicit XmlWriter(const std::string &);
 			~XmlWriter();
 
 			std::shared_ptr<XmlChunk> createChunk(const std::string &, const XmlAttribute & = XmlAttribute(), std::shared_ptr<XmlChunk> = std::shared_ptr<XmlChunk>());

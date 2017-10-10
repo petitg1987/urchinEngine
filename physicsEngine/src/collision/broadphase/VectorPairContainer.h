@@ -17,13 +17,13 @@ namespace urchin
 	class VectorPairContainer : public PairContainer
 	{
 		public:
-			~VectorPairContainer();
+			~VectorPairContainer() override;
 
-			void addOverlappingPair(AbstractWorkBody *, AbstractWorkBody *);
-			void removeOverlappingPair(AbstractWorkBody *, AbstractWorkBody *);
-			void removeOverlappingPairs(AbstractWorkBody *);
+			void addOverlappingPair(AbstractWorkBody *, AbstractWorkBody *) override;
+			void removeOverlappingPair(AbstractWorkBody *, AbstractWorkBody *) override;
+			void removeOverlappingPairs(AbstractWorkBody *) override;
 
-			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
+			const std::vector<OverlappingPair *> &getOverlappingPairs() const override;
 
 		private:
 			std::vector<OverlappingPair *> overlappingPairs;

@@ -12,7 +12,6 @@ namespace urchin
 	struct IslandElementLink
 	{
 		IslandElementLink();
-		~IslandElementLink();
 
 		IslandElement *element; //reference to the element
 

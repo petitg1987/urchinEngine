@@ -9,11 +9,6 @@ namespace urchin
 
 	}
 
-	SplitBoundingBox::~SplitBoundingBox()
-	{
-
-	}
-
 	/**
 	 * Split the bounding box in several bounding boxes at limitSize.
 	 * If original box doesn't exceed limit size, the original box is returned.
@@ -26,7 +21,7 @@ namespace urchin
 			float size = aabbox.getHalfSize(axis) * 2.0f;
 			axisSplits[axis].push_back(aabbox.getMin()[axis]);
 
-			int nbSplits = static_cast<int>(std::ceil(size/limitSize));
+			auto nbSplits = static_cast<int>(std::ceil(size/limitSize));
 			float maxValue = aabbox.getMax()[axis];
 
 			for(int split = 0; split < nbSplits; ++split)
@@ -46,7 +41,7 @@ namespace urchin
 					Point3<float> minPoint(axisSplits[0][x-1], axisSplits[1][y-1], axisSplits[2][z-1]);
 					Point3<float> maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
 
-					splittedBoundingBox.push_back(AABBox<float>(minPoint, maxPoint));
+					splittedBoundingBox.emplace_back(AABBox<float>(minPoint, maxPoint));
 				}
 			}
 		}

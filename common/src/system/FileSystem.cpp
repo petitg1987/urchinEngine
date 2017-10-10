@@ -1,16 +1,10 @@
 #include "system/FileSystem.h"
-#include "system/FileHandler.h"
 
 namespace urchin
 {
 
 	FileSystem::FileSystem() : Singleton<FileSystem>(),
 			resourcesDirectory("./")
-	{
-
-	}
-
-	FileSystem::~FileSystem()
 	{
 
 	}

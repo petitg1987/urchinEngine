@@ -3,7 +3,6 @@
 
 #include "collision/broadphase/sweepandprune/SweepAndPrune.h"
 #include "collision/broadphase/VectorPairContainer.h"
-#include "shape/CollisionSphereShape.h"
 
 #define MAX_END_POINTS 16383
 
@@ -105,11 +104,11 @@ namespace urchin
 
 		//remove overlapping pairs
 		defaultPairContainer->removeOverlappingPairs(body);
-		for(auto &bodyBox : bodiesBox)
+		for(auto &bodyBoxIt : bodiesBox)
 		{
-			if(bodyBox.second->hasAlternativePairContainer())
+			if(bodyBoxIt.second->hasAlternativePairContainer())
 			{
-				bodyBox.second->getAlternativePairContainer()->removeOverlappingPairs(body);
+				bodyBoxIt.second->getAlternativePairContainer()->removeOverlappingPairs(body);
 			}
 		}
 
@@ -220,7 +219,7 @@ namespace urchin
 			{
 				const int axis1 = (1  << axis) & 3;
 				const int axis2 = (1  << axis1) & 3;
-				if(testOverlap && isOverlap(endPoint->getBodyBox(), prevEndPoint->getBodyBox(), axis1, axis2))
+				if(testOverlap && isOverlap(endPoint->getBodyBox(), prevEndPoint->getBodyBox(), static_cast<unsigned int>(axis1), static_cast<unsigned int>(axis2)))
 				{
 					createOverlappingPair(endPoint->getBodyBox(), prevEndPoint->getBodyBox());
 				}
@@ -254,7 +253,7 @@ namespace urchin
 			{
 				const int axis1 = (1 << axis) & 3;
 				const int axis2 = (1 << axis1) & 3;
-				if(testOverlap && isOverlap(endPoint->getBodyBox(), prevEndPoint->getBodyBox(), axis1, axis2))
+				if(testOverlap && isOverlap(endPoint->getBodyBox(), prevEndPoint->getBodyBox(), static_cast<unsigned int>(axis1), static_cast<unsigned int>(axis2)))
 				{
 					removeOverlappingPair(endPoint->getBodyBox(), prevEndPoint->getBodyBox());
 				}
@@ -294,7 +293,7 @@ namespace urchin
 			{
 				const int axis1 = (1 << axis) & 3;
 				const int axis2 = (1 << axis1) & 3;
-				if(testOverlap && isOverlap(endPoint->getBodyBox(), nextEndPoint->getBodyBox(), axis1, axis2))
+				if(testOverlap && isOverlap(endPoint->getBodyBox(), nextEndPoint->getBodyBox(), static_cast<unsigned int>(axis1), static_cast<unsigned int>(axis2)))
 				{
 					removeOverlappingPair(endPoint->getBodyBox(), nextEndPoint->getBodyBox());
 				}
@@ -328,7 +327,7 @@ namespace urchin
 			{
 				const int axis1 = (1 << axis) & 3;
 				const int axis2 = (1 << axis1) & 3;
-				if(testOverlap && isOverlap(endPoint->getBodyBox(), nextEndPoint->getBodyBox(), axis1, axis2))
+				if(testOverlap && isOverlap(endPoint->getBodyBox(), nextEndPoint->getBodyBox(), static_cast<unsigned int>(axis1), static_cast<unsigned int>(axis2)))
 				{
 					createOverlappingPair(endPoint->getBodyBox(), nextEndPoint->getBodyBox());
 				}
@@ -418,15 +417,15 @@ namespace urchin
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitByRay;
 		bodiesAABBoxHitByRay.reserve(20);
 
-		for(auto it = bodiesBox.begin(); it!=bodiesBox.end(); ++it)
+		for (auto bodyBox : bodiesBox)
 		{
-			if(it->second->getBody()!=testedBody)
+			if(bodyBox.second->getBody()!=testedBody)
 			{
-				AABBox<float> bodyAABBox = it->second->retrieveBodyAABBox();
+				AABBox<float> bodyAABBox = bodyBox.second->retrieveBodyAABBox();
 				AABBox<float> enlargedBodyAABBox = bodyAABBox.enlarge(enlargeNodeBoxHalfSize, enlargeNodeBoxHalfSize);
 				if(enlargedBodyAABBox.collideWithRay(ray))
 				{
-					bodiesAABBoxHitByRay.push_back(it->first);
+					bodiesAABBoxHitByRay.push_back(bodyBox.first);
 				}
 			}
 		}

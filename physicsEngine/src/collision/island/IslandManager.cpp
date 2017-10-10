@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	IslandManager::~IslandManager()
-	{
-
-	}
-
 	/**
 	 * Refresh body active state. If all bodies of an island can sleep, we set their status to inactive.
 	 * If one body of the island cannot sleep, we set their status to active.
@@ -40,7 +35,7 @@ namespace urchin
 			bool islandBodiesCanSleep = true;
 			for(unsigned int j=0; j<nbElements; ++j)
 			{ //loop on elements of the island
-				WorkRigidBody *body = static_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+				auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
 				if(isBodyMoving(body))
 				{
 					islandBodiesCanSleep = false;
@@ -53,7 +48,7 @@ namespace urchin
 
 			for(unsigned int j=0; j<nbElements; ++j)
 			{ //loop on elements of the island
-				WorkRigidBody *body = static_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+				auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
 				bool bodyActiveState = !islandBodiesCanSleep;
 				if(body->isActive()!=bodyActiveState)
 				{
@@ -76,9 +71,8 @@ namespace urchin
 		//1. create an island for each body
 		std::vector<IslandElement *> islandElements;
 		islandElements.reserve(bodyManager->getWorkBodies().size());
-		for(unsigned int i=0; i<bodyManager->getWorkBodies().size(); i++)
+		for (auto body : bodyManager->getWorkBodies())
 		{
-			AbstractWorkBody *body = bodyManager->getWorkBodies()[i];
 			if(!body->isStatic())
 			{
 				islandElements.push_back(body);
@@ -114,7 +108,7 @@ namespace urchin
 	unsigned int IslandManager::computeNumberElements(const std::vector<IslandElementLink> &islandElementsLink, unsigned int startElementIndex) const
 	{
 		unsigned int islandId = islandElementsLink[startElementIndex].islandIdRef;
-		unsigned int endElementIndex = startElementIndex+1;
+		unsigned int endElementIndex;
 
 		for(endElementIndex = startElementIndex; islandElementsLink.size()>endElementIndex && islandId==islandElementsLink[endElementIndex].islandIdRef; ++endElementIndex)
 		{
@@ -126,13 +120,8 @@ namespace urchin
 
 	bool IslandManager::isBodyMoving(const WorkRigidBody *body) const
 	{
-		if(body->getLinearVelocity().squareLength() < squaredLinearSleepingThreshold
-				&& body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold)
-		{
-			return false;
-		}
-
-		return true;
+		return !(body->getLinearVelocity().squareLength() < squaredLinearSleepingThreshold
+				 && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
 	}
 
 	#ifdef _DEBUG
@@ -149,7 +138,7 @@ namespace urchin
 
 				for(unsigned int j=0; j<nbElements; ++j)
 				{ //loop on elements of the island
-					WorkRigidBody *body = static_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+					auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
 					std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
 				}
 

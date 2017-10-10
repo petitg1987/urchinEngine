@@ -12,9 +12,9 @@ namespace urchin
 	class LoaderMTR : public Loader<Material>
 	{
 		public:
-			virtual ~LoaderMTR() = default;
+			~LoaderMTR() override = default;
 
-			Material *loadFromFile(const std::string &, void *);
+			Material *loadFromFile(const std::string &, void *) override;
 	};
 
 }

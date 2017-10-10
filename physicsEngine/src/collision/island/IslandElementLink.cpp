@@ -11,9 +11,4 @@ namespace urchin
 
 	}
 
-	IslandElementLink::~IslandElementLink()
-	{
-
-	}
-
 }

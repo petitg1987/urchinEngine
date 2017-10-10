@@ -13,7 +13,6 @@ namespace urchin
 	{
 		public:
 			BodyNodeData(AbstractWorkBody *, PairContainer *);
-			~BodyNodeData();
 
 			AbstractWorkBody *getBody() const;
 

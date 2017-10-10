@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	BodyNodeData::~BodyNodeData()
-	{
-
-	}
-
 	AbstractWorkBody *BodyNodeData::getBody() const
 	{
 		return body;

@@ -19,18 +19,19 @@ namespace urchin
 	{
 		public:
 			Window(Position, Size, const std::string &, const std::string &stringTitle = "");
-			virtual ~Window();
+
+			~Window() override;
 		
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 
-			void addChild(Widget *);
+			void addChild(Widget *) override;
 
-			void display(int, float);
+			void display(int, float) override;
 		
 		private:
-			bool onKeyDownEvent(unsigned int);
-			bool onKeyUpEvent(unsigned int);
-			bool onMouseMoveEvent(int, int);
+			bool onKeyDownEvent(unsigned int) override;
+			bool onKeyUpEvent(unsigned int) override;
+			bool onMouseMoveEvent(int, int) override;
 
 			//properties
 			const std::string nameSkin;

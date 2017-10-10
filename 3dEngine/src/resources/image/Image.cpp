@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 #include <cassert>
 
@@ -25,7 +23,7 @@ namespace urchin
 
 	Image::~Image()
 	{	
-		if(isTexture==true)
+		if(isTexture)
 		{
 			glDeleteTextures(1, &textureID);
 		}else
@@ -63,7 +61,7 @@ namespace urchin
 		return texels;
 	}
 
-	int Image::retrieveInternalFormat() const
+	GLint Image::retrieveInternalFormat() const
 	{
 		if(componentsCount==1)
 		{
@@ -83,7 +81,7 @@ namespace urchin
 		}
 	}
 
-	int Image::retrieveFormat() const
+	GLenum Image::retrieveFormat() const
 	{
 		if(format==Image::IMAGE_LUMINANCE)
 		{

@@ -6,7 +6,8 @@
 namespace urchin
 {
 	
-	ResourceManager::ResourceManager() : Singleton<ResourceManager>()
+	ResourceManager::ResourceManager() :
+			Singleton<ResourceManager>()
 	{
 		
 	}

@@ -59,9 +59,9 @@ namespace urchin
 			throw std::invalid_argument("Cannot open the file " + propertiesFilePath + ".");
 		}
 
-		for(std::map<std::string, std::string>::const_iterator it = properties.begin(); it!=properties.end(); ++it)
+		for (const auto &property : properties)
 		{
-			file << it->first << " = " << it->second <<"\n";
+			file << property.first << " = " << property.second <<"\n";
 		}
 
 		file.close();
@@ -74,7 +74,7 @@ namespace urchin
 			std::getline(file, buffer);
 
 			//delete '\r'
-			int length = buffer.length()-1;
+			unsigned long length = buffer.length()-1;
 			if(length >=0 && buffer[length]=='\r')
 			{
 				buffer.resize(length);

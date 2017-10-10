@@ -18,7 +18,7 @@ namespace urchin
 	{
 		public:
 			TextBox(Position, Size, const std::string &);
-			virtual ~TextBox();
+			~TextBox() override;
 			
 			void createOrUpdateWidget();
 

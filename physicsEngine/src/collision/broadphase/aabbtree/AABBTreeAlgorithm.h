@@ -15,16 +15,16 @@ namespace urchin
 	{
 		public:
 			AABBTreeAlgorithm();
-			~AABBTreeAlgorithm();
+			~AABBTreeAlgorithm() override;
 
-			void addBody(AbstractWorkBody *, PairContainer *);
-			void removeBody(AbstractWorkBody *);
-			void updateBodies();
+			void addBody(AbstractWorkBody *, PairContainer *) override;
+			void removeBody(AbstractWorkBody *) override;
+			void updateBodies() override;
 
-			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
+			const std::vector<OverlappingPair *> &getOverlappingPairs() const override;
 
-			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const;
-			std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const;
+			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const override;
+			std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const override;
 
 		private:
 			AABBTree *tree;

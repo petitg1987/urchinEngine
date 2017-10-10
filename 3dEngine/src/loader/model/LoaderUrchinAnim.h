@@ -27,9 +27,9 @@ namespace urchin
 	class LoaderUrchinAnim : public Loader<ConstAnimation>
 	{
 		public:
-			virtual ~LoaderUrchinAnim();
+			~LoaderUrchinAnim() override = default;
 
-			ConstAnimation *loadFromFile(const std::string &, void *);
+			ConstAnimation *loadFromFile(const std::string &, void *) override;
 			
 		private:
 			void nextLine(std::ifstream &, std::string &);

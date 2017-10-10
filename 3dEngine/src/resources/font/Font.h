@@ -27,7 +27,7 @@ namespace urchin
 	{
 		public:
 			Font(Image *, Glyph *, unsigned int, unsigned int, unsigned int);
-			~Font();
+			~Font() override;
 		
 			const Glyph &getGlyph(unsigned char i) const;
 			unsigned int getTextureID() const;
