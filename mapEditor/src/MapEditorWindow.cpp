@@ -1,9 +1,3 @@
-#include <stdexcept>
-#include <QApplication>
-#include <QMenuBar>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QFileDialog>
-
 #include "MapEditorWindow.h"
 #include "dialog/NewDialog.h"
 #include "dialog/NotSavedDialog.h"
@@ -12,6 +6,12 @@
 #include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "scene/controller/lights/LightTableView.h"
 #include "scene/controller/sounds/SoundTableView.h"
+
+#include <stdexcept>
+#include <QApplication>
+#include <QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QFileDialog>
 
 namespace urchin
 {

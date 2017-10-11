@@ -17,7 +17,6 @@ namespace urchin
 	{
 		public:
 			ShadowModelUniform();
-			~ShadowModelUniform();
 
 			void setLayersToUpdateLocation(int);
 			void setModelUniformData(const ShadowData *);

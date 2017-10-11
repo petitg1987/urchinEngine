@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "shape/CollisionBoxShape.h"
 #include "object/CollisionBoxObject.h"
 
@@ -9,6 +11,8 @@ namespace urchin
 			boxShape(std::make_shared<BoxShape<float>>(halfSizes))
 	{
 		computeSafeMargin();
+
+		lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
 	}
 
 	void CollisionBoxShape::computeSafeMargin()
@@ -46,16 +50,22 @@ namespace urchin
 
 	AABBox<float> CollisionBoxShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
-		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
-		Point3<float> extend(
-			boxShape->getHalfSize(0) * std::abs(orientation[0]) + boxShape->getHalfSize(1) * std::abs(orientation[3]) + boxShape->getHalfSize(2) * std::abs(orientation[6]),
-			boxShape->getHalfSize(0) * std::abs(orientation[1]) + boxShape->getHalfSize(1) * std::abs(orientation[4]) + boxShape->getHalfSize(2) * std::abs(orientation[7]),
-			boxShape->getHalfSize(0) * std::abs(orientation[2]) + boxShape->getHalfSize(1) * std::abs(orientation[5]) + boxShape->getHalfSize(2) * std::abs(orientation[8])
-		);
+		if(!lastTransform.equals(physicsTransform))
+		{
+			const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
+			Point3<float> extend(
+					boxShape->getHalfSize(0) * std::abs(orientation[0]) + boxShape->getHalfSize(1) * std::abs(orientation[3]) + boxShape->getHalfSize(2) * std::abs(orientation[6]),
+					boxShape->getHalfSize(0) * std::abs(orientation[1]) + boxShape->getHalfSize(1) * std::abs(orientation[4]) + boxShape->getHalfSize(2) * std::abs(orientation[7]),
+					boxShape->getHalfSize(0) * std::abs(orientation[2]) + boxShape->getHalfSize(1) * std::abs(orientation[5]) + boxShape->getHalfSize(2) * std::abs(orientation[8])
+			);
 
-		const Point3<float> &position = physicsTransform.getPosition();
+			const Point3<float> &position = physicsTransform.getPosition();
 
-		return AABBox<float>(position - extend, position + extend);
+			lastAabbox = AABBox<float>(position - extend, position + extend);
+			lastTransform = physicsTransform;
+		}
+
+		return lastAabbox;
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const

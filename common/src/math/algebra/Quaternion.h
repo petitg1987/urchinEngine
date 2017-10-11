@@ -61,7 +61,10 @@ namespace urchin
 			const Quaternion<T>& operator *=(const Quaternion<T> &);
 			const Quaternion<T>& operator *=(const Point3<T> &);
 			const Quaternion<T>& operator *=(T);
-			
+
+			bool operator ==(const Quaternion<T> &) const;
+			bool operator !=(const Quaternion<T> &) const;
+
 			T& operator [](int i);
 			const T& operator [](int i) const;
 

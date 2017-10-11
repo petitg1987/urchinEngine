@@ -28,7 +28,7 @@ namespace urchin
 
 		public:
 			ObjectControllerWidget();
-			virtual ~ObjectControllerWidget() = default;
+			~ObjectControllerWidget() override = default;
 
 			enum NotificationType
 			{
@@ -53,7 +53,7 @@ namespace urchin
 			void setupPhysicsFactorPropertiesBox(QVBoxLayout *);
 			void setupPhysicsShapeBox(QVBoxLayout *);
 
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 			void setupObjectDataFrom(const SceneObject *);
 			void setupObjectPhysicsDataFrom(const SceneObject *);
 

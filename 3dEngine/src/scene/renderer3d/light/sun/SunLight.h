@@ -11,16 +11,16 @@ namespace urchin
 	class SunLight : public Light
 	{
 		public:
-			SunLight(const Vector3<float> &);
-			virtual ~SunLight();
+			explicit SunLight(const Vector3<float> &);
+			~SunLight() override = default;
 
 			//general methods
 			void setDirection(const Vector3<float> &);
-			std::vector<Vector3<float>> getDirections() const;
-			const Point3<float> &getPosition() const;
-			LightType getLightType() const;
-			bool hasParallelBeams() const;
-			const AABBox<float> &getAABBox() const;
+			std::vector<Vector3<float>> getDirections() const override;
+			const Point3<float> &getPosition() const override;
+			LightType getLightType() const override;
+			bool hasParallelBeams() const override;
+			const AABBox<float> &getAABBox() const override;
 
 		private:
 			Vector3<float> direction;

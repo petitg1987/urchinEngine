@@ -23,18 +23,18 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			BodyCompoundShapeWidget(const SceneObject *);
-			virtual ~BodyCompoundShapeWidget();
+			explicit BodyCompoundShapeWidget(const SceneObject *);
+			~BodyCompoundShapeWidget() override;
 
-			std::string getBodyShapeName() const;
+			std::string getBodyShapeName() const override;
 			LocalizedShapeTableView *getLocalizedShapeTableView() const;
 
 		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>);
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const;
+			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
 		private:
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 
 			void setupTransformBox(QVBoxLayout *, std::shared_ptr<const LocalizedCollisionShape>);
 			void setupPosition(QGridLayout *, const Point3<float> &);

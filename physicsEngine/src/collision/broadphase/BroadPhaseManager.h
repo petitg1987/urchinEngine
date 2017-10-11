@@ -18,10 +18,10 @@ namespace urchin
 	class BroadPhaseManager : public Observer
 	{
 		public:
-			BroadPhaseManager(BodyManager *);
-			~BroadPhaseManager();
+			explicit BroadPhaseManager(BodyManager *);
+			~BroadPhaseManager() override;
 
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 
 			void addBody(AbstractWorkBody *, PairContainer *);
 			void removeBody(AbstractWorkBody *);

@@ -197,7 +197,7 @@ namespace urchin
 
 	template<class T> T Quaternion<T>::norm() const
 	{
-		return sqrt((X*X) + (Y*Y) + (Z*Z) + (W*W));
+		return std::sqrt((X*X) + (Y*Y) + (Z*Z) + (W*W));
 	}
 
 	template<class T> T Quaternion<T>::squareNorm() const
@@ -268,17 +268,17 @@ namespace urchin
 		}else
 		{
 			//computes the sin of the angle using the trig identity sin^2(omega) + cos^2(omega) = 1
-			T sinOmega = sqrt(1.0f - (cosOmega * cosOmega));
+			T sinOmega = std::sqrt(1.0f - (cosOmega * cosOmega));
 
 			//computes the angle from its sin and cosine
-			T omega = atan2(sinOmega, cosOmega);
+			T omega = std::atan2(sinOmega, cosOmega);
 
 			//computes inverse of denominator, so we only have to divide once
 			T oneOverSinOmega = 1.0f / sinOmega;
 
 			//computes interpolation parameters
-			k0 = sin((1.0f - t) * omega) * oneOverSinOmega;
-			k1 = sin(t * omega) * oneOverSinOmega;
+			k0 = std::sin((1.0f - t) * omega) * oneOverSinOmega;
+			k1 = std::sin(t * omega) * oneOverSinOmega;
 		}
 
 		//interpolates and returns new quaternion
@@ -379,24 +379,24 @@ namespace urchin
 	{ //inspired on Eigen library (EulerAngle.h)
 		Vector3<T> euler;
 
-		bool sequenceAxis = ((i+1)%3==j) ? true : false;
+		bool sequenceAxis = (i+1)%3==j;
 		Matrix3<T> m = toMatrix3();
 
-		euler[0] = atan2(m(k, j), m(k, k));
+		euler[0] = std::atan2(m(k, j), m(k, k));
 		T cosEuler1 = Vector2<T>(m(i, i), m(j, i)).length();
 
 		if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0))
 		{
 			euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
-			euler[1] = atan2(-m(k, i), -cosEuler1);
+			euler[1] = std::atan2(-m(k, i), -cosEuler1);
 		}else
 		{
-			euler[1] = atan2(-m(k, i), cosEuler1);
+			euler[1] = std::atan2(-m(k, i), cosEuler1);
 		}
 
 		T sinEuler0 = sin(euler[0]);
 		T cosEuler0 = cos(euler[0]);
-		euler[2] = atan2(sinEuler0*m(i, k) - cosEuler0*m(i, j), cosEuler0*m(j, j) - sinEuler0*m(j, k));
+		euler[2] = std::atan2(sinEuler0*m(i, k) - cosEuler0*m(i, j), cosEuler0*m(j, j) - sinEuler0*m(j, k));
 
 		return sequenceAxis ? euler : -euler;
 	}
@@ -405,24 +405,24 @@ namespace urchin
 	{ //inspired on Eigen library (EulerAngle.h)
 		Vector3<T> euler;
 
-		bool sequenceAxis = ((i+1)%3==j) ? true : false;
+		bool sequenceAxis = (i+1)%3==j;
 		Matrix3<T> m = toMatrix3();
 
-		euler[0] = atan2(m(i, j), m(i, k));
+		euler[0] = std::atan2(m(i, j), m(i, k));
 		T sinEuler1 = Vector2<T>(m(i, j), m(i, k)).length();
 
 	    if((sequenceAxis && euler[0]<0) || ((!sequenceAxis) && euler[0]>0))
 	    {
 	    	euler[0] = (euler[0] > 0) ? euler[0] - PI_VALUE : euler[0] + PI_VALUE;
-	    	euler[1] = -atan2(sinEuler1, m(i, i));
+	    	euler[1] = -std::atan2(sinEuler1, m(i, i));
 	    }else
 	    {
-	    	euler[1] = atan2(sinEuler1, m(i, i));
+	    	euler[1] = std::atan2(sinEuler1, m(i, i));
 	    }
 
 	    T sinEuler0 = sin(euler[0]);
 	    T cosEuler0 = cos(euler[0]);
-	    euler[2] = atan2(cosEuler0*m(k, j) - sinEuler0*m(k, k), cosEuler0*m(j, j) - sinEuler0*m(j, k));
+	    euler[2] = std::atan2(cosEuler0*m(k, j) - sinEuler0*m(k, k), cosEuler0*m(j, j) - sinEuler0*m(j, k));
 
 		return sequenceAxis ? euler : -euler;
 	}
@@ -479,6 +479,16 @@ namespace urchin
 		*this = *this * t;
 
 		return *this;
+	}
+
+	template<class T> bool Quaternion<T>::operator ==(const Quaternion<T> &q) const
+	{
+		return (X==q.X && Y==q.Y && Z==q.Z && W==q.W);
+	}
+
+	template<class T> bool Quaternion<T>::operator !=(const Quaternion<T> &q) const
+	{
+		return !(*this == q);
 	}
 
 	template<class T> T& Quaternion<T>::operator [](int i)

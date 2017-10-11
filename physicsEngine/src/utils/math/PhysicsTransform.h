@@ -14,7 +14,7 @@ namespace urchin
 		public:
 			PhysicsTransform();
 			PhysicsTransform(const PhysicsTransform &);
-			PhysicsTransform(const Point3<float> &, const Quaternion<float> &q = Quaternion<float>());
+			explicit PhysicsTransform(const Point3<float> &, const Quaternion<float> &q = Quaternion<float>());
 
 			void setPosition(const Point3<float> &);
 			const Point3<float> &getPosition() const;
@@ -25,6 +25,7 @@ namespace urchin
 
 			const Transform<float> toTransform() const;
 
+			bool equals(const PhysicsTransform &) const;
 			Point3<float> transform(const Point3<float> &) const;
 			Point3<float> inverseTransform(const Point3<float> &) const;
 			PhysicsTransform integrate(const Vector3<float> &, const Vector3<float> &, float) const;

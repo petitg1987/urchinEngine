@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <map>
 
 #include "utils/display/geometry/convexhull/ConvexHullModel.h"

@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <fstream>
 #include <stdexcept>
 
@@ -138,7 +137,7 @@ namespace urchin
 
 		int countAttachedShaders = 0;
 		int maxCount = 10;
-		unsigned int *attachedShaders = new unsigned int[maxCount];
+		auto *attachedShaders = new unsigned int[maxCount];
 
 		glGetAttachedShaders(programID, maxCount, &countAttachedShaders, attachedShaders);
 
@@ -159,7 +158,7 @@ namespace urchin
 
 		if(infoLogLength > 1)
 		{
-			char *infoLog = new char[infoLogLength];
+			auto *infoLog = new char[infoLogLength];
 			glGetShaderInfoLog(shaderID, infoLogLength, nullptr, infoLog);
 
 			std::ostringstream buffer;
@@ -177,7 +176,7 @@ namespace urchin
 
 		if(infoLogLength > 1)
 		{
-			char *infoLog = new char[infoLogLength];
+			auto *infoLog = new char[infoLogLength];
 			glGetProgramInfoLog(programID, infoLogLength, nullptr, infoLog);
 
 			std::ostringstream buffer;

@@ -1,4 +1,5 @@
 #include <limits>
+#include <cmath>
 
 #include "shape/CollisionConvexHullShape.h"
 #include "object/CollisionConvexHullObject.h"
@@ -15,6 +16,8 @@ namespace urchin
 	{
 		initializeConvexHullReduced();
 		initializeDistances();
+
+		lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
 	}
 
 	void CollisionConvexHullShape::initializeConvexHullReduced()
@@ -69,44 +72,49 @@ namespace urchin
 
 	AABBox<float> CollisionConvexHullShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
-		const Quaternion<float> &orientation = physicsTransform.getOrientation();
-		Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-		Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-		const std::vector<Point3<float>> &convexHullShapePoints = convexHullShape->getPoints();
-		for (const auto &convexHullShapePoint : convexHullShapePoints)
+		if(!lastTransform.equals(physicsTransform))
 		{
-			const Point3<float> point = orientation.rotatePoint(convexHullShapePoint);
+			const Quaternion<float> &orientation = physicsTransform.getOrientation();
+			Point3<float> min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+			Point3<float> max(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+			const std::vector<Point3<float>> &convexHullShapePoints = convexHullShape->getPoints();
+			for (const auto &convexHullShapePoint : convexHullShapePoints)
+			{
+				const Point3<float> point = orientation.rotatePoint(convexHullShapePoint);
 
-			if(min.X > point.X)
-			{
-				min.X = point.X;
-			}
-			if(min.Y > point.Y)
-			{
-				min.Y = point.Y;
-			}
-			if(min.Z > point.Z)
-			{
-				min.Z = point.Z;
+				if (min.X > point.X)
+				{
+					min.X = point.X;
+				}
+				if (min.Y > point.Y)
+				{
+					min.Y = point.Y;
+				}
+				if (min.Z > point.Z)
+				{
+					min.Z = point.Z;
+				}
+
+				if (max.X < point.X)
+				{
+					max.X = point.X;
+				}
+				if (max.Y < point.Y)
+				{
+					max.Y = point.Y;
+				}
+				if (max.Z < point.Z)
+				{
+					max.Z = point.Z;
+				}
 			}
 
-			if(max.X < point.X)
-			{
-				max.X = point.X;
-			}
-			if(max.Y < point.Y)
-			{
-				max.Y = point.Y;
-			}
-			if(max.Z < point.Z)
-			{
-				max.Z = point.Z;
-			}
+			const Point3<float> &position = physicsTransform.getPosition();
+
+			lastAabbox = AABBox<float>(min + position, max + position);
+			lastTransform = physicsTransform;
 		}
-
-		const Point3<float> &position = physicsTransform.getPosition();
-
-		return AABBox<float>(min + position, max + position);
+		return lastAabbox;
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const

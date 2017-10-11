@@ -1,4 +1,5 @@
 #include <limits>
+#include <cmath>
 
 #include "CollisionTriangleMeshShape.h"
 
@@ -8,7 +9,7 @@ namespace urchin
     CollisionTriangleMeshShape::CollisionTriangleMeshShape() :
             CollisionShape3D()
     {
-
+        lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
     }
 
     CollisionShape3D::ShapeType CollisionTriangleMeshShape::getShapeType() const
@@ -33,7 +34,14 @@ namespace urchin
 
     AABBox<float> CollisionTriangleMeshShape::toAABBox(const PhysicsTransform &physicsTransform) const
     {
-        //TODO complete
+        if(!lastTransform.equals(physicsTransform))
+        {
+            //TODO complete
+
+            lastTransform = physicsTransform;
+        }
+
+        return lastAabbox;
     }
 
     std::shared_ptr<CollisionConvexObject3D> CollisionTriangleMeshShape::toConvexObject(const PhysicsTransform &physicsTransform) const

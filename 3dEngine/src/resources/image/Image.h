@@ -2,6 +2,7 @@
 #define URCHINENGINE_CIMAGE_H
 
 #include <GL/glew.h>
+
 #include "resources/Resource.h"
 
 namespace urchin

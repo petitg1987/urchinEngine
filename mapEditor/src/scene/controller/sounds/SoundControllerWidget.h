@@ -30,7 +30,7 @@ namespace urchin
 
 		public:
 			SoundControllerWidget();
-			virtual ~SoundControllerWidget() = default;
+			~SoundControllerWidget() override = default;
 
 			SoundTableView *getSoundTableView() const;
 
@@ -43,7 +43,7 @@ namespace urchin
 			void setupSoundBehaviorPropertiesBox(QVBoxLayout *);
 			void setupSpecificTriggerShapeBox(QVBoxLayout *);
 
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 			void setupSoundDataFrom(const SceneSound *);
 			void setupAmbientSoundDataFrom();
 			void setupPointSoundDataFrom(const PointSound *);

@@ -18,7 +18,7 @@ namespace urchin
 	{
 		public:
 			Octreeable();
-			virtual ~Octreeable();
+			~Octreeable() override;
 
 			enum NotificationType
 			{

@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include "Light.h"
 
 namespace urchin

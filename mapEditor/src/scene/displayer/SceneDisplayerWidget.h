@@ -2,11 +2,12 @@
 #define URCHINENGINE_MAPEDITOR_SCENEDISPLAYERWIDGET_H
 
 #include <string>
-#include <QGLWidget>
 #include <QKeyEvent>
 
 #include "UrchinCommon.h"
 #include "SceneDisplayer.h"
+#include <QGLWidget>
+
 
 namespace urchin
 {
@@ -17,7 +18,7 @@ namespace urchin
 
 		public:
 			SceneDisplayerWidget(QWidget *, const std::string &);
-			virtual ~SceneDisplayerWidget();
+			~SceneDisplayerWidget() override;
 
 			MapHandler *newMap(const std::string &, const std::string &);
 			MapHandler *openMap(const std::string &);
@@ -30,15 +31,15 @@ namespace urchin
 			void setHighlightSceneLight(const SceneLight *);
 			void setHighlightSceneSound(const SceneSound *);
 
-			void initializeGL();
-			void paintGL();
-			void resizeGL(int, int);
+			void initializeGL() override;
+			void paintGL() override;
+			void resizeGL(int, int) override;
 
-			void keyPressEvent(QKeyEvent *);
-			void keyReleaseEvent(QKeyEvent *);
-			void mousePressEvent(QMouseEvent *);
-			void mouseReleaseEvent(QMouseEvent *);
-			void mouseMoveEvent(QMouseEvent *);
+			void keyPressEvent(QKeyEvent *) override;
+			void keyReleaseEvent(QKeyEvent *) override;
+			void mousePressEvent(QMouseEvent *) override;
+			void mouseReleaseEvent(QMouseEvent *) override;
+			void mouseMoveEvent(QMouseEvent *) override;
 
 		private:
 			void updateSceneDisplayerViewProperties();

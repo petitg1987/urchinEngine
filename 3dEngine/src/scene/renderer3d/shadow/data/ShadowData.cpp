@@ -1,10 +1,8 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <cmath>
 #include <stdexcept>
 
 #include "ShadowData.h"
-#include "scene/renderer3d/light/Light.h"
 
 namespace urchin
 {

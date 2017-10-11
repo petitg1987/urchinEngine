@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <stdexcept>
 
 #include "LightManager.h"
@@ -24,9 +23,9 @@ namespace urchin
 	LightManager::~LightManager()
 	{
 		std::set<Light *> allOctreeableLights = lightOctreeManager->getOctreeables();
-		for(auto it=allOctreeableLights.begin(); it!=allOctreeableLights.end(); ++it)
-		{
-			delete (*it);
+		for (auto allOctreeableLight : allOctreeableLights)
+        {
+			delete allOctreeableLight;
 		}
 		for(std::vector<Light *>::const_iterator it=parallelBeamsLights.begin(); it!=parallelBeamsLights.end(); ++it)
 		{

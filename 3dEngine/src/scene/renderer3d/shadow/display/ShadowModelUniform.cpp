@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <algorithm>
 
 #include "ShadowModelUniform.h"
@@ -11,11 +10,6 @@ namespace urchin
 			CustomModelUniform(),
 			layersToUpdateLoc(0),
 			shadowData(nullptr)
-	{
-
-	}
-
-	ShadowModelUniform::~ShadowModelUniform()
 	{
 
 	}
@@ -41,7 +35,7 @@ namespace urchin
 			if(frustumShadowData->needShadowMapUpdate())
 			{
 				const std::set<Model *> &frustumModels = frustumShadowData->getModels();
-				std::set<Model *>::const_iterator itModel = std::find(frustumModels.begin(), frustumModels.end(), model);
+				auto itModel = std::find(frustumModels.begin(), frustumModels.end(), model);
 
 				if(itModel!=frustumModels.end())
 				{

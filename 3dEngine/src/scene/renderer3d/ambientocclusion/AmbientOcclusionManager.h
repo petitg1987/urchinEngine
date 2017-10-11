@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
 #define URCHINENGINE_AMBIENTOCCLUSIONMANAGER_H
 
+#include <GL/glew.h>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/camera/Camera.h"
@@ -88,7 +89,7 @@ namespace urchin
 			//visual data
 			unsigned int depthTexID;
 			unsigned int normalAndAmbientTexID;
-			unsigned int ambienOcclusionTexLoc;
+			GLint ambientOcclusionTexLoc;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 
 			std::shared_ptr<BilateralBlurFilter> verticalBlurFilter;

@@ -4,7 +4,6 @@
 #include <limits>
 
 #include "OmnidirectionalLight.h"
-#include "utils/display/geometry/sphere/SphereModel.h"
 
 namespace urchin
 {
@@ -44,12 +43,12 @@ namespace urchin
 	{
 		std::vector<Vector3<float>> directions;
 
-		directions.push_back(Vector3<float>(1.0, 0.0, 0.0)); //Left
-		directions.push_back(Vector3<float>(-1.0, 0.0, 0.0)); //Right
-		directions.push_back(Vector3<float>(0.0, 1.0, 0.0)); //Top
-		directions.push_back(Vector3<float>(0.0, -1.0, 0.0)); //Bottom
-		directions.push_back(Vector3<float>(0.0, 0.0, 1.0)); //Back
-		directions.push_back(Vector3<float>(0.0, 0.0, -1.0)); //Front
+		directions.emplace_back(Vector3<float>(1.0, 0.0, 0.0)); //Left
+		directions.emplace_back(Vector3<float>(-1.0, 0.0, 0.0)); //Right
+		directions.emplace_back(Vector3<float>(0.0, 1.0, 0.0)); //Top
+		directions.emplace_back(Vector3<float>(0.0, -1.0, 0.0)); //Bottom
+		directions.emplace_back(Vector3<float>(0.0, 0.0, 1.0)); //Back
+		directions.emplace_back(Vector3<float>(0.0, 0.0, -1.0)); //Front
 
 		return directions;
 	}

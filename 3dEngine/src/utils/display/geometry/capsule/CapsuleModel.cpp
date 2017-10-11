@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <cmath>
 
 #include "utils/display/geometry/capsule/CapsuleModel.h"

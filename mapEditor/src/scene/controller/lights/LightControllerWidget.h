@@ -23,7 +23,7 @@ namespace urchin
 
 		public:
 			LightControllerWidget();
-			virtual ~LightControllerWidget() = default;
+			~LightControllerWidget() override = default;
 
 			LightTableView *getLightTableView() const;
 
@@ -35,7 +35,7 @@ namespace urchin
 			void setupSpecificOmnidirectionalLightBox(QVBoxLayout *);
 			void setupSpecificSunLightBox(QVBoxLayout *);
 
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 			void setupLightDataFrom(const SceneLight *);
 			void setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *);
 			void setupSunLightDataFrom(const SunLight *);

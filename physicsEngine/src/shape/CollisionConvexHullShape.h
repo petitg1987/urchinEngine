@@ -39,6 +39,9 @@ namespace urchin
 
 			float minDistanceToCenter;
 			float maxDistanceToCenter;
+
+			mutable AABBox<float> lastAabbox;
+			mutable PhysicsTransform lastTransform;
 	};
 
 }

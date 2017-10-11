@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <cmath>
 #include <sstream>
 #include <memory>
@@ -160,7 +159,7 @@ namespace urchin
 		}
 	}
 
-	void ShadowManager::onCameraProjectionUpdate(const Camera *const camera)
+	void ShadowManager::onCameraProjectionUpdate(const Camera *camera)
 	{
 		this->projectionMatrix = camera->getProjectionMatrix();
 		this->frustumDistance = camera->getFrustum().computeFarDistance() + camera->getFrustum().computeNearDistance();
@@ -303,7 +302,7 @@ namespace urchin
 		return splittedFrustums;
 	}
 
-	const ShadowData &ShadowManager::getShadowData(const Light *const light) const
+	const ShadowData &ShadowManager::getShadowData(const Light *light) const
 	{
 		auto it = shadowDatas.find(light);
 		if(it==shadowDatas.end())
@@ -333,7 +332,7 @@ namespace urchin
 		return visibleModels;
 	}
 
-	void ShadowManager::addShadowLight(const Light *const light)
+	void ShadowManager::addShadowLight(const Light *light)
 	{
 		light->addObserver(this, Light::LIGHT_MOVE);
 
@@ -343,7 +342,7 @@ namespace urchin
 		updateViewMatrix(light);
 	}
 
-	void ShadowManager::removeShadowLight(const Light *const light)
+	void ShadowManager::removeShadowLight(const Light *light)
 	{
 		light->removeObserver(this, Light::LIGHT_MOVE);
 
@@ -371,7 +370,7 @@ namespace urchin
 		}
 	}
 
-	void ShadowManager::updateViewMatrix(const Light *const light)
+	void ShadowManager::updateViewMatrix(const Light *light)
 	{
 		ShadowData *shadowData = shadowDatas[light];
 
@@ -402,7 +401,7 @@ namespace urchin
 	/**
 	 * Updates frustum shadow data (models, shadow caster/receiver box, projection matrix)
 	 */
-	void ShadowManager::updateFrustumShadowData(const Light *const light, ShadowData *const shadowData)
+	void ShadowManager::updateFrustumShadowData(const Light *light, ShadowData *shadowData)
 	{
 		if(light->hasParallelBeams())
 		{ //sun light
@@ -563,7 +562,7 @@ namespace urchin
 		}
 	}
 
-	void ShadowManager::createShadowMaps(const Light *const light)
+	void ShadowManager::createShadowMaps(const Light *light)
 	{
 		//frame buffer object
 		unsigned int fboID;
@@ -642,7 +641,7 @@ namespace urchin
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void ShadowManager::removeShadowMaps(const Light *const light)
+	void ShadowManager::removeShadowMaps(const Light *light)
 	{
 		unsigned int depthTextureID = shadowDatas[light]->getDepthTextureID();
 		glDeleteTextures(1, &depthTextureID);
@@ -731,7 +730,7 @@ namespace urchin
 	}
 
 #ifdef _DEBUG
-	void ShadowManager::drawLightSceneBox(const Frustum<float> &frustum, const Light *const light, const Matrix4<float> &viewMatrix) const
+	void ShadowManager::drawLightSceneBox(const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const
 	{
 		auto itShadowData = shadowDatas.find(light);
 		if(itShadowData==shadowDatas.end())

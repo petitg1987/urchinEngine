@@ -56,6 +56,11 @@ namespace urchin
 		return Transform<float>(position, orientation, 1.0f);
 	}
 
+	bool PhysicsTransform::equals(const PhysicsTransform &physicsTransform) const
+	{
+		return physicsTransform.getPosition() == position && physicsTransform.getOrientation() == orientation;
+	}
+
 	Point3<float> PhysicsTransform::transform(const Point3<float> &point) const
 	{
 		return orientation.rotatePoint(point) + position;

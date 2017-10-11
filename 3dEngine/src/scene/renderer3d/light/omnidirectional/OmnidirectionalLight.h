@@ -11,16 +11,16 @@ namespace urchin
 	class OmnidirectionalLight : public Light
 	{
 		public:
-			OmnidirectionalLight(const Point3<float> &);
-			virtual ~OmnidirectionalLight();
+			explicit OmnidirectionalLight(const Point3<float> &);
+			~OmnidirectionalLight() override;
 
 			//general methods
 			void setPosition(const Point3<float> &);
-			const Point3<float> &getPosition() const;
-			std::vector<Vector3<float>> getDirections() const;
-			LightType getLightType() const;
-			bool hasParallelBeams() const;
-			const AABBox<float> &getAABBox() const;
+			const Point3<float> &getPosition() const override;
+			std::vector<Vector3<float>> getDirections() const override;
+			LightType getLightType() const override;
+			bool hasParallelBeams() const override;
+			const AABBox<float> &getAABBox() const override;
 
 			//attenuation methods
 			void setAttenuation(float);

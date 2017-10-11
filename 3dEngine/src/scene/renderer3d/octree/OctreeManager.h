@@ -18,15 +18,15 @@ namespace urchin
 	template<class TOctreeable> class OctreeManager : public Observable, public Observer
 	{
 		public:
-			OctreeManager(int);
-			~OctreeManager();
+			explicit OctreeManager(int);
+			~OctreeManager() override;
 
 			enum NotificationType
 			{
 				OCTREE_BUILT,
 			};
 
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 		
 			void addOctreeable(TOctreeable *);
 			void removeOctreeable(TOctreeable *);

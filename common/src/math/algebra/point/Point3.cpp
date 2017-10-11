@@ -188,7 +188,7 @@ namespace urchin
 		return (X==p.X && Y==p.Y && Z==p.Z);
 	}
 
-	template<class T> bool Point3<T>::operator !=(const Point3<T>& p) const
+	template<class T> bool Point3<T>::operator !=(const Point3<T> &p) const
 	{
 		return !(*this == p);
 	}

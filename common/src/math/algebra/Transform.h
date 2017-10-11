@@ -15,7 +15,7 @@ namespace urchin
 	{
 		public:
 			Transform();
-			Transform(const Point3<T> &, const Quaternion<T> &q = Quaternion<T>(), T scale = (T)1.0);
+			explicit Transform(const Point3<T> &, const Quaternion<T> &q = Quaternion<T>(), T scale = (T)1.0);
 		
 			void setPosition(const Point3<T> &);
 			const Point3<T> &getPosition() const;

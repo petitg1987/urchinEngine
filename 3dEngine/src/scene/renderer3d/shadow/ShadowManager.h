@@ -37,12 +37,12 @@ namespace urchin
 			};
 
 			ShadowManager(LightManager *, OctreeManager<Model> *);
-			virtual ~ShadowManager();
+			~ShadowManager() override;
 
 			void loadUniformLocationFor(unsigned int);
 			void onResize(unsigned int, unsigned int);
-			void onCameraProjectionUpdate(const Camera *const);
-			void notify(Observable *, int);
+			void onCameraProjectionUpdate(const Camera *);
+			void notify(Observable *, int) override;
 
 			float getShadowMapBias() const;
 			void setShadowMapResolution(unsigned int);
@@ -57,7 +57,7 @@ namespace urchin
 			float getShadowMapFrequencyUpdate() const;
 
 			const std::vector<Frustum<float>> &getSplittedFrustums() const;
-			const ShadowData &getShadowData(const Light *const) const;
+			const ShadowData &getShadowData(const Light *) const;
 			std::set<Model *> getVisibleModels();
 
 			void updateVisibleModels(const Frustum<float> &);
@@ -66,7 +66,7 @@ namespace urchin
 			void loadShadowMaps(const Matrix4<float> &, unsigned int);
 			
 			#ifdef _DEBUG
-				void drawLightSceneBox(const Frustum<float> &, const Light *const, const Matrix4<float> &) const;
+				void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 			#endif
 
 		private:
@@ -75,13 +75,13 @@ namespace urchin
 
 			//light handling
 			void deleteLightsLocation();
-			void addShadowLight(const Light *const);
-			void removeShadowLight(const Light *const);
+			void addShadowLight(const Light *);
+			void removeShadowLight(const Light *);
 			void updateShadowLights();
 
 			//splits handling
-			void updateViewMatrix(const Light *const);
-			void updateFrustumShadowData(const Light *const, ShadowData *const);
+			void updateViewMatrix(const Light *);
+			void updateFrustumShadowData(const Light *, ShadowData *);
 			AABBox<float> createSceneIndependentBox(const Frustum<float> &, const Matrix4<float> &) const;
 			float computeNearZForSceneIndependentBox(const Frustum<float> &) const;
 			AABBox<float> createSceneDependentBox(const AABBox<float> &, const OBBox<float> &,
@@ -89,8 +89,8 @@ namespace urchin
 			void splitFrustum(const Frustum<float> &);
 
 			//shadow map handling
-			void createShadowMaps(const Light *const);
-			void removeShadowMaps(const Light *const);
+			void createShadowMaps(const Light *);
+			void removeShadowMaps(const Light *);
 
 			//shadow map quality
 			const float shadowMapBias;

@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include <algorithm>
 
 #include "scene/GUI/widget/Widget.h"

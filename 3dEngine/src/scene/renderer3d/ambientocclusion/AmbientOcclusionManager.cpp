@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-#include <GL/gl.h>
 #include <map>
 #include <string>
 #include <cmath>
@@ -56,7 +54,7 @@ namespace urchin
 
 		depthTexID(depthTexID),
 		normalAndAmbientTexID(normalAndAmbientTexID),
-		ambienOcclusionTexLoc(0),
+		ambientOcclusionTexLoc(0),
 		verticalBlurFilter(nullptr),
 		horizontalBlurFilter(nullptr),
 		isBlurActivated(true)
@@ -122,7 +120,7 @@ namespace urchin
 	void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID)
 	{
 		ShaderManager::instance()->bind(deferredShaderID);
-		ambienOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
+		ambientOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
 	}
 
 	void AmbientOcclusionManager::onResize(unsigned int width, unsigned int height)
@@ -332,7 +330,7 @@ namespace urchin
 
 	void AmbientOcclusionManager::updateAOTexture(const Camera *const camera)
 	{
-		int activeFBO;
+		GLint activeFBO;
 		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
@@ -346,7 +344,7 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D, randomTexID);
 
 		ShaderManager::instance()->bind(hbaoShader);
-		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, false, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
+		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
 
 		glViewport(0, 0, textureSizeX, textureSizeY);
 
@@ -367,7 +365,7 @@ namespace urchin
 		glActiveTexture(GL_TEXTURE0 + ambientOcclusionTextureUnit);
 		glBindTexture(GL_TEXTURE_2D, getAmbientOcclusionTextureID());
 
-		glUniform1i(ambienOcclusionTexLoc, ambientOcclusionTextureUnit);
+		glUniform1i(ambientOcclusionTexLoc, ambientOcclusionTextureUnit);
 	}
 
 }

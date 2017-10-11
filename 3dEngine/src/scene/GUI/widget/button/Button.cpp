@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <GL/gl.h>
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/button/Button.h"

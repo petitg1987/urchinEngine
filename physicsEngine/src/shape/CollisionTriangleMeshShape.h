@@ -26,6 +26,10 @@ namespace urchin
             Vector3<float> computeLocalInertia(float) const override;
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
+
+        private:
+            mutable AABBox<float> lastAabbox;
+            mutable PhysicsTransform lastTransform;
     };
 
 }

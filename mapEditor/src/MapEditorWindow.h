@@ -19,11 +19,11 @@ namespace urchin
 		#define WINDOW_TITLE "Urchin - Map Editor"
 
 		public:
-			MapEditorWindow(const std::string &);
-			virtual ~MapEditorWindow() = default;
+			explicit MapEditorWindow(const std::string &);
+            ~MapEditorWindow() override = default;
 
 		protected:
-			void closeEvent(QCloseEvent *event);
+			void closeEvent(QCloseEvent *event) override;
 
 		private:
 			void setupMenu();
@@ -35,7 +35,7 @@ namespace urchin
 			void updateMenuStatus();
 			void updateMapFilename(QString);
 
-			void notify(Observable *, int);
+			void notify(Observable *, int) override;
 			void handleCompoundShapeSelectionChange(Observable *, int);
 
 			QAction *saveAction;
