@@ -40,7 +40,7 @@ namespace urchin
 			float minDistanceToCenter;
 			float maxDistanceToCenter;
 
-			mutable AABBox<float> lastAabbox;
+			mutable AABBox<float> lastAABBox;
 			mutable PhysicsTransform lastTransform;
 	};
 

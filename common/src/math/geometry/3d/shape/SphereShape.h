@@ -11,7 +11,7 @@ namespace urchin
 	template<class T> class SphereShape : public ConvexShape3D<T>
 	{
 		public:
-			SphereShape(T);
+			explicit SphereShape(T);
 
 			T getRadius() const;
 

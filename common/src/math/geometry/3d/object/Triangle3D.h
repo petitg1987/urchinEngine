@@ -12,7 +12,7 @@ namespace urchin
 	template<class T> class Triangle3D : public ConvexObject3D<T>
 	{
 		public:
-			Triangle3D(const Point3<T> *);
+			explicit Triangle3D(const Point3<T> *);
 			Triangle3D(const Point3<T> &, const Point3<T> &, const Point3<T> &);
 
 			const Point3<T> *getPoints() const;

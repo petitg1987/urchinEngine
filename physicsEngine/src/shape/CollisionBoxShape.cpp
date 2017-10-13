@@ -61,11 +61,11 @@ namespace urchin
 
 			const Point3<float> &position = physicsTransform.getPosition();
 
-			lastAabbox = AABBox<float>(position - extend, position + extend);
+			lastAABBox = AABBox<float>(position - extend, position + extend);
 			lastTransform = physicsTransform;
 		}
 
-		return lastAabbox;
+		return lastAABBox;
 	}
 
 	std::shared_ptr<CollisionConvexObject3D> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const

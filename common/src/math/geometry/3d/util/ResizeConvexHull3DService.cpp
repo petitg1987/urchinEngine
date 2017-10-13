@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	template<class T> ResizeConvexHull3DService<T>::~ResizeConvexHull3DService()
-	{
-
-	}
-
 	/**
 	 * @param distance All planes of convex hull shape will be moved along their normal to the specified distance.
 	 * Positive distance will extend convex hull shape and negative distance will shrink the convex hull shape.
@@ -29,7 +24,7 @@ namespace urchin
 		shiftPlanes(planes, distance);
 
 		std::map<unsigned int, ConvexHullPoint<T>> newConvexHullPoints;
-		for(const auto itPoint : originalConvexHullShape.getConvexHullPoints())
+		for(const auto &itPoint : originalConvexHullShape.getConvexHullPoints())
 		{
 			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangleIndices, planes);
 			if(threePlanes.size()==3)
@@ -110,10 +105,10 @@ namespace urchin
 		std::vector<Plane<T>> nonParallelPlanes;
 		nonParallelPlanes.reserve(3);
 
-		Plane<T> plane1 = allPlanes.at(planeIndices[0]);
+		const Plane<T> &plane1 = allPlanes.at(planeIndices[0]);
 		for(unsigned int i=1; i<planeIndices.size(); ++i)
 		{
-			Plane<T> plane2 = allPlanes.at(planeIndices[i]);
+			const Plane<T> &plane2 = allPlanes.at(planeIndices[i]);
 			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE)
 			{ //planes are parallel: continue on next plane
 				continue;
@@ -121,7 +116,7 @@ namespace urchin
 
 			for(unsigned int j=i+1; j<planeIndices.size(); ++j)
 			{
-				Plane<T> plane3 = allPlanes.at(planeIndices[j]);
+				const Plane<T> &plane3 = allPlanes.at(planeIndices[j]);
 
 				Vector3<T> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
 				if(n2CrossN3.squareLength() < 0.0
@@ -145,7 +140,7 @@ namespace urchin
 	template<class T> bool ResizeConvexHull3DService<T>::isPointInsidePlanes(const std::map<unsigned int, Plane<T>> &planes, const Point3<T> &point) const
 	{
 		constexpr T EPSILON = std::numeric_limits<T>::epsilon();
-		for(const auto itPlane : planes)
+		for(const auto &itPlane : planes)
 		{
 			if(itPlane.second.distance(point) > EPSILON)
 			{

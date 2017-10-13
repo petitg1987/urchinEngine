@@ -23,11 +23,6 @@ namespace urchin
 		axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
 	}
 
-	template<class T> Cylinder<T>::~Cylinder()
-	{
-
-	}
-
 	template<class T> T Cylinder<T>::getRadius() const
 	{
 		return cylinderShape.getRadius();

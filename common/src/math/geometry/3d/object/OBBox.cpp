@@ -46,11 +46,6 @@ namespace urchin
 		axis[2] = Vector3<T>(0.0, 0.0, 1.0);
 	}
 
-	template<class T> OBBox<T>::~OBBox()
-	{
-
-	}
-
 	template<class T> const T OBBox<T>::getHalfSize(unsigned int index) const
 	{
 		return boxShape.getHalfSize(index);

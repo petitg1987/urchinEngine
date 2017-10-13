@@ -19,11 +19,6 @@ namespace urchin
 
 	}
 
-	template<class T> ConvexHull3D<T>::~ConvexHull3D()
-	{
-
-	}
-
 	/**
 	 * Points of convex hull indexed to be used with indexed triangles.
 	 */

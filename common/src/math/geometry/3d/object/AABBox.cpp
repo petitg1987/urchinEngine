@@ -29,11 +29,6 @@ namespace urchin
 
 	}
 
-	template<class T> AABBox<T>::~AABBox()
-	{
-
-	}
-
 	template<class T> const T AABBox<T>::getHalfSize(unsigned int index) const
 	{
 		return boxShape.getHalfSize(index);
@@ -190,13 +185,8 @@ namespace urchin
 
 	template<class T> bool AABBox<T>::collideWithPoint(const Point3<T> &point) const
 	{
-		if(	point.X > min.X && point.Y > min.Y && point.Z > min.Z &&
-				point.X < max.X && point.Y < max.Y && point.Z < max.Z)
-		{
-			return true;
-		}
-
-		return false;
+		return point.X > min.X && point.Y > min.Y && point.Z > min.Z &&
+            point.X < max.X && point.Y < max.Y && point.Z < max.Z;
 	}
 
 	/**

@@ -34,7 +34,7 @@ namespace urchin
 
 		if(pointDDotDirection > maxPointDotDirection)
 		{
-			maxPointDotDirection = pointDDotDirection;
+			//maxPointDotDirection = pointDDotDirection;
 			supportPoint = d;
 		}
 
@@ -121,7 +121,7 @@ namespace urchin
 			T squareDist = pq.dotProduct(pq);
 			if(squareDist < bestSquareDist)
 			{
-				bestSquareDist = squareDist;
+				//bestSquareDist = squareDist;
 
 				closestPoint = q;
 				barycentrics[0] = 0.0;
@@ -182,12 +182,8 @@ namespace urchin
 			return false;
 		}
 
-		if(pointOutsideOrInPlane(p, b, d, c, a))
-		{
-			return false;
-		}
+		return !pointOutsideOrInPlane(p, b, d, c, a);
 
-		return true;
 	}
 
 	/**

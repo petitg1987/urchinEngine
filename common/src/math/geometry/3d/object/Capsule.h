@@ -17,7 +17,6 @@ namespace urchin
 		public:
 			Capsule();
 			Capsule(T, T, typename CapsuleShape<T>::CapsuleOrientation, const Point3<T> &, const Quaternion<T> &);
-			~Capsule();
 
 			T getRadius() const;
 			T getCylinderHeight() const;

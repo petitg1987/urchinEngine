@@ -39,12 +39,7 @@ namespace urchin
 
 	template<class T> bool Sphere<T>::collideWithPoint(const Point3<T> &point) const
 	{
-		if(centerOfMass.squareDistance(point) > this->getRadius() * this->getRadius())
-		{
-			return false;
-		}
-
-		return true;
+		return centerOfMass.squareDistance(point) <= this->getRadius() * this->getRadius();
 	}
 
 	/**
@@ -53,12 +48,7 @@ namespace urchin
 	template<class T> bool Sphere<T>::collideWithSphere(const Sphere<T> &sphere) const
 	{
 		float sumRadius = this->getRadius()+sphere.getRadius();
-		if(centerOfMass.squareDistance(sphere.getCenterOfMass()) > (sumRadius*sumRadius))
-		{
-			return false;
-		}
-
-		return true;
+		return centerOfMass.squareDistance(sphere.getCenterOfMass()) <= (sumRadius * sumRadius);
 	}
 
 	//explicit template

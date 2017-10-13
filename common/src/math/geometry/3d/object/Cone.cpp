@@ -27,12 +27,7 @@ namespace urchin
 		axis[1] = orientation.rotatePoint(Point3<T>(0.0, 1.0, 0.0)).toVector();
 		axis[2] = orientation.rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
 
-		baseSideCosAngle = radius / sqrt(radius * radius + height * height);
-	}
-
-	template<class T> Cone<T>::~Cone()
-	{
-
+		baseSideCosAngle = radius / std::sqrt(radius * radius + height * height);
 	}
 
 	template<class T> T Cone<T>::getRadius() const

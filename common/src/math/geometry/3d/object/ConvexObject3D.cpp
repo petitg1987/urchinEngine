@@ -3,16 +3,6 @@
 namespace urchin
 {
 
-	template<class T> ConvexObject3D<T>::ConvexObject3D()
-	{
-
-	}
-
-	template<class T> ConvexObject3D<T>::~ConvexObject3D()
-	{
-
-	}
-
 	template<class T> bool ConvexObject3D<T>::collideWithPoint(const Point3<T> &) const
 	{
 		throw std::runtime_error("Collision test unsupported.");

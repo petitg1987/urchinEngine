@@ -26,7 +26,6 @@ namespace urchin
 		public:
 			ConvexHullShape3D(const std::vector<Point3<T>> &);
 			ConvexHullShape3D(const std::map<unsigned int, ConvexHullPoint<T>> &, const std::map<unsigned int, IndexedTriangle3D<T>> &);
-			~ConvexHullShape3D();
 
 			const typename std::map<unsigned int, ConvexHullPoint<T>> &getConvexHullPoints() const;
 			std::vector<Point3<T>> getPoints() const;

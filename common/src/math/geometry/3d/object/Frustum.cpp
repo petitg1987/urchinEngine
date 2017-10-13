@@ -40,11 +40,6 @@ namespace urchin
 		buildFrustum(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
 	}
 
-	template<class T> Frustum<T>::~Frustum()
-	{
-
-	}
-
 	/**
 	* Frustum builder from angle, ratio and near/far distances.
 	* Default frustum position: x=0, y=0, z=0

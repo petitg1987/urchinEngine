@@ -42,11 +42,6 @@ namespace urchin
 
 	}
 
-	template<class T> ConvexHullShape3D<T>::~ConvexHullShape3D()
-	{
-
-	}
-
 	/**
 	 * Points of convex hull shape indexed to be used with indexed triangles.
 	 */
@@ -100,7 +95,7 @@ namespace urchin
 		constexpr int HALF_SIZE_INDEX = (sizeof(unsigned int) * 8) / 2;
 
 		//deletes all triangles visible by the new point
-		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::iterator itTriangle=indexedTriangles.begin(); itTriangle!=indexedTriangles.end();)
+		for(auto itTriangle=indexedTriangles.begin(); itTriangle!=indexedTriangles.end();)
 		{
 			const IndexedTriangle3D<T> indexedTriangle = itTriangle->second;
 			const Vector3<T> &triangleNormal = indexedTriangle.computeNormal(
@@ -119,7 +114,7 @@ namespace urchin
 					int index2 = indexedTriangle.getIndices()[(i+1)%3];
 
 					long long idEdge = (std::min(index1, index2) << HALF_SIZE_INDEX) | std::max(index1, index2);
-					std::map<long long, std::pair<unsigned int, unsigned int>>::iterator itEdge = edges.find(idEdge);
+					auto itEdge = edges.find(idEdge);
 					if(itEdge==edges.end())
 					{
 						edges[idEdge] = std::make_pair(index1, index2);
@@ -138,14 +133,14 @@ namespace urchin
 		}
 
 		//adds the new triangles
-		if(edges.size()>0)
+		if(!edges.empty())
 		{
 			unsigned int newPointIndex = nextPointIndex++;
 			points[newPointIndex].point = newPoint;
 
-			for(std::map<long long, std::pair<unsigned int, unsigned int>>::iterator it = edges.begin(); it!=edges.end(); ++it)
+			for (auto &edge : edges)
 			{
-				addTriangle(IndexedTriangle3D<T>(it->second.first, it->second.second, newPointIndex));
+				addTriangle(IndexedTriangle3D<T>(edge.second.first, edge.second.second, newPointIndex));
 			}
 
 			return newPointIndex;
@@ -229,7 +224,7 @@ namespace urchin
 		std::set<unsigned int> pointsUsed;
 
 		//2. build a point (use first point)
-		if(points.size()<1)
+		if(points.empty())
 		{
 			throw buildException(points, pointsUsed);
 		}
@@ -325,7 +320,7 @@ namespace urchin
 	template<class T> std::invalid_argument ConvexHullShape3D<T>::buildException(const std::vector<Point3<T>> &points, const std::set<unsigned int> &pointsUsed)
 	{
 		std::string formName;
-		if(pointsUsed.size()==0)
+		if(pointsUsed.empty())
 		{
 			formName = "empty set";
 		}else if(pointsUsed.size()==1)
@@ -346,7 +341,7 @@ namespace urchin
 
 		//log points in error log file
 		std::stringstream logStream;
-		if(points.size()>0)
+		if(!points.empty())
 		{
 			logStream<<"Impossible to build a convex hull shape with following points:"<<std::endl;
 			for (unsigned int i=0; i<points.size(); ++i)
@@ -364,7 +359,7 @@ namespace urchin
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHullShape3D<T> &ch)
 	{
-		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it)
+		for(auto it = ch.getIndexedTriangles().begin(); it!=ch.getIndexedTriangles().end(); ++it)
 		{
 			stream << "Triangle "<< it->first <<": "
 				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "

@@ -15,11 +15,6 @@ namespace urchin
 
 	}
 
-	template<class T> BoxShape<T>::~BoxShape()
-	{
-
-	}
-
 	template<class T> const T BoxShape<T>::getHalfSize(unsigned int index) const
 	{
 		return halfSizes[index];

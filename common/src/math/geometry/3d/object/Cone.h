@@ -17,7 +17,6 @@ namespace urchin
 		public:
 			Cone();
 			Cone(T, T, typename ConeShape<T>::ConeOrientation, const Point3<T> &, const Quaternion<T> &);
-			~Cone();
 
 			T getRadius() const;
 			T getHeight() const;

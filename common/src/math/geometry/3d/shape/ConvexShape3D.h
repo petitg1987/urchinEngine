@@ -16,8 +16,7 @@ namespace urchin
 	template<class T> class ConvexShape3D
 	{
 		public:
-			ConvexShape3D();
-			virtual ~ConvexShape3D();
+			virtual ~ConvexShape3D() = default;
 
 			virtual std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const = 0;
 	};

@@ -26,7 +26,6 @@ namespace urchin
 			explicit OBBox(const Vector3<T> &, const Point3<T> &, const Quaternion<T> &);
 			explicit OBBox(const AABBox<T> &);
 			explicit OBBox(const Sphere<T> &);
-			~OBBox();
 
 			const T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;

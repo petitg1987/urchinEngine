@@ -36,7 +36,7 @@ namespace urchin
 		file.seekg(0, std::ios::beg);
 		
 		//extracts header
-		TgaHeader header;
+		TgaHeader header{};
 		file.read((char *)&header, sizeof(TgaHeader));
 		file.seekg(header.idLenght, std::ios::cur);
 			
@@ -79,6 +79,8 @@ namespace urchin
 					case 32:
 						readTGA32bits();
 						break;
+					default:
+						break;
 				}
 				break;
 
@@ -113,6 +115,8 @@ namespace urchin
 					case 32:
 						readTGA32bitsRLE();
 						break;
+					default:
+						break;
 				}
 				break;
 
@@ -135,7 +139,6 @@ namespace urchin
 				delete [] data;
 				//image type is not correct
 				throw std::runtime_error("Unknown TGA image type, filename: " + filenamePath + ".");
-				break;
 		}
 		
 		if(header.colormapType)
@@ -168,8 +171,8 @@ namespace urchin
 
 	void LoaderTGA::getImageInfo(const TgaHeader &header)
 	{
-		width = header.width;
-		height = header.height;
+		width = static_cast<unsigned int>(header.width);
+		height = static_cast<unsigned int>(header.height);
 
 		switch(header.imageType)
 		{
@@ -207,6 +210,8 @@ namespace urchin
 
 				break;
 			}
+			default:
+				break;
 		}
 	}
 

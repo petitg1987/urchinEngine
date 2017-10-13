@@ -24,7 +24,7 @@ namespace urchin
 
 		private:
 			ResizeConvexHull3DService();
-			virtual ~ResizeConvexHull3DService();
+			virtual ~ResizeConvexHull3DService() = default;
 
 			std::map<unsigned int, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &) const;
 			void shiftPlanes(std::map<unsigned int, Plane<T>> &, T) const;

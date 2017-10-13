@@ -13,8 +13,7 @@ namespace urchin
 	template<class T> class BoxShape : public ConvexShape3D<T>
 	{
 		public:
-			BoxShape(const Vector3<T> &);
-			~BoxShape();
+			explicit BoxShape(const Vector3<T> &);
 
 			const T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;

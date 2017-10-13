@@ -15,8 +15,7 @@ namespace urchin
 	template<class T> class ConvexObject3D
 	{
 		public:
-			ConvexObject3D();
-			virtual ~ConvexObject3D();
+			virtual ~ConvexObject3D() = default;
 
 			virtual bool collideWithPoint(const Point3<T> &) const;
 			virtual bool collideWithAABBox(const AABBox<T> &) const;

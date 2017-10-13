@@ -35,7 +35,7 @@ namespace urchin
 			void computeSafeMargin();
 
 			const std::shared_ptr<BoxShape<float>> boxShape; //shape including margin
-			mutable AABBox<float> lastAabbox;
+			mutable AABBox<float> lastAABBox;
 			mutable PhysicsTransform lastTransform;
 	};
 

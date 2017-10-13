@@ -23,7 +23,6 @@ namespace urchin
 			Frustum();
 			Frustum(T, T, T, T);
 			Frustum(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
-			~Frustum();
 
 			enum FrustumPoint
 			{

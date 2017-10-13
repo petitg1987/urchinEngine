@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_COLLISIONTRIANGLEMESHSHAPE_H
-#define URCHINENGINE_COLLISIONTRIANGLEMESHSHAPE_H
+#ifndef URCHINENGINE_COLLISIONHEIGHTFIELDSHAPE_H
+#define URCHINENGINE_COLLISIONHEIGHTFIELDSHAPE_H
 
 #include <memory>
 #include <vector>
@@ -10,10 +10,10 @@
 namespace urchin
 {
 
-    class CollisionTriangleMeshShape : public CollisionShape3D
+    class CollisionHeightfieldShape : public CollisionShape3D
     {
         public:
-            CollisionTriangleMeshShape();
+            CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
 
             CollisionShape3D::ShapeType getShapeType() const override;
             std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
@@ -28,7 +28,15 @@ namespace urchin
             float getMinDistanceToCenter() const override;
 
         private:
-            mutable AABBox<float> lastAabbox;
+            std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
+
+            std::vector<Point3<float>> vertices;
+            unsigned int height;
+            unsigned int width;
+
+            std::unique_ptr<BoxShape<float>> localAABBox;
+
+            mutable AABBox<float> lastAABBox;
             mutable PhysicsTransform lastTransform;
     };
 

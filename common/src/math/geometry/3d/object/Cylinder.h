@@ -15,7 +15,6 @@ namespace urchin
 		public:
 			Cylinder();
 			Cylinder(T, T, typename CylinderShape<T>::CylinderOrientation, const Point3<T> &, const Quaternion<T> &);
-			~Cylinder();
 
 			T getRadius() const;
 			T getHeight() const;
