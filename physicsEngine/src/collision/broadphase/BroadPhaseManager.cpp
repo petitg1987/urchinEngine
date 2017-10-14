@@ -1,7 +1,4 @@
 #include "collision/broadphase/BroadPhaseManager.h"
-#include "body/work/AbstractWorkBody.h"
-#include "body/work/WorkGhostBody.h"
-#include "collision/broadphase/sweepandprune/SweepAndPrune.h"
 #include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
 
 namespace urchin
@@ -38,6 +35,8 @@ namespace urchin
 					removeBody(updatedBody);
 					break;
 				}
+				default:
+					break;
 			}
 		}
 	}

@@ -14,6 +14,7 @@
 #include "shape/CollisionConeShape.h"
 #include "shape/CollisionConvexHullShape.h"
 #include "shape/CollisionCompoundShape.h"
+#include "shape/CollisionHeightfieldShape.h"
 
 #include "object/CollisionConvexObject3D.h"
 #include "object/CollisionSphereObject.h"

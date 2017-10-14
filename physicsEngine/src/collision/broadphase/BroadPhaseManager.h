@@ -7,6 +7,7 @@
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
 #include "collision/broadphase/PairContainer.h"
 #include "collision/OverlappingPair.h"
+#include "body/work/AbstractWorkBody.h"
 #include "body/BodyManager.h"
 
 namespace urchin

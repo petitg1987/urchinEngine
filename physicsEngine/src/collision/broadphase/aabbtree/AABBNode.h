@@ -11,7 +11,7 @@ namespace urchin
 	class AABBNode
 	{
 		public:
-			AABBNode(BodyNodeData *);
+			explicit AABBNode(BodyNodeData *);
 			~AABBNode();
 
 			BodyNodeData *getBodyNodeData() const;

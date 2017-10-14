@@ -8,13 +8,13 @@
 namespace urchin
 {
 
-    CollisionHeightfieldShape::CollisionHeightfieldShape(std::vector<Point3<float>> vertices, unsigned int width, unsigned int height) :
+    CollisionHeightfieldShape::CollisionHeightfieldShape(std::vector<Point3<float>> vertices, unsigned int xLength, unsigned int zLength) :
             CollisionShape3D(),
             vertices(std::move(vertices)),
-            width(width),
-            height(height)
+            xLength(xLength),
+            zLength(zLength)
     {
-        assert(vertices.size()==width*height);
+        assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();
 
         lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
@@ -22,7 +22,22 @@ namespace urchin
 
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const
     {
-        //TODO ...
+        Point3<float> min(vertices[0].X, std::numeric_limits<float>::max(), vertices[0].Z);
+        Point3<float> max(vertices[xLength-1].X, -std::numeric_limits<float>::max(), vertices[vertices.size()-1].Z);
+
+        for (const auto &vertex : vertices)
+        {
+            if(min.Y > vertex.Y)
+            {
+                min.Y = vertex.Y;
+            }
+            if(max.Y < vertex.Y)
+            {
+                max.Y = vertex.Y;
+            }
+        }
+
+        return std::make_unique<BoxShape<float>>(min.vector(max));
     }
 
     CollisionShape3D::ShapeType CollisionHeightfieldShape::getShapeType() const
@@ -42,7 +57,7 @@ namespace urchin
             throw std::runtime_error("Scaling a heightfield shape is currently not supported");
         }
 
-        return std::make_shared<CollisionHeightfieldShape>(vertices, width, height);
+        return std::make_shared<CollisionHeightfieldShape>(vertices, xLength, zLength);
     }
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform &physicsTransform) const
@@ -58,6 +73,7 @@ namespace urchin
 
             const Point3<float> &position = physicsTransform.getPosition();
 
+            lastAABBox = AABBox<float>(position - extend, position + extend);
             lastTransform = physicsTransform;
         }
 

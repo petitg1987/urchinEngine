@@ -21,9 +21,11 @@ namespace urchin
             throw std::invalid_argument("Unsupported image format for terrain rendering: " + imgTerrain->getImageFormat());
         }
 
+        xLength = imgTerrain->getWidth();
+        zLength = imgTerrain->getHeight();
         vertices = buildVertices(imgTerrain);
-        indices = buildIndices(imgTerrain);
-        normals = buildNormals(imgTerrain);
+        indices = buildIndices();
+        normals = buildNormals();
         imgTerrain->release();
 
         glGenBuffers(3, bufferIDs);
@@ -65,6 +67,26 @@ namespace urchin
         this->projectionMatrix = projectionMatrix;
     }
 
+    const std::vector<Point3<float>> &Terrain::getVertices() const
+    {
+        return vertices;
+    }
+
+    unsigned int Terrain::getXLength() const
+    {
+        return xLength;
+    }
+
+    unsigned int Terrain::getZLength() const
+    {
+        return zLength;
+    }
+
+    float Terrain::getAmbient() const
+    {
+        return ambient;
+    }
+
     void Terrain::setAmbient(float ambient)
     {
         this->ambient = ambient;
@@ -74,23 +96,27 @@ namespace urchin
     {
         std::vector<Point3<float>> vertices;
         vertices.reserve(imgTerrain->getHeight() * imgTerrain->getWidth());
+
+        float xStart = -(imgTerrain->getWidth() * xzScale) / 2.0;
+        float zStart = -(imgTerrain->getHeight() * xzScale) / 2.0;
+
         for(unsigned int z=0; z<imgTerrain->getHeight(); ++z)
         {
-            float zFloat = static_cast<float>(z) * xzScale;
+            float zFloat = zStart + static_cast<float>(z) * xzScale;
             for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
             {
                 float elevation = -2.5 + imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] * yScale;
-                float xFloat = static_cast<float>(x) * xzScale;
+                float xFloat = xStart + static_cast<float>(x) * xzScale;
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }
         }
         return vertices;
     }
 
-    std::vector<Vector3<float>> Terrain::buildNormals(const Image *imgTerrain) const
+    std::vector<Vector3<float>> Terrain::buildNormals() const
     {
         //1. compute normal of triangles
-        unsigned int totalTriangles = ((imgTerrain->getHeight() - 1) * (imgTerrain->getWidth() - 1)) * 2;
+        unsigned int totalTriangles = ((zLength - 1) * (xLength - 1)) * 2;
         std::vector<Vector3<float>> normalTriangles;
         normalTriangles.reserve(totalTriangles);
 
@@ -128,7 +154,7 @@ namespace urchin
         normalVertex.reserve(vertices.size());
         for(unsigned int i=0; i<vertices.size(); ++i)
         {
-            std::vector<unsigned int> triangleIndices = findTriangleIndices(i, imgTerrain);
+            std::vector<unsigned int> triangleIndices = findTriangleIndices(i);
 
             Vector3<float> vertexNormal(0.0, 0.0, 0.0);
             for(unsigned int triangleIndex : triangleIndices)
@@ -142,18 +168,18 @@ namespace urchin
         return normalVertex;
     }
 
-    std::vector<unsigned int> Terrain::findTriangleIndices(unsigned int vertexIndex, const Image *imgTerrain) const
+    std::vector<unsigned int> Terrain::findTriangleIndices(unsigned int vertexIndex) const
     {
         std::vector<unsigned int> triangleIndices;
         triangleIndices.reserve(6);
 
-        unsigned int rowNum = vertexIndex / imgTerrain->getWidth();
-        int squareIndex = vertexIndex - imgTerrain->getWidth() - rowNum;
+        unsigned int rowNum = vertexIndex / xLength;
+        int squareIndex = vertexIndex - xLength - rowNum;
 
-        bool isLeftBorderVertex = (vertexIndex % imgTerrain->getWidth()) == 0;
-        bool isRightBorderVertex = ((vertexIndex + 1) % imgTerrain->getWidth()) == 0;
+        bool isLeftBorderVertex = (vertexIndex % xLength) == 0;
+        bool isRightBorderVertex = ((vertexIndex + 1) % xLength) == 0;
         bool isFirstRowVertex = rowNum == 0;
-        bool isLastRowVertex = rowNum == (imgTerrain->getHeight() - 1);
+        bool isLastRowVertex = rowNum == (zLength - 1);
 
         //above triangles to the vertex
         if(!isFirstRowVertex)
@@ -177,7 +203,7 @@ namespace urchin
         //below triangles to the vertex
         if(!isLastRowVertex)
         {
-            int firstLeftBottomTriangle = (squareIndex * 2) + (imgTerrain->getWidth() - 1) * 2;
+            int firstLeftBottomTriangle = (squareIndex * 2) + (xLength - 1) * 2;
 
             //left triangles
             if (!isLeftBorderVertex)
@@ -196,17 +222,17 @@ namespace urchin
         return triangleIndices;
     }
 
-    std::vector<unsigned int> Terrain::buildIndices(const Image *imgTerrain) const
+    std::vector<unsigned int> Terrain::buildIndices() const
     {
         std::vector<unsigned int> indices;
-        indices.reserve(((imgTerrain->getHeight()-1) * imgTerrain->getWidth() * 2) + (imgTerrain->getHeight()-1));
+        indices.reserve(((zLength-1) * xLength * 2) + (zLength-1));
 
-        for(unsigned int z=0; z<imgTerrain->getHeight()-1; ++z)
+        for(unsigned int z=0; z<zLength-1; ++z)
         {
-            for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
+            for (unsigned int x = 0; x < xLength; ++x)
             {
-                indices.push_back(x + imgTerrain->getWidth() * (z + 1));
-                indices.push_back(x + imgTerrain->getWidth() * z);
+                indices.push_back(x + xLength * (z + 1));
+                indices.push_back(x + xLength * z);
             }
 
             indices.push_back(RESTART_INDEX);

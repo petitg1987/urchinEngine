@@ -31,8 +31,8 @@ namespace urchin
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
 
             std::vector<Point3<float>> vertices;
-            unsigned int height;
-            unsigned int width;
+            unsigned int xLength;
+            unsigned int zLength;
 
             std::unique_ptr<BoxShape<float>> localAABBox;
 
