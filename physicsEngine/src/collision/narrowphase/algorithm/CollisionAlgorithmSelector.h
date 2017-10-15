@@ -21,6 +21,8 @@ namespace urchin
 
 		private:
 			void initializeCollisionAlgorithmBuilderMatrix();
+			void initializeConcaveAlgorithm();
+			void initializeCompoundAlgorithm();
 			void deleteCollisionAlgorithmBuilderMatrix();
 
 			class AlgorithmDeleter

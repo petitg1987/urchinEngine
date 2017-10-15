@@ -42,7 +42,12 @@ namespace urchin
 
     CollisionShape3D::ShapeType CollisionHeightfieldShape::getShapeType() const
     {
-        return CollisionHeightfieldShape::TRIANGLE_MESH_SHAPE;
+        return CollisionHeightfieldShape::HEIGHTFIELD_SHAPE;
+    }
+
+    CollisionShape3D::ShapeCategory CollisionHeightfieldShape::getShapeCategory() const
+    {
+        return CollisionShape3D::CONCAVE;
     }
 
     std::shared_ptr<ConvexShape3D<float>> CollisionHeightfieldShape::getSingleShape() const

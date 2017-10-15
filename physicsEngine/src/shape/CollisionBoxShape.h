@@ -18,6 +18,7 @@ namespace urchin
 			explicit CollisionBoxShape(const Vector3<float> &);
 
 			CollisionShape3D::ShapeType getShapeType() const override;
+			CollisionShape3D::ShapeCategory getShapeCategory() const override;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
 			float getHalfSize(unsigned int) const;
 			const Vector3<float> &getHalfSizes() const;

@@ -1,18 +1,18 @@
 #include <memory>
 
-#include "collision/narrowphase/algorithm/ConvexHullConvexHullCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h"
 #include "object/CollisionConvexObject3D.h"
 
 namespace urchin
 {
 
-	ConvexHullConvexHullCollisionAlgorithm::ConvexHullConvexHullCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
+	ConvexConvexCollisionAlgorithm::ConvexConvexCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
 			CollisionAlgorithm(objectSwapped, result)
 	{
 
 	}
 
-	void ConvexHullConvexHullCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
+	void ConvexConvexCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
 		//transform convex hull shapes
 		std::shared_ptr<CollisionConvexObject3D> convexObject1 = object1.getShape().toConvexObject(object1.getShapeWorldTransform());
@@ -57,24 +57,19 @@ namespace urchin
 		}
 	}
 
-	CollisionAlgorithm *ConvexHullConvexHullCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, void* memPtr) const
+	CollisionAlgorithm *ConvexConvexCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, void* memPtr) const
 	{
-		return new(memPtr) ConvexHullConvexHullCollisionAlgorithm(objectSwapped, result);
+		return new(memPtr) ConvexConvexCollisionAlgorithm(objectSwapped, result);
 	}
 
-	CollisionShape3D::ShapeType ConvexHullConvexHullCollisionAlgorithm::Builder::getShapeType1() const
+	CollisionShape3D::ShapeType ConvexConvexCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
-		return CollisionShape3D::CONVEX_HULL_SHAPE;
+		return CollisionShape3D::ANY_TYPE;
 	}
 
-	CollisionShape3D::ShapeType ConvexHullConvexHullCollisionAlgorithm::Builder::getShapeType2() const
+	unsigned int ConvexConvexCollisionAlgorithm::Builder::getAlgorithmSize() const
 	{
-		return CollisionShape3D::CONVEX_HULL_SHAPE;
-	}
-
-	unsigned int ConvexHullConvexHullCollisionAlgorithm::Builder::getAlgorithmSize() const
-	{
-		return sizeof(ConvexHullConvexHullCollisionAlgorithm);
+		return sizeof(ConvexConvexCollisionAlgorithm);
 	}
 
 }

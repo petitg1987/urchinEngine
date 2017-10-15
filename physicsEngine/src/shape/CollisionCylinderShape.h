@@ -17,6 +17,7 @@ namespace urchin
 			CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
 
 			CollisionShape3D::ShapeType getShapeType() const override;
+			CollisionShape3D::ShapeCategory getShapeCategory() const override;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
 			float getRadius() const;
 			float getHeight() const;

@@ -18,6 +18,7 @@ namespace urchin
 			explicit CollisionConvexHullShape(const std::vector<Point3<float>> &);
 
 			CollisionShape3D::ShapeType getShapeType() const override;
+			CollisionShape3D::ShapeCategory getShapeCategory() const override;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
 			std::vector<Point3<float>> getPoints() const;
 

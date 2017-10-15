@@ -97,10 +97,10 @@ set(SOURCE_FILES
         src/collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h
         src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.cpp
         src/collision/narrowphase/algorithm/CollisionAlgorithmSelector.h
-        src/collision/narrowphase/algorithm/CompoundCollisionAlgorithm.cpp
-        src/collision/narrowphase/algorithm/CompoundCollisionAlgorithm.h
-        src/collision/narrowphase/algorithm/ConvexHullConvexHullCollisionAlgorithm.cpp
-        src/collision/narrowphase/algorithm/ConvexHullConvexHullCollisionAlgorithm.h
+        src/collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.cpp
+        src/collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h
+        src/collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.cpp
+        src/collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h
         src/collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.cpp
         src/collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.h
         src/collision/narrowphase/algorithm/SphereSphereCollisionAlgorithm.cpp
@@ -167,7 +167,7 @@ set(SOURCE_FILES
         src/visualizer/CollisionVisualizer.h
         src/PhysicsWorld.cpp
         src/PhysicsWorld.h
-        src/UrchinPhysicsEngine.h)
+        src/UrchinPhysicsEngine.h src/collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.cpp src/collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h)
 
 include_directories(src ../common/src)
 

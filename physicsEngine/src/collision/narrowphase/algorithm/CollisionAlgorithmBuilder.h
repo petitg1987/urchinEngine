@@ -16,8 +16,7 @@ namespace urchin
 
 			virtual CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, void *) const = 0;
 
-			virtual CollisionShape3D::ShapeType getShapeType1() const = 0;
-			virtual CollisionShape3D::ShapeType getShapeType2() const = 0;
+			virtual CollisionShape3D::ShapeType getFirstExpectedShapeType() const = 0;
 			virtual unsigned int getAlgorithmSize() const = 0;
 	};
 

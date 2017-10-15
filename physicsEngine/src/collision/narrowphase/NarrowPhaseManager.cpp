@@ -110,7 +110,7 @@ namespace urchin
 			ccd_set ccdResults;
 
 			const CollisionShape3D *bodyShape = body->getShape();
-			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
+			if(bodyShape->getShapeCategory()==CollisionShape3D::COMPOUND)
 			{
 				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
@@ -124,10 +124,13 @@ namespace urchin
 						ccdResults.insert(localizedShapeCcdResult);
 					}
 				}
-			}else
+			}else if(bodyShape->getShapeCategory()==CollisionShape3D::CONVEX)
 			{
 				TemporalObject temporalObject(body->getShape(), from, to);
 				ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
+			}else
+			{
+				throw std::invalid_argument("Unknown shape category: " + std::to_string(bodyShape->getShapeCategory()));
 			}
 
 			if(!ccdResults.empty())
@@ -154,7 +157,7 @@ namespace urchin
 		for(auto bodyAABBoxHit : bodiesAABBoxHit)
 		{
 			const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
-			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
+			if(bodyShape->getShapeCategory()==CollisionShape3D::COMPOUND)
 			{
 				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
@@ -165,12 +168,15 @@ namespace urchin
 
 					continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 				}
-			}else
+			}else if(bodyShape->getShapeCategory()==CollisionShape3D::CONVEX)
 			{
 				PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
 				TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
 				continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+			}else
+			{
+				throw std::invalid_argument("Unknown shape category: " + std::to_string(bodyShape->getShapeCategory()));
 			}
 		}
 
@@ -183,12 +189,12 @@ namespace urchin
 	void NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject1, const TemporalObject &temporalObject2,
 			AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
 	{
-		std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisioncResult = gjkContinuousCollisionAlgorithm
+		std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisionResult = gjkContinuousCollisionAlgorithm
 				.calculateTimeOfImpact(temporalObject1, temporalObject2, body2);
 
-		if(continuousCollisioncResult)
+		if(continuousCollisionResult)
 		{
-			continuousCollisionResults.insert(continuousCollisioncResult);
+			continuousCollisionResults.insert(continuousCollisionResult);
 		}
 	}
 

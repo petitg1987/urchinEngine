@@ -4,8 +4,9 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 #include "collision/narrowphase/algorithm/SphereSphereCollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/SphereBoxCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/ConvexHullConvexHullCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/CompoundCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/ConvexConvexCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h"
 
 namespace urchin
 {
@@ -14,6 +15,7 @@ namespace urchin
 	{
 		//initialize algorithm builder
 		initializeCollisionAlgorithmBuilderMatrix();
+
 		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
 		{
 			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
@@ -61,14 +63,8 @@ namespace urchin
 		collisionAlgorithmBuilderMatrix[CollisionShape3D::SPHERE_SHAPE][CollisionShape3D::SPHERE_SHAPE] = new SphereSphereCollisionAlgorithm::Builder();
 		collisionAlgorithmBuilderMatrix[CollisionShape3D::SPHERE_SHAPE][CollisionShape3D::BOX_SHAPE] = new SphereBoxCollisionAlgorithm::Builder();
 		collisionAlgorithmBuilderMatrix[CollisionShape3D::BOX_SHAPE][CollisionShape3D::SPHERE_SHAPE] = new SphereBoxCollisionAlgorithm::Builder();
-		for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId)
-		{
-			collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = new CompoundCollisionAlgorithm::Builder();
-			if(shapeId!=CollisionShape3D::COMPOUND_SHAPE)
-			{
-				collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE] = new CompoundCollisionAlgorithm::Builder();
-			}
-		}
+		initializeConcaveAlgorithm();
+		initializeCompoundAlgorithm();
 
 		//generic algorithm (convex hull vs. convex hull)
 		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
@@ -77,8 +73,38 @@ namespace urchin
 			{
 				if(collisionAlgorithmBuilderMatrix[i][j]==nullptr)
 				{
-					collisionAlgorithmBuilderMatrix[i][j] = new ConvexHullConvexHullCollisionAlgorithm::Builder();
+					collisionAlgorithmBuilderMatrix[i][j] = new ConvexConvexCollisionAlgorithm::Builder();
 				}
+			}
+		}
+	}
+
+	void CollisionAlgorithmSelector::initializeConcaveAlgorithm()
+	{
+        //heightfield shape
+		for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId)
+		{
+			collisionAlgorithmBuilderMatrix[CollisionShape3D::HEIGHTFIELD_SHAPE][shapeId] = new ConcaveAnyCollisionAlgorithm::Builder();
+
+			if(shapeId!=CollisionShape3D::HEIGHTFIELD_SHAPE)
+			{
+				collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::HEIGHTFIELD_SHAPE] = new ConcaveAnyCollisionAlgorithm::Builder();
+			}
+		}
+	}
+
+	void CollisionAlgorithmSelector::initializeCompoundAlgorithm()
+	{
+		for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId)
+		{
+			if(collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId]==nullptr)
+			{
+				collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = new CompoundAnyCollisionAlgorithm::Builder();
+			}
+
+			if(shapeId!=CollisionShape3D::COMPOUND_SHAPE && collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE]==nullptr)
+			{
+				collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE] = new CompoundAnyCollisionAlgorithm::Builder();
 			}
 		}
 	}
@@ -102,21 +128,22 @@ namespace urchin
 			AbstractWorkBody *body1, const CollisionShape3D *shape1, AbstractWorkBody *body2, const CollisionShape3D *shape2)
 	{
 		CollisionAlgorithmBuilder *collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
-		#ifdef _DEBUG
-			assert(collisionAlgorithmBuilder->getShapeType1()!=CollisionShape3D::ANY_TYPE);
-		#endif
 
 		void *memPtr = algorithmPool->allocate(collisionAlgorithmBuilder->getAlgorithmSize());
-
-		if(collisionAlgorithmBuilder->getShapeType1()==shape1->getShapeType())
+		if(collisionAlgorithmBuilder->getFirstExpectedShapeType()==CollisionShape3D::ANY_TYPE ||
+				collisionAlgorithmBuilder->getFirstExpectedShapeType()==shape1->getShapeType())
 		{
 			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
 					false, ManifoldResult(body1, body2), memPtr), AlgorithmDeleter(algorithmPool));
-		}else
+		}else if(collisionAlgorithmBuilder->getFirstExpectedShapeType()==shape2->getShapeType())
 		{
 			//objects must be swap to match algorithm shape types
 			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
 					true, ManifoldResult(body2, body1), memPtr), AlgorithmDeleter(algorithmPool));
+		}else
+		{
+			throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1->getShapeType())
+									 + " and " + std::to_string(shape2->getShapeType()));
 		}
 	}
 

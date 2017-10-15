@@ -29,13 +29,21 @@ namespace urchin
 				CONE_SHAPE,
 				CONVEX_HULL_SHAPE,
 				COMPOUND_SHAPE,
-				TRIANGLE_MESH_SHAPE,
+				HEIGHTFIELD_SHAPE,
 
 				SHAPE_MAX
 			};
 
+			enum ShapeCategory
+			{
+				CONVEX,
+				COMPOUND,
+				CONCAVE
+			};
+
 			float getInnerMargin() const;
 			virtual CollisionShape3D::ShapeType getShapeType() const = 0;
+			virtual CollisionShape3D::ShapeCategory getShapeCategory() const = 0;
 			virtual std::shared_ptr<ConvexShape3D<float>> getSingleShape() const = 0;
 
 			virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;

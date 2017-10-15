@@ -33,7 +33,15 @@ namespace urchin
 			const Transform<float> &modelTransform = sceneObject->getModel()->getTransform();
 			std::shared_ptr<const CollisionShape3D> bodyShape = sceneObject->getRigidBody()->getScaledShape();
 
-			if(bodyShape->getShapeType()==CollisionShape3D::COMPOUND_SHAPE)
+			if(bodyShape->getShapeCategory()==CollisionShape3D::CONCAVE)
+			{
+				PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
+				AABBox<float> heightfieldAABBox = bodyShape->toAABBox(transform);
+
+				GeometryModel *geometryModel =  new AABBoxModel(heightfieldAABBox);
+				geometryModel->setColor(0.0, 1.0, 0.0);
+				bodyShapeModels.push_back(geometryModel);
+			} else if(bodyShape->getShapeCategory()==CollisionShape3D::COMPOUND)
 			{
 				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape.get());
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
@@ -44,17 +52,17 @@ namespace urchin
 
 					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject.get());
 
-					if(selectedCompoundShapeComponent!=nullptr && selectedCompoundShapeComponent->position==localizedShape->position)
+					if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->position == localizedShape->position)
 					{
 						geometryModel->setColor(1.0, 1.0, 1.0);
-					}else
+					} else
 					{
 						geometryModel->setColor(0.0, 1.0, 0.0);
 					}
 
 					bodyShapeModels.push_back(geometryModel);
 				}
-			}else
+			} else if(bodyShape->getShapeCategory()==CollisionShape3D::CONVEX)
 			{
 				PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
 				std::shared_ptr<CollisionConvexObject3D> bodyObject = bodyShape->toConvexObject(transform);
@@ -62,6 +70,9 @@ namespace urchin
 				GeometryModel *geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject.get());
 				geometryModel->setColor(0.0, 1.0, 0.0);
 				bodyShapeModels.push_back(geometryModel);
+			} else
+			{
+				throw std::invalid_argument("Unknown shape category: " + std::to_string(bodyShape->getShapeCategory()));
 			}
 
 			for (auto &bodyShapeModel : bodyShapeModels)

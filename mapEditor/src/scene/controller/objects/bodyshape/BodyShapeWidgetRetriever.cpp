@@ -57,7 +57,7 @@ namespace urchin
 			bodyShapeWidget = new BodyCompoundShapeWidget(sceneObject);
 		}else
 		{
-			throw new std::invalid_argument("Unknown shape type to retrieve body shape widget: " + shapeType);
+			throw std::invalid_argument("Unknown shape type to retrieve body shape widget: " + shapeType);
 		}
 
 		return bodyShapeWidget;

@@ -14,8 +14,8 @@ namespace urchin
 
 	void SphereSphereCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
-		const CollisionSphereShape &sphere1 = static_cast<const CollisionSphereShape &>(object1.getShape());
-		const CollisionSphereShape &sphere2 = static_cast<const CollisionSphereShape &>(object2.getShape());
+		const auto &sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
+		const auto &sphere2 = dynamic_cast<const CollisionSphereShape &>(object2.getShape());
 
 		Vector3<float> diff = object2.getShapeWorldTransform().getPosition().vector(object1.getShapeWorldTransform().getPosition());
 		float length = diff.length();
@@ -46,14 +46,9 @@ namespace urchin
 		return new(memPtr) SphereSphereCollisionAlgorithm(objectSwapped, result);
 	}
 
-	CollisionShape3D::ShapeType SphereSphereCollisionAlgorithm::Builder::getShapeType1() const
+	CollisionShape3D::ShapeType SphereSphereCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
-		return CollisionShape3D::SPHERE_SHAPE;
-	}
-
-	CollisionShape3D::ShapeType SphereSphereCollisionAlgorithm::Builder::getShapeType2() const
-	{
-		return CollisionShape3D::SPHERE_SHAPE;
+		return CollisionShape3D::ANY_TYPE;
 	}
 
 	unsigned int SphereSphereCollisionAlgorithm::Builder::getAlgorithmSize() const

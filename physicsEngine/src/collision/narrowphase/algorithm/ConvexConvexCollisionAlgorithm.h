@@ -11,11 +11,11 @@
 namespace urchin
 {
 
-	class ConvexHullConvexHullCollisionAlgorithm : public CollisionAlgorithm
+	class ConvexConvexCollisionAlgorithm : public CollisionAlgorithm
 	{
 		public:
-			ConvexHullConvexHullCollisionAlgorithm(bool, const ManifoldResult &);
-			~ConvexHullConvexHullCollisionAlgorithm() override = default;
+			ConvexConvexCollisionAlgorithm(bool, const ManifoldResult &);
+			~ConvexConvexCollisionAlgorithm() override = default;
 
 			void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
 
@@ -23,8 +23,7 @@ namespace urchin
 			{
 				CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, void*) const override;
 
-				CollisionShape3D::ShapeType getShapeType1() const override;
-				CollisionShape3D::ShapeType getShapeType2() const override;
+				CollisionShape3D::ShapeType getFirstExpectedShapeType() const override;
 				unsigned int getAlgorithmSize() const override;
 			};
 

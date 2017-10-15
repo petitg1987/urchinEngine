@@ -24,6 +24,11 @@ namespace urchin
 		return CollisionShape3D::CAPSULE_SHAPE;
 	}
 
+	CollisionShape3D::ShapeCategory CollisionCapsuleShape::getShapeCategory() const
+	{
+		return CollisionShape3D::CONVEX;
+	}
+
 	std::shared_ptr<ConvexShape3D<float>> CollisionCapsuleShape::getSingleShape() const
 	{
 		return capsuleShape;

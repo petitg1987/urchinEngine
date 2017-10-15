@@ -1,25 +1,25 @@
 #include <limits>
 
-#include "collision/narrowphase/algorithm/CompoundCollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CompoundAnyCollisionAlgorithm.h"
 #include "shape/CollisionCompoundShape.h"
 #include "shape/CollisionShape3D.h"
 
 namespace urchin
 {
 
-	CompoundCollisionAlgorithm::CompoundCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
+	CompoundAnyCollisionAlgorithm::CompoundAnyCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
 			CollisionAlgorithm(objectSwapped, result),
 			collisionAlgorithmSelector(new CollisionAlgorithmSelector())
 	{
 
 	}
 
-	CompoundCollisionAlgorithm::~CompoundCollisionAlgorithm()
+	CompoundAnyCollisionAlgorithm::~CompoundAnyCollisionAlgorithm()
 	{
 		delete collisionAlgorithmSelector;
 	}
 
-	void CompoundCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
+	void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
 		const auto &compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
 		const CollisionShape3D &otherShape = object2.getShape();
@@ -45,7 +45,7 @@ namespace urchin
 		}
 	}
 
-	void CompoundCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped)
+	void CompoundAnyCollisionAlgorithm::addContactPointsToManifold(const ManifoldResult &manifoldResult, bool manifoldSwapped)
 	{
 		for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i)
 		{
@@ -60,7 +60,6 @@ namespace urchin
 						manifolContactPoint.getLocalPointOnObject1(),
 						manifolContactPoint.getDepth(),
 						manifolContactPoint.isPredictive());
-
 			}else
 			{
 				getManifoldResult().addContactPoint(
@@ -75,24 +74,19 @@ namespace urchin
 		}
 	}
 
-	CollisionAlgorithm *CompoundCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, void* memPtr) const
+	CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, void* memPtr) const
 	{
-		return new(memPtr) CompoundCollisionAlgorithm(objectSwapped, result);
+		return new(memPtr) CompoundAnyCollisionAlgorithm(objectSwapped, result);
 	}
 
-	CollisionShape3D::ShapeType CompoundCollisionAlgorithm::Builder::getShapeType1() const
+	CollisionShape3D::ShapeType CompoundAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
 		return CollisionShape3D::COMPOUND_SHAPE;
 	}
 
-	CollisionShape3D::ShapeType CompoundCollisionAlgorithm::Builder::getShapeType2() const
+	unsigned int CompoundAnyCollisionAlgorithm::Builder::getAlgorithmSize() const
 	{
-		return CollisionShape3D::ANY_TYPE;
-	}
-
-	unsigned int CompoundCollisionAlgorithm::Builder::getAlgorithmSize() const
-	{
-		return sizeof(CompoundCollisionAlgorithm);
+		return sizeof(CompoundAnyCollisionAlgorithm);
 	}
 
 }
