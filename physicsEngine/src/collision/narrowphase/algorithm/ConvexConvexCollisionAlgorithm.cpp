@@ -62,9 +62,9 @@ namespace urchin
 		return new(memPtr) ConvexConvexCollisionAlgorithm(objectSwapped, result);
 	}
 
-	CollisionShape3D::ShapeType ConvexConvexCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
+	std::set<CollisionShape3D::ShapeType> ConvexConvexCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
-		return CollisionShape3D::ANY_TYPE;
+		return CollisionShape3D::CONVEX_SHAPES;
 	}
 
 	unsigned int ConvexConvexCollisionAlgorithm::Builder::getAlgorithmSize() const

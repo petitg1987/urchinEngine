@@ -15,8 +15,8 @@ namespace urchin
 
 	void SphereBoxCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
-		const CollisionSphereShape &sphere1 = static_cast<const CollisionSphereShape &>(object1.getShape());
-		const CollisionBoxShape &box2 = static_cast<const CollisionBoxShape &>(object2.getShape());
+		const auto &sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
+		const auto &box2 = dynamic_cast<const CollisionBoxShape &>(object2.getShape());
 
 		//For easiest computation, we need to have box position on origin.
 		//So, we transform sphere position into box local space.
@@ -86,9 +86,9 @@ namespace urchin
 		return new(memPtr) SphereBoxCollisionAlgorithm(objectSwapped, result);
 	}
 
-	CollisionShape3D::ShapeType SphereBoxCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
+	std::set<CollisionShape3D::ShapeType> SphereBoxCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
-		return CollisionShape3D::SPHERE_SHAPE;
+		return {CollisionShape3D::SPHERE_SHAPE};
 	}
 
 	unsigned int SphereBoxCollisionAlgorithm::Builder::getAlgorithmSize() const

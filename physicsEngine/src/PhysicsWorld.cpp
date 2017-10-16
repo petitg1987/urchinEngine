@@ -171,36 +171,43 @@ namespace urchin
 
 	void PhysicsWorld::startPhysicsUpdate()
 	{
-		double remainingTime = 0.0;
-		auto frameStartTime = std::chrono::high_resolution_clock::now();
-
-		while(continueExecution())
+		try
 		{
-			//Compute number of sub steps to execute.
-			//Note: rest of division could be used in next steps and interpolate between steps (see http://gafferongames.com/game-physics/fix-your-timestep/)
-			auto numSteps = static_cast<unsigned int>((timeStep - remainingTime) / timeStep);
-			//Clamp number of sub steps to max sub step to avoid spiral of death (time of simulation increase and need to be executed increasingly).
-			unsigned int numStepsClamped = (numSteps > maxSubStep) ? maxSubStep : numSteps;
+			double remainingTime = 0.0;
+			auto frameStartTime = std::chrono::high_resolution_clock::now();
 
-			for(unsigned int step=0; step<numStepsClamped; ++step)
+			while (continueExecution())
 			{
-				processPhysicsUpdate();
+				//Compute number of sub steps to execute.
+				//Note: rest of division could be used in next steps and interpolate between steps (see http://gafferongames.com/game-physics/fix-your-timestep/)
+				auto numSteps = static_cast<unsigned int>((timeStep - remainingTime) / timeStep);
+				//Clamp number of sub steps to max sub step to avoid spiral of death (time of simulation increase and need to be executed increasingly).
+				unsigned int numStepsClamped = (numSteps > maxSubStep) ? maxSubStep : numSteps;
+
+				for (unsigned int step = 0; step < numStepsClamped; ++step)
+				{
+					processPhysicsUpdate();
+				}
+
+				auto frameEndTime = std::chrono::high_resolution_clock::now();
+				auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
+				remainingTime = timeStep - (diffTimeMicroSeconds / 1000000.0);
+
+				if (remainingTime >= 0.0)
+				{
+					std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0)));
+
+					remainingTime = 0.0;
+					frameStartTime = std::chrono::high_resolution_clock::now();
+				} else
+				{
+					frameStartTime = frameEndTime;
+				}
 			}
-
-			auto frameEndTime = std::chrono::high_resolution_clock::now();
-			auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-			remainingTime = timeStep - (diffTimeMicroSeconds / 1000000.0);
-
-			if(remainingTime >= 0.0)
-			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0)));
-
-				remainingTime = 0.0;
-				frameStartTime = std::chrono::high_resolution_clock::now();
-			}else
-			{
-				frameStartTime = frameEndTime;
-			}
+		}catch(std::exception &e)
+		{
+			Logger::logger().logError("Error cause physics thread crash: " + std::string(e.what()));
+            throw e;
 		}
 	}
 

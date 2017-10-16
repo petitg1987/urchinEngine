@@ -5,6 +5,13 @@
 namespace urchin
 {
 
+	//static
+	std::set<CollisionShape3D::ShapeType> CollisionShape3D::CONVEX_SHAPES = {CollisionShape3D::SPHERE_SHAPE, CollisionShape3D::BOX_SHAPE,
+                                                                             CollisionShape3D::CAPSULE_SHAPE, CollisionShape3D::CYLINDER_SHAPE,
+                                                                             CollisionShape3D::CONE_SHAPE, CollisionShape3D::CONVEX_HULL_SHAPE};
+	std::set<CollisionShape3D::ShapeType> CollisionShape3D::CONCAVE_SHAPES = {CollisionShape3D::HEIGHTFIELD_SHAPE};
+	std::set<CollisionShape3D::ShapeType> CollisionShape3D::COMPOUND_SHAPES = {CollisionShape3D::COMPOUND_SHAPE};
+
 	CollisionShape3D::CollisionShape3D() :
 			innerMargin(ConfigService::instance()->getUnsignedIntValue("collisionShape.innerMargin")),
 			initialInnerMargin(innerMargin)
@@ -51,5 +58,20 @@ namespace urchin
 				Logger::logger().logWarning(logStream.str());
 			}
 		}
+	}
+
+	bool CollisionShape3D::isConvex() const
+	{
+		return CONVEX_SHAPES.find(getShapeType()) != CONVEX_SHAPES.end();
+	}
+
+	bool CollisionShape3D::isConcave() const
+	{
+		return CONCAVE_SHAPES.find(getShapeType()) != CONCAVE_SHAPES.end();
+	}
+
+	bool CollisionShape3D::isCompound() const
+	{
+		return COMPOUND_SHAPES.find(getShapeType()) != COMPOUND_SHAPES.end();
 	}
 }

@@ -35,7 +35,7 @@ namespace urchin
 		if(rigidBody!=nullptr)
 		{
 			std::shared_ptr<const CollisionShape3D> scaledCollisionShape3D = rigidBody->getScaledShape();
-			if(scaledCollisionShape3D->getShapeCategory()==CollisionShape3D::COMPOUND)
+			if(scaledCollisionShape3D->isCompound())
 			{
 				std::shared_ptr<const CollisionCompoundShape> collisionCompoundShape = std::dynamic_pointer_cast<const CollisionCompoundShape>(scaledCollisionShape3D);
 				for(const auto &collisionLocalizedShape : collisionCompoundShape->getLocalizedShapes())
@@ -47,7 +47,7 @@ namespace urchin
 
 					localizedShapes.push_back(localizedShape);
 				}
-			}else if(scaledCollisionShape3D->getShapeCategory()==CollisionShape3D::CONVEX)
+			}else if(scaledCollisionShape3D->isConvex())
 			{
 				Transform<float> unscaledTransform = rigidBody->getTransform();
 				unscaledTransform.setScale(1.0); //scale not needed because shape is already scaled.
@@ -59,7 +59,7 @@ namespace urchin
 				localizedShapes.push_back(localizedShape);
 			} else
 			{
-				throw std::invalid_argument("Unknown shape category: " + std::to_string(scaledCollisionShape3D->getShapeCategory()));
+				throw std::invalid_argument("Unknown shape type category: " + std::to_string(scaledCollisionShape3D->getShapeType()));
 			}
 		}
 

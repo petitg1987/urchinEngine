@@ -25,9 +25,9 @@ namespace urchin
         return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, result);
     }
 
-    CollisionShape3D::ShapeType ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
+    std::set<CollisionShape3D::ShapeType> ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
     {
-        return CollisionShape3D::HEIGHTFIELD_SHAPE; //TODO wrong: don't include all types of concave
+        return CollisionShape3D::CONCAVE_SHAPES;
     }
 
     unsigned int ConcaveAnyCollisionAlgorithm::Builder::getAlgorithmSize() const

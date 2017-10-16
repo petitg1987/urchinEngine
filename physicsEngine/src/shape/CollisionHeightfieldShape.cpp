@@ -45,11 +45,6 @@ namespace urchin
         return CollisionHeightfieldShape::HEIGHTFIELD_SHAPE;
     }
 
-    CollisionShape3D::ShapeCategory CollisionHeightfieldShape::getShapeCategory() const
-    {
-        return CollisionShape3D::CONCAVE;
-    }
-
     std::shared_ptr<ConvexShape3D<float>> CollisionHeightfieldShape::getSingleShape() const
     {
         throw std::runtime_error("Impossible to retrieve single convex shape for heightfield shape");

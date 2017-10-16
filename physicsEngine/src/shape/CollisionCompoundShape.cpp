@@ -37,11 +37,6 @@ namespace urchin
 		return CollisionShape3D::COMPOUND_SHAPE;
 	}
 
-	CollisionShape3D::ShapeCategory CollisionCompoundShape::getShapeCategory() const
-	{
-		return CollisionShape3D::COMPOUND;
-	}
-
 	std::shared_ptr<ConvexShape3D<float>> CollisionCompoundShape::getSingleShape() const
 	{
 		throw std::runtime_error("Impossible to retrieve single convex shape for compound shape");

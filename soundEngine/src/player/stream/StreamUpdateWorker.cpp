@@ -94,26 +94,33 @@ namespace urchin
 
 	void StreamUpdateWorker::start()
 	{
-		while(continueExecution())
+		try
 		{
+			while (continueExecution())
 			{
-				std::lock_guard<std::mutex> lock(tasksMutex);
-
-				for(auto it=tasks.begin(); it!=tasks.end();)
 				{
-					bool taskFinished = processTask(*it);
-					if(taskFinished)
+					std::lock_guard<std::mutex> lock(tasksMutex);
+
+					for (auto it = tasks.begin(); it != tasks.end();)
 					{
-						deleteTask(*it);
-						it = tasks.erase(it);
-					}else
-					{
-						++it;
+						bool taskFinished = processTask(*it);
+						if (taskFinished)
+						{
+							deleteTask(*it);
+							it = tasks.erase(it);
+						} else
+						{
+							++it;
+						}
 					}
 				}
-			}
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
+				std::this_thread::sleep_for(std::chrono::milliseconds(updateStreamBufferPauseTime));
+			}
+		}catch(std::exception &e)
+		{
+			Logger::logger().logError("Error cause sound streaming thread crash: " + std::string(e.what()));
+			throw e;
 		}
 	}
 

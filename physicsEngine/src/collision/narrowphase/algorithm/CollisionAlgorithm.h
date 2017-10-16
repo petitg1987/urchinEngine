@@ -11,7 +11,7 @@ namespace urchin
 	{
 		public:
 			CollisionAlgorithm(bool, const ManifoldResult &);
-			virtual ~CollisionAlgorithm();
+			virtual ~CollisionAlgorithm() = default;
 
 			void processCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &, bool);
 

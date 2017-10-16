@@ -10,11 +10,6 @@ namespace urchin
 
 	}
 
-	CollisionAlgorithm::~CollisionAlgorithm()
-	{
-
-	}
-
 	void CollisionAlgorithm::processCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2, bool refreshContractPoints)
 	{
 		if(objectSwapped)

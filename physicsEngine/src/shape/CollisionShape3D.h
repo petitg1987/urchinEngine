@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <set>
 #include "UrchinCommon.h"
 
 #include "utils/math/PhysicsTransform.h"
@@ -20,8 +21,6 @@ namespace urchin
 
 			enum ShapeType
 			{
-				ANY_TYPE = -1,
-
 				SPHERE_SHAPE = 0,
 				BOX_SHAPE,
 				CAPSULE_SHAPE,
@@ -33,17 +32,13 @@ namespace urchin
 
 				SHAPE_MAX
 			};
-
-			enum ShapeCategory
-			{
-				CONVEX,
-				COMPOUND,
-				CONCAVE
-			};
+            static std::set<ShapeType> CONVEX_SHAPES, CONCAVE_SHAPES, COMPOUND_SHAPES;
 
 			float getInnerMargin() const;
 			virtual CollisionShape3D::ShapeType getShapeType() const = 0;
-			virtual CollisionShape3D::ShapeCategory getShapeCategory() const = 0;
+            bool isConvex() const;
+            bool isConcave() const;
+            bool isCompound() const;
 			virtual std::shared_ptr<ConvexShape3D<float>> getSingleShape() const = 0;
 
 			virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;

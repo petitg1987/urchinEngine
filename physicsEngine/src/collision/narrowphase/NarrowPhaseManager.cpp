@@ -110,7 +110,7 @@ namespace urchin
 			ccd_set ccdResults;
 
 			const CollisionShape3D *bodyShape = body->getShape();
-			if(bodyShape->getShapeCategory()==CollisionShape3D::COMPOUND)
+			if(bodyShape->isCompound())
 			{
 				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> & localizedShapes = compoundShape->getLocalizedShapes();
@@ -124,13 +124,13 @@ namespace urchin
 						ccdResults.insert(localizedShapeCcdResult);
 					}
 				}
-			}else if(bodyShape->getShapeCategory()==CollisionShape3D::CONVEX)
+			}else if(bodyShape->isConvex())
 			{
 				TemporalObject temporalObject(body->getShape(), from, to);
 				ccdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 			}else
 			{
-				throw std::invalid_argument("Unknown shape category: " + std::to_string(bodyShape->getShapeCategory()));
+				throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
 			}
 
 			if(!ccdResults.empty())
@@ -157,7 +157,7 @@ namespace urchin
 		for(auto bodyAABBoxHit : bodiesAABBoxHit)
 		{
 			const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
-			if(bodyShape->getShapeCategory()==CollisionShape3D::COMPOUND)
+			if(bodyShape->isCompound())
 			{
 				const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(bodyShape);
 				const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
@@ -168,7 +168,7 @@ namespace urchin
 
 					continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 				}
-			}else if(bodyShape->getShapeCategory()==CollisionShape3D::CONVEX)
+			}else if(bodyShape->isConvex())
 			{
 				PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
 				TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
@@ -176,7 +176,7 @@ namespace urchin
 				continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 			}else
 			{
-				throw std::invalid_argument("Unknown shape category: " + std::to_string(bodyShape->getShapeCategory()));
+				throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
 			}
 		}
 

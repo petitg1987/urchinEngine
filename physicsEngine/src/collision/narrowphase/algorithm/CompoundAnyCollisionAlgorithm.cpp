@@ -79,9 +79,9 @@ namespace urchin
 		return new(memPtr) CompoundAnyCollisionAlgorithm(objectSwapped, result);
 	}
 
-	CollisionShape3D::ShapeType CompoundAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
+	std::set<CollisionShape3D::ShapeType> CompoundAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
-		return CollisionShape3D::COMPOUND_SHAPE;
+		return CollisionShape3D::COMPOUND_SHAPES;
 	}
 
 	unsigned int CompoundAnyCollisionAlgorithm::Builder::getAlgorithmSize() const
