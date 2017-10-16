@@ -167,7 +167,13 @@ set(SOURCE_FILES
         src/visualizer/CollisionVisualizer.h
         src/PhysicsWorld.cpp
         src/PhysicsWorld.h
-        src/UrchinPhysicsEngine.h src/collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.cpp src/collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h)
+        src/UrchinPhysicsEngine.h
+        src/collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.cpp
+        src/collision/narrowphase/algorithm/ConcaveAnyCollisionAlgorithm.h
+        src/shape/CollisionTriangleShape.cpp
+        src/shape/CollisionTriangleShape.h
+        src/object/CollisionTriangleObject.cpp
+        src/object/CollisionTriangleObject.h)
 
 include_directories(src ../common/src)
 

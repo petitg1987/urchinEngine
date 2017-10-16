@@ -21,13 +21,17 @@ namespace urchin
 
 			enum ShapeType
 			{
+				//Convex:
 				SPHERE_SHAPE = 0,
 				BOX_SHAPE,
 				CAPSULE_SHAPE,
 				CYLINDER_SHAPE,
 				CONE_SHAPE,
 				CONVEX_HULL_SHAPE,
+				TRIANGLE_SHAPE,
+				//compound:
 				COMPOUND_SHAPE,
+				//Concave:
 				HEIGHTFIELD_SHAPE,
 
 				SHAPE_MAX

@@ -8,7 +8,8 @@ namespace urchin
 	//static
 	std::set<CollisionShape3D::ShapeType> CollisionShape3D::CONVEX_SHAPES = {CollisionShape3D::SPHERE_SHAPE, CollisionShape3D::BOX_SHAPE,
                                                                              CollisionShape3D::CAPSULE_SHAPE, CollisionShape3D::CYLINDER_SHAPE,
-                                                                             CollisionShape3D::CONE_SHAPE, CollisionShape3D::CONVEX_HULL_SHAPE};
+                                                                             CollisionShape3D::CONE_SHAPE, CollisionShape3D::CONVEX_HULL_SHAPE,
+																			 CollisionShape3D::TRIANGLE_SHAPE};
 	std::set<CollisionShape3D::ShapeType> CollisionShape3D::CONCAVE_SHAPES = {CollisionShape3D::HEIGHTFIELD_SHAPE};
 	std::set<CollisionShape3D::ShapeType> CollisionShape3D::COMPOUND_SHAPES = {CollisionShape3D::COMPOUND_SHAPE};
 
