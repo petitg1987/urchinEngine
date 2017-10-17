@@ -10,11 +10,6 @@ namespace urchin
 
 	}
 
-	CollisionObjectWrapper::~CollisionObjectWrapper()
-	{
-
-	}
-
 	const CollisionShape3D &CollisionObjectWrapper::getShape() const
 	{
 		return shape;

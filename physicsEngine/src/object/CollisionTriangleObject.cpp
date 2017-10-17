@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "CollisionTriangleObject.h"
 
 namespace urchin
@@ -16,11 +18,20 @@ namespace urchin
 
     Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const
     {
-        return triangleObject.getSupportPoint(direction); //TODO use includeMargin...
+        if(includeMargin)
+        {
+            return retrieveTriangle().getSupportPoint(direction);
+        }
+
+        return triangleObject.getSupportPoint(direction);
     }
 
     const Triangle3D<float> CollisionTriangleObject::retrieveTriangle() const
     {
+        #ifdef _DEBUG
+            assert(getOuterMargin()==0.0f);
+        #endif
+
         return triangleObject;
     }
 

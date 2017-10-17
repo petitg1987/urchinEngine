@@ -49,27 +49,27 @@ namespace urchin
 	{
 		for(unsigned int i=0; i<manifoldResult.getNumContactPoints(); ++i)
 		{
-			const ManifoldContactPoint &manifolContactPoint = manifoldResult.getManifoldContactPoint(i);
+			const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
 			if(manifoldSwapped)
 			{
 				getManifoldResult().addContactPoint(
-						(-manifolContactPoint.getNormalFromObject2()),
-						manifolContactPoint.getPointOnObject2(),
-						manifolContactPoint.getPointOnObject1(),
-						manifolContactPoint.getLocalPointOnObject2(),
-						manifolContactPoint.getLocalPointOnObject1(),
-						manifolContactPoint.getDepth(),
-						manifolContactPoint.isPredictive());
+						(-manifoldContactPoint.getNormalFromObject2()),
+						manifoldContactPoint.getPointOnObject2(),
+						manifoldContactPoint.getPointOnObject1(),
+						manifoldContactPoint.getLocalPointOnObject2(),
+						manifoldContactPoint.getLocalPointOnObject1(),
+						manifoldContactPoint.getDepth(),
+						manifoldContactPoint.isPredictive());
 			}else
 			{
 				getManifoldResult().addContactPoint(
-						manifolContactPoint.getNormalFromObject2(),
-						manifolContactPoint.getPointOnObject1(),
-						manifolContactPoint.getPointOnObject2(),
-						manifolContactPoint.getLocalPointOnObject1(),
-						manifolContactPoint.getLocalPointOnObject2(),
-						manifolContactPoint.getDepth(),
-						manifolContactPoint.isPredictive());
+						manifoldContactPoint.getNormalFromObject2(),
+						manifoldContactPoint.getPointOnObject1(),
+						manifoldContactPoint.getPointOnObject2(),
+						manifoldContactPoint.getLocalPointOnObject1(),
+						manifoldContactPoint.getLocalPointOnObject2(),
+						manifoldContactPoint.getDepth(),
+						manifoldContactPoint.isPredictive());
 			}
 		}
 	}

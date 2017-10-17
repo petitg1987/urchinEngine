@@ -1,5 +1,6 @@
 #include <limits>
 #include <cmath>
+#include <cassert>
 
 #include "shape/CollisionConvexHullShape.h"
 #include "object/CollisionConvexHullObject.h"
@@ -26,7 +27,7 @@ namespace urchin
 
 		if(!convexHullShapeReduced)
 		{ //impossible to shrink the convex hull correctly
-			refreshInnerMargin(0.0);
+			refreshInnerMargin(0.0f);
 		}
 	}
 
@@ -124,6 +125,9 @@ namespace urchin
 
 		if(!convexHullShapeReduced)
 		{ //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
+			#ifdef _DEBUG
+            	assert(getInnerMargin()==0.0f);
+    		#endif
             std::shared_ptr<ConvexHull3D<float>> convexHullWithoutMargin(convexHullWithMargin);
             return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
 		}
