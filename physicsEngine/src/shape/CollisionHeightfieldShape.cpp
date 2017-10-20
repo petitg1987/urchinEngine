@@ -107,4 +107,29 @@ namespace urchin
     {
         return 0.0f;
     }
+
+    std::vector<Triangle3D<float>> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &localAabbox) const //TODO rename: confusion between localAabbox & this->localAABBox
+    {
+        float verticesDistanceX = vertices[1].X - vertices[0].X;
+        float halfSizeX = localAABBox->getHalfSizes().X / 2.0; //TODO why divide by 2 half size ?
+        std::cout<<halfSizeX<<std::endl;
+        auto startVertexX = static_cast<int>((localAabbox.getMin().X + halfSizeX) / verticesDistanceX);
+        auto endVertexX = static_cast<int>((localAabbox.getMax().X + halfSizeX) / verticesDistanceX) + 1;
+
+        float verticesDistanceZ = vertices[xLength].Z - vertices[0].Z;
+        float halfSizeZ = localAABBox->getHalfSizes().Z / 2.0;
+        auto startVertexZ = static_cast<int>((localAabbox.getMin().Z + halfSizeZ) / verticesDistanceZ);
+        auto endVertexZ = static_cast<int>((localAabbox.getMax().Z + halfSizeZ) / verticesDistanceZ) + 1;
+
+        std::vector<Triangle3D<float>> triangles;
+        triangles.reserve((endVertexX-startVertexX) * (endVertexZ-startVertexZ));
+
+        std::cout<<"X start-end: "<<startVertexX<<"::"<<endVertexX<<std::endl;
+        std::cout<<"Y start-end: "<<startVertexZ<<"::"<<endVertexZ<<std::endl;
+        std::cout<<localAabbox<<std::endl;
+
+        //TODO implement it
+
+        return triangles;
+    }
 }

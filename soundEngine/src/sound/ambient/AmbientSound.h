@@ -16,7 +16,7 @@ namespace urchin
 		public:
 			explicit AmbientSound(const std::string &);
 
-			Sound::SoundType getSoundType() const;
+			Sound::SoundType getSoundType() const override;
 	};
 
 }

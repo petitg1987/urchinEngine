@@ -18,7 +18,7 @@ namespace urchin
 	class Model : public Octreeable<Model>
 	{
 		public:
-			Model(const std::string &);
+			explicit Model(const std::string &);
 			virtual ~Model();
 		
 			void loadAnimation(const std::string &, const std::string &);

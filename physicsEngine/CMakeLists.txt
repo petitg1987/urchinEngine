@@ -173,7 +173,9 @@ set(SOURCE_FILES
         src/shape/CollisionTriangleShape.cpp
         src/shape/CollisionTriangleShape.h
         src/object/CollisionTriangleObject.cpp
-        src/object/CollisionTriangleObject.h)
+        src/object/CollisionTriangleObject.h
+        src/shape/CollisionConcaveShape.cpp
+        src/shape/CollisionConcaveShape.h)
 
 include_directories(src ../common/src)
 

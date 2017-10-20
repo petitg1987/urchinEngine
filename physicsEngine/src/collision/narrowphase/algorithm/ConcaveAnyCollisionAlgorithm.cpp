@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "ConcaveAnyCollisionAlgorithm.h"
+#include "shape/CollisionConcaveShape.h"
 #include "shape/CollisionTriangleShape.h"
 
 namespace urchin
@@ -19,26 +20,25 @@ namespace urchin
     }
 
     void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
-    { //TODO implement it
+    {
         const CollisionShape3D &otherShape = object2.getShape();
 
         AbstractWorkBody *body1 = getManifoldResult().getBody1();
         AbstractWorkBody *body2 = getManifoldResult().getBody2();
 
-        AABBox<float> aabbox = object2.getShape().toAABBox(object2.getShapeWorldTransform());
+        AABBox<float> aabboxLocalToObject1 = object2.getShape().toAABBox(object1.getShapeWorldTransform().inverse() * object2.getShapeWorldTransform());
         const auto &concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());
 
-        std::vector<Triangle3D<float>> triangles = concaveShape.retrieveTrianglesIn(object1.getShapeWorldTransform(), aabbox);
+        std::vector<Triangle3D<float>> triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
         for(const auto &triangle : triangles)
         {
             CollisionTriangleShape collisionTriangleShape(triangle.getPoints());
 
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(
-                    body1, collisionTriangleShape, body2, &otherShape);
+                    body1, &collisionTriangleShape, body2, &otherShape);
             const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 
-            PhysicsTransform shapeWorldTransform = object1.getShapeWorldTransform() * localizedShape->transform;
-            CollisionObjectWrapper subObject1(collisionTriangleShape, shapeWorldTransform);
+            CollisionObjectWrapper subObject1(collisionTriangleShape, object1.getShapeWorldTransform());
             CollisionObjectWrapper subObject2(otherShape, object2.getShapeWorldTransform());
 
             collisionAlgorithm->processCollisionAlgorithm(subObject1, subObject2, false);

@@ -24,6 +24,9 @@ namespace urchin
             float getAmbient() const;
             void setAmbient(float);
 
+            void setTransform(const Transform<float> &);
+            const Transform<float> &getTransform() const;
+
             void display(const Matrix4<float> &) const;
 
         private:
@@ -46,13 +49,15 @@ namespace urchin
                 SHADER_NORMAL
             };
             unsigned int shader;
-            int mProjectionLoc, mViewLoc;
+            int mModelLoc, mProjectionLoc, mViewLoc;
             int ambientLoc;
 
             float xzScale;
             float yScale;
             Matrix4<float> projectionMatrix;
             float ambient;
+
+            Transform<float> transform;
 
             std::vector<Point3<float>> vertices;
             unsigned int xLength, zLength;

@@ -48,6 +48,7 @@ namespace urchin
         shader = ShaderManager::instance()->createProgram("terrain.vert", "terrain.frag");
         ShaderManager::instance()->bind(shader);
 
+        mModelLoc = glGetUniformLocation(shader, "mModel");
         mProjectionLoc = glGetUniformLocation(shader, "mProjection");
         mViewLoc = glGetUniformLocation(shader, "mView");
         ambientLoc = glGetUniformLocation(shader, "ambient");
@@ -90,6 +91,16 @@ namespace urchin
     void Terrain::setAmbient(float ambient)
     {
         this->ambient = ambient;
+    }
+
+    void Terrain::setTransform(const Transform<float> &transform)
+    {
+        this->transform = transform;
+    }
+
+    const Transform<float> &Terrain::getTransform() const
+    {
+        return transform;
     }
 
     std::vector<Point3<float>> Terrain::buildVertices(const Image *imgTerrain) const
@@ -245,6 +256,7 @@ namespace urchin
         unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
         ShaderManager::instance()->bind(shader);
 
+        glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) transform.getTransformMatrix());
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
         glUniform1f(ambientLoc, ambient);

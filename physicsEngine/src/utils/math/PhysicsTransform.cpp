@@ -56,6 +56,12 @@ namespace urchin
 		return Transform<float>(position, orientation, 1.0f);
 	}
 
+	PhysicsTransform PhysicsTransform::inverse() const
+	{
+		Quaternion<float> invOrientation = orientation.inverse();
+		return PhysicsTransform(invOrientation.rotatePoint(-position), invOrientation);
+	}
+
 	bool PhysicsTransform::equals(const PhysicsTransform &physicsTransform) const
 	{
 		return physicsTransform.getPosition() == position && physicsTransform.getOrientation() == orientation;

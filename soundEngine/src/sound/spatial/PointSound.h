@@ -19,7 +19,7 @@ namespace urchin
 			PointSound(const std::string &, const Point3<float> &);
 			PointSound(const std::string &, const Point3<float> &, float);
 
-			Sound::SoundType getSoundType() const;
+			Sound::SoundType getSoundType() const override;
 
 			void setPosition(const Point3<float> &);
 			Point3<float> getPosition() const;

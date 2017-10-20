@@ -6,11 +6,12 @@
 #include "UrchinCommon.h"
 
 #include "shape/CollisionShape3D.h"
+#include "shape/CollisionConcaveShape.h"
 
 namespace urchin
 {
 
-    class CollisionHeightfieldShape : public CollisionShape3D
+    class CollisionHeightfieldShape : public CollisionShape3D, public CollisionConcaveShape
     {
         public:
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
@@ -26,6 +27,8 @@ namespace urchin
             Vector3<float> computeLocalInertia(float) const override;
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
+
+            std::vector<Triangle3D<float>> findTrianglesInAABBox(const AABBox<float> &) const override;
 
         private:
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
