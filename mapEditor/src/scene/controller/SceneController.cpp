@@ -3,7 +3,7 @@
 #include "SceneController.h"
 
 namespace urchin
-{
+{ //TODO add new object on MapEditor: linear & angular factor not at 1,1,1 values: normal ?
 
 	SceneController::SceneController(MapHandler *mapHandler) :
 			bIsModified(false),

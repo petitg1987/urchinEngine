@@ -10,9 +10,9 @@ namespace urchin
 			CollisionShape3D(),
 			boxShape(std::make_shared<BoxShape<float>>(halfSizes))
 	{
-		computeSafeMargin();
-
 		lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
+
+		computeSafeMargin();
 	}
 
 	void CollisionBoxShape::computeSafeMargin()

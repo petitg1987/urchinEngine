@@ -14,10 +14,10 @@ namespace urchin
             xLength(xLength),
             zLength(zLength)
     {
+        lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
+
         assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();
-
-        lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
     }
 
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const
@@ -37,7 +37,8 @@ namespace urchin
             }
         }
 
-        return std::make_unique<BoxShape<float>>(min.vector(max));
+        Vector3<float> halfSizes((max.X-min.X) / 2.0, (max.Y-min.Y) / 2.0, (max.Z-min.Z) / 2.0);
+        return std::make_unique<BoxShape<float>>(halfSizes);
     }
 
     CollisionShape3D::ShapeType CollisionHeightfieldShape::getShapeType() const
@@ -108,27 +109,41 @@ namespace urchin
         return 0.0f;
     }
 
-    std::vector<Triangle3D<float>> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &localAabbox) const //TODO rename: confusion between localAabbox & this->localAABBox
+    std::vector<Triangle3D<float>> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const
     {
         float verticesDistanceX = vertices[1].X - vertices[0].X;
-        float halfSizeX = localAABBox->getHalfSizes().X / 2.0; //TODO why divide by 2 half size ?
-        std::cout<<halfSizeX<<std::endl;
-        auto startVertexX = static_cast<int>((localAabbox.getMin().X + halfSizeX) / verticesDistanceX);
-        auto endVertexX = static_cast<int>((localAabbox.getMax().X + halfSizeX) / verticesDistanceX) + 1;
+        auto rawStartVertexX = static_cast<int>((checkAABBox.getMin().X + localAABBox->getHalfSizes().X) / verticesDistanceX);
+        auto startVertexX = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertexX, 0, static_cast<int>(xLength-1)));
+        auto rawEndVertexX = static_cast<int>((checkAABBox.getMax().X + localAABBox->getHalfSizes().X) / verticesDistanceX) + 1;
+        auto endVertexX = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexX, 0, static_cast<int>(xLength-1)));
 
         float verticesDistanceZ = vertices[xLength].Z - vertices[0].Z;
-        float halfSizeZ = localAABBox->getHalfSizes().Z / 2.0;
-        auto startVertexZ = static_cast<int>((localAabbox.getMin().Z + halfSizeZ) / verticesDistanceZ);
-        auto endVertexZ = static_cast<int>((localAabbox.getMax().Z + halfSizeZ) / verticesDistanceZ) + 1;
+        auto rawStartVertexZ = static_cast<int>((checkAABBox.getMin().Z + localAABBox->getHalfSizes().Z) / verticesDistanceZ);
+        auto startVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertexZ, 0, static_cast<int>(zLength-1)));
+        auto rawEndVertexZ = static_cast<int>((checkAABBox.getMax().Z + localAABBox->getHalfSizes().Z) / verticesDistanceZ) + 1;
+        auto endVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexZ, 0, static_cast<int>(zLength-1)));
 
+        unsigned int nbTriangles = (endVertexX-startVertexX) * (endVertexZ-startVertexZ) * 2;
         std::vector<Triangle3D<float>> triangles;
-        triangles.reserve((endVertexX-startVertexX) * (endVertexZ-startVertexZ));
+        triangles.reserve(nbTriangles);
 
-        std::cout<<"X start-end: "<<startVertexX<<"::"<<endVertexX<<std::endl;
-        std::cout<<"Y start-end: "<<startVertexZ<<"::"<<endVertexZ<<std::endl;
-        std::cout<<localAabbox<<std::endl;
+        for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
+        {
+            for (unsigned int x = startVertexX; x < endVertexX; ++x)
+            {
+                Point3<float> point1 = vertices[x + xLength * z]; //far-left
+                Point3<float> point2 = vertices[x + 1 + xLength * z]; //far-right
+                Point3<float> point3 = vertices[x + xLength * (z + 1)]; //near-left
+                Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
 
-        //TODO implement it
+                triangles.emplace_back(Triangle3D<float>(point1, point3, point2));
+                triangles.emplace_back(Triangle3D<float>(point2, point3, point4));
+            }
+        }
+
+        #ifdef _DEBUG
+            assert(nbTriangles==triangles.size());
+        #endif
 
         return triangles;
     }

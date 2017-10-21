@@ -238,7 +238,7 @@ namespace urchin
         std::vector<unsigned int> indices;
         indices.reserve(((zLength-1) * xLength * 2) + (zLength-1));
 
-        for(unsigned int z=0; z<zLength-1; ++z)
+        for(unsigned int z = 0; z < zLength - 1; ++z)
         {
             for (unsigned int x = 0; x < xLength; ++x)
             {

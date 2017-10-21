@@ -166,17 +166,18 @@ namespace urchin
 					PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform() * localizedShape->transform;
 					TemporalObject temporalObject2(localizedShape->shape.get(), fromToObject2, fromToObject2);
 
-					continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+					continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 				}
 			}else if(bodyShape->isConvex())
 			{
-				PhysicsTransform fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
+				const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
 				TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
-				continuousCollissionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+				continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 			}else
 			{
-				throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
+                //TODO handle ccd for terrain
+                // throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
 			}
 		}
 
@@ -186,7 +187,7 @@ namespace urchin
 	/**
 	 * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
 	 */
-	void NarrowPhaseManager::continuousCollissionTest(const TemporalObject &temporalObject1, const TemporalObject &temporalObject2,
+	void NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const TemporalObject &temporalObject2,
 			AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
 	{
 		std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisionResult = gjkContinuousCollisionAlgorithm

@@ -15,10 +15,10 @@ namespace urchin
 			CollisionShape3D(),
 			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points))
 	{
+		lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
+
 		initializeConvexHullReduced();
 		initializeDistances();
-
-		lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
 	}
 
 	void CollisionConvexHullShape::initializeConvexHullReduced()
