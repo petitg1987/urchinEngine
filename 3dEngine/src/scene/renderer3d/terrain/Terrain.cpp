@@ -108,19 +108,38 @@ namespace urchin
         std::vector<Point3<float>> vertices;
         vertices.reserve(imgTerrain->getHeight() * imgTerrain->getWidth());
 
-        float xStart = -(imgTerrain->getWidth() * xzScale) / 2.0;
-        float zStart = -(imgTerrain->getHeight() * xzScale) / 2.0;
+        float xStart = (-(imgTerrain->getWidth() * xzScale) / 2.0) + (xzScale / 2.0);
+        float zStart = (-(imgTerrain->getHeight() * xzScale) / 2.0) + (xzScale / 2.0);
 
+        float minElevation = std::numeric_limits<float>::max();
+        float maxElevation = -std::numeric_limits<float>::max();
         for(unsigned int z=0; z<imgTerrain->getHeight(); ++z)
         {
             float zFloat = zStart + static_cast<float>(z) * xzScale;
             for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
             {
-                float elevation = -2.5 + imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] * yScale;
+                float elevation = imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] * yScale;
+                if(elevation > maxElevation)
+                {
+                    maxElevation = elevation;
+                }
+                if(elevation < minElevation)
+                {
+                    minElevation = elevation;
+                }
                 float xFloat = xStart + static_cast<float>(x) * xzScale;
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }
         }
+
+        //center terrain on Y axis
+        float elevationDifference = maxElevation - minElevation;
+        float elevationDelta = (elevationDifference / 2.0) - maxElevation;
+        for(auto &vertex : vertices)
+        {
+            vertex.Y += elevationDelta;
+        }
+
         return vertices;
     }
 
