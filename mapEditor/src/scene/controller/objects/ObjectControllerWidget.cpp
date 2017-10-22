@@ -421,6 +421,7 @@ namespace urchin
 
 	void ObjectControllerWidget::setupObjectPhysicsDataFrom(const SceneObject *sceneObject)
 	{
+		disableObjectEvent = true;
 		const RigidBody *rigidBody = sceneObject->getRigidBody();
 		std::shared_ptr<const CollisionShape3D> bodyScaledShape(nullptr);
 		if(rigidBody!=nullptr)
@@ -454,6 +455,7 @@ namespace urchin
 		bodyShapeWidget->setupShapePropertiesFrom(bodyScaledShape);
 
 		shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget->getBodyShapeName()));
+		disableObjectEvent = false;
 	}
 
 	BodyShapeWidget *ObjectControllerWidget::retrieveBodyShapeWidget(std::shared_ptr<const CollisionShape3D> shape, const SceneObject *sceneObject)

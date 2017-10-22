@@ -7,22 +7,6 @@
 namespace urchin
 {
 
-	void LoaderUrchinAnim::nextLine(std::ifstream &file, std::string &buffer)
-	{
-		do
-		{
-			std::getline(file, buffer);
-
-			//delete '\r'
-			unsigned long length = buffer.length()-1;
-			if(length >=0 && buffer[length]=='\r')
-			{
-				buffer.resize(length);
-			}
-
-		}while(buffer.length()==0 && !file.eof());
-	}
-
 	ConstAnimation *LoaderUrchinAnim::loadFromFile(const std::string &filename, void *params)
 	{
 		std::locale::global(std::locale("C")); //for float
@@ -41,65 +25,65 @@ namespace urchin
 		
 		//numFrames
 		unsigned int numFrames;
-		nextLine(file, buffer);
+        FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numFrames;
 		
 		//numBones
 		unsigned int numBones;
-		nextLine(file, buffer);
+        FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numBones;
 		
 		//frameRates
 		unsigned int frameRate;
-		nextLine(file, buffer);
+        FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> frameRate;
 		
 		//numAnimatedComponents
 		unsigned int numAnimatedComponents;
-		nextLine(file, buffer);
+        FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numAnimatedComponents;
 		
 		//hierarchy
 		auto *boneInfos = new BoneInfo[numBones];
-		nextLine(file, buffer); //buffer = "hierarchy {"
+        FileReaderUtil::nextLine(file, buffer); //buffer = "hierarchy {"
 		for(unsigned int i=0;i<numBones;i++)
 		{
-			nextLine(file, buffer);
+            FileReaderUtil::nextLine(file, buffer);
 			iss.clear(); iss.str(buffer);
 			iss >> boneInfos[i].name >> boneInfos[i].parent >> boneInfos[i].flags >>boneInfos[i].startIndex;
 			boneInfos[i].name =boneInfos[i].name.substr(1, boneInfos[i].name.length()-2); //remove quot
 		}
-		nextLine(file, buffer); //buffer = "}"
+        FileReaderUtil::nextLine(file, buffer); //buffer = "}"
 		
 		//bounds
 		auto **bboxes = new AABBox<float>*[numFrames];
-		nextLine(file, buffer); //buffer = "bounds {"
+        FileReaderUtil::nextLine(file, buffer); //buffer = "bounds {"
 		for(unsigned int i=0;i<numFrames;i++)
 		{
-			nextLine(file, buffer);
+            FileReaderUtil::nextLine(file, buffer);
 			iss.clear(); iss.str(buffer);
 
 			Point3<float> min, max;
 			iss >> sdata >> min.X >> min.Y >> min.Z >> sdata >> sdata >> max.X >> max.Y >> max.Z;
 			bboxes[i] = new AABBox<float>(min, max);
-		}	
-		nextLine(file, buffer); //buffer = "}"
+		}
+        FileReaderUtil::nextLine(file, buffer); //buffer = "}"
 		
 		//baseframe
 		auto *baseFrame = new BaseFrameBone[numBones];
-		nextLine(file, buffer); //buffer = "baseframe {"
+        FileReaderUtil::nextLine(file, buffer); //buffer = "baseframe {"
 		for(unsigned int i=0;i<numBones;i++)
 		{
-			nextLine(file, buffer);
+            FileReaderUtil::nextLine(file, buffer);
 			iss.clear(); iss.str(buffer);
 			iss >> sdata >> baseFrame[i].pos.X >> baseFrame[i].pos.Y >> baseFrame[i].pos.Z >> sdata >> sdata >>baseFrame[i].orient.X >> baseFrame[i].orient.Y >> baseFrame[i].orient.Z;
 			baseFrame[i].orient.computeW();
 		}
-		nextLine(file, buffer); //buffer = "}"
+        FileReaderUtil::nextLine(file, buffer); //buffer = "}"
 		
 		//frames
 		auto **skeletonFrames = new Bone*[numFrames];
@@ -107,8 +91,8 @@ namespace urchin
 		for(unsigned int frameIndex=0;frameIndex<numFrames;++frameIndex)
 		{
 			skeletonFrames[frameIndex] = new Bone[numBones];
-		
-			nextLine(file, buffer); // buffer = "frame ? {"
+
+            FileReaderUtil::nextLine(file, buffer); // buffer = "frame ? {"
 			for(unsigned int j=0;j<numAnimatedComponents;j++)
 			{
 				file >> animFrameData[j];
@@ -189,7 +173,7 @@ namespace urchin
 				}
 			}
 
-			nextLine(file, buffer); //buferf = "}"
+            FileReaderUtil::nextLine(file, buffer); //buferf = "}"
 		}
 
 		delete [] boneInfos;

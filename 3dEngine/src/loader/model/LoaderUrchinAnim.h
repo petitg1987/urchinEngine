@@ -2,7 +2,6 @@
 #define URCHINENGINE_LOADERURCHINANIM_H
 
 #include <string>
-#include <fstream>
 
 #include "resources/model/ConstAnimation.h"
 #include "loader/Loader.h"
@@ -30,9 +29,6 @@ namespace urchin
 			~LoaderUrchinAnim() override = default;
 
 			ConstAnimation *loadFromFile(const std::string &, void *) override;
-			
-		private:
-			void nextLine(std::ifstream &, std::string &);
 	};
 
 }

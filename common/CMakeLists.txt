@@ -147,7 +147,10 @@ set(SOURCE_FILES
         src/tools/xml/XmlWriter.h
         src/tools/ConfigService.cpp
         src/tools/ConfigService.h
-        src/UrchinCommon.h src/system/NumericalCheck.cpp src/system/NumericalCheck.h)
+        src/UrchinCommon.h src/system/NumericalCheck.cpp
+        src/system/NumericalCheck.h
+        src/io/FileReaderUtil.cpp
+        src/io/FileReaderUtil.h)
 
 include_directories(src)
 

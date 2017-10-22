@@ -1,9 +1,9 @@
 #include <sstream>
-#include <fstream>
 #include <iostream>
 #include <stdexcept>
 
 #include "tools/file/PropertyFileHandler.h"
+#include "io/FileReaderUtil.h"
 
 namespace urchin
 {
@@ -33,7 +33,7 @@ namespace urchin
 		do
 		{
 			std::string buffer;
-			nextLine(file, buffer);
+			FileReaderUtil::nextLine(file, buffer);
 
 			std::istringstream iss(buffer);
 			iss >> propertyName;
@@ -65,22 +65,6 @@ namespace urchin
 		}
 
 		file.close();
-	}
-
-	void PropertyFileHandler::nextLine(std::ifstream &file, std::string &buffer) const
-	{
-		do
-		{
-			std::getline(file, buffer);
-
-			//delete '\r'
-			unsigned long length = buffer.length()-1;
-			if(length >=0 && buffer[length]=='\r')
-			{
-				buffer.resize(length);
-			}
-
-		}while(buffer.length()==0 && !file.eof());
 	}
 
 }

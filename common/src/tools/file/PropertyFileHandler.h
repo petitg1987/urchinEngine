@@ -16,8 +16,6 @@ namespace urchin
 			void savePropertyFile(const std::map<std::string, std::string> &) const;
 
 		private:
-			void nextLine(std::ifstream &file, std::string &buffer) const;
-
 			std::string propertiesFilePath;
 	};
 
