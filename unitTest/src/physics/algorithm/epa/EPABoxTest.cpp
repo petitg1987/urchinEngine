@@ -9,6 +9,7 @@
 #include "physics/algorithm/epa/EPATestHelper.h"
 using namespace urchin;
 
+//TODO fix unit tests...
 void EPABoxTest::identicalAABBox()
 {
 	CollisionBoxObject aabbox1(0.0, Vector3<float>(0.5, 0.5, 0.5), Point3<float>(0.5, 0.5, 0.5), Quaternion<float>());

@@ -68,7 +68,7 @@ namespace urchin
     }
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform &physicsTransform) const
-    {
+    { //TODO create better AABBoxes
         if(!lastTransform.equals(physicsTransform))
         {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();

@@ -251,7 +251,6 @@ namespace urchin
 			}else
             { //no tetrahedron containing the origin due to float imprecision
                 convexHullPoints.clear();
-                //TODO check why character is here a lot of time...no margin ?
             }
 		}else if(simplex.getSize()==4)
 		{ //simplex is a tetrahedron containing the origin

@@ -14,7 +14,7 @@ namespace urchin
 	std::set<CollisionShape3D::ShapeType> CollisionShape3D::COMPOUND_SHAPES = {CollisionShape3D::COMPOUND_SHAPE};
 
 	CollisionShape3D::CollisionShape3D() :
-			innerMargin(ConfigService::instance()->getUnsignedIntValue("collisionShape.innerMargin")),
+			innerMargin(ConfigService::instance()->getFloatValue("collisionShape.innerMargin")),
 			initialInnerMargin(innerMargin)
 	{
 

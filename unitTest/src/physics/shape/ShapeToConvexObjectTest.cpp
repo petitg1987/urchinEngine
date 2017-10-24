@@ -15,7 +15,7 @@ void ShapeToConvexObjectTest::boxConversion()
 			urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
 
 	std::shared_ptr<CollisionConvexObject3D> boxObject = collisionBox.toConvexObject(transform);
-	CollisionBoxObject *box = static_cast<CollisionBoxObject *>(boxObject.get());
+	auto *box = dynamic_cast<CollisionBoxObject *>(boxObject.get());
 
 	AssertHelper::assertPoint3FloatEquals(box->getCenterOfMass(), Point3<float>(1.0, 1.0, 1.0));
 	AssertHelper::assertFloatEquals(box->getHalfSize(0), 1.0);
@@ -33,7 +33,7 @@ void ShapeToConvexObjectTest::capsuleConversion()
 			urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
 
 	std::shared_ptr<CollisionConvexObject3D> capsuleObject = collisionCapsule.toConvexObject(transform);
-	CollisionCapsuleObject *capsule = static_cast<CollisionCapsuleObject *>(capsuleObject.get());
+	auto *capsule = dynamic_cast<CollisionCapsuleObject *>(capsuleObject.get());
 
 	AssertHelper::assertPoint3FloatEquals(capsule->getCenterOfMass(), Point3<float>(1.0, 1.0, 1.0));
 	AssertHelper::assertFloatEquals(capsule->getCylinderHeight(), 5.0);
@@ -50,7 +50,7 @@ void ShapeToConvexObjectTest::cylinderConversion()
 			urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
 
 	std::shared_ptr<CollisionConvexObject3D> cylinderObject = collisionCylinder.toConvexObject(transform);
-	CollisionCylinderObject *cylinder = static_cast<CollisionCylinderObject *>(cylinderObject.get());
+	auto *cylinder = dynamic_cast<CollisionCylinderObject *>(cylinderObject.get());
 
 	AssertHelper::assertPoint3FloatEquals(cylinder->getCenterOfMass(), Point3<float>(1.0, 1.0, 1.0));
 	AssertHelper::assertFloatEquals(cylinder->getHeight(), 5.0);
@@ -73,7 +73,7 @@ void ShapeToConvexObjectTest::convexHullConversion()
 			urchin::Quaternion<float>(urchin::Vector3<float>(0.0, 0.0, 1.0), -PI_VALUE/4)); //rotate 45° on Z axis
 
 	std::shared_ptr<CollisionConvexObject3D> convexHullObject = collisionConvexHull.toConvexObject(transform);
-	CollisionConvexHullObject *convexHull = static_cast<CollisionConvexHullObject *>(convexHullObject.get());
+	auto *convexHull = dynamic_cast<CollisionConvexHullObject *>(convexHullObject.get());
 
 	AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[0], Point3<float>(0.70710678118, -0.70710678118, 0.0));
 	AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[1], Point3<float>(2.12132034356, -2.12132034356, 0.0));
@@ -86,7 +86,7 @@ void ShapeToConvexObjectTest::sphereConversion()
 			urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
 
 	std::shared_ptr<CollisionConvexObject3D> sphereObject = collisionSphere.toConvexObject(transform);
-	CollisionSphereObject *sphere = static_cast<CollisionSphereObject *>(sphereObject.get());
+	auto *sphere = dynamic_cast<CollisionSphereObject *>(sphereObject.get());
 
 	AssertHelper::assertFloatEquals(sphere->getRadius(), 20.0);
 	AssertHelper::assertPoint3FloatEquals(sphere->getCenterOfMass(), Point3<float>(1.0, 1.0, 1.0));
