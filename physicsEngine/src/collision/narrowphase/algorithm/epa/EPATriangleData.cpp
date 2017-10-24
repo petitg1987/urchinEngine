@@ -19,11 +19,6 @@ namespace urchin
 		}
 	}
 
-	template<class T> EPATriangleData<T>::~EPATriangleData()
-	{
-
-	}
-
 	/**
 	 * @param Minimum distance between the triangle and the origin. Result can be negative or positive in function of normal orientation.
 	 */

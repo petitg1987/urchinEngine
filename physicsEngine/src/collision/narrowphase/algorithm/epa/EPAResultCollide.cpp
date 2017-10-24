@@ -13,11 +13,6 @@ namespace urchin
 
 	}
 
-	template<class T> EPAResultCollide<T>::~EPAResultCollide()
-	{
-
-	}
-
 	template<class T> bool EPAResultCollide<T>::isValidResult() const
 	{
 		return true;

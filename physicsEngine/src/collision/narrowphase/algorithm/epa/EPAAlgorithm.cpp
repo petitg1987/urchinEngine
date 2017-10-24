@@ -34,7 +34,10 @@ namespace urchin
 		std::map<unsigned int, unsigned int> nbTrianglesByPoint;
 
 		determineInitialPoints(simplex, convexObject1, convexObject2, convexHullPoints, supportPointsA, supportPointsB);
-		determineInitialTriangles(convexHullPoints, indexedTriangles);
+        if(convexHullPoints.size() >= 4)
+        {
+            determineInitialTriangles(convexHullPoints, indexedTriangles);
+        }
 
 		if(indexedTriangles.size()!=4)
 		{//due to numerical imprecision, it's impossible to create indexed triangles correctly
@@ -197,13 +200,16 @@ namespace urchin
 				convexHullPoints[1].point = convexHullPoints[4].point;
 				supportPointsA[1] = supportPointsA[4];
 				supportPointsB[1] = supportPointsB[4];
-			}else
+			}else if(Tetrahedron<T>(convexHullPoints[4].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[3].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0)))
 			{
 				//we use the point 4 instead of point 0 for the initial tetrahedron
 				convexHullPoints[0].point = convexHullPoints[4].point;
 				supportPointsA[0] = supportPointsA[4];
 				supportPointsB[0] = supportPointsB[4];
-			}
+			}else
+            { //no tetrahedron containing the origin due to float imprecision
+                convexHullPoints.clear();
+            }
 		}else if(simplex.getSize()==3)
 		{ //simplex is a triangle containing the origin
 			//create two vectors based on three points
@@ -236,13 +242,17 @@ namespace urchin
 			if(Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[3].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0)))
 			{
 				//we use the 4 first point - nothing to do
-			}else
+			}else if(Tetrahedron<T>(convexHullPoints[0].point, convexHullPoints[1].point, convexHullPoints[2].point, convexHullPoints[4].point).collideWithPoint(Point3<T>(0.0, 0.0, 0.0)))
 			{
 				//we use the point 4 instead of point 3 for the initial tetrahedron
 				convexHullPoints[3].point = convexHullPoints[4].point;
 				supportPointsA[3] = supportPointsA[4];
 				supportPointsB[3] = supportPointsB[4];
-			}
+			}else
+            { //no tetrahedron containing the origin due to float imprecision
+                convexHullPoints.clear();
+                //TODO check why character is here a lot of time...no margin ?
+            }
 		}else if(simplex.getSize()==4)
 		{ //simplex is a tetrahedron containing the origin
 			for(unsigned int i=0; i<4; ++i)

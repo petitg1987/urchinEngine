@@ -3,17 +3,6 @@
 namespace urchin
 {
 
-	template<class T> EPAResultNoCollide<T>::EPAResultNoCollide() :
-		EPAResult<T>()
-	{
-
-	}
-
-	template<class T> EPAResultNoCollide<T>::~EPAResultNoCollide()
-	{
-
-	}
-
 	template<class T> bool EPAResultNoCollide<T>::isValidResult() const
 	{
 		return true;

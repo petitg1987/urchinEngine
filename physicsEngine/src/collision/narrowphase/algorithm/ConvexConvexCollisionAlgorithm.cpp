@@ -19,7 +19,7 @@ namespace urchin
 		std::shared_ptr<CollisionConvexObject3D> convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
 
 		//process GJK and EPA hybrid algorithms
-		std::unique_ptr<GJKResult<double>> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1.get(), *convexObject2.get(), false);
+		std::unique_ptr<GJKResult<double>> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1.get(), *convexObject2.get(), false); //TODO don't perform if both object don't have margin ?!
 
 		if(gjkResultWithoutMargin->isValidResult())
 		{

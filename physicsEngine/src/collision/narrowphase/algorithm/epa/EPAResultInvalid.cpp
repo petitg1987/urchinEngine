@@ -3,17 +3,6 @@
 namespace urchin
 {
 
-	template<class T> EPAResultInvalid<T>::EPAResultInvalid() :
-		EPAResult<T>()
-	{
-
-	}
-
-	template<class T> EPAResultInvalid<T>::~EPAResultInvalid()
-	{
-
-	}
-
 	template<class T> bool EPAResultInvalid<T>::isValidResult() const
 	{
 		return false;

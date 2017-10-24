@@ -11,6 +11,7 @@ namespace urchin
             CollisionShape3D(),
             triangleShape(std::make_shared<TriangleShape3D<float>>(points))
     {
+        //TODO check if margin can be added for terrain !
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 

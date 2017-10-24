@@ -16,17 +16,14 @@ namespace urchin
 	template<class T> class GJKResultInvalid : public GJKResult<T>
 	{
 		public:
-			GJKResultInvalid();
-			~GJKResultInvalid();
+			bool isValidResult() const override;
 
-			bool isValidResult() const;
+			bool isCollide() const override;
+			T getSeparatingDistance() const override;
+			const Point3<T> &getClosestPointA() const override;
+			const Point3<T> &getClosestPointB() const override;
 
-			bool isCollide() const;
-			T getSeparatingDistance() const;
-			const Point3<T> &getClosestPointA() const;
-			const Point3<T> &getClosestPointB() const;
-
-			const Simplex<T> &getSimplex() const;
+			const Simplex<T> &getSimplex() const override;
 	};
 
 }

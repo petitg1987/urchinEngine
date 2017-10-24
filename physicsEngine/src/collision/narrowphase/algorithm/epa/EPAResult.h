@@ -9,8 +9,7 @@ namespace urchin
 	template<class T> class EPAResult
 	{
 		public:
-			EPAResult();
-			virtual ~EPAResult();
+			virtual ~EPAResult() = default;
 
 			virtual bool isValidResult() const = 0;
 

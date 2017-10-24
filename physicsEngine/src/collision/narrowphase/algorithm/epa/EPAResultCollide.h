@@ -12,15 +12,14 @@ namespace urchin
 	{
 		public:
 			EPAResultCollide(const Point3<T> &, const Point3<T> &, const Vector3<T> &, T);
-			~EPAResultCollide();
 
-			bool isValidResult() const;
+			bool isValidResult() const override;
 
-			bool isCollide() const;
-			const Point3<T> &getContactPointA() const;
-			const Point3<T> &getContactPointB() const;
-			const Vector3<T> &getNormal() const;
-			T getPenetrationDepth() const;
+			bool isCollide() const override;
+			const Point3<T> &getContactPointA() const override;
+			const Point3<T> &getContactPointB() const override;
+			const Vector3<T> &getNormal() const override;
+			T getPenetrationDepth() const override;
 
 		private:
 			Point3<T> contactPointA, contactPointB;

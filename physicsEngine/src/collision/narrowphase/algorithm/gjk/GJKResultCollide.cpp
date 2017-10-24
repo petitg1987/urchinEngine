@@ -10,11 +10,6 @@ namespace urchin
 
 	}
 
-	template<class T> GJKResultCollide<T>::~GJKResultCollide()
-	{
-
-	}
-
 	template<class T> bool GJKResultCollide<T>::isValidResult() const
 	{
 		return true;

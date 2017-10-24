@@ -15,16 +15,13 @@ namespace urchin
 	template<class T> class EPAResultInvalid : public EPAResult<T>
 	{
 		public:
-			EPAResultInvalid();
-			~EPAResultInvalid();
+			bool isValidResult() const override;
 
-			bool isValidResult() const;
-
-			bool isCollide() const;
-			const Point3<T> &getContactPointA() const;
-			const Point3<T> &getContactPointB() const;
-			const Vector3<T> &getNormal() const;
-			T getPenetrationDepth() const;
+			bool isCollide() const override;
+			const Point3<T> &getContactPointA() const override;
+			const Point3<T> &getContactPointB() const override;
+			const Vector3<T> &getNormal() const override;
+			T getPenetrationDepth() const override;
 	};
 
 }

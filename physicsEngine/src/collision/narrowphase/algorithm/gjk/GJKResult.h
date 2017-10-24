@@ -11,8 +11,7 @@ namespace urchin
 	template<class T> class GJKResult
 	{
 		public:
-			GJKResult();
-			virtual ~GJKResult();
+			virtual ~GJKResult() = default;
 
 			virtual bool isValidResult() const = 0;
 

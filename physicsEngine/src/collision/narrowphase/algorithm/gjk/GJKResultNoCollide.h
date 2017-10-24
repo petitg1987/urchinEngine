@@ -14,16 +14,15 @@ namespace urchin
 	{
 		public:
 			GJKResultNoCollide(T, const Simplex<T> &);
-			~GJKResultNoCollide();
 
-			bool isValidResult() const;
+			bool isValidResult() const override;
 
-			bool isCollide() const;
-			T getSeparatingDistance() const;
-			const Point3<T> &getClosestPointA() const;
-			const Point3<T> &getClosestPointB() const;
+			bool isCollide() const override;
+			T getSeparatingDistance() const override;
+			const Point3<T> &getClosestPointA() const override;
+			const Point3<T> &getClosestPointB() const override;
 
-			const Simplex<T> &getSimplex() const;
+			const Simplex<T> &getSimplex() const override;
 
 		private:
 			T separatingDistance;

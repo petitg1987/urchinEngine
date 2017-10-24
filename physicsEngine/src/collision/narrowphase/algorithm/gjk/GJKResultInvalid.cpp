@@ -3,17 +3,6 @@
 namespace urchin
 {
 
-	template<class T> GJKResultInvalid<T>::GJKResultInvalid() :
-		GJKResult<T>()
-	{
-
-	}
-
-	template<class T> GJKResultInvalid<T>::~GJKResultInvalid()
-	{
-
-	}
-
 	template<class T> bool GJKResultInvalid<T>::isValidResult() const
 	{
 		return false;
