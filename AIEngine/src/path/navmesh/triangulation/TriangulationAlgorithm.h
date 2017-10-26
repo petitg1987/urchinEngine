@@ -36,7 +36,7 @@ namespace urchin
 				CCW
 			};
 
-			TriangulationAlgorithm(const std::vector<Point2<float>> &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
+			explicit TriangulationAlgorithm(const std::vector<Point2<float>> &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 

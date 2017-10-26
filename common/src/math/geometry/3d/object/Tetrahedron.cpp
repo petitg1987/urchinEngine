@@ -53,10 +53,10 @@ namespace urchin
 		T triangleBarycentrics[3];
 		T bestSquareDist = std::numeric_limits<T>::max();
 
-		bool pointOutsideOrInPlaneABC = pointOutsideOrInPlane(p, a, b, c, d);
-		bool pointOutsideOrInPlaneACD = pointOutsideOrInPlane(p, a, c, d, b);
-		bool pointOutsideOrInPlaneADB = pointOutsideOrInPlane(p, a, d, b, c);
-		bool pointOutsideOrInPlaneBDC = pointOutsideOrInPlane(p, b, d, c, a);
+		bool pointOutsideOrInPlaneABC = pointOutsidePlane(p, a, b, c, d, true);
+		bool pointOutsideOrInPlaneACD = pointOutsidePlane(p, a, c, d, b, true);
+		bool pointOutsideOrInPlaneADB = pointOutsidePlane(p, a, d, b, c, true);
+		bool pointOutsideOrInPlaneBDC = pointOutsidePlane(p, b, d, c, a, true);
 
 		if((voronoiRegionMask & 1) && pointOutsideOrInPlaneABC)
 		{ //point outside face ABC: compute closest point on ABC
@@ -167,30 +167,17 @@ namespace urchin
 
 	template<class T> bool Tetrahedron<T>::collideWithPoint(const Point3<T> &p) const
 	{
-		if(pointOutsideOrInPlane(p, a, b, c, d))
-		{
-			return false;
-		}
-
-		if(pointOutsideOrInPlane(p, a, c, d, b))
-		{
-			return false;
-		}
-
-		if(pointOutsideOrInPlane(p, a, d, b, c))
-		{
-			return false;
-		}
-
-		return !pointOutsideOrInPlane(p, b, d, c, a);
-
+		return !pointOutsidePlane(p, a, b, c, d, false) &&
+                !pointOutsidePlane(p, a, c, d, b, false) &&
+                !pointOutsidePlane(p, a, d, b, c, false) &&
+                !pointOutsidePlane(p, b, d, c, a, false);
 	}
 
 	/**
 	 * @return True if point p is outside the plane. Direction of plane normal is determinate by d.
 	 */
-	template<class T> bool Tetrahedron<T>::pointOutsideOrInPlane(const Point3<T> &p,
-		const Point3<T> &planePointA, const Point3<T> &planePointB, const Point3<T> &planePointC, const Point3<T> &d) const
+	template<class T> bool Tetrahedron<T>::pointOutsidePlane(const Point3<T> &p, const Point3<T> &planePointA, const Point3<T> &planePointB,
+                                                             const Point3<T> &planePointC, const Point3<T> &d, bool onPlaneIsOutside) const
 	{
 		Vector3<T> ap = planePointA.vector(p);
 		Vector3<T> ad = planePointA.vector(d);
@@ -200,7 +187,11 @@ namespace urchin
 		T signp = ap.dotProduct(ab.crossProduct(ac));
 		T signd = ad.dotProduct(ab.crossProduct(ac));
 
-		return (signp * signd) <= (T)0.0;
+        if(onPlaneIsOutside)
+        {
+            return (signp * signd) <= (T) 0.0;
+        }
+        return (signp * signd) < (T) 0.0;
 	}
 
 	//explicit template

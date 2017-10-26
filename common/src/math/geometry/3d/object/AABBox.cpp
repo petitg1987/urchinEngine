@@ -200,7 +200,7 @@ namespace urchin
 	}
 
 	/**
-	 * @return True if the ray is inside or partially inside the bouding box
+	 * @return True if the ray is inside or partially inside the bounding box
 	 */
 	template<class T> bool AABBox<T>::collideWithRay(const Ray<T> &ray) const
 	{

@@ -75,8 +75,8 @@ void ShapeToConvexObjectTest::convexHullConversion()
 	std::shared_ptr<CollisionConvexObject3D> convexHullObject = collisionConvexHull.toConvexObject(transform);
 	auto *convexHull = dynamic_cast<CollisionConvexHullObject *>(convexHullObject.get());
 
-	AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[0], Point3<float>(0.70710678118, -0.70710678118, 0.0));
-	AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[1], Point3<float>(2.12132034356, -2.12132034356, 0.0));
+	AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[0], Point3<float>(0.74710678118, -0.6905382872, -0.04));
+	AssertHelper::assertPoint3FloatEquals(convexHull->getPointsWithoutMargin()[1], Point3<float>(2.08132034356, -2.0247519016, -0.04));
 }
 
 void ShapeToConvexObjectTest::sphereConversion()
