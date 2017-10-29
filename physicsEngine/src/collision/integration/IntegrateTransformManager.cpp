@@ -60,7 +60,7 @@ namespace urchin
 			if(!ccdResults.empty())
 			{
 				//determine new body transform to avoid collision
-				float timeToFirstHit = ccdResults.begin()->get()->getTimeToHit();
+				float timeToFirstHit = (*ccdResults.begin())->getTimeToHit();
 				updatedTargetTransform = from.integrate(body->getLinearVelocity(), body->getAngularVelocity(), timeToFirstHit*dt);
 
 				//clamp linear velocity

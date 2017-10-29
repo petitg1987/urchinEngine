@@ -56,9 +56,9 @@ namespace urchin
 		boxHalfSizes[getCapsuleOrientation()] += getCylinderHeight() / 2.0f;
 		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
 		Point3<float> extend(
-			boxHalfSizes.X * std::abs(orientation[0]) + boxHalfSizes.Y * std::abs(orientation[3]) + boxHalfSizes.Z * std::abs(orientation[6]),
-			boxHalfSizes.X * std::abs(orientation[1]) + boxHalfSizes.Y * std::abs(orientation[4]) + boxHalfSizes.Z * std::abs(orientation[7]),
-			boxHalfSizes.X * std::abs(orientation[2]) + boxHalfSizes.Y * std::abs(orientation[5]) + boxHalfSizes.Z * std::abs(orientation[8])
+			boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
+			boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
+			boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
 		);
 
 		const Point3<float> &position = physicsTransform.getPosition();
@@ -76,7 +76,7 @@ namespace urchin
 	}
 
 	Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const
-	{ //approximative local inertia computed based on box including capsule.
+	{ //rough local inertia computed based on box including capsule.
 		Vector3<float> boxSizes(getRadius()*2.0f, getRadius()*2.0f, getRadius()*2.0f);
 		boxSizes[getCapsuleOrientation()] += getCylinderHeight();
 

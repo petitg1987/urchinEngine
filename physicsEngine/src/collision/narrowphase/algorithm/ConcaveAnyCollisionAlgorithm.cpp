@@ -30,7 +30,6 @@ namespace urchin
         const auto &concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());
 
         std::vector<Triangle3D<float>> triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
-std::cout<<triangles.size()<<std::endl; //TODO too much triangles !
         for(const auto &triangle : triangles)
         {
             CollisionTriangleShape collisionTriangleShape(triangle.getPoints());

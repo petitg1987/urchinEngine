@@ -15,8 +15,7 @@ namespace urchin
 	}
 
 	NavMesh::NavMesh(const NavMesh &navMesh) :
-		id(navMesh.getId()),
-		polygons(navMesh.getPolygons())
+		id(navMesh.getId())
 	{
         polygons.reserve(navMesh.getPolygons().size());
         for(const std::shared_ptr<NavPolygon> &polygon : navMesh.getPolygons())

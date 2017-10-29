@@ -27,7 +27,7 @@ namespace urchin
             void setAIWorld(const std::shared_ptr<AIWorld> &);
             void addPathRequest(const std::shared_ptr<PathRequest> &);
 
-            void start(float, unsigned int maxStep = 1);
+            void start(float);
             void pause();
             void play();
             bool isPaused() const;
@@ -43,7 +43,6 @@ namespace urchin
 
             mutable std::mutex mutex;
             float timeStep;
-            unsigned int maxSubStep;
             bool paused;
 
             NavMeshGenerator *navMeshGenerator;

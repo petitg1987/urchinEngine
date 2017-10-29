@@ -53,9 +53,11 @@ namespace urchin
 
 			T& operator ()(std::size_t, std::size_t);
 			const T& operator ()(std::size_t, std::size_t) const;
+			T& operator ()(std::size_t);
+			const T& operator ()(std::size_t) const;
 
-			operator T*();
-			operator const T*() const;
+			explicit operator T*();
+			explicit operator const T*() const;
 		
 			T 	a11, a21, a31, a41,
 				a12, a22, a32, a42,

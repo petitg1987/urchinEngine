@@ -20,7 +20,7 @@ namespace urchin
 			AbstractWorkBody *body2) const
 	{
 		T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
-		Vector3<T> normalFromObject2;
+		Vector3<T> normalFromObject2(NAN, NAN, NAN);
 		Simplex<T> simplex;
 
 		PhysicsTransform interpolatedTransform1 = object1.getFrom();
@@ -42,7 +42,7 @@ namespace urchin
 			Point3<T> supportPoint2 = getWorldSupportPoint(object2, -direction, interpolatedTransform2);
 			Point3<T> newPoint = supportPoint1 - supportPoint2;
 
-			const Vector3<T> &vClosestPoint = -direction; //vector from origin to closest point of simplex
+			Vector3<T> vClosestPoint = -direction; //vector from origin to closest point of simplex
 			T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 
 			if (timeToHit > 1.0)
@@ -63,7 +63,7 @@ namespace urchin
 				interpolatedTransform1.setPosition(interpolate(object1.getFrom().getPosition(), object1.getTo().getPosition(), timeToHit));
 				interpolatedTransform2.setPosition(interpolate(object2.getFrom().getPosition(), object2.getTo().getPosition(), timeToHit));
 
-				normalFromObject2 = -direction;
+                normalFromObject2 = -direction;
 			}
 
 			if(!simplex.isPointInSimplex(newPoint))
@@ -76,22 +76,33 @@ namespace urchin
 
 			if(closestPointSquareDistance < terminationTolerance)
 			{
-				if(normalFromObject2.squareLength() < squareEpsilon)
+				if(simplex.getSize()==4)
 				{
-					return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
+                    if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0))
+                    {
+                        normalFromObject2.setValues(1.0, 0.0, 0.0); //fictive normal because time of impact = 0
+                    }else
+                    {
+                        std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
+                        logInputData(object1, object2, wrongSituation, Logger::ERROR);
+                        return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
+                    }
 				}
 
-				normalFromObject2 = normalFromObject2.normalize();
+                if(!std::isnan(normalFromObject2.X))
+                {
+                    normalFromObject2 = normalFromObject2.normalize();
 
-				Point3<T> hitPointOnObject1, hitPointOnObject2;
-				simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
+                    Point3<T> hitPointOnObject1, hitPointOnObject2;
+                    simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-				return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT)timeToHit);
+                    return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT) timeToHit);
+                }
 			}
 		}
 
-		logMaximumIterationReach();
-
+        std::string maxIterationReachMsg = "Maximum of iteration reached on GJK continuous collision algorithm (" + std::to_string(maxIteration) + ").";
+        logInputData(object1, object2, maxIterationReachMsg, Logger::WARNING);
 		return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
 	}
 
@@ -113,12 +124,19 @@ namespace urchin
 				invertedInterpolatePercentage * from.Z + interpolatePercentage * to.Z);
 	}
 
-	template<class T, class OUT> void GJKContinuousCollisionAlgorithm<T, OUT>::logMaximumIterationReach() const
+	template<class T, class OUT> void GJKContinuousCollisionAlgorithm<T, OUT>::logInputData(const TemporalObject &object1, const TemporalObject &object2,
+                                                                                            const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
-		logStream<<"Maximum of iteration reached on GJK continuous collision algorithm ("<<maxIteration<<")."<<std::endl;
-		logStream<<" - Termination tolerance: "<<terminationTolerance;
-		Logger::logger().logWarning(logStream.str());
+		logStream<<message<<std::endl;
+		logStream<<" - Termination tolerance: "<<terminationTolerance<<std::endl;
+		logStream<<" - Object 1: "<<std::endl<<object1.getLocalObject()->toString()<<std::endl;
+		logStream<<" - Object 1, from: "<<object1.getFrom()<<std::endl;
+		logStream<<" - Object 1, to: "<<object1.getTo()<<std::endl;
+		logStream<<" - Object 2: "<<std::endl<<object2.getLocalObject()->toString()<<std::endl;
+		logStream<<" - Object 2, from: "<<object2.getFrom()<<std::endl;
+		logStream<<" - Object 2, to: "<<object2.getTo();
+		Logger::logger().log(logLevel, logStream.str());
 	}
 
 	//explicit template

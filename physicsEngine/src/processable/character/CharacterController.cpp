@@ -159,7 +159,7 @@ namespace urchin
 		{
 			Vector3<float> walkDirection = getWalkDirection();
 			float slopeSpeedDecrease = MathAlgorithm::clamp(1.0f - (slopeInPercentage / getMaxSlopeInPercentage()), 0.0f, 1.0f);
-			targetPosition = targetPosition.translate(walkDirection * slopeSpeedDecrease);
+			targetPosition = targetPosition.translate(walkDirection * dt * slopeSpeedDecrease);
 
 			lastWalkDirection = walkDirection;
 		}else if(timeInTheAir < timeKeepMoveInAir)
@@ -167,7 +167,7 @@ namespace urchin
 			float momentumSpeedDecrease = 1.0f - (timeInTheAir / timeKeepMoveInAir);
 			Vector3<float> walkDirectionInAir = lastWalkDirection*(1.0f-percentageControlInAir)
 					+ walkDirection*percentageControlInAir;
-			targetPosition = targetPosition.translate(walkDirectionInAir * momentumSpeedDecrease);
+			targetPosition = targetPosition.translate(walkDirectionInAir * dt * momentumSpeedDecrease);
 		}else
 		{
 			lastWalkDirection.X = lastWalkDirection.Y = lastWalkDirection.Z = 0.0f;

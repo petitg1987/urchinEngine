@@ -49,8 +49,8 @@ namespace urchin
 
 			const PhysicsTransform &getTransform() const;
 
-			void setup(float, const Vector3<float> &);
-			void execute(float, const Vector3<float> &);
+			void setup(float, const Vector3<float> &) override;
+			void execute(float, const Vector3<float> &) override;
 
 		private:
 			bool needJumpAndUpdateFlag();

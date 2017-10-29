@@ -51,13 +51,13 @@ namespace urchin
 		//broad phase: determine pairs of bodies potentially colliding based on their AABBox
 		const std::vector<OverlappingPair *> &overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
+		//integrate bodies velocities (gravity, external forces...)
+		integrateVelocityManager->integrateVelocity(dt, manifoldResults, gravity);
+
 		//narrow phase: check if pair of bodies colliding and update collision constraints
 		manifoldResults.clear();
 		narrowPhaseManager->process(dt, overlappingPairs, manifoldResults);
 		notifyObservers(this, COLLISION_RESULT_UPDATED);
-
-		//integrate bodies velocities (gravity, external forces...)
-		integrateVelocityManager->integrateVelocity(dt, manifoldResults, gravity);
 
 		//constraints solver: solve collision constraints
 		constraintSolverManager->solveConstraints(dt, manifoldResults);

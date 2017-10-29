@@ -160,6 +160,16 @@ namespace urchin
 		return (&a11)[column * 2 + line];
 	}
 
+	template<class T> T& Matrix2<T>::operator ()(std::size_t index)
+	{
+		return (&a11)[index];
+	}
+
+	template<class T> const T& Matrix2<T>::operator ()(std::size_t index) const
+	{
+		return (&a11)[index];
+	}
+
 	template<class T> Matrix2<T>::operator T*()
 	{
 		return &a11;

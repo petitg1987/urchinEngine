@@ -10,7 +10,7 @@ namespace urchin
 	PhysicsWorld::PhysicsWorld() :
 			physicsSimulationThread(nullptr),
 			physicsSimulationStopper(false),
-			timeStep(0),
+			timeStep(0.0f),
 			maxSubStep(1),
 			paused(false),
 			bodyManager(new BodyManager()),
@@ -186,8 +186,9 @@ namespace urchin
 
 				for (unsigned int step = 0; step < numStepsClamped; ++step)
 				{
-					processPhysicsUpdate();
+					processPhysicsUpdate(timeStep);
 				}
+//                processPhysicsUpdate(timeStep + std::abs(remainingTime)); //TODO use it ?
 
 				auto frameEndTime = std::chrono::high_resolution_clock::now();
 				auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
@@ -201,7 +202,11 @@ namespace urchin
 					frameStartTime = std::chrono::high_resolution_clock::now();
 				} else
 				{
+                    #ifdef _DEBUG
+                        Logger::logger().logWarning("Performance issues: physics engine takes " + std::to_string(remainingTime) + " seconds too long to process");
+                    #endif
 					frameStartTime = frameEndTime;
+//                    frameStartTime = std::chrono::high_resolution_clock::now(); //TODO use it ?
 				}
 			}
 		}catch(std::exception &e)
@@ -219,7 +224,7 @@ namespace urchin
 		return !physicsSimulationStopper.load(std::memory_order_relaxed);
 	}
 
-	void PhysicsWorld::processPhysicsUpdate()
+	void PhysicsWorld::processPhysicsUpdate(float frameTimeStep)
 	{
 		//copy for local thread
 		bool paused;
@@ -240,11 +245,11 @@ namespace urchin
 		//physics execution
 		if(!paused)
 		{
-			setupProcessables(processables, timeStep, gravity);
+			setupProcessables(processables, frameTimeStep, gravity);
 
-			collisionWorld->process(timeStep, gravity);
+			collisionWorld->process(frameTimeStep, gravity);
 
-			executeProcessables(processables, timeStep, gravity);
+			executeProcessables(processables, frameTimeStep, gravity);
 		}
 	}
 

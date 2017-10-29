@@ -51,7 +51,7 @@ namespace urchin
 		private:
 			void startPhysicsUpdate();
 			bool continueExecution();
-			void processPhysicsUpdate();
+			void processPhysicsUpdate(float);
 
 			void setupProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);
 			void executeProcessables(const std::vector<std::shared_ptr<Processable>> &, float, const Vector3<float> &);

@@ -37,7 +37,7 @@ namespace urchin
 			Point3<T> supportPointB = convexObject2.getSupportPoint((-direction).template cast<float>(), includeMargin).template cast<T>();
 			Point3<T> newPoint = supportPointA - supportPointB;
 
-			const Vector3<T> &vClosestPoint = -direction; //vector from origin to closest point of simplex
+			Vector3<T> vClosestPoint = -direction; //vector from origin to closest point of simplex
 			T closestPointSquareDistance = vClosestPoint.dotProduct(vClosestPoint);
 			T closestPointDotNewPoint = vClosestPoint.dotProduct(newPoint.toVector());
 

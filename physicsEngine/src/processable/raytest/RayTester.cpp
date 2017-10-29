@@ -8,7 +8,7 @@ namespace urchin
 			ray(ray),
 			rayTestResult(std::make_shared<RayTestResult>()),
 			collisionWorld(nullptr)
-	{
+	{ //TODO don't work on testEngineSfml
 
 	}
 
