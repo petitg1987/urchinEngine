@@ -2,6 +2,8 @@
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"
 #include "shape/CollisionCompoundShape.h"
+#include "shape/CollisionConcaveShape.h"
+#include "shape/CollisionTriangleShape.h"
 #include "body/work/WorkRigidBody.h"
 #include "object/TemporalObject.h"
 
@@ -169,15 +171,32 @@ namespace urchin
 					continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 				}
 			}else if(bodyShape->isConvex())
-			{
-				const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
-				TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
+            {
+                const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
+                TemporalObject temporalObject2(bodyShape, fromToObject2, fromToObject2);
 
-				continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+                continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+            }else if(bodyShape->isConcave())
+            {
+                AABBox<float> fromAABBox = temporalObject1.getShape()->toAABBox(temporalObject1.getFrom());
+                AABBox<float> toAABBox = temporalObject1.getShape()->toAABBox(temporalObject1.getTo());
+                AABBox<float> temporalAABBox = fromAABBox.merge(toAABBox);
+
+				const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
+
+				std::vector<Triangle3D<float>> triangles = concaveShape->findTrianglesInAABBox(temporalAABBox);
+				for(const auto &triangle : triangles)
+				{
+					CollisionTriangleShape collisionTriangleShape(triangle.getPoints());
+
+					const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
+					TemporalObject temporalObject2(&collisionTriangleShape, fromToObject2, fromToObject2);
+
+					continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
+				}
 			}else
 			{
-                //TODO handle ccd for terrain
-                // throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
+                throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
 			}
 		}
 

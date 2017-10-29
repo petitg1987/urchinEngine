@@ -8,7 +8,7 @@ namespace urchin
 			ray(ray),
 			rayTestResult(std::make_shared<RayTestResult>()),
 			collisionWorld(nullptr)
-	{ //TODO don't work on testEngineSfml
+	{
 
 	}
 
@@ -28,7 +28,7 @@ namespace urchin
 	}
 
 	void RayTester::execute(float, const Vector3<float> &)
-	{
+	{ //TODO don't work with concave & not performance (>5000 triangles)
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitRay = collisionWorld->getBroadPhaseManager()->rayTest(ray);
 		ccd_set rayCastResults = collisionWorld->getNarrowPhaseManager()->rayTest(ray, bodiesAABBoxHitRay);
 

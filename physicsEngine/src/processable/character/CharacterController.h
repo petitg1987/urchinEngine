@@ -32,9 +32,9 @@ namespace urchin
 	{
 		public:
 			CharacterController(const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
-			~CharacterController();
+			~CharacterController() override;
 
-			void initialize(PhysicsWorld *);
+			void initialize(PhysicsWorld *) override;
 
 			void setWalkDirection(const Vector3<float> &);
 			const Vector3<float> &getWalkDirection() const;

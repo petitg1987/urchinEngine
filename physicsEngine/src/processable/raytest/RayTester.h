@@ -14,14 +14,14 @@ namespace urchin
 	class RayTester : public Processable
 	{
 		public:
-			RayTester(const Ray<float> &ray);
+			explicit RayTester(const Ray<float> &ray);
 
 			std::shared_ptr<const RayTestResult> getRayTestResult() const;
 
-			void initialize(PhysicsWorld *);
+			void initialize(PhysicsWorld *) override;
 
-			void setup(float, const Vector3<float> &);
-			void execute(float, const Vector3<float> &);
+			void setup(float, const Vector3<float> &) override;
+			void execute(float, const Vector3<float> &) override;
 
 		private:
 			const Ray<float> ray;
