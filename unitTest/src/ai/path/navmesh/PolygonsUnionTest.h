@@ -42,6 +42,8 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();
+
+		void test(); //TODO review name
 };
 
 #endif

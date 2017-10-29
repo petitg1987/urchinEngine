@@ -178,13 +178,14 @@ namespace urchin
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
             }else if(bodyShape->isConcave())
             {
-                AABBox<float> fromAABBox = temporalObject1.getShape()->toAABBox(temporalObject1.getFrom());
-                AABBox<float> toAABBox = temporalObject1.getShape()->toAABBox(temporalObject1.getTo());
-                AABBox<float> temporalAABBox = fromAABBox.merge(toAABBox);
+                PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getPhysicsTransform().inverse();
+                AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
+                AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getTo());
+                AABBox<float> temporalAABBoxLocalToObject1 = fromAABBoxLocalToObject1.merge(toAABBoxLocalToObject1);
 
 				const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
 
-				std::vector<Triangle3D<float>> triangles = concaveShape->findTrianglesInAABBox(temporalAABBox);
+				std::vector<Triangle3D<float>> triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 				for(const auto &triangle : triangles)
 				{
 					CollisionTriangleShape collisionTriangleShape(triangle.getPoints());

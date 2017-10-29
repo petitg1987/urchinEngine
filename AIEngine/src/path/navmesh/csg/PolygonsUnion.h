@@ -20,7 +20,7 @@ namespace urchin
 	};
 
 	template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>>
-	{ //TODO error: see /home/greg/PolUnion.txt
+	{
 		public:
 			friend class Singleton<PolygonsUnion<T>>;
 

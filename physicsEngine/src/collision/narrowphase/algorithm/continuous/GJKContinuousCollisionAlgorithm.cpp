@@ -80,22 +80,25 @@ namespace urchin
 				{
                     if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0))
                     {
-                        normalFromObject2.setValues(1.0, 0.0, 0.0); //fictive normal because time of impact = 0
+						Point3<T> hitPointOnObject1, hitPointOnObject2;
+						simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
+
+						return std::make_shared<ContinuousCollisionResult<OUT>>(body2, Vector3<OUT>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<OUT>(), 0.0);
                     }else
                     {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR);
                         return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
                     }
-				}else
+				}else if(!std::isnan(normalFromObject2.X))
 				{
 					normalFromObject2 = normalFromObject2.normalize();
+
+					Point3<T> hitPointOnObject1, hitPointOnObject2;
+					simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
+
+					return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT) timeToHit);
 				}
-
-				Point3<T> hitPointOnObject1, hitPointOnObject2;
-				simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
-
-				return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT) timeToHit);
 			}
 		}
 
