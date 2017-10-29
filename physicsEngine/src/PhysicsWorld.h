@@ -38,7 +38,7 @@ namespace urchin
 			void setGravity(const Vector3<float> &);
 			Vector3<float> getGravity() const;
 
-			void start(float, unsigned int maxStep = 1);
+			void start(float);
 			void pause();
 			void play();
 			bool isPaused() const;
@@ -62,7 +62,6 @@ namespace urchin
 			mutable std::mutex mutex;
 			Vector3<float> gravity;
 			float timeStep;
-			unsigned int maxSubStep;
 			bool paused;
 
 			BodyManager *bodyManager;

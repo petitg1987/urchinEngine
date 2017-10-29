@@ -65,6 +65,8 @@ namespace urchin
 			const CollisionConvexObject3D &convexObject2, bool includeMargin) const
 	{
 		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
 		logStream<<"Maximum of iteration reached on GJK algorithm ("<<maxIteration<<")."<<std::endl;
 		logStream<<" - Termination tolerance: "<<terminationTolerance<<std::endl;
 		logStream<<" - Include margin: "<<includeMargin<<std::endl;

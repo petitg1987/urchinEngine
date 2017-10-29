@@ -128,6 +128,8 @@ namespace urchin
                                                                                             const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
 		logStream<<message<<std::endl;
 		logStream<<" - Termination tolerance: "<<terminationTolerance<<std::endl;
 		logStream<<" - Object 1: "<<std::endl<<object1.getLocalObject()->toString()<<std::endl;

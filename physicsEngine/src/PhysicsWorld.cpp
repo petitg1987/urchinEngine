@@ -11,7 +11,6 @@ namespace urchin
 			physicsSimulationThread(nullptr),
 			physicsSimulationStopper(false),
 			timeStep(0.0f),
-			maxSubStep(1),
 			paused(false),
 			bodyManager(new BodyManager()),
 			collisionWorld(new CollisionWorld(bodyManager))
@@ -125,9 +124,8 @@ namespace urchin
 	/**
 	 * Launch the physics simulation in new thread
 	 * @param timeStep Frequency updates expressed in second
-	 * @param maxSubStep Maximum number of sub steps to execute
 	 */
-	void PhysicsWorld::start(float timeStep, unsigned int maxSubStep)
+	void PhysicsWorld::start(float timeStep)
 	{
 		if(physicsSimulationThread!=nullptr)
 		{
@@ -135,7 +133,6 @@ namespace urchin
 		}
 
 		this->timeStep = timeStep;
-		this->maxSubStep = maxSubStep;
 
 		physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
 	}
@@ -173,40 +170,36 @@ namespace urchin
 	{
 		try
 		{
-			double remainingTime = 0.0;
+			float remainingTime = 0.0f;
+            float maxAdditionalTimeStep = timeStep * 0.5f;
 			auto frameStartTime = std::chrono::high_resolution_clock::now();
 
 			while (continueExecution())
 			{
-				//Compute number of sub steps to execute.
-				//Note: rest of division could be used in next steps and interpolate between steps (see http://gafferongames.com/game-physics/fix-your-timestep/)
-				auto numSteps = static_cast<unsigned int>((timeStep - remainingTime) / timeStep);
-				//Clamp number of sub steps to max sub step to avoid spiral of death (time of simulation increase and need to be executed increasingly).
-				unsigned int numStepsClamped = (numSteps > maxSubStep) ? maxSubStep : numSteps;
+                float additionalTimeStep = std::abs(remainingTime);
+                if(additionalTimeStep > maxAdditionalTimeStep)
+                { //Cannot process physics update with 'additionalTimeStep'. Value is too big and can lead to physics errors.
+                    #ifdef _DEBUG
+                        Logger::logger().logWarning("Performance issues: physics engine takes " + std::to_string(additionalTimeStep) + " seconds too long to process");
+                    #endif
+                    additionalTimeStep = maxAdditionalTimeStep;
+                }
 
-				for (unsigned int step = 0; step < numStepsClamped; ++step)
-				{
-					processPhysicsUpdate(timeStep);
-				}
-//                processPhysicsUpdate(timeStep + std::abs(remainingTime)); //TODO use it ?
+                processPhysicsUpdate(timeStep + additionalTimeStep);
 
 				auto frameEndTime = std::chrono::high_resolution_clock::now();
 				auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-				remainingTime = timeStep - (diffTimeMicroSeconds / 1000000.0);
+				remainingTime = (timeStep + additionalTimeStep) - (diffTimeMicroSeconds / 1000000.0);
 
-				if (remainingTime >= 0.0)
+				if (remainingTime >= 0.0f)
 				{
-					std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0)));
+					std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0f)));
 
-					remainingTime = 0.0;
+					remainingTime = 0.0f;
 					frameStartTime = std::chrono::high_resolution_clock::now();
 				} else
 				{
-                    #ifdef _DEBUG
-                        Logger::logger().logWarning("Performance issues: physics engine takes " + std::to_string(remainingTime) + " seconds too long to process");
-                    #endif
 					frameStartTime = frameEndTime;
-//                    frameStartTime = std::chrono::high_resolution_clock::now(); //TODO use it ?
 				}
 			}
 		}catch(std::exception &e)

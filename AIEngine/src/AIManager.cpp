@@ -106,17 +106,20 @@ namespace urchin
 
                 auto frameEndTime = std::chrono::high_resolution_clock::now();
                 auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-                double remainingTime = timeStep - (diffTimeMicroSeconds / 1000000.0);
+                float remainingTime = timeStep - (diffTimeMicroSeconds / 1000000.0);
 
-                if (remainingTime >= 0.0)
+                if (remainingTime >= 0.0f)
                 {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0)));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(remainingTime * 1000.0f)));
 
                     frameStartTime = std::chrono::high_resolution_clock::now();
                 } else
                 {
                     #ifdef _DEBUG
-                        Logger::logger().logWarning("Performance issues: AI engine takes " + std::to_string(remainingTime) + " seconds too long to process");
+                        if(std::abs(remainingTime) > (timeStep * 0.5f))
+                        {
+                            Logger::logger().logWarning("Performance issues: AI engine takes " + std::to_string(remainingTime) + " seconds too long to process");
+                        }
                     #endif
                     frameStartTime = frameEndTime;
                 }
