@@ -68,7 +68,7 @@ namespace urchin
     }
 
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform &physicsTransform) const
-    { //TODO create better AABBoxes
+    {
         if(!lastTransform.equals(physicsTransform))
         {
             const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
@@ -131,25 +131,31 @@ namespace urchin
 
         unsigned int nbTriangles = (endVertexX-startVertexX) * (endVertexZ-startVertexZ) * 2;
         std::vector<Triangle3D<float>> triangles;
-        triangles.reserve(nbTriangles);
+        triangles.reserve(nbTriangles); //estimated memory size
 
         for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
         {
             for (unsigned int x = startVertexX; x < endVertexX; ++x)
             {
-                Point3<float> point1 = vertices[x + xLength * z]; //far-left
                 Point3<float> point2 = vertices[x + 1 + xLength * z]; //far-right
                 Point3<float> point3 = vertices[x + xLength * (z + 1)]; //near-left
-                Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
 
-                triangles.emplace_back(Triangle3D<float>(point1, point3, point2));
-                triangles.emplace_back(Triangle3D<float>(point2, point3, point4));
+                if(point2.Y > checkAABBox.getMin().Y || point3.Y > checkAABBox.getMin().Y)
+                {
+                    Point3<float> point1 = vertices[x + xLength * z]; //far-left
+                    if(point1.Y > checkAABBox.getMin().Y)
+                    {
+                        triangles.emplace_back(Triangle3D<float>(point1, point3, point2));
+                    }
+
+                    Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
+                    if(point4.Y > checkAABBox.getMin().Y)
+                    {
+                        triangles.emplace_back(Triangle3D<float>(point2, point3, point4));
+                    }
+                }
             }
         }
-
-        #ifdef _DEBUG
-            assert(nbTriangles==triangles.size());
-        #endif
 
         return triangles;
     }

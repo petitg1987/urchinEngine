@@ -76,7 +76,7 @@ namespace urchin
 
 			if(closestPointSquareDistance < terminationTolerance)
 			{
-				if(simplex.getSize()==4)
+				if(simplex.getSize()==4 && std::isnan(normalFromObject2.X))
 				{
                     if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0))
                     {
@@ -87,17 +87,15 @@ namespace urchin
                         logInputData(object1, object2, wrongSituation, Logger::ERROR);
                         return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
                     }
+				}else
+				{
+					normalFromObject2 = normalFromObject2.normalize();
 				}
 
-                if(!std::isnan(normalFromObject2.X))
-                {
-                    normalFromObject2 = normalFromObject2.normalize();
+				Point3<T> hitPointOnObject1, hitPointOnObject2;
+				simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-                    Point3<T> hitPointOnObject1, hitPointOnObject2;
-                    simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
-
-                    return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT) timeToHit);
-                }
+				return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT) timeToHit);
 			}
 		}
 
