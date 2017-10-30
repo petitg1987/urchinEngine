@@ -185,13 +185,11 @@ namespace urchin
 
 				const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
 
-				std::vector<Triangle3D<float>> triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
+				std::vector<CollisionTriangleShape> triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 				for(const auto &triangle : triangles)
 				{
-					CollisionTriangleShape collisionTriangleShape(triangle.getPoints());
-
 					const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
-					TemporalObject temporalObject2(&collisionTriangleShape, fromToObject2, fromToObject2);
+					TemporalObject temporalObject2(&triangle, fromToObject2, fromToObject2);
 
 					continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
 				}

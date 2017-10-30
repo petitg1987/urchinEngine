@@ -4,6 +4,7 @@
 #include "UrchinCommon.h"
 
 #include "utils/math/PhysicsTransform.h"
+#include "shape/CollisionTriangleShape.h"
 
 namespace urchin
 {
@@ -11,7 +12,7 @@ namespace urchin
     class CollisionConcaveShape
     {
         public:
-            virtual std::vector<Triangle3D<float>> findTrianglesInAABBox(const AABBox<float> &) const = 0;
+            virtual std::vector<CollisionTriangleShape> findTrianglesInAABBox(const AABBox<float> &) const = 0;
     };
 
 }

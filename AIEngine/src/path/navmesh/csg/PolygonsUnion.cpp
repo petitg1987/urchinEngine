@@ -218,7 +218,7 @@ namespace urchin
 
 			LineSegment2D<T> polygonEdge(points[previousI], points[i]);
 			bool hasIntersection;
-            Point2<T> intersectionPoint = edge.intersectPoint(polygonEdge, hasIntersection);
+            Point2<T> intersectionPoint = edge.template cast<double>().intersectPoint(polygonEdge.template cast<double>(), hasIntersection).template cast<T>();
 
             if(hasIntersection)
             {

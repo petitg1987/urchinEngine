@@ -115,7 +115,7 @@ namespace urchin
         return 0.0f;
     }
 
-    std::vector<Triangle3D<float>> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const
+    std::vector<CollisionTriangleShape> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const
     {
         float verticesDistanceX = vertices[1].X - vertices[0].X;
         auto rawStartVertexX = static_cast<int>((checkAABBox.getMin().X + localAABBox->getHalfSizes().X) / verticesDistanceX);
@@ -130,7 +130,7 @@ namespace urchin
         auto endVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexZ, 0, static_cast<int>(zLength-1)));
 
         unsigned int nbTriangles = (endVertexX-startVertexX) * (endVertexZ-startVertexZ) * 2;
-        std::vector<Triangle3D<float>> triangles;
+        std::vector<CollisionTriangleShape> triangles;
         triangles.reserve(nbTriangles); //estimated memory size
 
         for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
@@ -145,13 +145,13 @@ namespace urchin
                     Point3<float> point1 = vertices[x + xLength * z]; //far-left
                     if(point1.Y > checkAABBox.getMin().Y)
                     {
-                        triangles.emplace_back(Triangle3D<float>(point1, point3, point2));
+                        triangles.emplace_back(CollisionTriangleShape(point1, point3, point2));
                     }
 
                     Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
                     if(point4.Y > checkAABBox.getMin().Y)
                     {
-                        triangles.emplace_back(Triangle3D<float>(point2, point3, point4));
+                        triangles.emplace_back(CollisionTriangleShape(point2, point3, point4));
                     }
                 }
             }

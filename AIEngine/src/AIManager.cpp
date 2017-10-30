@@ -115,12 +115,6 @@ namespace urchin
                     frameStartTime = std::chrono::high_resolution_clock::now();
                 } else
                 {
-                    #ifdef _DEBUG
-                        if(std::abs(remainingTime) > (timeStep * 0.5f))
-                        {
-                            Logger::logger().logWarning("Performance issues: AI engine takes " + std::to_string(remainingTime) + " seconds too long to process");
-                        }
-                    #endif
                     frameStartTime = frameEndTime;
                 }
             }

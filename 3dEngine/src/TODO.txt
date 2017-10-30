@@ -15,6 +15,8 @@
 	- (3) [NEW FEATURE] Implement PCSS
 	- (3) [OPTIMIZATION] Use LOD
 	- (3) [OPTIMIZATION] Create shadow map texture only for visible lights
+- TERRAIN
+    - (2) [OPTIMIZATION] Terrain class should have methods for LOD (usable for physics and AI)
 - GUI
 	- (3) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop

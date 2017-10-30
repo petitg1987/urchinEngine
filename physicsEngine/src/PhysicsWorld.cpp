@@ -178,10 +178,9 @@ namespace urchin
 			{
                 float additionalTimeStep = std::abs(remainingTime);
                 if(additionalTimeStep > maxAdditionalTimeStep)
-                { //Cannot process physics update with 'additionalTimeStep'. Value is too big and can lead to physics errors.
-                    #ifdef _DEBUG
-                        Logger::logger().logWarning("Performance issues: physics engine takes " + std::to_string(additionalTimeStep) + " seconds too long to process");
-                    #endif
+                {
+					//Cannot process physics update with 'additionalTimeStep'. Value is too big and can lead to physics errors.
+					//Use 'maxAdditionalTimeStep' which lead to slow-down of the physics.
                     additionalTimeStep = maxAdditionalTimeStep;
                 }
 

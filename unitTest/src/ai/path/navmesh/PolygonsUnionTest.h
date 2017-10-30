@@ -24,6 +24,7 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsUnionAlmostSameEdge3();
 		void twoPolygonsUnionAlmostSameEdge4();
 		void twoPolygonsUnionAlmostSameEdge5();
+		void twoPolygonsUnionAlmostSameEdge6();
 		void twoPolygonsSameEndPoint();
 		void twoPolygonsIntersectionIsEndPoint();
 		void twoPolygonsIntersectionIsAlmostEndPoint();
@@ -42,8 +43,6 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 
 		void threePolygonsUnion();
 		void twoPolygonsUnionAndSeparatePolygon();
-
-		void test(); //TODO review name
 };
 
 #endif

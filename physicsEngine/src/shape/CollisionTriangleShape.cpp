@@ -4,9 +4,6 @@
 namespace urchin
 {
 
-    /**
-     * Build a collision triangle shape where center is origin (0.0, 0.0, 0.0)
-     */
     CollisionTriangleShape::CollisionTriangleShape(const Point3<float> *points) :
             CollisionShape3D(),
             triangleShape(std::make_shared<TriangleShape3D<float>>(points))
@@ -14,14 +11,11 @@ namespace urchin
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    /**
-     * Build a collision triangle shape where center is origin (0.0, 0.0, 0.0)
-     */
     CollisionTriangleShape::CollisionTriangleShape(const Point3<float> &point1, const Point3<float> &point2, const Point3<float> &point3) :
             CollisionShape3D(),
             triangleShape(std::make_shared<TriangleShape3D<float>>(point1, point2, point3))
     {
-
+        refreshInnerMargin(0.0f); //no margin for triangle
     }
 
     CollisionShape3D::ShapeType CollisionTriangleShape::getShapeType() const
@@ -63,21 +57,7 @@ namespace urchin
 
     float CollisionTriangleShape::getMaxDistanceToCenter() const
     {
-        float point1ToCenter = triangleShape->getPoints()[0].vector(Point3<float>(0.0, 0.0, 0.0)).length();
-        float point2ToCenter = triangleShape->getPoints()[1].vector(Point3<float>(0.0, 0.0, 0.0)).length();
-        float point3ToCenter = triangleShape->getPoints()[2].vector(Point3<float>(0.0, 0.0, 0.0)).length();
-
-        if(point1ToCenter > point2ToCenter)
-        {
-            if(point1ToCenter > point3ToCenter)
-            {
-                return point1ToCenter;
-            }
-        }else if(point2ToCenter > point3ToCenter)
-        {
-            return point2ToCenter;
-        }
-        return point3ToCenter;
+        throw std::runtime_error("Computing max distance to center is currently not supported (triangle is only usable as a sub-shape)");
     }
 
     float CollisionTriangleShape::getMinDistanceToCenter() const

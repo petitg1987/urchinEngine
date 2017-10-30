@@ -28,7 +28,7 @@ namespace urchin
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
-            std::vector<Triangle3D<float>> findTrianglesInAABBox(const AABBox<float> &) const override;
+            std::vector<CollisionTriangleShape> findTrianglesInAABBox(const AABBox<float> &) const override;
 
         private:
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
