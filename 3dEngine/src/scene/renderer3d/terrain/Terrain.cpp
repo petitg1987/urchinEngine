@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <cassert>
 #include <stdexcept>
-#include <expat_external.h>
 
 #include "Terrain.h"
 #include "resources/MediaManager.h"
@@ -12,9 +11,10 @@
 
 namespace urchin
 {
-    Terrain::Terrain(const std::string &filename, float xzScale, float yScale) :
+    Terrain::Terrain(const std::string &filename, float xzScale, float yScale, std::unique_ptr<TerrainMaterial> &terrainMaterial) :
             xzScale(xzScale),
-            yScale(yScale)
+            yScale(yScale),
+            terrainMaterial(std::move(terrainMaterial))
     {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(filename);
         if(imgTerrain->getImageFormat()!=Image::IMAGE_LUMINANCE)
@@ -30,7 +30,7 @@ namespace urchin
         normals = buildNormals();
         imgTerrain->release();
 
-        glGenBuffers(4, bufferIDs);
+        glGenBuffers(5, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
         glBindVertexArray(vertexArrayObject);
 
@@ -58,19 +58,16 @@ namespace urchin
         mModelLoc = glGetUniformLocation(shader, "mModel");
         mProjectionLoc = glGetUniformLocation(shader, "mProjection");
         mViewLoc = glGetUniformLocation(shader, "mView");
-        int diffuseTexLoc = glGetUniformLocation(shader, "diffuseTex");
         ambientLoc = glGetUniformLocation(shader, "ambient");
         setAmbient(DEFAULT_AMBIENT);
 
-        //activate texture
-        glActiveTexture(GL_TEXTURE0);
-        glUniform1i(diffuseTexLoc, 0);
+        this->terrainMaterial->initialize(shader);
     }
 
     Terrain::~Terrain()
     {
         glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(4, bufferIDs);
+        glDeleteBuffers(5, bufferIDs);
 
         ShaderManager::instance()->removeProgram(shader);
     }
@@ -103,11 +100,6 @@ namespace urchin
     void Terrain::setAmbient(float ambient)
     {
         this->ambient = ambient;
-    }
-
-    void Terrain::setMaterial(const std::string &materialFilename)
-    {
-        material = MediaManager::instance()->getMedia<Material>(materialFilename, nullptr);
     }
 
     void Terrain::setTransform(const Transform<float> &transform)
@@ -169,8 +161,8 @@ namespace urchin
         {
             for (unsigned int x = 0; x < xLength; ++x)
             {
-                float s = static_cast<float>(x)/xLength * 10.0; //TODO hardcoded
-                float t = static_cast<float>(z)/zLength * 10.0;
+                float s = static_cast<float>(x) / xLength * 15.0; //TODO hardcoded
+                float t = static_cast<float>(z) / zLength * 15.0;
 
                 texCoordinates.emplace_back(Point2<float>(s, t));
             }
@@ -316,8 +308,7 @@ namespace urchin
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
         glUniform1f(ambientLoc, ambient);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, material->getDiffuseTexture()->getTextureID());
+        terrainMaterial->loadTextures();
 
         glEnable(GL_PRIMITIVE_RESTART);
         glPrimitiveRestartIndex(RESTART_INDEX);

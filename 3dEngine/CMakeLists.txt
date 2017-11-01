@@ -190,7 +190,9 @@ set(SOURCE_FILES
         src/utils/shader/TokenReplacerShader.h
         src/Urchin3dEngine.h
         src/scene/renderer3d/terrain/Terrain.cpp
-        src/scene/renderer3d/terrain/Terrain.h)
+        src/scene/renderer3d/terrain/Terrain.h
+        src/scene/renderer3d/terrain/TerrainMaterial.cpp
+        src/scene/renderer3d/terrain/TerrainMaterial.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

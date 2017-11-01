@@ -3,18 +3,19 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "UrchinCommon.h"
 
+#include "scene/renderer3d/terrain/TerrainMaterial.h"
 #include "resources/image/Image.h"
-#include "resources/material/Material.h"
 
 namespace urchin
 {
 
     class Terrain
-    { //TODO handle: texture, shadow, map editor, AI
+    { //TODO handle: map editor, AI
         public:
-            Terrain(const std::string &, float, float);
+            Terrain(const std::string &, float, float, std::unique_ptr<TerrainMaterial> &);
             ~Terrain();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
@@ -25,22 +26,20 @@ namespace urchin
             float getAmbient() const;
             void setAmbient(float);
 
-            void setMaterial(const std::string &);
-
             void setTransform(const Transform<float> &);
             const Transform<float> &getTransform() const;
 
             void display(const Matrix4<float> &) const;
 
         private:
-            std::vector<Point3<float>> buildVertices(const Image *) const;
+            std::vector<Point3<float>> buildVertices(const Image *) const; //TODO extract these method
             std::vector<Point2<float>> buildTexCoordinates() const;
             std::vector<Vector3<float>> buildNormals() const;
             std::vector<unsigned int> buildIndices() const;
 
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;
 
-            unsigned int bufferIDs[4], vertexArrayObject;
+            unsigned int bufferIDs[5], vertexArrayObject;
             enum //buffer IDs indices
             {
                 VAO_VERTEX_POSITION = 0,
@@ -63,7 +62,7 @@ namespace urchin
             Matrix4<float> projectionMatrix;
             float ambient;
 
-            Material *material;
+            std::unique_ptr<TerrainMaterial> terrainMaterial;
 
             Transform<float> transform;
 

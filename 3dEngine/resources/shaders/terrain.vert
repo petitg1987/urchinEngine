@@ -14,6 +14,7 @@ invariant gl_Position;
 
 void main(){
     textCoordinates = texCoord;
+
     normal = vertexNormal;
 
 	gl_Position = mProjection * mView * mModel * vec4(vertexPosition, 1.0);
