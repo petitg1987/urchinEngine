@@ -18,7 +18,7 @@ namespace urchin
 	class XmlParser
 	{
 		public:
-			XmlParser(const std::string &);
+			explicit XmlParser(const std::string &);
 			XmlParser(const std::string &, const std::string &);
 			~XmlParser();
 

@@ -14,7 +14,17 @@ namespace urchin
 		std::locale::global(std::locale("C")); //for float
 
 		XmlParser parserXml(filename);
-		
+
+		//textures data
+		bool needMipMaps = true;
+		bool needAnisotropy = true;
+		bool needRepeatTexture = false;
+		std::shared_ptr<XmlChunk> repeatTexture(parserXml.getUniqueChunk(false, "repeatTexture"));
+		if(repeatTexture!=nullptr)
+		{
+			needRepeatTexture = repeatTexture->getBoolValue();
+		}
+
 		//diffuse data
 		Image *diffuseTex = nullptr;
 		std::shared_ptr<XmlChunk> diffuse(parserXml.getUniqueChunk(false, "diffuse"));
@@ -22,7 +32,7 @@ namespace urchin
 		{
 			std::shared_ptr<XmlChunk> diffuseTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), diffuse));
 			diffuseTex = MediaManager::instance()->getMedia<Image>(diffuseTexture->getStringValue());
-			diffuseTex->toTexture(true, true);
+			diffuseTex->toTexture(needMipMaps, needAnisotropy, needRepeatTexture);
 		}
 
 		//normal data
@@ -32,7 +42,7 @@ namespace urchin
 		{
 			std::shared_ptr<XmlChunk> normalTexture(parserXml.getUniqueChunk(true, "texture", XmlAttribute(), normal));
 			normalTex = MediaManager::instance()->getMedia<Image>(normalTexture->getStringValue());
-			normalTex->toTexture(true, false);
+			normalTex->toTexture(needMipMaps, needAnisotropy, needRepeatTexture);
 		}
 
 		//ambient data

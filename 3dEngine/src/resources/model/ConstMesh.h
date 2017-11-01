@@ -82,8 +82,6 @@ namespace urchin
 			const DataVertex *getBaseDataVertices() const;
 
 		private:
-			void defineTextureWrap();
-
 			Material *material;
 
 			std::vector<Vertex> vertices;
@@ -97,7 +95,7 @@ namespace urchin
 			//mesh information in bind-pose
 			std::vector<Bone> baseSkeleton; //bind-pose skeleton
 			Point3<float> *const baseVertices;
-			DataVertex *const baseDataVertices; //additional informations for the vertex
+			DataVertex *const baseDataVertices; //additional information for the vertex
 	};
 }
 

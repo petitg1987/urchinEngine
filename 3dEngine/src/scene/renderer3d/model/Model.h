@@ -19,7 +19,7 @@ namespace urchin
 	{
 		public:
 			explicit Model(const std::string &);
-			virtual ~Model();
+			~Model() override;
 		
 			void loadAnimation(const std::string &, const std::string &);
 			void animate(const std::string &);
@@ -28,7 +28,7 @@ namespace urchin
 			const ConstMeshes *getMeshes() const;
 			std::map<std::string, const ConstAnimation *> getAnimations() const;
 
-			const AABBox<float> &getAABBox() const;
+			const AABBox<float> &getAABBox() const override;
 			const std::vector<AABBox<float>> &getSplittedAABBox() const;
 			const AABBox<float> &getLocalAABBox() const;
 			
@@ -36,7 +36,7 @@ namespace urchin
 			void setOrientation(const Quaternion<float> &);
 			void setScale(float);
 			void setTransform(const Transform<float> &);
-			const Transform<float> &getTransform() const;
+			const Transform<float> &getTransform() const override;
 
 			void setProduceShadow(bool);
 			bool isProduceShadow() const;

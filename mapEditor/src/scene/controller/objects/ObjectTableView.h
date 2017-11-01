@@ -18,7 +18,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			ObjectTableView(QWidget *parent = 0);
+			explicit ObjectTableView(QWidget *parent = nullptr);
 
 			enum NotificationType
 			{
@@ -35,7 +35,7 @@ namespace urchin
 		private:
 			QStandardItemModel *objectsListModel;
 
-			void selectionChanged(const QItemSelection &, const QItemSelection &);
+			void selectionChanged(const QItemSelection &, const QItemSelection &) override;
 	};
 
 }

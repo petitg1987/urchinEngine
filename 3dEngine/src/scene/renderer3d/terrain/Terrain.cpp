@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <cassert>
 #include <stdexcept>
+#include <expat_external.h>
 
 #include "Terrain.h"
 #include "resources/MediaManager.h"
@@ -24,11 +25,12 @@ namespace urchin
         xLength = imgTerrain->getWidth();
         zLength = imgTerrain->getHeight();
         vertices = buildVertices(imgTerrain);
+        texCoordinates = buildTexCoordinates();
         indices = buildIndices();
         normals = buildNormals();
         imgTerrain->release();
 
-        glGenBuffers(3, bufferIDs);
+        glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
         glBindVertexArray(vertexArrayObject);
 
@@ -36,6 +38,11 @@ namespace urchin
         glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float)*3, &vertices[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
+        glBufferData(GL_ARRAY_BUFFER, texCoordinates.size()*sizeof(float)*2, &texCoordinates[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_TEX_COORD);
+        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
         glBufferData(GL_ARRAY_BUFFER, normals.size()*sizeof(float)*3, &normals[0], GL_STATIC_DRAW);
@@ -51,14 +58,19 @@ namespace urchin
         mModelLoc = glGetUniformLocation(shader, "mModel");
         mProjectionLoc = glGetUniformLocation(shader, "mProjection");
         mViewLoc = glGetUniformLocation(shader, "mView");
+        int diffuseTexLoc = glGetUniformLocation(shader, "diffuseTex");
         ambientLoc = glGetUniformLocation(shader, "ambient");
         setAmbient(DEFAULT_AMBIENT);
+
+        //activate texture
+        glActiveTexture(GL_TEXTURE0);
+        glUniform1i(diffuseTexLoc, 0);
     }
 
     Terrain::~Terrain()
     {
         glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(3, bufferIDs);
+        glDeleteBuffers(4, bufferIDs);
 
         ShaderManager::instance()->removeProgram(shader);
     }
@@ -93,6 +105,11 @@ namespace urchin
         this->ambient = ambient;
     }
 
+    void Terrain::setMaterial(const std::string &materialFilename)
+    {
+        material = MediaManager::instance()->getMedia<Material>(materialFilename, nullptr);
+    }
+
     void Terrain::setTransform(const Transform<float> &transform)
     {
         this->transform = transform;
@@ -106,19 +123,19 @@ namespace urchin
     std::vector<Point3<float>> Terrain::buildVertices(const Image *imgTerrain) const
     {
         std::vector<Point3<float>> vertices;
-        vertices.reserve(imgTerrain->getHeight() * imgTerrain->getWidth());
+        vertices.reserve(xLength * zLength);
 
-        float xStart = (-(imgTerrain->getWidth() * xzScale) / 2.0) + (xzScale / 2.0);
-        float zStart = (-(imgTerrain->getHeight() * xzScale) / 2.0) + (xzScale / 2.0);
+        float xStart = (-(xLength * xzScale) / 2.0) + (xzScale / 2.0);
+        float zStart = (-(zLength * xzScale) / 2.0) + (xzScale / 2.0);
 
         float minElevation = std::numeric_limits<float>::max();
         float maxElevation = -std::numeric_limits<float>::max();
-        for(unsigned int z=0; z<imgTerrain->getHeight(); ++z)
+        for(unsigned int z=0; z<zLength; ++z)
         {
             float zFloat = zStart + static_cast<float>(z) * xzScale;
-            for (unsigned int x = 0; x < imgTerrain->getWidth(); ++x)
+            for (unsigned int x = 0; x < xLength; ++x)
             {
-                float elevation = imgTerrain->getTexels()[x + imgTerrain->getWidth() * z] * yScale;
+                float elevation = imgTerrain->getTexels()[x + xLength * z] * yScale;
                 if(elevation > maxElevation)
                 {
                     maxElevation = elevation;
@@ -141,6 +158,25 @@ namespace urchin
         }
 
         return vertices;
+    }
+
+    std::vector<Point2<float>> Terrain::buildTexCoordinates() const
+    {
+        std::vector<Point2<float>> texCoordinates;
+        texCoordinates.reserve(xLength * zLength);
+
+        for(unsigned int z = 0; z < zLength; ++z)
+        {
+            for (unsigned int x = 0; x < xLength; ++x)
+            {
+                float s = static_cast<float>(x)/xLength * 10.0; //TODO hardcoded
+                float t = static_cast<float>(z)/zLength * 10.0;
+
+                texCoordinates.emplace_back(Point2<float>(s, t));
+            }
+        }
+
+        return texCoordinates;
     }
 
     std::vector<Vector3<float>> Terrain::buildNormals() const
@@ -279,6 +315,9 @@ namespace urchin
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
         glUniform1f(ambientLoc, ambient);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, material->getDiffuseTexture()->getTextureID());
 
         glEnable(GL_PRIMITIVE_RESTART);
         glPrimitiveRestartIndex(RESTART_INDEX);

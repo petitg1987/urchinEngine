@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-	Image::Image(unsigned int componentsCount, unsigned int width, unsigned int height, ImageFormat format, unsigned char *texels) : Resource(),
+	Image::Image(unsigned int componentsCount, unsigned int width, unsigned int height, ImageFormat format, unsigned char *texels) :
 			componentsCount(componentsCount),
 			width(width),
 			height(height),
@@ -17,7 +17,7 @@ namespace urchin
 			textureID(0)
 	{
 		#ifdef _DEBUG
-			assert(componentsCount >=0 && componentsCount<=4);
+			assert(componentsCount >=0 && componentsCount <= 4);
 		#endif
 	}
 
@@ -101,7 +101,7 @@ namespace urchin
 		}
 	}
 
-	unsigned int Image::toTexture(bool needMipmaps, bool needAnisotropy)
+	unsigned int Image::toTexture(bool needMipMaps, bool needAnisotropy, bool needRepeat)
 	{
 		if(isTexture)
 		{
@@ -123,13 +123,13 @@ namespace urchin
 		}
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, needMipmaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, needMipMaps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, texels);
 
-		if(needMipmaps)
+		if(needMipMaps)
 		{
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}

@@ -28,7 +28,7 @@ namespace urchin
 			tex->release();
 		}
 		tex = MediaManager::instance()->getMedia<Image>(filename);
-		tex->toTexture(false, false);
+		tex->toTexture(false, false, false);
 
 		//visual
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()

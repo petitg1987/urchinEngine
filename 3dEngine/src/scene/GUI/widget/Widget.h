@@ -16,7 +16,7 @@ namespace urchin
 	{
 		public:
 			Widget(Position, Size);
-			virtual ~Widget();
+			~Widget() override;
 
 			enum NotificationType
 			{
@@ -81,7 +81,7 @@ namespace urchin
 
 		private:
 			void handleWidgetKeyDown(unsigned int);
-			void handkeWidgetKeyUp(unsigned int);
+			void handleWidgetKeyUp(unsigned int);
 			void handleWidgetMouseMove(int, int);
 			void handleDisable();
 

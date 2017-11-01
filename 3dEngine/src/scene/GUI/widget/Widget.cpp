@@ -234,7 +234,7 @@ namespace urchin
 
 	bool Widget::onKeyUp(unsigned int key)
 	{
-		handkeWidgetKeyUp(key);
+		handleWidgetKeyUp(key);
 
 		bool propagateEvent = onKeyUpEvent(key);
 
@@ -253,7 +253,7 @@ namespace urchin
 		return true;
 	}
 
-	void Widget::handkeWidgetKeyUp(unsigned int key)
+	void Widget::handleWidgetKeyUp(unsigned int key)
 	{
 		if(key==InputDevice::Key::MOUSE_LEFT)
 		{
@@ -308,11 +308,11 @@ namespace urchin
 
 		bool propagateEvent = onMouseMoveEvent(mouseX, mouseY);
 
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible())
+			if(child->isVisible())
 			{
-				if(!children[i]->onMouseMove(mouseX, mouseY))
+				if(!child->onMouseMove(mouseX, mouseY))
 				{
 					return false;
 				}

@@ -6,6 +6,7 @@
 #include "UrchinCommon.h"
 
 #include "resources/image/Image.h"
+#include "resources/material/Material.h"
 
 namespace urchin
 {
@@ -24,6 +25,8 @@ namespace urchin
             float getAmbient() const;
             void setAmbient(float);
 
+            void setMaterial(const std::string &);
+
             void setTransform(const Transform<float> &);
             const Transform<float> &getTransform() const;
 
@@ -31,21 +34,24 @@ namespace urchin
 
         private:
             std::vector<Point3<float>> buildVertices(const Image *) const;
+            std::vector<Point2<float>> buildTexCoordinates() const;
             std::vector<Vector3<float>> buildNormals() const;
             std::vector<unsigned int> buildIndices() const;
 
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;
 
-            unsigned int bufferIDs[3], vertexArrayObject;
+            unsigned int bufferIDs[4], vertexArrayObject;
             enum //buffer IDs indices
             {
                 VAO_VERTEX_POSITION = 0,
+                VAO_TEX_COORD,
                 VAO_NORMAL,
                 VAO_INDEX
             };
             enum //shader input
             {
                 SHADER_VERTEX_POSITION = 0,
+                SHADER_TEX_COORD,
                 SHADER_NORMAL
             };
             unsigned int shader;
@@ -57,10 +63,13 @@ namespace urchin
             Matrix4<float> projectionMatrix;
             float ambient;
 
+            Material *material;
+
             Transform<float> transform;
 
-            std::vector<Point3<float>> vertices;
             unsigned int xLength, zLength;
+            std::vector<Point3<float>> vertices;
+            std::vector<Point2<float>> texCoordinates;
             std::vector<Vector3<float>> normals;
             std::vector<unsigned int> indices;
     };

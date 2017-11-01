@@ -143,7 +143,7 @@ namespace urchin
 
 		//create the texture
 		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(componentsCount, width, height, imgWidget->getImageFormat(), texels), Resource::ResourceDeleter());
-		texWidget->toTexture(false, false);
+		texWidget->toTexture(false, false, false);
 
 		imgWidget->release();
 

@@ -31,7 +31,7 @@ namespace urchin
 			GLint retrieveInternalFormat() const;
 			GLenum retrieveFormat() const;
 		
-			unsigned int toTexture(bool, bool);
+			unsigned int toTexture(bool, bool, bool);
 			unsigned int getTextureID() const;
 			
 		private:

@@ -29,7 +29,7 @@ namespace urchin
 			
 		private:
 			MediaManager();
-			~MediaManager();
+			~MediaManager() override;
 
 			std::map<std::string, LoaderInterface *> loadersRegistry;
 	};
