@@ -29,7 +29,7 @@ namespace urchin
 
 		private:
 			GUISkinService();
-			virtual ~GUISkinService();
+			~GUISkinService() override;
 
 			XmlParser *xmlSkin;
 	};

@@ -192,7 +192,9 @@ set(SOURCE_FILES
         src/scene/renderer3d/terrain/Terrain.cpp
         src/scene/renderer3d/terrain/Terrain.h
         src/scene/renderer3d/terrain/TerrainMaterial.cpp
-        src/scene/renderer3d/terrain/TerrainMaterial.h)
+        src/scene/renderer3d/terrain/TerrainMaterial.h
+        src/scene/renderer3d/terrain/TerrainMesh.cpp
+        src/scene/renderer3d/terrain/TerrainMesh.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 
