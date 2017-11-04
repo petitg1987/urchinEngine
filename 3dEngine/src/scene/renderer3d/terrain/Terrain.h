@@ -14,16 +14,16 @@ namespace urchin
 {
 
     class Terrain
-    { //TODO handle: map editor, AI
+    { //TODO handle in AI engine
         public:
             Terrain(std::unique_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &);
             ~Terrain();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
-            void setupTerrain(std::unique_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &);
-
+            void setMesh(std::unique_ptr<TerrainMesh> &);
             const TerrainMesh *getMesh() const;
+            void setMaterial(std::unique_ptr<TerrainMaterial> &);
             const TerrainMaterial *getMaterial() const;
 
             void setPosition(const Point3<float> &);

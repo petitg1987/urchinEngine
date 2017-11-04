@@ -9,7 +9,7 @@
 
 namespace urchin
 {
-    Terrain::Terrain(std::unique_ptr<TerrainMesh> &terrainMesh, std::unique_ptr<TerrainMaterial> &terrainMaterial)
+    Terrain::Terrain(std::unique_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material)
     {
         glGenBuffers(5, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -24,8 +24,8 @@ namespace urchin
 
         setPosition(Point3<float>(0.0f, 0.0f, 0.0f));
         setAmbient(DEFAULT_AMBIENT);
-
-        setupTerrain(terrainMesh, terrainMaterial);
+        setMesh(mesh);
+        setMaterial(material);
     }
 
     Terrain::~Terrain()
@@ -36,29 +36,6 @@ namespace urchin
         ShaderManager::instance()->removeProgram(terrainShader);
     }
 
-    void Terrain::setupTerrain(std::unique_ptr<TerrainMesh> &terrainMesh, std::unique_ptr<TerrainMaterial> &terrainMaterial)
-    {
-        mesh = std::move(terrainMesh);
-        glBindVertexArray(vertexArrayObject);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size()*sizeof(float)*3, &mesh->getVertices()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-        glBufferData(GL_ARRAY_BUFFER, mesh->getNormals().size()*sizeof(float)*3, &mesh->getNormals()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_NORMAL);
-        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size()*sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
-
-        material = std::move(terrainMaterial);
-        material->initialize(terrainShader, mesh->getXSize(), mesh->getZSize());
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, material->getTexCoordinates().size()*sizeof(float)*2, &material->getTexCoordinates()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-    }
-
     void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
     {
         this->projectionMatrix = projectionMatrix;
@@ -67,9 +44,50 @@ namespace urchin
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
+    void Terrain::setMesh(std::unique_ptr<TerrainMesh> &terrainMesh)
+    {
+        mesh = std::move(terrainMesh);
+
+        glBindVertexArray(vertexArrayObject);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+        glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size()*sizeof(float)*3, &mesh->getVertices()[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+        glBufferData(GL_ARRAY_BUFFER, mesh->getNormals().size()*sizeof(float)*3, &mesh->getNormals()[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_NORMAL);
+        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size()*sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
+
+        if(material != nullptr)
+        {
+            setMaterial(material); //material uses mesh info: refresh is required
+        }
+    }
+
     const TerrainMesh *Terrain::getMesh() const
     {
         return mesh.get();
+    }
+
+    void Terrain::setMaterial(std::unique_ptr<TerrainMaterial> &terrainMaterial)
+    {
+        if(material != terrainMaterial)
+        {
+            material = std::move(terrainMaterial);
+            material->initialize(terrainShader, mesh->getXSize(), mesh->getZSize());
+        }
+
+        glBindVertexArray(vertexArrayObject);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
+        glBufferData(GL_ARRAY_BUFFER, material->getTexCoordinates().size()*sizeof(float)*2, &material->getTexCoordinates()[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_TEX_COORD);
+        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 
     const TerrainMaterial *Terrain::getMaterial() const

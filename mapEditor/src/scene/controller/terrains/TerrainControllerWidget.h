@@ -30,7 +30,12 @@ namespace urchin
             void unload();
 
         private:
+            void setupGeneralPropertiesBox(QVBoxLayout *);
+            void setupMeshBox(QVBoxLayout *);
+            void setupMaterialBox(QVBoxLayout *);
+
             void notify(Observable *, int) override;
+            void setupTerrainDataFrom(const SceneTerrain *);
 
             TerrainController *terrainController;
 
@@ -38,9 +43,29 @@ namespace urchin
             QPushButton *addTerrainButton;
             QPushButton *removeTerrainButton;
 
+            QGroupBox *generalPropertiesGroupBox;
+            QGroupBox *meshGroupBox;
+            QGroupBox *materialGroupBox;
+
+            bool disableTerrainEvent;
+
+            //general properties
+            QDoubleSpinBox *positionX, *positionY, *positionZ;
+            QDoubleSpinBox *ambient;
+
+            //mesh properties
+            QDoubleSpinBox *xzScale, *yScale;
+
+            //material properties
+
+
         private slots:
             void showAddTerrainDialog();
             void removeSelectedTerrain();
+
+            void updateTerrainGeneralProperties();
+            void updateTerrainMesh();
+            void updateTerrainMaterial();
     };
 
 }

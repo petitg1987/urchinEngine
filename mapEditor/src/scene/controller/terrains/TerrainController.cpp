@@ -50,6 +50,31 @@ namespace urchin
         markModified();
     }
 
+    const SceneTerrain *TerrainController::updateSceneTerrainGeneralProperties(const SceneTerrain *constSceneTerrain,
+                                                                               const Point3<float> &position, float ambient)
+    {
+        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain *terrain = sceneTerrain->getTerrain();
+
+        terrain->setPosition(position);
+        terrain->setAmbient(ambient);
+
+        markModified();
+        return sceneTerrain;
+    }
+
+    const SceneTerrain *TerrainController::updateSceneTerrainMesh(const SceneTerrain *constSceneTerrain, float xzScale, float yScale)
+    {
+        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain *terrain = sceneTerrain->getTerrain();
+
+        auto terrainMesh = std::make_unique<TerrainMesh>(terrain->getMesh()->getHeightFilename(), xzScale, yScale);
+        terrain->setMesh(terrainMesh);
+
+        markModified();
+        return sceneTerrain;
+    }
+
     SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain *constSceneTerrain)
     {
         const std::list<SceneTerrain *> &sceneTerrains = mapHandler->getMap()->getSceneTerrains();

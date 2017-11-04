@@ -21,6 +21,9 @@ namespace urchin
             void addSceneTerrain(SceneTerrain *);
             void removeSceneTerrain(const SceneTerrain *);
 
+            const SceneTerrain *updateSceneTerrainGeneralProperties(const SceneTerrain *, const Point3<float> &, float);
+            const SceneTerrain *updateSceneTerrainMesh(const SceneTerrain *, float, float);
+
         private:
             void markModified();
             SceneTerrain *findSceneTerrain(const SceneTerrain *);

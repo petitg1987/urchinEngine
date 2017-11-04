@@ -52,7 +52,7 @@ namespace urchin
 	}
 
 	const SceneLight *LightController::updateSceneLightGeneralProperties(const SceneLight *constSceneLight,
-			const Point3<float> &ambientColor, bool isProduceShadow)
+																		 const Point3<float> &ambientColor, bool isProduceShadow)
 	{
 		SceneLight *sceneLight = findSceneLight(constSceneLight);
 		Light *light = sceneLight->getLight();
@@ -68,7 +68,7 @@ namespace urchin
 	}
 
 	const SceneLight *LightController::updateSceneOmnidirectionalLightProperties(const SceneLight *constSceneLight,
-			float attenuation, const Point3<float> &position)
+																				 float attenuation, const Point3<float> &position)
 	{
 		SceneLight *sceneLight = findSceneLight(constSceneLight);
 		auto *light = dynamic_cast<OmnidirectionalLight *>(sceneLight->getLight());
