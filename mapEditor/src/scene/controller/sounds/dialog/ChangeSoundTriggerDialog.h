@@ -28,7 +28,7 @@ namespace urchin
 		private:
 			void setupSoundTriggerTypeFields(QGridLayout *);
 
-			void done(int);
+			void done(int) override;
 
 			QLabel *soundTriggerTypeLabel;
 			QComboBox *soundTriggerTypeComboBox;

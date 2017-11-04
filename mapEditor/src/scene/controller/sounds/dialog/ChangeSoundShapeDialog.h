@@ -25,7 +25,7 @@ namespace urchin
 		private:
 			void setupSoundShapeTypeFields(QGridLayout *);
 
-			void done(int);
+			void done(int) override;
 
 			QLabel *soundShapeTypeLabel;
 			QComboBox *soundShapeTypeComboBox;

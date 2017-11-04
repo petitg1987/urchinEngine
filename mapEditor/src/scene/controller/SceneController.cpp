@@ -11,6 +11,7 @@ namespace urchin
 	{
 		objectController = new ObjectController(mapHandler);
 		lightController = new LightController(mapHandler);
+		terrainController = new TerrainController(mapHandler);
 		soundController = new SoundController(mapHandler);
 		aiController = new AIController(mapHandler);
 	}
@@ -19,6 +20,7 @@ namespace urchin
 	{
 		delete objectController;
 		delete lightController;
+		delete terrainController;
 		delete soundController;
 		delete aiController;
 	}
@@ -35,6 +37,7 @@ namespace urchin
 		return bIsModified
 				|| objectController->isModified()
 				|| lightController->isModified()
+			    || terrainController->isModified()
 				|| soundController->isModified()
 				|| aiController->isModified();
 	}
@@ -49,6 +52,7 @@ namespace urchin
 		bIsModified = false;
 		objectController->resetModified();
 		lightController->resetModified();
+		terrainController->resetModified();
 		soundController->resetModified();
 		aiController->resetModified();
 	}
@@ -71,6 +75,11 @@ namespace urchin
 	LightController *SceneController::getLightController()
 	{
 		return lightController;
+	}
+
+	TerrainController *SceneController::getTerrainController()
+	{
+		return terrainController;
 	}
 
 	SoundController *SceneController::getSoundController()

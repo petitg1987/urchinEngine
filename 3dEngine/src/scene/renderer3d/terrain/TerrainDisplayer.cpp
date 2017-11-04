@@ -1,7 +1,6 @@
 #include <algorithm>
 
 #include "TerrainDisplayer.h"
-#include "utils/shader/ShaderManager.h"
 
 namespace urchin
 {

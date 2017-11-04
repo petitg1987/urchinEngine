@@ -19,13 +19,13 @@ namespace urchin
 		this->resize(530, 130);
 		this->setFixedSize(this->width(),this->height());
 
-		QGridLayout *mainLayout = new QGridLayout(this);
+		auto *mainLayout = new QGridLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		setupNameFields(mainLayout);
 		setupLightTypeFields(mainLayout);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		auto *buttonBox = new QDialogButtonBox();
 		mainLayout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);

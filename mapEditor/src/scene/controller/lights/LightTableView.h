@@ -18,7 +18,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			LightTableView(QWidget *parent = 0);
+			explicit LightTableView(QWidget *parent = nullptr);
 
 			enum NotificationType
 			{
@@ -35,7 +35,7 @@ namespace urchin
 		private:
 			QStandardItemModel *lightsListModel;
 
-			void selectionChanged(const QItemSelection &, const QItemSelection &);
+			void selectionChanged(const QItemSelection &, const QItemSelection &) override;
 	};
 
 }

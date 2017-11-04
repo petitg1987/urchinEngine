@@ -11,15 +11,23 @@ namespace urchin
     TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, float sRepeat, float tRepeat) :
             isInitialized(false),
             maskMapFilename(maskMapFilename),
-            maskTexture(MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr)),
             sRepeat(sRepeat),
             tRepeat(tRepeat)
     {
-        if(maskTexture->getComponentsCount() != 4)
+        if(maskMapFilename.empty())
         {
-            throw std::runtime_error("Mask texture must have 4 component (RGBA). Components count: " + std::to_string(maskTexture->getComponentsCount()));
+            auto *defaultMaskMapTab = new unsigned char[4]{255, 0, 0, 0};
+            maskTexture = new Image(4, 1, 1, Image::IMAGE_RGBA, defaultMaskMapTab);
+            maskTexture->toTexture(false, false, false);
+        }else
+        {
+            maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr);
+            if(maskTexture->getImageFormat() != Image::IMAGE_RGBA)
+            {
+                throw std::runtime_error("Mask texture must have 4 component (RGBA). Components: " + std::to_string(maskTexture->getComponentsCount()));
+            }
+            maskTexture->toTexture(false, false, false);
         }
-        maskTexture->toTexture(false, false, false);
 
         materials.resize(4); //maximum 4 materials (RGBA)
         for (auto &material : materials)

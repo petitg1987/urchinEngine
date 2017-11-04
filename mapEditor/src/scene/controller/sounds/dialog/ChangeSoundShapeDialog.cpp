@@ -2,7 +2,6 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
-#include "UrchinCommon.h"
 #include "ChangeSoundShapeDialog.h"
 #include "scene/controller/sounds/soundshape/SoundShapeWidget.h"
 
@@ -16,12 +15,12 @@ namespace urchin
 		this->resize(245, 80);
 		this->setFixedSize(this->width(),this->height());
 
-		QGridLayout *mainLayout = new QGridLayout(this);
+		auto *mainLayout = new QGridLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		setupSoundShapeTypeFields(mainLayout);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		auto *buttonBox = new QDialogButtonBox();
 		mainLayout->addWidget(buttonBox, 1, 0, 1, 2, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);

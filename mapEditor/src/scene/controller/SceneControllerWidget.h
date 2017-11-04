@@ -9,6 +9,7 @@
 #include "scene/controller/SceneController.h"
 #include "scene/controller/objects/ObjectControllerWidget.h"
 #include "scene/controller/lights/LightControllerWidget.h"
+#include "scene/controller/terrains/TerrainControllerWidget.h"
 #include "scene/controller/sounds/SoundControllerWidget.h"
 #include "scene/controller/ai/AIControllerWidget.h"
 
@@ -20,8 +21,8 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SceneControllerWidget(QWidget *parent);
-			virtual ~SceneControllerWidget();
+			explicit SceneControllerWidget(QWidget *parent);
+			~SceneControllerWidget() override;
 
 			enum NotificationType
 			{
@@ -32,12 +33,14 @@ namespace urchin
 			{
 				OBJECTS,
 				LIGHTS,
+				TERRAINS,
 				SOUNDS,
 				AI
 			};
 
 			ObjectControllerWidget *getObjectControllerWidget() const;
 			LightControllerWidget *getLightControllerWidget() const;
+			TerrainControllerWidget *getTerrainControllerWidget() const;
 			SoundControllerWidget *getSoundControllerWidget() const;
 			AIControllerWidget *getAIControllerWidget() const;
 
@@ -56,6 +59,7 @@ namespace urchin
 
 			ObjectControllerWidget *tabObjects;
 			LightControllerWidget *tabLights;
+			TerrainControllerWidget *tabTerrains;
 			SoundControllerWidget *tabSounds;
 			AIControllerWidget *tabAI;
 

@@ -121,7 +121,15 @@ set(SOURCE_FILES
         src/Main.cpp
         src/Main.h
         src/MapEditorWindow.cpp
-        src/MapEditorWindow.h)
+        src/MapEditorWindow.h
+        src/scene/controller/terrains/TerrainController.cpp
+        src/scene/controller/terrains/TerrainController.h
+        src/scene/controller/terrains/TerrainControllerWidget.cpp
+        src/scene/controller/terrains/TerrainControllerWidget.h
+        src/scene/controller/terrains/TerrainTableView.cpp
+        src/scene/controller/terrains/TerrainTableView.h
+        src/scene/controller/terrains/dialog/NewTerrainDialog.cpp
+        src/scene/controller/terrains/dialog/NewTerrainDialog.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 

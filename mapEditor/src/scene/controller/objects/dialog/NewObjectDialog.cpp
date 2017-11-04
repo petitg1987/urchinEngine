@@ -3,8 +3,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
-
 #include "UrchinCommon.h"
+
 #include "NewObjectDialog.h"
 #include "support/LabelStyleHelper.h"
 #include "support/ButtonStyleHelper.h"
@@ -23,13 +23,13 @@ namespace urchin
 		this->resize(530, 130);
 		this->setFixedSize(this->width(),this->height());
 
-		QGridLayout *mainLayout = new QGridLayout(this);
+		auto *mainLayout = new QGridLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		setupNameFields(mainLayout);
 		setupMeshFilenameFields(mainLayout);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		auto *buttonBox = new QDialogButtonBox();
 		mainLayout->addWidget(buttonBox, 2, 0, 1, 3);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -84,15 +84,12 @@ namespace urchin
 
 			std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
 			std::string relativeMeshFilename = FileHandler::getRelativePath(resourcesDirectory, meshFilename);
-			Model *model = new Model(relativeMeshFilename);
+			auto *model = new Model(relativeMeshFilename);
 			sceneObject->setModel(model);
 		}catch(std::exception &e)
 		{
 			QMessageBox::critical(this, "Error", e.what());
-			if(sceneObject!=nullptr)
-			{
-				delete sceneObject;
-			}
+			delete sceneObject;
 
 			return QDialog::Rejected;
 		}
@@ -109,7 +106,7 @@ namespace urchin
 	void NewObjectDialog::showMeshFilenameDialog()
 	{
 		QString directory = preferredMeshPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredMeshPath;
-		QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.urchinMesh)", 0, QFileDialog::DontUseNativeDialog);
+		QString filename = QFileDialog::getOpenFileName(this, tr("Open mesh file"), directory, "Mesh file (*.urchinMesh)", nullptr, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull())
 		{
 			this->meshFilename = filename.toUtf8().constData();
@@ -130,7 +127,7 @@ namespace urchin
 			LabelStyleHelper::applyNormalStyle(objectNameLabel);
 			LabelStyleHelper::applyNormalStyle(meshFilenameLabel);
 
-			if(objectName.compare("")==0)
+			if(objectName.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is mandatory");
 				hasError = true;
@@ -139,7 +136,7 @@ namespace urchin
 				LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
 				hasError = true;
 			}
-			if(meshFilename.compare("")==0)
+			if(meshFilename.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(meshFilenameLabel, "Mesh is mandatory");
 				hasError = true;
@@ -161,7 +158,7 @@ namespace urchin
 		std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
 		for(std::list<const SceneObject *>::const_iterator it = sceneObjects.begin(); it!=sceneObjects.end(); ++it)
 		{
-			if((*it)->getName().compare(name)==0)
+			if((*it)->getName() == name)
 			{
 				return true;
 			}

@@ -29,7 +29,7 @@ namespace urchin
 			void updateObjectName();
 			int buildSceneObject(int);
 
-			void done(int);
+			void done(int) override;
 			bool isSceneObjectExist(const std::string &);
 
 			const ObjectController *objectController;

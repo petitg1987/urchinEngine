@@ -32,7 +32,7 @@ namespace urchin
 			void updateLightName();
 			int buildSceneLight(int);
 
-			void done(int);
+			void done(int) override;
 			bool isSceneLightExist(const std::string &);
 
 			const LightController *lightController;

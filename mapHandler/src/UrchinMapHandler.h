@@ -7,5 +7,6 @@
 
 #include "resources/object/SceneObject.h"
 #include "resources/light/SceneLight.h"
+#include "resources/terrain/SceneTerrain.h"
 
 #endif

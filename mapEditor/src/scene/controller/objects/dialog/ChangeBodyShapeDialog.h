@@ -25,7 +25,7 @@ namespace urchin
 		private:
 			void setupBodyShapeTypeFields(QGridLayout *);
 
-			void done(int);
+			void done(int) override;
 
 			bool excludeCompoundShape;
 

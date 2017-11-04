@@ -33,7 +33,7 @@ namespace urchin
 			void updateSoundName();
 			int buildSceneSound(int);
 
-			void done(int);
+			void done(int) override;
 			bool isSceneSoundExist(const std::string &);
 
 			const SoundController *soundController;

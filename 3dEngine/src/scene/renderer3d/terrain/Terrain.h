@@ -26,11 +26,11 @@ namespace urchin
             const TerrainMesh *getMesh() const;
             const TerrainMaterial *getMaterial() const;
 
-            float getAmbient() const;
-            void setAmbient(float);
-
             void setPosition(const Point3<float> &);
             const Point3<float> &getPosition() const;
+
+            float getAmbient() const;
+            void setAmbient(float);
 
             void display(const Matrix4<float> &) const;
 
@@ -57,8 +57,8 @@ namespace urchin
 
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterial> material;
-            float ambient;
             Point3<float> position;
+            float ambient;
     };
 
 }

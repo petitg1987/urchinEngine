@@ -1,0 +1,172 @@
+#include <stdexcept>
+#include <QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFileDialog>
+#include "UrchinCommon.h"
+
+#include "NewTerrainDialog.h"
+#include "support/LabelStyleHelper.h"
+#include "support/ButtonStyleHelper.h"
+
+namespace urchin
+{
+    QString NewTerrainDialog::preferredHeightPath = QString();
+
+    NewTerrainDialog::NewTerrainDialog(QWidget *parent, const TerrainController *terrainController) :
+            QDialog(parent),
+            terrainController(terrainController),
+            sceneTerrain(nullptr)
+    {
+        this->setWindowTitle("New Terrain");
+        this->resize(530, 130);
+        this->setFixedSize(this->width(),this->height());
+
+        auto *mainLayout = new QGridLayout(this);
+        mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+        setupNameFields(mainLayout);
+        setupHeightFilenameFields(mainLayout);
+
+        auto *buttonBox = new QDialogButtonBox();
+        mainLayout->addWidget(buttonBox, 2, 0, 1, 3);
+        buttonBox->setOrientation(Qt::Horizontal);
+        buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+
+        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    }
+
+    void NewTerrainDialog::setupNameFields(QGridLayout *mainLayout)
+    {
+        terrainNameLabel = new QLabel("Terrain Name:");
+        mainLayout->addWidget(terrainNameLabel, 0, 0);
+
+        terrainNameText = new QLineEdit();
+        mainLayout->addWidget(terrainNameText, 0, 1);
+        terrainNameText->setFixedWidth(360);
+    }
+
+    void NewTerrainDialog::setupHeightFilenameFields(QGridLayout *mainLayout)
+    {
+        heightFilenameLabel = new QLabel("Height File:");
+        mainLayout->addWidget(heightFilenameLabel, 1, 0);
+
+        heightFilenameText = new QLineEdit();
+        mainLayout->addWidget(heightFilenameText, 1, 1);
+        heightFilenameText->setReadOnly(true);
+        heightFilenameText->setFixedWidth(360);
+
+        QPushButton *selectHeightFileButton = new QPushButton("...");
+        mainLayout->addWidget(selectHeightFileButton, 1, 2);
+        ButtonStyleHelper::applyNormalStyle(selectHeightFileButton);
+        selectHeightFileButton->setFixedWidth(22);
+        connect(selectHeightFileButton, SIGNAL(clicked()), this, SLOT(showHeightFilenameDialog()));
+    }
+
+    void NewTerrainDialog::updateTerrainName()
+    {
+        QString terrainName = terrainNameText->text();
+        if(!terrainName.isEmpty())
+        {
+            this->terrainName = terrainName.toUtf8().constData();
+        }
+    }
+
+    int NewTerrainDialog::buildSceneTerrain(int result)
+    {
+        try
+        {
+            sceneTerrain = new SceneTerrain();
+
+            sceneTerrain->setName(terrainName);
+
+            std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+            std::string relativeHeightFilename = FileHandler::getRelativePath(resourcesDirectory, heightFilename);
+
+            auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 100.0f, 100.0f);
+            auto terrainMaterial = std::make_unique<TerrainMaterial>("", 1.0f, 1.0f);
+            auto *terrain = new Terrain(terrainMesh, terrainMaterial);
+
+            sceneTerrain->setTerrain(terrain);
+        }catch(std::exception &e)
+        {
+            QMessageBox::critical(this, "Error", e.what());
+            delete sceneTerrain;
+
+            return QDialog::Rejected;
+        }
+
+        return result;
+    }
+
+
+    SceneTerrain *NewTerrainDialog::getSceneTerrain() const
+    {
+        return sceneTerrain;
+    }
+
+    void NewTerrainDialog::showHeightFilenameDialog()
+    {
+        QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredHeightPath;
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open height file"), directory, "Height file (*.tga)", nullptr, QFileDialog::DontUseNativeDialog);
+        if(!filename.isNull())
+        {
+            this->heightFilename = filename.toUtf8().constData();
+            this->heightFilenameText->setText(filename);
+
+            std::string preferredHeightPathString = FileHandler::getDirectoryFrom(heightFilename);
+            preferredHeightPath = QString::fromStdString(preferredHeightPathString);
+        }
+    }
+
+    void NewTerrainDialog::done(int r)
+    {
+        if(QDialog::Accepted == r)
+        {
+            bool hasError = false;
+
+            updateTerrainName();
+            LabelStyleHelper::applyNormalStyle(terrainNameLabel);
+            LabelStyleHelper::applyNormalStyle(heightFilenameLabel);
+
+            if(terrainName.empty())
+            {
+                LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is mandatory");
+                hasError = true;
+            }else if(isSceneTerrainExist(terrainName))
+            {
+                LabelStyleHelper::applyErrorStyle(terrainNameLabel, "Terrain name is already used");
+                hasError = true;
+            }
+            if(heightFilename.empty())
+            {
+                LabelStyleHelper::applyErrorStyle(heightFilenameLabel, "Height is mandatory");
+                hasError = true;
+            }
+
+            if(!hasError)
+            {
+                r = buildSceneTerrain(r);
+                QDialog::done(r);
+            }
+        }else
+        {
+            QDialog::done(r);
+        }
+    }
+
+    bool NewTerrainDialog::isSceneTerrainExist(const std::string &name)
+    {
+        std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
+        for(std::list<const SceneTerrain *>::const_iterator it = sceneTerrains.begin(); it!=sceneTerrains.end(); ++it)
+        {
+            if((*it)->getName() == name)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

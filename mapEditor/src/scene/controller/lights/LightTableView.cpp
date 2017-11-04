@@ -1,5 +1,4 @@
 #include <QHeaderView>
-#include <QVariant>
 
 #include "LightTableView.h"
 

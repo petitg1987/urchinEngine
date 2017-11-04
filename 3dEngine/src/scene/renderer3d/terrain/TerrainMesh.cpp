@@ -11,9 +11,9 @@ namespace urchin
             yScale(yScale)
     {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
-        if(imgTerrain->getImageFormat()!=Image::IMAGE_LUMINANCE)
+        if(imgTerrain->getImageFormat() != Image::IMAGE_LUMINANCE)
         {
-            throw std::invalid_argument("Unsupported image format for terrain rendering: " + imgTerrain->getImageFormat());
+            throw std::runtime_error("Height texture must have 1 component (LUMINANCE). Components: " + std::to_string(imgTerrain->getComponentsCount()));
         }
         
         xSize = imgTerrain->getWidth();

@@ -18,7 +18,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SoundTableView(QWidget *parent = 0);
+			explicit SoundTableView(QWidget *parent = nullptr);
 
 			enum NotificationType
 			{
@@ -35,7 +35,7 @@ namespace urchin
 		private:
 			QStandardItemModel *soundsListModel;
 
-			void selectionChanged(const QItemSelection &, const QItemSelection &);
+			void selectionChanged(const QItemSelection &, const QItemSelection &) override;
 	};
 
 }

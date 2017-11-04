@@ -22,8 +22,8 @@ namespace urchin
         mViewLoc = glGetUniformLocation(terrainShader, "mView");
         ambientLoc = glGetUniformLocation(terrainShader, "ambient");
 
-        setAmbient(DEFAULT_AMBIENT);
         setPosition(Point3<float>(0.0f, 0.0f, 0.0f));
+        setAmbient(DEFAULT_AMBIENT);
 
         setupTerrain(terrainMesh, terrainMaterial);
     }
@@ -77,19 +77,6 @@ namespace urchin
         return material.get();
     }
 
-    float Terrain::getAmbient() const
-    {
-        return ambient;
-    }
-
-    void Terrain::setAmbient(float ambient)
-    {
-        this->ambient = ambient;
-
-        ShaderManager::instance()->bind(terrainShader);
-        glUniform1f(ambientLoc, ambient);
-    }
-
     void Terrain::setPosition(const Point3<float> &position)
     {
         this->position = position;
@@ -101,6 +88,19 @@ namespace urchin
     const Point3<float> &Terrain::getPosition() const
     {
         return position;
+    }
+
+    float Terrain::getAmbient() const
+    {
+        return ambient;
+    }
+
+    void Terrain::setAmbient(float ambient)
+    {
+        this->ambient = ambient;
+
+        ShaderManager::instance()->bind(terrainShader);
+        glUniform1f(ambientLoc, ambient);
     }
 
     void Terrain::display(const Matrix4<float> &viewMatrix) const
