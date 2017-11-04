@@ -17,11 +17,13 @@ namespace urchin
         terrainShader = ShaderManager::instance()->createProgram("terrain.vert", "terrain.frag");
         ShaderManager::instance()->bind(terrainShader);
 
-        mModelLoc = glGetUniformLocation(terrainShader, "mModel");
+        vPositionLoc = glGetUniformLocation(terrainShader, "vPosition");
         mProjectionLoc = glGetUniformLocation(terrainShader, "mProjection");
         mViewLoc = glGetUniformLocation(terrainShader, "mView");
         ambientLoc = glGetUniformLocation(terrainShader, "ambient");
+
         setAmbient(DEFAULT_AMBIENT);
+        setPosition(Point3<float>(0.0f, 0.0f, 0.0f));
 
         setupTerrain(terrainMesh, terrainMaterial);
     }
@@ -65,19 +67,14 @@ namespace urchin
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
-    const std::vector<Point3<float>> &Terrain::getVertices() const
+    const TerrainMesh *Terrain::getMesh() const
     {
-        return mesh->getVertices();
+        return mesh.get();
     }
 
-    unsigned int Terrain::getXSize() const
+    const TerrainMaterial *Terrain::getMaterial() const
     {
-        return mesh->getXSize();
-    }
-
-    unsigned int Terrain::getZSize() const
-    {
-        return mesh->getZSize();
+        return material.get();
     }
 
     float Terrain::getAmbient() const
@@ -88,26 +85,29 @@ namespace urchin
     void Terrain::setAmbient(float ambient)
     {
         this->ambient = ambient;
+
+        ShaderManager::instance()->bind(terrainShader);
+        glUniform1f(ambientLoc, ambient);
     }
 
-    void Terrain::setTransform(const Transform<float> &transform)
+    void Terrain::setPosition(const Point3<float> &position)
     {
-        this->transform = transform;
+        this->position = position;
+
+        ShaderManager::instance()->bind(terrainShader);
+        glUniform3fv(vPositionLoc, 1, (const float*) position);
     }
 
-    const Transform<float> &Terrain::getTransform() const
+    const Point3<float> &Terrain::getPosition() const
     {
-        return transform;
+        return position;
     }
 
     void Terrain::display(const Matrix4<float> &viewMatrix) const
     {
         ShaderManager::instance()->bind(terrainShader);
 
-        glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) transform.getTransformMatrix());
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
-        glUniform1f(ambientLoc, ambient);
-
         material->loadTextures();
 
         glBindVertexArray(vertexArrayObject);

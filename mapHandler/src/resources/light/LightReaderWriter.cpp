@@ -24,7 +24,7 @@ namespace urchin
 	Light *LightReaderWriter::buildLightFrom(std::shared_ptr<XmlChunk> lightChunk, const XmlParser &xmlParser) const
 	{
 		std::string lightType = lightChunk->getAttributeValue(TYPE_ATTR);
-		if(lightType.compare(OMNIDIRECTIONAL_VALUE)==0)
+		if(lightType == OMNIDIRECTIONAL_VALUE)
 		{
 			std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), lightChunk);
 			OmnidirectionalLight *omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
@@ -33,7 +33,7 @@ namespace urchin
 			omnidirectional->setAttenuation(expenentialAttenuationChunk->getFloatValue());
 
 			return omnidirectional;
-		}else if(lightType.compare(SUN_VALUE)==0)
+		}else if(lightType == SUN_VALUE)
 		{
 			std::shared_ptr<XmlChunk> directionChunk = xmlParser.getUniqueChunk(true, DIRECTION_TAG, XmlAttribute(), lightChunk);
 
@@ -47,7 +47,7 @@ namespace urchin
 	{
 		if(light->getLightType()==Light::OMNIDIRECTIONAL)
 		{
-			const OmnidirectionalLight *omnidirectionalLight = static_cast<const OmnidirectionalLight *>(light);
+			const auto *omnidirectionalLight = dynamic_cast<const OmnidirectionalLight *>(light);
 			lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, OMNIDIRECTIONAL_VALUE));
 
 			std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), lightChunk);
@@ -57,7 +57,7 @@ namespace urchin
 			expenentialAttenuationChunk->setFloatValue(omnidirectionalLight->getExponentialAttenuation());
 		}else if(light->getLightType()==Light::SUN)
 		{
-			const SunLight *sunLight = static_cast<const SunLight *>(light);
+			const auto *sunLight = dynamic_cast<const SunLight *>(light);
 			lightChunk->setAttribute(XmlAttribute(TYPE_ATTR, SUN_VALUE));
 
 			std::shared_ptr<XmlChunk> directionChunk = xmlWriter.createChunk(DIRECTION_TAG, XmlAttribute(), lightChunk);
@@ -70,25 +70,25 @@ namespace urchin
 
 	void LightReaderWriter::loadPropertiesOn(Light *light, std::shared_ptr<XmlChunk> lightChunk, const XmlParser &xmlParser) const
 	{
-		std::shared_ptr<XmlChunk> ambientColorChunk = xmlParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, XmlAttribute(), lightChunk);
+		std::shared_ptr<XmlChunk> ambientColorChunk = xmlParser.getUniqueChunk(true, AMBIENT_COLOR_TAG, XmlAttribute(), std::move(lightChunk));
 		light->setAmbientColor(ambientColorChunk->getPoint3Value());
 	}
 
 	void LightReaderWriter::writePropertiesOn(std::shared_ptr<XmlChunk> lightChunk, const Light *light, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> ambientColorChunk = xmlWriter.createChunk(AMBIENT_COLOR_TAG, XmlAttribute(), lightChunk);
+		std::shared_ptr<XmlChunk> ambientColorChunk = xmlWriter.createChunk(AMBIENT_COLOR_TAG, XmlAttribute(), std::move(lightChunk));
 		ambientColorChunk->setPoint3Value(light->getAmbientColor());
 	}
 
 	void LightReaderWriter::loadFlagsOn(Light *light, std::shared_ptr<XmlChunk> lightChunk, const XmlParser &xmlParser) const
 	{
-		std::shared_ptr<XmlChunk> produceShadowChunk = xmlParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, XmlAttribute(), lightChunk);
+		std::shared_ptr<XmlChunk> produceShadowChunk = xmlParser.getUniqueChunk(true, PRODUCE_SHADOW_TAG, XmlAttribute(), std::move(lightChunk));
 		light->setProduceShadow(produceShadowChunk->getBoolValue());
 	}
 
 	void LightReaderWriter::writeFlagsOn(std::shared_ptr<XmlChunk> lightChunk, const Light *light, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> produceShadowChunk = xmlWriter.createChunk(PRODUCE_SHADOW_TAG, XmlAttribute(), lightChunk);
+		std::shared_ptr<XmlChunk> produceShadowChunk = xmlWriter.createChunk(PRODUCE_SHADOW_TAG, XmlAttribute(), std::move(lightChunk));
 		produceShadowChunk->setBoolValue(light->isProduceShadow());
 	}
 

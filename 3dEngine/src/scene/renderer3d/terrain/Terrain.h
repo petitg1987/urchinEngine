@@ -23,14 +23,14 @@ namespace urchin
 
             void setupTerrain(std::unique_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &);
 
-            const std::vector<Point3<float>> &getVertices() const;
-            unsigned int getXSize() const;
-            unsigned int getZSize() const;
+            const TerrainMesh *getMesh() const;
+            const TerrainMaterial *getMaterial() const;
+
             float getAmbient() const;
             void setAmbient(float);
 
-            void setTransform(const Transform<float> &);
-            const Transform<float> &getTransform() const;
+            void setPosition(const Point3<float> &);
+            const Point3<float> &getPosition() const;
 
             void display(const Matrix4<float> &) const;
 
@@ -50,7 +50,7 @@ namespace urchin
                 SHADER_NORMAL
             };
             unsigned int terrainShader;
-            int mModelLoc, mProjectionLoc, mViewLoc;
+            int vPositionLoc, mProjectionLoc, mViewLoc;
             int ambientLoc;
 
             Matrix4<float> projectionMatrix;
@@ -58,7 +58,7 @@ namespace urchin
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterial> material;
             float ambient;
-            Transform<float> transform;
+            Point3<float> position;
     };
 
 }

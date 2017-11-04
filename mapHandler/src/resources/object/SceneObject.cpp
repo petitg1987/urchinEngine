@@ -8,20 +8,20 @@ namespace urchin
 {
 
 	SceneObject::SceneObject() :
-		renderer3d(nullptr),
-		physicsWorld(nullptr),
-		model(nullptr),
-		rigidBody(nullptr)
+			renderer3d(nullptr),
+			physicsWorld(nullptr),
+			model(nullptr),
+			rigidBody(nullptr)
 	{
 
 	}
 
 	SceneObject::~SceneObject()
 	{
-		renderer3d->removeModel(this->model);
+		renderer3d->removeModel(model);
 		if(physicsWorld!=nullptr)
 		{
-			physicsWorld->removeBody(this->rigidBody);
+			physicsWorld->removeBody(rigidBody);
 		}else
 		{
 			delete this->rigidBody;

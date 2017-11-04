@@ -11,6 +11,7 @@
 #include "UrchinAIEngine.h"
 #include "resources/object/SceneObject.h"
 #include "resources/light/SceneLight.h"
+#include "resources/terrain/SceneTerrain.h"
 #include "resources/sound/SceneSound.h"
 #include "resources/ai/SceneAI.h"
 
@@ -27,6 +28,8 @@ namespace urchin
 		#define OBJECT_TAG "object"
 		#define LIGHTS_TAG "lights"
 		#define LIGHT_TAG "light"
+		#define TERRAINS_TAG "terrains"
+		#define TERRAIN_TAG "terrain"
 		#define SOUND_ELEMENTS_TAG "soundElements"
 		#define SOUND_ELEMENT_TAG "soundElement"
 		#define AI_ELEMENTS_TAG "aiElements"
@@ -47,6 +50,11 @@ namespace urchin
 			void addSceneLight(SceneLight *);
 			void removeSceneLight(SceneLight *);
 
+			const std::list<SceneTerrain *> &getSceneTerrains() const;
+			SceneTerrain *getSceneTerrain(const std::string &) const;
+			void addSceneTerrain(SceneTerrain *);
+			void removeSceneTerrain(SceneTerrain *);
+
 			const std::list<SceneSound *> &getSceneSounds() const;
 			SceneSound *getSceneSound(const std::string &) const;
 			void addSceneSound(SceneSound *);
@@ -61,12 +69,14 @@ namespace urchin
 			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneObjectsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneLightsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
+			void loadSceneTerrainFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneSoundsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneAIFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 
 			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneObjectsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneLightsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+			void writeSceneTerrainsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
@@ -81,6 +91,7 @@ namespace urchin
 
 			std::list<SceneObject *> sceneObjects;
 			std::list<SceneLight *> sceneLights;
+			std::list<SceneTerrain *> sceneTerrains;
 			std::list<SceneSound *> sceneSounds;
 			SceneAI *sceneAI;
 	};

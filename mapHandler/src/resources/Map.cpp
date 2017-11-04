@@ -28,6 +28,11 @@ namespace urchin
 			delete *it;
 		}
 
+		for(std::list<SceneTerrain *>::const_iterator it=sceneTerrains.begin(); it!=sceneTerrains.end(); ++it)
+		{
+			delete *it;
+		}
+
 		for(std::list<SceneSound *>::const_iterator it=sceneSounds.begin(); it!=sceneSounds.end(); ++it)
 		{
 			delete *it;
@@ -40,13 +45,14 @@ namespace urchin
 	{
 		loadSceneObjectsFrom(chunk, xmlParser);
 		loadSceneLightsFrom(chunk, xmlParser);
+		loadSceneTerrainFrom(chunk, xmlParser);
 		loadSceneSoundsFrom(chunk, xmlParser);
 		loadSceneAIFrom(chunk, xmlParser);
 	}
 
 	void Map::loadSceneObjectsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, XmlAttribute(), std::move(chunk));
 		std::vector<std::shared_ptr<XmlChunk>> objectsChunk = xmlParser.getChunks(OBJECT_TAG, XmlAttribute(), objectsListChunk);
 
 		for (const auto &objectChunk : objectsChunk)
@@ -60,7 +66,7 @@ namespace urchin
 
 	void Map::loadSceneLightsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, XmlAttribute(), std::move(chunk));
 		std::vector<std::shared_ptr<XmlChunk>> lightsChunk = xmlParser.getChunks(LIGHT_TAG, XmlAttribute(), lightsListChunk);
 
 		for (const auto &lightChunk : lightsChunk)
@@ -72,9 +78,23 @@ namespace urchin
 		}
 	}
 
+	void Map::loadSceneTerrainFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+	{
+		std::shared_ptr<XmlChunk> terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, XmlAttribute(), std::move(chunk));
+		std::vector<std::shared_ptr<XmlChunk>> terrainsChunk = xmlParser.getChunks(TERRAIN_TAG, XmlAttribute(), terrainsListChunk);
+
+		for (const auto &terrainChunk : terrainsChunk)
+		{
+			auto *sceneTerrain = new SceneTerrain();
+			sceneTerrain->loadFrom(terrainChunk, xmlParser);
+
+			addSceneTerrain(sceneTerrain);
+		}
+	}
+
 	void Map::loadSceneSoundsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
 		std::vector<std::shared_ptr<XmlChunk>> soundElementsChunk = xmlParser.getChunks(SOUND_ELEMENT_TAG, XmlAttribute(), soundElementsListChunk);
 
 		for (const auto &soundElementChunk : soundElementsChunk)
@@ -88,7 +108,7 @@ namespace urchin
 
 	void Map::loadSceneAIFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
 
 		auto *sceneAI = new SceneAI();
 		sceneAI->loadFrom(aiElementsListChunk, xmlParser);
@@ -100,13 +120,14 @@ namespace urchin
 	{
 		writeSceneObjectsOn(chunk, xmlWriter);
 		writeSceneLightsOn(chunk, xmlWriter);
+		writeSceneTerrainsOn(chunk, xmlWriter);
 		writeSceneSoundsOn(chunk, xmlWriter);
 		writeSceneAIOn(chunk, xmlWriter);
 	}
 
 	void Map::writeSceneObjectsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, XmlAttribute(), std::move(chunk));
 
 		for (auto sceneObject : sceneObjects)
 		{
@@ -117,7 +138,7 @@ namespace urchin
 
 	void Map::writeSceneLightsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, XmlAttribute(), std::move(chunk));
 
 		for (auto sceneLight : sceneLights)
 		{
@@ -126,9 +147,20 @@ namespace urchin
 		}
 	}
 
+	void Map::writeSceneTerrainsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+	{
+		std::shared_ptr<XmlChunk> terrainsListChunk = xmlWriter.createChunk(TERRAINS_TAG, XmlAttribute(), std::move(chunk));
+
+		for (auto sceneTerrain : sceneTerrains)
+		{
+			std::shared_ptr<XmlChunk> lightsChunk = xmlWriter.createChunk(TERRAIN_TAG, XmlAttribute(), terrainsListChunk);
+			sceneTerrain->writeOn(lightsChunk, xmlWriter);
+		}
+	}
+
 	void Map::writeSceneSoundsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
+		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
 
 		for (auto sceneSound : sceneSounds)
 		{
@@ -139,7 +171,7 @@ namespace urchin
 
     void Map::writeSceneAIOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
     {
-        std::shared_ptr<XmlChunk> aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, XmlAttribute(), chunk);
+        std::shared_ptr<XmlChunk> aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
 
         sceneAI->writeOn(aiElementsListChunk, xmlWriter);
     }
@@ -202,6 +234,36 @@ namespace urchin
 	{
 		sceneLights.remove(sceneLight);
 		delete sceneLight;
+	}
+
+	const std::list<SceneTerrain *> &Map::getSceneTerrains() const
+	{
+		return sceneTerrains;
+	}
+
+	SceneTerrain *Map::getSceneTerrain(const std::string &name) const
+	{
+		for(auto sceneTerrain : sceneTerrains)
+		{
+			if(sceneTerrain->getName() == name)
+			{
+				return sceneTerrain;
+			}
+		}
+
+		throw std::invalid_argument("Impossible to find a scene terrain having name: " + name);
+	}
+
+	void Map::addSceneTerrain(SceneTerrain *sceneTerrain)
+	{
+		sceneTerrain->setTerrainManagers(renderer3d, physicsWorld);
+		sceneTerrains.push_back(sceneTerrain);
+	}
+
+	void Map::removeSceneTerrain(SceneTerrain *sceneTerrain)
+	{
+		sceneTerrains.remove(sceneTerrain);
+		delete sceneTerrain;
 	}
 
 	const std::list<SceneSound *> &Map::getSceneSounds() const

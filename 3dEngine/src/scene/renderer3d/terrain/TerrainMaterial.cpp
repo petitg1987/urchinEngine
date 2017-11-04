@@ -10,9 +10,10 @@ namespace urchin
 
     TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, float sRepeat, float tRepeat) :
             isInitialized(false),
+            maskMapFilename(maskMapFilename),
+            maskTexture(MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr)),
             sRepeat(sRepeat),
-            tRepeat(tRepeat),
-            maskTexture(MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr))
+            tRepeat(tRepeat)
     {
         if(maskTexture->getComponentsCount() != 4)
         {
@@ -33,6 +34,8 @@ namespace urchin
 
     TerrainMaterial::~TerrainMaterial()
     {
+        maskTexture->release();
+
         for (auto &material : materials)
         {
             if(material != nullptr)
@@ -93,6 +96,26 @@ namespace urchin
         isInitialized = true;
     }
 
+    const std::string &TerrainMaterial::getMaskMapFilename() const
+    {
+        return maskMapFilename;
+    }
+
+    float TerrainMaterial::getSRepeat() const
+    {
+        return sRepeat;
+    }
+
+    float TerrainMaterial::getTRepeat() const
+    {
+        return tRepeat;
+    }
+
+    std::vector<Material *> TerrainMaterial::getMaterials() const
+    {
+        return materials;
+    }
+
     std::vector<Point2<float>> TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize)
     {
         texCoordinates.reserve(xSize * zSize);
@@ -110,6 +133,12 @@ namespace urchin
 
         return texCoordinates;
     }
+
+
+
+
+
+
 
     const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const
     {
@@ -138,10 +167,5 @@ namespace urchin
                 glBindTexture(GL_TEXTURE_2D, defaultTexture->getTextureID());
             }
         }
-    }
-
-    Image *TerrainMaterial::getMaskTexture() const
-    {
-        return maskTexture;
     }
 }

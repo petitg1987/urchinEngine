@@ -16,6 +16,9 @@ namespace urchin
         public:
             TerrainMesh(const std::string &, float, float);
 
+            const std::string &getHeightFilename() const;
+            float getXZScale() const;
+            float getYScale() const;
             unsigned int getXSize() const;
             unsigned int getZSize() const;
 
@@ -28,6 +31,10 @@ namespace urchin
             std::vector<unsigned int> buildIndices();
             std::vector<Vector3<float>> buildNormals();
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;
+
+            std::string heightFilename;
+            float xzScale;
+            float yScale;
 
             unsigned int xSize;
             unsigned int zSize;

@@ -5,7 +5,10 @@
 namespace urchin
 {
 
-    TerrainMesh::TerrainMesh(const std::string &heightFilename, float xzScale, float yScale)
+    TerrainMesh::TerrainMesh(const std::string &heightFilename, float xzScale, float yScale) :
+            heightFilename(heightFilename),
+            xzScale(xzScale),
+            yScale(yScale)
     {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
         if(imgTerrain->getImageFormat()!=Image::IMAGE_LUMINANCE)
@@ -21,6 +24,21 @@ namespace urchin
         buildNormals();
 
         imgTerrain->release();
+    }
+
+    const std::string &TerrainMesh::getHeightFilename() const
+    {
+        return heightFilename;
+    }
+
+    float TerrainMesh::getXZScale() const
+    {
+        return xzScale;
+    }
+
+    float TerrainMesh::getYScale() const
+    {
+        return yScale;
     }
 
     unsigned int TerrainMesh::getXSize() const

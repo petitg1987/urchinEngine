@@ -8,9 +8,9 @@ namespace urchin
 {
 
 	SceneSound::SceneSound() :
-		soundManager(nullptr),
-		sound(nullptr),
-		soundTrigger(nullptr)
+			soundManager(nullptr),
+			sound(nullptr),
+			soundTrigger(nullptr)
 	{
 
 	}

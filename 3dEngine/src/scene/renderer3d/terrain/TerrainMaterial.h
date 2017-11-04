@@ -18,27 +18,29 @@ namespace urchin
             ~TerrainMaterial();
 
             void addMaterial(unsigned int, const std::string &);
+            void initialize(unsigned int, unsigned int, unsigned int);
 
+            const std::string &getMaskMapFilename() const;
+            float getSRepeat() const;
+            float getTRepeat() const;
+            std::vector<Material *> getMaterials() const;
             const std::vector<Point2<float>> &getTexCoordinates() const;
 
-            void initialize(unsigned int, unsigned int, unsigned int);
             void loadTextures() const;
-
-            Image *getMaskTexture() const;
 
         private:
             std::vector<Point2<float>> buildTexCoordinates(unsigned int, unsigned int);
 
             bool isInitialized;
 
+            std::string maskMapFilename;
             Image *maskTexture;
             float sRepeat;
             float tRepeat;
             std::vector<Material *> materials;
+            std::vector<Point2<float>> texCoordinates;
 
             Image *defaultTexture;
-
-            std::vector<Point2<float>> texCoordinates;
     };
 
 }

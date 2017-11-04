@@ -7,15 +7,15 @@ namespace urchin
 {
 
 	SceneLight::SceneLight() :
-		lightManager(nullptr),
-		light(nullptr)
+			lightManager(nullptr),
+			light(nullptr)
 	{
 
 	}
 
 	SceneLight::~SceneLight()
 	{
-		lightManager->removeLight(this->light);
+		lightManager->removeLight(light);
 	}
 
 	void SceneLight::setLightManager(LightManager *lightManager)

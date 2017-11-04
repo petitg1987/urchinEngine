@@ -6,7 +6,7 @@ layout(location=2) in vec3 vertexNormal;
 
 uniform mat4 mProjection;
 uniform mat4 mView;
-uniform mat4 mModel;
+uniform vec3 vPosition;
 
 out vec3 normal;
 out vec2 textCoordinates;
@@ -17,5 +17,5 @@ void main(){
 
     normal = vertexNormal;
 
-	gl_Position = mProjection * mView * mModel * vec4(vertexPosition, 1.0);
+	gl_Position = mProjection * mView * vec4(vPosition + vertexPosition, 1.0);
 }
