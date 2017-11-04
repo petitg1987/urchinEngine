@@ -27,11 +27,11 @@ namespace urchin
 				DEPTH_ONLY_MODE
 			};
 
-			ModelDisplayer(DisplayMode displayMode);
+			explicit ModelDisplayer(DisplayMode displayMode);
 			~ModelDisplayer();
 
 			void initialize();
-			void onCameraProjectionUpdate(const Camera *const);
+			void onCameraProjectionUpdate(const Camera *);
 
 			int getUniformLocation(const std::string &name);
 			void setCustomGeometryShader(const std::string &, const std::map<std::string, std::string> &);

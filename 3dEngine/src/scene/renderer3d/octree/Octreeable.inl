@@ -8,7 +8,7 @@ template<class TOctreeable> Octreeable<TOctreeable>::Octreeable() :
 template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable()
 {
 	//remove references to this octreeable
-	for(typename std::vector<Octree<TOctreeable> *>::iterator it = refOctree.begin(); it!=refOctree.end(); ++it)
+	for(auto it = refOctree.begin(); it!=refOctree.end(); ++it)
 	{
 		TOctreeable *toctreeable = static_cast<TOctreeable *>(this);
 		(*it)->removeOctreeable(toctreeable, false);
@@ -67,7 +67,7 @@ template<class TOctreeable> void Octreeable<TOctreeable>::addRefOctree(Octree<TO
 
 template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree<TOctreeable> *octree)
 {
-	typename std::vector<Octree<TOctreeable> *>::iterator it = std::find(refOctree.begin(), refOctree.end(), octree);
+	auto it = std::find(refOctree.begin(), refOctree.end(), octree);
 	if(it!=refOctree.end())
 	{
 		VectorEraser::erase(refOctree, it);
@@ -80,7 +80,7 @@ template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree
 #ifdef _DEBUG
 	template<class TOctreeable> void Octreeable<TOctreeable>::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
-		std::unique_ptr<AABBoxModel> aabboxModel(new AABBoxModel(getAABBox()));
+		std::unique_ptr<AABBoxModel> aabboxModel = std::make_unique<AABBoxModel>(getAABBox());
 		aabboxModel->onCameraProjectionUpdate(projectionMatrix);
 		aabboxModel->display(viewMatrix);
 	}

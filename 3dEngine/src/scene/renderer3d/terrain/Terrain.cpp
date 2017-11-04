@@ -9,42 +9,21 @@
 
 namespace urchin
 {
-    Terrain::Terrain(std::unique_ptr<TerrainMesh> &terrainMesh, std::unique_ptr<TerrainMaterial> &terrainMaterial) :
-            terrainMesh(std::move(terrainMesh)),
-            terrainMaterial(std::move(terrainMaterial))
+    Terrain::Terrain(std::unique_ptr<TerrainMesh> &terrainMesh, std::unique_ptr<TerrainMaterial> &terrainMaterial)
     {
         glGenBuffers(5, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
-        glBindVertexArray(vertexArrayObject);
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, this->terrainMesh->getVertices().size()*sizeof(float)*3, &this->terrainMesh->getVertices()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        terrainShader = ShaderManager::instance()->createProgram("terrain.vert", "terrain.frag");
+        ShaderManager::instance()->bind(terrainShader);
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, this->terrainMesh->getTexCoordinates().size()*sizeof(float)*2, &this->terrainMesh->getTexCoordinates()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-        glBufferData(GL_ARRAY_BUFFER, this->terrainMesh->getNormals().size()*sizeof(float)*3, &this->terrainMesh->getNormals()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_NORMAL);
-        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->terrainMesh->getIndices().size()*sizeof(unsigned int), &this->terrainMesh->getIndices()[0], GL_STATIC_DRAW);
-
-        shader = ShaderManager::instance()->createProgram("terrain.vert", "terrain.frag");
-        ShaderManager::instance()->bind(shader);
-
-        mModelLoc = glGetUniformLocation(shader, "mModel");
-        mProjectionLoc = glGetUniformLocation(shader, "mProjection");
-        mViewLoc = glGetUniformLocation(shader, "mView");
-        ambientLoc = glGetUniformLocation(shader, "ambient");
+        mModelLoc = glGetUniformLocation(terrainShader, "mModel");
+        mProjectionLoc = glGetUniformLocation(terrainShader, "mProjection");
+        mViewLoc = glGetUniformLocation(terrainShader, "mView");
+        ambientLoc = glGetUniformLocation(terrainShader, "ambient");
         setAmbient(DEFAULT_AMBIENT);
 
-        this->terrainMaterial->initialize(shader);
+        setupTerrain(terrainMesh, terrainMaterial);
     }
 
     Terrain::~Terrain()
@@ -52,27 +31,53 @@ namespace urchin
         glDeleteVertexArrays(1, &vertexArrayObject);
         glDeleteBuffers(5, bufferIDs);
 
-        ShaderManager::instance()->removeProgram(shader);
+        ShaderManager::instance()->removeProgram(terrainShader);
+    }
+
+    void Terrain::setupTerrain(std::unique_ptr<TerrainMesh> &terrainMesh, std::unique_ptr<TerrainMaterial> &terrainMaterial)
+    {
+        mesh = std::move(terrainMesh);
+        glBindVertexArray(vertexArrayObject);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+        glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size()*sizeof(float)*3, &mesh->getVertices()[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+        glBufferData(GL_ARRAY_BUFFER, mesh->getNormals().size()*sizeof(float)*3, &mesh->getNormals()[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_NORMAL);
+        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size()*sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
+
+        material = std::move(terrainMaterial);
+        material->initialize(terrainShader, mesh->getXSize(), mesh->getZSize());
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
+        glBufferData(GL_ARRAY_BUFFER, material->getTexCoordinates().size()*sizeof(float)*2, &material->getTexCoordinates()[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(SHADER_TEX_COORD);
+        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 
     void Terrain::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
     {
         this->projectionMatrix = projectionMatrix;
+
+        ShaderManager::instance()->bind(terrainShader);
+        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
     const std::vector<Point3<float>> &Terrain::getVertices() const
     {
-        return terrainMesh->getVertices();
+        return mesh->getVertices();
     }
 
     unsigned int Terrain::getXSize() const
     {
-        return terrainMesh->getXSize();
+        return mesh->getXSize();
     }
 
     unsigned int Terrain::getZSize() const
     {
-        return terrainMesh->getZSize();
+        return mesh->getZSize();
     }
 
     float Terrain::getAmbient() const
@@ -97,24 +102,15 @@ namespace urchin
 
     void Terrain::display(const Matrix4<float> &viewMatrix) const
     {
-        unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
-        ShaderManager::instance()->bind(shader);
+        ShaderManager::instance()->bind(terrainShader);
 
         glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) transform.getTransformMatrix());
-        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
         glUniform1f(ambientLoc, ambient);
 
-        terrainMaterial->loadTextures();
-
-        glEnable(GL_PRIMITIVE_RESTART);
-        glPrimitiveRestartIndex(RESTART_INDEX);
+        material->loadTextures();
 
         glBindVertexArray(vertexArrayObject);
-        glDrawElements(GL_TRIANGLE_STRIP, terrainMesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
-
-        glDisable(GL_PRIMITIVE_RESTART);
-
-        ShaderManager::instance()->bind(shaderSaved);
+        glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
     }
 }

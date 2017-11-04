@@ -3,11 +3,15 @@
 
 #include "TerrainMaterial.h"
 #include "resources/MediaManager.h"
+#include "utils/shader/ShaderManager.h"
 
 namespace urchin
 {
 
-    TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename) :
+    TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, float sRepeat, float tRepeat) :
+            isInitialized(false),
+            sRepeat(sRepeat),
+            tRepeat(tRepeat),
             maskTexture(MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr))
     {
         if(maskTexture->getComponentsCount() != 4)
@@ -16,9 +20,10 @@ namespace urchin
         }
         maskTexture->toTexture(false, false, false);
 
-        for(unsigned int i=0; i<4; ++i)
+        materials.resize(4); //maximum 4 materials (RGBA)
+        for (auto &material : materials)
         {
-            materials[i] = nullptr;
+            material = nullptr;
         }
 
         auto *defaultDiffuseColorTab = new unsigned char[4]{0, 0, 0, 0};
@@ -28,11 +33,11 @@ namespace urchin
 
     TerrainMaterial::~TerrainMaterial()
     {
-        for(unsigned int i=0; i<4; ++i)
+        for (auto &material : materials)
         {
-            if(materials[i] != nullptr)
+            if(material != nullptr)
             {
-                materials[i]->release();
+                material->release();
             }
         }
 
@@ -41,9 +46,14 @@ namespace urchin
 
     void TerrainMaterial::addMaterial(unsigned int position, const std::string &materialFilename)
     {
-        if(position >= 4)
+        if(isInitialized)
         {
-            throw std::runtime_error("Material position must be between 0 and 3. Value : " + std::to_string(position));
+            throw std::runtime_error("Impossible to add material once the terrain displayer initialized.");
+        }
+
+        if(position >= materials.size())
+        {
+            throw std::runtime_error("Material position is incorrect. Value : " + std::to_string(position));
         }
 
         if(materials[position] != nullptr)
@@ -54,13 +64,18 @@ namespace urchin
         materials[position] = MediaManager::instance()->getMedia<Material>(materialFilename, nullptr);
     }
 
-    void TerrainMaterial::initialize(unsigned int shader)
+    void TerrainMaterial::initialize(unsigned int shader, unsigned int xSize, unsigned int zSize)
     {
+        if(isInitialized)
+        {
+            throw std::runtime_error("Terrain displayer is already initialized.");
+        }
+
+        ShaderManager::instance()->bind(shader);
         int maskTexLoc = glGetUniformLocation(shader, "maskTex");
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(maskTexLoc, 0);
-
-        for(unsigned int i=0; i<4; ++i)
+        for(unsigned int i=0; i<materials.size(); ++i)
         {
             std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
             int diffuseTexLoc = glGetUniformLocation(shader, shaderTextureName.c_str());
@@ -68,14 +83,50 @@ namespace urchin
             glActiveTexture(GL_TEXTURE0 + i + 1);
             glUniform1i(diffuseTexLoc, i + 1);
         }
+        int sRepeatLoc = glGetUniformLocation(shader, "sRepeat");
+        glUniform1f(sRepeatLoc, sRepeat);
+        int tRepeatLoc = glGetUniformLocation(shader, "tRepeat");
+        glUniform1f(tRepeatLoc, tRepeat);
+
+        buildTexCoordinates(xSize, zSize);
+
+        isInitialized = true;
+    }
+
+    std::vector<Point2<float>> TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize)
+    {
+        texCoordinates.reserve(xSize * zSize);
+
+        for(unsigned int z = 0; z < zSize; ++z)
+        {
+            for (unsigned int x = 0; x < xSize; ++x)
+            {
+                float s = static_cast<float>(x) / xSize * sRepeat;
+                float t = static_cast<float>(z) / zSize * tRepeat;
+
+                texCoordinates.emplace_back(Point2<float>(s, t));
+            }
+        }
+
+        return texCoordinates;
+    }
+
+    const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const
+    {
+        return texCoordinates;
     }
 
     void TerrainMaterial::loadTextures() const
     {
+        if(!isInitialized)
+        {
+            throw std::runtime_error("Terrain displayer must be initialized before load textures.");
+        }
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, maskTexture->getTextureID());
 
-        for(unsigned int i=0; i<4; ++i)
+        for(unsigned int i=0; i<materials.size(); ++i)
         {
             glActiveTexture(GL_TEXTURE0 + i + 1);
 

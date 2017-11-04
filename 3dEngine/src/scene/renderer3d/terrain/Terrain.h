@@ -21,6 +21,8 @@ namespace urchin
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
+            void setupTerrain(std::unique_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &);
+
             const std::vector<Point3<float>> &getVertices() const;
             unsigned int getXSize() const;
             unsigned int getZSize() const;
@@ -47,14 +49,14 @@ namespace urchin
                 SHADER_TEX_COORD,
                 SHADER_NORMAL
             };
-            unsigned int shader;
+            unsigned int terrainShader;
             int mModelLoc, mProjectionLoc, mViewLoc;
             int ambientLoc;
 
             Matrix4<float> projectionMatrix;
 
-            std::unique_ptr<TerrainMesh> terrainMesh;
-            std::unique_ptr<TerrainMaterial> terrainMaterial;
+            std::unique_ptr<TerrainMesh> mesh;
+            std::unique_ptr<TerrainMaterial> material;
             float ambient;
             Transform<float> transform;
     };

@@ -20,13 +20,11 @@ namespace urchin
             unsigned int getZSize() const;
 
             const std::vector<Point3<float>> &getVertices() const;
-            const std::vector<Point2<float>> &getTexCoordinates() const;
             const std::vector<Vector3<float>> &getNormals() const;
             const std::vector<unsigned int> &getIndices() const;
 
         private:
             std::vector<Point3<float>> buildVertices(const Image *, float, float);
-            std::vector<Point2<float>> buildTexCoordinates();
             std::vector<unsigned int> buildIndices();
             std::vector<Vector3<float>> buildNormals();
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;
@@ -35,7 +33,6 @@ namespace urchin
             unsigned int zSize;
 
             std::vector<Point3<float>> vertices;
-            std::vector<Point2<float>> texCoordinates;
             std::vector<Vector3<float>> normals;
             std::vector<unsigned int> indices;
     };

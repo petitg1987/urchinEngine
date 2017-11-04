@@ -14,7 +14,7 @@ namespace urchin
 	{
 		public:
 			LightManager();
-			virtual ~LightManager();
+			~LightManager() override;
 
 			enum NotificationType
 			{
@@ -28,8 +28,8 @@ namespace urchin
 
 			unsigned int getMaxLights() const;
 			const std::vector<Light *> &getVisibleLights() const;
-			void addLight(Light *const);
-			void removeLight(Light *const);
+			void addLight(Light *);
+			void removeLight(Light *);
 
 			void setGlobalAmbientColor(const Point4<float> &);
 			const Point4<float> &getGlobalAmbientColor() const;
@@ -43,7 +43,7 @@ namespace urchin
 			#endif
 
 		private:
-			void onLightEvent(Light *const, NotificationType);
+			void onLightEvent(Light *, NotificationType);
 
 			//lights container
 			std::vector<Light *> parallelBeamsLights; //sun lights

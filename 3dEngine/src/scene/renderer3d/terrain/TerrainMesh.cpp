@@ -5,9 +5,9 @@
 namespace urchin
 {
 
-    TerrainMesh::TerrainMesh(const std::string &heightfieldFilename, float xzScale, float yScale)
+    TerrainMesh::TerrainMesh(const std::string &heightFilename, float xzScale, float yScale)
     {
-        auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightfieldFilename);
+        auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
         if(imgTerrain->getImageFormat()!=Image::IMAGE_LUMINANCE)
         {
             throw std::invalid_argument("Unsupported image format for terrain rendering: " + imgTerrain->getImageFormat());
@@ -17,7 +17,6 @@ namespace urchin
         zSize = imgTerrain->getHeight();
 
         buildVertices(imgTerrain, xzScale, yScale);
-        buildTexCoordinates();
         buildIndices();
         buildNormals();
 
@@ -37,11 +36,6 @@ namespace urchin
     const std::vector<Point3<float>> &TerrainMesh::getVertices() const
     {
         return vertices;
-    }
-
-    const std::vector<Point2<float>> &TerrainMesh::getTexCoordinates() const
-    {
-        return texCoordinates;
     }
 
     const std::vector<Vector3<float>> &TerrainMesh::getNormals() const
@@ -94,24 +88,6 @@ namespace urchin
         }
 
         return vertices;
-    }
-
-    std::vector<Point2<float>> TerrainMesh::buildTexCoordinates()
-    {
-        texCoordinates.reserve(xSize * zSize);
-
-        for(unsigned int z = 0; z < zSize; ++z)
-        {
-            for (unsigned int x = 0; x < xSize; ++x)
-            {
-                float s = static_cast<float>(x) / xSize * 15.0; //TODO hardcoded
-                float t = static_cast<float>(z) / zSize * 15.0;
-
-                texCoordinates.emplace_back(Point2<float>(s, t));
-            }
-        }
-
-        return texCoordinates;
     }
 
     std::vector<unsigned int> TerrainMesh::buildIndices()

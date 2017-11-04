@@ -57,7 +57,7 @@ namespace urchin
 		setModel(ModelReaderWriter().loadFrom(modelChunk, xmlParser));
 
 		std::shared_ptr<XmlChunk> physicsChunk = xmlParser.getUniqueChunk(false, PHYSICS_TAG, XmlAttribute(), chunk);
-		if(physicsChunk.get()!=nullptr)
+		if(physicsChunk != nullptr)
 		{
 			std::string rigidBodyId = this->name;
 			const Transform<float> &modelTransform = this->model->getTransform();

@@ -123,7 +123,7 @@ namespace urchin
 		mViewLoc = glGetUniformLocation(modelShader, "mView");
 	}
 
-	void ModelDisplayer::onCameraProjectionUpdate(const Camera *const camera)
+	void ModelDisplayer::onCameraProjectionUpdate(const Camera *camera)
 	{
 		this->projectionMatrix = camera->getProjectionMatrix();
 

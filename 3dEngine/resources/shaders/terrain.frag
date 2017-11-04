@@ -3,6 +3,8 @@
 in vec2 textCoordinates;
 in vec3 normal;
 
+uniform float sRepeat, tRepeat;
+
 uniform sampler2D maskTex;
 uniform sampler2D diffuseTex1;
 uniform sampler2D diffuseTex2;
@@ -15,11 +17,11 @@ layout (location = 1) out vec4 fragNormalAndAmbient;
 
 void main(){
 	//diffuse
-	vec2 maskTextCoordinates2 = vec2(textCoordinates.x/15.0, textCoordinates.y/15.0); //TODO hardcoded
-	vec4 maskValue = texture2D(maskTex, maskTextCoordinates2);
+	vec2 maskTextCoordinates = vec2(textCoordinates.x / sRepeat, textCoordinates.y / tRepeat);
+	vec4 maskValue = texture2D(maskTex, maskTextCoordinates);
 
 	vec4 diffuseValue1 = texture2D(diffuseTex1, textCoordinates);
-	vec4 diffuseValue2 = texture2D(diffuseTex2, textCoordinates); //TODO avoid read unused texture ?
+	vec4 diffuseValue2 = texture2D(diffuseTex2, textCoordinates);
 	vec4 diffuseValue3 = texture2D(diffuseTex3, textCoordinates);
 	vec4 diffuseValue4 = texture2D(diffuseTex4, textCoordinates);
 

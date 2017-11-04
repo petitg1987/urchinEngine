@@ -78,7 +78,7 @@ namespace urchin
 		return lightOctreeManager;
 	}
 
-	void LightManager::onLightEvent(Light *const light, NotificationType notificationType)
+	void LightManager::onLightEvent(Light *light, NotificationType notificationType)
 	{
 		lastUpdatedLight = light;
 		notifyObservers(this, notificationType);
@@ -102,7 +102,7 @@ namespace urchin
 		return visibleLights;
 	}
 
-	void LightManager::addLight(Light *const light)
+	void LightManager::addLight(Light *light)
 	{
 		if(light!=nullptr)
 		{
@@ -118,7 +118,7 @@ namespace urchin
 		}
 	}
 
-	void LightManager::removeLight(Light *const light)
+	void LightManager::removeLight(Light *light)
 	{
 		if(light!=nullptr)
 		{

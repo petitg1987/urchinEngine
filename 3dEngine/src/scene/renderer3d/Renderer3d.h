@@ -13,8 +13,10 @@
 #include "scene/renderer3d/shadow/ShadowManager.h"
 #include "scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h"
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/skybox/Skybox.h"
+#include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/terrain/Terrain.h"
+#include "scene/renderer3d/terrain/TerrainDisplayer.h"
+#include "scene/renderer3d/skybox/Skybox.h"
 #include "utils/display/geometry/GeometryDisplayer.h"
 #include "utils/display/geometry/GeometryModel.h"
 #include "utils/display/quad/QuadDisplayer.h"
@@ -55,14 +57,14 @@ namespace urchin
 			void createSkybox(const std::vector<std::string> &);
 			Skybox *getSkybox() const;
 
-			//terrain
-			void setTerrain(Terrain *);
-			Terrain *getTerrain() const;
-
 			//models
-			Model *addModel(Model *);
+			void addModel(Model *);
 			void removeModel(Model *);
 			bool isModelExist(Model *);
+
+			//terrain
+			void addTerrain(Terrain *);
+			void removeTerrain(Terrain *);
 
 			//geometry
 			GeometryModel *addGeometry(GeometryModel *);
@@ -94,6 +96,7 @@ namespace urchin
 
 			//managers
 			ModelDisplayer *modelDisplayer;
+			TerrainDisplayer *terrainDisplayer;
 			GeometryDisplayer *geometryDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
 
@@ -114,9 +117,6 @@ namespace urchin
 
 			//skybox
 			Skybox *skybox;
-
-			//terrain
-			Terrain *terrain;
 
 			//visual
 			unsigned int *fboIDs;
