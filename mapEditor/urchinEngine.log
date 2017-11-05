@@ -1,3 +1,8 @@
 [2017-11-04 20:18:07] (EE) Resources not released:
  - materials/capsuleDiffuse.tga
 
+[2017-11-05 08:52:13] (EE) Impossible to build a convex hull shape with following points:
+ - 0.235775, 0.276482, 0.050994
+ - 0.235775, -0.276482, 0.050994
+ - -0.235775, -0.276482, 0.050994
+

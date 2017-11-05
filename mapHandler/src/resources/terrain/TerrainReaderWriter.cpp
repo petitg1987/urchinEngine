@@ -68,7 +68,7 @@ namespace urchin
             if(material != nullptr)
             {
                 std::shared_ptr<XmlChunk> materialFilenameChunk = xmlWriter.createChunk(MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
-                materialFilenameChunk->setStringValue(material->getDiffuseTexture()->getName());
+                materialFilenameChunk->setStringValue(material->getName());
             }
             ++i;
         }

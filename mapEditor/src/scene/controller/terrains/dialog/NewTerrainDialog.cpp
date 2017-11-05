@@ -84,7 +84,7 @@ namespace urchin
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
             std::string relativeHeightFilename = FileHandler::getRelativePath(resourcesDirectory, heightFilename);
 
-            auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 100.0f, 100.0f);
+            auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
             auto terrainMaterial = std::make_unique<TerrainMaterial>("", 1.0f, 1.0f);
             auto *terrain = new Terrain(terrainMesh, terrainMaterial);
 
@@ -109,7 +109,7 @@ namespace urchin
     void NewTerrainDialog::showHeightFilenameDialog()
     {
         QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredHeightPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open height file"), directory, "Height file (*.tga)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga)", nullptr, QFileDialog::DontUseNativeDialog);
         if(!filename.isNull())
         {
             this->heightFilename = filename.toUtf8().constData();

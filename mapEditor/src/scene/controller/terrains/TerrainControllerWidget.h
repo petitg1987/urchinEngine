@@ -8,10 +8,13 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 
 #include "UrchinCommon.h"
 #include "scene/controller/terrains/TerrainController.h"
 #include "scene/controller/terrains/TerrainTableView.h"
+
+#define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
 
 namespace urchin
 {
@@ -57,7 +60,11 @@ namespace urchin
             QDoubleSpinBox *xzScale, *yScale;
 
             //material properties
-
+            QDoubleSpinBox *sRepeat, *tRepeat;
+            QLineEdit *maskMapFilenameText;
+            static QString preferredMaskMapPath;
+            std::vector<QLineEdit *> materialFilenameTexts;
+            static QString preferredMaterialPath;
 
         private slots:
             void showAddTerrainDialog();
@@ -66,6 +73,11 @@ namespace urchin
             void updateTerrainGeneralProperties();
             void updateTerrainMesh();
             void updateTerrainMaterial();
+
+            void showMaskFilenameDialog();
+            void clearMaskFilename();
+            void showMaterialFilenameDialog(const QString &);
+            void clearMaterialFilename(const QString &);
     };
 
 }

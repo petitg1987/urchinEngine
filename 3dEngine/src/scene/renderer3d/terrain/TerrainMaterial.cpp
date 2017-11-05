@@ -29,7 +29,7 @@ namespace urchin
             maskTexture->toTexture(false, false, false);
         }
 
-        materials.resize(4); //maximum 4 materials (RGBA)
+        materials.resize(MAX_MATERIAL);
         for (auto &material : materials)
         {
             material = nullptr;

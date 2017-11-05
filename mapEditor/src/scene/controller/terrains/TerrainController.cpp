@@ -75,6 +75,28 @@ namespace urchin
         return sceneTerrain;
     }
 
+    const SceneTerrain *TerrainController::updateSceneTerrainMaterial(const SceneTerrain *constSceneTerrain, float sRepeat, float tRepeat, std::string maskMapFilename,
+                                                                      const std::vector<std::string> &materialFilenames)
+    {
+        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain *terrain = sceneTerrain->getTerrain();
+
+        auto terrainMaterial = std::make_unique<TerrainMaterial>(maskMapFilename, sRepeat, tRepeat);
+        unsigned int i=0;
+        for(const auto &materialFilename : materialFilenames)
+        {
+            if(!materialFilename.empty())
+            {
+                terrainMaterial->addMaterial(i, materialFilename);
+            }
+            i++;
+        }
+        terrain->setMaterial(terrainMaterial);
+
+        markModified();
+        return sceneTerrain;
+    }
+
     SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain *constSceneTerrain)
     {
         const std::list<SceneTerrain *> &sceneTerrains = mapHandler->getMap()->getSceneTerrains();

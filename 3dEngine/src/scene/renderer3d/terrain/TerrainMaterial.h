@@ -8,6 +8,8 @@
 #include "resources/material/Material.h"
 #include "resources/image/Image.h"
 
+#define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
+
 namespace urchin
 {
 

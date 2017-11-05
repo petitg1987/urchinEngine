@@ -23,6 +23,7 @@ namespace urchin
 
             const SceneTerrain *updateSceneTerrainGeneralProperties(const SceneTerrain *, const Point3<float> &, float);
             const SceneTerrain *updateSceneTerrainMesh(const SceneTerrain *, float, float);
+            const SceneTerrain *updateSceneTerrainMaterial(const SceneTerrain *, float, float, std::string, const std::vector<std::string> &);
 
         private:
             void markModified();
