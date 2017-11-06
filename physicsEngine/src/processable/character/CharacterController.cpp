@@ -158,7 +158,7 @@ namespace urchin
 		if(isOnGround)
 		{
 			Vector3<float> walkDirection = getWalkDirection();
-			float slopeSpeedDecrease = MathAlgorithm::clamp(1.0f - (slopeInPercentage / getMaxSlopeInPercentage()), 0.0f, 1.0f);
+			float slopeSpeedDecrease = MathAlgorithm::clamp(1.0f - (slopeInPercentage / getMaxSlopeInPercentage()), MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
 			targetPosition = targetPosition.translate(walkDirection * dt * slopeSpeedDecrease);
 
 			lastWalkDirection = walkDirection;

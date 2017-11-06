@@ -10,6 +10,8 @@
 #include "body/work/WorkGhostBody.h"
 
 #define RECOVER_PENETRATION_SUB_STEPS 4 //number of steps to recover character from penetration
+#define MIN_WALK_SPEED_PERCENTAGE 0.75f
+#define MAX_WALK_SPEED_PERCENTAGE 1.25f
 
 namespace urchin
 {

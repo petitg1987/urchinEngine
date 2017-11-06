@@ -21,6 +21,8 @@ namespace urchin
 
         private:
             std::vector<Terrain *> terrains;
+
+            Matrix4<float> projectionMatrix;
     };
 
 }

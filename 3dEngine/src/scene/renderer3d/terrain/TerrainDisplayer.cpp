@@ -8,6 +8,8 @@ namespace urchin
     void TerrainDisplayer::addTerrain(Terrain *terrain)
     {
         terrains.push_back(terrain);
+
+        terrain->onCameraProjectionUpdate(projectionMatrix);
     }
 
     void TerrainDisplayer::removeTerrain(Terrain *terrain)
@@ -17,9 +19,10 @@ namespace urchin
 
     void TerrainDisplayer::onCameraProjectionUpdate(const Camera *camera)
     {
+        this->projectionMatrix = camera->getProjectionMatrix();
         for(const auto terrain : terrains)
         {
-            terrain->onCameraProjectionUpdate(camera->getProjectionMatrix());
+            terrain->onCameraProjectionUpdate(projectionMatrix);
         }
     }
 
