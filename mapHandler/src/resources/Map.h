@@ -80,8 +80,7 @@ namespace urchin
 			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
-			void refreshPhysics();
-			void refreshAI();
+			void refreshObjects();
             void refreshSound();
 
 			Renderer3d *renderer3d;

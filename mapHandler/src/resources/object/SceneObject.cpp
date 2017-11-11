@@ -1,8 +1,10 @@
 #include <stdexcept>
+#include <AIManager.h>
 
 #include "SceneObject.h"
 #include "resources/object/ModelReaderWriter.h"
 #include "resources/object/RigidBodyReaderWriter.h"
+#include "resources/object/aiobject/AIObjectBuilder.h"
 
 namespace urchin
 {
@@ -10,8 +12,10 @@ namespace urchin
 	SceneObject::SceneObject() :
 			renderer3d(nullptr),
 			physicsWorld(nullptr),
+			aiManager(nullptr),
 			model(nullptr),
-			rigidBody(nullptr)
+			rigidBody(nullptr),
+			aiObject(nullptr)
 	{
 
 	}
@@ -19,16 +23,11 @@ namespace urchin
 	SceneObject::~SceneObject()
 	{
 		renderer3d->removeModel(model);
-		if(physicsWorld!=nullptr)
-		{
-			physicsWorld->removeBody(rigidBody);
-		}else
-		{
-			delete this->rigidBody;
-		}
+		deleteRigidBody();
+		deleteAIObjects();
 	}
 
-	void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld)
+	void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager)
 	{
 		if(this->renderer3d!=nullptr)
 		{
@@ -41,11 +40,18 @@ namespace urchin
 
 		this->renderer3d = renderer3d;
 		this->physicsWorld = physicsWorld;
+		this->aiManager = aiManager;
 
 		renderer3d->addModel(model);
+
 		if(physicsWorld!=nullptr)
 		{
 			physicsWorld->addBody(rigidBody);
+		}
+
+		if(aiManager!=nullptr)
+		{
+			aiManager->addObject(aiObject);
 		}
 	}
 
@@ -62,7 +68,7 @@ namespace urchin
 			std::string rigidBodyId = this->name;
 			const Transform<float> &modelTransform = this->model->getTransform();
 
-			setRigidBody(RigidBodyReaderWriter().loadFrom(physicsChunk, rigidBodyId, modelTransform, xmlParser));
+			setupInteractiveBody(RigidBodyReaderWriter().loadFrom(physicsChunk, rigidBodyId, modelTransform, xmlParser));
 		}
 	}
 
@@ -119,18 +125,58 @@ namespace urchin
 		return rigidBody;
 	}
 
-	void SceneObject::setRigidBody(RigidBody *rigidBody)
+	const std::shared_ptr<AIObject> &SceneObject::getAIObject() const
+	{
+		return aiObject;
+	}
+
+	void SceneObject::setupInteractiveBody(RigidBody *rigidBody)
+	{
+		setupRigidBody(rigidBody);
+		setupAIObject(rigidBody);
+	}
+
+	void SceneObject::setupRigidBody(RigidBody *rigidBody)
+	{
+		deleteRigidBody();
+
+		this->rigidBody = rigidBody;
+		if(physicsWorld!=nullptr)
+		{
+			physicsWorld->addBody(rigidBody);
+		}
+	}
+
+	void SceneObject::setupAIObject(RigidBody *rigidBody)
+	{
+		deleteAIObjects();
+
+		this->aiObject = AIObjectBuilder::buildAIObject(rigidBody->getId(), rigidBody->getScaledShape(), rigidBody->getTransform());
+		if(aiManager!=nullptr)
+		{
+			aiManager->addObject(aiObject);
+		}
+	}
+
+	void SceneObject::deleteRigidBody()
 	{
 		if(physicsWorld!=nullptr)
 		{
-			physicsWorld->removeBody(this->rigidBody);
-			physicsWorld->addBody(rigidBody);
+			physicsWorld->removeBody(rigidBody);
 		}else
 		{
-			delete this->rigidBody;
+			delete rigidBody;
 		}
 
-		this->rigidBody = rigidBody;
+		rigidBody = nullptr;
+	}
+
+	void SceneObject::deleteAIObjects()
+	{
+		if(aiManager!=nullptr)
+		{
+			aiManager->removeObject(aiObject);
+		}
 	}
 
 }

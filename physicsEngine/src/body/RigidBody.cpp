@@ -75,21 +75,21 @@ namespace urchin
 		}
 	}
 
-	const Vector3<float> &RigidBody::getLinearVelocity() const
+	Vector3<float> RigidBody::getLinearVelocity() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return linearVelocity;
 	}
 
-	const Vector3<float> &RigidBody::getAngularVelocity() const
+	Vector3<float> RigidBody::getAngularVelocity() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return angularVelocity;
 	}
 
-	const Vector3<float> &RigidBody::getTotalForce() const
+	Vector3<float> RigidBody::getTotalForce() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -114,7 +114,7 @@ namespace urchin
 		totalTorque += pos.toVector().crossProduct(force);
 	}
 
-	const Vector3<float> &RigidBody::getTotalTorque() const
+	Vector3<float> RigidBody::getTotalTorque() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -145,7 +145,7 @@ namespace urchin
 		return mass;
 	}
 
-	const Vector3<float> &RigidBody::getLocalInertia() const
+	Vector3<float> RigidBody::getLocalInertia() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -202,7 +202,7 @@ namespace urchin
 	/**
 	 * @return Linear factor. Linear factor allows to block movement if axis value is 0.
 	 */
-	const Vector3<float> &RigidBody::getLinearFactor() const
+	Vector3<float> RigidBody::getLinearFactor() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
@@ -222,7 +222,7 @@ namespace urchin
 	/**
 	 * @return Angular factor. Angular factor allows to block rotation movement if axis value is 0.
 	 */
-	const Vector3<float> &RigidBody::getAngularFactor() const
+	Vector3<float> RigidBody::getAngularFactor() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 

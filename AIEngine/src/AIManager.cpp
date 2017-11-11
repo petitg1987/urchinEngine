@@ -35,11 +35,14 @@ namespace urchin
         return navMeshGenerator;
     }
 
-    void AIManager::setAIWorld(const std::shared_ptr<AIWorld> &aiWorld)
+    void AIManager::addObject(const std::shared_ptr<AIObject> &aiObject)
     {
-        std::lock_guard<std::mutex> lock(mutex);
+        aiWorld.addObject(aiObject);
+    }
 
-        this->aiWorld = aiWorld;
+    void AIManager::removeObject(const std::shared_ptr<AIObject> &aiObject)
+    {
+        aiWorld.removeObject(aiObject);
     }
 
     void AIManager::addPathRequest(const std::shared_ptr<PathRequest> &pathRequest)
@@ -137,21 +140,16 @@ namespace urchin
     {
         //copy for local thread
         bool paused;
-        std::shared_ptr<AIWorld> aiWorld;
         std::vector<std::shared_ptr<PathRequest>> pathRequests;
         {
             std::lock_guard<std::mutex> lock(mutex);
 
             paused = this->paused;
-            if(this->aiWorld)
-            {
-                aiWorld = std::make_shared<AIWorld>(*this->aiWorld);
-            }
             pathRequests = this->pathRequests;
         }
 
         //AI execution
-        if (!paused && aiWorld)
+        if (!paused)
         {
             std::shared_ptr<NavMesh> navMesh = navMeshGenerator->generate(aiWorld);
 

@@ -12,13 +12,16 @@ namespace urchin
 	{
 		public:
             AIWorld();
-			AIWorld(const AIWorld &);
 
-			void addObject(const AIObject &);
-			const std::vector<AIObject> &getObjects() const;
+			void addObject(const std::shared_ptr<AIObject> &);
+            void removeObject(const std::shared_ptr<AIObject> &);
+
+			std::vector<std::shared_ptr<AIObject>> getObjects() const;
 
 		private:
-			std::vector<AIObject> objects;
+			mutable std::mutex mutex;
+
+			std::vector<std::shared_ptr<AIObject>> objects;
 	};
 
 }

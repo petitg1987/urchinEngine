@@ -98,7 +98,7 @@ namespace urchin
 	PhysicsTransform PhysicsTransform::operator *(const PhysicsTransform &transform) const
 	{
 		return PhysicsTransform(position + orientation.rotatePoint(transform.getPosition()),
-				orientation * transform.getOrientation());
+								orientation * transform.getOrientation());
 	}
 
 	const PhysicsTransform& PhysicsTransform::operator *=(const PhysicsTransform &transform)

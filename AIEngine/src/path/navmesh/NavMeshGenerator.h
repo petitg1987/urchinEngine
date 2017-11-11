@@ -34,11 +34,11 @@ namespace urchin
 
 			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
 
-			std::shared_ptr<NavMesh> generate(std::shared_ptr<AIWorld>);
+			std::shared_ptr<NavMesh> generate(const AIWorld &);
 			NavMesh retrieveLastGeneratedNavMesh() const;
 
 		private:
-			std::vector<Polyhedron> createExpandedPolyhedrons(std::shared_ptr<AIWorld>) const;
+			std::vector<Polyhedron> createExpandedPolyhedrons(const AIWorld &) const;
 			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *) const;
 			std::vector<PolyhedronFace> createPolyhedronFaces() const;
 			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *) const;

@@ -42,7 +42,7 @@ namespace urchin
         return NavMesh(*navMesh);
     }
 
-	std::shared_ptr<NavMesh> NavMeshGenerator::generate(std::shared_ptr<AIWorld> aiWorld)
+	std::shared_ptr<NavMesh> NavMeshGenerator::generate(const AIWorld &aiWorld)
 	{
 		#ifdef _DEBUG
 //			auto frameStartTime = std::chrono::high_resolution_clock::now();
@@ -50,7 +50,7 @@ namespace urchin
 
         std::lock_guard<std::mutex> lock(navMeshMutex);
 
-		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons(std::move(aiWorld));
+		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons(aiWorld);
 		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
         navMesh.reset(new NavMesh());
 
@@ -72,36 +72,53 @@ namespace urchin
 		return navMesh;
 	}
 
-	std::vector<Polyhedron> NavMeshGenerator::createExpandedPolyhedrons(std::shared_ptr<AIWorld> aiWorld) const
+	std::vector<Polyhedron> NavMeshGenerator::createExpandedPolyhedrons(const AIWorld &aiWorld) const
 	{
+        std::vector<std::shared_ptr<AIObject>> aiObjects = aiWorld.getObjects(); //copy to avoid several calls on this slow method
+
 		std::vector<Polyhedron> polyhedrons;
-		polyhedrons.reserve(aiWorld->getObjects().size());
+        polyhedrons.reserve(aiObjects.size());
 
-		for(auto &aiObject : aiWorld->getObjects())
+		for(auto &aiObject : aiObjects)
 		{
-			std::unique_ptr<ConvexObject3D<float>> object = aiObject.getShape()->toConvexObject(aiObject.getTransform());
+			unsigned int aiShapeIndex = 0;
+			for(auto &aiShape : aiObject->getShapes())
+			{
+                std::string shapeName = aiObject->getName() + "[" + std::to_string(aiShapeIndex) + "]";
+				std::unique_ptr<ConvexObject3D<float>> object;
+				if(aiShape->hasLocalTransform())
+				{
+					Transform<float> shapeTransform = aiObject->getTransform() * aiShape->getLocalTransform();
+					object = aiShape->getShape()->toConvexObject(shapeTransform);
+				}else
+				{
+					object = aiShape->getShape()->toConvexObject(aiObject->getTransform());
+				}
 
-			if(auto box = dynamic_cast<OBBox<float>*>(object.get()))
-			{
-				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), box));
-			}else if(auto capsule = dynamic_cast<Capsule<float>*>(object.get()))
-			{
-				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), capsule));
-			}else if(auto cone = dynamic_cast<Cone<float>*>(object.get()))
-			{
-				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cone));
-			}else if(auto convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
-			{
-				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), convexHull));
-			}else if(auto cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
-			{
-				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), cylinder));
-			}else if(auto sphere = dynamic_cast<Sphere<float>*>(object.get()))
-			{
-				polyhedrons.push_back(createPolyhedronFor(aiObject.getName(), sphere));
-			} else
-			{
-				throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));
+				if(auto box = dynamic_cast<OBBox<float>*>(object.get()))
+				{
+					polyhedrons.push_back(createPolyhedronFor(shapeName, box));
+				}else if(auto capsule = dynamic_cast<Capsule<float>*>(object.get()))
+				{
+					polyhedrons.push_back(createPolyhedronFor(shapeName, capsule));
+				}else if(auto cone = dynamic_cast<Cone<float>*>(object.get()))
+				{
+					polyhedrons.push_back(createPolyhedronFor(shapeName, cone));
+				}else if(auto convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
+				{
+					polyhedrons.push_back(createPolyhedronFor(shapeName, convexHull));
+				}else if(auto cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
+				{
+					polyhedrons.push_back(createPolyhedronFor(shapeName, cylinder));
+				}else if(auto sphere = dynamic_cast<Sphere<float>*>(object.get()))
+				{
+					polyhedrons.push_back(createPolyhedronFor(shapeName, sphere));
+				}else
+				{
+					throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));
+				}
+
+				aiShapeIndex++;
 			}
 		}
 
@@ -389,7 +406,7 @@ namespace urchin
 		std::vector<CSGPolygon<float>> holePolygons;
 		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
 		{
-			if(i!=polyhedronWalkableFace.polyhedronIndex)
+			if(i!=polyhedronWalkableFace.polyhedronIndex && expandedPolyhedrons[i].isObstacleCandidate())
 			{
 				CSGPolygon<float> footprintPolygon = computePolyhedronFootprint(expandedPolyhedrons[i], walkableFace);
 				if(footprintPolygon.getCwPoints().size() >= 3)

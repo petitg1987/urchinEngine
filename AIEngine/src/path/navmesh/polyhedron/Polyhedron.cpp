@@ -14,7 +14,8 @@ namespace urchin
 			name(name),
 			faces(faces),
 			points(points),
-			walkableCandidate(true)
+			walkableCandidate(true),
+            obstacleCandidate(true)
 	{
 
 	}
@@ -48,6 +49,16 @@ namespace urchin
 	{
 		return walkableCandidate;
 	}
+
+    void Polyhedron::setObstacleCandidate(bool obstacleCandidate)
+    {
+        Polyhedron::obstacleCandidate = obstacleCandidate;
+    }
+
+    bool Polyhedron::isObstacleCandidate() const
+    {
+        return obstacleCandidate;
+    }
 
 	void Polyhedron::expand(const NavMeshAgent &agent)
 	{

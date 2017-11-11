@@ -36,7 +36,7 @@ namespace urchin
 			virtual void applyFrom(const AbstractWorkBody *);
 
 			void setTransform(const Transform<float> &);
-			const Transform<float> &getTransform() const;
+			Transform<float> getTransform() const;
 
 			void setShape(const std::shared_ptr<const CollisionShape3D> &);
 			std::shared_ptr<const CollisionShape3D> getOriginalShape() const;

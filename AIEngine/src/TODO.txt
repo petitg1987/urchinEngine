@@ -11,7 +11,7 @@
 	- (3) [QUALITY IMPROVEMENT] Insert bevel planes during Polyhedron#expand (see BrushExpander.cpp from Hesperus).
 - A STAR
 	- (2) [OPTIMIZATION] When compute A* G score: avoid to execute funnel algorithm from start each time.
-	- (2) [OPTIMIZATION] When search start and end triangles: use AABB Tree algorithm
+	- (2) [OPTIMIZATION] When search start and end triangles: use AABBox Tree algorithm
 
 ############################################
 # Bugs :

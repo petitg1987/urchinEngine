@@ -5,6 +5,7 @@
 
 #include "Urchin3dEngine.h"
 #include "UrchinPhysicsEngine.h"
+#include "UrchinAIEngine.h"
 
 namespace urchin
 {
@@ -27,7 +28,7 @@ namespace urchin
 			SceneObject();
 			~SceneObject();
 
-			void setObjectManagers(Renderer3d *, PhysicsWorld *);
+			void setObjectManagers(Renderer3d *, PhysicsWorld *, AIManager *);
 
 			const std::string &getName() const;
 			void setName(const std::string &);
@@ -36,18 +37,28 @@ namespace urchin
 			void setModel(Model *);
 
 			RigidBody *getRigidBody() const;
-			void setRigidBody(RigidBody *);
+            const std::shared_ptr<AIObject> &getAIObject() const;
+
+			void setupInteractiveBody(RigidBody *);
 
 		private:
 			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
+			void deleteRigidBody();
+			void deleteAIObjects();
+
+			void setupRigidBody(RigidBody *);
+			void setupAIObject(RigidBody *);
+
 			Renderer3d *renderer3d;
 			PhysicsWorld *physicsWorld;
+			AIManager *aiManager;
 
 			std::string name;
 			Model *model;
 			RigidBody *rigidBody;
+			std::shared_ptr<AIObject> aiObject;
 	};
 
 }

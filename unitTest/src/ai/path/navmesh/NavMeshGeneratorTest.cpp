@@ -9,9 +9,13 @@ using namespace urchin;
 
 void NavMeshGeneratorTest::holeOnWalkableFace()
 {
-    std::shared_ptr<AIWorld> aiWorld = std::make_shared<AIWorld>();
-    aiWorld->addObject(AIObject("walkableFace", std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)), Transform<float>(Point3<float>(0.0, 0.0, 0.0))));
-    aiWorld->addObject(AIObject("hole", std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)), Transform<float>(Point3<float>(0.0, 1.0, 0.0))));
+    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)));
+    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", walkableShape, Transform<float>(Point3<float>(0.0, 0.0, 0.0)));
+    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)));
+    auto holeObject = std::make_shared<AIObject>("hole", holeShape, Transform<float>(Point3<float>(0.0, 1.0, 0.0)));
+    AIWorld aiWorld;
+    aiWorld.addObject(walkableFaceObject);
+    aiWorld.addObject(holeObject);
     NavMeshGenerator navMeshGenerator;
     navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
 
@@ -26,9 +30,13 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
 
 void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
 {
-    std::shared_ptr<AIWorld> aiWorld = std::make_shared<AIWorld>();
-    aiWorld->addObject(AIObject("walkableFace", std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)), Transform<float>(Point3<float>(0.0, 0.0, 0.0))));
-    aiWorld->addObject(AIObject("hole", std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)), Transform<float>(Point3<float>(-1.0, 1.0, -1.0))));
+    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)));
+    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", walkableShape, Transform<float>(Point3<float>(0.0, 0.0, 0.0)));
+    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)));
+    auto holeObject = std::make_shared<AIObject>("hole", holeShape, Transform<float>(Point3<float>(-1.0, 1.0, -1.0)));
+    AIWorld aiWorld;
+    aiWorld.addObject(walkableFaceObject);
+    aiWorld.addObject(holeObject);
     NavMeshGenerator navMeshGenerator;
     navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
 
@@ -51,7 +59,7 @@ CppUnit::Test *NavMeshGeneratorTest::suite()
 {
     CppUnit::TestSuite *suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
-   // suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeEdgeOnWalkableFace", &NavMeshGeneratorTest::holeEdgeOnWalkableFace));
 
     return suite;

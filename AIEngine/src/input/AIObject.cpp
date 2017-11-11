@@ -3,12 +3,26 @@
 namespace urchin
 {
 
-	AIObject::AIObject(const std::string &name, std::shared_ptr<const ConvexShape3D<float>> shape, const Transform<float> &transform) :
-			name(name),
-			shape(std::move(shape)),
+	AIObject::AIObject(std::string name, const std::shared_ptr<AIShape> &shape, const Transform<float> &transform) :
+			name(std::move(name)),
+			transform(transform)
+	{
+		shapes.push_back(shape);
+	}
+
+	AIObject::AIObject(std::string name, const std::vector<std::shared_ptr<AIShape>> &shapes, const Transform<float> &transform) :
+			name(std::move(name)),
+			shapes(shapes),
 			transform(transform)
 	{
 
+	}
+
+	void AIObject::setTransform(const Transform<float> &transform)
+	{
+		std::lock_guard<std::mutex> lock(mutex);
+
+		this->transform = transform;
 	}
 
 	const std::string &AIObject::getName() const
@@ -16,13 +30,15 @@ namespace urchin
 		return name;
 	}
 
-	std::shared_ptr<const ConvexShape3D<float>> AIObject::getShape() const
+	const std::vector<std::shared_ptr<AIShape>> &AIObject::getShapes() const
 	{
-		return shape;
+		return shapes;
 	}
 
 	Transform<float> AIObject::getTransform() const
 	{
+		std::lock_guard<std::mutex> lock(mutex);
+
 		return transform;
 	}
 

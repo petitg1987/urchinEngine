@@ -24,7 +24,9 @@ namespace urchin
 
             NavMeshGenerator *getNavMeshGenerator() const;
 
-            void setAIWorld(const std::shared_ptr<AIWorld> &);
+            void addObject(const std::shared_ptr<AIObject> &);
+            void removeObject(const std::shared_ptr<AIObject> &);
+
             void addPathRequest(const std::shared_ptr<PathRequest> &);
 
             void start(float);
@@ -46,7 +48,7 @@ namespace urchin
             bool paused;
 
             NavMeshGenerator *navMeshGenerator;
-            std::shared_ptr<AIWorld> aiWorld;
+            AIWorld aiWorld;
             std::vector<std::shared_ptr<PathRequest>> pathRequests;
     };
 

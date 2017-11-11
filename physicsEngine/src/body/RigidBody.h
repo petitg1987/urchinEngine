@@ -22,28 +22,28 @@ namespace urchin
 			void updateTo(AbstractWorkBody *) override;
 			void applyFrom(const AbstractWorkBody *) override;
 
-			const Vector3<float> &getLinearVelocity() const;
-			const Vector3<float> &getAngularVelocity() const;
+			Vector3<float> getLinearVelocity() const;
+			Vector3<float> getAngularVelocity() const;
 
-			const Vector3<float> &getTotalForce() const;
+			Vector3<float> getTotalForce() const;
 			void applyCentralForce(const Vector3<float> &);
 			void applyForce(const Vector3<float> &, const Point3<float> &);
 
-			const Vector3<float> &getTotalTorque() const;
+			Vector3<float> getTotalTorque() const;
 			void applyTorque(const Vector3<float> &);
 
 			void setMass(float);
 			float getMass() const;
-			const Vector3<float> &getLocalInertia() const;
+			Vector3<float> getLocalInertia() const;
 
 			void setDamping(float, float);
 			float getLinearDamping() const;
 			float getAngularDamping() const;
 
 			void setLinearFactor(const Vector3<float> &);
-			const Vector3<float> &getLinearFactor() const;
+			Vector3<float> getLinearFactor() const;
 			void setAngularFactor(const Vector3<float> &);
-			const Vector3<float> &getAngularFactor() const;
+			Vector3<float> getAngularFactor() const;
 
 		private:
 			void refreshScaledShape() override;

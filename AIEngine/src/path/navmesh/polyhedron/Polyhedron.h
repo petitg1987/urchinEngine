@@ -27,6 +27,9 @@ namespace urchin
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
 
+			void setObstacleCandidate(bool);
+			bool isObstacleCandidate() const;
+
 			void expand(const NavMeshAgent &);
 
 		private:
@@ -39,6 +42,7 @@ namespace urchin
 			std::vector<PolyhedronPoint> points;
 
 			bool walkableCandidate;
+			bool obstacleCandidate;
 	};
 
 	std::ostream& operator <<(std::ostream &, const Polyhedron &);

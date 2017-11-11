@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "Map.h"
-#include "ai/AIWorldGenerator.h"
 
 namespace urchin
 {
@@ -18,24 +17,24 @@ namespace urchin
 
 	Map::~Map()
 	{
-		for(std::list<SceneObject *>::const_iterator it=sceneObjects.begin(); it!=sceneObjects.end(); ++it)
+		for(SceneObject *sceneObject : sceneObjects)
 		{
-			delete *it;
+			delete sceneObject;
 		}
 
-		for(std::list<SceneLight *>::const_iterator it=sceneLights.begin(); it!=sceneLights.end(); ++it)
+		for(SceneLight *sceneLight : sceneLights)
 		{
-			delete *it;
+			delete sceneLight;
 		}
 
-		for(std::list<SceneTerrain *>::const_iterator it=sceneTerrains.begin(); it!=sceneTerrains.end(); ++it)
+		for(SceneTerrain *sceneTerrain : sceneTerrains)
 		{
-			delete *it;
+			delete sceneTerrain;
 		}
 
-		for(std::list<SceneSound *>::const_iterator it=sceneSounds.begin(); it!=sceneSounds.end(); ++it)
+		for(SceneSound *sceneSound : sceneSounds)
 		{
-			delete *it;
+			delete sceneSound;
 		}
 
 		delete sceneAI;
@@ -196,7 +195,7 @@ namespace urchin
 
 	void Map::addSceneObject(SceneObject *sceneObject)
 	{
-		sceneObject->setObjectManagers(renderer3d, physicsWorld);
+		sceneObject->setObjectManagers(renderer3d, physicsWorld, aiManager);
 		sceneObjects.push_back(sceneObject);
 	}
 
@@ -309,29 +308,23 @@ namespace urchin
 
 	void Map::refreshMap()
 	{
-		refreshPhysics();
-		refreshAI();
+		refreshObjects();
 		refreshSound();
 	}
 
-	void Map::refreshPhysics()
+	void Map::refreshObjects()
 	{
-		for(std::list<SceneObject *>::const_iterator it=sceneObjects.begin(); it!=sceneObjects.end(); ++it)
+		for(SceneObject *sceneObject : sceneObjects)
 		{
-			SceneObject *sceneObject = *it;
 			RigidBody *rigidBody = sceneObject->getRigidBody();
 			if(rigidBody!=nullptr && !rigidBody->isStatic() && rigidBody->isActive())
 			{
-				Model *model = sceneObject->getModel();
-				model->setTransform(rigidBody->getTransform());
+				Transform<float> newTransform = rigidBody->getTransform(); //copy to avoid several calls on this slow method
+
+				sceneObject->getModel()->setTransform(newTransform);
+				sceneObject->getAIObject()->setTransform(newTransform);
 			}
 		}
-	}
-
-	void Map::refreshAI()
-	{
-		std::shared_ptr<AIWorld> aiWorld = AIWorldGenerator().generate(sceneObjects);
-		aiManager->setAIWorld(aiWorld);
 	}
 
 	void Map::refreshSound()

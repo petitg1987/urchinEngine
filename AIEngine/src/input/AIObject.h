@@ -2,8 +2,11 @@
 #define URCHINENGINE_AIOBJECT_H
 
 #include <memory>
+#include <vector>
+#include <mutex>
 
 #include "UrchinCommon.h"
+#include "input/AIShape.h"
 
 namespace urchin
 {
@@ -11,17 +14,20 @@ namespace urchin
 	class AIObject
 	{
 		public:
-			AIObject(const std::string &, std::shared_ptr<const ConvexShape3D<float>>, const Transform<float> &);
+			AIObject(std::string, const std::shared_ptr<AIShape> &, const Transform<float> &);
+			AIObject(std::string, const std::vector<std::shared_ptr<AIShape>> &, const Transform<float> &);
+
+			void setTransform(const Transform<float> &);
 
 			const std::string &getName() const;
-
-			std::shared_ptr<const ConvexShape3D<float>> getShape() const;
+			const std::vector<std::shared_ptr<AIShape>> &getShapes() const;
 			Transform<float> getTransform() const;
 
 		private:
-			std::string name;
+			mutable std::mutex mutex;
 
-			std::shared_ptr<const ConvexShape3D<float>> shape;
+			std::string name;
+			std::vector<std::shared_ptr<AIShape>> shapes;
 			Transform<float> transform;
 	};
 

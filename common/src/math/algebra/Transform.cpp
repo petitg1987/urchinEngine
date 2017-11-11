@@ -83,6 +83,20 @@ namespace urchin
 		return mTransform;
 	}
 
+	template<class T> Transform<T> Transform<T>::operator *(const Transform<T> &transform) const
+	{
+		return Transform<T>(pPosition + qOrientation.rotatePoint(transform.getPosition()),
+						 qOrientation * transform.getOrientation(),
+						 fScale * transform.getScale());
+	}
+
+	template<class T> const Transform<T>& Transform<T>::operator *=(const Transform<T> &transform)
+	{
+		*this = *this * transform;
+
+		return *this;
+	}
+
 	//explicit template
 	template class Transform<float>;
 

@@ -54,7 +54,9 @@ set(SOURCE_FILES
         src/path/pathfinding/FunnelAlgorithm.cpp
         src/path/pathfinding/FunnelAlgorithm.h
         src/path/PathRequest.cpp
-        src/path/PathRequest.h)
+        src/path/PathRequest.h
+        src/input/AIShape.cpp
+        src/input/AIShape.h)
 
 include_directories(src ../common/src)
 

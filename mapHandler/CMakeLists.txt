@@ -5,8 +5,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
-        src/ai/AIWorldGenerator.cpp
-        src/ai/AIWorldGenerator.h
         src/resources/common/OrientationReaderWriter.cpp
         src/resources/common/OrientationReaderWriter.h
         src/resources/light/LightReaderWriter.cpp
@@ -55,14 +53,17 @@ set(SOURCE_FILES
         src/resources/Map.h
         src/MapHandler.cpp
         src/MapHandler.h
-        src/UrchinMapHandler.h src/resources/ai/SceneAI.cpp
+        src/UrchinMapHandler.h
+        src/resources/ai/SceneAI.cpp
         src/resources/ai/SceneAI.h
         src/resources/ai/NavMeshConfigWriter.cpp
         src/resources/ai/NavMeshConfigWriter.h
         src/resources/terrain/TerrainReaderWriter.cpp
         src/resources/terrain/TerrainReaderWriter.h
         src/resources/terrain/SceneTerrain.cpp
-        src/resources/terrain/SceneTerrain.h)
+        src/resources/terrain/SceneTerrain.h
+        src/resources/object/aiobject/AIObjectBuilder.cpp
+        src/resources/object/aiobject/AIObjectBuilder.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src)
 

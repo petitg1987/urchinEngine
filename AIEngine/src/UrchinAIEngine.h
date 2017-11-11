@@ -5,6 +5,7 @@
 
 #include "input/AIWorld.h"
 #include "input/AIObject.h"
+#include "input/AIShape.h"
 
 #include "path/navmesh/NavMeshGenerator.h"
 #include "path/navmesh/model/NavMeshConfig.h"

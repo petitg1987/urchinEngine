@@ -30,6 +30,9 @@ namespace urchin
 			const Matrix4<T> &getOrientationMatrix() const;
 			const Matrix4<T> &getScaleMatrix() const;
 			const Matrix4<T> &getTransformMatrix() const;
+
+			Transform<T> operator *(const Transform<T> &) const;
+			const Transform<T>& operator *=(const Transform<T> &);
 		
 		private:
 			Point3<T> pPosition;

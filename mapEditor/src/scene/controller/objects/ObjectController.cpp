@@ -63,7 +63,7 @@ namespace urchin
 		std::shared_ptr<const CollisionShape3D> bodyShape = DefaultBodyShapeCreator(constSceneObject).createDefaultBodyShape(CollisionShape3D::ShapeType::BOX_SHAPE, false);
 
 		auto *rigidBody = new RigidBody(bodyId, modelTransform, bodyShape);
-		sceneObject->setRigidBody(rigidBody);
+		sceneObject->setupInteractiveBody(rigidBody);
 
 		markModified();
 	}
@@ -78,7 +78,7 @@ namespace urchin
 	void ObjectController::removeBody(const SceneObject *constSceneObject)
 	{
 		SceneObject *sceneObject = findSceneObject(constSceneObject);
-		sceneObject->setRigidBody(nullptr);
+		sceneObject->setupInteractiveBody(nullptr);
 
 		markModified();
 	}
@@ -144,7 +144,7 @@ namespace urchin
 		newRigidBody->setFriction(rigidBody->getFriction());
 		newRigidBody->setRollingFriction(rigidBody->getRollingFriction());
 
-		sceneObject->setRigidBody(newRigidBody);
+		sceneObject->setupInteractiveBody(newRigidBody);
 
 		markModified();
 		return sceneObject;

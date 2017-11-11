@@ -123,7 +123,7 @@ namespace urchin
 		this->setNeedFullRefresh(true);
 	}
 
-	const Transform<float> &AbstractBody::getTransform() const
+	Transform<float> AbstractBody::getTransform() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
