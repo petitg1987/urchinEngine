@@ -14,7 +14,6 @@
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
 #include "physics/object/SupportPointTest.h"
-#include "physics/algorithm/broadphase/SweepAndPruneTest.h"
 #include "physics/algorithm/gjk/GJKBoxTest.h"
 #include "physics/algorithm/gjk/GJKConvexHullTest.h"
 #include "physics/algorithm/gjk/GJKSphereTest.h"
@@ -64,8 +63,6 @@ int main()
 	runner.addTest(SupportPointTest::suite());
 
 	//physics - algorithm
-	runner.addTest(SweepAndPruneTest::suite());
-
 	runner.addTest(GJKSphereTest::suite());
 	runner.addTest(GJKBoxTest::suite());
 	runner.addTest(GJKConvexHullTest::suite());

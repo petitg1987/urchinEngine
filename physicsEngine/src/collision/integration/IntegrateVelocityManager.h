@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "body/BodyManager.h"
-#include "collision/ManifoldResult.h"
+#include "collision/OverlappingPair.h"
 
 namespace urchin
 {
@@ -18,11 +18,11 @@ namespace urchin
 		public:
 			explicit IntegrateVelocityManager(const BodyManager *);
 
-			void integrateVelocity(float, std::vector<ManifoldResult> &, const Vector3<float> &);
+			void integrateVelocity(float, const std::vector<OverlappingPair *> &, const Vector3<float> &);
 
 		private:
 			void applyGravityForce(const Vector3<float> &);
-			void applyRollingFrictionResistanceForce(float , std::vector<ManifoldResult> &);
+			void applyRollingFrictionResistanceForce(float , const std::vector<OverlappingPair *> &);
 
 			const BodyManager *bodyManager;
 	};

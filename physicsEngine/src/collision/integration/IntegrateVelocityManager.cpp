@@ -15,11 +15,11 @@ namespace urchin
 	 * @param manifoldResults Constraints to solve
 	 * @param gravity Gravity expressed in units/s^2
 	 */
-	void IntegrateVelocityManager::integrateVelocity(float dt, std::vector<ManifoldResult> &manifoldResult, const Vector3<float> &gravity)
+	void IntegrateVelocityManager::integrateVelocity(float dt, const std::vector<OverlappingPair *> &overlappingPairs, const Vector3<float> &gravity)
 	{
 		//apply internal forces
 		applyGravityForce(gravity);
-		applyRollingFrictionResistanceForce(dt, manifoldResult);
+		applyRollingFrictionResistanceForce(dt, overlappingPairs);
 
 		//integrate velocities and apply damping
 		for (auto abstractBody : bodyManager->getWorkBodies())
@@ -57,19 +57,15 @@ namespace urchin
 		}
 	}
 
-	/**
-	 * @param dt Delta of time (sec.) between two simulation steps
-	 * @param manifoldResults Constraints to solve
-	 */
-	void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, std::vector<ManifoldResult> &manifoldResults)
+	void IntegrateVelocityManager::applyRollingFrictionResistanceForce(float dt, const std::vector<OverlappingPair *> &overlappingPairs)
 	{
-		for (const auto &result : manifoldResults)
+		for (const auto &overlappingPair : overlappingPairs)
 		{
-			float rollingFriction = std::max(result.getBody1()->getRollingFriction(), result.getBody2()->getRollingFriction());
+			float rollingFriction = std::max(overlappingPair->getBody1()->getRollingFriction(), overlappingPair->getBody2()->getRollingFriction());
 
 			for(unsigned int bodyIndex=0; bodyIndex<2; ++bodyIndex)
 			{
-				WorkRigidBody *body =  WorkRigidBody::upCast(result.getBody(bodyIndex));
+				WorkRigidBody *body = WorkRigidBody::upCast(overlappingPair->getBody(bodyIndex));
 				if(body!=nullptr && body->isActive())
 				{
 					Matrix3<float> inertia = body->getInvWorldInertia().inverse();

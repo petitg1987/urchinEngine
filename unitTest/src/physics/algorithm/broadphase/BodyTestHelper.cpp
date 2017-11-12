@@ -3,16 +3,6 @@
 #include "physics/algorithm/broadphase/BodyTestHelper.h"
 using namespace urchin;
 
-BodyTestHelper::BodyTestHelper()
-{
-
-}
-
-BodyTestHelper::~BodyTestHelper()
-{
-
-}
-
 std::unique_ptr<WorkRigidBody> BodyTestHelper::createCubeRigidBody(const Point3<float> &position, float boxSize)
 {
 	float halfBoxSize = boxSize / 2.0f;

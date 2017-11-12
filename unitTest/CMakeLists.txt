@@ -32,8 +32,6 @@ set(SOURCE_FILES
         src/math/geometry/SortPointsTest.h
         src/physics/algorithm/broadphase/BodyTestHelper.cpp
         src/physics/algorithm/broadphase/BodyTestHelper.h
-        src/physics/algorithm/broadphase/SweepAndPruneTest.cpp
-        src/physics/algorithm/broadphase/SweepAndPruneTest.h
         src/physics/algorithm/epa/EPABoxTest.cpp
         src/physics/algorithm/epa/EPABoxTest.h
         src/physics/algorithm/epa/EPAConvexHullTest.cpp

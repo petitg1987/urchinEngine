@@ -27,12 +27,6 @@ set(SOURCE_FILES
         src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h
         src/collision/broadphase/aabbtree/BodyNodeData.cpp
         src/collision/broadphase/aabbtree/BodyNodeData.h
-        src/collision/broadphase/sweepandprune/BodyBox.cpp
-        src/collision/broadphase/sweepandprune/BodyBox.h
-        src/collision/broadphase/sweepandprune/BodyEndPoint.cpp
-        src/collision/broadphase/sweepandprune/BodyEndPoint.h
-        src/collision/broadphase/sweepandprune/SweepAndPrune.cpp
-        src/collision/broadphase/sweepandprune/SweepAndPrune.h
         src/collision/broadphase/BroadPhaseAlgorithm.cpp
         src/collision/broadphase/BroadPhaseAlgorithm.h
         src/collision/broadphase/BroadPhaseManager.cpp

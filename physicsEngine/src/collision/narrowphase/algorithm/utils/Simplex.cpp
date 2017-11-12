@@ -118,6 +118,11 @@ namespace urchin
 	template<class T> void Simplex<T>::updateSimplex()
 	{
 		T barycentrics[4];
+		barycentrics[0] = 0.0;
+		barycentrics[1] = 0.0;
+		barycentrics[2] = 0.0;
+		barycentrics[3] = 0.0;
+
 
 		if(getSize() == 1)
 		{ //simplex is a point

@@ -12,8 +12,8 @@ class BodyTestHelper
 		static std::unique_ptr<WorkRigidBody> createCubeRigidBody(const Point3<float> &, float);
 
 	private:
-		BodyTestHelper();
-		~BodyTestHelper();
+		BodyTestHelper() = default;
+		~BodyTestHelper() = default;
 };
 
 #endif

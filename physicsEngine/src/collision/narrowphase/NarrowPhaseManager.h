@@ -33,7 +33,7 @@ namespace urchin
 
 		private:
 			void processOverlappingPairs(const std::vector<OverlappingPair *> &, std::vector<ManifoldResult> &);
-			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *overlappingPair);
+			std::shared_ptr<CollisionAlgorithm> retrieveCollisionAlgorithm(OverlappingPair *);
 
 			void processPredictiveContacts(float, std::vector<ManifoldResult> &);
 			void handleContinuousCollision(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &, std::vector<ManifoldResult> &);

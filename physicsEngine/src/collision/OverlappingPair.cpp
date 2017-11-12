@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "collision/OverlappingPair.h"
 
 namespace urchin
@@ -22,6 +24,18 @@ namespace urchin
 			collisionAlgorithm(nullptr)
 	{
 
+	}
+
+	/**
+ 	 * @param index Index of body to return. Index must be '0' for body1 or '1' for body2.
+ 	 */
+	AbstractWorkBody *OverlappingPair::getBody(unsigned int index) const
+	{
+		#ifdef _DEBUG
+			assert(index==0 || index==1);
+		#endif
+
+		return index==0 ? body1 : body2;
 	}
 
 	AbstractWorkBody *OverlappingPair::getBody1() const
@@ -61,7 +75,7 @@ namespace urchin
 
 	void OverlappingPair::setCollisionAlgorithm(std::shared_ptr<CollisionAlgorithm> collisionAlgorithm)
 	{
-		this->collisionAlgorithm = collisionAlgorithm;
+		this->collisionAlgorithm = std::move(collisionAlgorithm);
 	}
 
 	std::shared_ptr<CollisionAlgorithm> OverlappingPair::getCollisionAlgorithm() const

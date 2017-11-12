@@ -52,7 +52,7 @@ namespace urchin
 		const std::vector<OverlappingPair *> &overlappingPairs = broadPhaseManager->computeOverlappingPairs();
 
 		//integrate bodies velocities (gravity, external forces...)
-		integrateVelocityManager->integrateVelocity(dt, manifoldResults, gravity);
+		integrateVelocityManager->integrateVelocity(dt, overlappingPairs, gravity);
 
 		//narrow phase: check if pair of bodies colliding and update collision constraints
 		manifoldResults.clear();
