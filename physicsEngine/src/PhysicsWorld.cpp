@@ -11,7 +11,7 @@ namespace urchin
 			physicsSimulationThread(nullptr),
 			physicsSimulationStopper(false),
 			timeStep(0.0f),
-			paused(false),
+			paused(true),
 			bodyManager(new BodyManager()),
 			collisionWorld(new CollisionWorld(bodyManager))
 	{
@@ -125,7 +125,7 @@ namespace urchin
 	 * Launch the physics simulation in new thread
 	 * @param timeStep Frequency updates expressed in second
 	 */
-	void PhysicsWorld::start(float timeStep)
+	void PhysicsWorld::start(float timeStep, bool startPaused)
 	{
 		if(physicsSimulationThread!=nullptr)
 		{
@@ -133,6 +133,7 @@ namespace urchin
 		}
 
 		this->timeStep = timeStep;
+		this->paused = startPaused;
 
 		physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
 	}

@@ -44,12 +44,12 @@ namespace urchin
 
 		renderer3d->addModel(model);
 
-		if(physicsWorld!=nullptr)
+		if(physicsWorld!=nullptr && rigidBody!=nullptr)
 		{
 			physicsWorld->addBody(rigidBody);
 		}
 
-		if(aiManager!=nullptr)
+		if(aiManager!=nullptr && aiObject!=nullptr)
 		{
 			aiManager->addObject(aiObject);
 		}
@@ -141,7 +141,7 @@ namespace urchin
 		deleteRigidBody();
 
 		this->rigidBody = rigidBody;
-		if(physicsWorld!=nullptr)
+		if(physicsWorld!=nullptr && rigidBody!=nullptr)
 		{
 			physicsWorld->addBody(rigidBody);
 		}
@@ -151,11 +151,17 @@ namespace urchin
 	{
 		deleteAIObjects();
 
-		this->aiObject = AIObjectBuilder::buildAIObject(rigidBody->getId(), rigidBody->getScaledShape(), rigidBody->getTransform());
-		if(aiManager!=nullptr)
+		if(rigidBody==nullptr)
 		{
-			aiManager->addObject(aiObject);
+			this->aiObject = nullptr;
+		} else {
+			this->aiObject = AIObjectBuilder::buildAIObject(rigidBody->getId(), rigidBody->getScaledShape(), rigidBody->getTransform());
+			if(aiManager!=nullptr)
+			{
+				aiManager->addObject(aiObject);
+			}
 		}
+
 	}
 
 	void SceneObject::deleteRigidBody()

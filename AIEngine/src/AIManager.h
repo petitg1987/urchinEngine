@@ -29,7 +29,7 @@ namespace urchin
 
             void addPathRequest(const std::shared_ptr<PathRequest> &);
 
-            void start(float);
+            void start(float, bool startPaused = false);
             void pause();
             void play();
             bool isPaused() const;

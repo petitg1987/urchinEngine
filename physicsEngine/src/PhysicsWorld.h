@@ -38,7 +38,7 @@ namespace urchin
 			void setGravity(const Vector3<float> &);
 			Vector3<float> getGravity() const;
 
-			void start(float);
+			void start(float, bool startPaused = false);
 			void pause();
 			void play();
 			bool isPaused() const;

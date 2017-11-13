@@ -52,9 +52,13 @@ namespace urchin
 			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
 			initializeScene();
-			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
+
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
+			aiManager->pause();
+			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
 			mapHandler->loadMapFromFile(relativeMapFilename);
+			aiManager->play();
+
 			isInitialized = true;
 		}catch(std::exception &e)
 		{
@@ -74,6 +78,7 @@ namespace urchin
 
 			initializeScene();
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
+
 			isInitialized = true;
 		}catch(std::exception &e)
 		{

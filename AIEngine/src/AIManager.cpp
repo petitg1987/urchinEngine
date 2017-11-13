@@ -11,7 +11,7 @@ namespace urchin
             aiSimulationThread(nullptr),
             aiSimulationStopper(false),
             timeStep(0),
-            paused(false),
+            paused(true),
             navMeshGenerator(new NavMeshGenerator())
     {
         NumericalCheck::instance()->perform();
@@ -56,7 +56,7 @@ namespace urchin
      * Launch the AI simulation in new thread
      * @param timeStep Frequency updates expressed in second
      */
-    void AIManager::start(float timeStep)
+    void AIManager::start(float timeStep, bool startPaused)
     {
         if(aiSimulationThread!=nullptr)
         {
@@ -64,6 +64,7 @@ namespace urchin
         }
 
         this->timeStep = timeStep;
+        this->paused = startPaused;
 
         aiSimulationThread = new std::thread(&AIManager::startAIUpdate, this);
     }

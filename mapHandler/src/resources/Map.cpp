@@ -42,6 +42,16 @@ namespace urchin
 
 	void Map::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
+		if(physicsWorld!=nullptr && !physicsWorld->isPaused())
+		{ //to avoid miss of collision between objects just loaded and on objects not loaded yet
+			throw std::runtime_error("Physics world should be paused while loading map.");
+		}
+
+        if(aiManager!=nullptr && !aiManager->isPaused())
+        { //to avoid compute path based on a world with missing objects
+            throw std::runtime_error("AI manager should be paused while loading map.");
+        }
+
 		loadSceneObjectsFrom(chunk, xmlParser);
 		loadSceneLightsFrom(chunk, xmlParser);
 		loadSceneTerrainFrom(chunk, xmlParser);
