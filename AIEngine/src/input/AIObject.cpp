@@ -18,11 +18,11 @@ namespace urchin
 
 	}
 
-	void AIObject::setTransform(const Transform<float> &transform)
+	void AIObject::updateTransform(const Point3<float> &position, const Quaternion<float> &orientation)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 
-		this->transform = transform;
+		this->transform = Transform<float>(position, orientation, 1.0);
 	}
 
 	const std::string &AIObject::getName() const

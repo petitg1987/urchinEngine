@@ -54,15 +54,14 @@ namespace urchin
 			if(body1->isActive() || body2->isActive())
 			{
 				std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
-				const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 
 				CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getPhysicsTransform());
 				CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
 				collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
 
-				if(constCollisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0)
+				if(collisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0)
 				{
-					manifoldResults.push_back(constCollisionAlgorithm->getConstManifoldResult());
+					manifoldResults.push_back(collisionAlgorithm->getConstManifoldResult());
 				}
 			}
 		}

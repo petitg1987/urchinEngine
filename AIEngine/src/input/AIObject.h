@@ -17,7 +17,7 @@ namespace urchin
 			AIObject(std::string, const std::shared_ptr<AIShape> &, const Transform<float> &);
 			AIObject(std::string, const std::vector<std::shared_ptr<AIShape>> &, const Transform<float> &);
 
-			void setTransform(const Transform<float> &);
+			void updateTransform(const Point3<float> &, const Quaternion<float> &);
 
 			const std::string &getName() const;
 			const std::vector<std::shared_ptr<AIShape>> &getShapes() const;

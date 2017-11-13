@@ -23,7 +23,7 @@ namespace urchin
 
 			void notify(Observable *, int) override;
 
-			const std::vector<ManifoldResult> &getManifoldResults() const;
+			std::vector<ManifoldResult> getManifoldResults() const;
 
 		private:
 			CollisionWorld *collisionWorld;

@@ -322,7 +322,7 @@ namespace urchin
 				Transform<float> newTransform = rigidBody->getTransform(); //copy to avoid several calls on this slow method
 
 				sceneObject->getModel()->setTransform(newTransform);
-				sceneObject->getAIObject()->setTransform(newTransform);
+				sceneObject->getAIObject()->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
 			}
 		}
 	}

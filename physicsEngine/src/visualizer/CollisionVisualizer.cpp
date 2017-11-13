@@ -40,7 +40,7 @@ namespace urchin
 		}
 	}
 
-	const std::vector<ManifoldResult> &CollisionVisualizer::getManifoldResults() const
+	std::vector<ManifoldResult> CollisionVisualizer::getManifoldResults() const
 	{
 		std::lock_guard<std::mutex> lock(visualizerDataMutex);
 
