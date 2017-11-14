@@ -13,8 +13,9 @@
 namespace urchin
 {
 
-	PolyhedronFaceIndex::PolyhedronFaceIndex(unsigned int polyhedronIndex, unsigned int faceIndex) :
-			polyhedronIndex(polyhedronIndex), faceIndex(faceIndex)
+	PolyhedronFaceIndex::PolyhedronFaceIndex(it_polyhedron polyhedronRef, unsigned int faceIndex) :
+            polyhedronRef(polyhedronRef),
+            faceIndex(faceIndex)
 	{
 
 	}
@@ -42,21 +43,20 @@ namespace urchin
         return NavMesh(*navMesh);
     }
 
-	std::shared_ptr<NavMesh> NavMeshGenerator::generate(const AIWorld &aiWorld)
+	std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
 	{
 		#ifdef _DEBUG
 //			auto frameStartTime = std::chrono::high_resolution_clock::now();
         #endif
 
-        std::lock_guard<std::mutex> lock(navMeshMutex);
+		updateExpandedPolyhedrons(aiWorld);
+		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces();
 
-		std::vector<Polyhedron> expandedPolyhedrons = createExpandedPolyhedrons(aiWorld);
-		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces(expandedPolyhedrons);
+		std::lock_guard<std::mutex> lock(navMeshMutex);
         navMesh.reset(new NavMesh());
-
         for (const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
         {
-            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polyhedronWalkableFace, expandedPolyhedrons);
+            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polyhedronWalkableFace);
             for (const auto &navPolygon : navPolygons)
             {
                 navMesh->addPolygon(navPolygon);
@@ -72,59 +72,57 @@ namespace urchin
 		return navMesh;
 	}
 
-	std::vector<Polyhedron> NavMeshGenerator::createExpandedPolyhedrons(const AIWorld &aiWorld) const
+	void NavMeshGenerator::updateExpandedPolyhedrons(AIWorld &aiWorld)
 	{
-        std::vector<std::shared_ptr<AIObject>> aiObjects = aiWorld.getObjects(); //copy to avoid several calls on this slow method
-
-		std::vector<Polyhedron> polyhedrons;
-        polyhedrons.reserve(aiObjects.size());
-
-		for(auto &aiObject : aiObjects)
+		for(auto &aiObjectToRemove : aiWorld.getObjectsToRemove())
 		{
-			unsigned int aiShapeIndex = 0;
-			for(auto &aiShape : aiObject->getShapes())
-			{
-                std::string shapeName = aiObject->getName() + "[" + std::to_string(aiShapeIndex) + "]";
-				std::unique_ptr<ConvexObject3D<float>> object;
-				if(aiShape->hasLocalTransform())
-				{
-					Transform<float> shapeTransform = aiObject->getTransform() * aiShape->getLocalTransform();
-					object = aiShape->getShape()->toConvexObject(shapeTransform);
-				}else
-				{
-					object = aiShape->getShape()->toConvexObject(aiObject->getTransform());
-				}
+			expandedPolyhedrons.erase(aiObjectToRemove);
+		}
+		aiWorld.removeObjectsTagged();
 
-				if(auto box = dynamic_cast<OBBox<float>*>(object.get()))
+		for(auto &aiObject : aiWorld.getObjects())
+		{
+			if(!aiObject->isToRebuild())
+			{
+				continue;
+			}
+
+			unsigned int aiShapeIndex = 0;
+			for (auto &aiShape : aiObject->getShapes())
+			{
+				std::string shapeName = aiObject->getName() + "[" + std::to_string(aiShapeIndex) + "]";
+				Transform<float> shapeTransform = aiShape->hasLocalTransform() ? aiObject->getTransform() * aiShape->getLocalTransform() : aiObject->getTransform();
+				std::unique_ptr<ConvexObject3D<float>> object = aiShape->getShape()->toConvexObject(shapeTransform);
+
+				if (auto box = dynamic_cast<OBBox<float> *>(object.get()))
 				{
-					polyhedrons.push_back(createPolyhedronFor(shapeName, box));
-				}else if(auto capsule = dynamic_cast<Capsule<float>*>(object.get()))
+					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, box)));
+				} else if (auto capsule = dynamic_cast<Capsule<float> *>(object.get()))
 				{
-					polyhedrons.push_back(createPolyhedronFor(shapeName, capsule));
-				}else if(auto cone = dynamic_cast<Cone<float>*>(object.get()))
+					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, capsule)));
+				} else if (auto cone = dynamic_cast<Cone<float> *>(object.get()))
 				{
-					polyhedrons.push_back(createPolyhedronFor(shapeName, cone));
-				}else if(auto convexHull = dynamic_cast<ConvexHull3D<float>*>(object.get()))
+					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, cone)));
+				} else if (auto convexHull = dynamic_cast<ConvexHull3D<float> *>(object.get()))
 				{
-					polyhedrons.push_back(createPolyhedronFor(shapeName, convexHull));
-				}else if(auto cylinder = dynamic_cast<Cylinder<float>*>(object.get()))
+					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, convexHull)));
+				} else if (auto cylinder = dynamic_cast<Cylinder<float> *>(object.get()))
 				{
-					polyhedrons.push_back(createPolyhedronFor(shapeName, cylinder));
-				}else if(auto sphere = dynamic_cast<Sphere<float>*>(object.get()))
+					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, cylinder)));
+				} else if (auto sphere = dynamic_cast<Sphere<float> *>(object.get()))
 				{
-					polyhedrons.push_back(createPolyhedronFor(shapeName, sphere));
-				}else
+					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, sphere)));
+				} else
 				{
 					throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));
 				}
 
+				expandedPolyhedrons.at(aiObject).expand(navMeshConfig->getAgent());
 				aiShapeIndex++;
 			}
+
+			aiObject->markRebuilt();
 		}
-
-		expandPolyhedrons(polyhedrons);
-
-		return polyhedrons;
 	}
 
 	/**
@@ -261,22 +259,14 @@ namespace urchin
 		return polyhedron;
 	}
 
-	void NavMeshGenerator::expandPolyhedrons(std::vector<Polyhedron> &polyhedrons) const
-	{
-		for(auto &polyhedron : polyhedrons)
-		{
-			polyhedron.expand(navMeshConfig->getAgent());
-		}
-	}
-
-	std::vector<PolyhedronFaceIndex> NavMeshGenerator::findWalkableFaces(const std::vector<Polyhedron> &expandedPolyhedrons) const
+	std::vector<PolyhedronFaceIndex> NavMeshGenerator::findWalkableFaces() const
 	{
 		std::vector<PolyhedronFaceIndex> walkableFaces;
 		walkableFaces.reserve(expandedPolyhedrons.size()/2); //estimated memory size
 
-		for(unsigned int polyhedronIndex=0; polyhedronIndex<expandedPolyhedrons.size(); ++polyhedronIndex)
+        for(auto itPolyhedron = expandedPolyhedrons.begin(); itPolyhedron!=expandedPolyhedrons.end(); ++itPolyhedron)
 		{
-			const Polyhedron &expandedPolyhedron = expandedPolyhedrons[polyhedronIndex];
+			const Polyhedron &expandedPolyhedron = itPolyhedron->second;
 			if(expandedPolyhedron.isWalkableCandidate())
 			{
 				for(unsigned int faceIndex=0; faceIndex<expandedPolyhedron.getFaces().size(); ++faceIndex)
@@ -285,7 +275,7 @@ namespace urchin
 
 					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig->getMaxSlope())
 					{
-						walkableFaces.emplace_back(PolyhedronFaceIndex(polyhedronIndex, faceIndex));
+						walkableFaces.emplace_back(PolyhedronFaceIndex(itPolyhedron, faceIndex));
 					}
 				}
 			}
@@ -294,16 +284,16 @@ namespace urchin
 		return walkableFaces;
 	}
 
-	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace, const std::vector<Polyhedron> &expandedPolyhedrons) const
+	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace) const
 	{
-		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
+		const Polyhedron &polyhedron = polyhedronWalkableFace.polyhedronRef->second;
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
 
 		std::string walkableName = polyhedron.getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
         std::vector<bool> isExternalPoints(walkableFace.getCcwPoints().size(), true);
         std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints()))};
 
-        auto obstaclePolygons = computeObstacles(expandedPolyhedrons, polyhedronWalkableFace);
+        auto obstaclePolygons = computeObstacles(polyhedronWalkableFace);
 		std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 		remainingObstaclePolygons.reserve(2); //estimated memory size
 
@@ -398,17 +388,17 @@ namespace urchin
 		return reverseFlatPoints;
 	}
 
-	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const std::vector<Polyhedron> &expandedPolyhedrons, const PolyhedronFaceIndex &polyhedronWalkableFace) const
+	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const PolyhedronFaceIndex &polyhedronWalkableFace) const
 	{
-		const Polyhedron &polyhedron = expandedPolyhedrons[polyhedronWalkableFace.polyhedronIndex];
+		const Polyhedron &polyhedron = polyhedronWalkableFace.polyhedronRef->second;
 		const PolyhedronFace &walkableFace = polyhedron.getFace(polyhedronWalkableFace.faceIndex);
 
 		std::vector<CSGPolygon<float>> holePolygons;
-		for(unsigned int i=0; i<expandedPolyhedrons.size(); ++i)
-		{
-			if(i!=polyhedronWalkableFace.polyhedronIndex && expandedPolyhedrons[i].isObstacleCandidate())
+        for (const auto &expandedPolyhedron : expandedPolyhedrons)
+        {
+			if(expandedPolyhedron.first!=polyhedronWalkableFace.polyhedronRef->first && expandedPolyhedron.second.isObstacleCandidate())
 			{
-				CSGPolygon<float> footprintPolygon = computePolyhedronFootprint(expandedPolyhedrons[i], walkableFace);
+				CSGPolygon<float> footprintPolygon = computePolyhedronFootprint(expandedPolyhedron.second, walkableFace);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
 					holePolygons.push_back(footprintPolygon);

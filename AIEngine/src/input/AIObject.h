@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <mutex>
+#include <atomic>
 
 #include "UrchinCommon.h"
 #include "input/AIShape.h"
@@ -18,6 +19,8 @@ namespace urchin
 			AIObject(std::string, const std::vector<std::shared_ptr<AIShape>> &, const Transform<float> &);
 
 			void updateTransform(const Point3<float> &, const Quaternion<float> &);
+			bool isToRebuild() const;
+			void markRebuilt();
 
 			const std::string &getName() const;
 			const std::vector<std::shared_ptr<AIShape>> &getShapes() const;
@@ -25,6 +28,7 @@ namespace urchin
 
 		private:
 			mutable std::mutex mutex;
+			std::atomic_bool bToRebuild;
 
 			std::string name;
 			std::vector<std::shared_ptr<AIShape>> shapes;

@@ -18,10 +18,14 @@ namespace urchin
 
 			std::vector<std::shared_ptr<AIObject>> getObjects() const;
 
+			std::vector<std::shared_ptr<AIObject>> getObjectsToRemove() const;
+			void removeObjectsTagged();
+
 		private:
 			mutable std::mutex mutex;
 
 			std::vector<std::shared_ptr<AIObject>> objects;
+			std::vector<std::shared_ptr<AIObject>> objectsToRemove;
 	};
 
 }

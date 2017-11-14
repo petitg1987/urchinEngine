@@ -40,6 +40,8 @@
 ############################################
 # Bugs :
 ############################################
+- SHADOW
+    - (1) Rounded objects (sphere...) have faces in the dark while facing to light
 - AMBIENT OCCLUSION
 	- (2) In a wall corner, move camera to bottom or top: AO is less intensive
 	- (2) Blur is not well smooth but has steps
