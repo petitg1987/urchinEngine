@@ -96,22 +96,22 @@ namespace urchin
 
 				if (auto box = dynamic_cast<OBBox<float> *>(object.get()))
 				{
-					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, box)));
+					expandedPolyhedrons[aiObject] = createPolyhedronFor(shapeName, box);
 				} else if (auto capsule = dynamic_cast<Capsule<float> *>(object.get()))
 				{
-					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, capsule)));
+					expandedPolyhedrons[aiObject] = createPolyhedronFor(shapeName, capsule);
 				} else if (auto cone = dynamic_cast<Cone<float> *>(object.get()))
 				{
-					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, cone)));
+					expandedPolyhedrons[aiObject] = createPolyhedronFor(shapeName, cone);
 				} else if (auto convexHull = dynamic_cast<ConvexHull3D<float> *>(object.get()))
 				{
-					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, convexHull)));
+					expandedPolyhedrons[aiObject] = createPolyhedronFor(shapeName, convexHull);
 				} else if (auto cylinder = dynamic_cast<Cylinder<float> *>(object.get()))
 				{
-					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, cylinder)));
+					expandedPolyhedrons[aiObject] = createPolyhedronFor(shapeName, cylinder);
 				} else if (auto sphere = dynamic_cast<Sphere<float> *>(object.get()))
 				{
-					expandedPolyhedrons.insert(std::make_pair(aiObject, createPolyhedronFor(shapeName, sphere)));
+					expandedPolyhedrons[aiObject] = createPolyhedronFor(shapeName, sphere);
 				} else
 				{
 					throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));

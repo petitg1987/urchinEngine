@@ -6,6 +6,13 @@
 namespace urchin
 {
 
+	Polyhedron::Polyhedron() :
+			walkableCandidate(true),
+			obstacleCandidate(true)
+	{
+
+	}
+
 	/**
 	 * @param faces Indexed faces of the polyhedron. Faces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
 	 * @param points All points of the polyhedrons

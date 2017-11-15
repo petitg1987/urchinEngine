@@ -16,6 +16,7 @@ namespace urchin
 	class Polyhedron
 	{
 		public:
+			Polyhedron();
 			Polyhedron(const std::string &, std::vector<PolyhedronFace> &, const std::vector<PolyhedronPoint> &);
 
 			const std::string getName() const;
