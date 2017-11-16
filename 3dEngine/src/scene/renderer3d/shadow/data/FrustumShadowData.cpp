@@ -3,19 +3,10 @@
 namespace urchin
 {
 
-	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex, float shadowMapFrequencyUpdate) :
+	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex) :
 			frustumSplitIndex(frustumSplitIndex),
 			shadowCasterReceiverBoxUpdated(false),
-			bIsModelsMoved(false),
-			bIsDifferentModels(false),
-			modelsInverseFrequencyUpdate(round(1.0f/shadowMapFrequencyUpdate)),
-			modelsMovedCount(0),
-			modelsRequiredUpdate(false)
-	{
-
-	}
-
-	FrustumShadowData::~FrustumShadowData()
+            modelsRequireUpdate(false)
 	{
 
 	}
@@ -65,46 +56,24 @@ namespace urchin
 	 */
 	void FrustumShadowData::updateModels(const std::set<Model *> &models)
 	{
-		bIsModelsMoved = false;
-		bIsDifferentModels = false;
+        modelsRequireUpdate = false;
 
-		for(std::set<Model *>::const_iterator it = models.begin(); it!=models.end(); ++it)
-		{
-			Model *model = *it;
-			if(model->isMovingInOctree() || model->isAnimate())
-			{
-				bIsModelsMoved = true;
-			}
-		}
-
-		if(models!=this->models)
-		{ //models have been created or deleted OR models have moved outside the frustum split OR models have moved inside the frustum split
-			bIsDifferentModels = true;
-		}
-
-		updateModelsRequiredUpdateFlag();
+        if(models!=this->models)
+        {
+            modelsRequireUpdate = true;
+        }else
+        {
+            for (auto model : models)
+            {
+                if(model->isMovingInOctree() || model->isAnimate())
+                {
+                    modelsRequireUpdate = true;
+                    break;
+                }
+            }
+        }
 
 		this->models = models;
-	}
-
-	void FrustumShadowData::updateModelsRequiredUpdateFlag()
-	{
-		if(bIsDifferentModels)
-		{
-			modelsRequiredUpdate = true;
-		}else
-		{
-			modelsRequiredUpdate = bIsModelsMoved;
-
-			if(bIsModelsMoved)
-			{
-				modelsMovedCount++;
-				if(modelsMovedCount % modelsInverseFrequencyUpdate!=0)
-				{
-					modelsRequiredUpdate = false;
-				}
-			}
-		}
 	}
 
 	/**
@@ -115,21 +84,8 @@ namespace urchin
 		return models;
 	}
 
-	bool FrustumShadowData::isModelsMoved() const
-	{
-		return bIsModelsMoved;
-	}
-
-	bool FrustumShadowData::isDifferentModels() const
-	{
-		return bIsDifferentModels;
-	}
-
-	/**
-	 * Return true when it's necessary to update the shadow map
-	 */
 	bool FrustumShadowData::needShadowMapUpdate() const
 	{
-		return shadowCasterReceiverBoxUpdated || modelsRequiredUpdate;
+		return shadowCasterReceiverBoxUpdated || modelsRequireUpdate;
 	}
 }

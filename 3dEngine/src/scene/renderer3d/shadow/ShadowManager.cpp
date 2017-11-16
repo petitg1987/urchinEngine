@@ -18,7 +18,6 @@
 #define DEFAULT_SHADOW_MAP_RESOLUTION 1024
 #define DEFAULT_VIEWING_SHADOW_DISTANCE 75.0
 #define DEFAULT_BLUR_SHADOW BlurShadow::MEDIUM
-#define DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE 0.5
 
 namespace urchin
 {
@@ -31,7 +30,6 @@ namespace urchin
 			nbShadowMaps(DEFAULT_NUMBER_SHADOW_MAPS),
 			viewingShadowDistance(DEFAULT_VIEWING_SHADOW_DISTANCE),
 			blurShadow(DEFAULT_BLUR_SHADOW),
-			shadowMapFrequencyUpdate(DEFAULT_SHADOW_MAP_FREQUENCY_UPDATE),
 			sceneWidth(0),
 			sceneHeight(0),
 			shadowModelDisplayer(nullptr),
@@ -282,21 +280,6 @@ namespace urchin
 		return blurShadow;
 	}
 
-	/**
-	 * @param shadowMapFrequencyUpdate A value of 100% (1.0) represent an update of shadow maps at each frame.
-	 * A value of 25% (0.25) represent an update of shadow maps at each 4 frame.
-	 */
-	void ShadowManager::setShadowMapFrequencyUpdate(float shadowMapFrequencyUpdate)
-	{
-		this->shadowMapFrequencyUpdate = shadowMapFrequencyUpdate;
-		updateShadowLights();
-	}
-
-	float ShadowManager::getShadowMapFrequencyUpdate() const
-	{
-		return shadowMapFrequencyUpdate;
-	}
-
 	const std::vector<Frustum<float>> &ShadowManager::getSplittedFrustums() const
 	{
 		return splittedFrustums;
@@ -336,7 +319,7 @@ namespace urchin
 	{
 		light->addObserver(this, Light::LIGHT_MOVE);
 
-		shadowDatas[light] = new ShadowData(light, nbShadowMaps, shadowMapFrequencyUpdate);
+		shadowDatas[light] = new ShadowData(light, nbShadowMaps);
 
 		createShadowMaps(light);
 		updateViewMatrix(light);

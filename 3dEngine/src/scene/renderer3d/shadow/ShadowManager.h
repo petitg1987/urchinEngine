@@ -53,8 +53,6 @@ namespace urchin
 			float getViewingShadowDistance() const;
 			void setBlurShadow(BlurShadow);
 			BlurShadow getBlurShadow() const;
-			void setShadowMapFrequencyUpdate(float);
-			float getShadowMapFrequencyUpdate() const;
 
 			const std::vector<Frustum<float>> &getSplittedFrustums() const;
 			const ShadowData &getShadowData(const Light *) const;
@@ -100,7 +98,6 @@ namespace urchin
 			unsigned int nbShadowMaps;
 			float viewingShadowDistance;
 			BlurShadow blurShadow;
-			float shadowMapFrequencyUpdate;
 
 			//scene information
 			unsigned int sceneWidth, sceneHeight;

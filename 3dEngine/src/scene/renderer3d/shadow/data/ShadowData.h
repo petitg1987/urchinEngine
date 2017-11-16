@@ -19,7 +19,7 @@ namespace urchin
 	class ShadowData
 	{
 		public:
-			ShadowData(const Light *const, unsigned int, float);
+			ShadowData(const Light *, unsigned int);
 			~ShadowData();
 
 			void setFboID(unsigned int);
