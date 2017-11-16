@@ -14,7 +14,7 @@ namespace urchin
 {
 
     class Terrain
-    { //TODO handle in AI engine
+    {
         public:
             Terrain(std::unique_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &);
             ~Terrain();

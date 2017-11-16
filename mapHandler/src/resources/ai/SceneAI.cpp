@@ -1,6 +1,4 @@
 #include "SceneAI.h"
-
-#include <utility>
 #include "resources/ai/NavMeshConfigWriter.h"
 
 namespace urchin

@@ -58,12 +58,12 @@ float linearStep(float min, float max, float v){
 } 
 
 float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
-    float bias = #SHADOW_MAP_BIAS# * tan(acos(NdotL));
-    float shadowMapZBiase = shadowMapZ - bias;
-    float isInHardShadow = float(shadowMapZBiase <= moments.x);
+    float bias = max(#SHADOW_MAP_BIAS# * tan(acos(NdotL)), 0.00001);
+    float shadowMapZBias = shadowMapZ - bias;
+    float isInHardShadow = float(shadowMapZBias <= moments.x);
     
     float variance = moments.y - (moments.x*moments.x);
-    float d = moments.x - shadowMapZBiase;
+    float d = moments.x - shadowMapZBias;
     float pMax = variance / (variance + d*d);
     
     pMax = linearStep(0.75f, 1.0f, pMax); //reduce light bleeding
@@ -113,8 +113,8 @@ void main(){
 	fragColor = globalAmbient;
 	
 	if(hasAmbientOcclusion){
-		float ambienOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
-		fragColor -= vec4(ambienOcclusionFactor, ambienOcclusionFactor, ambienOcclusionFactor, 0.0f);
+		float ambientOcclusionFactor = texture2D(ambientOcclusionTex, textCoordinates).r;
+		fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
 	}
 
 	if(hasLighting){		

@@ -265,7 +265,7 @@ namespace urchin
 
 	void Map::addSceneTerrain(SceneTerrain *sceneTerrain)
 	{
-		sceneTerrain->setTerrainManagers(renderer3d, physicsWorld);
+		sceneTerrain->setTerrainManagers(renderer3d, physicsWorld, aiManager);
 		sceneTerrains.push_back(sceneTerrain);
 	}
 

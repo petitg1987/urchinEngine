@@ -23,6 +23,11 @@ namespace urchin
             }
 
             return std::make_shared<AIObject>(name, aiShapes, unscaledTransform);
+        }else if(scaledShape->isConcave())
+        {
+            //TODO build terrain shapes
+            std::vector<std::shared_ptr<AIShape>> aiShapes;
+            return std::make_shared<AIObject>(name, aiShapes, unscaledTransform);
         }
 
         throw std::invalid_argument("Unknown shape type category: " + std::to_string(scaledShape->getShapeType()));

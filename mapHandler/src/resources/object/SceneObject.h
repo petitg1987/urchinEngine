@@ -45,11 +45,11 @@ namespace urchin
 			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
-			void deleteRigidBody();
-			void deleteAIObjects();
-
 			void setupRigidBody(RigidBody *);
 			void setupAIObject(RigidBody *);
+
+			void deleteRigidBody();
+			void deleteAIObjects();
 
 			Renderer3d *renderer3d;
 			PhysicsWorld *physicsWorld;

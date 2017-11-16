@@ -2,12 +2,14 @@
 
 #include "SceneTerrain.h"
 #include "resources/terrain/TerrainReaderWriter.h"
+#include "utils/AIObjectBuilder.h"
 
 namespace urchin
 {
     SceneTerrain::SceneTerrain() :
             renderer3d(nullptr),
             physicsWorld(nullptr),
+            aiManager(nullptr),
             terrain(nullptr),
             rigidBody(nullptr)
     {
@@ -17,16 +19,10 @@ namespace urchin
     SceneTerrain::~SceneTerrain()
     {
         renderer3d->removeTerrain(terrain);
-        if(physicsWorld!=nullptr)
-        {
-            physicsWorld->removeBody(rigidBody);
-        }else
-        {
-            delete this->rigidBody;
-        }
+        deleteRigidBody();
     }
 
-    void SceneTerrain::setTerrainManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld)
+    void SceneTerrain::setTerrainManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager)
     {
         if(this->renderer3d!=nullptr)
         {
@@ -39,11 +35,18 @@ namespace urchin
 
         this->renderer3d = renderer3d;
         this->physicsWorld = physicsWorld;
+        this->aiManager = aiManager;
 
         renderer3d->addTerrain(terrain);
+
         if(physicsWorld!=nullptr)
         {
             physicsWorld->addBody(rigidBody);
+        }
+
+        if(aiManager!=nullptr && aiObject!=nullptr)
+        {
+            aiManager->addObject(aiObject);
         }
     }
 
@@ -57,7 +60,7 @@ namespace urchin
                                                                                          terrain->getMesh()->getXSize(),
                                                                                          terrain->getMesh()->getZSize());
         RigidBody *terrainRigidBody = new RigidBody(this->name, Transform<float>(terrain->getPosition()), collisionTerrainShape);
-        setRigidBody(terrainRigidBody);
+        setupInteractiveBody(terrainRigidBody);
     }
 
     void SceneTerrain::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
@@ -106,17 +109,57 @@ namespace urchin
         return rigidBody;
     }
 
-    void SceneTerrain::setRigidBody(RigidBody *rigidBody)
+    void SceneTerrain::setupInteractiveBody(RigidBody *rigidBody)
+    {
+        setupRigidBody(rigidBody);
+        setupAIObject(rigidBody);
+    }
+
+    void SceneTerrain::setupRigidBody(RigidBody *rigidBody)
+    {
+        deleteRigidBody();
+
+        this->rigidBody = rigidBody;
+        if(physicsWorld!=nullptr && rigidBody!=nullptr)
+        {
+            physicsWorld->addBody(rigidBody);
+        }
+    }
+
+    void SceneTerrain::setupAIObject(RigidBody *rigidBody)
+    {
+        deleteAIObjects();
+
+        if(rigidBody==nullptr)
+        {
+            this->aiObject = nullptr;
+        } else {
+            this->aiObject = AIObjectBuilder::buildAIObject(rigidBody->getId(), rigidBody->getScaledShape(), rigidBody->getTransform());
+            if(aiManager!=nullptr)
+            {
+                aiManager->addObject(aiObject);
+            }
+        }
+    }
+
+    void SceneTerrain::deleteRigidBody()
     {
         if(physicsWorld!=nullptr)
         {
-            physicsWorld->removeBody(this->rigidBody);
-            physicsWorld->addBody(rigidBody);
+            physicsWorld->removeBody(rigidBody);
         }else
         {
-            delete this->rigidBody;
+            delete rigidBody;
         }
 
-        this->rigidBody = rigidBody;
+        rigidBody = nullptr;
+    }
+
+    void SceneTerrain::deleteAIObjects()
+    {
+        if(aiManager!=nullptr)
+        {
+            aiManager->removeObject(aiObject);
+        }
     }
 }

@@ -4,7 +4,7 @@
 #include "SceneObject.h"
 #include "resources/object/ModelReaderWriter.h"
 #include "resources/object/RigidBodyReaderWriter.h"
-#include "resources/object/aiobject/AIObjectBuilder.h"
+#include "utils/AIObjectBuilder.h"
 
 namespace urchin
 {
@@ -161,7 +161,6 @@ namespace urchin
 				aiManager->addObject(aiObject);
 			}
 		}
-
 	}
 
 	void SceneObject::deleteRigidBody()
