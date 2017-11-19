@@ -14,14 +14,13 @@
 #include "path/navmesh/model/NavPolygon.h"
 #include "path/navmesh/polyhedron/Polyhedron.h"
 #include "path/navmesh/polyhedron/PolyhedronFace.h"
-#include "path/navmesh/polyhedron/PolyhedronPoint.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/triangulation/TriangulationAlgorithm.h"
 
 namespace urchin
 {
 
-	typedef std::map<std::shared_ptr<AIObject>, Polyhedron>::const_iterator it_polyhedron;
+	typedef std::map<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>>::const_iterator it_polyhedron;
 
 	struct PolyhedronFaceIndex
 	{
@@ -43,14 +42,6 @@ namespace urchin
 
 		private:
 			void updateExpandedPolyhedrons(AIWorld &);
-			std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *) const;
-			std::vector<PolyhedronFace> createPolyhedronFaces() const;
-			Polyhedron createPolyhedronFor(const std::string &, OBBox<float> *) const;
-			Polyhedron createPolyhedronFor(const std::string &, Capsule<float> *) const;
-			Polyhedron createPolyhedronFor(const std::string &, Cone<float> *) const;
-			Polyhedron createPolyhedronFor(const std::string &, ConvexHull3D<float> *) const;
-			Polyhedron createPolyhedronFor(const std::string &, Cylinder<float> *) const;
-			Polyhedron createPolyhedronFor(const std::string &, Sphere<float> *) const;
 
 			std::vector<PolyhedronFaceIndex> findWalkableFaces() const;
 
@@ -58,7 +49,7 @@ namespace urchin
 			std::vector<Point2<float>> reversePoints(const std::vector<Point2<float>> &) const;
 			std::vector<Point2<float>> reverseAndFlatPointsOnYAxis(const std::vector<Point3<float>> &) const;
 			std::vector<CSGPolygon<float>> computeObstacles(const PolyhedronFaceIndex &) const;
-			CSGPolygon<float> computePolyhedronFootprint(const Polyhedron &, const PolyhedronFace &) const;
+			CSGPolygon<float> computePolyhedronFootprint(const std::unique_ptr<Polyhedron> &, const PolyhedronFace &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const PolyhedronFace &) const;
 			Point3<float> elevatePoints(const Point2<float> &, float, const PolyhedronFace &) const;
 
@@ -67,8 +58,7 @@ namespace urchin
 
             mutable std::mutex navMeshMutex;
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
-
-			std::map<std::shared_ptr<AIObject>, Polyhedron> expandedPolyhedrons;
+			std::multimap<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>> expandedPolyhedrons;
 
 			std::shared_ptr<NavMesh> navMesh;
 	};

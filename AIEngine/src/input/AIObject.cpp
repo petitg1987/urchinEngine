@@ -3,19 +3,24 @@
 namespace urchin
 {
 
-	AIObject::AIObject(std::string name, const std::shared_ptr<AIShape> &shape, const Transform<float> &transform) :
+	AIObject::AIObject(std::string name, const std::shared_ptr<AIShape> &shape, const Transform<float> &transform, bool bIsObstacleCandidate) :
             bToRebuild(true),
 			name(std::move(name)),
-			transform(transform)
+			bIsDissociateShapes(true),
+			transform(transform),
+			bIsObstacleCandidate(bIsObstacleCandidate)
 	{
 		shapes.push_back(shape);
 	}
 
-	AIObject::AIObject(std::string name, const std::vector<std::shared_ptr<AIShape>> &shapes, const Transform<float> &transform) :
+	AIObject::AIObject(std::string name, bool isDissociateShapes, const std::vector<std::shared_ptr<AIShape>> &shapes, const Transform<float> &transform,
+					   bool bIsObstacleCandidate) :
 			bToRebuild(true),
 			name(std::move(name)),
+			bIsDissociateShapes(isDissociateShapes),
 			shapes(shapes),
-			transform(transform)
+			transform(transform),
+			bIsObstacleCandidate(bIsObstacleCandidate)
 	{
 
 	}
@@ -45,6 +50,11 @@ namespace urchin
 		return name;
 	}
 
+	bool AIObject::isDissociateShapes() const
+	{
+		return bIsDissociateShapes;
+	}
+
 	const std::vector<std::shared_ptr<AIShape>> &AIObject::getShapes() const
 	{
 		return shapes;
@@ -54,6 +64,11 @@ namespace urchin
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 		return transform;
+	}
+
+	bool AIObject::isObstacleCandidate() const
+	{
+		return bIsObstacleCandidate;
 	}
 
 }

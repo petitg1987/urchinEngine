@@ -29,7 +29,7 @@ namespace urchin
 		ccwPoints.clear();
 		for(unsigned int ccwPointIndex : ccwPointIndices)
 		{
-			ccwPoints.push_back(polyhedronPoints[ccwPointIndex].point);
+			ccwPoints.push_back(polyhedronPoints[ccwPointIndex].getPoint());
 		}
 
 		Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[2]);

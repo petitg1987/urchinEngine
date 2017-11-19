@@ -12,7 +12,7 @@ namespace urchin
 	class PolyhedronFace
 	{
 		public:
-			PolyhedronFace(const std::vector<unsigned int> &);
+			explicit PolyhedronFace(const std::vector<unsigned int> &);
 
 			void refreshWith(const std::vector<PolyhedronPoint> &);
 

@@ -72,30 +72,38 @@ namespace urchin
 		std::vector<Plane<float>> planes = buildPlanesFromFaces();
 		shiftPlanes(planes, agent);
 
-		for(auto &point : points)
+		for(auto &polyhedronPoint : points)
 		{
-			std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(point.faceIndices, planes);
-			Point3<float> newPoint;
-			if(threePlanes.size()==3)
-			{
-				Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
-				Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
-				Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
+            if(polyhedronPoint.getFaceIndices().size()==1)
+            { //face is individual
+				Plane<float> plane = planes[polyhedronPoint.getFaceIndices()[0]];
+                float distance = agent.computeExpandDistance(plane.getNormal());
+				polyhedronPoint.setPoint(polyhedronPoint.getPoint().translate(plane.getNormal() * distance));
+            }else
+            {
+                std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), planes);
+                Point3<float> newPoint;
+                if (threePlanes.size() == 3)
+                {
+                    Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
+                    Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
+                    Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
 
-				newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
-				newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
-				newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-				newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
-			}else
-			{ //useless point found on polyhedron (could be removed from polyhedron without impact)
-                std::stringstream logStream;
-                logStream.precision(std::numeric_limits<float>::max_digits10);
-                logStream<<"Impossible to resize polyhedron because of useless point."<<std::endl;
-                logStream<<" - Polyhedron: "<<std::endl<<(*this)<<std::endl;
-                Logger::logger().logError(logStream.str());
-			}
+                    newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
+                    newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
+                    newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
+                    newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+                } else
+                { //useless point found on polyhedron (could be removed from polyhedron without impact)
+                    std::stringstream logStream;
+                    logStream.precision(std::numeric_limits<float>::max_digits10);
+                    logStream << "Impossible to resize polyhedron because of useless point." << std::endl;
+                    logStream << " - Polyhedron: " << std::endl << (*this) << std::endl;
+                    Logger::logger().logError(logStream.str());
+                }
 
-			point.point = newPoint;
+				polyhedronPoint.setPoint(newPoint);
+            }
 		}
 
 		for(auto &face : faces)
@@ -111,7 +119,7 @@ namespace urchin
 
 		for(const auto &face : faces)
 		{
-			planes.emplace_back(Plane<float>(points[face.getCcwPointIndices()[0]].point, points[face.getCcwPointIndices()[1]].point, points[face.getCcwPointIndices()[2]].point));
+			planes.emplace_back(Plane<float>(points[face.getCcwPointIndices()[0]].getPoint(), points[face.getCcwPointIndices()[1]].getPoint(), points[face.getCcwPointIndices()[2]].getPoint()));
 		}
 
 		return planes;
@@ -170,7 +178,7 @@ namespace urchin
             stream<<"Face "<<faceIndex++<<" ";
             for(unsigned int pointIndex : face.getCcwPointIndices())
             {
-                stream<<"("<<polyhedron.getPoints()[pointIndex].point<<") ";
+                stream<<"("<<polyhedron.getPoints()[pointIndex].getPoint()<<") ";
             }
             stream<<std::endl;
         }

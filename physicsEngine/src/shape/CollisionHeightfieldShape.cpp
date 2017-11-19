@@ -67,6 +67,21 @@ namespace urchin
         return std::make_shared<CollisionHeightfieldShape>(vertices, xLength, zLength);
     }
 
+    const std::vector<Point3<float>> &CollisionHeightfieldShape::getVertices() const
+    {
+        return vertices;
+    }
+
+    unsigned int CollisionHeightfieldShape::getXLength() const
+    {
+        return xLength;
+    }
+
+    unsigned int CollisionHeightfieldShape::getZLength() const
+    {
+        return zLength;
+    }
+
     AABBox<float> CollisionHeightfieldShape::toAABBox(const PhysicsTransform &physicsTransform) const
     {
         if(!lastTransform.equals(physicsTransform))

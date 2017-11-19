@@ -18,6 +18,9 @@ namespace urchin
 
             CollisionShape3D::ShapeType getShapeType() const override;
             std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+            const std::vector<Point3<float>> &getVertices() const;
+            unsigned int getXLength() const;
+            unsigned int getZLength() const;
 
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 

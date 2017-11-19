@@ -133,8 +133,10 @@ namespace urchin
         if(rigidBody==nullptr)
         {
             this->aiObject = nullptr;
-        } else {
-            this->aiObject = AIObjectBuilder::buildAIObject(rigidBody->getId(), rigidBody->getScaledShape(), rigidBody->getTransform());
+        } else
+        {
+            std::string aiObjectName = "@" + rigidBody->getId(); //prefix to avoid collision name with objects
+            this->aiObject = AIObjectBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
             if(aiManager!=nullptr)
             {
                 aiManager->addObject(aiObject);

@@ -9,10 +9,16 @@
 namespace urchin
 {
 
-    class AIObjectBuilder
+    class AIObjectBuilder : public Singleton<AIObjectBuilder>
     {
         public:
-            static std::shared_ptr<AIObject> buildAIObject(std::string, const std::shared_ptr<const CollisionShape3D> &, const Transform<float> &);
+            friend class Singleton<AIObjectBuilder>;
+
+            std::shared_ptr<AIObject> buildAIObject(std::string, const std::shared_ptr<const CollisionShape3D> &, const Transform<float> &);
+
+        private:
+            std::shared_ptr<AIObject> heightfieldToAIObject(std::string, const std::shared_ptr<const CollisionHeightfieldShape> &, const Transform<float> &);
+            std::vector<Point3<float>> getHeightfieldVertices(const std::shared_ptr<const CollisionHeightfieldShape> &, unsigned int, unsigned int, unsigned int, unsigned int);
     };
 
 }
