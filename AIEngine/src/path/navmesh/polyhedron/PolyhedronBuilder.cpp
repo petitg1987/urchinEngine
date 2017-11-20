@@ -57,6 +57,8 @@ namespace urchin
             polyhedron->setObstacleCandidate(aiObject->isObstacleCandidate());
             polyhedrons.push_back(std::move(polyhedron));
         }
+
+        return polyhedrons;
     }
 
     std::unique_ptr<Polyhedron> PolyhedronBuilder::buildUniquePolyhedron(const std::shared_ptr<AIObject> &aiObject)

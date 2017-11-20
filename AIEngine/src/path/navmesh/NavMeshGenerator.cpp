@@ -90,7 +90,7 @@ namespace urchin
 
             expandedPolyhedrons.erase(aiObject);
             std::vector<std::unique_ptr<Polyhedron>> polyhedrons = PolyhedronBuilder::instance()->buildPolyhedrons(aiObject);
-            for(auto &polyhedron : polyhedrons) //TODO fix memory problems
+            for(auto &polyhedron : polyhedrons)
             {
                 polyhedron->expand(navMeshConfig->getAgent());
                 expandedPolyhedrons.insert(std::pair<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>>(aiObject, std::move(polyhedron)));

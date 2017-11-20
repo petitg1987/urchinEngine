@@ -49,20 +49,20 @@ namespace urchin
 
         for(unsigned int x=0; x<subDivision; x++)
         {
-            auto startX = static_cast<unsigned int>(((float)x) * xDivisionLength);
-            auto endX = static_cast<unsigned int>(((float)x + 1.0f) * xDivisionLength) - 1;
+            auto startX = static_cast<unsigned int>(x * xDivisionLength);
+            auto endX = std::min(static_cast<unsigned int>((x + 1.0f) * xDivisionLength), heightfieldShape->getXLength()-1);
 
             for(unsigned int z=0; z<subDivision; ++z)
             {
-                auto startZ = static_cast<unsigned int>(((float)z) * zDivisionLength);
-                auto endZ = static_cast<unsigned int>(((float)z + 1.0f) * zDivisionLength) - 1;
+                auto startZ = static_cast<unsigned int>(z * zDivisionLength);
+                auto endZ = std::min(static_cast<unsigned int>((z + 1.0f) * zDivisionLength), heightfieldShape->getZLength()-1);
 
                 std::vector<Point3<float>> squareVertices = getHeightfieldVertices(heightfieldShape, startX, endX, startZ, endZ);
 
-                unsigned int squareXLength = endX-startX;
-                unsigned int squareZLength = endZ-startZ;
+                unsigned int squareXLength = endX - startX + 1;
+                unsigned int squareZLength = endZ - startZ + 1;
 
-                Point3<float> p1 = squareVertices[0];
+                Point3<float> p1 = squareVertices[0]; //TODO check px: seems not correct between neighbor triangles
                 Point3<float> p2 = squareVertices[squareXLength - 1];
                 Point3<float> p3 = squareVertices[(squareXLength * squareZLength) - 1];
                 Point3<float> p4 = squareVertices[(squareXLength * squareZLength) - squareXLength];
@@ -80,15 +80,18 @@ namespace urchin
         return std::make_shared<AIObject>(name, false, aiShapes, unscaledTransform, false);
     }
 
+    /**
+     * @return All vertices include in intervals [startX, endX], [endZ, endZ]
+     */
     std::vector<Point3<float>> AIObjectBuilder::getHeightfieldVertices(const std::shared_ptr<const CollisionHeightfieldShape> &heightfieldShape,
                                                  unsigned int startX, unsigned int endX, unsigned int startZ, unsigned int endZ)
     {
         std::vector<Point3<float>> squareVertices;
         squareVertices.reserve((endZ-startZ) * (endX-startX));
 
-        for(unsigned int z=startZ; z<endZ; ++z)
+        for(unsigned int z=startZ; z<=endZ; ++z)
         {
-            for(unsigned int x=startX; x<endX; ++x)
+            for(unsigned int x=startX; x<=endX; ++x)
             {
                 squareVertices.push_back(heightfieldShape->getVertices()[z * heightfieldShape->getXLength() + x]);
             }
@@ -96,6 +99,5 @@ namespace urchin
 
         return squareVertices;
     }
-
 
 }
