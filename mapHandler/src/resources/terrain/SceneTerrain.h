@@ -2,15 +2,16 @@
 #define URCHINENGINE_SCENETERRAIN_H
 
 #include <string>
-
 #include "Urchin3dEngine.h"
 #include "UrchinPhysicsEngine.h"
 #include "UrchinAIEngine.h"
 
+#include "resources/common/SceneEntity.h"
+
 namespace urchin
 {
 
-    class SceneTerrain
+    class SceneTerrain : public SceneEntity
     {
         //XML attributes
         #define NAME_ATTR "name"
@@ -29,7 +30,8 @@ namespace urchin
             Terrain *getTerrain() const;
             void setTerrain(Terrain *);
 
-            RigidBody *getRigidBody() const;
+            RigidBody *getRigidBody() const override;
+            void moveTo(const Transform<float> &) override;
 
         private:
             void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);

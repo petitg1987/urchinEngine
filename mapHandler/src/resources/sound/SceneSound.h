@@ -2,7 +2,6 @@
 #define URCHINENGINE_SCENESOUND_H
 
 #include <string>
-
 #include "UrchinSoundEngine.h"
 
 namespace urchin

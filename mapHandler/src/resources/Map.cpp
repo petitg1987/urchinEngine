@@ -318,24 +318,34 @@ namespace urchin
 
 	void Map::refreshMap()
 	{
-		refreshObjects();
+        refreshEntities();
 		refreshSound();
 	}
 
-	void Map::refreshObjects()
+	void Map::refreshEntities()
 	{
 		for(SceneObject *sceneObject : sceneObjects)
 		{
-			RigidBody *rigidBody = sceneObject->getRigidBody();
-			if(rigidBody!=nullptr && !rigidBody->isStatic() && rigidBody->isActive())
-			{
-				Transform<float> newTransform = rigidBody->getTransform(); //copy to avoid several calls on this slow method
+            refreshEntity(sceneObject);
+		}
 
-				sceneObject->getModel()->setTransform(newTransform);
-				sceneObject->getAIObject()->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
-			}
+		for(SceneTerrain *sceneTerrain : sceneTerrains)
+		{
+            refreshEntity(sceneTerrain);
 		}
 	}
+
+    void Map::refreshEntity(SceneEntity *sceneEntity)
+    {
+        RigidBody *rigidBody = sceneEntity->getRigidBody();
+        if(rigidBody!=nullptr)
+        {
+            if((!rigidBody->isStatic() && rigidBody->isActive()) || (rigidBody->isManuallyMovedAndResetFlag()))
+            {
+                sceneEntity->moveTo(rigidBody->getTransform());
+            }
+        }
+    }
 
 	void Map::refreshSound()
 	{

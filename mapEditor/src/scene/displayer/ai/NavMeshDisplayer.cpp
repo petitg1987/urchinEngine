@@ -19,17 +19,17 @@ namespace urchin
 
 	void NavMeshDisplayer::displayNavMesh(const NavMesh &navMesh)
 	{
-		cleanCurrentDisplay();
-
 		if(loadedNavMeshId!=navMesh.getId())
 		{
+            cleanCurrentDisplay();
+
 			constexpr float Y_ELEVATION_FILL = 0.01f;
 			constexpr float Y_ELEVATION_WIREFRAME = 0.015f;
 
 			for(const auto &navPolygon : navMesh.getPolygons())
 			{
-				auto *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL),
-                                                          toDisplayTriangles(navPolygon->getTriangles()));
+                GeometryModel *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_FILL),
+                                                                   toDisplayTriangles(navPolygon->getTriangles()));
 				trianglesModel->setBlendMode(GeometryModel::ONE_MINUS_SRC_ALPHA);
 				trianglesModel->setColor(0.0, 0.0, 1.0, 0.5);
 				trianglesModel->setPolygonMode(GeometryModel::FILL);
@@ -38,8 +38,8 @@ namespace urchin
 
 			for(const auto &navPolygon : navMesh.getPolygons())
 			{
-				auto *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME),
-                                                          toDisplayTriangles(navPolygon->getTriangles()));
+                GeometryModel *trianglesModel = new TrianglesModel(toDisplayPoints(navPolygon->getPoints(), Y_ELEVATION_WIREFRAME),
+                                                                   toDisplayTriangles(navPolygon->getTriangles()));
 				trianglesModel->setLineSize(4.0);
 				trianglesModel->setColor(0.3, 0.3, 1.0, 1.0);
 				trianglesModel->setPolygonMode(GeometryModel::WIREFRAME);
@@ -50,6 +50,8 @@ namespace urchin
             {
 				sceneManager->getActiveRenderer3d()->addGeometry(navMeshModel);
 			}
+
+			loadedNavMeshId = navMesh.getId();
 		}
 	}
 

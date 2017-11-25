@@ -120,7 +120,9 @@ namespace urchin
 		{
 			this->transform = transform;
 		}
+
 		this->setNeedFullRefresh(true);
+		this->isManuallyMoved = true;
 	}
 
 	Transform<float> AbstractBody::getTransform() const
@@ -128,6 +130,16 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		return transform;
+	}
+
+	bool AbstractBody::isManuallyMovedAndResetFlag()
+	{
+		if(isManuallyMoved)
+		{
+			isManuallyMoved = false;
+			return true;
+		}
+		return false;
 	}
 
 	void AbstractBody::setShape(const std::shared_ptr<const CollisionShape3D> &shape)

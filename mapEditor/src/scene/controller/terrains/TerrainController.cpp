@@ -57,6 +57,11 @@ namespace urchin
         Terrain *terrain = sceneTerrain->getTerrain();
 
         terrain->setPosition(position);
+        if(sceneTerrain->getRigidBody()!=nullptr)
+        {
+            sceneTerrain->getRigidBody()->setTransform(Transform<float>(position));
+        }
+
         terrain->setAmbient(ambient);
 
         markModified();

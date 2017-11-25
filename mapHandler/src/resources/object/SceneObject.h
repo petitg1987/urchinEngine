@@ -2,10 +2,11 @@
 #define URCHINENGINE_SCENEOBJECT_H
 
 #include <string>
-
 #include "Urchin3dEngine.h"
 #include "UrchinPhysicsEngine.h"
 #include "UrchinAIEngine.h"
+
+#include "resources/common/SceneEntity.h"
 
 namespace urchin
 {
@@ -13,7 +14,7 @@ namespace urchin
 	/**
 	* Represent an object on the scene (3d model and physics)
 	*/
-	class SceneObject
+	class SceneObject : public SceneEntity
 	{
 		//XML tags
 		#define MODEL_TAG "model"
@@ -36,8 +37,8 @@ namespace urchin
 			Model *getModel() const;
 			void setModel(Model *);
 
-			RigidBody *getRigidBody() const;
-            const std::shared_ptr<AIObject> &getAIObject() const;
+			RigidBody *getRigidBody() const override;
+			void moveTo(const Transform<float> &) override;
 
 			void setupInteractiveBody(RigidBody *);
 

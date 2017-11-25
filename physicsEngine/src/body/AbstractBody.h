@@ -37,6 +37,7 @@ namespace urchin
 
 			void setTransform(const Transform<float> &);
 			Transform<float> getTransform() const;
+			bool isManuallyMovedAndResetFlag();
 
 			void setShape(const std::shared_ptr<const CollisionShape3D> &);
 			std::shared_ptr<const CollisionShape3D> getOriginalShape() const;
@@ -76,6 +77,7 @@ namespace urchin
 
 			//body representation data
 			Transform<float> transform;
+			bool isManuallyMoved;
 
 			//body description data
 			std::string id;

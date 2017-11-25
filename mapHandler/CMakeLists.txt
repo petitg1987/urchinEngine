@@ -63,7 +63,9 @@ set(SOURCE_FILES
         src/resources/terrain/SceneTerrain.cpp
         src/resources/terrain/SceneTerrain.h
         src/utils/AIObjectBuilder.cpp
-        src/utils/AIObjectBuilder.h)
+        src/utils/AIObjectBuilder.h
+        src/resources/common/SceneEntity.cpp
+        src/resources/common/SceneEntity.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src)
 

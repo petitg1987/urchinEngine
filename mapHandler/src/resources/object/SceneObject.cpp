@@ -125,9 +125,10 @@ namespace urchin
 		return rigidBody;
 	}
 
-	const std::shared_ptr<AIObject> &SceneObject::getAIObject() const
+	void SceneObject::moveTo(const Transform<float> &newTransform)
 	{
-		return aiObject;
+		model->setTransform(newTransform);
+		aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
 	}
 
 	void SceneObject::setupInteractiveBody(RigidBody *rigidBody)

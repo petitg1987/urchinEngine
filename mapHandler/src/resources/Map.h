@@ -14,6 +14,7 @@
 #include "resources/terrain/SceneTerrain.h"
 #include "resources/sound/SceneSound.h"
 #include "resources/ai/SceneAI.h"
+#include "resources/common/SceneEntity.h"
 
 namespace urchin
 {
@@ -80,7 +81,8 @@ namespace urchin
 			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
-			void refreshObjects();
+			void refreshEntities();
+			void refreshEntity(SceneEntity *);
             void refreshSound();
 
 			Renderer3d *renderer3d;
