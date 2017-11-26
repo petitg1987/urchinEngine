@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "input/AIObject.h"
+#include "input/AIEntity.h"
 
 namespace urchin
 {
@@ -13,19 +13,19 @@ namespace urchin
 		public:
             AIWorld();
 
-			void addObject(const std::shared_ptr<AIObject> &);
-            void removeObject(const std::shared_ptr<AIObject> &);
+			void addEntity(const std::shared_ptr<AIEntity> &);
+            void removeEntity(const std::shared_ptr<AIEntity> &);
 
-			std::vector<std::shared_ptr<AIObject>> getObjects() const;
+			std::vector<std::shared_ptr<AIEntity>> getEntities() const;
 
-			std::vector<std::shared_ptr<AIObject>> getObjectsToRemove() const;
-			void removeObjectsTagged();
+			std::vector<std::shared_ptr<AIEntity>> getEntitiesToRemove() const;
+			void removeEntitiesTagged();
 
 		private:
 			mutable std::mutex mutex;
 
-			std::vector<std::shared_ptr<AIObject>> objects;
-			std::vector<std::shared_ptr<AIObject>> objectsToRemove;
+			std::vector<std::shared_ptr<AIEntity>> entities;
+			std::vector<std::shared_ptr<AIEntity>> entitiesToRemove;
 	};
 
 }

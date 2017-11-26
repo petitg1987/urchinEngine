@@ -56,7 +56,13 @@ set(SOURCE_FILES
         src/path/PathRequest.cpp
         src/path/PathRequest.h
         src/input/AIShape.cpp
-        src/input/AIShape.h src/path/navmesh/polyhedron/PolyhedronBuilder.cpp src/path/navmesh/polyhedron/PolyhedronBuilder.h)
+        src/input/AIShape.h
+        src/path/navmesh/polyhedron/PolyhedronBuilder.cpp
+        src/path/navmesh/polyhedron/PolyhedronBuilder.h
+        src/input/AITerrain.cpp
+        src/input/AITerrain.h
+        src/input/AIEntity.cpp
+        src/input/AIEntity.h)
 
 include_directories(src ../common/src)
 

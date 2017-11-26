@@ -21,9 +21,6 @@ namespace urchin
             std::vector<std::unique_ptr<Polyhedron>> buildPolyhedrons(const std::shared_ptr<AIObject> &);
 
         private:
-            std::vector<std::unique_ptr<Polyhedron>> buildDissociatePolyhedrons(const std::shared_ptr<AIObject> &);
-            std::unique_ptr<Polyhedron> buildUniquePolyhedron(const std::shared_ptr<AIObject> &);
-
             std::vector<PolyhedronPoint> createPolyhedronPoints(OBBox<float> *) const;
             std::vector<PolyhedronFace> createPolyhedronFaces() const;
 

@@ -8,7 +8,6 @@
 #include "UrchinCommon.h"
 
 #include "input/AIWorld.h"
-#include "input/AIObject.h"
 #include "path/navmesh/model/NavMeshConfig.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
@@ -20,7 +19,7 @@
 namespace urchin
 {
 
-	typedef std::map<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>>::const_iterator it_polyhedron;
+	typedef std::map<std::shared_ptr<AIEntity>, std::unique_ptr<Polyhedron>>::const_iterator it_polyhedron;
 
 	struct PolyhedronFaceIndex
 	{
@@ -58,7 +57,7 @@ namespace urchin
 
             mutable std::mutex navMeshMutex;
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
-			std::multimap<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>> expandedPolyhedrons;
+			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polyhedron>> expandedPolyhedrons;
 
 			std::shared_ptr<NavMesh> navMesh;
 	};

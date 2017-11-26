@@ -2,7 +2,7 @@
 
 #include "SceneTerrain.h"
 #include "resources/terrain/TerrainReaderWriter.h"
-#include "utils/AIObjectBuilder.h"
+#include "utils/AIEntityBuilder.h"
 
 namespace urchin
 {
@@ -44,9 +44,9 @@ namespace urchin
             physicsWorld->addBody(rigidBody);
         }
 
-        if(aiManager!=nullptr && aiObject!=nullptr)
+        if(aiManager!=nullptr && aiTerrain!=nullptr)
         {
-            aiManager->addObject(aiObject);
+            aiManager->addEntity(aiTerrain);
         }
     }
 
@@ -112,7 +112,7 @@ namespace urchin
     void SceneTerrain::moveTo(const Transform<float> &newTransform)
     {
         terrain->setPosition(newTransform.getPosition());
-        aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
+        aiTerrain->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
     }
 
     void SceneTerrain::setupInteractiveBody(RigidBody *rigidBody)
@@ -138,14 +138,14 @@ namespace urchin
 
         if(rigidBody==nullptr)
         {
-            this->aiObject = nullptr;
+            this->aiTerrain = nullptr;
         } else
         {
             std::string aiObjectName = "@" + rigidBody->getId(); //prefix to avoid collision name with objects
-            this->aiObject = AIObjectBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
+            this->aiTerrain = AIEntityBuilder::instance()->buildAITerrain(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
             if(aiManager!=nullptr)
             {
-                aiManager->addObject(aiObject);
+                aiManager->addEntity(aiTerrain);
             }
         }
     }
@@ -167,7 +167,7 @@ namespace urchin
     {
         if(aiManager!=nullptr)
         {
-            aiManager->removeObject(aiObject);
+            aiManager->removeEntity(aiTerrain);
         }
     }
 }

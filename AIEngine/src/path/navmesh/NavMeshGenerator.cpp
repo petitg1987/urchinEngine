@@ -4,6 +4,8 @@
 #include <numeric>
 
 #include "NavMeshGenerator.h"
+#include "input/AIObject.h"
+#include "input/AITerrain.h"
 #include "path/navmesh/polyhedron/PolyhedronBuilder.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
@@ -75,28 +77,34 @@ namespace urchin
 
 	void NavMeshGenerator::updateExpandedPolyhedrons(AIWorld &aiWorld)
 	{
-		for(auto &aiObjectToRemove : aiWorld.getObjectsToRemove())
+		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemove())
 		{
 			expandedPolyhedrons.erase(aiObjectToRemove);
 		}
-		aiWorld.removeObjectsTagged();
+		aiWorld.removeEntitiesTagged();
 
-		for(auto &aiObject : aiWorld.getObjects())
+		for(auto &aiEntity : aiWorld.getEntities())
 		{
-			if(!aiObject->isToRebuild())
+			if(aiEntity->isToRebuild())
 			{
-				continue;
+                expandedPolyhedrons.erase(aiEntity);
+
+                if(aiEntity->getType()==AIEntity::OBJECT)
+                {
+                    auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
+                    std::vector<std::unique_ptr<Polyhedron>> polyhedrons = PolyhedronBuilder::instance()->buildPolyhedrons(aiObject);
+                    for (auto &polyhedron : polyhedrons)
+                    {
+                        polyhedron->expand(navMeshConfig->getAgent());
+                        expandedPolyhedrons.insert(std::pair<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>>(aiObject, std::move(polyhedron)));
+                    }
+                }else if(aiEntity->getType()==AIEntity::TERRAIN)
+                {
+                    //TODO
+                }
+
+                aiEntity->markRebuilt();
 			}
-
-            expandedPolyhedrons.erase(aiObject);
-            std::vector<std::unique_ptr<Polyhedron>> polyhedrons = PolyhedronBuilder::instance()->buildPolyhedrons(aiObject);
-            for(auto &polyhedron : polyhedrons)
-            {
-                polyhedron->expand(navMeshConfig->getAgent());
-                expandedPolyhedrons.insert(std::pair<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>>(aiObject, std::move(polyhedron)));
-            }
-
-			aiObject->markRebuilt();
 		}
 	}
 

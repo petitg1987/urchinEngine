@@ -8,6 +8,7 @@
 #include "UrchinCommon.h"
 
 #include "input/AIWorld.h"
+#include "input/AIEntity.h"
 #include "path/PathRequest.h"
 #include "path/navmesh/NavMeshGenerator.h"
 #include "path/navmesh/model/NavMesh.h"
@@ -24,8 +25,8 @@ namespace urchin
 
             NavMeshGenerator *getNavMeshGenerator() const;
 
-            void addObject(const std::shared_ptr<AIObject> &);
-            void removeObject(const std::shared_ptr<AIObject> &);
+            void addEntity(const std::shared_ptr<AIEntity> &);
+            void removeEntity(const std::shared_ptr<AIEntity> &);
 
             void addPathRequest(const std::shared_ptr<PathRequest> &);
 

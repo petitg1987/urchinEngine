@@ -62,8 +62,8 @@ set(SOURCE_FILES
         src/resources/terrain/TerrainReaderWriter.h
         src/resources/terrain/SceneTerrain.cpp
         src/resources/terrain/SceneTerrain.h
-        src/utils/AIObjectBuilder.cpp
-        src/utils/AIObjectBuilder.h
+        src/utils/AIEntityBuilder.cpp
+        src/utils/AIEntityBuilder.h
         src/resources/common/SceneEntity.cpp
         src/resources/common/SceneEntity.h)
 

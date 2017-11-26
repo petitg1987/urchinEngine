@@ -4,7 +4,7 @@
 #include "SceneObject.h"
 #include "resources/object/ModelReaderWriter.h"
 #include "resources/object/RigidBodyReaderWriter.h"
-#include "utils/AIObjectBuilder.h"
+#include "utils/AIEntityBuilder.h"
 
 namespace urchin
 {
@@ -51,7 +51,7 @@ namespace urchin
 
 		if(aiManager!=nullptr && aiObject!=nullptr)
 		{
-			aiManager->addObject(aiObject);
+			aiManager->addEntity(aiObject);
 		}
 	}
 
@@ -158,10 +158,10 @@ namespace urchin
 		} else
 		{
 			std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
-			this->aiObject = AIObjectBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
+			this->aiObject = AIEntityBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
 			if(aiManager!=nullptr)
 			{
-				aiManager->addObject(aiObject);
+				aiManager->addEntity(aiObject);
 			}
 		}
 	}
@@ -183,7 +183,7 @@ namespace urchin
 	{
 		if(aiManager!=nullptr)
 		{
-			aiManager->removeObject(aiObject);
+			aiManager->removeEntity(aiObject);
 		}
 	}
 

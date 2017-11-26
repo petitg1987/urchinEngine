@@ -7,20 +7,6 @@ namespace urchin
 
     std::vector<std::unique_ptr<Polyhedron>> PolyhedronBuilder::buildPolyhedrons(const std::shared_ptr<AIObject> &aiObject)
     {
-        if(!aiObject->isDissociateShapes())
-        {
-            std::unique_ptr<Polyhedron> uniquePolyhedron = buildUniquePolyhedron(aiObject);
-
-            std::vector<std::unique_ptr<Polyhedron>> polyhedrons;
-            polyhedrons.push_back(std::move(uniquePolyhedron));
-            return polyhedrons;
-        }
-
-        return buildDissociatePolyhedrons(aiObject);
-    }
-
-    std::vector<std::unique_ptr<Polyhedron>> PolyhedronBuilder::buildDissociatePolyhedrons(const std::shared_ptr<AIObject> &aiObject)
-    {
         std::vector<std::unique_ptr<Polyhedron>> polyhedrons;
 
         unsigned int aiShapeIndex = 0;
@@ -59,43 +45,6 @@ namespace urchin
         }
 
         return polyhedrons;
-    }
-
-    std::unique_ptr<Polyhedron> PolyhedronBuilder::buildUniquePolyhedron(const std::shared_ptr<AIObject> &aiObject)
-    {
-        std::vector<PolyhedronFace> faces;
-        faces.reserve(aiObject->getShapes().size());
-
-        std::vector<PolyhedronPoint> points;
-        points.reserve(aiObject->getShapes().size() * 3);
-
-        for (auto &aiShape : aiObject->getShapes())
-        {
-            #ifdef _DEBUG
-                assert(!aiShape->hasLocalTransform());
-            #endif
-
-            std::unique_ptr<ConvexObject3D<float>> object = aiShape->getShape()->toConvexObject(aiObject->getTransform());
-
-            if (auto triangle = dynamic_cast<Triangle3D<float> *>(object.get()))
-            {
-                unsigned int startPointIndex = points.size();
-                faces.emplace_back(PolyhedronFace({startPointIndex + 0, startPointIndex + 2, startPointIndex + 1}));
-
-                unsigned int faceIndex = faces.size() - 1;
-                points.emplace_back(PolyhedronPoint(triangle->getPoints()[0], {faceIndex}));
-                points.emplace_back(PolyhedronPoint(triangle->getPoints()[1], {faceIndex}));
-                points.emplace_back(PolyhedronPoint(triangle->getPoints()[2], {faceIndex}));
-            } else
-            {
-                throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));
-            }
-        }
-
-        auto polyhedron = std::make_unique<Polyhedron>(aiObject->getName(), faces, points); //TODO faces should be linked together
-        polyhedron->setObstacleCandidate(aiObject->isObstacleCandidate());
-
-        return polyhedron;
     }
 
     /**

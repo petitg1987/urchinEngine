@@ -7,41 +7,41 @@ namespace urchin
 
     AIWorld::AIWorld()
     {
-        objects.reserve(50); //estimated memory size
+        entities.reserve(50); //estimated memory size
     }
 
-	void AIWorld::addObject(const std::shared_ptr<AIObject> &aiObject)
+	void AIWorld::addEntity(const std::shared_ptr<AIEntity> &aiEntity)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		objects.push_back(aiObject);
+		entities.push_back(aiEntity);
 	}
 
-	void AIWorld::removeObject(const std::shared_ptr<AIObject> &aiObject)
+	void AIWorld::removeEntity(const std::shared_ptr<AIEntity> &aiEntity)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		objectsToRemove.push_back(aiObject);
+		entitiesToRemove.push_back(aiEntity);
 	}
 
-	std::vector<std::shared_ptr<AIObject>> AIWorld::getObjects() const
+	std::vector<std::shared_ptr<AIEntity>> AIWorld::getEntities() const
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		return objects;
+		return entities;
 	}
 
-	std::vector<std::shared_ptr<AIObject>> AIWorld::getObjectsToRemove() const
+	std::vector<std::shared_ptr<AIEntity>> AIWorld::getEntitiesToRemove() const
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		return objectsToRemove;
+		return entitiesToRemove;
 	}
 
-	void AIWorld::removeObjectsTagged()
+	void AIWorld::removeEntitiesTagged()
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		for(const auto &objectToRemove : objectsToRemove)
+		for(const auto &objectToRemove : entitiesToRemove)
 		{
-			objects.erase(std::remove(objects.begin(), objects.end(), objectToRemove), objects.end());
+			entities.erase(std::remove(entities.begin(), entities.end(), objectToRemove), entities.end());
 		}
-		objectsToRemove.clear();
+		entitiesToRemove.clear();
 	}
 
 }

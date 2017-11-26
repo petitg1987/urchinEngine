@@ -51,7 +51,7 @@ namespace urchin
             std::string name;
             Terrain *terrain;
             RigidBody *rigidBody;
-            std::shared_ptr<AIObject> aiObject;
+            std::shared_ptr<AITerrain> aiTerrain;
     };
 
 }
