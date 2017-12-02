@@ -11,21 +11,21 @@
 #include "path/navmesh/model/NavMeshConfig.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
-#include "path/navmesh/polyhedron/Polyhedron.h"
-#include "path/navmesh/polyhedron/PolyhedronFace.h"
+#include "path/navmesh/polytope/Polytope.h"
+#include "path/navmesh/polytope/PolytopeSurface.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/triangulation/TriangulationAlgorithm.h"
 
 namespace urchin
 {
 
-	typedef std::map<std::shared_ptr<AIEntity>, std::unique_ptr<Polyhedron>>::const_iterator it_polyhedron;
+	typedef std::map<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>::const_iterator it_polytope;
 
-	struct PolyhedronFaceIndex
+	struct PolytopeSurfaceIndex
 	{
-		PolyhedronFaceIndex(it_polyhedron, unsigned int);
+		PolytopeSurfaceIndex(it_polytope, unsigned int);
 
-		it_polyhedron polyhedronRef;
+		it_polytope polytopeRef;
 		unsigned int faceIndex;
 	};
 
@@ -40,24 +40,23 @@ namespace urchin
 			NavMesh retrieveLastGeneratedNavMesh() const;
 
 		private:
-			void updateExpandedPolyhedrons(AIWorld &);
+			void updateExpandedPolytopes(AIWorld &);
 
-			std::vector<PolyhedronFaceIndex> findWalkableFaces() const;
+			std::vector<PolytopeSurfaceIndex> findWalkableSurfaces() const;
 
-			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygonFor(const PolyhedronFaceIndex &) const;
+			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygonFor(const PolytopeSurfaceIndex &) const;
 			std::vector<Point2<float>> reversePoints(const std::vector<Point2<float>> &) const;
-			std::vector<Point2<float>> reverseAndFlatPointsOnYAxis(const std::vector<Point3<float>> &) const;
-			std::vector<CSGPolygon<float>> computeObstacles(const PolyhedronFaceIndex &) const;
-			CSGPolygon<float> computePolyhedronFootprint(const std::unique_ptr<Polyhedron> &, const PolyhedronFace &) const;
-			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const PolyhedronFace &) const;
-			Point3<float> elevatePoints(const Point2<float> &, float, const PolyhedronFace &) const;
+			std::vector<CSGPolygon<float>> computeObstacles(const PolytopeSurfaceIndex &) const;
+			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::unique_ptr<PolytopeSurface> &) const;
+			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::unique_ptr<PolytopeSurface> &) const;
+			Point3<float> elevatePoints(const Point2<float> &, float, const std::unique_ptr<PolytopeSurface> &) const;
 
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
 
             mutable std::mutex navMeshMutex;
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
-			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polyhedron>> expandedPolyhedrons;
+			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>> expandedPolytopes;
 
 			std::shared_ptr<NavMesh> navMesh;
 	};

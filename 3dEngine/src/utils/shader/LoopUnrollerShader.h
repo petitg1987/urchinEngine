@@ -16,8 +16,6 @@ namespace urchin
 	class LoopUnrollerShader
 	{
 		public:
-			LoopUnrollerShader();
-
 			std::string unrollLoops(const std::string &);
 
 		private:

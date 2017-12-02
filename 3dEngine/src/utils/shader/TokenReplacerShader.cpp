@@ -3,19 +3,14 @@
 namespace urchin
 {
 
-	TokenReplacerShader::TokenReplacerShader()
-	{
-
-	}
-
 	std::string TokenReplacerShader::replaceTokens(const std::string &shaderSource, const std::map<std::string, std::string> &tokens)
 	{
 		std::string result = shaderSource;
-		for(std::map<std::string, std::string>::const_iterator it = tokens.begin(); it!=tokens.end(); ++it)
+		for (const auto &token : tokens)
 		{
 			std::ostringstream tokenString;
-			tokenString << "#" << it->first << "#";
-			StringUtil::replaceAll(result, tokenString.str(), it->second);
+			tokenString << "#" << token.first << "#";
+			StringUtil::replaceAll(result, tokenString.str(), token.second);
 		}
 
 		return result;

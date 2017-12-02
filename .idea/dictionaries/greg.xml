@@ -3,6 +3,7 @@
     <words>
       <w>heightfield</w>
       <w>pathfinding</w>
+      <w>polytope</w>
     </words>
   </dictionary>
 </component>

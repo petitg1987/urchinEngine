@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_POLYHEDRONPOINT_H
-#define URCHINENGINE_POLYHEDRONPOINT_H
+#ifndef URCHINENGINE_POLYTOPEPOINT_H
+#define URCHINENGINE_POLYTOPEPOINT_H
 
 #include <vector>
 #include "UrchinCommon.h"
@@ -7,11 +7,11 @@
 namespace urchin
 {
 
-	class PolyhedronPoint
+	class PolytopePoint
 	{
 		public:
-			explicit PolyhedronPoint(const Point3<float> &);
-			PolyhedronPoint(const Point3<float> &, const std::vector<unsigned int> &);
+			explicit PolytopePoint(const Point3<float> &);
+			PolytopePoint(const Point3<float> &, const std::vector<unsigned int> &);
 
 			void setPoint(const Point3<float> &);
 			const Point3<float> &getPoint() const;

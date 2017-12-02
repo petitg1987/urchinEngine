@@ -1,12 +1,14 @@
 #include <cmath>
 #include <chrono>
 #include <algorithm>
+#include <string>
 #include <numeric>
 
 #include "NavMeshGenerator.h"
 #include "input/AIObject.h"
 #include "input/AITerrain.h"
-#include "path/navmesh/polyhedron/PolyhedronBuilder.h"
+#include "path/navmesh/polytope/PolytopePlaneSurface.h"
+#include "path/navmesh/polytope/PolytopeBuilder.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 
@@ -16,8 +18,8 @@
 namespace urchin
 {
 
-	PolyhedronFaceIndex::PolyhedronFaceIndex(it_polyhedron polyhedronRef, unsigned int faceIndex) :
-            polyhedronRef(polyhedronRef),
+	PolytopeSurfaceIndex::PolytopeSurfaceIndex(it_polytope polytopeRef, unsigned int faceIndex) :
+			polytopeRef(polytopeRef),
             faceIndex(faceIndex)
 	{
 
@@ -52,14 +54,14 @@ namespace urchin
 //			auto frameStartTime = std::chrono::high_resolution_clock::now();
         #endif
 
-		updateExpandedPolyhedrons(aiWorld);
-		std::vector<PolyhedronFaceIndex> polyhedronWalkableFaces = findWalkableFaces();
+		updateExpandedPolytopes(aiWorld);
+		std::vector<PolytopeSurfaceIndex> polytopeWalkableSurfaces = findWalkableSurfaces();
 
 		std::lock_guard<std::mutex> lock(navMeshMutex);
         navMesh.reset(new NavMesh());
-        for (const auto &polyhedronWalkableFace : polyhedronWalkableFaces)
+        for (const auto &polytopeWalkableSurface : polytopeWalkableSurfaces)
         {
-            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polyhedronWalkableFace);
+            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polytopeWalkableSurface);
             for (const auto &navPolygon : navPolygons)
             {
                 navMesh->addPolygon(navPolygon);
@@ -75,11 +77,11 @@ namespace urchin
 		return navMesh;
 	}
 
-	void NavMeshGenerator::updateExpandedPolyhedrons(AIWorld &aiWorld)
+	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
 	{
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemove())
 		{
-			expandedPolyhedrons.erase(aiObjectToRemove);
+			expandedPolytopes.erase(aiObjectToRemove);
 		}
 		aiWorld.removeEntitiesTagged();
 
@@ -87,19 +89,20 @@ namespace urchin
 		{
 			if(aiEntity->isToRebuild())
 			{
-                expandedPolyhedrons.erase(aiEntity);
+				expandedPolytopes.erase(aiEntity);
 
                 if(aiEntity->getType()==AIEntity::OBJECT)
                 {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
-                    std::vector<std::unique_ptr<Polyhedron>> polyhedrons = PolyhedronBuilder::instance()->buildPolyhedrons(aiObject);
-                    for (auto &polyhedron : polyhedrons)
+                    std::vector<std::unique_ptr<Polytope>> polytopes = PolytopeBuilder::instance()->buildPolytopes(aiObject);
+                    for (auto &polytope : polytopes)
                     {
-                        polyhedron->expand(navMeshConfig->getAgent());
-                        expandedPolyhedrons.insert(std::pair<std::shared_ptr<AIObject>, std::unique_ptr<Polyhedron>>(aiObject, std::move(polyhedron)));
+						polytope->expand(navMeshConfig->getAgent());
+                        expandedPolytopes.insert(std::pair<std::shared_ptr<AIObject>, std::unique_ptr<Polytope>>(aiObject, std::move(polytope)));
                     }
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
+					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
                     //TODO
                 }
 
@@ -108,23 +111,23 @@ namespace urchin
 		}
 	}
 
-	std::vector<PolyhedronFaceIndex> NavMeshGenerator::findWalkableFaces() const
+	std::vector<PolytopeSurfaceIndex> NavMeshGenerator::findWalkableSurfaces() const
 	{
-		std::vector<PolyhedronFaceIndex> walkableFaces;
-		walkableFaces.reserve(expandedPolyhedrons.size()/2); //estimated memory size
+		std::vector<PolytopeSurfaceIndex> walkableFaces;
+		walkableFaces.reserve(expandedPolytopes.size()/8); //estimated memory size
 
-        for(auto itPolyhedron = expandedPolyhedrons.begin(); itPolyhedron!=expandedPolyhedrons.end(); ++itPolyhedron)
+        for(auto itPolytope = expandedPolytopes.begin(); itPolytope!=expandedPolytopes.end(); ++itPolytope)
 		{
-			const std::unique_ptr<Polyhedron> &expandedPolyhedron = itPolyhedron->second;
-			if(expandedPolyhedron->isWalkableCandidate())
+			const std::unique_ptr<Polytope> &expandedPolytope = itPolytope->second;
+			if(expandedPolytope->isWalkableCandidate())
 			{
-				for(unsigned int faceIndex=0; faceIndex<expandedPolyhedron->getFaces().size(); ++faceIndex)
+				for(unsigned int surfaceIndex=0; surfaceIndex<expandedPolytope->getSurfaces().size(); ++surfaceIndex)
 				{
-					const PolyhedronFace &face = expandedPolyhedron->getFace(faceIndex);
+					const std::unique_ptr<PolytopeSurface> &surface = expandedPolytope->getSurface(surfaceIndex);
 
-					if(face.isWalkableCandidate() && std::fabs(face.getAngleToHorizontal()) < navMeshConfig->getMaxSlope())
+					if(surface->isWalkable(navMeshConfig->getMaxSlope()))
 					{
-						walkableFaces.emplace_back(PolyhedronFaceIndex(itPolyhedron, faceIndex));
+						walkableFaces.emplace_back(PolytopeSurfaceIndex(itPolytope, surfaceIndex));
 					}
 				}
 			}
@@ -133,16 +136,15 @@ namespace urchin
 		return walkableFaces;
 	}
 
-	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygonFor(const PolyhedronFaceIndex &polyhedronWalkableFace) const
+	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygonFor(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		const std::unique_ptr<Polyhedron> &polyhedron = polyhedronWalkableFace.polyhedronRef->second;
-		const PolyhedronFace &walkableFace = polyhedron->getFace(polyhedronWalkableFace.faceIndex);
+		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
+		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
-		std::string walkableName = polyhedron->getName() + "[" + std::to_string(polyhedronWalkableFace.faceIndex) + "]";
-        std::vector<bool> isExternalPoints(walkableFace.getCcwPoints().size(), true);
-        std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, reverseAndFlatPointsOnYAxis(walkableFace.getCcwPoints()))};
+		std::string walkableName = polytope->getName() + "[" + std::to_string(polytopeWalkableSurface.faceIndex) + "]";
+        std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints())};
 
-        auto obstaclePolygons = computeObstacles(polyhedronWalkableFace);
+        auto obstaclePolygons = computeObstacles(polytopeWalkableSurface);
 		std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 		remainingObstaclePolygons.reserve(2); //estimated memory size
 
@@ -224,30 +226,17 @@ namespace urchin
 		return reversePoints;
 	}
 
-	std::vector<Point2<float>> NavMeshGenerator::reverseAndFlatPointsOnYAxis(const std::vector<Point3<float>> &points) const
+	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		std::vector<Point2<float>> reverseFlatPoints;
-		reverseFlatPoints.reserve(points.size());
-
-		for(auto it = points.rbegin(); it!=points.rend(); ++it)
-		{
-			reverseFlatPoints.emplace_back(Point2<float>(it->X, -it->Z));
-		}
-
-		return reverseFlatPoints;
-	}
-
-	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const PolyhedronFaceIndex &polyhedronWalkableFace) const
-	{
-		const std::unique_ptr<Polyhedron> &polyhedron = polyhedronWalkableFace.polyhedronRef->second;
-		const PolyhedronFace &walkableFace = polyhedron->getFace(polyhedronWalkableFace.faceIndex);
+		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
+		const std::unique_ptr<PolytopeSurface> &walkableSurface = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
 		std::vector<CSGPolygon<float>> holePolygons;
-        for (const auto &expandedPolyhedron : expandedPolyhedrons)
+        for (const auto &expandedPolytope : expandedPolytopes)
         {
-			if(expandedPolyhedron.first!=polyhedronWalkableFace.polyhedronRef->first && expandedPolyhedron.second->isObstacleCandidate())
+			if(expandedPolytope.first!=polytopeWalkableSurface.polytopeRef->first && expandedPolytope.second->isObstacleCandidate())
 			{
-				CSGPolygon<float> footprintPolygon = computePolyhedronFootprint(expandedPolyhedron.second, walkableFace);
+				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytope.second, walkableSurface);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
 					holePolygons.push_back(footprintPolygon);
@@ -258,43 +247,49 @@ namespace urchin
 		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
 	}
 
-	CSGPolygon<float> NavMeshGenerator::computePolyhedronFootprint(const std::unique_ptr<Polyhedron> &polyhedron, const PolyhedronFace &walkableFace) const
+	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytope, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		std::vector<Point2<float>> footprintPoints;
-		footprintPoints.reserve(polyhedron->getPoints().size() / 2); //estimated memory size
+		footprintPoints.reserve(polytope->getPoints().size() / 2); //estimated memory size
 
-		Plane<float> walkablePlane(walkableFace.getCcwPoints()[0], walkableFace.getCcwPoints()[1], walkableFace.getCcwPoints()[2]);
-		for(const auto &polyhedronFace : polyhedron->getFaces())
+		Plane<float> walkablePlane(walkableSurface->getCcwPoints()[0], walkableSurface->getCcwPoints()[1], walkableSurface->getCcwPoints()[2]);
+		for(const auto &polytopeSurface : polytope->getSurfaces())
 		{
-			for(unsigned int i=0, previousI=polyhedronFace.getCcwPoints().size()-1; i<polyhedronFace.getCcwPoints().size(); previousI=i++)
-			{
-				float distance1 = walkablePlane.distance(polyhedronFace.getCcwPoints()[previousI]);
-				float distance2 = walkablePlane.distance(polyhedronFace.getCcwPoints()[i]);
-				if((distance1<0.0 && distance2>0.0) || (distance1>0.0 && distance2<0.0))
-				{
-					Line3D<float> polyhedronEdgeLine(polyhedronFace.getCcwPoints()[previousI], polyhedronFace.getCcwPoints()[i]);
-					Point3<float> intersectionPoint = walkablePlane.intersectPoint(polyhedronEdgeLine);
-					footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
-				}
-			}
+            if(auto *polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface *>(polytopeSurface.get()))
+            {
+                for (unsigned int i = 0, previousI = polytopePlaneSurface->getCcwPoints().size() - 1; i < polytopePlaneSurface->getCcwPoints().size(); previousI = i++)
+                {
+                    float distance1 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[previousI]);
+                    float distance2 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[i]);
+                    if ((distance1 < 0.0 && distance2 > 0.0) || (distance1 > 0.0 && distance2 < 0.0))
+                    {
+                        Line3D<float> polytopeEdgeLine(polytopePlaneSurface->getCcwPoints()[previousI], polytopePlaneSurface->getCcwPoints()[i]);
+                        Point3<float> intersectionPoint = walkablePlane.intersectPoint(polytopeEdgeLine);
+                        footprintPoints.emplace_back(Point2<float>(intersectionPoint.X, -intersectionPoint.Z));
+                    }
+                }
+            }else
+            {
+                throw std::runtime_error("Unsupported type of surface as obstacle: " + std::string(typeid(*polytopeSurface).name()));
+            }
 		}
 
 		ConvexHull2D<float> footprintConvexHull(footprintPoints);
 		std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
 		std::reverse(cwPoints.begin(), cwPoints.end());
-		return CSGPolygon<float>(polyhedron->getName(), cwPoints);
+		return CSGPolygon<float>(polytope->getName(), cwPoints);
 	}
 
-	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const PolyhedronFace &walkableFace) const
+	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
-        float shiftDistance = -navMeshConfig->getAgent().computeExpandDistance(walkableFace.getNormal());
+        float shiftDistance = -navMeshConfig->getAgent().computeExpandDistance(walkableSurface->getNormal());
 
 		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
 
         for(const auto &walkablePoint : triangulation.getPolygonPoints())
         {
-            elevatedPoints.push_back(elevatePoints(walkablePoint, shiftDistance, walkableFace));
+            elevatedPoints.push_back(elevatePoints(walkablePoint, shiftDistance, walkableSurface));
         }
 
 		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
@@ -302,18 +297,18 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				elevatedPoints.push_back(elevatePoints(holePoint, shiftDistance, walkableFace));
+				elevatedPoints.push_back(elevatePoints(holePoint, shiftDistance, walkableSurface));
 			}
 		}
 
 		return elevatedPoints;
 	}
 
-    Point3<float> NavMeshGenerator::elevatePoints(const Point2<float> &point, float shiftDistance, const PolyhedronFace &walkableFace) const
+    Point3<float> NavMeshGenerator::elevatePoints(const Point2<float> &point, float shiftDistance, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
     {
         Point3<float> point3D(point.X, 0.0, -point.Y);
-        float shortestFaceDistance = walkableFace.getNormal().dotProduct(point3D.vector(walkableFace.getCcwPoints()[0]));
-        float t = (shortestFaceDistance+shiftDistance) / walkableFace.getNormal().Y;
+        float shortestFaceDistance = walkableSurface->getNormal().dotProduct(point3D.vector(walkableSurface->getCcwPoints()[0]));
+        float t = (shortestFaceDistance+shiftDistance) / walkableSurface->getNormal().Y;
         return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
     }
 

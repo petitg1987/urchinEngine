@@ -7,11 +7,6 @@
 namespace urchin
 {
 
-	LoopUnrollerShader::LoopUnrollerShader()
-	{
-
-	}
-
 	std::string LoopUnrollerShader::unrollLoops(const std::string &shaderSource)
 	{
 		std::string result = shaderSource;
@@ -84,12 +79,12 @@ namespace urchin
 		for(unsigned int index=0; index<loopIterationNumber; ++index)
 		{
 			//handle loop stop
-			std::string loopIterationContent = "";
+			std::string loopIterationContent;
 			if(hasLoopStop && index!=0)
 			{
 				loopIterationContent = "if(!stopLoop" + loopNumberString.str() + "){";
 			}
-			loopIterationContent = loopIterationContent + loopContentUpdated;
+			loopIterationContent += loopContentUpdated;
 
 			//handle last iteration
 			std::ostringstream ifLastIterationToken, elseLastIterationToken, endifLastIterationToken;
@@ -107,7 +102,7 @@ namespace urchin
 				{
 					//content of last iteration
 					unsigned int startLastIterationContent = loopIterationContent.find(ifLastIterationToken.str()) + ifLastIterationToken.str().length() +1;
-					unsigned int endLastIterationContent = -1;
+					unsigned int endLastIterationContent;
 					if(loopIterationContent.find(elseLastIterationToken.str()) != std::string::npos)
 					{
 						endLastIterationContent = loopIterationContent.find(elseLastIterationToken.str());
@@ -121,7 +116,7 @@ namespace urchin
 				}else
 				{
 					//content of not last iteration (else)
-					std::string notLastIterationContent = "";
+					std::string notLastIterationContent;
 					if(loopIterationContent.find(elseLastIterationToken.str()) != std::string::npos)
 					{
 						unsigned int startNotLastIterationContent = loopIterationContent.find(elseLastIterationToken.str()) + elseLastIterationToken.str().length() + 1;
@@ -139,7 +134,7 @@ namespace urchin
 			StringUtil::replaceAll(loopIterationContent, counterTokenString.str(), iterationNumber.str());
 
 			//add loop iteration content to result
-			result = result + loopIterationContent;
+			result += loopIterationContent;
 		}
 
 		//handle loop stop
@@ -147,7 +142,7 @@ namespace urchin
 		{
 			for(unsigned int index=1; index<loopIterationNumber; ++index)
 			{
-				result = result + "\n}";
+				result += "\n}";
 			}
 		}
 

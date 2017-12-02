@@ -1,28 +1,29 @@
-#ifndef URCHINENGINE_POLYHEDRONFACE_H
-#define URCHINENGINE_POLYHEDRONFACE_H
+#ifndef URCHINENGINE_POLYTOPEPLANESURFACE_H
+#define URCHINENGINE_POLYTOPEPLANESURFACE_H
 
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "path/navmesh/polyhedron/PolyhedronPoint.h"
+#include "path/navmesh/polytope/PolytopeSurface.h"
+#include "path/navmesh/polytope/PolytopePoint.h"
 
 namespace urchin
 {
 
-	class PolyhedronFace
+	class PolytopePlaneSurface : public PolytopeSurface
 	{
 		public:
-			explicit PolyhedronFace(const std::vector<unsigned int> &);
+			explicit PolytopePlaneSurface(const std::vector<unsigned int> &);
 
-			void refreshWith(const std::vector<PolyhedronPoint> &);
+			void refreshWith(const std::vector<PolytopePoint> &);
+
+			bool isWalkable(float) const override;
+			std::vector<Point2<float>> getOutlineCwPoints() const override;
 
 			const std::vector<unsigned int> &getCcwPointIndices() const;
 			const std::vector<Point3<float>> &getCcwPoints() const;
 			const Vector3<float> &getNormal() const;
 			float getAngleToHorizontal() const;
-
-			void setWalkableCandidate(bool);
-			bool isWalkableCandidate() const;
 
 		private:
 			void checkInitialization() const;
@@ -34,8 +35,6 @@ namespace urchin
 			std::vector<Point3<float>> ccwPoints;
 			Vector3<float> normal;
 			float angleToHorizontalInRadian;
-
-			bool walkableCandidate;
 	};
 
 }

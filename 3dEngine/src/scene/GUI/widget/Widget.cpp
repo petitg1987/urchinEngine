@@ -287,7 +287,8 @@ namespace urchin
 
 		for(unsigned int i=0;i<children.size();++i)
 		{
-			if(children[i]->isVisible() && !children[i]->onChar(character)){
+			if(children[i]->isVisible() && !children[i]->onChar(character))
+			{
 				return false;
 			}
 		}

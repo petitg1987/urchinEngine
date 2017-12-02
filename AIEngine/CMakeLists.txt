@@ -21,12 +21,12 @@ set(SOURCE_FILES
         src/path/navmesh/model/NavMesh.h
         src/path/navmesh/model/NavPolygon.cpp
         src/path/navmesh/model/NavPolygon.h
-        src/path/navmesh/polyhedron/Polyhedron.cpp
-        src/path/navmesh/polyhedron/Polyhedron.h
-        src/path/navmesh/polyhedron/PolyhedronFace.cpp
-        src/path/navmesh/polyhedron/PolyhedronFace.h
-        src/path/navmesh/polyhedron/PolyhedronPoint.cpp
-        src/path/navmesh/polyhedron/PolyhedronPoint.h
+        src/path/navmesh/polytope/Polytope.cpp
+        src/path/navmesh/polytope/Polytope.h
+        src/path/navmesh/polytope/PolytopePlaneSurface.cpp
+        src/path/navmesh/polytope/PolytopePlaneSurface.h
+        src/path/navmesh/polytope/PolytopePoint.cpp
+        src/path/navmesh/polytope/PolytopePoint.h
         src/path/navmesh/triangulation/MonotonePolygonAlgorithm.cpp
         src/path/navmesh/triangulation/MonotonePolygonAlgorithm.h
         src/path/navmesh/triangulation/TriangulationAlgorithm.cpp
@@ -57,12 +57,16 @@ set(SOURCE_FILES
         src/path/PathRequest.h
         src/input/AIShape.cpp
         src/input/AIShape.h
-        src/path/navmesh/polyhedron/PolyhedronBuilder.cpp
-        src/path/navmesh/polyhedron/PolyhedronBuilder.h
+        src/path/navmesh/polytope/PolytopeBuilder.cpp
+        src/path/navmesh/polytope/PolytopeBuilder.h
         src/input/AITerrain.cpp
         src/input/AITerrain.h
         src/input/AIEntity.cpp
-        src/input/AIEntity.h)
+        src/input/AIEntity.h
+        src/path/navmesh/polytope/PolytopeSurface.cpp
+        src/path/navmesh/polytope/PolytopeSurface.h
+        src/path/navmesh/polytope/PolytopeTerrainSurface.cpp
+        src/path/navmesh/polytope/PolytopeTerrainSurface.h)
 
 include_directories(src ../common/src)
 

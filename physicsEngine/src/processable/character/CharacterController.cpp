@@ -180,7 +180,8 @@ namespace urchin
 			verticalVelocity += getJumpSpeed();
 			isOnGround = false;
 			jumping = true;
-		}else if(isOnGround && jumping){
+		}else if(isOnGround && jumping)
+		{
 			jumping = false;
 		}
 
