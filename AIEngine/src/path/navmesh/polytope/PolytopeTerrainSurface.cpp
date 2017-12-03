@@ -7,6 +7,15 @@ namespace urchin
         return isWalkableCandidate();
     }
 
+    Rectangle<float> PolytopeTerrainSurface::computeXZRectangle() const
+    {
+        Rectangle<float> xzRectangle(Point2<float>(0.0, 0.0), Point2<float>(0.0, 0.0));
+
+        //TODO build xzRectangle (global not local)
+
+        return xzRectangle;
+    }
+
     std::vector<Point2<float>> PolytopeTerrainSurface::getOutlineCwPoints() const
     {
         std::vector<Point2<float>> flatPoints;

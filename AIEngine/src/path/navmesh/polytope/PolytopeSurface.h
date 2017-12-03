@@ -19,6 +19,8 @@ namespace urchin
             bool isWalkableCandidate() const;
 
             virtual bool isWalkable(float maxSlopeInRadian) const = 0;
+            virtual Rectangle<float> computeXZRectangle() const = 0;
+
             virtual std::vector<Point2<float>> getOutlineCwPoints() const = 0;
             virtual Plane<float> getPlaneIn(const Rectangle<float> &) const = 0;
             virtual Point3<float> elevatePoint(const Point2<float> &, const NavMeshAgent &) const = 0; //TODO check if better to give shiftDistance instead of NavMeshAgent

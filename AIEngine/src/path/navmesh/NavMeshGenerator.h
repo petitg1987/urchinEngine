@@ -30,7 +30,7 @@ namespace urchin
 	};
 
 	class NavMeshGenerator
-	{
+	{ //TODO fix memory problem (see memcheck)
 		public:
             NavMeshGenerator();
 

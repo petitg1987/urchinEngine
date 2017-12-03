@@ -16,16 +16,14 @@ namespace urchin
 	class Polytope
 	{
 		public:
-			Polytope();
-			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &&, const std::vector<PolytopePoint> &);
+			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &, const std::vector<PolytopePoint> &);
 
 			const std::string getName() const;
 
 			const std::vector<std::unique_ptr<PolytopeSurface>> &getSurfaces() const;
 			const std::unique_ptr<PolytopeSurface> &getSurface(unsigned int) const;
-			const std::vector<PolytopePoint> &getPoints() const;
 
-			const std::unique_ptr<AABBox<float>> &getAABBox() const;
+			const std::unique_ptr<Rectangle<float>> &getXZRectangle() const;
 
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
@@ -33,19 +31,21 @@ namespace urchin
 			void setObstacleCandidate(bool);
 			bool isObstacleCandidate() const;
 
-			void expand(const NavMeshAgent &);
+            std::unique_ptr<Polytope> expand(const NavMeshAgent &) const;
 
 		private:
-			void expandPolyhedron(const NavMeshAgent &);
+            std::unique_ptr<Polytope> expandPolyhedron(const NavMeshAgent &) const;
 			std::vector<Plane<float>> buildPlanesFromPlaneSurfaces() const;
 			void shiftPlanes(std::vector<Plane<float>> &, const NavMeshAgent &) const;
 			std::vector<Plane<float>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::vector<Plane<float>> &) const;
+
+			void buildXZRectangle();
 
 			std::string name;
 			std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
 			std::vector<PolytopePoint> points;
 
-			std::unique_ptr<AABBox<float>> aabbox;
+			std::unique_ptr<Rectangle<float>> xzRectangle;
 
 			bool walkableCandidate;
 			bool obstacleCandidate;

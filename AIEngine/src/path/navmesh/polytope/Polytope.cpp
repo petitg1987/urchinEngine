@@ -8,25 +8,18 @@
 namespace urchin
 {
 
-	Polytope::Polytope() :
-			walkableCandidate(true),
-			obstacleCandidate(true)
-	{
-
-	}
-
 	/**
 	 * @param surfaces Indexed faces of the polytope. Surfaces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
 	 * @param points All points of the polytopes
 	 */
-	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> &&surfaces, const std::vector<PolytopePoint> &points) :
+	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> &surfaces, const std::vector<PolytopePoint> &points) :
 			name(name),
 			surfaces(std::move(surfaces)),
 			points(points),
 			walkableCandidate(true),
             obstacleCandidate(true)
 	{
-		aabbox = std::make_unique<AABBox<float>>(); //TODO compute correct aabbox
+        buildXZRectangle();
 	}
 
 	const std::string Polytope::getName() const
@@ -44,14 +37,9 @@ namespace urchin
 		return surfaces[surfaceIndex];
 	}
 
-	const std::vector<PolytopePoint> &Polytope::getPoints() const
+	const std::unique_ptr<Rectangle<float>> &Polytope::getXZRectangle() const
 	{
-		return points;
-	}
-
-	const std::unique_ptr<AABBox<float>> &Polytope::getAABBox() const
-	{
-		return aabbox;
+		return xzRectangle;
 	}
 
 	void Polytope::setWalkableCandidate(bool walkableCandidate)
@@ -74,19 +62,23 @@ namespace urchin
         return obstacleCandidate;
     }
 
-	void Polytope::expand(const NavMeshAgent &agent)
+	std::unique_ptr<Polytope> Polytope::expand(const NavMeshAgent &agent) const
 	{
 		if(surfaces.size() > 1)
 		{ //polyhedron (3D)
-			expandPolyhedron(agent);
+			return expandPolyhedron(agent);
 		}else if(surfaces.size()==1)
 		{ //polygon (2D)
-			//TODO
+			//TODO expand polygon
 		}
 	}
 
-	void Polytope::expandPolyhedron(const NavMeshAgent &agent)
+	std::unique_ptr<Polytope> Polytope::expandPolyhedron(const NavMeshAgent &agent) const
 	{
+		//1. compute expanded points
+		std::vector<PolytopePoint> expandedPoints;
+		expandedPoints.reserve(points.size());
+
 		std::vector<Plane<float>> planes = buildPlanesFromPlaneSurfaces();
 		shiftPlanes(planes, agent);
 
@@ -96,7 +88,8 @@ namespace urchin
 			{ //face is individual
 				Plane<float> plane = planes[polyhedronPoint.getFaceIndices()[0]];
 				float distance = agent.computeExpandDistance(plane.getNormal());
-				polyhedronPoint.setPoint(polyhedronPoint.getPoint().translate(plane.getNormal() * distance));
+				Point3<float> newPoint = polyhedronPoint.getPoint().translate(plane.getNormal() * distance);
+				expandedPoints.emplace_back(PolytopePoint(newPoint, polyhedronPoint.getFaceIndices()));
 			}else
 			{
 				std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), planes);
@@ -120,15 +113,23 @@ namespace urchin
 					Logger::logger().logError(logStream.str());
 				}
 
-				polyhedronPoint.setPoint(newPoint);
+				expandedPoints.emplace_back(PolytopePoint(newPoint, polyhedronPoint.getFaceIndices()));
 			}
 		}
 
+		//2. compute expanded surfaces
+		std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+		expandedSurfaces.reserve(surfaces.size());
 		for(auto &surface : surfaces)
 		{
 			auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
-			planeSurface->refreshWith(points);
+			expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(planeSurface->getCcwPointIndices(), expandedPoints));
 		}
+
+		auto expandedPolytope = std::make_unique<Polytope>(getName(), expandedSurfaces, expandedPoints);
+        expandedPolytope->setWalkableCandidate(isWalkableCandidate());
+        expandedPolytope->setObstacleCandidate(isObstacleCandidate());
+        return expandedPolytope;
 	}
 
 	std::vector<Plane<float>> Polytope::buildPlanesFromPlaneSurfaces() const
@@ -136,12 +137,10 @@ namespace urchin
 		std::vector<Plane<float>> planes;
 		planes.reserve(surfaces.size());
 
+		Rectangle<float> nullRectangle(Point2<float>(0.0, 0.0), Point2<float>(0.0, 0.0));
 		for(const auto &surface : surfaces)
 		{
-			auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
-			planes.emplace_back(Plane<float>(points[planeSurface->getCcwPointIndices()[0]].getPoint(),
-											 points[planeSurface->getCcwPointIndices()[1]].getPoint(),
-											 points[planeSurface->getCcwPointIndices()[2]].getPoint()));
+			planes.emplace_back(surface->getPlaneIn(nullRectangle));
 		}
 
 		return planes;
@@ -192,6 +191,16 @@ namespace urchin
 		return nonParallelPlanes;
 	}
 
+	void Polytope::buildXZRectangle()
+	{
+		Rectangle<float> xzRectangle = surfaces[0]->computeXZRectangle();
+		for(unsigned int i=1; i<surfaces.size(); ++i)
+		{
+			xzRectangle = xzRectangle.merge(surfaces[i]->computeXZRectangle());
+		}
+		this->xzRectangle = std::make_unique<Rectangle<float>>(xzRectangle.getMin(), xzRectangle.getDiagonal());
+	}
+
     std::ostream& operator <<(std::ostream &stream, const Polytope &polytope)
     {
         unsigned int surfaceIndex = 0;
@@ -200,14 +209,15 @@ namespace urchin
             stream<<"Surface "<<surfaceIndex++<<" ";
 			if(const auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get()))
 			{
-				for (unsigned int pointIndex : planeSurface->getCcwPointIndices())
+				for (const auto &point : planeSurface->getCcwPoints())
 				{
-					stream << "(" << polytope.getPoints()[pointIndex].getPoint() << ") ";
+					stream << "(" << point << ") ";
 				}
 				stream << std::endl;
 			}else if(const auto *terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surface.get()))
 			{
-				//TODO
+				terrainSurface->isWalkableCandidate(); //@IgnoreUnused
+				stream << "(terrain: " << polytope.getName() << ") " << std::endl;
 			}
         }
 

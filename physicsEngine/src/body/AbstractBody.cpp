@@ -10,6 +10,7 @@ namespace urchin
 			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
 			workBody(nullptr),
 			transform(transform),
+			isManuallyMoved(false),
 			id(id),
 			originalShape(shape)
 	{

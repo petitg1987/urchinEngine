@@ -10,10 +10,8 @@ namespace urchin
 	/**
 	 * @param ccwPointIndices Point indices of the plane which must be coplanar and counter clockwise oriented
 	 */
-	PolytopePlaneSurface::PolytopePlaneSurface(const std::vector<unsigned int> &ccwPointIndices) :
-		isInitialized(false),
-		ccwPointIndices(ccwPointIndices),
-		angleToHorizontalInRadian(std::numeric_limits<float>::max())
+	PolytopePlaneSurface::PolytopePlaneSurface(const std::vector<unsigned int> &ccwPointIndices, const std::vector<PolytopePoint> &polytopePoints) :
+		ccwPointIndices(ccwPointIndices)
 	{
 		if(ccwPointIndices.size()<3)
 		{
@@ -21,11 +19,6 @@ namespace urchin
 		}
 
 		ccwPoints.reserve(ccwPointIndices.size());
-	}
-
-	void PolytopePlaneSurface::refreshWith(const std::vector<PolytopePoint> &polytopePoints)
-	{
-		ccwPoints.clear();
 		for(unsigned int ccwPointIndex : ccwPointIndices)
 		{
 			ccwPoints.push_back(polytopePoints[ccwPointIndex].getPoint());
@@ -37,8 +30,6 @@ namespace urchin
 
 		Vector3<float> upVector(0.0, 1.0, 0.0);
 		angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
-
-		isInitialized = true;
 	}
 
 	bool PolytopePlaneSurface::isWalkable(float maxSlopeInRadian) const
@@ -46,10 +37,23 @@ namespace urchin
 		return isWalkableCandidate() && std::fabs(getAngleToHorizontal()) < maxSlopeInRadian;
 	}
 
+	Rectangle<float> PolytopePlaneSurface::computeXZRectangle() const
+	{
+		Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+		Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+		for(auto point : ccwPoints)
+		{
+			minPoint.X = minPoint.X > point.X ? point.X : minPoint.X;
+			minPoint.Y = minPoint.Y > point.Y ? point.Y : minPoint.Y;
+
+			maxPoint.X = maxPoint.X < point.X ? point.X : minPoint.X;
+			maxPoint.Y = maxPoint.Y < point.Y ? point.Y : minPoint.Y;
+		}
+		return Rectangle<float>(minPoint, maxPoint);
+	}
+
     std::vector<Point2<float>> PolytopePlaneSurface::getOutlineCwPoints() const
     {
-        checkInitialization();
-
         std::vector<Point2<float>> reverseFlatPoints;
         reverseFlatPoints.reserve(ccwPoints.size());
 
@@ -63,30 +67,17 @@ namespace urchin
 
 	Plane<float> PolytopePlaneSurface::getPlaneIn(const Rectangle<float> &box) const
 	{
-		checkInitialization();
 		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
 	}
 
 	Point3<float> PolytopePlaneSurface::elevatePoint(const Point2<float> &point, const NavMeshAgent &navMeshAgent) const
 	{
-		checkInitialization();
-
 		float shiftDistance = -navMeshAgent.computeExpandDistance(normal);
 
 		Point3<float> point3D(point.X, 0.0, -point.Y);
 		float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
 		float t = (shortestFaceDistance+shiftDistance) / normal.Y;
 		return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
-	}
-
-	void PolytopePlaneSurface::checkInitialization() const
-	{
-		#ifdef _DEBUG
-			if(!isInitialized)
-			{
-				throw std::runtime_error("Impossible to access to this data because polytope face not initialized.");
-			}
-		#endif
 	}
 
 	const std::vector<unsigned int> &PolytopePlaneSurface::getCcwPointIndices() const
@@ -96,19 +87,16 @@ namespace urchin
 
 	const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const
 	{
-		checkInitialization();
 		return ccwPoints;
 	}
 
 	const Vector3<float> &PolytopePlaneSurface::getNormal() const
 	{
-		checkInitialization();
 		return normal;
 	}
 
 	float PolytopePlaneSurface::getAngleToHorizontal() const
 	{
-		checkInitialization();
 		return angleToHorizontalInRadian;
 	}
 }

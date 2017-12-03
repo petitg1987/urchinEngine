@@ -17,7 +17,13 @@ namespace urchin
 			Rectangle(const Point2<T> &, const Vector2<T> &);
 			Rectangle(const Point2<T> &, const Point2<T> &);
 
+			Point2<T> getMin() const;
+			Point2<T> getMax() const;
+			Vector2<T> getDiagonal() const;
 			Point2<T> getSupportPoint(const Vector2<T> &) const;
+
+			Rectangle<T> merge(const Rectangle<T> &) const;
+
 			bool collideWithPoint(const Point2<T> &) const;
 
 		private:

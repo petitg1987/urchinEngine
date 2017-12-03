@@ -95,16 +95,19 @@ namespace urchin
                 if(aiEntity->getType()==AIEntity::OBJECT)
                 {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> polytopes = PolytopeBuilder::instance()->buildPolytopes(aiObject);
+                    std::vector<std::unique_ptr<Polytope>> polytopes = PolytopeBuilder::instance()->buildPolytopes(aiObject); //TODO perf: build in expanded
                     for (auto &polytope : polytopes)
                     {
-						polytope->expand(navMeshConfig->getAgent());
-                        expandedPolytopes.insert(std::pair<std::shared_ptr<AIObject>, std::unique_ptr<Polytope>>(aiObject, std::move(polytope)));
+						auto expandedPolytope = polytope->expand(navMeshConfig->getAgent());
+                        expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiObject, std::move(expandedPolytope)));
                     }
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
 					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
-                    //TODO
+					std::unique_ptr<Polytope> polytope = PolytopeBuilder::instance()->buildPolytope(aiTerrain); //TODO perf: build in expanded
+
+					auto expandedPolytope = polytope->expand(navMeshConfig->getAgent());
+					expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiTerrain, std::move(expandedPolytope)));
                 }
 
                 aiEntity->markRebuilt();
@@ -251,11 +254,9 @@ namespace urchin
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytope, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		std::vector<Point2<float>> footprintPoints;
-		footprintPoints.reserve(polytope->getPoints().size() / 2); //estimated memory size
+        footprintPoints.reserve(4); //estimated memory size
 
-        const auto &aabbox = polytope->getAABBox();
-        Rectangle<float> flatAABBox(Point2<float>(aabbox->getMin().X, aabbox->getMin().Z), Point2<float>(aabbox->getMax().X, aabbox->getMax().Z));
-        Plane<float> walkablePlane = walkableSurface->getPlaneIn(flatAABBox);
+        Plane<float> walkablePlane = walkableSurface->getPlaneIn(*polytope->getXZRectangle());
 
 		for(const auto &polytopeSurface : polytope->getSurfaces())
 		{

@@ -46,7 +46,6 @@ namespace urchin
 
     std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(std::string name, const std::shared_ptr<const CollisionHeightfieldShape> &heightfieldShape, const Transform<float> &transform)
     {
-        //TODO use heightfieldShape to build AITerrain
-        return std::make_shared<AITerrain>(name, transform, false);
+        return std::make_shared<AITerrain>(name, transform, false, heightfieldShape->getVertices(), heightfieldShape->getXLength(), heightfieldShape->getZLength());
     }
 }
