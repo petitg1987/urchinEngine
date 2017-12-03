@@ -19,6 +19,8 @@ namespace urchin
 
 			bool isWalkable(float) const override;
 			std::vector<Point2<float>> getOutlineCwPoints() const override;
+			Plane<float> getPlaneIn(const Rectangle<float> &) const override;
+			Point3<float> elevatePoint(const Point2<float> &, const NavMeshAgent &) const override;
 
 			const std::vector<unsigned int> &getCcwPointIndices() const;
 			const std::vector<Point3<float>> &getCcwPoints() const;

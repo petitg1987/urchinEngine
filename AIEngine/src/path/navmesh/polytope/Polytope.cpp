@@ -19,14 +19,14 @@ namespace urchin
 	 * @param surfaces Indexed faces of the polytope. Surfaces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
 	 * @param points All points of the polytopes
 	 */
-	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> surfaces, const std::vector<PolytopePoint> &points) :
+	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> &&surfaces, const std::vector<PolytopePoint> &points) :
 			name(name),
 			surfaces(std::move(surfaces)),
 			points(points),
 			walkableCandidate(true),
             obstacleCandidate(true)
 	{
-
+		aabbox = std::make_unique<AABBox<float>>(); //TODO compute correct aabbox
 	}
 
 	const std::string Polytope::getName() const
@@ -47,6 +47,11 @@ namespace urchin
 	const std::vector<PolytopePoint> &Polytope::getPoints() const
 	{
 		return points;
+	}
+
+	const std::unique_ptr<AABBox<float>> &Polytope::getAABBox() const
+	{
+		return aabbox;
 	}
 
 	void Polytope::setWalkableCandidate(bool walkableCandidate)
@@ -121,7 +126,7 @@ namespace urchin
 
 		for(auto &surface : surfaces)
 		{
-			PolytopePlaneSurface *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
+			auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
 			planeSurface->refreshWith(points);
 		}
 	}
@@ -133,7 +138,7 @@ namespace urchin
 
 		for(const auto &surface : surfaces)
 		{
-			PolytopePlaneSurface *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
+			auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
 			planes.emplace_back(Plane<float>(points[planeSurface->getCcwPointIndices()[0]].getPoint(),
 											 points[planeSurface->getCcwPointIndices()[1]].getPoint(),
 											 points[planeSurface->getCcwPointIndices()[2]].getPoint()));

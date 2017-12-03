@@ -17,13 +17,15 @@ namespace urchin
 	{
 		public:
 			Polytope();
-			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>>, const std::vector<PolytopePoint> &);
+			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &&, const std::vector<PolytopePoint> &);
 
 			const std::string getName() const;
 
 			const std::vector<std::unique_ptr<PolytopeSurface>> &getSurfaces() const;
 			const std::unique_ptr<PolytopeSurface> &getSurface(unsigned int) const;
 			const std::vector<PolytopePoint> &getPoints() const;
+
+			const std::unique_ptr<AABBox<float>> &getAABBox() const;
 
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
@@ -42,6 +44,8 @@ namespace urchin
 			std::string name;
 			std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
 			std::vector<PolytopePoint> points;
+
+			std::unique_ptr<AABBox<float>> aabbox;
 
 			bool walkableCandidate;
 			bool obstacleCandidate;

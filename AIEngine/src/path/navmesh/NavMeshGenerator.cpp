@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <string>
 #include <numeric>
+#include <path/navmesh/polytope/PolytopeTerrainSurface.h>
 
 #include "NavMeshGenerator.h"
 #include "input/AIObject.h"
@@ -252,7 +253,10 @@ namespace urchin
 		std::vector<Point2<float>> footprintPoints;
 		footprintPoints.reserve(polytope->getPoints().size() / 2); //estimated memory size
 
-		Plane<float> walkablePlane(walkableSurface->getCcwPoints()[0], walkableSurface->getCcwPoints()[1], walkableSurface->getCcwPoints()[2]);
+        const auto &aabbox = polytope->getAABBox();
+        Rectangle<float> flatAABBox(Point2<float>(aabbox->getMin().X, aabbox->getMin().Z), Point2<float>(aabbox->getMax().X, aabbox->getMax().Z));
+        Plane<float> walkablePlane = walkableSurface->getPlaneIn(flatAABBox);
+
 		for(const auto &polytopeSurface : polytope->getSurfaces())
 		{
             if(auto *polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface *>(polytopeSurface.get()))
@@ -282,14 +286,12 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
-        float shiftDistance = -navMeshConfig->getAgent().computeExpandDistance(walkableSurface->getNormal());
-
 		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
 
         for(const auto &walkablePoint : triangulation.getPolygonPoints())
         {
-            elevatedPoints.push_back(elevatePoints(walkablePoint, shiftDistance, walkableSurface));
+            elevatedPoints.push_back(walkableSurface->elevatePoint(walkablePoint, navMeshConfig->getAgent()));
         }
 
 		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
@@ -297,19 +299,11 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				elevatedPoints.push_back(elevatePoints(holePoint, shiftDistance, walkableSurface));
+				elevatedPoints.push_back(walkableSurface->elevatePoint(holePoint, navMeshConfig->getAgent()));
 			}
 		}
 
 		return elevatedPoints;
 	}
-
-    Point3<float> NavMeshGenerator::elevatePoints(const Point2<float> &point, float shiftDistance, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
-    {
-        Point3<float> point3D(point.X, 0.0, -point.Y);
-        float shortestFaceDistance = walkableSurface->getNormal().dotProduct(point3D.vector(walkableSurface->getCcwPoints()[0]));
-        float t = (shortestFaceDistance+shiftDistance) / walkableSurface->getNormal().Y;
-        return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
-    }
 
 }

@@ -49,7 +49,6 @@ namespace urchin
 			std::vector<CSGPolygon<float>> computeObstacles(const PolytopeSurfaceIndex &) const;
 			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::unique_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::unique_ptr<PolytopeSurface> &) const;
-			Point3<float> elevatePoints(const Point2<float> &, float, const std::unique_ptr<PolytopeSurface> &) const;
 
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;

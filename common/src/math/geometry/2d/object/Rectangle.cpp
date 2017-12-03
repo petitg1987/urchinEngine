@@ -40,4 +40,5 @@ namespace urchin
 
 	//explicit template
 	template class Rectangle<int>;
+	template class Rectangle<float>;
 }

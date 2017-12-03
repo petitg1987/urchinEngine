@@ -57,12 +57,12 @@ namespace urchin
         std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
         surfaces.reserve(6);
 
-        surfaces.push_back(std::make_unique<PolytopePlaneSurface>({0, 2, 3, 1})); //right
-        surfaces.push_back(std::make_unique<PolytopePlaneSurface>({4, 5, 7, 6})); //left
-        surfaces.push_back(std::make_unique<PolytopePlaneSurface>({0, 1, 5, 4})); //top
-        surfaces.push_back(std::make_unique<PolytopePlaneSurface>({3, 2, 6, 7})); //bottom
-        surfaces.push_back(std::make_unique<PolytopePlaneSurface>({0, 4, 6, 2})); //front
-        surfaces.push_back(std::make_unique<PolytopePlaneSurface>({1, 3, 7, 5})); //back
+        surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({0, 2, 3, 1}))); //right
+        surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({4, 5, 7, 6}))); //left
+        surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({0, 1, 5, 4}))); //top
+        surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({3, 2, 6, 7}))); //bottom
+        surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({0, 4, 6, 2}))); //front
+        surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({1, 3, 7, 5}))); //back
 
         return surfaces;
     }
@@ -92,8 +92,7 @@ namespace urchin
 
     std::unique_ptr<Polytope> PolytopeBuilder::createPolytopeFor(const std::string &name, OBBox<float> *box) const
     {
-        std::vector<std::unique_ptr<PolytopeSurface>> polytopeSurfaces = createPolytopeSurfaces();
-        return std::make_unique<Polytope>(name, polytopeSurfaces, createPolytopePoints(box));
+        return std::make_unique<Polytope>(name, createPolytopeSurfaces(), createPolytopePoints(box));
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createPolytopeFor(const std::string &name, Capsule<float> *capsule) const
@@ -148,11 +147,11 @@ namespace urchin
             unsigned int polytopePoint2Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[2])));
             polytopePoints[polytopePoint2Index].addFaceIndex(i);
 
-            surfaces.push_back(std::make_unique<PolytopePlaneSurface>({polytopePoint0Index, polytopePoint1Index, polytopePoint2Index}));
+            surfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({polytopePoint0Index, polytopePoint1Index, polytopePoint2Index})));
             i++;
         }
 
-        return std::make_unique<Polytope>(name, surfaces, polytopePoints);
+        return std::make_unique<Polytope>(name, std::move(surfaces), polytopePoints);
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createPolytopeFor(const std::string &name, Cylinder<float> *cylinder) const
@@ -167,7 +166,7 @@ namespace urchin
             surfaces[i]->setWalkableCandidate(cylinder->getCylinderOrientation()==i/2);
         }
 
-        return std::make_unique<Polytope>(name, surfaces, createPolytopePoints(&cylinderBox));
+        return std::make_unique<Polytope>(name, std::move(surfaces), createPolytopePoints(&cylinderBox));
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createPolytopeFor(const std::string &name, Sphere<float> *sphere) const

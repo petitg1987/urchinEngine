@@ -61,6 +61,24 @@ namespace urchin
         return reverseFlatPoints;
     }
 
+	Plane<float> PolytopePlaneSurface::getPlaneIn(const Rectangle<float> &box) const
+	{
+		checkInitialization();
+		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
+	}
+
+	Point3<float> PolytopePlaneSurface::elevatePoint(const Point2<float> &point, const NavMeshAgent &navMeshAgent) const
+	{
+		checkInitialization();
+
+		float shiftDistance = -navMeshAgent.computeExpandDistance(normal);
+
+		Point3<float> point3D(point.X, 0.0, -point.Y);
+		float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
+		float t = (shortestFaceDistance+shiftDistance) / normal.Y;
+		return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
+	}
+
 	void PolytopePlaneSurface::checkInitialization() const
 	{
 		#ifdef _DEBUG

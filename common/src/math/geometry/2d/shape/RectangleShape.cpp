@@ -16,5 +16,5 @@ namespace urchin
 
 	//explicit template
 	template class RectangleShape<int>;
-
+	template class RectangleShape<float>;
 }
