@@ -1,4 +1,3 @@
-#include <limits>
 #include <cassert>
 #include <algorithm>
 #include <typeinfo>
@@ -41,9 +40,14 @@ namespace urchin
 		return result << exponent;
 	}
 
-	bool MathAlgorithm::isZero(float value)
+	bool MathAlgorithm::isZero(float value, float tolerance)
 	{
-		return value > -std::numeric_limits<float>::epsilon() && value < std::numeric_limits<float>::epsilon();
+		return value > 0.0f-tolerance && value < 0.0f+tolerance;
+	}
+
+	bool MathAlgorithm::isOne(float value, float tolerance)
+	{
+		return value > 1.0f-tolerance && value < 1.0f+tolerance;
 	}
 
 	/**

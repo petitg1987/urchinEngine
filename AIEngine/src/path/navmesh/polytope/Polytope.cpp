@@ -199,15 +199,17 @@ namespace urchin
 	}
 
     std::unique_ptr<Polytope> Polytope::expandPolygon(const NavMeshAgent &agent) const
-    { //TODO expand terrain surfaces
+    {
         auto *terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surfaces[0].get());
         if(terrainSurface==nullptr)
         {
             throw std::runtime_error("Only polytope terrain surface are supported on polygon (2D)");
         }
 
+		//TODO expand terrain surfaces
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
-        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>();
+        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(terrainSurface->getTransform(), terrainSurface->getLocalVertices(),
+                                                                        terrainSurface->getXLength(), terrainSurface->getZLength());
         expandedSurface->setWalkableCandidate(terrainSurface->isWalkableCandidate());
         expandedSurfaces.emplace_back(std::move(expandedSurface));
 

@@ -1,6 +1,8 @@
 #ifndef URCHINENGINE_MATHALGORITHM_H
 #define URCHINENGINE_MATHALGORITHM_H
 
+#include <limits>
+
 namespace urchin
 {
 
@@ -13,7 +15,8 @@ namespace urchin
 			static int nextPowerOfTwo(int);
 			static unsigned int powerOfTwo(unsigned int);
 
-			static bool isZero(float);
+			static bool isZero(float, float tolerance = std::numeric_limits<float>::epsilon());
+			static bool isOne(float, float tolerance = std::numeric_limits<float>::epsilon());
 
 			template<class T> static T roundDivision(T, T);
 	};

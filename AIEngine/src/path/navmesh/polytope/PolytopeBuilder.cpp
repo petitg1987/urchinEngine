@@ -50,9 +50,10 @@ namespace urchin
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::buildPolytope(const std::shared_ptr<AITerrain> &aiTerrain)
-    { //TODO build polytope from terrain
+    {
         std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
-        surfaces.emplace_back(std::make_unique<PolytopeTerrainSurface>());
+        surfaces.emplace_back(std::make_unique<PolytopeTerrainSurface>(aiTerrain->getTransform(), aiTerrain->getVertices(),
+                                                                       aiTerrain->getXLength(), aiTerrain->getZLength()));
 
         auto polytope = std::make_unique<Polytope>(aiTerrain->getName(), surfaces);
         polytope->setObstacleCandidate(aiTerrain->isObstacleCandidate());
