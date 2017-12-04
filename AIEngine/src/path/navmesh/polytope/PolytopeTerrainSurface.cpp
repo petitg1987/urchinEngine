@@ -1,21 +1,15 @@
-#include <cassert>
-
 #include "PolytopeTerrainSurface.h"
 
 namespace urchin
 {
 
-    PolytopeTerrainSurface::PolytopeTerrainSurface(const Transform<float> &transform, const std::vector<Point3<float>> &localVertices,
+    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
                                                    unsigned int xLength, unsigned int zLength) :
-            transform(transform),
+            position(position),
             localVertices(localVertices),
             xLength(xLength),
             zLength(zLength)
     {
-        #ifdef _DEBUG
-            assert(MathAlgorithm::isOne(transform.getScale()));
-        #endif
-
         buildOutlineCwPoints();
     }
 
@@ -23,16 +17,16 @@ namespace urchin
     {
         outlineCwPoints.reserve(4);
 
-        Point3<float> farRightVertex = transform.getOrientation().rotatePoint(localVertices[0]) + transform.getPosition();
+        Point3<float> farRightVertex = position + localVertices[0];
         outlineCwPoints.emplace_back(Point2<float>(farRightVertex.X, farRightVertex.Z));
 
-        Point3<float> farLeftVertex = transform.getOrientation().rotatePoint(localVertices[xLength - 1]) + transform.getPosition();
+        Point3<float> farLeftVertex = position + localVertices[xLength - 1];
         outlineCwPoints.emplace_back(Point2<float>(farLeftVertex.X, farLeftVertex.Z));
 
-        Point3<float> nearRightVertex = transform.getOrientation().rotatePoint(localVertices[(xLength * zLength) - xLength]) + transform.getPosition();
+        Point3<float> nearRightVertex = position + localVertices[(xLength * zLength) - xLength];
         outlineCwPoints.emplace_back(Point2<float>(nearRightVertex.X, nearRightVertex.Z));
 
-        Point3<float> nearLeftVertex = transform.getOrientation().rotatePoint(localVertices[(xLength * zLength) - 1]) + transform.getPosition();
+        Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - 1];
         outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, nearLeftVertex.Z));
     }
 
@@ -45,15 +39,15 @@ namespace urchin
     {
         Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
         Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-        for(const auto &vertex : localVertices)
+        for(const auto &localVertex : localVertices)
         {
-            Point3<float> transformedVertex = transform.getOrientation().rotatePoint(vertex) + transform.getPosition();
+            Point3<float> globalVertex = position + localVertex;
 
-            minPoint.X = minPoint.X > transformedVertex.X ? transformedVertex.X : minPoint.X;
-            minPoint.Y = minPoint.Y > transformedVertex.Z ? transformedVertex.Z : minPoint.Y;
+            minPoint.X = minPoint.X > globalVertex.X ? globalVertex.X : minPoint.X;
+            minPoint.Y = minPoint.Y > globalVertex.Z ? globalVertex.Z : minPoint.Y;
 
-            maxPoint.X = maxPoint.X < transformedVertex.X ? transformedVertex.X : minPoint.X;
-            maxPoint.Y = maxPoint.Y < transformedVertex.Z ? transformedVertex.Z : minPoint.Y;
+            maxPoint.X = maxPoint.X < globalVertex.X ? globalVertex.X : minPoint.X;
+            maxPoint.Y = maxPoint.Y < globalVertex.Z ? globalVertex.Z : minPoint.Y;
         }
         return Rectangle<float>(minPoint, maxPoint);
     }
@@ -64,26 +58,36 @@ namespace urchin
     }
 
     Plane<float> PolytopeTerrainSurface::getPlaneIn(const Rectangle<float> &box) const
-    {
-        Plane<float> plane;
+    { //TODO handle shiftDistance & is walkable ?
+        Point3<float> point1 = retrieveGlobalVertex(box.getMin());
+        Point3<float> point2 = retrieveGlobalVertex(box.getMax());
+        Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
 
-        //TODO create plane + check if walkable + /!\ shift distance
-
-        return plane;
+        return  Plane<float>(point1, point2, point3);
     }
 
     Point3<float> PolytopeTerrainSurface::elevatePoint(const Point2<float> &point, const NavMeshAgent &navMeshAgent) const
-    {
-        Point3<float> elevatedPoint;
-
-        //TODO compute elevatePoint
-
-        return elevatedPoint;
+    { //TODO handle shiftDistance
+        return retrieveGlobalVertex(point);
     }
 
-    const Transform<float> &PolytopeTerrainSurface::getTransform() const
+    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &xzCoordinate) const
+    { //TODO handle vertices outside terrain
+        Point2<float> localXzCoordinate = xzCoordinate - Point2<float>(position.X, position.Z);
+        Point2<float> farRightCoordinate = localXzCoordinate - (Point2<float>(localVertices[0].X, localVertices[0].Z));
+
+        float xInterval = localVertices[1].X - localVertices[0].X;
+        float zInterval = localVertices[xLength].Z - localVertices[0].Z;
+
+        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farRightCoordinate.X / xInterval)), 0, static_cast<int>(xLength - 1));
+        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farRightCoordinate.Y / zInterval)), 0, static_cast<int>(zLength - 1));
+
+        return localVertices[xIndex + zIndex*xLength] + position;
+    }
+
+    const Point3<float> &PolytopeTerrainSurface::getPosition() const
     {
-        return transform;
+        return position;
     }
 
     const std::vector<Point3<float>> PolytopeTerrainSurface::getLocalVertices() const

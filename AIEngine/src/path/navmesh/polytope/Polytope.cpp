@@ -208,7 +208,7 @@ namespace urchin
 
 		//TODO expand terrain surfaces
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
-        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(terrainSurface->getTransform(), terrainSurface->getLocalVertices(),
+        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(terrainSurface->getPosition(), terrainSurface->getLocalVertices(),
                                                                         terrainSurface->getXLength(), terrainSurface->getZLength());
         expandedSurface->setWalkableCandidate(terrainSurface->isWalkableCandidate());
         expandedSurfaces.emplace_back(std::move(expandedSurface));

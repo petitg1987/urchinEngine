@@ -62,7 +62,6 @@ namespace urchin
 		return fScale;
 	}
 
-
 	template<class T> const Matrix4<T> &Transform<T>::getPositionMatrix() const
 	{
 		return mPosition;
