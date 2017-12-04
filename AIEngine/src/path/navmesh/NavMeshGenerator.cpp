@@ -80,11 +80,10 @@ namespace urchin
 
 	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
 	{
-		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemove())
+		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
 			expandedPolytopes.erase(aiObjectToRemove);
 		}
-		aiWorld.removeEntitiesTagged();
 
 		for(auto &aiEntity : aiWorld.getEntities())
 		{

@@ -20,6 +20,7 @@ namespace urchin
     {
         renderer3d->removeTerrain(terrain);
         deleteRigidBody();
+        deleteAIObjects();
     }
 
     void SceneTerrain::setTerrainManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager)

@@ -65,12 +65,15 @@ namespace urchin
 	std::unique_ptr<Polytope> Polytope::expand(const NavMeshAgent &agent) const
 	{
 		if(surfaces.size() > 1)
-		{ //polyhedron (3D)
+		{
 			return expandPolyhedron(agent);
-		}else if(surfaces.size()==1)
-		{ //polygon (2D)
-			//TODO expand polygon
-		}
+		}else if(surfaces.size() == 1)
+		{
+            return expandPolygon(agent);
+		}else
+        {
+            throw std::runtime_error("Polytope must be either a polyhedron (3D) or a polygon (2D)");
+        }
 	}
 
 	std::unique_ptr<Polytope> Polytope::expandPolyhedron(const NavMeshAgent &agent) const
@@ -84,37 +87,35 @@ namespace urchin
 
 		for(auto &polyhedronPoint : points)
 		{
-			if(polyhedronPoint.getFaceIndices().size()==1)
-			{ //face is individual
-				Plane<float> plane = planes[polyhedronPoint.getFaceIndices()[0]];
-				float distance = agent.computeExpandDistance(plane.getNormal());
-				Point3<float> newPoint = polyhedronPoint.getPoint().translate(plane.getNormal() * distance);
-				expandedPoints.emplace_back(PolytopePoint(newPoint, polyhedronPoint.getFaceIndices()));
-			}else
-			{
-				std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), planes);
-				Point3<float> newPoint;
-				if (threePlanes.size() == 3)
-				{
-					Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
-					Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
-					Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
+            #ifdef _DEBUG
+                if(polyhedronPoint.getFaceIndices().size() < 3)
+                {
+                    throw std::runtime_error("A polyhedron (3D) point must belong at least to 3 faces");
+                }
+            #endif
 
-					newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
-					newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
-					newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-					newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
-				} else
-				{ //useless point found on polytope (could be removed from polytope without impact)
-					std::stringstream logStream;
-					logStream.precision(std::numeric_limits<float>::max_digits10);
-					logStream << "Impossible to resize polytope because of useless point." << std::endl;
-					logStream << " - Polytope: " << std::endl << (*this) << std::endl;
-					Logger::logger().logError(logStream.str());
-				}
+            std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), planes);
+            Point3<float> newPoint;
+            if (threePlanes.size() == 3)
+            {
+                Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
+                Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
+                Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
 
-				expandedPoints.emplace_back(PolytopePoint(newPoint, polyhedronPoint.getFaceIndices()));
-			}
+                newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
+                newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
+                newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
+                newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+            } else
+            { //useless point found on polytope (could be removed from polytope without impact)
+                std::stringstream logStream;
+                logStream.precision(std::numeric_limits<float>::max_digits10);
+                logStream << "Impossible to resize polytope because of useless point." << std::endl;
+                logStream << " - Polytope: " << std::endl << (*this) << std::endl;
+                Logger::logger().logError(logStream.str());
+            }
+
+            expandedPoints.emplace_back(PolytopePoint(newPoint, polyhedronPoint.getFaceIndices()));
 		}
 
 		//2. compute expanded surfaces
@@ -123,7 +124,13 @@ namespace urchin
 		for(auto &surface : surfaces)
 		{
 			auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
-			expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(planeSurface->getCcwPointIndices(), expandedPoints));
+            if(!planeSurface)
+            {
+                throw std::runtime_error("Only polytope plane surface are supported on polyhedron (3D)");
+            }
+            auto expandedSurface = std::make_unique<PolytopePlaneSurface>(planeSurface->getCcwPointIndices(), expandedPoints);
+            expandedSurface->setWalkableCandidate(surface->isWalkableCandidate());
+			expandedSurfaces.emplace_back(std::move(expandedSurface));
 		}
 
 		auto expandedPolytope = std::make_unique<Polytope>(getName(), expandedSurfaces, expandedPoints);
@@ -190,6 +197,25 @@ namespace urchin
 
 		return nonParallelPlanes;
 	}
+
+    std::unique_ptr<Polytope> Polytope::expandPolygon(const NavMeshAgent &agent) const
+    { //TODO expand terrain surfaces
+        auto *terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surfaces[0].get());
+        if(terrainSurface==nullptr)
+        {
+            throw std::runtime_error("Only polytope terrain surface are supported on polygon (2D)");
+        }
+
+        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>();
+        expandedSurface->setWalkableCandidate(terrainSurface->isWalkableCandidate());
+        expandedSurfaces.emplace_back(std::move(expandedSurface));
+
+        auto expandedPolytope = std::make_unique<Polytope>(getName(), expandedSurfaces);
+        expandedPolytope->setWalkableCandidate(isWalkableCandidate());
+        expandedPolytope->setObstacleCandidate(isObstacleCandidate());
+        return expandedPolytope;
+    }
 
 	void Polytope::buildXZRectangle()
 	{

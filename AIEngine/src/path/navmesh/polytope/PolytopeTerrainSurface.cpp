@@ -29,7 +29,7 @@ namespace urchin
     {
         Plane<float> plane;
 
-        //TODO create plane + check if walkable ?
+        //TODO create plane + check if walkable + /!\ shift distance
 
         return plane;
     }

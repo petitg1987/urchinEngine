@@ -21,6 +21,7 @@ namespace urchin
             };
 
             AIEntity(std::string, const Transform<float> &, bool);
+            virtual ~AIEntity() = default;
 
             void updateTransform(const Point3<float> &, const Quaternion<float> &);
             bool isToRebuild() const;

@@ -16,7 +16,7 @@ namespace urchin
 	class Polytope
 	{
 		public:
-			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &, const std::vector<PolytopePoint> &);
+			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &, const std::vector<PolytopePoint> &points = std::vector<PolytopePoint>());
 
 			const std::string getName() const;
 
@@ -38,6 +38,7 @@ namespace urchin
 			std::vector<Plane<float>> buildPlanesFromPlaneSurfaces() const;
 			void shiftPlanes(std::vector<Plane<float>> &, const NavMeshAgent &) const;
 			std::vector<Plane<float>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::vector<Plane<float>> &) const;
+			std::unique_ptr<Polytope> expandPolygon(const NavMeshAgent &) const;
 
 			void buildXZRectangle();
 

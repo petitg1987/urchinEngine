@@ -28,20 +28,16 @@ namespace urchin
 		return entities;
 	}
 
-	std::vector<std::shared_ptr<AIEntity>> AIWorld::getEntitiesToRemove() const
+	std::vector<std::shared_ptr<AIEntity>> AIWorld::getEntitiesToRemoveAndReset()
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		return entitiesToRemove;
-	}
-
-	void AIWorld::removeEntitiesTagged()
-	{
-		std::lock_guard<std::mutex> lock(mutex);
-		for(const auto &objectToRemove : entitiesToRemove)
-		{
-			entities.erase(std::remove(entities.begin(), entities.end(), objectToRemove), entities.end());
-		}
-		entitiesToRemove.clear();
+        std::vector<std::shared_ptr<AIEntity>> result = entitiesToRemove;
+        for(const auto &objectToRemove : entitiesToRemove)
+        {
+            entities.erase(std::remove(entities.begin(), entities.end(), objectToRemove), entities.end());
+        }
+        entitiesToRemove.clear();
+        return result;
 	}
 
 }
