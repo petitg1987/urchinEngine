@@ -12,8 +12,10 @@ namespace urchin
     class PolytopeSurface
     {
         public:
-            PolytopeSurface();
+            PolytopeSurface(bool);
             virtual ~PolytopeSurface() = default;
+
+            bool isExpandedSurface() const;
 
             void setWalkableCandidate(bool);
             bool isWalkableCandidate() const;
@@ -22,10 +24,11 @@ namespace urchin
             virtual Rectangle<float> computeXZRectangle() const = 0;
 
             virtual std::vector<Point2<float>> getOutlineCwPoints() const = 0;
-            virtual Plane<float> getPlaneIn(const Rectangle<float> &) const = 0;
-            virtual Point3<float> elevatePoint(const Point2<float> &, const NavMeshAgent &) const = 0; //TODO check if better to give shiftDistance instead of NavMeshAgent
+            virtual Plane<float> getExpandedPlane(const Rectangle<float> &, const NavMeshAgent &) const = 0;
+            virtual Point3<float> elevatePoint(const Point2<float> &, const NavMeshAgent &) const = 0;
 
         private:
+            bool expandedSurface;
             bool walkableCandidate;
     };
 

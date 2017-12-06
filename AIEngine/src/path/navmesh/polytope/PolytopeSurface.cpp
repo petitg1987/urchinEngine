@@ -2,10 +2,16 @@
 
 namespace urchin
 {
-    PolytopeSurface::PolytopeSurface() :
+    PolytopeSurface::PolytopeSurface(bool expandedSurface) :
+            expandedSurface(expandedSurface),
             walkableCandidate(true)
     {
 
+    }
+
+    bool PolytopeSurface::isExpandedSurface() const
+    {
+        return expandedSurface;
     }
 
     void PolytopeSurface::setWalkableCandidate(bool walkableCandidate)

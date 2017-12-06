@@ -9,13 +9,13 @@ namespace urchin
     class PolytopeTerrainSurface : public PolytopeSurface
     { //TODO eliminate un-walkable terrain part
         public:
-            PolytopeTerrainSurface(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int);
+            PolytopeTerrainSurface(bool, const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int);
 
             bool isWalkable(float) const override;
             Rectangle<float> computeXZRectangle() const override;
 
             std::vector<Point2<float>> getOutlineCwPoints() const override;
-            Plane<float> getPlaneIn(const Rectangle<float> &) const override;
+            Plane<float> getExpandedPlane(const Rectangle<float> &, const NavMeshAgent &) const override;
             Point3<float> elevatePoint(const Point2<float> &, const NavMeshAgent &) const override;
 
             const Point3<float> &getPosition() const;

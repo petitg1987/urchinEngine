@@ -79,7 +79,7 @@ namespace urchin
 	}
 
 	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
-	{
+	{ //TODO update all when agent change
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
 			expandedPolytopes.erase(aiObjectToRemove);
@@ -251,11 +251,11 @@ namespace urchin
 	}
 
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytope, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
-	{
+	{ //TODO bug: missing hole for cube on terrain
 		std::vector<Point2<float>> footprintPoints;
         footprintPoints.reserve(4); //estimated memory size
 
-        Plane<float> walkablePlane = walkableSurface->getPlaneIn(*polytope->getXZRectangle());
+        Plane<float> walkablePlane = walkableSurface->getExpandedPlane(*polytope->getXZRectangle(), navMeshConfig->getAgent());
 
 		for(const auto &polytopeSurface : polytope->getSurfaces())
 		{

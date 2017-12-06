@@ -82,8 +82,7 @@ namespace urchin
 		std::vector<PolytopePoint> expandedPoints;
 		expandedPoints.reserve(points.size());
 
-		std::vector<Plane<float>> planes = buildPlanesFromPlaneSurfaces();
-		shiftPlanes(planes, agent);
+		std::vector<Plane<float>> expandedPlanes = buildExpandedPlanesFromPlaneSurfaces(agent);
 
 		for(auto &polyhedronPoint : points)
 		{
@@ -94,7 +93,7 @@ namespace urchin
                 }
             #endif
 
-            std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), planes);
+            std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), expandedPlanes);
             Point3<float> newPoint;
             if (threePlanes.size() == 3)
             {
@@ -128,7 +127,7 @@ namespace urchin
             {
                 throw std::runtime_error("Only polytope plane surface are supported on polyhedron (3D)");
             }
-            auto expandedSurface = std::make_unique<PolytopePlaneSurface>(planeSurface->getCcwPointIndices(), expandedPoints);
+            auto expandedSurface = std::make_unique<PolytopePlaneSurface>(true, planeSurface->getCcwPointIndices(), expandedPoints);
             expandedSurface->setWalkableCandidate(surface->isWalkableCandidate());
 			expandedSurfaces.emplace_back(std::move(expandedSurface));
 		}
@@ -139,27 +138,18 @@ namespace urchin
         return expandedPolytope;
 	}
 
-	std::vector<Plane<float>> Polytope::buildPlanesFromPlaneSurfaces() const
+	std::vector<Plane<float>> Polytope::buildExpandedPlanesFromPlaneSurfaces(const NavMeshAgent &navMeshAgent) const
 	{
-		std::vector<Plane<float>> planes;
-		planes.reserve(surfaces.size());
+		std::vector<Plane<float>> expandedPlanes;
+        expandedPlanes.reserve(surfaces.size());
 
 		Rectangle<float> nullRectangle(Point2<float>(0.0, 0.0), Point2<float>(0.0, 0.0));
 		for(const auto &surface : surfaces)
 		{
-			planes.emplace_back(surface->getPlaneIn(nullRectangle));
+            expandedPlanes.emplace_back(surface->getExpandedPlane(nullRectangle, navMeshAgent));
 		}
 
-		return planes;
-	}
-
-	void Polytope::shiftPlanes(std::vector<Plane<float>> &planes, const NavMeshAgent &agent) const
-	{
-		for(auto &plane : planes)
-		{
-			float distance = agent.computeExpandDistance(plane.getNormal());
-			plane.setDistanceToOrigin(plane.getDistanceToOrigin() - distance);
-		}
+		return expandedPlanes;
 	}
 
 	std::vector<Plane<float>> Polytope::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::vector<Plane<float>> &allPlanes) const
@@ -206,14 +196,14 @@ namespace urchin
             throw std::runtime_error("Only polytope terrain surface are supported on polygon (2D)");
         }
 
-		//TODO expand terrain surfaces
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
-        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(terrainSurface->getPosition(), terrainSurface->getLocalVertices(),
-                                                                        terrainSurface->getXLength(), terrainSurface->getZLength());
-        expandedSurface->setWalkableCandidate(terrainSurface->isWalkableCandidate());
-        expandedSurfaces.emplace_back(std::move(expandedSurface));
+        std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
+        bool expandedSurface = false;
+        auto surface = std::make_unique<PolytopeTerrainSurface>(expandedSurface, terrainSurface->getPosition(), terrainSurface->getLocalVertices(),
+                                                                terrainSurface->getXLength(), terrainSurface->getZLength());
+        surface->setWalkableCandidate(terrainSurface->isWalkableCandidate());
+        surfaces.emplace_back(std::move(surface));
 
-        auto expandedPolytope = std::make_unique<Polytope>(getName(), expandedSurfaces);
+        auto expandedPolytope = std::make_unique<Polytope>(getName(), surfaces);
         expandedPolytope->setWalkableCandidate(isWalkableCandidate());
         expandedPolytope->setObstacleCandidate(isObstacleCandidate());
         return expandedPolytope;
