@@ -9,30 +9,42 @@
 #include "input/AITerrain.h"
 #include "path/navmesh/polytope/Polytope.h"
 #include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/polytope/PolytopePoint.h"
 #include "path/navmesh/model/NavMeshConfig.h"
 
 namespace urchin
 {
+
+    struct PointFace
+    {
+        PointFace(const Point3<float> &, const std::vector<unsigned int> &);
+
+        Point3<float> point;
+        std::vector<unsigned int> faceIndices;
+    };
 
     class PolytopeBuilder : public Singleton<PolytopeBuilder>
     {
         public:
             friend class Singleton<PolytopeBuilder>;
 
-            std::vector<std::unique_ptr<Polytope>> buildPolytopes(const std::shared_ptr<AIObject> &);
-            std::unique_ptr<Polytope> buildPolytope(const std::shared_ptr<AITerrain> &);
+            std::vector<std::unique_ptr<Polytope>> buildExpandedPolytopes(const std::shared_ptr<AIObject> &, const NavMeshAgent &);
+            std::unique_ptr<Polytope> buildExpandedPolytope(const std::shared_ptr<AITerrain> &, const NavMeshAgent &);
 
         private:
-            std::vector<PolytopePoint> createPolytopePoints(OBBox<float> *) const;
-            std::vector<std::unique_ptr<PolytopeSurface>> createPolytopeSurfaces(const std::vector<PolytopePoint> &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, OBBox<float> *, const NavMeshAgent &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Capsule<float> *, const NavMeshAgent &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Cone<float> *, const NavMeshAgent &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, ConvexHull3D<float> *, const NavMeshAgent &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Cylinder<float> *, const NavMeshAgent &) const;
+            std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Sphere<float> *, const NavMeshAgent &) const;
 
-            std::unique_ptr<Polytope> createPolytopeFor(const std::string &, OBBox<float> *) const;
-            std::unique_ptr<Polytope> createPolytopeFor(const std::string &, Capsule<float> *) const;
-            std::unique_ptr<Polytope> createPolytopeFor(const std::string &, Cone<float> *) const;
-            std::unique_ptr<Polytope> createPolytopeFor(const std::string &, ConvexHull3D<float> *) const;
-            std::unique_ptr<Polytope> createPolytopeFor(const std::string &, Cylinder<float> *) const;
-            std::unique_ptr<Polytope> createPolytopeFor(const std::string &, Sphere<float> *) const;
+            std::vector<Point3<float>> createExpandedPoints(OBBox<float> *, const NavMeshAgent &) const;
+            std::vector<Plane<float>> createExpandedBoxPlanes(const std::vector<Point3<float>> &, const NavMeshAgent &) const;
+            Plane<float> createExpandedPlane(const Point3<float> &, const Point3<float> &, const Point3<float> &, const NavMeshAgent &) const;
+            std::vector<Point3<float>> expandPoints(const std::vector<PointFace> &, const std::vector<Plane<float>> &) const;
+            std::vector<Plane<float>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::vector<Plane<float>> &) const;
+
+            std::vector<std::unique_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &) const;
     };
 
 }

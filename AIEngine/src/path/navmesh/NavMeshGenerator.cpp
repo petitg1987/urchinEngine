@@ -94,19 +94,17 @@ namespace urchin
                 if(aiEntity->getType()==AIEntity::OBJECT)
                 {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> polytopes = PolytopeBuilder::instance()->buildPolytopes(aiObject); //TODO perf: build in expanded
-                    for (auto &polytope : polytopes)
+                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, navMeshConfig->getAgent());
+                    for (auto &objectExpandedPolytope : objectExpandedPolytopes)
                     {
-						auto expandedPolytope = polytope->expand(navMeshConfig->getAgent());
-                        expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiObject, std::move(expandedPolytope)));
+                        expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiObject, std::move(objectExpandedPolytope)));
                     }
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
 					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
-					std::unique_ptr<Polytope> polytope = PolytopeBuilder::instance()->buildPolytope(aiTerrain); //TODO perf: build in expanded
+					std::unique_ptr<Polytope> terrainExpandedPolytope = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshConfig->getAgent());
 
-					auto expandedPolytope = polytope->expand(navMeshConfig->getAgent());
-					expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiTerrain, std::move(expandedPolytope)));
+					expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiTerrain, std::move(terrainExpandedPolytope)));
                 }
 
                 aiEntity->markRebuilt();
@@ -255,7 +253,7 @@ namespace urchin
 		std::vector<Point2<float>> footprintPoints;
         footprintPoints.reserve(4); //estimated memory size
 
-        Plane<float> walkablePlane = walkableSurface->getExpandedPlane(*polytope->getXZRectangle(), navMeshConfig->getAgent());
+        Plane<float> walkablePlane = walkableSurface->getPlane(*polytope->getXZRectangle(), navMeshConfig->getAgent());
 
 		for(const auto &polytopeSurface : polytope->getSurfaces())
 		{
@@ -291,7 +289,7 @@ namespace urchin
 
         for(const auto &walkablePoint : triangulation.getPolygonPoints())
         {
-            elevatedPoints.push_back(walkableSurface->elevatePoint(walkablePoint, navMeshConfig->getAgent()));
+            elevatedPoints.push_back(walkableSurface->computeRealPoint(walkablePoint, navMeshConfig->getAgent()));
         }
 
 		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
@@ -299,7 +297,7 @@ namespace urchin
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)
 			{
-				elevatedPoints.push_back(walkableSurface->elevatePoint(holePoint, navMeshConfig->getAgent()));
+				elevatedPoints.push_back(walkableSurface->computeRealPoint(holePoint, navMeshConfig->getAgent()));
 			}
 		}
 

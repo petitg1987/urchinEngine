@@ -3,9 +3,9 @@
 namespace urchin
 {
 
-    PolytopeTerrainSurface::PolytopeTerrainSurface(bool expandedSurface, const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
+    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
                                                    unsigned int xLength, unsigned int zLength) :
-            PolytopeSurface(expandedSurface),
+            PolytopeSurface(),
             position(position),
             localVertices(localVertices),
             xLength(xLength),
@@ -58,29 +58,24 @@ namespace urchin
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopeTerrainSurface::getExpandedPlane(const Rectangle<float> &box, const NavMeshAgent &navMeshAgent) const
+    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box, const NavMeshAgent &agent) const
     { //TODO handle vertices outside terrain
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
         Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
         Plane<float> plane(point1, point2, point3);
 
-        if(!isExpandedSurface())
-        {
-            float expandDistance = navMeshAgent.computeExpandDistance(plane.getNormal());
-            plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
-        }
+        float expandDistance = agent.computeExpandDistance(plane.getNormal());
+        plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
 
         return plane;
     }
 
-    Point3<float> PolytopeTerrainSurface::elevatePoint(const Point2<float> &point, const NavMeshAgent &navMeshAgent) const
+    /**
+     * Return point on un-expanded surface
+     */
+    Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float> &point, const NavMeshAgent &agent) const
     {
-        if(isExpandedSurface())
-        {
-            throw std::runtime_error("Unimplemented method to elevate point on expanded terrain surface");
-        }
-
         return retrieveGlobalVertex(point);
     }
 

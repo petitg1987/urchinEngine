@@ -7,7 +7,6 @@
 #include "UrchinCommon.h"
 
 #include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/polytope/PolytopePoint.h"
 #include "path/navmesh/model/NavMeshAgent.h"
 
 namespace urchin
@@ -16,7 +15,7 @@ namespace urchin
 	class Polytope
 	{
 		public:
-			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &, const std::vector<PolytopePoint> &points = std::vector<PolytopePoint>());
+			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &);
 
 			const std::string getName() const;
 
@@ -31,19 +30,11 @@ namespace urchin
 			void setObstacleCandidate(bool);
 			bool isObstacleCandidate() const;
 
-            std::unique_ptr<Polytope> expand(const NavMeshAgent &) const;
-
 		private:
-            std::unique_ptr<Polytope> expandPolyhedron(const NavMeshAgent &) const;
-			std::vector<Plane<float>> buildExpandedPlanesFromPlaneSurfaces(const NavMeshAgent &) const;
-			std::vector<Plane<float>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::vector<Plane<float>> &) const;
-			std::unique_ptr<Polytope> expandPolygon(const NavMeshAgent &) const;
-
 			void buildXZRectangle();
 
 			std::string name;
 			std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
-			std::vector<PolytopePoint> points;
 
 			std::unique_ptr<Rectangle<float>> xzRectangle;
 

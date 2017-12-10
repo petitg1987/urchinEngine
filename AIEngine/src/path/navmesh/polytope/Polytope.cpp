@@ -10,12 +10,10 @@ namespace urchin
 
 	/**
 	 * @param surfaces Indexed faces of the polytope. Surfaces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
-	 * @param points All points of the polytopes
 	 */
-	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> &surfaces, const std::vector<PolytopePoint> &points) :
+	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> &surfaces) :
 			name(name),
 			surfaces(std::move(surfaces)),
-			points(points),
 			walkableCandidate(true),
             obstacleCandidate(true)
 	{
@@ -60,153 +58,6 @@ namespace urchin
     bool Polytope::isObstacleCandidate() const
     {
         return obstacleCandidate;
-    }
-
-	std::unique_ptr<Polytope> Polytope::expand(const NavMeshAgent &agent) const
-	{
-		if(surfaces.size() > 1)
-		{
-			return expandPolyhedron(agent);
-		}else if(surfaces.size() == 1)
-		{
-            return expandPolygon(agent);
-		}else
-        {
-            throw std::runtime_error("Polytope must be either a polyhedron (3D) or a polygon (2D)");
-        }
-	}
-
-	std::unique_ptr<Polytope> Polytope::expandPolyhedron(const NavMeshAgent &agent) const
-	{
-		//1. compute expanded points
-		std::vector<PolytopePoint> expandedPoints;
-		expandedPoints.reserve(points.size());
-
-		std::vector<Plane<float>> expandedPlanes = buildExpandedPlanesFromPlaneSurfaces(agent);
-
-		for(auto &polyhedronPoint : points)
-		{
-            #ifdef _DEBUG
-                if(polyhedronPoint.getFaceIndices().size() < 3)
-                {
-                    throw std::runtime_error("A polyhedron (3D) point must belong at least to 3 faces");
-                }
-            #endif
-
-            std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(polyhedronPoint.getFaceIndices(), expandedPlanes);
-            Point3<float> newPoint;
-            if (threePlanes.size() == 3)
-            {
-                Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
-                Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
-                Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
-
-                newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
-                newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
-                newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-                newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
-            } else
-            { //useless point found on polytope (could be removed from polytope without impact)
-                std::stringstream logStream;
-                logStream.precision(std::numeric_limits<float>::max_digits10);
-                logStream << "Impossible to resize polytope because of useless point." << std::endl;
-                logStream << " - Polytope: " << std::endl << (*this) << std::endl;
-                Logger::logger().logError(logStream.str());
-            }
-
-            expandedPoints.emplace_back(PolytopePoint(newPoint, polyhedronPoint.getFaceIndices()));
-		}
-
-		//2. compute expanded surfaces
-		std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
-		expandedSurfaces.reserve(surfaces.size());
-		for(auto &surface : surfaces)
-		{
-			auto *planeSurface = dynamic_cast<PolytopePlaneSurface *>(surface.get());
-            if(!planeSurface)
-            {
-                throw std::runtime_error("Only polytope plane surface are supported on polyhedron (3D)");
-            }
-            auto expandedSurface = std::make_unique<PolytopePlaneSurface>(true, planeSurface->getCcwPointIndices(), expandedPoints);
-            expandedSurface->setWalkableCandidate(surface->isWalkableCandidate());
-			expandedSurfaces.emplace_back(std::move(expandedSurface));
-		}
-
-		auto expandedPolytope = std::make_unique<Polytope>(getName(), expandedSurfaces, expandedPoints);
-        expandedPolytope->setWalkableCandidate(isWalkableCandidate());
-        expandedPolytope->setObstacleCandidate(isObstacleCandidate());
-        return expandedPolytope;
-	}
-
-	std::vector<Plane<float>> Polytope::buildExpandedPlanesFromPlaneSurfaces(const NavMeshAgent &navMeshAgent) const
-	{
-		std::vector<Plane<float>> expandedPlanes;
-        expandedPlanes.reserve(surfaces.size());
-
-		Rectangle<float> nullRectangle(Point2<float>(0.0, 0.0), Point2<float>(0.0, 0.0));
-		for(const auto &surface : surfaces)
-		{
-            expandedPlanes.emplace_back(surface->getExpandedPlane(nullRectangle, navMeshAgent));
-		}
-
-		return expandedPlanes;
-	}
-
-	std::vector<Plane<float>> Polytope::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::vector<Plane<float>> &allPlanes) const
-	{
-        constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
-
-		std::vector<Plane<float>> nonParallelPlanes;
-		nonParallelPlanes.reserve(3);
-
-		Plane<float> plane1 = allPlanes.at(planeIndices[0]);
-		for(unsigned int i=1; i<planeIndices.size(); ++i)
-		{
-			Plane<float> plane2 = allPlanes.at(planeIndices[i]);
-			if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE)
-			{ //planes are parallel: continue on next plane
-				continue;
-			}
-
-			for(unsigned int j=i+1; j<planeIndices.size(); ++j)
-			{
-				Plane<float> plane3 = allPlanes.at(planeIndices[j]);
-
-				Vector3<float> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
-				if(n2CrossN3.squareLength() < 0.0
-						|| plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE
-						|| plane1.getNormal().dotProduct(n2CrossN3)==0.0) //additional check due to float imprecision
-				{ //planes are parallel: continue on next plane
-					continue;
-				}
-
-				nonParallelPlanes = {plane1, plane2, plane3};
-				return nonParallelPlanes;
-			}
-		}
-
-		return nonParallelPlanes;
-	}
-
-    std::unique_ptr<Polytope> Polytope::expandPolygon(const NavMeshAgent &agent) const
-    {
-        auto *terrainSurface = dynamic_cast<PolytopeTerrainSurface *>(surfaces[0].get());
-        if(terrainSurface==nullptr)
-        {
-            throw std::runtime_error("Only polytope terrain surface are supported on polygon (2D)");
-        }
-
-        std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
-        bool expandedSurface = false;
-        auto surface = std::make_unique<PolytopeTerrainSurface>(expandedSurface, terrainSurface->getPosition(), terrainSurface->getLocalVertices(),
-                                                                terrainSurface->getXLength(), terrainSurface->getZLength());
-        surface->setWalkableCandidate(terrainSurface->isWalkableCandidate());
-        surfaces.emplace_back(std::move(surface));
-
-        auto expandedPolytope = std::make_unique<Polytope>(getName(), surfaces);
-        expandedPolytope->setWalkableCandidate(isWalkableCandidate());
-        expandedPolytope->setObstacleCandidate(isObstacleCandidate());
-        return expandedPolytope;
     }
 
 	void Polytope::buildXZRectangle()

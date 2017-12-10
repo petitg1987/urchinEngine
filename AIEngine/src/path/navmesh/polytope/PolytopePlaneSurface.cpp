@@ -10,9 +10,7 @@ namespace urchin
 	/**
 	 * @param ccwPointIndices Point indices of the plane which must be coplanar and counter clockwise oriented
 	 */
-	PolytopePlaneSurface::PolytopePlaneSurface(bool expandedSurface, const std::vector<unsigned int> &ccwPointIndices, const std::vector<PolytopePoint> &polytopePoints) :
-			PolytopeSurface(expandedSurface),
-			ccwPointIndices(ccwPointIndices)
+	PolytopePlaneSurface::PolytopePlaneSurface(const std::vector<unsigned int> &ccwPointIndices, const std::vector<Point3<float>> &points)
 	{
 		if(ccwPointIndices.size()<3)
 		{
@@ -22,7 +20,7 @@ namespace urchin
 		ccwPoints.reserve(ccwPointIndices.size());
 		for(unsigned int ccwPointIndex : ccwPointIndices)
 		{
-			ccwPoints.push_back(polytopePoints[ccwPointIndex].getPoint());
+			ccwPoints.push_back(points[ccwPointIndex]);
 		}
 
 		Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[2]);
@@ -66,36 +64,22 @@ namespace urchin
         return reverseFlatPoints;
     }
 
-	Plane<float> PolytopePlaneSurface::getExpandedPlane(const Rectangle<float> &box, const NavMeshAgent &navMeshAgent) const
+	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &box, const NavMeshAgent &agent) const
 	{
-		Plane<float> plane(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
-
-		if(!isExpandedSurface())
-		{
-			float expandDistance = navMeshAgent.computeExpandDistance(normal);
-			plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
-		}
-
-		return plane;
+		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
 	}
 
-	Point3<float> PolytopePlaneSurface::elevatePoint(const Point2<float> &point, const NavMeshAgent &navMeshAgent) const
+	/**
+ 	 * Return point on un-expanded surface
+ 	 */
+	Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const NavMeshAgent &agent) const
 	{
-		float reduceDistance = 0.0f;
-		if(isExpandedSurface())
-		{
-			reduceDistance = - navMeshAgent.computeExpandDistance(normal);
-		}
+		float reduceDistance = - agent.computeExpandDistance(normal);
 
 		Point3<float> point3D(point.X, 0.0, -point.Y);
 		float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
 		float t = (shortestFaceDistance + reduceDistance) / normal.Y;
 		return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
-	}
-
-	const std::vector<unsigned int> &PolytopePlaneSurface::getCcwPointIndices() const
-	{
-		return ccwPointIndices;
 	}
 
 	const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const

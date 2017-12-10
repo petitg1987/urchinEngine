@@ -25,8 +25,6 @@ set(SOURCE_FILES
         src/path/navmesh/polytope/Polytope.h
         src/path/navmesh/polytope/PolytopePlaneSurface.cpp
         src/path/navmesh/polytope/PolytopePlaneSurface.h
-        src/path/navmesh/polytope/PolytopePoint.cpp
-        src/path/navmesh/polytope/PolytopePoint.h
         src/path/navmesh/triangulation/MonotonePolygonAlgorithm.cpp
         src/path/navmesh/triangulation/MonotonePolygonAlgorithm.h
         src/path/navmesh/triangulation/TriangulationAlgorithm.cpp
