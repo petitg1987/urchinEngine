@@ -22,8 +22,10 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
     AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 2);
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<walkableFace[2]> - <hole>");
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 8); //8 points for a square with a square hole inside
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 8); //8 triangles for a square with a square hole inside
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<hole[2]>");
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
 }
@@ -43,10 +45,12 @@ void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
     AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 2);
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 8); //8 points for a square with a square hole inside
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 8); //8 triangles for a square with a square hole inside
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<hole[2]>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 4); //4 points of "hole" polygon
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<walkableFace[2]> - <hole>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 8); //8 points for a square with a square hole inside
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 8); //8 triangles for a square with a square hole inside
 }
 
 std::shared_ptr<NavMeshConfig> NavMeshGeneratorTest::buildNavMeshConfig()

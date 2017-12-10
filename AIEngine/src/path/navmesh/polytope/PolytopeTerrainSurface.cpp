@@ -4,7 +4,7 @@ namespace urchin
 {
 
     PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
-                                                   unsigned int xLength, unsigned int zLength) :
+                                                   unsigned int xLength, unsigned int zLength, const NavMeshAgent &agent) :
             PolytopeSurface(),
             position(position),
             localVertices(localVertices),
@@ -12,6 +12,7 @@ namespace urchin
             zLength(zLength)
     {
         buildOutlineCwPoints();
+        buildSelfObstacles(agent);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()
@@ -29,6 +30,11 @@ namespace urchin
 
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
         outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
+    }
+
+    void PolytopeTerrainSurface::buildSelfObstacles(const NavMeshAgent &agent)
+    {
+        //TODO compute self obstacles
     }
 
     bool PolytopeTerrainSurface::isWalkable(float) const
@@ -59,7 +65,7 @@ namespace urchin
     }
 
     Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box, const NavMeshAgent &agent) const
-    { //TODO handle vertices outside terrain
+    {
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
         Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
@@ -69,6 +75,11 @@ namespace urchin
         plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
 
         return plane;
+    }
+
+    std::vector<CSGPolygon<float>> PolytopeTerrainSurface::getSelfObstacles() const
+    {
+        return selfObstacles;
     }
 
     /**

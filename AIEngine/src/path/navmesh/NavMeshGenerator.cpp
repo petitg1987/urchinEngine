@@ -234,12 +234,12 @@ namespace urchin
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableSurface = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
-		std::vector<CSGPolygon<float>> holePolygons;
-        for (const auto &expandedPolytope : expandedPolytopes)
+		std::vector<CSGPolygon<float>> holePolygons = walkableSurface->getSelfObstacles();
+        for (const auto &expandedPolytopeObstacle : expandedPolytopes)
         {
-			if(expandedPolytope.first!=polytopeWalkableSurface.polytopeRef->first && expandedPolytope.second->isObstacleCandidate())
+			if(expandedPolytopeObstacle.first!=polytopeWalkableSurface.polytopeRef->first && expandedPolytopeObstacle.second->isObstacleCandidate())
 			{
-				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytope.second, walkableSurface);
+				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle.second, walkableSurface);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
 					holePolygons.push_back(footprintPolygon);
@@ -250,14 +250,14 @@ namespace urchin
 		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
 	}
 
-	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytope, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
+	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytopeObstacle, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		std::vector<Point2<float>> footprintPoints;
         footprintPoints.reserve(4); //estimated memory size
 
-        Plane<float> walkablePlane = walkableSurface->getPlane(*polytope->getXZRectangle(), navMeshConfig->getAgent());
+        Plane<float> walkablePlane = walkableSurface->getPlane(*polytopeObstacle->getXZRectangle(), navMeshConfig->getAgent());
 
-		for(const auto &polytopeSurface : polytope->getSurfaces())
+		for(const auto &polytopeSurface : polytopeObstacle->getSurfaces())
 		{
             if(auto *polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface *>(polytopeSurface.get()))
             {
@@ -281,7 +281,7 @@ namespace urchin
 		ConvexHull2D<float> footprintConvexHull(footprintPoints);
 		std::vector<Point2<float>> cwPoints(footprintConvexHull.getPoints());
 		std::reverse(cwPoints.begin(), cwPoints.end());
-		return CSGPolygon<float>(polytope->getName(), cwPoints);
+		return CSGPolygon<float>(polytopeObstacle->getName(), cwPoints);
 	}
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const

@@ -65,7 +65,7 @@ namespace urchin
 
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
         auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
-                                                                        aiTerrain->getXLength(), aiTerrain->getZLength());
+                                                                        aiTerrain->getXLength(), aiTerrain->getZLength(), agent);
         expandedSurface->setWalkableCandidate(true);
         expandedSurfaces.emplace_back(std::move(expandedSurface));
 

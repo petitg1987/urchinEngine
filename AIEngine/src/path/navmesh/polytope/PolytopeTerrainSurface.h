@@ -7,15 +7,16 @@ namespace urchin
 {
 
     class PolytopeTerrainSurface : public PolytopeSurface
-    { //TODO eliminate un-walkable terrain part
+    {
         public:
-            PolytopeTerrainSurface(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int);
+            PolytopeTerrainSurface(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int, const NavMeshAgent &);
 
             bool isWalkable(float) const override;
             Rectangle<float> computeXZRectangle() const override;
 
             std::vector<Point2<float>> getOutlineCwPoints() const override;
             Plane<float> getPlane(const Rectangle<float> &, const NavMeshAgent &) const override;
+            std::vector<CSGPolygon<float>> getSelfObstacles() const override;
             Point3<float> computeRealPoint(const Point2<float> &, const NavMeshAgent &) const override;
 
             const Point3<float> &getPosition() const;
@@ -25,6 +26,7 @@ namespace urchin
 
         private:
             void buildOutlineCwPoints();
+            void buildSelfObstacles(const NavMeshAgent &);
             Point3<float> retrieveGlobalVertex(const Point2<float> &) const;
 
             Point3<float> position;
@@ -33,6 +35,7 @@ namespace urchin
             unsigned int zLength;
 
             std::vector<Point2<float>> outlineCwPoints;
+            std::vector<CSGPolygon<float>> selfObstacles;
     };
 
 }
