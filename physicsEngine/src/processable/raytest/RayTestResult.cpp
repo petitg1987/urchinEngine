@@ -33,7 +33,7 @@ namespace urchin
 			throw std::runtime_error("Ray test callback result is not ready.");
 		}
 
-		return rayTestResults.size() > 0;
+		return !rayTestResults.empty();
 	}
 
 	std::shared_ptr<ContinuousCollisionResult<float>> RayTestResult::getNearestResult() const

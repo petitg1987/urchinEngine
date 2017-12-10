@@ -32,7 +32,7 @@ namespace urchin
 			navMeshConfig(std::make_shared<NavMeshConfig>(NavMeshAgent())),
 			navMesh(std::make_shared<NavMesh>())
     {
-
+		needFullRefresh.store(false, std::memory_order_relaxed);
 	}
 
 	void NavMeshGenerator::setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
@@ -40,6 +40,7 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(navMeshMutex);
 
 		this->navMeshConfig = std::move(navMeshConfig);
+        this->needFullRefresh.store(true, std::memory_order_relaxed);
 	}
 
     NavMesh NavMeshGenerator::retrieveLastGeneratedNavMesh() const
@@ -79,15 +80,16 @@ namespace urchin
 	}
 
 	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
-	{ //TODO update all when agent change
+	{
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
 			expandedPolytopes.erase(aiObjectToRemove);
 		}
 
+        bool refreshAllEntities = needFullRefresh.exchange(false, std::memory_order_relaxed);
 		for(auto &aiEntity : aiWorld.getEntities())
 		{
-			if(aiEntity->isToRebuild())
+			if(aiEntity->isToRebuild() || refreshAllEntities)
 			{
 				expandedPolytopes.erase(aiEntity);
 

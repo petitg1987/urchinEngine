@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <mutex>
+#include <atomic>
 #include <map>
 #include "UrchinCommon.h"
 
@@ -58,6 +59,7 @@ namespace urchin
 			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>> expandedPolytopes;
 
 			std::shared_ptr<NavMesh> navMesh;
+			std::atomic_bool needFullRefresh;
 	};
 
 }
