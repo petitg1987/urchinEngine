@@ -45,10 +45,10 @@ namespace urchin
 		for(auto point : ccwPoints)
 		{
 			minPoint.X = minPoint.X > point.X ? point.X : minPoint.X;
-			minPoint.Y = minPoint.Y > point.Z ? point.Z : minPoint.Y;
+			minPoint.Y = minPoint.Y > -point.Z ? -point.Z : minPoint.Y;
 
 			maxPoint.X = maxPoint.X < point.X ? point.X : minPoint.X;
-			maxPoint.Y = maxPoint.Y < point.Z ? point.Z : minPoint.Y;
+			maxPoint.Y = maxPoint.Y < -point.Z ? -point.Z : minPoint.Y;
 		}
 		return Rectangle<float>(minPoint, maxPoint);
 	}

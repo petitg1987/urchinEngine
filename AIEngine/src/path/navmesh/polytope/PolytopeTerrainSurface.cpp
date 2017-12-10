@@ -18,17 +18,17 @@ namespace urchin
     {
         outlineCwPoints.reserve(4);
 
-        Point3<float> farRightVertex = position + localVertices[0];
-        outlineCwPoints.emplace_back(Point2<float>(farRightVertex.X, -farRightVertex.Z));
-
-        Point3<float> farLeftVertex = position + localVertices[xLength - 1];
+        Point3<float> farLeftVertex = position + localVertices[0];
         outlineCwPoints.emplace_back(Point2<float>(farLeftVertex.X, -farLeftVertex.Z));
 
-        Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - 1];
-        outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
+        Point3<float> farRightVertex = position + localVertices[xLength - 1];
+        outlineCwPoints.emplace_back(Point2<float>(farRightVertex.X, -farRightVertex.Z));
 
-        Point3<float> nearRightVertex = position + localVertices[(xLength * zLength) - xLength];
+        Point3<float> nearRightVertex = position + localVertices[(xLength * zLength) - 1];
         outlineCwPoints.emplace_back(Point2<float>(nearRightVertex.X, -nearRightVertex.Z));
+
+        Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
+        outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
     }
 
     bool PolytopeTerrainSurface::isWalkable(float) const
@@ -45,10 +45,10 @@ namespace urchin
             Point3<float> globalVertex = position + localVertex;
 
             minPoint.X = minPoint.X > globalVertex.X ? globalVertex.X : minPoint.X;
-            minPoint.Y = minPoint.Y > globalVertex.Z ? globalVertex.Z : minPoint.Y;
+            minPoint.Y = minPoint.Y > -globalVertex.Z ? -globalVertex.Z : minPoint.Y;
 
             maxPoint.X = maxPoint.X < globalVertex.X ? globalVertex.X : minPoint.X;
-            maxPoint.Y = maxPoint.Y < globalVertex.Z ? globalVertex.Z : minPoint.Y;
+            maxPoint.Y = maxPoint.Y < -globalVertex.Z ? -globalVertex.Z : minPoint.Y;
         }
         return Rectangle<float>(minPoint, maxPoint);
     }
@@ -87,13 +87,13 @@ namespace urchin
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &xzCoordinate) const
     {
         Point3<float> localCoordinate = Point3<float>(xzCoordinate.X, 0.0, -xzCoordinate.Y) - position;
-        Point3<float> farRightCoordinate = localCoordinate - localVertices[0];
+        Point3<float> farLeftCoordinate = localCoordinate - localVertices[0];
 
         float xInterval = localVertices[1].X - localVertices[0].X;
-        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farRightCoordinate.X / xInterval)), 0, static_cast<int>(xLength - 1));
+        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.X / xInterval)), 0, static_cast<int>(xLength - 1));
 
         float zInterval = localVertices[xLength].Z - localVertices[0].Z;
-        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farRightCoordinate.Z / zInterval)), 0, static_cast<int>(zLength - 1));
+        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Z / zInterval)), 0, static_cast<int>(zLength - 1));
 
         return localVertices[xIndex + zIndex*xLength] + position;
     }

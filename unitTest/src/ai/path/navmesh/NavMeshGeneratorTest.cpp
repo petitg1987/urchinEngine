@@ -10,12 +10,12 @@ using namespace urchin;
 void NavMeshGeneratorTest::holeOnWalkableFace()
 {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)));
-    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", walkableShape, Transform<float>(Point3<float>(0.0, 0.0, 0.0)));
+    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)));
-    auto holeObject = std::make_shared<AIObject>("hole", holeShape, Transform<float>(Point3<float>(0.0, 1.0, 0.0)));
+    auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(0.0, 1.0, 0.0)), true, holeShape);
     AIWorld aiWorld;
-    aiWorld.addObject(walkableFaceObject);
-    aiWorld.addObject(holeObject);
+    aiWorld.addEntity(walkableFaceObject);
+    aiWorld.addEntity(holeObject);
     NavMeshGenerator navMeshGenerator;
     navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
 
@@ -31,12 +31,12 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
 void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
 {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)));
-    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", walkableShape, Transform<float>(Point3<float>(0.0, 0.0, 0.0)));
+    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
     auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)));
-    auto holeObject = std::make_shared<AIObject>("hole", holeShape, Transform<float>(Point3<float>(-1.0, 1.0, -1.0)));
+    auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(-1.0, 1.0, -1.0)), true, holeShape);
     AIWorld aiWorld;
-    aiWorld.addObject(walkableFaceObject);
-    aiWorld.addObject(holeObject);
+    aiWorld.addEntity(walkableFaceObject);
+    aiWorld.addEntity(holeObject);
     NavMeshGenerator navMeshGenerator;
     navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
 

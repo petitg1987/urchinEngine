@@ -251,7 +251,7 @@ namespace urchin
 	}
 
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytope, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
-	{ //TODO bug: missing hole for cube on terrain
+	{
 		std::vector<Point2<float>> footprintPoints;
         footprintPoints.reserve(4); //estimated memory size
 
