@@ -20,10 +20,13 @@ namespace urchin
             TerrainObstacleService() = default;
             ~TerrainObstacleService() override = default;
 
+            bool isWalkableSquare(unsigned int, const std::vector<Point3<float>> &, unsigned int, unsigned int, float) const;
+            float computeTriangleSlope(const std::vector<Point3<float>> &) const;
+
+            std::vector<unsigned int> findAllInaccessibleNeighbors(unsigned int, const std::vector<Point3<float>> &, unsigned int, unsigned int, float) const;
             std::vector<unsigned int> retrieveNeighbors(unsigned int, unsigned int, unsigned int) const;
 
-            float computeSquareSlope(unsigned int, const std::vector<Point3<float>> &, unsigned int, unsigned int) const;
-            float computeTriangleSlope(const std::vector<Point3<float>> &) const;
+            CSGPolygon<float> squaresToPolygon(const std::vector<unsigned int> &, const std::vector<Point3<float>> &, unsigned int) const;
     };
 
 }
