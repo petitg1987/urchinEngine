@@ -56,7 +56,7 @@ namespace urchin
         return expandedPolytopes;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const NavMeshAgent &agent)
+    std::unique_ptr<Polytope> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshConfig> &navMeshConfig)
     {
         #ifdef _DEBUG
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
@@ -65,7 +65,7 @@ namespace urchin
 
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
         auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
-                                                                        aiTerrain->getXLength(), aiTerrain->getZLength(), agent);
+                                                                        aiTerrain->getXLength(), aiTerrain->getZLength(), navMeshConfig->getMaxSlope());
         expandedSurface->setWalkableCandidate(true);
         expandedSurfaces.emplace_back(std::move(expandedSurface));
 

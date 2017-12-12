@@ -1,10 +1,11 @@
 #include "PolytopeTerrainSurface.h"
+#include "path/navmesh/polytope/services/TerrainObstacleService.h"
 
 namespace urchin
 {
 
     PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
-                                                   unsigned int xLength, unsigned int zLength, const NavMeshAgent &agent) :
+                                                   unsigned int xLength, unsigned int zLength, float maxSlopeInRadian) :
             PolytopeSurface(),
             position(position),
             localVertices(localVertices),
@@ -12,7 +13,7 @@ namespace urchin
             zLength(zLength)
     {
         buildOutlineCwPoints();
-        buildSelfObstacles(agent);
+        selfObstacles = TerrainObstacleService::instance()->selfObstacles(position, localVertices, xLength, zLength, maxSlopeInRadian);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()
@@ -30,11 +31,6 @@ namespace urchin
 
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
         outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
-    }
-
-    void PolytopeTerrainSurface::buildSelfObstacles(const NavMeshAgent &agent)
-    {
-        //TODO compute self obstacles
     }
 
     bool PolytopeTerrainSurface::isWalkable(float) const

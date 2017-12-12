@@ -10,6 +10,7 @@
 #include "path/navmesh/polytope/Polytope.h"
 #include "path/navmesh/polytope/PolytopeSurface.h"
 #include "path/navmesh/model/NavMeshConfig.h"
+#include "path/navmesh/model/NavMeshAgent.h"
 
 namespace urchin
 {
@@ -28,7 +29,7 @@ namespace urchin
             friend class Singleton<PolytopeBuilder>;
 
             std::vector<std::unique_ptr<Polytope>> buildExpandedPolytopes(const std::shared_ptr<AIObject> &, const NavMeshAgent &);
-            std::unique_ptr<Polytope> buildExpandedPolytope(const std::shared_ptr<AITerrain> &, const NavMeshAgent &);
+            std::unique_ptr<Polytope> buildExpandedPolytope(const std::shared_ptr<AITerrain> &, const std::shared_ptr<NavMeshConfig> &);
 
         private:
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, OBBox<float> *, const NavMeshAgent &) const;

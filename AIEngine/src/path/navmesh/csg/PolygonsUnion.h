@@ -28,7 +28,7 @@ namespace urchin
 
 		private:
 			PolygonsUnion() = default;
-			virtual ~PolygonsUnion() = default;
+			~PolygonsUnion() override = default;
 
 			std::vector<CSGPolygon<T>> unionTwoPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
 

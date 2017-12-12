@@ -17,7 +17,7 @@ namespace urchin
 
 		private:
 			PolygonsIntersection() = default;
-			virtual ~PolygonsIntersection() = default;
+			~PolygonsIntersection() override = default;
 
 			bool isPointInside(const Line2D<T> &, const Point2<T> &) const;
 			void addIntersection(const Line2D<T> &, const Line2D<T> &, std::vector<Point2<T>> &) const;

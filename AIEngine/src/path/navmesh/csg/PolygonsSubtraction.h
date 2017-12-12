@@ -54,7 +54,7 @@ namespace urchin
 
         private:
             PolygonsSubtraction() = default;
-            virtual ~PolygonsSubtraction() = default;
+            ~PolygonsSubtraction() override = default;
 
             SubtractionPoints<T> buildSubtractionPoints(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
             void buildIntersectionPoints(const CSGPolygon<T> &, std::map<unsigned int, std::vector<IntersectionPoint<T>>> &,

@@ -64,7 +64,7 @@ set(SOURCE_FILES
         src/path/navmesh/polytope/PolytopeSurface.cpp
         src/path/navmesh/polytope/PolytopeSurface.h
         src/path/navmesh/polytope/PolytopeTerrainSurface.cpp
-        src/path/navmesh/polytope/PolytopeTerrainSurface.h)
+        src/path/navmesh/polytope/PolytopeTerrainSurface.h src/path/navmesh/polytope/services/TerrainObstacleService.cpp src/path/navmesh/polytope/services/TerrainObstacleService.h)
 
 include_directories(src ../common/src)
 
