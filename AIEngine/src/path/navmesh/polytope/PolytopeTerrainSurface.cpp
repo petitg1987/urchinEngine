@@ -13,7 +13,7 @@ namespace urchin
             zLength(zLength)
     {
         buildOutlineCwPoints();
-        selfObstacles = TerrainObstacleService::instance()->selfObstacles(position, localVertices, xLength, zLength, maxSlopeInRadian);
+        selfObstacles = TerrainObstacleService(position, localVertices, xLength, zLength).computeSelfObstacles(maxSlopeInRadian);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()

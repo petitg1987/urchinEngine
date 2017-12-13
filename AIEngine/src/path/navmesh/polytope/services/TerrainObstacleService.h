@@ -9,24 +9,39 @@
 namespace urchin
 {
 
-    class TerrainObstacleService : public Singleton<TerrainObstacleService>
+    class TerrainObstacleService
     {
         public:
-            friend class Singleton<TerrainObstacleService>;
+            TerrainObstacleService(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int);
 
-            std::vector<CSGPolygon<float>> selfObstacles(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int, float);
+            std::vector<CSGPolygon<float>> computeSelfObstacles(float);
 
         private:
-            TerrainObstacleService() = default;
-            ~TerrainObstacleService() override = default;
+            const Point3<float> &position;
+            const std::vector<Point3<float>> &localVertices;
+            unsigned int xLength;
+            unsigned int zLength;
 
-            bool isWalkableSquare(unsigned int, const std::vector<Point3<float>> &, unsigned int, unsigned int, float) const;
+            enum EdgeDirection
+            {
+                LEFT,
+                RIGHT,
+                TOP,
+                BOTTOM
+            };
+
+            bool isWalkableSquare(unsigned int, float) const;
             float computeTriangleSlope(const std::vector<Point3<float>> &) const;
 
-            std::vector<unsigned int> findAllInaccessibleNeighbors(unsigned int, const std::vector<Point3<float>> &, unsigned int, unsigned int, float) const;
-            std::vector<unsigned int> retrieveNeighbors(unsigned int, unsigned int, unsigned int) const;
+            std::vector<unsigned int> findAllInaccessibleNeighbors(unsigned int, float) const;
+            std::vector<unsigned int> retrieveNeighbors(unsigned int) const;
 
-            CSGPolygon<float> squaresToPolygon(const std::vector<unsigned int> &, const std::vector<Point3<float>> &, unsigned int) const;
+            CSGPolygon<float> squaresToPolygon(const std::vector<unsigned int> &) const;
+            unsigned int retrieveNextPointIndex(unsigned int, const std::vector<EdgeDirection> &, const std::vector<unsigned int> &, EdgeDirection &) const;
+            int nextPointInDirection(unsigned int, EdgeDirection) const;
+            bool pointExistInSquares(unsigned int, const std::vector<unsigned int> &) const;
+
+            CSGPolygon<float> pointIndicesToPolygon(const std::vector<unsigned int> &) const;
     };
 
 }

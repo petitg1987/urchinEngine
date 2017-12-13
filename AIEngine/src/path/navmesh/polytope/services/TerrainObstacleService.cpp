@@ -6,8 +6,16 @@
 
 namespace urchin
 {
-    std::vector<CSGPolygon<float>> TerrainObstacleService::selfObstacles(const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
-                                                                         unsigned int xLength, unsigned int zLength, float maxSlopeInRadian)
+    TerrainObstacleService::TerrainObstacleService(const Point3<float> &position, const std::vector<Point3<float>> &localVertices, unsigned int xLength, unsigned int zLength) :
+            position(position),
+            localVertices(localVertices),
+            xLength(xLength),
+            zLength(zLength)
+    {
+
+    }
+
+    std::vector<CSGPolygon<float>> TerrainObstacleService::computeSelfObstacles(float maxSlopeInRadian)
     {
         std::vector<CSGPolygon<float>> obstaclePolygons;
 
@@ -24,10 +32,10 @@ namespace urchin
                 continue;
             }
 
-            if(!isWalkableSquare(squareIndex, localVertices, xLength, zLength, maxSlopeInRadian))
+            if(!isWalkableSquare(squareIndex, maxSlopeInRadian))
             {
-                std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, localVertices, xLength, zLength, maxSlopeInRadian);
-                obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares, localVertices, xLength));
+                std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, maxSlopeInRadian);
+                obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares));
 
                 squaresProcessed.insert(squaresProcessed.end(), inaccessibleSquares.begin(), inaccessibleSquares.end());
             }
@@ -36,8 +44,7 @@ namespace urchin
         return obstaclePolygons;
     }
 
-    bool TerrainObstacleService::isWalkableSquare(unsigned int squareIndex, const std::vector<Point3<float>> &localVertices,
-                                                  unsigned int xLength, unsigned int zLength, float maxSlopeInRadian) const
+    bool TerrainObstacleService::isWalkableSquare(unsigned int squareIndex, float maxSlopeInRadian) const
     {
         #ifdef _DEBUG
             assert((squareIndex + 1) % xLength != 0); //not an extreme right point
@@ -65,8 +72,7 @@ namespace urchin
         return std::acos(normal.dotProduct(upVector));
     }
 
-    std::vector<unsigned int> TerrainObstacleService::findAllInaccessibleNeighbors(unsigned int squareIndex, const std::vector<Point3<float>> &localVertices,
-                                                                                   unsigned int xLength, unsigned int zLength, float maxSlopeInRadian) const
+    std::vector<unsigned int> TerrainObstacleService::findAllInaccessibleNeighbors(unsigned int squareIndex, float maxSlopeInRadian) const
     {
         std::vector<unsigned int> inaccessibleNeighbors;
         std::stack<unsigned int> squaresToProcess;
@@ -79,10 +85,10 @@ namespace urchin
 
             inaccessibleNeighbors.push_back(currSquareIndex);
 
-            std::vector<unsigned int> neighborSquares = retrieveNeighbors(currSquareIndex, xLength, zLength);
+            std::vector<unsigned int> neighborSquares = retrieveNeighbors(currSquareIndex);
             for(unsigned int neighborSquare : neighborSquares)
             {
-                if(!isWalkableSquare(neighborSquare, localVertices, xLength, zLength, maxSlopeInRadian))
+                if(!isWalkableSquare(neighborSquare, maxSlopeInRadian))
                 { //inaccessible square
                     squaresToProcess.push(neighborSquare);
                 }
@@ -92,7 +98,7 @@ namespace urchin
         return inaccessibleNeighbors;
     }
 
-    std::vector<unsigned int> TerrainObstacleService::retrieveNeighbors(unsigned int squareIndex, unsigned int xLength, unsigned int zLength) const
+    std::vector<unsigned int> TerrainObstacleService::retrieveNeighbors(unsigned int squareIndex) const
     {
         #ifdef _DEBUG
             assert((squareIndex + 1) % xLength != 0); //not an extreme right point
@@ -125,9 +131,107 @@ namespace urchin
         return neighbors;
     }
 
-    CSGPolygon<float> TerrainObstacleService::squaresToPolygon(const std::vector<unsigned int> &squares, const std::vector<Point3<float>> &localVertices,
-                                                               unsigned int xLength) const
+    CSGPolygon<float> TerrainObstacleService::squaresToPolygon(const std::vector<unsigned int> &squares) const
     {
-        //TODO implement it
+        std::map<EdgeDirection, std::vector<EdgeDirection>> checkDirectionsMap;
+        checkDirectionsMap[EdgeDirection::RIGHT] = {EdgeDirection::TOP, EdgeDirection::RIGHT, EdgeDirection::BOTTOM};
+        checkDirectionsMap[EdgeDirection::BOTTOM] = {EdgeDirection::RIGHT, EdgeDirection::BOTTOM, EdgeDirection::LEFT};
+        checkDirectionsMap[EdgeDirection::LEFT] = {EdgeDirection::BOTTOM, EdgeDirection::LEFT, EdgeDirection::TOP};
+        checkDirectionsMap[EdgeDirection::TOP] = {EdgeDirection::LEFT, EdgeDirection::TOP, EdgeDirection::RIGHT};
+
+        std::vector<unsigned int> cwPolygonPointIndices;
+        cwPolygonPointIndices.push_back(squares[0]);
+        cwPolygonPointIndices.push_back(squares[0] + 1);
+        EdgeDirection direction = EdgeDirection::RIGHT;
+
+        while(true)
+        {
+            unsigned int lastPointIndex = cwPolygonPointIndices[cwPolygonPointIndices.size() - 1];
+            std::vector<EdgeDirection> checkDirections = checkDirectionsMap.at(direction);
+            EdgeDirection usedDirection;
+            unsigned int nextPointIndex = retrieveNextPointIndex(lastPointIndex, checkDirections, squares, usedDirection);
+
+            if(nextPointIndex==cwPolygonPointIndices[0])
+            { //polygon end reached
+                break;
+            }
+
+            cwPolygonPointIndices.push_back(nextPointIndex);
+            direction = usedDirection;
+        }
+
+        return pointIndicesToPolygon(cwPolygonPointIndices);
     }
+
+    unsigned int TerrainObstacleService::retrieveNextPointIndex(unsigned int pointIndex, const std::vector<EdgeDirection> &checkDirections,
+                                                                const std::vector<unsigned int> &squares, EdgeDirection &usedDirection) const
+    {
+        for(EdgeDirection checkDirection : checkDirections)
+        {
+            int nextPoint = nextPointInDirection(pointIndex, checkDirection);
+            if(nextPoint!=-1 && pointExistInSquares(static_cast<unsigned int>(nextPoint), squares))
+            {
+                usedDirection = checkDirection;
+                return static_cast<unsigned int>(nextPoint);
+            }
+        }
+
+        throw std::runtime_error("No next point found for index: " + std::to_string(pointIndex));
+    }
+
+    int TerrainObstacleService::nextPointInDirection(unsigned int pointIndex, EdgeDirection direction) const
+    {
+        if(EdgeDirection::RIGHT==direction)
+        {
+            if((pointIndex + 1) % xLength == 0)
+            { //no right point
+                return -1;
+            }
+            return pointIndex + 1;
+        }else if(EdgeDirection::BOTTOM==direction)
+        {
+            if(pointIndex >= xLength * (zLength - 1))
+            {
+                return -1;
+            }
+            return pointIndex + xLength;
+        }else if(EdgeDirection::LEFT==direction)
+        {
+            if(pointIndex % xLength == 0)
+            { //no left point
+                return -1;
+            }
+            return pointIndex - 1;
+        }else if(EdgeDirection::TOP==direction)
+        {
+            if(pointIndex < xLength)
+            {
+                return -1;
+            }
+            return pointIndex - xLength;
+        }
+
+        throw std::runtime_error("Unknown edge direction: " + std::to_string(direction));
+    }
+
+    bool TerrainObstacleService::pointExistInSquares(unsigned int pointIndex, const std::vector<unsigned int> &squares) const
+    {
+        for(unsigned int squareIndex : squares)
+        {
+            if(     (squareIndex == pointIndex) ||
+                    (squareIndex + 1 == pointIndex) ||
+                    (squareIndex + xLength == pointIndex) ||
+                    (squareIndex + xLength + 1 == pointIndex) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    CSGPolygon<float> TerrainObstacleService::pointIndicesToPolygon(const std::vector<unsigned int> &cwPolygonPointIndices) const
+    {
+        //TODO build polygon (use position) + simplify
+    }
+
 }

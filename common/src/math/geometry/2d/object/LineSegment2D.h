@@ -11,7 +11,7 @@ namespace urchin
 	template<class T> class LineSegment2D : public ConvexObject2D<T>
 	{
 		public:
-			LineSegment2D(const Point2<T> &,  const Point2<T> &);
+			LineSegment2D(const Point2<T> &, const Point2<T> &);
 
 			const Point2<T> &getA() const;
 			const Point2<T> &getB() const;
