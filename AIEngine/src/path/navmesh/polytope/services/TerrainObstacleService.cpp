@@ -6,7 +6,9 @@
 
 namespace urchin
 {
-    TerrainObstacleService::TerrainObstacleService(const Point3<float> &position, const std::vector<Point3<float>> &localVertices, unsigned int xLength, unsigned int zLength) :
+    TerrainObstacleService::TerrainObstacleService(std::string terrainName, const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
+                                                   unsigned int xLength, unsigned int zLength) :
+            terrainName(std::move(terrainName)),
             position(position),
             localVertices(localVertices),
             xLength(xLength),
@@ -19,6 +21,7 @@ namespace urchin
     {
         std::vector<CSGPolygon<float>> obstaclePolygons;
 
+        unsigned int obstacleIndex = 0;
         unsigned int maxSquareIndex = (xLength * (zLength - 1));
         std::vector<bool> squaresProcessed(maxSquareIndex, false);
         for(unsigned int squareIndex = 0; squareIndex < maxSquareIndex; ++squareIndex)
@@ -35,7 +38,7 @@ namespace urchin
             if(!isWalkableSquare(squareIndex, maxSlopeInRadian))
             {
                 std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, maxSlopeInRadian);
-                obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares));
+                obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares, obstacleIndex++));
 
                 squaresProcessed.insert(squaresProcessed.end(), inaccessibleSquares.begin(), inaccessibleSquares.end());
             }
@@ -131,7 +134,7 @@ namespace urchin
         return neighbors;
     }
 
-    CSGPolygon<float> TerrainObstacleService::squaresToPolygon(const std::vector<unsigned int> &squares) const
+    CSGPolygon<float> TerrainObstacleService::squaresToPolygon(const std::vector<unsigned int> &squares, unsigned int obstacleIndex) const
     {
         std::map<EdgeDirection, std::vector<EdgeDirection>> checkDirectionsMap;
         checkDirectionsMap[EdgeDirection::RIGHT] = {EdgeDirection::TOP, EdgeDirection::RIGHT, EdgeDirection::BOTTOM};
@@ -156,11 +159,17 @@ namespace urchin
                 break;
             }
 
-            cwPolygonPointIndices.push_back(nextPointIndex);
-            direction = usedDirection;
+            if(direction==usedDirection)
+            {
+                cwPolygonPointIndices[cwPolygonPointIndices.size() -1] = nextPointIndex;
+            }else
+            {
+                cwPolygonPointIndices.push_back(nextPointIndex);
+                direction = usedDirection;
+            }
         }
 
-        return pointIndicesToPolygon(cwPolygonPointIndices);
+        return pointIndicesToPolygon(cwPolygonPointIndices, obstacleIndex);
     }
 
     unsigned int TerrainObstacleService::retrieveNextPointIndex(unsigned int pointIndex, const std::vector<EdgeDirection> &checkDirections,
@@ -229,9 +238,19 @@ namespace urchin
         return false;
     }
 
-    CSGPolygon<float> TerrainObstacleService::pointIndicesToPolygon(const std::vector<unsigned int> &cwPolygonPointIndices) const
+    CSGPolygon<float> TerrainObstacleService::pointIndicesToPolygon(const std::vector<unsigned int> &cwPolygonPointIndices, unsigned int obstacleIndex) const
     {
-        //TODO build polygon (use position) + simplify
+        std::vector<Point2<float>> cwPoints;
+        cwPoints.reserve(cwPolygonPointIndices.size());
+
+        for(unsigned int cwPolygonPointIndex : cwPolygonPointIndices)
+        {
+            Point3<float> vertex = localVertices[cwPolygonPointIndex] + position;
+            cwPoints.emplace_back(Point2<float>(vertex.X, -vertex.Z));
+        }
+
+        std::string obstacleName = terrainName + "_obstacle" + std::to_string(obstacleIndex);
+        return CSGPolygon<float>(obstacleName, cwPoints);
     }
 
 }

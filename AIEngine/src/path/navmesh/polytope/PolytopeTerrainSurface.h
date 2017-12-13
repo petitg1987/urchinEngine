@@ -9,7 +9,7 @@ namespace urchin
     class PolytopeTerrainSurface : public PolytopeSurface
     {
         public:
-            PolytopeTerrainSurface(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int, float maxSlopeInRadian);
+            PolytopeTerrainSurface(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int, const std::vector<CSGPolygon<float>> &);
 
             bool isWalkable(float) const override;
             Rectangle<float> computeXZRectangle() const override;

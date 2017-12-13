@@ -3,6 +3,7 @@
 #include "PolytopeBuilder.h"
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
 #include "path/navmesh/polytope/PolytopeTerrainSurface.h"
+#include "path/navmesh/polytope/services/TerrainObstacleService.h"
 
 namespace urchin
 {
@@ -64,8 +65,11 @@ namespace urchin
         #endif
 
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+        TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
+                                                      aiTerrain->getXLength(), aiTerrain->getZLength());
+        std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshConfig->getMaxSlope());
         auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
-                                                                        aiTerrain->getXLength(), aiTerrain->getZLength(), navMeshConfig->getMaxSlope());
+                                                                        aiTerrain->getXLength(), aiTerrain->getZLength(), selfObstacles);
         expandedSurface->setWalkableCandidate(true);
         expandedSurfaces.emplace_back(std::move(expandedSurface));
 

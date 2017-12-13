@@ -1,19 +1,18 @@
 #include "PolytopeTerrainSurface.h"
-#include "path/navmesh/polytope/services/TerrainObstacleService.h"
 
 namespace urchin
 {
 
-    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
-                                                   unsigned int xLength, unsigned int zLength, float maxSlopeInRadian) :
+    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices, unsigned int xLength,
+                                                   unsigned int zLength, const std::vector<CSGPolygon<float>> &selfObstacles) :
             PolytopeSurface(),
             position(position),
             localVertices(localVertices),
             xLength(xLength),
-            zLength(zLength)
+            zLength(zLength),
+            selfObstacles(selfObstacles)
     {
         buildOutlineCwPoints();
-        selfObstacles = TerrainObstacleService(position, localVertices, xLength, zLength).computeSelfObstacles(maxSlopeInRadian);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()
