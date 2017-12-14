@@ -34,7 +34,7 @@ namespace urchin
             CSGPolygon<float> squaresToPolygon(const std::vector<unsigned int> &, unsigned int) const;
             unsigned int retrieveNextPointIndex(unsigned int, const std::vector<EdgeDirection> &, const std::vector<unsigned int> &, EdgeDirection &) const;
             int nextPointInDirection(unsigned int, EdgeDirection) const;
-            bool pointExistInSquares(unsigned int, const std::vector<unsigned int> &) const;
+            bool edgeBelongToOneSquare(unsigned int, unsigned int, const std::vector<unsigned int> &) const;
 
             CSGPolygon<float> pointIndicesToPolygon(const std::vector<unsigned int> &, unsigned int) const;
 

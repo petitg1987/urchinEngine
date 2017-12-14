@@ -87,18 +87,24 @@ void TerrainObstacleServiceTest::squaresInUForm()
     AssertHelper::assertUnsignedInt(selfObstacles.size(), 1);
     AssertHelper::assertTrue(selfObstacles[0].getName()=="terrain_obstacle0");
     AssertHelper::assertUnsignedInt(selfObstacles[0].getCwPoints().size(), 8);
-    //TODO complete...
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[0], Point2<float>(0.0f, 0.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[1], Point2<float>(1.0f, 0.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[2], Point2<float>(1.0f, -1.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[3], Point2<float>(2.0f, -1.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[4], Point2<float>(2.0f, 0.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[5], Point2<float>(3.0f, 0.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[6], Point2<float>(3.0f, -2.0f));
+    AssertHelper::assertPoint2FloatEquals(selfObstacles[0].getCwPoints()[7], Point2<float>(0.0f, -2.0f));
 }
 
 CppUnit::Test *TerrainObstacleServiceTest::suite()
 {
     CppUnit::TestSuite *suite = new CppUnit::TestSuite("TerrainObstacleServiceTest");
-    //TODO uncomment
-//    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("oneSquare", &TerrainObstacleServiceTest::oneSquare));
-//    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoAlignedSquares", &TerrainObstacleServiceTest::twoAlignedSquares));
-//    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoSquaresSamePoint", &TerrainObstacleServiceTest::twoSquaresSamePoint));
+
+    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("oneSquare", &TerrainObstacleServiceTest::oneSquare));
+    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoAlignedSquares", &TerrainObstacleServiceTest::twoAlignedSquares));
+    suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoSquaresSamePoint", &TerrainObstacleServiceTest::twoSquaresSamePoint));
     suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("squaresInUForm", &TerrainObstacleServiceTest::squaresInUForm));
-    //TODO add more tests
 
     return suite;
 }

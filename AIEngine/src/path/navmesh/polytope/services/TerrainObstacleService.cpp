@@ -186,11 +186,11 @@ namespace urchin
     {
         for(EdgeDirection checkDirection : checkDirections)
         {
-            int nextPoint = nextPointInDirection(pointIndex, checkDirection);
-            if(nextPoint!=-1 && pointExistInSquares(static_cast<unsigned int>(nextPoint), squares))
+            int nextPointIndex = nextPointInDirection(pointIndex, checkDirection);
+            if(nextPointIndex!=-1 && edgeBelongToOneSquare(pointIndex, static_cast<unsigned int>(nextPointIndex), squares))
             {
                 usedDirection = checkDirection;
-                return static_cast<unsigned int>(nextPoint);
+                return static_cast<unsigned int>(nextPointIndex);
             }
         }
 
@@ -232,14 +232,12 @@ namespace urchin
         throw std::runtime_error("Unknown edge direction: " + std::to_string(direction));
     }
 
-    bool TerrainObstacleService::pointExistInSquares(unsigned int pointIndex, const std::vector<unsigned int> &squares) const
+    bool TerrainObstacleService::edgeBelongToOneSquare(unsigned int point1, unsigned int point2, const std::vector<unsigned int> &squares) const
     {
         for(unsigned int squareIndex : squares)
         {
-            if(     (squareIndex == pointIndex) ||
-                    (squareIndex + 1 == pointIndex) ||
-                    (squareIndex + xLength == pointIndex) ||
-                    (squareIndex + xLength + 1 == pointIndex) )
+            if(     ((squareIndex == point1) || (squareIndex + 1 == point1) || (squareIndex + xLength == point1) || (squareIndex + xLength + 1 == point1)) &&
+                    ((squareIndex == point2) || (squareIndex + 1 == point2) || (squareIndex + xLength == point2) || (squareIndex + xLength + 1 == point2)) )
             {
                 return true;
             }
