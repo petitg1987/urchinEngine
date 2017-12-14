@@ -73,7 +73,9 @@ set(SOURCE_FILES
         src/ai/path/navmesh/NavMeshGeneratorTest.h
         src/ai/path/navmesh/NavMeshGeneratorTest.cpp
         src/ai/path/pathfinding/FunnelAlgorithmTest.cpp
-        src/ai/path/pathfinding/FunnelAlgorithmTest.h)
+        src/ai/path/pathfinding/FunnelAlgorithmTest.h
+        src/ai/path/navmesh/TerrainObstacleServiceTest.cpp
+        src/ai/path/navmesh/TerrainObstacleServiceTest.h)
 
 include_directories(src ../common/src ../physicsEngine/src ../AIEngine/src)
 

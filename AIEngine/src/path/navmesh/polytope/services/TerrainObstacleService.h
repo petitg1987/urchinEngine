@@ -39,8 +39,8 @@ namespace urchin
             CSGPolygon<float> pointIndicesToPolygon(const std::vector<unsigned int> &, unsigned int) const;
 
             std::string terrainName;
-            const Point3<float> &position;
-            const std::vector<Point3<float>> &localVertices;
+            Point3<float> position;
+            std::vector<Point3<float>> localVertices;
             unsigned int xLength;
             unsigned int zLength;
     };

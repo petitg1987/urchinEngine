@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cmath>
 #include <stack>
+#include <algorithm>
 
 #include "TerrainObstacleService.h"
 
@@ -40,7 +41,10 @@ namespace urchin
                 std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, maxSlopeInRadian);
                 obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares, obstacleIndex++));
 
-                squaresProcessed.insert(squaresProcessed.end(), inaccessibleSquares.begin(), inaccessibleSquares.end());
+                for(unsigned int inaccessibleSquare : inaccessibleSquares)
+                {
+                    squaresProcessed[inaccessibleSquare] = true;
+                }
             }
         }
 
@@ -91,7 +95,8 @@ namespace urchin
             std::vector<unsigned int> neighborSquares = retrieveNeighbors(currSquareIndex);
             for(unsigned int neighborSquare : neighborSquares)
             {
-                if(!isWalkableSquare(neighborSquare, maxSlopeInRadian))
+                bool notProcessed = std::find(inaccessibleNeighbors.begin(), inaccessibleNeighbors.end(), neighborSquare) == inaccessibleNeighbors.end();
+                if(notProcessed && !isWalkableSquare(neighborSquare, maxSlopeInRadian))
                 { //inaccessible square
                     squaresToProcess.push(neighborSquare);
                 }
@@ -156,12 +161,16 @@ namespace urchin
 
             if(nextPointIndex==cwPolygonPointIndices[0])
             { //polygon end reached
+                if(direction==usedDirection)
+                {
+                    cwPolygonPointIndices.pop_back();
+                }
                 break;
             }
 
             if(direction==usedDirection)
             {
-                cwPolygonPointIndices[cwPolygonPointIndices.size() -1] = nextPointIndex;
+                cwPolygonPointIndices[cwPolygonPointIndices.size() - 1] = nextPointIndex;
             }else
             {
                 cwPolygonPointIndices.push_back(nextPointIndex);

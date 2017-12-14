@@ -26,6 +26,11 @@ namespace urchin
 
 	}
 
+	bool AIEntityComp::operator() (const std::shared_ptr<AIEntity>& left, const std::shared_ptr<AIEntity>& right) const
+	{
+		return left->getName().compare(right->getName());
+	}
+
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygon.removeAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold")),

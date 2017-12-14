@@ -30,6 +30,7 @@
 #include "ai/path/navmesh/PolygonsIntersectionTest.h"
 #include "ai/path/navmesh/PolygonsSubtractionTest.h"
 #include "ai/path/navmesh/NavMeshGeneratorTest.h"
+#include "ai/path/navmesh/TerrainObstacleServiceTest.h"
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 
 int main()
@@ -86,6 +87,7 @@ int main()
 	runner.addTest(PolygonsIntersectionTest::suite());
 	runner.addTest(PolygonsSubtractionTest::suite());
 	runner.addTest(NavMeshGeneratorTest::suite());
+	runner.addTest(TerrainObstacleServiceTest::suite());
 
 	//ai - pathfinding
 	runner.addTest(FunnelAlgorithmTest::suite());

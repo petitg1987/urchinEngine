@@ -30,6 +30,11 @@ namespace urchin
 		unsigned int faceIndex;
 	};
 
+	struct AIEntityComp
+	{
+		bool operator() (const std::shared_ptr<AIEntity>& left, const std::shared_ptr<AIEntity>& right) const;
+	};
+
 	class NavMeshGenerator
 	{
 		public:
@@ -56,7 +61,7 @@ namespace urchin
 
             mutable std::mutex navMeshMutex;
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
-			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>> expandedPolytopes;
+			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>, AIEntityComp> expandedPolytopes;
 
 			std::shared_ptr<NavMesh> navMesh;
 			std::atomic_bool needFullRefresh;
