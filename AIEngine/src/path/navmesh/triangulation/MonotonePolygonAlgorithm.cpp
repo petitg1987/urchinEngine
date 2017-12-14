@@ -107,7 +107,11 @@ namespace urchin
 							{
 								if(nextPointIndex==monotonePointsIndex)
 								{
-									logInputData("Duplicate point in monotone polygon.", Logger::ERROR);
+									std::stringstream logStream;
+                                    logStream.precision(std::numeric_limits<float>::max_digits10);
+									logStream<<"Duplicate point ("<<polygonPoints[nextPointIndex]<<") inserted in monotone polygon: ";
+
+									logInputData(logStream.str(), Logger::ERROR);
 								}
 							}
 						#endif

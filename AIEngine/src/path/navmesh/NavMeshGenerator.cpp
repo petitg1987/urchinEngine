@@ -28,7 +28,7 @@ namespace urchin
 
 	bool AIEntityComp::operator() (const std::shared_ptr<AIEntity>& left, const std::shared_ptr<AIEntity>& right) const
 	{
-		return left->getName().compare(right->getName());
+		return left->getName().compare(right->getName()) > 0;
 	}
 
     NavMeshGenerator::NavMeshGenerator() :
@@ -252,7 +252,7 @@ namespace urchin
 			}
 		}
 
-		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
+		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons); //TODO union of self polygon generates degenerated polygons
 	}
 
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytopeObstacle, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
