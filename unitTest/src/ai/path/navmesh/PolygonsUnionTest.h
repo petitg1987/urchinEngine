@@ -30,7 +30,8 @@ class PolygonsUnionTest : public CppUnit::TestFixture
 		void twoPolygonsIntersectionIsAlmostEndPoint();
 		void twoPolygonsIntersectionIsAlmostEdgeA1();
 		void twoPolygonsIntersectionIsAlmostEdgeA2();
-		void twoPolygonsTouchInOnePoint();
+		void twoPolygonsTouchInOnePoint1();
+		void twoPolygonsTouchInOnePoint2();
 		void twoPolygonsNestedTouchInOnePoint();
 		void twoPolygonsIntersectionLastEdge();
 

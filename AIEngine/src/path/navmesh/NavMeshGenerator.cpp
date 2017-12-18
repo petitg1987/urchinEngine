@@ -252,7 +252,7 @@ namespace urchin
 			}
 		}
 
-		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons); //TODO union of self polygon generates degenerated polygons
+		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
 	}
 
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytopeObstacle, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
