@@ -101,10 +101,7 @@ namespace urchin
             }
 		}
 
-        ClipperLib::Path cleanedPath;
-        ClipperLib::CleanPolygon(path, cleanedPath);
-
-		return cleanedPath;
+		return path;
 	}
 
     template<class T> CSGPolygon<T> PolygonsUnion<T>::toPolygon(const ClipperLib::Path &path, const std::string &name) const

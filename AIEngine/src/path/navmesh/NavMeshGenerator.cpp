@@ -247,7 +247,8 @@ namespace urchin
 				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle.second, walkableSurface);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
-					holePolygons.push_back(footprintPolygon);
+                    CSGPolygon<float> simplifiedFootprintPolygon = footprintPolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
+					holePolygons.push_back(simplifiedFootprintPolygon);
 				}
 			}
 		}

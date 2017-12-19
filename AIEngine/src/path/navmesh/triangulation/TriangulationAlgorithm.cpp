@@ -26,6 +26,16 @@ namespace urchin
 	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints, TriangleOrientation triangleOrientation) :
 			polygonPoints(ccwPolygonPoints)
 	{
+        #ifdef _DEBUG
+			//assert counter-clockwise order
+            double area = 0.0;
+            for (unsigned int i = 0, prevI = ccwPolygonPoints.size() - 1; i < ccwPolygonPoints.size(); prevI=i++)
+            {
+                area += (ccwPolygonPoints[i].X - ccwPolygonPoints[prevI].X) * (ccwPolygonPoints[i].Y + ccwPolygonPoints[prevI].Y);
+            }
+            assert(area <= 0.0);
+        #endif
+
 		this->endContourIndices.push_back(ccwPolygonPoints.size());
 		this->triangleOrientation = triangleOrientation;
 	}
@@ -44,6 +54,16 @@ namespace urchin
 	 */
 	unsigned int TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
 	{
+        #ifdef _DEBUG
+			//assert clockwise order
+            double area = 0.0;
+            for (unsigned int i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI=i++)
+            {
+                area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
+            }
+            assert(area >= 0.0);
+        #endif
+
 		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
 		endContourIndices.push_back(polygonPoints.size());
 
@@ -68,6 +88,17 @@ namespace urchin
 
 	std::vector<NavTriangle> TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
+		#ifdef _DEBUG
+            //assert no duplicate points
+			for (unsigned int i = 0; i < polygonPoints.size(); ++i)
+			{
+				for (unsigned int j = 0; j < polygonPoints.size(); ++j)
+				{
+					assert(i == j || polygonPoints[i].X != polygonPoints[j].X || polygonPoints[i].Y != polygonPoints[j].Y);
+				}
+			}
+		#endif
+
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
 
 		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));

@@ -103,6 +103,7 @@ namespace urchin
 						}
 
 						#ifdef _DEBUG
+                            //check no duplicate points inserted in monotone
 							for(unsigned int monotonePointsIndex: monotonePointsIndices)
 							{
 								if(nextPointIndex==monotonePointsIndex)

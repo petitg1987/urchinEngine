@@ -30,7 +30,7 @@ namespace urchin
 
 			std::vector<PolygonPath> unionTwoPolygonPaths(const PolygonPath &, const PolygonPath &) const;
 
-			ClipperLib::Path toPath(const CSGPolygon<T> &polygon) const;
+			ClipperLib::Path toPath(const CSGPolygon<T> &) const;
             CSGPolygon<T> toPolygon(const ClipperLib::Path &, const std::string &) const;
 	};
 

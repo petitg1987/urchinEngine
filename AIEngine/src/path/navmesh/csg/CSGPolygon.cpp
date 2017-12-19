@@ -10,6 +10,7 @@ namespace urchin
 		#ifdef _DEBUG
             if(cwPoints.size()>=3)
             {
+				//assert no duplicate points
                 for (unsigned int i = 0; i < cwPoints.size(); ++i)
                 {
                     for (unsigned int j = 0; j < cwPoints.size(); ++j)
@@ -18,13 +19,13 @@ namespace urchin
                     }
                 }
 
+				//assert clockwise order
                 double area = 0.0;
                 for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
                 {
                     area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
                 }
-
-               assert(area >= 0.0); //check clockwise order
+               	assert(area >= 0.0);
             }
     	#endif
 	}
