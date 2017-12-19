@@ -170,7 +170,7 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4()
     std::vector<CSGPolygon<long long>> polygonUnion = PolygonsUnion<long long>::instance()->unionPolygons(allPolygons);
 
     AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
-    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 10);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 7);
     //no points check
 }
 

@@ -63,11 +63,11 @@ namespace urchin
     {
         ClipperLib::Clipper clipper;
         clipper.ReverseSolution(true);
-        clipper.AddPath(polygon1.path, ClipperLib::ptClip, true);
+        clipper.AddPath(polygon1.path, ClipperLib::ptSubject, true);
         clipper.AddPath(polygon2.path, ClipperLib::ptClip, true);
 
         ClipperLib::Paths solution;
-        clipper.Execute(ClipperLib::ctUnion, solution, ClipperLib::pftNonZero, ClipperLib::pftNonZero);
+        clipper.Execute(ClipperLib::ctUnion, solution, ClipperLib::pftEvenOdd, ClipperLib::pftEvenOdd);
 
         std::vector<PolygonPath> result;
         result.reserve(solution.size());
@@ -101,7 +101,10 @@ namespace urchin
             }
 		}
 
-		return path;
+        ClipperLib::Path cleanedPath;
+        ClipperLib::CleanPolygon(path, cleanedPath);
+
+		return cleanedPath;
 	}
 
     template<class T> CSGPolygon<T> PolygonsUnion<T>::toPolygon(const ClipperLib::Path &path, const std::string &name) const

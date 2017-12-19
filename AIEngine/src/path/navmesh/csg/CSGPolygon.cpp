@@ -7,7 +7,26 @@ namespace urchin
 		name(std::move(name)),
 		cwPoints(cwPoints)
 	{
+		#ifdef _DEBUG
+            if(cwPoints.size()>=3)
+            {
+                for (unsigned int i = 0; i < cwPoints.size(); ++i)
+                {
+                    for (unsigned int j = 0; j < cwPoints.size(); ++j)
+                    {
+                        assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
+                    }
+                }
 
+                double area = 0.0;
+                for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
+                {
+                    area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
+                }
+
+               assert(area >= 0.0); //check clockwise order
+            }
+    	#endif
 	}
 
 	template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :
