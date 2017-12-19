@@ -35,9 +35,11 @@ namespace urchin
 	 * @param polygonPoints Polygon points are in CCW order and holes in CW order.
 	 * @param endContourIndices Delimiter between polygon points and holes points.
 	 */
-	MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>> &polygonPoints, const std::vector<unsigned int> &endContourIndices) :
+	MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>> &polygonPoints, const std::vector<unsigned int> &endContourIndices,
+                                                       const std::vector<std::string> &contourNames) :
 			polygonPoints(polygonPoints),
-			endContourIndices(endContourIndices)
+			endContourIndices(endContourIndices),
+            contourNames(contourNames)
 	{
 		edgeHelpers.reserve(5);
 
@@ -501,21 +503,23 @@ namespace urchin
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
 
+        unsigned int contourIndex = 0;
 		logStream<<message<<std::endl;
 		logStream<<"Monotone polygon input data:"<<std::endl;
+        logStream<<"\tPoints ("<<contourNames[contourIndex++]<<"):"<<std::endl;
 		for(unsigned int i=0; i<polygonPoints.size(); ++i)
 		{
-			logStream<<" - "<<polygonPoints[i]<<std::endl;
+			logStream<<"\t\t"<<polygonPoints[i]<<std::endl;
 
 			if((i+1)!=polygonPoints.size() && std::find(endContourIndices.begin(), endContourIndices.end(), i+1) != endContourIndices.end())
 			{
-				logStream<<" - Hole:"<<std::endl;
+				logStream<<"\tHole ("<<contourNames[contourIndex++]<<"):"<<std::endl;
 			}
 		}
 		Logger::logger().log(logLevel, logStream.str());
 
         #ifdef _DEBUG
-//            exportSVG("/home/greg/monotonePoints.html");
+            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
         #endif
 	}
 

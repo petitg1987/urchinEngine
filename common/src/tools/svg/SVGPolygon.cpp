@@ -7,17 +7,13 @@ namespace urchin
 {
     SVGPolygon::SVGPolygon(const std::vector<Point2<float>> &polygonPoints, SVGColor color, float opacity) :
         polygonPoints(polygonPoints),
+        color(color),
         opacity(opacity)
     {
         for(auto &polygonPoint : this->polygonPoints)
-        {
+        { //SVG Y axis is up side down
             polygonPoint.Y = -polygonPoint.Y;
         }
-
-        std::map<SVGColor, std::string> colorsMap;
-        colorsMap[SVGColor::LIME] = "lime";
-        colorsMap[SVGColor::RED] = "red";
-        colorString = colorsMap[color];
     }
 
     const std::vector<Point2<float>> &SVGPolygon::getPolygonPoints() const
@@ -27,7 +23,20 @@ namespace urchin
 
     std::string SVGPolygon::getStyle() const
     {
-        return "fill:" + colorString + ";stroke:purple;stroke-width:0;opacity:" + std::to_string(opacity);
+        std::string colorStr;
+        switch(color)
+        {
+            case SVGColor::LIME:
+                colorStr = "lime";
+                break;
+            case SVGColor::RED:
+                colorStr = "red";
+                break;
+            default:
+                colorStr = "back";
+        }
+
+        return "fill:" + colorStr + ";stroke-width:0;opacity:" + std::to_string(opacity);
     }
 
     Rectangle<int> SVGPolygon::computeRectangle() const

@@ -28,7 +28,7 @@ namespace urchin
 
         private:
             std::vector<Point2<float>> polygonPoints;
-            std::string colorString;
+            SVGColor color;
             float opacity;
     };
 

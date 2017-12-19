@@ -202,13 +202,13 @@ namespace urchin
                         simplifiedWalkablePolygons.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE);
 
 				std::string navPolygonName = "<" + simplifiedWalkablePolygons.getName() + ">";
-				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints), TriangulationAlgorithm::CCW);
+				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints), simplifiedWalkablePolygons.getName(), TriangulationAlgorithm::CCW);
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
                 {
                     if(simplifiedWalkablePolygons.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
                     { //obstacle fully inside walkable polygon
-                        triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints());
+                        triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints(), remainingObstaclePolygon.getName());
 						navPolygonName += " - <" + remainingObstaclePolygon.getName() + ">";
                     }
                 }

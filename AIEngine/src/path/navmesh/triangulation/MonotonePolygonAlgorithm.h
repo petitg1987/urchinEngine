@@ -58,7 +58,7 @@ namespace urchin
 	class MonotonePolygonAlgorithm
 	{
 		public:
-            MonotonePolygonAlgorithm(const std::vector<Point2<float>> &, const std::vector<unsigned int> &);
+            MonotonePolygonAlgorithm(const std::vector<Point2<float>> &, const std::vector<unsigned int> &, const std::vector<std::string> &);
 
 			std::vector<MonotonePolygon> createYMonotonePolygons();
 
@@ -94,6 +94,7 @@ namespace urchin
 
 			const std::vector<Point2<float>> &polygonPoints;
 			const std::vector<unsigned int> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
+			const std::vector<std::string> &contourNames;
 
 			std::vector<MonotonePolygon> yMonotonePolygons;
 			std::vector<EdgeHelper> edgeHelpers;

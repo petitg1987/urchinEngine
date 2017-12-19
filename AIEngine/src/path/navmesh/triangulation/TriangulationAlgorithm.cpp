@@ -23,7 +23,7 @@ namespace urchin
 	/**
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
-	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints, TriangleOrientation triangleOrientation) :
+	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints, const std::string &name, TriangleOrientation triangleOrientation) :
 			polygonPoints(ccwPolygonPoints)
 	{
         #ifdef _DEBUG
@@ -37,6 +37,7 @@ namespace urchin
         #endif
 
 		this->endContourIndices.push_back(ccwPolygonPoints.size());
+		this->contourNames.push_back(name);
 		this->triangleOrientation = triangleOrientation;
 	}
 
@@ -52,7 +53,7 @@ namespace urchin
 	 * @param cwHolePoints Hole points in clockwise order. Points must be unique and not go outside the polygon contour.
 	 * @return Hole index (start to 0).
 	 */
-	unsigned int TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints)
+	unsigned int TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints, const std::string &holeName)
 	{
         #ifdef _DEBUG
 			//assert clockwise order
@@ -66,6 +67,7 @@ namespace urchin
 
 		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
 		endContourIndices.push_back(polygonPoints.size());
+		contourNames.push_back(holeName);
 
 		return endContourIndices.size() - 2;
 	}
@@ -99,7 +101,7 @@ namespace urchin
 			}
 		#endif
 
-		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices).createYMonotonePolygons();
+		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames).createYMonotonePolygons();
 
 		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
 

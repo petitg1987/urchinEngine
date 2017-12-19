@@ -36,11 +36,11 @@ namespace urchin
 				CCW
 			};
 
-			explicit TriangulationAlgorithm(const std::vector<Point2<float>> &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
+			explicit TriangulationAlgorithm(const std::vector<Point2<float>> &, const std::string &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 
-			unsigned int addHolePoints(const std::vector<Point2<float>> &);
+			unsigned int addHolePoints(const std::vector<Point2<float>> &, const std::string &);
 			unsigned int getHolesSize() const;
 			std::vector<Point2<float>> getHolePoints(unsigned int) const;
 
@@ -64,6 +64,7 @@ namespace urchin
 
 			std::vector<Point2<float>> polygonPoints;
 			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
+			std::vector<std::string> contourNames;
 			TriangleOrientation triangleOrientation;
 
 			std::vector<NavTriangle> triangles;

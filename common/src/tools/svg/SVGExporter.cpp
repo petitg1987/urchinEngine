@@ -45,10 +45,10 @@ namespace urchin
             viewBox = viewBox.merge(polygon.computeRectangle());
         }
 
-        constexpr float margin = 2.0f;
-        return std::to_string(viewBox.getMin().X - margin) + " " + std::to_string(viewBox.getMin().Y - margin) + " "
-               + std::to_string(viewBox.getMax().X - viewBox.getMin().X + margin) + " "
-               + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + margin);
+        constexpr float MARGIN = 2.0f;
+        return std::to_string(viewBox.getMin().X - MARGIN) + " " + std::to_string(viewBox.getMin().Y - MARGIN) + " "
+               + std::to_string(viewBox.getMax().X - viewBox.getMin().X + (MARGIN * 2.0f)) + " "
+               + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + (MARGIN * 2.0f));
     }
 
     void SVGExporter::addPolygons(std::ofstream &fileStream) const
