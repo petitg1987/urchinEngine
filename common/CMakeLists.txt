@@ -152,7 +152,11 @@ set(SOURCE_FILES
         src/UrchinCommon.h src/system/NumericalCheck.cpp
         src/system/NumericalCheck.h
         src/io/FileReaderUtil.cpp
-        src/io/FileReaderUtil.h)
+        src/io/FileReaderUtil.h
+        src/tools/svg/SVGExporter.cpp
+        src/tools/svg/SVGExporter.h
+        src/tools/svg/SVGPolygon.cpp
+        src/tools/svg/SVGPolygon.h)
 
 include_directories(src)
 

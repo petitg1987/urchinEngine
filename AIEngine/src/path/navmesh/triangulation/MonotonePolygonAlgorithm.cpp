@@ -513,7 +513,29 @@ namespace urchin
 			}
 		}
 		Logger::logger().log(logLevel, logStream.str());
+
+        #ifdef _DEBUG
+//            exportSVG("/home/greg/monotonePoints.html");
+        #endif
 	}
+
+    void MonotonePolygonAlgorithm::exportSVG(const std::string &filename) const
+    {
+        SVGExporter svgExporter(filename);
+
+        std::vector<Point2<float>> svgPolygonPoints;
+        std::copy(polygonPoints.begin(), polygonPoints.begin() + endContourIndices[0], std::back_inserter(svgPolygonPoints));
+        svgExporter.addPolygon(SVGPolygon(svgPolygonPoints, SVGPolygon::LIME));
+
+        for(unsigned int i=0; i<endContourIndices.size()-1; ++i)
+        {
+            std::vector<Point2<float>> svgHolePoints;
+            std::copy(polygonPoints.begin()+endContourIndices[i], polygonPoints.begin() + endContourIndices[i + 1], std::back_inserter(svgHolePoints));
+            svgExporter.addPolygon(SVGPolygon(svgHolePoints, SVGPolygon::RED, 0.5));
+        }
+
+        svgExporter.generateSVG(250);
+    }
 
 	void MonotonePolygonAlgorithm::logOutputData(const std::string &message, const std::vector<std::vector<unsigned int>> &yMonotonePolygons, Logger::CriticalityLevel logLevel) const
 	{

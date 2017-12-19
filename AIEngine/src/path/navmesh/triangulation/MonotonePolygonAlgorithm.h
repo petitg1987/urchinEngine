@@ -89,6 +89,7 @@ namespace urchin
 			void markDiagonalProcessed(it_diagonals, unsigned int);
 
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;
+			void exportSVG(const std::string &) const;
 			void logOutputData(const std::string &, const std::vector<std::vector<unsigned int>> &, Logger::CriticalityLevel) const;
 
 			const std::vector<Point2<float>> &polygonPoints;

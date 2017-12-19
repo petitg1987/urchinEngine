@@ -6,6 +6,8 @@
 #include "tools/file/PropertyFileHandler.h"
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"
+#include "tools/svg/SVGExporter.h"
+#include "tools/svg/SVGPolygon.h"
 #include "tools/ConfigService.h"
 #include "tools/xml/XmlParser.h"
 #include "tools/xml/XmlWriter.h"
