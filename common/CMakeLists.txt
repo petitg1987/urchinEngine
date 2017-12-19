@@ -5,6 +5,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
+        src/libs/tinyxml/tinyxml.cpp
+        src/libs/tinyxml/tinyxml.h
+        src/libs/tinyxml/tinyxmlerror.cpp
+        src/libs/tinyxml/tinyxmlparser.cpp
+        src/libs/clipper/clipper.cpp
+        src/libs/clipper/clipper.h
         src/io/Converter.cpp
         src/io/Converter.h
         src/io/StringUtil.cpp
@@ -133,10 +139,6 @@ set(SOURCE_FILES
         src/tools/logger/Logger.cpp
         src/tools/logger/Logger.h
         src/tools/vector/VectorEraser.h
-        src/tools/xml/tinyxml/tinyxml.cpp
-        src/tools/xml/tinyxml/tinyxml.h
-        src/tools/xml/tinyxml/tinyxmlerror.cpp
-        src/tools/xml/tinyxml/tinyxmlparser.cpp
         src/tools/xml/XmlAttribute.cpp
         src/tools/xml/XmlAttribute.h
         src/tools/xml/XmlChunk.cpp

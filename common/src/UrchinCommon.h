@@ -1,6 +1,8 @@
 #ifndef URCHINENGINE_URCHINCOMMON_H
 #define URCHINENGINE_URCHINCOMMON_H
 
+#include "libs/clipper/clipper.h"
+
 #include "tools/file/PropertyFileHandler.h"
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"

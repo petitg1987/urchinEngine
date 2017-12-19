@@ -9,14 +9,12 @@
 namespace urchin
 {
 
-	template<class T> struct CSGIntersection
+	struct PolygonPath
 	{
-		bool hasValidIntersection;
-		bool hasIntersection;
-		Point2<T> intersectionPoint;
-		uint_fast64_t intersectionId;
-		unsigned int edgeStartPointIndex;
-		unsigned int edgeEndPointIndex;
+		PolygonPath(const ClipperLib::Path &, const std::string &);
+
+		ClipperLib::Path path;
+		std::string name;
 	};
 
 	template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>>
@@ -30,17 +28,10 @@ namespace urchin
 			PolygonsUnion() = default;
 			~PolygonsUnion() override = default;
 
-			std::vector<CSGPolygon<T>> unionTwoPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
+			std::vector<PolygonPath> unionTwoPolygonPaths(const PolygonPath &, const PolygonPath &) const;
 
-			unsigned int findStartPoint(const CSGPolygon<T> &, const CSGPolygon<T> &, const CSGPolygon<T> *&) const;
-			unsigned int findLowestPointIndex(const CSGPolygon<T> &) const;
-			CSGIntersection<T> findFirstIntersectionOnEdge(const LineSegment2D<T> &, const Point2<T> &, const CSGPolygon<T> *,
-														   const CSGPolygon<T> *, unsigned int, std::set<uint_fast64_t> &, const Point2<T> &) const;
-			bool isIntersectionAngleBetter(const LineSegment2D<T> &, const LineSegment2D<T> &) const;
-			bool isIntersectionAngleBetter(const Point2<T> &, const LineSegment2D<T> &, const Point2<T> &) const;
-            uint_fast64_t getIntersectionId(const CSGPolygon<T> *, unsigned int, const CSGPolygon<T> *, unsigned int) const;
-
-			void logInputData(const CSGPolygon<T> &, const CSGPolygon<T> &, const std::string &, Logger::CriticalityLevel) const;
+			ClipperLib::Path toPath(const CSGPolygon<T> &polygon) const;
+            CSGPolygon<T> toPolygon(const ClipperLib::Path &, const std::string &) const;
 	};
 
 }

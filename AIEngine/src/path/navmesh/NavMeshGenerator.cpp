@@ -202,7 +202,7 @@ namespace urchin
                         simplifiedWalkablePolygons.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE);
 
 				std::string navPolygonName = "<" + simplifiedWalkablePolygons.getName() + ">";
-				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints));
+				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints), TriangulationAlgorithm::CCW);
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
                 {

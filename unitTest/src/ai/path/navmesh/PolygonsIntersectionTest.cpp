@@ -16,11 +16,8 @@ void PolygonsIntersectionTest::subjectCoverClipper()
 	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
 			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
 
-	AssertHelper::assertUnsignedInt(polygonIntersection.getCwPoints().size(), 4);
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[0], Point2<float>(3.0, 3.0));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[1], Point2<float>(3.0, 1.0));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[2], Point2<float>(1.0, 1.0));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[3], Point2<float>(1.0, 3.0));
+	AssertHelper::assertPolygonFloatEquals(polygonIntersection.getCwPoints(), {Point2<float>(3.0, 3.0), Point2<float>(3.0, 1.0), Point2<float>(1.0, 1.0),
+                                                                               Point2<float>(1.0, 3.0)});
 }
 
 void PolygonsIntersectionTest::clipperCoverSubject()
@@ -32,10 +29,7 @@ void PolygonsIntersectionTest::clipperCoverSubject()
 	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
 			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
 
-	AssertHelper::assertUnsignedInt(polygonIntersection.getCwPoints().size(), 3);
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[0], Point2<float>(1.5, 1.5));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[1], Point2<float>(1.5, 2.5));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[2], Point2<float>(2.5, 1.5));
+    AssertHelper::assertPolygonFloatEquals(polygonIntersection.getCwPoints(), {Point2<float>(1.5, 1.5), Point2<float>(1.5, 2.5), Point2<float>(2.5, 1.5)});
 }
 
 void PolygonsIntersectionTest::subjectClippedByBox()
@@ -47,10 +41,7 @@ void PolygonsIntersectionTest::subjectClippedByBox()
 	CSGPolygon<float> polygonIntersection = PolygonsIntersection<float>::instance()->intersectionPolygons(
 			CSGPolygon<float>("subject", subjectPoly), CSGPolygon<float>("clipper", clipperPoly));
 
-	AssertHelper::assertUnsignedInt(polygonIntersection.getCwPoints().size(), 3);
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[0], Point2<float>(1.5, 1.0));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[1], Point2<float>(2.0, 2.0));
-	AssertHelper::assertPoint2FloatEquals(polygonIntersection.getCwPoints()[2], Point2<float>(2.5, 1.0));
+    AssertHelper::assertPolygonFloatEquals(polygonIntersection.getCwPoints(), {Point2<float>(1.5, 1.0), Point2<float>(2.0, 2.0), Point2<float>(2.5, 1.0)});
 }
 
 CppUnit::Test *PolygonsIntersectionTest::suite()

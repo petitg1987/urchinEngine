@@ -49,7 +49,7 @@ namespace urchin
 		return str[0];
 	}
 
-	long long Converter::toInteger(float value, float scale)
+	long long Converter::toLongLong(float value, float scale)
 	{
 		const float minValue = std::numeric_limits<long long>::min() / scale;
 		const float maxValue = std::numeric_limits<long long>::max() / scale;
