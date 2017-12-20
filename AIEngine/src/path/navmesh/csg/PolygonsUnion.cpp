@@ -64,6 +64,7 @@ namespace urchin
     {
         ClipperLib::Clipper clipper;
         clipper.ReverseSolution(true);
+        clipper.StrictlySimple(true); //slow but avoid duplicate points
         clipper.AddPath(polygon1.path, ClipperLib::ptSubject, true);
         clipper.AddPath(polygon2.path, ClipperLib::ptClip, true);
 
@@ -75,6 +76,11 @@ namespace urchin
 
         if(solution.Childs.size()==1)
         {
+            #ifdef _DEBUG
+                assert(!solution.Childs[0]->IsOpen());
+                assert(!solution.Childs[0]->IsHole());
+            #endif
+
             std::string unionName = "{" + polygon1.name + "} ∪ {" + polygon2.name + "}";
             result.emplace_back(PolygonPath(solution.Childs[0]->Contour, unionName));
         }else if(solution.Childs.size()==2)
