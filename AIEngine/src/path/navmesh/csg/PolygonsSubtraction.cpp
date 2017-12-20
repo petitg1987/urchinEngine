@@ -334,7 +334,8 @@ namespace urchin
         Logger::logger().logInfo(logStream.str());
     }
 
-    template<class T> void PolygonsSubtraction<T>::logInputData(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, const std::string &message, Logger::CriticalityLevel logLevel) const
+    template<class T> void PolygonsSubtraction<T>::logInputData(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, const std::string &message,
+                                                                Logger::CriticalityLevel logLevel) const
     {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);

@@ -58,7 +58,7 @@ namespace urchin
             fileStream<<"  <polygon points=\"";
             for(const auto &polygonPoint : polygon.getPolygonPoints())
             {
-                fileStream<<polygonPoint.X<<", "<<polygonPoint.Y<<" ";
+                fileStream<<polygonPoint.X<<","<<polygonPoint.Y<<" ";
             }
             fileStream<<"\" style=\"" + polygon.getStyle() + "\" />"<<std::endl;
         }

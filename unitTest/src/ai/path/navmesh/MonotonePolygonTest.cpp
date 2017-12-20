@@ -11,8 +11,9 @@ void MonotonePolygonTest::singleTriangle()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(-1.0, -1.0), Point2<float>(1.0, 1.0), Point2<float>(-1.0, 1.0)};
 	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::string> contourNames = {"test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
@@ -27,8 +28,9 @@ void MonotonePolygonTest::oneSplitVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0, 2.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0)};
 	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::string> contourNames = {"test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -51,8 +53,9 @@ void MonotonePolygonTest::twoSplitVertex()
 			Point2<float>(3.0, 1.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 3.0)
 	};
 	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::string> contourNames = {"test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 3);
@@ -79,8 +82,9 @@ void MonotonePolygonTest::oneMergeVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 0.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0)};
 	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::string> contourNames = {"test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -100,8 +104,9 @@ void MonotonePolygonTest::twoRegularVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.0), Point2<float>(0.0, 0.0), Point2<float>(2.0, 1.0)};
 	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::string> contourNames = {"test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
@@ -117,8 +122,9 @@ void MonotonePolygonTest::splitAndMergeVertex()
 			Point2<float>(0.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0), Point2<float>(2.0, 3.0), Point2<float>(1.0, 2.0)
 	};
 	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::string> contourNames = {"test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -143,8 +149,9 @@ void MonotonePolygonTest::polygonOneHole()
 		Point2<float>(1.0, 1.0), Point2<float>(1.0, 2.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0) //hole points
 	};
 	std::vector<unsigned int> endContourIndices = {4, (unsigned int)polygonPoints.size()};
+	std::vector<std::string> contourNames = {"test", "test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -174,8 +181,9 @@ void MonotonePolygonTest::polygonTwoHoles1()
 		Point2<float>(4.0, 3.0), Point2<float>(3.0, 4.0), Point2<float>(4.0, 4.0) //hole 2 points
 	};
 	std::vector<unsigned int> endContourIndices = {4, 7, (unsigned int)polygonPoints.size()};
+	std::vector<std::string> contourNames = {"test", "test", "test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 2);
@@ -207,8 +215,9 @@ void MonotonePolygonTest::polygonTwoHoles2()
 			Point2<float>(53.8388672, 29.7792969), Point2<float>(54.234375, 29.2304688), Point2<float>(54.0556641, 28.6269531), Point2<float>(53.8388672, 28.6269531) //hole 2 points
 	};
 	std::vector<unsigned int> endContourIndices = {4, 7, (unsigned int)polygonPoints.size()};
+	std::vector<std::string> contourNames = {"test", "test", "test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 3);
@@ -250,8 +259,9 @@ void MonotonePolygonTest::polygonTwoHoles3()
 			Point2<float>(2.76441312, -4.29339933), Point2<float>(3.20787191, -5.65283394),
 	};
 	std::vector<unsigned int> endContourIndices = {4, 8, (unsigned int)polygonPoints.size()};
+	std::vector<std::string> contourNames = {"test", "test", "test"};
 
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices);
+	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	//check duplicate points:

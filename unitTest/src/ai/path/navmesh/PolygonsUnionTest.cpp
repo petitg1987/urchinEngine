@@ -55,6 +55,27 @@ void PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint()
 	AssertHelper::assertPolygonFloatEquals(polygonUnion[0].getCwPoints(), {Point2<float>(0.0, -5.0), Point2<float>(0.0, 0.0), Point2<float>(3.0, 0.0)});
 }
 
+void PolygonsUnionTest::twoPolygonsWithHoleInside()
+{
+    std::vector<Point2<float>> polyPoints1 = {Point2<float>(-0.530539632, -4.50937748), Point2<float>(0.469382435, -4.50937748),
+                                              Point2<float>(0.469382435, -5.50917721), Point2<float>(-0.530539632, -5.50917721)};
+    std::vector<Point2<float>> polyPoints2 = {Point2<float>(0.0802265704, -7.24355221), Point2<float>(-0.0744862929, -7.2450161),
+                                              Point2<float>(-0.0753405541, -7.18082476), Point2<float>(-1.51282442, -6.91251755),
+                                              Point2<float>(-1.29546773, -5.63524199), Point2<float>(-1.14017522, -5.3795886),
+                                              Point2<float>(-0.399924427, -5.51769829), Point2<float>(-0.399924427, -4.35019779),
+                                              Point2<float>(0.899924397, -4.35019779), Point2<float>(0.899924397, -4.96294832),
+                                              Point2<float>(2.03855228, -5.62088203), Point2<float>(1.66762424, -6.15682983),
+                                              Point2<float>(1.68166137, -7.22853851), Point2<float>(0.921211898, -7.23561811),
+                                              Point2<float>(0.677094221, -7.58849049)};
+
+    std::vector<CSGPolygon<float>> allPolygons = {CSGPolygon<float>("p1", polyPoints1), CSGPolygon<float>("p2", polyPoints2)};
+    std::vector<CSGPolygon<float>> polygonUnion = PolygonsUnion<float>::instance()->unionPolygons(allPolygons);
+
+    AssertHelper::assertUnsignedInt(polygonUnion.size(), 1);
+    AssertHelper::assertUnsignedInt(polygonUnion[0].getCwPoints().size(), 17);
+    //no points check
+}
+
 void PolygonsUnionTest::twoPolygonsUnion()
 {
 	std::vector<Point2<float>> polyPoints1 = {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0)};
@@ -470,6 +491,8 @@ CppUnit::Test *PolygonsUnionTest::suite()
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsNoUnion", &PolygonsUnionTest::twoPolygonsNoUnion));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("polygonInsideAnother", &PolygonsUnionTest::polygonInsideAnother));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("polygonInsideAnotherTouchInOnePoint", &PolygonsUnionTest::polygonInsideAnotherTouchInOnePoint));
+
+    suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsWithHoleInside", &PolygonsUnionTest::twoPolygonsWithHoleInside));
 
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnion", &PolygonsUnionTest::twoPolygonsUnion));
 	suite->addTest(new CppUnit::TestCaller<PolygonsUnionTest>("twoPolygonsUnionXAligned", &PolygonsUnionTest::twoPolygonsUnionXAligned));

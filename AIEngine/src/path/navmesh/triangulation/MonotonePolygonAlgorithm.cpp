@@ -519,7 +519,7 @@ namespace urchin
 		Logger::logger().log(logLevel, logStream.str());
 
         #ifdef _DEBUG
-            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
+//            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
         #endif
 	}
 

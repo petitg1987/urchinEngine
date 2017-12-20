@@ -35,7 +35,8 @@ namespace urchin
             {
                 std::vector<PolygonPath> result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
                 if(result.empty())
-                { //error: returns empty std::vector
+                {
+                    logInputPath(allPolygonPaths[0], allPolygonPaths[i], "Empty result returned after polygon union.", Logger::ERROR);
                     return {};
                 }
                 if(result.size()==1)
@@ -66,20 +67,20 @@ namespace urchin
         clipper.AddPath(polygon1.path, ClipperLib::ptSubject, true);
         clipper.AddPath(polygon2.path, ClipperLib::ptClip, true);
 
-        ClipperLib::Paths solution;
+        ClipperLib::PolyTree solution;
         clipper.Execute(ClipperLib::ctUnion, solution, ClipperLib::pftEvenOdd, ClipperLib::pftEvenOdd);
 
         std::vector<PolygonPath> result;
-        result.reserve(solution.size());
+        result.reserve(solution.Childs.size());
 
-        if(solution.size()==1)
+        if(solution.Childs.size()==1)
         {
             std::string unionName = "{" + polygon1.name + "} ∪ {" + polygon2.name + "}";
-            result.emplace_back(PolygonPath(solution[0], unionName));
-        }else if(solution.size()==2)
+            result.emplace_back(PolygonPath(solution.Childs[0]->Contour, unionName));
+        }else if(solution.Childs.size()==2)
         {
-            result.emplace_back(PolygonPath(solution[0], polygon1.name));
-            result.emplace_back(PolygonPath(solution[1], polygon2.name));
+            result.emplace_back(PolygonPath(solution.Childs[0]->Contour, polygon1.name));
+            result.emplace_back(PolygonPath(solution.Childs[1]->Contour, polygon2.name));
         }
 
         return result;
@@ -121,6 +122,34 @@ namespace urchin
         }
 
         return CSGPolygon<T>(name, cwPoints);
+    }
+
+    template<class T> void PolygonsUnion<T>::logInputPath(const PolygonPath &polygon1, const PolygonPath &polygon2, const std::string &message,
+                                                          Logger::CriticalityLevel logLevel) const
+    {
+        std::stringstream logStream;
+        logStream.precision(std::numeric_limits<T>::max_digits10);
+
+        logStream<<message<<std::endl;
+
+        logStream<<"Polygon path 1:"<<std::endl;
+        logStream<<"\tName:" << polygon1.name<<std::endl;
+        logStream<<"\tPoints (CW):" << std::endl;
+        for(const auto &point : polygon1.path)
+        {
+            logStream<<"\t\t"<<point<<std::endl;
+        }
+
+        logStream<<"Polygon path 2:"<<std::endl;
+        logStream<<"\tName:" << polygon2.name<<std::endl;
+        logStream<<"\tPoints (CW):" << std::endl;
+        for(const auto &point : polygon2.path)
+        {
+            logStream<<"\t\t"<<point<<std::endl;
+        }
+        logStream<<std::endl;
+
+        Logger::logger().log(logLevel, logStream.str());
     }
 
     //explicit template
