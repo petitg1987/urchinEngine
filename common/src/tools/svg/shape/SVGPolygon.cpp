@@ -6,9 +6,8 @@
 namespace urchin
 {
     SVGPolygon::SVGPolygon(const std::vector<Point2<float>> &polygonPoints, SVGColor color, float opacity) :
-        polygonPoints(polygonPoints),
-        color(color),
-        opacity(opacity)
+            SVGShape(color, opacity),
+            polygonPoints(polygonPoints)
     {
         for(auto &polygonPoint : this->polygonPoints)
         { //SVG Y axis is up side down
@@ -16,27 +15,19 @@ namespace urchin
         }
     }
 
-    const std::vector<Point2<float>> &SVGPolygon::getPolygonPoints() const
+    std::string SVGPolygon::getShapeTag() const
     {
-        return polygonPoints;
-    }
-
-    std::string SVGPolygon::getStyle() const
-    {
-        std::string colorStr;
-        switch(color)
+        std::stringstream stream;
+        stream<<"<polygon points=\"";
+        for(const auto &polygonPoint : polygonPoints)
         {
-            case SVGColor::LIME:
-                colorStr = "lime";
-                break;
-            case SVGColor::RED:
-                colorStr = "red";
-                break;
-            default:
-                colorStr = "back";
+            stream<<polygonPoint.X<<","<<polygonPoint.Y<<" ";
         }
+        stream<<"\"";
 
-        return "fill:" + colorStr + ";stroke-width:0;opacity:" + std::to_string(opacity);
+        stream<<" style=\"" + getStyle() + "\" />";
+
+        return stream.str();
     }
 
     Rectangle<int> SVGPolygon::computeRectangle() const

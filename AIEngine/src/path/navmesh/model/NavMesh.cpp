@@ -89,4 +89,51 @@ namespace urchin
 
 		Logger::logger().log(Logger::INFO, logStream.str());
 	}
+
+	void NavMesh::svgMeshExport(const std::string &filename) const
+	{
+		SVGExporter svgExporter(filename);
+
+		for(const auto &polygon : polygons)
+		{
+			for(const auto &triangle : polygon->getTriangles())
+			{
+				std::vector<Point2<float>> trianglePoints;
+				Point3<float> p1 = polygon->getPoint(triangle.getIndices()[0]);
+				Point3<float> p2 = polygon->getPoint(triangle.getIndices()[1]);
+				Point3<float> p3 = polygon->getPoint(triangle.getIndices()[2]);
+
+				trianglePoints.emplace_back(Point2<float>(p1.X, -p1.Z));
+				trianglePoints.emplace_back(Point2<float>(p2.X, -p2.Z));
+				trianglePoints.emplace_back(Point2<float>(p3.X, -p3.Z));
+
+                auto *svgPolygon = new SVGPolygon(trianglePoints, SVGPolygon::LIME, 0.5f);
+                svgPolygon->setStroke(SVGPolygon::RED, 0.05f);
+				svgExporter.addShape(svgPolygon);
+			}
+		}
+
+		for(const auto &polygon : polygons)
+		{
+			for (const auto &triangle : polygon->getTriangles())
+			{
+				for(unsigned int i=0; i<3; ++i)
+				{
+					int neighbor = triangle.getNeighbor(i);
+					if(neighbor!=-1)
+					{
+						Point3<float> lineP1 = triangle.getCenterPoint();
+						Point3<float> lineP2 = polygon->getTriangle(static_cast<unsigned int>(neighbor)).getCenterPoint();
+						LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
+
+						auto *svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);
+						svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
+						svgExporter.addShape(svgLine);
+					}
+				}
+			}
+		}
+
+        svgExporter.generateSVG(400);
+	}
 }

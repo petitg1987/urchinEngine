@@ -529,13 +529,13 @@ namespace urchin
 
         std::vector<Point2<float>> svgPolygonPoints;
         std::copy(polygonPoints.begin(), polygonPoints.begin() + endContourIndices[0], std::back_inserter(svgPolygonPoints));
-        svgExporter.addPolygon(SVGPolygon(svgPolygonPoints, SVGPolygon::LIME));
+        svgExporter.addShape(new SVGPolygon(svgPolygonPoints, SVGPolygon::LIME));
 
         for(unsigned int i=0; i<endContourIndices.size()-1; ++i)
         {
             std::vector<Point2<float>> svgHolePoints;
             std::copy(polygonPoints.begin()+endContourIndices[i], polygonPoints.begin() + endContourIndices[i + 1], std::back_inserter(svgHolePoints));
-            svgExporter.addPolygon(SVGPolygon(svgHolePoints, SVGPolygon::RED, 0.5));
+            svgExporter.addShape(new SVGPolygon(svgHolePoints, SVGPolygon::RED, 0.5));
         }
 
         svgExporter.generateSVG(250);

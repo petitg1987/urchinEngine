@@ -28,6 +28,7 @@ namespace urchin
 			LineSegment3D<float> resolveEdge(const NavEdgeRef &edgeRef) const;
 
 			void logNavMesh() const;
+			void svgMeshExport(const std::string &) const;
 		private:
 			static unsigned int nextId;
 			unsigned int id;

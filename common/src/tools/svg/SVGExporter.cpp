@@ -8,9 +8,17 @@ namespace urchin
 
     }
 
-    void SVGExporter::addPolygon(const SVGPolygon &polygon)
+    SVGExporter::~SVGExporter()
     {
-        polygons.push_back(polygon);
+        for(const SVGShape *shape : shapes)
+        {
+           delete shape;
+        }
+    }
+
+    void SVGExporter::addShape(const SVGShape *shape)
+    {
+        shapes.push_back(shape);
     }
 
     void SVGExporter::generateSVG(int zoomPercentage) const
@@ -23,7 +31,7 @@ namespace urchin
         fileStream<<"<body>"<<std::endl;
         fileStream<< R"(<svg height=")" + std::to_string(zoomPercentage) + R"(%" width=")" + std::to_string(zoomPercentage) + R"(%" viewbox=")" + retrieveViewBox() + "\">"<<std::endl;
 
-        addPolygons(fileStream);
+        addShapes(fileStream);
 
         fileStream<<"</svg>"<<std::endl;
         fileStream<<"</body>"<<std::endl;
@@ -34,15 +42,15 @@ namespace urchin
 
     std::string SVGExporter::retrieveViewBox() const
     {
-        if(polygons.empty())
+        if(shapes.empty())
         {
             return "";
         }
 
-        Rectangle<int> viewBox = polygons[0].computeRectangle();
-        for(const auto &polygon : polygons)
+        Rectangle<int> viewBox = shapes[0]->computeRectangle();
+        for(const auto shape : shapes)
         {
-            viewBox = viewBox.merge(polygon.computeRectangle());
+            viewBox = viewBox.merge(shape->computeRectangle());
         }
 
         constexpr float MARGIN = 2.0f;
@@ -51,16 +59,11 @@ namespace urchin
                + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + (MARGIN * 2.0f));
     }
 
-    void SVGExporter::addPolygons(std::ofstream &fileStream) const
+    void SVGExporter::addShapes(std::ofstream &fileStream) const
     {
-        for(const auto &polygon : polygons)
+        for(const auto &shape : shapes)
         {
-            fileStream<<"  <polygon points=\"";
-            for(const auto &polygonPoint : polygon.getPolygonPoints())
-            {
-                fileStream<<polygonPoint.X<<","<<polygonPoint.Y<<" ";
-            }
-            fileStream<<"\" style=\"" + polygon.getStyle() + "\" />"<<std::endl;
+            fileStream<<"  "<<shape->getShapeTag()<<std::endl;
         }
     }
 }

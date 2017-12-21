@@ -22,7 +22,7 @@ namespace urchin
     std::vector<Point3<float>> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
     {
         std::unique_ptr<NavTriangleRef> startTriangle = findTriangle(startPoint);
-        std::unique_ptr<NavTriangleRef>  endTriangle = findTriangle(endPoint);
+        std::unique_ptr<NavTriangleRef> endTriangle = findTriangle(endPoint);
         if(startTriangle==nullptr || endTriangle==nullptr)
         {
             return {}; //no path exists
@@ -91,6 +91,9 @@ namespace urchin
             return determinePath(endNodePath, startPoint, endPoint);
         }
 
+        #ifdef _DEBUG
+//            navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/pathInfo/pathInfo" + std::to_string(navMesh->getId()) + ".html");
+        #endif
         return {}; //no path exists
     }
 

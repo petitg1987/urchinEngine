@@ -155,8 +155,12 @@ set(SOURCE_FILES
         src/io/FileReaderUtil.h
         src/tools/svg/SVGExporter.cpp
         src/tools/svg/SVGExporter.h
-        src/tools/svg/SVGPolygon.cpp
-        src/tools/svg/SVGPolygon.h)
+        src/tools/svg/shape/SVGPolygon.cpp
+        src/tools/svg/shape/SVGPolygon.h
+        src/tools/svg/shape/SVGShape.cpp
+        src/tools/svg/shape/SVGShape.h
+        src/tools/svg/shape/SVGLine.cpp
+        src/tools/svg/shape/SVGLine.h src/tools/svg/shape/SVGCircle.cpp src/tools/svg/shape/SVGCircle.h)
 
 include_directories(src)
 
