@@ -88,7 +88,7 @@ namespace urchin
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
-	std::vector<NavTriangle> TriangulationAlgorithm::triangulate()
+	const std::vector<NavTriangle> &TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		#ifdef _DEBUG
             //assert no duplicate points
@@ -103,6 +103,7 @@ namespace urchin
 
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames).createYMonotonePolygons();
 
+		triangles.clear();
 		triangles.reserve((polygonPoints.size()-2) + (2*getHolesSize()));
 
 		for (const auto &monotonePolygon : monotonePolygons)

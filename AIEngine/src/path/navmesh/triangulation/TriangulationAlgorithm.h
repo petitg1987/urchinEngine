@@ -46,7 +46,7 @@ namespace urchin
 
 			unsigned int getAllPointsSize() const;
 
-			std::vector<NavTriangle> triangulate();
+			const std::vector<NavTriangle> &triangulate();
 
 		private:
 			std::vector<NavTriangle> triangulateMonotonePolygon(const MonotonePolygon &);
