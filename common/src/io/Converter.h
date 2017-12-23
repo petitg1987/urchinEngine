@@ -20,10 +20,13 @@ namespace urchin
 		#define FLOAT_INT_SCALE 8192.0
 
 		public:
+			static bool isInt(const std::string &);
 			static int toInt(const std::string &);
+			static bool isUnsignedInt(const std::string &);
 			static unsigned int toUnsignedInt(const std::string &);
+			static bool isFloat(const std::string &);
 			static float toFloat(const std::string &);
-			static double toDouble(const std::string &);
+			static bool isChar(const std::string &);
 			static char toChar(const std::string &);
 
 			static long long toLongLong(float, float scale=FLOAT_INT_SCALE);

@@ -10,6 +10,14 @@
 namespace urchin
 {
 
+    bool Converter::isInt(const std::string &str)
+    {
+        std::istringstream iss(str);
+        int value;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
 	int Converter::toInt(const std::string &str)
 	{
 		std::istringstream iss(str);
@@ -18,6 +26,14 @@ namespace urchin
 		return value;
 	}
 
+    bool Converter::isUnsignedInt(const std::string &str)
+    {
+        std::istringstream iss(str);
+        unsigned int value;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
+
 	unsigned int Converter::toUnsignedInt(const std::string &str)
 	{
 		std::istringstream iss(str);
@@ -25,6 +41,16 @@ namespace urchin
 		iss >> value;
 		return value;
 	}
+
+    bool Converter::isFloat(const std::string &str)
+    {
+        std::locale::global(std::locale("C")); //for float
+
+        std::istringstream iss(str);
+        float value;
+        iss >> std::noskipws >> value;
+        return iss.eof() && !iss.fail();
+    }
 
 	float Converter::toFloat(const std::string &str)
 	{
@@ -36,13 +62,10 @@ namespace urchin
 		return value;
 	}
 
-	double Converter::toDouble(const std::string &str)
-	{
-		std::istringstream iss(str);
-		double value;
-		iss >> value;
-		return value;
-	}
+    bool Converter::isChar(const std::string &str)
+    {
+        return str.size()==1;
+    }
 
 	char Converter::toChar(const std::string &str)
 	{

@@ -37,31 +37,29 @@ namespace urchin
 		PropertyFileHandler propertyFileHandler(propertiesFilePath);
 		
 		properties = propertyFileHandler.loadPropertyFile();
+        for(const auto &property : properties)
+        { //build specific maps for performance reason (numeric conversion is slow)
+            if(Converter::isUnsignedInt(property.second))
+            {
+                unsignedIntProperties[property.first] = Converter::toUnsignedInt(property.second);
+            }
+            if(Converter::isFloat(property.second))
+            {
+                floatProperties[property.first] = Converter::toFloat(property.second);
+            }
+        }
 
 		isInitialized=true;
 	}
-	
-	int ConfigService::getIntValue(const std::string &propertyName) const
-	{
-		checkState();
 
-		auto it = properties.find(propertyName);
-		if(it!=properties.end())
-		{
-			return Converter::toInt(it->second);
-		}
-
-		throw std::invalid_argument("The property " + propertyName + " doesn't exist.");
-	}
-	
 	unsigned int ConfigService::getUnsignedIntValue(const std::string &propertyName) const
 	{
 		checkState();
 
-		auto it = properties.find(propertyName);
-		if(it!=properties.end())
+		auto it = unsignedIntProperties.find(propertyName);
+		if(it!=unsignedIntProperties.end())
 		{
-			return Converter::toUnsignedInt(it->second);
+			return it->second;
 		}
 
 		throw std::invalid_argument("The property " + propertyName + " doesn't exist.");
@@ -71,26 +69,13 @@ namespace urchin
 	{
 		checkState();
 
-		auto it = properties.find(propertyName);
-		if(it!=properties.end())
+		auto it = floatProperties.find(propertyName);
+		if(it!=floatProperties.end())
 		{
-			return Converter::toFloat(it->second);
+			return it->second;
 		}
 
 		throw std::invalid_argument("The property "+ propertyName + " doesn't exist.");
-	}
-	
-	double ConfigService::getDoubleValue(const std::string &propertyName) const
-	{
-		checkState();
-
-		auto it = properties.find(propertyName);
-		if(it!=properties.end())
-		{
-			return Converter::toDouble(it->second);
-		}
-
-		throw std::invalid_argument("The property " + propertyName + "doesn't exist.");
 	}
 
 	std::string ConfigService::getStringValue(const std::string &propertyName) const
@@ -113,7 +98,7 @@ namespace urchin
 		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
-			return (it->second)[0];
+			return Converter::toChar(it->second);
 		}
 
 		throw std::invalid_argument("The property " + propertyName + " doesn't exist.");

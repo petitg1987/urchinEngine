@@ -42,7 +42,7 @@ namespace urchin
 			depthSplitDistanceLoc(0),
 			lightsLocation(nullptr)
 	{
-		switch(ConfigService::instance()->getIntValue("shadow.depthComponent"))
+		switch(ConfigService::instance()->getUnsignedIntValue("shadow.depthComponent"))
 		{
 			case 16:
 				depthComponent = GL_DEPTH_COMPONENT16;
