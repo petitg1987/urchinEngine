@@ -103,7 +103,7 @@ namespace urchin
 			ALenum err;
 			while((err = alGetError()) != AL_NO_ERROR)
 			{
-				std::cout<<"OpenAL error: "<<err<<std::endl;
+				throw std::runtime_error("OpenAL error: " + std::to_string(err));
 			}
         #endif
 	}

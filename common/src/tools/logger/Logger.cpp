@@ -8,12 +8,17 @@ namespace urchin
 {
 	
 	//static
-	Logger *Logger::instance = new FileLogger();
+	std::unique_ptr<Logger> Logger::instance = std::make_unique<FileLogger>("urchinEngine.log");
 
-	Logger::~Logger()
+    Logger::Logger() :
+            bHasFailure(false)
+    {
+
+    }
+
+	void Logger::defineLogger(std::unique_ptr<Logger> logger)
 	{
-		delete instance;
-		instance = nullptr;
+		instance = std::move(logger);
 	}
 
 	Logger& Logger::logger()
@@ -45,8 +50,18 @@ namespace urchin
 			{
 				write(prefix(criticalityLevel) + toLog + "\n");
 			}
-		#endif
+        #endif
+
+        if(criticalityLevel >= WARNING)
+        {
+            bHasFailure = true;
+        }
 	}
+
+    bool Logger::hasFailure()
+    {
+        return bHasFailure;
+    }
 
 	/**
 	 * @return Prefix composed of date/time and criticality

@@ -61,7 +61,8 @@ namespace urchin
 			isInitialized = true;
 		}catch(std::exception &e)
 		{
-			QMessageBox::critical(nullptr, "Error", e.what());
+			Logger::logger().logError("Error occurred during map initialization: " + std::string(e.what()));
+            QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
 			this->~SceneDisplayer();
 			exit(1);
 		}
@@ -81,7 +82,8 @@ namespace urchin
 			isInitialized = true;
 		}catch(std::exception &e)
 		{
-			QMessageBox::critical(nullptr, "Error", e.what());
+			Logger::logger().logError("Error occurred during map creation: " + std::string(e.what()));
+			QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
 			this->~SceneDisplayer();
 			exit(1);
 		}
@@ -210,7 +212,8 @@ namespace urchin
 			}
 		}catch(std::exception &e)
 		{
-			QMessageBox::critical(nullptr, "Error", e.what());
+			Logger::logger().logError("Error occurred during paint: " + std::string(e.what()));
+			QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
 			this->~SceneDisplayer();
 			exit(1);
 		}

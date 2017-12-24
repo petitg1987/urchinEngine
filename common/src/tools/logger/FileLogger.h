@@ -5,15 +5,13 @@
 
 #include "tools/logger/Logger.h"
 
-#define DEFAULT_LOG_FILENAME "urchinEngine.log"
-
 namespace urchin
 {
 	
 	class FileLogger : public Logger
 	{
 		public:
-			explicit FileLogger(std::string filename = DEFAULT_LOG_FILENAME);
+			explicit FileLogger(std::string);
 
 		private:
 			void write(const std::string &) override;
