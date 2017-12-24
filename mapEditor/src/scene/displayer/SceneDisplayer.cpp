@@ -1,5 +1,5 @@
-#include <memory>
 #include <stdexcept>
+#include <memory>
 #include <QMessageBox>
 
 #include "SceneDisplayer.h"
@@ -54,7 +54,6 @@ namespace urchin
 			initializeScene();
 
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
-			aiManager->pause();
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
 			mapHandler->loadMapFromFile(relativeMapFilename);
 			aiManager->play();
@@ -108,7 +107,7 @@ namespace urchin
 		sceneManager = new SceneManager();
 		soundManager = new SoundManager();
 		aiManager = new AIManager();
-		aiManager->start(1.0/4.0);
+		aiManager->start(1.0/4.0, true);
 
 		sceneManager->newRenderer3d(true);
 

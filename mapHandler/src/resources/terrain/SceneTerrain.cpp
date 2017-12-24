@@ -153,7 +153,7 @@ namespace urchin
 
     void SceneTerrain::deleteRigidBody()
     {
-        if(physicsWorld!=nullptr)
+        if(physicsWorld!=nullptr && rigidBody!=nullptr)
         {
             physicsWorld->removeBody(rigidBody);
         }else
@@ -166,7 +166,7 @@ namespace urchin
 
     void SceneTerrain::deleteAIObjects()
     {
-        if(aiManager!=nullptr)
+        if(aiManager!=nullptr && aiTerrain!=nullptr)
         {
             aiManager->removeEntity(aiTerrain);
         }
