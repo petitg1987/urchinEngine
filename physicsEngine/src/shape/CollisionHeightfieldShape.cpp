@@ -152,22 +152,21 @@ namespace urchin
         {
             for (unsigned int x = startVertexX; x < endVertexX; ++x)
             {
+                Point3<float> point1 = vertices[x + xLength * z]; //far-left
                 Point3<float> point2 = vertices[x + 1 + xLength * z]; //far-right
                 Point3<float> point3 = vertices[x + xLength * (z + 1)]; //near-left
+                Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
 
-                if(point2.Y > checkAABBox.getMin().Y || point3.Y > checkAABBox.getMin().Y)
+                bool hasDiagonalPointAbove = point2.Y > checkAABBox.getMin().Y || point3.Y > checkAABBox.getMin().Y;
+
+                if(hasDiagonalPointAbove || point1.Y > checkAABBox.getMin().Y)
                 {
-                    Point3<float> point1 = vertices[x + xLength * z]; //far-left
-                    if(point1.Y > checkAABBox.getMin().Y)
-                    {
-                        triangles.emplace_back(CollisionTriangleShape(point1, point3, point2));
-                    }
+                    triangles.emplace_back(CollisionTriangleShape(point1, point3, point2));
+                }
 
-                    Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
-                    if(point4.Y > checkAABBox.getMin().Y)
-                    {
-                        triangles.emplace_back(CollisionTriangleShape(point2, point3, point4));
-                    }
+                if(hasDiagonalPointAbove || point4.Y > checkAABBox.getMin().Y)
+                {
+                    triangles.emplace_back(CollisionTriangleShape(point2, point3, point4));
                 }
             }
         }
