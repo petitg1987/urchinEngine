@@ -21,7 +21,7 @@ namespace urchin
 		
 		private:
 			TextureManager();
-			virtual ~TextureManager() = default;
+			~TextureManager() override = default;
 
 			void clampToMaxAnisotropy();
 

@@ -11,15 +11,15 @@ namespace urchin
             yScale(yScale)
     {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
-        if(imgTerrain->getImageFormat() != Image::IMAGE_LUMINANCE)
+        if(imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE_8BITS && imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE_16BITS)
         {
-            throw std::runtime_error("Height texture must have 1 component (LUMINANCE). Components: " + std::to_string(imgTerrain->getComponentsCount()));
+            throw std::runtime_error("Height texture must have 1 component. Components: " + std::to_string(imgTerrain->getComponentsCount()));
         }
         
         xSize = imgTerrain->getWidth();
         zSize = imgTerrain->getHeight();
 
-        buildVertices(imgTerrain, xzScale, yScale);
+        buildVertices(imgTerrain);
         buildIndices();
         buildNormals();
 
@@ -66,7 +66,7 @@ namespace urchin
         return indices;
     }
 
-    std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain, float xzScale, float yScale)
+    std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain)
     {
         unsigned int xLength = imgTerrain->getWidth();;
         unsigned int zLength = imgTerrain->getHeight();

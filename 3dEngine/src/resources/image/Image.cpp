@@ -65,7 +65,7 @@ namespace urchin
 	{
 		if(componentsCount==1)
 		{
-			return GL_R;
+			return GL_RED;
 		}else if(componentsCount==2)
 		{
 			return GL_RG;
@@ -83,12 +83,12 @@ namespace urchin
 
 	GLenum Image::retrieveFormat() const
 	{
-		if(format==Image::IMAGE_LUMINANCE)
+		if(format==Image::IMAGE_GRAYSCALE_8BITS)
 		{
-			return GL_LUMINANCE;
-		}else if(format==Image::IMAGE_LUMINANCE_ALPHA)
+			return GL_RED;
+		}else if(format==Image::IMAGE_GRAYSCALE_16BITS)
 		{
-			return GL_LUMINANCE_ALPHA;
+			throw std::runtime_error("Unsupported grayscale 16 bits");
 		}else if(format==Image::IMAGE_RGB)
 		{
 			return GL_RGB;

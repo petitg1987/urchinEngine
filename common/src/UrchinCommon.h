@@ -2,6 +2,7 @@
 #define URCHINENGINE_URCHINCOMMON_H
 
 #include "libs/clipper/clipper.h"
+#include "libs/lodepng/lodepng.h"
 
 #include "tools/file/PropertyFileHandler.h"
 #include "tools/logger/Logger.h"

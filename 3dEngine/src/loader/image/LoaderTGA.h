@@ -46,13 +46,11 @@ namespace urchin
 			void readTGA24bits();
 			void readTGA32bits();
 			void readTGAgray8bits();
-			void readTGAgray16bits();
 			void readTGA8bitsRLE();
 			void readTGA16bitsRLE();
 			void readTGA24bitsRLE();
 			void readTGA32bitsRLE();
 			void readTGAgray8bitsRLE();
-			void readTGAgray16bitsRLE();
 
 			//temporary attributes
 			unsigned char *colorMap, *data;

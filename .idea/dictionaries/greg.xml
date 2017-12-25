@@ -2,6 +2,8 @@
   <dictionary name="greg">
     <words>
       <w>aabbox</w>
+      <w>ambience</w>
+      <w>grayscale</w>
       <w>heightfield</w>
       <w>pathfinding</w>
       <w>polytope</w>

@@ -27,7 +27,7 @@ namespace urchin
             const std::vector<unsigned int> &getIndices() const;
 
         private:
-            std::vector<Point3<float>> buildVertices(const Image *, float, float);
+            std::vector<Point3<float>> buildVertices(const Image *);
             std::vector<unsigned int> buildIndices();
             std::vector<Vector3<float>> buildNormals();
             std::vector<unsigned int> findTriangleIndices(unsigned int) const;

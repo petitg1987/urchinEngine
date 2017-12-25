@@ -15,8 +15,8 @@ namespace urchin
 			{
 				IMAGE_RGB,
 				IMAGE_RGBA,
-				IMAGE_LUMINANCE,
-				IMAGE_LUMINANCE_ALPHA
+				IMAGE_GRAYSCALE_8BITS,
+				IMAGE_GRAYSCALE_16BITS
 			};
 
 			Image(unsigned int, unsigned int, unsigned int, ImageFormat, unsigned char *);

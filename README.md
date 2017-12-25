@@ -4,23 +4,23 @@ Game engine library: 3D, Physics, Sound, IA, Map Editor
 Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 
 - 3D Engine:
+  - Skeleton animate 3d models
+  - Texture manager: TGA & PNG, anisotropy, mip-maps, normal mapping
   - Dynamic shadow (cached parallel split shadow maps, variance shadow map, blur)
-  - Dynamic lighting (deferred shading): omni-directional & directional
+  - Dynamic lighting with deferred shading: omni-directional & directional
   - Terrain multi-layered
-  - Animate 3d models reader
-  - Normal mapping
   - Ambient occlusion (HBAO)
   - Anti-aliasing (FXAA)
   - Space partitioning (octree)
-  - UI 2D: button, window, text (TTF reader), text input, bitmap (TGA reader), slider
+  - UI 2D: button, window, text (TTF), text input, bitmap, slider
   - Skybox
 
 - Physics Engine:
   - Supported shapes: sphere, box, cylinder, capsule, cone, convex hull, compound shape, terrain
   - Supported body: rigid body
   - Algorithms:
-    - Broadphase: AABB Tree
-    - Narrowphase: sphere-sphere, sphere-box, GJK/EPA, concave-convex
+    - Broad phase: AABBox Tree
+    - Narrow phase: sphere-sphere, sphere-box, GJK/EPA, concave-convex
     - Constraint solver (iterative): external force, friction, restitution, inertia
   - Continuous collision detection (CCD)
   - Island

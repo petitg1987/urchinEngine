@@ -1,5 +1,5 @@
-#include <fstream>
 #include <stdexcept>
+#include <fstream>
 #include "UrchinCommon.h"
 
 #include "loader/image/LoaderTGA.h"
@@ -85,13 +85,13 @@ namespace urchin
 				break;
 
 			case 3:
-				//uncompressed 8 or 16 bits grayscale
+				//uncompressed 8 bits grayscale
 				if(header.pixelDepth==8)
 				{
 					readTGAgray8bits();
 				}else
-				{ //16 bits
-					readTGAgray16bits();
+				{
+					throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
 				}
 				break;
 
@@ -121,13 +121,13 @@ namespace urchin
 				break;
 
 			case 11:
-				//RLE compressed 8 or 16 bits grayscale
+				//RLE compressed 8bits grayscale
 				if(header.pixelDepth == 8)
 				{
 					readTGAgray8bitsRLE();
 				}else
-				{//16 bits
-					readTGAgray16bitsRLE();
+				{
+					throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
 				}
 				break;
 
@@ -166,7 +166,7 @@ namespace urchin
 		}
 		
 		
-		return (new Image(componentsCount, width, height, format, texels));
+		return new Image(componentsCount, width, height, format, texels);
 	}
 
 	void LoaderTGA::getImageInfo(const TgaHeader &header)
@@ -181,12 +181,11 @@ namespace urchin
 			{
 				if(header.pixelDepth==8)
 				{
-					format = Image::IMAGE_LUMINANCE;
+					format = Image::IMAGE_GRAYSCALE_8BITS;
 					componentsCount = 1;
-				}else //16 bits
+				}else
 				{
-					format = Image::IMAGE_LUMINANCE_ALPHA;
-					componentsCount = 2;
+					throw std::runtime_error("Wrong number of bits for grayscale: " + std::to_string(header.pixelDepth));
 				}
 
 				break;
@@ -273,11 +272,6 @@ namespace urchin
 	void LoaderTGA::readTGAgray8bits()
 	{
 		memcpy(texels, data, sizeof(char)*width*height);
-	}
-
-	void LoaderTGA::readTGAgray16bits()
-	{
-		memcpy(texels, data, sizeof(char)*width*height*2);
 	}
 
 	void LoaderTGA::readTGA8bitsRLE()
@@ -466,41 +460,6 @@ namespace urchin
 
 				ptr+=size;
 				j+=size;
-			}
-		}
-	}
-
-	void LoaderTGA::readTGAgray16bitsRLE()
-	{
-		int j = 0;
-		unsigned char color, alpha;
-		unsigned char packetHeader;
-		unsigned char *ptr = texels;
-
-		while(ptr<texels+(width*height)*2)
-		{
-			//reads first byte
-			packetHeader = data[j++];
-			int size = 1 + (packetHeader & 0x7f);
-
-			if(packetHeader & 0x80)
-			{
-				//run-length packet
-				color = data[j++];
-				alpha = data[j++];
-
-				for(int i=0; i<size; ++i,ptr+=2)
-				{
-					ptr[0] = color;
-					ptr[1] = alpha;
-				}
-			}else
-			{
-				//non run-length packet
-				memcpy(ptr, data + j, size * sizeof(char)*2);
-
-				ptr += size * 2;
-				j += size * 2;
 			}
 		}
 	}

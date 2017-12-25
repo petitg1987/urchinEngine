@@ -11,6 +11,8 @@ set(SOURCE_FILES
         src/libs/tinyxml/tinyxmlparser.cpp
         src/libs/clipper/clipper.cpp
         src/libs/clipper/clipper.h
+        src/libs/lodepng/lodepng.cpp
+        src/libs/lodepng/lodepng.h
         src/io/Converter.cpp
         src/io/Converter.h
         src/io/StringUtil.cpp
@@ -160,7 +162,9 @@ set(SOURCE_FILES
         src/tools/svg/shape/SVGShape.cpp
         src/tools/svg/shape/SVGShape.h
         src/tools/svg/shape/SVGLine.cpp
-        src/tools/svg/shape/SVGLine.h src/tools/svg/shape/SVGCircle.cpp src/tools/svg/shape/SVGCircle.h)
+        src/tools/svg/shape/SVGLine.h
+        src/tools/svg/shape/SVGCircle.cpp
+        src/tools/svg/shape/SVGCircle.h)
 
 include_directories(src)
 
