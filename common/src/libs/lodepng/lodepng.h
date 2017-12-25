@@ -886,7 +886,7 @@ without warning.
 #endif /*LODEPNG_COMPILE_CPP*/
 
 /*
-TODO:
+TODOs:
 [.] test if there are no memory leaks or security exploits - done a lot but needs to be checked often
 [.] check compatibility with various compilers  - done but needs to be redone for every newer version
 [X] converting color to 16-bit per channel types

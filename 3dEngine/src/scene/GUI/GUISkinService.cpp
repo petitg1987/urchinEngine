@@ -52,7 +52,7 @@ namespace urchin
 		}
 
 		//creates the image width*height
-		unsigned int componentsCount = imgWidget->getComponentsCount(); //shortcut
+		unsigned int componentsCount = imgWidget->retrieveComponentsCount(); //shortcut
 		auto *texels = new unsigned char[height*width*componentsCount];
 
 		unsigned int widthMinusRight = static_cast<unsigned int>(std::max(0, (int)width-(int)right));
@@ -142,7 +142,7 @@ namespace urchin
 		}
 
 		//create the texture
-		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(componentsCount, width, height, imgWidget->getImageFormat(), texels), Resource::ResourceDeleter());
+		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(width, height, imgWidget->getImageFormat(), texels), Resource::ResourceDeleter());
 		texWidget->toTexture(false, false, false);
 
 		imgWidget->release();

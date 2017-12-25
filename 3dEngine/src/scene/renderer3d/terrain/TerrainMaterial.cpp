@@ -17,14 +17,14 @@ namespace urchin
         if(maskMapFilename.empty())
         {
             auto *defaultMaskMapTab = new unsigned char[4]{255, 0, 0, 0};
-            maskTexture = new Image(4, 1, 1, Image::IMAGE_RGBA, defaultMaskMapTab);
+            maskTexture = new Image(1, 1, Image::IMAGE_RGBA, defaultMaskMapTab);
             maskTexture->toTexture(false, false, false);
         }else
         {
             maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr);
             if(maskTexture->getImageFormat() != Image::IMAGE_RGBA)
             {
-                throw std::runtime_error("Mask texture must have 4 component (RGBA). Components: " + std::to_string(maskTexture->getComponentsCount()));
+                throw std::runtime_error("Mask texture must have 4 component (RGBA). Components: " + std::to_string(maskTexture->retrieveComponentsCount()));
             }
             maskTexture->toTexture(false, false, false);
         }
@@ -36,7 +36,7 @@ namespace urchin
         }
 
         auto *defaultDiffuseColorTab = new unsigned char[4]{0, 0, 0, 0};
-        defaultTexture = new Image(4, 1, 1, Image::IMAGE_RGBA, defaultDiffuseColorTab);
+        defaultTexture = new Image(1, 1, Image::IMAGE_RGBA, defaultDiffuseColorTab);
         defaultTexture->toTexture(false, false, false);
     }
 

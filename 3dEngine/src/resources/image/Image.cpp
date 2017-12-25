@@ -1,24 +1,32 @@
 #include <stdexcept>
-#include <cassert>
 
 #include "resources/image/Image.h"
 #include "texture/TextureManager.h"
+#include "Image.h"
 
 namespace urchin
 {
 
-	Image::Image(unsigned int componentsCount, unsigned int width, unsigned int height, ImageFormat format, unsigned char *texels) :
-			componentsCount(componentsCount),
+	Image::Image(unsigned int width, unsigned int height, ImageFormat format, unsigned char *texels8) :
 			width(width),
 			height(height),
 			format(format),
-			texels(texels),
+			channelBit(ChannelBit::CHANNEL_8),
 			isTexture(false),
 			textureID(0)
 	{
-		#ifdef _DEBUG
-			assert(componentsCount >=0 && componentsCount <= 4);
-		#endif
+		this->texels.texels8 = texels8;
+	}
+
+	Image::Image(unsigned int width, unsigned int height, ImageFormat format, int16_t *texels16) :
+			width(width),
+			height(height),
+			format(format),
+			channelBit(ChannelBit::CHANNEL_16),
+			isTexture(false),
+			textureID(0)
+	{
+		this->texels.texels16 = texels16;
 	}
 
 	Image::~Image()
@@ -28,13 +36,14 @@ namespace urchin
 			glDeleteTextures(1, &textureID);
 		}else
 		{
-			delete [] texels;
+            if(channelBit==ChannelBit::CHANNEL_8)
+            {
+                delete[] texels.texels8;
+            }else if(channelBit==ChannelBit::CHANNEL_16)
+            {
+                delete[] texels.texels16;
+            }
 		}
-	}
-
-	unsigned int Image::getComponentsCount() const
-	{
-		return componentsCount;
 	}
 
 	unsigned int Image::getWidth() const
@@ -52,43 +61,80 @@ namespace urchin
 		return format;
 	}
 
+	Image::ChannelBit Image::getChannelBit() const
+	{
+		return channelBit;
+	}
+
 	unsigned char *Image::getTexels() const
 	{
 		if(isTexture)
 		{
 			throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
 		}
-		return texels;
+
+		if(channelBit!=ChannelBit::CHANNEL_8)
+		{
+			throw std::runtime_error("Channel must have 8 bits: " + std::to_string(channelBit));
+		}
+
+		return texels.texels8;
+	}
+
+	int16_t *Image::getTexels16Bits() const
+	{
+		if(isTexture)
+		{
+			throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
+		}
+
+		if(channelBit!=ChannelBit::CHANNEL_16)
+		{
+			throw std::runtime_error("Channel must have 16 bits: " + std::to_string(channelBit));
+		}
+
+		return texels.texels16;
+	}
+
+	unsigned int Image::retrieveComponentsCount() const
+	{
+		if(format==Image::IMAGE_GRAYSCALE)
+		{
+			return 1;
+		}else if(format==Image::IMAGE_RGB)
+		{
+			return 3;
+		}else if(format==Image::IMAGE_RGBA)
+		{
+			return 4;
+		}else
+		{
+			throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
+		}
 	}
 
 	GLint Image::retrieveInternalFormat() const
 	{
-		if(componentsCount==1)
+		if(format==Image::IMAGE_GRAYSCALE)
 		{
 			return GL_RED;
-		}else if(componentsCount==2)
-		{
-			return GL_RG;
-		}else if(componentsCount==3)
+		}else if(format==Image::IMAGE_RGB)
 		{
 			return GL_RGB;
-		}else if(componentsCount==4)
+		}else if(format==Image::IMAGE_RGBA)
 		{
 			return GL_RGBA;
 		}else
 		{
-			throw std::runtime_error("Unknown image components count: " + std::to_string(componentsCount) + ".");
+			throw std::runtime_error("Unknown image format: " + std::to_string(format) + ".");
 		}
 	}
 
 	GLenum Image::retrieveFormat() const
 	{
-		if(format==Image::IMAGE_GRAYSCALE_8BITS)
+		if(format==Image::IMAGE_GRAYSCALE)
 		{
 			return GL_RED;
-		}else if(format==Image::IMAGE_GRAYSCALE_16BITS)
-		{
-			throw std::runtime_error("Unsupported grayscale 16 bits");
 		}else if(format==Image::IMAGE_RGB)
 		{
 			return GL_RGB;
@@ -106,6 +152,11 @@ namespace urchin
 		if(isTexture)
 		{
 			return textureID;
+		}
+
+		if(channelBit!=ChannelBit::CHANNEL_8)
+		{
+			throw std::runtime_error("Channel bit not supported to convert into texture: " + std::to_string(channelBit));
 		}
 
 		glGenTextures(1, &textureID);
@@ -127,14 +178,14 @@ namespace urchin
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, texels);
+		glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, texels.texels8);
 
 		if(needMipMaps)
 		{
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 
-		delete [] texels; //the API has its own copy
+		delete [] texels.texels8; //the API has its own copy
 		isTexture=true;
 
 		return textureID;

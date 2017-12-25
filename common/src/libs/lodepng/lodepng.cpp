@@ -336,7 +336,7 @@ static void lodepng_set32bitInt(unsigned char* buffer, unsigned value)
 #ifdef LODEPNG_COMPILE_ENCODER
 static void lodepng_add32bitInt(ucvector* buffer, unsigned value)
 {
-    ucvector_resize(buffer, buffer->size + 4); /*todo: give error if resize failed*/
+    ucvector_resize(buffer, buffer->size + 4); /*todos: give error if resize failed*/
     lodepng_set32bitInt(&buffer->data[buffer->size - 4], value);
 }
 #endif /*LODEPNG_COMPILE_ENCODER*/
@@ -417,7 +417,7 @@ unsigned lodepng_save_file(const unsigned char* buffer, size_t buffersize, const
 
 #ifdef LODEPNG_COMPILE_ZLIB
 #ifdef LODEPNG_COMPILE_ENCODER
-/*TODO: this ignores potential out of memory errors*/
+/*TODOs: this ignores potential out of memory errors*/
 #define addBitToStream(/*size_t**/ bitpointer, /*ucvector**/ bitstream, /*unsigned char*/ bit)\
 {\
   /*add a new byte at the end*/\
@@ -974,7 +974,7 @@ static unsigned huffmanDecodeSymbol(const unsigned char* in, size_t* bp,
 /*get the tree of a deflated block with fixed tree, as specified in the deflate specification*/
 static void getTreeInflateFixed(HuffmanTree* tree_ll, HuffmanTree* tree_d)
 {
-    /*TODO: check for out of memory errors*/
+    /*TODOs: check for out of memory errors*/
     generateFixedLitLenTree(tree_ll);
     generateFixedDistanceTree(tree_d);
 }
@@ -1327,7 +1327,7 @@ static void addHuffmanSymbol(size_t* bp, ucvector* compressed, unsigned code, un
 given array must be sorted (if no value is smaller, it returns the size of the given array)*/
 static size_t searchCodeIndex(const unsigned* array, size_t array_size, size_t value)
 {
-    /*binary search (only small gain over linear). TODO: use CPU log2 instruction for getting symbols instead*/
+    /*binary search (only small gain over linear). TODOs: use CPU log2 instruction for getting symbols instead*/
     size_t left = 1;
     size_t right = array_size - 1;
 
@@ -1371,7 +1371,7 @@ typedef struct Hash
     unsigned short* chain;
     int* val; /*circular pos to hash value*/
 
-    /*TODO: do this not only for zeros but for any repeated byte. However for PNG
+    /*TODOs: do this not only for zeros but for any repeated byte. However for PNG
   it's always going to be the zeros that dominate, so not important for PNG*/
     int* headz; /*similar to head, but for chainz*/
     unsigned short* chainz; /*those with same amount of zeros*/
@@ -4197,7 +4197,7 @@ static unsigned postProcessScanlines(unsigned char* out, unsigned char* in,
         for(i = 0; i != 7; ++i)
         {
             CERROR_TRY_RETURN(unfilter(&in[padded_passstart[i]], &in[filter_passstart[i]], passw[i], passh[i], bpp));
-            /*TODO: possible efficiency improvement: if in this reduced image the bits fit nicely in 1 scanline,
+            /*TODOs: possible efficiency improvement: if in this reduced image the bits fit nicely in 1 scanline,
       move bytes instead of bits or move not at all*/
             if(bpp < 8)
             {
@@ -4746,7 +4746,7 @@ unsigned lodepng_decode(unsigned char** out, unsigned* w, unsigned* h,
         unsigned char* data = *out;
         size_t outsize;
 
-        /*TODO: check if this works according to the statement in the documentation: "The converter can convert
+        /*TODOs: check if this works according to the statement in the documentation: "The converter can convert
     from greyscale input color type, to 8-bit greyscale or greyscale with alpha"*/
         if(!(state->info_raw.colortype == LCT_RGB || state->info_raw.colortype == LCT_RGBA)
            && !(state->info_raw.bitdepth == 8))

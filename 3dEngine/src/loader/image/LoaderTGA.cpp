@@ -164,9 +164,8 @@ namespace urchin
 			delete [] texels;
 			texels = texelsInverse;
 		}
-		
-		
-		return new Image(componentsCount, width, height, format, texels);
+
+		return new Image(width, height, format, texels);
 	}
 
 	void LoaderTGA::getImageInfo(const TgaHeader &header)
@@ -181,7 +180,7 @@ namespace urchin
 			{
 				if(header.pixelDepth==8)
 				{
-					format = Image::IMAGE_GRAYSCALE_8BITS;
+					format = Image::IMAGE_GRAYSCALE;
 					componentsCount = 1;
 				}else
 				{

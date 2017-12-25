@@ -11,9 +11,9 @@ namespace urchin
             yScale(yScale)
     {
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
-        if(imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE_8BITS && imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE_16BITS)
+        if(imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE)
         {
-            throw std::runtime_error("Height texture must have 1 component. Components: " + std::to_string(imgTerrain->getComponentsCount()));
+            throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }
         
         xSize = imgTerrain->getWidth();
