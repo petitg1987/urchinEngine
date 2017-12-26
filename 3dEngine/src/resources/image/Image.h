@@ -2,6 +2,7 @@
 #define URCHINENGINE_CIMAGE_H
 
 #include <GL/glew.h>
+#include <vector>
 
 #include "resources/Resource.h"
 
@@ -17,22 +18,22 @@ namespace urchin
 				IMAGE_RGBA,
 				IMAGE_GRAYSCALE
 			};
-			enum ChannelBit
+			enum ChannelPrecision
 			{
 				CHANNEL_8,
 				CHANNEL_16
 			};
 
-			Image(unsigned int, unsigned int, ImageFormat, unsigned char *);
-			Image(unsigned int, unsigned int, ImageFormat, int16_t *);
+			Image(unsigned int, unsigned int, ImageFormat, std::vector<unsigned char> &&);
+			Image(unsigned int, unsigned int, ImageFormat, std::vector<uint16_t> &&);
 			~Image() override;
 
 			unsigned int getWidth() const;
 			unsigned int getHeight() const;
 			ImageFormat getImageFormat() const;
-			ChannelBit getChannelBit() const;
-			unsigned char *getTexels() const;
-			int16_t *getTexels16Bits() const;
+            ChannelPrecision getChannelPrecision() const;
+			const std::vector<unsigned char> &getTexels() const;
+			const std::vector<uint16_t> &getTexels16Bits() const;
 
 			unsigned int retrieveComponentsCount() const;
 			GLint retrieveInternalFormat() const;
@@ -45,12 +46,9 @@ namespace urchin
 			unsigned int width;
 			unsigned int height;
 			ImageFormat format;
-			ChannelBit channelBit;
-			union
-			{
-				unsigned char *texels8; //8 bits
-				int16_t *texels16; //16 bits
-			} texels;
+            ChannelPrecision channelPrecision;
+            std::vector<unsigned char> texels8; //8 bits
+            std::vector<uint16_t> texels16; //16 bits
 			
 			bool isTexture;
 			unsigned int textureID;

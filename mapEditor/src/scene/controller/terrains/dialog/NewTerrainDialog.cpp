@@ -109,7 +109,7 @@ namespace urchin
     void NewTerrainDialog::showHeightFilenameDialog()
     {
         QString directory = preferredHeightPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredHeightPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.png *.tga)", nullptr, QFileDialog::DontUseNativeDialog);
         if(!filename.isNull())
         {
             this->heightFilename = filename.toUtf8().constData();

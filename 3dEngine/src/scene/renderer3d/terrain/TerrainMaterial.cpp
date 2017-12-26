@@ -16,8 +16,7 @@ namespace urchin
     {
         if(maskMapFilename.empty())
         {
-            auto *defaultMaskMapTab = new unsigned char[4]{255, 0, 0, 0};
-            maskTexture = new Image(1, 1, Image::IMAGE_RGBA, defaultMaskMapTab);
+            maskTexture = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({255, 0, 0, 0}));
             maskTexture->toTexture(false, false, false);
         }else
         {
@@ -35,8 +34,7 @@ namespace urchin
             material = nullptr;
         }
 
-        auto *defaultDiffuseColorTab = new unsigned char[4]{0, 0, 0, 0};
-        defaultTexture = new Image(1, 1, Image::IMAGE_RGBA, defaultDiffuseColorTab);
+        defaultTexture = new Image(1, 1, Image::IMAGE_RGBA, std::vector<unsigned char>({0, 0, 0, 0}));
         defaultTexture->toTexture(false, false, false);
     }
 

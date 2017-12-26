@@ -1,3 +1,4 @@
+#include <bitset>
 #include "UrchinCommon.h"
 
 #include "LoaderPNG.h"
@@ -22,8 +23,8 @@ namespace urchin
         unsigned int width, height;
         lodepng::State state;
         state.info_raw.bitdepth=16;
-        std::vector<unsigned char> image; //RGBA (16 bits)
-        unsigned int errorRead = lodepng::decode(image, width, height, state, png);
+        std::vector<unsigned char> pixelsRGBA16bits;
+        unsigned int errorRead = lodepng::decode(pixelsRGBA16bits, width, height, state, png);
         if(errorRead!=0)
         {
             throw std::invalid_argument("Cannot read the file " + filenamePath + ": " + lodepng_error_text(errorLoad));
@@ -35,10 +36,10 @@ namespace urchin
         {
             if(bitDepth==8)
             {
-
+                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract8BitsChannels(pixelsRGBA16bits, 1));
             }else if(bitDepth==16)
             {
-
+                return new Image(width, height, Image::IMAGE_GRAYSCALE, extract16BitsChannels(pixelsRGBA16bits, 1));
             }else
             {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (grayscale): " + std::to_string(bitDepth));
@@ -47,7 +48,7 @@ namespace urchin
         {
             if(bitDepth==8)
             {
-
+                return new Image(width, height, Image::IMAGE_RGB, extract8BitsChannels(pixelsRGBA16bits, 7));
             }else
             {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (RGB): " + std::to_string(bitDepth));
@@ -56,7 +57,7 @@ namespace urchin
         {
             if(bitDepth==8)
             {
-
+                return new Image(width, height, Image::IMAGE_RGBA, extract8BitsChannels(pixelsRGBA16bits, 15));
             }else
             {
                 throw std::invalid_argument("Unsupported number of bits for PNG image (RGBA): " + std::to_string(bitDepth));
@@ -65,20 +66,69 @@ namespace urchin
         {
             throw std::invalid_argument("Unsupported color type for PNG image: " + std::to_string(colorType));
         }
+    }
 
-        long long r=0, g=0, b=0, a=0;
-        for(unsigned int i=7; i<width*height*8; i+=8)
+    /**
+     * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
+     */
+    std::vector<unsigned char> LoaderPNG::extract8BitsChannels(const std::vector<unsigned char> &pixelsRGBA16bits, unsigned int channelsMask)
+    {
+        std::vector<unsigned char> pixels;
+        size_t nbChannels = std::bitset<8>(channelsMask).count();
+        pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
+
+        for(unsigned int i=7; i<pixelsRGBA16bits.size(); i+=8)
         {
-            r += (static_cast<int>(image[i-7]) << 8) | static_cast<int>(image[i-6]); //TODO for 8bit: read one component (static_cast<int>(image[i-6]))
-            g += (static_cast<int>(image[i-5]) << 8) | static_cast<int>(image[i-4]);
-            b += (static_cast<int>(image[i-3]) << 8) | static_cast<int>(image[i-2]);
-            a += (static_cast<int>(image[i-1]) << 8) | static_cast<int>(image[i-0]);
+            if(channelsMask & 1)
+            { //red
+                pixels.push_back(pixelsRGBA16bits[i-6]);
+            }
+            if(channelsMask & 2)
+            { //green
+                pixels.push_back(pixelsRGBA16bits[i-4]);
+            }
+            if(channelsMask & 4)
+            { //blue
+                pixels.push_back(pixelsRGBA16bits[i-2]);
+            }
+            if(channelsMask & 8)
+            { //alpha
+                pixels.push_back(pixelsRGBA16bits[i-0]);
+            }
         }
 
-        std::cout<<r<<" "<<g<<" "<<b<<" "<<a<<std::endl;
+        return pixels;
+    }
 
-        //TODO devlop & test
+    /**
+     * @param channelsMask Channel to extract where bit 0: R, bit 1: G, bit 2: B,  bit 3: A
+     */
+    std::vector<uint16_t> LoaderPNG::extract16BitsChannels(const std::vector<unsigned char> &pixelsRGBA16bits, unsigned int channelsMask)
+    {
+        std::vector<uint16_t> pixels;
+        size_t nbChannels = std::bitset<8>(channelsMask).count();
+        pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
 
-        return new Image(width, height, Image::IMAGE_GRAYSCALE, &image[0]); //TODO build tab with new !
+        for(unsigned int i=7; i<pixelsRGBA16bits.size(); i+=8)
+        {
+            if(channelsMask & 1)
+            { //red
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-7]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-6]));
+            }
+            if(channelsMask & 2)
+            { //green
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-5]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-4]));
+            }
+            if(channelsMask & 4)
+            { //blue
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-3]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-2]));
+            }
+            if(channelsMask & 8)
+            { //alpha
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-1]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-0]));
+            }
+        }
+
+        return pixels;
     }
 }

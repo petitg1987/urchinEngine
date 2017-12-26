@@ -132,13 +132,7 @@ namespace urchin
 		auto dimensionTexture = static_cast<unsigned int>(dimensionLetters * NUM_LETTERS_BY_LINE);
 		
 		//texture creation
-		auto *texels = new unsigned char[dimensionTexture*dimensionTexture*NUM_COLORS];
-		
-		for(unsigned int i=0;i<dimensionTexture*dimensionTexture*NUM_COLORS;i++)
-		{
-			texels[i] = 0; //initialize
-		}
-
+		std::vector<unsigned char> texels(dimensionTexture*dimensionTexture*NUM_COLORS, 0);
 		Vector3<float> fontColor = textParameters.fontColor;
 		for(unsigned int i=0,c=0; i<dimensionTexture; i+=dimensionLetters)
 		{
@@ -158,7 +152,7 @@ namespace urchin
 			}
 		}
 
-		auto *texAlphabet = new Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, texels);
+		auto *texAlphabet = new Image(dimensionTexture, dimensionTexture, Image::IMAGE_RGBA, std::move(texels));
 		texAlphabet->toTexture(false, false, false);
 		
 		//clears buffers of letters

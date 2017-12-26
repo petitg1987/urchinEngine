@@ -347,7 +347,7 @@ namespace urchin
     {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredMaskMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaskMapPath;
-        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga)", nullptr, QFileDialog::DontUseNativeDialog);
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if(!filename.isNull())
         {
             std::string tgaFilenamePath = filename.toUtf8().constData();

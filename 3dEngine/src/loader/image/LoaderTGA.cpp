@@ -13,8 +13,7 @@ namespace urchin
 			width(0),
 			height(0),
 			componentsCount(0),
-			format(Image::IMAGE_RGB),
-			texels(nullptr)
+			format(Image::IMAGE_RGB)
 	{
 
 	}
@@ -54,7 +53,7 @@ namespace urchin
 
 		//memory allocation for pixel data
 		getImageInfo(header);
-		texels = new unsigned char[width*height*componentsCount];
+		texels.resize(width*height*componentsCount);
 
 		//reads image data
 		switch(header.imageType)
@@ -151,7 +150,7 @@ namespace urchin
 		short origin = ((int)header.imageDescriptor & 0x20)>>5; //0:origin bottom, 1:origin top
 		if(origin==0)
 		{ //inverses the texels
-			auto *texelsInverse = new unsigned char[width*height*componentsCount];
+			std::vector<unsigned char> texelsInverse(width*height*componentsCount, 0);
 			
 			for(unsigned int i=0, iInverse=height-1;i<height;i++, iInverse--)
 			{
@@ -160,12 +159,11 @@ namespace urchin
 					texelsInverse[i*(width*componentsCount) + j] = texels[iInverse*(width*componentsCount) + j];
 				}
 			}
-			
-			delete [] texels;
-			texels = texelsInverse;
+
+			return new Image(width, height, format, std::move(texelsInverse));
 		}
 
-		return new Image(width, height, format, texels);
+		return new Image(width, height, format, std::move(texels));
 	}
 
 	void LoaderTGA::getImageInfo(const TgaHeader &header)
@@ -270,7 +268,10 @@ namespace urchin
 
 	void LoaderTGA::readTGAgray8bits()
 	{
-		memcpy(texels, data, sizeof(char)*width*height);
+		for(unsigned int i=0; i<width*height; ++i)
+		{
+			texels[i] = data[i];
+		}
 	}
 
 	void LoaderTGA::readTGA8bitsRLE()
@@ -278,9 +279,9 @@ namespace urchin
 		int j = 0;
 		unsigned char color;
 		unsigned char packetHeader;
-		unsigned char *ptr = texels;
+		unsigned int ptrIndex = 0;
 
-		while(ptr<texels+(width*height)*3)
+		while(ptrIndex < width*height*3)
 		{
 			//reads first byte
 			packetHeader = data[j++];
@@ -291,22 +292,22 @@ namespace urchin
 				//run-length packet
 				color = data[j++];
 
-				for(int i=0;i<size;++i, ptr+=3)
+				for(int i=0;i<size;++i, ptrIndex+=3)
 				{
-					ptr[0] = colorMap[(color * 3) + 2];
-					ptr[1] = colorMap[(color * 3) + 1];
-					ptr[2] = colorMap[(color * 3) + 0];
+					texels[ptrIndex] = colorMap[(color * 3) + 2];
+					texels[ptrIndex+1] = colorMap[(color * 3) + 1];
+					texels[ptrIndex+2] = colorMap[(color * 3) + 0];
 				}
 			}else
 			{
 				//non run-length packet
-				for(int i=0;i<size;++i,ptr+=3)
+				for(int i=0;i<size;++i,ptrIndex+=3)
 				{
 					color = data[j++];
 
-					ptr[0] = colorMap[(color * 3) + 2];
-					ptr[1] = colorMap[(color * 3) + 1];
-					ptr[2] = colorMap[(color * 3) + 0];
+					texels[ptrIndex] = colorMap[(color * 3) + 2];
+					texels[ptrIndex+1] = colorMap[(color * 3) + 1];
+					texels[ptrIndex+2] = colorMap[(color * 3) + 0];
 				}
 			}
 		}
@@ -317,9 +318,9 @@ namespace urchin
 		int j = 0;
 		unsigned short color;
 		unsigned char packetHeader;
-		unsigned char *ptr = texels;
+		unsigned int ptrIndex = 0;
 
-		while(ptr<texels+(width*height)*3)
+		while(ptrIndex < width*height*3)
 		{
 			//reads first byte
 			packetHeader = data[j++];
@@ -331,22 +332,22 @@ namespace urchin
 				color = data[j] + (data[j + 1] << 8);
 				j+=2;
 
-				for(int i=0; i<size; ++i,ptr+=3)
+				for(int i=0; i<size; ++i,ptrIndex+=3)
 				{
-					ptr[0] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
-					ptr[1] = (unsigned char)(((color & 0x03E0) >>  5) << 3);
-					ptr[2] = (unsigned char)(((color & 0x001F) >>  0) << 3);
+					texels[ptrIndex] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
+					texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0) >>  5) << 3);
+					texels[ptrIndex+2] = (unsigned char)(((color & 0x001F) >>  0) << 3);
 				}
 			}else
 			{
 				//non run-length packet
-				for(int i=0; i<size; ++i,ptr+=3,j+=2)
+				for(int i=0; i<size; ++i,ptrIndex+=3,j+=2)
 				{
 					color = data[j] + (data[j + 1] << 8);
 
-					ptr[0] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
-					ptr[1] = (unsigned char)(((color & 0x03E0) >> 5) << 3);
-					ptr[2] = (unsigned char)(((color & 0x001F) >> 0) << 3);
+					texels[ptrIndex] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
+					texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0) >> 5) << 3);
+					texels[ptrIndex+2] = (unsigned char)(((color & 0x001F) >> 0) << 3);
 				}
 			}
 		}
@@ -357,9 +358,9 @@ namespace urchin
 		int j = 0;
 		unsigned char *rgb;
 		unsigned char packetHeader;
-		unsigned char *ptr = texels;
+		unsigned int ptrIndex = 0;
 
-		while(ptr<texels+(width*height)*3)
+		while(ptrIndex < width*height*3)
 		{
 			//reads first byte
 			packetHeader = data[j++];
@@ -371,20 +372,20 @@ namespace urchin
 				rgb = &data[j];
 				j += 3;
 
-				for(int i=0; i<size; ++i,ptr+=3)
+				for(int i=0; i<size; ++i,ptrIndex+=3)
 				{
-					ptr[0] = rgb[2];
-					ptr[1] = rgb[1];
-					ptr[2] = rgb[0];
+					texels[ptrIndex] = rgb[2];
+					texels[ptrIndex+1] = rgb[1];
+					texels[ptrIndex+2] = rgb[0];
 				}
 			}else
 			{
 				//non run-length packet
-				for(int i=0; i<size; ++i,ptr+=3,j+=3)
+				for(int i=0; i<size; ++i,ptrIndex+=3,j+=3)
 				{
-					ptr[2] = data[j + 0];
-					ptr[1] = data[j + 1];
-					ptr[0] = data[j + 2];
+					texels[ptrIndex+2] = data[j + 0];
+					texels[ptrIndex+1] = data[j + 1];
+					texels[ptrIndex] = data[j + 2];
 				}
 			}
 		}
@@ -395,9 +396,9 @@ namespace urchin
 		int j = 0;
 		unsigned char *rgba;
 		unsigned char packetHeader;
-		unsigned char *ptr = texels;
+		unsigned int ptrIndex = 0;
 
-		while(ptr<texels+(width * height)*4)
+		while(ptrIndex < width*height*4)
 		{
 			//reads first byte
 			packetHeader = data[j++];
@@ -409,22 +410,22 @@ namespace urchin
 				rgba = &data[j];
 				j += 4;
 
-				for(int i=0; i<size; ++i,ptr+=4)
+				for(int i=0; i<size; ++i,ptrIndex+=4)
 				{
-					ptr[0] = rgba[2];
-					ptr[1] = rgba[1];
-					ptr[2] = rgba[0];
-					ptr[3] = rgba[3];
+					texels[ptrIndex] = rgba[2];
+					texels[ptrIndex+1] = rgba[1];
+					texels[ptrIndex+2] = rgba[0];
+					texels[ptrIndex+3] = rgba[3];
 				}
 			}else
 			{
 				//non run-length packet
-				for(int i=0; i<size; ++i,ptr+=4,j+=4)
+				for(int i=0; i<size; ++i,ptrIndex+=4,j+=4)
 				{
-					ptr[2] = data[j + 0];
-					ptr[1] = data[j + 1];
-					ptr[0] = data[j + 2];
-					ptr[3] = data[j + 3];
+					texels[ptrIndex+2] = data[j + 0];
+					texels[ptrIndex+1] = data[j + 1];
+					texels[ptrIndex] = data[j + 2];
+					texels[ptrIndex+3] = data[j + 3];
 				}
 			}
 		}
@@ -435,9 +436,9 @@ namespace urchin
 		int j = 0;
 		unsigned char color;
 		unsigned char packetHeader;
-		unsigned char *ptr = texels;
+		unsigned int ptrIndex = 0;
 
-		while(ptr<texels+(width*height))
+		while(ptrIndex < width*height)
 		{
 			//reads first byte
 			packetHeader = data[j++];
@@ -448,16 +449,19 @@ namespace urchin
 				//run-length packet
 				color = data[j++];
 
-				for(int i=0; i<size; ++i,ptr++)
+				for(int i=0; i<size; ++i,ptrIndex++)
 				{
-					*ptr=color;
+					texels[ptrIndex]=color;
 				}
 			}else
 			{
 				//non run-length packet
-				memcpy(ptr, data + j, size * sizeof(char));
+				for(unsigned int i=0; i<size; ++i)
+				{
+					texels[ptrIndex+i] = data[j+i];
+				}
 
-				ptr+=size;
+				ptrIndex+=size;
 				j+=size;
 			}
 		}

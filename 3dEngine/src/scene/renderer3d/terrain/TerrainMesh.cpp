@@ -83,15 +83,19 @@ namespace urchin
             float zFloat = zStart + static_cast<float>(z) * xzScale;
             for (unsigned int x = 0; x < xLength; ++x)
             {
-                float elevation = imgTerrain->getTexels()[x + xLength * z] * yScale;
-                if(elevation > maxElevation)
+                float elevation = 0.0f;
+                if(imgTerrain->getChannelPrecision()==Image::CHANNEL_8)
                 {
-                    maxElevation = elevation;
-                }
-                if(elevation < minElevation)
+                    elevation = imgTerrain->getTexels()[x + xLength * z] * yScale;
+                }else if(imgTerrain->getChannelPrecision()==Image::CHANNEL_16)
                 {
-                    minElevation = elevation;
+                    constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
+                    elevation = imgTerrain->getTexels16Bits()[x + xLength * z] * scale16BitsTo8Bits * yScale;
                 }
+
+                maxElevation = std::max(maxElevation, elevation);
+                minElevation = std::min(minElevation, elevation);
+
                 float xFloat = xStart + static_cast<float>(x) * xzScale;
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }

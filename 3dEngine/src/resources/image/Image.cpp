@@ -2,31 +2,32 @@
 
 #include "resources/image/Image.h"
 #include "texture/TextureManager.h"
-#include "Image.h"
 
 namespace urchin
 {
 
-	Image::Image(unsigned int width, unsigned int height, ImageFormat format, unsigned char *texels8) :
+	Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<unsigned char> &&texels8) :
 			width(width),
 			height(height),
 			format(format),
-			channelBit(ChannelBit::CHANNEL_8),
+            channelPrecision(ChannelPrecision::CHANNEL_8),
+            texels8(texels8),
 			isTexture(false),
 			textureID(0)
 	{
-		this->texels.texels8 = texels8;
+
 	}
 
-	Image::Image(unsigned int width, unsigned int height, ImageFormat format, int16_t *texels16) :
+	Image::Image(unsigned int width, unsigned int height, ImageFormat format, std::vector<uint16_t> &&texels16) :
 			width(width),
 			height(height),
 			format(format),
-			channelBit(ChannelBit::CHANNEL_16),
+            channelPrecision(ChannelPrecision::CHANNEL_16),
+            texels16(texels16),
 			isTexture(false),
 			textureID(0)
 	{
-		this->texels.texels16 = texels16;
+
 	}
 
 	Image::~Image()
@@ -34,15 +35,6 @@ namespace urchin
 		if(isTexture)
 		{
 			glDeleteTextures(1, &textureID);
-		}else
-		{
-            if(channelBit==ChannelBit::CHANNEL_8)
-            {
-                delete[] texels.texels8;
-            }else if(channelBit==ChannelBit::CHANNEL_16)
-            {
-                delete[] texels.texels16;
-            }
 		}
 	}
 
@@ -61,39 +53,39 @@ namespace urchin
 		return format;
 	}
 
-	Image::ChannelBit Image::getChannelBit() const
+	Image::ChannelPrecision Image::getChannelPrecision() const
 	{
-		return channelBit;
+		return channelPrecision;
 	}
 
-	unsigned char *Image::getTexels() const
+	const std::vector<unsigned char> &Image::getTexels() const
 	{
 		if(isTexture)
 		{
 			throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
 		}
 
-		if(channelBit!=ChannelBit::CHANNEL_8)
+		if(channelPrecision!=ChannelPrecision::CHANNEL_8)
 		{
-			throw std::runtime_error("Channel must have 8 bits: " + std::to_string(channelBit));
+			throw std::runtime_error("Channel must have 8 bits. Channel type: " + std::to_string(channelPrecision));
 		}
 
-		return texels.texels8;
+		return texels8;
 	}
 
-	int16_t *Image::getTexels16Bits() const
+	const std::vector<uint16_t> &Image::getTexels16Bits() const
 	{
 		if(isTexture)
 		{
 			throw std::runtime_error("The image \"" + getName() + "\" was transformed into a texture, you cannot get the texels.");
 		}
 
-		if(channelBit!=ChannelBit::CHANNEL_16)
+		if(channelPrecision!=ChannelPrecision::CHANNEL_16)
 		{
-			throw std::runtime_error("Channel must have 16 bits: " + std::to_string(channelBit));
+			throw std::runtime_error("Channel must have 16 bits. Channel type: " + std::to_string(channelPrecision));
 		}
 
-		return texels.texels16;
+		return texels16;
 	}
 
 	unsigned int Image::retrieveComponentsCount() const
@@ -154,9 +146,9 @@ namespace urchin
 			return textureID;
 		}
 
-		if(channelBit!=ChannelBit::CHANNEL_8)
+		if(channelPrecision!=ChannelPrecision::CHANNEL_8)
 		{
-			throw std::runtime_error("Channel bit not supported to convert into texture: " + std::to_string(channelBit));
+			throw std::runtime_error("Channel bit not supported to convert into texture: " + std::to_string(channelPrecision));
 		}
 
 		glGenTextures(1, &textureID);
@@ -178,14 +170,14 @@ namespace urchin
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, needRepeat ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, texels.texels8);
+		glTexImage2D(GL_TEXTURE_2D, 0, retrieveInternalFormat(), width, height, 0, retrieveFormat(), GL_UNSIGNED_BYTE, &texels8[0]);
 
 		if(needMipMaps)
 		{
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 
-		delete [] texels.texels8; //the API has its own copy
+		texels8.clear(); //the API has its own copy
 		isTexture=true;
 
 		return textureID;

@@ -1,5 +1,5 @@
-#include <memory>
 #include <stdexcept>
+#include <memory>
 
 #include "scene/GUI/GUISkinService.h"
 #include "resources/MediaManager.h"
@@ -53,7 +53,7 @@ namespace urchin
 
 		//creates the image width*height
 		unsigned int componentsCount = imgWidget->retrieveComponentsCount(); //shortcut
-		auto *texels = new unsigned char[height*width*componentsCount];
+		std::vector<unsigned char> texels(height*width*componentsCount, 0);
 
 		unsigned int widthMinusRight = static_cast<unsigned int>(std::max(0, (int)width-(int)right));
 		unsigned int heightMinusBottom = static_cast<unsigned int>(std::max(0, (int)height-(int)bottom));
@@ -142,7 +142,7 @@ namespace urchin
 		}
 
 		//create the texture
-		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(width, height, imgWidget->getImageFormat(), texels), Resource::ResourceDeleter());
+		std::shared_ptr<Image> texWidget = std::shared_ptr<Image>(new Image(width, height, imgWidget->getImageFormat(), std::move(texels)), Resource::ResourceDeleter());
 		texWidget->toTexture(false, false, false);
 
 		imgWidget->release();

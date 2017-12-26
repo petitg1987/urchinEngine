@@ -16,6 +16,7 @@ namespace urchin
 		glFormat.setProfile(QGLFormat::CompatibilityProfile);
 		glFormat.setSampleBuffers(true);
 		glFormat.setDoubleBuffer(true);
+		glFormat.setSwapInterval(1); //vertical sync
 		setFormat(glFormat);
 	}
 

@@ -23,15 +23,13 @@ namespace urchin
 	{
 		if(!hasDiffuseTexture())
 		{
-			auto *diffuseColorTab = new unsigned char[3]{255, 20, 147};
-			this->diffuseTexture = new Image(1, 1, Image::IMAGE_RGB, diffuseColorTab);
+			this->diffuseTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 20, 147}));
 			this->diffuseTexture->toTexture(false, false, true);
 		}
 
 		if(!hasNormalTexture())
 		{
-			auto *normalColorTab = new unsigned char[3]{127, 127, 255};
-			this->normalTexture = new Image(1, 1, Image::IMAGE_RGB, normalColorTab);
+			this->normalTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({127, 127, 255}));
 			this->normalTexture->toTexture(false, false, true);
 		}
 	}

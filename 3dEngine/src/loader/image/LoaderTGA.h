@@ -59,7 +59,7 @@ namespace urchin
 			unsigned int width, height;
 			unsigned int componentsCount;
 			Image::ImageFormat format;
-			unsigned char *texels;
+			std::vector<unsigned char> texels;
 	};
 
 }
