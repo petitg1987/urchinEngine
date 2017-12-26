@@ -74,7 +74,7 @@ namespace urchin
 		Vector3<T> bp = b.vector(p);
 		T abDotBp = ab.dotProduct(bp);
 		T acDotBp = ac.dotProduct(bp);
-		if(abDotBp >= 0.0f && acDotBp <= abDotBp)
+		if(abDotBp >= (T)0.0 && acDotBp <= abDotBp)
 		{
 			barycentrics[0] = 0.0;
 			barycentrics[1] = 1.0;
