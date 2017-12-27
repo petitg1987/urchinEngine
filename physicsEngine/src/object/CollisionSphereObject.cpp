@@ -22,6 +22,11 @@ namespace urchin
 		return sphereObject.getCenterOfMass();
 	}
 
+	CollisionConvexObject3D::ObjectType CollisionSphereObject::getObjectType() const
+	{
+		return CollisionConvexObject3D::SPHERE_OBJECT;
+	}
+
 	/**
 	 * @return includeMargin Indicate whether support function need to take into account margin
 	 */

@@ -49,6 +49,11 @@ namespace urchin
 		return cylinderObject.getAxis(index);
 	}
 
+	CollisionConvexObject3D::ObjectType CollisionCylinderObject::getObjectType() const
+	{
+		return CollisionConvexObject3D::CYLINDER_OBJECT;
+	}
+
 	/**
 	 * @return includeMargin Indicate whether support function need to take into account margin
 	 */

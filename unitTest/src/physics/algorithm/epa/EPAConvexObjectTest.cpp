@@ -21,24 +21,36 @@ void EPAConvexObjectTest::overlapSphereAndBox()
 	AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.1);
 	AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(1.0, 0.0, 0.0), epsilon);
 	AssertHelper::assertFloatEquals(resultEpa->getContactPointA().vector(resultEpa->getContactPointB()).length(), 0.1, epsilon);
-	AssertHelper::assertFloatEquals(resultEpa->getContactPointA().X, 1.0, epsilon);
-	AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Y, 0.0, epsilon);
-	AssertHelper::assertFloatEquals(resultEpa->getContactPointA().Z, 0.0, epsilon);
-	AssertHelper::assertFloatEquals(resultEpa->getContactPointB().X, 0.9, epsilon);
-	AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Y, 0.0, epsilon);
-	AssertHelper::assertFloatEquals(resultEpa->getContactPointB().Z, 0.0, epsilon);
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(1.0, 0.0, 0.0), epsilon);
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.9, 0.0, 0.0), epsilon);
 }
 
 void EPAConvexObjectTest::overlapCapsuleAndTriangle()
-{ //TODO fix bug
+{
 	CollisionCapsuleObject capsule(0.0f, 0.25f, 1.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(0.0, 0.2, 0.0), Quaternion<float>());
-	CollisionTriangleObject triangle(0.0f, Point3<float>(0.0, 0.0, 0.0), Point3<float>(-2.0, 0.0, 0.0), Point3<float>(-2.0, 0.0, -2.0));
+	CollisionTriangleObject triangle(0.0f, Point3<float>(0.0, 0.0, 0.0), Point3<float>(-2.0, 0.0, -2.0), Point3<float>(-2.0, 0.0, 0.0));
 
 	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(capsule, triangle);
 
 	AssertHelper::assertTrue(resultEpa->isCollide());
 	AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.55);
-    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0, 1.0, 0.0)); //or -1.0 ?
+    AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0, -1.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(0.0, -0.55, 0.0));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0, 0.0, 0.0));
+}
+
+void EPAConvexObjectTest::overlapTriangleAndCapsule()
+{
+	CollisionTriangleObject triangle(0.0f, Point3<float>(0.0, 0.0, 0.0), Point3<float>(-2.0, 0.0, -2.0), Point3<float>(-2.0, 0.0, 0.0));
+	CollisionCapsuleObject capsule(0.0f, 0.25f, 1.0f, CapsuleShape<float>::CAPSULE_Y, Point3<float>(0.0, 0.2, 0.0), Quaternion<float>());
+
+	std::shared_ptr<EPAResult<float>> resultEpa = EPATestHelper::executeEPA(triangle, capsule);
+
+	AssertHelper::assertTrue(resultEpa->isCollide());
+	AssertHelper::assertFloatEquals(resultEpa->getPenetrationDepth(), 0.55);
+	AssertHelper::assertVector3FloatEquals(resultEpa->getNormal(), Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointA(), Point3<float>(0.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(resultEpa->getContactPointB(), Point3<float>(0.0, -0.55, 0.0));
 }
 
 CppUnit::Test *EPAConvexObjectTest::suite()
@@ -47,6 +59,7 @@ CppUnit::Test *EPAConvexObjectTest::suite()
 
 	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapSphereAndBox", &EPAConvexObjectTest::overlapSphereAndBox));
 	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapCapsuleAndTriangle", &EPAConvexObjectTest::overlapCapsuleAndTriangle));
+	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapTriangleAndCapsule", &EPAConvexObjectTest::overlapTriangleAndCapsule));
 
 	return suite;
 }

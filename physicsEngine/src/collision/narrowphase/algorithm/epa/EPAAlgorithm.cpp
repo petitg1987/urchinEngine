@@ -1,3 +1,4 @@
+#include <object/CollisionTriangleObject.h>
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 
 namespace urchin
@@ -15,7 +16,14 @@ namespace urchin
 	{
 		#ifdef _DEBUG
 			assert(gjkResult.isCollide());
-		#endif
+        #endif
+
+		//handle sub triangle cases
+		std::unique_ptr<EPAResult<T>> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
+		if(subTriangleResult!=nullptr)
+		{
+			return subTriangleResult;
+		}
 
 		//1. check collision exist
 		const Simplex<T> &simplex = gjkResult.getSimplex();
@@ -129,6 +137,53 @@ namespace urchin
 
 		return std::make_unique<EPAResultCollide<T>>(contactPointA, contactPointB, normal, distanceToOrigin);
 	}
+
+    template<class T> std::unique_ptr<EPAResult<T>> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D &convexObject1,
+                                                                                       const CollisionConvexObject3D &convexObject2) const
+    {
+        //Handle specific case for triangles mesh. EPA algorithm is not aware of others triangles of the mesh and can lead to wrong results.
+        //Example: an object is inside a triangle: EPA could found a contact point which lead to slide the object on X/Z axis. This is wrong since
+        //another triangles exist on X/Z. See: EPAConvexObjectTest::overlapCapsuleAndTriangle() & EPAConvexObjectTest::overlapTriangleAndCapsule().
+        //Solution: only allow to slide object based on triangle normal.
+
+		bool needSwap;
+		const CollisionTriangleObject *triangleObject;
+		const CollisionConvexObject3D *otherObject;
+
+		if(convexObject1.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT)
+		{
+			triangleObject = dynamic_cast<const CollisionTriangleObject *>(&convexObject1);
+			otherObject = &convexObject2;
+			needSwap = false;
+		}else if(convexObject2.getObjectType()==CollisionConvexObject3D::TRIANGLE_OBJECT)
+		{
+			triangleObject = dynamic_cast<const CollisionTriangleObject *>(&convexObject2);
+			otherObject = &convexObject1;
+			needSwap = true;
+		}else
+		{
+			return std::unique_ptr<EPAResult<T>>(nullptr);
+		}
+
+		Triangle3D<float> triangle = triangleObject->retrieveTriangle();
+		Point3<float> contactPointOther = otherObject->getSupportPoint(-triangle.computeNormal(), true);
+		float triangleBarycentrics[3];
+		Point3<float> contactPointTriangle = triangle.closestPoint(contactPointOther, triangleBarycentrics);
+		if(triangle.projectedPointInsideTriangle(contactPointOther))
+		{
+			float distanceToOrigin = contactPointTriangle.distance(contactPointOther);
+			Vector3<T> normal = contactPointOther.vector(contactPointTriangle).normalize().template cast<T>();
+
+            if(needSwap)
+            {
+                return std::make_unique<EPAResultCollide<T>>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
+            }
+
+			return std::make_unique<EPAResultCollide<T>>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
+		}
+
+        return std::unique_ptr<EPAResult<T>>(nullptr);
+    }
 
 	/**
 	 * Determine initial points useful for EPA algorithm: points of initial convex hull as well as the linked support points

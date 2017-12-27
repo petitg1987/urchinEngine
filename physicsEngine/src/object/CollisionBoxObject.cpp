@@ -37,6 +37,11 @@ namespace urchin
 		return boxObject.getAxis(index);
 	}
 
+	CollisionConvexObject3D::ObjectType CollisionBoxObject::getObjectType() const
+	{
+		return CollisionConvexObject3D::BOX_OBJECT;
+	}
+
 	/**
 	 * @return includeMargin Indicate whether support function need to take into account margin
 	 */

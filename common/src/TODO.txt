@@ -3,6 +3,7 @@
 ############################################
 - GLOBAL
 	- (3) [OPTIMIZATION] Use PGO in g++
+	- (3) [OPTIMIZATION] Use SSE (3 dot products: Triangle3D<T>::getSupportPoint()...)
 
 ############################################
 # Bugs :

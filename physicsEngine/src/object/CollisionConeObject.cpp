@@ -49,6 +49,11 @@ namespace urchin
 		return coneObject.getAxis(index);
 	}
 
+	CollisionConvexObject3D::ObjectType CollisionConeObject::getObjectType() const
+	{
+		return CollisionConvexObject3D::CONE_OBJECT;
+	}
+
 	/**
 	 * @return includeMargin Indicate whether support function need to take into account margin
 	 */

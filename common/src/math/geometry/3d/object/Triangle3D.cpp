@@ -141,6 +141,27 @@ namespace urchin
 		return a.translate(ab * v + ac * w);
 	}
 
+	/**
+	 * Project point on triangle plane and check if point lies on triangle
+	 */
+	template<class T> bool Triangle3D<T>::projectedPointInsideTriangle(const Point3<T> &point) const
+	{ //see https://stackoverflow.com/questions/25512037/how-to-determine-if-a-point-lies-over-a-triangle-in-3d
+		Vector3<T> normal = computeNormal();
+
+		for(unsigned int i=0; i<3; ++i)
+		{
+			Vector3<T> triangleVector = triangleShape.getPoints()[(i+1)%3].vector(triangleShape.getPoints()[i]);
+			Vector3<T> pointToTriangle = point.vector(triangleShape.getPoints()[i]);
+			Vector3<T> tetrahedronFaceNormal = triangleVector.crossProduct(pointToTriangle);
+			if(tetrahedronFaceNormal.dotProduct(normal) < 0.0)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	//explicit template
 	template class Triangle3D<float>;
 	template class Triangle3D<double>;

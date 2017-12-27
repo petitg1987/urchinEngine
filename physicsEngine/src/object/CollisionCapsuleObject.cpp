@@ -46,6 +46,11 @@ namespace urchin
 		return capsuleObject.getAxis(index);
 	}
 
+	CollisionConvexObject3D::ObjectType CollisionCapsuleObject::getObjectType() const
+	{
+		return CollisionConvexObject3D::CAPSULE_OBJECT;
+	}
+
 	/**
 	 * @return includeMargin Indicate whether support function need to take into account margin
 	 */

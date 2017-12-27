@@ -21,6 +21,7 @@ namespace urchin
 			std::vector<Point3<float>> getPointsWithoutMargin() const;
             std::vector<Point3<float>> getPointsWithMargin() const;
 
+			CollisionConvexObject3D::ObjectType getObjectType() const override;
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
 			std::string toString() const override;

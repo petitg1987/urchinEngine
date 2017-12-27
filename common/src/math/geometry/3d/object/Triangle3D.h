@@ -20,6 +20,7 @@ namespace urchin
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 			Vector3<T> computeNormal() const;
 			Point3<T> closestPoint(const Point3<T> &, T [3]) const;
+			bool projectedPointInsideTriangle(const Point3<T> &) const;
 
 		private:
 			TriangleShape3D<T> triangleShape;

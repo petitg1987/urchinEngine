@@ -21,6 +21,7 @@ namespace urchin
 			const Quaternion<float> &getOrientation() const;
 			const Vector3<float> &getAxis(unsigned int) const;
 
+			CollisionConvexObject3D::ObjectType getObjectType() const override;
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
 			const Cylinder<float> retrieveCylinder() const;

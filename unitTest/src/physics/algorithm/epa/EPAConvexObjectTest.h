@@ -11,6 +11,7 @@ class EPAConvexObjectTest : public CppUnit::TestFixture
 
 		void overlapSphereAndBox();
 		void overlapCapsuleAndTriangle();
+		void overlapTriangleAndCapsule();
 };
 
 #endif

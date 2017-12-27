@@ -40,6 +40,11 @@ namespace urchin
         return convexHullObjectWithMargin->getPoints();
     }
 
+	CollisionConvexObject3D::ObjectType CollisionConvexHullObject::getObjectType() const
+	{
+		return CollisionConvexObject3D::CONVEX_HULL_OBJECT;
+	}
+
 	/**
 	 * @return includeMargin Indicate whether support function need to take into account margin
 	 */

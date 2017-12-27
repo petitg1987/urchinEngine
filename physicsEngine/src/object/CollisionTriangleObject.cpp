@@ -16,6 +16,11 @@ namespace urchin
         return triangleObject.getPoints()[index];
     }
 
+    CollisionConvexObject3D::ObjectType CollisionTriangleObject::getObjectType() const
+    {
+        return CollisionConvexObject3D::TRIANGLE_OBJECT;
+    }
+
     Point3<float> CollisionTriangleObject::getSupportPoint(const Vector3<float> &direction, bool includeMargin) const
     {
         if(includeMargin)
