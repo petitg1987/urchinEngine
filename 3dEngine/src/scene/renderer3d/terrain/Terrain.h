@@ -8,6 +8,7 @@
 
 #include "scene/renderer3d/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/terrain/TerrainMesh.h"
+#include "scene/renderer3d/terrain/TerrainGrass.h"
 #include "resources/image/Image.h"
 
 namespace urchin
@@ -25,6 +26,8 @@ namespace urchin
             const TerrainMesh *getMesh() const;
             void setMaterial(std::unique_ptr<TerrainMaterial> &);
             const TerrainMaterial *getMaterial() const;
+            void setGrass(std::unique_ptr<TerrainGrass> &);
+            const TerrainGrass *getGrass();
 
             void setPosition(const Point3<float> &);
             const Point3<float> &getPosition() const;
@@ -57,6 +60,7 @@ namespace urchin
 
             std::unique_ptr<TerrainMesh> mesh;
             std::unique_ptr<TerrainMaterial> material;
+            std::unique_ptr<TerrainGrass> grass;
             Point3<float> position;
             float ambient;
     };

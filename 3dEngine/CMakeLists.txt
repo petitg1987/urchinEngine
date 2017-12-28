@@ -198,7 +198,9 @@ set(SOURCE_FILES
         src/scene/renderer3d/terrain/TerrainDisplayer.cpp
         src/scene/renderer3d/terrain/TerrainDisplayer.h
         src/loader/image/LoaderPNG.cpp
-        src/loader/image/LoaderPNG.h)
+        src/loader/image/LoaderPNG.h
+        src/scene/renderer3d/terrain/TerrainGrass.cpp
+        src/scene/renderer3d/terrain/TerrainGrass.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

@@ -155,7 +155,7 @@ namespace urchin
     {
         if(!isInitialized)
         {
-            throw std::runtime_error("Terrain displayer must be initialized before load textures.");
+            throw std::runtime_error("Terrain material must be initialized before load textures.");
         }
 
         glActiveTexture(GL_TEXTURE0);

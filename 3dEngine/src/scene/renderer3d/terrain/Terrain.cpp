@@ -42,6 +42,11 @@ namespace urchin
 
         ShaderManager::instance()->bind(terrainShader);
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
+
+        if(grass!=nullptr)
+        {
+            grass->onCameraProjectionUpdate(projectionMatrix);
+        }
     }
 
     void Terrain::setMesh(std::unique_ptr<TerrainMesh> &terrainMesh)
@@ -66,6 +71,7 @@ namespace urchin
         if(material != nullptr)
         {
             setMaterial(material); //material uses mesh info: refresh is required
+            //TODO do it for grass
         }
     }
 
@@ -79,7 +85,7 @@ namespace urchin
         if(material != terrainMaterial)
         {
             material = std::move(terrainMaterial);
-            material->initialize(terrainShader, mesh->getXSize(), mesh->getZSize());
+            material->initialize(terrainShader, mesh->getXSize(), mesh->getZSize()); //TODO should be re-executed in case of new mesh provided !
         }
 
         glBindVertexArray(vertexArrayObject);
@@ -95,8 +101,24 @@ namespace urchin
         return material.get();
     }
 
-    void Terrain::setPosition(const Point3<float> &position)
+    void Terrain::setGrass(std::unique_ptr<TerrainGrass> &terrainGrass)
     {
+        if(grass != terrainGrass)
+        {
+            grass = std::move(terrainGrass);
+        }
+
+        grass->initialize(mesh, position);
+        grass->onCameraProjectionUpdate(projectionMatrix);
+    }
+
+    const TerrainGrass *Terrain::getGrass()
+    {
+        return grass.get();
+    }
+
+    void Terrain::setPosition(const Point3<float> &position)
+    { //TODO update grass position
         this->position = position;
 
         ShaderManager::instance()->bind(terrainShader);
@@ -130,5 +152,10 @@ namespace urchin
 
         glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
+
+        if(grass!=nullptr)
+        {
+            grass->display(viewMatrix);
+        }
     }
 }

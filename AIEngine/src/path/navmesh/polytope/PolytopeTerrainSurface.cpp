@@ -86,9 +86,9 @@ namespace urchin
         return Point3<float>(point.X, globalVertex.Y, -point.Y);
     }
 
-    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &xzCoordinate) const
+    Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
     {
-        Point3<float> localCoordinate = Point3<float>(xzCoordinate.X, 0.0, -xzCoordinate.Y) - position;
+        Point3<float> localCoordinate = Point3<float>(globalXzCoordinate.X, 0.0, -globalXzCoordinate.Y) - position;
         Point3<float> farLeftCoordinate = localCoordinate - localVertices[0];
 
         float xInterval = localVertices[1].X - localVertices[0].X;
