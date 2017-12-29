@@ -87,7 +87,7 @@ namespace urchin
 
 			//scene
 			void updateScene(float);
-			void deferredGeometryRendering();
+			void deferredGeometryRendering(float);
 			void lightingPassRendering();
 			void postUpdateScene();
 

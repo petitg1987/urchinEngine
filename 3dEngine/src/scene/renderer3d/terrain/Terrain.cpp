@@ -143,7 +143,7 @@ namespace urchin
         glUniform1f(ambientLoc, ambient);
     }
 
-    void Terrain::display(const Matrix4<float> &viewMatrix) const
+    void Terrain::display(const Matrix4<float> &viewMatrix, float invFrameRate) const
     {
         ShaderManager::instance()->bind(terrainShader);
 
@@ -155,7 +155,7 @@ namespace urchin
 
         if(grass!=nullptr)
         {
-            grass->display(viewMatrix);
+            grass->display(viewMatrix, invFrameRate);
         }
     }
 }

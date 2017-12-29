@@ -416,7 +416,7 @@ namespace urchin
 
 		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
 		glDrawBuffers(2, &fboAttachments[0]);
-		deferredGeometryRendering();
+		deferredGeometryRendering(invFrameRate);
 
 		if(isAntiAliasingActivated)
 		{
@@ -447,7 +447,7 @@ namespace urchin
 //			textureDisplayer1.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer1.display();
 
-			//display normal and ambient buffer
+//			//display normal and ambient buffer
 //			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
 //			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
@@ -504,7 +504,7 @@ namespace urchin
 	 * First pass of deferred shading algorithm.
 	 * Render depth, color, normal, etc. into buffers.
 	 */
-	void Renderer3d::deferredGeometryRendering()
+	void Renderer3d::deferredGeometryRendering(float invFrameRate)
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -513,7 +513,7 @@ namespace urchin
 		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
 		modelDisplayer->display(camera->getViewMatrix());
 
-		terrainDisplayer->display(camera->getViewMatrix());
+		terrainDisplayer->display(camera->getViewMatrix(), invFrameRate);
 
 		geometryDisplayer->display(camera->getViewMatrix());
 

@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <random>
 
 #include "TerrainGrass.h"
 #include "resources/image/Image.h"
@@ -8,7 +9,8 @@
 namespace urchin
 {
 
-    TerrainGrass::TerrainGrass(const std::string &grassFilename)
+    TerrainGrass::TerrainGrass(const std::string &grassFilename) :
+            sumTimeStep(0.0f)
     {
         glGenBuffers(1, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -19,10 +21,13 @@ namespace urchin
 
         mProjectionLoc = glGetUniformLocation(terrainGrassShader, "mProjection");
         mViewLoc = glGetUniformLocation(terrainGrassShader, "mView");
+        sumTimeStepLoc = glGetUniformLocation(terrainGrassShader, "sumTimeStep");
 
-        auto *grassTexture = MediaManager::instance()->getMedia<Image>(grassFilename, nullptr);
-        unsigned int grassTextureId = grassTexture->toTexture(true, true, false);
-        grassTexture->release();
+        grassTexture = MediaManager::instance()->getMedia<Image>(grassFilename, nullptr);
+        grassTexture->toTexture(true, true, false);
+        int terrainGrassTexLoc = glGetUniformLocation(terrainGrassShader, "grassTex");
+        glActiveTexture(GL_TEXTURE0);
+        glUniform1i(terrainGrassTexLoc, 0);
     }
 
     TerrainGrass::~TerrainGrass()
@@ -31,6 +36,8 @@ namespace urchin
         glDeleteBuffers(1, bufferIDs);
 
         ShaderManager::instance()->removeProgram(terrainGrassShader);
+
+        grassTexture->release();
     }
 
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
@@ -58,6 +65,9 @@ namespace urchin
 
     std::vector<Point3<float>> TerrainGrass::generateGrassVertices(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) const
     {
+        std::default_random_engine generator;
+        std::uniform_real_distribution<float> distribution(-0.2f, 0.2f); //TODO configurable ?
+
         std::vector<Point3<float>> grassCenterVertices;
 
         float grassOffset = 0.4f; //TODO make it configurable
@@ -70,10 +80,12 @@ namespace urchin
 
         for(unsigned int xIndex=0; xIndex<grassXQuantity; ++xIndex)
         {
-            float xValue = startX + xIndex * grassOffset;
+            const float xFixedValue = startX + xIndex * grassOffset;
+
             for(unsigned int zIndex=0; zIndex<grassZQuantity; ++zIndex)
             {
-                float zValue = startZ + zIndex * grassOffset;
+                float xValue = xFixedValue + distribution(generator);
+                float zValue = (startZ + zIndex * grassOffset) + distribution(generator);
                 float yValue = retrieveGlobalVertex(Point2<float>(xValue, zValue), mesh, terrainPosition).Y;
 
                 grassCenterVertices.emplace_back(Point3<float>(xValue, yValue, zValue));
@@ -97,7 +109,7 @@ namespace urchin
         return mesh->getVertices()[xIndex + zIndex*mesh->getXSize()] + terrainPosition;
     }
 
-    void TerrainGrass::display(const Matrix4<float> &viewMatrix)
+    void TerrainGrass::display(const Matrix4<float> &viewMatrix, float invFrameRate)
     {
         if(!isInitialized)
         {
@@ -106,10 +118,21 @@ namespace urchin
 
         ShaderManager::instance()->bind(terrainGrassShader);
 
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, grassTexture->getTextureID());
+
+        sumTimeStep += invFrameRate;
+        glUniform1f(sumTimeStepLoc, sumTimeStep);
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
 
         glBindVertexArray(vertexArrayObject);
         glDrawArrays(GL_POINTS, 0, grassQuantity);
+
+        glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+        glEnable(GL_CULL_FACE);
     }
 
 }

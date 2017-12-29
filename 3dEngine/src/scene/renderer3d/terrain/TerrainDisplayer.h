@@ -17,7 +17,7 @@ namespace urchin
 
             void onCameraProjectionUpdate(const Camera *);
 
-            void display(const Matrix4<float> &) const;
+            void display(const Matrix4<float> &, float) const;
 
         private:
             std::vector<Terrain *> terrains;

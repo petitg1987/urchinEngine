@@ -19,7 +19,7 @@ namespace urchin
 
             void initialize(const std::unique_ptr<TerrainMesh> &, const Point3<float> &);
 
-            void display(const Matrix4<float> &);
+            void display(const Matrix4<float> &, float);
 
         private:
             std::vector<Point3<float>> generateGrassVertices(const std::unique_ptr<TerrainMesh> &, const Point3<float> &) const;
@@ -37,10 +37,12 @@ namespace urchin
                 SHADER_VERTEX_POSITION = 0
             };
             unsigned int terrainGrassShader;
-            int mProjectionLoc, mViewLoc;
+            int mProjectionLoc, mViewLoc, sumTimeStepLoc;
 
             Matrix4<float> projectionMatrix;
+            float sumTimeStep;
 
+            Image *grassTexture;
             unsigned int grassQuantity;
     };
 

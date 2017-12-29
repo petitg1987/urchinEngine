@@ -35,7 +35,7 @@ namespace urchin
             float getAmbient() const;
             void setAmbient(float);
 
-            void display(const Matrix4<float> &) const;
+            void display(const Matrix4<float> &, float invFrameRate) const;
 
         private:
             unsigned int bufferIDs[5], vertexArrayObject;
