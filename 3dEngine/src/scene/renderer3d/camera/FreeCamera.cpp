@@ -1,7 +1,6 @@
 #include "UrchinCommon.h"
 
 #include "FreeCamera.h"
-#include "scene/SceneManager.h"
 #include "scene/InputDevice.h"
 
 #define DEFAULT_KEY_FRONT 'Z'
@@ -31,11 +30,6 @@ namespace urchin
 			rotateSpeed(DEFAULT_ROTATE_SPEED)
 	{
 
-	}
-
-	FreeCamera::~FreeCamera()
-	{
-		
 	}
 
 	/**

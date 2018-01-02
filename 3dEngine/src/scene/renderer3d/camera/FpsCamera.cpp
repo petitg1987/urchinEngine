@@ -1,5 +1,3 @@
-#include "UrchinCommon.h"
-
 #include "FpsCamera.h"
 
 #define DEFAULT_KEY_FRONT 'Z'
@@ -27,11 +25,6 @@ namespace urchin
 			speed(DEFAULT_SPEED)
 	{
 		useMouseToMoveCamera(true);
-	}
-
-	FpsCamera::~FpsCamera()
-	{
-		
 	}
 
 	/**

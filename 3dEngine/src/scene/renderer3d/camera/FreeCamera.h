@@ -15,7 +15,7 @@ namespace urchin
 	{
 		public:
 			FreeCamera(float, float, float);
-			virtual ~FreeCamera();
+			virtual ~FreeCamera() = default;
 		
 			void setKeys(unsigned int, unsigned int, unsigned int, unsigned int);
 			void setSpeed(float, float);

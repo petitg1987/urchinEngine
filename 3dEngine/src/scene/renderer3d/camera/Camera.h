@@ -13,7 +13,7 @@ namespace urchin
 	{
 		public:
 			Camera(float, float, float);
-			virtual ~Camera();
+			virtual ~Camera() = default;
 			
 			void onResize(unsigned int, unsigned int);
 			virtual void moveMouse(unsigned int, unsigned int) = 0;
@@ -35,7 +35,7 @@ namespace urchin
 			float getAngle() const;
 			float getNearPlane() const;
 			float getFarPlane() const;
-		
+
 			void moveTo(const Point3<float> &);
 			void moveX(float);
 			void moveZ(float);
@@ -60,10 +60,10 @@ namespace urchin
 			Vector3<float> up;
 			float currentRotationX, maxRotationX;
 			float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
-		
+
 			bool bUseMouse; //true if the cursor is used to move the camera
 			float mouseSensitivity;
-			int middleScreenX, middleScreenY, oldMouseX, oldMouseY;
+			unsigned int middleScreenX, middleScreenY, oldMouseX, oldMouseY;
 	};
 
 }
