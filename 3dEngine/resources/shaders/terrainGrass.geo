@@ -11,40 +11,32 @@ uniform float sumTimeStep;
 smooth out vec2 vertexTextCoordinates;
 out vec3 normal;
 
-vec3 vLocalSeed; //TODO don't use global var
+float PHI = 1.61803398874989484820459 * 00000.1; //golden ratio
+float PI  = 3.14159265358979323846264 * 00000.1; //PI
+float SRT = 1.41421356237309504880169 * 10000.0; //square root of two
 
-mat4 rotationMatrix(vec3 axis, float angle)
-{
+mat3 rotationMatrix(vec3 axis, float angle){
     axis = normalize(axis);
     float s = sin(angle);
     float c = cos(angle);
     float oc = 1.0 - c;
 
-    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-                0.0,                                0.0,                                0.0,                                1.0);
+    return mat3(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c);
 }
 
-float randZeroOne()
-{ //TODO simplify ?
-    uint n = floatBitsToUint(vLocalSeed.y * 214013.0 + vLocalSeed.x * 2531011.0 + vLocalSeed.z * 141251.0);
-    n = n * (n * n * 15731u + 789221u);
-    n = (n >> 9u) | 0x3F800000u;
-
-    float fRes =  2.0 - uintBitsToFloat(n);
-    vLocalSeed = vec3(vLocalSeed.x + 147158.0 * fRes, vLocalSeed.y*fRes  + 415161.0 * fRes, vLocalSeed.z + 324154.0*fRes);
-    return fRes;
+float randZeroOne(in vec2 seed){
+    return fract(sin(dot(seed, vec2(PHI, PI)))*SRT);
 }
 
-int randomInt(int min, int max)
-{
-	float fRandomFloat = randZeroOne();
+int randomInt(int min, int max, vec3 seed){
+    vec2 seed2d = vec2(seed.x, seed.y + seed.z);
+	float fRandomFloat = randZeroOne(seed2d);
 	return int(float(min)+fRandomFloat*float(max-min));
 }
 
 void main(){
-
     mat4 mProjectionView = mProjection * mView;
 
     float PiOver180 = 3.14159f/180.0f;
@@ -54,30 +46,29 @@ void main(){
     vBaseDir[2] = vec3(float(cos(-45.0f*PiOver180)), 0.0f, float(sin(-45.0f*PiOver180)));
 
     vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
-    float halfLengthGrass = 0.6f;
-    float heightGrass = 0.2f;
+    float halfLengthGrass = 0.6f; //TODO configurable
+    float heightGrass = 0.8f; //TODO configurable
+    int nbGrassTexture = 4; //TODO configurable
 
-	vec3 vWindDirection = vec3(0.707, 0.0, 0.707);
-	float fWindStrength = 0.6f;
+	vec3 vWindDirection = vec3(0.707, 0.0, 0.707); //TODO configurable
+	float fWindStrength = 0.6f; //TODO configurable
+    float fWindPower = 0.5f + sin(grassCenterPosition.x/30.0f + grassCenterPosition.z/30.0f + sumTimeStep*(1.2f+fWindStrength/20.0f));
+    if(fWindPower > 0.0f){
+        fWindPower = fWindPower*0.3f;
+    }else{
+        fWindPower = fWindPower*0.2f;
+    }
+    fWindPower *= fWindStrength;
 
     for(int i = 0; i < 3; i++)
 	{
 	    //texture selection
-        vLocalSeed = grassCenterPosition * float(i);
-        float startTextX = 0.0f; //float(randomInt(0, 3)) * 0.25f;
-        float endTextX = 1.0f; //startTextX+0.25f;
-
-        //wind (Y axis) //TODO is it really Y axis rotation ?
-        vec3 vBaseDirRotated = (rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * vec4(vBaseDir[i], 1.0)).xyz; //TODO use mat 4 & vec3 ?
+        vec3 seed = grassCenterPosition * float(i);
+        float startTextX = float(randomInt(0, nbGrassTexture-1, seed)) * (1.0f / nbGrassTexture);
+        float endTextX = startTextX + 1.0f / nbGrassTexture;
 
         //wind
-        float fWindPower = 0.5f+sin(grassCenterPosition.x/30+grassCenterPosition.z/30+sumTimeStep*(1.2f+fWindStrength/20.0f)); //TODO pre-compute when possible
-        if(fWindPower < 0.0f){
-        	fWindPower = fWindPower*0.2f;
-        }else{
-            fWindPower = fWindPower*0.3f;
-        }
-        fWindPower *= fWindStrength;
+        vec3 vBaseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * vBaseDir[i];
 
         //TODO use terrain normal
         normal = vec3(0.5, 1.0, 0.5);
