@@ -79,12 +79,13 @@ namespace urchin
  	 */
 	Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const NavMeshAgent &agent) const
 	{
-		float reduceDistance = - agent.computeExpandDistance(normal);
-
 		Point3<float> point3D(point.X, 0.0, -point.Y);
 		float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
-		float t = (shortestFaceDistance + reduceDistance) / normal.Y;
-		return point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
+		float t = shortestFaceDistance / normal.Y;
+		Point3<float> pointOnExpandedSurface = point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
+
+        float reduceDistance =  - agent.computeExpandDistance(normal);
+        return pointOnExpandedSurface.translate(normal * reduceDistance);
 	}
 
 	const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const
