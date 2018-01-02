@@ -11,13 +11,13 @@ namespace urchin
 	class FrustumModel : public GeometryModel
 	{
 		public:
-			FrustumModel(const Frustum<float> &);
+			explicit FrustumModel(const Frustum<float> &);
 
 		protected:
-			Matrix4<float> retrieveModelMatrix() const;
-			std::vector<Point3<float>> retrieveVertexArray() const;
+			Matrix4<float> retrieveModelMatrix() const override;
+			std::vector<Point3<float>> retrieveVertexArray() const override;
 
-			void drawGeometry() const;
+			void drawGeometry() const override;
 
 		private:
 			Frustum<float> frustum;

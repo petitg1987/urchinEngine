@@ -56,7 +56,7 @@ namespace urchin
         glBindVertexArray(vertexArrayObject);
 
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, grassCenterVertices.size()*sizeof(float)*3, &grassCenterVertices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, grassCenterVertices.size()*sizeof(float)*3, &grassCenterVertices[0], GL_STATIC_DRAW); //TODO GL_?_DRAW
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 

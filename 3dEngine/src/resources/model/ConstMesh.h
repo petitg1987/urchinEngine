@@ -39,7 +39,6 @@ namespace urchin
 	{
 		Vector3<float> normal; //vector normal for each vertices
 		Vector3<float> tangent; //vector tangent for each vertices
-		int nbFace; //numbers of face for the vertex
 	};
 
 	struct Bone

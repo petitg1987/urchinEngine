@@ -38,11 +38,6 @@ namespace urchin
 		connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
 	}
 
-	BodyCapsuleShapeWidget::~BodyCapsuleShapeWidget()
-	{
-
-	}
-
 	std::string BodyCapsuleShapeWidget::getBodyShapeName() const
 	{
 		return CAPSULE_SHAPE_LABEL;
@@ -50,7 +45,7 @@ namespace urchin
 
 	void BodyCapsuleShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
 	{
-		const CollisionCapsuleShape *capsuleShape = static_cast<const CollisionCapsuleShape *>(shape.get());
+		auto *capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(shape.get());
 
 		radius->setValue(capsuleShape->getRadius());
 		cylinderHeight->setValue(capsuleShape->getCylinderHeight());
@@ -65,7 +60,7 @@ namespace urchin
 	std::shared_ptr<const CollisionShape3D> BodyCapsuleShapeWidget::createBodyShape() const
 	{
 		QVariant variant = orientation->currentData();
-		CapsuleShape<float>::CapsuleOrientation orientation = static_cast<CapsuleShape<float>::CapsuleOrientation>(variant.toInt());
+		auto orientation = static_cast<CapsuleShape<float>::CapsuleOrientation>(variant.toInt());
 
 		return std::make_shared<const CollisionCapsuleShape>(radius->value(), cylinderHeight->value(), orientation);
 	}

@@ -8,6 +8,7 @@ namespace urchin
 	class ConstMesh;
 	struct Bone;
 	struct DataVertex;
+	struct Triangle;
 
 	class MeshService : public Singleton<MeshService>
 	{
@@ -19,7 +20,10 @@ namespace urchin
 
 		private:
 			MeshService();
-			virtual ~MeshService() = default;
+			~MeshService() override = default;
+
+			int indexOfVertexInTriangle(const Triangle &, unsigned int, const ConstMesh *const);
+			Vector3<float> computeWeightedVertexNormal(const Triangle &, unsigned int, const Point3<float> *const );
 	};
 
 }

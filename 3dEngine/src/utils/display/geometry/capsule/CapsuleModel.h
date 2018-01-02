@@ -14,10 +14,10 @@ namespace urchin
 			CapsuleModel(const Capsule<float> &, int, int);
 
 		protected:
-			Matrix4<float> retrieveModelMatrix() const;
-			std::vector<Point3<float>> retrieveVertexArray() const;
+			Matrix4<float> retrieveModelMatrix() const override;
+			std::vector<Point3<float>> retrieveVertexArray() const override;
 
-			void drawGeometry() const;
+			void drawGeometry() const override;
 
 		private:
 			void fillWithTopCap(std::vector<Point3<float>> &, const Quaternion<float> &) const;

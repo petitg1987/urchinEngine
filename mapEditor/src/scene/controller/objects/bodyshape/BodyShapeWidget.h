@@ -26,8 +26,8 @@ namespace urchin
 		#define COMPOUND_SHAPE_LABEL "Compound Shape"
 
 		public:
-			BodyShapeWidget(const SceneObject *);
-			virtual ~BodyShapeWidget();
+			explicit BodyShapeWidget(const SceneObject *);
+			~BodyShapeWidget() override = default;
 
 			const SceneObject *getSceneObject() const;
 			virtual std::string getBodyShapeName() const = 0;

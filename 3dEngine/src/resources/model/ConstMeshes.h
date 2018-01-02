@@ -24,6 +24,7 @@ namespace urchin
 			const std::string &getMeshFilename() const;
 			unsigned int getNumberConstMeshes() const;
 			const ConstMesh *getConstMesh(unsigned int) const;
+			const std::vector<const ConstMesh *> &getConstMeshes() const;
 
 			const AABBox<float> &getOriginalAABBox() const;
 			const std::vector<AABBox<float>> &getOriginalSplittedAABBoxes() const;

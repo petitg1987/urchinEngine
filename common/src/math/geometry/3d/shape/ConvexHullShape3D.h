@@ -24,7 +24,7 @@ namespace urchin
 	template<class T> class ConvexHullShape3D : public ConvexShape3D<T>
 	{
 		public:
-			ConvexHullShape3D(const std::vector<Point3<T>> &);
+			explicit ConvexHullShape3D(const std::vector<Point3<T>> &);
 			ConvexHullShape3D(const std::map<unsigned int, ConvexHullPoint<T>> &, const std::map<unsigned int, IndexedTriangle3D<T>> &);
 
 			const typename std::map<unsigned int, ConvexHullPoint<T>> &getConvexHullPoints() const;

@@ -117,6 +117,8 @@ namespace urchin
 				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] + this->getHalfSize(2) * axis[2]);
 			case 7:
 				return centerOfMass.translate(-(this->getHalfSize(0) * axis[0]) - this->getHalfSize(1) * axis[1] - this->getHalfSize(2) * axis[2]);
+			default:
+				break;
 		}
 
 		throw std::invalid_argument("Invalid index: " + std::to_string(index));
@@ -201,7 +203,7 @@ namespace urchin
 				{axis[1].dotProduct(bbox.getAxis(0)), axis[1].dotProduct(bbox.getAxis(1)), axis[1].dotProduct(bbox.getAxis(2))},
 				{axis[2].dotProduct(bbox.getAxis(0)), axis[2].dotProduct(bbox.getAxis(1)), axis[2].dotProduct(bbox.getAxis(2))}
 		};
-		const T epsilon = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
+		auto epsilon = (T)0.00001; //projectionAxis could be near to zero: need epsilon to avoid rounding error
 
 		//case 1, 2, 3 (projectionAxis = axis[0] | axis[1] | axis[2])
 		for(unsigned int i=0; i<3;i++)

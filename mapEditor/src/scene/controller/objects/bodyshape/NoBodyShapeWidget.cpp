@@ -11,11 +11,6 @@ namespace urchin
 
 	}
 
-	NoBodyShapeWidget::~NoBodyShapeWidget()
-	{
-
-	}
-
 	std::string NoBodyShapeWidget::getBodyShapeName() const
 	{
 		return "/";

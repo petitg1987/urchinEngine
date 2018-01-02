@@ -1,3 +1,6 @@
+#include <limits>
+#include <chrono>
+
 #include "resources/model/MeshService.h"
 #include "resources/model/ConstAnimation.h"
 
@@ -33,63 +36,92 @@ namespace urchin
 	}
 
 	void MeshService::computeNormals(const ConstMesh *const constMesh, const Point3<float> *const vertices, DataVertex *const dataVertices)
-	{
-		//1. compute the normals for each triangle
-		std::vector<Vector3<float>> normalByTriangles;
-		for(unsigned int i=0;i<constMesh->getNumberTriangles();++i)
-		{
-			const int *pTris = constMesh->getTriangle(i).index; //shortcut
+    {
+        //compute weighted normals
+        std::vector<Vector3<float>> vertexNormals(constMesh->getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
+        for(unsigned int triIndex=0; triIndex<constMesh->getNumberTriangles(); ++triIndex)
+        {
+            const Triangle &tri = constMesh->getTriangle(triIndex);
+            for(unsigned int triVertexIndex=0; triVertexIndex<3; ++triVertexIndex)
+            {
+                auto vertexIndex = static_cast<unsigned int>(tri.index[triVertexIndex]);
 
-			//create two vectors to calculate the cross product
-			const Vector3<float> &v1 = vertices[pTris[0]].vector(vertices[pTris[1]]).normalize();
-			const Vector3<float> &v2 = vertices[pTris[2]].vector(vertices[pTris[0]]).normalize();
+                Vector3<float> weightedNormal = computeWeightedVertexNormal(tri, triVertexIndex, vertices);
+                vertexNormals[vertexIndex] += weightedNormal;
+            }
+        }
 
-			normalByTriangles.push_back(v1.crossProduct(v2).normalize());
-		}
+        //sum weighted normals of same vertex
+        for (unsigned int vertexIndex = 0; vertexIndex < constMesh->getNumberVertices(); ++vertexIndex)
+        {
+            unsigned int linkedVerticesGroupId = constMesh->getStructVertex(vertexIndex).linkedVerticesGroupId;
+            std::vector<unsigned int> linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
+            assert(!linkedVertices.empty()); //contains at least 'vertexIndex'
 
-		//2. compute the normals and tangents for each vertex
-		Vector3<float> normalsSum[constMesh->getNumberVertices()];
-		for(unsigned int i=0;i<constMesh->getNumberVertices();i++)
-		{
-			dataVertices[i].nbFace = 0;
-		}
-		for(unsigned int i=0;i<constMesh->getNumberTriangles();++i)
-		{
-			const int *pTris = constMesh->getTriangle(i).index; //shortcut
+            for(unsigned int linkedVertex : linkedVertices)
+            {
+                dataVertices[vertexIndex].normal += vertexNormals[linkedVertex];
+            }
+        }
 
-			for(int j=0;j<3;j++)
-			{
-				normalsSum[pTris[j]] = normalByTriangles[i] + normalsSum[pTris[j]];
-				dataVertices[pTris[j]].nbFace++;
-			}
-		}
+        for (unsigned int vertexIndex = 0; vertexIndex < constMesh->getNumberVertices(); ++vertexIndex)
+        {
+            //normal normalization
+            dataVertices[vertexIndex].normal = dataVertices[vertexIndex].normal.normalize();
 
-		for(unsigned int i=0;i<constMesh->getNumberVertices();++i)
-		{
-			//computes normal
-			unsigned int linkedVerticesGroupId = constMesh->getStructVertex(i).linkedVerticesGroupId;
-			std::vector<unsigned int> linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
-
-			Vector3<float> totalNormalsSum = Vector3<float>(0.0f, 0.0f, 0.0f);
-			int totalNbFace = 0;
-			for (unsigned int linkedVertexIndex : linkedVertices)
-			{
-				totalNormalsSum += normalsSum[linkedVertexIndex];
-				totalNbFace += dataVertices[linkedVertexIndex].nbFace;
-			}
-
-			dataVertices[i].normal = (totalNormalsSum / (float)totalNbFace).normalize();
-
-			//computes tangent
-			const Vector3<float> &c1 = dataVertices[i].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));
-			const Vector3<float> &c2 = dataVertices[i].normal.crossProduct(Vector3<float>(0.0, 1.0, 0.0));
-			if(c1.squareLength() > c2.squareLength())
-			{
-				dataVertices[i].tangent = c1.normalize();
-			}else
-			{
-				dataVertices[i].tangent = c2.normalize();
-			}
-		}
+            //computes tangent
+            const Vector3<float> &c1 = dataVertices[vertexIndex].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));
+            const Vector3<float> &c2 = dataVertices[vertexIndex].normal.crossProduct(Vector3<float>(0.0, 1.0, 0.0));
+            if(c1.squareLength() > c2.squareLength())
+            {
+                dataVertices[vertexIndex].tangent = c1.normalize();
+            }else
+            {
+                dataVertices[vertexIndex].tangent = c2.normalize();
+            }
+        }
 	}
+
+    int MeshService::indexOfVertexInTriangle(const Triangle &triangle, unsigned int vertexIndex, const ConstMesh *const constMesh)
+    {
+        for(unsigned int i=0; i<3; ++i)
+        {
+            auto triVertexIndex = static_cast<unsigned int>(triangle.index[i]);
+
+            //classic
+            if(triVertexIndex==vertexIndex)
+            {
+                return i;
+            }
+
+            //by group id
+            unsigned int linkedVerticesGroupId = constMesh->getStructVertex(triVertexIndex).linkedVerticesGroupId;
+            std::vector<unsigned int> linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
+            for (unsigned int linkedVertexIndex : linkedVertices)
+            {
+                if (linkedVertexIndex == vertexIndex)
+                {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    Vector3<float> MeshService::computeWeightedVertexNormal(const Triangle &triangle, unsigned int vertexIndex, const Point3<float> *const vertices)
+    { //see https://stackoverflow.com/questions/18519586/calculate-normal-per-vertex-opengl
+        Point3<float> a = vertices[triangle.index[vertexIndex]];
+        Point3<float> b = vertices[triangle.index[(vertexIndex+1)%3]];
+        Point3<float> c = vertices[triangle.index[(vertexIndex+2)%3]];
+
+        Vector3<float> ab = a.vector(b);
+        Vector3<float> ac = a.vector(c);
+
+        Vector3<float> normal = ac.crossProduct(ab);
+        float sinAlpha = normal.length() / (ab.length() * ac.length());
+        sinAlpha = MathAlgorithm::clamp(sinAlpha, -1.0f + std::numeric_limits<float>::epsilon(), 1.0f - std::numeric_limits<float>::epsilon()); //because of rounding error
+
+        return normal.normalize() * std::asin(sinAlpha);
+    }
 }

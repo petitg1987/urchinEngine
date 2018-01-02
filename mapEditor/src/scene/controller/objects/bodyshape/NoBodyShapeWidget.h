@@ -16,14 +16,14 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			NoBodyShapeWidget(const SceneObject *);
-			virtual ~NoBodyShapeWidget();
+			explicit NoBodyShapeWidget(const SceneObject *);
+			~NoBodyShapeWidget() override = default;
 
-			std::string getBodyShapeName() const;
+			std::string getBodyShapeName() const override;
 
 		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>);
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const;
+			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 	};
 
 }

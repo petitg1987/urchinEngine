@@ -22,6 +22,9 @@ namespace urchin
 			std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T> &, T) const;
 			std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T> &, T) const;
 
+			std::unique_ptr<ConvexHullShape3D<T>> resizeConvexHullShape(const ConvexHullShape3D<T> &, const std::map<unsigned int, Plane<T>> &) const;
+			std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T> &, const std::map<unsigned int, Plane<T>> &) const;
+
 		private:
 			ResizeConvexHull3DService();
 			virtual ~ResizeConvexHull3DService() = default;
@@ -29,7 +32,6 @@ namespace urchin
 			std::map<unsigned int, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &) const;
 			void shiftPlanes(std::map<unsigned int, Plane<T>> &, T) const;
 			std::vector<Plane<T>> findThreeNonParallelPlanes(const std::vector<unsigned int> &, const std::map<unsigned int, Plane<T>> &) const;
-			bool isPointInsidePlanes(const std::map<unsigned int, Plane<T>> &, const Point3<T> &) const;
 	};
 
 }

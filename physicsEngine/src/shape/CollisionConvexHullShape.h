@@ -16,6 +16,7 @@ namespace urchin
 	{
 		public:
 			explicit CollisionConvexHullShape(const std::vector<Point3<float>> &);
+			explicit CollisionConvexHullShape(const std::shared_ptr<ConvexHullShape3D<float>> &);
 
 			CollisionShape3D::ShapeType getShapeType() const override;
 			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
@@ -31,6 +32,7 @@ namespace urchin
 			float getMinDistanceToCenter() const override;
 
 		private:
+			void initialize();
 			void initializeConvexHullReduced();
 			void initializeDistances();
 

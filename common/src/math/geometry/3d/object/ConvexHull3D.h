@@ -19,8 +19,8 @@ namespace urchin
 			template<class U> friend class ResizeConvexHull3DService;
 			template<class V> friend std::ostream& operator<< (std::ostream&, const ConvexHull3D<V> &);
 
-			ConvexHull3D(const std::vector<Point3<T>> &);
-			ConvexHull3D(const ConvexHullShape3D<T> &);
+			explicit ConvexHull3D(const std::vector<Point3<T>> &);
+			explicit ConvexHull3D(const ConvexHullShape3D<T> &);
 
 			const typename std::map<unsigned int, ConvexHullPoint<T>> &getConvexHullPoints() const;
 			std::vector<Point3<T>> getPoints() const;

@@ -176,7 +176,6 @@ namespace urchin
             {
                 vertexNormal += normalTriangles[triangleIndex];
             }
-            vertexNormal /= triangleIndices.size();
             normals.emplace_back(vertexNormal.normalize());
         }
 

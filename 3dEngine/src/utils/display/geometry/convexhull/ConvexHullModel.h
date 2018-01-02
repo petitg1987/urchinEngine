@@ -11,13 +11,13 @@ namespace urchin
 	class ConvexHullModel : public GeometryModel
 	{
 		public:
-			ConvexHullModel(const ConvexHull3D<float> &);
+			explicit ConvexHullModel(const ConvexHull3D<float> &);
 
 		protected:
-			Matrix4<float> retrieveModelMatrix() const;
-			std::vector<Point3<float>> retrieveVertexArray() const;
+			Matrix4<float> retrieveModelMatrix() const override;
+			std::vector<Point3<float>> retrieveVertexArray() const override;
 
-			void drawGeometry() const;
+			void drawGeometry() const override;
 
 		private:
 			ConvexHull3D<float> convexHull;

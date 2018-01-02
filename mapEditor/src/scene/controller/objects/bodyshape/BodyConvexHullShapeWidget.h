@@ -19,14 +19,14 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			BodyConvexHullShapeWidget(const SceneObject *);
-			virtual ~BodyConvexHullShapeWidget();
+			explicit BodyConvexHullShapeWidget(const SceneObject *);
+			~BodyConvexHullShapeWidget() override = default;
 
-			std::string getBodyShapeName() const;
+			std::string getBodyShapeName() const override;
 
 		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>);
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const;
+			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
 		private:
 			void addPoint(const Point3<float> &);

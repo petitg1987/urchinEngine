@@ -14,10 +14,10 @@ namespace urchin
 			SphereModel(const Sphere<float> &, int);
 
 		protected:
-			Matrix4<float> retrieveModelMatrix() const;
-			std::vector<Point3<float>> retrieveVertexArray() const;
+			Matrix4<float> retrieveModelMatrix() const override;
+			std::vector<Point3<float>> retrieveVertexArray() const override;
 
-			void drawGeometry() const;
+			void drawGeometry() const override;
 
 		private:
 			Sphere<float> sphere;

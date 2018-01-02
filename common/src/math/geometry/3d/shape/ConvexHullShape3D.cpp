@@ -95,6 +95,7 @@ namespace urchin
 		constexpr int HALF_SIZE_INDEX = (sizeof(unsigned int) * 8) / 2;
 
 		//deletes all triangles visible by the new point
+        unsigned int trianglesRemoved = 0;
 		for(auto itTriangle=indexedTriangles.begin(); itTriangle!=indexedTriangles.end();)
 		{
 			const IndexedTriangle3D<T> indexedTriangle = itTriangle->second;
@@ -126,6 +127,7 @@ namespace urchin
 
 				removedTriangleIndices.push_back(itTriangle->first);
 				removeTriangle(itTriangle++);
+                trianglesRemoved++;
 			}else
 			{
 				++itTriangle;
@@ -143,8 +145,22 @@ namespace urchin
 				addTriangle(IndexedTriangle3D<T>(edge.second.first, edge.second.second, newPointIndex));
 			}
 
+			#ifdef _DEBUG
+				if(points[newPointIndex].triangleIndices.size() < 3)
+				{
+					throw std::runtime_error("A convex hull point must belong at least to 3 triangles");
+				}
+			#endif
+
 			return newPointIndex;
 		}
+
+        #ifdef _DEBUG
+            if(edges.empty() && trianglesRemoved > 0)
+            {
+                throw std::runtime_error("Triangle removed but no new point added");
+            }
+        #endif
 
 		return 0;
 	}
@@ -207,8 +223,13 @@ namespace urchin
 		const unsigned int *indices = itTriangle->second.getIndices();
 		for(unsigned int i=0;i<3;i++)
 		{
-			std::vector<unsigned int> &pointTriangles = points[indices[i]].triangleIndices;
+			std::vector<unsigned int> &pointTriangles = points.at(indices[i]).triangleIndices;
 			pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
+            if(pointTriangles.empty())
+            { //orphan point: remove it
+                points.erase(indices[i]);
+            }
+
 		}
 
 		//remove indexed triangles from triangle map
@@ -308,6 +329,16 @@ namespace urchin
 		{
 			throw buildException(points, pointsUsed);
 		}
+
+		#ifdef _DEBUG
+			for(unsigned int i=0; i<4; ++i)
+			{
+				if(this->points[i].triangleIndices.size() < 3)
+				{
+					throw std::runtime_error("A convex hull point must belong at least to 3 triangles");
+				}
+			}
+		#endif
 
 		return pointsUsed;
 	}

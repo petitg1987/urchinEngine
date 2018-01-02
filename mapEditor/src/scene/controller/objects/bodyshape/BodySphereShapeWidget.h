@@ -17,14 +17,14 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			BodySphereShapeWidget(const SceneObject *);
-			virtual ~BodySphereShapeWidget();
+			explicit BodySphereShapeWidget(const SceneObject *);
+			~BodySphereShapeWidget() override = default;
 
-			std::string getBodyShapeName() const;
+			std::string getBodyShapeName() const override;
 
 		protected:
-			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>);
-			std::shared_ptr<const CollisionShape3D> createBodyShape() const;
+			void doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D>) override;
+			std::shared_ptr<const CollisionShape3D> createBodyShape() const override;
 
 		private:
 			QDoubleSpinBox *radius;

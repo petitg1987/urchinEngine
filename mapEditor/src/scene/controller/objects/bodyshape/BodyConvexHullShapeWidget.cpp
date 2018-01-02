@@ -1,9 +1,8 @@
 #include <QtWidgets/QLabel>
-#include <QHeaderView>
 #include <QVariant>
+#include <QHeaderView>
 
 #include "BodyConvexHullShapeWidget.h"
-#include "support/SpinBoxStyleHelper.h"
 #include "support/LabelStyleHelper.h"
 #include "support/ButtonStyleHelper.h"
 #include "scene/controller/objects/bodyshape/support/SpinBoxDelegate.h"
@@ -35,10 +34,10 @@ namespace urchin
 		pointsTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
 		pointsTable->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
 
-		SpinBoxDelegate *delegate = new SpinBoxDelegate(NULL, this, pointsTable, pointsTableModel);
+		auto *delegate = new SpinBoxDelegate(nullptr, this, pointsTable, pointsTableModel);
 		pointsTable->setItemDelegate(delegate);
 
-		QHBoxLayout *buttonLayout = new QHBoxLayout();
+		auto *buttonLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonLayout, 2, 0);
 		buttonLayout->setAlignment(Qt::AlignLeft);
 
@@ -53,11 +52,6 @@ namespace urchin
 		connect(removePointButton, SIGNAL(clicked()), this, SLOT(removeSelectedPoint()));
 	}
 
-	BodyConvexHullShapeWidget::~BodyConvexHullShapeWidget()
-	{
-
-	}
-
 	std::string BodyConvexHullShapeWidget::getBodyShapeName() const
 	{
 		return CONVEX_HULL_SHAPE_LABEL;
@@ -65,12 +59,12 @@ namespace urchin
 
 	void BodyConvexHullShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
 	{
-		const CollisionConvexHullShape *convexHullShape = static_cast<const CollisionConvexHullShape *>(shape.get());
+		const auto *convexHullShape = dynamic_cast<const CollisionConvexHullShape *>(shape.get());
 
 		const std::vector<Point3<float>> &points = convexHullShape->getPoints();
-		for(unsigned int i=0; i<points.size(); ++i)
-		{
-			addPoint(points[i]);
+		for (const auto &point : points)
+        {
+			addPoint(point);
 		}
 	}
 
@@ -106,7 +100,7 @@ namespace urchin
 			QVariant valueY = pointsTableModel->data(indexY);
 			QVariant valueZ = pointsTableModel->data(indexZ);
 
-			points.push_back(Point3<float>(valueX.toFloat(), valueY.toFloat(), valueZ.toFloat()));
+			points.emplace_back(Point3<float>(valueX.toFloat(), valueY.toFloat(), valueZ.toFloat()));
 		}
 
 		return points;

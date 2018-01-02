@@ -24,7 +24,7 @@ namespace urchin
 
 		public:
 			explicit BodyCompoundShapeWidget(const SceneObject *);
-			~BodyCompoundShapeWidget() override;
+			~BodyCompoundShapeWidget() override = default;;
 
 			std::string getBodyShapeName() const override;
 			LocalizedShapeTableView *getLocalizedShapeTableView() const;

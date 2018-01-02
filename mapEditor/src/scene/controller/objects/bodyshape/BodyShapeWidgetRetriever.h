@@ -14,7 +14,7 @@ namespace urchin
 	class BodyShapeWidgetRetriever
 	{
 		public:
-			BodyShapeWidgetRetriever(const SceneObject *);
+			explicit BodyShapeWidgetRetriever(const SceneObject *);
 
 			BodyShapeWidget *retrieveShapeWidget(std::shared_ptr<const CollisionShape3D>);
 			BodyShapeWidget *retrieveShapeWidget(CollisionShape3D::ShapeType);

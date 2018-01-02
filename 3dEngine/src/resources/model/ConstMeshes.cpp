@@ -73,6 +73,11 @@ namespace urchin
 		return constMeshes[index];
 	}
 
+	const std::vector<const ConstMesh *> &ConstMeshes::getConstMeshes() const
+	{
+		return constMeshes;
+	}
+
 	const AABBox<float> &ConstMeshes::getOriginalAABBox() const
 	{
 		return *originalBBox;

@@ -41,11 +41,6 @@ namespace urchin
 		connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
 	}
 
-	BodyConeShapeWidget::~BodyConeShapeWidget()
-	{
-
-	}
-
 	std::string BodyConeShapeWidget::getBodyShapeName() const
 	{
 		return CONE_SHAPE_LABEL;

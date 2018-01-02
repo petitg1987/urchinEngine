@@ -15,17 +15,30 @@ namespace urchin
 			CollisionShape3D(),
 			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points))
 	{
+		initialize();
+	}
+
+	CollisionConvexHullShape::CollisionConvexHullShape(const std::shared_ptr<ConvexHullShape3D<float>> &convexHullShape) :
+			CollisionShape3D(),
+			convexHullShape(convexHullShape)
+	{
+		initialize();
+	}
+
+	void CollisionConvexHullShape::initialize()
+	{
 		lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
 
-		initializeConvexHullReduced();
 		initializeDistances();
+		initializeConvexHullReduced();
 	}
 
 	void CollisionConvexHullShape::initializeConvexHullReduced()
 	{
-		convexHullShapeReduced = convexHullShape->resize(-getInnerMargin());
-
-		if(!convexHullShapeReduced)
+		if(minDistanceToCenter > getInnerMargin())
+		{
+			convexHullShapeReduced = convexHullShape->resize(-getInnerMargin());
+		}else
 		{ //impossible to shrink the convex hull correctly
 			refreshInnerMargin(0.0f);
 		}

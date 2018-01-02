@@ -38,11 +38,6 @@ namespace urchin
 		connect(orientation, SIGNAL(currentIndexChanged(int)), this, SLOT(updateBodyShape()));
 	}
 
-	BodyCylinderShapeWidget::~BodyCylinderShapeWidget()
-	{
-
-	}
-
 	std::string BodyCylinderShapeWidget::getBodyShapeName() const
 	{
 		return CYLINDER_SHAPE_LABEL;

@@ -19,11 +19,6 @@ namespace urchin
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 	}
 
-	BodySphereShapeWidget::~BodySphereShapeWidget()
-	{
-
-	}
-
 	std::string BodySphereShapeWidget::getBodyShapeName() const
 	{
 		return SPHERE_SHAPE_LABEL;

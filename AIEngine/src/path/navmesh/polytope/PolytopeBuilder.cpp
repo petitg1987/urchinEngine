@@ -1,4 +1,5 @@
 #include <cassert>
+#include "UrchinCommon.h"
 
 #include "PolytopeBuilder.h"
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
@@ -112,49 +113,41 @@ namespace urchin
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, ConvexHull3D<float> *convexHull, const NavMeshAgent &agent) const
     {
-        const std::map<unsigned int, IndexedTriangle3D<float>> &indexedTriangles = convexHull->getIndexedTriangles();
-        const std::map<unsigned int, ConvexHullPoint<float>> &convexHullPoints = convexHull->getConvexHullPoints();
-
-        std::vector<PointFace> pointFaces;
-        pointFaces.reserve(convexHullPoints.size());
-        for(const auto &convexHullPoint : convexHullPoints)
+        std::map<unsigned int, Plane<float>> expandedPlanes;
+        for(const auto &itTriangles : convexHull->getIndexedTriangles())
         {
-            pointFaces.emplace_back(PointFace(convexHullPoint.second.point, {}));
+            const Point3<float> &point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
+            const Point3<float> &point2 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(1)).point;
+            const Point3<float> &point3 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(2)).point;
+            expandedPlanes.insert(std::pair<unsigned int, Plane<float>>(itTriangles.first, createExpandedPlane(point1, point2, point3, agent)));
         }
 
+        std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::instance()->resizeConvexHull(*convexHull, expandedPlanes);
+
         std::vector<std::vector<unsigned int>> pointIndicesByFaces;
-        pointIndicesByFaces.reserve(indexedTriangles.size());
-        std::vector<Plane<float>> expandedPlanes;
-        expandedPlanes.reserve(indexedTriangles.size());
-        unsigned int faceIndex=0;
-        for(const auto &indexedTriangle : indexedTriangles)
+        pointIndicesByFaces.reserve(expandedConvexHull->getIndexedTriangles().size());
+        for(const auto &indexedTriangle : expandedConvexHull->getIndexedTriangles())
         {
             const unsigned int *indices = indexedTriangle.second.getIndices();
 
-            unsigned int point0Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[0])));
-            pointFaces[point0Index].faceIndices.push_back(faceIndex);
-
-            unsigned int point1Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[1])));
-            pointFaces[point1Index].faceIndices.push_back(faceIndex);
-
-            unsigned int point2Index = static_cast<unsigned int>(std::distance(convexHullPoints.begin(), convexHullPoints.find(indices[2])));
-            pointFaces[point2Index].faceIndices.push_back(faceIndex);
+            auto point0Index = static_cast<unsigned int>(std::distance(expandedConvexHull->getConvexHullPoints().begin(), expandedConvexHull->getConvexHullPoints().find(indices[0])));
+            auto point1Index = static_cast<unsigned int>(std::distance(expandedConvexHull->getConvexHullPoints().begin(), expandedConvexHull->getConvexHullPoints().find(indices[1])));
+            auto point2Index = static_cast<unsigned int>(std::distance(expandedConvexHull->getConvexHullPoints().begin(), expandedConvexHull->getConvexHullPoints().find(indices[2])));
 
             pointIndicesByFaces.emplace_back(std::vector<unsigned int>({point0Index, point1Index, point2Index}));
-            expandedPlanes.emplace_back(createExpandedPlane(pointFaces[point0Index].point, pointFaces[point1Index].point, pointFaces[point2Index].point, agent));
-
-            faceIndex++;
         }
 
-        std::vector<Point3<float>> expandedPoints = expandPoints(pointFaces, expandedPlanes);
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(pointIndicesByFaces.size());
         for(const auto &pointIndicesByFace : pointIndicesByFaces)
         {
-            expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(pointIndicesByFace, expandedPoints));
+            expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(pointIndicesByFace, expandedConvexHull->getPoints()));
         }
 
-        return std::make_unique<Polytope>(name, expandedSurfaces);
+        std::unique_ptr<Polytope> polytope = std::make_unique<Polytope>(name, expandedSurfaces);
+        polytope->setWalkableCandidate(false);
+
+        return polytope;
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, Cylinder<float> *cylinder, const NavMeshAgent &agent) const
@@ -199,7 +192,7 @@ namespace urchin
         }
 
         std::vector<Plane<float>> expandedPlanes = createExpandedBoxPlanes(points, navMeshAgent);
-        return expandPoints(pointFaces, expandedPlanes);
+        return expandBoxPoints(pointFaces, expandedPlanes);
     }
 
     /**
@@ -231,7 +224,7 @@ namespace urchin
         return plane;
     }
 
-    std::vector<Point3<float>> PolytopeBuilder::expandPoints(const std::vector<PointFace> &pointFaces, const std::vector<Plane<float>> &expandedPlanes) const
+    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<PointFace> &pointFaces, const std::vector<Plane<float>> &expandedPlanes) const
     {
         std::vector<Point3<float>> expandedPoints;
         expandedPoints.reserve(pointFaces.size());
@@ -239,83 +232,26 @@ namespace urchin
         for(auto &pointFace : pointFaces)
         {
             #ifdef _DEBUG
-                if(pointFace.faceIndices.size() < 3)
-                {
-                    throw std::runtime_error("A polyhedron (3D) point must belong at least to 3 faces");
-                }
+                assert(pointFace.faceIndices.size()==3);
             #endif
 
-            std::vector<Plane<float>> threePlanes = findThreeNonParallelPlanes(pointFace.faceIndices, expandedPlanes);
-            Point3<float> newPoint;
-            if (threePlanes.size() == 3)
-            {
-                Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
-                Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
-                Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
+            std::vector<Plane<float>> threePlanes = {expandedPlanes[pointFace.faceIndices[0]],
+                                                     expandedPlanes[pointFace.faceIndices[1]],
+                                                     expandedPlanes[pointFace.faceIndices[2]]};
 
-                newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
-                newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
-                newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-                newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
-            } else
-            { //useless point found on polytope (could be removed from polytope without impact)
-                std::stringstream logStream;
-                logStream.precision(std::numeric_limits<float>::max_digits10);
-                logStream << "Impossible to resize polytope because of useless point." << std::endl;
-                logStream << " - Point: " << pointFace.point << " (";
-                for(unsigned int faceIndex : pointFace.faceIndices)
-                {
-                    logStream << faceIndex <<" ";
-                }
-                logStream << ")"<<std::endl;
-                logStream << " - Expanded planes: " << std::endl;
-                for(const auto &expandedPlane : expandedPlanes)
-                {
-                    logStream << expandedPlane <<std::endl;
-                }
-                Logger::logger().logError(logStream.str());
-            }
+            Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
+            Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
+            Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
+
+            Point3<float> newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
+            newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
+            newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
+            newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
 
             expandedPoints.emplace_back(newPoint);
         }
 
         return expandedPoints;
-    }
-
-    std::vector<Plane<float>> PolytopeBuilder::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::vector<Plane<float>> &allPlanes) const
-    {
-        constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
-
-        std::vector<Plane<float>> nonParallelPlanes;
-        nonParallelPlanes.reserve(3);
-
-        Plane<float> plane1 = allPlanes.at(planeIndices[0]);
-        for(unsigned int i=1; i<planeIndices.size(); ++i)
-        {
-            Plane<float> plane2 = allPlanes.at(planeIndices[i]);
-            if(plane1.getNormal().crossProduct(plane2.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE)
-            { //planes are parallel: continue on next plane
-                continue;
-            }
-
-            for(unsigned int j=i+1; j<planeIndices.size(); ++j)
-            {
-                Plane<float> plane3 = allPlanes.at(planeIndices[j]);
-
-                Vector3<float> n2CrossN3 = plane2.getNormal().crossProduct(plane3.getNormal());
-                if(n2CrossN3.squareLength() < 0.0
-                   || plane3.getNormal().crossProduct(plane1.getNormal()).squareLength() < PARALLEL_COMPARISON_TOLERANCE
-                   || plane1.getNormal().dotProduct(n2CrossN3)==0.0) //additional check due to float imprecision
-                { //planes are parallel: continue on next plane
-                    continue;
-                }
-
-                nonParallelPlanes = {plane1, plane2, plane3};
-                return nonParallelPlanes;
-            }
-        }
-
-        return nonParallelPlanes;
     }
 
     /**

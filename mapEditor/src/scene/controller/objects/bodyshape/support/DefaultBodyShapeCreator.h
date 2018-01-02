@@ -13,11 +13,13 @@ namespace urchin
 	{
 
 		public:
-			DefaultBodyShapeCreator(const SceneObject *);
+			explicit DefaultBodyShapeCreator(const SceneObject *);
 
 			std::shared_ptr<const CollisionShape3D> createDefaultBodyShape(CollisionShape3D::ShapeType, bool) const;
 
 		private:
+			std::shared_ptr<ConvexHullShape3D<float>> buildConvexHullShape(const Model *) const;
+
 			const SceneObject *sceneObject;
 	};
 

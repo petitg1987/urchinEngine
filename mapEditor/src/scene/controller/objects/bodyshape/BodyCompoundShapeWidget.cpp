@@ -50,11 +50,6 @@ namespace urchin
 		bodyShapeWidget = nullptr;
 	}
 
-	BodyCompoundShapeWidget::~BodyCompoundShapeWidget()
-	{
-
-	}
-
 	std::string BodyCompoundShapeWidget::getBodyShapeName() const
 	{
 		return COMPOUND_SHAPE_LABEL;

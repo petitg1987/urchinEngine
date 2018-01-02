@@ -12,7 +12,7 @@ namespace urchin
 		QLabel *halfSizesLabel = new QLabel("Half Sizes:", this);
 		mainLayout->addWidget(halfSizesLabel, 0, 0);
 
-		QHBoxLayout *halfSizeLayout = new QHBoxLayout();
+		auto *halfSizeLayout = new QHBoxLayout();
 		mainLayout->addLayout(halfSizeLayout, 0, 1);
 		halfSizeX = new QDoubleSpinBox();
 		halfSizeLayout->addWidget(halfSizeX);
@@ -31,11 +31,6 @@ namespace urchin
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 	}
 
-	BodyBoxShapeWidget::~BodyBoxShapeWidget()
-	{
-
-	}
-
 	std::string BodyBoxShapeWidget::getBodyShapeName() const
 	{
 		return BOX_SHAPE_LABEL;
@@ -43,7 +38,7 @@ namespace urchin
 
 	void BodyBoxShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
 	{
-		const CollisionBoxShape *boxShape = static_cast<const CollisionBoxShape *>(shape.get());
+		auto *boxShape = dynamic_cast<const CollisionBoxShape *>(shape.get());
 
 		const Vector3<float> &halfSizes = boxShape->getHalfSizes();
 		halfSizeX->setValue(halfSizes.X);

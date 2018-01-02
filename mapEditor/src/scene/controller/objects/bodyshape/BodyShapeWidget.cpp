@@ -16,11 +16,6 @@ namespace urchin
 		mainLayout->setContentsMargins(0, 0, 0, 0);
 	}
 
-	BodyShapeWidget::~BodyShapeWidget()
-	{
-
-	}
-
 	const SceneObject *BodyShapeWidget::getSceneObject() const
 	{
 		return sceneObject;
