@@ -47,8 +47,8 @@ void main(){
 
     vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
     float halfLengthGrass = 0.6f; //TODO configurable
-    float heightGrass = 0.8f; //TODO configurable
-    int nbGrassTexture = 4; //TODO configurable
+    float heightGrass = 0.4f; //TODO configurable
+    int nbGrassTexture = 1; //TODO configurable
 
 	vec3 vWindDirection = vec3(0.707, 0.0, 0.707); //TODO configurable
 	float fWindStrength = 0.6f; //TODO configurable

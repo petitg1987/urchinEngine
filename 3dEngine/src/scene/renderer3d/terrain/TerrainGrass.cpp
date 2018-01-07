@@ -68,7 +68,7 @@ namespace urchin
         std::default_random_engine generator;
         std::uniform_real_distribution<float> distribution(-0.2f, 0.2f); //TODO configurable ?
 
-        float grassOffset = 0.4f; //TODO make it configurable
+        float grassOffset = 0.6f; //TODO make it configurable
         unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() / grassOffset;
         unsigned int grassZQuantity = mesh->getXZScale() * mesh->getZSize() / grassOffset;
         grassCenterVertices.reserve(grassXQuantity * grassZQuantity);
