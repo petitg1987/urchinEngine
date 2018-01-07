@@ -41,7 +41,7 @@ namespace urchin
 			const unsigned int numFrames, numBones, frameRate;
 			const Bone *const *const skeletonFrames;
 			const AABBox<float> *const *const bboxes; //bounding boxes of each animation frames (not transformed)
-			AABBox<float> *originalGlobalBBox; //original global bounding box (not transformed)
+			AABBox<float> originalGlobalBBox; //original global bounding box (not transformed)
 			std::vector<AABBox<float>> originalGlobalSplittedBBox;
 	};
 

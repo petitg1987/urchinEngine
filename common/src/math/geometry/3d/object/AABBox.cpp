@@ -1,4 +1,5 @@
 #include <cassert>
+#include <limits>
 
 #include "AABBox.h"
 
@@ -13,7 +14,7 @@ namespace urchin
 
 	}
 
-	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Point3<T> &max):
+	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Point3<T> &max) :
 		boxShape(BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0))),
 		min(min),
 		max(max)
@@ -21,12 +22,48 @@ namespace urchin
 
 	}
 
-	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal):
+	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal) :
 		boxShape(BoxShape<T>(Vector3<T>(diagonal.X/2.0, diagonal.Y/2.0, diagonal.Z/2.0))),
 		min(min),
 		max(min.translate(diagonal))
 	{
 
+	}
+
+	template<class T> AABBox<T>::AABBox(const std::vector<Point3<T>> &points) :
+            min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
+            max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max()))
+	{
+		for(const auto &point : points)
+		{
+			if(min.X > point.X)
+			{
+				min.X = point.X;
+			}
+			if(min.Y > point.Y)
+			{
+				min.Y = point.Y;
+			}
+			if(min.Z > point.Z)
+			{
+				min.Z = point.Z;
+			}
+
+			if(max.X < point.X)
+			{
+				max.X = point.X;
+			}
+			if(max.Y < point.Y)
+			{
+				max.Y = point.Y;
+			}
+			if(max.Z < point.Z)
+			{
+				max.Z = point.Z;
+			}
+		}
+
+		boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
 	}
 
 	template<class T> const T AABBox<T>::getHalfSize(unsigned int index) const

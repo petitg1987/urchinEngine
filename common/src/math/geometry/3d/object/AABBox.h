@@ -22,8 +22,9 @@ namespace urchin
 	{
 		public:
 			AABBox();
-			explicit AABBox(const Point3<T> &, const Point3<T> &);
-			explicit AABBox(const Point3<T> &, const Vector3<T>&);
+			AABBox(const Point3<T> &, const Point3<T> &);
+			AABBox(const Point3<T> &, const Vector3<T>&);
+			explicit AABBox(const std::vector<Point3<T>> &);
 
 			const T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;

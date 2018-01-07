@@ -43,7 +43,7 @@ namespace urchin
 
 			unsigned int getAmbientOcclusionTextureID() const;
 
-			void updateAOTexture(const Camera *const);
+			void updateAOTexture(const Camera *);
 			void loadAOTexture(unsigned int) const;
 
 		private:

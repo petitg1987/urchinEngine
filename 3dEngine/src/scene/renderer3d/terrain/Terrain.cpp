@@ -143,11 +143,11 @@ namespace urchin
         glUniform1f(ambientLoc, ambient);
     }
 
-    void Terrain::display(const Matrix4<float> &viewMatrix, float invFrameRate) const
+    void Terrain::display(const Camera *camera, float invFrameRate) const
     {
         ShaderManager::instance()->bind(terrainShader);
 
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
+        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
         material->loadTextures();
 
         glBindVertexArray(vertexArrayObject);
@@ -155,7 +155,7 @@ namespace urchin
 
         if(grass!=nullptr)
         {
-            grass->display(viewMatrix, invFrameRate);
+            grass->display(camera, invFrameRate);
         }
     }
 }

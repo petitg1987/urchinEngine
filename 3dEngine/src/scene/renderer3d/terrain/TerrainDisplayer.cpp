@@ -26,14 +26,14 @@ namespace urchin
         }
     }
 
-    void TerrainDisplayer::display(const Matrix4<float> &viewMatrix, float invFrameRate) const
+    void TerrainDisplayer::display(const Camera *camera, float invFrameRate) const
     {
         glEnable(GL_PRIMITIVE_RESTART);
         glPrimitiveRestartIndex(RESTART_INDEX);
 
         for(const auto terrain : terrains)
         {
-            terrain->display(viewMatrix, invFrameRate);
+            terrain->display(camera, invFrameRate);
         }
 
         glDisable(GL_PRIMITIVE_RESTART);

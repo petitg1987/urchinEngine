@@ -429,30 +429,7 @@ namespace urchin
 		}
 
 		//build shadow receiver/caster bounding box from points
-		Point3<float> min(shadowReceiverAndCasterVertex[0]);
-		Point3<float> max(shadowReceiverAndCasterVertex[0]);
-		for(unsigned int i=1; i<shadowReceiverAndCasterVertex.size(); ++i)
-		{
-			if(min.X > shadowReceiverAndCasterVertex[i].X)
-				min.X = shadowReceiverAndCasterVertex[i].X;
-
-			if(min.Y > shadowReceiverAndCasterVertex[i].Y)
-				min.Y = shadowReceiverAndCasterVertex[i].Y;
-
-			if(min.Z > shadowReceiverAndCasterVertex[i].Z)
-				min.Z = shadowReceiverAndCasterVertex[i].Z;
-
-			if(max.X < shadowReceiverAndCasterVertex[i].X)
-				max.X = shadowReceiverAndCasterVertex[i].X;
-
-			if(max.Y < shadowReceiverAndCasterVertex[i].Y)
-				max.Y = shadowReceiverAndCasterVertex[i].Y;
-
-			if(max.Z < shadowReceiverAndCasterVertex[i].Z)
-				max.Z = shadowReceiverAndCasterVertex[i].Z;
-		}
-
-		return AABBox<float>(min, max);
+		return AABBox<float>(shadowReceiverAndCasterVertex);
 	}
 
 	float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float> &splittedFrustumLightSpace) const

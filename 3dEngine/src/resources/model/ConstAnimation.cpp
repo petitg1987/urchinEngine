@@ -16,39 +16,12 @@ namespace urchin
 		bboxes(bboxes)
 	{
 		//determines the bounding box
-		Point3<float> globalMin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-		Point3<float> globalMax(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-
-		for(unsigned int i=0; i<numFrames; ++i)
+		originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
+		for(unsigned int i=i; i<numFrames; ++i)
 		{
-			if(globalMin.X > bboxes[i]->getMin().X)
-			{
-				globalMin.X = bboxes[i]->getMin().X;
-			}
-			if(globalMin.Y > bboxes[i]->getMin().Y)
-			{
-				globalMin.Y = bboxes[i]->getMin().Y;
-			}
-			if(globalMin.Z > bboxes[i]->getMin().Z)
-			{
-				globalMin.Z = bboxes[i]->getMin().Z;
-			}
-
-			if(globalMax.X < bboxes[i]->getMax().X)
-			{
-				globalMax.X = bboxes[i]->getMax().X;
-			}
-			if(globalMax.Y < bboxes[i]->getMax().Y)
-			{
-				globalMax.Y = bboxes[i]->getMax().Y;
-			}
-			if(globalMax.Z < bboxes[i]->getMax().Z)
-			{
-				globalMax.Z = bboxes[i]->getMax().Z;
-			}
+			originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
 		}
-		originalGlobalBBox = new AABBox<float>(globalMin, globalMax);
-		originalGlobalSplittedBBox = SplitBoundingBox().split(*originalGlobalBBox);
+		originalGlobalSplittedBBox = SplitBoundingBox().split(originalGlobalBBox);
 	}
 
 	ConstAnimation::~ConstAnimation()
@@ -61,7 +34,6 @@ namespace urchin
 
 		delete [] skeletonFrames;
 		delete [] bboxes;
-		delete originalGlobalBBox;
 	}
 
 	const std::string &ConstAnimation::getAnimationFilename() const
@@ -91,7 +63,7 @@ namespace urchin
 
 	const AABBox<float> &ConstAnimation::getOriginalGlobalAABBox() const
 	{
-		return *originalGlobalBBox;
+		return originalGlobalBBox;
 	}
 
 	const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplittedAABBox() const

@@ -513,7 +513,7 @@ namespace urchin
 		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
 		modelDisplayer->display(camera->getViewMatrix());
 
-		terrainDisplayer->display(camera->getViewMatrix(), invFrameRate);
+		terrainDisplayer->display(camera, invFrameRate);
 
 		geometryDisplayer->display(camera->getViewMatrix());
 

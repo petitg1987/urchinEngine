@@ -328,7 +328,7 @@ namespace urchin
 		return ambientOcclusionTexID;
 	}
 
-	void AmbientOcclusionManager::updateAOTexture(const Camera *const camera)
+	void AmbientOcclusionManager::updateAOTexture(const Camera *camera)
 	{
 		GLint activeFBO;
 		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);

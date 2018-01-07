@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <random>
+#include <chrono>
 
 #include "TerrainGrass.h"
 #include "resources/image/Image.h"
@@ -50,25 +51,22 @@ namespace urchin
 
     void TerrainGrass::initialize(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &position)
     {
-        std::vector<Point3<float>> grassCenterVertices = generateGrassVertices(mesh, position);
-        grassQuantity = grassCenterVertices.size();
+        generateGrassVertices(mesh, position);
 
         glBindVertexArray(vertexArrayObject);
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glBufferData(GL_ARRAY_BUFFER, grassCenterVertices.size()*sizeof(float)*3, &grassCenterVertices[0], GL_STATIC_DRAW); //TODO GL_?_DRAW
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+//        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+//        glBufferData(GL_ARRAY_BUFFER, grassCenterVertices.size()*sizeof(float)*3, &grassCenterVertices[0], GL_STATIC_DRAW); //TODO GL_?_DRAW
+//        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+//        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         isInitialized = true;
     }
 
-    std::vector<Point3<float>> TerrainGrass::generateGrassVertices(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) const
+    void TerrainGrass::generateGrassVertices(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
     {
         std::default_random_engine generator;
         std::uniform_real_distribution<float> distribution(-0.2f, 0.2f); //TODO configurable ?
-
-        std::vector<Point3<float>> grassCenterVertices;
 
         float grassOffset = 0.4f; //TODO make it configurable
         unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() / grassOffset;
@@ -91,8 +89,6 @@ namespace urchin
                 grassCenterVertices.emplace_back(Point3<float>(xValue, yValue, zValue));
             }
         }
-
-        return grassCenterVertices;
     }
 
     Point3<float> TerrainGrass::retrieveGlobalVertex(const Point2<float> &localXzCoordinate, const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) const
@@ -109,7 +105,7 @@ namespace urchin
         return mesh->getVertices()[xIndex + zIndex*mesh->getXSize()] + terrainPosition;
     }
 
-    void TerrainGrass::display(const Matrix4<float> &viewMatrix, float invFrameRate)
+    void TerrainGrass::display(const Camera *camera, float invFrameRate)
     {
         if(!isInitialized)
         {
@@ -126,10 +122,15 @@ namespace urchin
 
         sumTimeStep += invFrameRate;
         glUniform1f(sumTimeStepLoc, sumTimeStep);
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
+        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_POINTS, 0, grassQuantity);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
+        glBufferData(GL_ARRAY_BUFFER, grassCenterVertices.size() * sizeof(float) * 3, &grassCenterVertices[0], GL_STATIC_DRAW); //TODO GL_?_DRAW
+        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glDrawArrays(GL_POINTS, 0, grassCenterVertices.size());
 
         glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
         glEnable(GL_CULL_FACE);

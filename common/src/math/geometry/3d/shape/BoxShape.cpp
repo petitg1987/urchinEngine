@@ -6,6 +6,12 @@
 namespace urchin
 {
 
+	template<class T> BoxShape<T>::BoxShape() :
+			halfSizes(Vector3<T>(0.0, 0.0, 0.0))
+	{
+
+	}
+
 	/**
 	 * @param halfSizes Half sizes (width, height and depth) of box
 	 */
