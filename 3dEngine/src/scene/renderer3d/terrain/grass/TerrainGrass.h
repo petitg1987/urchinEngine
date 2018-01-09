@@ -5,6 +5,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
+#include "scene/renderer3d/terrain/grass/GrassPatchOctree.h"
 #include "scene/renderer3d/terrain/TerrainMesh.h"
 #include "scene/renderer3d/camera/Camera.h"
 
@@ -24,8 +25,9 @@ namespace urchin
             void display(const Camera *, float);
 
         private:
-            void generateGrassVertices(const std::unique_ptr<TerrainMesh> &, const Point3<float> &);
+            void generateGrassPatches(const std::unique_ptr<TerrainMesh> &, const Point3<float> &);
             Point3<float> retrieveGlobalVertex(const Point2<float> &, const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &) const;
+            void buildGrassOctree(const std::vector<GrassPatchOctree *> &, unsigned int, unsigned int);
 
             bool isInitialized;
 
@@ -45,7 +47,7 @@ namespace urchin
             float sumTimeStep;
 
             Image *grassTexture;
-            std::vector<Point3<float>> grassCenterVertices;
+            GrassPatchOctree *mainGrassOctree;
     };
 
 }

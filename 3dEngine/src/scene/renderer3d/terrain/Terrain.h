@@ -8,7 +8,7 @@
 
 #include "scene/renderer3d/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/terrain/TerrainMesh.h"
-#include "scene/renderer3d/terrain/TerrainGrass.h"
+#include "scene/renderer3d/terrain/grass/TerrainGrass.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "resources/image/Image.h"
 

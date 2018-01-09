@@ -66,6 +66,14 @@ namespace urchin
 		boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
 	}
 
+	template<class T> AABBox<T>::AABBox(const AABBox<T> &aabBox) :
+			boxShape(aabBox.getHalfSizes()),
+			min(aabBox.getMin()),
+			max(aabBox.getMax())
+	{
+
+	}
+
 	template<class T> const T AABBox<T>::getHalfSize(unsigned int index) const
 	{
 		return boxShape.getHalfSize(index);
