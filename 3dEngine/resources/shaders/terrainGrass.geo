@@ -8,8 +8,10 @@ uniform mat4 mProjection;
 uniform mat4 mView;
 uniform float sumTimeStep;
 
+in vec3 normal[];
+
 smooth out vec2 vertexTextCoordinates;
-out vec3 normal;
+out vec3 grassNormal;
 
 float PHI = 1.61803398874989484820459 * 00000.1; //golden ratio
 float PI  = 3.14159265358979323846264 * 00000.1; //PI
@@ -60,6 +62,8 @@ void main(){
     }
     fWindPower *= fWindStrength;
 
+    grassNormal = normal[0];
+
     for(int i = 0; i < 3; i++)
 	{
 	    //texture selection
@@ -69,9 +73,6 @@ void main(){
 
         //wind
         vec3 vBaseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * vBaseDir[i];
-
-        //TODO use terrain normal
-        normal = vec3(0.5, 1.0, 0.5);
 
         //top left
         vec3 localTopLeft = grassCenterPosition - vBaseDirRotated*halfLengthGrass + vWindDirection*fWindPower;

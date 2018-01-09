@@ -57,7 +57,7 @@ namespace urchin
         return children;
     }
 
-    void TerrainGrassQuadtree::addVertex(const Point3<float> &vertex)
+    void TerrainGrassQuadtree::addVertex(const Point3<float> &vertex, const Vector3<float> &normal)
     {
         #ifdef _DEBUG
             assert(children.empty());
@@ -65,6 +65,7 @@ namespace urchin
         #endif
 
         grassVertices.push_back(vertex);
+        normals.push_back(normal);
     }
 
     const std::vector<Point3<float>> &TerrainGrassQuadtree::getGrassVertices() const
@@ -72,4 +73,8 @@ namespace urchin
         return grassVertices;
     }
 
+    const std::vector<Vector3<float>> &TerrainGrassQuadtree::getGrassNormals() const
+    {
+        return normals;
+    }
 }

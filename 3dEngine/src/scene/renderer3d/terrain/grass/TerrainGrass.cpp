@@ -15,7 +15,7 @@ namespace urchin
             sumTimeStep(0.0f),
             mainGrassQuadtree(nullptr)
     {
-        glGenBuffers(1, bufferIDs);
+        glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
         terrainGrassShader = ShaderManager::instance()->createProgram("terrainGrass.vert", "terrainGrass.frag");
@@ -36,7 +36,7 @@ namespace urchin
     TerrainGrass::~TerrainGrass()
     {
         glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(1, bufferIDs);
+        glDeleteBuffers(2, bufferIDs);
 
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
@@ -57,9 +57,14 @@ namespace urchin
         generateGrass(mesh, position);
 
         glBindVertexArray(vertexArrayObject);
+
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
         glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
         glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+        glEnableVertexAttribArray(SHADER_NORMAL);
+        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         isInitialized = true;
     }
@@ -95,20 +100,24 @@ namespace urchin
             {
                 float xValue = xFixedValue + distribution(generator);
                 float zValue = (startZ + zIndex * grassOffset) + distribution(generator);
-                float yValue = retrieveGlobalVertex(Point2<float>(xValue, zValue), mesh, terrainPosition).Y;
+                unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue), mesh);
+                float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
+
+                Point3<float> grassVertex(xValue, yValue, zValue);
+                Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
                 unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
                 unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
                 unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
 
-                leafGrassPatches[patchIndex]->addVertex(Point3<float>(xValue, yValue, zValue));
+                leafGrassPatches[patchIndex]->addVertex(grassVertex, grassNormal);
             }
         }
 
         buildGrassQuadtree(leafGrassPatches, patchQuantityX, patchQuantityZ);
     }
 
-    Point3<float> TerrainGrass::retrieveGlobalVertex(const Point2<float> &localXzCoordinate, const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) const
+    unsigned int TerrainGrass::retrieveVertexIndex(const Point2<float> &localXzCoordinate, const std::unique_ptr<TerrainMesh> &mesh) const
     {
         Point3<float> localCoordinate = Point3<float>(localXzCoordinate.X, 0.0f, localXzCoordinate.Y);
         Point3<float> farLeftCoordinate = localCoordinate - mesh->getVertices()[0];
@@ -119,7 +128,7 @@ namespace urchin
         float zInterval = mesh->getVertices()[mesh->getXSize()].Z - mesh->getVertices()[0].Z;
         int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Z / zInterval)), 0, static_cast<int>(mesh->getZSize() - 1));
 
-        return mesh->getVertices()[xIndex + zIndex*mesh->getXSize()] + terrainPosition;
+        return xIndex + zIndex*mesh->getXSize();
     }
 
     void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ)
@@ -189,7 +198,6 @@ namespace urchin
         glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
 
         glBindVertexArray(vertexArrayObject);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
 
         std::stack<const TerrainGrassQuadtree *> grassQuadtrees;
         grassQuadtrees.push(mainGrassQuadtree);
@@ -202,7 +210,10 @@ namespace urchin
             {
                 if(grassQuadtree->isLeaf())
                 {
+                    glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
                     glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassVertices().size() * sizeof(float) * 3, &grassQuadtree->getGrassVertices()[0], GL_DYNAMIC_DRAW);
+                    glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
+                    glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassNormals().size() * sizeof(float) * 3, &grassQuadtree->getGrassNormals()[0], GL_DYNAMIC_DRAW);
                     glDrawArrays(GL_POINTS, 0, grassQuadtree->getGrassVertices().size());
                 }else
                 {

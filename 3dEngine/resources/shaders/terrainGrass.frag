@@ -1,7 +1,7 @@
 #version 330
 
 smooth in vec2 vertexTextCoordinates;
-in vec3 normal;
+in vec3 grassNormal;
 
 uniform sampler2D grassTex;
 
@@ -17,5 +17,5 @@ void main(){
 		discard;
 
 	fragColor = vec4(color.xyz, color.a);
-	fragNormalAndAmbient = vec4(normal, 0.3f); //TODO use ambient from terrain
+	fragNormalAndAmbient = vec4(grassNormal, 0.3f); //TODO use ambient from terrain
 }

@@ -26,7 +26,7 @@ namespace urchin
 
         private:
             void generateGrass(const std::unique_ptr<TerrainMesh> &, const Point3<float> &);
-            Point3<float> retrieveGlobalVertex(const Point2<float> &, const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &) const;
+            unsigned int retrieveVertexIndex(const Point2<float> &, const std::unique_ptr<TerrainMesh> &mesh) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &, unsigned int, unsigned int);
 
             bool isInitialized;
@@ -34,14 +34,16 @@ namespace urchin
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 
-            unsigned int bufferIDs[5], vertexArrayObject;
+            unsigned int bufferIDs[2], vertexArrayObject;
             enum //buffer IDs indices
             {
-                VAO_VERTEX_POSITION = 0
+                VAO_VERTEX_POSITION = 0,
+                VAO_NORMAL
             };
             enum //shader input
             {
-                SHADER_VERTEX_POSITION = 0
+                SHADER_VERTEX_POSITION = 0,
+                SHADER_NORMAL
             };
             unsigned int terrainGrassShader;
             int mProjectionLoc, mViewLoc, sumTimeStepLoc;
