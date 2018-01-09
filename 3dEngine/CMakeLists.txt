@@ -201,8 +201,8 @@ set(SOURCE_FILES
         src/loader/image/LoaderPNG.h
         src/scene/renderer3d/terrain/grass/TerrainGrass.cpp
         src/scene/renderer3d/terrain/grass/TerrainGrass.h
-        src/scene/renderer3d/terrain/grass/GrassPatchOctree.cpp
-        src/scene/renderer3d/terrain/grass/GrassPatchOctree.h)
+        src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.cpp
+        src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

@@ -32,7 +32,7 @@ namespace urchin
 
 		private:
 			ShaderManager();
-			virtual ~ShaderManager();
+			~ShaderManager() override;
 
 			std::string readEntireFile(const std::string &);
 			void clearProgram(unsigned int);

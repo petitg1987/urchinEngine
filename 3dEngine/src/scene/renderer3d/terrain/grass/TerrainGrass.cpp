@@ -3,7 +3,6 @@
 #include <stack>
 
 #include "TerrainGrass.h"
-#include "resources/image/Image.h"
 #include "resources/MediaManager.h"
 #include "utils/shader/ShaderManager.h"
 
@@ -11,8 +10,10 @@ namespace urchin
 {
 
     TerrainGrass::TerrainGrass(const std::string &grassFilename) :
+            grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
+            grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             sumTimeStep(0.0f),
-            mainGrassOctree(nullptr)
+            mainGrassQuadtree(nullptr)
     {
         glGenBuffers(1, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -40,7 +41,7 @@ namespace urchin
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
         grassTexture->release();
-        delete mainGrassOctree;
+        delete mainGrassQuadtree;
     }
 
     void TerrainGrass::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
@@ -53,7 +54,7 @@ namespace urchin
 
     void TerrainGrass::initialize(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &position)
     {
-        generateGrassPatches(mesh, position);
+        generateGrass(mesh, position);
 
         glBindVertexArray(vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
@@ -63,7 +64,7 @@ namespace urchin
         isInitialized = true;
     }
 
-    void TerrainGrass::generateGrassPatches(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
+    void TerrainGrass::generateGrass(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
     {
         std::default_random_engine generator;
         std::uniform_real_distribution<float> distribution(-0.2f, 0.2f); //TODO configurable
@@ -72,17 +73,16 @@ namespace urchin
         unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() / grassOffset;
         unsigned int grassZQuantity = mesh->getXZScale() * mesh->getZSize() / grassOffset;
 
-        float patchSize = 30.0f; //TODO configurable
-        unsigned int patchQuantityX = mesh->getXZScale() * mesh->getXSize() / patchSize;
-        unsigned int patchQuantityZ = mesh->getXZScale() * mesh->getZSize() / patchSize;
+        unsigned int patchQuantityX = mesh->getXZScale() * mesh->getXSize() / grassPatchSize;
+        unsigned int patchQuantityZ = mesh->getXZScale() * mesh->getZSize() / grassPatchSize;
         float adjustedPatchSizeX = mesh->getXZScale() * mesh->getXSize() / patchQuantityX;
         float adjustedPatchSizeZ = mesh->getXZScale() * mesh->getZSize() / patchQuantityZ;
 
-        std::vector<GrassPatchOctree *> leafGrassPatches;
+        std::vector<TerrainGrassQuadtree *> leafGrassPatches;
         leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
         for(unsigned int i=0; i<patchQuantityX * patchQuantityZ; ++i)
         {
-            leafGrassPatches.push_back(new GrassPatchOctree());
+            leafGrassPatches.push_back(new TerrainGrassQuadtree());
         }
 
         float startX = mesh->getVertices()[0].X;
@@ -105,7 +105,7 @@ namespace urchin
             }
         }
 
-        buildGrassOctree(leafGrassPatches, patchQuantityX, patchQuantityZ);
+        buildGrassQuadtree(leafGrassPatches, patchQuantityX, patchQuantityZ);
     }
 
     Point3<float> TerrainGrass::retrieveGlobalVertex(const Point2<float> &localXzCoordinate, const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition) const
@@ -122,53 +122,51 @@ namespace urchin
         return mesh->getVertices()[xIndex + zIndex*mesh->getXSize()] + terrainPosition;
     }
 
-    void TerrainGrass::buildGrassOctree(const std::vector<GrassPatchOctree *> &leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ)
+    void TerrainGrass::buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches, unsigned int leafQuantityX, unsigned int leafQuantityZ)
     {
-        constexpr unsigned int MAX_DEPTH = 4;
+        std::vector<TerrainGrassQuadtree *> childrenGrassQuadtree = leafGrassPatches;
+        unsigned int childrenNbQuadtreeX = leafQuantityX;
+        unsigned int childrenNbQuadtreeZ = leafQuantityZ;
 
-        std::vector<GrassPatchOctree *> childrenGrassOctree = leafGrassPatches;
-        unsigned int childrenNbOctreeX = leafQuantityX;
-        unsigned int childrenNbOctreeZ = leafQuantityZ;
-
-        unsigned int depth = MAX_DEPTH;
+        unsigned int depth = grassQuadtreeDepth;
         while(depth >= 1)
         {
-            auto depthNbOctreeX = static_cast<unsigned int>(MathAlgorithm::pow(2, depth));
-            unsigned int depthNbOctreeZ = depthNbOctreeX;
-            unsigned int depthNbOctree = depthNbOctreeX * depthNbOctreeZ;
-            if(std::sqrt(childrenGrassOctree.size()) >= std::sqrt(depthNbOctree)*2)
+            auto depthNbQuadtreeX = static_cast<unsigned int>(MathAlgorithm::pow(2, depth));
+            unsigned int depthNbQuadtreeZ = depthNbQuadtreeX;
+            unsigned int depthNbQuadtree = depthNbQuadtreeX * depthNbQuadtreeZ;
+            if(std::sqrt(childrenGrassQuadtree.size()) >= std::sqrt(depthNbQuadtree)*2)
             {
-                std::vector<GrassPatchOctree *> depthGrassOctree;
-                depthGrassOctree.reserve(depthNbOctree);
-                for(unsigned int i=0; i<depthNbOctree; ++i)
+                std::vector<TerrainGrassQuadtree *> depthGrassQuadtree;
+                depthGrassQuadtree.reserve(depthNbQuadtree);
+                for(unsigned int i=0; i<depthNbQuadtree; ++i)
                 {
-                    depthGrassOctree.push_back(new GrassPatchOctree());
+                    depthGrassQuadtree.push_back(new TerrainGrassQuadtree());
                 }
 
-                for (unsigned int childZ = 0; childZ < childrenNbOctreeZ; ++childZ)
+                for (unsigned int childZ = 0; childZ < childrenNbQuadtreeZ; ++childZ)
                 {
-                    for (unsigned int childX = 0; childX < childrenNbOctreeX; ++childX)
+                    for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX)
                     {
-                        int xOctreeIndex = (depthNbOctreeX/static_cast<float>(childrenNbOctreeX)) * (childX + 0.5f);
-                        int zOctreeIndex = (depthNbOctreeZ/static_cast<float>(childrenNbOctreeZ)) * (childZ + 0.5f);
+                        int xQuadtreeIndex = (depthNbQuadtreeX/static_cast<float>(childrenNbQuadtreeX)) * (childX + 0.5f);
+                        int zQuadtreeIndex = (depthNbQuadtreeZ/static_cast<float>(childrenNbQuadtreeZ)) * (childZ + 0.5f);
 
-                        unsigned int octreeIndex = (zOctreeIndex * depthNbOctreeX) + xOctreeIndex;
-                        unsigned int childOctreeIndex = (childZ * childrenNbOctreeZ) + childX;
+                        unsigned int quadtreeIndex = (zQuadtreeIndex * depthNbQuadtreeX) + xQuadtreeIndex;
+                        unsigned int childQuadtreeIndex = (childZ * childrenNbQuadtreeZ) + childX;
 
-                        depthGrassOctree[octreeIndex]->addChild(childrenGrassOctree[childOctreeIndex]);
+                        depthGrassQuadtree[quadtreeIndex]->addChild(childrenGrassQuadtree[childQuadtreeIndex]);
                     }
                 }
 
-                childrenGrassOctree = depthGrassOctree;
-                childrenNbOctreeX = depthNbOctreeX;
-                childrenNbOctreeZ = depthNbOctreeZ;
+                childrenGrassQuadtree = depthGrassQuadtree;
+                childrenNbQuadtreeX = depthNbQuadtreeX;
+                childrenNbQuadtreeZ = depthNbQuadtreeZ;
             }
 
             depth--;
         }
 
-        delete mainGrassOctree;
-        mainGrassOctree = new GrassPatchOctree(childrenGrassOctree);
+        delete mainGrassQuadtree;
+        mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
     }
 
     void TerrainGrass::display(const Camera *camera, float invFrameRate)
@@ -193,24 +191,24 @@ namespace urchin
         glBindVertexArray(vertexArrayObject);
         glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
 
-        std::stack<const GrassPatchOctree *> grassOctrees;
-        grassOctrees.push(mainGrassOctree);
-        while(!grassOctrees.empty())
+        std::stack<const TerrainGrassQuadtree *> grassQuadtrees;
+        grassQuadtrees.push(mainGrassQuadtree);
+        while(!grassQuadtrees.empty())
         {
-            const GrassPatchOctree *grassOctree = grassOctrees.top();
-            grassOctrees.pop();
+            const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees.top();
+            grassQuadtrees.pop();
 
-            if(camera->getFrustum().collideWithAABBox(*grassOctree->getBox())) //TODO don't use whole frustum to cull
+            if(camera->getFrustum().collideWithAABBox(*grassQuadtree->getBox())) //TODO don't use whole frustum to cull
             {
-                if(grassOctree->isLeaf())
+                if(grassQuadtree->isLeaf())
                 {
-                    glBufferData(GL_ARRAY_BUFFER, grassOctree->getGrassVertices().size() * sizeof(float) * 3, &grassOctree->getGrassVertices()[0], GL_DYNAMIC_DRAW);
-                    glDrawArrays(GL_POINTS, 0, grassOctree->getGrassVertices().size());
+                    glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassVertices().size() * sizeof(float) * 3, &grassQuadtree->getGrassVertices()[0], GL_DYNAMIC_DRAW);
+                    glDrawArrays(GL_POINTS, 0, grassQuadtree->getGrassVertices().size());
                 }else
                 {
-                    for(const auto *child : grassOctree->getChildren())
+                    for(const auto *child : grassQuadtree->getChildren())
                     {
-                        grassOctrees.push(child);
+                        grassQuadtrees.push(child);
                     }
                 }
             }

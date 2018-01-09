@@ -1,15 +1,15 @@
-#include "GrassPatchOctree.h"
+#include "TerrainGrassQuadtree.h"
 
 namespace urchin
 {
 
-    GrassPatchOctree::GrassPatchOctree(const std::vector<GrassPatchOctree *> &children) :
+    TerrainGrassQuadtree::TerrainGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &children) :
         children(children)
     {
 
     }
 
-    GrassPatchOctree::~GrassPatchOctree()
+    TerrainGrassQuadtree::~TerrainGrassQuadtree()
     {
         for(const auto *child : children)
         {
@@ -17,12 +17,12 @@ namespace urchin
         }
     }
 
-    bool GrassPatchOctree::isLeaf() const
+    bool TerrainGrassQuadtree::isLeaf() const
     {
         return children.empty();
     }
 
-    const std::unique_ptr<AABBox<float>> &GrassPatchOctree::getBox() const
+    const std::unique_ptr<AABBox<float>> &TerrainGrassQuadtree::getBox() const
     {
         if(bbox==nullptr)
         {
@@ -43,7 +43,7 @@ namespace urchin
         return bbox;
     }
 
-    void GrassPatchOctree::addChild(GrassPatchOctree *grassPatchOctree)
+    void TerrainGrassQuadtree::addChild(TerrainGrassQuadtree *grassPatchOctree)
     {
         #ifdef _DEBUG
             assert(bbox==nullptr);
@@ -52,12 +52,12 @@ namespace urchin
         children.push_back(grassPatchOctree);
     }
 
-    const std::vector<GrassPatchOctree *> &GrassPatchOctree::getChildren() const
+    const std::vector<TerrainGrassQuadtree *> &TerrainGrassQuadtree::getChildren() const
     {
         return children;
     }
 
-    void GrassPatchOctree::addVertex(const Point3<float> &vertex)
+    void TerrainGrassQuadtree::addVertex(const Point3<float> &vertex)
     {
         #ifdef _DEBUG
             assert(children.empty());
@@ -67,7 +67,7 @@ namespace urchin
         grassVertices.push_back(vertex);
     }
 
-    const std::vector<Point3<float>> &GrassPatchOctree::getGrassVertices() const
+    const std::vector<Point3<float>> &TerrainGrassQuadtree::getGrassVertices() const
     {
         return grassVertices;
     }

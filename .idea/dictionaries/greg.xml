@@ -7,6 +7,9 @@
       <w>heightfield</w>
       <w>pathfinding</w>
       <w>polytope</w>
+      <w>quadtree</w>
+      <w>quadtrees</w>
+      <w>quatree</w>
     </words>
   </dictionary>
 </component>
