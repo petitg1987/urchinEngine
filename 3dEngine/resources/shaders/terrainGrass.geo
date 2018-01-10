@@ -7,6 +7,9 @@ layout(max_vertices = 12) out;
 uniform mat4 mProjection;
 uniform mat4 mView;
 uniform float sumTimeStep;
+uniform vec3 terrainMinPoint;
+uniform vec3 terrainMaxPoint;
+uniform sampler2D grassMaskTex;
 
 in vec3 normal[];
 
@@ -39,6 +42,20 @@ int randomInt(int min, int max, vec3 seed){
 }
 
 void main(){
+
+    vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
+
+    float s = (grassCenterPosition.x - terrainMinPoint.x) / (terrainMaxPoint.x - terrainMinPoint.x);
+    float t = (grassCenterPosition.z - terrainMinPoint.z) / (terrainMaxPoint.z - terrainMinPoint.z);
+    vec4 grassMask = texture2D(grassMaskTex, vec2(s, t));
+    if(grassMask.x > 0.5){
+        return;
+    }
+
+    float halfLengthGrass = 0.6f; //TODO configurable
+    float heightGrass = 0.4f; //TODO configurable
+    int nbGrassTexture = 1; //TODO configurable
+
     mat4 mProjectionView = mProjection * mView;
 
     float PiOver180 = 3.14159f/180.0f;
@@ -46,11 +63,6 @@ void main(){
     vBaseDir[0] = vec3(1.0, 0.0, 0.0);
     vBaseDir[1] = vec3(float(cos(45.0f*PiOver180)), 0.0f, float(sin(45.0f*PiOver180)));
     vBaseDir[2] = vec3(float(cos(-45.0f*PiOver180)), 0.0f, float(sin(-45.0f*PiOver180)));
-
-    vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
-    float halfLengthGrass = 0.6f; //TODO configurable
-    float heightGrass = 0.4f; //TODO configurable
-    int nbGrassTexture = 1; //TODO configurable
 
 	vec3 vWindDirection = vec3(0.707, 0.0, 0.707); //TODO configurable
 	float fWindStrength = 0.6f; //TODO configurable

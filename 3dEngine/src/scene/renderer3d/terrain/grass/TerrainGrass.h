@@ -15,7 +15,7 @@ namespace urchin
     class TerrainGrass
     {
         public:
-            explicit TerrainGrass(const std::string &);
+            TerrainGrass(const std::string &, const std::string &);
             ~TerrainGrass();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
@@ -31,6 +31,7 @@ namespace urchin
 
             bool isInitialized;
 
+            const float grassPositionRandomPercentage;
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 
@@ -47,11 +48,12 @@ namespace urchin
             };
             unsigned int terrainGrassShader;
             int mProjectionLoc, mViewLoc, sumTimeStepLoc;
+            int terrainMinPointLoc, terrainMaxPointLoc;
 
             Matrix4<float> projectionMatrix;
             float sumTimeStep;
 
-            Image *grassTexture;
+            Image *grassTexture, *grassMaskTexture;
             TerrainGrassQuadtree *mainGrassQuadtree;
     };
 

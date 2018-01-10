@@ -140,12 +140,6 @@ namespace urchin
         return texCoordinates;
     }
 
-
-
-
-
-
-
     const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const
     {
         return texCoordinates;

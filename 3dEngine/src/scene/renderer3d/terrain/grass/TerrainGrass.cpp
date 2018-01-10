@@ -9,7 +9,8 @@
 namespace urchin
 {
 
-    TerrainGrass::TerrainGrass(const std::string &grassFilename) :
+    TerrainGrass::TerrainGrass(const std::string &grassFilename, const std::string &grassMaskFilename) :
+            grassPositionRandomPercentage(ConfigService::instance()->getFloatValue("terrain.grassPositionRandomPercentage")),
             grassPatchSize(ConfigService::instance()->getFloatValue("terrain.grassPatchSize")),
             grassQuadtreeDepth(ConfigService::instance()->getUnsignedIntValue("terrain.grassQuadtreeDepth")),
             sumTimeStep(0.0f),
@@ -25,12 +26,24 @@ namespace urchin
         mProjectionLoc = glGetUniformLocation(terrainGrassShader, "mProjection");
         mViewLoc = glGetUniformLocation(terrainGrassShader, "mView");
         sumTimeStepLoc = glGetUniformLocation(terrainGrassShader, "sumTimeStep");
+        terrainMinPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMinPoint");
+        terrainMaxPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMaxPoint");
 
         grassTexture = MediaManager::instance()->getMedia<Image>(grassFilename, nullptr);
         grassTexture->toTexture(true, true, false);
         int terrainGrassTexLoc = glGetUniformLocation(terrainGrassShader, "grassTex");
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(terrainGrassTexLoc, 0);
+
+        grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename, nullptr);
+        if(grassMaskTexture->getImageFormat() != Image::IMAGE_GRAYSCALE)
+        {
+            throw std::runtime_error("Grass mask texture must be grayscale format. Components: " + std::to_string(grassMaskTexture->retrieveComponentsCount()));
+        }
+        grassMaskTexture->toTexture(false, false, false);
+        int terrainGrassMaskTexLoc = glGetUniformLocation(terrainGrassShader, "grassMaskTex");
+        glActiveTexture(GL_TEXTURE1);
+        glUniform1i(terrainGrassMaskTexLoc, 1);
     }
 
     TerrainGrass::~TerrainGrass()
@@ -41,6 +54,7 @@ namespace urchin
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
         grassTexture->release();
+        grassMaskTexture->release();
         delete mainGrassQuadtree;
     }
 
@@ -66,15 +80,20 @@ namespace urchin
         glEnableVertexAttribArray(SHADER_NORMAL);
         glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform3fv(terrainMinPointLoc, 1, (const float *)mesh->getVertices()[0]);
+        glUniform3fv(terrainMaxPointLoc, 1, (const float *)mesh->getVertices()[mesh->getXSize()*mesh->getZSize()-1]);
+
         isInitialized = true;
     }
 
     void TerrainGrass::generateGrass(const std::unique_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
     {
-        std::default_random_engine generator;
-        std::uniform_real_distribution<float> distribution(-0.2f, 0.2f); //TODO configurable
-
         float grassOffset = 0.6f; //TODO configurable
+
+        std::default_random_engine generator;
+        std::uniform_real_distribution<float> distribution(-grassOffset*grassPositionRandomPercentage, grassOffset*grassPositionRandomPercentage);
+
         unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() / grassOffset;
         unsigned int grassZQuantity = mesh->getXZScale() * mesh->getZSize() / grassOffset;
 
@@ -192,6 +211,8 @@ namespace urchin
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, grassTexture->getTextureID());
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, grassMaskTexture->getTextureID());
 
         sumTimeStep += invFrameRate;
         glUniform1f(sumTimeStepLoc, sumTimeStep);
