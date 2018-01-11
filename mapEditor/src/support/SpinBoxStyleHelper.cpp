@@ -39,4 +39,15 @@ namespace urchin
 		spinBox->setFixedSize(QSize(80, 22));
 	}
 
+	void SpinBoxStyleHelper::applyDefaultStyleOn(QSpinBox *spinBox)
+	{
+		spinBox->setMinimum(-std::numeric_limits<int>::max());
+		spinBox->setMaximum(std::numeric_limits<int>::max());
+		spinBox->setSingleStep(1);
+		spinBox->setKeyboardTracking(true);
+		spinBox->setAccelerated(true);
+		spinBox->setLocale(QLocale::English);
+		spinBox->setFixedSize(QSize(80, 22));
+	}
+
 }

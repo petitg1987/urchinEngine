@@ -108,7 +108,7 @@ namespace urchin
             grass = std::move(terrainGrass);
         }
 
-        grass->initialize(mesh, position);
+        grass->initialize(mesh, position, ambient);
         grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
@@ -136,7 +136,7 @@ namespace urchin
     }
 
     void Terrain::setAmbient(float ambient)
-    {
+    { //TODO update grass ambient
         this->ambient = ambient;
 
         ShaderManager::instance()->bind(terrainShader);

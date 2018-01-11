@@ -7,9 +7,14 @@ layout(max_vertices = 12) out;
 uniform mat4 mProjection;
 uniform mat4 mView;
 uniform float sumTimeStep;
+uniform vec3 terrainMinPoint;
+uniform vec3 terrainMaxPoint;
+uniform sampler2D grassMaskTex;
+
+in vec3 normal[];
 
 smooth out vec2 vertexTextCoordinates;
-out vec3 normal;
+out vec3 grassNormal;
 
 float PHI = 1.61803398874989484820459 * 00000.1; //golden ratio
 float PI  = 3.14159265358979323846264 * 00000.1; //PI
@@ -37,6 +42,20 @@ int randomInt(int min, int max, vec3 seed){
 }
 
 void main(){
+
+    vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
+
+    float s = (grassCenterPosition.x - terrainMinPoint.x) / (terrainMaxPoint.x - terrainMinPoint.x);
+    float t = (grassCenterPosition.z - terrainMinPoint.z) / (terrainMaxPoint.z - terrainMinPoint.z);
+    vec4 grassMask = texture2D(grassMaskTex, vec2(s, t));
+    if(grassMask.x > 0.5){
+        return;
+    }
+
+    float halfLengthGrass = 0.6f; //TODO configurable
+    float heightGrass = 0.4f; //TODO configurable
+    int nbGrassTexture = 1; //TODO configurable
+
     mat4 mProjectionView = mProjection * mView;
 
     float PiOver180 = 3.14159f/180.0f;
@@ -44,11 +63,6 @@ void main(){
     vBaseDir[0] = vec3(1.0, 0.0, 0.0);
     vBaseDir[1] = vec3(float(cos(45.0f*PiOver180)), 0.0f, float(sin(45.0f*PiOver180)));
     vBaseDir[2] = vec3(float(cos(-45.0f*PiOver180)), 0.0f, float(sin(-45.0f*PiOver180)));
-
-    vec3 grassCenterPosition = gl_in[0].gl_Position.xyz;
-    float halfLengthGrass = 0.6f; //TODO configurable
-    float heightGrass = 0.4f; //TODO configurable
-    int nbGrassTexture = 1; //TODO configurable
 
 	vec3 vWindDirection = vec3(0.707, 0.0, 0.707); //TODO configurable
 	float fWindStrength = 0.6f; //TODO configurable
@@ -60,6 +74,8 @@ void main(){
     }
     fWindPower *= fWindStrength;
 
+    grassNormal = normal[0];
+
     for(int i = 0; i < 3; i++)
 	{
 	    //texture selection
@@ -69,9 +85,6 @@ void main(){
 
         //wind
         vec3 vBaseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * vBaseDir[i];
-
-        //TODO use terrain normal
-        normal = vec3(0.5, 1.0, 0.5);
 
         //top left
         vec3 localTopLeft = grassCenterPosition - vBaseDirRotated*halfLengthGrass + vWindDirection*fWindPower;

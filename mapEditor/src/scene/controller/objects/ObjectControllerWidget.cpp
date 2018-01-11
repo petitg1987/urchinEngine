@@ -127,6 +127,7 @@ namespace urchin
 		eulerAxis0 = new QDoubleSpinBox();
 		eulerAxisLayout->addWidget(eulerAxis0);
 		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
+		SpinBoxStyleHelper::applyAngleStyleOn(eulerAxis0);
 		connect(eulerAxis0, SIGNAL(valueChanged(double)), this, SLOT(updateObjectTransform()));
 		eulerAxis1 = new QDoubleSpinBox();
 		eulerAxisLayout->addWidget(eulerAxis1);

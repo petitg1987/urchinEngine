@@ -46,6 +46,7 @@ namespace urchin
         setupGeneralPropertiesBox(mainLayout);
         setupMeshBox(mainLayout);
         setupMaterialBox(mainLayout);
+        setupGrassBox(mainLayout);
     }
 
     void TerrainControllerWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
@@ -195,6 +196,117 @@ namespace urchin
         }
     }
 
+    void TerrainControllerWidget::setupGrassBox(QVBoxLayout *mainLayout)
+    {
+        grassGroupBox = new QGroupBox("Grass");
+        mainLayout->addWidget(grassGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(grassGroupBox);
+        grassGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        grassGroupBox->hide();
+
+        auto *grassLayout = new QGridLayout(grassGroupBox);
+
+        QLabel *textureLabel= new QLabel("Texture:");
+        grassLayout->addWidget(textureLabel, 1, 0);
+
+        grassTextureFilenameText = new QLineEdit();
+        grassLayout->addWidget(grassTextureFilenameText, 1, 1, 1, 3);
+        grassTextureFilenameText->setReadOnly(true);
+
+        QPushButton *selectTextureFileButton = new QPushButton("...");
+        grassLayout->addWidget(selectTextureFileButton, 1, 4);
+        ButtonStyleHelper::applyNormalStyle(selectTextureFileButton);
+        selectTextureFileButton->setFixedWidth(22);
+        //TODO connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
+
+        QPushButton *clearTextureFileButton = new QPushButton("Clr");
+        grassLayout->addWidget(clearTextureFileButton, 1, 5);
+        ButtonStyleHelper::applyNormalStyle(clearTextureFileButton);
+        clearTextureFileButton->setFixedWidth(22);
+        //TODO connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
+
+        QLabel *maskLabel= new QLabel("Mask:");
+        grassLayout->addWidget(maskLabel, 2, 0);
+
+        grassMaskFilenameText = new QLineEdit();
+        grassLayout->addWidget(grassMaskFilenameText, 2, 1, 1, 3);
+        grassMaskFilenameText->setReadOnly(true);
+
+        QPushButton *selectMaskFileButton = new QPushButton("...");
+        grassLayout->addWidget(selectMaskFileButton, 2, 4);
+        ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
+        selectMaskFileButton->setFixedWidth(22);
+        //TODO connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
+
+        QPushButton *clearMaskFileButton = new QPushButton("Clr");
+        grassLayout->addWidget(clearMaskFileButton, 2, 5);
+        ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
+        clearMaskFileButton->setFixedWidth(22);
+        //TODO connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
+
+        QLabel *numGrassInTexLabel= new QLabel("Num grass in tex:");
+        grassLayout->addWidget(numGrassInTexLabel, 3, 0);
+
+        numGrassInTex = new QSpinBox(); //TODO integer...
+        grassLayout->addWidget(numGrassInTex, 3, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(numGrassInTex);
+        numGrassInTex->setMinimum(1);
+        numGrassInTex->setSingleStep(1);
+        //TODO connect(numGrassInTex, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+
+        QLabel *grassOffsetLabel= new QLabel("Grass offset:");
+        grassLayout->addWidget(grassOffsetLabel, 4, 0);
+
+        grassOffset = new QDoubleSpinBox();
+        grassLayout->addWidget(grassOffset, 4, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassOffset);
+        grassOffset->setMinimum(0.0);
+        grassOffset->setSingleStep(0.2);
+        //TODO connect(grassOffset, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+
+        QLabel *grassHeightLabel= new QLabel("Height/length:");
+        grassLayout->addWidget(grassHeightLabel, 5, 0);
+
+        grassHeight = new QDoubleSpinBox();
+        grassLayout->addWidget(grassHeight, 5, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassHeight);
+        grassHeight->setMinimum(0.0);
+        grassHeight->setSingleStep(0.05);
+        //TODO connect(grassHeight, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+
+        grassLength = new QDoubleSpinBox();
+        grassLayout->addWidget(grassLength, 5, 2);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassLength);
+        grassLength->setMinimum(0.0);
+        grassLength->setSingleStep(0.05);
+        //TODO connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+
+        QLabel *windDirectionLabel= new QLabel("Wind direction:");
+        grassLayout->addWidget(windDirectionLabel, 6, 0);
+
+        windDirectionX = new QDoubleSpinBox();
+        grassLayout->addWidget(windDirectionX, 6, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionX);
+        //TODO connect(windDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        windDirectionY = new QDoubleSpinBox();
+        grassLayout->addWidget(windDirectionY, 6, 2);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionY);
+        //TODO connect(windDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        windDirectionZ = new QDoubleSpinBox();
+        grassLayout->addWidget(windDirectionZ, 6, 3, 1, 3);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionZ);
+        //TODO connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+
+        QLabel *windStrengthLabel= new QLabel("Wind strength:");
+        grassLayout->addWidget(windStrengthLabel, 7, 0);
+
+        windStrength = new QDoubleSpinBox();
+        grassLayout->addWidget(windStrength, 7, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(windStrength);
+        windStrength->setMinimum(0.0);
+        //TODO connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+    }
+
     TerrainTableView *TerrainControllerWidget::getTerrainTableView() const
     {
         return terrainTableView;
@@ -234,12 +346,14 @@ namespace urchin
                         generalPropertiesGroupBox->show();
                         meshGroupBox->show();
                         materialGroupBox->show();
+                        grassGroupBox->show();
                     }else
                     {
                         removeTerrainButton->setEnabled(false);
                         generalPropertiesGroupBox->hide();
                         meshGroupBox->hide();
                         materialGroupBox->hide();
+                        grassGroupBox->hide();
                     }
                     break;
                 default:

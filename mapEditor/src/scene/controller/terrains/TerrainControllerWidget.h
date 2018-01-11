@@ -36,6 +36,7 @@ namespace urchin
             void setupGeneralPropertiesBox(QVBoxLayout *);
             void setupMeshBox(QVBoxLayout *);
             void setupMaterialBox(QVBoxLayout *);
+            void setupGrassBox(QVBoxLayout *);
 
             void notify(Observable *, int) override;
             void setupTerrainDataFrom(const SceneTerrain *);
@@ -49,6 +50,7 @@ namespace urchin
             QGroupBox *generalPropertiesGroupBox;
             QGroupBox *meshGroupBox;
             QGroupBox *materialGroupBox;
+            QGroupBox *grassGroupBox;
 
             bool disableTerrainEvent;
 
@@ -65,6 +67,13 @@ namespace urchin
             static QString preferredMaskMapPath;
             std::vector<QLineEdit *> materialFilenameTexts;
             static QString preferredMaterialPath;
+
+            //grass properties
+            QLineEdit *grassTextureFilenameText;
+            QLineEdit *grassMaskFilenameText;
+            QSpinBox *numGrassInTex;
+            QDoubleSpinBox *grassOffset, *grassHeight, *grassLength;
+            QDoubleSpinBox *windDirectionX, *windDirectionY, *windDirectionZ, *windStrength;
 
         private slots:
             void showAddTerrainDialog();
