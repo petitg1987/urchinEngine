@@ -15,14 +15,30 @@ namespace urchin
     class TerrainGrass
     {
         public:
-            TerrainGrass(const std::string &);
+            explicit TerrainGrass(const std::string &);
             ~TerrainGrass();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
             void initialize(const std::unique_ptr<TerrainMesh> &, const Point3<float> &, float);
 
+            const std::string &getMaskTexture() const;
             void setMaskTexture(const std::string &);
+
+            float getGrassHeight() const;
+            void setGrassHeight(float);
+
+            float getGrassLength() const;
+            void setGrassLength(float);
+
+            unsigned int getNumGrassInTexture() const;
+            void setNumGrassInTexture(unsigned int);
+
+            Vector3<float> getWindDirection() const;
+            void setWindDirection(const Vector3<float> &);
+
+            float getWindLength() const;
+            void setWindStrength(float);
 
             void display(const Camera *, float);
 
@@ -51,12 +67,20 @@ namespace urchin
             unsigned int terrainGrassShader;
             int mProjectionLoc, mViewLoc, sumTimeStepLoc;
             int terrainMinPointLoc, terrainMaxPointLoc, terrainAmbientLoc;
+            int grassHeightLoc, grassHalfLengthLoc, numGrassInTexLoc;
+            int windDirectionLoc, windStrengthLoc;
 
             Matrix4<float> projectionMatrix;
             float sumTimeStep;
 
             Image *grassTexture, *grassMaskTexture;
             TerrainGrassQuadtree *mainGrassQuadtree;
+            std::string grassMaskFilename;
+            float grassHeight, grassLength;
+            unsigned int numGrassInTex;
+
+            Vector3<float> windDirection;
+            float windStrength;
     };
 
 }

@@ -29,9 +29,17 @@ namespace urchin
         mProjectionLoc = glGetUniformLocation(terrainGrassShader, "mProjection");
         mViewLoc = glGetUniformLocation(terrainGrassShader, "mView");
         sumTimeStepLoc = glGetUniformLocation(terrainGrassShader, "sumTimeStep");
+
         terrainMinPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMinPoint");
         terrainMaxPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMaxPoint");
         terrainAmbientLoc = glGetUniformLocation(terrainGrassShader, "ambient");
+
+        grassHeightLoc = glGetUniformLocation(terrainGrassShader, "grassHeight");
+        grassHalfLengthLoc = glGetUniformLocation(terrainGrassShader, "grassHalfLength");
+        numGrassInTexLoc = glGetUniformLocation(terrainGrassShader, "numGrassInTex");
+
+        windDirectionLoc = glGetUniformLocation(terrainGrassShader, "windDirection");
+        windStrengthLoc = glGetUniformLocation(terrainGrassShader, "windStrength");
 
         grassTexture = MediaManager::instance()->getMedia<Image>(grassFilename, nullptr);
         grassTexture->toTexture(true, true, false);
@@ -39,7 +47,16 @@ namespace urchin
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(terrainGrassTexLoc, 0);
 
+        int terrainGrassMaskTexLoc = glGetUniformLocation(terrainGrassShader, "grassMaskTex");
+        glActiveTexture(GL_TEXTURE1);
+        glUniform1i(terrainGrassMaskTexLoc, 1);
+
         setMaskTexture("");
+        setGrassHeight(1.0f);
+        setGrassLength(1.0f);
+        setNumGrassInTexture(1);
+        setWindDirection(Vector3<float>(1.0f, 0.0f, 0.0f));
+        setWindStrength(1.0f);
     }
 
     TerrainGrass::~TerrainGrass()
@@ -194,15 +211,21 @@ namespace urchin
         mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
     }
 
+    const std::string &TerrainGrass::getMaskTexture() const
+    {
+        return grassMaskFilename;
+    }
+
     void TerrainGrass::setMaskTexture(const std::string &grassMaskFilename)
     {
-        ShaderManager::instance()->bind(terrainGrassShader);
+        this->grassMaskFilename = grassMaskFilename;
 
         if(grassMaskTexture!=nullptr)
         {
             grassMaskTexture->release();
         }
 
+        ShaderManager::instance()->bind(terrainGrassShader);
         if(grassMaskFilename.empty())
         {
             grassMaskTexture = new Image(1, 1, Image::IMAGE_GRAYSCALE, std::vector<unsigned char>({0}));
@@ -212,10 +235,71 @@ namespace urchin
             grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename, nullptr);
             grassMaskTexture->toTexture(false, false, false);
         }
+    }
 
-        int terrainGrassMaskTexLoc = glGetUniformLocation(terrainGrassShader, "grassMaskTex");
-        glActiveTexture(GL_TEXTURE1);
-        glUniform1i(terrainGrassMaskTexLoc, 1);
+    float TerrainGrass::getGrassHeight() const
+    {
+        return grassHeight;
+    }
+
+    void TerrainGrass::setGrassHeight(float grassHeight)
+    {
+        this->grassHeight = grassHeight;
+
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform1f(grassHeightLoc, grassHeight);
+    }
+
+    float TerrainGrass::getGrassLength() const
+    {
+        return grassLength;
+    }
+
+    void TerrainGrass::setGrassLength(float grassLength)
+    {
+        this->grassLength = grassLength;
+
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform1f(grassHalfLengthLoc, grassLength / 2.0f);
+    }
+
+    unsigned int TerrainGrass::getNumGrassInTexture() const
+    {
+        return numGrassInTex;
+    }
+
+    void TerrainGrass::setNumGrassInTexture(unsigned int numGrassInTex)
+    {
+        this->numGrassInTex = numGrassInTex;
+
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform1i(numGrassInTexLoc, numGrassInTex);
+    }
+
+    Vector3<float> TerrainGrass::getWindDirection() const
+    {
+        return windDirection;
+    }
+
+    void TerrainGrass::setWindDirection(const Vector3<float> &windDirection)
+    {
+        this->windDirection = windDirection.normalize();
+
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform3fv(windDirectionLoc, 1, (const float *)this->windDirection);
+    }
+
+    float TerrainGrass::getWindLength() const
+    {
+        return windStrength;
+    }
+
+    void TerrainGrass::setWindStrength(float windStrength)
+    {
+        this->windStrength = windStrength;
+
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform1f(windStrengthLoc, windStrength);
     }
 
     void TerrainGrass::display(const Camera *camera, float invFrameRate)
