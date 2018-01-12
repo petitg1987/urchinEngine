@@ -19,6 +19,7 @@
     - (2) [OPTIMIZATION] Terrain class should have methods for LOD (usable for physics and AI)
     - (2) [NEW FEATURE] Use material textures (normal map...) for terrain
     - (2) [NEW FEATURE] Add auto shadow on terrain
+    - (2) [OPTIMIZATION] Don't build grass quadtree which are 100% discarded by grass mask
 - GUI
 	- (3) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop

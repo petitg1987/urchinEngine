@@ -230,8 +230,7 @@ namespace urchin
 
         if(grassTextureFilename.empty())
         {
-            grassTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
-            grassTexture->toTexture(true, true, false);
+            grassTexture = nullptr;
         }else
         {
             grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename, nullptr);
@@ -310,9 +309,12 @@ namespace urchin
 
     void TerrainGrass::setGrassOffset(float grassOffset)
     {
-        this->grassOffset = grassOffset;
+        if(this->grassOffset!=grassOffset)
+        {
+            this->grassOffset = grassOffset;
 
-        generateGrass(mesh, terrainPosition);
+            generateGrass(mesh, terrainPosition);
+        }
     }
 
     Vector3<float> TerrainGrass::getWindDirection() const
@@ -343,7 +345,7 @@ namespace urchin
 
     void TerrainGrass::display(const Camera *camera, float invFrameRate)
     {
-        if(mainGrassQuadtree!=nullptr)
+        if(grassTexture!=nullptr)
         {
             ShaderManager::instance()->bind(terrainGrassShader);
 

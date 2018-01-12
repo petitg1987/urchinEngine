@@ -134,7 +134,7 @@ namespace urchin
         }
     }
 
-    const TerrainGrass *Terrain::getGrass()
+    TerrainGrass *Terrain::getGrass()
     {
         return grass.get();
     }

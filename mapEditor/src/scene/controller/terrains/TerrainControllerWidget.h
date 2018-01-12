@@ -70,7 +70,9 @@ namespace urchin
 
             //grass properties
             QLineEdit *grassTextureFilenameText;
+            static QString preferredGrassTexturePath;
             QLineEdit *grassMaskFilenameText;
+            static QString preferredGrassMaskPath;
             QSpinBox *numGrassInTex;
             QDoubleSpinBox *grassOffset, *grassHeight, *grassLength;
             QDoubleSpinBox *windDirectionX, *windDirectionY, *windDirectionZ, *windStrength;
@@ -82,11 +84,17 @@ namespace urchin
             void updateTerrainGeneralProperties();
             void updateTerrainMesh();
             void updateTerrainMaterial();
+            void updateTerrainGrass();
 
             void showMaskFilenameDialog();
             void clearMaskFilename();
             void showMaterialFilenameDialog(const QString &);
             void clearMaterialFilename(const QString &);
+
+            void showGrassTextureFilenameDialog();
+            void clearGrassTextureFilename();
+            void showGrassMaskFilenameDialog();
+            void clearGrassMaskFilename();
     };
 
 }

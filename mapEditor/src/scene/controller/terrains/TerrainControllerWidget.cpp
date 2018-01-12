@@ -14,6 +14,8 @@ namespace urchin
 {
     QString TerrainControllerWidget::preferredMaskMapPath = QString();
     QString TerrainControllerWidget::preferredMaterialPath = QString();
+    QString TerrainControllerWidget::preferredGrassTexturePath = QString();
+    QString TerrainControllerWidget::preferredGrassMaskPath = QString();
 
     TerrainControllerWidget::TerrainControllerWidget() :
             terrainController(nullptr),
@@ -217,13 +219,13 @@ namespace urchin
         grassLayout->addWidget(selectTextureFileButton, 1, 4);
         ButtonStyleHelper::applyNormalStyle(selectTextureFileButton);
         selectTextureFileButton->setFixedWidth(22);
-        //TODO connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
+        connect(selectTextureFileButton, SIGNAL(clicked()), this, SLOT(showGrassTextureFilenameDialog()));
 
         QPushButton *clearTextureFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearTextureFileButton, 1, 5);
         ButtonStyleHelper::applyNormalStyle(clearTextureFileButton);
         clearTextureFileButton->setFixedWidth(22);
-        //TODO connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
+        connect(clearTextureFileButton, SIGNAL(clicked()), this, SLOT(clearGrassTextureFilename()));
 
         QLabel *maskLabel= new QLabel("Mask:");
         grassLayout->addWidget(maskLabel, 2, 0);
@@ -236,23 +238,23 @@ namespace urchin
         grassLayout->addWidget(selectMaskFileButton, 2, 4);
         ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
-        //TODO connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
+        connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showGrassMaskFilenameDialog()));
 
         QPushButton *clearMaskFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearMaskFileButton, 2, 5);
         ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
-        //TODO connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
+        connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearGrassMaskFilename()));
 
         QLabel *numGrassInTexLabel= new QLabel("Num grass in tex:");
         grassLayout->addWidget(numGrassInTexLabel, 3, 0);
 
-        numGrassInTex = new QSpinBox(); //TODO integer...
+        numGrassInTex = new QSpinBox();
         grassLayout->addWidget(numGrassInTex, 3, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(numGrassInTex);
         numGrassInTex->setMinimum(1);
         numGrassInTex->setSingleStep(1);
-        //TODO connect(numGrassInTex, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(numGrassInTex, SIGNAL(valueChanged(int)), this, SLOT(updateTerrainGrass()));
 
         QLabel *grassOffsetLabel= new QLabel("Grass offset:");
         grassLayout->addWidget(grassOffsetLabel, 4, 0);
@@ -261,8 +263,8 @@ namespace urchin
         grassLayout->addWidget(grassOffset, 4, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(grassOffset);
         grassOffset->setMinimum(0.0);
-        grassOffset->setSingleStep(0.2);
-        //TODO connect(grassOffset, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        grassOffset->setSingleStep(0.1);
+        connect(grassOffset, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         QLabel *grassHeightLabel= new QLabel("Height/length:");
         grassLayout->addWidget(grassHeightLabel, 5, 0);
@@ -272,14 +274,14 @@ namespace urchin
         SpinBoxStyleHelper::applyDefaultStyleOn(grassHeight);
         grassHeight->setMinimum(0.0);
         grassHeight->setSingleStep(0.05);
-        //TODO connect(grassHeight, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(grassHeight, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         grassLength = new QDoubleSpinBox();
         grassLayout->addWidget(grassLength, 5, 2);
         SpinBoxStyleHelper::applyDefaultStyleOn(grassLength);
         grassLength->setMinimum(0.0);
         grassLength->setSingleStep(0.05);
-        //TODO connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         QLabel *windDirectionLabel= new QLabel("Wind direction:");
         grassLayout->addWidget(windDirectionLabel, 6, 0);
@@ -287,15 +289,15 @@ namespace urchin
         windDirectionX = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionX, 6, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionX);
-        //TODO connect(windDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(windDirectionX, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
         windDirectionY = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionY, 6, 2);
         SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionY);
-        //TODO connect(windDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(windDirectionY, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
         windDirectionZ = new QDoubleSpinBox();
         grassLayout->addWidget(windDirectionZ, 6, 3, 1, 3);
         SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionZ);
-        //TODO connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         QLabel *windStrengthLabel= new QLabel("Wind strength:");
         grassLayout->addWidget(windStrengthLabel, 7, 0);
@@ -304,7 +306,7 @@ namespace urchin
         grassLayout->addWidget(windStrength, 7, 1);
         SpinBoxStyleHelper::applyDefaultStyleOn(windStrength);
         windStrength->setMinimum(0.0);
-        //TODO connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
+        connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
     }
 
     TerrainTableView *TerrainControllerWidget::getTerrainTableView() const
@@ -457,6 +459,21 @@ namespace urchin
         }
     }
 
+    void TerrainControllerWidget::updateTerrainGrass()
+    {
+        if(!disableTerrainEvent)
+        {
+            const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+
+            std::string grassTextureFilename = grassTextureFilenameText->text().toStdString();
+            std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
+            auto numGrassInTexValue = static_cast<unsigned int>(numGrassInTex->value());
+            Vector3<float> windDirection(windDirectionX->value(), windDirectionY->value(), windDirectionZ->value());
+            terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, grassOffset->value(),
+                                                       grassHeight->value(), grassLength->value(), windDirection, windStrength->value());
+        }
+    }
+
     void TerrainControllerWidget::showMaskFilenameDialog()
     {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
@@ -522,5 +539,69 @@ namespace urchin
         this->materialFilenameTexts[i]->setText("");
 
         updateTerrainMaterial();
+    }
+
+    void TerrainControllerWidget::showGrassTextureFilenameDialog()
+    {
+        std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+        QString directory = preferredGrassTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassTexturePath;
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
+        if(!filename.isNull())
+        {
+            std::string tgaFilenamePath = filename.toUtf8().constData();
+            std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
+            this->grassTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
+
+            std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
+            preferredGrassTexturePath = QString::fromStdString(preferredPathString);
+
+            try
+            {
+                updateTerrainGrass();
+            }catch(std::exception &e)
+            {
+                QMessageBox::critical(this, "Error", e.what());
+                clearMaskFilename();
+            }
+        }
+    }
+
+    void TerrainControllerWidget::clearGrassTextureFilename()
+    {
+        this->grassTextureFilenameText->setText("");
+
+        updateTerrainGrass();
+    }
+
+    void TerrainControllerWidget::showGrassMaskFilenameDialog()
+    {
+        std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+        QString directory = preferredGrassMaskPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassMaskPath;
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
+        if(!filename.isNull())
+        {
+            std::string tgaFilenamePath = filename.toUtf8().constData();
+            std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
+            this->grassMaskFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
+
+            std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
+            preferredGrassMaskPath = QString::fromStdString(preferredPathString);
+
+            try
+            {
+                updateTerrainGrass();
+            }catch(std::exception &e)
+            {
+                QMessageBox::critical(this, "Error", e.what());
+                clearMaskFilename();
+            }
+        }
+    }
+
+    void TerrainControllerWidget::clearGrassMaskFilename()
+    {
+        this->grassMaskFilenameText->setText("");
+
+        updateTerrainGrass();
     }
 }

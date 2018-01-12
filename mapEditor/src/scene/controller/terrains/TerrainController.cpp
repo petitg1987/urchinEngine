@@ -102,6 +102,31 @@ namespace urchin
         return sceneTerrain;
     }
 
+    const SceneTerrain *TerrainController::updateSceneTerrainGrass(const SceneTerrain *constSceneTerrain, std::string grassTextureFilename, std::string grassMaskFilename,
+                                                                   unsigned int numGrassInTex, float grassOffset, float grassHeight, float grassLength,
+                                                                   const Vector3<float> &windDirection, float windStrength)
+    {
+        SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
+        Terrain *terrain = sceneTerrain->getTerrain();
+
+        if(terrain->getGrass()==nullptr)
+        {
+            auto terrainGrass = std::make_unique<TerrainGrass>(grassTextureFilename);
+            terrain->setGrass(terrainGrass);
+        } else
+        {
+            terrain->getGrass()->setGrassTexture(grassTextureFilename);
+        }
+
+        terrain->getGrass()->setMaskTexture(grassMaskFilename);
+        terrain->getGrass()->setNumGrassInTexture(numGrassInTex);
+        terrain->getGrass()->setGrassOffset(grassOffset);
+        terrain->getGrass()->setGrassHeight(grassHeight);
+        terrain->getGrass()->setGrassLength(grassLength);
+        terrain->getGrass()->setWindDirection(windDirection);
+        terrain->getGrass()->setWindStrength(windStrength);
+    }
+
     SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain *constSceneTerrain)
     {
         const std::list<SceneTerrain *> &sceneTerrains = mapHandler->getMap()->getSceneTerrains();
