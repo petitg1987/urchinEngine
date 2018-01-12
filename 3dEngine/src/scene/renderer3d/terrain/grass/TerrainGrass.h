@@ -43,7 +43,7 @@ namespace urchin
             Vector3<float> getWindDirection() const;
             void setWindDirection(const Vector3<float> &);
 
-            float getWindLength() const;
+            float getWindStrength() const;
             void setWindStrength(float);
 
             void display(const Camera *, float);

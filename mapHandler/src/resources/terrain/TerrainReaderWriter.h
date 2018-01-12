@@ -27,6 +27,15 @@ namespace urchin
         #define MATERIAL_FILENAME "materialFilename"
         #define POSITION_TAG "position"
         #define AMBIENT_TAG "ambient"
+        #define GRASS_TAG "grass"
+        #define GRASS_TEXTURE_FILENAME_TAG "grassTextureFilename"
+        #define GRASS_MASK_FILENAME_TAG "grassMaskFilename"
+        #define NUM_GRASS_IN_TEX_TAG "numGrassInTex"
+        #define GRASS_HEIGHT_TAG "grassHeight"
+        #define GRASS_LENGTH_TAG "grassLength"
+        #define GRASS_OFFSET_TAG "grassOffset"
+        #define WIND_DIRECTION_TAG "windDirection"
+        #define WIND_STRENGTH_TAG "windStrength"
 
         public:
             Terrain *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
@@ -38,6 +47,9 @@ namespace urchin
 
             void loadPropertiesOn(Terrain *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
             void writePropertiesOn(std::shared_ptr<XmlChunk>, const Terrain *, XmlWriter &) const;
+
+            void loadGrassOn(Terrain *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
+            void writeGrassOn(std::shared_ptr<XmlChunk>, const Terrain *, XmlWriter &) const;
     };
 
 }

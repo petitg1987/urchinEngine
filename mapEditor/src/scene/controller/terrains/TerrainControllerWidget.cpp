@@ -394,6 +394,22 @@ namespace urchin
             }
         }
 
+        if(terrain->getGrass()!=nullptr)
+        {
+            auto *terrainGrass = terrain->getGrass();
+
+            this->grassTextureFilenameText->setText(QString::fromStdString(terrainGrass->getGrassTexture()));
+            this->grassMaskFilenameText->setText(QString::fromStdString(terrainGrass->getMaskTexture()));
+            this->numGrassInTex->setValue(terrainGrass->getNumGrassInTexture());
+            this->grassHeight->setValue(terrainGrass->getGrassHeight());
+            this->grassLength->setValue(terrainGrass->getGrassLength());
+            this->grassOffset->setValue(terrainGrass->getGrassOffset());
+            this->windDirectionX->setValue(terrainGrass->getWindDirection().X);
+            this->windDirectionY->setValue(terrainGrass->getWindDirection().Y);
+            this->windDirectionZ->setValue(terrainGrass->getWindDirection().Z);
+            this->windStrength->setValue(terrainGrass->getWindStrength());
+        }
+
         disableTerrainEvent = false;
     }
 

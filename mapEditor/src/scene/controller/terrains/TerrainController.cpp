@@ -118,13 +118,18 @@ namespace urchin
             terrain->getGrass()->setGrassTexture(grassTextureFilename);
         }
 
-        terrain->getGrass()->setMaskTexture(grassMaskFilename);
-        terrain->getGrass()->setNumGrassInTexture(numGrassInTex);
-        terrain->getGrass()->setGrassOffset(grassOffset);
-        terrain->getGrass()->setGrassHeight(grassHeight);
-        terrain->getGrass()->setGrassLength(grassLength);
-        terrain->getGrass()->setWindDirection(windDirection);
-        terrain->getGrass()->setWindStrength(windStrength);
+        TerrainGrass *terrainGrass = terrain->getGrass();
+
+        terrainGrass->setMaskTexture(grassMaskFilename);
+        terrainGrass->setNumGrassInTexture(numGrassInTex);
+        if(terrainGrass->getGrassOffset()!=grassOffset)
+        {
+            terrainGrass->setGrassOffset(grassOffset);
+        }
+        terrainGrass->setGrassHeight(grassHeight);
+        terrainGrass->setGrassLength(grassLength);
+        terrainGrass->setWindDirection(windDirection);
+        terrainGrass->setWindStrength(windStrength);
     }
 
     SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain *constSceneTerrain)

@@ -309,12 +309,9 @@ namespace urchin
 
     void TerrainGrass::setGrassOffset(float grassOffset)
     {
-        if(this->grassOffset!=grassOffset)
-        {
-            this->grassOffset = grassOffset;
+        this->grassOffset = grassOffset;
 
-            generateGrass(mesh, terrainPosition);
-        }
+        generateGrass(mesh, terrainPosition);
     }
 
     Vector3<float> TerrainGrass::getWindDirection() const
@@ -330,7 +327,7 @@ namespace urchin
         glUniform3fv(windDirectionLoc, 1, (const float *)this->windDirection);
     }
 
-    float TerrainGrass::getWindLength() const
+    float TerrainGrass::getWindStrength() const
     {
         return windStrength;
     }
