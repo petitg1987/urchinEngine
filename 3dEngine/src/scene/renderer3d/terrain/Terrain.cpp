@@ -9,7 +9,7 @@
 
 namespace urchin
 {
-    Terrain::Terrain(std::unique_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material)
+    Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material)
     {
         glGenBuffers(5, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -21,6 +21,21 @@ namespace urchin
         mProjectionLoc = glGetUniformLocation(terrainShader, "mProjection");
         mViewLoc = glGetUniformLocation(terrainShader, "mView");
         ambientLoc = glGetUniformLocation(terrainShader, "ambient");
+        sRepeatLoc = glGetUniformLocation(terrainShader, "sRepeat");
+        tRepeatLoc = glGetUniformLocation(terrainShader, "tRepeat");
+
+        int maskTexLoc = glGetUniformLocation(terrainShader, "maskTex");
+        glActiveTexture(GL_TEXTURE0);
+        glUniform1i(maskTexLoc, 0);
+
+        for(unsigned int i=0; i<MAX_MATERIAL; ++i)
+        {
+            std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
+            int diffuseTexLoc = glGetUniformLocation(terrainShader, shaderTextureName.c_str());
+
+            glActiveTexture(GL_TEXTURE0 + i + 1);
+            glUniform1i(diffuseTexLoc, i + 1);
+        }
 
         setPosition(Point3<float>(0.0f, 0.0f, 0.0f));
         setAmbient(DEFAULT_AMBIENT);
@@ -49,9 +64,9 @@ namespace urchin
         }
     }
 
-    void Terrain::setMesh(std::unique_ptr<TerrainMesh> &terrainMesh)
+    void Terrain::setMesh(const std::shared_ptr<TerrainMesh> &mesh)
     {
-        mesh = std::move(terrainMesh);
+        this->mesh = mesh;
 
         glBindVertexArray(vertexArrayObject);
 
@@ -68,11 +83,8 @@ namespace urchin
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size()*sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
 
-        if(material != nullptr)
-        {
-            setMaterial(material); //material uses mesh info: refresh is required
-            //TODO do it for grass
-        }
+        setMaterial(material); //material uses mesh info: refresh is required
+        setGrass(grass); //grass uses mesh info: refresh is required
     }
 
     const TerrainMesh *Terrain::getMesh() const
@@ -85,15 +97,22 @@ namespace urchin
         if(material != terrainMaterial)
         {
             material = std::move(terrainMaterial);
-            material->initialize(terrainShader, mesh->getXSize(), mesh->getZSize()); //TODO should be re-executed in case of new mesh provided !
         }
 
-        glBindVertexArray(vertexArrayObject);
+        if(material!=nullptr)
+        {
+            material->refreshWith(mesh->getXSize(), mesh->getZSize());
 
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
-        glBufferData(GL_ARRAY_BUFFER, material->getTexCoordinates().size()*sizeof(float)*2, &material->getTexCoordinates()[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(SHADER_TEX_COORD);
-        glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+            ShaderManager::instance()->bind(terrainShader);
+            glUniform1f(sRepeatLoc, material->getSRepeat());
+            glUniform1f(tRepeatLoc, material->getTRepeat());
+
+            glBindVertexArray(vertexArrayObject);
+            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_TEX_COORD]);
+            glBufferData(GL_ARRAY_BUFFER, material->getTexCoordinates().size() * sizeof(float) * 2, &material->getTexCoordinates()[0], GL_STATIC_DRAW);
+            glEnableVertexAttribArray(SHADER_TEX_COORD);
+            glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+        }
     }
 
     const TerrainMaterial *Terrain::getMaterial() const
@@ -108,8 +127,11 @@ namespace urchin
             grass = std::move(terrainGrass);
         }
 
-        grass->initialize(mesh, position, ambient);
-        grass->onCameraProjectionUpdate(projectionMatrix);
+        if(grass!=nullptr)
+        {
+            grass->refreshWith(mesh, position, ambient);
+            grass->onCameraProjectionUpdate(projectionMatrix);
+        }
     }
 
     const TerrainGrass *Terrain::getGrass()
@@ -118,11 +140,12 @@ namespace urchin
     }
 
     void Terrain::setPosition(const Point3<float> &position)
-    { //TODO update grass position
+    {
         this->position = position;
 
         ShaderManager::instance()->bind(terrainShader);
         glUniform3fv(vPositionLoc, 1, (const float*) position);
+        setGrass(grass); //grass uses terrain position: refresh is required
     }
 
     const Point3<float> &Terrain::getPosition() const
@@ -136,11 +159,12 @@ namespace urchin
     }
 
     void Terrain::setAmbient(float ambient)
-    { //TODO update grass ambient
+    {
         this->ambient = ambient;
 
         ShaderManager::instance()->bind(terrainShader);
         glUniform1f(ambientLoc, ambient);
+        setGrass(grass); //grass uses ambient value: refresh is required
     }
 
     void Terrain::display(const Camera *camera, float invFrameRate) const

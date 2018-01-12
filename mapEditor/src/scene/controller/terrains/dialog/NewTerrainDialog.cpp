@@ -84,7 +84,7 @@ namespace urchin
             std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
             std::string relativeHeightFilename = FileHandler::getRelativePath(resourcesDirectory, heightFilename);
 
-            auto terrainMesh = std::make_unique<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
+            auto terrainMesh = std::make_shared<TerrainMesh>(relativeHeightFilename, 1.0f, 0.1f);
             auto terrainMaterial = std::make_unique<TerrainMaterial>("", 1.0f, 1.0f);
             auto *terrain = new Terrain(terrainMesh, terrainMaterial);
 

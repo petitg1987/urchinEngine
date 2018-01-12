@@ -9,7 +9,6 @@ namespace urchin
 {
 
     TerrainMaterial::TerrainMaterial(const std::string &maskMapFilename, float sRepeat, float tRepeat) :
-            isInitialized(false),
             maskMapFilename(maskMapFilename),
             sRepeat(sRepeat),
             tRepeat(tRepeat)
@@ -53,13 +52,13 @@ namespace urchin
         delete defaultTexture;
     }
 
+    void TerrainMaterial::refreshWith(unsigned int xSize, unsigned int zSize)
+    {
+        buildTexCoordinates(xSize, zSize);
+    }
+
     void TerrainMaterial::addMaterial(unsigned int position, const std::string &materialFilename)
     {
-        if(isInitialized)
-        {
-            throw std::runtime_error("Impossible to add material once the terrain displayer initialized.");
-        }
-
         if(position >= materials.size())
         {
             throw std::runtime_error("Material position is incorrect. Value : " + std::to_string(position));
@@ -71,35 +70,6 @@ namespace urchin
         }
 
         materials[position] = MediaManager::instance()->getMedia<Material>(materialFilename, nullptr);
-    }
-
-    void TerrainMaterial::initialize(unsigned int shader, unsigned int xSize, unsigned int zSize)
-    {
-        if(isInitialized)
-        {
-            throw std::runtime_error("Terrain displayer is already initialized.");
-        }
-
-        ShaderManager::instance()->bind(shader);
-        int maskTexLoc = glGetUniformLocation(shader, "maskTex");
-        glActiveTexture(GL_TEXTURE0);
-        glUniform1i(maskTexLoc, 0);
-        for(unsigned int i=0; i<materials.size(); ++i)
-        {
-            std::string shaderTextureName = "diffuseTex" + std::to_string(i + 1);
-            int diffuseTexLoc = glGetUniformLocation(shader, shaderTextureName.c_str());
-
-            glActiveTexture(GL_TEXTURE0 + i + 1);
-            glUniform1i(diffuseTexLoc, i + 1);
-        }
-        int sRepeatLoc = glGetUniformLocation(shader, "sRepeat");
-        glUniform1f(sRepeatLoc, sRepeat);
-        int tRepeatLoc = glGetUniformLocation(shader, "tRepeat");
-        glUniform1f(tRepeatLoc, tRepeat);
-
-        buildTexCoordinates(xSize, zSize);
-
-        isInitialized = true;
     }
 
     const std::string &TerrainMaterial::getMaskMapFilename() const
@@ -147,11 +117,6 @@ namespace urchin
 
     void TerrainMaterial::loadTextures() const
     {
-        if(!isInitialized)
-        {
-            throw std::runtime_error("Terrain material must be initialized before load textures.");
-        }
-
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, maskTexture->getTextureID());
 

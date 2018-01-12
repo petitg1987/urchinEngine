@@ -19,8 +19,9 @@ namespace urchin
             explicit TerrainMaterial(const std::string &, float, float);
             ~TerrainMaterial();
 
+            void refreshWith(unsigned int, unsigned int);
+
             void addMaterial(unsigned int, const std::string &);
-            void initialize(unsigned int, unsigned int, unsigned int);
 
             const std::string &getMaskMapFilename() const;
             float getSRepeat() const;
@@ -32,8 +33,6 @@ namespace urchin
 
         private:
             std::vector<Point2<float>> buildTexCoordinates(unsigned int, unsigned int);
-
-            bool isInitialized;
 
             std::string maskMapFilename;
             Image *maskTexture;

@@ -60,11 +60,11 @@ void main(){
     mat4 mProjectionView = mProjection * mView;
     grassNormal = normal[0];
 
-    float PiOver180 = 3.14159f/180.0f;
-    vec3 vBaseDir[3];
-    vBaseDir[0] = vec3(1.0, 0.0, 0.0);
-    vBaseDir[1] = vec3(float(cos(45.0f*PiOver180)), 0.0f, float(sin(45.0f*PiOver180)));
-    vBaseDir[2] = vec3(float(cos(-45.0f*PiOver180)), 0.0f, float(sin(-45.0f*PiOver180)));
+    float piOver180 = 3.14159f/180.0f;
+    vec3 baseDir[3];
+    baseDir[0] = vec3(1.0, 0.0, 0.0);
+    baseDir[1] = vec3(float(cos(45.0f*piOver180)), 0.0f, float(sin(45.0f*piOver180)));
+    baseDir[2] = vec3(float(cos(-45.0f*piOver180)), 0.0f, float(sin(-45.0f*piOver180)));
 
     float windPower = 0.5f + sin(grassCenterPosition.x/30.0f + grassCenterPosition.z/30.0f + sumTimeStep*(1.2f+windStrength/20.0f));
     if(windPower > 0.0f){
@@ -82,30 +82,30 @@ void main(){
         float endTextX = startTextX + 1.0f / numGrassInTex;
 
         //wind
-        vec3 vBaseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * vBaseDir[i];
+        vec3 baseDirRotated = rotationMatrix(vec3(0, 1, 0), sin(sumTimeStep*0.7f)*0.2f) * baseDir[i];
 
         //top left
-        vec3 localTopLeft = grassCenterPosition - vBaseDirRotated*grassHalfLength + windDirection*windPower;
+        vec3 localTopLeft = grassCenterPosition - baseDirRotated*grassHalfLength + windDirection*windPower;
         localTopLeft.y += grassHeight;
         gl_Position = mProjectionView * vec4(localTopLeft, 1.0f);
         vertexTextCoordinates = vec2(startTextX, 0.0);
         EmitVertex();
 
         //bottom left
-        vec3 localBottomLeft = grassCenterPosition - vBaseDir[i]*grassHalfLength;
+        vec3 localBottomLeft = grassCenterPosition - baseDir[i]*grassHalfLength;
         gl_Position = mProjectionView * vec4(localBottomLeft, 1.0f);
         vertexTextCoordinates = vec2(startTextX, 1.0);
         EmitVertex();
 
         //top right
-        vec3 localTopRight = grassCenterPosition + vBaseDirRotated*grassHalfLength + windDirection*windPower;
+        vec3 localTopRight = grassCenterPosition + baseDirRotated*grassHalfLength + windDirection*windPower;
         localTopRight.y += grassHeight;
         gl_Position = mProjectionView * vec4(localTopRight, 1.0f);
         vertexTextCoordinates = vec2(endTextX, 0.0);
         EmitVertex();
 
         //bottom right
-        vec3 localBottomRight = grassCenterPosition + vBaseDir[i]*grassHalfLength;
+        vec3 localBottomRight = grassCenterPosition + baseDir[i]*grassHalfLength;
         gl_Position = mProjectionView * vec4(localBottomRight, 1.0f);
         vertexTextCoordinates = vec2(endTextX, 1.0);
         EmitVertex();

@@ -20,7 +20,10 @@ namespace urchin
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
-            void initialize(const std::unique_ptr<TerrainMesh> &, const Point3<float> &, float);
+            void refreshWith(const std::shared_ptr<TerrainMesh> &, const Point3<float> &, float);
+
+            const std::string &getGrassTexture() const;
+            void setGrassTexture(const std::string &);
 
             const std::string &getMaskTexture() const;
             void setMaskTexture(const std::string &);
@@ -34,6 +37,9 @@ namespace urchin
             unsigned int getNumGrassInTexture() const;
             void setNumGrassInTexture(unsigned int);
 
+            float getGrassOffset() const;
+            void setGrassOffset(float);
+
             Vector3<float> getWindDirection() const;
             void setWindDirection(const Vector3<float> &);
 
@@ -43,11 +49,9 @@ namespace urchin
             void display(const Camera *, float);
 
         private:
-            void generateGrass(const std::unique_ptr<TerrainMesh> &, const Point3<float> &);
-            unsigned int retrieveVertexIndex(const Point2<float> &, const std::unique_ptr<TerrainMesh> &mesh) const;
+            void generateGrass(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);
+            unsigned int retrieveVertexIndex(const Point2<float> &) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &, unsigned int, unsigned int);
-
-            bool isInitialized;
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
@@ -70,14 +74,18 @@ namespace urchin
             int grassHeightLoc, grassHalfLengthLoc, numGrassInTexLoc;
             int windDirectionLoc, windStrengthLoc;
 
+            std::shared_ptr<TerrainMesh> mesh;
+            Point3<float> terrainPosition;
+
             Matrix4<float> projectionMatrix;
             float sumTimeStep;
 
             Image *grassTexture, *grassMaskTexture;
+            std::string grassTextureFilename, grassMaskFilename;
             TerrainGrassQuadtree *mainGrassQuadtree;
-            std::string grassMaskFilename;
             float grassHeight, grassLength;
             unsigned int numGrassInTex;
+            float grassOffset;
 
             Vector3<float> windDirection;
             float windStrength;

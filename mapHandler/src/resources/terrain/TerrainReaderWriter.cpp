@@ -24,7 +24,7 @@ namespace urchin
         std::shared_ptr<XmlChunk> heightFilenameChunk = xmlParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, XmlAttribute(), meshChunk);
         std::shared_ptr<XmlChunk> xzScaleChunk = xmlParser.getUniqueChunk(true, XZ_SCALE_TAG, XmlAttribute(), meshChunk);
         std::shared_ptr<XmlChunk> yScaleChunk = xmlParser.getUniqueChunk(true, Y_SCALE_TAG, XmlAttribute(), meshChunk);
-        auto terrainMesh = std::make_unique<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue());
+        auto terrainMesh = std::make_shared<TerrainMesh>(heightFilenameChunk->getStringValue(), xzScaleChunk->getFloatValue(), yScaleChunk->getFloatValue());
 
         std::shared_ptr<XmlChunk> materialChunk = xmlParser.getUniqueChunk(true, MATERIAL_TAG, XmlAttribute(), terrainChunk);
         std::shared_ptr<XmlChunk> maskMapFilenameChunk = xmlParser.getUniqueChunk(true, MASK_MAP_FILENAME, XmlAttribute(), materialChunk);
