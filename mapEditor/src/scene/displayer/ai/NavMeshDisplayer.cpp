@@ -48,7 +48,7 @@ namespace urchin
 
 			for (auto &navMeshModel : navMeshModels)
             {
-				sceneManager->getActiveRenderer3d()->addGeometry(navMeshModel);
+				sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(navMeshModel);
 			}
 
 			loadedNavMeshId = navMesh.getId();
@@ -59,7 +59,7 @@ namespace urchin
 	{
 		for (auto &navMeshModel : navMeshModels)
         {
-			sceneManager->getActiveRenderer3d()->removeGeometry(navMeshModel);
+			sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(navMeshModel);
 			delete navMeshModel;
 		}
 

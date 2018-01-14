@@ -1,5 +1,5 @@
-#ifndef GREENCITY_TERRAINDISPLAYER_H
-#define GREENCITY_TERRAINDISPLAYER_H
+#ifndef GREENCITY_TERRAINMANAGER_H
+#define GREENCITY_TERRAINMANAGER_H
 
 #include "UrchinCommon.h"
 
@@ -9,20 +9,28 @@
 namespace urchin
 {
 
-    class TerrainDisplayer
+    class TerrainManager
     {
         public:
+            TerrainManager();
+
+            void onCameraProjectionUpdate(const Camera *);
+
             void addTerrain(Terrain *);
             void removeTerrain(Terrain *);
 
-            void onCameraProjectionUpdate(const Camera *);
+            void setGrassDisplayDistance(float);
 
             void display(const Camera *, float) const;
 
         private:
+            void updateWithConfig();
+
             std::vector<Terrain *> terrains;
 
             Matrix4<float> projectionMatrix;
+
+            float grassDisplayDistance;
     };
 
 }

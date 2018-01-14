@@ -47,6 +47,7 @@ namespace urchin
 			T computeNearDistance() const;
 			T computeFarDistance() const;
 			Frustum<T> splitFrustum(T, T) const;
+			Frustum<T> cutFrustum(T) const;
 
 			bool collideWithPoint(const Point3<T> &) const;
 			bool collideWithAABBox(const AABBox<T> &) const;

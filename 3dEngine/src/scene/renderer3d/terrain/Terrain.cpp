@@ -41,6 +41,9 @@ namespace urchin
         setAmbient(DEFAULT_AMBIENT);
         setMesh(mesh);
         setMaterial(material);
+
+        grass = std::make_unique<TerrainGrass>("");
+        refreshGrass();
     }
 
     Terrain::~Terrain()
@@ -58,10 +61,7 @@ namespace urchin
         ShaderManager::instance()->bind(terrainShader);
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
 
-        if(grass!=nullptr)
-        {
-            grass->onCameraProjectionUpdate(projectionMatrix);
-        }
+        grass->onCameraProjectionUpdate(projectionMatrix);
     }
 
     void Terrain::setMesh(const std::shared_ptr<TerrainMesh> &mesh)
@@ -83,8 +83,8 @@ namespace urchin
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferIDs[VAO_INDEX]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size()*sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
 
-        setMaterial(material); //material uses mesh info: refresh is required
-        setGrass(grass); //grass uses mesh info: refresh is required
+        refreshMaterial(); //material uses mesh info: refresh is required
+        refreshGrass(); //grass uses mesh info: refresh is required
     }
 
     const TerrainMesh *Terrain::getMesh() const
@@ -99,6 +99,11 @@ namespace urchin
             material = std::move(terrainMaterial);
         }
 
+        refreshMaterial();
+    }
+
+    void Terrain::refreshMaterial()
+    {
         if(material!=nullptr)
         {
             material->refreshWith(mesh->getXSize(), mesh->getZSize());
@@ -120,13 +125,8 @@ namespace urchin
         return material.get();
     }
 
-    void Terrain::setGrass(std::unique_ptr<TerrainGrass> &terrainGrass)
+    void Terrain::refreshGrass()
     {
-        if(grass != terrainGrass)
-        {
-            grass = std::move(terrainGrass);
-        }
-
         if(grass!=nullptr)
         {
             grass->refreshWith(mesh, position, ambient);
@@ -145,7 +145,7 @@ namespace urchin
 
         ShaderManager::instance()->bind(terrainShader);
         glUniform3fv(vPositionLoc, 1, (const float*) position);
-        setGrass(grass); //grass uses terrain position: refresh is required
+        refreshGrass(); //grass uses terrain position: refresh is required
     }
 
     const Point3<float> &Terrain::getPosition() const
@@ -164,7 +164,7 @@ namespace urchin
 
         ShaderManager::instance()->bind(terrainShader);
         glUniform1f(ambientLoc, ambient);
-        setGrass(grass); //grass uses ambient value: refresh is required
+        refreshGrass(); //grass uses ambient value: refresh is required
     }
 
     void Terrain::display(const Camera *camera, float invFrameRate) const

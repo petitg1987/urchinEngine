@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_GEOMETRYDISPLAYER_H
-#define URCHINENGINE_GEOMETRYDISPLAYER_H
+#ifndef URCHINENGINE_GEOMETRYMANAGER_H
+#define URCHINENGINE_GEOMETRYMANAGER_H
 
 #include <vector>
 #include "UrchinCommon.h"
@@ -10,16 +10,15 @@
 namespace urchin
 {
 
-	class GeometryDisplayer
+	class GeometryManager
 	{
 		public:
-			virtual ~GeometryDisplayer() = default;
+			virtual ~GeometryManager() = default;
 
 			void addGeometry(GeometryModel *);
 			void removeGeometry(GeometryModel *);
-			void removeAllGeometries();
 
-			void onCameraProjectionUpdate(const Camera *const);
+			void onCameraProjectionUpdate(const Camera *);
 
 			void display(const Matrix4<float> &viewMatrix) const;
 

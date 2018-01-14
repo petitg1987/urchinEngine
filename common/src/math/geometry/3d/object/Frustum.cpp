@@ -50,13 +50,13 @@ namespace urchin
 	{
 		//half distance of near and far planes
 		T halfFovy = (angle/360.0)*PI_VALUE; //half angle in radian
-		T tang = (T)std::tan(halfFovy);
+		auto tang = (T)std::tan(halfFovy);
 		T nearHalfHeight = nearDistance * tang;
 		T nearHalfWidth = nearHalfHeight * ratio;
 		T farHalfHeight = farDistance * tang;
 		T farHalfWidth = farHalfHeight * ratio;
 
-		//builting frustum points
+		//building frustum points
 		frustumPoints.clear();
 		frustumPoints.push_back(Point3<T>(-nearHalfWidth, nearHalfHeight, -nearDistance)); //ntl
 		frustumPoints.push_back(Point3<T>(nearHalfWidth, nearHalfHeight, -nearDistance)); //ntr
@@ -109,7 +109,7 @@ namespace urchin
 		planes[NEARP].buildFrom3Points(frustumPoints[NBR], frustumPoints[NTR], frustumPoints[NTL]);
 		planes[FARP].buildFrom3Points(frustumPoints[FBL], frustumPoints[FTL], frustumPoints[FTR]);
 
-		//compute eye/campera position
+		//compute eye/camera position
 		Line3D<T> sideLine(frustumPoints[FTR], frustumPoints[NTR]);
 		Point3<T> p1((frustumPoints[FTL] + frustumPoints[FBL]) / (T)2.0);
 		Point3<T> p2((frustumPoints[FTR] + frustumPoints[FBR]) / (T)2.0);
@@ -196,6 +196,31 @@ namespace urchin
 		Point3<T> fbr = frustumPoints[NBR].translate(sideVector * farDistOnSideVector);
 
 		return Frustum<T>(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
+	}
+
+	template<class T> Frustum<T> Frustum<T>::cutFrustum(T newFar) const
+	{
+		Point3<T> nearCenter((frustumPoints[NTL] + frustumPoints[NBR]) / (T)2.0);
+		Vector3<T> positionToCenter = position.vector(nearCenter).normalize();
+
+		//top left point
+		Vector3<T> sideVector = frustumPoints[NTL].vector(frustumPoints[FTL]).normalize();
+		T farDistOnSideVector = newFar / positionToCenter.dotProduct(sideVector);
+		Point3<T> ftl = frustumPoints[NTL].translate(sideVector * farDistOnSideVector);
+
+		//top right point
+		sideVector = frustumPoints[NTR].vector(frustumPoints[FTR]).normalize();
+		Point3<T> ftr = frustumPoints[NTR].translate(sideVector * farDistOnSideVector);
+
+		//bottom left point
+		sideVector = frustumPoints[NBL].vector(frustumPoints[FBL]).normalize();
+		Point3<T> fbl = frustumPoints[NBL].translate(sideVector * farDistOnSideVector);
+
+		//bottom right point
+		sideVector = frustumPoints[NBR].vector(frustumPoints[FBR]).normalize();
+		Point3<T> fbr = frustumPoints[NBR].translate(sideVector * farDistOnSideVector);
+
+		return Frustum<T>(frustumPoints[NTL], frustumPoints[NTR], frustumPoints[NBL], frustumPoints[NBR], ftl, ftr, fbl, fbr);
 	}
 
 	template<class T> bool Frustum<T>::collideWithPoint(const Point3<T> &point) const

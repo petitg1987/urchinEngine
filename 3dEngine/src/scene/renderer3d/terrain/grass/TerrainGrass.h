@@ -28,6 +28,9 @@ namespace urchin
             const std::string &getMaskTexture() const;
             void setMaskTexture(const std::string &);
 
+            float getGrassDisplayDistance() const;
+            void setGrassDisplayDistance(float);
+
             float getGrassHeight() const;
             void setGrassHeight(float);
 
@@ -37,8 +40,8 @@ namespace urchin
             unsigned int getNumGrassInTexture() const;
             void setNumGrassInTexture(unsigned int);
 
-            float getGrassOffset() const;
-            void setGrassOffset(float);
+            float getGrassQuantity() const;
+            void setGrassQuantity(float);
 
             Vector3<float> getWindDirection() const;
             void setWindDirection(const Vector3<float> &);
@@ -69,8 +72,9 @@ namespace urchin
                 SHADER_NORMAL
             };
             unsigned int terrainGrassShader;
-            int mProjectionLoc, mViewLoc, sumTimeStepLoc;
+            int mProjectionLoc, mViewLoc, cameraPositionLoc, sumTimeStepLoc;
             int terrainMinPointLoc, terrainMaxPointLoc, terrainAmbientLoc;
+            int grassDisplayDistanceLoc;
             int grassHeightLoc, grassHalfLengthLoc, numGrassInTexLoc;
             int windDirectionLoc, windStrengthLoc;
 
@@ -83,9 +87,10 @@ namespace urchin
             Image *grassTexture, *grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
             TerrainGrassQuadtree *mainGrassQuadtree;
-            float grassHeight, grassLength;
             unsigned int numGrassInTex;
-            float grassOffset;
+            float grassDisplayDistance;
+            float grassHeight, grassLength;
+            float grassQuantity;
 
             Vector3<float> windDirection;
             float windStrength;

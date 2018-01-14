@@ -38,7 +38,7 @@ namespace urchin
 				PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
 				AABBox<float> heightfieldAABBox = bodyShape->toAABBox(transform);
 
-				GeometryModel *geometryModel =  new AABBoxModel(heightfieldAABBox);
+				GeometryModel *geometryModel = new AABBoxModel(heightfieldAABBox);
 				geometryModel->setColor(0.0, 1.0, 0.0);
 				bodyShapeModels.push_back(geometryModel);
 			} else if(bodyShape->isCompound())
@@ -77,7 +77,7 @@ namespace urchin
 
 			for (auto &bodyShapeModel : bodyShapeModels)
 			{
-				sceneManager->getActiveRenderer3d()->addGeometry(bodyShapeModel);
+				sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(bodyShapeModel);
 			}
 		}
 	}
@@ -156,7 +156,7 @@ namespace urchin
 	{
 		for (auto &bodyShapeModel : bodyShapeModels)
 		{
-			sceneManager->getActiveRenderer3d()->removeGeometry(bodyShapeModel);
+			sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(bodyShapeModel);
 			delete bodyShapeModel;
 		}
 

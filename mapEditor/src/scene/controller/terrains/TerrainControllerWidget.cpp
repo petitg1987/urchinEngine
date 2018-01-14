@@ -256,15 +256,15 @@ namespace urchin
         numGrassInTex->setSingleStep(1);
         connect(numGrassInTex, SIGNAL(valueChanged(int)), this, SLOT(updateTerrainGrass()));
 
-        QLabel *grassOffsetLabel= new QLabel("Grass offset:");
-        grassLayout->addWidget(grassOffsetLabel, 4, 0);
+        QLabel *grassQuantityLabel= new QLabel("Grass quantity:");
+        grassLayout->addWidget(grassQuantityLabel, 4, 0);
 
-        grassOffset = new QDoubleSpinBox();
-        grassLayout->addWidget(grassOffset, 4, 1);
-        SpinBoxStyleHelper::applyDefaultStyleOn(grassOffset);
-        grassOffset->setMinimum(0.0);
-        grassOffset->setSingleStep(0.1);
-        connect(grassOffset, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
+        grassQuantity = new QDoubleSpinBox();
+        grassLayout->addWidget(grassQuantity, 4, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(grassQuantity);
+        grassQuantity->setMinimum(0.0);
+        grassQuantity->setSingleStep(0.1);
+        connect(grassQuantity, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
         QLabel *grassHeightLabel= new QLabel("Height/length:");
         grassLayout->addWidget(grassHeightLabel, 5, 0);
@@ -403,7 +403,7 @@ namespace urchin
             this->numGrassInTex->setValue(terrainGrass->getNumGrassInTexture());
             this->grassHeight->setValue(terrainGrass->getGrassHeight());
             this->grassLength->setValue(terrainGrass->getGrassLength());
-            this->grassOffset->setValue(terrainGrass->getGrassOffset());
+            this->grassQuantity->setValue(terrainGrass->getGrassQuantity());
             this->windDirectionX->setValue(terrainGrass->getWindDirection().X);
             this->windDirectionY->setValue(terrainGrass->getWindDirection().Y);
             this->windDirectionZ->setValue(terrainGrass->getWindDirection().Z);
@@ -485,7 +485,7 @@ namespace urchin
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
             auto numGrassInTexValue = static_cast<unsigned int>(numGrassInTex->value());
             Vector3<float> windDirection(windDirectionX->value(), windDirectionY->value(), windDirectionZ->value());
-            terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, grassOffset->value(),
+            terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, grassQuantity->value(),
                                                        grassHeight->value(), grassLength->value(), windDirection, windStrength->value());
         }
     }

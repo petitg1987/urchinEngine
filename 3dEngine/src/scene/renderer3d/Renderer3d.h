@@ -15,9 +15,9 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/terrain/Terrain.h"
-#include "scene/renderer3d/terrain/TerrainDisplayer.h"
+#include "scene/renderer3d/terrain/TerrainManager.h"
 #include "scene/renderer3d/skybox/Skybox.h"
-#include "utils/display/geometry/GeometryDisplayer.h"
+#include "utils/display/geometry/GeometryManager.h"
 #include "utils/display/geometry/GeometryModel.h"
 #include "utils/display/quad/QuadDisplayer.h"
 
@@ -36,6 +36,10 @@ namespace urchin
 
 			//managers
 			OctreeManager<Model> *getModelOctreeManager() const;
+
+            TerrainManager *getTerrainManager() const;
+
+			GeometryManager *getGeometryManager() const;
 
 			LightManager *getLightManager() const;
 			void activateLighting(bool);
@@ -62,15 +66,6 @@ namespace urchin
 			void removeModel(Model *);
 			bool isModelExist(Model *);
 
-			//terrain
-			void addTerrain(Terrain *);
-			void removeTerrain(Terrain *);
-
-			//geometry
-			GeometryModel *addGeometry(GeometryModel *);
-			void removeGeometry(GeometryModel *);
-			void removeAllGeometries();
-
 			//events
 			bool onKeyDown(unsigned int) override;
 			bool onKeyUp(unsigned int) override;
@@ -96,9 +91,11 @@ namespace urchin
 
 			//managers
 			ModelDisplayer *modelDisplayer;
-			TerrainDisplayer *terrainDisplayer;
-			GeometryDisplayer *geometryDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
+
+            TerrainManager *terrainManager;
+
+            GeometryManager *geometryManager;
 
 			LightManager *lightManager;
 			bool isLightingActivated;

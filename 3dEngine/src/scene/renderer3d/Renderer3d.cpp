@@ -4,8 +4,6 @@
 #include <locale>
 
 #include "Renderer3d.h"
-#include "utils/shader/ShaderManager.h"
-#include "utils/display/texture/TextureDisplayer.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
 #define DEFAULT_OCTREE_DEPTH 3
@@ -17,8 +15,8 @@ namespace urchin
 			width(0),
 			height(0),
 			modelDisplayer(nullptr),
-			terrainDisplayer(nullptr),
-			geometryDisplayer(nullptr),
+			terrainManager(nullptr),
+			geometryManager(nullptr),
 			camera(nullptr),
 			skybox(nullptr),
 			fboIDs(nullptr),
@@ -35,13 +33,14 @@ namespace urchin
 		textureIDs = new unsigned int[4];
 		modelDisplayer = new ModelDisplayer(ModelDisplayer::DEFAULT_MODE);
 		modelDisplayer->initialize();
-		geometryDisplayer = new GeometryDisplayer();
 		glGenFramebuffers(1, fboIDs);
 		glGenTextures(4, textureIDs);
 
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 
-		terrainDisplayer = new TerrainDisplayer();
+		terrainManager = new TerrainManager();
+
+		geometryManager = new GeometryManager();
 
 		lightManager = new LightManager();
 		isLightingActivated = true;
@@ -75,8 +74,8 @@ namespace urchin
 
 		//managers
 		delete modelDisplayer;
-		delete terrainDisplayer;
-		delete geometryDisplayer;
+		delete terrainManager;
+		delete geometryManager;
 		delete shadowManager;
 		delete modelOctreeManager;
 		delete lightManager;
@@ -221,6 +220,16 @@ namespace urchin
 		return modelOctreeManager;
 	}
 
+	TerrainManager *Renderer3d::getTerrainManager() const
+	{
+		return terrainManager;
+	}
+
+	GeometryManager *Renderer3d::getGeometryManager() const
+	{
+		return geometryManager;
+	}
+
 	LightManager *Renderer3d::getLightManager() const
 	{
 		return lightManager;
@@ -283,9 +292,9 @@ namespace urchin
 
 		modelDisplayer->onCameraProjectionUpdate(camera);
 
-		terrainDisplayer->onCameraProjectionUpdate(camera);
+		terrainManager->onCameraProjectionUpdate(camera);
 
-		geometryDisplayer->onCameraProjectionUpdate(camera);
+		geometryManager->onCameraProjectionUpdate(camera);
 
 		shadowManager->onCameraProjectionUpdate(camera);
 
@@ -329,42 +338,6 @@ namespace urchin
 	{
 		std::set<Model *> allOctreeables = modelOctreeManager->getOctreeables();
 		return allOctreeables.find(model)!=allOctreeables.end();
-	}
-
-	void Renderer3d::addTerrain(Terrain *terrain)
-	{
-		if(terrain!=nullptr)
-		{
-			terrainDisplayer->addTerrain(terrain);
-		}
-	}
-
-	void Renderer3d::removeTerrain(Terrain *terrain)
-	{
-		if(terrain!=nullptr)
-		{
-			terrainDisplayer->removeTerrain(terrain);
-		}
-		delete terrain;
-	}
-
-	GeometryModel *Renderer3d::addGeometry(GeometryModel *geometry)
-	{
-		geometryDisplayer->addGeometry(geometry);
-		return geometry;
-	}
-
-	void Renderer3d::removeGeometry(GeometryModel *geometry)
-	{
-		if(geometry!=nullptr)
-		{
-			geometryDisplayer->removeGeometry(geometry);
-		}
-	}
-
-	void Renderer3d::removeAllGeometries()
-	{
-		geometryDisplayer->removeAllGeometries();
 	}
 
 	bool Renderer3d::onKeyDown(unsigned int key)
@@ -513,9 +486,9 @@ namespace urchin
 		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
 		modelDisplayer->display(camera->getViewMatrix());
 
-		terrainDisplayer->display(camera, invFrameRate);
+		terrainManager->display(camera, invFrameRate);
 
-		geometryDisplayer->display(camera->getViewMatrix());
+		geometryManager->display(camera->getViewMatrix());
 
 		if(isAmbientOcclusionActivated)
 		{

@@ -27,7 +27,6 @@ namespace urchin
             const TerrainMesh *getMesh() const;
             void setMaterial(std::unique_ptr<TerrainMaterial> &);
             const TerrainMaterial *getMaterial() const;
-            void setGrass(std::unique_ptr<TerrainGrass> &);
             TerrainGrass *getGrass() const;
 
             void setPosition(const Point3<float> &);
@@ -39,6 +38,9 @@ namespace urchin
             void display(const Camera *, float invFrameRate) const;
 
         private:
+            void refreshMaterial();
+            void refreshGrass();
+
             unsigned int bufferIDs[5], vertexArrayObject;
             enum //buffer IDs indices
             {

@@ -103,28 +103,19 @@ namespace urchin
     }
 
     const SceneTerrain *TerrainController::updateSceneTerrainGrass(const SceneTerrain *constSceneTerrain, std::string grassTextureFilename, std::string grassMaskFilename,
-                                                                   unsigned int numGrassInTex, float grassOffset, float grassHeight, float grassLength,
+                                                                   unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                    const Vector3<float> &windDirection, float windStrength)
     {
         SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
         Terrain *terrain = sceneTerrain->getTerrain();
-
-        if(terrain->getGrass()==nullptr)
-        {
-            auto terrainGrass = std::make_unique<TerrainGrass>(grassTextureFilename);
-            terrain->setGrass(terrainGrass);
-        } else
-        {
-            terrain->getGrass()->setGrassTexture(grassTextureFilename);
-        }
-
         TerrainGrass *terrainGrass = terrain->getGrass();
 
+        terrainGrass->setGrassTexture(grassTextureFilename);
         terrainGrass->setMaskTexture(grassMaskFilename);
         terrainGrass->setNumGrassInTexture(numGrassInTex);
-        if(terrainGrass->getGrassOffset()!=grassOffset)
+        if(terrainGrass->getGrassQuantity()!=grassQuantity)
         {
-            terrainGrass->setGrassOffset(grassOffset);
+            terrainGrass->setGrassQuantity(grassQuantity);
         }
         terrainGrass->setGrassHeight(grassHeight);
         terrainGrass->setGrassLength(grassLength);

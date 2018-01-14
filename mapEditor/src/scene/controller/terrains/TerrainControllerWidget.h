@@ -74,7 +74,7 @@ namespace urchin
             QLineEdit *grassMaskFilenameText;
             static QString preferredGrassMaskPath;
             QSpinBox *numGrassInTex;
-            QDoubleSpinBox *grassOffset, *grassHeight, *grassLength;
+            QDoubleSpinBox *grassQuantity, *grassHeight, *grassLength;
             QDoubleSpinBox *windDirectionX, *windDirectionY, *windDirectionZ, *windStrength;
 
         private slots:

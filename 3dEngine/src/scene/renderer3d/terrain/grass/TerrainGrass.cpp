@@ -1,10 +1,18 @@
 #include <stdexcept>
 #include <random>
 #include <stack>
+#include <cassert>
 
 #include "TerrainGrass.h"
 #include "resources/MediaManager.h"
 #include "utils/shader/ShaderManager.h"
+
+#define DEFAULT_NUM_GRASS_IN_TEX 1
+#define DEFAULT_GRASS_HEIGHT 1.0
+#define DEFAULT_GRASS_LENGTH 1.0
+#define DEFAULT_GRASS_QUANTITY 2.0
+#define DEFAULT_WIND_DIRECTION Vector3<float>(1.0f, 0.0f, 0.0f)
+#define DEFAULT_WIND_STRENGTH 1.0
 
 namespace urchin
 {
@@ -16,7 +24,8 @@ namespace urchin
             sumTimeStep(0.0f),
             grassTexture(nullptr),
             grassMaskTexture(nullptr),
-            mainGrassQuadtree(nullptr)
+            mainGrassQuadtree(nullptr),
+            grassDisplayDistance(0.0f)
     {
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -29,12 +38,14 @@ namespace urchin
 
         mProjectionLoc = glGetUniformLocation(terrainGrassShader, "mProjection");
         mViewLoc = glGetUniformLocation(terrainGrassShader, "mView");
+        cameraPositionLoc = glGetUniformLocation(terrainGrassShader, "cameraPosition");
         sumTimeStepLoc = glGetUniformLocation(terrainGrassShader, "sumTimeStep");
 
         terrainMinPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMinPoint");
         terrainMaxPointLoc = glGetUniformLocation(terrainGrassShader, "terrainMaxPoint");
         terrainAmbientLoc = glGetUniformLocation(terrainGrassShader, "ambient");
 
+        grassDisplayDistanceLoc = glGetUniformLocation(terrainGrassShader, "grassDisplayDistance");
         grassHeightLoc = glGetUniformLocation(terrainGrassShader, "grassHeight");
         grassHalfLengthLoc = glGetUniformLocation(terrainGrassShader, "grassHalfLength");
         numGrassInTexLoc = glGetUniformLocation(terrainGrassShader, "numGrassInTex");
@@ -52,12 +63,12 @@ namespace urchin
 
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
-        setGrassHeight(1.0f);
-        setGrassLength(1.0f);
-        setNumGrassInTexture(1);
-        setGrassOffset(0.6f);
-        setWindDirection(Vector3<float>(1.0f, 0.0f, 0.0f));
-        setWindStrength(1.0f);
+        setNumGrassInTexture(DEFAULT_NUM_GRASS_IN_TEX);
+        setGrassHeight(DEFAULT_GRASS_HEIGHT);
+        setGrassLength(DEFAULT_GRASS_LENGTH);
+        setGrassQuantity(DEFAULT_GRASS_QUANTITY);
+        setWindDirection(DEFAULT_WIND_DIRECTION);
+        setWindStrength(DEFAULT_WIND_STRENGTH);
     }
 
     TerrainGrass::~TerrainGrass()
@@ -108,10 +119,10 @@ namespace urchin
             this->terrainPosition = terrainPosition;
 
             std::default_random_engine generator;
-            std::uniform_real_distribution<float> distribution(-grassOffset * grassPositionRandomPercentage, grassOffset * grassPositionRandomPercentage);
+            std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
 
-            unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() / grassOffset;
-            unsigned int grassZQuantity = mesh->getXZScale() * mesh->getZSize() / grassOffset;
+            unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() * grassQuantity;
+            unsigned int grassZQuantity = mesh->getXZScale() * mesh->getZSize() * grassQuantity;
 
             unsigned int patchQuantityX = mesh->getXZScale() * mesh->getXSize() / grassPatchSize;
             unsigned int patchQuantityZ = mesh->getXZScale() * mesh->getZSize() / grassPatchSize;
@@ -129,12 +140,12 @@ namespace urchin
             float startZ = mesh->getVertices()[0].Z;
             for (unsigned int xIndex = 0; xIndex < grassXQuantity; ++xIndex)
             {
-                const float xFixedValue = startX + xIndex * grassOffset;
+                const float xFixedValue = startX + xIndex / grassQuantity;
 
                 for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex)
                 {
                     float xValue = xFixedValue + distribution(generator);
-                    float zValue = (startZ + zIndex * grassOffset) + distribution(generator);
+                    float zValue = (startZ + zIndex / grassQuantity) + distribution(generator);
                     unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
                     float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
 
@@ -263,6 +274,19 @@ namespace urchin
         }
     }
 
+    float TerrainGrass::getGrassDisplayDistance() const
+    {
+        return grassDisplayDistance;
+    }
+
+    void TerrainGrass::setGrassDisplayDistance(float grassDisplayDistance)
+    {
+        this->grassDisplayDistance = grassDisplayDistance;
+
+        ShaderManager::instance()->bind(terrainGrassShader);
+        glUniform1f(grassDisplayDistanceLoc, grassDisplayDistance);
+    }
+
     float TerrainGrass::getGrassHeight() const
     {
         return grassHeight;
@@ -302,14 +326,14 @@ namespace urchin
         glUniform1i(numGrassInTexLoc, numGrassInTex);
     }
 
-    float TerrainGrass::getGrassOffset() const
+    float TerrainGrass::getGrassQuantity() const
     {
-        return grassOffset;
+        return grassQuantity;
     }
 
-    void TerrainGrass::setGrassOffset(float grassOffset)
+    void TerrainGrass::setGrassQuantity(float grassQuantity)
     {
-        this->grassOffset = grassOffset;
+        this->grassQuantity = grassQuantity;
 
         generateGrass(mesh, terrainPosition);
     }
@@ -344,6 +368,10 @@ namespace urchin
     {
         if(grassTexture!=nullptr)
         {
+            #ifdef _DEBUG
+                assert(grassDisplayDistance!=0.0f);
+            #endif
+
             ShaderManager::instance()->bind(terrainGrassShader);
 
             glDisable(GL_CULL_FACE);
@@ -357,6 +385,7 @@ namespace urchin
             sumTimeStep += invFrameRate;
             glUniform1f(sumTimeStepLoc, sumTimeStep);
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
+            glUniform3fv(cameraPositionLoc, 1, (const float *)camera->getPosition());
 
             glBindVertexArray(vertexArrayObject);
 
@@ -367,7 +396,7 @@ namespace urchin
                 const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees.top();
                 grassQuadtrees.pop();
 
-                if (camera->getFrustum().collideWithAABBox(*grassQuadtree->getBox())) //TODO don't use whole frustum to cull
+                if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox()))
                 {
                     if (grassQuadtree->isLeaf())
                     {

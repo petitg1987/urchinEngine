@@ -100,8 +100,7 @@ namespace urchin
         if(grassChunk!=nullptr)
         {
             std::shared_ptr<XmlChunk> grassTextureFilenameChunk = xmlParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, XmlAttribute(), grassChunk);
-            auto terrainGrass = std::make_unique<TerrainGrass>(grassTextureFilenameChunk->getStringValue());
-            terrain->setGrass(terrainGrass);
+            terrain->getGrass()->setGrassTexture(grassTextureFilenameChunk->getStringValue());
 
             std::shared_ptr<XmlChunk> grassMaskFilenameChunk = xmlParser.getUniqueChunk(true, GRASS_MASK_FILENAME_TAG, XmlAttribute(), grassChunk);
             terrain->getGrass()->setMaskTexture(grassMaskFilenameChunk->getStringValue());
@@ -115,8 +114,8 @@ namespace urchin
             std::shared_ptr<XmlChunk> grassLengthChunk = xmlParser.getUniqueChunk(true, GRASS_LENGTH_TAG, XmlAttribute(), grassChunk);
             terrain->getGrass()->setGrassLength(grassLengthChunk->getFloatValue());
 
-            std::shared_ptr<XmlChunk> grassOffsetChunk = xmlParser.getUniqueChunk(true, GRASS_OFFSET_TAG, XmlAttribute(), grassChunk);
-            terrain->getGrass()->setGrassOffset(grassOffsetChunk->getFloatValue());
+            std::shared_ptr<XmlChunk> grassQuantityChunk = xmlParser.getUniqueChunk(true, GRASS_QUANTITY_TAG, XmlAttribute(), grassChunk);
+            terrain->getGrass()->setGrassQuantity(grassQuantityChunk->getFloatValue());
 
             std::shared_ptr<XmlChunk> windDirectionChunk = xmlParser.getUniqueChunk(true, WIND_DIRECTION_TAG, XmlAttribute(), grassChunk);
             terrain->getGrass()->setWindDirection(windDirectionChunk->getVector3Value());
@@ -147,8 +146,8 @@ namespace urchin
             std::shared_ptr<XmlChunk> grassLengthChunk = xmlWriter.createChunk(GRASS_LENGTH_TAG, XmlAttribute(), grassChunk);
             grassLengthChunk->setFloatValue(terrain->getGrass()->getGrassLength());
 
-            std::shared_ptr<XmlChunk> grassOffsetChunk = xmlWriter.createChunk(GRASS_OFFSET_TAG, XmlAttribute(), grassChunk);
-            grassOffsetChunk->setFloatValue(terrain->getGrass()->getGrassOffset());
+            std::shared_ptr<XmlChunk> grassQuantityChunk = xmlWriter.createChunk(GRASS_QUANTITY_TAG, XmlAttribute(), grassChunk);
+            grassQuantityChunk->setFloatValue(terrain->getGrass()->getGrassQuantity());
 
             std::shared_ptr<XmlChunk> windDirectionChunk = xmlWriter.createChunk(WIND_DIRECTION_TAG, XmlAttribute(), grassChunk);
             windDirectionChunk->setVector3Value(terrain->getGrass()->getWindDirection());

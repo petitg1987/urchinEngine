@@ -156,8 +156,8 @@ set(SOURCE_FILES
         src/utils/display/geometry/sphere/SphereModel.h
         src/utils/display/geometry/triangles/TrianglesModel.cpp
         src/utils/display/geometry/triangles/TrianglesModel.h
-        src/utils/display/geometry/GeometryDisplayer.cpp
-        src/utils/display/geometry/GeometryDisplayer.h
+        src/utils/display/geometry/GeometryManager.cpp
+        src/utils/display/geometry/GeometryManager.h
         src/utils/display/geometry/GeometryModel.cpp
         src/utils/display/geometry/GeometryModel.h
         src/utils/display/quad/QuadDisplayer.cpp
@@ -195,14 +195,16 @@ set(SOURCE_FILES
         src/scene/renderer3d/terrain/TerrainMaterial.h
         src/scene/renderer3d/terrain/TerrainMesh.cpp
         src/scene/renderer3d/terrain/TerrainMesh.h
-        src/scene/renderer3d/terrain/TerrainDisplayer.cpp
-        src/scene/renderer3d/terrain/TerrainDisplayer.h
+        src/scene/renderer3d/terrain/TerrainManager.cpp
+        src/scene/renderer3d/terrain/TerrainManager.h
         src/loader/image/LoaderPNG.cpp
         src/loader/image/LoaderPNG.h
         src/scene/renderer3d/terrain/grass/TerrainGrass.cpp
         src/scene/renderer3d/terrain/grass/TerrainGrass.h
         src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.cpp
-        src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.h)
+        src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.h
+        src/scene/renderer3d/terrain/TerrainManager.cpp
+        src/scene/renderer3d/terrain/TerrainManager.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

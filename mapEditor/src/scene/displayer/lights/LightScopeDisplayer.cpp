@@ -34,7 +34,7 @@ namespace urchin
 			for (auto &lightScopeModel : lightScopeModels)
 			{
 				lightScopeModel->setColor(1.0, 0.0, 0.0);
-				sceneManager->getActiveRenderer3d()->addGeometry(lightScopeModel);
+				sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(lightScopeModel);
 			}
 		}
 	}
@@ -43,7 +43,7 @@ namespace urchin
 	{
 		for (auto &lightScopeModel : lightScopeModels)
 		{
-			sceneManager->getActiveRenderer3d()->removeGeometry(lightScopeModel);
+			sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(lightScopeModel);
 			delete lightScopeModel;
 		}
 

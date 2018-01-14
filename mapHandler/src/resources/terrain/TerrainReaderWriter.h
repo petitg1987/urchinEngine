@@ -33,7 +33,7 @@ namespace urchin
         #define NUM_GRASS_IN_TEX_TAG "numGrassInTex"
         #define GRASS_HEIGHT_TAG "grassHeight"
         #define GRASS_LENGTH_TAG "grassLength"
-        #define GRASS_OFFSET_TAG "grassOffset"
+        #define GRASS_QUANTITY_TAG "grassQuantity"
         #define WIND_DIRECTION_TAG "windDirection"
         #define WIND_STRENGTH_TAG "windStrength"
 

@@ -18,7 +18,7 @@ namespace urchin
 
     SceneTerrain::~SceneTerrain()
     {
-        renderer3d->removeTerrain(terrain);
+        renderer3d->getTerrainManager()->removeTerrain(terrain);
         deleteRigidBody();
         deleteAIObjects();
     }
@@ -38,7 +38,7 @@ namespace urchin
         this->physicsWorld = physicsWorld;
         this->aiManager = aiManager;
 
-        renderer3d->addTerrain(terrain);
+        renderer3d->getTerrainManager()->addTerrain(terrain);
 
         if(physicsWorld!=nullptr)
         {
@@ -95,8 +95,8 @@ namespace urchin
 
         if(renderer3d!=nullptr)
         {
-            renderer3d->removeTerrain(this->terrain);
-            renderer3d->addTerrain(terrain);
+            renderer3d->getTerrainManager()->removeTerrain(this->terrain);
+            renderer3d->getTerrainManager()->addTerrain(terrain);
         }else
         {
             delete this->terrain;
