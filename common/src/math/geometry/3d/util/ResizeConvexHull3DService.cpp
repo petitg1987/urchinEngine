@@ -29,7 +29,7 @@ namespace urchin
 	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, T distance) const
 	{
 		std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, distance);
-		return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized.release());
+		return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
 	}
 
 	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, const std::map<unsigned int, Plane<T>> &expandedPlanes) const
@@ -78,7 +78,7 @@ namespace urchin
 	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, const std::map<unsigned int, Plane<T>> &expandedPlanes) const
 	{
 		std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, expandedPlanes);
-		return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized.release());
+		return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
 	}
 
 	template<class T> std::map<unsigned int, Plane<T>> ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull) const

@@ -43,7 +43,9 @@ namespace urchin
             }
         }
 
-        return new Terrain(terrainMesh, terrainMaterial);
+        std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), terrainChunk);
+
+        return new Terrain(terrainMesh, terrainMaterial, positionChunk->getPoint3Value());
     }
 
     void TerrainReaderWriter::buildChunkFrom(std::shared_ptr<XmlChunk> terrainChunk, const Terrain *terrain, XmlWriter &xmlWriter) const
@@ -74,22 +76,19 @@ namespace urchin
             }
             ++i;
         }
+
+        std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), terrainChunk);
+        positionChunk->setPoint3Value(terrain->getPosition());
     }
 
     void TerrainReaderWriter::loadPropertiesOn(Terrain *terrain, std::shared_ptr<XmlChunk> terrainChunk, const XmlParser &xmlParser) const
     {
-        std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), terrainChunk);
-        terrain->setPosition(positionChunk->getPoint3Value());
-
         std::shared_ptr<XmlChunk> ambientChunk = xmlParser.getUniqueChunk(true, AMBIENT_TAG, XmlAttribute(), terrainChunk);
         terrain->setAmbient(ambientChunk->getFloatValue());
     }
 
     void TerrainReaderWriter::writePropertiesOn(std::shared_ptr<XmlChunk> terrainChunk, const Terrain *terrain, XmlWriter &xmlWriter) const
     {
-        std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), terrainChunk);
-        positionChunk->setPoint3Value(terrain->getPosition());
-
         std::shared_ptr<XmlChunk> ambientChunk = xmlWriter.createChunk(AMBIENT_TAG, XmlAttribute(), terrainChunk);
         ambientChunk->setFloatValue(terrain->getAmbient());
     }

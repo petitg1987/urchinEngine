@@ -18,7 +18,7 @@ namespace urchin
     class Terrain
     {
         public:
-            Terrain(std::shared_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &);
+            Terrain(std::shared_ptr<TerrainMesh> &, std::unique_ptr<TerrainMaterial> &, const Point3<float> &);
             ~Terrain();
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
@@ -39,7 +39,8 @@ namespace urchin
 
         private:
             void refreshMaterial();
-            void refreshGrass();
+            void refreshGrassMesh();
+            void refreshGrassAmbient();
 
             unsigned int bufferIDs[5], vertexArrayObject;
             enum //buffer IDs indices

@@ -20,7 +20,8 @@ namespace urchin
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
-            void refreshWith(const std::shared_ptr<TerrainMesh> &, const Point3<float> &, float);
+            void refreshWith(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);
+            void refreshWith(float);
 
             const std::string &getGrassTexture() const;
             void setGrassTexture(const std::string &);

@@ -91,9 +91,9 @@ namespace urchin
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
-    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &position, float ambient)
+    void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
     {
-        generateGrass(mesh, position);
+        generateGrass(mesh, terrainPosition);
 
         glBindVertexArray(vertexArrayObject);
 
@@ -108,6 +108,11 @@ namespace urchin
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform3fv(terrainMinPointLoc, 1, (const float *)mesh->getVertices()[0]);
         glUniform3fv(terrainMaxPointLoc, 1, (const float *)mesh->getVertices()[mesh->getXSize()*mesh->getZSize()-1]);
+    }
+
+    void TerrainGrass::refreshWith(float ambient)
+    {
+        ShaderManager::instance()->bind(terrainGrassShader);
         glUniform1f(terrainAmbientLoc, ambient);
     }
 
@@ -149,14 +154,14 @@ namespace urchin
                     unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
                     float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
 
-                    Point3<float> grassVertex(xValue, yValue, zValue);
+                    Point3<float> globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
                     Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
                     unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
                     unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
                     unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
 
-                    leafGrassPatches[patchIndex]->addVertex(grassVertex, grassNormal);
+                    leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
                 }
             }
 
