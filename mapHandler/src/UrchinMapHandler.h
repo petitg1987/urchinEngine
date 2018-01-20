@@ -9,4 +9,7 @@
 #include "resources/light/SceneLight.h"
 #include "resources/terrain/SceneTerrain.h"
 
+#include "load/LoadCallback.h"
+#include "load/NullLoadCallback.h"
+
 #endif

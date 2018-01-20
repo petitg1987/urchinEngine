@@ -40,7 +40,7 @@ namespace urchin
 		delete sceneAI;
 	}
 
-	void Map::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+	void Map::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser, LoadCallback &loadCallback)
 	{
 		if(physicsWorld!=nullptr && !physicsWorld->isPaused())
 		{ //to avoid miss of collision between objects just loaded and on objects not loaded yet
@@ -53,10 +53,19 @@ namespace urchin
         }
 
 		loadSceneObjectsFrom(chunk, xmlParser);
+		loadCallback.execute(LoadCallback::OBJECTS);
+
 		loadSceneLightsFrom(chunk, xmlParser);
+		loadCallback.execute(LoadCallback::LIGHTS);
+
 		loadSceneTerrainFrom(chunk, xmlParser);
+		loadCallback.execute(LoadCallback::TERRAINS);
+
 		loadSceneSoundsFrom(chunk, xmlParser);
+		loadCallback.execute(LoadCallback::SOUNDS);
+
 		loadSceneAIFrom(chunk, xmlParser);
+		loadCallback.execute(LoadCallback::AI);
 	}
 
 	void Map::loadSceneObjectsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)

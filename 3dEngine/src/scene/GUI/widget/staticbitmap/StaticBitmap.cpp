@@ -39,9 +39,14 @@ namespace urchin
 
 	void StaticBitmap::display(int translateDistanceLoc, float invFrameRate)
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glBindTexture(GL_TEXTURE_2D, tex->getTextureID());
 
 		quadDisplayer->display();
+
+		glDisable(GL_BLEND);
 
 		Widget::display(translateDistanceLoc, invFrameRate);
 	}

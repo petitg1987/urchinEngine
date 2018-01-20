@@ -55,7 +55,8 @@ namespace urchin
 
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
-			mapHandler->loadMapFromFile(relativeMapFilename);
+			NullLoadCallback nullLoadCallback;
+			mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
 			aiManager->play();
 
 			isInitialized = true;

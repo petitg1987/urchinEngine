@@ -9,6 +9,7 @@
 #include "Urchin3dEngine.h"
 #include "UrchinSoundEngine.h"
 #include "UrchinAIEngine.h"
+#include "load/LoadCallback.h"
 #include "resources/object/SceneObject.h"
 #include "resources/light/SceneLight.h"
 #include "resources/terrain/SceneTerrain.h"
@@ -67,7 +68,7 @@ namespace urchin
 			void refreshMap();
 
 		private:
-			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
+			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &, LoadCallback &);
 			void loadSceneObjectsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneLightsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneTerrainFrom(std::shared_ptr<XmlChunk>, const XmlParser &);

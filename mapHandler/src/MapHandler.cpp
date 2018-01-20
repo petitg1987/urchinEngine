@@ -1,6 +1,7 @@
 #include <stdexcept>
 
 #include "MapHandler.h"
+#include "load/NullLoadCallback.h"
 
 namespace urchin
 {
@@ -31,12 +32,13 @@ namespace urchin
 		delete map;
 	}
 
-	void MapHandler::loadMapFromFile(const std::string &filename)
+	void MapHandler::loadMapFromFile(const std::string &filename, LoadCallback &loadCallback)
 	{
 		XmlParser xmlParser(filename);
 
 		this->relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
-		map->loadFrom(xmlParser.getRootChunk(), xmlParser);
+
+		map->loadFrom(xmlParser.getRootChunk(), xmlParser, loadCallback);
 	}
 
 	void MapHandler::writeMapOnFile(const std::string &filename) const

@@ -10,6 +10,8 @@
 #include "UrchinSoundEngine.h"
 #include "UrchinAIEngine.h"
 #include "resources/Map.h"
+#include "load/LoadCallback.h"
+#include "load/NullLoadCallback.h"
 
 namespace urchin
 {
@@ -29,7 +31,7 @@ namespace urchin
 			MapHandler(Renderer3d *, PhysicsWorld *, SoundManager *, AIManager *);
 			~MapHandler();
 
-			void loadMapFromFile(const std::string &);
+			void loadMapFromFile(const std::string &, LoadCallback &loadCallback);
 			void writeMapOnFile(const std::string &) const;
 
 			static std::string getRelativeWorkingDirectory(const std::string &);

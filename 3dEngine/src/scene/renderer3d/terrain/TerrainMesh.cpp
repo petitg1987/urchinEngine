@@ -13,6 +13,7 @@ namespace urchin
         auto *imgTerrain = MediaManager::instance()->getMedia<Image>(heightFilename);
         if(imgTerrain->getImageFormat() != Image::IMAGE_GRAYSCALE)
         {
+            imgTerrain->release();
             throw std::runtime_error("Height map must be grayscale. Image format: " + std::to_string(imgTerrain->getImageFormat()));
         }
         
