@@ -2,6 +2,10 @@
 #include <random>
 #include <stack>
 #include <cassert>
+#include <thread>
+#include <algorithm>
+#include <functional>
+#include <mutex>
 
 #include "TerrainGrass.h"
 #include "resources/MediaManager.h"
@@ -10,7 +14,7 @@
 #define DEFAULT_NUM_GRASS_IN_TEX 1
 #define DEFAULT_GRASS_HEIGHT 1.0
 #define DEFAULT_GRASS_LENGTH 1.0
-#define DEFAULT_GRASS_QUANTITY 2.0
+#define DEFAULT_GRASS_QUANTITY 0.1
 #define DEFAULT_WIND_DIRECTION Vector3<float>(1.0f, 0.0f, 0.0f)
 #define DEFAULT_WIND_STRENGTH 1.0
 
@@ -117,7 +121,9 @@ namespace urchin
     }
 
     void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
-    { //TODO improve perf
+    {
+        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
+
         if(mesh!=nullptr)
         {
             this->mesh = mesh;
@@ -143,27 +149,39 @@ namespace urchin
 
             float startX = mesh->getVertices()[0].X;
             float startZ = mesh->getVertices()[0].Z;
-            for (unsigned int xIndex = 0; xIndex < grassXQuantity; ++xIndex)
+
+            std::vector<std::thread> threads(NUM_THREADS);
+            for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++)
             {
-                const float xFixedValue = startX + xIndex / grassQuantity;
+                unsigned int beginX = threadI * grassXQuantity / NUM_THREADS;
+                unsigned int endX = (threadI + 1) == NUM_THREADS ? grassXQuantity : (threadI + 1) * grassXQuantity / NUM_THREADS;
 
-                for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex)
+                threads[threadI] = std::thread(std::bind([&](unsigned int beginX, unsigned int endX)
                 {
-                    float xValue = xFixedValue + distribution(generator);
-                    float zValue = (startZ + zIndex / grassQuantity) + distribution(generator);
-                    unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
-                    float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
+                    for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex)
+                    {
+                        const float xFixedValue = startX + xIndex / grassQuantity;
 
-                    Point3<float> globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
-                    Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
+                        for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex)
+                        {
+                            float xValue = xFixedValue + distribution(generator);
+                            float zValue = (startZ + zIndex / grassQuantity) + distribution(generator);
+                            unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
+                            float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
 
-                    unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
-                    unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
-                    unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
+                            Point3<float> globalGrassVertex(xValue + terrainPosition.X, yValue, zValue + terrainPosition.Z);
+                            Vector3<float> grassNormal = (mesh->getNormals()[vertexIndex] / 2.0f) + Vector3<float>(0.5f, 0.5f, 0.5f);
 
-                    leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
-                }
+                            unsigned int patchXIndex = std::min(static_cast<unsigned int>((xValue - startX) / adjustedPatchSizeX), patchQuantityX);
+                            unsigned int patchZIndex = std::min(static_cast<unsigned int>((zValue - startZ) / adjustedPatchSizeZ), patchQuantityZ);
+                            unsigned int patchIndex = (patchZIndex * patchQuantityX) + patchXIndex;
+
+                            leafGrassPatches[patchIndex]->addVertex(globalGrassVertex, grassNormal);
+                        }
+                    }
+                }, beginX, endX));
             }
+            std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
 
             buildGrassQuadtree(leafGrassPatches, patchQuantityX, patchQuantityZ);
         }

@@ -71,7 +71,7 @@ namespace urchin
     }
 
     std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain)
-    { //TODO improve perf
+    {
         unsigned int xLength = imgTerrain->getWidth();;
         unsigned int zLength = imgTerrain->getHeight();
 
@@ -135,19 +135,19 @@ namespace urchin
 
     std::vector<Vector3<float>> TerrainMesh::buildNormals()
     {
-        const size_t numThreads = std::thread::hardware_concurrency();
-        unsigned int totalTriangles = ((zSize - 1) * (xSize - 1)) * 2;
-        unsigned int xLineQuantity = (xSize * 2) + 1;
+        const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
         //1. compute normal of triangles
+        unsigned int totalTriangles = ((zSize - 1) * (xSize - 1)) * 2;
+        unsigned int xLineQuantity = (xSize * 2) + 1;
         std::vector<Vector3<float>> normalTriangles;
         normalTriangles.resize(totalTriangles);
         unsigned int numLoopNormalTriangle = indices.size() - 2;
-        std::vector<std::thread> threadsNormalTriangle(numThreads);
-        for(int threadI=0; threadI<numThreads; threadI++)
+        std::vector<std::thread> threadsNormalTriangle(NUM_THREADS);
+        for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++)
         {
-            unsigned int beginI = threadI * numLoopNormalTriangle / numThreads;
-            unsigned int endI = (threadI + 1)==numThreads ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / numThreads;
+            unsigned int beginI = threadI * numLoopNormalTriangle / NUM_THREADS;
+            unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / NUM_THREADS;
             threadsNormalTriangle[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI)
             {
                 for(unsigned int i = beginI; i<endI; i++)
@@ -185,11 +185,11 @@ namespace urchin
         //2. compute normal of vertex
         normals.resize(vertices.size());
         unsigned int numLoopNormalVertex = vertices.size();
-        std::vector<std::thread> threadsNormalVertex(numThreads);
-        for(int threadI=0; threadI<numThreads; threadI++)
+        std::vector<std::thread> threadsNormalVertex(NUM_THREADS);
+        for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++)
         {
-            unsigned int beginI = threadI * numLoopNormalVertex / numThreads;
-            unsigned int endI = (threadI + 1)==numThreads ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / numThreads;
+            unsigned int beginI = threadI * numLoopNormalVertex / NUM_THREADS;
+            unsigned int endI = (threadI + 1)==NUM_THREADS ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / NUM_THREADS;
 
             threadsNormalVertex[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI)
             {

@@ -2,6 +2,7 @@
 #define GREENCITY_TERRAINGRASSQUADTREE_H
 
 #include <vector>
+#include <mutex>
 #include "UrchinCommon.h"
 
 namespace urchin
@@ -25,6 +26,7 @@ namespace urchin
             const std::vector<Vector3<float>> &getGrassNormals() const;
 
         private:
+            std::mutex mutexAddVertex;
             std::vector<TerrainGrassQuadtree *> children;
 
             mutable std::unique_ptr<AABBox<float>> bbox;
