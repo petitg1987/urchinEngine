@@ -1,5 +1,8 @@
-#include "TerrainMesh.h"
+#include <thread>
+#include <algorithm>
+#include <functional>
 
+#include "TerrainMesh.h"
 #include "resources/MediaManager.h"
 
 namespace urchin
@@ -68,7 +71,7 @@ namespace urchin
     }
 
     std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain)
-    {
+    { //TODO improve perf
         unsigned int xLength = imgTerrain->getWidth();;
         unsigned int zLength = imgTerrain->getHeight();
 
@@ -132,53 +135,78 @@ namespace urchin
 
     std::vector<Vector3<float>> TerrainMesh::buildNormals()
     {
-        //1. compute normal of triangles
+        const size_t numThreads = std::thread::hardware_concurrency();
         unsigned int totalTriangles = ((zSize - 1) * (xSize - 1)) * 2;
+        unsigned int xLineQuantity = (xSize * 2) + 1;
+
+        //1. compute normal of triangles
         std::vector<Vector3<float>> normalTriangles;
-        normalTriangles.reserve(totalTriangles);
-
-        bool isCwTriangle = true;
-        for(unsigned int i=0; i<indices.size() - 2; ++i)
+        normalTriangles.resize(totalTriangles);
+        unsigned int numLoopNormalTriangle = indices.size() - 2;
+        std::vector<std::thread> threadsNormalTriangle(numThreads);
+        for(int threadI=0; threadI<numThreads; threadI++)
         {
-            if(indices[i+2] != RESTART_INDEX)
+            unsigned int beginI = threadI * numLoopNormalTriangle / numThreads;
+            unsigned int endI = (threadI + 1)==numThreads ? numLoopNormalTriangle : (threadI + 1) * numLoopNormalTriangle / numThreads;
+            threadsNormalTriangle[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI)
             {
-                Point3<float> point1 = vertices[indices[i]];
-                Point3<float> point2 = vertices[indices[i+1]];
-                Point3<float> point3 = vertices[indices[i+2]];
+                for(unsigned int i = beginI; i<endI; i++)
+                {
+                    if(indices[i+2] != RESTART_INDEX)
+                    {
+                        Point3<float> point1 = vertices[indices[i]];
+                        Point3<float> point2 = vertices[indices[i+1]];
+                        Point3<float> point3 = vertices[indices[i+2]];
 
-                Vector3<float> normal;
-                if(isCwTriangle)
-                {
-                    normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
-                }else
-                {
-                    normal = (point1.vector(point2).crossProduct(point1.vector(point3)));
+                        bool isCwTriangle = (i % xLineQuantity) % 2 == 0;
+                        Vector3<float> normal;
+                        if(isCwTriangle)
+                        {
+                            normal = (point1.vector(point2).crossProduct(point3.vector(point1)));
+                        }else
+                        {
+                            normal = (point1.vector(point2).crossProduct(point1.vector(point3)));
+                        }
+
+                        unsigned int normalTriangleIndex = i - ((i / xLineQuantity) * 3);
+                        normalTriangles[normalTriangleIndex] = normal.normalize();
+                    }else
+                    {
+                        i += 2;
+                    }
                 }
-
-                normalTriangles.push_back(normal.normalize());
-                isCwTriangle = !isCwTriangle;
-            }else
-            {
-                i += 2;
-            }
+            }, beginI, endI));
         }
+        std::for_each(threadsNormalTriangle.begin(), threadsNormalTriangle.end(), [](std::thread& x){x.join();});
         #ifdef _DEBUG
             assert(totalTriangles == normalTriangles.size());
         #endif
 
         //2. compute normal of vertex
-        normals.reserve(vertices.size());
-        for(unsigned int i=0; i<vertices.size(); ++i)
+        normals.resize(vertices.size());
+        unsigned int numLoopNormalVertex = vertices.size();
+        std::vector<std::thread> threadsNormalVertex(numThreads);
+        for(int threadI=0; threadI<numThreads; threadI++)
         {
-            std::vector<unsigned int> triangleIndices = findTriangleIndices(i);
+            unsigned int beginI = threadI * numLoopNormalVertex / numThreads;
+            unsigned int endI = (threadI + 1)==numThreads ? numLoopNormalVertex : (threadI + 1) * numLoopNormalVertex / numThreads;
 
-            Vector3<float> vertexNormal(0.0, 0.0, 0.0);
-            for(unsigned int triangleIndex : triangleIndices)
+            threadsNormalVertex[threadI] = std::thread(std::bind([&](unsigned int beginI, unsigned int endI)
             {
-                vertexNormal += normalTriangles[triangleIndex];
-            }
-            normals.emplace_back(vertexNormal.normalize());
+                for(unsigned int i = beginI; i<endI; i++)
+                {
+                    std::vector<unsigned int> triangleIndices = findTriangleIndices(i);
+
+                    Vector3<float> vertexNormal(0.0, 0.0, 0.0);
+                    for(unsigned int triangleIndex : triangleIndices)
+                    {
+                        vertexNormal += normalTriangles[triangleIndex];
+                    }
+                    normals[i] = vertexNormal.normalize();
+                }
+            }, beginI, endI));
         }
+        std::for_each(threadsNormalVertex.begin(), threadsNormalVertex.end(), [](std::thread& x){x.join();});
 
         return normals;
     }

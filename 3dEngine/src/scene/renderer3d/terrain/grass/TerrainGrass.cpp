@@ -117,7 +117,7 @@ namespace urchin
     }
 
     void TerrainGrass::generateGrass(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
-    {
+    { //TODO improve perf
         if(mesh!=nullptr)
         {
             this->mesh = mesh;
