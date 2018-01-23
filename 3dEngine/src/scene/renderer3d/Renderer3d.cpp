@@ -16,6 +16,7 @@ namespace urchin
 			height(0),
 			modelDisplayer(nullptr),
 			terrainManager(nullptr),
+			waterManager(nullptr),
 			geometryManager(nullptr),
 			camera(nullptr),
 			skybox(nullptr),
@@ -39,6 +40,8 @@ namespace urchin
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
 
 		terrainManager = new TerrainManager();
+
+		waterManager = new WaterManager();
 
 		geometryManager = new GeometryManager();
 
@@ -74,6 +77,7 @@ namespace urchin
 
 		//managers
 		delete modelDisplayer;
+		delete waterManager;
 		delete terrainManager;
 		delete geometryManager;
 		delete shadowManager;
@@ -225,6 +229,11 @@ namespace urchin
 		return terrainManager;
 	}
 
+	WaterManager *Renderer3d::getWaterManager() const
+	{
+		return waterManager;
+	}
+
 	GeometryManager *Renderer3d::getGeometryManager() const
 	{
 		return geometryManager;
@@ -293,6 +302,8 @@ namespace urchin
 		modelDisplayer->onCameraProjectionUpdate(camera);
 
 		terrainManager->onCameraProjectionUpdate(camera);
+
+		waterManager->onCameraProjectionUpdate(camera);
 
 		geometryManager->onCameraProjectionUpdate(camera);
 
@@ -487,6 +498,8 @@ namespace urchin
 		modelDisplayer->display(camera->getViewMatrix());
 
 		terrainManager->display(camera, invFrameRate);
+
+		waterManager->display(camera, invFrameRate);
 
 		geometryManager->display(camera->getViewMatrix());
 

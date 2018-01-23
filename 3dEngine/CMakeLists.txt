@@ -203,8 +203,10 @@ set(SOURCE_FILES
         src/scene/renderer3d/terrain/grass/TerrainGrass.h
         src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.cpp
         src/scene/renderer3d/terrain/grass/TerrainGrassQuadtree.h
-        src/scene/renderer3d/terrain/TerrainManager.cpp
-        src/scene/renderer3d/terrain/TerrainManager.h)
+        src/scene/renderer3d/water/WaterManager.cpp
+        src/scene/renderer3d/water/WaterManager.h
+        src/scene/renderer3d/water/Water.cpp
+        src/scene/renderer3d/water/Water.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

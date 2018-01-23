@@ -1,5 +1,5 @@
-#ifndef GREENCITY_TERRAINMESH_H
-#define GREENCITY_TERRAINMESH_H
+#ifndef URCHINENGINE_TERRAINMESH_H
+#define URCHINENGINE_TERRAINMESH_H
 
 #include <vector>
 #include "UrchinCommon.h"

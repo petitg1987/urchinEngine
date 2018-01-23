@@ -14,8 +14,8 @@
 #include "scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
-#include "scene/renderer3d/terrain/Terrain.h"
 #include "scene/renderer3d/terrain/TerrainManager.h"
+#include "scene/renderer3d/water/WaterManager.h"
 #include "scene/renderer3d/skybox/Skybox.h"
 #include "utils/display/geometry/GeometryManager.h"
 #include "utils/display/geometry/GeometryModel.h"
@@ -38,6 +38,8 @@ namespace urchin
 			OctreeManager<Model> *getModelOctreeManager() const;
 
             TerrainManager *getTerrainManager() const;
+
+			WaterManager *getWaterManager() const;
 
 			GeometryManager *getGeometryManager() const;
 
@@ -94,6 +96,8 @@ namespace urchin
 			OctreeManager<Model> *modelOctreeManager;
 
             TerrainManager *terrainManager;
+
+			WaterManager *waterManager;
 
             GeometryManager *geometryManager;
 

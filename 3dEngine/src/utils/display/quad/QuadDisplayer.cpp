@@ -51,7 +51,7 @@ namespace urchin
 		const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
 		glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, bufferUsage);
 		glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-		glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, false, 0, 0);
+		glVertexAttribPointer(SHADER_VERTEX_POSITION, dimension, vertexDataType, GL_FALSE, 0, nullptr);
 		if(vertexDataType==GL_FLOAT)
 		{
 			delete [] static_cast<float *>(vertexCoord);
@@ -68,7 +68,7 @@ namespace urchin
 		const unsigned int textureSize = (textureDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
 		glBufferData(GL_ARRAY_BUFFER, textureSize, textureCoord, bufferUsage);
 		glEnableVertexAttribArray(SHADER_TEX_COORD);
-		glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, false, 0, 0);
+		glVertexAttribPointer(SHADER_TEX_COORD, dimension, textureDataType, GL_FALSE, 0, nullptr);
 		if(textureDataType==GL_FLOAT)
 		{
 			delete [] static_cast<float *>(textureCoord);

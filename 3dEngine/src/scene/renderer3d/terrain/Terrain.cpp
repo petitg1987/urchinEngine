@@ -11,7 +11,7 @@ namespace urchin
 {
     Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position)
     {
-        glGenBuffers(5, bufferIDs);
+        glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
         terrainShader = ShaderManager::instance()->createProgram("terrain.vert", "terrain.frag");
@@ -50,7 +50,7 @@ namespace urchin
     Terrain::~Terrain()
     {
         glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(5, bufferIDs);
+        glDeleteBuffers(4, bufferIDs);
 
         ShaderManager::instance()->removeProgram(terrainShader);
     }

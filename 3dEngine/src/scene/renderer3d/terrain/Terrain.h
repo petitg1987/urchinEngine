@@ -42,7 +42,7 @@ namespace urchin
             void refreshGrassMesh();
             void refreshGrassAmbient();
 
-            unsigned int bufferIDs[5], vertexArrayObject;
+            unsigned int bufferIDs[4], vertexArrayObject;
             enum //buffer IDs indices
             {
                 VAO_VERTEX_POSITION = 0,

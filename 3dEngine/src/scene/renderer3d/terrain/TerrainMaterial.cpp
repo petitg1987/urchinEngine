@@ -3,7 +3,6 @@
 
 #include "TerrainMaterial.h"
 #include "resources/MediaManager.h"
-#include "utils/shader/ShaderManager.h"
 
 namespace urchin
 {
@@ -22,7 +21,8 @@ namespace urchin
             maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr);
             if(maskTexture->getImageFormat() != Image::IMAGE_RGBA)
             {
-                throw std::runtime_error("Mask texture must have 4 component (RGBA). Components: " + std::to_string(maskTexture->retrieveComponentsCount()));
+                maskTexture->release();
+                throw std::runtime_error("Mask texture must have 4 components (RGBA). Components: " + std::to_string(maskTexture->retrieveComponentsCount()));
             }
             maskTexture->toTexture(false, false, false);
         }
