@@ -32,6 +32,11 @@ namespace urchin
 			delete sceneTerrain;
 		}
 
+		for(SceneWater *sceneWater : sceneWaters)
+		{
+			delete sceneWater;
+		}
+
 		for(SceneSound *sceneSound : sceneSounds)
 		{
 			delete sceneSound;
@@ -59,7 +64,8 @@ namespace urchin
 		loadCallback.execute(LoadCallback::LIGHTS);
 
 		loadSceneTerrainFrom(chunk, xmlParser);
-		loadCallback.execute(LoadCallback::TERRAINS);
+		loadSceneWaterFrom(chunk, xmlParser);
+		loadCallback.execute(LoadCallback::LANDSCAPE);
 
 		loadSceneSoundsFrom(chunk, xmlParser);
 		loadCallback.execute(LoadCallback::SOUNDS);
@@ -110,6 +116,20 @@ namespace urchin
 		}
 	}
 
+	void Map::loadSceneWaterFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+	{
+		std::shared_ptr<XmlChunk> watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, XmlAttribute(), std::move(chunk));
+		std::vector<std::shared_ptr<XmlChunk>> watersChunk = xmlParser.getChunks(WATER_TAG, XmlAttribute(), watersListChunk);
+
+		for (const auto &waterChunk : watersChunk)
+		{
+			auto *sceneWater = new SceneWater();
+			sceneWater->loadFrom(waterChunk, xmlParser);
+
+			addSceneWater(sceneWater);
+		}
+	}
+
 	void Map::loadSceneSoundsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
 		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
@@ -139,6 +159,7 @@ namespace urchin
 		writeSceneObjectsOn(chunk, xmlWriter);
 		writeSceneLightsOn(chunk, xmlWriter);
 		writeSceneTerrainsOn(chunk, xmlWriter);
+		writeSceneWatersOn(chunk, xmlWriter);
 		writeSceneSoundsOn(chunk, xmlWriter);
 		writeSceneAIOn(chunk, xmlWriter);
 	}
@@ -171,8 +192,19 @@ namespace urchin
 
 		for (auto sceneTerrain : sceneTerrains)
 		{
-			std::shared_ptr<XmlChunk> lightsChunk = xmlWriter.createChunk(TERRAIN_TAG, XmlAttribute(), terrainsListChunk);
-			sceneTerrain->writeOn(lightsChunk, xmlWriter);
+			std::shared_ptr<XmlChunk> terrainsChunk = xmlWriter.createChunk(TERRAIN_TAG, XmlAttribute(), terrainsListChunk);
+			sceneTerrain->writeOn(terrainsChunk, xmlWriter);
+		}
+	}
+
+	void Map::writeSceneWatersOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+	{
+		std::shared_ptr<XmlChunk> watersListChunk = xmlWriter.createChunk(WATERS_TAG, XmlAttribute(), std::move(chunk));
+
+		for (auto sceneWater : sceneWaters)
+		{
+			std::shared_ptr<XmlChunk> watersChunk = xmlWriter.createChunk(WATER_TAG, XmlAttribute(), watersListChunk);
+			sceneWater->writeOn(watersChunk, xmlWriter);
 		}
 	}
 
@@ -282,6 +314,36 @@ namespace urchin
 	{
 		sceneTerrains.remove(sceneTerrain);
 		delete sceneTerrain;
+	}
+
+	const std::list<SceneWater *> &Map::getSceneWaters() const
+	{
+		return sceneWaters;
+	}
+
+	SceneWater *Map::getSceneWater(const std::string &name) const
+	{
+		for(auto sceneWater : sceneWaters)
+		{
+			if(sceneWater->getName() == name)
+			{
+				return sceneWater;
+			}
+		}
+
+		throw std::invalid_argument("Impossible to find a scene water having name: " + name);
+	}
+
+	void Map::addSceneWater(SceneWater *sceneWater)
+	{
+		sceneWater->setWaterManagers(renderer3d);
+		sceneWaters.push_back(sceneWater);
+	}
+
+	void Map::removeSceneWater(SceneWater *sceneWater)
+	{
+		sceneWaters.remove(sceneWater);
+		delete sceneWater;
 	}
 
 	const std::list<SceneSound *> &Map::getSceneSounds() const

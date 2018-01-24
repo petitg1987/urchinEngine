@@ -27,7 +27,7 @@ namespace urchin
     {
         if(this->renderer3d!=nullptr)
         {
-            throw std::invalid_argument("Cannot add the scene light on two different renderer.");
+            throw std::invalid_argument("Cannot add the scene terrain on two different renderer.");
         }
         if(renderer3d==nullptr)
         {

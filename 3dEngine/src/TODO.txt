@@ -28,7 +28,7 @@
 	- (3) [NEW FEATURE] Text selection
 	- (3) [NEW FEATURE] Use 'glutBitmapCharacter' to display characters
 - GRAPHIC EFFECT
-	- (3) [NEW FEATURE] Water
+	- (3) [QUALITY IMPROVEMENT] Water
 	- (3) [NEW FEATURE] Reflects
 	- (3) [NEW FEATURE] Smoke
 	- (3) [NEW FEATURE] Fire & explosion

@@ -65,7 +65,14 @@ set(SOURCE_FILES
         src/utils/AIEntityBuilder.cpp
         src/utils/AIEntityBuilder.h
         src/resources/common/SceneEntity.cpp
-        src/resources/common/SceneEntity.h src/load/LoadCallback.cpp src/load/LoadCallback.h src/load/NullLoadCallback.cpp src/load/NullLoadCallback.h)
+        src/resources/common/SceneEntity.h src/load/LoadCallback.cpp
+        src/load/LoadCallback.h
+        src/load/NullLoadCallback.cpp
+        src/load/NullLoadCallback.h
+        src/resources/water/SceneWater.cpp
+        src/resources/water/SceneWater.h
+        src/resources/water/WaterReaderWriter.cpp
+        src/resources/water/WaterReaderWriter.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src)
 

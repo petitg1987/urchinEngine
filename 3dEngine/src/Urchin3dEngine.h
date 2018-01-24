@@ -17,6 +17,7 @@
 #include "scene/renderer3d/terrain/TerrainMesh.h"
 #include "scene/renderer3d/terrain/TerrainMaterial.h"
 #include "scene/renderer3d/terrain/grass/TerrainGrass.h"
+#include "scene/renderer3d/water/Water.h"
 
 #include "scene/GUI/EventListener.h"
 #include "scene/GUI/GUIRenderer.h"

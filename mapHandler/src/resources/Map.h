@@ -13,6 +13,7 @@
 #include "resources/object/SceneObject.h"
 #include "resources/light/SceneLight.h"
 #include "resources/terrain/SceneTerrain.h"
+#include "resources/water/SceneWater.h"
 #include "resources/sound/SceneSound.h"
 #include "resources/ai/SceneAI.h"
 #include "resources/common/SceneEntity.h"
@@ -32,6 +33,8 @@ namespace urchin
 		#define LIGHT_TAG "light"
 		#define TERRAINS_TAG "terrains"
 		#define TERRAIN_TAG "terrain"
+		#define WATERS_TAG "waters"
+		#define WATER_TAG "water"
 		#define SOUND_ELEMENTS_TAG "soundElements"
 		#define SOUND_ELEMENT_TAG "soundElement"
 		#define AI_ELEMENTS_TAG "aiElements"
@@ -57,6 +60,11 @@ namespace urchin
 			void addSceneTerrain(SceneTerrain *);
 			void removeSceneTerrain(SceneTerrain *);
 
+			const std::list<SceneWater *> &getSceneWaters() const;
+			SceneWater *getSceneWater(const std::string &) const;
+			void addSceneWater(SceneWater *);
+			void removeSceneWater(SceneWater *);
+
 			const std::list<SceneSound *> &getSceneSounds() const;
 			SceneSound *getSceneSound(const std::string &) const;
 			void addSceneSound(SceneSound *);
@@ -72,6 +80,7 @@ namespace urchin
 			void loadSceneObjectsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneLightsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneTerrainFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
+			void loadSceneWaterFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneSoundsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 			void loadSceneAIFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
 
@@ -79,6 +88,7 @@ namespace urchin
 			void writeSceneObjectsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneLightsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneTerrainsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+			void writeSceneWatersOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
@@ -94,6 +104,7 @@ namespace urchin
 			std::list<SceneObject *> sceneObjects;
 			std::list<SceneLight *> sceneLights;
 			std::list<SceneTerrain *> sceneTerrains;
+			std::list<SceneWater *> sceneWaters;
 			std::list<SceneSound *> sceneSounds;
 			SceneAI *sceneAI;
 	};

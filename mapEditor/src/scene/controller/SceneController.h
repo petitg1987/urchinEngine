@@ -26,7 +26,7 @@ namespace urchin
 
 			ObjectController *getObjectController();
 			LightController *getLightController();
-			TerrainController *getTerrainController();
+			TerrainController *getTerrainController(); //TODO handle water
 			SoundController *getSoundController();
 			AIController *getAIController();
 

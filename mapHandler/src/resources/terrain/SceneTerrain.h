@@ -22,7 +22,7 @@ namespace urchin
             SceneTerrain();
             ~SceneTerrain();
 
-            void setTerrainManagers(Renderer3d *, PhysicsWorld *physicsWorld, AIManager *);
+            void setTerrainManagers(Renderer3d *, PhysicsWorld *, AIManager *);
 
             std::string getName() const;
             void setName(const std::string &);

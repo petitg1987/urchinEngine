@@ -11,7 +11,8 @@ namespace urchin
             {
                 OBJECTS,
                 LIGHTS,
-                TERRAINS,
+                LANDSCAPE,
+                WATERS,
                 SOUNDS,
                 AI
             };

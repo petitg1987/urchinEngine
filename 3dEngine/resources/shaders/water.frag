@@ -14,6 +14,7 @@ void main(){
 	fragColor = vec4(waterColor, 0.5);
 
 	//normal and ambient factor
-	vec4 normal = texture2D(normalTex, textCoordinates);
+	float shiftMove = sin(sumTimeStep) * 0.02f;
+	vec4 normal = texture2D(normalTex, textCoordinates + vec2(shiftMove, shiftMove));
 	fragNormalAndAmbient = vec4(normal.xyz, 0.5);
 }

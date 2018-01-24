@@ -45,6 +45,8 @@ namespace urchin
         glDeleteVertexArrays(1, &vertexArrayObject);
         glDeleteBuffers(2, bufferIDs);
 
+        normalTexture->release();
+
         ShaderManager::instance()->removeProgram(waterShader);
     }
 
