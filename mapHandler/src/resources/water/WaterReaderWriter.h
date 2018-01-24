@@ -25,9 +25,6 @@ namespace urchin
             void writeOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
 
         private:
-            Water *buildWaterFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-            void buildChunkFrom(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
-
             void loadPropertiesOn(Water *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
             void writePropertiesOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
     };

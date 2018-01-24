@@ -129,7 +129,11 @@ set(SOURCE_FILES
         src/scene/controller/terrains/TerrainTableView.cpp
         src/scene/controller/terrains/TerrainTableView.h
         src/scene/controller/terrains/dialog/NewTerrainDialog.cpp
-        src/scene/controller/terrains/dialog/NewTerrainDialog.h)
+        src/scene/controller/terrains/dialog/NewTerrainDialog.h
+        src/scene/controller/waters/WaterController.cpp
+        src/scene/controller/waters/WaterController.h
+        src/scene/controller/waters/WaterTableView.cpp
+        src/scene/controller/waters/WaterTableView.h src/scene/controller/waters/WaterControllerWidget.cpp src/scene/controller/waters/WaterControllerWidget.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 

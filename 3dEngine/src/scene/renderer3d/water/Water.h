@@ -12,11 +12,16 @@ namespace urchin
     class Water
     {
         public:
-            Water(const Point3<float> &, float, float);
+            Water();
             ~Water();
 
+            void setCenterPosition(const Point3<float> &);
             const Point3<float> &getCenterPosition() const;
+
+            void setXSize(float);
             float getXSize() const;
+
+            void setZSize(float);
             float getZSize() const;
 
             void setWaterColor(const Vector3<float> &);

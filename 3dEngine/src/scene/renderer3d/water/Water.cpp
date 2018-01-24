@@ -4,20 +4,22 @@
 #include "resources/MediaManager.h"
 #include "utils/shader/ShaderManager.h"
 
+#define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
+#define DEFAULT_SIZE 1000.0
 #define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
 #define DEFAULT_NORMAL_TEXTURE ""
+#define DEFAULT_REPEAT 1.0
 
 namespace urchin
 {
 
-    Water::Water(const Point3<float> &centerPosition, float xSize, float zSize) :
+    Water::Water() :
             sumTimeStep(0.0f),
-            centerPosition(centerPosition),
-            xSize(xSize),
-            zSize(zSize),
+            xSize(0.0f),
+            zSize(0.0f),
             normalTexture(nullptr),
-            sRepeat(1.0f),
-            tRepeat(1.0f)
+            sRepeat(0.0f),
+            tRepeat(0.0f)
     {
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -35,9 +37,13 @@ namespace urchin
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(normalTexLoc, 0);
 
-        generateVertex();
+        setCenterPosition(DEFAULT_CENTER_POSITION);
+        setXSize(DEFAULT_SIZE);
+        setZSize(DEFAULT_SIZE);
         setWaterColor(DEFAULT_WATER_COLOR);
         setNormalTexture(DEFAULT_NORMAL_TEXTURE);
+        setSRepeat(DEFAULT_REPEAT);
+        setTRepeat(DEFAULT_REPEAT);
     }
 
     Water::~Water()
@@ -77,14 +83,35 @@ namespace urchin
         glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 
+    void Water::setCenterPosition(const Point3<float> &centerPosition)
+    {
+        this->centerPosition = centerPosition;
+
+        generateVertex();
+    }
+
     const Point3<float> &Water::getCenterPosition() const
     {
         return centerPosition;
     }
 
+    void Water::setXSize(float xSize)
+    {
+        this->xSize = xSize;
+
+        generateVertex();
+    }
+
     float Water::getXSize() const
     {
         return xSize;
+    }
+
+    void Water::setZSize(float zSize)
+    {
+        this->zSize = zSize;
+
+        generateVertex();
     }
 
     float Water::getZSize() const

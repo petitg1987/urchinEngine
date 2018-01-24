@@ -4,41 +4,28 @@ namespace urchin
 {
     Water *WaterReaderWriter::loadFrom(std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
     {
-        Water *water = buildWaterFrom(waterChunk, xmlParser);
-
-        loadPropertiesOn(water, waterChunk, xmlParser);
+        auto *water = new Water();
+        loadPropertiesOn(water, std::move(waterChunk), xmlParser);
 
         return water;
     }
 
     void WaterReaderWriter::writeOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
     {
-        buildChunkFrom(waterChunk, water, xmlWriter);
-
-        writePropertiesOn(waterChunk, water, xmlWriter);
-    }
-
-    Water *WaterReaderWriter::buildWaterFrom(std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
-    {
-        std::shared_ptr<XmlChunk> centerPositionChunk = xmlParser.getUniqueChunk(true, CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
-        std::shared_ptr<XmlChunk> xSizeChunk = xmlParser.getUniqueChunk(true, X_SIZE_TAG, XmlAttribute(), waterChunk);
-        std::shared_ptr<XmlChunk> zSizeChunk = xmlParser.getUniqueChunk(true, Z_SIZE_TAG, XmlAttribute(), waterChunk);
-
-        return new Water(centerPositionChunk->getPoint3Value(), xSizeChunk->getFloatValue(), zSizeChunk->getFloatValue());
-    }
-
-    void WaterReaderWriter::buildChunkFrom(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
-    {
-        std::shared_ptr<XmlChunk> centerPositionChunk = xmlWriter.createChunk(CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
-        centerPositionChunk->setPoint3Value(water->getCenterPosition());
-        std::shared_ptr<XmlChunk> xSizeChunk = xmlWriter.createChunk(X_SIZE_TAG, XmlAttribute(), waterChunk);
-        xSizeChunk->setFloatValue(water->getXSize());
-        std::shared_ptr<XmlChunk> zSizeChunk = xmlWriter.createChunk(Z_SIZE_TAG, XmlAttribute(), waterChunk);
-        zSizeChunk->setFloatValue(water->getZSize());
+        writePropertiesOn(std::move(waterChunk), water, xmlWriter);
     }
 
     void WaterReaderWriter::loadPropertiesOn(Water *water, std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
     {
+        std::shared_ptr<XmlChunk> centerPositionChunk = xmlParser.getUniqueChunk(true, CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
+        water->setCenterPosition(centerPositionChunk->getPoint3Value());
+
+        std::shared_ptr<XmlChunk> xSizeChunk = xmlParser.getUniqueChunk(true, X_SIZE_TAG, XmlAttribute(), waterChunk);
+        water->setXSize(xSizeChunk->getFloatValue());
+
+        std::shared_ptr<XmlChunk> zSizeChunk = xmlParser.getUniqueChunk(true, Z_SIZE_TAG, XmlAttribute(), waterChunk);
+        water->setZSize(zSizeChunk->getFloatValue());
+
         std::shared_ptr<XmlChunk> waterColorChunk = xmlParser.getUniqueChunk(true, WATER_COLOR_TAG, XmlAttribute(), waterChunk);
         water->setWaterColor(waterColorChunk->getVector3Value());
 
@@ -54,6 +41,15 @@ namespace urchin
 
     void WaterReaderWriter::writePropertiesOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
     {
+        std::shared_ptr<XmlChunk> centerPositionChunk = xmlWriter.createChunk(CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
+        centerPositionChunk->setPoint3Value(water->getCenterPosition());
+
+        std::shared_ptr<XmlChunk> xSizeChunk = xmlWriter.createChunk(X_SIZE_TAG, XmlAttribute(), waterChunk);
+        xSizeChunk->setFloatValue(water->getXSize());
+
+        std::shared_ptr<XmlChunk> zSizeChunk = xmlWriter.createChunk(Z_SIZE_TAG, XmlAttribute(), waterChunk);
+        zSizeChunk->setFloatValue(water->getZSize());
+
         std::shared_ptr<XmlChunk> waterColorChunk = xmlWriter.createChunk(WATER_COLOR_TAG, XmlAttribute(), waterChunk);
         waterColorChunk->setVector3Value(water->getWaterColor());
 
