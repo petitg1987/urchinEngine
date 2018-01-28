@@ -131,8 +131,8 @@ namespace urchin
 
         auto *materialLayout = new QGridLayout(materialGroupBox);
 
-        QLabel *yScaleLabel= new QLabel("Repeat:");
-        materialLayout->addWidget(yScaleLabel, 0, 0);
+        QLabel *repeatLabel= new QLabel("Repeat:");
+        materialLayout->addWidget(repeatLabel, 0, 0);
 
         sRepeat = new QDoubleSpinBox();
         materialLayout->addWidget(sRepeat, 0, 1);

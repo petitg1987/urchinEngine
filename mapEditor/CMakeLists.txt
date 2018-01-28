@@ -133,7 +133,11 @@ set(SOURCE_FILES
         src/scene/controller/waters/WaterController.cpp
         src/scene/controller/waters/WaterController.h
         src/scene/controller/waters/WaterTableView.cpp
-        src/scene/controller/waters/WaterTableView.h src/scene/controller/waters/WaterControllerWidget.cpp src/scene/controller/waters/WaterControllerWidget.h)
+        src/scene/controller/waters/WaterTableView.h
+        src/scene/controller/waters/WaterControllerWidget.cpp
+        src/scene/controller/waters/WaterControllerWidget.h
+        src/scene/controller/waters/dialog/NewWaterDialog.cpp
+        src/scene/controller/waters/dialog/NewWaterDialog.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 

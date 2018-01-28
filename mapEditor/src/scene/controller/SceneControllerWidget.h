@@ -10,6 +10,7 @@
 #include "scene/controller/objects/ObjectControllerWidget.h"
 #include "scene/controller/lights/LightControllerWidget.h"
 #include "scene/controller/terrains/TerrainControllerWidget.h"
+#include "scene/controller/waters/WaterControllerWidget.h"
 #include "scene/controller/sounds/SoundControllerWidget.h"
 #include "scene/controller/ai/AIControllerWidget.h"
 
@@ -34,6 +35,7 @@ namespace urchin
 				OBJECTS,
 				LIGHTS,
 				TERRAINS,
+				WATERS,
 				SOUNDS,
 				AI
 			};
@@ -41,6 +43,7 @@ namespace urchin
 			ObjectControllerWidget *getObjectControllerWidget() const;
 			LightControllerWidget *getLightControllerWidget() const;
 			TerrainControllerWidget *getTerrainControllerWidget() const;
+			WaterControllerWidget *getWaterControllerWidget() const;
 			SoundControllerWidget *getSoundControllerWidget() const;
 			AIControllerWidget *getAIControllerWidget() const;
 
@@ -60,6 +63,7 @@ namespace urchin
 			ObjectControllerWidget *tabObjects;
 			LightControllerWidget *tabLights;
 			TerrainControllerWidget *tabTerrains;
+			WaterControllerWidget *tabWaters;
 			SoundControllerWidget *tabSounds;
 			AIControllerWidget *tabAI;
 

@@ -9,8 +9,8 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-
 #include "UrchinCommon.h"
+
 #include "scene/controller/terrains/TerrainController.h"
 #include "scene/controller/terrains/TerrainTableView.h"
 

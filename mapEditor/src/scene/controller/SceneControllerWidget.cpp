@@ -18,6 +18,9 @@ namespace urchin
 		tabTerrains = new TerrainControllerWidget();
 		addTab(tabTerrains, "Terrains");
 
+		tabWaters = new WaterControllerWidget();
+		addTab(tabWaters, "Waters");
+
 		tabSounds = new SoundControllerWidget();
 		addTab(tabSounds, "Sounds");
 
@@ -47,6 +50,11 @@ namespace urchin
 	TerrainControllerWidget *SceneControllerWidget::getTerrainControllerWidget() const
 	{
 		return tabTerrains;
+	}
+
+	WaterControllerWidget *SceneControllerWidget::getWaterControllerWidget() const
+	{
+		return tabWaters;
 	}
 
 	SoundControllerWidget *SceneControllerWidget::getSoundControllerWidget() const
@@ -80,6 +88,7 @@ namespace urchin
 		tabObjects->load(sceneController->getObjectController());
 		tabLights->load(sceneController->getLightController());
 		tabTerrains->load(sceneController->getTerrainController());
+		tabWaters->load(sceneController->getWaterController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
 	}
@@ -94,6 +103,7 @@ namespace urchin
 		tabObjects->load(sceneController->getObjectController());
 		tabLights->load(sceneController->getLightController());
 		tabTerrains->load(sceneController->getTerrainController());
+		tabWaters->load(sceneController->getWaterController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
 	}
@@ -111,6 +121,7 @@ namespace urchin
 		tabObjects->unload();
 		tabLights->unload();
 		tabTerrains->unload();
+		tabWaters->unload();
 		tabSounds->unload();
 		tabAI->unload();
 		setEnabled(false);
@@ -130,11 +141,14 @@ namespace urchin
 			return TabName::LIGHTS;
 		}else if(tabIndex==2)
 		{
-			return TabName ::TERRAINS;
+			return TabName::TERRAINS;
 		}else if(tabIndex==3)
 		{
-			return TabName::SOUNDS;
+			return TabName::WATERS;
 		}else if(tabIndex==4)
+		{
+			return TabName::SOUNDS;
+		}else if(tabIndex==5)
 		{
 			return TabName::AI;
 		}
