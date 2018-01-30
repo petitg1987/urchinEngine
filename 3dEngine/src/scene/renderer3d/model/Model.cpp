@@ -6,20 +6,31 @@
 
 namespace urchin
 {
-	
+
+    //static
+    AABBox<float> Model::defaultModelAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+
 	Model::Model(const std::string &meshFilename) :
+			constMeshes(nullptr),
+			meshes(nullptr),
 			currConstAnimation(nullptr),
 			currAnimation(nullptr),
 			bIsProduceShadow(true)
 	{
-		constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
-		meshes = new Meshes(constMeshes);
-		meshes->onMoving(transform);
+		if(!meshFilename.empty())
+		{
+			constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
+			meshes = new Meshes(constMeshes);
+			meshes->onMoving(transform);
+		}
 	}
 
 	Model::~Model()
 	{
-		constMeshes->release();
+		if(constMeshes!=nullptr)
+		{
+			constMeshes->release();
+		}
 		delete meshes;
 		
 		for (auto &animation : animations)
@@ -35,6 +46,11 @@ namespace urchin
 
 	void Model::loadAnimation(const std::string &name, const std::string &filename)
 	{
+		if(!constMeshes)
+		{
+			throw std::runtime_error("Cannot add animation on model without mesh");
+		}
+
 		//load and add the anim to the std::map
 		auto *constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
 		constAnimations[name] = constAnimation;
@@ -90,7 +106,10 @@ namespace urchin
 		this->notifyOctreeableMove();
 
 		//update the bounding box
-		meshes->onMoving(newTransform);
+		if(meshes)
+		{
+			meshes->onMoving(newTransform);
+		}
 		if(currAnimation)
 		{
 			currAnimation->onMoving(newTransform);
@@ -118,24 +137,30 @@ namespace urchin
 		if(isAnimate())
 		{
 			return currAnimation->getGlobalAABBox();
-		}else
+		}else if(meshes)
 		{
 			return meshes->getGlobalAABBox();
-		}
+		}else
+        {
+            return defaultModelAABBox;
+        }
 	}
 
 	/**
 	 * @return identical to getAABBox() method but the bounding box is splitted to the limit size configured
 	 */
-	const std::vector<AABBox<float>> &Model::getSplittedAABBox() const
+	std::vector<AABBox<float>> Model::getSplittedAABBox() const
 	{
 		if(isAnimate())
 		{
 			return currAnimation->getGlobalSplittedAABBox();
-		}else
+		}else if(meshes)
 		{
 			return meshes->getGlobalSplittedAABBox();
-		}
+		}else
+        {
+            return {defaultModelAABBox};
+        }
 	}
 
 	/**
@@ -146,10 +171,13 @@ namespace urchin
 		if(isAnimate())
 		{
 			return currAnimation->getGlobalLocalAABBox();
-		}else
+		}else if(meshes)
 		{
 			return meshes->getGlobalLocalAABBox();
-		}
+		}else
+        {
+            return defaultModelAABBox;
+        }
 	}
 
 	void Model::setPosition(const Point3<float> &p)
@@ -205,10 +233,13 @@ namespace urchin
 
 	void Model::display(const MeshParameter &meshParameter)
 	{
-		for(unsigned int m=0; m<meshes->getNumberMeshes(); ++m)
-		{
-			meshes->getMesh(m)->display(meshParameter);
-		}
+        if(meshes)
+        {
+            for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m)
+            {
+                meshes->getMesh(m)->display(meshParameter);
+            }
+        }
 	}
 
 }

@@ -83,7 +83,11 @@ namespace urchin
 			sceneObject->setName(objectName);
 
 			std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
-			std::string relativeMeshFilename = FileHandler::getRelativePath(resourcesDirectory, meshFilename);
+			std::string relativeMeshFilename;
+			if(!meshFilename.empty())
+			{
+				relativeMeshFilename = FileHandler::getRelativePath(resourcesDirectory, meshFilename);
+			}
 			auto *model = new Model(relativeMeshFilename);
 			sceneObject->setModel(model);
 		}catch(std::exception &e)
@@ -134,11 +138,6 @@ namespace urchin
 			}else if(isSceneObjectExist(objectName))
 			{
 				LabelStyleHelper::applyErrorStyle(objectNameLabel, "Object name is already used");
-				hasError = true;
-			}
-			if(meshFilename.empty())
-			{
-				LabelStyleHelper::applyErrorStyle(meshFilenameLabel, "Mesh is mandatory");
 				hasError = true;
 			}
 

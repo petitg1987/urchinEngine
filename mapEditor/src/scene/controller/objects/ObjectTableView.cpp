@@ -54,7 +54,11 @@ namespace urchin
 		itemObjectName->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
 		itemObjectName->setEditable(false);
 
-		std::string pathFileName = sceneObject->getModel()->getMeshes()->getMeshFilename();
+		std::string pathFileName;
+		if(sceneObject->getModel()->getMeshes())
+		{
+			pathFileName = sceneObject->getModel()->getMeshes()->getMeshFilename();
+		}
 		QStandardItem *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
 		itemMeshFile->setToolTip(QString::fromStdString(pathFileName));
 		itemMeshFile->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);

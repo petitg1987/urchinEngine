@@ -29,7 +29,7 @@ namespace urchin
 			std::map<std::string, const ConstAnimation *> getAnimations() const;
 
 			const AABBox<float> &getAABBox() const override;
-			const std::vector<AABBox<float>> &getSplittedAABBox() const;
+			std::vector<AABBox<float>> getSplittedAABBox() const;
 			const AABBox<float> &getLocalAABBox() const;
 			
 			void setPosition(const Point3<float> &);
@@ -46,6 +46,8 @@ namespace urchin
 
 		private:
 			void onMoving(const Transform<float> &);
+
+			static AABBox<float> defaultModelAABBox;
 
 			//meshes
 			ConstMeshes *constMeshes; //constant part of the meshes (common to all cloned models)
