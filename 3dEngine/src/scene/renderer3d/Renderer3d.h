@@ -44,7 +44,6 @@ namespace urchin
 			GeometryManager *getGeometryManager() const;
 
 			LightManager *getLightManager() const;
-			void activateLighting(bool);
 
 			ShadowManager *getShadowManager() const;
 			void activateShadow(bool);
@@ -102,7 +101,6 @@ namespace urchin
             GeometryManager *geometryManager;
 
 			LightManager *lightManager;
-			bool isLightingActivated;
 
 			ShadowManager *shadowManager;
 			bool isShadowActivated;
@@ -138,7 +136,7 @@ namespace urchin
 
 			std::shared_ptr<QuadDisplayer> lightingPassQuadDisplayer;
 			unsigned int deferredShadingShader;
-			int mInverseViewProjectionLoc, viewPositionLoc, hasLightingLoc, hasShadowLoc, hasAmbientOcclusionLoc;
+			int mInverseViewProjectionLoc, viewPositionLoc;
 	};
 
 }

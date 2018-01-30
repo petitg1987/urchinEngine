@@ -24,10 +24,7 @@ namespace urchin
 			textureIDs(nullptr),
 			deferredShadingShader(0),
 			mInverseViewProjectionLoc(0),
-			viewPositionLoc(0),
-			hasLightingLoc(0),
-			hasShadowLoc(0),
-			hasAmbientOcclusionLoc(0)
+			viewPositionLoc(0)
 	{
 		//deferred shading (pass 1)
 		fboIDs = new unsigned int[1];
@@ -46,7 +43,6 @@ namespace urchin
 		geometryManager = new GeometryManager();
 
 		lightManager = new LightManager();
-		isLightingActivated = true;
 
 		shadowManager = new ShadowManager(lightManager, modelOctreeManager);
 		shadowManager->addObserver(this, ShadowManager::NUMBER_SHADOW_MAPS_UPDATE);
@@ -127,13 +123,10 @@ namespace urchin
 		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
 		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
-		hasLightingLoc = glGetUniformLocation(deferredShadingShader, "hasLighting");
-		glUniform1i(hasLightingLoc, isLightingActivated);
-
-		hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
+		int hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
 		glUniform1i(hasShadowLoc, isShadowActivated);
 
-		hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
+		int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
 		glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
 
 		//managers
@@ -242,13 +235,6 @@ namespace urchin
 	LightManager *Renderer3d::getLightManager() const
 	{
 		return lightManager;
-	}
-
-	void Renderer3d::activateLighting(bool isLightingActivated)
-	{
-		this->isLightingActivated = isLightingActivated;
-
-		createOrUpdateDeferredShadingShader();
 	}
 
 	ShadowManager *Renderer3d::getShadowManager() const
@@ -549,10 +535,7 @@ namespace urchin
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
 		glUniform3fv(viewPositionLoc, 1, (const float *)camera->getPosition());
 
-		if(isLightingActivated)
-		{
-			lightManager->loadLights();
-		}
+        lightManager->loadLights();
 
 		if(isShadowActivated)
 		{
