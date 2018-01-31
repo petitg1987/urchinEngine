@@ -120,14 +120,12 @@ namespace urchin
 		glUniform1i(diffuseTexLoc, GL_TEXTURE1-GL_TEXTURE0);
 		int normalAndAmbientTexLoc = glGetUniformLocation(deferredShadingShader, "normalAndAmbientTex");
 		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE2-GL_TEXTURE0);
-		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
-		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
-
 		int hasShadowLoc = glGetUniformLocation(deferredShadingShader, "hasShadow");
 		glUniform1i(hasShadowLoc, isShadowActivated);
-
 		int hasAmbientOcclusionLoc = glGetUniformLocation(deferredShadingShader, "hasAmbientOcclusion");
 		glUniform1i(hasAmbientOcclusionLoc, isAmbientOcclusionActivated);
+		mInverseViewProjectionLoc = glGetUniformLocation(deferredShadingShader, "mInverseViewProjection");
+		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
 		//managers
 		lightManager->loadUniformLocationFor(deferredShadingShader);

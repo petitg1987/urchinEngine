@@ -17,9 +17,9 @@ uniform sampler2D colorTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D ambientOcclusionTex;
 uniform mat4 mInverseViewProjection;
-uniform bool hasLighting;
 uniform bool hasShadow;
 uniform bool hasAmbientOcclusion;
+uniform vec3 viewPosition;
 
 //lights and shadows:
 struct StructLightInfo{
@@ -95,21 +95,50 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
 	return shadowContribution;
 }
 
+vec4 addFog(vec4 baseColor, vec4 position){ //TODO review (optimize, configurable)
+    if(viewPosition.y > -29.4){
+        return baseColor;
+    }
+
+    const float density = 2.0;
+    const float gradient = 0.5;
+
+    vec3 lineVector = position.xyz - viewPosition;
+    vec3 lineAToPlanePoint = vec3(0.0, -29.4, 0.0) - viewPosition;
+    vec3 waterNormal = vec3(0.0, 1.0, 0.0);
+    float t = dot(waterNormal,  lineAToPlanePoint) / dot(waterNormal, lineVector);
+    vec3 correctedPosition = viewPosition + (t * lineVector);
+    if(t < 0.0 || t > 1.0)
+    {
+        correctedPosition = position.xyz;
+    }
+
+    float distance = distance(viewPosition, correctedPosition);
+    float visibility = exp(-pow((distance*density), gradient));
+    visibility = clamp(visibility, 0.0, 1.0);
+
+    vec4 fogColor = vec4(0.08, 0.22, 0.29, 1.0);
+    return mix(fogColor, fragColor, visibility);
+}
+
 void main(){	
 	vec4 diffuse = texture2D(colorTex, textCoordinates);
 	vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
 	float modelAmbientFactor = normalAndAmbient.a;
-	
+	float depthValue = texture2D(depthTex, textCoordinates).r;
+    vec4 position = fetchPosition(textCoordinates, depthValue);
+
 	if(modelAmbientFactor >= 0.99999f){ //no lighting
 		fragColor = diffuse;
+
+		//TODO review:
+		fragColor = addFog(fragColor, position);
+
 		return;
 	}
-	
-	float depthValue = texture2D(depthTex, textCoordinates).r;
-	vec4 position = fetchPosition(textCoordinates, depthValue);
+
 	vec3 normal = vec3(normalAndAmbient) * 2.0f - 1.0f;
 	vec4 modelAmbient = diffuse * modelAmbientFactor;
-	
 	fragColor = globalAmbient;
 	
 	if(hasAmbientOcclusion){
@@ -146,6 +175,9 @@ void main(){
             break; //no more light
         }
     }
+
+	//TODO review:
+	fragColor = addFog(fragColor, position);
 
 	//DEBUG: add color to shadow map splits
 /*	const float colorValue = 0.25f;
