@@ -15,6 +15,7 @@ namespace urchin
 			width(0),
 			height(0),
 			modelDisplayer(nullptr),
+			fogManager(nullptr),
 			terrainManager(nullptr),
 			waterManager(nullptr),
 			geometryManager(nullptr),
@@ -35,6 +36,8 @@ namespace urchin
 		glGenTextures(4, textureIDs);
 
 		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
+
+		fogManager = new FogManager();
 
 		terrainManager = new TerrainManager();
 
@@ -75,6 +78,7 @@ namespace urchin
 		delete modelDisplayer;
 		delete waterManager;
 		delete terrainManager;
+		delete fogManager;
 		delete geometryManager;
 		delete shadowManager;
 		delete modelOctreeManager;
@@ -128,6 +132,7 @@ namespace urchin
 		viewPositionLoc = glGetUniformLocation(deferredShadingShader, "viewPosition");
 
 		//managers
+		fogManager->loadUniformLocationFor(deferredShadingShader);
 		lightManager->loadUniformLocationFor(deferredShadingShader);
 		shadowManager->loadUniformLocationFor(deferredShadingShader);
 		ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
@@ -213,6 +218,11 @@ namespace urchin
 	OctreeManager<Model> *Renderer3d::getModelOctreeManager() const
 	{
 		return modelOctreeManager;
+	}
+
+	FogManager *Renderer3d::getFogManager() const
+	{
+		return fogManager;
 	}
 
 	TerrainManager *Renderer3d::getTerrainManager() const
@@ -483,7 +493,7 @@ namespace urchin
 
 		terrainManager->display(camera, invFrameRate);
 
-		waterManager->display(camera, invFrameRate);
+		waterManager->display(camera, fogManager, invFrameRate);
 
 		geometryManager->display(camera->getViewMatrix());
 

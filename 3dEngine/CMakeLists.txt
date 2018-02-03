@@ -206,7 +206,11 @@ set(SOURCE_FILES
         src/scene/renderer3d/water/WaterManager.cpp
         src/scene/renderer3d/water/WaterManager.h
         src/scene/renderer3d/water/Water.cpp
-        src/scene/renderer3d/water/Water.h)
+        src/scene/renderer3d/water/Water.h
+        src/scene/renderer3d/fog/FogManager.cpp
+        src/scene/renderer3d/fog/FogManager.h
+        src/scene/renderer3d/fog/Fog.cpp
+        src/scene/renderer3d/fog/Fog.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

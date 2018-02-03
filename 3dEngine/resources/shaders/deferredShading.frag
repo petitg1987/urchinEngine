@@ -39,6 +39,13 @@ uniform StructLightInfo lightsInfo[#MAX_LIGHTS#];
 uniform float depthSplitDistance[#NUMBER_SHADOW_MAPS#];
 uniform vec4 globalAmbient;
 
+//fog
+uniform bool hasFog;
+uniform float fogDensity;
+uniform float fogGradient;
+uniform vec4 fogColor;
+uniform float fogMaxHeight;
+
 layout (location = #OUTPUT_LOCATION#) out vec4 fragColor;
 
 vec4 fetchPosition(vec2 textCoord, float depthValue){
@@ -96,12 +103,7 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
 }
 
 vec4 addFog(vec4 baseColor, vec4 position){
-    const float fogDensity = 2.0; //TODO make it configurable
-    const float fogGradient = 0.5;
-    const float fogMaxHeight = -29.4;
-    vec4 fogColor = vec4(0.08, 0.22, 0.29, 1.0);
-
-    if(viewPosition.y > fogMaxHeight){
+    if(!hasFog || viewPosition.y > fogMaxHeight){
         return baseColor;
     }
 

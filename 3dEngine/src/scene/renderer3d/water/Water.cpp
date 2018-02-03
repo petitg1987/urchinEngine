@@ -192,19 +192,29 @@ namespace urchin
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
-    void Water::display(const Camera *camera, float invFrameRate)
+    void Water::display(const Camera *camera, FogManager *fogManager, float invFrameRate)
     {
-        ShaderManager::instance()->bind(waterShader);
+        if(camera->getPosition().Y < centerPosition.Y)
+        {
+            if(!fogManager->hasFog()) //TODO check water rectangle...
+            {
+                fogManager->activateFog(new urchin::Fog(2.0, 0.5, getWaterColor(), centerPosition.Y)); //TODO delete + hardcoded value
+            }
+        }else
+        {
+            fogManager->disableFog(); //TODO restore previous fog
 
-        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)camera->getViewMatrix());
+            ShaderManager::instance()->bind(waterShader);
+            glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
 
-        sumTimeStep += invFrameRate;
-        glUniform1f(sumTimeStepLoc, sumTimeStep);
+            sumTimeStep += invFrameRate;
+            glUniform1f(sumTimeStepLoc, sumTimeStep);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, normalTexture->getTextureID());
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, normalTexture->getTextureID());
 
-        glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_QUADS, 0, 4);
+            glBindVertexArray(vertexArrayObject);
+            glDrawArrays(GL_QUADS, 0, 4);
+        }
     }
 }

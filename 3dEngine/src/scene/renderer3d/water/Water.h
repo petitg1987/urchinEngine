@@ -5,6 +5,7 @@
 
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
+#include "scene/renderer3d/fog/FogManager.h"
 
 namespace urchin
 {
@@ -38,7 +39,7 @@ namespace urchin
 
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
-            void display(const Camera *, float invFrameRate);
+            void display(const Camera *, FogManager *, float invFrameRate);
 
         private:
             void generateVertex();

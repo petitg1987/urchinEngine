@@ -39,6 +39,13 @@ uniform StructLightInfo lightsInfo[#MAX_LIGHTS#];
 uniform float depthSplitDistance[#NUMBER_SHADOW_MAPS#];
 uniform vec4 globalAmbient;
 
+//fog
+uniform bool hasFog;
+uniform float fogDensity;
+uniform float fogGradient;
+uniform vec4 fogColor;
+uniform float fogMaxHeight;
+
 layout (location = #OUTPUT_LOCATION#) out vec4 fragColor;
 
 vec4 fetchPosition(vec2 textCoord, float depthValue){
@@ -95,30 +102,21 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
 	return shadowContribution;
 }
 
-vec4 addFog(vec4 baseColor, vec4 position){ //TODO review
-    if(viewPosition.y > -29.4){
+vec4 addFog(vec4 baseColor, vec4 position){
+    if(!hasFog || viewPosition.y > fogMaxHeight){
         return baseColor;
     }
 
-    const float density = 3.0;
-    const float gradient = 0.4;
-
     vec3 lineVector = position.xyz - viewPosition;
-    vec3 lineAToPlanePoint = vec3(0.0, -29.4, 0.0) - viewPosition;
-    vec3 waterNormal = vec3(0.0, 1.0, 0.0);
-    float t = dot(waterNormal,  lineAToPlanePoint) / dot(waterNormal, lineVector);
-    vec3 correctedPosition = viewPosition + (t * lineVector);
-    if(t < 0.0 || t > 1.0)
-    {
-        correctedPosition = position.xyz;
+    float t = (fogMaxHeight - viewPosition.y) / lineVector.y;
+    vec3 correctedPosition = position.xyz;
+    if(t > 0.0 && t < 1.0){
+        correctedPosition = viewPosition + (t * lineVector);
     }
 
     float distance = distance(viewPosition, correctedPosition);
-    float visibility = exp(-pow((distance*density), gradient));
-    visibility = clamp(visibility, 0.0, 1.0);
-
-    vec4 fogColor = vec4(0.08, 0.22, 0.29, 1.0);
-    return mix(fogColor, fragColor, visibility);
+    float visibility = exp(-pow((distance*fogDensity), fogGradient));
+    return mix(fogColor, baseColor, visibility);
 }
 
 void main(){	
@@ -129,11 +127,7 @@ void main(){
     vec4 position = fetchPosition(textCoordinates, depthValue);
 
 	if(modelAmbientFactor >= 0.99999f){ //no lighting
-		fragColor = diffuse;
-
-		//TODO review:
-		fragColor = addFog(fragColor, position);
-
+		fragColor = addFog(diffuse, position);
 		return;
 	}
 
@@ -176,7 +170,6 @@ void main(){
         }
     }
 
-	//TODO review:
 	fragColor = addFog(fragColor, position);
 
 	//DEBUG: add color to shadow map splits

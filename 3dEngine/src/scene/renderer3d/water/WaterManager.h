@@ -5,6 +5,7 @@
 
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/water/Water.h"
+#include "scene/renderer3d/fog/FogManager.h"
 
 namespace urchin
 {
@@ -17,7 +18,7 @@ namespace urchin
             void addWater(Water *);
             void removeWater(Water *);
 
-            void display(const Camera *, float) const;
+            void display(const Camera *, FogManager *, float) const;
 
         private:
             std::vector<Water *> waters;

@@ -15,6 +15,7 @@
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/terrain/TerrainManager.h"
+#include "scene/renderer3d/fog/FogManager.h"
 #include "scene/renderer3d/water/WaterManager.h"
 #include "scene/renderer3d/skybox/Skybox.h"
 #include "utils/display/geometry/GeometryManager.h"
@@ -36,6 +37,8 @@ namespace urchin
 
 			//managers
 			OctreeManager<Model> *getModelOctreeManager() const;
+
+			FogManager *getFogManager() const;
 
             TerrainManager *getTerrainManager() const;
 
@@ -93,6 +96,8 @@ namespace urchin
 			//managers
 			ModelDisplayer *modelDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
+
+			FogManager *fogManager;
 
             TerrainManager *terrainManager;
 

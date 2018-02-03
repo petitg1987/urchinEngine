@@ -33,11 +33,11 @@ namespace urchin
         }
     }
 
-    void WaterManager::display(const Camera *camera, float invFrameRate) const
+    void WaterManager::display(const Camera *camera, FogManager *fogManager, float invFrameRate) const
     {
         for(const auto water : waters)
         {
-            water->display(camera, invFrameRate);
+            water->display(camera, fogManager, invFrameRate);
         }
     }
 }
