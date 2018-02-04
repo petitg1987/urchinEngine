@@ -5,17 +5,19 @@ namespace urchin
     Water *WaterReaderWriter::loadFrom(std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
     {
         auto *water = new Water();
-        loadPropertiesOn(water, std::move(waterChunk), xmlParser);
+        loadGeneralPropertiesOn(water, waterChunk, xmlParser);
+        loadUnderWaterProperties(water, waterChunk, xmlParser);
 
         return water;
     }
 
     void WaterReaderWriter::writeOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
     {
-        writePropertiesOn(std::move(waterChunk), water, xmlWriter);
+        writeGeneralPropertiesOn(waterChunk, water, xmlWriter);
+        writeUnderWaterPropertiesOn(waterChunk, water, xmlWriter);
     }
 
-    void WaterReaderWriter::loadPropertiesOn(Water *water, std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
+    void WaterReaderWriter::loadGeneralPropertiesOn(Water *water, std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> centerPositionChunk = xmlParser.getUniqueChunk(true, CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
         water->setCenterPosition(centerPositionChunk->getPoint3Value());
@@ -39,7 +41,7 @@ namespace urchin
         water->setTRepeat(tRepeatChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writePropertiesOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
+    void WaterReaderWriter::writeGeneralPropertiesOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
     {
         std::shared_ptr<XmlChunk> centerPositionChunk = xmlWriter.createChunk(CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
         centerPositionChunk->setPoint3Value(water->getCenterPosition());
@@ -61,6 +63,24 @@ namespace urchin
 
         std::shared_ptr<XmlChunk> tRepeatChunk = xmlWriter.createChunk(T_REPEAT_TAG, XmlAttribute(), waterChunk);
         tRepeatChunk->setFloatValue(water->getTRepeat());
+    }
+
+    void WaterReaderWriter::loadUnderWaterProperties(Water *water, const std::shared_ptr<XmlChunk> &waterChunk, const XmlParser &xmlParser) const
+    {
+        std::shared_ptr<XmlChunk> densityChunk = xmlParser.getUniqueChunk(true, DENSITY_TAG, XmlAttribute(), waterChunk);
+        water->setDensity(densityChunk->getFloatValue());
+
+        std::shared_ptr<XmlChunk> gradientChunk = xmlParser.getUniqueChunk(true, GRADIENT_TAG, XmlAttribute(), waterChunk);
+        water->setGradient(gradientChunk->getFloatValue());
+    }
+
+    void WaterReaderWriter::writeUnderWaterPropertiesOn(const std::shared_ptr<XmlChunk> &waterChunk, const Water *water, XmlWriter &xmlWriter) const
+    {
+        std::shared_ptr<XmlChunk> densityChunk = xmlWriter.createChunk(DENSITY_TAG, XmlAttribute(), waterChunk);
+        densityChunk->setFloatValue(water->getDensity());
+
+        std::shared_ptr<XmlChunk> gradientChunk = xmlWriter.createChunk(GRADIENT_TAG, XmlAttribute(), waterChunk);
+        gradientChunk->setFloatValue(water->getGradient());
     }
 
 }

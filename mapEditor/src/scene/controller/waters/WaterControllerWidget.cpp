@@ -42,6 +42,7 @@ namespace urchin
         connect(removeWaterButton, SIGNAL(clicked()), this, SLOT(removeSelectedWater()));
 
         setupGeneralPropertiesBox(mainLayout);
+        setupUnderWaterProperties(mainLayout);
     }
 
     void WaterControllerWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
@@ -155,6 +156,35 @@ namespace urchin
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
     }
 
+    void WaterControllerWidget::setupUnderWaterProperties(QVBoxLayout *mainLayout)
+    {
+        underWaterPropertiesGroupBox = new QGroupBox("Under Water");
+        mainLayout->addWidget(underWaterPropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(underWaterPropertiesGroupBox);
+        underWaterPropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        underWaterPropertiesGroupBox->hide();
+
+        auto *underWaterPropertiesLayout = new QGridLayout(underWaterPropertiesGroupBox);
+
+        QLabel *densityLabel= new QLabel("Density:");
+        underWaterPropertiesLayout->addWidget(densityLabel, 0, 0);
+
+        density = new QDoubleSpinBox();
+        underWaterPropertiesLayout->addWidget(density, 0, 1, 1, 3, Qt::AlignLeft);
+        SpinBoxStyleHelper::applyDefaultStyleOn(density);
+        density->setMinimum(0.0);
+        connect(density, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
+
+        QLabel *gradientLabel= new QLabel("Gradient:");
+        underWaterPropertiesLayout->addWidget(gradientLabel, 1, 0);
+
+        gradient = new QDoubleSpinBox();
+        underWaterPropertiesLayout->addWidget(gradient, 1, 1, 1, 3, Qt::AlignLeft);
+        SpinBoxStyleHelper::applyDefaultStyleOn(gradient);
+        gradient->setMinimum(0.0);
+        connect(gradient, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
+    }
+
     WaterTableView *WaterControllerWidget::getWaterTableView() const
     {
         return waterTableView;
@@ -192,10 +222,12 @@ namespace urchin
 
                         removeWaterButton->setEnabled(true);
                         generalPropertiesGroupBox->show();
+                        underWaterPropertiesGroupBox->show();
                     }else
                     {
                         removeWaterButton->setEnabled(false);
                         generalPropertiesGroupBox->hide();
+                        underWaterPropertiesGroupBox->hide();
                     }
                     break;
                 default:
@@ -224,6 +256,9 @@ namespace urchin
 
         this->sRepeat->setValue(water->getSRepeat());
         this->tRepeat->setValue(water->getTRepeat());
+
+        this->density->setValue(water->getDensity());
+        this->gradient->setValue(water->getGradient());
 
         disableWaterEvent = false;
     }
@@ -263,6 +298,16 @@ namespace urchin
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
             waterController->updateSceneWater(sceneWater, position, xSize->value(), zSize->value(), waterColor, normalTextureFilename, sRepeat->value(), tRepeat->value());
+        }
+    }
+
+    void WaterControllerWidget::updateUnderWaterProperties()
+    {
+        if(!disableWaterEvent)
+        {
+            const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+
+            waterController->updateSceneWater(sceneWater, density->value(), gradient->value());
         }
     }
 

@@ -22,6 +22,7 @@ namespace urchin
             void removeSceneWater(const SceneWater *);
 
             const SceneWater *updateSceneWater(const SceneWater *, const Point3<float> &, float, float, const Vector3<float> &, const std::string &, float, float);
+            const SceneWater *updateSceneWater(const SceneWater *, float, float);
 
         private:
             void markModified();

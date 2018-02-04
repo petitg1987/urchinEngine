@@ -32,6 +32,7 @@ namespace urchin
 
         private:
             void setupGeneralPropertiesBox(QVBoxLayout *);
+            void setupUnderWaterProperties(QVBoxLayout *);
 
             void notify(Observable *, int) override;
             void setupWaterDataFrom(const SceneWater *);
@@ -43,6 +44,7 @@ namespace urchin
             QPushButton *removeWaterButton;
 
             QGroupBox *generalPropertiesGroupBox;
+            QGroupBox *underWaterPropertiesGroupBox;
 
             bool disableWaterEvent;
 
@@ -54,11 +56,15 @@ namespace urchin
             static QString preferredNormalTexturePath;
             QDoubleSpinBox *sRepeat, *tRepeat;
 
+            //under water properties
+            QDoubleSpinBox *density, *gradient;
+
         private slots:
             void showAddWaterDialog();
             void removeSelectedWater();
 
             void updateWaterProperties();
+            void updateUnderWaterProperties();
 
             void showNormalTextureFilenameDialog();
             void clearNormalTextureFilename();

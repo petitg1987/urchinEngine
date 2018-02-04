@@ -1,6 +1,9 @@
 #ifndef URCHINENGINE_FOGMANAGER_H
 #define URCHINENGINE_FOGMANAGER_H
 
+#include <stack>
+#include <memory>
+
 #include "scene/renderer3d/fog/Fog.h"
 
 namespace urchin
@@ -11,15 +14,16 @@ namespace urchin
         public:
             FogManager();
 
-            void activateFog(Fog *);
-            void disableFog();
-            bool hasFog() const;
+            void pushFog(const std::shared_ptr<Fog> &);
+            void popFog();
+            std::shared_ptr<const Fog> getCurrentFog() const;
 
             void loadUniformLocationFor(unsigned int);
             void loadFog();
 
         private:
-            Fog *currentFog;
+            std::stack<std::shared_ptr<Fog>> fogs;
+
             unsigned int deferredShaderID;
             int hasFogLoc, fogDensityLoc, fogGradientLoc, fogColorLoc, fogMaxHeightLoc;
     };

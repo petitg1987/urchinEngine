@@ -2,19 +2,27 @@
 #define URCHINENGINE_WATER_H
 
 #include "UrchinCommon.h"
+#include <memory>
 
 #include "resources/image/Image.h"
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/fog/FogManager.h"
+#include "scene/renderer3d/fog/Fog.h"
 
 namespace urchin
 {
 
-    class Water
+    class Water : public Observable
     {
         public:
             Water();
-            ~Water();
+            ~Water() override;
+
+            enum NotificationType
+            {
+                MOVE_UNDER_WATER,
+                MOVE_ABOVE_WATER,
+            };
 
             void setCenterPosition(const Point3<float> &);
             const Point3<float> &getCenterPosition() const;
@@ -37,12 +45,19 @@ namespace urchin
             void setTRepeat(float);
             float getTRepeat() const;
 
+            void setDensity(float);
+            float getDensity() const;
+
+            void setGradient(float);
+            float getGradient() const;
+
             void onCameraProjectionUpdate(const Matrix4<float> &);
 
             void display(const Camera *, FogManager *, float invFrameRate);
 
         private:
             void generateVertex();
+            void buildUnderwaterFog();
 
             unsigned int bufferIDs[3], vertexArrayObject;
             enum //buffer IDs indices
@@ -67,6 +82,12 @@ namespace urchin
             Vector3<float> waterColor;
             Image *normalTexture;
             float sRepeat, tRepeat;
+            std::unique_ptr<Rectangle<float>> waterRectangle;
+
+            float density;
+            float gradient;
+            std::shared_ptr<Fog> underwaterFog;
+
     };
 
 }

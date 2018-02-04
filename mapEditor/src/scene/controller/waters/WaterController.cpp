@@ -68,6 +68,18 @@ namespace urchin
         return sceneWater;
     }
 
+    const SceneWater *WaterController::updateSceneWater(const SceneWater *constSceneWater, float density, float gradient)
+    {
+        SceneWater *sceneWater = findSceneWater(constSceneWater);
+        Water *water = sceneWater->getWater();
+
+        water->setDensity(density);
+        water->setGradient(gradient);
+
+        markModified();
+        return sceneWater;
+    }
+
     SceneWater *WaterController::findSceneWater(const SceneWater *constSceneWater)
     {
         const std::list<SceneWater *> &sceneWaters = mapHandler->getMap()->getSceneWaters();

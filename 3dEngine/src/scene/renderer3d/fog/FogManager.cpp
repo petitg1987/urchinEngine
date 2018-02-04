@@ -6,7 +6,6 @@
 namespace urchin
 {
     FogManager::FogManager() :
-            currentFog(nullptr),
             hasFogLoc(0),
             fogDensityLoc(0),
             fogGradientLoc(0),
@@ -16,23 +15,31 @@ namespace urchin
 
     }
 
-    void FogManager::activateFog(Fog *fog)
+    void FogManager::pushFog(const std::shared_ptr<Fog> &fog)
     {
-        currentFog = fog;
+        fogs.push(fog);
 
         loadFog();
     }
 
-    void FogManager::disableFog()
+    void FogManager::popFog()
     {
-        currentFog = nullptr;
+        if(!fogs.empty())
+        {
+            fogs.pop();
+        }
 
         loadFog();
     }
 
-    bool FogManager::hasFog() const
+    std::shared_ptr<const Fog> FogManager::getCurrentFog() const
     {
-        return currentFog!=nullptr;
+        if(fogs.empty())
+        {
+            return nullptr;
+        }
+
+        return fogs.top();
     }
 
     void FogManager::loadUniformLocationFor(unsigned int deferredShaderID)
@@ -52,14 +59,14 @@ namespace urchin
     void FogManager::loadFog()
     {
         ShaderManager::instance()->bind(deferredShaderID);
-        glUniform1i(hasFogLoc, currentFog!=nullptr);
+        glUniform1i(hasFogLoc, !fogs.empty());
 
-        if(currentFog!=nullptr)
+        if(!fogs.empty())
         {
-            glUniform1f(fogDensityLoc, currentFog->getDensity());
-            glUniform1f(fogGradientLoc, currentFog->getGradient());
-            glUniform4fv(fogColorLoc, 1, (const float *)Vector4<float>(currentFog->getColor(), 1.0));
-            glUniform1f(fogMaxHeightLoc, currentFog->getMaxHeight());
+            glUniform1f(fogDensityLoc, fogs.top()->getDensity());
+            glUniform1f(fogGradientLoc, fogs.top()->getGradient());
+            glUniform4fv(fogColorLoc, 1, (const float *)Vector4<float>(fogs.top()->getColor(), 1.0));
+            glUniform1f(fogMaxHeightLoc, fogs.top()->getMaxHeight());
         }
     }
 

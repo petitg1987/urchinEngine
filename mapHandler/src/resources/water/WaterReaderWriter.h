@@ -19,14 +19,19 @@ namespace urchin
             #define NORMAL_FILENAME_TAG "normalFilename"
             #define S_REPEAT_TAG "sRepeat"
             #define T_REPEAT_TAG "tRepeat"
+            #define DENSITY_TAG "density"
+            #define GRADIENT_TAG "gradient"
 
         public:
             Water *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
             void writeOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
 
         private:
-            void loadPropertiesOn(Water *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
-            void writePropertiesOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
+            void loadGeneralPropertiesOn(Water *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
+            void writeGeneralPropertiesOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
+
+            void loadUnderWaterProperties(Water *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            void writeUnderWaterPropertiesOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;
     };
 
 }

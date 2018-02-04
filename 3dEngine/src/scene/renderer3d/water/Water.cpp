@@ -9,6 +9,8 @@
 #define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
 #define DEFAULT_NORMAL_TEXTURE ""
 #define DEFAULT_REPEAT 1.0
+#define DEFAULT_DENSITY 2.0
+#define DEFAULT_GRADIENT 0.5
 
 namespace urchin
 {
@@ -37,6 +39,7 @@ namespace urchin
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(normalTexLoc, 0);
 
+        //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);
         setXSize(DEFAULT_SIZE);
         setZSize(DEFAULT_SIZE);
@@ -44,6 +47,10 @@ namespace urchin
         setNormalTexture(DEFAULT_NORMAL_TEXTURE);
         setSRepeat(DEFAULT_REPEAT);
         setTRepeat(DEFAULT_REPEAT);
+
+        //under water properties
+        setDensity(DEFAULT_DENSITY);
+        setGradient(DEFAULT_GRADIENT);
     }
 
     Water::~Water()
@@ -81,6 +88,15 @@ namespace urchin
         glBufferData(GL_ARRAY_BUFFER, texCoord.size()*sizeof(float)*2, &texCoord[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(SHADER_TEX_COORD);
         glVertexAttribPointer(SHADER_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+        Point2<float> leftFarPoint(Point2<float>(-xSize/2.0f + centerPosition.X, -zSize/2.0f + centerPosition.Z));
+        Point2<float> rightNearPoint(Point2<float>(xSize/2.0f + centerPosition.X, zSize/2.0f + centerPosition.Z));
+        waterRectangle = std::make_unique<Rectangle<float>>(leftFarPoint, rightNearPoint);
+    }
+
+    void Water::buildUnderwaterFog()
+    {
+        underwaterFog = std::make_shared<Fog>(density, gradient, waterColor, centerPosition.Y);
     }
 
     void Water::setCenterPosition(const Point3<float> &centerPosition)
@@ -184,6 +200,30 @@ namespace urchin
         return tRepeat;
     }
 
+    void Water::setDensity(float density)
+    {
+        this->density = density;
+
+        buildUnderwaterFog();
+    }
+
+    float Water::getDensity() const
+    {
+        return density;
+    }
+
+    void Water::setGradient(float gradient)
+    {
+        this->gradient = gradient;
+
+        buildUnderwaterFog();
+    }
+
+    float Water::getGradient() const
+    {
+        return gradient;
+    }
+
     void Water::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
     {
         this->projectionMatrix = projectionMatrix;
@@ -194,15 +234,20 @@ namespace urchin
 
     void Water::display(const Camera *camera, FogManager *fogManager, float invFrameRate)
     {
-        if(camera->getPosition().Y < centerPosition.Y)
+        if(camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z)))
         {
-            if(!fogManager->hasFog()) //TODO check water rectangle...
+            if(fogManager->getCurrentFog().get() != underwaterFog.get())
             {
-                fogManager->activateFog(new urchin::Fog(2.0, 0.5, getWaterColor(), centerPosition.Y)); //TODO delete + hardcoded value
+                fogManager->pushFog(underwaterFog);
+                notifyObservers(this, NotificationType::MOVE_UNDER_WATER);
             }
         }else
         {
-            fogManager->disableFog(); //TODO restore previous fog
+            if(fogManager->getCurrentFog().get() == underwaterFog.get())
+            {
+                fogManager->popFog();
+                notifyObservers(this, NotificationType::MOVE_ABOVE_WATER);
+            }
 
             ShaderManager::instance()->bind(waterShader);
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
