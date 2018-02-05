@@ -17,6 +17,7 @@ namespace urchin
             #define Z_SIZE_TAG "zSize"
             #define WATER_COLOR_TAG "waterColor"
             #define NORMAL_FILENAME_TAG "normalFilename"
+            #define DUDV_MAP_FILENAME "dudvMapFilename"
             #define S_REPEAT_TAG "sRepeat"
             #define T_REPEAT_TAG "tRepeat"
             #define DENSITY_TAG "density"

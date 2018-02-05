@@ -34,6 +34,9 @@ namespace urchin
         std::shared_ptr<XmlChunk> normalFilenameChunk = xmlParser.getUniqueChunk(true, NORMAL_FILENAME_TAG, XmlAttribute(), waterChunk);
         water->setNormalTexture(normalFilenameChunk->getStringValue());
 
+        std::shared_ptr<XmlChunk> dudvMapFilenameChunk = xmlParser.getUniqueChunk(true, DUDV_MAP_FILENAME, XmlAttribute(), waterChunk);
+        water->setDudvMap(dudvMapFilenameChunk->getStringValue());
+
         std::shared_ptr<XmlChunk> sRepeatChunk = xmlParser.getUniqueChunk(true, S_REPEAT_TAG, XmlAttribute(), waterChunk);
         water->setSRepeat(sRepeatChunk->getFloatValue());
 
@@ -57,6 +60,9 @@ namespace urchin
 
         std::shared_ptr<XmlChunk> normalFilenameChunk = xmlWriter.createChunk(NORMAL_FILENAME_TAG, XmlAttribute(), waterChunk);
         normalFilenameChunk->setStringValue(water->getNormalTexture()->getName());
+
+        std::shared_ptr<XmlChunk> dudvMapFilenameChunk = xmlWriter.createChunk(DUDV_MAP_FILENAME, XmlAttribute(), waterChunk);
+        dudvMapFilenameChunk->setStringValue(water->getDudvMap()->getName());
 
         std::shared_ptr<XmlChunk> sRepeatChunk = xmlWriter.createChunk(S_REPEAT_TAG, XmlAttribute(), waterChunk);
         sRepeatChunk->setFloatValue(water->getSRepeat());

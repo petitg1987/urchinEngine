@@ -12,6 +12,7 @@
 namespace urchin
 {
     QString WaterControllerWidget::preferredNormalTexturePath = QString();
+    QString WaterControllerWidget::preferredDudvMapPath = QString();
 
     WaterControllerWidget::WaterControllerWidget() :
             waterController(nullptr),
@@ -136,11 +137,32 @@ namespace urchin
         clearNormalTextureFileButton->setFixedWidth(22);
         connect(clearNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(clearNormalTextureFilename()));
 
+        QLabel *dudvMapLabel= new QLabel("Du-dv map:");
+        generalPropertiesLayout->addWidget(dudvMapLabel, 4, 0);
+
+        auto *dudvMapLayout = new QHBoxLayout();
+        generalPropertiesLayout->addLayout(dudvMapLayout, 4, 1, Qt::AlignmentFlag::AlignLeft);
+        dudvMapFilenameText = new QLineEdit();
+        dudvMapLayout->addWidget(dudvMapFilenameText);
+        dudvMapFilenameText->setReadOnly(true);
+
+        QPushButton *selectDudvMapFileButton = new QPushButton("...");
+        dudvMapLayout->addWidget(selectDudvMapFileButton);
+        ButtonStyleHelper::applyNormalStyle(selectDudvMapFileButton);
+        selectDudvMapFileButton->setFixedWidth(22);
+        connect(selectDudvMapFileButton, SIGNAL(clicked()), this, SLOT(showDudvMapFilenameDialog()));
+
+        QPushButton *clearDudvMapFileButton = new QPushButton("Clr");
+        dudvMapLayout->addWidget(clearDudvMapFileButton);
+        ButtonStyleHelper::applyNormalStyle(clearDudvMapFileButton);
+        clearDudvMapFileButton->setFixedWidth(22);
+        connect(clearDudvMapFileButton, SIGNAL(clicked()), this, SLOT(clearDudvMapFilename()));
+
         QLabel *repeatLabel= new QLabel("Repeat:");
-        generalPropertiesLayout->addWidget(repeatLabel, 4, 0);
+        generalPropertiesLayout->addWidget(repeatLabel, 5, 0);
 
         auto *repeatLayout = new QHBoxLayout();
-        generalPropertiesLayout->addLayout(repeatLayout, 4, 1, Qt::AlignmentFlag::AlignLeft);
+        generalPropertiesLayout->addLayout(repeatLayout, 5, 1, Qt::AlignmentFlag::AlignLeft);
         sRepeat = new QDoubleSpinBox();
         repeatLayout->addWidget(sRepeat);
         SpinBoxStyleHelper::applyDefaultStyleOn(sRepeat);
@@ -253,6 +275,7 @@ namespace urchin
         this->waterColorB->setValue(water->getWaterColor().Z);
 
         this->normalTextureFilenameText->setText(QString::fromStdString(water->getNormalTexture()->getName()));
+        this->dudvMapFilenameText->setText(QString::fromStdString(water->getDudvMap()->getName()));
 
         this->sRepeat->setValue(water->getSRepeat());
         this->tRepeat->setValue(water->getTRepeat());
@@ -297,7 +320,8 @@ namespace urchin
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
-            waterController->updateSceneWater(sceneWater, position, xSize->value(), zSize->value(), waterColor, normalTextureFilename, sRepeat->value(), tRepeat->value());
+            std::string dudvMapFilename = dudvMapFilenameText->text().toStdString();
+            waterController->updateSceneWater(sceneWater, position, xSize->value(), zSize->value(), waterColor, normalTextureFilename, dudvMapFilename, sRepeat->value(), tRepeat->value());
         }
     }
 
@@ -339,6 +363,38 @@ namespace urchin
     void WaterControllerWidget::clearNormalTextureFilename()
     {
         this->normalTextureFilenameText->setText("");
+
+        updateWaterProperties();
+    }
+
+    void WaterControllerWidget::showDudvMapFilenameDialog()
+    {
+        std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
+        QString directory = preferredDudvMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredDudvMapPath;
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
+        if(!filename.isNull())
+        {
+            std::string tgaFilenamePath = filename.toUtf8().constData();
+            std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
+            this->dudvMapFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
+
+            std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
+            preferredDudvMapPath = QString::fromStdString(preferredPathString);
+
+            try
+            {
+                updateWaterProperties();
+            }catch(std::exception &e)
+            {
+                QMessageBox::critical(this, "Error", e.what());
+                clearDudvMapFilename();
+            }
+        }
+    }
+
+    void WaterControllerWidget::clearDudvMapFilename()
+    {
+        this->dudvMapFilenameText->setText("");
 
         updateWaterProperties();
     }

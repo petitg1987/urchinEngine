@@ -51,7 +51,8 @@ namespace urchin
     }
 
     const SceneWater *WaterController::updateSceneWater(const SceneWater *constSceneWater, const Point3<float> &centerPosition, float xSize, float zSize,
-                                                        const Vector3<float> &waterColor, const std::string &normalFilename, float sRepeat, float tRepeat)
+                                                        const Vector3<float> &waterColor, const std::string &normalFilename, const std::string &dudvMapFilename,
+                                                        float sRepeat, float tRepeat)
     {
         SceneWater *sceneWater = findSceneWater(constSceneWater);
         Water *water = sceneWater->getWater();
@@ -61,6 +62,7 @@ namespace urchin
         water->setZSize(zSize);
         water->setWaterColor(waterColor);
         water->setNormalTexture(normalFilename);
+        water->setDudvMap(dudvMapFilename);
         water->setSRepeat(sRepeat);
         water->setTRepeat(tRepeat);
 

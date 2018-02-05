@@ -52,8 +52,8 @@ namespace urchin
             QDoubleSpinBox *positionX, *positionY, *positionZ;
             QDoubleSpinBox *xSize, *zSize;
             QDoubleSpinBox *waterColorR, *waterColorG, *waterColorB;
-            QLineEdit *normalTextureFilenameText;
-            static QString preferredNormalTexturePath;
+            QLineEdit *normalTextureFilenameText, *dudvMapFilenameText;
+            static QString preferredNormalTexturePath, preferredDudvMapPath;
             QDoubleSpinBox *sRepeat, *tRepeat;
 
             //under water properties
@@ -68,6 +68,9 @@ namespace urchin
 
             void showNormalTextureFilenameDialog();
             void clearNormalTextureFilename();
+
+            void showDudvMapFilenameDialog();
+            void clearDudvMapFilename();
     };
 
 }

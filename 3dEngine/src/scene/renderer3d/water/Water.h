@@ -39,6 +39,9 @@ namespace urchin
             void setNormalTexture(const std::string &);
             const Image *getNormalTexture() const;
 
+            void setDudvMap(const std::string &);
+            const Image *getDudvMap() const;
+
             void setSRepeat(float);
             float getSRepeat() const;
 
@@ -80,7 +83,7 @@ namespace urchin
             Point3<float> centerPosition;
             float xSize, zSize;
             Vector3<float> waterColor;
-            Image *normalTexture;
+            Image *normalTexture, *dudvMap;
             float sRepeat, tRepeat;
             std::unique_ptr<Rectangle<float>> waterRectangle;
 

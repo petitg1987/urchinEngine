@@ -8,6 +8,7 @@
 #define DEFAULT_SIZE 1000.0
 #define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
 #define DEFAULT_NORMAL_TEXTURE ""
+#define DEFAULT_DUDV_MAP ""
 #define DEFAULT_REPEAT 1.0
 #define DEFAULT_DENSITY 2.0
 #define DEFAULT_GRADIENT 0.5
@@ -20,6 +21,7 @@ namespace urchin
             xSize(0.0f),
             zSize(0.0f),
             normalTexture(nullptr),
+            dudvMap(nullptr),
             sRepeat(0.0f),
             tRepeat(0.0f)
     {
@@ -39,12 +41,17 @@ namespace urchin
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(normalTexLoc, 0);
 
+        int dudvTexLoc = glGetUniformLocation(waterShader, "dudvMap");
+        glActiveTexture(GL_TEXTURE1);
+        glUniform1i(dudvTexLoc, 1);
+
         //general properties
         setCenterPosition(DEFAULT_CENTER_POSITION);
         setXSize(DEFAULT_SIZE);
         setZSize(DEFAULT_SIZE);
         setWaterColor(DEFAULT_WATER_COLOR);
         setNormalTexture(DEFAULT_NORMAL_TEXTURE);
+        setDudvMap(DEFAULT_DUDV_MAP);
         setSRepeat(DEFAULT_REPEAT);
         setTRepeat(DEFAULT_REPEAT);
 
@@ -59,6 +66,7 @@ namespace urchin
         glDeleteBuffers(2, bufferIDs);
 
         normalTexture->release();
+        dudvMap->release();
 
         ShaderManager::instance()->removeProgram(waterShader);
     }
@@ -176,6 +184,34 @@ namespace urchin
         return normalTexture;
     }
 
+    void Water::setDudvMap(const std::string &dudvFilename)
+    {
+        if(dudvMap!=nullptr)
+        {
+            dudvMap->release();
+        }
+
+        if(dudvFilename.empty())
+        {
+            dudvMap = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255}));
+        }else
+        {
+            dudvMap = MediaManager::instance()->getMedia<Image>(dudvFilename, nullptr);
+            if(dudvMap->getImageFormat() != Image::IMAGE_RGB)
+            {
+                dudvMap->release();
+                throw std::runtime_error("Water dudv map must have 3 components (RGB). Components: " + std::to_string(dudvMap->retrieveComponentsCount()));
+            }
+        }
+
+        dudvMap->toTexture(true, true, true);
+    }
+
+    const Image *Water::getDudvMap() const
+    {
+        return dudvMap;
+    }
+
     void Water::setSRepeat(float sRepeat)
     {
         this->sRepeat = sRepeat;
@@ -257,6 +293,9 @@ namespace urchin
 
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, normalTexture->getTextureID());
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, dudvMap->getTextureID());
 
             glBindVertexArray(vertexArrayObject);
             glDrawArrays(GL_QUADS, 0, 4);
