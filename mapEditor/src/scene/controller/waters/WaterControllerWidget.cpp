@@ -43,6 +43,7 @@ namespace urchin
         connect(removeWaterButton, SIGNAL(clicked()), this, SLOT(removeSelectedWater()));
 
         setupGeneralPropertiesBox(mainLayout);
+        setupWaterSurfaceProperties(mainLayout);
         setupUnderWaterProperties(mainLayout);
     }
 
@@ -91,36 +92,47 @@ namespace urchin
         zSize->setMinimum(0.0);
         zSize->setSingleStep(1.0);
         connect(zSize, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
+    }
+
+    void WaterControllerWidget::setupWaterSurfaceProperties(QVBoxLayout *mainLayout)
+    {
+        waterSurfacePropertiesGroupBox = new QGroupBox("Surface");
+        mainLayout->addWidget(waterSurfacePropertiesGroupBox);
+        GroupBoxStyleHelper::applyNormalStyle(waterSurfacePropertiesGroupBox);
+        waterSurfacePropertiesGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        waterSurfacePropertiesGroupBox->hide();
+
+        auto *waterSurfacePropertiesLayout = new QGridLayout(waterSurfacePropertiesGroupBox);
 
         QLabel *waterColorLabel= new QLabel("Water color:");
-        generalPropertiesLayout->addWidget(waterColorLabel, 2, 0);
+        waterSurfacePropertiesLayout->addWidget(waterColorLabel, 0, 0);
 
         auto *waterColorLayout = new QHBoxLayout();
-        generalPropertiesLayout->addLayout(waterColorLayout, 2, 1, Qt::AlignmentFlag::AlignLeft);
+        waterSurfacePropertiesLayout->addLayout(waterColorLayout, 0, 1, Qt::AlignmentFlag::AlignLeft);
         waterColorR = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorR);
         SpinBoxStyleHelper::applyDefaultStyleOn(waterColorR);
         waterColorR->setMinimum(0.0);
         waterColorR->setMaximum(1.0);
-        connect(waterColorR, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
+        connect(waterColorR, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
         waterColorG = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorG);
         SpinBoxStyleHelper::applyDefaultStyleOn(waterColorG);
         waterColorG->setMinimum(0.0);
         waterColorG->setMaximum(1.0);
-        connect(waterColorG, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
+        connect(waterColorG, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
         waterColorB = new QDoubleSpinBox();
         waterColorLayout->addWidget(waterColorB);
         SpinBoxStyleHelper::applyDefaultStyleOn(waterColorB);
         waterColorB->setMinimum(0.0);
         waterColorB->setMaximum(1.0);
-        connect(waterColorB, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
+        connect(waterColorB, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
 
         QLabel *normalTextureLabel= new QLabel("Normal:");
-        generalPropertiesLayout->addWidget(normalTextureLabel, 3, 0);
+        waterSurfacePropertiesLayout->addWidget(normalTextureLabel, 2, 0);
 
         auto *normalTextureLayout = new QHBoxLayout();
-        generalPropertiesLayout->addLayout(normalTextureLayout, 3, 1, Qt::AlignmentFlag::AlignLeft);
+        waterSurfacePropertiesLayout->addLayout(normalTextureLayout, 2, 1, Qt::AlignmentFlag::AlignLeft);
         normalTextureFilenameText = new QLineEdit();
         normalTextureLayout->addWidget(normalTextureFilenameText);
         normalTextureFilenameText->setReadOnly(true);
@@ -138,10 +150,10 @@ namespace urchin
         connect(clearNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(clearNormalTextureFilename()));
 
         QLabel *dudvMapLabel= new QLabel("Du-dv map:");
-        generalPropertiesLayout->addWidget(dudvMapLabel, 4, 0);
+        waterSurfacePropertiesLayout->addWidget(dudvMapLabel, 3, 0);
 
         auto *dudvMapLayout = new QHBoxLayout();
-        generalPropertiesLayout->addLayout(dudvMapLayout, 4, 1, Qt::AlignmentFlag::AlignLeft);
+        waterSurfacePropertiesLayout->addLayout(dudvMapLayout, 3, 1, Qt::AlignmentFlag::AlignLeft);
         dudvMapFilenameText = new QLineEdit();
         dudvMapLayout->addWidget(dudvMapFilenameText);
         dudvMapFilenameText->setReadOnly(true);
@@ -158,24 +170,44 @@ namespace urchin
         clearDudvMapFileButton->setFixedWidth(22);
         connect(clearDudvMapFileButton, SIGNAL(clicked()), this, SLOT(clearDudvMapFilename()));
 
+        QLabel *waveSpeedLabel= new QLabel("Wave speed:");
+        waterSurfacePropertiesLayout->addWidget(waveSpeedLabel, 4, 0);
+
+        waveSpeed = new QDoubleSpinBox();
+        waterSurfacePropertiesLayout->addWidget(waveSpeed, 4, 1, 1, 3, Qt::AlignLeft);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waveSpeed);
+        waveSpeed->setMinimum(0.0);
+        waveSpeed->setSingleStep(0.01);
+        connect(waveSpeed, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
+
+        QLabel *waveStrengthLabel= new QLabel("Wave strength:");
+        waterSurfacePropertiesLayout->addWidget(waveStrengthLabel, 5, 0);
+
+        waveStrength = new QDoubleSpinBox();
+        waterSurfacePropertiesLayout->addWidget(waveStrength, 5, 1, 1, 3, Qt::AlignLeft);
+        SpinBoxStyleHelper::applyDefaultStyleOn(waveStrength);
+        waveStrength->setMinimum(0.0);
+        waveStrength->setSingleStep(0.01);
+        connect(waveStrength, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
+
         QLabel *repeatLabel= new QLabel("Repeat:");
-        generalPropertiesLayout->addWidget(repeatLabel, 5, 0);
+        waterSurfacePropertiesLayout->addWidget(repeatLabel, 6, 0);
 
         auto *repeatLayout = new QHBoxLayout();
-        generalPropertiesLayout->addLayout(repeatLayout, 5, 1, Qt::AlignmentFlag::AlignLeft);
+        waterSurfacePropertiesLayout->addLayout(repeatLayout, 6, 1, Qt::AlignmentFlag::AlignLeft);
         sRepeat = new QDoubleSpinBox();
         repeatLayout->addWidget(sRepeat);
         SpinBoxStyleHelper::applyDefaultStyleOn(sRepeat);
         sRepeat->setMinimum(0.0);
         sRepeat->setSingleStep(1.0);
-        connect(sRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
+        connect(sRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
 
         tRepeat = new QDoubleSpinBox();
         repeatLayout->addWidget(tRepeat);
         SpinBoxStyleHelper::applyDefaultStyleOn(tRepeat);
         tRepeat->setMinimum(0.0);
         tRepeat->setSingleStep(1.0);
-        connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
+        connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
     }
 
     void WaterControllerWidget::setupUnderWaterProperties(QVBoxLayout *mainLayout)
@@ -244,11 +276,13 @@ namespace urchin
 
                         removeWaterButton->setEnabled(true);
                         generalPropertiesGroupBox->show();
+                        waterSurfacePropertiesGroupBox->show();
                         underWaterPropertiesGroupBox->show();
                     }else
                     {
                         removeWaterButton->setEnabled(false);
                         generalPropertiesGroupBox->hide();
+                        waterSurfacePropertiesGroupBox->hide();
                         underWaterPropertiesGroupBox->hide();
                     }
                     break;
@@ -276,6 +310,9 @@ namespace urchin
 
         this->normalTextureFilenameText->setText(QString::fromStdString(water->getNormalTexture()->getName()));
         this->dudvMapFilenameText->setText(QString::fromStdString(water->getDudvMap()->getName()));
+
+        this->waveSpeed->setValue(water->getWaveSpeed());
+        this->waveStrength->setValue(water->getWaveStrength());
 
         this->sRepeat->setValue(water->getSRepeat());
         this->tRepeat->setValue(water->getTRepeat());
@@ -318,10 +355,21 @@ namespace urchin
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
+            waterController->updateSceneWaterGeneral(sceneWater, position, xSize->value(), zSize->value());
+        }
+    }
+
+    void WaterControllerWidget::updateSurfaceWaterProperties()
+    {
+        if(!disableWaterEvent)
+        {
+            const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
             std::string dudvMapFilename = dudvMapFilenameText->text().toStdString();
-            waterController->updateSceneWater(sceneWater, position, xSize->value(), zSize->value(), waterColor, normalTextureFilename, dudvMapFilename, sRepeat->value(), tRepeat->value());
+            waterController->updateSceneWaterSurface(sceneWater, waterColor, normalTextureFilename, dudvMapFilename, waveSpeed->value(), waveStrength->value(),
+                                                     sRepeat->value(), tRepeat->value());
         }
     }
 
@@ -331,7 +379,7 @@ namespace urchin
         {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
-            waterController->updateSceneWater(sceneWater, density->value(), gradient->value());
+            waterController->updateSceneWaterUnderWater(sceneWater, density->value(), gradient->value());
         }
     }
 
@@ -351,7 +399,7 @@ namespace urchin
 
             try
             {
-                updateWaterProperties();
+                updateSurfaceWaterProperties();
             }catch(std::exception &e)
             {
                 QMessageBox::critical(this, "Error", e.what());
@@ -364,7 +412,7 @@ namespace urchin
     {
         this->normalTextureFilenameText->setText("");
 
-        updateWaterProperties();
+        updateSurfaceWaterProperties();
     }
 
     void WaterControllerWidget::showDudvMapFilenameDialog()
@@ -383,7 +431,7 @@ namespace urchin
 
             try
             {
-                updateWaterProperties();
+                updateSurfaceWaterProperties();
             }catch(std::exception &e)
             {
                 QMessageBox::critical(this, "Error", e.what());
@@ -396,6 +444,6 @@ namespace urchin
     {
         this->dudvMapFilenameText->setText("");
 
-        updateWaterProperties();
+        updateSurfaceWaterProperties();
     }
 }

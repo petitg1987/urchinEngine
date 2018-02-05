@@ -17,7 +17,9 @@ namespace urchin
             #define Z_SIZE_TAG "zSize"
             #define WATER_COLOR_TAG "waterColor"
             #define NORMAL_FILENAME_TAG "normalFilename"
-            #define DUDV_MAP_FILENAME "dudvMapFilename"
+            #define DUDV_MAP_FILENAME_TAG "dudvMapFilename"
+            #define WAVE_SPEED_TAG "waveSpeed"
+            #define WAVE_STRENGTH_TAG "waveStrength"
             #define S_REPEAT_TAG "sRepeat"
             #define T_REPEAT_TAG "tRepeat"
             #define DENSITY_TAG "density"
@@ -30,6 +32,9 @@ namespace urchin
         private:
             void loadGeneralPropertiesOn(Water *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
             void writeGeneralPropertiesOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
+
+            void loadWaterSurfaceProperties(Water *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            void writeWaterSurfacePropertiesOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;
 
             void loadUnderWaterProperties(Water *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void writeUnderWaterPropertiesOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;

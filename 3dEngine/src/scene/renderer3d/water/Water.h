@@ -42,6 +42,12 @@ namespace urchin
             void setDudvMap(const std::string &);
             const Image *getDudvMap() const;
 
+            void setWaveSpeed(float);
+            float getWaveSpeed() const;
+
+            void setWaveStrength(float);
+            float getWaveStrength() const;
+
             void setSRepeat(float);
             float getSRepeat() const;
 
@@ -75,17 +81,19 @@ namespace urchin
             };
             unsigned int waterShader;
             int mProjectionLoc, mViewLoc, sumTimeStepLoc;
-            int waterColorLoc;
+            int waterColorLoc, waveSpeedLoc, waveStrengthLoc;
 
             Matrix4<float> projectionMatrix;
             float sumTimeStep;
 
             Point3<float> centerPosition;
             float xSize, zSize;
+            std::unique_ptr<Rectangle<float>> waterRectangle;
+
             Vector3<float> waterColor;
             Image *normalTexture, *dudvMap;
+            float waveSpeed, waveStrength;
             float sRepeat, tRepeat;
-            std::unique_ptr<Rectangle<float>> waterRectangle;
 
             float density;
             float gradient;

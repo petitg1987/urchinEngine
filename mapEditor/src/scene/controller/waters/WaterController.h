@@ -21,9 +21,9 @@ namespace urchin
             void addSceneWater(SceneWater *);
             void removeSceneWater(const SceneWater *);
 
-            const SceneWater *updateSceneWater(const SceneWater *, const Point3<float> &, float, float, const Vector3<float> &,
-                                               const std::string &, const std::string &, float, float);
-            const SceneWater *updateSceneWater(const SceneWater *, float, float);
+            const SceneWater *updateSceneWaterGeneral(const SceneWater *, const Point3<float> &, float, float);
+            const SceneWater *updateSceneWaterSurface(const SceneWater *, const Vector3<float> &, const std::string &, const std::string &, float, float, float, float);
+            const SceneWater *updateSceneWaterUnderWater(const SceneWater *, float, float);
 
         private:
             void markModified();

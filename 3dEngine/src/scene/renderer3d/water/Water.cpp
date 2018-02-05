@@ -9,6 +9,8 @@
 #define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
 #define DEFAULT_NORMAL_TEXTURE ""
 #define DEFAULT_DUDV_MAP ""
+#define DEFAULT_WAVE_SPEED 0.08
+#define DEFAULT_WAVE_STRENGTH 0.04
 #define DEFAULT_REPEAT 1.0
 #define DEFAULT_DENSITY 2.0
 #define DEFAULT_GRADIENT 0.5
@@ -36,6 +38,8 @@ namespace urchin
         sumTimeStepLoc = glGetUniformLocation(waterShader, "sumTimeStep");
 
         waterColorLoc = glGetUniformLocation(waterShader, "waterColor");
+        waveSpeedLoc = glGetUniformLocation(waterShader, "waveSpeed");
+        waveStrengthLoc = glGetUniformLocation(waterShader, "waveStrength");
 
         int normalTexLoc = glGetUniformLocation(waterShader, "normalTex");
         glActiveTexture(GL_TEXTURE0);
@@ -49,9 +53,13 @@ namespace urchin
         setCenterPosition(DEFAULT_CENTER_POSITION);
         setXSize(DEFAULT_SIZE);
         setZSize(DEFAULT_SIZE);
+
+        //surface properties
         setWaterColor(DEFAULT_WATER_COLOR);
         setNormalTexture(DEFAULT_NORMAL_TEXTURE);
         setDudvMap(DEFAULT_DUDV_MAP);
+        setWaveSpeed(DEFAULT_WAVE_SPEED);
+        setWaveStrength(DEFAULT_WAVE_STRENGTH);
         setSRepeat(DEFAULT_REPEAT);
         setTRepeat(DEFAULT_REPEAT);
 
@@ -210,6 +218,32 @@ namespace urchin
     const Image *Water::getDudvMap() const
     {
         return dudvMap;
+    }
+
+    void Water::setWaveSpeed(float waveSpeed)
+    {
+        this->waveSpeed = waveSpeed;
+
+        ShaderManager::instance()->bind(waterShader);
+        glUniform1f(waveSpeedLoc, waveSpeed);
+    }
+
+    float Water::getWaveSpeed() const
+    {
+        return waveSpeed;
+    }
+
+    void Water::setWaveStrength(float waveStrength)
+    {
+        this->waveStrength = waveStrength;
+
+        ShaderManager::instance()->bind(waterShader);
+        glUniform1f(waveStrengthLoc, waveStrength);
+    }
+
+    float Water::getWaveStrength() const
+    {
+        return waveStrength;
     }
 
     void Water::setSRepeat(float sRepeat)
