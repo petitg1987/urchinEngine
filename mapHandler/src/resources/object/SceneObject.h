@@ -47,7 +47,7 @@ namespace urchin
 			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
 			void setupRigidBody(RigidBody *);
-			void setupAIObject(RigidBody *);
+			void setupAIObject();
 
 			void deleteRigidBody();
 			void deleteAIObjects();

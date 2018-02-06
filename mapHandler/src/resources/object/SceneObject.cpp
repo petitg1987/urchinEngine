@@ -134,7 +134,7 @@ namespace urchin
 	void SceneObject::setupInteractiveBody(RigidBody *rigidBody)
 	{
 		setupRigidBody(rigidBody);
-		setupAIObject(rigidBody);
+		setupAIObject();
 	}
 
 	void SceneObject::setupRigidBody(RigidBody *rigidBody)
@@ -148,11 +148,11 @@ namespace urchin
 		}
 	}
 
-	void SceneObject::setupAIObject(RigidBody *rigidBody)
+	void SceneObject::setupAIObject()
 	{
 		deleteAIObjects();
 
-		if(rigidBody==nullptr)
+		if(rigidBody==nullptr || model->getMeshes()==nullptr)
 		{
 			this->aiObject = nullptr;
 		} else
