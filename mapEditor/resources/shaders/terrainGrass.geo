@@ -45,7 +45,7 @@ float randZeroOne(in vec2 seed){
 int randomInt(int min, int max, vec3 seed){
     vec2 seed2d = vec2(seed.x, seed.y + seed.z);
 	float fRandomFloat = randZeroOne(seed2d);
-	return int(float(min)+fRandomFloat*float(max-min));
+	return int(round(float(min)+fRandomFloat*float(max-min)));
 }
 
 void main(){
