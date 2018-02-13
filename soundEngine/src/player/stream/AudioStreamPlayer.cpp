@@ -7,32 +7,11 @@
 namespace urchin
 {
 
-	//static
-	StreamUpdateWorker *AudioStreamPlayer::streamUpdateWorker = nullptr;
-	std::thread *AudioStreamPlayer::streamUpdateWorkerThread = nullptr;
-
-	AudioStreamPlayer::AudioStreamPlayer(const Sound *sound) :
-		AudioPlayer(sound)
+	AudioStreamPlayer::AudioStreamPlayer(const Sound *sound, StreamUpdateWorker *streamUpdateWorker) :
+		AudioPlayer(sound),
+		streamUpdateWorker(streamUpdateWorker)
 	{
-		if(streamUpdateWorker==nullptr || streamUpdateWorkerThread==nullptr)
-		{
-			throw std::runtime_error("Stream update worker thread must be initialized before instantiate a stream player");
-		}
-	};
 
-	void AudioStreamPlayer::initializeStreamWorkerThread()
-	{
-		streamUpdateWorker = new StreamUpdateWorker();
-		streamUpdateWorkerThread = new std::thread(&StreamUpdateWorker::start, streamUpdateWorker);
-	}
-
-	void AudioStreamPlayer::destroyStreamWorkerThread()
-	{
-		streamUpdateWorker->interrupt();
-		streamUpdateWorkerThread->join();
-
-		delete streamUpdateWorkerThread;
-		delete streamUpdateWorker;
 	}
 
 	void AudioStreamPlayer::play()
@@ -45,9 +24,21 @@ namespace urchin
 		play(true);
 	}
 
+	bool AudioStreamPlayer::isPlaying()
+	{
+		return streamUpdateWorker->isTaskExist(getSound());
+	}
+
 	void AudioStreamPlayer::pause()
 	{
 		alSourcePause(getSound()->getSourceId());
+	}
+
+	bool AudioStreamPlayer::isPaused()
+	{
+		ALint state;
+		alGetSourcei(getSound()->getSourceId(), AL_SOURCE_STATE, &state);
+		return state == AL_PAUSED;
 	}
 
 	void AudioStreamPlayer::stop()

@@ -2,12 +2,14 @@
 #define URCHINENGINE_SOUNDMANAGER_H
 
 #include <vector>
+#include <thread>
 #include "UrchinCommon.h"
 
 #include "AudioController.h"
 #include "device/DeviceManager.h"
 #include "sound/Sound.h"
 #include "trigger/SoundTrigger.h"
+#include "player/stream/StreamUpdateWorker.h"
 
 namespace urchin
 {
@@ -25,15 +27,20 @@ namespace urchin
 			std::vector<const SoundTrigger *> getSoundTriggers() const;
 			SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
 
+            void globalPause();
+            void globalResume();
+
 			void process(const Point3<float> &);
 			void process();
 
 		private:
 			void deleteAudioController(AudioController *);
 
-			DeviceManager deviceManager;
-
 			std::vector<AudioController *> audioControllers;
+
+			//stream chunk updater thread
+			StreamUpdateWorker *streamUpdateWorker;
+			std::thread *streamUpdateWorkerThread;
 	};
 
 }

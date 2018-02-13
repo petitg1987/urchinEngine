@@ -18,6 +18,9 @@ namespace urchin
             std::shared_ptr<AITerrain> buildAITerrain(std::string, const std::shared_ptr<const CollisionShape3D> &, const Transform<float> &);
 
         private:
+            AIEntityBuilder() = default;
+            ~AIEntityBuilder() override = default;
+
             std::shared_ptr<AITerrain> buildAITerrain(std::string, const std::shared_ptr<const CollisionHeightfieldShape> &, const Transform<float> &);
     };
 

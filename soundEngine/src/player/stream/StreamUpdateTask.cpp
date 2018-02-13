@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "player/stream/StreamUpdateTask.h"
 
 namespace urchin
@@ -42,6 +44,11 @@ namespace urchin
 	{
 		return playLoop;
 	}
+
+    std::string StreamUpdateTask::getSoundFilename() const
+    {
+        return sound->getFilename();
+    }
 
 	StreamChunk &StreamUpdateTask::getStreamChunk(unsigned int chunkId)
 	{

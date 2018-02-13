@@ -3,7 +3,6 @@
 
 #include <string>
 #include <iostream>
-#include <thread>
 
 #include "player/AudioPlayer.h"
 #include "player/stream/StreamUpdateWorker.h"
@@ -15,22 +14,21 @@ namespace urchin
 	class AudioStreamPlayer : public AudioPlayer
 	{
 		public:
-			explicit AudioStreamPlayer(const Sound *);
+			AudioStreamPlayer(const Sound *, StreamUpdateWorker *);
 
-			static void initializeStreamWorkerThread();
-			static void destroyStreamWorkerThread();
+			void play() override;
+			void playLoop() override;
+			bool isPlaying() override;
 
-			void play();
-			void playLoop();
-			void pause();
-			void stop();
+			void pause() override;
+			bool isPaused() override;
+
+			void stop() override;
 
 		private:
 			void play(bool);
 
-			//stream chunk updater thread
-			static StreamUpdateWorker *streamUpdateWorker;
-			static std::thread *streamUpdateWorkerThread;
+			StreamUpdateWorker *streamUpdateWorker;
 	};
 
 }

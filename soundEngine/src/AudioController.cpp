@@ -7,14 +7,15 @@ namespace urchin
 	/**
 	 * @param soundTrigger Trigger used to play the sound
 	 */
-	AudioController::AudioController(Sound *sound, SoundTrigger *soundTrigger) :
+	AudioController::AudioController(Sound *sound, SoundTrigger *soundTrigger, StreamUpdateWorker *streamUpdateWorker) :
 			sound(sound),
 			soundTrigger(soundTrigger),
-			triggerValue(SoundTrigger::STOP)
+			triggerValue(SoundTrigger::STOP),
+            isGlobalPaused(false)
 	{
 		smoothStopAction = new SmoothStopAction(soundTrigger->getSoundBehavior());
 
-		audioPlayer = new AudioStreamPlayer(sound);
+		audioPlayer = new AudioStreamPlayer(sound, streamUpdateWorker);
 	}
 
 	AudioController::~AudioController()
@@ -48,6 +49,26 @@ namespace urchin
 
 		soundTrigger = newSoundTrigger;
 		smoothStopAction = new SmoothStopAction(soundTrigger->getSoundBehavior());
+	}
+
+	void AudioController::globalPause()
+	{
+		if(audioPlayer->isPlaying())
+		{
+			audioPlayer->pause();
+
+            isGlobalPaused = true;
+		}
+	}
+
+	void AudioController::globalResume()
+	{
+        if(isGlobalPaused)
+        {
+            audioPlayer->play(); //as it's a resume: use 'play' or 'playLoop' method doesn't make any difference
+
+            isGlobalPaused = false;
+        }
 	}
 
 	void AudioController::process(const Point3<float> &listenerPosition)

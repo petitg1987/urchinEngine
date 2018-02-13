@@ -10,8 +10,9 @@ namespace urchin
 
 	SoundManager::SoundManager()
 	{
-		deviceManager.initializeDevice();
-		AudioStreamPlayer::initializeStreamWorkerThread();
+		DeviceManager::instance();
+        streamUpdateWorker = new StreamUpdateWorker();
+        streamUpdateWorkerThread = new std::thread(&StreamUpdateWorker::start, streamUpdateWorker);
 
 		alDistanceModel(AL_LINEAR_DISTANCE_CLAMPED);
 		alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
@@ -24,16 +25,17 @@ namespace urchin
 			deleteAudioController(audioController);
 		}
 
-		AudioStreamPlayer::destroyStreamWorkerThread();
-
-		deviceManager.shutdownDevice();
+        streamUpdateWorker->interrupt();
+        streamUpdateWorkerThread->join();
+        delete streamUpdateWorkerThread;
+        delete streamUpdateWorker;
 	}
 
 	void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger)
 	{
 		if(sound!=nullptr && soundTrigger!=nullptr)
 		{
-			auto *audioController = new AudioController(sound, soundTrigger);
+			auto *audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
 			audioControllers.push_back(audioController);
 		}
 	}
@@ -89,6 +91,22 @@ namespace urchin
 
 		throw std::invalid_argument("Impossible to find a sound trigger for the sound.");
 	}
+
+    void SoundManager::globalPause()
+    {
+        for(auto &audioController : audioControllers)
+        {
+            audioController->globalPause();
+        }
+    }
+
+    void SoundManager::globalResume()
+    {
+        for(auto &audioController : audioControllers)
+        {
+            audioController->globalResume();
+        }
+    }
 
 	void SoundManager::process(const Point3<float> &listenerPosition)
 	{

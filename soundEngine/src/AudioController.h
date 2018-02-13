@@ -8,6 +8,7 @@
 #include "trigger/SoundTrigger.h"
 #include "behavior/SmoothStopAction.h"
 #include "player/AudioPlayer.h"
+#include "player/stream/StreamUpdateWorker.h"
 
 namespace urchin
 {
@@ -18,12 +19,15 @@ namespace urchin
 	class AudioController
 	{
 		public:
-			AudioController(Sound *, SoundTrigger *);
+			AudioController(Sound *, SoundTrigger *, StreamUpdateWorker *);
 			~AudioController();
 
 			const Sound *getSound() const;
 			SoundTrigger *getSoundTrigger() const;
 			void changeSoundTrigger(SoundTrigger *);
+
+			void globalPause();
+			void globalResume();
 
 			void process(const Point3<float> &);
 
@@ -38,6 +42,7 @@ namespace urchin
 			SoundTrigger::TriggerResultValue triggerValue;
 
 			AudioPlayer *audioPlayer;
+			bool isGlobalPaused;
 	};
 
 }

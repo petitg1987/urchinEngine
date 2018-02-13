@@ -24,6 +24,8 @@ namespace urchin
 			SoundFileReader *getSoundFileReader();
 			bool isPlayLoop() const;
 
+			std::string getSoundFilename() const;
+
 			StreamChunk &getStreamChunk(unsigned int);
 			StreamChunk *getStreamChunks();
 

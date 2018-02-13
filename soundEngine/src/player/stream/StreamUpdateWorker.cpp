@@ -1,7 +1,6 @@
 #include <AL/al.h>
 #include <thread>
 #include <iostream>
-#include <stdexcept>
 #include "UrchinCommon.h"
 
 #include "player/stream/StreamUpdateWorker.h"
@@ -106,7 +105,7 @@ namespace urchin
 						bool taskFinished = processTask(*it);
 						if (taskFinished)
 						{
-							deleteTask(*it);
+                            deleteTask(*it);
 							it = tasks.erase(it);
 						} else
 						{
@@ -162,7 +161,7 @@ namespace urchin
 
 	void StreamUpdateWorker::deleteTask(StreamUpdateTask *task)
 	{
-		clearQueue(task);
+        clearQueue(task);
 		alSourcei(task->getSourceId(), AL_BUFFER, 0);
 
 		for(unsigned int i=0; i<nbChunkBuffer; ++i)
@@ -215,7 +214,7 @@ namespace urchin
 			}
 		}
 
-		throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found.");
+		throw std::domain_error("Stream chunk with buffer id " + std::to_string(bufferId) + " not found (" + task->getSoundFilename() + ")");
 	}
 
 	void StreamUpdateWorker::clearQueue(StreamUpdateTask *task)
