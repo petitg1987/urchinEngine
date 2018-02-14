@@ -61,17 +61,27 @@ namespace urchin
 			bool isInitialized;
 			QWidget *parentWidget;
 
+			//3d
 			SceneManager *sceneManager;
-			SoundManager *soundManager;
-			AIManager *aiManager;
 			SceneFreeCamera *camera;
-
-			MapHandler *mapHandler;
 			BodyShapeDisplayer *bodyShapeDisplayer;
 			LightScopeDisplayer *lightScopeDisplayer;
 			SoundTriggerDisplayer *soundTriggerDisplayer;
 			NavMeshDisplayer *navMeshDisplayer;
 
+			//physics
+			PhysicsWorld *physicsWorld;
+
+			//AI
+			AIManager *aiManager;
+
+			//sound
+			SoundManager *soundManager;
+
+			//map handler
+			MapHandler *mapHandler;
+
+			//scene specifics
 			bool viewProperties[LAST_VIEW_PROPERTIES];
 			const SceneObject *highlightSceneObject;
 			const SceneLight *highlightSceneLight;

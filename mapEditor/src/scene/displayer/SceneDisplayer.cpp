@@ -11,6 +11,7 @@ namespace urchin
 		isInitialized(false),
 		parentWidget(parentWidget),
 		sceneManager(nullptr),
+		physicsWorld(nullptr),
 		soundManager(nullptr),
 		aiManager(nullptr),
 		camera(nullptr),
@@ -30,14 +31,18 @@ namespace urchin
 	{
 		delete mapHandler;
 
+        delete soundManager;
+
+        delete aiManager;
+
+        delete physicsWorld;
+
+        delete bodyShapeDisplayer;
+        delete lightScopeDisplayer;
+        delete soundTriggerDisplayer;
+        delete navMeshDisplayer;
 		delete camera;
-		delete bodyShapeDisplayer;
-		delete lightScopeDisplayer;
-		delete soundTriggerDisplayer;
-		delete navMeshDisplayer;
 		delete sceneManager;
-		delete soundManager;
-		delete aiManager;
 
 		SingletonManager::destroyAllSingletons();
 	}
@@ -53,10 +58,11 @@ namespace urchin
 
 			initializeScene();
 
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
 			NullLoadCallback nullLoadCallback;
 			mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
+			physicsWorld->play();
 			aiManager->play();
 
 			isInitialized = true;
@@ -78,7 +84,7 @@ namespace urchin
 			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
 			initializeScene();
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), nullptr, soundManager, aiManager);
+			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
 
 			isInitialized = true;
 		}catch(std::exception &e)
@@ -107,24 +113,31 @@ namespace urchin
 			}
 		#endif
 
-		sceneManager = new SceneManager();
-		soundManager = new SoundManager();
+        //3d
+        sceneManager = new SceneManager();
+        camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, parentWidget);
+        camera->setDistance(0.0);
+        camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
+        sceneManager->newRenderer3d(true);
+        sceneManager->getActiveRenderer3d()->setCamera(camera);
+        sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
+
+        bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
+        lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
+        soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
+        navMeshDisplayer = new NavMeshDisplayer(sceneManager);
+
+        //physics
+		physicsWorld = new PhysicsWorld();
+        physicsWorld->setGravity(Vector3<float>(0.0, 0.0, 0.0));
+		physicsWorld->start(1.0/30.0, true);
+
+        //AI
 		aiManager = new AIManager();
 		aiManager->start(1.0/4.0, true);
 
-		sceneManager->newRenderer3d(true);
-
-		bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
-		lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
-		soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
-		navMeshDisplayer = new NavMeshDisplayer(sceneManager);
-
-		//3d scene configuration
-		camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, parentWidget);
-		camera->setDistance(0.0);
-		camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
-		sceneManager->getActiveRenderer3d()->setCamera(camera);
-		sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
+        //sound
+        soundManager = new SoundManager();
 	}
 
 	void SceneDisplayer::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)

@@ -193,6 +193,8 @@ namespace urchin
 		if(event->buttons() == Qt::LeftButton)
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_LEFT);
+
+			//TODO picking
 		}else if (event->button() == Qt::RightButton)
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_RIGHT);

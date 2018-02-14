@@ -1,10 +1,10 @@
 ############################################
 # To do :
 ############################################
-- SCENE OBJECTS
-	- (2) [NEW FEATURE] Allow picking objects and move them
-	- (2) [NEW FEATURE] Handle physics shape as intrinsic to mesh object
+- RENDER
+	- (1) [NEW FEATURE] Allow picking objects and move them
 	- (2) [QUALITY IMPROVEMENT] When change orientation of cylinder/capsule: resize physics shape to fit the object size
+    - (3) [NEW FEATURE] Handle skybox
 - UI
 	- (3) [NEW FEATURE] Allow CTRL+Y to return in previous value
 	- (2) [NEW FEATURE] When save (CTRL+S): change window title from "(not saved)" to "(saved)"
