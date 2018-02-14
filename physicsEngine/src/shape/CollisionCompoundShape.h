@@ -37,6 +37,8 @@ namespace urchin
 			float getMaxDistanceToCenter() const override;
 			float getMinDistanceToCenter() const override;
 
+			CollisionShape3D *clone() const override;
+
 		private:
 			void initializeDistances();
 

@@ -20,6 +20,7 @@ namespace urchin
 			std::list<const SceneObject *> getSceneObjects() const;
 			void addSceneObject(SceneObject *);
 			void removeSceneObject(const SceneObject *);
+			void cloneSceneObject(SceneObject *, const SceneObject *);
 
 			void createDefaultBody(const SceneObject *);
 			void changeBodyShape(const SceneObject *, CollisionShape3D::ShapeType);

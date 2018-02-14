@@ -100,4 +100,9 @@ namespace urchin
 		return capsuleShape->getRadius();
 	}
 
+	CollisionShape3D *CollisionCapsuleShape::clone() const
+	{
+		return new CollisionCapsuleShape(capsuleShape->getRadius(), capsuleShape->getCylinderHeight(), capsuleShape->getCapsuleOrientation());
+	}
+
 }

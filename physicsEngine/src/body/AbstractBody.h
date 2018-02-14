@@ -17,6 +17,7 @@ namespace urchin
 	{
 		public:
 			AbstractBody(const std::string &, const Transform<float> &, const std::shared_ptr<const CollisionShape3D> &);
+			AbstractBody(const AbstractBody &);
 			virtual ~AbstractBody() = default;
 
 			void setIsNew(bool);
@@ -43,6 +44,7 @@ namespace urchin
 			std::shared_ptr<const CollisionShape3D> getOriginalShape() const;
 			std::shared_ptr<const CollisionShape3D> getScaledShape() const;
 
+			void setId(const std::string &);
 			const std::string &getId() const;
 
 			void setRestitution(float);
@@ -59,6 +61,7 @@ namespace urchin
 			bool isActive() const;
 
 		protected:
+			void initialize();
 			virtual void refreshScaledShape();
 			Vector3<float> computeScaledShapeLocalInertia(float) const;
 

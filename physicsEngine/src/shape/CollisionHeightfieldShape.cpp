@@ -130,6 +130,11 @@ namespace urchin
         return 0.0f;
     }
 
+    CollisionShape3D *CollisionHeightfieldShape::clone() const
+    {
+        return new CollisionHeightfieldShape(vertices, xLength, zLength);
+    }
+
     std::vector<CollisionTriangleShape> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const
     {
         float verticesDistanceX = vertices[1].X - vertices[0].X;
@@ -173,4 +178,5 @@ namespace urchin
 
         return triangles;
     }
+
 }

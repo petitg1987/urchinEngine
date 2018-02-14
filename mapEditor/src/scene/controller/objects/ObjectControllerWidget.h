@@ -64,6 +64,7 @@ namespace urchin
 			ObjectTableView *objectTableView;
 			QPushButton *addObjectButton;
 			QPushButton *removeObjectButton;
+			QPushButton *cloneObjectButton;
 			QTabWidget *tabWidget;
 
 			bool disableObjectEvent;
@@ -90,6 +91,7 @@ namespace urchin
 		private slots:
 			void showAddObjectDialog();
 			void removeSelectedObject();
+			void showCloneObjectDialog();
 
 			void updateObjectOrientationType();
 			void updateObjectTransform();

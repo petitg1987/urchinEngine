@@ -17,13 +17,22 @@ namespace urchin
 			currAnimation(nullptr),
 			bIsProduceShadow(true)
 	{
-		if(!meshFilename.empty())
-		{
-			constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
-			meshes = new Meshes(constMeshes);
-			meshes->onMoving(transform);
-		}
+        initialize(meshFilename);
 	}
+
+    Model::Model(const Model &model) :
+            constMeshes(nullptr),
+            meshes(nullptr),
+            currConstAnimation(nullptr),
+            currAnimation(nullptr)
+    {
+        std::string meshFilename = model.getMeshes()!=nullptr ? model.getMeshes()->getName() : "";
+        initialize(meshFilename);
+
+        setTransform(model.getTransform());
+        setProduceShadow(model.isProduceShadow());
+        setVisible(model.isVisible());
+    }
 
 	Model::~Model()
 	{
@@ -43,6 +52,17 @@ namespace urchin
 			(constAnimation.second)->release();
 		}
 	}
+
+    void Model::initialize(const std::string &meshFilename)
+    {
+        if(!meshFilename.empty())
+        {
+            constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
+            meshes = new Meshes(constMeshes);
+            meshes->onMoving(transform);
+        }
+    }
+
 
 	void Model::loadAnimation(const std::string &name, const std::string &filename)
 	{

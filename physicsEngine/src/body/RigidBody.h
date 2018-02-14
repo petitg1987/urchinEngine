@@ -15,6 +15,7 @@ namespace urchin
 	{
 		public:
 			RigidBody(const std::string &, const Transform<float> &, const std::shared_ptr<const CollisionShape3D> &);
+			RigidBody(const RigidBody &);
 			~RigidBody() override = default;
 
 			AbstractWorkBody *createWorkBody() const override;
@@ -46,6 +47,7 @@ namespace urchin
 			Vector3<float> getAngularFactor() const;
 
 		private:
+			void initializeRigidBody();
 			void refreshScaledShape() override;
 			void refreshLocalInertia();
 

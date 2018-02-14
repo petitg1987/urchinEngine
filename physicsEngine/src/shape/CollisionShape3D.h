@@ -56,6 +56,8 @@ namespace urchin
 
 			void checkInnerMarginQuality(const std::string &) const;
 
+			virtual CollisionShape3D *clone() const = 0;
+
 		protected:
 			void refreshInnerMargin(float);
 

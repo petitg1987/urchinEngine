@@ -54,6 +54,25 @@ namespace urchin
 		markModified();
 	}
 
+	void ObjectController::cloneSceneObject(SceneObject *newSceneObject, const SceneObject *toCloneSceneObject)
+	{
+        Model *toCloneModel = toCloneSceneObject->getModel();
+        auto *model = new Model(*toCloneModel);
+        Point3<float> shiftPosition(0.5f, 0.0f, 0.0f);
+        model->setPosition(model->getTransform().getPosition() + shiftPosition);
+        newSceneObject->setModel(model);
+
+        RigidBody *toCloneRigidBody = toCloneSceneObject->getRigidBody();
+        if(toCloneRigidBody!=nullptr)
+        {
+            auto *rigidBody = new RigidBody(*toCloneRigidBody);
+			rigidBody->setId(newSceneObject->getName());
+            newSceneObject->setupInteractiveBody(rigidBody);
+        }
+
+        addSceneObject(newSceneObject);
+	}
+
 	void ObjectController::createDefaultBody(const SceneObject *constSceneObject)
 	{
 		SceneObject *sceneObject = findSceneObject(constSceneObject);

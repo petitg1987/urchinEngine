@@ -14,6 +14,27 @@ namespace urchin
 			id(id),
 			originalShape(shape)
 	{
+		initialize();
+	}
+
+	AbstractBody::AbstractBody(const AbstractBody &abstractBody) :
+			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+			workBody(nullptr),
+			transform(abstractBody.getTransform()),
+			isManuallyMoved(false),
+			id(abstractBody.getId()),
+			originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone()))
+	{
+		initialize();
+
+		setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());
+		setFriction(abstractBody.getFriction());
+		setRestitution(abstractBody.getRestitution());
+		setRollingFriction(abstractBody.getRollingFriction());
+	}
+
+	void AbstractBody::initialize()
+	{
 		//technical data
 		bIsNew.store(false, std::memory_order_relaxed);
 		bIsDeleted.store(false, std::memory_order_relaxed);
@@ -180,6 +201,13 @@ namespace urchin
 		#endif
 
 		return scaledShape->computeLocalInertia(mass);
+	}
+
+	void AbstractBody::setId(const std::string &id)
+	{
+		std::lock_guard<std::mutex> lock(bodyMutex);
+
+		this->id = id;
 	}
 
 	const std::string &AbstractBody::getId() const

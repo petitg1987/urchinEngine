@@ -19,6 +19,7 @@ namespace urchin
 	{
 		public:
 			explicit Model(const std::string &);
+			Model(const Model &);
 			~Model() override;
 		
 			void loadAnimation(const std::string &, const std::string &);
@@ -45,6 +46,7 @@ namespace urchin
 			void display(const MeshParameter &);
 
 		private:
+			void initialize(const std::string &);
 			void onMoving(const Transform<float> &);
 
 			static AABBox<float> defaultModelAABBox;

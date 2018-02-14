@@ -63,4 +63,9 @@ namespace urchin
 		return sphereShape->getRadius();
 	}
 
+	CollisionShape3D *CollisionSphereShape::clone() const
+	{
+		return new CollisionSphereShape(sphereShape->getRadius());
+	}
+
 }

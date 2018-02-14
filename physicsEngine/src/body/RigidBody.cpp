@@ -10,6 +10,22 @@ namespace urchin
 	RigidBody::RigidBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			AbstractBody(id, transform, shape)
 	{
+		initializeRigidBody();
+	}
+
+	RigidBody::RigidBody(const RigidBody &rigidBody) :
+		AbstractBody(rigidBody)
+	{
+		initializeRigidBody();
+
+		setLinearFactor(rigidBody.getLinearFactor());
+		setAngularFactor(rigidBody.getAngularFactor());
+		setDamping(rigidBody.getLinearDamping(), rigidBody.getAngularDamping());
+		setMass(rigidBody.getMass());
+	}
+
+	void RigidBody::initializeRigidBody()
+	{
 		//default values
 		setMass(0.0f);
 		linearDamping = 0.0f;

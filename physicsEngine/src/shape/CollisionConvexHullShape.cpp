@@ -172,4 +172,9 @@ namespace urchin
 		return minDistanceToCenter;
 	}
 
+	CollisionShape3D *CollisionConvexHullShape::clone() const
+	{
+		return new CollisionConvexHullShape(convexHullShape->getPoints());
+	}
+
 }

@@ -48,7 +48,7 @@ namespace urchin
 		return nullptr;
 	}
 
-	void ObjectTableView::addObject(const SceneObject *sceneObject)
+	int ObjectTableView::addObject(const SceneObject *sceneObject)
 	{
 		QStandardItem *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
 		itemObjectName->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
@@ -70,6 +70,8 @@ namespace urchin
 		objectsListModel->setItem(nextRow, 1, itemMeshFile);
 
 		resizeRowsToContents();
+
+		return nextRow;
 	}
 
 	bool ObjectTableView::removeSelectedObject()

@@ -65,4 +65,9 @@ namespace urchin
         return 0.0;
     }
 
+    CollisionShape3D *CollisionTriangleShape::clone() const
+    {
+        return new CollisionTriangleShape(triangleShape->getPoints());
+    }
+
 }

@@ -101,4 +101,9 @@ namespace urchin
 		return std::min(coneShape->getHeight()/2.0f, coneShape->getRadius());
 	}
 
+	CollisionShape3D *CollisionConeShape::clone() const
+	{
+		return new CollisionConeShape(coneShape->getRadius(), coneShape->getHeight(), coneShape->getConeOrientation());
+	}
+
 }

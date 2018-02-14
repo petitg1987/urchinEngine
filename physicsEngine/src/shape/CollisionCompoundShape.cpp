@@ -108,4 +108,20 @@ namespace urchin
 		return minDistanceToCenter;
 	}
 
+	CollisionShape3D *CollisionCompoundShape::clone() const
+	{
+		std::vector<std::shared_ptr<const LocalizedCollisionShape>> clonedLocalizedShapes;
+		for(const auto &localizedShape : localizedShapes)
+		{
+			auto clonedLocalizedShape = std::make_shared<LocalizedCollisionShape>();
+			clonedLocalizedShape->position = localizedShape->position;
+			clonedLocalizedShape->shape = std::shared_ptr<const CollisionShape3D>(localizedShape->shape->clone());
+			clonedLocalizedShape->transform = localizedShape->transform;
+
+			clonedLocalizedShapes.push_back(clonedLocalizedShape);
+		}
+
+		return new CollisionCompoundShape(clonedLocalizedShapes);
+	}
+
 }

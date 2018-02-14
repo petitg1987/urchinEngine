@@ -8,6 +8,7 @@
 #include "support/ComboBoxStyleHelper.h"
 #include "support/FrameStyleHelper.h"
 #include "scene/controller/objects/dialog/NewObjectDialog.h"
+#include "scene/controller/objects/dialog/CloneObjectDialog.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
 
@@ -41,6 +42,12 @@ namespace urchin
 		ButtonStyleHelper::applyNormalStyle(removeObjectButton);
 		removeObjectButton->setEnabled(false);
 		connect(removeObjectButton, SIGNAL(clicked()), this, SLOT(removeSelectedObject()));
+
+		cloneObjectButton = new QPushButton("Clone Object");
+		buttonsLayout->addWidget(cloneObjectButton);
+		ButtonStyleHelper::applyNormalStyle(cloneObjectButton);
+		cloneObjectButton->setEnabled(false);
+		connect(cloneObjectButton, SIGNAL(clicked()), this, SLOT(showCloneObjectDialog()));
 
 		tabWidget = new QTabWidget();
 		mainLayout->addWidget(tabWidget);
@@ -384,10 +391,12 @@ namespace urchin
 						setupObjectDataFrom(sceneObject);
 
 						removeObjectButton->setEnabled(true);
+						cloneObjectButton->setEnabled(true);
 						tabWidget->show();
 					}else
 					{
 						removeObjectButton->setEnabled(false);
+						cloneObjectButton->setEnabled(false);
 						tabWidget->hide();
 					}
 					break;
@@ -484,7 +493,8 @@ namespace urchin
 			SceneObject *sceneObject = newSceneObjectDialog.getSceneObject();
 			objectController->addSceneObject(sceneObject);
 
-			objectTableView->addObject(sceneObject);
+			int row = objectTableView->addObject(sceneObject);
+			objectTableView->selectRow(row);
 		}
 	}
 
@@ -496,6 +506,22 @@ namespace urchin
 			objectController->removeSceneObject(sceneObject);
 
 			objectTableView->removeSelectedObject();
+		}
+	}
+
+	void ObjectControllerWidget::showCloneObjectDialog()
+	{
+		CloneObjectDialog cloneSceneObjectDialog(this, objectController);
+		cloneSceneObjectDialog.exec();
+
+		if(cloneSceneObjectDialog.result()==QDialog::Accepted)
+		{
+			SceneObject *newSceneObject = cloneSceneObjectDialog.getSceneObject();
+			const SceneObject *toCloneSceneObject = objectTableView->getSelectedSceneObject();
+			objectController->cloneSceneObject(newSceneObject, toCloneSceneObject);
+
+			int row = objectTableView->addObject(newSceneObject);
+			objectTableView->selectRow(row);
 		}
 	}
 

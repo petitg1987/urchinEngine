@@ -30,6 +30,8 @@ namespace urchin
             float getMaxDistanceToCenter() const override;
             float getMinDistanceToCenter() const override;
 
+            CollisionShape3D *clone() const override;
+
         private:
             const std::shared_ptr<TriangleShape3D<float>> triangleShape; //shape including margin
 

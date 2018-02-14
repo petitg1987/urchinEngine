@@ -137,7 +137,9 @@ set(SOURCE_FILES
         src/scene/controller/waters/WaterControllerWidget.cpp
         src/scene/controller/waters/WaterControllerWidget.h
         src/scene/controller/waters/dialog/NewWaterDialog.cpp
-        src/scene/controller/waters/dialog/NewWaterDialog.h)
+        src/scene/controller/waters/dialog/NewWaterDialog.h
+        src/scene/controller/objects/dialog/CloneObjectDialog.cpp
+        src/scene/controller/objects/dialog/CloneObjectDialog.h)
 
 include_directories(src ../common/src ../3dEngine/src ../physicsEngine/src ../soundEngine/src ../AIEngine/src ../mapHandler/src)
 
