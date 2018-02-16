@@ -133,7 +133,7 @@ namespace urchin
 
 		ShaderManager::instance()->bind(hbaoShader);
 		Vector2<float> invResolution(1.0f/sceneWidth, 1.0f/sceneHeight);
-		glUniform2fv(invResolutionLoc, 1, invResolution);
+		glUniform2fv(invResolutionLoc, 1, (const float *)invResolution);
 	}
 
 	void AmbientOcclusionManager::createOrUpdateAOTexture()

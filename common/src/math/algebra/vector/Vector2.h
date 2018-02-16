@@ -41,8 +41,8 @@ namespace urchin
 			T& operator [](int i);
 			const T& operator [](int i) const;
 
-			operator T*();
-			operator const T*() const;
+			explicit operator T*();
+			explicit operator const T*() const;
 
 			template<class NEW_TYPE> Vector2<NEW_TYPE> cast() const;
 		

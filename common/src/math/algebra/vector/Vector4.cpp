@@ -65,6 +65,11 @@ namespace urchin
 		return (X*v.X + Y*v.Y + Z*v.Z + W*v.W);
 	}
 
+	template<class T> Vector3<T> Vector4<T>::xyz() const
+	{
+		return Vector3<T>(X, Y, Z);
+	}
+
 	template<class T> Vector4<T> Vector4<T>::operator +() const
 	{
 		return Vector4<T>(X, Y, Z, W);

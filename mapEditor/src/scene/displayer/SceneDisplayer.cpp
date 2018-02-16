@@ -246,6 +246,11 @@ namespace urchin
 		return sceneManager;
 	}
 
+    PhysicsWorld *SceneDisplayer::getPhysicsWorld() const
+    {
+        return physicsWorld;
+    }
+
 	MapHandler *SceneDisplayer::getMapHandler() const
 	{
 		return mapHandler;

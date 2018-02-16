@@ -194,7 +194,23 @@ namespace urchin
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_LEFT);
 
-			//TODO picking
+            //TODO picking
+            Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
+            Vector3<float> viewVector = camera->getPosition().vector(camera->getView());
+            Ray<float> pickingRay(camera->getPosition(), viewVector, 100.0);
+            std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
+            std::this_thread::sleep_for(std::chrono::milliseconds(200)); //TODO remove
+            const ccd_set &pickedObjects = rayTestResult->getResults();
+            if(pickedObjects.empty())
+            {
+                std::cout<<"nothing picked"<<std::endl;
+            }else
+            {
+                std::cout<<"picked:"<<(*pickedObjects.begin())->getBody2()->getId()<<std::endl;
+            }
+
+
+
 		}else if (event->button() == Qt::RightButton)
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_RIGHT);

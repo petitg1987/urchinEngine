@@ -25,6 +25,7 @@ namespace urchin
 			T length() const;
 			T squareLength() const;
 			T dotProduct(const Vector4<T> &) const;
+			Vector3<T> xyz() const;
 		
 			Vector4<T> operator +() const;
 			Vector4<T> operator -() const;
@@ -41,9 +42,9 @@ namespace urchin
 		
 			T& operator [](int i);
 			const T& operator [](int i) const;
-			
-			operator T*();
-			operator const T*() const;
+
+			explicit operator T*();
+			explicit operator const T*() const;
 
 			template<class NEW_TYPE> Vector4<NEW_TYPE> cast() const;
 		

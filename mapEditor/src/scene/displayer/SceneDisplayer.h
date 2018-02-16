@@ -47,6 +47,7 @@ namespace urchin
 			void resize(unsigned int width, unsigned int height);
 
 			SceneManager *getSceneManager() const;
+			PhysicsWorld *getPhysicsWorld() const;
 			MapHandler *getMapHandler() const;
 
 		private:
