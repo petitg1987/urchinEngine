@@ -43,6 +43,7 @@ namespace urchin
 			float getCcdMotionThreshold() const;
 			void setCcdMotionThreshold(float);
 
+			static void disableAllBodies(bool);
 			bool isStatic() const;
 			void setIsStatic(bool);
 			bool isActive() const override;
@@ -67,6 +68,7 @@ namespace urchin
 			float ccdMotionThreshold;
 
 			//state flags
+			static bool bDisableAllBodies;
 			bool bIsStatic;
 			bool bIsActive;
 

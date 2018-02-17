@@ -129,7 +129,7 @@ namespace urchin
 
         //physics
 		physicsWorld = new PhysicsWorld();
-        physicsWorld->setGravity(Vector3<float>(0.0, 0.0, 0.0));
+        AbstractWorkBody::disableAllBodies(true);
 		physicsWorld->start(1.0/50.0, true);
 
         //AI

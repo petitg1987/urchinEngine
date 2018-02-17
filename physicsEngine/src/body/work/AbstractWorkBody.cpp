@@ -7,6 +7,7 @@ namespace urchin
 
 	//static
 	uint_fast32_t AbstractWorkBody::nextObjectId = 0;
+	bool AbstractWorkBody::bDisableAllBodies = false;
 
 	AbstractWorkBody::AbstractWorkBody(const std::string &id, const PhysicsTransform &physicsTransform,
 		const std::shared_ptr<const CollisionShape3D> &shape) :
@@ -125,12 +126,17 @@ namespace urchin
 		this->ccdMotionThreshold = ccdMotionThreshold;
 	}
 
+	void AbstractWorkBody::disableAllBodies(bool value)
+	{
+        bDisableAllBodies = value;
+	}
+
 	/**
 	 * @return True when body is static (cannot be affected by physics world)
 	 */
 	bool AbstractWorkBody::isStatic() const
 	{
-		return bIsStatic;
+		return bDisableAllBodies || bIsStatic;
 	}
 
 	/**
@@ -146,7 +152,7 @@ namespace urchin
 	 */
 	bool AbstractWorkBody::isActive() const
 	{
-		return bIsActive;
+		return !bDisableAllBodies && bIsActive;
 	}
 
 	/**

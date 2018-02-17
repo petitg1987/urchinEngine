@@ -80,6 +80,7 @@ namespace urchin
         {
             auto *rigidBody = new RigidBody(*toCloneRigidBody);
 			rigidBody->setId(newSceneObject->getName());
+			rigidBody->setTransform(model->getTransform());
             newSceneObject->setupInteractiveBody(rigidBody);
         }
 

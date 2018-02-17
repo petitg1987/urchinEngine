@@ -4,12 +4,15 @@
 #include "PhysicsWorld.h"
 #include "processable/raytest/RayTester.h"
 
+#define DEFAULT_GRAVITY Vector3<float>(0.0f, -9.81f, 0.0f)
+
 namespace urchin
 {
 
 	PhysicsWorld::PhysicsWorld() :
 			physicsSimulationThread(nullptr),
 			physicsSimulationStopper(false),
+			gravity(DEFAULT_GRAVITY),
 			timeStep(0.0f),
 			paused(true),
 			bodyManager(new BodyManager()),
