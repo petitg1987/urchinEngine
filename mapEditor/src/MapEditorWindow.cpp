@@ -166,6 +166,8 @@ namespace urchin
 		sceneControllerWidget->addObserver(this, SceneControllerWidget::TAB_SELECTED);
 
 		horizontalLayout->addWidget(sceneControllerWidget);
+
+		sceneDisplayerWidget->addObserver(sceneControllerWidget->getObjectControllerWidget(), SceneDisplayerWidget::BODY_PICKED);
 	}
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
@@ -222,20 +224,28 @@ namespace urchin
 			switch(notificationType)
 			{
 				case ObjectControllerWidget::BODY_SHAPE_INITIALIZED:
+				{
 					BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
-					if(auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
+					if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
 					{
 						bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
 					}
 					break;
+				}
+				default:
+					;
 			}
 		}else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
 		{
 			switch(notificationType)
 			{
 				case LocalizedShapeTableView::SELECTION_CHANGED:
-					sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
-					break;
+                {
+                    sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
+                    break;
+                }
+				default:
+					;
 			}
 		}
 	}

@@ -12,13 +12,18 @@
 namespace urchin
 {
 
-	class SceneDisplayerWidget : public QGLWidget
+	class SceneDisplayerWidget : public QGLWidget, public Observable
 	{
 		Q_OBJECT
 
 		public:
 			SceneDisplayerWidget(QWidget *, const std::string &);
 			~SceneDisplayerWidget() override;
+
+			enum NotificationType
+			{
+				BODY_PICKED
+			};
 
 			MapHandler *newMap(const std::string &, const std::string &);
 			MapHandler *openMap(const std::string &);
@@ -41,6 +46,8 @@ namespace urchin
 			void mouseReleaseEvent(QMouseEvent *) override;
 			void mouseMoveEvent(QMouseEvent *) override;
 
+			const std::string &getLastPickedBodyId() const;
+
 		private:
 			void updateSceneDisplayerViewProperties();
 
@@ -48,6 +55,9 @@ namespace urchin
 
 			SceneDisplayer *sceneDisplayer;
 			bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
+
+			int mouseX, mouseY;
+			std::string lastPickedBodyId;
 	};
 
 }

@@ -3,13 +3,17 @@
 
 #include "SceneDisplayerWidget.h"
 
+#define PICKING_RAY_LENGTH 100.0f
+
 namespace urchin
 {
 
 	SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, const std::string &mapEditorPath) :
 			QGLWidget(parent),
 			mapEditorPath(mapEditorPath),
-			sceneDisplayer(nullptr)
+			sceneDisplayer(nullptr),
+            mouseX(0),
+            mouseY(0)
 	{
 		QGLFormat glFormat;
 		glFormat.setVersion(3,3);
@@ -194,23 +198,29 @@ namespace urchin
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_LEFT);
 
-            //TODO picking
             Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
-            Vector3<float> viewVector = camera->getPosition().vector(camera->getView());
-            Ray<float> pickingRay(camera->getPosition(), viewVector, 100.0);
+            float clipSpaceX = (2.0f * mouseX) / ((float)sceneDisplayer->getSceneManager()->getSceneWidth()) - 1.0f;
+            float clipSpaceY = 1.0f - (2.0f * mouseY) / ((float)sceneDisplayer->getSceneManager()->getSceneHeight());
+            urchin::Vector4<float> rayDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
+            urchin::Vector4<float> rayDirectionEyeSpace = camera->getProjectionMatrix().inverse() * rayDirectionClipSpace;
+            rayDirectionEyeSpace.setValues(rayDirectionEyeSpace.X, rayDirectionEyeSpace.Y, -1.0f, 0.0f);
+            urchin::Vector3<float> rayDirectionWorldSpace = (camera->getViewMatrix().inverse() * rayDirectionEyeSpace).xyz().normalize();
+
+            const urchin::Point3<float> &rayStart = camera->getPosition();
+            urchin::Point3<float> rayEnd = rayStart.translate(rayDirectionWorldSpace * PICKING_RAY_LENGTH);
+            Ray<float> pickingRay(rayStart, rayEnd);
             std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
-            std::this_thread::sleep_for(std::chrono::milliseconds(200)); //TODO remove
-            const ccd_set &pickedObjects = rayTestResult->getResults();
-            if(pickedObjects.empty())
+
+            while(!rayTestResult->isResultReady())
             {
-                std::cout<<"nothing picked"<<std::endl;
-            }else
-            {
-                std::cout<<"picked:"<<(*pickedObjects.begin())->getBody2()->getId()<<std::endl;
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
             }
-
-
-
+            const ccd_set &pickedObjects = rayTestResult->getResults();
+            if(!pickedObjects.empty())
+            {
+				lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
+				notifyObservers(this, BODY_PICKED);
+            }
 		}else if (event->button() == Qt::RightButton)
 		{
 			sceneDisplayer->getSceneManager()->onKeyDown(InputDevice::Key::MOUSE_RIGHT);
@@ -235,10 +245,18 @@ namespace urchin
 
 	void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event)
 	{
+        this->mouseX = event->x();
+        this->mouseY = event->y();
+
 		if(sceneDisplayer!=nullptr)
 		{
-			sceneDisplayer->getSceneManager()->onMouseMove(event->x(), event->y());
+			sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
 		}
+	}
+
+	const std::string &SceneDisplayerWidget::getLastPickedBodyId() const
+	{
+		return lastPickedBodyId;
 	}
 
 }

@@ -18,6 +18,7 @@ namespace urchin
 			void resetModified();
 
 			std::list<const SceneObject *> getSceneObjects() const;
+			const SceneObject *findSceneObjectByBodyId(const std::string &) const;
 			void addSceneObject(SceneObject *);
 			void removeSceneObject(const SceneObject *);
 			void cloneSceneObject(SceneObject *, const SceneObject *);

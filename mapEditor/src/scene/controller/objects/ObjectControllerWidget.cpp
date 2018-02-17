@@ -11,6 +11,7 @@
 #include "scene/controller/objects/dialog/CloneObjectDialog.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
+#include "scene/displayer/SceneDisplayerWidget.h"
 
 namespace urchin
 {
@@ -403,6 +404,27 @@ namespace urchin
 				default:
 					;
 			}
+		}else if(auto *sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget *>(observable))
+		{
+			switch(notificationType)
+			{
+				case SceneDisplayerWidget::BODY_PICKED:
+                {
+                    const std::string &bodyId = sceneDisplayerWidget->getLastPickedBodyId();
+                    const SceneObject *sceneObject = objectController->findSceneObjectByBodyId(bodyId);
+                    if(sceneObject!=nullptr)
+                    {
+                        int row = this->objectTableView->getSceneObjectRow(sceneObject);
+						if(row >=0)
+						{
+							this->objectTableView->selectRow(row);
+						}
+                    }
+                    break;
+                }
+				default:
+					;
+			}
 		}
 	}
 
@@ -492,6 +514,7 @@ namespace urchin
 		{
 			SceneObject *sceneObject = newSceneObjectDialog.getSceneObject();
 			objectController->addSceneObject(sceneObject);
+			objectController->createDefaultBody(sceneObject);
 
 			int row = objectTableView->addObject(sceneObject);
 			objectTableView->selectRow(row);

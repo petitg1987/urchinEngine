@@ -38,6 +38,21 @@ namespace urchin
 		return this->currentIndex().row()!=-1;
 	}
 
+	int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const
+	{
+		for(int rowId = 0; rowId < objectsListModel->rowCount(); ++rowId)
+		{
+			QModelIndex index = objectsListModel->index(rowId, 0);
+            auto *sceneObject = index.data(Qt::UserRole + 1).value<const SceneObject *>();
+            if(expectedSceneObject->getName() == sceneObject->getName())
+            {
+                return rowId;
+            }
+		}
+
+		return -1;
+	}
+
 	const SceneObject *ObjectTableView::getSelectedSceneObject() const
 	{
 		QModelIndex selectedIndex = this->currentIndex();

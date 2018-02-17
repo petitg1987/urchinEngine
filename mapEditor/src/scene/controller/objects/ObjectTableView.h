@@ -28,6 +28,8 @@ namespace urchin
 			bool hasSceneObjectSelected() const;
 			const SceneObject *getSelectedSceneObject() const;
 
+			int getSceneObjectRow(const SceneObject *) const;
+
 			int addObject(const SceneObject *);
 			bool removeSelectedObject();
 			void removeAllObjects();

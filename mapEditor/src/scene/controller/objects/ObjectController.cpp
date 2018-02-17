@@ -39,6 +39,19 @@ namespace urchin
 		return constSceneObjects;
 	}
 
+	const SceneObject *ObjectController::findSceneObjectByBodyId(const std::string &bodyId) const
+	{
+		for(auto sceneObject : getSceneObjects())
+		{
+			if(sceneObject->getRigidBody()!=nullptr && sceneObject->getRigidBody()->getId()==bodyId)
+			{
+				return sceneObject;
+			}
+		}
+
+		return nullptr;
+	}
+
 	void ObjectController::addSceneObject(SceneObject *sceneObject)
 	{
 		mapHandler->getMap()->addSceneObject(sceneObject);
