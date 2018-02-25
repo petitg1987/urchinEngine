@@ -164,7 +164,9 @@ set(SOURCE_FILES
         src/tools/svg/shape/SVGLine.cpp
         src/tools/svg/shape/SVGLine.h
         src/tools/svg/shape/SVGCircle.cpp
-        src/tools/svg/shape/SVGCircle.h)
+        src/tools/svg/shape/SVGCircle.h
+        src/math/geometry/3d/util/FindPointService.cpp
+        src/math/geometry/3d/util/FindPointService.h)
 
 include_directories(src)
 

@@ -19,7 +19,7 @@ namespace urchin
 			std::vector<Point3<T>> sortPointsCounterClockwise(const std::vector<Point3<T>> &, const Vector3<T> &);
 
 		private:
-			SortPointsService();
+			SortPointsService() = default;
 			virtual ~SortPointsService() = default;
 
 			bool isNewPointClockwiseSorted(const std::vector<Point3<T>> &, const Vector3<T> &, unsigned int);

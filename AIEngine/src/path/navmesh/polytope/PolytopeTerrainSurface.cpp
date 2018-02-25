@@ -88,16 +88,8 @@ namespace urchin
 
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
     {
-        Point3<float> localCoordinate = Point3<float>(globalXzCoordinate.X, 0.0, -globalXzCoordinate.Y) - position;
-        Point3<float> farLeftCoordinate = localCoordinate - localVertices[0];
-
-        float xInterval = localVertices[1].X - localVertices[0].X;
-        int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.X / xInterval)), 0, static_cast<int>(xLength - 1));
-
-        float zInterval = localVertices[xLength].Z - localVertices[0].Z;
-        int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Z / zInterval)), 0, static_cast<int>(zLength - 1));
-
-        return localVertices[xIndex + zIndex*xLength] + position;
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
+        return FindPointService<float>::instance()->findPoint(localVertices, xLength, localCoordinate) + position;
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const

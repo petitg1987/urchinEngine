@@ -209,7 +209,7 @@ namespace urchin
         }else if(EdgeDirection::BOTTOM==direction)
         {
             if(pointIndex >= xLength * (zLength - 1))
-            {
+            { //not bottom point
                 return -1;
             }
             return pointIndex + xLength;
@@ -223,7 +223,7 @@ namespace urchin
         }else if(EdgeDirection::TOP==direction)
         {
             if(pointIndex < xLength)
-            {
+            { //no top point
                 return -1;
             }
             return pointIndex - xLength;

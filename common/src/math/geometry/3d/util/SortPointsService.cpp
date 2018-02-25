@@ -5,12 +5,6 @@
 namespace urchin
 {
 
-	template<class T> SortPointsService<T>::SortPointsService() :
-		Singleton<SortPointsService<T>>()
-	{
-
-	}
-
 	/**
 	 * Sort points in clockwise direction in a right hand coordinate system (Z+ directed to the observer) when the normal is directed to the observer.
 	 */

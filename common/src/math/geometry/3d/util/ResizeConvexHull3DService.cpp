@@ -7,12 +7,6 @@
 namespace urchin
 {
 
-	template<class T> ResizeConvexHull3DService<T>::ResizeConvexHull3DService() :
-			Singleton<ResizeConvexHull3DService<T>>()
-	{
-
-	}
-
 	/**
 	 * @param distance All planes of convex hull shape will be moved along their normal to the specified distance.
 	 * Positive distance will extend convex hull shape and negative distance will shrink the convex hull shape.

@@ -26,7 +26,7 @@ namespace urchin
 			std::unique_ptr<ConvexHull3D<T>> resizeConvexHull(const ConvexHull3D<T> &, const std::map<unsigned int, Plane<T>> &) const;
 
 		private:
-			ResizeConvexHull3DService();
+			ResizeConvexHull3DService() = default;
 			virtual ~ResizeConvexHull3DService() = default;
 
 			std::map<unsigned int, Plane<T>> buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &) const;
