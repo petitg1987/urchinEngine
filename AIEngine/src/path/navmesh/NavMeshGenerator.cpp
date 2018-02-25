@@ -242,7 +242,7 @@ namespace urchin
 		std::vector<CSGPolygon<float>> holePolygons = walkableSurface->getSelfObstacles();
         for (const auto &expandedPolytopeObstacle : expandedPolytopes)
         {
-			if(expandedPolytopeObstacle.first!=polytopeWalkableSurface.polytopeRef->first && expandedPolytopeObstacle.second->isObstacleCandidate())
+			if(expandedPolytopeObstacle.second->getName()!=polytope->getName() && expandedPolytopeObstacle.second->isObstacleCandidate())
 			{
 				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle.second, walkableSurface);
 				if(footprintPolygon.getCwPoints().size() >= 3)
