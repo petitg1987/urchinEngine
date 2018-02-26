@@ -27,6 +27,8 @@ namespace urchin
 
 	PhysicsWorld::~PhysicsWorld()
 	{
+	    Profiler::getInstance("physics")->print();
+
 		if(physicsSimulationThread!=nullptr)
 		{
 			interrupt();

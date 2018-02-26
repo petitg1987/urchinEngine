@@ -30,8 +30,12 @@ namespace urchin
 	 */
 	void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
 	{
+		Profiler::getInstance("physics")->startNewProfile("narrowPhase");
+
 		processOverlappingPairs(overlappingPairs, manifoldResults);
 		processPredictiveContacts(dt, manifoldResults);
+
+		Profiler::getInstance("physics")->stopCurrentProfile();
 	}
 
 	/**
@@ -46,6 +50,8 @@ namespace urchin
 
 	void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
 	{
+        Profiler::getInstance("physics")->startNewProfile("processOverlappingPairs");
+
 		for(const auto &overlappingPair : overlappingPairs)
 		{
 			AbstractWorkBody *body1 = overlappingPair->getBody1();
@@ -65,6 +71,8 @@ namespace urchin
 				}
 			}
 		}
+
+        Profiler::getInstance("physics")->stopCurrentProfile();
 	}
 
 	std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair *overlappingPair)
@@ -85,6 +93,8 @@ namespace urchin
 
 	void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult> &manifoldResults)
 	{
+        Profiler::getInstance("physics")->startNewProfile("processPredictiveContacts");
+
 		for (auto workBody : bodyManager->getWorkBodies())
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(workBody);
@@ -102,6 +112,8 @@ namespace urchin
 				}
 			}
 		}
+
+        Profiler::getInstance("physics")->stopCurrentProfile();
 	}
 
 	void NarrowPhaseManager::handleContinuousCollision(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to, std::vector<ManifoldResult> &manifoldResults)
