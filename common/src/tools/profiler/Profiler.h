@@ -19,7 +19,7 @@ namespace urchin
             static std::shared_ptr<Profiler> getInstance(const std::string &);
 
             void startNewProfile(const std::string &);
-            void stopCurrentProfile();
+            void stopProfile(const std::string &nodeName = "");
 
             void print();
 

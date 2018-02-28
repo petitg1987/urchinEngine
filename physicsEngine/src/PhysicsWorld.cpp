@@ -27,8 +27,6 @@ namespace urchin
 
 	PhysicsWorld::~PhysicsWorld()
 	{
-	    Profiler::getInstance("physics")->print();
-
 		if(physicsSimulationThread!=nullptr)
 		{
 			interrupt();
@@ -46,6 +44,8 @@ namespace urchin
 
 		delete collisionWorld;
 		delete bodyManager;
+
+		Profiler::getInstance("physics")->print();
 	}
 
 	BodyManager *PhysicsWorld::getBodyManager() const
@@ -269,6 +269,8 @@ namespace urchin
 	 */
 	void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
+		ScopeProfiler profiler("physics", "executeProcessables");
+
 		for (const auto &processable : processables)
 		{
 			processable->execute(dt, gravity);

@@ -206,6 +206,8 @@ namespace urchin
 	 */
 	void CharacterController::execute(float dt, const Vector3<float> &gravity)
 	{
+		ScopeProfiler profiler("physics", "characterControllerExecute");
+
 		//recover from penetration
 		recoverFromPenetration(dt);
 

@@ -8,6 +8,7 @@
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"
 #include "tools/profiler/Profiler.h"
+#include "tools/profiler/ScopeProfiler.h"
 #include "tools/svg/SVGExporter.h"
 #include "tools/svg/shape/SVGPolygon.h"
 #include "tools/svg/shape/SVGLine.h"

@@ -170,7 +170,7 @@ set(SOURCE_FILES
         src/tools/profiler/Profiler.cpp
         src/tools/profiler/Profiler.h
         src/tools/profiler/ProfilerNode.cpp
-        src/tools/profiler/ProfilerNode.h)
+        src/tools/profiler/ProfilerNode.h src/tools/profiler/ScopeProfiler.cpp src/tools/profiler/ScopeProfiler.h)
 
 include_directories(src)
 

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Profiler.h"
 
 namespace urchin
@@ -5,7 +7,7 @@ namespace urchin
     //static
     std::map<std::string, std::shared_ptr<Profiler>> Profiler::instances;
 
-    Profiler::Profiler() : //TODO create ScopeProfile class and use it
+    Profiler::Profiler() :
             profilerRoot(new ProfilerNode("root", nullptr)),
             currentNode(profilerRoot)
     { //TODO allow to disable profiler
@@ -32,32 +34,48 @@ namespace urchin
 
     void Profiler::startNewProfile(const std::string &nodeName)
     {
-        ProfilerNode *profilerNode = currentNode->findChildren(nodeName);
-        if(profilerNode!=nullptr)
+        if(currentNode->getName()==nodeName)
         {
-            profilerNode->startTimer();
+            currentNode->startTimer(true);
         }else
         {
-            profilerNode = new ProfilerNode(nodeName, currentNode);
-            currentNode->addChild(profilerNode);
-            profilerNode->startTimer();
-        }
+            ProfilerNode *profilerNode = currentNode->findChildren(nodeName);
+            if(profilerNode==nullptr)
+            {
+                profilerNode = new ProfilerNode(nodeName, currentNode);
+                currentNode->addChild(profilerNode);
+            }
 
-        currentNode = profilerNode;
+            profilerNode->startTimer();
+            currentNode = profilerNode;
+        }
     }
 
-    void Profiler::stopCurrentProfile()
+    void Profiler::stopProfile(const std::string &nodeName)
     {
-        currentNode->stopTimer();
+        if(!nodeName.empty() && currentNode->getName()!=nodeName)
+        {
+            throw std::runtime_error("Impossible to stop node '" + nodeName + "' because current node is '" + currentNode->getName() + "'");
+        }
 
-        currentNode = currentNode->getParent();
+        if(currentNode->getParent()==nullptr)
+        {
+            throw std::runtime_error("Current node is the root node: impossible to stop current profile");
+        }
+
+        bool isTimerStopped = currentNode->stopTimer();
+
+        if(isTimerStopped)
+        {
+            currentNode = currentNode->getParent();
+        }
     }
 
     void Profiler::print()
     {
         if(currentNode!=profilerRoot)
         {
-            throw std::runtime_error("Current node must be the root node to perform print: " + currentNode->getName());
+            throw std::runtime_error("Current node must be the root node to perform print. Current node: " + currentNode->getName());
         }
 
         profilerRoot->print(0);

@@ -56,6 +56,8 @@ namespace urchin
 
 	const std::vector<OverlappingPair *> &BroadPhaseManager::computeOverlappingPairs()
 	{
+		ScopeProfiler profiler("physics", "computeOverlappingPairs");
+
 		broadPhaseAlgorithm->updateBodies();
 		return broadPhaseAlgorithm->getOverlappingPairs();
 	}

@@ -52,7 +52,7 @@ namespace urchin
 	 */
 	void BodyManager::setupWorkBodies()
 	{
-		Profiler::getInstance("physics")->startNewProfile("setupWorkBodies");
+		ScopeProfiler profiler("physics", "setupWorkBodies");
 		std::lock_guard<std::mutex> lock(bodiesMutex);
 
 		auto it = bodies.begin();
@@ -78,8 +78,6 @@ namespace urchin
 				++it;
 			}
 		}
-
-		Profiler::getInstance("physics")->stopCurrentProfile();
 	}
 
 	void BodyManager::createNewWorkBody(AbstractBody *body)

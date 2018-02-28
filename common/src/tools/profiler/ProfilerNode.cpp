@@ -10,7 +10,8 @@ namespace urchin
     ProfilerNode::ProfilerNode(const std::string &name, ProfilerNode *parent) :
             name(name),
             parent(parent),
-            isStarted(false)
+            isStarted(false),
+            ignoreStop(0)
     {
 
     }
@@ -48,40 +49,85 @@ namespace urchin
         children.push_back(child);
     }
 
-    void ProfilerNode::startTimer()
+    bool ProfilerNode::startTimer(bool accumulateTime)
     {
+        bool isTimerStarted = false;
+
         if(isStarted)
+        { //recursive call (ignore)
+            ignoreStop++;
+        }else
         {
-            throw std::runtime_error("Profiler already started: " + name);
+            startTime = std::chrono::high_resolution_clock::now();
+            isStarted = true;
+            needAccumulateTime = accumulateTime;
+
+            isTimerStarted = true;
         }
 
-        startTime = std::chrono::high_resolution_clock::now();
-        isStarted = true;
+        return isTimerStarted;
     }
 
-    void ProfilerNode::stopTimer()
+    bool ProfilerNode::stopTimer()
     {
+        bool isTimerStopped = false;
+
         if(!isStarted)
         {
             throw std::runtime_error("Profiler not started: " + name);
+        }else if(ignoreStop > 0)
+        {
+            ignoreStop--;
+        }else
+        {
+            auto endTime = std::chrono::high_resolution_clock::now();
+            double durationMs = static_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count();
+
+            if (needAccumulateTime)
+            {
+                averageTimes[averageTimes.size() - 1] += durationMs;
+            } else
+            {
+                averageTimes.push_back(durationMs);
+            }
+
+            isStarted = false;
+            isTimerStopped = true;
         }
 
-        auto endTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> durationMs = endTime - startTime;
+        return isTimerStopped;
+    }
 
-        averageTimes.push_back(durationMs.count());
-        isStarted = false;
+    double ProfilerNode::computeAverageTime() const
+    {
+        return std::accumulate(averageTimes.begin(), averageTimes.end(), 0.0) / averageTimes.size();
     }
 
     void ProfilerNode::print(unsigned int level)
     {
+        if(ignoreStop!=0) //TODO: do it better (startCount ?)
+        {
+            throw std::runtime_error("errrrr"); //TODO ...
+        }
+
         if(level > 0)
         {
-            double average = std::accumulate(averageTimes.begin(), averageTimes.end(), 0.0) / averageTimes.size();
-            std::cout << std::setw(level) << std::left << " - " << name << " (" << average << " ms)" << std::endl;
+            double averageTime = computeAverageTime();
+            double childAverageTime = 0.0;
+            for(const auto &child : children)
+            {
+                childAverageTime += child->computeAverageTime();
+            }
+            double unTrackedTime = averageTime - childAverageTime; //TODO wrong computation
+
+            std::cout << std::setw(level) << std::left << " - " << name
+                      << " (time: " << computeAverageTime() <<"ms"
+                      << ", call: " << averageTimes.size()
+                      << ", un-tracked: " << (children.empty() ? "N/A" : std::to_string(unTrackedTime))
+                      << ")" << std::endl;
         }else
         {
-            std::cout<<"Root profile:"<<std::endl;
+            std::cout<<"root profile:"<<std::endl;
         }
 
         for(const auto &child : children)
