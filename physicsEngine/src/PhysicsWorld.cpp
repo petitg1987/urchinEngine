@@ -45,7 +45,7 @@ namespace urchin
 		delete collisionWorld;
 		delete bodyManager;
 
-		Profiler::getInstance("physics")->print();
+		Profiler::getInstance("physics")->log();
 	}
 
 	BodyManager *PhysicsWorld::getBodyManager() const

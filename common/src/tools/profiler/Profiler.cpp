@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "Profiler.h"
+#include "tools/logger/Logger.h"
+#include "tools/logger/FileLogger.h"
 
 namespace urchin
 {
@@ -36,7 +38,7 @@ namespace urchin
     {
         if(currentNode->getName()==nodeName)
         {
-            currentNode->startTimer(true);
+            currentNode->startTimer();
         }else
         {
             ProfilerNode *profilerNode = currentNode->findChildren(nodeName);
@@ -71,14 +73,21 @@ namespace urchin
         }
     }
 
-    void Profiler::print()
+    void Profiler::log()
     {
         if(currentNode!=profilerRoot)
         {
             throw std::runtime_error("Current node must be the root node to perform print. Current node: " + currentNode->getName());
         }
 
-        profilerRoot->print(0);
+        std::unique_ptr<Logger> oldLogger = Logger::defineLogger(std::make_unique<FileLogger>("perf.log"));
+        std::stringstream logStream;
+        logStream.precision(3);
+
+        profilerRoot->log(0, logStream);
+
+        Logger::logger().logInfo(logStream.str());
+        Logger::defineLogger(std::move(oldLogger));
     }
 
 }

@@ -10,8 +10,7 @@ namespace urchin
     ProfilerNode::ProfilerNode(const std::string &name, ProfilerNode *parent) :
             name(name),
             parent(parent),
-            isStarted(false),
-            ignoreStop(0)
+            startCount(0)
     {
 
     }
@@ -49,90 +48,87 @@ namespace urchin
         children.push_back(child);
     }
 
-    bool ProfilerNode::startTimer(bool accumulateTime)
+    bool ProfilerNode::isStarted()
     {
-        bool isTimerStarted = false;
+        return startCount > 0;
+    }
 
-        if(isStarted)
-        { //recursive call (ignore)
-            ignoreStop++;
-        }else
-        {
+    void ProfilerNode::startTimer()
+    {
+        if(!isStarted())
+        { //not recursive call
             startTime = std::chrono::high_resolution_clock::now();
-            isStarted = true;
-            needAccumulateTime = accumulateTime;
-
-            isTimerStarted = true;
         }
 
-        return isTimerStarted;
+        startCount++;
     }
 
     bool ProfilerNode::stopTimer()
     {
-        bool isTimerStopped = false;
-
-        if(!isStarted)
+        if(!isStarted())
         {
             throw std::runtime_error("Profiler not started: " + name);
-        }else if(ignoreStop > 0)
-        {
-            ignoreStop--;
-        }else
+        }
+
+        bool isStopped = false;
+        if(startCount==1)
         {
             auto endTime = std::chrono::high_resolution_clock::now();
             double durationMs = static_cast<std::chrono::duration<double, std::milli>>(endTime - startTime).count();
 
-            if (needAccumulateTime)
-            {
-                averageTimes[averageTimes.size() - 1] += durationMs;
-            } else
-            {
-                averageTimes.push_back(durationMs);
-            }
-
-            isStarted = false;
-            isTimerStopped = true;
+            times.push_back(durationMs);
+            isStopped = true;
         }
 
-        return isTimerStopped;
+        startCount--;
+
+        return isStopped;
+    }
+
+    double ProfilerNode::computeTotalTimes() const
+    {
+        return std::accumulate(times.begin(), times.end(), 0.0);
     }
 
     double ProfilerNode::computeAverageTime() const
     {
-        return std::accumulate(averageTimes.begin(), averageTimes.end(), 0.0) / averageTimes.size();
+        return computeTotalTimes() / times.size();
     }
 
-    void ProfilerNode::print(unsigned int level)
+    void ProfilerNode::log(unsigned int shiftLevel, std::stringstream &logStream)
     {
-        if(ignoreStop!=0) //TODO: do it better (startCount ?)
+        if(startCount!=0)
         {
-            throw std::runtime_error("errrrr"); //TODO ...
+            throw std::runtime_error("Impossible to print node " + getName() + " because there is " + std::to_string(startCount) + " missing stop call");
         }
 
-        if(level > 0)
+        if(shiftLevel > 0)
         {
             double averageTime = computeAverageTime();
-            double childAverageTime = 0.0;
-            for(const auto &child : children)
-            {
-                childAverageTime += child->computeAverageTime();
-            }
-            double unTrackedTime = averageTime - childAverageTime; //TODO wrong computation
 
-            std::cout << std::setw(level) << std::left << " - " << name
+            logStream << std::setw(shiftLevel) << " - " << name
                       << " (time: " << computeAverageTime() <<"ms"
-                      << ", call: " << averageTimes.size()
-                      << ", un-tracked: " << (children.empty() ? "N/A" : std::to_string(unTrackedTime))
-                      << ")" << std::endl;
+                      << ", call: " << times.size();
+            if(!children.empty())
+            {
+                double childTotalTime = 0.0;
+                for(const auto &child : children)
+                {
+                    childTotalTime += child->computeTotalTimes();
+                }
+                double unTrackedTime = averageTime - (childTotalTime / times.size());
+
+                logStream << ", un-tracked: " << std::to_string(unTrackedTime) << "ms";
+            }
+            logStream << ")" <<std::endl;
         }else
         {
-            std::cout<<"root profile:"<<std::endl;
+            logStream << "Profiling result:" << std::endl;
         }
 
         for(const auto &child : children)
         {
-            child->print(level + 4);
+            child->log(shiftLevel + 4, logStream);
         }
     }
 }

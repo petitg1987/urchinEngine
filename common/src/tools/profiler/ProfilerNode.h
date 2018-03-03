@@ -21,22 +21,22 @@ namespace urchin
             ProfilerNode *findChildren(const std::string &) const;
             void addChild(ProfilerNode *);
 
-            bool startTimer(bool accumulateTime = false);
+            bool isStarted();
+            void startTimer();
             bool stopTimer();
 
+            double computeTotalTimes() const;
             double computeAverageTime() const;
-            void print(unsigned int);
+            void log(unsigned int, std::stringstream &);
 
         private:
             std::string name;
             ProfilerNode *parent;
             std::vector<ProfilerNode *> children;
 
-            bool isStarted;
-            bool needAccumulateTime;
-            unsigned int ignoreStop;
+            unsigned int startCount;
             std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
-            std::vector<double> averageTimes;
+            std::vector<double> times;
     };
 
 }

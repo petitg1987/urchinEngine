@@ -9,8 +9,6 @@
 namespace urchin
 {
 
-	class FileLogger;
-
 	class Logger
 	{
 		public:
@@ -24,7 +22,7 @@ namespace urchin
 				ERROR
 			};
 
-            static void defineLogger(std::unique_ptr<Logger>);
+            static std::unique_ptr<Logger> defineLogger(std::unique_ptr<Logger>);
 			static Logger& logger();
 
 			void logInfo(const std::string &);

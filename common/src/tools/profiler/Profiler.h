@@ -21,7 +21,7 @@ namespace urchin
             void startNewProfile(const std::string &);
             void stopProfile(const std::string &nodeName = "");
 
-            void print();
+            void log();
 
         private:
             static std::map<std::string, std::shared_ptr<Profiler>> instances;
