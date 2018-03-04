@@ -6,7 +6,9 @@
 - AMBIENT OCCLUSION
 	- (2) [QUALITY IMPROVEMENT] Improve AO to get better results
 - SHADOW
-	- (2) [OPTIMIZATION] Blur variance shadow map with 'summed area' technique.
+    - (2) [OPTIMIZATION] Improve performance ShadowManager::updateVisibleModels (solution to find)
+            - Note 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
+	- (2) [QUALITY IMPROVEMENT] Blur variance shadow map with 'summed area' technique.
 			- Note 1: decreased light bleeding to improve quality.
 			- Note 2: force usage of 32 bits shadow map.
 	- (2) [QUALITY IMPROVEMENT] Use mipmap on shadow map (on blured shadow maps when blur used)

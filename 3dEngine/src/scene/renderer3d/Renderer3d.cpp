@@ -470,10 +470,15 @@ namespace urchin
 		//determine visible lights on scene
 		lightManager->updateLights(camera->getFrustum());
 
-		//animate models (only those visible to scene OR producing shadow on scene)
+		//determine models producing shadow on scene
 		if(isShadowActivated)
 		{
 			shadowManager->updateVisibleModels(camera->getFrustum());
+		}
+
+		//animate models (only those visible to scene OR producing shadow on scene)
+		if(isShadowActivated)
+		{
 			modelDisplayer->setModels(shadowManager->getVisibleModels());
 		}else
 		{
@@ -500,7 +505,7 @@ namespace urchin
 
 		skybox->display(camera->getViewMatrix(), camera->getPosition());
 
-		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum())); //TODO perf: should reuse model computed in Renderer3d::updateScene
+		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
 		modelDisplayer->display(camera->getViewMatrix());
 
 		terrainManager->display(camera, invFrameRate);
