@@ -149,6 +149,8 @@ namespace urchin
 
 	void LightManager::updateLights(const Frustum<float> &frustum)
 	{
+		ScopeProfiler profiler("3d", "updateLights");
+
 		lightOctreeManager->refreshOctreeables();
 		std::set<Light *> lightInFrustum = lightOctreeManager->getOctreeablesIn(frustum);
 

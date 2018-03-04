@@ -58,6 +58,8 @@ namespace urchin
 
     void TerrainManager::display(const Camera *camera, float invFrameRate) const
     {
+        ScopeProfiler profiler("3d", "terrainDisplay");
+
         glEnable(GL_PRIMITIVE_RESTART);
         glPrimitiveRestartIndex(RESTART_INDEX);
 

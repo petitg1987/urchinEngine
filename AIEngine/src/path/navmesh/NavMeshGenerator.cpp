@@ -1,5 +1,4 @@
 #include <cmath>
-#include <chrono>
 #include <algorithm>
 #include <string>
 #include <numeric>
@@ -57,9 +56,7 @@ namespace urchin
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
 	{
-		#ifdef _DEBUG
-//			auto frameStartTime = std::chrono::high_resolution_clock::now();
-        #endif
+		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
 		std::vector<PolytopeSurfaceIndex> polytopeWalkableSurfaces = findWalkableSurfaces();
@@ -68,24 +65,20 @@ namespace urchin
         navMesh.reset(new NavMesh());
         for (const auto &polytopeWalkableSurface : polytopeWalkableSurfaces)
         {
-            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygonFor(polytopeWalkableSurface);
+            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygon(polytopeWalkableSurface);
             for (const auto &navPolygon : navPolygons)
             {
                 navMesh->addPolygon(navPolygon);
             }
         }
 
-		#ifdef _DEBUG
-//			auto frameEndTime = std::chrono::high_resolution_clock::now();
-//			auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-//			std::cout<<"Nav mesh generation time (ms): "<<diffTimeMicroSeconds/1000.0<<std::endl;
-		#endif
-
 		return navMesh;
 	}
 
 	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
 	{
+        ScopeProfiler scopeProfiler("ai", "updateExpandedPolytopes");
+
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
 			expandedPolytopes.erase(aiObjectToRemove);
@@ -121,6 +114,8 @@ namespace urchin
 
 	std::vector<PolytopeSurfaceIndex> NavMeshGenerator::findWalkableSurfaces() const
 	{
+		ScopeProfiler scopeProfiler("ai", "findWalkableSurfaces");
+
 		std::vector<PolytopeSurfaceIndex> walkableFaces;
 		walkableFaces.reserve(expandedPolytopes.size()/8); //estimated memory size
 
@@ -144,8 +139,10 @@ namespace urchin
 		return walkableFaces;
 	}
 
-	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygonFor(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
+	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygon(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
+		ScopeProfiler scopeProfiler("ai", "createNavigationPolygon");
+
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
@@ -236,6 +233,8 @@ namespace urchin
 
 	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
+		ScopeProfiler scopeProfiler("ai", "computeObstacles");
+
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableSurface = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
@@ -292,6 +291,8 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
+		ScopeProfiler scopeProfiler("ai", "elevateTriangulatedPoints");
+
 		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());
 

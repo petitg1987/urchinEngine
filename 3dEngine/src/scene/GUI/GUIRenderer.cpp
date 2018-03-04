@@ -167,6 +167,8 @@ namespace urchin
 
 	void GUIRenderer::display(float invFrameRate)
 	{
+		ScopeProfiler profiler("3d", "guiRenderDisplay");
+
 		ShaderManager::instance()->bind(GUIShader);
 		glUniform1i(diffuseTexSamplerLoc, 0);
 

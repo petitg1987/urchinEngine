@@ -28,6 +28,8 @@ namespace urchin
         }
 
         delete navMeshGenerator;
+
+        Profiler::getInstance("ai")->log();
     }
 
     NavMeshGenerator *AIManager::getNavMeshGenerator() const

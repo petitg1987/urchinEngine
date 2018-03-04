@@ -330,6 +330,8 @@ namespace urchin
 
 	void AmbientOcclusionManager::updateAOTexture(const Camera *camera)
 	{
+		ScopeProfiler profiler("3d", "updateAOTexture");
+
 		GLint activeFBO;
 		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);

@@ -152,6 +152,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::updateDepth(int dep
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables()
 {
+	ScopeProfiler profiler("3d", "refreshOctreeables");
+
 	if(mainOctree!=nullptr)
 	{
 		//1. remove octreeables which have been moved
@@ -219,7 +221,9 @@ template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::
 
 template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject, 
 		const OctreeableFilter<TOctreeable> &filter) const
-{	
+{
+	ScopeProfiler profiler("3d", "getOctreeablesIn");
+
 	std::set<TOctreeable *> visibleOctreeables;
 	mainOctree->getOctreeablesIn(visibleOctreeables, convexObject, filter);
 	return visibleOctreeables;

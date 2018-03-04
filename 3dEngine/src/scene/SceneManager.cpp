@@ -44,6 +44,8 @@ namespace urchin
 		{
 			delete guiRenderer;
 		}
+
+		Profiler::getInstance("3d")->log();
 	}
 
 	void SceneManager::initializeGl()
@@ -277,6 +279,8 @@ namespace urchin
 
 	void SceneManager::display()
 	{
+		ScopeProfiler profiler("3d", "sceneManagerDisplay");
+
 		//FPS
 		computeFps();
 		float invFrameRate = getOneOnFps();

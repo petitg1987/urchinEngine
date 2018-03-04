@@ -86,29 +86,38 @@ namespace urchin
     }
 
     double ProfilerNode::computeTotalTimes() const
-    {
-        return std::accumulate(times.begin(), times.end(), 0.0);
+    { //remove first element (avoid counting time for potential initialization process)
+        return std::accumulate(times.begin() + 1, times.end(), 0.0);
     }
 
-    double ProfilerNode::computeAverageTime() const
-    {
-        return computeTotalTimes() / times.size();
+    int ProfilerNode::getNbValidTimes() const
+    { //remove first element (avoid counting time for potential initialization process)
+        return times.size() - 1;
     }
 
-    void ProfilerNode::log(unsigned int shiftLevel, std::stringstream &logStream)
+    void ProfilerNode::log(unsigned int level, std::stringstream &logStream, double levelOneTotalTime)
     {
         if(startCount!=0)
         {
             throw std::runtime_error("Impossible to print node " + getName() + " because there is " + std::to_string(startCount) + " missing stop call");
         }
 
-        if(shiftLevel > 0)
+        if(level == 1)
         {
-            double averageTime = computeAverageTime();
+            levelOneTotalTime = computeTotalTimes();
+        }
 
-            logStream << std::setw(shiftLevel) << " - " << name
-                      << " (time: " << computeAverageTime() <<"ms"
-                      << ", call: " << times.size();
+        if(level > 0)
+        {
+            double totalTime = computeTotalTimes();
+            double averageTime = totalTime / getNbValidTimes();
+            double percentageTime = (totalTime / levelOneTotalTime) * 100.0;
+
+            logStream << std::setw(level * 4) << " - " << name;
+            logStream << " (average: " << averageTime <<"ms";
+            logStream << ", total: " << totalTime / 1000.0 << "sec/" << percentageTime << "%";
+            logStream << ", call: " << getNbValidTimes();
+
             if(!children.empty())
             {
                 double childTotalTime = 0.0;
@@ -116,19 +125,17 @@ namespace urchin
                 {
                     childTotalTime += child->computeTotalTimes();
                 }
-                double unTrackedTime = averageTime - (childTotalTime / times.size());
+                double unTrackedTime = averageTime - (childTotalTime / getNbValidTimes());
 
                 logStream << ", un-tracked: " << std::to_string(unTrackedTime) << "ms";
             }
+
             logStream << ")" <<std::endl;
-        }else
-        {
-            logStream << "Profiling result:" << std::endl;
         }
 
         for(const auto &child : children)
         {
-            child->log(shiftLevel + 4, logStream);
+            child->log(level + 1, logStream, levelOneTotalTime);
         }
     }
 }

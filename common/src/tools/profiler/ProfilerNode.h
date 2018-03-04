@@ -25,11 +25,12 @@ namespace urchin
             void startTimer();
             bool stopTimer();
 
-            double computeTotalTimes() const;
-            double computeAverageTime() const;
-            void log(unsigned int, std::stringstream &);
+            void log(unsigned int, std::stringstream &, double);
 
         private:
+            double computeTotalTimes() const;
+            int getNbValidTimes() const;
+
             std::string name;
             ProfilerNode *parent;
             std::vector<ProfilerNode *> children;

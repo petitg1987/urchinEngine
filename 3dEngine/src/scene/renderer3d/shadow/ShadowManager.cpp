@@ -302,6 +302,8 @@ namespace urchin
 	 */
 	std::set<Model *> ShadowManager::getVisibleModels()
 	{
+		ScopeProfiler profiler("3d", "shadowGetVisibleModels");
+
 		std::set<Model *> visibleModels;
 		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
 		{
@@ -615,6 +617,8 @@ namespace urchin
 
 	void ShadowManager::updateVisibleModels(const Frustum<float> &frustum)
 	{
+		ScopeProfiler profiler("3d", "shadowUpdateVisibleModels");
+
 		splitFrustum(frustum);
 
 		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
@@ -630,6 +634,8 @@ namespace urchin
 
 	void ShadowManager::updateShadowMaps()
 	{
+		ScopeProfiler profiler("3d", "updateShadowMaps");
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)

@@ -13,7 +13,7 @@ namespace urchin
     class Profiler
     {
         public:
-            Profiler();
+            explicit Profiler(const std::string &);
             ~Profiler();
 
             static std::shared_ptr<Profiler> getInstance(const std::string &);
@@ -25,6 +25,9 @@ namespace urchin
 
         private:
             static std::map<std::string, std::shared_ptr<Profiler>> instances;
+
+            bool isEnable;
+            std::string instanceName;
 
             ProfilerNode *profilerRoot;
             ProfilerNode *currentNode;

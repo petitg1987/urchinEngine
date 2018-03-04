@@ -385,6 +385,8 @@ namespace urchin
 
 	void Renderer3d::display(float invFrameRate)
 	{
+		ScopeProfiler profiler("3d", "renderer3dDisplay");
+
 		if(camera==nullptr)
 		{ //nothing to display if camera doesn't exist
 			return;
@@ -457,6 +459,8 @@ namespace urchin
 
 	void Renderer3d::updateScene(float invFrameRate)
 	{
+		ScopeProfiler profiler("3d", "updateScene");
+
 		//move the camera
 		camera->updateCameraView(invFrameRate);
 
@@ -467,8 +471,14 @@ namespace urchin
 		lightManager->updateLights(camera->getFrustum());
 
 		//animate models (only those visible to scene OR producing shadow on scene)
-		shadowManager->updateVisibleModels(camera->getFrustum());
-		modelDisplayer->setModels(shadowManager->getVisibleModels());
+		if(isShadowActivated)
+		{
+			shadowManager->updateVisibleModels(camera->getFrustum());
+			modelDisplayer->setModels(shadowManager->getVisibleModels());
+		}else
+		{
+			modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
+		}
 		modelDisplayer->updateAnimation(invFrameRate);
 
 		//update shadow maps
@@ -484,11 +494,13 @@ namespace urchin
 	 */
 	void Renderer3d::deferredGeometryRendering(float invFrameRate)
 	{
+		ScopeProfiler profiler("3d", "deferredGeometryRendering");
+
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		skybox->display(camera->getViewMatrix(), camera->getPosition());
 
-		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
+		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum())); //TODO perf: should reuse model computed in Renderer3d::updateScene
 		modelDisplayer->display(camera->getViewMatrix());
 
 		terrainManager->display(camera, invFrameRate);
@@ -528,6 +540,8 @@ namespace urchin
 	 */
 	void Renderer3d::lightingPassRendering()
 	{
+        ScopeProfiler profiler("3d", "lightingPassRendering");
+
 		ShaderManager::instance()->bind(deferredShadingShader);
 		unsigned int nextTextureUnit = 0;
 
@@ -562,6 +576,8 @@ namespace urchin
 
 	void Renderer3d::postUpdateScene()
 	{
+        ScopeProfiler profiler("3d", "postUpdateScene");
+
 		modelOctreeManager->postRefreshOctreeables();
 
 		lightManager->postUpdateLights();

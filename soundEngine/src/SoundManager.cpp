@@ -29,6 +29,8 @@ namespace urchin
         streamUpdateWorkerThread->join();
         delete streamUpdateWorkerThread;
         delete streamUpdateWorker;
+
+		Profiler::getInstance("sound")->log();
 	}
 
 	void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger)
@@ -128,6 +130,8 @@ namespace urchin
 
 	void SoundManager::process()
 	{
+		ScopeProfiler profiler("sound", "soundManagerProcess");
+
 		process(Point3<float>(0.0, 0.0, 0.0));
 	}
 
