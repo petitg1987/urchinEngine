@@ -8,6 +8,7 @@
 - SHADOW
     - (2) [OPTIMIZATION] Improve performance ShadowManager::updateVisibleModels (solution to find)
             - Note 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
+            - Note 2: possible solution: group objects, reduce octree division...
 	- (2) [QUALITY IMPROVEMENT] Blur variance shadow map with 'summed area' technique.
 			- Note 1: decreased light bleeding to improve quality.
 			- Note 2: force usage of 32 bits shadow map.

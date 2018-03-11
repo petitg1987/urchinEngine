@@ -5,6 +5,7 @@
 
 #include "Renderer3d.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
+#include "utils/display/texture/TextureDisplayer.h"
 
 #define DEFAULT_OCTREE_DEPTH 3
 
