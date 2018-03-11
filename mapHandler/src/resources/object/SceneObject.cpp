@@ -128,7 +128,10 @@ namespace urchin
 	void SceneObject::moveTo(const Transform<float> &newTransform)
 	{
 		model->setTransform(newTransform);
-		aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
+		if(aiObject!=nullptr)
+		{
+			aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
+		}
 	}
 
 	void SceneObject::setupInteractiveBody(RigidBody *rigidBody)

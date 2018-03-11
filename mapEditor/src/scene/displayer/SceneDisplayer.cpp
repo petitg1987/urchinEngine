@@ -116,8 +116,9 @@ namespace urchin
         //3d
         sceneManager = new SceneManager();
         camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, parentWidget);
-        camera->setDistance(0.0);
-        camera->moveTo(Point3<float>(0.0, 0.0, 10.0));
+        camera->setDistance(0.0f);
+        camera->moveTo(Point3<float>(0.0f, 0.0f, 10.0f));
+		camera->setSpeed(45.0f, 2.0f);
         sceneManager->newRenderer3d(true);
         sceneManager->getActiveRenderer3d()->setCamera(camera);
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
