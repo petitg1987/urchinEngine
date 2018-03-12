@@ -391,6 +391,8 @@ namespace urchin
     {
         if(grassTexture!=nullptr)
         {
+            ScopeProfiler profiler("3d", "grassDisplay");
+
             #ifdef _DEBUG
                 assert(grassDisplayDistance!=0.0f);
             #endif
