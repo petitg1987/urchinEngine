@@ -6,7 +6,7 @@
 - AMBIENT OCCLUSION
 	- (2) [QUALITY IMPROVEMENT] Improve AO to get better results
 - SHADOW
-    - (1) [OPTIMIZATION] Improve performance ShadowManager::updateVisibleModels (solution to find)
+    - (2) [OPTIMIZATION] Improve performance ShadowManager::updateVisibleModels (solution to find)
             - Note 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
             - Note 2: possible solution: group objects, reduce octree division...
 	- (2) [QUALITY IMPROVEMENT] Blur variance shadow map with 'summed area' technique.
@@ -19,7 +19,6 @@
 	- (3) [OPTIMIZATION] Use LOD
 	- (3) [OPTIMIZATION] Create shadow map texture only for visible lights
 - TERRAIN
-    - (1) [OPTIMIZATION] Check usage of one VBO(/VAO) by grass octree
     - (2) [OPTIMIZATION] Terrain class should have methods for LOD (usable for physics and AI)
     - (2) [NEW FEATURE] Use material textures (normal map...) for terrain
     - (2) [NEW FEATURE] Add auto shadow on terrain

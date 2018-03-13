@@ -56,12 +56,15 @@ namespace urchin
             void generateGrass(const std::shared_ptr<TerrainMesh> &, const Point3<float> &);
             unsigned int retrieveVertexIndex(const Point2<float> &) const;
             void buildGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &, unsigned int, unsigned int);
+            void createVBO(const std::vector<TerrainGrassQuadtree *> &);
+            void clearVBO();
 
             const float grassPositionRandomPercentage;
             const float grassPatchSize;
             const unsigned int grassQuadtreeDepth;
 
-            unsigned int bufferIDs[2], vertexArrayObject;
+            std::vector<unsigned int> vertexArrayObjects;
+            std::vector<std::array<unsigned int, 2>> bufferIDs;
             enum //buffer IDs indices
             {
                 VAO_VERTEX_POSITION = 0,

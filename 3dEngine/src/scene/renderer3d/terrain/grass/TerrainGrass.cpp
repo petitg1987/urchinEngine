@@ -31,9 +31,6 @@ namespace urchin
             mainGrassQuadtree(nullptr),
             grassDisplayDistance(0.0f)
     {
-        glGenBuffers(2, bufferIDs);
-        glGenVertexArrays(1, &vertexArrayObject);
-
         std::map<std::string, std::string> tokens;
         tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
         terrainGrassShader = ShaderManager::instance()->createProgram("terrainGrass.vert", "terrainGrass.frag", tokens);
@@ -77,9 +74,7 @@ namespace urchin
 
     TerrainGrass::~TerrainGrass()
     {
-        glDeleteVertexArrays(1, &vertexArrayObject);
-        glDeleteBuffers(2, bufferIDs);
-
+        clearVBO();
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
         grassTexture->release();
@@ -98,16 +93,6 @@ namespace urchin
     void TerrainGrass::refreshWith(const std::shared_ptr<TerrainMesh> &mesh, const Point3<float> &terrainPosition)
     {
         generateGrass(mesh, terrainPosition);
-
-        glBindVertexArray(vertexArrayObject);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-        glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
-        glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-        glEnableVertexAttribArray(SHADER_NORMAL);
-        glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
         ShaderManager::instance()->bind(terrainGrassShader);
         glUniform3fv(terrainMinPointLoc, 1, (const float *)mesh->getVertices()[0]);
@@ -184,6 +169,7 @@ namespace urchin
             std::for_each(threads.begin(), threads.end(), [](std::thread& x){x.join();});
 
             buildGrassQuadtree(leafGrassPatches, patchQuantityX, patchQuantityZ);
+            createVBO(leafGrassPatches);
         }
     }
 
@@ -246,6 +232,49 @@ namespace urchin
 
         delete mainGrassQuadtree;
         mainGrassQuadtree = new TerrainGrassQuadtree(childrenGrassQuadtree);
+    }
+
+    void TerrainGrass::createVBO(const std::vector<TerrainGrassQuadtree *> &leafGrassPatches)
+    {
+        clearVBO();
+
+        vertexArrayObjects.resize(leafGrassPatches.size());
+        glGenVertexArrays(leafGrassPatches.size(), &vertexArrayObjects[0]);
+        bufferIDs.resize(leafGrassPatches.size());
+        glGenBuffers(leafGrassPatches.size() * 2, &bufferIDs[0][0]);
+
+        unsigned int quadtreeId = 0;
+        for(auto *grassQuadtree : leafGrassPatches)
+        {
+            glBindVertexArray(vertexArrayObjects[quadtreeId]);
+
+            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[quadtreeId][VAO_VERTEX_POSITION]);
+            glEnableVertexAttribArray(SHADER_VERTEX_POSITION);
+            glVertexAttribPointer(SHADER_VERTEX_POSITION, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+            glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassVertices().size() * sizeof(float) * 3, &grassQuadtree->getGrassVertices()[0], GL_STATIC_DRAW);
+
+            glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[quadtreeId][VAO_NORMAL]);
+            glEnableVertexAttribArray(SHADER_NORMAL);
+            glVertexAttribPointer(SHADER_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+            glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassNormals().size() * sizeof(float) * 3, &grassQuadtree->getGrassNormals()[0], GL_STATIC_DRAW);
+
+            grassQuadtree->setVertexArrayObjectId(quadtreeId++);
+        }
+    }
+
+    void TerrainGrass::clearVBO()
+    {
+        if(!vertexArrayObjects.empty())
+        {
+            glDeleteVertexArrays(vertexArrayObjects.size(), &vertexArrayObjects[0]);
+            vertexArrayObjects.clear();
+        }
+
+        if(!bufferIDs.empty())
+        {
+            glDeleteBuffers(bufferIDs.size(), &bufferIDs[0][0]);
+            bufferIDs.clear();
+        }
     }
 
     const std::string &TerrainGrass::getGrassTexture() const
@@ -412,8 +441,6 @@ namespace urchin
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
             glUniform3fv(cameraPositionLoc, 1, (const float *)camera->getPosition());
 
-            glBindVertexArray(vertexArrayObject);
-
             std::stack<const TerrainGrassQuadtree *> grassQuadtrees;
             grassQuadtrees.push(mainGrassQuadtree);
             while (!grassQuadtrees.empty())
@@ -425,10 +452,7 @@ namespace urchin
                 {
                     if (grassQuadtree->isLeaf())
                     {
-                        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
-                        glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassVertices().size() * sizeof(float) * 3, &grassQuadtree->getGrassVertices()[0], GL_DYNAMIC_DRAW);
-                        glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_NORMAL]);
-                        glBufferData(GL_ARRAY_BUFFER, grassQuadtree->getGrassNormals().size() * sizeof(float) * 3, &grassQuadtree->getGrassNormals()[0], GL_DYNAMIC_DRAW);
+                        glBindVertexArray(vertexArrayObjects[grassQuadtree->getVertexArrayObjectId()]);
                         glDrawArrays(GL_POINTS, 0, grassQuadtree->getGrassVertices().size());
                     } else
                     {

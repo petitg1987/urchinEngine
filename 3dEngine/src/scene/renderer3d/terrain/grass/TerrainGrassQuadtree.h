@@ -11,9 +11,12 @@ namespace urchin
     class TerrainGrassQuadtree
     {
         public:
-            TerrainGrassQuadtree() = default;
+            TerrainGrassQuadtree();
             explicit TerrainGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &);
             ~TerrainGrassQuadtree();
+
+            void setVertexArrayObjectId(unsigned int);
+            unsigned int getVertexArrayObjectId() const;
 
             bool isLeaf() const;
             const std::unique_ptr<AABBox<float>> &getBox() const;
@@ -26,6 +29,8 @@ namespace urchin
             const std::vector<Vector3<float>> &getGrassNormals() const;
 
         private:
+            unsigned int vertexArrayObjectId;
+
             std::mutex mutexAddVertex;
             std::vector<TerrainGrassQuadtree *> children;
 

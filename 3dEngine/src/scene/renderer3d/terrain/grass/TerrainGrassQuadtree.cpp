@@ -3,8 +3,15 @@
 namespace urchin
 {
 
+    TerrainGrassQuadtree::TerrainGrassQuadtree() :
+            vertexArrayObjectId(0)
+    {
+
+    }
+
     TerrainGrassQuadtree::TerrainGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &children) :
-        children(children)
+            vertexArrayObjectId(0),
+            children(children)
     {
 
     }
@@ -15,6 +22,16 @@ namespace urchin
         {
             delete child;
         }
+    }
+
+    void TerrainGrassQuadtree::setVertexArrayObjectId(unsigned int vertexArrayObjectId)
+    {
+        this->vertexArrayObjectId = vertexArrayObjectId;
+    }
+
+    unsigned int TerrainGrassQuadtree::getVertexArrayObjectId() const
+    {
+        return vertexArrayObjectId;
     }
 
     bool TerrainGrassQuadtree::isLeaf() const
