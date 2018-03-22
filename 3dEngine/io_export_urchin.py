@@ -554,7 +554,7 @@ def saveUrchin(settings):
                 vertex = vertices[  face.vertices[i] ]
                 
               if not vertex: # found unique vertex, add to list
-                coord = pointByMatrix(verts[face.vertices[i]].co, wMatrix)
+                coord = pointByMatrix(verts[face.vertices[i]].co, w_matrix)
                 
                 vertex = Vertex(subMesh, coord) 
                 if face.use_smooth:  # smooth face can share vertex, not flat face
@@ -590,11 +590,11 @@ def saveUrchin(settings):
               
               hasFaceUV = len(uv_textures) > 0
               if hasFaceUV: 
-              	uv = [uv_textures.active.data[face.index].uv[i][0], uv_textures.active.data[face.index].uv[i][1]]
-              	uv[1] = 1.0 - uv[1]
-              	if not vertex.textureCoord: 
+                uv = [uv_textures.active.data[face.index].uv[i][0], uv_textures.active.data[face.index].uv[i][1]]
+                uv[1] = 1.0 - uv[1]
+                if not vertex.textureCoord:
                   vertex.textureCoord = TextureCoordinate(*uv)
-              	elif (vertex.textureCoord.u != uv[0]) or (vertex.textureCoord.v != uv[1]):
+                elif (vertex.textureCoord.u != uv[0]) or (vertex.textureCoord.v != uv[1]):
                   for clone in vertex.clones:
                     if (clone.textureCoord.u == uv[0]) and (clone.textureCoord.v == uv[1]):
                       vertex = clone

@@ -388,12 +388,15 @@ namespace urchin
 	 */
 	void ShadowManager::updateFrustumShadowData(const Light *light, ShadowData *shadowData)
 	{
+		ScopeProfiler profiler("3d", "updateFrustumShadowData");
+
 		if(light->hasParallelBeams())
 		{ //sun light
+            Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
 			for(unsigned int i=0; i<splittedFrustums.size(); ++i)
 			{
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], shadowData->getLightViewMatrix());
-				OBBox<float> obboxSceneIndependentViewSpace = shadowData->getLightViewMatrix().inverse() * OBBox<float>(aabboxSceneIndependent);
+				OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
 
 				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
 				shadowData->getFrustumShadowData(i)->updateModels(models);
@@ -415,6 +418,8 @@ namespace urchin
 	 */
 	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splittedFrustum, const Matrix4<float> &lightViewMatrix) const
 	{
+		ScopeProfiler profiler("3d", "createSceneIndependentBox");
+
 		const Frustum<float> &frustumLightSpace = lightViewMatrix * splittedFrustum;
 
 		//determine point belonging to shadow caster/receiver box
@@ -453,28 +458,34 @@ namespace urchin
 	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
 			const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
-		AABBox<float> aabboxSceneDependent;
-		bool boxInitialized = false;
+		ScopeProfiler profiler("3d", "createSceneDependentBox");
 
-		AABBox<float> aabboxSceneIndependentViewSpace = obboxSceneIndependentViewSpace.toAABBox();
-		for (auto model : models)
-		{
-			const std::vector<AABBox<float>> &splittedAABBox = model->getSplittedAABBox();
-			for(unsigned int i=0; i<splittedAABBox.size(); ++i)
-			{
-				if(splittedAABBox.size()==1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
-				{
-					if(boxInitialized)
-					{
-						aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splittedAABBox[i]);
-					}else
-					{
-						aabboxSceneDependent = lightViewMatrix * splittedAABBox[i];
-						boxInitialized = true;
-					}
-				}
-			}
-		}
+		AABBox<float> aabboxSceneDependent;
+
+        if(!models.empty())
+        {
+			bool boxInitialized = false;
+            AABBox<float> aabboxSceneIndependentViewSpace = obboxSceneIndependentViewSpace.toAABBox();
+
+            for (auto model : models)
+            {
+                const std::vector<AABBox<float>> &splittedAABBox = model->getSplittedAABBox();
+                for (unsigned int i = 0; i < splittedAABBox.size(); ++i)
+                {
+                    if (splittedAABBox.size() == 1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
+                    {
+                        if (boxInitialized)
+                        {
+                            aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splittedAABBox[i]);
+                        } else
+                        {
+                            aabboxSceneDependent = lightViewMatrix * splittedAABBox[i];
+                            boxInitialized = true;
+                        }
+                    }
+                }
+            }
+        }
 
 		Point3<float> cutMin(
 			aabboxSceneDependent.getMin().X<aabboxSceneIndependent.getMin().X ? aabboxSceneIndependent.getMin().X : aabboxSceneDependent.getMin().X,
@@ -498,6 +509,8 @@ namespace urchin
 
 	void ShadowManager::splitFrustum(const Frustum<float> &frustum)
 	{
+		ScopeProfiler profiler("3d", "splitFrustum");
+
 		splittedDistance.clear();
 		splittedFrustums.clear();
 
