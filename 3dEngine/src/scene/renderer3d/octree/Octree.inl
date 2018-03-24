@@ -1,73 +1,62 @@
-template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &position, const Vector3<float> &size, int depth) :
-	bbox(AABBox<float>(position, size)),
-	depth(depth)
+template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &position, const Vector3<float> &size, float minSize) :
+	bbox(AABBox<float>(position, size))
 {
-	//creates 8 children
-	if(depth > 0)
-	{
-		const Vector3<float> &sizeChild = size / 2.0f;
-		
-		//child 1
-		Point3<float> posChild = position;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 2
-		posChild = position;
-		posChild.X = posChild.X + sizeChild.X;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 3
-		posChild = position;
-		posChild.Z = posChild.Z + sizeChild.Z;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 4
-		posChild = position;
-		posChild.X = posChild.X + sizeChild.X;
-		posChild.Z = posChild.Z + sizeChild.Z;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 5
-		posChild = position;
-		posChild.Y = posChild.Y + sizeChild.Y;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 6
-		posChild = position;
-		posChild.X = posChild.X + sizeChild.X;
-		posChild.Y = posChild.Y + sizeChild.Y;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 7
-		posChild = position;
-		posChild.Y = posChild.Y + sizeChild.Y;
-		posChild.Z = posChild.Z + sizeChild.Z;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-		
-		//child 8
-		posChild = position;
-		posChild.X = posChild.X + sizeChild.X;
-		posChild.Y = posChild.Y + sizeChild.Y;
-		posChild.Z = posChild.Z + sizeChild.Z;
-		children.push_back(new Octree(posChild, sizeChild, depth-1));
-	}
+    Vector3<float> sizeChild = size;
+    std::vector<float> splitX = {position.X};
+    std::vector<float> splitY = {position.Y};
+    std::vector<float> splitZ = {position.Z};
+    if(size.X/2.0f > minSize)
+    {
+        sizeChild.X /= 2.0f;
+        splitX.push_back(position.X + sizeChild.X);
+    }
+    if(size.Y/2.0f > minSize)
+    {
+        sizeChild.Y /= 2.0f;
+        splitY.push_back(position.Y + sizeChild.Y);
+    }
+    if(size.Z/2.0f > minSize)
+    {
+        sizeChild.Z /= 2.0f;
+        splitZ.push_back(position.Z + sizeChild.Z);
+    }
+
+    if(splitX.size()==1 && splitY.size()==1 && splitZ.size()==1)
+    {
+        isLeaf = true;
+    }else
+    {
+        isLeaf = false;
+
+        for (float xValue : splitX)
+        {
+            for (float yValue : splitY)
+            {
+                for (float zValue : splitZ)
+                {
+                    Point3<float> positionChild(xValue, yValue, zValue);
+                    children.push_back(new Octree(positionChild, sizeChild, minSize));
+                }
+            }
+        }
+    }
 }
 
 template<class TOctreeable> Octree<TOctreeable>::~Octree()
 {
-	if(depth==0)
+	if(isLeaf)
 	{
 		//remove references to this octree
-		for(typename std::vector<TOctreeable *>::iterator it = octreeables.begin(); it!=octreeables.end(); ++it)
+		for(auto &octreeable : octreeables)
 		{
-			(*it)->removeRefOctree(this);
+            octreeable->removeRefOctree(this);
 		}
 	}else
 	{
 		//delete children
-		for(typename std::vector<Octree *>::iterator it=children.begin(); it!=children.end(); ++it)
+		for(auto &child : children)
 		{
-			delete (*it);
+			delete child;
 		}
 	}
 }
@@ -75,11 +64,6 @@ template<class TOctreeable> Octree<TOctreeable>::~Octree()
 template<class TOctreeable> const AABBox<float> &Octree<TOctreeable>::getAABBox() const
 {
 	return bbox;
-}
-
-template<class TOctreeable> int Octree<TOctreeable>::getDepth() const
-{
-	return depth;
 }
 
 template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable *octreeable, bool addRef)
@@ -92,8 +76,8 @@ template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable 
 		octreeable->getAABBox().getMin().Z <= maxOctree.Z && octreeable->getAABBox().getMax().Z >= minOctree.Z
 	)
 	{
-		if(depth == 0)
-		{ //leaf of the octree
+		if(isLeaf)
+		{
 			octreeables.push_back(octreeable);
 			if(addRef)
 			{
@@ -101,9 +85,9 @@ template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable 
 			}
 		}else
 		{
-			for(typename std::vector<Octree *>::iterator it=children.begin(); it!=children.end(); ++it)
+			for(auto &child : children)
 			{
-				(*it)->addOctreeable(octreeable, addRef);
+				child->addOctreeable(octreeable, addRef);
 			}
 		}
 	}
@@ -111,9 +95,9 @@ template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable 
 
 template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeable *octreeable, bool removeRef)
 {
-	if(depth==0)
+	if(isLeaf)
 	{
-		typename std::vector<TOctreeable *>::iterator it = std::find(octreeables.begin(), octreeables.end(), octreeable);
+		auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);
 		if(it!=octreeables.end())
 		{
 			VectorEraser::erase(octreeables, it);
@@ -129,8 +113,8 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 {
 	if(convexObject.collideWithAABBox(bbox))
 	{		
-		if(depth==0)
-		{ //leaf of the octree
+		if(isLeaf)
+		{
 			for(unsigned int i=0;i<octreeables.size();i++)
 			{
 				if(octreeables[i]->isVisible() && filter.isAccepted(octreeables[i])
@@ -141,9 +125,9 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 			}
 		}else
 		{
-			for(typename std::vector<Octree *>::const_iterator it=children.begin(); it!=children.end(); ++it)
+			for(const auto &child : children)
 			{
-				(*it)->getOctreeablesIn(visibleOctreeables, convexObject, filter);
+				child->getOctreeablesIn(visibleOctreeables, convexObject, filter);
 			}
 		}
 	}
@@ -151,32 +135,28 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 
 template<class TOctreeable> void Octree<TOctreeable>::getAllOctreeables(std::set<TOctreeable *> &allOctreeables) const
 {
-	if(depth==0)
-	{ //leaf of the octree
+	if(isLeaf)
+	{
 		allOctreeables.insert(octreeables.begin(), octreeables.end());
 	}else
 	{
-		for(typename std::vector<Octree *>::const_iterator it=children.begin(); it!=children.end(); ++it)
+		for(const auto &child : children)
 		{
-			(*it)->getAllOctreeables(allOctreeables);
+			child->getAllOctreeables(allOctreeables);
 		}
 	}
 }
 
-#ifdef _DEBUG
-	template<class TOctreeable> void Octree<TOctreeable>::drawNode(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
+template<class TOctreeable> void Octree<TOctreeable>::getAllLeafOctrees(std::vector<const Octree<TOctreeable> *> &allOctrees) const
+{
+	if(isLeaf)
 	{
-		if(depth==0)
+		allOctrees.push_back(this);
+	}else
+	{
+		for(const auto &child : children)
 		{
-			AABBoxModel aabboxModel(bbox);
-			aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-			aabboxModel.display(viewMatrix);
-		}else
-		{
-			for(typename std::vector<Octree *>::const_iterator it=children.begin(); it!=children.end(); ++it)
-			{
-				(*it)->drawNode(projectionMatrix, viewMatrix);
-			}
+			child->getAllLeafOctrees(allOctrees);
 		}
 	}
-#endif
+}

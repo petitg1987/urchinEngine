@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_AABBOXMODEL_H
 #define URCHINENGINE_AABBOXMODEL_H
 
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "utils/display/geometry/GeometryModel.h"
@@ -12,6 +13,7 @@ namespace urchin
 	{
 		public:
 			explicit AABBoxModel(const AABBox<float> &);
+			explicit AABBoxModel(const std::vector<AABBox<float>> &);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;
@@ -20,7 +22,7 @@ namespace urchin
 			void drawGeometry() const override;
 
 		private:
-			AABBox<float> aabbox;
+			std::vector<AABBox<float>> aabboxes;
 	};
 
 }

@@ -7,7 +7,7 @@
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 #include "utils/display/texture/TextureDisplayer.h"
 
-#define DEFAULT_OCTREE_DEPTH 3
+#define DEFAULT_OCTREE_MIN_SIZE 20.0f
 
 namespace urchin
 {
@@ -36,7 +36,7 @@ namespace urchin
 		glGenFramebuffers(1, fboIDs);
 		glGenTextures(4, textureIDs);
 
-		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_DEPTH);
+		modelOctreeManager = new OctreeManager<Model>(DEFAULT_OCTREE_MIN_SIZE);
 
 		fogManager = new FogManager();
 

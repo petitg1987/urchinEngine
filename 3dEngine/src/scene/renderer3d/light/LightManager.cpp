@@ -5,7 +5,7 @@
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"
 
-#define DEFAULT_OCTREE_DEPTH 2
+#define DEFAULT_OCTREE_MIN_SIZE 50.0f
 
 namespace urchin
 {
@@ -17,7 +17,7 @@ namespace urchin
 			globalAmbientColor(Point4<float>(0.0, 0.0, 0.0, 0.0))
 	{
 		lightsInfo = new LightInfo[maxLights];
-		lightOctreeManager = new OctreeManager<Light>(DEFAULT_OCTREE_DEPTH);
+		lightOctreeManager = new OctreeManager<Light>(DEFAULT_OCTREE_MIN_SIZE);
 	}
 
 	LightManager::~LightManager()

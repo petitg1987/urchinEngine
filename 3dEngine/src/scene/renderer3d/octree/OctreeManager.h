@@ -4,6 +4,7 @@
 #include <limits>
 #include <set>
 #include <stdexcept>
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "Octree.h"
@@ -18,7 +19,7 @@ namespace urchin
 	template<class TOctreeable> class OctreeManager : public Observable, public Observer
 	{
 		public:
-			explicit OctreeManager(int);
+			explicit OctreeManager(float);
 			~OctreeManager() override;
 
 			enum NotificationType
@@ -31,7 +32,7 @@ namespace urchin
 			void addOctreeable(TOctreeable *);
 			void removeOctreeable(TOctreeable *);
 
-			void updateDepth(int);
+			void updateMinSize(float);
 			void refreshOctreeables();
 			void postRefreshOctreeables();
 
@@ -51,7 +52,7 @@ namespace urchin
 			bool resizeOctree(TOctreeable *);
 		
 			float overflowSize;
-			int depth;
+			int minSize;
 			Octree<TOctreeable> *mainOctree;
 
 			std::set<TOctreeable *> movingOctreeables;

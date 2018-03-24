@@ -21,7 +21,7 @@ namespace urchin
 			void setLayersToUpdateLocation(int);
 			void setModelUniformData(const ShadowData *);
 
-			void loadCustomUniforms(const Model *);
+			void loadCustomUniforms(const Model *) override;
 
 		private:
 			int layersToUpdateLoc;

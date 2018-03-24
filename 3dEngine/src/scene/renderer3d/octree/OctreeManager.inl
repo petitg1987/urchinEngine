@@ -1,6 +1,6 @@
-template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(int depth) :
+template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minSize) :
 		overflowSize(ConfigService::instance()->getFloatValue("octree.overflowSize")),
-		depth(depth),
+        minSize(minSize),
 		mainOctree(nullptr)
 {
 	if(overflowSize < -std::numeric_limits<float>::epsilon())
@@ -24,10 +24,10 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
 	{
 		std::set<TOctreeable *> allOctreeables;
 		mainOctree->getAllOctreeables(allOctreeables);
-		
-		for(typename std::set<TOctreeable *>::const_iterator it = allOctreeables.begin(); it!=allOctreeables.end(); ++it)
+
+        for(const auto &octreeable : allOctreeables)
 		{
-			removeOctreeable(*it);
+			removeOctreeable(octreeable);
 		}
 		
 		delete mainOctree;
@@ -55,9 +55,9 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::se
 	Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 	Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
 
-	for(typename std::set<TOctreeable *>::iterator itOctreeable=octreeables.begin(); itOctreeable!=octreeables.end(); ++itOctreeable)
+    for(const auto &octreeable : octreeables)
 	{
-		const Point3<float> &bboxMin = (*itOctreeable)->getAABBox().getMin();
+		const Point3<float> &bboxMin = octreeable->getAABBox().getMin();
 		if(minScene.X > bboxMin.X)
 		{
 			minScene.X = bboxMin.X;
@@ -71,7 +71,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::se
 			minScene.Z = bboxMin.Z;
 		}
 
-		const Point3<float> &bboxMax = (*itOctreeable)->getAABBox().getMax();
+		const Point3<float> &bboxMax = octreeable->getAABBox().getMax();
 		if(maxScene.X < bboxMax.X)
 		{
 			maxScene.X = bboxMax.X;
@@ -98,12 +98,12 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::se
 	//gets the position and the size of the scene (end)
 	
 	delete mainOctree;
-	mainOctree = new Octree<TOctreeable>(position, size, depth);
+	mainOctree = new Octree<TOctreeable>(position, size, minSize);
 	
 	//adds the octreeables to the octree
-	for(typename std::set<TOctreeable *>::iterator itOctreeable=octreeables.begin(); itOctreeable!=octreeables.end(); ++itOctreeable)
+    for(auto &octreeable : octreeables)
 	{
-		addOctreeable(*itOctreeable);
+		addOctreeable(octreeable);
 	}
 
 	//notify observers
@@ -135,9 +135,9 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::removeOctreeable(TO
 	octreeable->removeObserver(this, TOctreeable::MOVE);
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::updateDepth(int depth)
+template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float minSize)
 {
-	this->depth = depth;
+	this->minSize = minSize;
 
 	//gets all octreeables from the current octree
 	std::set<TOctreeable *> allOctreeables;
@@ -157,15 +157,15 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 	if(mainOctree!=nullptr)
 	{
 		//1. remove octreeables which have been moved
-		for(typename std::set<TOctreeable *>::iterator it=movingOctreeables.begin();it!=movingOctreeables.end();++it)
+        for(auto &movingOctreeable : movingOctreeables)
 		{
-			removeOctreeable((*it));
+			removeOctreeable(movingOctreeable);
 		}
 
 		//2. add the octreeables which have been moved and recreate the octree if necessary
-		for(typename std::set<TOctreeable *>::iterator it=movingOctreeables.begin();it!=movingOctreeables.end();++it)
+        for(auto &movingOctreeable : movingOctreeables)
 		{
-			addOctreeable((*it));
+			addOctreeable(movingOctreeable);
 		}
 	}
 	
@@ -181,9 +181,9 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::postRefreshOctreeables()
 {
-	for(typename std::set<TOctreeable *>::iterator it=movingOctreeables.begin();it!=movingOctreeables.end();++it)
+    for(auto &movingOctreeable : movingOctreeables)
 	{
-		(*it)->onMoveDone();
+        movingOctreeable->onMoveDone();
 	}
 	
 	movingOctreeables.clear();
@@ -263,6 +263,19 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 #ifdef _DEBUG
 	template<class TOctreeable> void OctreeManager<TOctreeable>::drawOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
-		mainOctree->drawNode(projectionMatrix, viewMatrix);
+		std::vector<const Octree<TOctreeable> *> leafOctrees;
+        mainOctree->getAllLeafOctrees(leafOctrees);
+
+		std::vector<AABBox<float>> aabboxes;
+		aabboxes.reserve(leafOctrees.size());
+
+		for(const auto &leafOctree : leafOctrees)
+		{
+			aabboxes.push_back(leafOctree->getAABBox());
+		}
+
+		AABBoxModel aabboxModel(aabboxes);
+		aabboxModel.onCameraProjectionUpdate(projectionMatrix);
+		aabboxModel.display(viewMatrix);
 	}
 #endif
