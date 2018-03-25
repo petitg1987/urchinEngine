@@ -117,8 +117,7 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 		{
 			for(unsigned int i=0;i<octreeables.size();i++)
 			{
-				if(octreeables[i]->isVisible() && filter.isAccepted(octreeables[i])
-						&& convexObject.collideWithAABBox(octreeables[i]->getAABBox()))
+				if(octreeables[i]->isVisible() && filter.isAccepted(octreeables[i], convexObject))
 				{
 					visibleOctreeables.insert(octreeables[i]);
 				}

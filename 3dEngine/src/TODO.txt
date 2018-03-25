@@ -3,20 +3,22 @@
 ############################################
 - LIGHTING
 	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
-- AMBIENT OCCLUSION
-	- (2) [QUALITY IMPROVEMENT] Improve AO to get better results
+- MODEL
+    - (2) [OPTIMIZATION] Group same models in same octree to perform one draw call
+	- (3) [OPTIMIZATION] Models LOD
+	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
 - SHADOW
-    - (2) [OPTIMIZATION] Improve performance ShadowManager::updateVisibleModels (solution to find)
-            - Note 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
-            - Note 2: possible solution: group objects, reduce octree division...
+    - (2) [OPTIMIZATION] Improve performance ShadowManager::updateVisibleModels
+            - Tips 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
+            - Tips 2: call octree manager one times for all frustum splits and then split the models
 	- (2) [QUALITY IMPROVEMENT] Blur variance shadow map with 'summed area' technique.
-			- Note 1: decreased light bleeding to improve quality.
-			- Note 2: force usage of 32 bits shadow map.
+			- Note 1: decreased light bleeding to improve quality
+			- Note 2: force usage of 32 bits shadow map
 	- (2) [QUALITY IMPROVEMENT] Use mipmap on shadow map (on blured shadow maps when blur used)
 	- (2) [QUALITY IMPROVEMENT] Use anisotropic on shadow map (on blured shadow maps when blur used)
 	- (3) [NEW FEATURE] Shadow on omnidirectional light
 	- (3) [NEW FEATURE] Implement PCSS
-	- (3) [OPTIMIZATION] Use LOD
+	- (3) [OPTIMIZATION] Use models LOD
 	- (3) [OPTIMIZATION] Create shadow map texture only for visible lights
 - TERRAIN
     - (2) [OPTIMIZATION] Terrain class should have methods for LOD (usable for physics and AI)
@@ -37,14 +39,12 @@
 	- (3) [NEW FEATURE] Fire & explosion
 	- (3) [NEW FEATURE] Alpha management
 	- (3) [OPTIMIZATION] Textures compression
-- SCENE
-	- (3) [OPTIMIZATION] LOD
-	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited
 
 ############################################
 # Bugs :
 ############################################
 - AMBIENT OCCLUSION
+	- (1) Result is different depending of camera angle (missing projection ?)
 	- (2) In a wall corner, move camera to bottom or top: AO is less intensive
 	- (2) Blur is not well smooth but has steps
 

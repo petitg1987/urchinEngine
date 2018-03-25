@@ -12,10 +12,9 @@ namespace urchin
 	class ModelProduceShadowFilter : public OctreeableFilter<Model>
 	{
 		public:
-			ModelProduceShadowFilter();
-			~ModelProduceShadowFilter();
+			~ModelProduceShadowFilter() override = default;
 
-			bool isAccepted(const Model *const) const;
+			bool isAccepted(const Model *const, const ConvexObject3D<float> &) const;
 	};
 }
 

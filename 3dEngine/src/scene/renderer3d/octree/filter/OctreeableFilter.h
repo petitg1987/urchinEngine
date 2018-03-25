@@ -7,13 +7,10 @@ namespace urchin
 	template<class TOctreeable> class OctreeableFilter
 	{
 		public:
-			OctreeableFilter();
-			virtual ~OctreeableFilter();
+			virtual ~OctreeableFilter() = default;
 
-			virtual bool isAccepted(const TOctreeable *const) const = 0;
+			virtual bool isAccepted(const TOctreeable *const, const ConvexObject3D<float> &) const = 0;
 	};
-
-	#include "OctreeableFilter.inl"
 
 }
 

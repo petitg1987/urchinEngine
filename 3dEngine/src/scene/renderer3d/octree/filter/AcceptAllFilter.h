@@ -9,10 +9,9 @@ namespace urchin
 	template<class TOctreeable> class AcceptAllFilter : public OctreeableFilter<TOctreeable>
 	{
 		public:
-			AcceptAllFilter();
-			~AcceptAllFilter();
+			~AcceptAllFilter() override = default;
 
-			bool isAccepted(const TOctreeable *const) const;
+			bool isAccepted(const TOctreeable *const, const ConvexObject3D<float> &) const;
 	};
 
 	#include "AcceptAllFilter.inl"

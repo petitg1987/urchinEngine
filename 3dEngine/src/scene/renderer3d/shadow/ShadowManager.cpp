@@ -388,8 +388,6 @@ namespace urchin
 	 */
 	void ShadowManager::updateFrustumShadowData(const Light *light, ShadowData *shadowData)
 	{
-		ScopeProfiler profiler("3d", "updateFrustumShadowData");
-
 		if(light->hasParallelBeams())
 		{ //sun light
             Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
@@ -418,8 +416,6 @@ namespace urchin
 	 */
 	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splittedFrustum, const Matrix4<float> &lightViewMatrix) const
 	{
-		ScopeProfiler profiler("3d", "createSceneIndependentBox");
-
 		const Frustum<float> &frustumLightSpace = lightViewMatrix * splittedFrustum;
 
 		//determine point belonging to shadow caster/receiver box
@@ -458,8 +454,6 @@ namespace urchin
 	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
 			const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
-		ScopeProfiler profiler("3d", "createSceneDependentBox");
-
 		AABBox<float> aabboxSceneDependent;
 
         if(!models.empty())
