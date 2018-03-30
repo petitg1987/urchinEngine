@@ -15,6 +15,14 @@ namespace urchin
 
     }
 
+    ProfilerNode::~ProfilerNode()
+    {
+        for(ProfilerNode *child : children)
+        {
+            delete child;
+        }
+    }
+
     const std::string &ProfilerNode::getName() const
     {
         return name;

@@ -154,7 +154,7 @@ namespace urchin
 			fillAndPushChunk(task, chunkId);
 		}
 
-		ALint nbQueues;
+		ALint nbQueues = 0;
 		alGetSourcei(task->getSourceId(), AL_BUFFERS_QUEUED, &nbQueues);
 		return nbQueues==0; //task terminated ?
 	}

@@ -12,6 +12,7 @@ namespace urchin
     {
         public:
             ProfilerNode(const std::string &, ProfilerNode *);
+            ~ProfilerNode();
 
             const std::string &getName() const;
 
