@@ -44,7 +44,7 @@ namespace urchin
 	{
 		if(initialInnerMargin > innerMargin)
 		{
-			constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 20.0;
+			constexpr float RELATIVE_MARGIN_FACTOR_BIG_SHAPE = 200.0;
 			AABBox<float> aabbox = toAABBox(PhysicsTransform());
 			float shapeLength = aabbox.getMin().vector(aabbox.getMax()).length();
 			bool isBigShape = shapeLength > initialInnerMargin * RELATIVE_MARGIN_FACTOR_BIG_SHAPE;
