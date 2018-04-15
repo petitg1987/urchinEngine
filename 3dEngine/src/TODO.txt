@@ -67,3 +67,4 @@
 	- The Division & Watch Dog 2: use Hybrid Frustum Traced Shadows
 - ANTI ALIASING
 	- Assassin Creed Syndicate: MSAA4x+FXAA (VRAM=392Mo) or TXAA4x+FXAA (VRAM=410Mo)
+	- Far Cry 5: SMAA or TAA

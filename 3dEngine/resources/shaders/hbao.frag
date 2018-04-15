@@ -40,13 +40,24 @@ vec2 rotateDirection(vec2 direction, vec2 sinCos)
   					direction.x*sinCos.y + direction.y*sinCos.x);
 }
 
+/*
+ * Return 0.0 in case of no AO
+ */
 float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
 	vec3 V = inspectPosition - position;
 
 	float Vlength = length(V);
 	float normalDotV = dot(normal, V/Vlength);
-  	
-  	float linearAttenuationFactor = clamp(1.0f - (Vlength / #RADIUS#), 0.0f, 1.0f);
+    vec3 wallNormal = V/Vlength;
+
+    //TODO test KO due to perspective
+    /* if(abs(inspectPosition.x - position.x) < 0.01){
+        return 0.2;
+    }
+    return 0.0; */
+
+    float enlargedRadius = #RADIUS# * 1.2f; //avoid full attenuation //TODO wrong because sum(AO) will be incorrect ?
+	float linearAttenuationFactor = clamp(1.0f - (Vlength / enlargedRadius), 0.0f, 1.0f); //TODO att by length is wrong due to perspective ?
 	return max(normalDotV - #BIAS_ANGLE#, 0.0f) * linearAttenuationFactor;
 }
 
@@ -72,11 +83,10 @@ void main(){
 	vec3 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz  * 2.0f - 1.0f;
 	vec3 randomValues = texture2D(randomTex, (textCoordinates/(invResolution*#RANDOM_TEXTURE_SIZE#)) * #TEXTURE_SIZE_FACTOR#).xyz;
-		
+
 	int numStepsAdjusted = min(#NUM_STEPS#, int(zScreenRadius - 1)); //avoid too much steps in case of small radius
-	float stepSizePixel = zScreenRadius / (float(numStepsAdjusted) + 1.0f); //+1: avoid total attenuation at last step
-	float halfStepSizePixel = stepSizePixel / 2.0f;
-	
+	float stepSizePixel = zScreenRadius / (float(numStepsAdjusted) + 1.0f);
+
 	int numDirectionsAdjusted = min(#NUM_DIRECTIONS#, int(zScreenRadius - 1)); //avoid too much directions in case of small radius
 	float rotationAngleStep = 2.0f*M_PI / numDirectionsAdjusted;
 
@@ -85,10 +95,10 @@ void main(){
 	for(int directionIndex=0; directionIndex<numDirectionsAdjusted; ++directionIndex){
 		vec2 direction = vec2(sin(rotationAngle), cos(rotationAngle));
 		vec2 randomizedDirection = rotateDirection(direction, randomValues.xy);
-		
-		float raySizePixel = stepSizePixel;
-		float randomizedRaySizePixel = (raySizePixel * randomValues.z) + halfStepSizePixel;
-		for(int stepIndex=0; stepIndex<numStepsAdjusted; ++stepIndex){
+
+		float randomizedStepSizePixel = stepSizePixel * randomValues.z;
+		for(int stepIndex=1; stepIndex<=numStepsAdjusted; ++stepIndex){
+		    float randomizedRaySizePixel = randomizedStepSizePixel * stepIndex;
 			vec2 uvShift = (randomizedDirection * randomizedRaySizePixel) * invResolution;
 			vec3 inspectPosition = fetchPosition(textCoordinates + uvShift);
 			
@@ -110,7 +120,7 @@ void main(){
 	if(lengthToCenter < centerZScreenRadius){
 		fragColor = 1.0f;
 	}*/
-	
+
 	//DEBUG: display random texture
 /*	fragColor = randomValues.b;*/
 }
