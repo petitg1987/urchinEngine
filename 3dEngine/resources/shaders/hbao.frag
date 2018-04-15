@@ -41,28 +41,19 @@ vec2 rotateDirection(vec2 direction, vec2 sinCos)
 }
 
 /*
- * Return 0.0 in case of no AO
+ * Return 0.0 in case of no AO, otherwise a positive number
  */
 float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
 	vec3 V = inspectPosition - position;
 
 	float Vlength = length(V);
 	float normalDotV = dot(normal, V/Vlength);
-    vec3 wallNormal = V/Vlength;
 
-    //TODO test KO due to perspective
-    /* if(abs(inspectPosition.x - position.x) < 0.01){
-        return 0.2;
-    }
-    return 0.0; */
-
-    float enlargedRadius = #RADIUS# * 1.2f; //avoid full attenuation //TODO wrong because sum(AO) will be incorrect ?
-	float linearAttenuationFactor = clamp(1.0f - (Vlength / enlargedRadius), 0.0f, 1.0f); //TODO att by length is wrong due to perspective ?
-	return max(normalDotV - #BIAS_ANGLE#, 0.0f) * linearAttenuationFactor;
+    return max(normalDotV - #BIAS_ANGLE#, 0.0f);
 }
 
 float linearizeDepth(float depthValue){
-	float unmapDepthValue = depthValue * 2.0 - 1.0;
+	float unmapDepthValue = depthValue * 2.0f - 1.0f;
 	return (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] - 
 			unmapDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0=nearPlane, 1.0=far plane]
 }
@@ -72,6 +63,10 @@ float toWorldDepthValue(float linearizedDepthValue){
 }
 
 void main(){
+    //TODO fix visual bug on house wall
+    //TODO 'stepSizePixel' should be different in function of perspective
+    //TODO see https://www.gamasutra.com/view/news/179308/Indepth_Anglebased_SSAO.php : Dealing with large depth differences
+
 	float depthValue = texture2D(depthTex, textCoordinates).r;	
 	float linearizedDepthValue = linearizeDepth(depthValue);
 	float zScreenRadius = nearPlaneScreenRadius / toWorldDepthValue(linearizedDepthValue); //radius in pixel at position.z
@@ -84,32 +79,30 @@ void main(){
 	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz  * 2.0f - 1.0f;
 	vec3 randomValues = texture2D(randomTex, (textCoordinates/(invResolution*#RANDOM_TEXTURE_SIZE#)) * #TEXTURE_SIZE_FACTOR#).xyz;
 
-	int numStepsAdjusted = min(#NUM_STEPS#, int(zScreenRadius - 1)); //avoid too much steps in case of small radius
-	float stepSizePixel = zScreenRadius / (float(numStepsAdjusted) + 1.0f);
-
-	int numDirectionsAdjusted = min(#NUM_DIRECTIONS#, int(zScreenRadius - 1)); //avoid too much directions in case of small radius
-	float rotationAngleStep = 2.0f*M_PI / numDirectionsAdjusted;
+	float rotationAngleStep = 2.0f*M_PI / #NUM_DIRECTIONS#;
+	float distancePixelStep = (zScreenRadius / float(#NUM_STEPS#)) * randomValues.z;
+    float proratedDivisor = (#NUM_STEPS# * (#NUM_STEPS# + 1)) / 2.0f; //=1+2+3+...+#NUM_STEPS#
 
 	float AO = 0.0f;
 	float rotationAngle = 0.0f;
-	for(int directionIndex=0; directionIndex<numDirectionsAdjusted; ++directionIndex){
-		vec2 direction = vec2(sin(rotationAngle), cos(rotationAngle));
-		vec2 randomizedDirection = rotateDirection(direction, randomValues.xy);
+	for(int directionIndex=0; directionIndex<#NUM_DIRECTIONS#; ++directionIndex){
+		vec2 rayDirection = vec2(sin(rotationAngle), cos(rotationAngle));
+		rayDirection = rotateDirection(rayDirection, randomValues.xy);
 
-		float randomizedStepSizePixel = stepSizePixel * randomValues.z;
-		for(int stepIndex=1; stepIndex<=numStepsAdjusted; ++stepIndex){
-		    float randomizedRaySizePixel = randomizedStepSizePixel * stepIndex;
-			vec2 uvShift = (randomizedDirection * randomizedRaySizePixel) * invResolution;
+		for(int distanceIndex=0; distanceIndex<#NUM_STEPS#; ++distanceIndex){
+		    float rayDistance = distancePixelStep * (distanceIndex + 1.0f);
+
+			vec2 uvShift = (rayDirection * rayDistance) * invResolution;
 			vec3 inspectPosition = fetchPosition(textCoordinates + uvShift);
-			
-			AO += computeAO(position, normal, inspectPosition);
-			
-			randomizedRaySizePixel += stepSizePixel;
+
+			float rawAO = computeAO(position, normal, inspectPosition);
+			float distanceProratedAO = rawAO * ((#NUM_STEPS# - distanceIndex) / proratedDivisor);
+			AO += distanceProratedAO;
 		}
 		rotationAngle += rotationAngleStep;
 	}
 	
-	AO = clamp(AO / (numDirectionsAdjusted * numStepsAdjusted), 0.0f, 1.0f);
+	AO = clamp(AO / float(#NUM_DIRECTIONS#), 0.0f, 1.0f);
 	fragColor = pow(AO, #AO_EXPONENT#);
 
 	//DEBUG: display scope radius at screen center point

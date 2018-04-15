@@ -191,7 +191,7 @@ namespace urchin
 	void AmbientOcclusionManager::generateRandomTexture(unsigned int hbaoShader)
 	{
 		std::default_random_engine generator;
-		std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+		std::uniform_real_distribution<float> distribution(0.8f, 1.0f);
 
 		auto *hbaoRandom = new Vector3<float>[randomTextureSize*randomTextureSize];
 		for(unsigned int i=0; i<randomTextureSize*randomTextureSize; ++i)
@@ -201,7 +201,7 @@ namespace urchin
 			hbaoRandom[i].X = std::sin(randomAngleRadian);
 			hbaoRandom[i].Y = std::cos(randomAngleRadian);
 
-			//random step distance
+			//random distance
 			hbaoRandom[i].Z = distribution(generator);
 		}
 
