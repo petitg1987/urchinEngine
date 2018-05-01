@@ -15,7 +15,7 @@ namespace urchin
             SVGLine(const LineSegment2D<float> &, SVGColor, float opacity = 1.0f);
 
             std::string getShapeTag() const override;
-            Rectangle<int> computeRectangle() const override;
+            Rectangle<float> computeRectangle() const override;
 
         private:
             LineSegment2D<float> line;

@@ -47,16 +47,18 @@ namespace urchin
             return "";
         }
 
-        Rectangle<int> viewBox = shapes[0]->computeRectangle();
+        Rectangle<float> viewBox = shapes[0]->computeRectangle();
         for(const auto shape : shapes)
         {
             viewBox = viewBox.merge(shape->computeRectangle());
         }
 
-        constexpr float MARGIN = 2.0f;
-        return std::to_string(viewBox.getMin().X - MARGIN) + " " + std::to_string(viewBox.getMin().Y - MARGIN) + " "
-               + std::to_string(viewBox.getMax().X - viewBox.getMin().X + (MARGIN * 2.0f)) + " "
-               + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + (MARGIN * 2.0f));
+        constexpr float MARGIN_PERCENTAGE = 0.05f;
+        float marginX = (viewBox.getMax().X - viewBox.getMin().X) * MARGIN_PERCENTAGE;
+        float marginY = (viewBox.getMax().Y - viewBox.getMin().Y) * MARGIN_PERCENTAGE;
+        return std::to_string(viewBox.getMin().X - marginX) + " " + std::to_string(viewBox.getMin().Y - marginY) + " "
+               + std::to_string(viewBox.getMax().X - viewBox.getMin().X + (marginX * 2.0f)) + " "
+               + std::to_string(viewBox.getMax().Y - viewBox.getMin().Y + (marginY * 2.0f));
     }
 
     void SVGExporter::addShapes(std::ofstream &fileStream) const

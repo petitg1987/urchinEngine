@@ -11,6 +11,7 @@ namespace urchin
 		public:
 			template<class T> static T clamp(T, T, T);
 			template<class T> static T sign(T);
+			template<class T> static T lerp(T, T, T);
 
 			static int nextPowerOfTwo(int);
 			static unsigned int powerOfTwo(unsigned int);

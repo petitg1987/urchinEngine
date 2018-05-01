@@ -25,6 +25,8 @@
     - (2) [NEW FEATURE] Use material textures (normal map...) for terrain
     - (2) [NEW FEATURE] Add auto shadow on terrain
     - (2) [OPTIMIZATION] Don't build grass quadtree which are 100% discarded by grass mask
+- AMBIENT OCCLUSION
+    - (3) [NEW FEATURE] Implement HBAO instead of SSAO
 - GUI
 	- (3) [NEW FEATURE] Combo list
 	- (3) [NEW FEATURE] Drag and drop
@@ -43,10 +45,7 @@
 ############################################
 # Bugs :
 ############################################
-- AMBIENT OCCLUSION
-	- (1) Result is different depending of camera angle (missing projection ?)
-	- (2) In a wall corner, move camera to bottom or top: AO is less intensive
-	- (2) Blur is not well smooth but has steps
+-
 
 ############################################
 # Notes :

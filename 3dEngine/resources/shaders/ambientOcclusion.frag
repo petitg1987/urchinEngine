@@ -7,12 +7,15 @@
 
 uniform sampler2D depthTex;
 uniform sampler2D normalAndAmbientTex;
-uniform sampler2D randomTex;
+uniform sampler2D noiseTex;
 
 in vec2 textCoordinates;
+uniform vec3 samples[#KERNEL_SAMPLES#];
 uniform mat4 mInverseViewProjection;
+uniform mat4 mProjection;
 uniform float cameraPlanes[2];
 uniform vec2 invResolution;
+uniform vec2 resolution;
 uniform float nearPlaneScreenRadius;
 
 layout (location = 0) out float fragColor;
@@ -63,11 +66,54 @@ float toWorldDepthValue(float linearizedDepthValue){
 }
 
 void main(){
+    vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
+
+    float depthValue = texture2D(depthTex, textCoordinates).r;
+    vec3 position = fetchPosition(textCoordinates, depthValue);
+	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz * 2.0f - 1.0f;
+
+	//TODO vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
+	vec3 randomVector = normalize(vec3(1.0, 1.0, 0.0));
+
+    normal = normalize(normal); //TODO useful ?
+	vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
+    vec3 bitangent = cross(normal, tangent);
+    mat3 kernelMatrix = mat3(tangent, bitangent, normal);
+
+    float occlusion = 0.0;
+    for(int i = 0; i < #KERNEL_SAMPLES#; ++i)
+    {
+        vec3 sampleVectorView = kernelMatrix * samples[i]; //from tangent to view-space
+        vec4 samplePointView = vec4(position, 1.0) + #RADIUS# * vec4(sampleVectorView, 0.0);
+
+        vec4 samplePointNDC = mProjection * samplePointView;
+        samplePointNDC /= samplePointNDC.w;
+        vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
+        float zSceneNDC = texture(depthTex, samplePointTexCoord).r * 2.0 - 1.0;
+        float delta = samplePointNDC.z - zSceneNDC;
+
+        // If scene fragment is before (smaller in z) sample point, increase occlusion.
+        if (delta > 0.0001 && delta < 0.005)
+        {
+            occlusion += 1.0;
+        }
+    }
+
+    occlusion = 1.0 - occlusion / (float(#KERNEL_SAMPLES#) - 1.0);
+    fragColor = occlusion;
+
+	//DEBUG: display random texture
+/*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */
+
+
+
+
+
+
     //TODO fix visual bug on house wall
     //TODO 'stepSizePixel' should be different in function of perspective
     //TODO see https://www.gamasutra.com/view/news/179308/Indepth_Anglebased_SSAO.php : Dealing with large depth differences
-
-	float depthValue = texture2D(depthTex, textCoordinates).r;	
+/*	float depthValue = texture2D(depthTex, textCoordinates).r;
 	float linearizedDepthValue = linearizeDepth(depthValue);
 	float zScreenRadius = nearPlaneScreenRadius / toWorldDepthValue(linearizedDepthValue); //radius in pixel at position.z
 	if(zScreenRadius < MIN_RADIUS_THRESHOLD){
@@ -103,7 +149,7 @@ void main(){
 	}
 	
 	AO = clamp(AO / float(#NUM_DIRECTIONS#), 0.0f, 1.0f);
-	fragColor = pow(AO, #AO_EXPONENT#);
+	fragColor = pow(AO, #AO_EXPONENT#); */
 
 	//DEBUG: display scope radius at screen center point
 /*	float centerDepthValue = texture2D(depthTex, vec2(0.5, 0.5)).r;

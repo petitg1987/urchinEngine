@@ -30,12 +30,11 @@ namespace urchin
         return stream.str();
     }
 
-    Rectangle<int> SVGLine::computeRectangle() const
+    Rectangle<float> SVGLine::computeRectangle() const
     {
         Point2<float> minPoint(std::min(line.getA().X, line.getB().X), std::min(line.getA().Y, line.getB().Y));
         Point2<float> maxPoint(std::max(line.getA().X, line.getB().X), std::max(line.getA().Y, line.getB().Y));
 
-        return Rectangle<int>(Point2<int>(static_cast<int>(minPoint.X), static_cast<int>(minPoint.Y)),
-                              Point2<int>(static_cast<int>(maxPoint.X), static_cast<int>(maxPoint.Y)));
+        return Rectangle<float>(minPoint, maxPoint);
     }
 }

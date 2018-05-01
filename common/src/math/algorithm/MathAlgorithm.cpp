@@ -24,6 +24,11 @@ namespace urchin
 		return ((T)0 < value) - (value < (T)0);
 	}
 
+	template<class T> T MathAlgorithm::lerp(T v0, T v1, T t)
+	{ //see https://en.wikipedia.org/wiki/Linear_interpolation
+		return (1.0 - t) * v0 + t * v1;
+	}
+
 	int MathAlgorithm::nextPowerOfTwo(int val)
 	{
 		int valPow2=1;
@@ -81,14 +86,17 @@ namespace urchin
 	//explicit template
 	template float MathAlgorithm::clamp<float>(float, float, float);
 	template float MathAlgorithm::sign<float>(float);
+    template float MathAlgorithm::lerp<float>(float, float, float);
 	template float MathAlgorithm::roundDivision<float>(float, float);
 
 	template double MathAlgorithm::clamp<double>(double, double, double);
 	template double MathAlgorithm::sign<double>(double);
+    template double MathAlgorithm::lerp<double>(double, double, double);
 	template double MathAlgorithm::roundDivision<double>(double, double);
 
 	template int MathAlgorithm::clamp<int>(int, int, int);
 	template int MathAlgorithm::sign<int>(int);
+	template int MathAlgorithm::lerp<int>(int, int, int);
 	template int MathAlgorithm::roundDivision<int>(int, int);
 
 	template long long MathAlgorithm::clamp<long long>(long long, long long, long long);

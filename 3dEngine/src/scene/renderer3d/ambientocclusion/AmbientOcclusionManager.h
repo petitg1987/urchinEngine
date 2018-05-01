@@ -11,9 +11,6 @@
 namespace urchin
 {
 
-	/**
-	* Manager for ambient occlusion (horizon based ambient occlusion - HBAO)
-	*/
 	class AmbientOcclusionManager
 	{
 		public:
@@ -28,11 +25,10 @@ namespace urchin
 
 			void loadUniformLocationFor(unsigned int);
 			void onResize(unsigned int, unsigned int);
-			void onCameraProjectionUpdate(const Camera *const);
+			void onCameraProjectionUpdate(const Camera *);
 
 			void setTextureSize(AOTextureSize);
-			void setNumDirections(unsigned int);
-			void setNumSteps(unsigned int);
+			void setKernelSamples(unsigned int);
 			void setRadius(float);
 			void setAmbientOcclusionExponent(float);
 			void setBiasAngleInDegree(float);
@@ -49,7 +45,9 @@ namespace urchin
 		private:
 			void createOrUpdateAOTexture();
 			void createOrUpdateAOShader();
-			void generateRandomTexture(unsigned int);
+			void generateKernelSamples();
+			void generateNoiseTexture();
+			void exportSVG(const std::string &, const std::vector<Vector3<float>> &) const;
 
 			int retrieveTextureSizeFactor();
 
@@ -61,30 +59,27 @@ namespace urchin
 			//tweak
 			AOTextureSize textureSize;
 			unsigned int textureSizeX, textureSizeY;
-
-			unsigned int numDirections;
-			unsigned int numSteps;
+			unsigned int kernelSamples;
 			float radius;
 			float ambientOcclusionExponent;
-
 			float biasAngleInDegree;
-
 			unsigned int blurSize;
 			float blurSharpness;
-
-			unsigned int randomTextureSize;
+			unsigned int noiseTextureSize;
 
 			//frame buffer object
 			unsigned int fboID;
 			unsigned int ambientOcclusionTexID;
 
-			//ambient occlusion shader
-			unsigned int hbaoShader;
+			//ambient occlusion shader //TODO check still used
+			unsigned int ambientOcclusionShader;
 			int mInverseViewProjectionLoc;
+			int mProjectionLoc;
 			int cameraPlanesLoc;
+			int resolutionLoc;
 			int invResolutionLoc;
 			int nearPlaneScreenRadiusLoc;
-			unsigned int randomTexID;
+			unsigned int noiseTexId;
 
 			//visual data
 			unsigned int depthTexID;

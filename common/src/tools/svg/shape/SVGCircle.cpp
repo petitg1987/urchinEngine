@@ -14,9 +14,9 @@ namespace urchin
     {
         std::stringstream stream;
 
-        stream<<"<circle x=\"";
+        stream<<"<circle cx=\"";
         stream<<center.X;
-        stream<<"\" y=\"";
+        stream<<"\" cy=\"";
         stream<<center.Y;
         stream<<"\"";
 
@@ -29,12 +29,11 @@ namespace urchin
         return stream.str();
     }
 
-    Rectangle<int> SVGCircle::computeRectangle() const
+    Rectangle<float> SVGCircle::computeRectangle() const
     {
         Point2<float> minPoint(center - radius);
         Point2<float> maxPoint(center + radius);
 
-        return Rectangle<int>(Point2<int>(static_cast<int>(minPoint.X), static_cast<int>(minPoint.Y)),
-                              Point2<int>(static_cast<int>(maxPoint.X), static_cast<int>(maxPoint.Y)));
+        return Rectangle<float>(minPoint, maxPoint);
     }
 }

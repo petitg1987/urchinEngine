@@ -9,7 +9,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - Dynamic shadow (cached parallel split shadow maps, variance shadow map, blur)
   - Dynamic lighting with deferred shading: omni-directional & directional
   - Terrain multi-layered
-  - Ambient occlusion (HBAO)
+  - Ambient occlusion (SSAO+)
   - Anti-aliasing (FXAA)
   - Space partitioning (octree)
   - UI 2D: button, window, text (TTF), text input, bitmap, slider

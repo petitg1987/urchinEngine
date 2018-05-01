@@ -11,14 +11,13 @@
 #include "utils/filter/bilateralblur/BilateralBlurFilterBuilder.h"
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
-#define DEFAULT_NUM_DIRECTIONS 6
-#define DEFAULT_NUM_STEPS 6
-#define DEFAULT_RADIUS 0.1
+#define DEFAULT_KERNEL_SAMPLES 64
+#define DEFAULT_RADIUS 0.5 //TODO set 0.1
 #define DEFAULT_AO_EXPONENT 1.6
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 10.0
 #define DEFAULT_BLUR_SIZE 7
 #define DEFAULT_BLUR_SHARPNESS 40.0
-#define RANDOM_TEXTURE_SIZE 4
+#define NOISE_TEXTURE_SIZE 4
 
 namespace urchin
 {
@@ -33,24 +32,25 @@ namespace urchin
 		textureSize(DEFAULT_TEXTURE_SIZE),
 		textureSizeX(0),
 		textureSizeY(0),
-		numDirections(DEFAULT_NUM_DIRECTIONS),
-		numSteps(DEFAULT_NUM_STEPS),
+        kernelSamples(DEFAULT_KERNEL_SAMPLES),
 		radius(DEFAULT_RADIUS),
 		ambientOcclusionExponent(DEFAULT_AO_EXPONENT),
 		biasAngleInDegree(DEFAULT_BIAS_ANGLE_IN_DEGREE),
 		blurSize(DEFAULT_BLUR_SIZE),
 		blurSharpness(DEFAULT_BLUR_SHARPNESS),
-		randomTextureSize(RANDOM_TEXTURE_SIZE),
+        noiseTextureSize(NOISE_TEXTURE_SIZE),
 
 		fboID(0),
 		ambientOcclusionTexID(0),
 
-		hbaoShader(0),
+		ambientOcclusionShader(0),
 		mInverseViewProjectionLoc(0),
+        mProjectionLoc(0),
 		cameraPlanesLoc(0),
+        resolutionLoc(0),
 		invResolutionLoc(0),
 		nearPlaneScreenRadiusLoc(0),
-		randomTexID(0),
+		noiseTexId(0),
 
 		depthTexID(depthTexID),
 		normalAndAmbientTexID(normalAndAmbientTexID),
@@ -80,33 +80,35 @@ namespace urchin
 		glDeleteFramebuffers(1, &fboID);
 		glDeleteTextures(1, &ambientOcclusionTexID);
 
-		glDeleteTextures(1, &randomTexID);
+		glDeleteTextures(1, &noiseTexId);
 	}
 
 	void AmbientOcclusionManager::createOrUpdateAOShader()
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		std::map<std::string, std::string> hbaoTokens;
-		hbaoTokens["NUM_DIRECTIONS"] = std::to_string(numDirections);
-		hbaoTokens["NUM_STEPS"] = std::to_string(numSteps);
-		hbaoTokens["RADIUS"] = std::to_string(radius);
-		hbaoTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent);
-		hbaoTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor()));
-		hbaoTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/PI_VALUE)));
-		hbaoTokens["RANDOM_TEXTURE_SIZE"] = std::to_string(randomTextureSize);
-		ShaderManager::instance()->removeProgram(hbaoShader);
-		hbaoShader = ShaderManager::instance()->createProgram("hbao.vert", "hbao.frag", hbaoTokens);
-		ShaderManager::instance()->bind(hbaoShader);
+		std::map<std::string, std::string> ambientOcclusionTokens; //TODO remove useless
+		ambientOcclusionTokens["KERNEL_SAMPLES"] = std::to_string(kernelSamples);
+		ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
+		ambientOcclusionTokens["RADIUS"] = std::to_string(radius);
+		ambientOcclusionTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent);
+		ambientOcclusionTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor()));
+		ambientOcclusionTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/PI_VALUE)));
+		ambientOcclusionTokens["RANDOM_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
+		ShaderManager::instance()->removeProgram(ambientOcclusionShader);
+		ambientOcclusionShader = ShaderManager::instance()->createProgram("ambientOcclusion.vert", "ambientOcclusion.frag", ambientOcclusionTokens);
+		ShaderManager::instance()->bind(ambientOcclusionShader);
 
-		mInverseViewProjectionLoc = glGetUniformLocation(hbaoShader, "mInverseViewProjection");
-		cameraPlanesLoc = glGetUniformLocation(hbaoShader, "cameraPlanes");
-		int depthTexLoc = glGetUniformLocation(hbaoShader, "depthTex");
+		mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mInverseViewProjection");
+		mProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mProjection");
+		cameraPlanesLoc = glGetUniformLocation(ambientOcclusionShader, "cameraPlanes");
+		int depthTexLoc = glGetUniformLocation(ambientOcclusionShader, "depthTex");
 		glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
-		int normalAndAmbientTexLoc = glGetUniformLocation(hbaoShader, "normalAndAmbientTex");
+		int normalAndAmbientTexLoc = glGetUniformLocation(ambientOcclusionShader, "normalAndAmbientTex");
 		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-		invResolutionLoc = glGetUniformLocation(hbaoShader, "invResolution");
-		nearPlaneScreenRadiusLoc = glGetUniformLocation(hbaoShader, "nearPlaneScreenRadius");
+		invResolutionLoc = glGetUniformLocation(ambientOcclusionShader, "invResolution");
+        resolutionLoc = glGetUniformLocation(ambientOcclusionShader, "resolution");
+		nearPlaneScreenRadiusLoc = glGetUniformLocation(ambientOcclusionShader, "nearPlaneScreenRadius");
 
 		float nearPlaneScreenRadiusInPixel = radius * projectionScale * sceneHeight;
 		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
@@ -114,7 +116,8 @@ namespace urchin
 		float cameraPlanes[2] = {nearPlane, farPlane};
 		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 
-		generateRandomTexture(hbaoShader);
+		generateKernelSamples();
+		generateNoiseTexture();
 	}
 
 	void AmbientOcclusionManager::loadUniformLocationFor(unsigned int deferredShaderID)
@@ -131,9 +134,11 @@ namespace urchin
 		createOrUpdateAOTexture();
 		createOrUpdateAOShader();
 
-		ShaderManager::instance()->bind(hbaoShader);
+		ShaderManager::instance()->bind(ambientOcclusionShader);
 		Vector2<float> invResolution(1.0f/sceneWidth, 1.0f/sceneHeight);
 		glUniform2fv(invResolutionLoc, 1, (const float *)invResolution);
+        Vector2<float> resolution(sceneWidth, sceneHeight);
+        glUniform2fv(resolutionLoc, 1, (const float *)resolution);
 	}
 
 	void AmbientOcclusionManager::createOrUpdateAOTexture()
@@ -188,40 +193,77 @@ namespace urchin
 		horizontalBlurFilter->onCameraProjectionUpdate(nearPlane, farPlane);
 	}
 
-	void AmbientOcclusionManager::generateRandomTexture(unsigned int hbaoShader)
+	void AmbientOcclusionManager::generateKernelSamples()
+    {
+        std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+        std::default_random_engine generator;
+
+        std::vector<Vector3<float>> ssaoKernel;
+        for (unsigned int i = 0; i < kernelSamples; ++i)
+        {
+            Vector3<float> sample(
+                    randomFloats(generator) * 2.0f - 1.0f,
+                    randomFloats(generator) * 2.0f - 1.0f,
+                    randomFloats(generator));
+            sample = sample.normalize();
+
+            float scale = static_cast<float>(i) / kernelSamples;
+            scale = MathAlgorithm::lerp<float>(0.1f, 1.0f, scale * scale); //use square function to bring most of sample closer to center
+            sample *= scale;
+            ssaoKernel.push_back(sample);
+        }
+
+        ShaderManager::instance()->bind(ambientOcclusionShader);
+        int samplesLoc = glGetUniformLocation(ambientOcclusionShader, "samples");
+        glUniform3fv(samplesLoc, ssaoKernel.size(), (const float *)ssaoKernel[0]);
+
+        #ifdef _DEBUG
+//      	exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
+        #endif
+    }
+
+	void AmbientOcclusionManager::generateNoiseTexture()
 	{
-		std::default_random_engine generator;
-		std::uniform_real_distribution<float> distribution(0.8f, 1.0f);
+        std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
+        std::default_random_engine generator;
 
-		auto *hbaoRandom = new Vector3<float>[randomTextureSize*randomTextureSize];
-		for(unsigned int i=0; i<randomTextureSize*randomTextureSize; ++i)
-		{
-			//random rotation
-			float randomAngleRadian = (2.0f*PI_VALUE) * (distribution(generator) / static_cast<float>(numDirections));
-			hbaoRandom[i].X = std::sin(randomAngleRadian);
-			hbaoRandom[i].Y = std::cos(randomAngleRadian);
+        std::vector<Vector3<float>> ssaoNoise;
+        for (unsigned int i = 0; i < 16; i++)
+        {
+            Vector3<float> noise(
+                    randomFloats(generator) * 2.0f - 1.0f,
+                    randomFloats(generator) * 2.0f - 1.0f,
+                    0.0f);
+            ssaoNoise.push_back(noise.normalize());
+        }
 
-			//random distance
-			hbaoRandom[i].Z = distribution(generator);
-		}
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glGenTextures(1, &noiseTexId);
+        glBindTexture(GL_TEXTURE_2D, noiseTexId);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, noiseTextureSize, noiseTextureSize, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glGenTextures(1, &randomTexID);
-		glBindTexture (GL_TEXTURE_2D, randomTexID);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, randomTextureSize, randomTextureSize, 0, GL_RGB, GL_FLOAT, hbaoRandom);
-		delete [] hbaoRandom;
-
-		ShaderManager::instance()->bind(hbaoShader);
-		int randomTexLoc = glGetUniformLocation(hbaoShader, "randomTex");
-		glUniform1i(randomTexLoc, GL_TEXTURE2-GL_TEXTURE0);
+        ShaderManager::instance()->bind(ambientOcclusionShader);
+        int noiseTexLoc = glGetUniformLocation(ambientOcclusionShader, "noiseTex");
+        glUniform1i(noiseTexLoc, GL_TEXTURE2-GL_TEXTURE0);
 	}
 
-	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *const camera)
+	void AmbientOcclusionManager::exportSVG(const std::string &filename, const std::vector<Vector3<float>> &ssaoKernel) const
+    {
+        SVGExporter svgExporter(filename);
+        svgExporter.addShape(new SVGCircle(Point2<float>(0.0, 0.0), radius, SVGPolygon::BLUE));
+        for (const auto &kernel : ssaoKernel)
+        {
+            svgExporter.addShape(new SVGCircle(Point2<float>(kernel.X, kernel.Y), 0.001, SVGPolygon::LIME));
+        }
+        svgExporter.generateSVG(100);
+	}
+
+	void AmbientOcclusionManager::onCameraProjectionUpdate(const Camera *camera)
 	{
 		nearPlane = camera->getNearPlane();
 		farPlane = camera->getFarPlane();
@@ -239,17 +281,9 @@ namespace urchin
 		createOrUpdateAOShader();
 	}
 
-	void AmbientOcclusionManager::setNumDirections(unsigned int numDirections)
+	void AmbientOcclusionManager::setKernelSamples(unsigned int kernelSamples)
 	{
-		this->numDirections = numDirections;
-
-		createOrUpdateAOTexture();
-		createOrUpdateAOShader();
-	}
-
-	void AmbientOcclusionManager::setNumSteps(unsigned int numSteps)
-	{
-		this->numSteps = numSteps;
+		this->kernelSamples = kernelSamples;
 
 		createOrUpdateAOTexture();
 		createOrUpdateAOShader();
@@ -322,7 +356,7 @@ namespace urchin
 	{
 		if(isBlurActivated)
 		{
-			 return horizontalBlurFilter->getTextureID();
+//TODO			 return horizontalBlurFilter->getTextureID();
 		}
 
 		return ambientOcclusionTexID;
@@ -343,10 +377,11 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D, normalAndAmbientTexID);
 
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, randomTexID);
+		glBindTexture(GL_TEXTURE_2D, noiseTexId);
 
-		ShaderManager::instance()->bind(hbaoShader);
+		ShaderManager::instance()->bind(ambientOcclusionShader);
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
+        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*) camera->getProjectionMatrix());
 
 		glViewport(0, 0, textureSizeX, textureSizeY);
 
@@ -354,12 +389,12 @@ namespace urchin
 
 		if(isBlurActivated)
 		{
-			verticalBlurFilter->applyOn(ambientOcclusionTexID);
-			horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
+//TODO			verticalBlurFilter->applyOn(ambientOcclusionTexID);
+//TODO 			horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
-		glBindFramebuffer(GL_FRAMEBUFFER, activeFBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, static_cast<GLuint>(activeFBO));
 	}
 
 	void AmbientOcclusionManager::loadAOTexture(unsigned int ambientOcclusionTextureUnit) const
