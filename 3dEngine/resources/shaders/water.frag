@@ -13,8 +13,9 @@ layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 fragNormalAndAmbient;
 
 vec3 toGlobalNormal(vec3 localNormal){
-    //Water normal is always vec3(0.0, 1.0, 0.0), then the TBN matrix (mat3(vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0))),
-    //computation can be simplified by inverting Y and Z components of the normal
+    //Water normal is always vec3(0.0, 1.0, 0.0)
+    //So, the normal multiply by the TBN matrix can be simplified by invert Y and Z components of the normal
+    //TBN matrix = mat3(vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0))
 
     return vec3(localNormal.x, localNormal.z, localNormal.y);
 }
@@ -30,7 +31,7 @@ void main(){
 
 	//normal and ambient factor
 	vec2 normalTextCoordinates = textCoordinates + totalDistortion;
-	vec3 localNormal = normalize(texture2D(normalTex, normalTextCoordinates).xyz * 2.0f - 1.0f);
+	vec3 localNormal = texture2D(normalTex, normalTextCoordinates).xyz * 2.0 - 1.0;
 	vec3 globalNormal = toGlobalNormal(localNormal);
-	fragNormalAndAmbient = vec4(globalNormal, 0.6);
+	fragNormalAndAmbient = vec4((globalNormal + 1.0) / 2.0, 0.3);
 }
