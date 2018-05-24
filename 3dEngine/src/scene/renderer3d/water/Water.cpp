@@ -6,7 +6,7 @@
 
 #define DEFAULT_CENTER_POSITION Point3<float>(0.0f, 0.0f, 0.0f)
 #define DEFAULT_SIZE 1000.0
-#define DEFAULT_WATER_COLOR Vector3<float>(0.08f, 0.22f, 0.29f)
+#define DEFAULT_WATER_COLOR Vector3<float>(0.16f, 0.44f, 0.58f)
 #define DEFAULT_NORMAL_TEXTURE ""
 #define DEFAULT_DUDV_MAP ""
 #define DEFAULT_WAVE_SPEED 0.08
