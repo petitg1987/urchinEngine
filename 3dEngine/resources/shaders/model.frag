@@ -15,8 +15,8 @@ void main(){
 	fragColor = texture2D(diffuseTex, textCoordinates);
 	
 	//normal and ambient factor
-	mat3 mInverseTBN = mat3(normalize(t), normalize(b),	normalize(n));
-	vec3 normal = normalize(vec3(texture2D(normalTex, textCoordinates)) * 2.0 - 1.0);
-	normal = ((mInverseTBN * normal) + 1.0) / 2.0;
+	mat3 tbnMatrix = mat3(normalize(t), normalize(b), normalize(n));
+	vec3 texNormal = normalize(vec3(texture2D(normalTex, textCoordinates)) * 2.0 - 1.0);
+	vec3 normal = ((tbnMatrix * texNormal) + 1.0) / 2.0;
 	fragNormalAndAmbient = vec4(normal, ambientFactor);
 }

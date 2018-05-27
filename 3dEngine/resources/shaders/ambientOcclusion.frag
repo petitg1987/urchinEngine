@@ -79,6 +79,7 @@ void main(){
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
     float occlusion = 0.0;
+    float testVar = 0.0; //TODO rem
     for(int i = 0; i < #KERNEL_SAMPLES#; ++i)
     {
         vec3 sampleVectorView = kernelMatrix * samples[i]; //from tangent to view-space
@@ -86,6 +87,11 @@ void main(){
 
         vec4 samplePointNDC = mProjection * samplePointView;
         samplePointNDC.xyz /= samplePointNDC.w;
+
+        if(samplePointNDC.x > 0.0) //TODO rem
+        {
+            testVar += 1.0/64.0;
+        }
 
         vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 
@@ -96,6 +102,8 @@ void main(){
 
     occlusion = 1.0 - (occlusion / float(#KERNEL_SAMPLES#));
     fragColor = occlusion;
+
+    fragColor = testVar; //TODO rem
 
 	//DEBUG: display random texture
 /*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */

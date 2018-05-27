@@ -98,7 +98,7 @@ namespace urchin
 		}
 		if(textureIDs!=nullptr)
 		{
-			glDeleteTextures(3, textureIDs);
+			glDeleteTextures(4, textureIDs);
 			delete [] textureIDs;
 		}
 
@@ -429,10 +429,10 @@ namespace urchin
 //			textureDisplayer1.display();
 
 //			//display normal and ambient buffer
-//			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
-//			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
-//			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer2.display();
+			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
+			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
+			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+			textureDisplayer2.display();
 
 			//display illuminated scene buffer
 //			TextureDisplayer textureDisplayer3(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
@@ -449,7 +449,7 @@ namespace urchin
 //			textureDisplayer4.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
 //			textureDisplayer4.display();
 
-			//display ambient occlusion buffer
+//			//display ambient occlusion buffer
 			float ambientOcclusionIntensity = 10.0f;
 			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
 			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
