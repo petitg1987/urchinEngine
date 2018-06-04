@@ -46,6 +46,7 @@ namespace urchin
 		ambientOcclusionShader(0),
 		mInverseViewProjectionLoc(0),
         mProjectionLoc(0),
+		mViewLoc(0),
 		cameraPlanesLoc(0),
         resolutionLoc(0),
 		invResolutionLoc(0),
@@ -101,6 +102,7 @@ namespace urchin
 
 		mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mInverseViewProjection");
 		mProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mProjection");
+		mViewLoc = glGetUniformLocation(ambientOcclusionShader, "mView");
 		cameraPlanesLoc = glGetUniformLocation(ambientOcclusionShader, "cameraPlanes");
 		int depthTexLoc = glGetUniformLocation(ambientOcclusionShader, "depthTex");
 		glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
@@ -382,6 +384,7 @@ namespace urchin
 		ShaderManager::instance()->bind(ambientOcclusionShader);
 		glUniformMatrix4fv(mInverseViewProjectionLoc, 1, GL_FALSE, (const float*) (camera->getProjectionMatrix() * camera->getViewMatrix()).inverse());
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*) camera->getProjectionMatrix());
+		glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*) camera->getViewMatrix());
 
 		glViewport(0, 0, textureSizeX, textureSizeY);
 

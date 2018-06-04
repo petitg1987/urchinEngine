@@ -12,7 +12,8 @@ uniform sampler2D noiseTex;
 in vec2 textCoordinates;
 uniform vec3 samples[#KERNEL_SAMPLES#];
 uniform mat4 mInverseViewProjection;
-uniform mat4 mProjection;
+uniform mat4 mProjection; //TODO group mProjection and mView in one matrix ?
+uniform mat4 mView;
 uniform float cameraPlanes[2];
 uniform vec2 invResolution;
 uniform vec2 resolution;
@@ -65,7 +66,7 @@ float toWorldDepthValue(float linearizedDepthValue){
 	return linearizedDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE]) + cameraPlanes[NEAR_PLANE];
 }
 
-void main(){
+void main(){ //TODO clear AO texture ?
     vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
@@ -79,31 +80,25 @@ void main(){
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
     float occlusion = 0.0;
-    float testVar = 0.0; //TODO rem
     for(int i = 0; i < #KERNEL_SAMPLES#; ++i)
     {
         vec3 sampleVectorView = kernelMatrix * samples[i]; //from tangent to view-space
         vec4 samplePointView = vec4(position, 1.0) + #RADIUS# * vec4(sampleVectorView, 0.0);
 
-        vec4 samplePointNDC = mProjection * samplePointView;
-        samplePointNDC.xyz /= samplePointNDC.w;
-
-        if(samplePointNDC.x > 0.0) //TODO rem
-        {
-            testVar += 1.0/64.0;
-        }
-
+        vec4 samplePointEyeSpace = mView * samplePointView;
+        vec4 samplePointClipSpace = mProjection * samplePointEyeSpace;
+        vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
         vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
-        vec3 scenePosition = fetchPosition(samplePointTexCoord, zSceneNDC); //TODO alternative: linearize depth
-        occlusion += (scenePosition.z >= samplePointView.z + 0.015 ? 1.0 : 0.0);
+        vec3 scenePosition = fetchPosition(samplePointTexCoord, zSceneNDC);
+
+        vec4 scenePositionEyeSpace = mView * vec4(scenePosition, 1.0); //TODO review fetchPosition to directly compute in view space ?
+        float rangeCheck = smoothstep(0.0, 1.0, #RADIUS# / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + 0.015 ? 1.0 : 0.0) * rangeCheck;
     }
 
-    occlusion = 1.0 - (occlusion / float(#KERNEL_SAMPLES#));
-    fragColor = occlusion;
-
-    fragColor = testVar; //TODO rem
+    fragColor = (occlusion / float(#KERNEL_SAMPLES#));
 
 	//DEBUG: display random texture
 /*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */

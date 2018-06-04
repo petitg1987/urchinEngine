@@ -75,6 +75,7 @@ namespace urchin
 			unsigned int ambientOcclusionShader;
 			int mInverseViewProjectionLoc;
 			int mProjectionLoc;
+			int mViewLoc;
 			int cameraPlanesLoc;
 			int resolutionLoc;
 			int invResolutionLoc;
