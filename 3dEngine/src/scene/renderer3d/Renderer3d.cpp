@@ -429,10 +429,10 @@ namespace urchin
 //			textureDisplayer1.display();
 
 //			//display normal and ambient buffer
-			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
-			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
-			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-			textureDisplayer2.display();
+//			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
+//			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
+//			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+//			textureDisplayer2.display();
 
 			//display illuminated scene buffer
 //			TextureDisplayer textureDisplayer3(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);

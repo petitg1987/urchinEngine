@@ -12,14 +12,23 @@ uniform sampler2D noiseTex;
 in vec2 textCoordinates;
 uniform vec3 samples[#KERNEL_SAMPLES#];
 uniform mat4 mInverseViewProjection;
-uniform mat4 mProjection; //TODO group mProjection and mView in one matrix ?
+uniform mat4 mProjection;
 uniform mat4 mView;
-uniform float cameraPlanes[2];
-uniform vec2 invResolution;
 uniform vec2 resolution;
-uniform float nearPlaneScreenRadius;
 
 layout (location = 0) out float fragColor;
+
+vec3 fetchEyePosition(vec2 textCoord, float depthValue){
+	vec4 texPosition = vec4(
+		textCoord.s * 2.0f - 1.0f,
+		textCoord.t * 2.0f - 1.0f,
+		depthValue * 2.0f - 1.0f,
+		1.0
+	);
+	vec4 position = inverse(mProjection) * texPosition;
+	position /= position.w;
+	return vec3(position);
+}
 
 vec3 fetchPosition(vec2 textCoord, float depthValue){
 	vec4 texPosition = vec4(
@@ -47,7 +56,7 @@ vec2 rotateDirection(vec2 direction, vec2 sinCos)
 /*
  * Return 0.0 in case of no AO, otherwise a positive number
  */
-float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
+float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){ //TODO remove or use it
 	vec3 V = inspectPosition - position;
 
 	float Vlength = length(V);
@@ -56,17 +65,7 @@ float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
     return max(normalDotV - #BIAS_ANGLE#, 0.0f);
 }
 
-float linearizeDepth(float depthValue){
-	float unmapDepthValue = depthValue * 2.0f - 1.0f;
-	return (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] - 
-			unmapDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0=nearPlane, 1.0=far plane]
-}
-
-float toWorldDepthValue(float linearizedDepthValue){
-	return linearizedDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE]) + cameraPlanes[NEAR_PLANE];
-}
-
-void main(){ //TODO clear AO texture ?
+void main(){
     vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
@@ -82,20 +81,18 @@ void main(){ //TODO clear AO texture ?
     float occlusion = 0.0;
     for(int i = 0; i < #KERNEL_SAMPLES#; ++i)
     {
-        vec3 sampleVectorView = kernelMatrix * samples[i]; //from tangent to view-space
-        vec4 samplePointView = vec4(position, 1.0) + #RADIUS# * vec4(sampleVectorView, 0.0);
-
-        vec4 samplePointEyeSpace = mView * samplePointView;
+        vec3 sampleVectorWorldSpace = kernelMatrix * samples[i];
+        vec3 samplePointWorldSpace = position + #RADIUS# * sampleVectorWorldSpace;
+        vec4 samplePointEyeSpace = mView * vec4(samplePointWorldSpace, 1.0);
         vec4 samplePointClipSpace = mProjection * samplePointEyeSpace;
         vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
         vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
-        vec3 scenePosition = fetchPosition(samplePointTexCoord, zSceneNDC);
+        vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
-        vec4 scenePositionEyeSpace = mView * vec4(scenePosition, 1.0); //TODO review fetchPosition to directly compute in view space ?
         float rangeCheck = smoothstep(0.0, 1.0, #RADIUS# / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
-        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + 0.015 ? 1.0 : 0.0) * rangeCheck;
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + 0.15 ? 1.0 : 0.0) * rangeCheck; //TODO configure bias or use BIAS_ANGLE ?
     }
 
     fragColor = (occlusion / float(#KERNEL_SAMPLES#));

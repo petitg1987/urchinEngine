@@ -12,7 +12,7 @@
 
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_KERNEL_SAMPLES 64
-#define DEFAULT_RADIUS 0.5 //TODO set 0.1
+#define DEFAULT_RADIUS 0.3
 #define DEFAULT_AO_EXPONENT 1.6
 #define DEFAULT_BIAS_ANGLE_IN_DEGREE 10.0
 #define DEFAULT_BLUR_SIZE 7
@@ -47,10 +47,7 @@ namespace urchin
 		mInverseViewProjectionLoc(0),
         mProjectionLoc(0),
 		mViewLoc(0),
-		cameraPlanesLoc(0),
         resolutionLoc(0),
-		invResolutionLoc(0),
-		nearPlaneScreenRadiusLoc(0),
 		noiseTexId(0),
 
 		depthTexID(depthTexID),
@@ -88,14 +85,13 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		std::map<std::string, std::string> ambientOcclusionTokens; //TODO remove useless
+		std::map<std::string, std::string> ambientOcclusionTokens;
 		ambientOcclusionTokens["KERNEL_SAMPLES"] = std::to_string(kernelSamples);
 		ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
 		ambientOcclusionTokens["RADIUS"] = std::to_string(radius);
-		ambientOcclusionTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent);
-		ambientOcclusionTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor()));
-		ambientOcclusionTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/PI_VALUE)));
-		ambientOcclusionTokens["RANDOM_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
+		ambientOcclusionTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent); //TODO remove or use it
+		ambientOcclusionTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor())); //TODO remove or use it
+		ambientOcclusionTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/PI_VALUE))); //TODO remove or use it
 		ShaderManager::instance()->removeProgram(ambientOcclusionShader);
 		ambientOcclusionShader = ShaderManager::instance()->createProgram("ambientOcclusion.vert", "ambientOcclusion.frag", ambientOcclusionTokens);
 		ShaderManager::instance()->bind(ambientOcclusionShader);
@@ -103,20 +99,11 @@ namespace urchin
 		mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mInverseViewProjection");
 		mProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mProjection");
 		mViewLoc = glGetUniformLocation(ambientOcclusionShader, "mView");
-		cameraPlanesLoc = glGetUniformLocation(ambientOcclusionShader, "cameraPlanes");
 		int depthTexLoc = glGetUniformLocation(ambientOcclusionShader, "depthTex");
 		glUniform1i(depthTexLoc, GL_TEXTURE0-GL_TEXTURE0);
 		int normalAndAmbientTexLoc = glGetUniformLocation(ambientOcclusionShader, "normalAndAmbientTex");
 		glUniform1i(normalAndAmbientTexLoc, GL_TEXTURE1-GL_TEXTURE0);
-		invResolutionLoc = glGetUniformLocation(ambientOcclusionShader, "invResolution");
         resolutionLoc = glGetUniformLocation(ambientOcclusionShader, "resolution");
-		nearPlaneScreenRadiusLoc = glGetUniformLocation(ambientOcclusionShader, "nearPlaneScreenRadius");
-
-		float nearPlaneScreenRadiusInPixel = radius * projectionScale * sceneHeight;
-		glUniform1f(nearPlaneScreenRadiusLoc, nearPlaneScreenRadiusInPixel);
-
-		float cameraPlanes[2] = {nearPlane, farPlane};
-		glUniform1fv(cameraPlanesLoc, 2, cameraPlanes);
 
 		generateKernelSamples();
 		generateNoiseTexture();
@@ -137,8 +124,6 @@ namespace urchin
 		createOrUpdateAOShader();
 
 		ShaderManager::instance()->bind(ambientOcclusionShader);
-		Vector2<float> invResolution(1.0f/sceneWidth, 1.0f/sceneHeight);
-		glUniform2fv(invResolutionLoc, 1, (const float *)invResolution);
         Vector2<float> resolution(sceneWidth, sceneHeight);
         glUniform2fv(resolutionLoc, 1, (const float *)resolution);
 	}

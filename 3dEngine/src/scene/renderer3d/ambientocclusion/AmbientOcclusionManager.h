@@ -76,10 +76,7 @@ namespace urchin
 			int mInverseViewProjectionLoc;
 			int mProjectionLoc;
 			int mViewLoc;
-			int cameraPlanesLoc;
 			int resolutionLoc;
-			int invResolutionLoc;
-			int nearPlaneScreenRadiusLoc;
 			unsigned int noiseTexId;
 
 			//visual data
