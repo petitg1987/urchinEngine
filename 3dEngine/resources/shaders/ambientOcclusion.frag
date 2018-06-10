@@ -1,10 +1,5 @@
 #version 330
 
-#define NEAR_PLANE 0
-#define FAR_PLANE 1
-#define MIN_RADIUS_THRESHOLD 2
-#define M_PI 3.14159265f
-
 uniform sampler2D depthTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D noiseTex;
@@ -42,36 +37,25 @@ vec3 fetchPosition(vec2 textCoord, float depthValue){
 	return vec3(position);
 }
 
-vec3 fetchPosition(vec2 textCoord){
-	float depthValue = texture2D(depthTex, textCoord).r;
-	return fetchPosition(textCoord, depthValue);
-}
-
-vec2 rotateDirection(vec2 direction, vec2 sinCos)
-{
-	return vec2(	direction.x*sinCos.x - direction.y*sinCos.y, 
-  					direction.x*sinCos.y + direction.y*sinCos.x);
-}
-
-/*
- * Return 0.0 in case of no AO, otherwise a positive number
- */
-float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){ //TODO remove or use it
-	vec3 V = inspectPosition - position;
-
-	float Vlength = length(V);
-	float normalDotV = dot(normal, V/Vlength);
-
-    return max(normalDotV - #BIAS_ANGLE#, 0.0f);
-}
-
 void main(){
-    vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
+    vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
+    if(normalAndAmbient.a >= 0.99999f){ //no lighting
+    	fragColor = 0.0;
+    	return;
+    }
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
-    vec3 position = fetchPosition(textCoordinates, depthValue);
-	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz * 2.0f - 1.0f;
+    float distanceReduceFactor = 1.0;
+    if(depthValue > #DEPTH_END_ATTENUATION#){
+        fragColor = 0.0;
+        return;
+    }else if(depthValue > #DEPTH_START_ATTENUATION#){
+        distanceReduceFactor = (#DEPTH_END_ATTENUATION# - depthValue) / (#DEPTH_END_ATTENUATION# - #DEPTH_START_ATTENUATION#);
+    }
 
+    vec3 position = fetchPosition(textCoordinates, depthValue);
+	vec3 normal = normalAndAmbient.xyz * 2.0f - 1.0f;
+	vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
 	vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
 
 	vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
@@ -92,10 +76,10 @@ void main(){
         vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
         float rangeCheck = smoothstep(0.0, 1.0, #RADIUS# / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
-        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + 0.15 ? 1.0 : 0.0) * rangeCheck; //TODO configure bias or use BIAS_ANGLE ?
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + #BIAS# ? 1.0 : 0.0) * rangeCheck;
     }
 
-    fragColor = (occlusion / float(#KERNEL_SAMPLES#));
+    fragColor = (occlusion / float(#KERNEL_SAMPLES#)) * distanceReduceFactor * #AO_STRENGTH#;
 
 	//DEBUG: display random texture
 /*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */

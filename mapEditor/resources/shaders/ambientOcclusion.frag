@@ -1,10 +1,5 @@
 #version 330
 
-#define NEAR_PLANE 0
-#define FAR_PLANE 1
-#define MIN_RADIUS_THRESHOLD 2
-#define M_PI 3.14159265f
-
 uniform sampler2D depthTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D noiseTex;
@@ -13,12 +8,22 @@ in vec2 textCoordinates;
 uniform vec3 samples[#KERNEL_SAMPLES#];
 uniform mat4 mInverseViewProjection;
 uniform mat4 mProjection;
-uniform float cameraPlanes[2];
-uniform vec2 invResolution;
+uniform mat4 mView;
 uniform vec2 resolution;
-uniform float nearPlaneScreenRadius;
 
 layout (location = 0) out float fragColor;
+
+vec3 fetchEyePosition(vec2 textCoord, float depthValue){
+	vec4 texPosition = vec4(
+		textCoord.s * 2.0f - 1.0f,
+		textCoord.t * 2.0f - 1.0f,
+		depthValue * 2.0f - 1.0f,
+		1.0
+	);
+	vec4 position = inverse(mProjection) * texPosition;
+	position /= position.w;
+	return vec3(position);
+}
 
 vec3 fetchPosition(vec2 textCoord, float depthValue){
 	vec4 texPosition = vec4(
@@ -32,46 +37,25 @@ vec3 fetchPosition(vec2 textCoord, float depthValue){
 	return vec3(position);
 }
 
-vec3 fetchPosition(vec2 textCoord){
-	float depthValue = texture2D(depthTex, textCoord).r;
-	return fetchPosition(textCoord, depthValue);
-}
-
-vec2 rotateDirection(vec2 direction, vec2 sinCos)
-{
-	return vec2(	direction.x*sinCos.x - direction.y*sinCos.y, 
-  					direction.x*sinCos.y + direction.y*sinCos.x);
-}
-
-/*
- * Return 0.0 in case of no AO, otherwise a positive number
- */
-float computeAO(vec3 position, vec3 normal, vec3 inspectPosition){
-	vec3 V = inspectPosition - position;
-
-	float Vlength = length(V);
-	float normalDotV = dot(normal, V/Vlength);
-
-    return max(normalDotV - #BIAS_ANGLE#, 0.0f);
-}
-
-float linearizeDepth(float depthValue){
-	float unmapDepthValue = depthValue * 2.0f - 1.0f;
-	return (2.0f * cameraPlanes[NEAR_PLANE]) / (cameraPlanes[FAR_PLANE] + cameraPlanes[NEAR_PLANE] - 
-			unmapDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE])); //[0.0=nearPlane, 1.0=far plane]
-}
-
-float toWorldDepthValue(float linearizedDepthValue){
-	return linearizedDepthValue * (cameraPlanes[FAR_PLANE] - cameraPlanes[NEAR_PLANE]) + cameraPlanes[NEAR_PLANE];
-}
-
 void main(){
-    vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
+    vec4 normalAndAmbient = vec4(texture2D(normalAndAmbientTex, textCoordinates));
+    if(normalAndAmbient.a >= 0.99999f){ //no lighting
+    	fragColor = 0.0;
+    	return;
+    }
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
-    vec3 position = fetchPosition(textCoordinates, depthValue);
-	vec3 normal = texture2D(normalAndAmbientTex, textCoordinates).xyz * 2.0f - 1.0f;
+    float distanceReduceFactor = 1.0;
+    if(depthValue > #DEPTH_END_ATTENUATION#){
+        fragColor = 0.0;
+        return;
+    }else if(depthValue > #DEPTH_START_ATTENUATION#){
+        distanceReduceFactor = (#DEPTH_END_ATTENUATION# - depthValue) / (#DEPTH_END_ATTENUATION# - #DEPTH_START_ATTENUATION#);
+    }
 
+    vec3 position = fetchPosition(textCoordinates, depthValue);
+	vec3 normal = normalAndAmbient.xyz * 2.0f - 1.0f;
+	vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
 	vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
 
 	vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
@@ -81,21 +65,21 @@ void main(){
     float occlusion = 0.0;
     for(int i = 0; i < #KERNEL_SAMPLES#; ++i)
     {
-        vec3 sampleVectorView = kernelMatrix * samples[i]; //from tangent to view-space
-        vec4 samplePointView = vec4(position, 1.0) + #RADIUS# * vec4(sampleVectorView, 0.0);
-
-        vec4 samplePointNDC = mProjection * samplePointView;
-        samplePointNDC.xyz /= samplePointNDC.w;
-
+        vec3 sampleVectorWorldSpace = kernelMatrix * samples[i];
+        vec3 samplePointWorldSpace = position + #RADIUS# * sampleVectorWorldSpace;
+        vec4 samplePointEyeSpace = mView * vec4(samplePointWorldSpace, 1.0);
+        vec4 samplePointClipSpace = mProjection * samplePointEyeSpace;
+        vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
         vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
-        vec3 scenePosition = fetchPosition(samplePointTexCoord, zSceneNDC); //TODO alternative: linearize depth
-        occlusion += (scenePosition.z >= samplePointView.z + 0.015 ? 1.0 : 0.0);
+        vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
+
+        float rangeCheck = smoothstep(0.0, 1.0, #RADIUS# / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + #BIAS# ? 1.0 : 0.0) * rangeCheck;
     }
 
-    occlusion = 1.0 - (occlusion / float(#KERNEL_SAMPLES#));
-    fragColor = occlusion;
+    fragColor = (occlusion / float(#KERNEL_SAMPLES#)) * distanceReduceFactor * #AO_STRENGTH#;
 
 	//DEBUG: display random texture
 /*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */

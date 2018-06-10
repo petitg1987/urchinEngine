@@ -30,8 +30,10 @@ namespace urchin
 			void setTextureSize(AOTextureSize);
 			void setKernelSamples(unsigned int);
 			void setRadius(float);
-			void setAmbientOcclusionExponent(float);
-			void setBiasAngleInDegree(float);
+			void setAmbientOcclusionStrength(float);
+			void setDistanceAttenuation(float, float);
+            void setNoiseTextureSize(float);
+			void setBias(float);
 			void setBlurSize(unsigned int);
 			void setBlurSharpness(float);
 
@@ -61,17 +63,18 @@ namespace urchin
 			unsigned int textureSizeX, textureSizeY;
 			unsigned int kernelSamples;
 			float radius;
-			float ambientOcclusionExponent;
-			float biasAngleInDegree;
+			float ambientOcclusionStrength;
+			float depthStartAttenuation, depthEndAttenuation;
+            unsigned int noiseTextureSize;
+			float bias;
 			unsigned int blurSize;
 			float blurSharpness;
-			unsigned int noiseTextureSize;
 
 			//frame buffer object
 			unsigned int fboID;
 			unsigned int ambientOcclusionTexID;
 
-			//ambient occlusion shader //TODO check still used
+			//ambient occlusion shader
 			unsigned int ambientOcclusionShader;
 			int mInverseViewProjectionLoc;
 			int mProjectionLoc;

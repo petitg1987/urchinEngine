@@ -13,11 +13,13 @@
 #define DEFAULT_TEXTURE_SIZE AOTextureSize::HALF_SIZE
 #define DEFAULT_KERNEL_SAMPLES 64
 #define DEFAULT_RADIUS 0.3
-#define DEFAULT_AO_EXPONENT 1.6
-#define DEFAULT_BIAS_ANGLE_IN_DEGREE 10.0
+#define DEFAULT_AO_STRENGTH 0.20
+#define DEFAULT_DEPTH_START_ATTENUATION 0.999
+#define DEFAULT_DEPTH_END_ATTENUATION 0.9995
+#define DEFAULT_NOISE_TEXTURE_SIZE 4
+#define DEFAULT_BIAS 0.15
 #define DEFAULT_BLUR_SIZE 7
 #define DEFAULT_BLUR_SHARPNESS 40.0
-#define NOISE_TEXTURE_SIZE 4
 
 namespace urchin
 {
@@ -34,11 +36,14 @@ namespace urchin
 		textureSizeY(0),
         kernelSamples(DEFAULT_KERNEL_SAMPLES),
 		radius(DEFAULT_RADIUS),
-		ambientOcclusionExponent(DEFAULT_AO_EXPONENT),
-		biasAngleInDegree(DEFAULT_BIAS_ANGLE_IN_DEGREE),
+		ambientOcclusionStrength(DEFAULT_AO_STRENGTH),
+		depthStartAttenuation(DEFAULT_DEPTH_START_ATTENUATION),
+		depthEndAttenuation(DEFAULT_DEPTH_END_ATTENUATION),
+		noiseTextureSize(DEFAULT_NOISE_TEXTURE_SIZE),
+		bias(DEFAULT_BIAS),
 		blurSize(DEFAULT_BLUR_SIZE),
 		blurSharpness(DEFAULT_BLUR_SHARPNESS),
-        noiseTextureSize(NOISE_TEXTURE_SIZE),
+
 
 		fboID(0),
 		ambientOcclusionTexID(0),
@@ -87,11 +92,12 @@ namespace urchin
 
 		std::map<std::string, std::string> ambientOcclusionTokens;
 		ambientOcclusionTokens["KERNEL_SAMPLES"] = std::to_string(kernelSamples);
-		ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
 		ambientOcclusionTokens["RADIUS"] = std::to_string(radius);
-		ambientOcclusionTokens["AO_EXPONENT"] = std::to_string(ambientOcclusionExponent); //TODO remove or use it
-		ambientOcclusionTokens["TEXTURE_SIZE_FACTOR"] = std::to_string(1.0f / static_cast<float>(retrieveTextureSizeFactor())); //TODO remove or use it
-		ambientOcclusionTokens["BIAS_ANGLE"] = std::to_string(std::cos((90.0f-biasAngleInDegree) / (180.0f/PI_VALUE))); //TODO remove or use it
+		ambientOcclusionTokens["AO_STRENGTH"] = std::to_string(ambientOcclusionStrength);
+		ambientOcclusionTokens["DEPTH_START_ATTENUATION"] = std::to_string(depthStartAttenuation);
+		ambientOcclusionTokens["DEPTH_END_ATTENUATION"] = std::to_string(depthEndAttenuation);
+		ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
+		ambientOcclusionTokens["BIAS"] = std::to_string(bias);
 		ShaderManager::instance()->removeProgram(ambientOcclusionShader);
 		ambientOcclusionShader = ShaderManager::instance()->createProgram("ambientOcclusion.vert", "ambientOcclusion.frag", ambientOcclusionTokens);
 		ShaderManager::instance()->bind(ambientOcclusionShader);
@@ -287,21 +293,31 @@ namespace urchin
 		createOrUpdateAOShader();
 	}
 
-	void AmbientOcclusionManager::setAmbientOcclusionExponent(float ambientOcclusionExponent)
+	void AmbientOcclusionManager::setAmbientOcclusionStrength(float ambientOcclusionStrength)
 	{
-		this->ambientOcclusionExponent = ambientOcclusionExponent;
+		this->ambientOcclusionStrength = ambientOcclusionStrength;
 
 		createOrUpdateAOShader();
 	}
 
-	/**
-	 * @param biasAngle Bias angle in degree. If angle between two faces is > (180 degree - 2*bias angle): faces will not produce occlusion on each other.
-	 * A value of 0 degree will produce maximum of occlusion. A value of 90 degrees won't produce occlusion.
-	 * This bias angle allows to eliminate some unexpected artifacts especially when camera is near to a surface.
-	 */
-	void AmbientOcclusionManager::setBiasAngleInDegree(float biasAngleInDegree)
+    void AmbientOcclusionManager::setDistanceAttenuation(float depthStartAttenuation, float depthEndAttenuation)
+    {
+        this->depthStartAttenuation = depthStartAttenuation;
+        this->depthEndAttenuation = depthEndAttenuation;
+
+		createOrUpdateAOShader();
+    }
+
+    void AmbientOcclusionManager::setNoiseTextureSize(float noiseTextureSize)
+    {
+	    this->noiseTextureSize = noiseTextureSize;
+
+		createOrUpdateAOShader();
+	}
+
+	void AmbientOcclusionManager::setBias(float bias)
 	{
-		this->biasAngleInDegree = biasAngleInDegree;
+		this->bias = bias;
 
 		createOrUpdateAOShader();
 	}
@@ -343,7 +359,7 @@ namespace urchin
 	{
 		if(isBlurActivated)
 		{
-//TODO			 return horizontalBlurFilter->getTextureID();
+			return horizontalBlurFilter->getTextureID();
 		}
 
 		return ambientOcclusionTexID;
@@ -377,8 +393,8 @@ namespace urchin
 
 		if(isBlurActivated)
 		{
-//TODO			verticalBlurFilter->applyOn(ambientOcclusionTexID);
-//TODO 			horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
+			verticalBlurFilter->applyOn(ambientOcclusionTexID);
+			horizontalBlurFilter->applyOn(verticalBlurFilter->getTextureID());
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
