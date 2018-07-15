@@ -1,11 +1,11 @@
 bl_info = {
-    "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
-    "version": (1, 0, 0),
-    "blender": (2, 6, 6),
-    "api": 31847,
-    "location": "File > Export",
-    "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
-    "category": "Import-Export"}
+  "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
+  "version": (1, 0, 0),
+  "blender": (2, 6, 6),
+  "api": 31847,
+  "location": "File > Export",
+  "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
+  "category": "Import-Export"}
 
 import bpy, struct, math, os, time, sys, mathutils, enum
 from enum import Enum
@@ -39,33 +39,33 @@ def vectorNormalize(v):
 
 def matrixInvert(m):
   det = (m.col[0][0] * (m.col[1][1] * m.col[2][2] - m.col[2][1] * m.col[1][2])
-       - m.col[1][0] * (m.col[0][1] * m.col[2][2] - m.col[2][1] * m.col[0][2])
-       + m.col[2][0] * (m.col[0][1] * m.col[1][2] - m.col[1][1] * m.col[0][2]))
+         - m.col[1][0] * (m.col[0][1] * m.col[2][2] - m.col[2][1] * m.col[0][2])
+         + m.col[2][0] * (m.col[0][1] * m.col[1][2] - m.col[1][1] * m.col[0][2]))
   if det == 0.0: return None
   det = 1.0 / det
 
   r = [ [
-      det * (m.col[1][1] * m.col[2][2] - m.col[2][1] * m.col[1][2]),
+    det * (m.col[1][1] * m.col[2][2] - m.col[2][1] * m.col[1][2]),
     - det * (m.col[0][1] * m.col[2][2] - m.col[2][1] * m.col[0][2]),
-      det * (m.col[0][1] * m.col[1][2] - m.col[1][1] * m.col[0][2]),
-      0.0,
+    det * (m.col[0][1] * m.col[1][2] - m.col[1][1] * m.col[0][2]),
+    0.0,
     ], [
     - det * (m.col[1][0] * m.col[2][2] - m.col[2][0] * m.col[1][2]),
-      det * (m.col[0][0] * m.col[2][2] - m.col[2][0] * m.col[0][2]),
+    det * (m.col[0][0] * m.col[2][2] - m.col[2][0] * m.col[0][2]),
     - det * (m.col[0][0] * m.col[1][2] - m.col[1][0] * m.col[0][2]),
-      0.0
-    ], [
-      det * (m.col[1][0] * m.col[2][1] - m.col[2][0] * m.col[1][1]),
+    0.0
+  ], [
+    det * (m.col[1][0] * m.col[2][1] - m.col[2][0] * m.col[1][1]),
     - det * (m.col[0][0] * m.col[2][1] - m.col[2][0] * m.col[0][1]),
-      det * (m.col[0][0] * m.col[1][1] - m.col[1][0] * m.col[0][1]),
-      0.0,
+    det * (m.col[0][0] * m.col[1][1] - m.col[1][0] * m.col[0][1]),
+    0.0,
     ] ]
   r.append([
     - (m.col[3][0] * r[0][0] + m.col[3][1] * r[1][0] + m.col[3][2] * r[2][0]),
     - (m.col[3][0] * r[0][1] + m.col[3][1] * r[1][1] + m.col[3][2] * r[2][1]),
     - (m.col[3][0] * r[0][2] + m.col[3][1] * r[1][2] + m.col[3][2] * r[2][2]),
     1.0,
-    ])
+  ])
   return r
 
 
@@ -175,9 +175,9 @@ class SubMesh:
     return buf
 
 class CloneReason(Enum):
-    NOT_CLONED = 1
-    FLAT_FACE = 2
-    DIFFERENT_TEXTURE_COORD = 3
+  NOT_CLONED = 1
+  FLAT_FACE = 2
+  DIFFERENT_TEXTURE_COORD = 3
 
 class Vertex:
   def __init__(self, subMesh, coord, clonedFrom = None, cloneReason = CloneReason.NOT_CLONED):
@@ -192,16 +192,16 @@ class Vertex:
     self.clonedFrom = clonedFrom
 
     if self.clonedFrom != None:
-        self.influences = clonedFrom.influences
-        clonedFrom.clones.append(self)
+      self.influences = clonedFrom.influences
+      clonedFrom.clones.append(self)
     else:
-        self.influences = []
+      self.influences = []
 
     if cloneReason == CloneReason.DIFFERENT_TEXTURE_COORD:
-        self.linkedVerticesGroupId = self.clonedFrom.linkedVerticesGroupId
+      self.linkedVerticesGroupId = self.clonedFrom.linkedVerticesGroupId
     else:
-        self.linkedVerticesGroupId = subMesh.nextLinkedVerticesGroupId
-        subMesh.nextLinkedVerticesGroupId += 1
+      self.linkedVerticesGroupId = subMesh.nextLinkedVerticesGroupId
+      subMesh.nextLinkedVerticesGroupId += 1
 
     subMesh.nextVertexId += 1
     subMesh.vertices.append(self)
@@ -304,7 +304,7 @@ class Bone:
     buf = "\t\"%s\"\t" % (self.name)
     parentIndex = -1
     if self.parent:
-        parentIndex = self.parent.id
+      parentIndex = self.parent.id
     buf = buf + "%i " % (parentIndex)
 
     pos1, pos2, pos3 = self.matrix.col[3][0], self.matrix.col[3][1], self.matrix.col[3][2]
@@ -317,9 +317,9 @@ class Bone:
     qy = bquat.y
     qz = bquat.z
     if bquat.w > 0:
-        qx = -qx
-        qy = -qy
-        qz = -qz
+      qx = -qx
+      qy = -qy
+      qz = -qz
     buf = buf + "( %f %f %f )" % (qx, qy, qz)
     buf = buf + "\n"
     return buf
@@ -363,9 +363,9 @@ class UrchinAnimation:
         qy = rot.y
         qz = rot.z
         if rot.w > 0:
-            qx = -qx
-            qy = -qy
-            qz = -qz
+          qx = -qx
+          qy = -qy
+          qz = -qz
         self.baseFrame.col[bone.id] = (bone.matrix.col[3][0] * scale, bone.matrix.col[3][1] * scale, bone.matrix.col[3][2] * scale, qx, qy, qz)
 
     buf = "numFrames %i\n" % (self.numFrames)
@@ -424,7 +424,7 @@ class urchinSettings:
 
 def getMinMax(listOfPoints):
   if len(listOfPoints) == 0:
-      return ([0, 0, 0], [0, 0, 0])
+    return ([0, 0, 0], [0, 0, 0])
   min = [listOfPoints[0][0], listOfPoints[1][0], listOfPoints[2][0]]
   max = [listOfPoints[0][0], listOfPoints[1][0], listOfPoints[2][0]]
   if len(listOfPoints[0]) > 1:
@@ -452,10 +452,10 @@ def generateBoundingBox(objects, urchinAnimation, frameRange):
         bbox = obj.bound_box
 
         matrix = [[1.0, 0.0, 0.0, 0.0],
-          [0.0, 1.0, 0.0, 0.0],
-          [0.0, 1.0, 1.0, 0.0],
-          [0.0, 0.0, 0.0, 1.0],
-          ]
+                  [0.0, 1.0, 0.0, 0.0],
+                  [0.0, 1.0, 1.0, 0.0],
+                  [0.0, 0.0, 0.0, 1.0],
+                  ]
         for v in bbox:
           corners.append(pointByMatrix (v, matrix))
     (min, max) = getMinMax(corners)
@@ -488,8 +488,8 @@ def saveUrchin(settings):
           for child in b.children:
             treatBone(child, bone)
 
+      print("[INFO] Processing armature: " + currArmature.name)
       for b in currArmature.data.bones:
-        print("[INFO] Processing armature: " + currArmature.name)
         if not b.parent: # only treat root bones
           treatBone(b)
 
@@ -557,7 +557,7 @@ def saveUrchin(settings):
 
                 vertex = Vertex(subMesh, coord)
                 if face.use_smooth:  # smooth face can share vertex, not flat face
-                    vertices[face.vertices[i]] = vertex
+                  vertices[face.vertices[i]] = vertex
                 createVertexA += 1
 
                 influences = []
@@ -574,14 +574,14 @@ def saveUrchin(settings):
                 for bone_name, weight in influences:
                   if sum != 0:
                     try:
-                        vertex.influences.append(Influence(bones[bone_name], weight / sum))
+                      vertex.influences.append(Influence(bones[bone_name], weight / sum))
                     except:
-                        continue
+                      continue
                   else: # we have a vertex that is probably not skinned. export anyway
                     try:
-                        vertex.influences.append(Influence(bones[bone_name], weight))
+                      vertex.influences.append(Influence(bones[bone_name], weight))
                     except:
-                        continue
+                      continue
 
               elif not face.use_smooth:
                 vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.FLAT_FACE)
@@ -625,6 +625,8 @@ def saveUrchin(settings):
     action = armature.animation_data.action
 
     frameMin, frameMax = action.frame_range
+    print("[INFO] Frame start: " + str(frameMin))
+    print("[INFO] Frame end: " + str(frameMax))
     rangeStart = int(frameMin)
     rangeEnd = int(frameMax)
 
@@ -649,9 +651,9 @@ def saveUrchin(settings):
         else:
           poseBoneMat = currArmature.matrix_world * poseBoneMat
         loc = [poseBoneMat.col[3][0],
-            poseBoneMat.col[3][1],
-            poseBoneMat.col[3][2],
-            ]
+               poseBoneMat.col[3][1],
+               poseBoneMat.col[3][2],
+               ]
         rot = poseBoneMat.to_quaternion()
         rot.normalize()
         rot = [rot.w, rot.x, rot.y, rot.z]
@@ -660,48 +662,48 @@ def saveUrchin(settings):
       currentTime += 1
 
   if(settings.exportMode == "mesh & anim" or settings.exportMode == "mesh only"):
-      urchinMeshFilename = settings.savePath + ".urchinMesh"
+    urchinMeshFilename = settings.savePath + ".urchinMesh"
 
-      if len(meshes) > 1: #save all submeshes in the first mesh
-        for mesh in range (1, len(meshes)):
-          for subMesh in meshes[mesh].subMeshes:
-            subMesh.bindToMesh(meshes[0])
+    if len(meshes) > 1: #save all submeshes in the first mesh
+      for mesh in range (1, len(meshes)):
+        for subMesh in meshes[mesh].subMeshes:
+          subMesh.bindToMesh(meshes[0])
 
-      try:
-        file = open(urchinMeshFilename, 'w')
-      except IOError:
-        print("[ERROR] IOError to write in: " + urchinMeshFilename)
+    try:
+      file = open(urchinMeshFilename, 'w')
+    except IOError:
+      print("[ERROR] IOError to write in: " + urchinMeshFilename)
 
-      buffer = skeleton.toUrchinMesh(len(meshes[0].subMeshes))
-      buffer = buffer + meshes[0].toUrchinMesh()
-      file.write(buffer)
-      file.close()
-      print("[INFO] Saved mesh to " + urchinMeshFilename)
+    buffer = skeleton.toUrchinMesh(len(meshes[0].subMeshes))
+    buffer = buffer + meshes[0].toUrchinMesh()
+    file.write(buffer)
+    file.close()
+    print("[INFO] Saved mesh to " + urchinMeshFilename)
 
   if(settings.exportMode == "mesh & anim" or settings.exportMode == "anim only"):
-      urchinAnimFilename = settings.savePath + ".urchinAnim"
+    urchinAnimFilename = settings.savePath + ".urchinAnim"
 
-      if len(animations) > 0:
-        anim = animations.popitem()[1]
-        try:
-          file = open(urchinAnimFilename, 'w')
-        except IOError:
-          print("[ERROR] IOError to write in: " + urchinAnimFilename)
-        objects = []
-        for subMesh in meshes[0].subMeshes:
-          if len(subMesh.weights) > 0:
-            obj = None
-            for sob in bpy.context.selected_objects:
-                if sob and sob.type == 'MESH' and sob.name == subMesh.name:
-                  obj = sob
-            objects.append (obj)
-        generateBoundingBox(objects, anim, [rangeStart, rangeEnd])
-        buffer = anim.toUrchinAnim()
-        file.write(buffer)
-        file.close()
-        print("[INFO] Saved anim to " + urchinAnimFilename)
-      else:
-        print("[WARNING] No urchinAnim file generated.")
+    if len(animations) > 0:
+      anim = animations.popitem()[1]
+      try:
+        file = open(urchinAnimFilename, 'w')
+      except IOError:
+        print("[ERROR] IOError to write in: " + urchinAnimFilename)
+      objects = []
+      for subMesh in meshes[0].subMeshes:
+        if len(subMesh.weights) > 0:
+          obj = None
+          for sob in bpy.context.selected_objects:
+            if sob and sob.type == 'MESH' and sob.name == subMesh.name:
+              obj = sob
+          objects.append (obj)
+      generateBoundingBox(objects, anim, [rangeStart, rangeEnd])
+      buffer = anim.toUrchinAnim()
+      file.write(buffer)
+      file.close()
+      print("[INFO] Saved anim to " + urchinAnimFilename)
+    else:
+      print("[WARNING] No urchinAnim file generated.")
 
 # ---------------------------------------------------------------------------
 # UI
@@ -713,8 +715,8 @@ class ExportUrchin(bpy.types.Operator):
   bl_label = 'Export Urchin Engine'
 
   exportModes = [("mesh & anim", "Mesh & Anim", "Export mesh and anim"),
-  		 ("anim only", "Anim only", "Export anim only"),
-  		 ("mesh only", "Mesh only", "Export mesh only")]
+                 ("anim only", "Anim only", "Export anim only"),
+                 ("mesh only", "Mesh only", "Export mesh only")]
 
   filepath = StringProperty(subtype='FILE_PATH', name="File Path", description="File path for exporting", maxlen=1024, default="")
   exportMode = EnumProperty(name="Exports", items=exportModes, description="Choose export mode", default='mesh only')
