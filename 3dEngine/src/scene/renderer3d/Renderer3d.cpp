@@ -527,6 +527,9 @@ namespace urchin
 			//display models bounding box
 //			modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
 
+			//display bones of specified model in base position
+//			modelDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
+
 			//display light octree
 //			lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
 

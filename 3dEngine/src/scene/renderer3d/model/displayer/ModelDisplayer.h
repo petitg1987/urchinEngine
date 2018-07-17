@@ -45,6 +45,7 @@ namespace urchin
 
 			#ifdef _DEBUG
 				void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
+				void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &, const std::string &) const;
 			#endif
 
 		private:

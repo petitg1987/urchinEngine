@@ -2,6 +2,7 @@
 
 #include "Mesh.h"
 #include "resources/model/MeshService.h"
+#include "utils/display/geometry/points/PointsModel.h"
 
 namespace urchin
 {
@@ -80,5 +81,21 @@ namespace urchin
 		glBindVertexArray(vertexArrayObject);
 		glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, nullptr);
 	}
+
+#ifdef _DEBUG
+	void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
+	{
+		std::vector<Point3<float>> bonePositions;
+		for(const auto &bone : constMesh->getBaseSkeleton())
+		{
+			bonePositions.push_back(bone.pos);
+		}
+
+		std::unique_ptr<PointsModel> pointsModel = std::make_unique<PointsModel>(bonePositions, 5);
+		pointsModel->onCameraProjectionUpdate(projectionMatrix);
+		pointsModel->setAlwaysVisible(true);
+		pointsModel->display(viewMatrix);
+	}
+#endif
 
 }

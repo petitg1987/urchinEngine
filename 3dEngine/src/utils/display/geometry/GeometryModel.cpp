@@ -10,7 +10,8 @@ namespace urchin
 			color(Vector4<float>(0.0, 1.0, 0.0, 1.0)),
 			polygonMode(WIREFRAME),
 			lineSize(1.3),
-			blendMode(NONE)
+			blendMode(NONE),
+            alwaysVisible(false)
 	{
 		shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "displayGeometry.frag");
 
@@ -70,6 +71,16 @@ namespace urchin
 		this->blendMode = blendMode;
 	}
 
+    bool GeometryModel::isAlwaysVisible() const
+    {
+        return alwaysVisible;
+    }
+
+    void GeometryModel::setAlwaysVisible(bool alwaysVisible)
+    {
+        this->alwaysVisible = alwaysVisible;
+    }
+
 	void GeometryModel::initialize()
 	{
 		modelMatrix = retrieveModelMatrix();
@@ -84,15 +95,15 @@ namespace urchin
 	}
 
 	void GeometryModel::display(const Matrix4<float> &viewMatrix) const
-	{
-		unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
-		ShaderManager::instance()->bind(shader);
+    {
+        unsigned int shaderSaved = ShaderManager::instance()->getCurrentProgram();
+        ShaderManager::instance()->bind(shader);
 
-		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
-		glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)(viewMatrix * modelMatrix));
-		glUniform4fv(colorLoc, 1, (const float*)color);
+        glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float *) projectionMatrix);
+        glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) (viewMatrix * modelMatrix));
+        glUniform4fv(colorLoc, 1, (const float *) color);
 
-		glBindVertexArray(vertexArrayObject);
+        glBindVertexArray(vertexArrayObject);
 
 		glDisable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_AND_BACK, polygonMode==WIREFRAME ? GL_LINE : GL_FILL);
@@ -102,9 +113,17 @@ namespace urchin
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
+        if (isAlwaysVisible())
+        {
+            glDisable(GL_DEPTH_TEST);
+        }
 
 		drawGeometry();
 
+        if (isAlwaysVisible())
+        {
+            glEnable(GL_DEPTH_TEST);
+        }
 		if(blendMode!=NONE)
 		{
 			glDisable(GL_BLEND);

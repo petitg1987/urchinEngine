@@ -36,6 +36,9 @@ namespace urchin
 			BlendMode getBlendMode() const;
 			void setBlendMode(BlendMode);
 
+			bool isAlwaysVisible() const;
+			void setAlwaysVisible(bool);
+
 			void display(const Matrix4<float> &) const;
 
 		protected:
@@ -68,6 +71,7 @@ namespace urchin
 			float lineSize;
 
 			BlendMode blendMode;
+			bool alwaysVisible;
 	};
 
 }

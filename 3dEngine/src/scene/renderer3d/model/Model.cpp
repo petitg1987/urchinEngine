@@ -262,4 +262,17 @@ namespace urchin
         }
 	}
 
+#ifdef _DEBUG
+	void Model::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
+	{
+		if(meshes)
+		{
+			for (unsigned int m = 0; m < meshes->getNumberMeshes(); ++m)
+			{
+				meshes->getMesh(m)->drawBaseBones(projectionMatrix, viewMatrix * getTransform().getTransformMatrix());
+			}
+		}
+	}
+#endif
+
 }

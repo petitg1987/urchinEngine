@@ -223,6 +223,17 @@ namespace urchin
 			model->drawBBox(projectionMatrix, viewMatrix);
 		}
 	}
+
+	void ModelDisplayer::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix, const std::string &meshFilename) const
+	{
+		for (auto model : models)
+		{
+			if(model->getMeshes() && model->getMeshes()->getMeshFilename()==meshFilename)
+			{
+				model->drawBaseBones(projectionMatrix, viewMatrix);
+			}
+		}
+	}
 #endif
 
 }
