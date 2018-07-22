@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-	ConstAnimation *LoaderUrchinAnim::loadFromFile(const std::string &filename, void *params)
+	ConstAnimation *LoaderUrchinAnim::loadFromFile(const std::string &filename, void *)
 	{
 		std::locale::global(std::locale("C")); //for float
 		
@@ -107,40 +107,39 @@ namespace urchin
 				Point3<float> animatedPos = baseBone->pos;
 				Quaternion<float> animatedOrient = baseBone->orient;
 
-				if(boneInfos[i].flags & 1) //Tx
+				if((boneInfos[i].flags) & 1u) //Tx
 				{
 					animatedPos.X = animFrameData[boneInfos[i].startIndex + j];
 					++j;
 				}
 
-				if(boneInfos[i].flags & 2) //Ty
+				if((boneInfos[i].flags) & 2u) //Ty
 				{
 					animatedPos.Y = animFrameData[boneInfos[i].startIndex + j];
 					++j;
 				}
 
-				if(boneInfos[i].flags & 4) //Tz
+				if((boneInfos[i].flags) & 4u) //Tz
 				{
 					animatedPos.Z = animFrameData[boneInfos[i].startIndex + j];
 					++j;
 				}
 
-				if(boneInfos[i].flags & 8) //Qx
+				if((boneInfos[i].flags) & 8u) //Qx
 				{
 					animatedOrient.X = animFrameData[boneInfos[i].startIndex + j];
 					++j;
 				}
 
-				if(boneInfos[i].flags & 16) //Qy
+				if((boneInfos[i].flags) & 16u) //Qy
 				{
 					animatedOrient.Y = animFrameData[boneInfos[i].startIndex + j];
 					++j;
 				}
 
-				if(boneInfos[i].flags & 32) //Qz
+				if((boneInfos[i].flags) & 32u) //Qz
 				{
 					animatedOrient.Z = animFrameData[boneInfos[i].startIndex + j];
-					++j;
 				}
 
 				//computes orient quaternion's w value

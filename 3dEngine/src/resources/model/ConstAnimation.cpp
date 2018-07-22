@@ -17,7 +17,7 @@ namespace urchin
 	{
 		//determines the bounding box
 		originalGlobalBBox = AABBox<float>(bboxes[0]->getMin(), bboxes[0]->getMax());
-		for(unsigned int i=i; i<numFrames; ++i)
+		for(unsigned int i=0; i<numFrames; ++i)
 		{
 			originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
 		}

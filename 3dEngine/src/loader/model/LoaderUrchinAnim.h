@@ -13,7 +13,7 @@ namespace urchin
 	{
 		std::string name;
 		int parent;
-		int flags;
+		unsigned int flags;
 		int startIndex;
 	};
 
