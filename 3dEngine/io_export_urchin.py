@@ -425,10 +425,10 @@ class urchinSettings:
 def getMinMax(listOfPoints):
   if len(listOfPoints) == 0:
     return ([0, 0, 0], [0, 0, 0])
-  min = [listOfPoints[0][0], listOfPoints[1][0], listOfPoints[2][0]]
-  max = [listOfPoints[0][0], listOfPoints[1][0], listOfPoints[2][0]]
-  if len(listOfPoints[0]) > 1:
-    for i in range(1, len(listOfPoints[0])):
+  min = [listOfPoints[0][0], listOfPoints[0][1], listOfPoints[0][2]]
+  max = [listOfPoints[0][0], listOfPoints[0][1], listOfPoints[0][2]]
+  for i in range(1, len(listOfPoints)):
+    if len(listOfPoints[i]) == 3:
       if listOfPoints[i][0] > max[0]: max[0] = listOfPoints[i][0]
       if listOfPoints[i][1] > max[1]: max[1] = listOfPoints[i][1]
       if listOfPoints[i][2] > max[2]: max[2] = listOfPoints[i][2]

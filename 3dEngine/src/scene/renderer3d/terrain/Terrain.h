@@ -35,7 +35,8 @@ namespace urchin
             float getAmbient() const;
             void setAmbient(float);
 
-            Point3<float> findPoint(const Point2<float> &) const;
+            Point3<float> findPointAt(const Point2<float> &) const;
+            float findHeightAt(const Point2<float> &) const;
 
             void display(const Camera *, float invFrameRate) const;
 

@@ -15,7 +15,8 @@ namespace urchin
         public:
             friend class Singleton<FindPointService<T>>;
 
-            Point3<T> findPoint(const std::vector<Point3<T>> &, unsigned int, const Point2<T> &) const;
+            Point3<T> findPointAt(const Point2<T> &, const std::vector<Point3<T>> &, unsigned int) const;
+            T findHeightAt(const Point2<T> &, const std::vector<Point3<T>> &, unsigned int) const;
 
         private:
             FindPointService() = default;

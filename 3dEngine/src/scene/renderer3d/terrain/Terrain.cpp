@@ -175,10 +175,16 @@ namespace urchin
         refreshGrassAmbient(); //grass uses ambient value: refresh is required
     }
 
-    Point3<float> Terrain::findPoint(const Point2<float> &globalXzCoordinate) const
+    Point3<float> Terrain::findPointAt(const Point2<float> &globalXzCoordinate) const
     {
-        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
-        return FindPointService<float>::instance()->findPoint(mesh->getVertices(), mesh->getXSize(), localCoordinate) + position;
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
+        return FindPointService<float>::instance()->findPointAt(localCoordinate, mesh->getVertices(), mesh->getXSize()) + position;
+    }
+
+    float Terrain::findHeightAt(const Point2<float> &globalXzCoordinate) const
+    {
+        Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
+        return FindPointService<float>::instance()->findHeightAt(localCoordinate, mesh->getVertices(), mesh->getXSize()) + position.Y;
     }
 
     void Terrain::display(const Camera *camera, float invFrameRate) const

@@ -89,7 +89,7 @@ namespace urchin
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
     {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
-        return FindPointService<float>::instance()->findPoint(localVertices, xLength, localCoordinate) + position;
+        return FindPointService<float>::instance()->findPointAt(localCoordinate, localVertices, xLength) + position;
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const
