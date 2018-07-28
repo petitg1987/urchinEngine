@@ -31,6 +31,8 @@ namespace urchin
             void setTerrain(Terrain *);
 
             RigidBody *getRigidBody() const override;
+
+        protected:
             void moveTo(const Transform<float> &) override;
 
         private:

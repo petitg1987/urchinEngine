@@ -397,26 +397,14 @@ namespace urchin
 	{
 		for(SceneObject *sceneObject : sceneObjects)
 		{
-            refreshEntity(sceneObject);
+			sceneObject->refresh();
 		}
 
 		for(SceneTerrain *sceneTerrain : sceneTerrains)
 		{
-            refreshEntity(sceneTerrain);
+			sceneTerrain->refresh();
 		}
 	}
-
-    void Map::refreshEntity(SceneEntity *sceneEntity)
-    {
-        RigidBody *rigidBody = sceneEntity->getRigidBody();
-        if(rigidBody!=nullptr)
-        {
-            if((!rigidBody->isStatic() && rigidBody->isActive()) || (rigidBody->isManuallyMovedAndResetFlag()))
-            {
-                sceneEntity->moveTo(rigidBody->getTransform());
-            }
-        }
-    }
 
 	void Map::refreshSound()
 	{

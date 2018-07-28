@@ -10,6 +10,10 @@ namespace urchin
     class SceneEntity
     {
         public:
+
+            void refresh();
+
+        protected:
             virtual RigidBody *getRigidBody() const = 0;
             virtual void moveTo(const Transform<float> &) = 0;
     };

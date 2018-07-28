@@ -26,6 +26,9 @@ namespace urchin
             const std::vector<Vector3<float>> &getNormals() const;
             const std::vector<unsigned int> &getIndices() const;
 
+            Point3<float> findPointAt(const Point2<float> &) const;
+            float findHeightAt(const Point2<float> &) const;
+
         private:
             std::vector<Point3<float>> buildVertices(const Image *);
             std::vector<unsigned int> buildIndices();
@@ -42,6 +45,7 @@ namespace urchin
             std::vector<Point3<float>> vertices;
             std::vector<Vector3<float>> normals;
             std::vector<unsigned int> indices;
+            std::unique_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
     };
 
 }

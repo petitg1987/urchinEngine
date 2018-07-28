@@ -120,6 +120,12 @@ namespace urchin
 		this->model = model;
 	}
 
+	void SceneObject::setupInteractiveBody(RigidBody *rigidBody)
+	{
+		setupRigidBody(rigidBody);
+		setupAIObject();
+	}
+
 	RigidBody *SceneObject::getRigidBody() const
 	{
 		return rigidBody;
@@ -132,12 +138,6 @@ namespace urchin
 		{
 			aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
 		}
-	}
-
-	void SceneObject::setupInteractiveBody(RigidBody *rigidBody)
-	{
-		setupRigidBody(rigidBody);
-		setupAIObject();
 	}
 
 	void SceneObject::setupRigidBody(RigidBody *rigidBody)

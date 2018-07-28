@@ -79,7 +79,7 @@
 #include "math/geometry/3d/object/Cone.h"
 #include "math/geometry/3d/util/SortPointsService.h"
 #include "math/geometry/3d/util/ResizeConvexHull3DService.h"
-#include "math/geometry/3d/util/FindPointService.h"
+#include "math/geometry/3d/util/HeightfieldPointHelper.h"
 #include "math/algorithm/MathAlgorithm.h"
 #include "math/algorithm/PascalTriangle.h"
 #include "math/trigonometry/AngleConverter.h"

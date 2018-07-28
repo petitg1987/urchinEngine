@@ -1,4 +1,4 @@
-#include "FindPointService.h"
+#include "HeightfieldPointHelper.h"
 
 #include "math/algorithm/MathAlgorithm.h"
 #include "math/geometry/3d/Plane.h"
@@ -6,18 +6,24 @@
 namespace urchin
 {
 
+    template<class T> HeightfieldPointHelper<T>::HeightfieldPointHelper(const std::vector<Point3<T>> &heightfieldPoints, unsigned int heightfieldXSize) :
+            heightfieldPoints(heightfieldPoints),
+            heightfieldXSize(heightfieldXSize)
+    {
+        heightfieldZSize = heightfieldPoints.size() / heightfieldXSize;
+
+        xInterval = heightfieldPoints[1].X - heightfieldPoints[0].X;
+        zInterval = heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z;
+    }
+
+
     /**
      * @return Nearest heightfield point (3D) of the provided coordinate point (2D)
      */
-    template<class T> Point3<T> FindPointService<T>::findPointAt(const Point2<T> &coordinatePoint, const std::vector<Point3<T>> &heightfieldPoints, unsigned int heightfieldXSize) const
-    { //TODO create instanciable class to save values 'heightfieldZSize', 'xInterval', 'zInterval'
-        unsigned int heightfieldZSize = heightfieldPoints.size() / heightfieldXSize;
+    template<class T> Point3<T> HeightfieldPointHelper<T>::findPointAt(const Point2<T> &coordinatePoint) const
+    {
         Point2<T> farLeftCoordinate = coordinatePoint - Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z);
-
-        T xInterval = heightfieldPoints[1].X - heightfieldPoints[0].X;
         int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-
-        T zInterval = heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z;
         int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
 
         return heightfieldPoints[xIndex + zIndex * heightfieldXSize];
@@ -26,15 +32,10 @@ namespace urchin
     /**
      * @return Heightfield height of the provided coordinate point (2D)
      */
-    template<class T> T FindPointService<T>::findHeightAt(const Point2<T> &coordinatePoint, const std::vector<Point3<T>> &heightfieldPoints, unsigned int heightfieldXSize) const
+    template<class T> T HeightfieldPointHelper<T>::findHeightAt(const Point2<T> &coordinatePoint) const
     {
-        unsigned int heightfieldZSize = heightfieldPoints.size() / heightfieldXSize;
         Point2<T> farLeftCoordinate = coordinatePoint - Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z);
-
-        T xInterval = heightfieldPoints[1].X - heightfieldPoints[0].X;
         int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-
-        T zInterval = heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z;
         int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
 
         Point3<T> nearestPoint = heightfieldPoints[xIndex + zIndex * heightfieldXSize];
@@ -51,7 +52,7 @@ namespace urchin
     }
 
     //explicit template
-    template class FindPointService<float>;
+    template class HeightfieldPointHelper<float>;
 
-    template class FindPointService<double>;
+    template class HeightfieldPointHelper<double>;
 }

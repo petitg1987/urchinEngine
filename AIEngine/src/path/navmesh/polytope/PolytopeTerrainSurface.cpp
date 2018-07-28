@@ -13,6 +13,8 @@ namespace urchin
             selfObstacles(selfObstacles)
     {
         buildOutlineCwPoints();
+
+        heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(localVertices, xLength);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()
@@ -89,7 +91,7 @@ namespace urchin
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
     {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
-        return FindPointService<float>::instance()->findPointAt(localCoordinate, localVertices, xLength) + position;
+        return heightfieldPointHelper->findPointAt(localCoordinate) + position;
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const

@@ -93,7 +93,6 @@ namespace urchin
 			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
 
 			void refreshEntities();
-			void refreshEntity(SceneEntity *);
             void refreshSound();
 
 			Renderer3d *renderer3d;

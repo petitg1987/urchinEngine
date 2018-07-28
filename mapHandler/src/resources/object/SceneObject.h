@@ -37,10 +37,12 @@ namespace urchin
 			Model *getModel() const;
 			void setModel(Model *);
 
-			RigidBody *getRigidBody() const override;
-			void moveTo(const Transform<float> &) override;
-
 			void setupInteractiveBody(RigidBody *);
+
+			RigidBody *getRigidBody() const override;
+
+		protected:
+			void moveTo(const Transform<float> &) override;
 
 		private:
 			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);

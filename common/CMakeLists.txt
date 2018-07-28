@@ -165,8 +165,8 @@ set(SOURCE_FILES
         src/tools/svg/shape/SVGLine.h
         src/tools/svg/shape/SVGCircle.cpp
         src/tools/svg/shape/SVGCircle.h
-        src/math/geometry/3d/util/FindPointService.cpp
-        src/math/geometry/3d/util/FindPointService.h
+        src/math/geometry/3d/util/HeightfieldPointHelper.cpp
+        src/math/geometry/3d/util/HeightfieldPointHelper.h
         src/tools/profiler/Profiler.cpp
         src/tools/profiler/Profiler.h
         src/tools/profiler/ProfilerNode.cpp

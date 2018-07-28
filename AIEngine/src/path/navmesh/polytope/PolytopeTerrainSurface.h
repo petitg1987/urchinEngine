@@ -1,6 +1,9 @@
 #ifndef URCHINENGINE_POLYTOPETERRAINSURFACE_H
 #define URCHINENGINE_POLYTOPETERRAINSURFACE_H
 
+#include <memory>
+
+#include "UrchinCommon.h"
 #include "path/navmesh/polytope/PolytopeSurface.h"
 
 namespace urchin
@@ -32,6 +35,7 @@ namespace urchin
             std::vector<Point3<float>> localVertices;
             unsigned int xLength;
             unsigned int zLength;
+            std::unique_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
 
             std::vector<Point2<float>> outlineCwPoints;
             std::vector<CSGPolygon<float>> selfObstacles;

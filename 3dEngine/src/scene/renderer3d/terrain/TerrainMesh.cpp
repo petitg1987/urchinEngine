@@ -26,6 +26,7 @@ namespace urchin
         buildVertices(imgTerrain);
         buildIndices();
         buildNormals();
+        heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(vertices, xSize);
 
         imgTerrain->release();
     }
@@ -68,6 +69,16 @@ namespace urchin
     const std::vector<unsigned int> &TerrainMesh::getIndices() const
     {
         return indices;
+    }
+
+    Point3<float> TerrainMesh::findPointAt(const Point2<float> &xzCoordinate) const
+    {
+        return heightfieldPointHelper->findPointAt(xzCoordinate);
+    }
+
+    float TerrainMesh::findHeightAt(const Point2<float> &xzCoordinate) const
+    {
+        return heightfieldPointHelper->findHeightAt(xzCoordinate);
     }
 
     std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain)
