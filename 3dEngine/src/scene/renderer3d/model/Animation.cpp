@@ -12,7 +12,7 @@ namespace urchin
 		animationInformation.currFrame = 0;
 		animationInformation.nextFrame = 1;
 		animationInformation.lastTime = 0;
-		animationInformation.maxTime = 1.0/constAnimation->getFrameRate();
+		animationInformation.maxTime = 1.0f / constAnimation->getFrameRate();
 	}
 
 	const std::vector<Bone> &Animation::getSkeleton() const
@@ -53,21 +53,14 @@ namespace urchin
 	void Animation::animate(float invFrameRate)
 	{
 		//calculate current and next frames
-		int maxFrames = constAnimation->getNumberFrames() - 1;
 		animationInformation.lastTime += invFrameRate;
 		if(animationInformation.lastTime >= animationInformation.maxTime) //move to next frame
 		{
-			animationInformation.currFrame++;
+			animationInformation.lastTime = 0.0;
+			animationInformation.currFrame = animationInformation.nextFrame;
 			animationInformation.nextFrame++;
 
-			animationInformation.lastTime = 0.0;
-
-			if(animationInformation.currFrame > maxFrames)
-			{
-				animationInformation.currFrame = 0;
-			}
-
-			if(animationInformation.nextFrame > maxFrames)
+			if(animationInformation.nextFrame >= constAnimation->getNumberFrames())
 			{
 				animationInformation.nextFrame = 0;
 			}
