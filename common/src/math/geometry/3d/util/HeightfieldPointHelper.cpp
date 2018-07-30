@@ -38,13 +38,21 @@ namespace urchin
         int xIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
         int zIndex = MathAlgorithm::clamp(static_cast<int>(std::round(farLeftCoordinate.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
 
-        Point3<T> nearestPoint = heightfieldPoints[xIndex + zIndex * heightfieldXSize];
+        int nearestPointIndex = xIndex + zIndex * heightfieldXSize;
+        Point3<T> nearestPoint = heightfieldPoints[nearestPointIndex];
 
-        int leftRightIndex = (nearestPoint.X > coordinatePoint.X) ? std::max(xIndex - 1, 0) : std::min(xIndex + 1, static_cast<int>(heightfieldXSize - 1));
-        Point3<T> leftRightPoint = heightfieldPoints[leftRightIndex + zIndex * heightfieldXSize];
+        int leftRightPointXIndex = (nearestPoint.X > coordinatePoint.X) ? std::max(xIndex - 1, 0) : std::min(xIndex + 1, static_cast<int>(heightfieldXSize - 1));
+        int leftRightPointIndex = leftRightPointXIndex + zIndex * heightfieldXSize;
+        Point3<T> leftRightPoint = heightfieldPoints[leftRightPointIndex];
 
-        int farNearPointIndex = (nearestPoint.Z > coordinatePoint.Y) ? std::max(zIndex - 1, 0) : std::min(zIndex + 1, static_cast<int>(heightfieldZSize - 1));
-        Point3<T> farNearPoint = heightfieldPoints[xIndex + farNearPointIndex * heightfieldXSize];
+        int farNearPointZIndex = (nearestPoint.Z > coordinatePoint.Y) ? std::max(zIndex - 1, 0) : std::min(zIndex + 1, static_cast<int>(heightfieldZSize - 1));
+        int farNearPointIndex = xIndex + farNearPointZIndex * heightfieldXSize;
+        Point3<T> farNearPoint = heightfieldPoints[farNearPointIndex];
+
+        if(nearestPointIndex==leftRightPointIndex || nearestPointIndex==farNearPointIndex || leftRightPointIndex==farNearPointIndex)
+        { //coordinates are outside heightfield or on edge: return approximate point
+            return nearestPoint.Y;
+        }
 
         const Point3<T> coordinatePoint3D(coordinatePoint.X, 0.0, coordinatePoint.Y);
         Vector3<T> planeNormal = leftRightPoint.vector(farNearPoint).crossProduct(leftRightPoint.vector(nearestPoint)).normalize();
