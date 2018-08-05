@@ -29,10 +29,6 @@ namespace urchin
         return (polygonType==SubtractionPoints<T>::MINUEND) ? minuend : subtrahend;
     }
 
-    /**
-     * Perform a subtraction of polygons.
-     * In case of subtrahendPolygon is totally included in minuendPolygon or touch edge: the minuendPolygon is returned without hole inside
-     */
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon) const
     {
         bool subtrahendInside;
@@ -41,7 +37,7 @@ namespace urchin
 
     /**
      * Perform a subtraction of polygons.
-     * When subtrahendPolygon is totally included in minuendPolygon: the minuendPolygon is returned without hole.
+     * When subtrahendPolygon is totally included in minuendPolygon or touch edge: the minuendPolygon is returned without hole.
      * @param subtrahendInside True when subtrahendPolygon is totally included in minuendPolygon or touch edge.
      */
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside) const
@@ -93,7 +89,7 @@ namespace urchin
                     int nextPointIndex = (currentPointIndex + nextPointOffset) % static_cast<int>(subtractionPoints[currentPolygon].size());
 
                     if( (isMinuend(currentPolygon) && !subtractionPoints[currentPolygon][nextPointIndex].isOutside && !subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside)
-                        || (isSubtrahend(currentPolygon) && (subtractionPoints[currentPolygon][nextPointIndex].isOutside) || subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside) )
+                        || ((isSubtrahend(currentPolygon) && subtractionPoints[currentPolygon][nextPointIndex].isOutside) || subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside) )
                     { //polygon switch
                         currentPointIndex = nextOtherPointIndex;
                         currentPolygon = otherPolygon;

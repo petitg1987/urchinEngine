@@ -4,7 +4,7 @@
 
 namespace urchin
 {
-    PathNode::PathNode(NavTriangleRef triangleRef, unsigned int gScore, unsigned int hScore) :
+    PathNode::PathNode(NavTriangleRef triangleRef, float gScore, float hScore) :
             triangleRef(triangleRef),
             gScore(gScore),
             hScore(hScore),

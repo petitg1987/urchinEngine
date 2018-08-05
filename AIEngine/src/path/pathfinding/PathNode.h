@@ -12,7 +12,7 @@ namespace urchin
     class PathNode
     {
         public:
-            PathNode(NavTriangleRef, unsigned int, unsigned int);
+            PathNode(NavTriangleRef, float, float);
 
             const NavTriangleRef getTriangleRef() const;
             NavEdgeRef retrieveNavEdgeRef() const;
