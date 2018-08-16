@@ -14,8 +14,8 @@ set(SOURCE_FILES
         src/ai/path/navmesh/PolygonsUnionTest.h
         src/ai/path/navmesh/TriangulationTest.cpp
         src/ai/path/navmesh/TriangulationTest.h
-        src/math/algebra/QuaternionEulerTest.cpp
-        src/math/algebra/QuaternionEulerTest.h
+        src/math/algebra/QuaternionTest.cpp
+        src/math/algebra/QuaternionTest.h
         src/math/geometry/AABBoxCollisionTest.cpp
         src/math/geometry/AABBoxCollisionTest.h
         src/math/geometry/ClosestPointTest.cpp

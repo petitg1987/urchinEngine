@@ -289,6 +289,17 @@ namespace urchin
 				(k0 * W) + (k1 * q1w));
 	}
 
+	template<class T> Quaternion<T> Quaternion<T>::lerp(const Quaternion &q, T t) const
+	{
+		float oneMinusT = 1.0f - t;
+		Quaternion<T> lerpResult(
+				oneMinusT*X + t*q.X,
+				oneMinusT*Y + t*q.Y,
+				oneMinusT*Z + t*q.Z,
+				oneMinusT*W + t*q.W);
+		return lerpResult.normalize();
+	}
+
 	template<class T> Matrix4<T> Quaternion<T>::toMatrix4() const
 	{
 		const T xx = X * X;

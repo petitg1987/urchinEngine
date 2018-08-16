@@ -1,11 +1,11 @@
-#ifndef URCHINENGINE_QUATERNIONEULERTEST_H
-#define URCHINENGINE_QUATERNIONEULERTEST_H
+#ifndef URCHINENGINE_QUATERNIONTEST_H
+#define URCHINENGINE_QUATERNIONTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 #include "UrchinCommon.h"
 
-class QuaternionEulerTest : public CppUnit::TestFixture
+class QuaternionTest : public CppUnit::TestFixture
 {
 	public:
 		static CppUnit::Test *suite();
@@ -23,6 +23,11 @@ class QuaternionEulerTest : public CppUnit::TestFixture
 		void eulerYZY();
 		void eulerZXZ();
 		void eulerZYZ();
+
+		void slerp50Rotation();
+        void slerp25Rotation();
+		void lerp50Rotation();
+		void lerp25Rotation();
 };
 
 #endif

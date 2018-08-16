@@ -1,11 +1,11 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "QuaternionEulerTest.h"
+#include "QuaternionTest.h"
 #include "math/algebra/MathValue.h"
 #include "AssertHelper.h"
 using namespace urchin;
 
-void QuaternionEulerTest::eulerXYZ()
+void QuaternionTest::eulerXYZ()
 {
 	Quaternion<float> quaternion(Vector3<float>(1.0, PI_VALUE/4.0, 10.0), Quaternion<float>::RotationSequence::XYZ);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XYZ);
@@ -13,7 +13,7 @@ void QuaternionEulerTest::eulerXYZ()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XYZ));
 }
 
-void QuaternionEulerTest::eulerXZY()
+void QuaternionTest::eulerXZY()
 {
 	Quaternion<float> quaternion(Vector3<float>(1.0, PI_VALUE/4.0, 2.0), Quaternion<float>::RotationSequence::XZY);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XZY);
@@ -21,7 +21,7 @@ void QuaternionEulerTest::eulerXZY()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XZY));
 }
 
-void QuaternionEulerTest::eulerYXZ()
+void QuaternionTest::eulerYXZ()
 {
 	Quaternion<float> quaternion(Vector3<float>(-1.0, PI_VALUE/2.0, 2.0), Quaternion<float>::RotationSequence::YXZ);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YXZ);
@@ -29,7 +29,7 @@ void QuaternionEulerTest::eulerYXZ()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YXZ));
 }
 
-void QuaternionEulerTest::eulerYZX()
+void QuaternionTest::eulerYZX()
 {
 	Quaternion<float> quaternion(Vector3<float>(PI_VALUE/2.0, -1.0, 2.0), Quaternion<float>::RotationSequence::YZX);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YZX);
@@ -37,7 +37,7 @@ void QuaternionEulerTest::eulerYZX()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YZX));
 }
 
-void QuaternionEulerTest::eulerZXY()
+void QuaternionTest::eulerZXY()
 {
 	Quaternion<float> quaternion(Vector3<float>(0.0, PI_VALUE/2.0, PI_VALUE/2.0), Quaternion<float>::RotationSequence::ZXY);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZXY);
@@ -45,7 +45,7 @@ void QuaternionEulerTest::eulerZXY()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZXY));
 }
 
-void QuaternionEulerTest::eulerZYX()
+void QuaternionTest::eulerZYX()
 {
 	Quaternion<float> quaternion(Vector3<float>(0.0, 0.0, 2.0), Quaternion<float>::RotationSequence::ZYX);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZYX);
@@ -53,7 +53,7 @@ void QuaternionEulerTest::eulerZYX()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZYX));
 }
 
-void QuaternionEulerTest::eulerXYX()
+void QuaternionTest::eulerXYX()
 {
 	Quaternion<float> quaternion(Vector3<float>(PI_VALUE/2.0, -1.0, 2.0), Quaternion<float>::RotationSequence::XYX);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XYX);
@@ -61,7 +61,7 @@ void QuaternionEulerTest::eulerXYX()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XYX));
 }
 
-void QuaternionEulerTest::eulerXZX()
+void QuaternionTest::eulerXZX()
 {
 	Quaternion<float> quaternion(Vector3<float>(PI_VALUE, -3.0, PI_VALUE/4.0), Quaternion<float>::RotationSequence::XZX);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::XZX);
@@ -69,7 +69,7 @@ void QuaternionEulerTest::eulerXZX()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::XZX));
 }
 
-void QuaternionEulerTest::eulerYXY()
+void QuaternionTest::eulerYXY()
 {
 	Quaternion<float> quaternion(Vector3<float>(PI_VALUE, -3.0, PI_VALUE/4.0), Quaternion<float>::RotationSequence::YXY);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YXY);
@@ -77,7 +77,7 @@ void QuaternionEulerTest::eulerYXY()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YXY));
 }
 
-void QuaternionEulerTest::eulerYZY()
+void QuaternionTest::eulerYZY()
 {
 	Quaternion<float> quaternion(Vector3<float>(0.0, 0.0, 2.0), Quaternion<float>::RotationSequence::YZY);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::YZY);
@@ -85,7 +85,7 @@ void QuaternionEulerTest::eulerYZY()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::YZY));
 }
 
-void QuaternionEulerTest::eulerZXZ()
+void QuaternionTest::eulerZXZ()
 {
 	Quaternion<float> quaternion(Vector3<float>(0.0, PI_VALUE/2.0, PI_VALUE/2.0), Quaternion<float>::RotationSequence::ZXZ);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZXZ);
@@ -93,7 +93,7 @@ void QuaternionEulerTest::eulerZXZ()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZXZ));
 }
 
-void QuaternionEulerTest::eulerZYZ()
+void QuaternionTest::eulerZYZ()
 {
 	Quaternion<float> quaternion(Vector3<float>(PI_VALUE/2.0, -1.0, PI_VALUE/2.0), Quaternion<float>::RotationSequence::ZYZ);
 	Vector3<float> eulerAngle = quaternion.toEulerAngle(Quaternion<float>::RotationSequence::ZYZ);
@@ -101,23 +101,84 @@ void QuaternionEulerTest::eulerZYZ()
 	AssertHelper::assertQuaternionFloatEquals(quaternion, Quaternion<float>(eulerAngle, Quaternion<float>::RotationSequence::ZYZ));
 }
 
-CppUnit::Test *QuaternionEulerTest::suite()
+void QuaternionTest::slerp50Rotation()
+{
+    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
+    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), 3.14159265359/2.0);
+    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.5);
+
+    Vector3<float> axis;
+    float angle;
+    slerpQuaternion.toAxisAngle(axis, angle);
+
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertFloatEquals(angle, 3.14159265359/4.0);
+}
+
+void QuaternionTest::slerp25Rotation()
+{
+    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
+    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), 3.14159265359/2.0);
+    Quaternion<float> slerpQuaternion = q1.slerp(q2, 0.25);
+
+    Vector3<float> axis;
+    float angle;
+    slerpQuaternion.toAxisAngle(axis, angle);
+
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertFloatEquals(angle, 3.14159265359/8.0);
+}
+
+void QuaternionTest::lerp50Rotation()
+{
+	Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
+	Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), 3.14159265359/2.0);
+	Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.5);
+
+	Vector3<float> axis;
+	float angle;
+	lerpQuaternion.toAxisAngle(axis, angle);
+
+	AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+	AssertHelper::assertFloatEquals(angle, 3.14159265359/4.0);
+}
+
+void QuaternionTest::lerp25Rotation()
+{
+    Quaternion<float> q1(Vector3<float>(0.0, 1.0, 0.0), 0.0);
+    Quaternion<float> q2(Vector3<float>(0.0, 1.0, 0.0), 3.14159265359/2.0);
+    Quaternion<float> lerpQuaternion = q1.lerp(q2, 0.25);
+
+    Vector3<float> axis;
+    float angle;
+    lerpQuaternion.toAxisAngle(axis, angle);
+
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertFloatEquals(angle, 0.3769595623);
+}
+
+CppUnit::Test *QuaternionTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("QuaternionTest");
 
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerXYZ", &QuaternionEulerTest::eulerXYZ));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerXZY", &QuaternionEulerTest::eulerXZY));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerYXZ", &QuaternionEulerTest::eulerYXZ));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerYZX", &QuaternionEulerTest::eulerYZX));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerZXY", &QuaternionEulerTest::eulerZXY));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerZYX", &QuaternionEulerTest::eulerZYX));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYZ", &QuaternionTest::eulerXYZ));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZY", &QuaternionTest::eulerXZY));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYXZ", &QuaternionTest::eulerYXZ));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYZX", &QuaternionTest::eulerYZX));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZXY", &QuaternionTest::eulerZXY));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZYX", &QuaternionTest::eulerZYX));
 
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerXYX", &QuaternionEulerTest::eulerXYX));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerXZX", &QuaternionEulerTest::eulerXZX));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerYXY", &QuaternionEulerTest::eulerYXY));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerYZY", &QuaternionEulerTest::eulerYZY));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerZXZ", &QuaternionEulerTest::eulerZXZ));
-	suite->addTest(new CppUnit::TestCaller<QuaternionEulerTest>("eulerZYZ", &QuaternionEulerTest::eulerZYZ));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYX", &QuaternionTest::eulerXYX));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZX", &QuaternionTest::eulerXZX));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYXY", &QuaternionTest::eulerYXY));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerYZY", &QuaternionTest::eulerYZY));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZXZ", &QuaternionTest::eulerZXZ));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerZYZ", &QuaternionTest::eulerZYZ));
+
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("slerp50Rotation", &QuaternionTest::slerp50Rotation));
+    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("slerp25Rotation", &QuaternionTest::slerp50Rotation));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerp50Rotation", &QuaternionTest::lerp50Rotation));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerp25Rotation", &QuaternionTest::lerp25Rotation));
 
 	return suite;
 }

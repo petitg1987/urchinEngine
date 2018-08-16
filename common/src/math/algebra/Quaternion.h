@@ -47,6 +47,7 @@ namespace urchin
 			T dotProduct(const Quaternion<T> &) const;
 			Point3<T> rotatePoint(const Point3<T> &) const;
 			Quaternion<T> slerp(const Quaternion<T> &, T t) const;
+			Quaternion<T> lerp(const Quaternion<T> &, T t) const;
 		
 			Matrix4<T> toMatrix4() const;
 			Matrix3<T> toMatrix3() const;

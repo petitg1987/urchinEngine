@@ -2,7 +2,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 #include "system/FileHandlerTest.h"
-#include "math/algebra/QuaternionEulerTest.h"
+#include "math/algebra/QuaternionTest.h"
 #include "math/geometry/OrthogonalProjectionTest.h"
 #include "math/geometry/ClosestPointTest.h"
 #include "math/geometry/AABBoxCollisionTest.h"
@@ -44,7 +44,7 @@ int main()
 	runner.addTest(FileHandlerTest::suite());
 
 	//math - algebra
-	runner.addTest(QuaternionEulerTest::suite());
+	runner.addTest(QuaternionTest::suite());
 
 	//math - geometry
 	runner.addTest(OrthogonalProjectionTest::suite());

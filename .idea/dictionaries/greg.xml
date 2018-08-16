@@ -5,11 +5,13 @@
       <w>ambience</w>
       <w>grayscale</w>
       <w>heightfield</w>
+      <w>lerp</w>
       <w>pathfinding</w>
       <w>polytope</w>
       <w>quadtree</w>
       <w>quadtrees</w>
       <w>quatree</w>
+      <w>slerp</w>
       <w>struct</w>
     </words>
   </dictionary>
