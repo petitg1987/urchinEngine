@@ -5,7 +5,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void QuaternionTest::multiplyEulerQuaternions()
+void QuaternionTest::multiplyAxisAngleQuaternions()
 {
     Quaternion<float> axisAngle09DegreeQuaternion(Vector3<float>(0.0, 1.0, 0.0), PI_VALUE/20.0);
     Quaternion<float> axisAngle45DegreeQuaternion(Vector3<float>(0.0, 1.0, 0.0), PI_VALUE/4.0);
@@ -189,7 +189,7 @@ CppUnit::Test *QuaternionTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("QuaternionTest");
 
-	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyEulerQuaternions", &QuaternionTest::multiplyEulerQuaternions));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyAxisAngleQuaternions", &QuaternionTest::multiplyAxisAngleQuaternions));
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions", &QuaternionTest::multiplyLookAtQuaternions));
 
 	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYZ", &QuaternionTest::eulerXYZ));
