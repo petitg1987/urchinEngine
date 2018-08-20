@@ -4,6 +4,7 @@
 
 #include "math/algebra/Quaternion.h"
 #include "math/algebra/MathValue.h"
+#include "math/algorithm/MathAlgorithm.h"
 
 namespace urchin
 {
@@ -145,6 +146,22 @@ namespace urchin
 		Z = finalQuaternion.Z;
 		W = finalQuaternion.W;
 	}
+
+    template<class T> Quaternion<T>::Quaternion(const Vector3<T> &normalizedLookAt, const Vector3<T> &normalizedUp)
+    {
+		#ifdef _DEBUG
+			assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
+			assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
+        #endif
+
+        Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
+
+        W = sqrtf(1.0 + right.X + normalizedUp.Y + normalizedLookAt.Z) * 0.5;
+        float w4Recip = 1.0 / (4.0 * W);
+        X = (normalizedUp.Z - normalizedLookAt.Y) * w4Recip;
+        Y = (normalizedLookAt.X - right.Z) * w4Recip;
+        Z = (right.Y - normalizedUp.X) * w4Recip;
+    }
 
 	template<class T> void Quaternion<T>::computeW()
 	{

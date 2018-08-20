@@ -33,8 +33,9 @@ namespace urchin
 			Quaternion();
 			explicit Quaternion(T Xu, T Yu, T Zu, T Wu);
 			explicit Quaternion(const Matrix3<T> &);
-			explicit Quaternion(const Vector3<T> &, T);
-			explicit Quaternion(const Vector3<T> &, RotationSequence);
+			Quaternion(const Vector3<T> &, T);
+			Quaternion(const Vector3<T> &, RotationSequence);
+			Quaternion(const Vector3<T> &, const Vector3<T> &normalizedUp = Vector3<T>(0.0, 1.0, 0.0));
 
 			void computeW();
 			void setIdentity();
@@ -48,7 +49,7 @@ namespace urchin
 			Point3<T> rotatePoint(const Point3<T> &) const;
 			Quaternion<T> slerp(const Quaternion<T> &, T t) const;
 			Quaternion<T> lerp(const Quaternion<T> &, T t) const;
-		
+
 			Matrix4<T> toMatrix4() const;
 			Matrix3<T> toMatrix3() const;
 			void toAxisAngle(Vector3<T> &, T &) const;

@@ -5,6 +5,34 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
+void QuaternionTest::multiplyEulerQuaternions()
+{
+    Quaternion<float> axisAngle09DegreeQuaternion(Vector3<float>(0.0, 1.0, 0.0), 3.14159265359/20.0);
+    Quaternion<float> axisAngle45DegreeQuaternion(Vector3<float>(0.0, 1.0, 0.0), 3.14159265359/4.0);
+    Quaternion<float> totalRotation = axisAngle09DegreeQuaternion * axisAngle45DegreeQuaternion;
+
+    Vector3<float> axis;
+    float angle;
+    totalRotation.toAxisAngle(axis, angle);
+
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertFloatEquals(angle, 3.14159265359/20.0 + 3.14159265359/4.0);
+}
+
+void QuaternionTest::multiplyLookAtQuaternions()
+{
+	Quaternion<float> lookAt09DegreeQuaternion(Vector3<float>(0.157732876, 0.0, 1.0).normalize(), Vector3<float>(0.0, 1.0, 0.0)); //9 degrees
+	Quaternion<float> lookAt45DegreeQuaternion(Vector3<float>(0.70710678118, 0.0, 0.70710678118), Vector3<float>(0.0, 1.0, 0.0)); //45 degrees
+	Quaternion<float> totalRotation = lookAt09DegreeQuaternion * lookAt45DegreeQuaternion;
+
+    Vector3<float> axis;
+    float angle;
+    totalRotation.toAxisAngle(axis, angle);
+
+    AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+    AssertHelper::assertFloatEquals(angle, 3.14159265359/20.0 + 3.14159265359/4.0);
+}
+
 void QuaternionTest::eulerXYZ()
 {
 	Quaternion<float> quaternion(Vector3<float>(1.0, PI_VALUE/4.0, 10.0), Quaternion<float>::RotationSequence::XYZ);
@@ -160,6 +188,9 @@ void QuaternionTest::lerp25Rotation()
 CppUnit::Test *QuaternionTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("QuaternionTest");
+
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyEulerQuaternions", &QuaternionTest::multiplyEulerQuaternions));
+    suite->addTest(new CppUnit::TestCaller<QuaternionTest>("multiplyLookAtQuaternions", &QuaternionTest::multiplyLookAtQuaternions));
 
 	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXYZ", &QuaternionTest::eulerXYZ));
 	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("eulerXZY", &QuaternionTest::eulerXZY));
