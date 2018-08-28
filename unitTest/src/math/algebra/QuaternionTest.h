@@ -10,8 +10,10 @@ class QuaternionTest : public CppUnit::TestFixture
 	public:
 		static CppUnit::Test *suite();
 
-		void multiplyAxisAngleQuaternions();
-		void multiplyLookAtQuaternions();
+		void multiplyAxisAngleQuaternions9And45();
+		void multiplyLookAtQuaternions9And45();
+		void multiplyLookAtQuaternions180And45();
+        void multiplyLookAtQuaternions180And45UpDown();
 
 		void eulerXYZ();
 		void eulerXZY();

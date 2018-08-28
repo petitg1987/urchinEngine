@@ -155,12 +155,41 @@ namespace urchin
         #endif
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
+        T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
 
-        W = sqrtf(1.0 + right.X + normalizedUp.Y + normalizedLookAt.Z) * 0.5;
-        float w4Recip = 1.0 / (4.0 * W);
-        X = (normalizedUp.Z - normalizedLookAt.Y) * w4Recip;
-        Y = (normalizedLookAt.X - right.Z) * w4Recip;
-        Z = (right.Y - normalizedUp.X) * w4Recip;
+        if(det > 0.0)
+		{
+        	T sqrtValue = sqrtf(1.0 + det);
+			T halfOverSqrt = 0.5 / sqrtValue;
+			X = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
+			Y = (normalizedLookAt.X - right.Z) * halfOverSqrt;
+			Z = (right.Y - normalizedUp.X) * halfOverSqrt;
+            W = sqrtValue * 0.5;
+		}else if ((right.X >= normalizedUp.Y) && (right.X >= normalizedLookAt.Z))
+        {
+            T sqrtValue = sqrtf(((1.0 + right.X) - normalizedUp.Y) - normalizedLookAt.Z);
+            T halfOverSqrt = 0.5 / sqrtValue;
+            X = 0.5 * sqrtValue;
+            Y = (right.Y + normalizedUp.X) * halfOverSqrt;
+            Z = (right.Z + normalizedLookAt.X) * halfOverSqrt;
+            W = (normalizedUp.Z - normalizedLookAt.Y) * halfOverSqrt;
+        }else if (normalizedUp.Y > normalizedLookAt.Z)
+        {
+            T sqrtValue = sqrtf(((1.0 + normalizedUp.Y) - right.X) - normalizedLookAt.Z);
+            T halfOverSqrt = 0.5 / sqrtValue;
+            X = (normalizedUp.X+ right.Y) * halfOverSqrt;
+            Y = 0.5 * sqrtValue;
+            Z = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
+            W = (normalizedLookAt.X - right.Z) * halfOverSqrt;
+        }else
+        {
+            T sqrtValue = sqrtf(((1.0 + normalizedLookAt.Z) - right.X) - normalizedUp.Y);
+            T halfOverSqrt = 0.5 / sqrtValue;
+            X = (normalizedLookAt.X + right.Z) * halfOverSqrt;
+            Y = (normalizedLookAt.Y + normalizedUp.Z) * halfOverSqrt;
+            Z = 0.5 * sqrtValue;
+            W = (right.Y - normalizedUp.X) * halfOverSqrt;
+        }
     }
 
 	template<class T> void Quaternion<T>::computeW()

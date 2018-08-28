@@ -1,6 +1,6 @@
 #include "NavMeshConfig.h"
 
-#define DEFAULT_MAX_SLOPE (3.14159f/4.0f) //45 degrees
+#define DEFAULT_MAX_SLOPE (PI_VALUE/4.0f) //45 degrees
 
 namespace urchin
 {

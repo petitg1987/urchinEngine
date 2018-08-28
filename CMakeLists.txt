@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.10)
+set(OpenGL_GL_PREFERENCE "GLVND")
 project(urchinEngine)
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")

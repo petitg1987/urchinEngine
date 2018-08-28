@@ -9,7 +9,7 @@
 #include "collision/broadphase/PairContainer.h"
 #include "PhysicsWorld.h"
 
-#define DEFAULT_MAX_SLOPE (3.14159f/4.0f) //45 degrees
+#define DEFAULT_MAX_SLOPE (PI_VALUE/4.0f) //45 degrees
 #define MIN_RECOVERABLE_DEPTH 0.0001f
 #define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f;
 #define MAX_VERTICAL_VELOCITY 55.0f
