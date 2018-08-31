@@ -5,7 +5,7 @@
 namespace urchin
 {
 
-	LinesModel::LinesModel(const std::vector<Point3<float>> &linesPoints, int linesSize) :
+	LinesModel::LinesModel(const std::vector<Point3<float>> &linesPoints, float linesSize) :
 			linesPoints(linesPoints),
 			linesSize(linesSize)
 	{

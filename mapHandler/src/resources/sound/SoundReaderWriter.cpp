@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "SoundReaderWriter.h"
 
 namespace urchin
@@ -25,7 +27,7 @@ namespace urchin
 		std::string filename = filenameChunk->getStringValue();
 
 		std::string soundType = soundChunk->getAttributeValue(TYPE_ATTR);
-		if(soundType.compare(POINT_VALUE)==0)
+		if(soundType == POINT_VALUE)
 		{
 			std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), soundChunk);
 			PointSound *pointSound = new PointSound(filename, positionChunk->getPoint3Value());
@@ -34,7 +36,7 @@ namespace urchin
 			pointSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());
 
 			return pointSound;
-		}else if(soundType.compare(AMBIENT_VALUE)==0)
+		}else if(soundType == AMBIENT_VALUE)
 		{
 			return new AmbientSound(filename);
 		}
@@ -49,7 +51,7 @@ namespace urchin
 
 		if(sound->getSoundType()==Sound::POINT)
 		{
-			const PointSound *pointSound = static_cast<const PointSound *>(sound);
+			const auto *pointSound = dynamic_cast<const PointSound *>(sound);
 			soundChunk->setAttribute(XmlAttribute(TYPE_ATTR, POINT_VALUE));
 
 			std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), soundChunk);
@@ -68,13 +70,13 @@ namespace urchin
 
 	void SoundReaderWriter::loadPropertiesOn(Sound *sound, std::shared_ptr<XmlChunk> soundChunk, const XmlParser &xmlParser) const
 	{
-		std::shared_ptr<XmlChunk> volumeChunk = xmlParser.getUniqueChunk(true, VOLUME_TAG, XmlAttribute(), soundChunk);
+		std::shared_ptr<XmlChunk> volumeChunk = xmlParser.getUniqueChunk(true, VOLUME_TAG, XmlAttribute(), std::move(soundChunk));
 		sound->setVolume(volumeChunk->getFloatValue());
 	}
 
 	void SoundReaderWriter::writePropertiesOn(std::shared_ptr<XmlChunk> soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> volumeChunk = xmlWriter.createChunk(VOLUME_TAG, XmlAttribute(), soundChunk);
+		std::shared_ptr<XmlChunk> volumeChunk = xmlWriter.createChunk(VOLUME_TAG, XmlAttribute(), std::move(soundChunk));
 		volumeChunk->setFloatValue(sound->getVolume());
 	}
 

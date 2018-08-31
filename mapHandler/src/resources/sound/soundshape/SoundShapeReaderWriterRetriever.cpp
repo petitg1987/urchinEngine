@@ -10,10 +10,10 @@ namespace urchin
 	std::shared_ptr<SoundShapeReaderWriter> SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(std::shared_ptr<XmlChunk> shapeChunk)
 	{
 		std::string shapeType = shapeChunk->getAttributeValue(TYPE_ATTR);
-		if(shapeType.compare(SPHERE_VALUE)==0)
+		if(shapeType == SPHERE_VALUE)
 		{
 			return std::make_shared<SoundSphereReaderWriter>();
-		}else if(shapeType.compare(BOX_VALUE)==0)
+		}else if(shapeType == BOX_VALUE)
 		{
 			return std::make_shared<SoundBoxReaderWriter>();
 		}
@@ -32,7 +32,7 @@ namespace urchin
 			return std::make_shared<SoundBoxReaderWriter>();
 		}
 
-		throw std::invalid_argument("Unknown shape type: " + shapeType);
+		throw std::invalid_argument("Unknown shape type: " + std::to_string(shapeType));
 	}
 
 }

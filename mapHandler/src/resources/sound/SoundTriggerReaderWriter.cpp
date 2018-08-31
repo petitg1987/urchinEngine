@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "SoundTriggerReaderWriter.h"
 #include "resources/sound/soundshape/SoundShapeReaderWriterRetriever.h"
 #include "resources/sound/soundshape/SoundShapeReaderWriter.h"
@@ -7,14 +9,14 @@ namespace urchin
 
 	SoundTrigger *SoundTriggerReaderWriter::loadFrom(std::shared_ptr<XmlChunk> soundTriggerChunk, const XmlParser &xmlParser) const
 	{
-		SoundTrigger *soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);
+		SoundTrigger *soundTrigger = buildSoundTriggerFrom(std::move(soundTriggerChunk), xmlParser);
 
 		return soundTrigger;
 	}
 
 	void SoundTriggerReaderWriter::writeOn(std::shared_ptr<XmlChunk> soundTriggerChunk, const SoundTrigger *soundTrigger, XmlWriter &xmlWriter) const
 	{
-		buildChunkFrom(soundTriggerChunk, soundTrigger, xmlWriter);
+		buildChunkFrom(std::move(soundTriggerChunk), soundTrigger, xmlWriter);
 	}
 
 	SoundTrigger *SoundTriggerReaderWriter::buildSoundTriggerFrom(std::shared_ptr<XmlChunk> soundTriggerChunk, const XmlParser &xmlParser) const
@@ -23,10 +25,10 @@ namespace urchin
 		SoundBehavior soundBehavior = buildSoundBehaviorFrom(soundBehaviorChunk, xmlParser);
 
 		std::string soundTriggerType = soundTriggerChunk->getAttributeValue(TYPE_ATTR);
-		if(soundTriggerType.compare(MANUAL_VALUE)==0)
+		if(soundTriggerType == MANUAL_VALUE)
 		{
 			return new ManualTrigger(soundBehavior);
-		}else if(soundTriggerType.compare(SHAPE_VALUE)==0)
+		}else if(soundTriggerType == SHAPE_VALUE)
 		{
 			std::shared_ptr<XmlChunk> soundShapeChunk = xmlParser.getUniqueChunk(true, SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);
 			std::shared_ptr<SoundShapeReaderWriter> soundShapeReaderWriter = SoundShapeReaderWriterRetriever::retrieveShapeReaderWriter(soundShapeChunk);
@@ -45,7 +47,7 @@ namespace urchin
 			soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, MANUAL_VALUE));
 		}else if(soundTrigger->getTriggerType()==SoundTrigger::SHAPE_TRIGGER)
 		{
-			const ShapeTrigger *shapeTrigger = static_cast<const ShapeTrigger *>(soundTrigger);
+			const auto *shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger);
 			soundTriggerChunk->setAttribute(XmlAttribute(TYPE_ATTR, SHAPE_VALUE));
 
 			std::shared_ptr<XmlChunk> soundShapeChunk = xmlWriter.createChunk(SOUND_SHAPE_TAG, XmlAttribute(), soundTriggerChunk);
@@ -64,10 +66,10 @@ namespace urchin
 	{
 		std::shared_ptr<XmlChunk> playBehaviorChunk = xmlParser.getUniqueChunk(true, PLAY_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
 		SoundBehavior::PlayBehavior playBehavior;
-		if(playBehaviorChunk->getStringValue().compare(PLAY_ONCE_VALUE)==0)
+		if(playBehaviorChunk->getStringValue() == PLAY_ONCE_VALUE)
 		{
 			playBehavior = SoundBehavior::PLAY_ONCE;
-		}else if(playBehaviorChunk->getStringValue().compare(PLAY_LOOP_VALUE)==0)
+		}else if(playBehaviorChunk->getStringValue() == PLAY_LOOP_VALUE)
 		{
 			playBehavior = SoundBehavior::PLAY_LOOP;
 		}else
@@ -77,10 +79,10 @@ namespace urchin
 
 		std::shared_ptr<XmlChunk> stopBehaviorChunk = xmlParser.getUniqueChunk(true, STOP_BEHAVIOR_TAG, XmlAttribute(), soundBehaviorChunk);
 		SoundBehavior::StopBehavior stopBehavior;
-		if(stopBehaviorChunk->getStringValue().compare(INSTANT_STOP_VALUE)==0)
+		if(stopBehaviorChunk->getStringValue() == INSTANT_STOP_VALUE)
 		{
 			stopBehavior = SoundBehavior::INSTANT_STOP;
-		}else if(stopBehaviorChunk->getStringValue().compare(SMOOTH_STOP_VALUE)==0)
+		}else if(stopBehaviorChunk->getStringValue() == SMOOTH_STOP_VALUE)
 		{
 			stopBehavior = SoundBehavior::SMOOTH_STOP;
 		}else
@@ -89,13 +91,13 @@ namespace urchin
 		}
 
 		std::shared_ptr<XmlChunk> volumeDecreasePercentageOnStopChunk = xmlParser.getUniqueChunk(false, VOLUME_DECREASE_PERCENTAGE_ON_STOP_TAG, XmlAttribute(), soundBehaviorChunk);
-		if(volumeDecreasePercentageOnStopChunk.get()==nullptr)
+		if(volumeDecreasePercentageOnStopChunk ==nullptr)
 		{
-			return SoundBehavior(playBehavior, stopBehavior);
+			return {playBehavior, stopBehavior};
 		}
 
 		float volumeDecreasePercentageOnStop = volumeDecreasePercentageOnStopChunk->getFloatValue();
-		return SoundBehavior(playBehavior, stopBehavior, volumeDecreasePercentageOnStop);
+		return {playBehavior, stopBehavior, volumeDecreasePercentageOnStop};
 	}
 
 	void SoundTriggerReaderWriter::buildChunkFrom(std::shared_ptr<XmlChunk> soundBehaviorChunk, const SoundBehavior &soundBehavior, XmlWriter &xmlWriter) const

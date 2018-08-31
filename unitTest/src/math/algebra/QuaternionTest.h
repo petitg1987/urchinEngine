@@ -33,6 +33,9 @@ class QuaternionTest : public CppUnit::TestFixture
         void slerp25Rotation();
 		void lerp50Rotation();
 		void lerp25Rotation();
+
+		void toAxisAngle90();
+		void toAxisAngle135();
 };
 
 #endif

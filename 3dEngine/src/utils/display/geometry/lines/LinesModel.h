@@ -12,7 +12,7 @@ namespace urchin
 	class LinesModel : public GeometryModel
 	{
 		public:
-			LinesModel(const std::vector<Point3<float>> &, int);
+			LinesModel(const std::vector<Point3<float>> &, float);
             LinesModel(const Line3D<float> &, int);
 
 		protected:
@@ -23,7 +23,7 @@ namespace urchin
 
 		private:
 			std::vector<Point3<float>> linesPoints;
-			int linesSize;
+			float linesSize;
 	};
 
 }

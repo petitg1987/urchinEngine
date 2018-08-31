@@ -18,11 +18,10 @@ namespace urchin
 		#define MARGIN_TAG "margin"
 
 		public:
-			SoundSphereReaderWriter();
-			virtual ~SoundSphereReaderWriter();
+			~SoundSphereReaderWriter() override = default;
 
-			SoundShape *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeOn(std::shared_ptr<XmlChunk>, const SoundShape *, XmlWriter &) const;
+			SoundShape *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
+			void writeOn(std::shared_ptr<XmlChunk>, const SoundShape *, XmlWriter &) const override;
 	};
 
 }

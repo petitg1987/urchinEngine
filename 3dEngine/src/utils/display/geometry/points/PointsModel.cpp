@@ -5,14 +5,14 @@
 namespace urchin
 {
 
-	PointsModel::PointsModel(const std::vector<Point3<float>> &points, int pointsSize):
+	PointsModel::PointsModel(const std::vector<Point3<float>> &points, float pointsSize):
 			points(points),
 			pointsSize(pointsSize)
 	{
 		initialize();
 	}
 
-	PointsModel::PointsModel(const Point3<float> &point, int pointsSize):
+	PointsModel::PointsModel(const Point3<float> &point, float pointsSize):
 		pointsSize(pointsSize)
 	{
 		points.push_back(point);

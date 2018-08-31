@@ -19,8 +19,7 @@ namespace urchin
 		#define BOX_VALUE "BOX"
 
 		public:
-			SoundShapeReaderWriter();
-			virtual ~SoundShapeReaderWriter();
+			virtual ~SoundShapeReaderWriter() = default;
 
 			virtual SoundShape *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const = 0;
 			virtual void writeOn(std::shared_ptr<XmlChunk>, const SoundShape *, XmlWriter &) const = 0;

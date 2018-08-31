@@ -346,6 +346,11 @@ namespace urchin
 		return lerpResult.normalize();
 	}
 
+	template<class T> Vector3<T> Quaternion<T>::getForwardDirection() const
+	{
+		return rotatePoint(Point3<T>(0.0, 0.0, 1.0)).toVector();
+	}
+
 	template<class T> Matrix4<T> Quaternion<T>::toMatrix4() const
 	{
 		const T xx = X * X;

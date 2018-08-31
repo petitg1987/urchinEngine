@@ -3,14 +3,4 @@
 namespace urchin
 {
 
-	SoundShapeReaderWriter::SoundShapeReaderWriter()
-	{
-
-	}
-
-	SoundShapeReaderWriter::~SoundShapeReaderWriter()
-	{
-
-	}
-
 }

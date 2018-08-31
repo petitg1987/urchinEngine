@@ -213,6 +213,30 @@ void QuaternionTest::lerp25Rotation()
     AssertHelper::assertFloatEquals(angle, 0.3769595623);
 }
 
+void QuaternionTest::toAxisAngle90()
+{
+	Quaternion<float> q(Vector3<float>(0.0, 1.0, 0.0), PI_VALUE/2.0f);
+
+	Vector3<float> axis;
+	float angle;
+	q.toAxisAngle(axis, angle);
+
+	AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+	AssertHelper::assertFloatEquals(angle, PI_VALUE/2.0f);
+}
+
+void QuaternionTest::toAxisAngle135()
+{ //TODO fix unit test
+	Quaternion<float> q(Vector3<float>(-0.70710678118, 0, -0.70710678118));
+
+	Vector3<float> axis;
+	float angle;
+	q.toAxisAngle(axis, angle);
+
+	AssertHelper::assertVector3FloatEquals(axis, Vector3<float>(0.0, 1.0, 0.0));
+	AssertHelper::assertFloatEquals(angle, PI_VALUE*(3.0/4.0));
+}
+
 CppUnit::Test *QuaternionTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("QuaternionTest");
@@ -240,6 +264,9 @@ CppUnit::Test *QuaternionTest::suite()
     suite->addTest(new CppUnit::TestCaller<QuaternionTest>("slerp25Rotation", &QuaternionTest::slerp50Rotation));
 	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerp50Rotation", &QuaternionTest::lerp50Rotation));
 	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("lerp25Rotation", &QuaternionTest::lerp25Rotation));
+
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("toAxisAngle90", &QuaternionTest::toAxisAngle90));
+	suite->addTest(new CppUnit::TestCaller<QuaternionTest>("toAxisAngle135", &QuaternionTest::toAxisAngle135));
 
 	return suite;
 }

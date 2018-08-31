@@ -21,11 +21,10 @@ namespace urchin
 		#define ANGLE_TAG "angle"
 
 		public:
-			SoundBoxReaderWriter();
-			virtual ~SoundBoxReaderWriter();
+			~SoundBoxReaderWriter() override = default;
 
-			SoundShape *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeOn(std::shared_ptr<XmlChunk>, const SoundShape *, XmlWriter &) const;
+			SoundShape *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
+			void writeOn(std::shared_ptr<XmlChunk>, const SoundShape *, XmlWriter &) const override;
 	};
 
 }

@@ -14,7 +14,7 @@ namespace urchin
 	{
 		if(ccwPointIndices.size()<3)
 		{
-			throw std::runtime_error("A indexed face must be composed of at least three points. Number of points: " + ccwPointIndices.size());
+			throw std::runtime_error("A indexed face must be composed of at least three points. Number of points: " + std::to_string(ccwPointIndices.size()));
 		}
 
 		ccwPoints.reserve(ccwPointIndices.size());

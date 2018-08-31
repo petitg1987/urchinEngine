@@ -3,16 +3,6 @@
 namespace urchin
 {
 
-	SoundBoxReaderWriter::SoundBoxReaderWriter()
-	{
-
-	}
-
-	SoundBoxReaderWriter::~SoundBoxReaderWriter()
-	{
-
-	}
-
 	SoundShape *SoundBoxReaderWriter::loadFrom(std::shared_ptr<XmlChunk> shapeChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> halfSizesChunk = xmlParser.getUniqueChunk(true, HALF_SIZES_TAG, XmlAttribute(), shapeChunk);
@@ -36,25 +26,25 @@ namespace urchin
 	{
 		shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, BOX_VALUE));
 
-		const SoundBox *boxshape = static_cast<const SoundBox *>(soundShape);
+		const auto *boxShape = dynamic_cast<const SoundBox *>(soundShape);
 
 		std::shared_ptr<XmlChunk> halfSizesChunk = xmlWriter.createChunk(HALF_SIZES_TAG, XmlAttribute(), shapeChunk);
-		halfSizesChunk->setVector3Value(boxshape->getHalfSizes());
+		halfSizesChunk->setVector3Value(boxShape->getHalfSizes());
 
 		std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), shapeChunk);
-		positionChunk->setPoint3Value(boxshape->getCenterPosition());
+		positionChunk->setPoint3Value(boxShape->getCenterPosition());
 
 		std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
 		std::shared_ptr<XmlChunk> orientationAxisChunk = xmlWriter.createChunk(AXIS_TAG, XmlAttribute(), orientationChunk);
 		std::shared_ptr<XmlChunk> orientationAngleChunk = xmlWriter.createChunk(ANGLE_TAG, XmlAttribute(), orientationChunk);
 		Vector3<float> orientationAxis;
-		float orienationAngle;
-		boxshape->getOrientation().toAxisAngle(orientationAxis, orienationAngle);
+		float orientationAngle;
+		boxShape->getOrientation().toAxisAngle(orientationAxis, orientationAngle);
 		orientationAxisChunk->setVector3Value(orientationAxis);
-		orientationAngleChunk->setFloatValue(orienationAngle);
+		orientationAngleChunk->setFloatValue(orientationAngle);
 
 		std::shared_ptr<XmlChunk> marginChunk = xmlWriter.createChunk(MARGIN_TAG, XmlAttribute(), shapeChunk);
-		marginChunk->setFloatValue(boxshape->getMargin());
+		marginChunk->setFloatValue(boxShape->getMargin());
 	}
 
 }
