@@ -276,73 +276,93 @@ namespace urchin
 		{
 			return *this;
 		}
-
 		if(t >= 1.0)
 		{
 			return q;
 		}
 
-		//compute "cosine of angle between quaternions" using dot product
 		T cosOmega = dotProduct(q);
+		T qX = q.X;
+		T qY = q.Y;
+		T qZ = q.Z;
+        T qW = q.W;
 
-		//if negative dot, use -q1.  two quaternions q and -q represent the same rotation, but may produce different slerp.  we chose q or -q to rotate using the acute angle.
-		T q1w = q.W;
-		T q1x = q.X;
-		T q1y = q.Y;
-		T q1z = q.Z;
-
-		if(cosOmega < 0.0f)
-		{
-			q1w = -q1w;
-			q1x = -q1x;
-			q1y = -q1y;
-			q1z = -q1z;
-			cosOmega = -cosOmega;
+		if(cosOmega < 0.0)
+		{ //ensure to take shortest path
+            cosOmega = -cosOmega;
+			qX = -qX;
+			qY = -qY;
+			qZ = -qZ;
+            qW = -qW;
 		}
 
-		//we should have two unit quaternions, so dot should be <= 1.0
-		assert(cosOmega < 1.1f);
+        #ifdef _DEBUG
+		    assert(cosOmega < 1.1); //we should have two unit quaternions, so dot should be <= 1.0
+        #endif
 
 		//computes interpolation fraction, checking for quaternions almost exactly the same
 		T k0, k1;
 
-		if(cosOmega > 0.9999f)
+		if(cosOmega > 0.9999)
 		{
-			//very close - just use linear interpolation, which will protect againt a divide by zero
-			k0 = 1.0f - t;
+			//very close - just use linear interpolation, which will protect against a divide by zero
+			k0 = 1.0 - t;
 			k1 = t;
 		}else
 		{
 			//computes the sin of the angle using the trig identity sin^2(omega) + cos^2(omega) = 1
-			T sinOmega = std::sqrt(1.0f - (cosOmega * cosOmega));
+			T sinOmega = std::sqrt(1.0 - (cosOmega * cosOmega));
 
 			//computes the angle from its sin and cosine
 			T omega = std::atan2(sinOmega, cosOmega);
 
 			//computes inverse of denominator, so we only have to divide once
-			T oneOverSinOmega = 1.0f / sinOmega;
+			T oneOverSinOmega = 1.0 / sinOmega;
 
 			//computes interpolation parameters
-			k0 = std::sin((1.0f - t) * omega) * oneOverSinOmega;
+			k0 = std::sin((1.0 - t) * omega) * oneOverSinOmega;
 			k1 = std::sin(t * omega) * oneOverSinOmega;
 		}
 
-		//interpolates and returns new quaternion
 		return Quaternion<T>(
-				(k0 * X) + (k1 * q1x),
-				(k0 * Y) + (k1 * q1y),
-				(k0 * Z) + (k1 * q1z),
-				(k0 * W) + (k1 * q1w));
+				(k0 * X) + (k1 * qX),
+				(k0 * Y) + (k1 * qY),
+				(k0 * Z) + (k1 * qZ),
+				(k0 * W) + (k1 * qW));
 	}
 
 	template<class T> Quaternion<T> Quaternion<T>::lerp(const Quaternion &q, T t) const
 	{
-		float oneMinusT = 1.0f - t;
+        //check for out-of range parameter and return edge points if so
+        if(t <= 0.0)
+        {
+            return *this;
+        }
+        if(t >= 1.0)
+        {
+            return q;
+        }
+
+        T cosOmega = dotProduct(q);
+        T qX = q.X;
+        T qY = q.Y;
+        T qZ = q.Z;
+        T qW = q.W;
+
+		if(cosOmega < 0.0)
+		{ //ensure to take shortest path
+            qX = -qX;
+            qY = -qY;
+            qZ = -qZ;
+            qW = -qW;
+		}
+
+		float oneMinusT = 1.0 - t;
 		Quaternion<T> lerpResult(
-				oneMinusT*X + t*q.X,
-				oneMinusT*Y + t*q.Y,
-				oneMinusT*Z + t*q.Z,
-				oneMinusT*W + t*q.W);
+				oneMinusT*X + t*qX,
+				oneMinusT*Y + t*qY,
+				oneMinusT*Z + t*qZ,
+				oneMinusT*W + t*qW);
 		return lerpResult.normalize();
 	}
 

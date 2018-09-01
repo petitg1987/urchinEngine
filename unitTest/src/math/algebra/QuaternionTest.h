@@ -31,11 +31,12 @@ class QuaternionTest : public CppUnit::TestFixture
 
 		void slerp50Rotation();
         void slerp25Rotation();
+        void slerpShortestPath();
 		void lerp50Rotation();
 		void lerp25Rotation();
+		void lerpShortestPath();
 
 		void toAxisAngle90();
-		void toAxisAngle135();
 };
 
 #endif
