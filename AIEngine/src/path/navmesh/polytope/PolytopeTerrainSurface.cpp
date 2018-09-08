@@ -84,9 +84,7 @@ namespace urchin
      */
     Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float> &point, const NavMeshAgent &agent) const
     {
-        Point3<float> globalVertex = retrieveGlobalVertex(point);
-        globalVertex.Z = -globalVertex.Z;
-        return globalVertex;
+        return retrieveGlobalVertex(point);
     }
 
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
