@@ -42,7 +42,8 @@ namespace urchin
 	 */
 	template<class T> Matrix2<T> Matrix2<T>::transpose() const
 	{
-		return Matrix2<T>(	a11, a21,
+		return Matrix2<T>(
+				a11, a21,
 				a12, a22);
 	}
 

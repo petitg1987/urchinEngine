@@ -37,6 +37,11 @@ namespace urchin
             }
         }
 
+        //center on Y axis
+        float maxAbsoluteYValue = std::max(std::abs(min.Y), std::abs(max.Y));
+        min.Y = -maxAbsoluteYValue;
+        max.Y = maxAbsoluteYValue;
+
         #ifdef _DEBUG //check BoxShape is centered
             assert(std::abs(std::abs(min.X)-max.X) < 0.01);
             assert(std::abs(std::abs(min.Y)-max.Y) < 0.01);

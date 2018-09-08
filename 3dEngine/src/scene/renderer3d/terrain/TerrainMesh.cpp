@@ -91,8 +91,6 @@ namespace urchin
         float xStart = (-(xLength * xzScale) / 2.0) + (xzScale / 2.0);
         float zStart = (-(zLength * xzScale) / 2.0) + (xzScale / 2.0);
 
-        float minElevation = std::numeric_limits<float>::max();
-        float maxElevation = -std::numeric_limits<float>::max();
         for(unsigned int z=0; z<zLength; ++z)
         {
             float zFloat = zStart + static_cast<float>(z) * xzScale;
@@ -108,20 +106,9 @@ namespace urchin
                     elevation = imgTerrain->getTexels16Bits()[x + xLength * z] * scale16BitsTo8Bits * yScale;
                 }
 
-                maxElevation = std::max(maxElevation, elevation);
-                minElevation = std::min(minElevation, elevation);
-
                 float xFloat = xStart + static_cast<float>(x) * xzScale;
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }
-        }
-
-        //center terrain on Y axis
-        float elevationDifference = maxElevation - minElevation;
-        float elevationDelta = (elevationDifference / 2.0) - maxElevation;
-        for(auto &vertex : vertices)
-        {
-            vertex.Y += elevationDelta;
         }
 
         return vertices;

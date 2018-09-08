@@ -16,7 +16,6 @@ namespace urchin
         zInterval = heightfieldPoints[heightfieldXSize].Z - heightfieldPoints[0].Z;
     }
 
-
     /**
      * @return Nearest heightfield point (3D) of the provided coordinate point (2D)
      */

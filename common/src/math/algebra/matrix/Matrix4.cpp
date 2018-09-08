@@ -59,7 +59,8 @@ namespace urchin
 	 */
 	template<class T> Matrix4<T> Matrix4<T>::transpose() const
 	{
-		return Matrix4<T>(	a11, a21, a31, a41,
+		return Matrix4<T>(
+				a11, a21, a31, a41,
 				a12, a22, a32, a42,
 				a13, a23, a33, a43,
 				a14, a24, a34, a44);

@@ -178,13 +178,13 @@ namespace urchin
     Point3<float> Terrain::findPointAt(const Point2<float> &globalXzCoordinate) const
     {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
-        return mesh->findPointAt(localCoordinate);
+        return mesh->findPointAt(localCoordinate) + position;
     }
 
     float Terrain::findHeightAt(const Point2<float> &globalXzCoordinate) const
     {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, globalXzCoordinate.Y - position.Z);
-        return mesh->findHeightAt(localCoordinate);
+        return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
     void Terrain::display(const Camera *camera, float invFrameRate) const
