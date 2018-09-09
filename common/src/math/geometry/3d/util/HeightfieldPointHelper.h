@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "pattern/singleton/Singleton.h"
 #include "math/algebra/point/Point2.h"
 #include "math/algebra/point/Point3.h"
 

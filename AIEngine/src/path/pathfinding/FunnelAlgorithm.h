@@ -11,7 +11,7 @@ namespace urchin
     class FunnelAlgorithm
     {
         public:
-            FunnelAlgorithm(const std::shared_ptr<std::vector<LineSegment3D<float>>> &);
+            explicit FunnelAlgorithm(const std::shared_ptr<std::vector<LineSegment3D<float>>> &);
 
             const std::vector<Point3<float>> &findPath();
 

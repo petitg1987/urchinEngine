@@ -1,7 +1,7 @@
 #include "HeightfieldPointHelper.h"
 
 #include "math/algorithm/MathAlgorithm.h"
-#include "math/geometry/3d/Plane.h"
+#include "math/geometry/2d/Line2D.h"
 
 namespace urchin
 {
@@ -63,8 +63,10 @@ namespace urchin
      */
     template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::establishPath(const Point3<T> &startPoint, const Point3<T> &endPoint) const
     {
+        Line2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Y), Point2<T>(endPoint.X, endPoint.Z));
+
         std::vector<Point3<T>> pathPoints;
-        pathPoints.push_back(startPoint); //TODO determine Y
+        pathPoints.push_back(startPoint);
 
         Vector2<T> farLeftToStartPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(startPoint.X, startPoint.Z));
         Vector2<T> farLeftToEndPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(endPoint.X, endPoint.Z));
@@ -72,17 +74,47 @@ namespace urchin
         //X lines collision
         int xStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(farLeftToStartPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
         int xEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(farLeftToEndPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-        //TODO implements
+        int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
+        for(int xCoord = xStartIndex; xCoord < xEndIndex; ++xCoord)
+        {
+            Point3<T> firstLinePoint = heightfieldPoints[xCoord];
+            Point3<T> endLinePoint = heightfieldPoints[xCoord + zLastIndex];
+            Line2D<T> xLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+
+            bool hasIntersection;
+            Point2<T> intersectionPoint = xLine.intersectPoint(pathLine, hasIntersection);
+            if(hasIntersection)
+            {
+                T intersectionHeight = findHeightAt(intersectionPoint);
+                pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
+            }
+        }
 
         //Z lines collision
         int zStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(farLeftToStartPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
         int zEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(farLeftToEndPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
-        //TODO implements
+        int xLastIndex = heightfieldXSize - 1;
+        for(int zCoord = zStartIndex; zCoord < zEndIndex; ++zCoord)
+        {
+            Point3<T> firstLinePoint = heightfieldPoints[zCoord * heightfieldXSize];
+            Point3<T> endLinePoint = heightfieldPoints[xLastIndex + zCoord * heightfieldXSize];
+            Line2D<T> zLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+
+            bool hasIntersection; //TODO avoid code duplication
+            Point2<T> intersectionPoint = zLine.intersectPoint(pathLine, hasIntersection);
+            if(hasIntersection)
+            {
+                T intersectionHeight = findHeightAt(intersectionPoint);
+                pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
+            }
+        }
+
+        //TODO sort points...
 
         //Oblique lines collision
-        //TODO implements
+        //No implemented
 
-        pathPoints.push_back(endPoint); //TODO determine Y
+        pathPoints.push_back(endPoint);
         return pathPoints;
     }
 
