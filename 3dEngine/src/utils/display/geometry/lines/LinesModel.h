@@ -13,7 +13,7 @@ namespace urchin
 	{
 		public:
 			LinesModel(const std::vector<Point3<float>> &, float);
-            LinesModel(const Line3D<float> &, int);
+            LinesModel(const Line3D<float> &, float);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

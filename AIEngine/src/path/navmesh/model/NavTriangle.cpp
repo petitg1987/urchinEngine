@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "NavTriangle.h"
+#include "path/navmesh/model/NavPolygon.h"
 
 namespace urchin
 {
@@ -15,23 +16,30 @@ namespace urchin
         this->indices[1] = index2;
         this->indices[2] = index3;
 
-        this->neighbors[0] = -1;
-        this->neighbors[1] = -1;
-        this->neighbors[2] = -1;
+        this->neighbors[0] = nullptr;
+        this->neighbors[1] = nullptr;
+        this->neighbors[2] = nullptr;
 
         this->centerPoint = Point3<float>(0.0, 0.0, 0.0);
     }
 
-    void NavTriangle::computeCenterPoint(const std::vector<Point3<float>> &points)
+    void NavTriangle::attachNavPolygon(const std::shared_ptr<NavPolygon> &navPolygon)
     {
-        for(unsigned int i=0; i<3; ++i)
-        {
-            this->centerPoint[i] = (points[indices[0]][i] + points[indices[1]][i] + points[indices[2]][i]) / 3.0;
-        }
+        this->navPolygon = navPolygon;
+        this->centerPoint = (navPolygon->getPoints()[indices[0]] + navPolygon->getPoints()[indices[1]] + navPolygon->getPoints()[indices[2]]) / 3.0f;
+    }
+
+    const std::shared_ptr<NavPolygon> &NavTriangle::getNavPolygon() const
+    {
+        return navPolygon;
     }
 
     const Point3<float> &NavTriangle::getCenterPoint() const
     {
+        #ifdef _DEBUG
+            assert(navPolygon != nullptr); //center point not computed until triangle is not linked to polygon
+        #endif
+
         return centerPoint;
     }
 
@@ -49,23 +57,17 @@ namespace urchin
         return indices[index];
     }
 
-    void NavTriangle::addNeighbor(unsigned int edgeIndex, int triangleNeighborIndex)
+    void NavTriangle::addNeighbor(unsigned int edgeIndex, const std::shared_ptr<NavTriangle> &navTriangleNeighbor)
     {
         #ifdef _DEBUG
-            assert(edgeIndex >= 0 && edgeIndex <= 2);
-            assert(neighbors[edgeIndex] == -1); //check neighbor not already provided
-            assert(triangleNeighborIndex >= 0);
+            assert(edgeIndex <= 2);
+            assert(neighbors[edgeIndex] == nullptr);
         #endif
 
-        neighbors[edgeIndex] = triangleNeighborIndex;
+        neighbors[edgeIndex] = navTriangleNeighbor;
     }
 
-    const int *NavTriangle::getNeighbors() const
-    {
-        return neighbors;
-    }
-
-    int NavTriangle::getNeighbor(unsigned int edgeIndex) const
+    const std::shared_ptr<NavTriangle> &NavTriangle::getNeighbor(unsigned int edgeIndex) const
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
@@ -74,9 +76,14 @@ namespace urchin
         return neighbors[edgeIndex];
     }
 
-    const std::vector<NavEdgeRef> &NavTriangle::getLinks() const
+    LineSegment3D<float> NavTriangle::computeEdge(unsigned int edgeStartIndex) const
     {
-        return links;
+        #ifdef _DEBUG
+            assert(edgeStartIndex <= 2);
+        #endif
+
+        unsigned int edgeEndIndex = (edgeStartIndex + 1) % 3;
+        return LineSegment3D<float>(navPolygon->getPoint(indices[edgeStartIndex]), navPolygon->getPoint(indices[edgeEndIndex]));
     }
 
 }

@@ -3,8 +3,7 @@
 
 #include <memory>
 
-#include "path/navmesh/model/ref/NavTriangleRef.h"
-#include "path/navmesh/model/ref/NavEdgeRef.h"
+#include "path/navmesh/model/NavTriangle.h"
 
 namespace urchin
 {
@@ -12,10 +11,9 @@ namespace urchin
     class PathNode
     {
         public:
-            PathNode(NavTriangleRef, float, float);
+            PathNode(const std::shared_ptr<NavTriangle> &, float, float);
 
-            const NavTriangleRef getTriangleRef() const;
-            NavEdgeRef retrieveNavEdgeRef() const;
+            const std::shared_ptr<NavTriangle> &getNavTriangle() const;
 
             void setGScore(float);
             float getGScore() const;
@@ -24,16 +22,16 @@ namespace urchin
 
             void setPreviousNode(const std::shared_ptr<PathNode> &, unsigned int);
             const std::shared_ptr<PathNode> &getPreviousNode() const;
-            int getPreviousNodeLinkEdgeId() const;
+            LineSegment3D<float> computeEdgeWithPreviousNode() const;
 
         private:
-            NavTriangleRef triangleRef;
+            const std::shared_ptr<NavTriangle> &navTriangle;
 
             float gScore;
             float hScore;
 
             std::shared_ptr<PathNode> previousNode;
-            int previousNodeLinkEdgeId; //edge ID on previous node which made link with this node
+            unsigned int previousNodeLinkEdgeId; //edge ID on previous node which made link with this node
     };
 
 }

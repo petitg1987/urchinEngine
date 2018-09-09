@@ -4,28 +4,18 @@
 
 namespace urchin
 {
-    PathNode::PathNode(NavTriangleRef triangleRef, float gScore, float hScore) :
-            triangleRef(triangleRef),
+    PathNode::PathNode(const std::shared_ptr<NavTriangle> &navTriangle, float gScore, float hScore) :
+            navTriangle(navTriangle),
             gScore(gScore),
             hScore(hScore),
-            previousNodeLinkEdgeId(-1)
+            previousNodeLinkEdgeId(std::numeric_limits<unsigned int>::max())
     {
 
     }
 
-    const NavTriangleRef PathNode::getTriangleRef() const
+    const std::shared_ptr<NavTriangle> &PathNode::getNavTriangle() const
     {
-        return triangleRef;
-    }
-
-    NavEdgeRef PathNode::retrieveNavEdgeRef() const
-    {
-        #ifdef _DEBUG
-            assert(previousNodeLinkEdgeId != -1);
-            assert(previousNode!=nullptr);
-        #endif
-
-        return {previousNode->getTriangleRef(), static_cast<unsigned int>(previousNodeLinkEdgeId)};
+        return navTriangle;
     }
 
     void PathNode::setGScore(float gScore)
@@ -50,6 +40,10 @@ namespace urchin
 
     void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, unsigned int previousNodeLinkEdgeId)
     {
+        #ifdef _DEBUG
+            assert(previousNodeLinkEdgeId <= 2);
+        #endif
+
         this->previousNode = previousNode;
         this->previousNodeLinkEdgeId = previousNodeLinkEdgeId;
     }
@@ -59,9 +53,13 @@ namespace urchin
         return previousNode;
     }
 
-    int PathNode::getPreviousNodeLinkEdgeId() const
+    LineSegment3D<float> PathNode::computeEdgeWithPreviousNode() const
     {
-        return previousNodeLinkEdgeId;
+        #ifdef _DEBUG
+            assert(previousNodeLinkEdgeId <= 2);
+        #endif
+
+        return previousNode->getNavTriangle()->computeEdge(previousNodeLinkEdgeId);
     }
 
 }

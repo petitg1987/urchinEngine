@@ -88,7 +88,7 @@ namespace urchin
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
 
-	const std::vector<NavTriangle> &TriangulationAlgorithm::triangulate()
+	const std::vector<std::shared_ptr<NavTriangle>> &TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		#ifdef _DEBUG
             //assert no duplicate points
@@ -108,7 +108,7 @@ namespace urchin
 
 		for (const auto &monotonePolygon : monotonePolygons)
 		{
-            std::vector<NavTriangle> monotonePolygonTriangles = triangulateMonotonePolygon(monotonePolygon);
+            std::vector<std::shared_ptr<NavTriangle>> monotonePolygonTriangles = triangulateMonotonePolygon(monotonePolygon);
             triangles.insert(triangles.end(), monotonePolygonTriangles.begin(), monotonePolygonTriangles.end());
 		}
 
@@ -128,13 +128,13 @@ namespace urchin
 		return polygonPoints.size();
 	}
 
-    std::vector<NavTriangle> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon &monotonePolygon)
+    std::vector<std::shared_ptr<NavTriangle>> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon &monotonePolygon)
 	{
         missingTriangleNeighbor = 0;
         const std::vector<unsigned int> &monotonePolygonPoints = monotonePolygon.getCcwPoints();
 		std::vector<SidedPoint> sortedSidedPoints = buildSortedSidedPoints(monotonePolygonPoints);
 
-        std::vector<NavTriangle> monotoneTriangles;
+        std::vector<std::shared_ptr<NavTriangle>> monotoneTriangles;
         monotoneTriangles.reserve(monotonePolygonPoints.size());
 
 		std::stack<SidedPoint> stack;
@@ -238,11 +238,11 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	NavTriangle TriangulationAlgorithm::buildOrientedTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
+	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildOrientedTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
 	{
 		if(triangleOrientation==TriangulationAlgorithm::NONE)
 		{
-			return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
+			return std::make_unique<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
 		}else if(triangleOrientation==TriangulationAlgorithm::CCW)
 		{
 			Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
@@ -251,49 +251,49 @@ namespace urchin
 			double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
 			if(crossProductZ > 0.0)
 			{
-				return NavTriangle(pointIndex1, pointIndex2, pointIndex3);
+				return std::make_unique<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
 			}else
 			{
-				return NavTriangle(pointIndex2, pointIndex1, pointIndex3);
+				return std::make_unique<NavTriangle>(pointIndex2, pointIndex1, pointIndex3);
 			}
 		}
 
-		throw std::runtime_error("Unknown triangle orientation type: " + triangleOrientation);
+		throw std::runtime_error("Unknown triangle orientation type: " + std::to_string(triangleOrientation));
 	}
 
-    void TriangulationAlgorithm::determineNeighbors(std::vector<NavTriangle> &triangles, const MonotonePolygon &monotonePolygon)
+    void TriangulationAlgorithm::determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &triangles, const MonotonePolygon &monotonePolygon)
     {
         determineNeighborsInsideMonotone(triangles);
         determineNeighborsBetweenMonotones(triangles, monotonePolygon);
     }
 
-    void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<NavTriangle> &monotoneTriangles)
+    void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles)
     {
         int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
         int prevMonotoneTriangleIndex = monotoneTriangles.size()-2;
-		NavTriangle &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
+		const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
         missingTriangleNeighbor += monotoneTriangles.size()>1 ? 1 : 0; //don't expect neighbor for first triangle
         while(prevMonotoneTriangleIndex>=0 && missingTriangleNeighbor>0)
         {
-			NavTriangle &prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
+			const auto &prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
 
             for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++)
             {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1))
                 {
-                    currTriangle.addNeighbor(0, prevMonotoneTriangleIndex + triangles.size());
-                    prevTriangle.addNeighbor(prevEdgeIndex, currMonotoneTriangleIndex + triangles.size());
+                    currTriangle->addNeighbor(0, prevTriangle);
+                    prevTriangle->addNeighbor(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 1, 2))
                 {
-                    currTriangle.addNeighbor(1, prevMonotoneTriangleIndex + triangles.size());
-                    prevTriangle.addNeighbor(prevEdgeIndex, currMonotoneTriangleIndex + triangles.size());
+                    currTriangle->addNeighbor(1, prevTriangle);
+                    prevTriangle->addNeighbor(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 2, 0))
                 {
-                    currTriangle.addNeighbor(2, prevMonotoneTriangleIndex + triangles.size());
-                    prevTriangle.addNeighbor(prevEdgeIndex, currMonotoneTriangleIndex + triangles.size());
+                    currTriangle->addNeighbor(2, prevTriangle);
+                    prevTriangle->addNeighbor(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 }
             }
@@ -302,17 +302,17 @@ namespace urchin
         }
     }
 
-    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<NavTriangle> &monotoneTriangles, const MonotonePolygon &monotonePolygon)
+    void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles, const MonotonePolygon &monotonePolygon)
     {
         unsigned int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
-		NavTriangle &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
+		const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
         for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
         {
-            if(currTriangle.getNeighbor(prevEdgeIndex)==-1)
+            if(currTriangle->getNeighbor(prevEdgeIndex) == nullptr)
             {
-				unsigned int edgeStartIndex = currTriangle.getIndex(prevEdgeIndex);
-				unsigned int edgeEndIndex = currTriangle.getIndex(edgeIndex);
+				unsigned int edgeStartIndex = currTriangle->getIndex(prevEdgeIndex);
+				unsigned int edgeEndIndex = currTriangle->getIndex(edgeIndex);
 
 				if(monotonePolygon.isSharedEdge(edgeStartIndex, edgeEndIndex))
 				{
@@ -323,8 +323,9 @@ namespace urchin
 						sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(triangles.size() + currMonotoneTriangleIndex, prevEdgeIndex)));
 					} else
 					{
-						currTriangle.addNeighbor(prevEdgeIndex, itFind->second.triangleIndex);
-						triangles[(itFind->second.triangleIndex)].addNeighbor(itFind->second.edgeIndex, triangles.size() + currMonotoneTriangleIndex);
+						unsigned int neighborIndex = itFind->second.triangleIndex;
+						currTriangle->addNeighbor(prevEdgeIndex, triangles[neighborIndex]);
+						triangles[neighborIndex]->addNeighbor(itFind->second.edgeIndex, currTriangle);
 
 						sharedMonotoneEdges.erase(itFind);
 					}
@@ -333,11 +334,11 @@ namespace urchin
         }
     }
 
-    bool TriangulationAlgorithm::areSameEdge(const NavTriangle &triangle1, unsigned int tri1Point1, unsigned int tri1Point2,
-                                             const NavTriangle &triangle2, unsigned int tri2Point1, unsigned int tri2Point2) const
+    bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle> &triangle1, unsigned int tri1Point1, unsigned int tri1Point2,
+                                             const std::shared_ptr<NavTriangle> &triangle2, unsigned int tri2Point1, unsigned int tri2Point2) const
     {
-        return (triangle1.getIndex(tri1Point1)==triangle2.getIndex(tri2Point1) && triangle1.getIndex(tri1Point2)==triangle2.getIndex(tri2Point2))
-               || (triangle1.getIndex(tri1Point1)==triangle2.getIndex(tri2Point2) && triangle1.getIndex(tri1Point2)==triangle2.getIndex(tri2Point1));
+        return (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point1) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point2))
+               || (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point2) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point1));
     }
 
     uint_fast64_t TriangulationAlgorithm::computeEdgeId(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
@@ -347,7 +348,7 @@ namespace urchin
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
 
-	void TriangulationAlgorithm::logOutputData(const std::string &message, const std::vector<NavTriangle> &triangles, Logger::CriticalityLevel logLevel) const
+	void TriangulationAlgorithm::logOutputData(const std::string &message, const std::vector<std::shared_ptr<NavTriangle>> &triangles, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
@@ -356,10 +357,10 @@ namespace urchin
 		logStream<<"Monotone polygon triangles output data:"<<std::endl;
 		for(const auto &triangle : triangles)
 		{
-			logStream<<" - {"<<triangle.getIndex(0)<<": "<<polygonPoints[triangle.getIndex(0)]
-                     <<"}, {"<<triangle.getIndex(1)<<": "<<polygonPoints[triangle.getIndex(1)]
-                     <<"}, {"<<triangle.getIndex(2)<<": "<<polygonPoints[triangle.getIndex(2)]<<"}"
-                     <<" {"<<triangle.getNeighbor(0)<<", "<<triangle.getNeighbor(1)<<", "<<triangle.getNeighbor(2)<<"}"<<std::endl;
+			logStream<<" - {"<<triangle->getIndex(0)<<": "<<polygonPoints[triangle->getIndex(0)]
+                     <<"}, {"<<triangle->getIndex(1)<<": "<<polygonPoints[triangle->getIndex(1)]
+                     <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"
+                     <<" {"<<triangle->getNeighbor(0)<<", "<<triangle->getNeighbor(1)<<", "<<triangle->getNeighbor(2)<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

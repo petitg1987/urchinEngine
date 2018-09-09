@@ -12,7 +12,7 @@ namespace urchin
 		initialize();
 	}
 
-    LinesModel::LinesModel(const Line3D<float> &line, int linesSize) :
+    LinesModel::LinesModel(const Line3D<float> &line, float linesSize) :
         linesSize(linesSize)
     {
         linesPoints.push_back(line.getA());

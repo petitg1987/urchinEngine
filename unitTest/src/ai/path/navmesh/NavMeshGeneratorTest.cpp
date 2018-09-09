@@ -77,10 +77,10 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[4], Point3<float>(-2.0, 0.01, -1.0));
     AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[5], Point3<float>(-2.0, 0.01, 2.0));
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 4);
-    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[0].getIndices(), {3, 1, 2});
-    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[1].getIndices(), {5, 1, 3});
-    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[2].getIndices(), {0, 1, 5});
-    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[3].getIndices(), {4, 5, 3});
+    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[0]->getIndices(), {3, 1, 2});
+    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[1]->getIndices(), {5, 1, 3});
+    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[2]->getIndices(), {0, 1, 5});
+    assert3UnsignedInts(navMesh->getPolygons()[0]->getTriangles()[3]->getIndices(), {4, 5, 3});
     AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<hole[2]>");
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon

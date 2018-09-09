@@ -15,24 +15,24 @@ namespace urchin
             navMesh(std::move(navMesh))
     {
         #ifdef _DEBUG
-//            this->navMesh->logNavMesh();
+            //this->navMesh->logNavMesh();
         #endif
     }
 
     std::vector<Point3<float>> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
     {
-        std::unique_ptr<NavTriangleRef> startTriangle = findTriangle(startPoint);
-        std::unique_ptr<NavTriangleRef> endTriangle = findTriangle(endPoint);
+        std::shared_ptr<NavTriangle> startTriangle = findTriangle(startPoint);
+        std::shared_ptr<NavTriangle> endTriangle = findTriangle(endPoint);
         if(startTriangle==nullptr || endTriangle==nullptr)
         {
             return {}; //no path exists
         }
 
-        float startEndHScore = computeHScore(*startTriangle, endPoint);
+        float startEndHScore = computeHScore(startTriangle, endPoint);
 
-        std::set<uint_fast64_t> closedList;
+        std::set<std::shared_ptr<NavTriangle>> closedList;
         std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> openList;
-        openList.insert(std::make_shared<PathNode>(*startTriangle, 0.0, startEndHScore));
+        openList.insert(std::make_shared<PathNode>(startTriangle, 0.0, startEndHScore));
 
         std::shared_ptr<PathNode> endNodePath = nullptr;
         while(!openList.empty())
@@ -40,28 +40,27 @@ namespace urchin
             auto currentNodeIt = openList.begin(); //node with smallest fScore
             std::shared_ptr<PathNode> currentNode = *currentNodeIt;
 
-            closedList.insert(computeTriangleId(currentNode->getTriangleRef()));
+            closedList.insert(currentNode->getNavTriangle());
             openList.erase(currentNodeIt);
 
-            const NavTriangle &currTriangle = navMesh->resolveTriangle(currentNode->getTriangleRef());
+            const auto currTriangle = currentNode->getNavTriangle();
             for(unsigned int i=0; i<3; ++i)
             {
-                if(currTriangle.getNeighbor(i)!=-1)
+                if(currentNode->getNavTriangle()->getNeighbor(i) != nullptr)
                 {
-                    auto neighborTriangleId = static_cast<unsigned int>(currTriangle.getNeighbor(i));
-                    NavTriangleRef neighborTriangleRef(currentNode->getTriangleRef().getPolygonIndex(), neighborTriangleId);
+                    const auto &neighborTriangle = currentNode->getNavTriangle()->getNeighbor(i);
 
-                    if(closedList.find(computeTriangleId(neighborTriangleRef))!=closedList.end())
+                    if(closedList.find(neighborTriangle)!=closedList.end())
                     { //already processed
                         continue;
                     }
 
-                    std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, neighborTriangleRef);
+                    std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, neighborTriangle);
                     if(!neighborNodePath)
                     {
-                        float gScore = computeGScore(currentNode, neighborTriangleRef, startPoint, endPoint, i);
-                        float hScore = computeHScore(neighborTriangleRef, endPoint);
-                        neighborNodePath.reset(new PathNode(neighborTriangleRef, gScore, hScore));
+                        float gScore = computeGScore(currentNode, neighborTriangle, startPoint, endPoint, i);
+                        float hScore = computeHScore(neighborTriangle, endPoint);
+                        neighborNodePath.reset(new PathNode(neighborTriangle, gScore, hScore));
                         neighborNodePath->setPreviousNode(currentNode, i);
 
                         if(!endNodePath || neighborNodePath->getFScore() < endNodePath->getFScore())
@@ -69,13 +68,13 @@ namespace urchin
                             openList.insert(neighborNodePath);
                         }
 
-                        if(neighborTriangleRef.equals(*endTriangle))
+                        if(neighborTriangle.get() == endTriangle.get())
                         { //end triangle reached but continue on path nodes having a smaller F score
                             endNodePath = neighborNodePath;
                         }
                     }else
                     {
-                        float gScore = computeGScore(currentNode, neighborTriangleRef, startPoint, endPoint, i);
+                        float gScore = computeGScore(currentNode, neighborTriangle, startPoint, endPoint, i);
                         if(neighborNodePath->getGScore() > gScore)
                         { //better path found to reach neighborNodePath: override previous values
                             neighborNodePath->setGScore(gScore);
@@ -97,38 +96,37 @@ namespace urchin
         return {}; //no path exists
     }
 
-    std::unique_ptr<NavTriangleRef> PathfindingAStar::findTriangle(const Point3<float> &point) const
+    std::shared_ptr<NavTriangle> PathfindingAStar::findTriangle(const Point3<float> &point) const
     {
         float bestVerticalDistance = std::numeric_limits<float>::max();
-        std::unique_ptr<NavTriangleRef> triangleRef = nullptr;
+        std::shared_ptr<NavTriangle> result = nullptr;
 
-        for (unsigned int polyIndex = 0; polyIndex < navMesh->getPolygons().size(); ++polyIndex)
+        for (const auto &polygon : navMesh->getPolygons())
         {
-            std::shared_ptr<NavPolygon> polygon = navMesh->getPolygons()[polyIndex];
             for (unsigned int triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex)
             {
-                const NavTriangle &triangle = polygon->getTriangles()[triIndex];
+                const auto &triangle = polygon->getTriangles()[triIndex];
                 Point2<float> flattenPoint(point.X, point.Z);
 
                 if (isPointInsideTriangle(flattenPoint, polygon, triangle))
                 {
-                    float verticalDistance = point.Y - triangle.getCenterPoint().Y;
+                    float verticalDistance = point.Y - triangle->getCenterPoint().Y;
                     if (verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
                     {
                         bestVerticalDistance = verticalDistance;
-                        triangleRef = std::make_unique<NavTriangleRef>(polyIndex, triIndex);
+                        result = triangle;
                     }
                 }
             }
         }
-        return triangleRef;
+        return result;
     }
 
-    bool PathfindingAStar::isPointInsideTriangle(const Point2<float> &point, const std::shared_ptr<NavPolygon> &polygon, const NavTriangle &triangle) const
+    bool PathfindingAStar::isPointInsideTriangle(const Point2<float> &point, const std::shared_ptr<NavPolygon> &polygon, const std::shared_ptr<NavTriangle> &triangle) const
     {
-        Point3<float> p0 = polygon->getPoint(triangle.getIndex(0));
-        Point3<float> p1 = polygon->getPoint(triangle.getIndex(1));
-        Point3<float> p2 = polygon->getPoint(triangle.getIndex(2));
+        Point3<float> p0 = polygon->getPoint(triangle->getIndex(0));
+        Point3<float> p1 = polygon->getPoint(triangle->getIndex(1));
+        Point3<float> p2 = polygon->getPoint(triangle->getIndex(2));
 
         bool b1 = sign(point, Point2<float>(p0.X, p0.Z), Point2<float>(p1.X, p1.Z)) < 0.0f;
         bool b2 = sign(point, Point2<float>(p1.X, p1.Z), Point2<float>(p2.X, p2.Z)) < 0.0f;
@@ -142,19 +140,12 @@ namespace urchin
         return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
     }
 
-    uint_fast64_t PathfindingAStar::computeTriangleId(const NavTriangleRef &triangle) const
-    {
-        auto id = static_cast<uint_fast64_t>(triangle.getPolygonIndex());
-        id = id << 32;
-        return id + triangle.getTriangleIndex();
-    }
-
     std::shared_ptr<PathNode> PathfindingAStar::retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &pathNodes,
-                                                                     const NavTriangleRef &triangleRef) const
+                                                                     const std::shared_ptr<NavTriangle> &navTriangle) const
     {
         for(const auto &pathNode : pathNodes)
         {
-            if(pathNode->getTriangleRef().equals(triangleRef))
+            if(pathNode->getNavTriangle().get() == navTriangle.get())
             {
                 return pathNode;
             }
@@ -162,14 +153,12 @@ namespace urchin
         return std::shared_ptr<PathNode>();
     }
 
-    float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const NavTriangleRef &neighbor, const Point3<float> &startPoint,
+    float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const std::shared_ptr<NavTriangle> &neighbor, const Point3<float> &startPoint,
                                           const Point3<float> &endPoint, unsigned previousNodeLinkEdgeId) const
     {
-        Point3<float> neighborPoint = navMesh->resolveTriangle(neighbor).getCenterPoint();
-
         std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(neighbor, 0.0, 0.0);
         neighborNodePath->setPreviousNode(currentNode, previousNodeLinkEdgeId);
-        std::vector<Point3<float>> path = determinePath(neighborNodePath, startPoint, neighborPoint);
+        std::vector<Point3<float>> path = determinePath(neighborNodePath, startPoint, neighbor->getCenterPoint());
 
         float pathDistance = 0.0;
         for(unsigned int i=0; i<path.size()-1; i++)
@@ -180,9 +169,9 @@ namespace urchin
         return pathDistance;
     }
 
-    float PathfindingAStar::computeHScore(const NavTriangleRef &current, const Point3<float> &endPoint) const
+    float PathfindingAStar::computeHScore(const std::shared_ptr<NavTriangle> &current, const Point3<float> &endPoint) const
     {
-        Point3<float> currentPoint = navMesh->resolveTriangle(current).getCenterPoint();
+        Point3<float> currentPoint = current->getCenterPoint();
         return std::abs(currentPoint.X - endPoint.X) + std::abs(currentPoint.Y - endPoint.Y) + std::abs(currentPoint.Z - endPoint.Z);
     }
 
@@ -196,7 +185,7 @@ namespace urchin
         std::shared_ptr<PathNode> pathNode = endNode;
         while(pathNode->getPreviousNode()!=nullptr)
         {
-            LineSegment3D<float> portal = navMesh->resolveEdge(pathNode->retrieveNavEdgeRef());
+            LineSegment3D<float> portal = pathNode->computeEdgeWithPreviousNode();
 
             Point3<float> characterPosition = middlePoint((*portals)[portals->size()-1]);
             Vector3<float> characterMoveDirection = characterPosition.vector(middlePoint(portal)).normalize();

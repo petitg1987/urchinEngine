@@ -3,15 +3,11 @@
 namespace urchin
 {
 
-	NavPolygon::NavPolygon(std::string name, const std::vector<Point3<float>> &points, const std::vector<NavTriangle> &triangles) :
+	NavPolygon::NavPolygon(std::string name, const std::vector<Point3<float>> &points) :
         	name(std::move(name)),
-			points(points),
-			triangles(triangles)
+			points(points)
 	{
-		for(NavTriangle &triangle : this->triangles)
-		{
-			triangle.computeCenterPoint(points);
-		}
+
 	}
 
 	NavPolygon::NavPolygon(const NavPolygon &navPolygon) :
@@ -37,12 +33,25 @@ namespace urchin
 		return points[index];
 	}
 
-	const std::vector<NavTriangle> &NavPolygon::getTriangles() const
+	void NavPolygon::addTriangles(const std::vector<std::shared_ptr<NavTriangle>> &triangles, const std::shared_ptr<NavPolygon> &thisNavPolygon)
+	{
+		#ifdef _DEBUG
+			assert(thisNavPolygon.get()==this);
+        #endif
+
+		this->triangles = triangles;
+		for(const auto &triangle : triangles)
+		{
+			triangle->attachNavPolygon(thisNavPolygon);
+		}
+	}
+
+	const std::vector<std::shared_ptr<NavTriangle>> &NavPolygon::getTriangles() const
 	{
 		return triangles;
 	}
 
-	const NavTriangle &NavPolygon::getTriangle(unsigned int index) const
+	const std::shared_ptr<NavTriangle> &NavPolygon::getTriangle(unsigned int index) const
 	{
 		return triangles[index];
 	}

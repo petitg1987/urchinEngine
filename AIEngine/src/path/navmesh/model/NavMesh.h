@@ -23,10 +23,6 @@ namespace urchin
 			unsigned int addPolygon(std::shared_ptr<NavPolygon>);
 			const std::vector<std::shared_ptr<NavPolygon>> &getPolygons() const;
 
-			const std::shared_ptr<NavPolygon> &resolvePolygon(const NavTriangleRef &) const;
-			const NavTriangle &resolveTriangle(const NavTriangleRef &) const;
-			LineSegment3D<float> resolveEdge(const NavEdgeRef &edgeRef) const;
-
 			void logNavMesh() const;
 			void svgMeshExport(const std::string &) const;
 		private:

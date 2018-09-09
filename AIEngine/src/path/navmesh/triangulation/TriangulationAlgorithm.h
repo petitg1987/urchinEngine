@@ -46,28 +46,28 @@ namespace urchin
 
 			unsigned int getAllPointsSize() const;
 
-			const std::vector<NavTriangle> &triangulate();
+			const std::vector<std::shared_ptr<NavTriangle>> &triangulate();
 
 		private:
-			std::vector<NavTriangle> triangulateMonotonePolygon(const MonotonePolygon &);
+			std::vector<std::shared_ptr<NavTriangle>> triangulateMonotonePolygon(const MonotonePolygon &);
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
 			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
-			NavTriangle buildOrientedTriangle(unsigned int, unsigned int, unsigned int) const;
+			std::shared_ptr<NavTriangle> buildOrientedTriangle(unsigned int, unsigned int, unsigned int) const;
 
-			void determineNeighbors(std::vector<NavTriangle> &, const MonotonePolygon &);
-			void determineNeighborsInsideMonotone(std::vector<NavTriangle> &);
-			void determineNeighborsBetweenMonotones(std::vector<NavTriangle> &, const MonotonePolygon &);
-			bool areSameEdge(const NavTriangle &, unsigned int, unsigned int, const NavTriangle &, unsigned int, unsigned int) const;
+			void determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon &);
+			void determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &);
+			void determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon &);
+			bool areSameEdge(const std::shared_ptr<NavTriangle> &, unsigned int, unsigned int, const std::shared_ptr<NavTriangle> &, unsigned int, unsigned int) const;
 			uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
 
-			void logOutputData(const std::string &, const std::vector<NavTriangle> &, Logger::CriticalityLevel) const;
+			void logOutputData(const std::string &, const std::vector<std::shared_ptr<NavTriangle>> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
 			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 			std::vector<std::string> contourNames;
 			TriangleOrientation triangleOrientation;
 
-			std::vector<NavTriangle> triangles;
+			std::vector<std::shared_ptr<NavTriangle>> triangles;
 			int missingTriangleNeighbor;
 			std::map<uint_fast64_t, TriangleEdge> sharedMonotoneEdges;
 	};

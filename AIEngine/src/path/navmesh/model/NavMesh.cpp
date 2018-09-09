@@ -40,30 +40,6 @@ namespace urchin
 		return polygons;
 	}
 
-	const std::shared_ptr<NavPolygon> &NavMesh::resolvePolygon(const NavTriangleRef &triangleRef) const
-	{
-		return polygons[triangleRef.getPolygonIndex()];
-	}
-
-	const NavTriangle &NavMesh::resolveTriangle(const NavTriangleRef &triangleRef) const
-	{
-		return polygons[triangleRef.getPolygonIndex()]->getTriangle(triangleRef.getTriangleIndex());
-	}
-
-	LineSegment3D<float> NavMesh::resolveEdge(const NavEdgeRef &edgeRef) const
-	{
-		const std::shared_ptr<NavPolygon> &navPolygon = resolvePolygon(edgeRef.getTriangleRef());
-		const NavTriangle &navTriangle = navPolygon->getTriangle(edgeRef.getTriangleRef().getTriangleIndex());
-
-		unsigned int triangleStartEdge = edgeRef.getEdgeIndex();
-		unsigned int triangleEndEdge = (triangleStartEdge + 1) % 3;
-
-		unsigned int polygonStartEdge = navTriangle.getIndex(triangleStartEdge);
-		unsigned int polygonEndEdge = navTriangle.getIndex(triangleEndEdge);
-
-		return LineSegment3D<float>(navPolygon->getPoint(polygonStartEdge), navPolygon->getPoint(polygonEndEdge));
-	}
-
 	void NavMesh::logNavMesh() const
 	{
 		std::stringstream logStream;
@@ -78,12 +54,12 @@ namespace urchin
 
 			for(unsigned int j=0; j<polygon->getTriangles().size(); ++j)
 			{
-				const NavTriangle &triangle = polygon->getTriangle(j);
+				const std::shared_ptr<NavTriangle> &triangle = polygon->getTriangle(j);
 				logStream<<"  - Triangle "<<j<<": "
-                         <<"{"<<triangle.getIndex(0)<<": "<<polygon->getPoint(triangle.getIndex(0))
-						 <<"}, {"<<triangle.getIndex(1)<<": "<<polygon->getPoint(triangle.getIndex(1))
-						 <<"}, {"<<triangle.getIndex(2)<<": "<<polygon->getPoint(triangle.getIndex(2))<<"}"
-						 <<" {"<<triangle.getNeighbor(0)<<", "<<triangle.getNeighbor(1)<<", "<<triangle.getNeighbor(2)<<"}"<<std::endl;
+                         <<"{"<<triangle->getIndex(0)<<": "<<polygon->getPoint(triangle->getIndex(0))
+						 <<"}, {"<<triangle->getIndex(1)<<": "<<polygon->getPoint(triangle->getIndex(1))
+						 <<"}, {"<<triangle->getIndex(2)<<": "<<polygon->getPoint(triangle->getIndex(2))<<"}"
+						 <<" {"<<triangle->getNeighbor(0)<<", "<<triangle->getNeighbor(1)<<", "<<triangle->getNeighbor(2)<<"}"<<std::endl;
 			}
 		}
 
@@ -99,9 +75,9 @@ namespace urchin
 			for(const auto &triangle : polygon->getTriangles())
 			{
 				std::vector<Point2<float>> trianglePoints;
-				Point3<float> p1 = polygon->getPoint(triangle.getIndices()[0]);
-				Point3<float> p2 = polygon->getPoint(triangle.getIndices()[1]);
-				Point3<float> p3 = polygon->getPoint(triangle.getIndices()[2]);
+				Point3<float> p1 = polygon->getPoint(triangle->getIndices()[0]);
+				Point3<float> p2 = polygon->getPoint(triangle->getIndices()[1]);
+				Point3<float> p3 = polygon->getPoint(triangle->getIndices()[2]);
 
 				trianglePoints.emplace_back(Point2<float>(p1.X, -p1.Z));
 				trianglePoints.emplace_back(Point2<float>(p2.X, -p2.Z));
@@ -119,11 +95,11 @@ namespace urchin
 			{
 				for(unsigned int i=0; i<3; ++i)
 				{
-					int neighbor = triangle.getNeighbor(i);
-					if(neighbor!=-1)
+					std::shared_ptr<NavTriangle> neighbor = triangle->getNeighbor(i);
+					if(neighbor != nullptr)
 					{
-						Point3<float> lineP1 = triangle.getCenterPoint();
-						Point3<float> lineP2 = polygon->getTriangle(static_cast<unsigned int>(neighbor)).getCenterPoint();
+						Point3<float> lineP1 = triangle->getCenterPoint();
+						Point3<float> lineP2 = neighbor->getCenterPoint();
 						LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
 						auto *svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);

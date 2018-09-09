@@ -19,7 +19,7 @@ namespace urchin
 		private:
 			void cleanCurrentDisplay();
 			std::vector<Point3<float>> toDisplayPoints(const std::vector<Point3<float>> &, float) const;
-			std::vector<IndexedTriangle3D<float>> toDisplayTriangles(const std::vector<NavTriangle> &) const;
+			std::vector<IndexedTriangle3D<float>> toDisplayTriangles(const std::vector<std::shared_ptr<NavTriangle>> &) const;
 
 			SceneManager *sceneManager;
 			std::vector<GeometryModel *> navMeshModels;

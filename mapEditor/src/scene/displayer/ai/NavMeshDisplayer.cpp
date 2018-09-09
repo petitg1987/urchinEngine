@@ -80,14 +80,14 @@ namespace urchin
 		return displayPoints;
 	}
 
-	std::vector<IndexedTriangle3D<float>> NavMeshDisplayer::toDisplayTriangles(const std::vector<NavTriangle> &triangles) const
+	std::vector<IndexedTriangle3D<float>> NavMeshDisplayer::toDisplayTriangles(const std::vector<std::shared_ptr<NavTriangle>> &triangles) const
 	{
 		std::vector<IndexedTriangle3D<float>> displayTriangles;
 		displayTriangles.reserve(triangles.size());
 
 		for(const auto &triangle : triangles)
 		{
-			displayTriangles.emplace_back(IndexedTriangle3D<float>(triangle.getIndices()));
+			displayTriangles.emplace_back(IndexedTriangle3D<float>(triangle->getIndices()));
 		}
 
 		return displayTriangles;
