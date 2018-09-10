@@ -1,4 +1,5 @@
 #include "PolytopeTerrainSurface.h"
+#include "path/navmesh/model/topography/NavTerrainTopography.h"
 
 namespace urchin
 {
@@ -14,7 +15,7 @@ namespace urchin
     {
         buildOutlineCwPoints();
 
-        heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(localVertices, xLength);
+        heightfieldPointHelper = std::make_shared<HeightfieldPointHelper<float>>(localVertices, xLength);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()
@@ -91,6 +92,12 @@ namespace urchin
     {
         Point2<float> localCoordinate = Point2<float>(globalXzCoordinate.X - position.X, -globalXzCoordinate.Y - position.Z);
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
+    }
+
+    NavTopography *PolytopeTerrainSurface::newNavTopography() const
+    {
+        auto constHeightfieldPointHelper = std::const_pointer_cast<const HeightfieldPointHelper<float>>(heightfieldPointHelper);
+        return new NavTerrainTopography(constHeightfieldPointHelper);
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const

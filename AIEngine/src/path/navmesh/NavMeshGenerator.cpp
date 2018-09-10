@@ -211,8 +211,9 @@ namespace urchin
                 }
 
                 std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
+                NavTopography *navTopography = walkableFace->newNavTopography();
 
-				std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, points);
+				std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, points, navTopography);
 				navPolygon->addTriangles(triangulation.triangulate(), navPolygon);
                 navPolygons.push_back(navPolygon);
             }
@@ -282,7 +283,7 @@ namespace urchin
                 }
             }else
             {
-                throw std::runtime_error("Unsupported type of surface as obstacle: " + std::string(typeid(*polytopeSurface).name()));
+                throw std::runtime_error("Unsupported type of surface as obstacle: " + std::string(typeid(polytopeSurface.get()).name()));
             }
 		}
 

@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "PolytopePlaneSurface.h"
+#include "path/navmesh/model/topography/NavFlatTopography.h"
 
 namespace urchin
 {
@@ -86,6 +87,11 @@ namespace urchin
 
         float reduceDistance =  - agent.computeExpandDistance(normal);
         return pointOnExpandedSurface.translate(normal * reduceDistance);
+	}
+
+	NavTopography *PolytopePlaneSurface::newNavTopography() const
+	{
+		return new NavFlatTopography();
 	}
 
 	const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const

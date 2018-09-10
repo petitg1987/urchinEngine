@@ -21,6 +21,7 @@ namespace urchin
             Plane<float> getPlane(const Rectangle<float> &, const NavMeshAgent &) const override;
             std::vector<CSGPolygon<float>> getSelfObstacles() const override;
             Point3<float> computeRealPoint(const Point2<float> &, const NavMeshAgent &) const override;
+            NavTopography *newNavTopography() const override;
 
             const Point3<float> &getPosition() const;
             const std::vector<Point3<float>> getLocalVertices() const;
@@ -35,7 +36,7 @@ namespace urchin
             std::vector<Point3<float>> localVertices;
             unsigned int xLength;
             unsigned int zLength;
-            std::unique_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
+            std::shared_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
 
             std::vector<Point2<float>> outlineCwPoints;
             std::vector<CSGPolygon<float>> selfObstacles;

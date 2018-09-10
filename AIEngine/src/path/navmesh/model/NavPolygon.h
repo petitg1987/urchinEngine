@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "path/navmesh/model/NavTriangle.h"
+#include "path/navmesh/model/topography/NavTopography.h"
 
 namespace urchin
 {
@@ -12,8 +13,9 @@ namespace urchin
 	class NavPolygon
 	{
 		public:
-			NavPolygon(std::string, const std::vector<Point3<float>> &);
+			NavPolygon(std::string, const std::vector<Point3<float>> &, const NavTopography *);
 			NavPolygon(const NavPolygon &);
+			~NavPolygon();
 
 			const std::string &getName() const;
 
@@ -24,11 +26,15 @@ namespace urchin
 			const std::vector<std::shared_ptr<NavTriangle>> &getTriangles() const;
 			const std::shared_ptr<NavTriangle> &getTriangle(unsigned int) const;
 
+            const NavTopography *getNavTopography() const;
+
 		private:
 			std::string name;
 
 			std::vector<Point3<float>> points;
 			std::vector<std::shared_ptr<NavTriangle>> triangles;
+
+            const NavTopography *navTopography;
 	};
 
 }
