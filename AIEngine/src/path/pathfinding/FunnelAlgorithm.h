@@ -5,13 +5,15 @@
 #include <utility>
 #include "UrchinCommon.h"
 
+#include "path/pathfinding/PathPortal.h"
+
 namespace urchin
 {
 
     class FunnelAlgorithm
     {
         public:
-            explicit FunnelAlgorithm(const std::shared_ptr<std::vector<LineSegment3D<float>>> &);
+            explicit FunnelAlgorithm(const std::vector<std::shared_ptr<PathPortal>> &);
 
             const std::vector<Point3<float>> &findPath();
 
@@ -26,7 +28,7 @@ namespace urchin
             const Point3<float> &getPortalPoint(FunnelSide, unsigned int) const;
             void updateSideIndex(FunnelSide, unsigned int);
 
-            std::shared_ptr<std::vector<LineSegment3D<float>>> portals;
+            std::vector<std::shared_ptr<PathPortal>> portals;
 
             Point3<float> apex;
             std::pair<unsigned int, unsigned int> sideIndices; //first: left index, second: right index

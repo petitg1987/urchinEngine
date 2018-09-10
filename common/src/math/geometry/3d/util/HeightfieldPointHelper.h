@@ -16,7 +16,7 @@ namespace urchin
 
             Point3<T> findPointAt(const Point2<T> &) const;
             T findHeightAt(const Point2<T> &) const;
-            std::vector<Point3<T>> establishPath(const Point3<T> &, const Point3<T> &) const;
+            std::vector<Point3<T>> followTopography(const Point3<T> &, const Point3<T> &) const;
 
         private:
             const std::vector<Point3<T>> &heightfieldPoints;

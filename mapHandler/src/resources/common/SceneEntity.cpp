@@ -2,7 +2,8 @@
 
 namespace urchin
 {
-    void SceneEntity::refresh(){
+    void SceneEntity::refresh()
+    {
         RigidBody *rigidBody = getRigidBody();
         if(rigidBody!=nullptr)
         {

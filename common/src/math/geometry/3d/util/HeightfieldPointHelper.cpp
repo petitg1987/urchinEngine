@@ -61,7 +61,7 @@ namespace urchin
     /**
      * @return Path points which follow the topography of the terrain between start and end point
      */
-    template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::establishPath(const Point3<T> &startPoint, const Point3<T> &endPoint) const
+    template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T> &startPoint, const Point3<T> &endPoint) const
     {
         Line2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Y), Point2<T>(endPoint.X, endPoint.Z));
 

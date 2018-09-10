@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "PathfindingAStar.h"
+#include "path/pathfinding/PathPortal.h"
 #include "path/pathfinding/FunnelAlgorithm.h"
 
 namespace urchin
@@ -178,31 +179,31 @@ namespace urchin
     std::vector<Point3<float>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint,
                                                                const Point3<float> &endPoint) const
     {
-        auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
-        portals->reserve(10); //estimated memory size
+        std::vector<std::shared_ptr<PathPortal>> portals;
+        portals.reserve(10); //estimated memory size
 
-        portals->emplace_back(LineSegment3D<float>(endPoint, endPoint));
         std::shared_ptr<PathNode> pathNode = endNode;
+        std::shared_ptr<PathPortal> endPortal = std::make_shared<PathPortal>(LineSegment3D<float>(endPoint, endPoint), nullptr, pathNode);
+        portals.emplace_back(endPortal);
         while(pathNode->getPreviousNode()!=nullptr)
         {
             LineSegment3D<float> portal = pathNode->computeEdgeWithPreviousNode();
 
-            Point3<float> characterPosition = middlePoint((*portals)[portals->size()-1]);
+            Point3<float> characterPosition = middlePoint(portals.back()->getPortal());
             Vector3<float> characterMoveDirection = characterPosition.vector(middlePoint(portal)).normalize();
             Vector3<float> characterToPortalA = characterPosition.vector(portal.getA()).normalize();
             float crossProductY = characterMoveDirection.Z*characterToPortalA.X - characterMoveDirection.X*characterToPortalA.Z;
-            if(crossProductY <= 0.0)
+            if(crossProductY > 0.0f)
             {
-                portals->emplace_back(portal);
-            }else
-            {
-                portals->emplace_back(LineSegment3D<float>(portal.getB(), portal.getA()));
+                portal = LineSegment3D<float>(portal.getB(), portal.getA());
             }
+
+            portals.emplace_back(std::make_shared<PathPortal>(portal, pathNode->getPreviousNode(), pathNode));
 
             pathNode = pathNode->getPreviousNode();
         }
-        portals->emplace_back(LineSegment3D<float>(startPoint, startPoint));
-        std::reverse(portals->begin(), portals->end());
+        portals.emplace_back(std::make_shared<PathPortal>(LineSegment3D<float>(startPoint, startPoint), pathNode, nullptr));
+        std::reverse(portals.begin(), portals.end());
 
         FunnelAlgorithm funnelAlgorithm(portals);
         return funnelAlgorithm.findPath();

@@ -9,7 +9,7 @@ namespace urchin
      * @param portals List of portals to cross by the character to reach his target.
      * First point (getA()) of portal segment must be on left of character when it cross a portal.
      */
-    FunnelAlgorithm::FunnelAlgorithm(const std::shared_ptr<std::vector<LineSegment3D<float>>> &portals) :
+    FunnelAlgorithm::FunnelAlgorithm(const std::vector<std::shared_ptr<PathPortal>> &portals) :
         portals(portals)
     {
 
@@ -18,22 +18,22 @@ namespace urchin
     const std::vector<Point3<float>> &FunnelAlgorithm::findPath()
     {
         #ifdef _DEBUG
-            assert(portals->size() >= 2);
-            assert((*portals)[0].getA() == (*portals)[0].getB()); //degenerated start portal
-            assert((*portals)[portals->size()-1].getA() == (*portals)[portals->size()-1].getB()); //degenerated end portal
+            assert(portals.size() >= 2);
+            assert(portals[0]->getPortal().getA() == portals[0]->getPortal().getB()); //degenerated start portal
+            assert(portals.back()->getPortal().getA() == portals.back()->getPortal().getB()); //degenerated end portal
         #endif
 
-        const Point3<float> &startPoint = (*portals)[0].getA();
-        const Point3<float> &endPoint = (*portals)[portals->size()-1].getA();
+        const Point3<float> &startPoint = portals[0]->getPortal().getA();
+        const Point3<float> &endPoint = portals.back()->getPortal().getA();
 
         path.clear();
-        path.reserve(portals->size() / 2 + 1); //estimated memory size
+        path.reserve(portals.size() / 2 + 1); //estimated memory size
         path.push_back(startPoint);
 
         apex = startPoint;
         sideIndices = std::make_pair(1, 1);
 
-        for (unsigned int portalIndex = 2; portalIndex < portals->size(); portalIndex++)
+        for (unsigned int portalIndex = 2; portalIndex < portals.size(); portalIndex++)
         {
             for(FunnelSide funnelSide : {FunnelSide::LEFT, FunnelSide::RIGHT})
             {
@@ -91,10 +91,10 @@ namespace urchin
     {
         if(updateSide==FunnelSide::LEFT)
         {
-            return (*portals)[index].getA();
+            return portals[index]->getPortal().getA();
         }else
         {
-            return (*portals)[index].getB();
+            return portals[index]->getPortal().getB();
         }
     }
 

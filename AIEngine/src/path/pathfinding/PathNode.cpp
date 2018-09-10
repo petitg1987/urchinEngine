@@ -41,6 +41,7 @@ namespace urchin
     void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, unsigned int previousNodeLinkEdgeId)
     {
         #ifdef _DEBUG
+            assert(previousNode != nullptr);
             assert(previousNodeLinkEdgeId <= 2);
         #endif
 
@@ -56,6 +57,7 @@ namespace urchin
     LineSegment3D<float> PathNode::computeEdgeWithPreviousNode() const
     {
         #ifdef _DEBUG
+            assert(previousNode != nullptr);
             assert(previousNodeLinkEdgeId <= 2);
         #endif
 
