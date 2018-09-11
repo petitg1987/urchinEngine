@@ -1,7 +1,7 @@
 #include "HeightfieldPointHelper.h"
 
 #include "math/algorithm/MathAlgorithm.h"
-#include "math/geometry/2d/Line2D.h"
+#include "math/geometry/2d/object/LineSegment2D.h"
 
 namespace urchin
 {
@@ -63,9 +63,9 @@ namespace urchin
      */
     template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T> &startPoint, const Point3<T> &endPoint) const
     {
-        Line2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Y), Point2<T>(endPoint.X, endPoint.Z));
+        LineSegment2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Y), Point2<T>(endPoint.X, endPoint.Z));
 
-        std::vector<Point3<T>> pathPoints;
+        std::vector<Point3<T>> pathPoints; //TODO estimate reserve() memory size
         pathPoints.push_back(startPoint);
 
         Vector2<T> farLeftToStartPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(startPoint.X, startPoint.Z));
@@ -79,7 +79,7 @@ namespace urchin
         {
             Point3<T> firstLinePoint = heightfieldPoints[xCoord];
             Point3<T> endLinePoint = heightfieldPoints[xCoord + zLastIndex];
-            Line2D<T> xLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+            LineSegment2D<T> xLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
 
             bool hasIntersection;
             Point2<T> intersectionPoint = xLine.intersectPoint(pathLine, hasIntersection);
@@ -98,14 +98,14 @@ namespace urchin
         {
             Point3<T> firstLinePoint = heightfieldPoints[zCoord * heightfieldXSize];
             Point3<T> endLinePoint = heightfieldPoints[xLastIndex + zCoord * heightfieldXSize];
-            Line2D<T> zLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+            LineSegment2D<T> zLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
 
             bool hasIntersection; //TODO avoid code duplication
             Point2<T> intersectionPoint = zLine.intersectPoint(pathLine, hasIntersection);
             if(hasIntersection)
             {
                 T intersectionHeight = findHeightAt(intersectionPoint);
-                pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
+      //TODO          pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
             }
         }
 

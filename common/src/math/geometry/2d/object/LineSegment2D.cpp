@@ -138,7 +138,7 @@ namespace urchin
 
         if(rCrossS==0)
         { //line segments are parallel
-            double rDotR = static_cast<double>(r.dotProduct(r));
+            auto rDotR = static_cast<double>(r.dotProduct(r));
             if(startPointsCrossR==0 && rDotR!=0.0)
             { //line segments are collinear
                 double t0 = thisToOther.dotProduct(r) / rDotR;

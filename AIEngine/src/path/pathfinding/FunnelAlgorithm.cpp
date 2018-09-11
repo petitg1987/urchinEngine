@@ -54,16 +54,17 @@ namespace urchin
 
     void FunnelAlgorithm::addPathPoint(const Point3<float> &point, const std::shared_ptr<PathPortal> &pathPortal)
     {
-        if(path.empty())
-        {
-            path.push_back(point);
-        }else
+        if(!path.empty() && pathPortal->getPreviousPathNode()!=nullptr) //never null expect for tests
         { //TODO handle different polygons between two points
             Point3<float> startPoint = path.back();
             const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
             std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, point);
 
-            path.insert(path.end()-1, topographyPoints.begin(), topographyPoints.end());
+            path.pop_back();
+            path.insert(path.end(), topographyPoints.begin(), topographyPoints.end());
+        }else
+        {
+            path.push_back(point);
         }
     }
 

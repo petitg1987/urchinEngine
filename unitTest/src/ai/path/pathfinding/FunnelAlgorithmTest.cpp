@@ -8,10 +8,10 @@
 
 void FunnelAlgorithmTest::straightPath()
 {
-    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
-    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0))); //start point
-    portals->push_back(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)));
-    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0))); //end point
+    std::vector<std::shared_ptr<PathPortal>> portals;
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //start point
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr));
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0)), nullptr, nullptr)); //end point
 
     std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
@@ -22,10 +22,10 @@ void FunnelAlgorithmTest::straightPath()
 
 void FunnelAlgorithmTest::cornerPath1()
 {
-    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
-    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0))); //start point
-    portals->push_back(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)));
-    portals->push_back(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0))); //end point
+    std::vector<std::shared_ptr<PathPortal>> portals;
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //start point
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr));
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0)), nullptr, nullptr)); //end point
 
     std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
@@ -37,10 +37,10 @@ void FunnelAlgorithmTest::cornerPath1()
 
 void FunnelAlgorithmTest::cornerPath2()
 {
-    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
-    portals->push_back(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0))); //start point
-    portals->push_back(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)));
-    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0))); //end point
+    std::vector<std::shared_ptr<PathPortal>> portals;
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0)), nullptr, nullptr)); //start point
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr));
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //end point
 
     std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
@@ -53,10 +53,10 @@ void FunnelAlgorithmTest::cornerPath2()
 
 void FunnelAlgorithmTest::cornerPath3()
 {
-    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
-    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0))); //start point
-    portals->push_back(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)));
-    portals->push_back(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0))); //end point
+    std::vector<std::shared_ptr<PathPortal>> portals;
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //start point
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr));
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0)), nullptr, nullptr)); //end point
 
     std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
@@ -68,10 +68,10 @@ void FunnelAlgorithmTest::cornerPath3()
 
 void FunnelAlgorithmTest::cornerPath4()
 {
-    auto portals = std::make_shared<std::vector<LineSegment3D<float>>>();
-    portals->push_back(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0))); //end point
-    portals->push_back(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)));
-    portals->push_back(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0))); //start point
+    std::vector<std::shared_ptr<PathPortal>> portals;
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0)), nullptr, nullptr)); //end point
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr));
+    portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //start point
 
     std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
 
