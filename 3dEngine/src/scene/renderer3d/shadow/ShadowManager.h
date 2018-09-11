@@ -21,7 +21,7 @@ namespace urchin
 	* Manager for shadow mapping (parallel-split shadow maps & variance shadow maps)
 	*/
 	class ShadowManager : public Observer, public Observable
-	{
+	{ //TODO fix bug shadow in testEngineSfml
 		public:
 			enum BlurShadow
 			{

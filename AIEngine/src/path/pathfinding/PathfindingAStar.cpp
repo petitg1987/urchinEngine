@@ -183,7 +183,7 @@ namespace urchin
         portals.reserve(10); //estimated memory size
 
         std::shared_ptr<PathNode> pathNode = endNode;
-        std::shared_ptr<PathPortal> endPortal = std::make_shared<PathPortal>(LineSegment3D<float>(endPoint, endPoint), nullptr, pathNode);
+        std::shared_ptr<PathPortal> endPortal = std::make_shared<PathPortal>(LineSegment3D<float>(endPoint, endPoint), pathNode, nullptr);
         portals.emplace_back(endPortal);
         while(pathNode->getPreviousNode()!=nullptr)
         {
@@ -202,7 +202,7 @@ namespace urchin
 
             pathNode = pathNode->getPreviousNode();
         }
-        portals.emplace_back(std::make_shared<PathPortal>(LineSegment3D<float>(startPoint, startPoint), pathNode, nullptr));
+        portals.emplace_back(std::make_shared<PathPortal>(LineSegment3D<float>(startPoint, startPoint), nullptr, pathNode));
         std::reverse(portals.begin(), portals.end());
 
         FunnelAlgorithm funnelAlgorithm(portals);

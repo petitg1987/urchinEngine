@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "FunnelAlgorithm.h"
+#include "path/navmesh/model/NavPolygon.h"
 
 namespace urchin
 {
@@ -28,7 +29,7 @@ namespace urchin
 
         path.clear();
         path.reserve(portals.size() / 2 + 1); //estimated memory size
-        path.push_back(startPoint);
+        addPathPoint(startPoint, portals[0]);
 
         apex = startPoint;
         sideIndices = std::make_pair(1, 1);
@@ -46,9 +47,24 @@ namespace urchin
             }
         }
 
-        path.push_back(endPoint);
+        addPathPoint(endPoint, portals.back());
 
         return path;
+    }
+
+    void FunnelAlgorithm::addPathPoint(const Point3<float> &point, const std::shared_ptr<PathPortal> &pathPortal)
+    {
+        if(path.empty())
+        {
+            path.push_back(point);
+        }else
+        { //TODO handle different polygons between two points
+            Point3<float> startPoint = path.back();
+            const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
+            std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, point);
+
+            path.insert(path.end()-1, topographyPoints.begin(), topographyPoints.end());
+        }
     }
 
     int FunnelAlgorithm::updateFunnelSide(FunnelSide updateSide, unsigned int currentIndex)
@@ -73,7 +89,7 @@ namespace urchin
                     updateSideIndex(updateSide, currentIndex);
                 }else
                 { //cross with other side: add new point
-                    path.push_back(getPortalPoint(otherSide, otherSideIndex));
+                    addPathPoint(getPortalPoint(otherSide, otherSideIndex), portals[otherSideIndex]);
                     apex = getPortalPoint(otherSide, otherSideIndex);
 
                     updateSideIndex(otherSide, otherSideIndex+1);

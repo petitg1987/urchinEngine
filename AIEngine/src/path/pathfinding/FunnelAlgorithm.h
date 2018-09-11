@@ -24,6 +24,7 @@ namespace urchin
                 RIGHT
             };
 
+            void addPathPoint(const Point3<float> &, const std::shared_ptr<PathPortal> &);
             int updateFunnelSide(FunnelSide, unsigned int);
             const Point3<float> &getPortalPoint(FunnelSide, unsigned int) const;
             void updateSideIndex(FunnelSide, unsigned int);

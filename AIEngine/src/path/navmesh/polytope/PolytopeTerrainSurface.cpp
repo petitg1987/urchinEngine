@@ -97,7 +97,7 @@ namespace urchin
     NavTopography *PolytopeTerrainSurface::newNavTopography() const
     {
         auto constHeightfieldPointHelper = std::const_pointer_cast<const HeightfieldPointHelper<float>>(heightfieldPointHelper);
-        return new NavTerrainTopography(constHeightfieldPointHelper);
+        return new NavTerrainTopography(constHeightfieldPointHelper, position);
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const
