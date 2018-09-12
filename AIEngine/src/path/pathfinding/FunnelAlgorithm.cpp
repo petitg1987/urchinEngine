@@ -58,6 +58,7 @@ namespace urchin
         { //TODO handle different polygons between two points
             Point3<float> startPoint = path.back();
             const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
+            //TODO too much call to topography (for each A* G value)
             std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, point);
 
             path.pop_back();
@@ -90,8 +91,8 @@ namespace urchin
                     updateSideIndex(updateSide, currentIndex);
                 }else
                 { //cross with other side: add new point
-                    addPathPoint(getPortalPoint(otherSide, otherSideIndex), portals[otherSideIndex]);
                     apex = getPortalPoint(otherSide, otherSideIndex);
+                    addPathPoint(apex, portals[otherSideIndex]);
 
                     updateSideIndex(otherSide, otherSideIndex+1);
                     updateSideIndex(updateSide, otherSideIndex+1);

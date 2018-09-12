@@ -1,10 +1,22 @@
-#include "HeightfieldPointHelper.h"
+#include <algorithm>
 
+#include "HeightfieldPointHelper.h"
 #include "math/algorithm/MathAlgorithm.h"
-#include "math/geometry/2d/object/LineSegment2D.h"
+
+#define PARALLEL_EPSILON 0.07 //= 4 degrees (asin(4/180*pi))
 
 namespace urchin
 {
+
+    template <class T> DistanceToStartPointComp<T>::DistanceToStartPointComp(const Point3<T> &startPoint) :
+            startPoint(startPoint)
+    {
+    }
+
+    template <class T> bool DistanceToStartPointComp<T>::operator() (const Point3<T> &left, const Point3<T> &right) const
+    {
+        return startPoint.squareDistance(left) < startPoint.squareDistance(right);
+    }
 
     template<class T> HeightfieldPointHelper<T>::HeightfieldPointHelper(const std::vector<Point3<T>> &heightfieldPoints, unsigned int heightfieldXSize) :
             heightfieldPoints(heightfieldPoints),
@@ -63,63 +75,89 @@ namespace urchin
      */
     template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T> &startPoint, const Point3<T> &endPoint) const
     {
-        LineSegment2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Y), Point2<T>(endPoint.X, endPoint.Z));
+        LineSegment2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Z), Point2<T>(endPoint.X, endPoint.Z));
+        DistanceToStartPointComp<T> distanceToStartPointComp(startPoint);
 
-        std::vector<Point3<T>> pathPoints; //TODO estimate reserve() memory size
+        std::vector<Point3<T>> pathPoints;
         pathPoints.push_back(startPoint);
 
         Vector2<T> farLeftToStartPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(startPoint.X, startPoint.Z));
         Vector2<T> farLeftToEndPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(endPoint.X, endPoint.Z));
 
         //X lines collision
-        int xStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(farLeftToStartPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-        int xEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(farLeftToEndPoint.X / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
-        int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
-        for(int xCoord = xStartIndex; xCoord < xEndIndex; ++xCoord)
+        if(!isParallelToXAxis(pathLine, PARALLEL_EPSILON))
         {
-            Point3<T> firstLinePoint = heightfieldPoints[xCoord];
-            Point3<T> endLinePoint = heightfieldPoints[xCoord + zLastIndex];
-            LineSegment2D<T> xLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+            int xStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.X, farLeftToEndPoint.X)  / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
+            int xEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.X, farLeftToEndPoint.X) / xInterval)), 0, static_cast<int>(heightfieldXSize - 1));
+            pathPoints.reserve(pathPoints.size() + (xEndIndex-xStartIndex) + 1);
 
-            bool hasIntersection;
-            Point2<T> intersectionPoint = xLine.intersectPoint(pathLine, hasIntersection);
-            if(hasIntersection)
+            int zLastIndex = (heightfieldZSize - 1) * heightfieldXSize;
+            for (int xCoord = xStartIndex; xCoord <= xEndIndex; ++xCoord)
             {
-                T intersectionHeight = findHeightAt(intersectionPoint);
-                pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
+                Point3<T> firstLinePoint = heightfieldPoints[xCoord];
+                Point3<T> endLinePoint = heightfieldPoints[xCoord + zLastIndex];
+                LineSegment2D<T> xLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+
+                addIntersectionPoint(xLine, pathLine, pathPoints);
             }
         }
 
         //Z lines collision
-        int zStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(farLeftToStartPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
-        int zEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(farLeftToEndPoint.Y / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
-        int xLastIndex = heightfieldXSize - 1;
-        for(int zCoord = zStartIndex; zCoord < zEndIndex; ++zCoord)
+        if(!isParallelToZAxis(pathLine, PARALLEL_EPSILON))
         {
-            Point3<T> firstLinePoint = heightfieldPoints[zCoord * heightfieldXSize];
-            Point3<T> endLinePoint = heightfieldPoints[xLastIndex + zCoord * heightfieldXSize];
-            LineSegment2D<T> zLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+            int zStartIndex = MathAlgorithm::clamp(static_cast<int>(std::floor(std::min(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
+            int zEndIndex = MathAlgorithm::clamp(static_cast<int>(std::ceil(std::max(farLeftToStartPoint.Y, farLeftToEndPoint.Y) / zInterval)), 0, static_cast<int>(heightfieldZSize - 1));
+            pathPoints.reserve(pathPoints.size() + (zEndIndex-zStartIndex) + 1);
 
-            bool hasIntersection; //TODO avoid code duplication
-            Point2<T> intersectionPoint = zLine.intersectPoint(pathLine, hasIntersection);
-            if(hasIntersection)
+            int xLastIndex = heightfieldXSize - 1;
+            for(int zCoord = zStartIndex; zCoord <= zEndIndex; ++zCoord)
             {
-                T intersectionHeight = findHeightAt(intersectionPoint);
-      //TODO          pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
+                Point3<T> firstLinePoint = heightfieldPoints[zCoord * heightfieldXSize];
+                Point3<T> endLinePoint = heightfieldPoints[xLastIndex + zCoord * heightfieldXSize];
+                LineSegment2D<T> zLine(Point2<T>(firstLinePoint.X, firstLinePoint.Z), Point2<T>(endLinePoint.X, endLinePoint.Z));
+
+                addIntersectionPoint(zLine, pathLine, pathPoints);
             }
         }
 
-        //TODO sort points...
-
         //Oblique lines collision
-        //No implemented
+        //Not implemented: no real added value and bad for performance
 
+        std::sort(pathPoints.begin(), pathPoints.end(), distanceToStartPointComp);
         pathPoints.push_back(endPoint);
         return pathPoints;
     }
 
+    /**
+     * @param pathPoints [out] Vector where intersection point is added
+     */
+    template<class T> void HeightfieldPointHelper<T>::addIntersectionPoint(const LineSegment2D<T> &line, const LineSegment2D<T> &pathLine, std::vector<Point3<T>> &pathPoints) const
+    {
+        bool hasIntersection;
+        Point2<T> intersectionPoint = line.intersectPoint(pathLine, hasIntersection);
+        if(hasIntersection)
+        {
+            T intersectionHeight = findHeightAt(intersectionPoint);
+            pathPoints.push_back(Point3<T>(intersectionPoint.X, intersectionHeight, intersectionPoint.Y));
+        }
+    }
+
+    template<class T> bool HeightfieldPointHelper<T>::isParallelToXAxis(const LineSegment2D<T> &pathLine, T epsilon) const
+    {
+        T dotProduct = pathLine.toVector().normalize().dotProduct(Vector2<T>(1.0, 0.0));
+        return std::fabs(dotProduct) < epsilon;
+    }
+
+    template<class T> bool HeightfieldPointHelper<T>::isParallelToZAxis(const LineSegment2D<T> &pathLine, T epsilon) const
+    {
+        T dotProduct = pathLine.toVector().normalize().dotProduct(Vector2<T>(0.0, 1.0));
+        return std::fabs(dotProduct) < epsilon;
+    }
+
     //explicit template
+    template class DistanceToStartPointComp<float>;
     template class HeightfieldPointHelper<float>;
 
+    template class DistanceToStartPointComp<double>;
     template class HeightfieldPointHelper<double>;
 }
