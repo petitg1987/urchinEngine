@@ -13,11 +13,11 @@ void FunnelAlgorithmTest::straightPath()
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr));
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, 1.0), Point3<float>(1.0, 0.0, 1.0)), nullptr, nullptr)); //end point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
+    std::vector<std::shared_ptr<PathPortal>> pathPortals = FunnelAlgorithm(portals).computePivotPoints();
 
-    AssertHelper::assertUnsignedInt(path.size(), 2);
-    AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(1.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[0]->getPivotPoint(), Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertTrue(!pathPortals[1]->hasPivotPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getPivotPoint(), Point3<float>(1.0, 0.0, 1.0));
 }
 
 void FunnelAlgorithmTest::cornerPath1()
@@ -27,12 +27,11 @@ void FunnelAlgorithmTest::cornerPath1()
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr));
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(4.0, 0.0, 1.0), Point3<float>(4.0, 0.0, 1.0)), nullptr, nullptr)); //end point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
+    std::vector<std::shared_ptr<PathPortal>> pathPortals = FunnelAlgorithm(portals).computePivotPoints();
 
-    AssertHelper::assertUnsignedInt(path.size(), 3);
-    AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(2.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(path[2], Point3<float>(4.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[0]->getPivotPoint(), Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[1]->getPivotPoint(), Point3<float>(2.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getPivotPoint(), Point3<float>(4.0, 0.0, 1.0));
 }
 
 void FunnelAlgorithmTest::cornerPath2()
@@ -42,12 +41,11 @@ void FunnelAlgorithmTest::cornerPath2()
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr));
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //end point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
+    std::vector<std::shared_ptr<PathPortal>> pathPortals = FunnelAlgorithm(portals).computePivotPoints();
 
-    AssertHelper::assertUnsignedInt(path.size(), 3);
-    AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(4.0, 0.0, 1.0));
-    AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(2.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(path[2], Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[0]->getPivotPoint(), Point3<float>(4.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[1]->getPivotPoint(), Point3<float>(2.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getPivotPoint(), Point3<float>(1.0, 0.0, -1.0));
 }
 
 
@@ -58,12 +56,11 @@ void FunnelAlgorithmTest::cornerPath3()
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(2.0, 0.0, 0.0), Point3<float>(0.0, 0.0, 0.0)), nullptr, nullptr));
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(-2.0, 0.0, 1.0), Point3<float>(-2.0, 0.0, 1.0)), nullptr, nullptr)); //end point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
+    std::vector<std::shared_ptr<PathPortal>> pathPortals = FunnelAlgorithm(portals).computePivotPoints();
 
-    AssertHelper::assertUnsignedInt(path.size(), 3);
-    AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(1.0, 0.0, -1.0));
-    AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(path[2], Point3<float>(-2.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[0]->getPivotPoint(), Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[1]->getPivotPoint(), Point3<float>(0.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getPivotPoint(), Point3<float>(-2.0, 0.0, 1.0));
 }
 
 void FunnelAlgorithmTest::cornerPath4()
@@ -73,12 +70,11 @@ void FunnelAlgorithmTest::cornerPath4()
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(0.0, 0.0, 0.0), Point3<float>(2.0, 0.0, 0.0)), nullptr, nullptr));
     portals.push_back(std::make_shared<PathPortal>(LineSegment3D<float>(Point3<float>(1.0, 0.0, -1.0), Point3<float>(1.0, 0.0, -1.0)), nullptr, nullptr)); //start point
 
-    std::vector<Point3<float>> path = FunnelAlgorithm(portals).findPath();
+    std::vector<std::shared_ptr<PathPortal>> pathPortals = FunnelAlgorithm(portals).computePivotPoints();
 
-    AssertHelper::assertUnsignedInt(path.size(), 3);
-    AssertHelper::assertPoint3FloatEquals(path[0], Point3<float>(-2.0, 0.0, 1.0));
-    AssertHelper::assertPoint3FloatEquals(path[1], Point3<float>(0.0, 0.0, 0.0));
-    AssertHelper::assertPoint3FloatEquals(path[2], Point3<float>(1.0, 0.0, -1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[0]->getPivotPoint(), Point3<float>(-2.0, 0.0, 1.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[1]->getPivotPoint(), Point3<float>(0.0, 0.0, 0.0));
+    AssertHelper::assertPoint3FloatEquals(pathPortals[2]->getPivotPoint(), Point3<float>(1.0, 0.0, -1.0));
 }
 
 CppUnit::Test *FunnelAlgorithmTest::suite()

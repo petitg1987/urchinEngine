@@ -88,7 +88,8 @@ namespace urchin
 
         if(endNodePath)
         {
-            return determinePath(endNodePath, startPoint, endPoint);
+            std::vector<std::shared_ptr<PathPortal>> pathPortals = determinePath(endNodePath, startPoint, endPoint);
+            return pathPortalsToPathPoints(pathPortals, true);
         }
 
         #ifdef _DEBUG
@@ -159,10 +160,11 @@ namespace urchin
     {
         std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(neighbor, 0.0, 0.0);
         neighborNodePath->setPreviousNode(currentNode, previousNodeLinkEdgeId);
-        std::vector<Point3<float>> path = determinePath(neighborNodePath, startPoint, neighbor->getCenterPoint());
+        std::vector<std::shared_ptr<PathPortal>> pathPortals = determinePath(neighborNodePath, startPoint, neighbor->getCenterPoint());
+        std::vector<Point3<float>> path = pathPortalsToPathPoints(pathPortals, false);
 
         float pathDistance = 0.0;
-        for(unsigned int i=0; i<path.size()-1; i++)
+        for(int i=0; i<static_cast<long>(path.size())-1; i++)
         {
             pathDistance += path[i].distance(path[i+1]);
         }
@@ -176,7 +178,7 @@ namespace urchin
         return std::abs(currentPoint.X - endPoint.X) + std::abs(currentPoint.Y - endPoint.Y) + std::abs(currentPoint.Z - endPoint.Z);
     }
 
-    std::vector<Point3<float>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint,
+    std::vector<std::shared_ptr<PathPortal>> PathfindingAStar::determinePath(const std::shared_ptr<PathNode> &endNode, const Point3<float> &startPoint,
                                                                const Point3<float> &endPoint) const
     {
         std::vector<std::shared_ptr<PathPortal>> portals;
@@ -206,11 +208,67 @@ namespace urchin
         std::reverse(portals.begin(), portals.end());
 
         FunnelAlgorithm funnelAlgorithm(portals);
-        return funnelAlgorithm.findPath();
+        return funnelAlgorithm.computePivotPoints();
     }
 
     Point3<float> PathfindingAStar::middlePoint(const LineSegment3D<float> &lineSegment) const
     {
         return (lineSegment.getA() + lineSegment.getB()) / 2.0f;
     }
+
+    std::vector<Point3<float>> PathfindingAStar::pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &pathPortals, bool followTopography) const
+    {
+        std::vector<Point3<float>> pathPoints;
+        pathPoints.reserve(pathPortals.size() / 2); //estimated memory size
+
+        addPolygonsPivotPoints(pathPortals);
+
+        for(const auto &pathPortal : pathPortals)
+        {
+            if(pathPortal->hasPivotPoint())
+            {
+                if(followTopography && !pathPoints.empty())
+                {
+                    Point3<float> startPoint = pathPoints.back();
+                    Point3<float> endPoint = pathPortal->getPivotPoint();
+
+                    const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
+                    std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, endPoint);
+
+                    pathPoints.insert(pathPoints.end(), topographyPoints.begin() + 1, topographyPoints.end());
+                }else
+                {
+                    pathPoints.push_back(pathPortal->getPivotPoint());
+                }
+            }
+        }
+
+        return pathPoints;
+    }
+
+    void PathfindingAStar::addPolygonsPivotPoints(std::vector<std::shared_ptr<PathPortal>> &portals) const
+    {
+        #ifdef _DEBUG
+            if(!portals.empty())
+            {
+                assert(portals[0]->hasPivotPoint());
+                assert(portals.back()->hasPivotPoint());
+            }
+        #endif
+
+        Point3<float> previousPivotPoint(NAN, NAN, NAN);
+        for (auto &portal : portals)
+        {
+            if(portal->hasPivotPoint())
+            {
+                previousPivotPoint = portal->getPivotPoint();
+            }else if(portal->getPreviousPathNode()->getNavTriangle()->getNavPolygon()->getName() != portal->getNextPathNode()->getNavTriangle()->getNavPolygon()->getName())
+            {
+                //Compute approximate point for performance reason (note:real point is intersection of portal->getPortal() with previousPivotPoint-nextPivotPoint)
+                Point3<float> portalPivotPoint = portal->getPortal().closestPoint(previousPivotPoint);
+                portal->setPivotPoint(portalPivotPoint);
+            }
+        }
+    }
+
 }

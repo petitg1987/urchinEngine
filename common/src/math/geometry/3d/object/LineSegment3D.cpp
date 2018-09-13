@@ -33,6 +33,26 @@ namespace urchin
 	}
 
 	/**
+ 	* @return Point on segment AB closest to point p
+ 	*/
+	template<class T> Point3<T> LineSegment3D<T>::closestPoint(const Point3<T> &p) const
+	{
+		Vector3<T> ab = a.vector(b);
+
+		T abSquareLength = ab.dotProduct(ab);
+		if(abSquareLength==(T)0.0)
+		{
+			return a;
+		}
+
+		Vector3<T> ap = a.vector(p);
+		T t = ap.dotProduct(ab) / abSquareLength;
+		t = std::min((T)1.0, std::max((T)0.0, t));
+
+		return ((b-a)*t) + a;
+	}
+
+	/**
 	 * @param barycentrics [out] Returns barycentric coordinates for closest point
 	 * @return Point on segment AB closest to point p
 	 */

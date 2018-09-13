@@ -16,7 +16,7 @@ namespace urchin
 
     }
 
-    const std::vector<Point3<float>> &FunnelAlgorithm::findPath()
+    const std::vector<std::shared_ptr<PathPortal>> &FunnelAlgorithm::computePivotPoints()
     {
         #ifdef _DEBUG
             assert(portals.size() >= 2);
@@ -27,9 +27,7 @@ namespace urchin
         const Point3<float> &startPoint = portals[0]->getPortal().getA();
         const Point3<float> &endPoint = portals.back()->getPortal().getA();
 
-        path.clear();
-        path.reserve(portals.size() / 2 + 1); //estimated memory size
-        addPathPoint(startPoint, portals[0]);
+        portals[0]->setPivotPoint(startPoint);
 
         apex = startPoint;
         sideIndices = std::make_pair(1, 1);
@@ -47,26 +45,9 @@ namespace urchin
             }
         }
 
-        addPathPoint(endPoint, portals.back());
+        portals.back()->setPivotPoint(endPoint);
 
-        return path;
-    }
-
-    void FunnelAlgorithm::addPathPoint(const Point3<float> &point, const std::shared_ptr<PathPortal> &pathPortal)
-    {
-        if(!path.empty() && pathPortal->getPreviousPathNode()!=nullptr) //never null expect for tests
-        { //TODO handle different polygons between two points
-            Point3<float> startPoint = path.back();
-            const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
-            //TODO too much call to topography (for each A* G value)
-            std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, point);
-
-            path.pop_back();
-            path.insert(path.end(), topographyPoints.begin(), topographyPoints.end());
-        }else
-        {
-            path.push_back(point);
-        }
+        return portals;
     }
 
     int FunnelAlgorithm::updateFunnelSide(FunnelSide updateSide, unsigned int currentIndex)
@@ -92,7 +73,7 @@ namespace urchin
                 }else
                 { //cross with other side: add new point
                     apex = getPortalPoint(otherSide, otherSideIndex);
-                    addPathPoint(apex, portals[otherSideIndex]);
+                    portals[otherSideIndex]->setPivotPoint(apex);
 
                     updateSideIndex(otherSide, otherSideIndex+1);
                     updateSideIndex(updateSide, otherSideIndex+1);
