@@ -21,7 +21,7 @@ namespace urchin
 			void setProjectionMatricesLocation(int);
 			void setUniformData(const ShadowData *);
 
-			void loadCustomUniforms();
+			void loadCustomUniforms() override;
 
 		private:
 			int mModelProjectionMatrixLoc;

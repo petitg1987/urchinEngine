@@ -5,8 +5,7 @@ namespace urchin
 
 	bool ModelProduceShadowFilter::isAccepted(const Model *const model, const ConvexObject3D<float> &convexObject) const
 	{
-		//return model->isProduceShadow() && convexObject.collideWithAABBox(octreeable->getAABBox());
-		return model->isProduceShadow();
+		return model->isProduceShadow() && convexObject.collideWithAABBox(model->getAABBox());
 	}
 
 }

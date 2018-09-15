@@ -14,7 +14,7 @@ namespace urchin
 		public:
 			~ModelProduceShadowFilter() override = default;
 
-			bool isAccepted(const Model *const, const ConvexObject3D<float> &) const;
+			bool isAccepted(const Model *, const ConvexObject3D<float> &) const override;
 	};
 }
 

@@ -36,7 +36,7 @@ namespace urchin
 				CCW
 			};
 
-			explicit TriangulationAlgorithm(const std::vector<Point2<float>> &, const std::string &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
+			TriangulationAlgorithm(const std::vector<Point2<float>> &, const std::string &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 
@@ -60,12 +60,13 @@ namespace urchin
 			bool areSameEdge(const std::shared_ptr<NavTriangle> &, unsigned int, unsigned int, const std::shared_ptr<NavTriangle> &, unsigned int, unsigned int) const;
 			uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
 
+			void logInputData(const std::string &, Logger::CriticalityLevel) const;
 			void logOutputData(const std::string &, const std::vector<std::shared_ptr<NavTriangle>> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
+			TriangleOrientation triangleOrientation;
 			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 			std::vector<std::string> contourNames;
-			TriangleOrientation triangleOrientation;
 
 			std::vector<std::shared_ptr<NavTriangle>> triangles;
 			int missingTriangleNeighbor;

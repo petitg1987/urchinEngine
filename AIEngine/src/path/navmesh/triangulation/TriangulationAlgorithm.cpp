@@ -24,21 +24,23 @@ namespace urchin
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
 	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints, const std::string &name, TriangleOrientation triangleOrientation) :
-			polygonPoints(ccwPolygonPoints)
+			polygonPoints(ccwPolygonPoints),
+			triangleOrientation(triangleOrientation)
 	{
+		this->endContourIndices.push_back(ccwPolygonPoints.size());
+		this->contourNames.push_back(name);
+
         #ifdef _DEBUG
-			//assert counter-clockwise order
             double area = 0.0;
             for (unsigned int i = 0, prevI = ccwPolygonPoints.size() - 1; i < ccwPolygonPoints.size(); prevI=i++)
             {
                 area += (ccwPolygonPoints[i].X - ccwPolygonPoints[prevI].X) * (ccwPolygonPoints[i].Y + ccwPolygonPoints[prevI].Y);
             }
-            assert(area <= 0.0);
+            if(area > 0.0)
+            {
+                logInputData("Triangulation input points not in CCW order. Area: " + std::to_string(area), Logger::ERROR);
+            }
         #endif
-
-		this->endContourIndices.push_back(ccwPolygonPoints.size());
-		this->contourNames.push_back(name);
-		this->triangleOrientation = triangleOrientation;
 	}
 
 	/**
@@ -55,19 +57,21 @@ namespace urchin
 	 */
 	unsigned int TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints, const std::string &holeName)
 	{
+		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
+		endContourIndices.push_back(polygonPoints.size());
+		contourNames.push_back(holeName);
+
         #ifdef _DEBUG
-			//assert clockwise order
             double area = 0.0;
             for (unsigned int i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI=i++)
             {
                 area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
             }
-            assert(area >= 0.0);
+            if(area < 0.0)
+            {
+                logInputData("Triangulation hole input points not in CW order. Area: " + std::to_string(area), Logger::ERROR);
+            }
         #endif
-
-		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
-		endContourIndices.push_back(polygonPoints.size());
-		contourNames.push_back(holeName);
 
 		return endContourIndices.size() - 2;
 	}
@@ -96,7 +100,10 @@ namespace urchin
 			{
 				for (unsigned int j = 0; j < polygonPoints.size(); ++j)
 				{
-					assert(i == j || polygonPoints[i].X != polygonPoints[j].X || polygonPoints[i].Y != polygonPoints[j].Y);
+					if(i!=j && polygonPoints[i] == polygonPoints[j])
+					{
+						logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j), Logger::ERROR);
+					}
 				}
 			}
 		#endif
@@ -240,6 +247,13 @@ namespace urchin
 
 	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildOrientedTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
 	{
+		#ifdef _DEBUG
+			if(pointIndex1==pointIndex2 || pointIndex1==pointIndex3 || pointIndex2==pointIndex3)
+			{
+				logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR);
+			}
+    	#endif
+
 		if(triangleOrientation==TriangulationAlgorithm::NONE)
 		{
 			return std::make_unique<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
@@ -347,6 +361,32 @@ namespace urchin
         edgeId = edgeId << 32;
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
+
+    void TriangulationAlgorithm::logInputData(const std::string &message, Logger::CriticalityLevel logLevel) const
+	{
+		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<float>::max_digits10);
+
+		logStream<<message<<std::endl;
+		logStream<<"Triangle orientation: "<<triangleOrientation<<std::endl;
+		logStream<<"Polygon points:"<<std::endl;
+		for(const auto &polygonPoint : polygonPoints)
+		{
+			logStream<<" - "<<polygonPoint<<std::endl;
+		}
+		logStream<<"Contour names:"<<std::endl;
+		for(const auto &contourName : contourNames)
+		{
+			logStream<<" - "<<contourName<<std::endl;
+		}
+		logStream<<"End contour indices:"<<std::endl;
+		for(const auto &endContourIndex : endContourIndices)
+		{
+			logStream<<" - "<<endContourIndex<<std::endl;
+		}
+
+		Logger::logger().log(logLevel, logStream.str());
+	}
 
 	void TriangulationAlgorithm::logOutputData(const std::string &message, const std::vector<std::shared_ptr<NavTriangle>> &triangles, Logger::CriticalityLevel logLevel) const
 	{
