@@ -9,7 +9,7 @@ namespace urchin
 		public:
 			virtual ~OctreeableFilter() = default;
 
-			virtual bool isAccepted(const TOctreeable *const, const ConvexObject3D<float> &) const = 0;
+			virtual bool isAccepted(const TOctreeable *, const ConvexObject3D<float> &) const = 0;
 	};
 
 }
