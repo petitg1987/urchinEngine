@@ -65,7 +65,8 @@ float linearStep(float min, float max, float v){
 } 
 
 float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
-    float bias = max(#SHADOW_MAP_BIAS# * tan(acos(NdotL)), 0.00001);
+    float tanAcosNdotL = sqrt(1 - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
+    float bias = max(#SHADOW_MAP_BIAS# * tanAcosNdotL, 0.00001);
     float shadowMapZBias = shadowMapZ - bias;
     float isInHardShadow = float(shadowMapZBias <= moments.x);
     
