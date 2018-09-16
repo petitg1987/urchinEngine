@@ -19,7 +19,11 @@ namespace urchin
 		min(min),
 		max(max)
 	{
-
+		#ifdef _DEBUG
+			assert(min.X <= max.X);
+			assert(min.Y <= max.Y);
+			assert(min.Z <= max.Z);
+    	#endif
 	}
 
 	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal) :
@@ -27,7 +31,11 @@ namespace urchin
 		min(min),
 		max(min.translate(diagonal))
 	{
-
+		#ifdef _DEBUG
+			assert(min.X <= max.X);
+			assert(min.Y <= max.Y);
+			assert(min.Z <= max.Z);
+		#endif
 	}
 
 	template<class T> AABBox<T>::AABBox(const std::vector<Point3<T>> &points) :

@@ -50,63 +50,66 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::set<TOctreeable *> &octreeables)
-{	
-	//gets the position and the size of the scene (begin)
-	Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-	Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-
-    for(const auto &octreeable : octreeables)
+{
+	if(!octreeables.empty())
 	{
-		const Point3<float> &bboxMin = octreeable->getAABBox().getMin();
-		if(minScene.X > bboxMin.X)
+		Point3<float> minScene(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+		Point3<float> maxScene(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+
+		for (const auto &octreeable : octreeables)
 		{
-			minScene.X = bboxMin.X;
-		}
-		if(minScene.Y > bboxMin.Y)
-		{
-			minScene.Y = bboxMin.Y;
-		}
-		if(minScene.Z > bboxMin.Z)
-		{
-			minScene.Z = bboxMin.Z;
+			const Point3<float> &bboxMin = octreeable->getAABBox().getMin();
+			if (minScene.X > bboxMin.X)
+			{
+				minScene.X = bboxMin.X;
+			}
+			if (minScene.Y > bboxMin.Y)
+			{
+				minScene.Y = bboxMin.Y;
+			}
+			if (minScene.Z > bboxMin.Z)
+			{
+				minScene.Z = bboxMin.Z;
+			}
+
+			const Point3<float> &bboxMax = octreeable->getAABBox().getMax();
+			if (maxScene.X < bboxMax.X)
+			{
+				maxScene.X = bboxMax.X;
+			}
+			if (maxScene.Y < bboxMax.Y)
+			{
+				maxScene.Y = bboxMax.Y;
+			}
+			if (maxScene.Z < bboxMax.Z)
+			{
+				maxScene.Z = bboxMax.Z;
+			}
 		}
 
-		const Point3<float> &bboxMax = octreeable->getAABBox().getMax();
-		if(maxScene.X < bboxMax.X)
+		Vector3<float> size = (minScene.vector(maxScene));
+		size.X += overflowSize * 2.0f;
+		size.Y += overflowSize * 2.0f;
+		size.Z += overflowSize * 2.0f;
+
+		Point3<float> position = minScene;
+		position.X -= overflowSize;
+		position.Y -= overflowSize;
+		position.Z -= overflowSize;
+
+		delete mainOctree;
+		mainOctree = new Octree<TOctreeable>(position, size, minSize);
+
+		for(auto &octreeable : octreeables)
 		{
-			maxScene.X = bboxMax.X;
+			addOctreeable(octreeable);
 		}
-		if(maxScene.Y < bboxMax.Y)
-		{
-			maxScene.Y = bboxMax.Y;
-		}
-		if(maxScene.Z < bboxMax.Z)
-		{
-			maxScene.Z = bboxMax.Z;
-		}
-	}
-	
-	Vector3<float> size = (minScene.vector(maxScene));
-	size.X += overflowSize * 2.0f;
-	size.Y += overflowSize * 2.0f;
-	size.Z += overflowSize * 2.0f;
-	
-	Point3<float> position = minScene;
-	position.X -= overflowSize;
-	position.Y -= overflowSize;
-	position.Z -= overflowSize;
-	//gets the position and the size of the scene (end)
-	
-	delete mainOctree;
-	mainOctree = new Octree<TOctreeable>(position, size, minSize);
-	
-	//adds the octreeables to the octree
-    for(auto &octreeable : octreeables)
+	}else
 	{
-		addOctreeable(octreeable);
+		delete mainOctree;
+		mainOctree = new Octree<TOctreeable>(Point3<float>(0.0, 0.0, 0.0), Vector3<float>(1.0, 1.0, 1.0), minSize);
 	}
 
-	//notify observers
 	notifyObservers(this, OCTREE_BUILT);
 }
 

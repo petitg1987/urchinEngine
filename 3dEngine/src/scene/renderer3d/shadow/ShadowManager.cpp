@@ -459,7 +459,6 @@ namespace urchin
         if(!models.empty())
         {
 			bool boxInitialized = false;
-            AABBox<float> aabboxSceneIndependentViewSpace = obboxSceneIndependentViewSpace.toAABBox();
 
             for (auto model : models)
             {
@@ -482,14 +481,14 @@ namespace urchin
         }
 
 		Point3<float> cutMin(
-			aabboxSceneDependent.getMin().X<aabboxSceneIndependent.getMin().X ? aabboxSceneIndependent.getMin().X : aabboxSceneDependent.getMin().X,
-			aabboxSceneDependent.getMin().Y<aabboxSceneIndependent.getMin().Y ? aabboxSceneIndependent.getMin().Y : aabboxSceneDependent.getMin().Y,
-			aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
+		        std::min(std::max(aabboxSceneDependent.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
+                std::min(std::max(aabboxSceneDependent.getMin().Y, aabboxSceneIndependent.getMin().Y), aabboxSceneIndependent.getMax().Y),
+				aabboxSceneIndependent.getMin().Z); //shadow can be projected outside the box: value cannot be capped
 
 		Point3<float> cutMax(
-			aabboxSceneDependent.getMax().X>aabboxSceneIndependent.getMax().X ? aabboxSceneIndependent.getMax().X : aabboxSceneDependent.getMax().X,
-			aabboxSceneDependent.getMax().Y>aabboxSceneIndependent.getMax().Y ? aabboxSceneIndependent.getMax().Y : aabboxSceneDependent.getMax().Y,
-			aabboxSceneDependent.getMax().Z>aabboxSceneIndependent.getMax().Z ? aabboxSceneIndependent.getMax().Z : aabboxSceneDependent.getMax().Z);
+				std::max(std::min(aabboxSceneDependent.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
+                std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Y),
+                std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
 		cutMin.X = (cutMin.X<0.0f) ? cutMin.X-(lightViewOverflowStepSize+fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X-fmod(cutMin.X, lightViewOverflowStepSize);
 		cutMin.Y = (cutMin.Y<0.0f) ? cutMin.Y-(lightViewOverflowStepSize+fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y-fmod(cutMin.Y, lightViewOverflowStepSize);
