@@ -21,6 +21,8 @@ class MonotonePolygonTest : public CppUnit::TestFixture
 		void polygonTwoHoles1();
 		void polygonTwoHoles2();
 		void polygonTwoHoles3();
+
+		void test();
 };
 
 #endif
