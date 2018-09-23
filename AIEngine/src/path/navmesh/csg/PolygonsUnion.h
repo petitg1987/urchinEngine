@@ -33,7 +33,7 @@ namespace urchin
 			ClipperLib::Path toPath(const CSGPolygon<T> &) const;
             CSGPolygon<T> toPolygon(const ClipperLib::Path &, const std::string &) const;
 
-			void logInputPath(const PolygonPath &, const PolygonPath &, const std::string &, Logger::CriticalityLevel) const;
+			void logInputData(const std::vector<CSGPolygon<T>> &, const std::string &, Logger::CriticalityLevel) const;
 	};
 
 }

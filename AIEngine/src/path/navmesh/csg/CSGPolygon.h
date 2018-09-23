@@ -26,6 +26,8 @@ namespace urchin
 			CSGPolygon<T> expand(T) const;
 			CSGPolygon<T> simplify(T, T) const;
 
+			bool isSelfIntersect() const;
+
 		private:
 			bool pointInsidePolygon(const Point2<T> &, bool) const;
 

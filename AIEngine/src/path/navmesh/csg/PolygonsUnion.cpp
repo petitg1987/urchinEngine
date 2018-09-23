@@ -36,7 +36,7 @@ namespace urchin
                 std::vector<PolygonPath> result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
                 if(result.empty())
                 {
-                    logInputPath(allPolygonPaths[0], allPolygonPaths[i], "Empty result returned after polygon union.", Logger::ERROR);
+                    logInputData(polygons, "Empty result returned after two polygons union." , Logger::ERROR);
                     return {};
                 }
                 if(result.size()==1)
@@ -56,6 +56,16 @@ namespace urchin
                 VectorEraser::erase(allPolygonPaths, 0);
             }
         }
+
+        #ifdef _DEBUG
+            for(const auto &mergedPolygon : mergedPolygons)
+            {
+                if(mergedPolygon.isSelfIntersect())
+                {
+                    logInputData(polygons, "Union of polygons result in self intersect polygon.", Logger::ERROR);
+                }
+            }
+        #endif
 
         return mergedPolygons;
 	}
@@ -130,30 +140,18 @@ namespace urchin
         return CSGPolygon<T>(name, cwPoints);
     }
 
-    template<class T> void PolygonsUnion<T>::logInputPath(const PolygonPath &polygon1, const PolygonPath &polygon2, const std::string &message,
-                                                          Logger::CriticalityLevel logLevel) const
+    template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>> &polygons, const std::string &message,
+            Logger::CriticalityLevel logLevel) const
     {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
         logStream<<message<<std::endl;
 
-        logStream<<"Polygon path 1:"<<std::endl;
-        logStream<<"\tName:" << polygon1.name<<std::endl;
-        logStream<<"\tPoints (CW):" << std::endl;
-        for(const auto &point : polygon1.path)
+        for(unsigned int i=0; i<polygons.size(); ++i)
         {
-            logStream<<"\t\t"<<point<<std::endl;
+            logStream << "Polygon " << i << std::endl << polygons[i] << std::endl;
         }
-
-        logStream<<"Polygon path 2:"<<std::endl;
-        logStream<<"\tName:" << polygon2.name<<std::endl;
-        logStream<<"\tPoints (CW):" << std::endl;
-        for(const auto &point : polygon2.path)
-        {
-            logStream<<"\t\t"<<point<<std::endl;
-        }
-        logStream<<std::endl;
 
         Logger::logger().log(logLevel, logStream.str());
     }

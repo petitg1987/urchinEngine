@@ -115,7 +115,7 @@ namespace urchin
                 subtractedPolygons.clear();
                 return subtractedPolygons;
             }
-            if(polygonCwPoints.size()<3)
+            if(polygonCwPoints.size() < 3)
             {
                 logInputData(minuendPolygon, subtrahendPolygon, "Degenerate polygons built on polygons subtraction algorithm.", Logger::ERROR);
                 subtractedPolygons.clear();
@@ -124,6 +124,16 @@ namespace urchin
 
             subtractedPolygons.push_back(CSGPolygon<T>("[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]", polygonCwPoints));
         }
+
+        #ifdef _DEBUG
+            for(const auto &subtractedPolygon : subtractedPolygons)
+            {
+                if(subtractedPolygon.isSelfIntersect())
+                {
+                    logInputData(minuendPolygon, subtrahendPolygon, "Subtraction of polygons result in self intersect polygon.", Logger::ERROR);
+                }
+            }
+        #endif
 
         return subtractedPolygons;
     }
@@ -331,14 +341,14 @@ namespace urchin
     }
 
     template<class T> void PolygonsSubtraction<T>::logInputData(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, const std::string &message,
-                                                                Logger::CriticalityLevel logLevel) const
+            Logger::CriticalityLevel logLevel) const
     {
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
-        logStream<<message<<std::endl;
-        logStream<<" - Minuend polygon: "<<std::endl<<minuendPolygon<<std::endl;
-        logStream<<" - Subtrahend Polygon: "<<std::endl<<subtrahendPolygon;
+        logStream << message << std::endl;
+        logStream << " - Minuend polygon: " << std::endl << minuendPolygon << std::endl;
+        logStream << " - Subtrahend Polygon: " << std::endl << subtrahendPolygon;
 
         Logger::logger().log(logLevel, logStream.str());
     }

@@ -34,7 +34,16 @@ namespace urchin
 			}
 		}
 
-		return CSGPolygon<T>("(" + subjectPolygon.getName() + ") ∩ (" + clipPolygon.getName() + ")", outputList);
+		CSGPolygon<T> intersectionPolygon("(" + subjectPolygon.getName() + ") ∩ (" + clipPolygon.getName() + ")", outputList);
+
+		#ifdef _DEBUG
+			if(intersectionPolygon.isSelfIntersect())
+			{
+				logInputData(subjectPolygon, clipPolygon, "Intersection of polygons result in self intersect polygon.", Logger::ERROR);
+			}
+		#endif
+
+		return intersectionPolygon;
 	}
 
 	template<class T> bool PolygonsIntersection<T>::isPointInside(const Line2D<T> &line, const Point2<T> &point) const
@@ -50,6 +59,19 @@ namespace urchin
 		{
 			outputList.push_back(intersectionPoint);
 		}
+	}
+
+	template<class T> void PolygonsIntersection<T>::logInputData(const CSGPolygon<T> &subjectPolygon, const CSGPolygon<T> &clipPolygon, const std::string &message,
+			Logger::CriticalityLevel logLevel) const
+	{
+		std::stringstream logStream;
+		logStream.precision(std::numeric_limits<T>::max_digits10);
+
+		logStream << message << std::endl;
+		logStream << " - Subject polygon: " << std::endl << subjectPolygon << std::endl;
+		logStream << " - Clip Polygon: " << std::endl << clipPolygon;
+
+		Logger::logger().log(logLevel, logStream.str());
 	}
 
 	//explicit template

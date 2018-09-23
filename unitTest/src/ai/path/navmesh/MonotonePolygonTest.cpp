@@ -272,32 +272,6 @@ void MonotonePolygonTest::polygonTwoHoles3()
 	}
 }
 
-void MonotonePolygonTest::test() //TODO rename
-{
-	std::vector<Point2<float>> polygonPoints = {
-		//polygon points:
-		Point2<float>(-102.200104, -93.8001022),
-		Point2<float>(102.200104, -93.8001022),
-		Point2<float>(102.200104, 110.600105),
-		Point2<float>(-102.200104, 110.600105),
-		//hole 1 points:
-		Point2<float>(3.05869365, -9.61269283),
-		Point2<float>(3.05869365, -8.31284428),
-		Point2<float>(3.23785949, -8.31284428),
-		Point2<float>(3.19827628, -8.25438881),
-		Point2<float>(2.88370371, -8.40819645),
-		Point2<float>(3.24508619, -6.27003527),
-		Point2<float>(4.10605001, -7.63136673),
-		Point2<float>(4.4616437, -7.38710213),
-	};
-
-	std::vector<unsigned int> endContourIndices = {4, (unsigned int)polygonPoints.size()};
-	std::vector<std::string> contourNames = {"test", "test"};
-
-	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
-	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
-}
-
 CppUnit::Test *MonotonePolygonTest::suite()
 {
 	CppUnit::TestSuite *suite = new CppUnit::TestSuite("MonotonePolygonTest");
@@ -314,8 +288,6 @@ CppUnit::Test *MonotonePolygonTest::suite()
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles1", &MonotonePolygonTest::polygonTwoHoles1));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles2", &MonotonePolygonTest::polygonTwoHoles2));
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("polygonTwoHoles3", &MonotonePolygonTest::polygonTwoHoles3));
-
-	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("test", &MonotonePolygonTest::test));
 
 	return suite;
 }

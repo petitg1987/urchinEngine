@@ -21,6 +21,8 @@ namespace urchin
 
 			bool isPointInside(const Line2D<T> &, const Point2<T> &) const;
 			void addIntersection(const Line2D<T> &, const Line2D<T> &, std::vector<Point2<T>> &) const;
+
+			void logInputData(const CSGPolygon<T> &, const CSGPolygon<T> &, const std::string &, Logger::CriticalityLevel) const;
 	};
 
 }
