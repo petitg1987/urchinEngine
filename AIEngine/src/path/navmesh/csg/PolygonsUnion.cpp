@@ -150,7 +150,12 @@ namespace urchin
 
         for(unsigned int i=0; i<polygons.size(); ++i)
         {
-            logStream << "Polygon " << i << std::endl << polygons[i] << std::endl;
+            logStream << "Polygon " << i << std::endl << polygons[i];
+            if(i < polygons.size() - 1)
+            {
+                logStream << std::endl;
+            }
+
         }
 
         Logger::logger().log(logLevel, logStream.str());

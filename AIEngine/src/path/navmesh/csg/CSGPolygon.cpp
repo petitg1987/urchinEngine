@@ -178,8 +178,8 @@ namespace urchin
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
 	{
-		stream << "Name:" << polygon.getName() << std::endl;
-		stream << "Points (CW):" << std::endl;
+		stream << "Name: " << polygon.getName() << std::endl;
+		stream << "Points (CW): " << std::endl;
 		for(const auto &point : polygon.getCwPoints())
 		{
 			stream << "\t" << point << std::endl;
