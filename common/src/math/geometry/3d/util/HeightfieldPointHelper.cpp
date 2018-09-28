@@ -75,14 +75,17 @@ namespace urchin
      */
     template<class T> std::vector<Point3<T>> HeightfieldPointHelper<T>::followTopography(const Point3<T> &startPoint, const Point3<T> &endPoint) const
     {
-        LineSegment2D<T> pathLine(Point2<T>(startPoint.X, startPoint.Z), Point2<T>(endPoint.X, endPoint.Z));
-        DistanceToStartPointComp<T> distanceToStartPointComp(startPoint);
+        Point3<T> adjustedStartPoint = Point3<T>(startPoint.X, findHeightAt(Point2<T>(startPoint.X, startPoint.Z)), startPoint.Z);
+        Point3<T> adjustedEndPoint = Point3<T>(endPoint.X, findHeightAt(Point2<T>(endPoint.X, endPoint.Z)), endPoint.Z);
+
+        LineSegment2D<T> pathLine(Point2<T>(adjustedStartPoint.X, adjustedStartPoint.Z), Point2<T>(adjustedEndPoint.X, adjustedEndPoint.Z));
+        DistanceToStartPointComp<T> distanceToStartPointComp(adjustedStartPoint);
 
         std::vector<Point3<T>> pathPoints;
-        pathPoints.push_back(startPoint);
+        pathPoints.push_back(adjustedStartPoint);
 
-        Vector2<T> farLeftToStartPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(startPoint.X, startPoint.Z));
-        Vector2<T> farLeftToEndPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(endPoint.X, endPoint.Z));
+        Vector2<T> farLeftToStartPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(adjustedStartPoint.X, adjustedStartPoint.Z));
+        Vector2<T> farLeftToEndPoint = Point2<T>(heightfieldPoints[0].X, heightfieldPoints[0].Z).vector(Point2<T>(adjustedEndPoint.X, adjustedEndPoint.Z));
 
         //X lines collision
         if(!isParallelToXAxis(pathLine, PARALLEL_EPSILON))
@@ -124,7 +127,7 @@ namespace urchin
         //Not implemented: no real added value and bad for performance
 
         std::sort(pathPoints.begin(), pathPoints.end(), distanceToStartPointComp);
-        pathPoints.push_back(endPoint);
+        pathPoints.push_back(adjustedEndPoint);
         return pathPoints;
     }
 

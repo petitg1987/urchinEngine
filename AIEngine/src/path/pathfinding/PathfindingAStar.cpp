@@ -235,7 +235,8 @@ namespace urchin
                     const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
                     std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, endPoint);
 
-                    pathPoints.insert(pathPoints.end(), topographyPoints.begin() + 1, topographyPoints.end());
+                    pathPoints.pop_back();
+                    pathPoints.insert(pathPoints.end(), topographyPoints.begin(), topographyPoints.end());
                 }else
                 {
                     pathPoints.push_back(pathPortal->getPivotPoint());
