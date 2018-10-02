@@ -20,7 +20,7 @@ namespace urchin
         #endif
     }
 
-    std::vector<Point3<float>> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
+    std::vector<PathPoint> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
     {
         std::shared_ptr<NavTriangle> startTriangle = findTriangle(startPoint);
         std::shared_ptr<NavTriangle> endTriangle = findTriangle(endPoint);
@@ -161,12 +161,12 @@ namespace urchin
         std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(neighbor, 0.0, 0.0);
         neighborNodePath->setPreviousNode(currentNode, previousNodeLinkEdgeId);
         std::vector<std::shared_ptr<PathPortal>> pathPortals = determinePath(neighborNodePath, startPoint, neighbor->getCenterPoint());
-        std::vector<Point3<float>> path = pathPortalsToPathPoints(pathPortals, false);
+        std::vector<PathPoint> path = pathPortalsToPathPoints(pathPortals, false);
 
         float pathDistance = 0.0;
         for(int i=0; i<static_cast<long>(path.size())-1; i++)
         {
-            pathDistance += path[i].distance(path[i+1]);
+            pathDistance += path[i].getPoint().distance(path[i+1].getPoint());
         }
 
         return pathDistance;
@@ -216,9 +216,9 @@ namespace urchin
         return (lineSegment.getA() + lineSegment.getB()) / 2.0f;
     }
 
-    std::vector<Point3<float>> PathfindingAStar::pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &pathPortals, bool followTopography) const
+    std::vector<PathPoint> PathfindingAStar::pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &pathPortals, bool followTopography) const
     {
-        std::vector<Point3<float>> pathPoints;
+        std::vector<PathPoint> pathPoints;
         pathPoints.reserve(pathPortals.size() / 2); //estimated memory size
 
         addPolygonsPivotPoints(pathPortals);
@@ -229,17 +229,22 @@ namespace urchin
             {
                 if(followTopography && !pathPoints.empty())
                 {
-                    Point3<float> startPoint = pathPoints.back();
+                    Point3<float> startPoint = pathPoints.back().getPoint();
                     Point3<float> endPoint = pathPortal->getPivotPoint();
 
                     const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
                     std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, endPoint);
 
                     pathPoints.pop_back();
-                    pathPoints.insert(pathPoints.end(), topographyPoints.begin(), topographyPoints.end());
+                    pathPoints.emplace_back(PathPoint(topographyPoints[0], true));
+                    for(unsigned int i=1; i<topographyPoints.size()-1; ++i)
+                    {
+                        pathPoints.emplace_back(PathPoint(topographyPoints[i], false));
+                    }
+                    pathPoints.emplace_back(PathPoint(topographyPoints.back(), true));
                 }else
                 {
-                    pathPoints.push_back(pathPortal->getPivotPoint());
+                    pathPoints.emplace_back(PathPoint(pathPortal->getPivotPoint(), true));
                 }
             }
         }

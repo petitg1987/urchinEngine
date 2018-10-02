@@ -9,6 +9,7 @@
 #include "path/navmesh/model/NavTriangle.h"
 #include "path/pathfinding/PathNode.h"
 #include "path/pathfinding/PathPortal.h"
+#include "path/PathPoint.h"
 
 namespace urchin
 {
@@ -23,7 +24,7 @@ namespace urchin
         public:
             explicit PathfindingAStar(std::shared_ptr<NavMesh>);
 
-            std::vector<Point3<float>> findPath(const Point3<float> &, const Point3<float> &) const;
+            std::vector<PathPoint> findPath(const Point3<float> &, const Point3<float> &) const;
 
         private:
             std::shared_ptr<NavTriangle> findTriangle(const Point3<float> &) const;
@@ -37,7 +38,7 @@ namespace urchin
             std::vector<std::shared_ptr<PathPortal>> determinePath(const std::shared_ptr<PathNode> &, const Point3<float> &, const Point3<float> &) const;
             Point3<float> middlePoint(const LineSegment3D<float> &) const;
 
-            std::vector<Point3<float>> pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &, bool) const;
+            std::vector<PathPoint> pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &, bool) const;
             void addPolygonsPivotPoints(std::vector<std::shared_ptr<PathPortal>> &) const;
 
             std::shared_ptr<NavMesh> navMesh;

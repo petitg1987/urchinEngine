@@ -25,5 +25,6 @@
 #include "path/pathfinding/FunnelAlgorithm.h"
 #include "path/pathfinding/PathPortal.h"
 #include "path/PathRequest.h"
+#include "path/PathPoint.h"
 
 #endif

@@ -5,6 +5,8 @@
 #include <mutex>
 #include "UrchinCommon.h"
 
+#include "path/PathPoint.h"
+
 namespace urchin
 {
 
@@ -16,8 +18,8 @@ namespace urchin
             const Point3<float> &getStartPoint() const;
             const Point3<float> &getEndPoint() const;
 
-            void setPath(const std::vector<Point3<float>> &);
-            std::vector<Point3<float>> getPath() const;
+            void setPath(const std::vector<PathPoint> &);
+            std::vector<PathPoint> getPath() const;
             bool isPathReady() const;
 
         private:
@@ -26,7 +28,7 @@ namespace urchin
 
             mutable std::mutex mutex;
             std::atomic_bool bIsPathReady;
-            std::vector<Point3<float>> path;
+            std::vector<PathPoint> path;
     };
 
 }

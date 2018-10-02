@@ -20,7 +20,7 @@ namespace urchin
         return endPoint;
     }
 
-    void PathRequest::setPath(const std::vector<Point3<float>> &path)
+    void PathRequest::setPath(const std::vector<PathPoint> &path)
     {
         {
             std::lock_guard<std::mutex> lock(mutex);
@@ -31,7 +31,7 @@ namespace urchin
         bIsPathReady.store(true, std::memory_order_relaxed);
     }
 
-    std::vector<Point3<float>> PathRequest::getPath() const
+    std::vector<PathPoint> PathRequest::getPath() const
     {
         std::lock_guard<std::mutex> lock(mutex);
 
