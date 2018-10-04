@@ -5,13 +5,6 @@
 namespace urchin
 {
 
-    PolygonPath::PolygonPath(const ClipperLib::Path &path, const std::string &name) :
-        path(path),
-        name(name)
-    {
-
-    }
-
 	/**
   	 * Perform an union of polygons.
   	 * When polygons cannot be put together because there is no contact: there are returned apart.
@@ -21,11 +14,11 @@ namespace urchin
         std::vector<CSGPolygon<T>> mergedPolygons;
         mergedPolygons.reserve(polygons.size()/2 + 1); //estimated memory size
 
-        std::vector<PolygonPath> allPolygonPaths;
+        std::vector<CSGPolygonPath> allPolygonPaths;
         allPolygonPaths.reserve(polygons.size() + mergedPolygons.size());
         for(const auto &polygon : polygons)
         {
-            allPolygonPaths.emplace_back(PolygonPath(toPath(polygon), polygon.getName()));
+            allPolygonPaths.emplace_back(CSGPolygonPath(polygon));
         }
 
         while(!allPolygonPaths.empty())
@@ -33,7 +26,7 @@ namespace urchin
             bool isPolygonsMerged = false;
             for(unsigned int i=1; i<allPolygonPaths.size(); ++i)
             {
-                std::vector<PolygonPath> result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
+                std::vector<CSGPolygonPath> result = unionTwoPolygonPaths(allPolygonPaths[0], allPolygonPaths[i]);
                 if(result.empty())
                 {
                     logInputData(polygons, "Empty result returned after two polygons union." , Logger::ERROR);
@@ -52,7 +45,7 @@ namespace urchin
             }
             if(!isPolygonsMerged)
             {
-                mergedPolygons.push_back(toPolygon(allPolygonPaths[0].path, allPolygonPaths[0].name));
+                mergedPolygons.push_back(allPolygonPaths[0].template toCSGPolygon<T>());
                 VectorEraser::erase(allPolygonPaths, 0);
             }
         }
@@ -70,18 +63,18 @@ namespace urchin
         return mergedPolygons;
 	}
 
-    template<class T> std::vector<PolygonPath> PolygonsUnion<T>::unionTwoPolygonPaths(const PolygonPath &polygon1, const PolygonPath &polygon2) const
+    template<class T> std::vector<CSGPolygonPath> PolygonsUnion<T>::unionTwoPolygonPaths(const CSGPolygonPath &polygon1, const CSGPolygonPath &polygon2) const
     {
         ClipperLib::Clipper clipper;
         clipper.ReverseSolution(true);
         clipper.StrictlySimple(true); //slow but avoid duplicate points
-        clipper.AddPath(polygon1.path, ClipperLib::ptSubject, true);
-        clipper.AddPath(polygon2.path, ClipperLib::ptClip, true);
+        clipper.AddPath(polygon1.getPath(), ClipperLib::ptSubject, true);
+        clipper.AddPath(polygon2.getPath(), ClipperLib::ptClip, true);
 
         ClipperLib::PolyTree solution;
         clipper.Execute(ClipperLib::ctUnion, solution, ClipperLib::pftEvenOdd, ClipperLib::pftEvenOdd);
 
-        std::vector<PolygonPath> result;
+        std::vector<CSGPolygonPath> result;
         result.reserve(solution.Childs.size());
 
         if(solution.Childs.size()==1)
@@ -91,53 +84,15 @@ namespace urchin
                 assert(!solution.Childs[0]->IsHole());
             #endif
 
-            std::string unionName = "{" + polygon1.name + "} ∪ {" + polygon2.name + "}";
-            result.emplace_back(PolygonPath(solution.Childs[0]->Contour, unionName));
+            std::string unionName = "{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}";
+            result.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, unionName));
         }else if(solution.Childs.size()==2)
         {
-            result.emplace_back(PolygonPath(solution.Childs[0]->Contour, polygon1.name));
-            result.emplace_back(PolygonPath(solution.Childs[1]->Contour, polygon2.name));
+            result.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, polygon1.getName()));
+            result.emplace_back(CSGPolygonPath(solution.Childs[1]->Contour, polygon2.getName()));
         }
 
         return result;
-    }
-
-	template<class T> ClipperLib::Path PolygonsUnion<T>::toPath(const CSGPolygon<T> &polygon) const
-	{
-		ClipperLib::Path path;
-        path.reserve(polygon.getCwPoints().size());
-
-		for(const auto &point : polygon.getCwPoints())
-		{
-            if(typeid(long long)==typeid(T))
-            {
-                path.emplace_back(ClipperLib::IntPoint(point.X, point.Y));
-            }else
-            {
-                path.emplace_back(ClipperLib::IntPoint(Converter::toLongLong(point.X), Converter::toLongLong(point.Y)));
-            }
-		}
-
-		return path;
-	}
-
-    template<class T> CSGPolygon<T> PolygonsUnion<T>::toPolygon(const ClipperLib::Path &path, const std::string &name) const
-    {
-        std::vector<Point2<T>> cwPoints;
-        cwPoints.reserve(path.size());
-
-        for (auto point : path)
-        {
-            if(typeid(long long)==typeid(T))
-            {
-                cwPoints.emplace_back(Point2<T>(point.X, point.Y));
-            }else
-            {
-                cwPoints.emplace_back(Point2<T>(Converter::toFloat(point.X), Converter::toFloat(point.Y)));
-            }
-        }
-
-        return CSGPolygon<T>(name, cwPoints);
     }
 
     template<class T> void PolygonsUnion<T>::logInputData(const std::vector<CSGPolygon<T>> &polygons, const std::string &message,

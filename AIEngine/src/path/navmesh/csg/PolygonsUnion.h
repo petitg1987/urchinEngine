@@ -5,17 +5,10 @@
 #include "UrchinCommon.h"
 
 #include "CSGPolygon.h"
+#include "path/navmesh/csg/CSGPolygonPath.h"
 
 namespace urchin
 {
-
-	struct PolygonPath
-	{
-		PolygonPath(const ClipperLib::Path &, const std::string &);
-
-		ClipperLib::Path path;
-		std::string name;
-	};
 
 	template<class T> class PolygonsUnion : public Singleton<PolygonsUnion<T>>
 	{
@@ -28,10 +21,7 @@ namespace urchin
 			PolygonsUnion() = default;
 			~PolygonsUnion() override = default;
 
-			std::vector<PolygonPath> unionTwoPolygonPaths(const PolygonPath &, const PolygonPath &) const;
-
-			ClipperLib::Path toPath(const CSGPolygon<T> &) const;
-            CSGPolygon<T> toPolygon(const ClipperLib::Path &, const std::string &) const;
+			std::vector<CSGPolygonPath> unionTwoPolygonPaths(const CSGPolygonPath &, const CSGPolygonPath &) const;
 
 			void logInputData(const std::vector<CSGPolygon<T>> &, const std::string &, Logger::CriticalityLevel) const;
 	};

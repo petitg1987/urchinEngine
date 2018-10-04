@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "PolygonsSubtraction.h"
+#include "path/navmesh/csg/CSGPolygonPath.h"
 
 namespace urchin
 {
@@ -41,99 +42,52 @@ namespace urchin
      * @param subtrahendInside True when subtrahendPolygon is totally included in minuendPolygon or touch edge.
      */
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside) const
-    { //see http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-SA-97135.pdf
+    { //TODO remove link: see http://www.pnnl.gov/main/publications/external/technical_reports/PNNL-SA-97135.pdf
+
         std::vector<CSGPolygon<T>> subtractedPolygons;
 
-        SubtractionPoints<T> subtractionPoints = buildSubtractionPoints(minuendPolygon, subtrahendPolygon);
-        #ifdef _DEBUG
-//            logSubtractionPoints(minuendPolygon.getName(), subtractionPoints.minuend, subtrahendPolygon.getName(), subtractionPoints.subtrahend);
-        #endif
+        CSGPolygonPath minuendPolygonPath(minuendPolygon);
+        CSGPolygonPath subtrahendPolygonPath(subtrahendPolygon);
 
-        subtrahendInside = isSubtrahendInsideMinuend(subtractionPoints.subtrahend);
-        if(subtrahendInside)
+        ClipperLib::Clipper clipper;
+        clipper.ReverseSolution(true);
+        clipper.StrictlySimple(true); //slow but avoid duplicate points
+        clipper.AddPath(minuendPolygonPath.getPath(), ClipperLib::ptSubject, true);
+        clipper.AddPath(subtrahendPolygonPath.getPath(), ClipperLib::ptClip, true);
+
+        ClipperLib::PolyTree solution;
+        clipper.Execute(ClipperLib::ctDifference, solution, ClipperLib::pftEvenOdd, ClipperLib::pftEvenOdd);
+
+        subtrahendInside = false;
+
+        if(solution.Childs.size() == 1)
         {
-            subtractedPolygons.emplace_back(minuendPolygon);
-            return subtractedPolygons;
-        }
+            const auto &mainSolution = solution.Childs[0];
 
-        int startPointIndex;
-        while((startPointIndex = findNextStartPointIndex(subtractionPoints.minuend))!=-1)
-        {
-            std::vector<Point2<T>> polygonCwPoints;
-            polygonCwPoints.reserve(subtractionPoints.minuend.size()); //estimated memory size
-
-            unsigned int maxIteration = static_cast<int>((minuendPolygon.getCwPoints().size() + subtrahendPolygon.getCwPoints().size()) + 1);
-            unsigned int currentIteration = 0;
-
-            typename SubtractionPoints<T>::PolygonType currentPolygon = SubtractionPoints<T>::MINUEND;
-            int currentPointIndex = startPointIndex;
-            while(currentIteration++ < maxIteration+1)
+            if (mainSolution->Childs.empty())
             {
-                auto &currSubtractionPoint = subtractionPoints[currentPolygon][currentPointIndex];
-
-                if(polygonCwPoints.empty() || polygonCwPoints[polygonCwPoints.size()-1]!=currSubtractionPoint.point)
-                {
-                    polygonCwPoints.emplace_back(currSubtractionPoint.point);
-                }
-                currSubtractionPoint.isProcessed = true;
-
-                if(currSubtractionPoint.crossPointIndex!=-1)
-                {
-                    typename SubtractionPoints<T>::PolygonType otherPolygon = isMinuend(currentPolygon) ? SubtractionPoints<T>::SUBTRAHEND : SubtractionPoints<T>::MINUEND;;
-
-                    int otherPointIndex = currSubtractionPoint.crossPointIndex;
-                    int nextOtherPointOffset = computeNextPointOffset(otherPolygon, subtractionPoints);
-                    int nextOtherPointIndex = (otherPointIndex + nextOtherPointOffset) % static_cast<int>(subtractionPoints[otherPolygon].size());
-
-                    int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
-                    int nextPointIndex = (currentPointIndex + nextPointOffset) % static_cast<int>(subtractionPoints[currentPolygon].size());
-
-                    if( (isMinuend(currentPolygon) && !subtractionPoints[currentPolygon][nextPointIndex].isOutside && !subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside)
-                        || ((isSubtrahend(currentPolygon) && subtractionPoints[currentPolygon][nextPointIndex].isOutside) || subtractionPoints[otherPolygon][nextOtherPointIndex].isOutside) )
-                    { //polygon switch
-                        currentPointIndex = nextOtherPointIndex;
-                        currentPolygon = otherPolygon;
-                    }else
-                    { //special case of collinear edge: don't perform polygon switch
-                        currentPointIndex = nextPointIndex;
-                    }
-                }else
-                {
-                    int nextPointOffset = computeNextPointOffset(currentPolygon, subtractionPoints);
-                    currentPointIndex = (currentPointIndex + nextPointOffset) % static_cast<int>(subtractionPoints[currentPolygon].size());
-                }
-
-                if(isMinuend(currentPolygon) && currentPointIndex==startPointIndex)
-                {
-                    break;
-                }
-            }
-
-            if(currentIteration > maxIteration)
+                subtractedPolygons.emplace_back(CSGPolygonPath(mainSolution->Contour, "???").template toCSGPolygon<T>()); //TODO add name
+            } else
             {
-                logInputData(minuendPolygon, subtrahendPolygon, "Maximum of iteration reached on polygons subtraction algorithm.", Logger::ERROR);
-                subtractedPolygons.clear();
+                #ifdef _DEBUG
+                    assert(mainSolution->Childs[0]->IsHole());
+                #endif
+
+                subtrahendInside = true;
+                subtractedPolygons.emplace_back(minuendPolygon);
                 return subtractedPolygons;
             }
-            if(polygonCwPoints.size() < 3)
+        }else if(solution.Childs.size() > 1)
+        {
+            for(const auto &solutionChildren : solution.Childs)
             {
-                logInputData(minuendPolygon, subtrahendPolygon, "Degenerate polygons built on polygons subtraction algorithm.", Logger::ERROR);
-                subtractedPolygons.clear();
-                return subtractedPolygons;
-            }
+                #ifdef _DEBUG
+                    assert(solutionChildren->Childs.empty());
+                #endif
 
-            subtractedPolygons.push_back(CSGPolygon<T>("[" + minuendPolygon.getName() + "] - [" + subtrahendPolygon.getName()+ "]", polygonCwPoints));
+                subtractedPolygons.emplace_back(CSGPolygonPath(solutionChildren->Contour, "???").template toCSGPolygon<T>()); //TODO add name
+            }
         }
-
-        #ifdef _DEBUG
-            for(const auto &subtractedPolygon : subtractedPolygons)
-            {
-                if(subtractedPolygon.isSelfIntersect())
-                {
-                    logInputData(minuendPolygon, subtrahendPolygon, "Subtraction of polygons result in self intersect polygon.", Logger::ERROR);
-                }
-            }
-        #endif
 
         return subtractedPolygons;
     }
