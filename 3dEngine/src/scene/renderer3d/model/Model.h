@@ -24,6 +24,7 @@ namespace urchin
 		
 			void loadAnimation(const std::string &, const std::string &);
 			void animate(const std::string &);
+			void stopAnimation(bool);
 			bool isAnimate() const;
 		
 			const ConstMeshes *getMeshes() const;
@@ -56,14 +57,12 @@ namespace urchin
 			static AABBox<float> defaultModelAABBox;
 
 			//meshes
-			ConstMeshes *constMeshes; //constant part of the meshes (common to all cloned models)
-			Meshes *meshes; //variable part of the meshes
+			Meshes *meshes;
 			
 			//animations
-			std::map<std::string, ConstAnimation *> constAnimations; //constant part of the animations (common to all cloned models)
-			std::map<std::string, Animation *> animations; //variable part of the animations
-			const ConstAnimation *currConstAnimation;
+			std::map<std::string, Animation *> animations;
 			Animation *currAnimation;
+			bool stopAnimationAtEnd;
 		
 			//transform
 			Transform<float> transform;

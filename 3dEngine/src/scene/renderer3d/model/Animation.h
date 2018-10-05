@@ -13,20 +13,24 @@ namespace urchin
 	class Animation
 	{
 		public:
-			Animation(const ConstAnimation *const, Meshes *const);
+			Animation(ConstAnimation *, Meshes *);
+			~Animation();
 
 			const std::vector<Bone> &getSkeleton() const;
 			const AABBox<float> &getGlobalAABBox() const;
 			const std::vector<AABBox<float>> &getGlobalSplittedAABBox() const;
 			const AABBox<float> &getGlobalLocalAABBox() const;
 
+			const ConstAnimation *getConstAnimation() const;
+			int getCurrFrame() const;
+
 			void animate(float);
 
 			void onMoving(const Transform<float> &);
 
 		private:
-			const ConstAnimation *const constAnimation;
-			Meshes *const meshes;
+			mutable ConstAnimation *constAnimation;
+			Meshes *meshes;
 			
 			AnimationInformation animationInformation;
 			std::vector<Bone> skeleton;

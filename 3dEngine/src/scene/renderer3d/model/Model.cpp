@@ -11,45 +11,33 @@ namespace urchin
     AABBox<float> Model::defaultModelAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
 
 	Model::Model(const std::string &meshFilename) :
-			constMeshes(nullptr),
 			meshes(nullptr),
-			currConstAnimation(nullptr),
 			currAnimation(nullptr),
+			stopAnimationAtEnd(false),
 			bIsProduceShadow(true)
 	{
         initialize(meshFilename);
 	}
 
-    Model::Model(const Model &model) :
-            constMeshes(nullptr),
+    Model::Model(const Model &model) : Octreeable(model),
             meshes(nullptr),
-            currConstAnimation(nullptr),
-            currAnimation(nullptr)
+			currAnimation(nullptr),
+			stopAnimationAtEnd(false)
     {
         std::string meshFilename = model.getMeshes()!=nullptr ? model.getMeshes()->getName() : "";
         initialize(meshFilename);
 
         setTransform(model.getTransform());
         setProduceShadow(model.isProduceShadow());
-        setVisible(model.isVisible());
     }
 
 	Model::~Model()
 	{
-		if(constMeshes!=nullptr)
-		{
-			constMeshes->release();
-		}
 		delete meshes;
 		
 		for (auto &animation : animations)
 		{
 			delete animation.second;
-		}
-		
-		for (auto &constAnimation : constAnimations)
-		{
-			(constAnimation.second)->release();
 		}
 	}
 
@@ -57,7 +45,7 @@ namespace urchin
     {
         if(!meshFilename.empty())
         {
-            constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
+			auto *constMeshes = MediaManager::instance()->getMedia<ConstMeshes>(meshFilename);
             meshes = new Meshes(constMeshes);
             meshes->onMoving(transform);
         }
@@ -66,58 +54,62 @@ namespace urchin
 
 	void Model::loadAnimation(const std::string &name, const std::string &filename)
 	{
-		if(!constMeshes)
+		if(!meshes)
 		{
 			throw std::runtime_error("Cannot add animation on model without mesh");
 		}
 
 		//load and add the anim to the std::map
 		auto *constAnimation = MediaManager::instance()->getMedia<ConstAnimation>(filename);
-		constAnimations[name] = constAnimation;
 		animations[name] = new Animation(constAnimation, meshes);
 		animations[name]->onMoving(transform);
 
 		//both files must have the same number of bones
-		if(constMeshes->getConstMesh(0)->getNumberBones() != constAnimation->getNumberBones())
+		if(meshes->getConstMeshes()->getConstMesh(0)->getNumberBones() != constAnimation->getNumberBones())
 		{
-			throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + constMeshes->getName() + ", Animation filename: " + constAnimation->getName() + ".");
+			throw std::runtime_error("Both files haven't the same number of bones. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
 		}
 
 		//we just check with mesh[0] && frame[0]
-		for(unsigned int i = 0; i<constMeshes->getConstMesh(0)->getNumberBones(); ++i)
+		for(unsigned int i = 0; i<meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i)
 		{
 			//bones must have the same parent index
-			if(constMeshes->getConstMesh(0)->getBaseBone(i).parent != constAnimation->getBone(0, i).parent)
+			if(meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).parent != constAnimation->getBone(0, i).parent)
 			{
-				throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + constMeshes->getName() + ", Animation filename: " + constAnimation->getName() + ".");
+				throw std::runtime_error("Bones haven't the same parent index. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
 			}
 
 			//bones must have the same name
-			if(constMeshes->getConstMesh(0)->getBaseBone(i).name != constAnimation->getBone(0, i).name)
+			if(meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).name != constAnimation->getBone(0, i).name)
 			{
-				throw std::runtime_error("Bones haven't the same name. Meshes filename: " + constMeshes->getName() + ", Animation filename: " + constAnimation->getName() + ".");
+				throw std::runtime_error("Bones haven't the same name. Meshes filename: " + meshes->getConstMeshes()->getName() + ", Animation filename: " + constAnimation->getName() + ".");
 			}
 		}
 	}
 
 	void Model::animate(const std::string &animationName)
 	{
-		if(animationName.empty())
+		currAnimation = animations.at(animationName);
+
+		onMoving(transform);
+	}
+
+	void Model::stopAnimation(bool immediate)
+	{
+		if (immediate)
 		{
-			currConstAnimation = nullptr;
 			currAnimation = nullptr;
-		}else
+		}else if(isAnimate())
 		{
-			currConstAnimation = constAnimations[animationName];
-			currAnimation = animations[animationName];
+			stopAnimationAtEnd = true;
 		}
-		
+
 		onMoving(transform);
 	}
 
 	bool Model::isAnimate() const
 	{
-		return currAnimation!=nullptr && currConstAnimation!=nullptr;
+		return currAnimation != nullptr;
 	}
 
 	void Model::onMoving(const Transform<float> &newTransform)
@@ -138,14 +130,21 @@ namespace urchin
 
 	const ConstMeshes *Model::getMeshes() const
 	{
-		return constMeshes;
+	    if(meshes!=nullptr)
+        {
+            return meshes->getConstMeshes();
+        }
+
+        return nullptr;
 	}
 
 	std::map<std::string, const ConstAnimation *> Model::getAnimations() const
 	{
 		std::map<std::string, const ConstAnimation *> constConstAnimations;
-		constConstAnimations.insert(constAnimations.begin(), constAnimations.end());
-
+		for(const auto &animation : animations)
+		{
+			constConstAnimations.insert(std::pair<std::string, const ConstAnimation *>(animation.first, animation.second->getConstAnimation()));
+		}
 		return constConstAnimations;
 	}
 
@@ -247,7 +246,14 @@ namespace urchin
 		//animate model
 		if(isAnimate())
 		{
-			currAnimation->animate(invFrameRate);
+			if(stopAnimationAtEnd && currAnimation->getCurrFrame() == 0)
+			{
+				stopAnimation(true);
+				stopAnimationAtEnd = false;
+			}else
+            {
+                currAnimation->animate(invFrameRate);
+            }
 		}
 	}
 

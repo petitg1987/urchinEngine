@@ -3,7 +3,7 @@
 namespace urchin
 {
 
-	Animation::Animation(const ConstAnimation *const constAnimation, Meshes *const meshes) :
+	Animation::Animation(ConstAnimation *constAnimation, Meshes *meshes) :
 		constAnimation(constAnimation),
 		meshes(meshes)
 	{
@@ -13,6 +13,11 @@ namespace urchin
 		animationInformation.nextFrame = 1;
 		animationInformation.lastTime = 0;
 		animationInformation.maxTime = 1.0f / constAnimation->getFrameRate();
+	}
+
+	Animation::~Animation()
+	{
+		constAnimation->release();
 	}
 
 	const std::vector<Bone> &Animation::getSkeleton() const
@@ -36,6 +41,16 @@ namespace urchin
 	const AABBox<float> &Animation::getGlobalLocalAABBox() const
 	{
 		return constAnimation->getOriginalGlobalAABBox();
+	}
+
+	const ConstAnimation *Animation::getConstAnimation() const
+	{
+		return constAnimation;
+	}
+
+	int Animation::getCurrFrame() const
+	{
+		return animationInformation.currFrame;
 	}
 
 	void Animation::onMoving(const Transform<float> &newTransform)

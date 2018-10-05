@@ -3,7 +3,7 @@
 namespace urchin
 {
 
-	Meshes::Meshes(const ConstMeshes *const constMeshes) :
+	Meshes::Meshes(ConstMeshes *constMeshes) :
 			constMeshes(constMeshes),
 			numMeshes(constMeshes->getNumberConstMeshes())
 	{
@@ -21,6 +21,8 @@ namespace urchin
 		{
 			delete meshes[i];
 		}
+
+		constMeshes->release();
 	}
 
 	unsigned int Meshes::getNumberMeshes() const
@@ -46,6 +48,11 @@ namespace urchin
 	const AABBox<float> &Meshes::getGlobalLocalAABBox() const
 	{
 		return constMeshes->getOriginalAABBox();
+	}
+
+	const ConstMeshes *Meshes::getConstMeshes() const
+	{
+		return constMeshes;
 	}
 
 	void Meshes::onMoving(const Transform<float> &newTransform)

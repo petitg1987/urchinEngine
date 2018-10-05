@@ -5,6 +5,13 @@ template<class TOctreeable> Octreeable<TOctreeable>::Octreeable() :
 
 }
 
+template<class TOctreeable> Octreeable<TOctreeable>::Octreeable(const Octreeable<TOctreeable> &octreeable) :
+	bIsMovingInOctree(false),
+	bIsVisible(octreeable.isVisible())
+{
+
+}
+
 template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable()
 {
 	//remove references to this octreeable
