@@ -50,16 +50,6 @@ namespace urchin
             }
         }
 
-        #ifdef _DEBUG
-            for(const auto &mergedPolygon : mergedPolygons)
-            {
-                if(mergedPolygon.isSelfIntersect())
-                {
-                    logInputData(polygons, "Union of polygons result in self intersect polygon.", Logger::ERROR);
-                }
-            }
-        #endif
-
         return mergedPolygons;
 	}
 

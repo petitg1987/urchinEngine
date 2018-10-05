@@ -154,28 +154,6 @@ namespace urchin
 		return CSGPolygon<T>(name, simplifiedCwPoints);
 	}
 
-	template<class T> bool CSGPolygon<T>::isSelfIntersect() const
-	{
-		for(unsigned int i = 0; i<cwPoints.size(); ++i)
-		{
-			LineSegment2D<T> line1(cwPoints[i], cwPoints[(i+1) % cwPoints.size()]);
-
-			for(unsigned int j = i+2; j<cwPoints.size() - 1; ++j)
-			{
-				LineSegment2D<T> line2(cwPoints[j], cwPoints[(j+1) % cwPoints.size()]);
-
-				bool hasIntersection;
-				line1.intersectPoint(line2, hasIntersection);
-				if(hasIntersection)
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
 	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
 	{
 		stream << "Name: " << polygon.getName() << std::endl;

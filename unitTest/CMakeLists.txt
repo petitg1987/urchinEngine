@@ -8,8 +8,6 @@ set(CMAKE_CXX_STANDARD 14)
 set(SOURCE_FILES
         src/ai/path/navmesh/MonotonePolygonTest.cpp
         src/ai/path/navmesh/MonotonePolygonTest.h
-        src/ai/path/navmesh/PolygonsIntersectionTest.cpp
-        src/ai/path/navmesh/PolygonsIntersectionTest.h
         src/ai/path/navmesh/PolygonsUnionTest.cpp
         src/ai/path/navmesh/PolygonsUnionTest.h
         src/ai/path/navmesh/TriangulationTest.cpp

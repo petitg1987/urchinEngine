@@ -11,8 +11,6 @@ set(SOURCE_FILES
         src/input/AIWorld.h
         src/path/navmesh/csg/CSGPolygon.cpp
         src/path/navmesh/csg/CSGPolygon.h
-        src/path/navmesh/csg/PolygonsIntersection.cpp
-        src/path/navmesh/csg/PolygonsIntersection.h
         src/path/navmesh/csg/PolygonsUnion.cpp
         src/path/navmesh/csg/PolygonsUnion.h
         src/path/navmesh/model/NavMeshConfig.cpp

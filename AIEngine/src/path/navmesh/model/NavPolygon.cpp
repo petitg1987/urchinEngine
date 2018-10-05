@@ -15,7 +15,7 @@ namespace urchin
 			name(navPolygon.getName()),
 			points(navPolygon.getPoints()),
 			triangles(navPolygon.getTriangles()),
-			navTopography(navPolygon.getNavTopography())
+			navTopography(nullptr) //no copy because not used
 	{
 
 	}
@@ -65,6 +65,10 @@ namespace urchin
 
 	const NavTopography *NavPolygon::getNavTopography() const
 	{
+		#ifdef _DEBUG
+			assert(navTopography!=nullptr);
+        #endif
+
 		return navTopography;
 	}
 

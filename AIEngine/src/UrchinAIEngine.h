@@ -18,7 +18,6 @@
 #include "path/navmesh/triangulation/MonotonePolygon.h"
 #include "path/navmesh/triangulation/TriangulationAlgorithm.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
-#include "path/navmesh/csg/PolygonsIntersection.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/polytope/services/TerrainObstacleService.h"
