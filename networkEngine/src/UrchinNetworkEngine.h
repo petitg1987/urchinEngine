@@ -1,6 +1,6 @@
 #ifndef URCHINENGINE_NETWORKENGINE_H
 #define URCHINENGINE_NETWORKENGINE_H
 
-#include "request/Request.h"
+#include "request/HttpRequest.h"
 
 #endif

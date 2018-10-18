@@ -11,7 +11,7 @@ namespace urchin
 {
 
 	/**
-	* Allows to create a singleton class
+	* Allows to create a singleton class (no thread-safe)
 	*/
 	template<class T> class Singleton : public SingletonInterface
 	{

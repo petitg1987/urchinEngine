@@ -5,8 +5,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
-        src/request/Request.cpp
-        src/request/Request.h)
+        src/request/HttpRequest.cpp
+        src/request/HttpRequest.h)
 
 include_directories(src ../common/src)
 
