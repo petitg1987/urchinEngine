@@ -35,6 +35,9 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - Automatic navigation mesh generator
   - Pathfinding A* with funnel algorithm
   
+- Network Engine:
+  - HTTP request sender
+  
 - Map Editor:
   - Add > 3d model, rigid body and sound on scene
   - Debug > view light scope, hitbox, sound trigger, navigation mesh
