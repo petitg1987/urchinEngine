@@ -13,8 +13,11 @@ namespace urchin
 		public:
 			explicit FileLogger(std::string);
 
+			std::string readAll() const;
+
 		private:
 			void write(const std::string &) override;
+
 			std::string filename;
 	};
 	

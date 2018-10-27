@@ -10,17 +10,22 @@ namespace urchin
 
 	ConfigService::ConfigService() :
 			Singleton<ConfigService>(),
-			isInitialized(false)
+			bIsInitialized(false)
 	{
 
 	}
 
 	void ConfigService::checkState() const
 	{
-		if(!isInitialized)
+		if(!bIsInitialized)
 		{
 			throw std::runtime_error("Impossible to get this property: the configuration service hasn't been initialized.");
 		}
+	}
+
+	bool ConfigService::isInitialized() const
+	{
+		return bIsInitialized;
 	}
 
 	void ConfigService::loadProperties(const std::string &propertiesFile)
@@ -49,7 +54,7 @@ namespace urchin
             }
         }
 
-		isInitialized=true;
+		bIsInitialized = true;
 	}
 
 	unsigned int ConfigService::getUnsignedIntValue(const std::string &propertyName) const

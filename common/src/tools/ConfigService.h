@@ -16,7 +16,9 @@ namespace urchin
 	{
 		public:
 			friend class Singleton<ConfigService>;
-		
+
+			bool isInitialized() const;
+
 			void loadProperties(const std::string &);
 			void loadProperties(const std::string &, const std::string &);
 
@@ -36,7 +38,7 @@ namespace urchin
 			std::map<std::string, float> floatProperties;
 			std::map<std::string, unsigned int> unsignedIntProperties;
 
-			bool isInitialized;
+			bool bIsInitialized;
 	};
 }
 

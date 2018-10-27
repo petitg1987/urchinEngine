@@ -1,5 +1,6 @@
 #include <fstream>
 #include <stdexcept>
+#include <vector>
 
 #include "tools/logger/FileLogger.h"
 
@@ -11,6 +12,18 @@ namespace urchin
 		filename(std::move(filename))
 	{
 
+	}
+
+	std::string FileLogger::readAll() const
+	{
+		std::ifstream ifs(filename.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+		auto fileSize = static_cast<unsigned long>(ifs.tellg());
+		ifs.seekg(0, std::ios::beg);
+
+		std::vector<char> bytes(fileSize);
+		ifs.read(bytes.data(), fileSize);
+
+		return std::string(bytes.data(), fileSize);
 	}
 
 	void FileLogger::write(const std::string &msg)
