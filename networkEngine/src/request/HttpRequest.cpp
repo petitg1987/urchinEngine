@@ -3,9 +3,16 @@
 #include <thread>
 
 #include "HttpRequest.h"
+#include "RequestException.h"
 
 namespace urchin
 {
+    static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
+    {
+        ((std::string*)userp)->append((char*)contents, size * nmemb);
+        return size * nmemb;
+    }
+
     HttpRequestInitializer::HttpRequestInitializer()
     {
         static int callNumber = 0;
@@ -49,7 +56,7 @@ namespace urchin
         }
     }
 
-    void HttpRequest::postText(const std::string &path, const std::string &value)
+    void HttpRequest::postTextPlain(const std::string &path, const std::string &value) const
     {
         std::string url = basePath + path;
 
@@ -59,11 +66,43 @@ namespace urchin
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, value.c_str());
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
 
-        CURLcode res = curl_easy_perform(curl);
+        executeRequest(url);
+    }
 
-        if(res != CURLE_OK)
+    std::string HttpRequest::getTextPlain(const std::string &path) const
+    {
+        std::string url = basePath + path;
+
+        curl_easy_reset(curl);
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
+
+        return executeRequest(url);
+    }
+
+    std::string HttpRequest::executeRequest(const std::string &url) const
+    {
+        std::string readBuffer;
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+
+        CURLcode res = curl_easy_perform(curl);
+        if (res != CURLE_OK)
         {
-            std::cout<<"ERROR:"<<curl_easy_strerror(res)<<std::endl; //TODO add context...url + data
+            std::string error = "HTTP request fail on \"" + url + "\" : " + std::string(curl_easy_strerror(res));
+            throw RequestException(error);
+        } else
+        {
+            long httpCode;
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+            if (httpCode >= 300)
+            {
+                std::string error = "HTTP request fail on \"" + url + "\" with status " + std::to_string(httpCode) + ". Raw response content: " + readBuffer;
+                throw RequestException(error);
+
+            }
         }
+
+        return readBuffer;
     }
 }

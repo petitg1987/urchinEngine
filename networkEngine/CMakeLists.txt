@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(SOURCE_FILES
         src/request/HttpRequest.cpp
-        src/request/HttpRequest.h)
+        src/request/HttpRequest.h src/request/RequestException.cpp src/request/RequestException.h)
 
 include_directories(src ../common/src)
 

@@ -19,9 +19,12 @@ namespace urchin
             explicit HttpRequest(const std::string &);
             ~HttpRequest();
 
-            void postText(const std::string &, const std::string &);
+            void postTextPlain(const std::string &, const std::string &) const;
+            std::string getTextPlain(const std::string &) const;
 
         private:
+            std::string executeRequest(const std::string &) const;
+
             CURL *curl;
             std::string basePath;
 
