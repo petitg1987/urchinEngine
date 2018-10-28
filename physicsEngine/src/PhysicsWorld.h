@@ -43,6 +43,7 @@ namespace urchin
 			void play();
 			bool isPaused() const;
 			void interrupt();
+			void controlExecution();
 
 			#ifdef _DEBUG
 				const CollisionVisualizer *getCollisionVisualizer() const;
@@ -58,6 +59,7 @@ namespace urchin
 
 			std::thread *physicsSimulationThread;
 			std::atomic_bool physicsSimulationStopper;
+			static std::exception_ptr physicsThreadExceptionPtr;
 
 			mutable std::mutex mutex;
 			Vector3<float> gravity;

@@ -110,6 +110,11 @@ namespace urchin
         }
     }
 
+	void SoundManager::controlExecution()
+	{
+		streamUpdateWorker->controlExecution();
+	}
+
 	void SoundManager::process(const Point3<float> &listenerPosition)
 	{
 		alListener3f(AL_POSITION, listenerPosition.X, listenerPosition.Y, listenerPosition.Z);

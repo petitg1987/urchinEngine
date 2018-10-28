@@ -7,6 +7,9 @@
 namespace urchin
 {
 
+    //static
+    std::exception_ptr AIManager::aiThreadExceptionPtr = nullptr;
+
     AIManager::AIManager() :
             aiSimulationThread(nullptr),
             aiSimulationStopper(false),
@@ -100,6 +103,17 @@ namespace urchin
         aiSimulationStopper.store(true, std::memory_order_relaxed);
     }
 
+    /**
+	 * Check if thread has been stopped by an exception and rethrow exception on main thread
+	 */
+	void AIManager::controlExecution()
+	{
+		if(aiThreadExceptionPtr)
+		{
+			std::rethrow_exception(aiThreadExceptionPtr);
+		}
+	}
+
     void AIManager::startAIUpdate()
     {
         try
@@ -126,8 +140,8 @@ namespace urchin
             }
         }catch(std::exception &e)
         {
-            Logger::logger().logError("Error cause AI thread crash: " + std::string(e.what()));
-            throw e;
+            Logger::logger().logError("Error cause AI thread crash: exception reported to main thread");
+            aiThreadExceptionPtr = std::current_exception();
         }
     }
 

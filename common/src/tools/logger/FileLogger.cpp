@@ -26,6 +26,13 @@ namespace urchin
 		return std::string(bytes.data(), fileSize);
 	}
 
+	void FileLogger::clearLogs()
+	{
+        std::ofstream file;
+        file.open(filename, std::ofstream::out | std::ofstream::trunc);
+        file.close();
+	}
+
 	void FileLogger::write(const std::string &msg)
 	{
 		std::ofstream file;

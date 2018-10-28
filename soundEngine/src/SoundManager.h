@@ -30,6 +30,8 @@ namespace urchin
             void globalPause();
             void globalResume();
 
+			void controlExecution();
+
 			void process(const Point3<float> &);
 			void process();
 

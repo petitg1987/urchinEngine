@@ -8,6 +8,9 @@
 namespace urchin
 {
 
+	//static
+	std::exception_ptr StreamUpdateWorker::soundThreadExceptionPtr = nullptr;
+
 	StreamUpdateWorker::StreamUpdateWorker() :
 		nbChunkBuffer(ConfigService::instance()->getUnsignedIntValue("player.numberOfStreamBuffer")),
 		nbSecondByChunk(ConfigService::instance()->getUnsignedIntValue("player.streamChunkSizeInSecond")),
@@ -91,6 +94,22 @@ namespace urchin
 		}
 	}
 
+	/**
+ 	 * Interrupt the thread
+ 	 */
+	void StreamUpdateWorker::interrupt()
+	{
+		streamUpdateWorkerStopper.store(true, std::memory_order_relaxed);
+	}
+
+	void StreamUpdateWorker::controlExecution()
+	{
+	    if(soundThreadExceptionPtr)
+        {
+            std::rethrow_exception(soundThreadExceptionPtr);
+        }
+	}
+
 	void StreamUpdateWorker::start()
 	{
 		try
@@ -118,8 +137,8 @@ namespace urchin
 			}
 		}catch(std::exception &e)
 		{
-			Logger::logger().logError("Error cause sound streaming thread crash: " + std::string(e.what()));
-			throw e;
+			Logger::logger().logError("Error cause sound thread crash: exception reported to main thread");
+			soundThreadExceptionPtr = std::current_exception();
 		}
 	}
 
@@ -129,14 +148,6 @@ namespace urchin
 	bool StreamUpdateWorker::continueExecution()
 	{
 		return !streamUpdateWorkerStopper.load(std::memory_order_relaxed);
-	}
-
-	/**
-	 * Interrupt the thread
-	 */
-	void StreamUpdateWorker::interrupt()
-	{
-		streamUpdateWorkerStopper.store(true, std::memory_order_relaxed);
 	}
 
 	bool StreamUpdateWorker::processTask(StreamUpdateTask *task)

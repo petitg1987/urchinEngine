@@ -9,6 +9,9 @@
 namespace urchin
 {
 
+    //static
+    std::exception_ptr PhysicsWorld::physicsThreadExceptionPtr = nullptr;
+
 	PhysicsWorld::PhysicsWorld() :
 			physicsSimulationThread(nullptr),
 			physicsSimulationStopper(false),
@@ -172,6 +175,17 @@ namespace urchin
 		physicsSimulationStopper.store(true, std::memory_order_relaxed);
 	}
 
+	/**
+	 * Check if thread has been stopped by an exception and rethrow exception on main thread
+	 */
+	void PhysicsWorld::controlExecution()
+	{
+		if(physicsThreadExceptionPtr)
+		{
+			std::rethrow_exception(physicsThreadExceptionPtr);
+		}
+	}
+
 	void PhysicsWorld::startPhysicsUpdate()
 	{
 		try
@@ -209,8 +223,8 @@ namespace urchin
 			}
 		}catch(std::exception &e)
 		{
-			Logger::logger().logError("Error cause physics thread crash: " + std::string(e.what()));
-            throw e;
+            Logger::logger().logError("Error cause physics thread crash: exception reported to main thread");
+			physicsThreadExceptionPtr = std::current_exception();
 		}
 	}
 

@@ -35,6 +35,7 @@ namespace urchin
             void play();
             bool isPaused() const;
             void interrupt();
+            void controlExecution();
 
         private:
             void startAIUpdate();
@@ -43,6 +44,7 @@ namespace urchin
 
             std::thread *aiSimulationThread;
             std::atomic_bool aiSimulationStopper;
+            static std::exception_ptr aiThreadExceptionPtr;
 
             mutable std::mutex mutex;
             float timeStep;

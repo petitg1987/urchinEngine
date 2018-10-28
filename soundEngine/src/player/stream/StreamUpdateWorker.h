@@ -25,6 +25,7 @@ namespace urchin
 
 			void start();
 			void interrupt();
+			void controlExecution();
 
 		private:
 			bool continueExecution();
@@ -42,6 +43,7 @@ namespace urchin
 			const unsigned int updateStreamBufferPauseTime;
 
 			std::atomic_bool streamUpdateWorkerStopper;
+			static std::exception_ptr soundThreadExceptionPtr;
 			mutable std::mutex tasksMutex;
 
 			std::vector<StreamUpdateTask *> tasks;

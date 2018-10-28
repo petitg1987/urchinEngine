@@ -14,6 +14,7 @@ namespace urchin
 			explicit FileLogger(std::string);
 
 			std::string readAll() const;
+			void clearLogs();
 
 		private:
 			void write(const std::string &) override;
