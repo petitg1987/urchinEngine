@@ -1,5 +1,5 @@
 # UrchinEngine
-Game engine library: 3D, Physics, Sound, IA, Map Editor
+Game engine library: 3D, Physics, Sound, Network, IA, Map Editor
 
 Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 
