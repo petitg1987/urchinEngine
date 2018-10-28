@@ -106,12 +106,10 @@ namespace urchin
 
 	void SceneDisplayer::initializeScene()
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Scene displayer is already initialized.");
-			}
-		#endif
+		if(isInitialized)
+		{
+			throw std::runtime_error("Scene displayer is already initialized.");
+		}
 
         //3d
         sceneManager = new SceneManager();

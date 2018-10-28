@@ -19,8 +19,8 @@ namespace urchin
 
 			bool isInitialized() const;
 
-			void loadProperties(const std::string &);
-			void loadProperties(const std::string &, const std::string &);
+			void loadProperties(const std::string &, const std::map<std::string, std::string> &placeholder={});
+			void loadProperties(const std::string &, const std::string &, const std::map<std::string, std::string> &placeholders={});
 
 			unsigned getUnsignedIntValue(const std::string &) const;
 			float getFloatValue(const std::string &) const;

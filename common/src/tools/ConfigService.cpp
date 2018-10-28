@@ -28,22 +28,35 @@ namespace urchin
 		return bIsInitialized;
 	}
 
-	void ConfigService::loadProperties(const std::string &propertiesFile)
+	void ConfigService::loadProperties(const std::string &propertiesFile, const std::map<std::string, std::string> &placeholders)
 	{
-		loadProperties(propertiesFile, FileSystem::instance()->getResourcesDirectory());
+		loadProperties(propertiesFile, FileSystem::instance()->getResourcesDirectory(), placeholders);
 	}
 
 	/**
 	 * @param workingDirectory Override the default working directory
 	 */
-	void ConfigService::loadProperties(const std::string &propertiesFile, const std::string &workingDirectory)
+	void ConfigService::loadProperties(const std::string &propertiesFile, const std::string &workingDirectory,
+			const std::map<std::string, std::string> &placeholders)
 	{
 		std::string propertiesFilePath = workingDirectory + propertiesFile;
 		PropertyFileHandler propertyFileHandler(propertiesFilePath);
 		
 		properties = propertyFileHandler.loadPropertyFile();
+
+		//replace placeholders
+		for(auto &property : properties)
+		{
+			auto itFind = placeholders.find(property.second);
+			if(itFind!=placeholders.end())
+			{
+				property.second = itFind->second;
+			}
+		}
+
+		//build specific maps for performance reason (numeric conversion is slow)
         for(const auto &property : properties)
-        { //build specific maps for performance reason (numeric conversion is slow)
+        {
             if(Converter::isUnsignedInt(property.second))
             {
                 unsignedIntProperties[property.first] = Converter::toUnsignedInt(property.second);
