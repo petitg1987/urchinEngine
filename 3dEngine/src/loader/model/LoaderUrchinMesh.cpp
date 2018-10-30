@@ -8,7 +8,7 @@
 namespace urchin
 {
 
-	ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename, void *params)
+	ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename, void *)
 	{	
 		std::locale::global(std::locale("C")); //for float
 		
@@ -111,7 +111,7 @@ namespace urchin
 			}
 			FileReaderUtil::nextLine(file, buffer); //buffer= "}"
 			
-			constMeshes.push_back(new ConstMesh(materialFilename, vertices, textureCoordinates, triangles, weights, baseSkeleton, params));
+			constMeshes.push_back(new ConstMesh(materialFilename, vertices, textureCoordinates, triangles, weights, baseSkeleton));
 		}
 		
 		file.close();

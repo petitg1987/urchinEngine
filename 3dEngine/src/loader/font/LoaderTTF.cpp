@@ -7,8 +7,8 @@
 #include "resources/image/Image.h"
 
 #define WIDTH_BETWEEN_LETTERS 2
-#define WIDTH_BETWEEN_LINES_RATE 1.9
-#define WIDTH_SPACE_RATE 0.4
+#define WIDTH_BETWEEN_LINES_RATE 1.9f
+#define WIDTH_SPACE_RATE 0.4f
 #define NUM_COLORS 4
 #define NUM_LETTERS 256
 #define NUM_LETTERS_BY_LINE 16
@@ -31,10 +31,10 @@ namespace urchin
 		}
 		
 		int error = FT_New_Face(library, fileFontPath.c_str(), 0, &face);
-		if(error == FT_Err_Unknown_File_Format || error!=0)
+		if(error!=0)
 		{
 			FT_Done_FreeType(library);
-			throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ".");
+			throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ", error id: " + std::to_string(error) + ".");
 		}
 
 		if (FT_Set_Char_Size(face, 0, textParameters.fontSize << 6, 96, 96))
@@ -107,13 +107,13 @@ namespace urchin
 		FT_Done_FreeType(library);
 
 		//compute space between lines, space between letters and height of letters
-		unsigned int height =0;
+		unsigned int height = 0;
 		for(int i='A'; i<'Z';i++)
 		{
 			height = std::max(height, (unsigned int)glyph[i].height);
 		}
-		unsigned int spaceBetweenLines = height * WIDTH_BETWEEN_LINES_RATE;
-		unsigned int spaceBetweenLetters = WIDTH_BETWEEN_LETTERS;
+		auto spaceBetweenLines = static_cast<unsigned int>(height * WIDTH_BETWEEN_LINES_RATE);
+		auto spaceBetweenLetters = static_cast<unsigned int>(WIDTH_BETWEEN_LETTERS);
 		glyph[' '].width = (int)((float)glyph['A'].width * WIDTH_SPACE_RATE);
 
 		//dimension of letters and texture
@@ -142,9 +142,9 @@ namespace urchin
 				{
 					for(int xx=0; xx<glyph[c].width; xx++,m++)
 					{
-						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 0] = (glyph[c].buf[m]>0) ? fontColor.X*255.0 : 0;
-						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 1] = (glyph[c].buf[m]>0) ? fontColor.Y*255.0 : 0;
-						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 2] = (glyph[c].buf[m]>0) ? fontColor.Z*255.0 : 0;
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 0] = (glyph[c].buf[m]>0) ? static_cast<int>(fontColor.X*255) : 0;
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 1] = (glyph[c].buf[m]>0) ? static_cast<int>(fontColor.Y*255) : 0;
+						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 2] = (glyph[c].buf[m]>0) ? static_cast<int>(fontColor.Z*255) : 0;
 
 						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 3] = glyph[c].buf[m];
 					}

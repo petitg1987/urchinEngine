@@ -13,12 +13,12 @@ namespace urchin
 	/**
 	* Implementation of GJK Ray Cast algorithm (see http://www.dtecta.com/papers/unpublished04raycast.pdf)
 	*/
-	template<class T, class OUT> class GJKContinuousCollisionAlgorithm
+	template<class T, class U> class GJKContinuousCollisionAlgorithm
 	{
 		public:
 			GJKContinuousCollisionAlgorithm();
 
-			std::shared_ptr<ContinuousCollisionResult<OUT>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
+			std::shared_ptr<ContinuousCollisionResult<U>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
 
 		private:
 			Point3<T> getWorldSupportPoint(const TemporalObject &, const Vector3<T> &, const PhysicsTransform &) const;

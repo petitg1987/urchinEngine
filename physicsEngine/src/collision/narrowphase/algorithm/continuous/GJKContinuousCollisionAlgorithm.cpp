@@ -8,7 +8,7 @@
 namespace urchin
 {
 
-	template<class T, class OUT> GJKContinuousCollisionAlgorithm<T, OUT>::GJKContinuousCollisionAlgorithm() :
+	template<class T, class U> GJKContinuousCollisionAlgorithm<T, U>::GJKContinuousCollisionAlgorithm() :
 		squareEpsilon(std::numeric_limits<T>::epsilon() * std::numeric_limits<T>::epsilon()),
 		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkContinuousCollisionMaxIteration")),
 		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkContinuousCollisionTerminationTolerance"))
@@ -16,7 +16,7 @@ namespace urchin
 
 	}
 
-	template<class T, class OUT> std::shared_ptr<ContinuousCollisionResult<OUT>> GJKContinuousCollisionAlgorithm<T, OUT>::calculateTimeOfImpact(const TemporalObject &object1, const TemporalObject &object2,
+	template<class T, class U> std::shared_ptr<ContinuousCollisionResult<U>> GJKContinuousCollisionAlgorithm<T, U>::calculateTimeOfImpact(const TemporalObject &object1, const TemporalObject &object2,
 			AbstractWorkBody *body2) const
 	{
 		T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
@@ -47,7 +47,7 @@ namespace urchin
 
 			if (timeToHit > 1.0)
 			{ //no hit detected between from and to transformation
-				return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
+				return std::shared_ptr<ContinuousCollisionResult<U>>(nullptr);
 			}
 
 			if (closestPointDotNewPoint > 0.0)
@@ -55,7 +55,7 @@ namespace urchin
 				T closestPointDotRelativeMotion = vClosestPoint.dotProduct(relativeMotion);
 				if (closestPointDotRelativeMotion >= -squareEpsilon)
 				{
-					return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
+					return std::shared_ptr<ContinuousCollisionResult<U>>(nullptr);
 				}
 
 				timeToHit = timeToHit - closestPointDotNewPoint / closestPointDotRelativeMotion;
@@ -83,12 +83,12 @@ namespace urchin
 						Point3<T> hitPointOnObject1, hitPointOnObject2;
 						simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-						return std::make_shared<ContinuousCollisionResult<OUT>>(body2, Vector3<OUT>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<OUT>(), 0.0);
+						return std::make_shared<ContinuousCollisionResult<U>>(body2, Vector3<U>(1.0, 0.0, 0.0), hitPointOnObject2.template cast<U>(), 0.0);
                     }else
                     {
                         std::string wrongSituation = "Unexpected situation reach on continuous collision algorithm.";
                         logInputData(object1, object2, wrongSituation, Logger::ERROR);
-                        return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
+                        return std::shared_ptr<ContinuousCollisionResult<U>>(nullptr);
                     }
 				}else if(!std::isnan(normalFromObject2.X))
 				{
@@ -97,17 +97,17 @@ namespace urchin
 					Point3<T> hitPointOnObject1, hitPointOnObject2;
 					simplex.computeClosestPoints(hitPointOnObject1, hitPointOnObject2);
 
-					return std::make_shared<ContinuousCollisionResult<OUT>>(body2, normalFromObject2.template cast<OUT>(), hitPointOnObject2.template cast<OUT>(), (OUT) timeToHit);
+					return std::make_shared<ContinuousCollisionResult<U>>(body2, normalFromObject2.template cast<U>(), hitPointOnObject2.template cast<U>(), (U) timeToHit);
 				}
 			}
 		}
 
         std::string maxIterationReachMsg = "Maximum of iteration reached on GJK continuous collision algorithm (" + std::to_string(maxIteration) + ").";
         logInputData(object1, object2, maxIterationReachMsg, Logger::WARNING);
-		return std::shared_ptr<ContinuousCollisionResult<OUT>>(nullptr);
+		return std::shared_ptr<ContinuousCollisionResult<U>>(nullptr);
 	}
 
-	template<class T, class OUT> Point3<T> GJKContinuousCollisionAlgorithm<T, OUT>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
+	template<class T, class U> Point3<T> GJKContinuousCollisionAlgorithm<T, U>::getWorldSupportPoint(const TemporalObject &object, const Vector3<T> &globalDirection, const PhysicsTransform &worldTransform) const
 	{
 		Vector3<float> localDirection = worldTransform.retrieveOrientationMatrix().transpose() * globalDirection.template cast<float>();
 		Point3<float> localSupportPoint = object.getLocalObject()->getSupportPoint(localDirection, true);
@@ -115,7 +115,7 @@ namespace urchin
 		return worldTransform.transform(localSupportPoint).template cast<T>();
 	}
 
-	template<class T, class OUT> Point3<float> GJKContinuousCollisionAlgorithm<T, OUT>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const
+	template<class T, class U> Point3<float> GJKContinuousCollisionAlgorithm<T, U>::interpolate(const Point3<float> &from, const Point3<float> &to, T interpolatePercentage) const
 	{
 		T invertedInterpolatePercentage = 1.0 - interpolatePercentage;
 
@@ -125,7 +125,7 @@ namespace urchin
 				invertedInterpolatePercentage * from.Z + interpolatePercentage * to.Z);
 	}
 
-	template<class T, class OUT> void GJKContinuousCollisionAlgorithm<T, OUT>::logInputData(const TemporalObject &object1, const TemporalObject &object2,
+	template<class T, class U> void GJKContinuousCollisionAlgorithm<T, U>::logInputData(const TemporalObject &object1, const TemporalObject &object2,
                                                                                             const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;

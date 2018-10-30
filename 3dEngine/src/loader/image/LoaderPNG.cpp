@@ -10,7 +10,7 @@ namespace urchin
 
     }
 
-    Image *LoaderPNG::loadFromFile(const std::string &filename, void *params)
+    Image *LoaderPNG::loadFromFile(const std::string &filename, void *)
     {
         std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
         std::vector<unsigned char> png;

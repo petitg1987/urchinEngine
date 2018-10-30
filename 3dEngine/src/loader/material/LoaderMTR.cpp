@@ -9,7 +9,7 @@
 namespace urchin
 {
 
-	Material *LoaderMTR::loadFromFile(const std::string &filename, void *params)
+	Material *LoaderMTR::loadFromFile(const std::string &filename, void *)
 	{
 		std::locale::global(std::locale("C")); //for float
 

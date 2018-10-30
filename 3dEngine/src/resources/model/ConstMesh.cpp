@@ -10,7 +10,7 @@ namespace urchin
 {
 
 	ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, const std::vector<TextureCoordinate> &textureCoordinates,
-			const std::vector<Triangle> &triangles, const std::vector<Weight> &weights, const std::vector<Bone> &baseSkeleton, void *loaderParams) :
+			const std::vector<Triangle> &triangles, const std::vector<Weight> &weights, const std::vector<Bone> &baseSkeleton) :
 		vertices(vertices),
 		textureCoordinates(textureCoordinates),
 		triangles(triangles),
@@ -30,7 +30,7 @@ namespace urchin
 		MeshService::instance()->computeNormals(this, baseVertices, baseDataVertices);
 
 		//load material
-		material = MediaManager::instance()->getMedia<Material>(materialFilename, loaderParams);
+		material = MediaManager::instance()->getMedia<Material>(materialFilename);
 	}
 
 	ConstMesh::~ConstMesh()

@@ -18,7 +18,7 @@ namespace urchin
 
 	}
 
-	Image *LoaderTGA::loadFromFile(const std::string &filename, void *params)
+	Image *LoaderTGA::loadFromFile(const std::string &filename, void *)
 	{
 		//opens file
 		std::ifstream file;
