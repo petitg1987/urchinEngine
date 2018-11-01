@@ -53,7 +53,7 @@ namespace urchin
 
 		//memory allocation for pixel data
 		getImageInfo(header);
-		texels.resize(width*height*componentsCount);
+		texels.resize(width*height*componentsCount, 0);
 
 		//reads image data
 		switch(header.imageType)
