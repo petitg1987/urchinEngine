@@ -25,7 +25,7 @@ namespace urchin
 		public:
 			friend class Singleton<MediaManager>;
 			
-			template<class T> T* getMedia(const std::string &, void *params=nullptr);
+			template<class T> T* getMedia(const std::string &);
 			
 		private:
 			MediaManager();

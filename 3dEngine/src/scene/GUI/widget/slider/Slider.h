@@ -27,10 +27,10 @@ namespace urchin
 			void setLeftButtonEventListener(const std::shared_ptr<EventListener> &);
 			void setRightButtonEventListener(const std::shared_ptr<EventListener> &);
 
-			void display(int, float);
+			void display(int, float) override;
 
 		private:
-			std::string buttonNameSkin, valuesNameSkin;
+			std::string buttonNameFont, valuesNameFont;
 			std::string leftButtonString, rightButtonString;
 			const std::vector<std::string> values;
 			unsigned int selectedIndex;
@@ -49,7 +49,7 @@ namespace urchin
 			{
 				public:
 					ButtonSliderEventListener(Slider *, bool);
-					void onClickRelease(Widget *);
+					void onClickRelease(Widget *) override;
 
 				private:
 					Slider *slider;

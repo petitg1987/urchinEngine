@@ -14,6 +14,11 @@ namespace urchin
 
 	}
 
+	const std::string FileLogger::getFilename() const
+	{
+		return filename;
+	}
+
 	std::string FileLogger::readAll() const
 	{
 		std::ifstream ifs(filename.c_str(), std::ios::in | std::ios::binary | std::ios::ate);

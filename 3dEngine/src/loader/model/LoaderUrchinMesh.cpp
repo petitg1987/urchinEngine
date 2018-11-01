@@ -8,7 +8,7 @@
 namespace urchin
 {
 
-	ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename, void *)
+	ConstMeshes *LoaderUrchinMesh::loadFromFile(const std::string &filename)
 	{	
 		std::locale::global(std::locale("C")); //for float
 		

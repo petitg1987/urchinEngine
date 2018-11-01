@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-	ConstAnimation *LoaderUrchinAnim::loadFromFile(const std::string &filename, void *)
+	ConstAnimation *LoaderUrchinAnim::loadFromFile(const std::string &filename)
 	{
 		std::locale::global(std::locale("C")); //for float
 		

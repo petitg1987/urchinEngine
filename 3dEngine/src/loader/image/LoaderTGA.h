@@ -37,7 +37,7 @@ namespace urchin
 			LoaderTGA();
 			~LoaderTGA() override = default;
 
-			Image *loadFromFile(const std::string &, void *) override;
+			Image *loadFromFile(const std::string &) override;
 
 		private:
 			void getImageInfo(const TgaHeader &);

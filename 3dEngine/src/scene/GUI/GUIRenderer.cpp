@@ -186,16 +186,13 @@ namespace urchin
 		}
 
 		#ifdef _DEBUG
-			//display font texture
-//			std::shared_ptr<XmlChunk> fontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", "defaultSkin"));
-//			std::shared_ptr<XmlChunk> fileFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "ttf", XmlAttribute(), fontChunk);
-//			std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
-//			Font *font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*) sizeFontChunk->getIntValue());
+//			//display font texture
+//			Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
 //
 //			TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_VALUE);
 //			textureDisplayer.setPosition(TextureDisplayer::USER_DEFINED_X, TextureDisplayer::USER_DEFINED_Y);
 //			textureDisplayer.setSize(20.0, font->getDimensionTexture() + 20.0, 20.0, font->getDimensionTexture() + 20.0);
-//			textureDisplayer.initialize(width, height, -1.0, -1.0);
+//			textureDisplayer.initialize(512, 512, -1.0, -1.0);
 //			textureDisplayer.display();
 //			font->release();
 		#endif

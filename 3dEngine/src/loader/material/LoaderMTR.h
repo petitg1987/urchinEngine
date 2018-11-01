@@ -14,7 +14,7 @@ namespace urchin
 		public:
 			~LoaderMTR() override = default;
 
-			Material *loadFromFile(const std::string &, void *) override;
+			Material *loadFromFile(const std::string &) override;
 	};
 
 }

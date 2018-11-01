@@ -14,7 +14,7 @@ namespace urchin
 		public:
 			~LoaderUrchinMesh() override = default;
 
-			ConstMeshes *loadFromFile(const std::string &, void *) override;
+			ConstMeshes *loadFromFile(const std::string &) override;
 	};
 
 }

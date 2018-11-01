@@ -3,7 +3,7 @@
 #include FT_FREETYPE_H
 #include "UrchinCommon.h"
 
-#include "loader/font/LoaderTTF.h"
+#include "loader/font/LoaderFNT.h"
 #include "resources/image/Image.h"
 
 #define WIDTH_BETWEEN_LETTERS 2
@@ -16,13 +16,17 @@
 namespace urchin
 {
 
-	Font *LoaderTTF::loadFromFile(const std::string &fileFont, void *params)
+	Font *LoaderFNT::loadFromFile(const std::string &fontFilename)
 	{
-		//parameters
-		FontParameters textParameters = (*static_cast<FontParameters*>(params));
-		
+        std::locale::global(std::locale("C")); //for float
+
+        XmlParser parserXml(fontFilename);
+        std::string ttfFilename = std::shared_ptr<XmlChunk>(parserXml.getUniqueChunk(false, "ttf"))->getStringValue();
+        int fontSize = std::shared_ptr<XmlChunk>(parserXml.getUniqueChunk(false, "size"))->getIntValue();
+        Vector3<float> fontColor =  std::shared_ptr<XmlChunk>(parserXml.getUniqueChunk(false, "color"))->getVector3Value();
+
 		//initialize freetype
-		std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + fileFont;
+		std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + ttfFilename;
 		FT_Library library;
 		FT_Face face;
 		if (FT_Init_FreeType(&library))
@@ -37,7 +41,7 @@ namespace urchin
 			throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ", error id: " + std::to_string(error) + ".");
 		}
 
-		if (FT_Set_Char_Size(face, 0, textParameters.fontSize << 6, 96, 96))
+		if (FT_Set_Char_Size(face, 0, fontSize << 6, 96, 96))
 		{
 			FT_Done_Face(face);
 			FT_Done_FreeType(library);
@@ -133,7 +137,6 @@ namespace urchin
 		
 		//texture creation
 		std::vector<unsigned char> texels(dimensionTexture*dimensionTexture*NUM_COLORS, 0);
-		Vector3<float> fontColor = textParameters.fontColor;
 		for(unsigned int i=0,c=0; i<dimensionTexture; i+=dimensionLetters)
 		{
 			for(unsigned int j=0; j<dimensionTexture; j+=dimensionLetters,c++)

@@ -19,7 +19,7 @@ namespace urchin
 
 	void Button::createOrUpdateWidget()
 	{
-		//skin informations
+		//skin information
 		std::shared_ptr<XmlChunk> buttonChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "button", XmlAttribute("nameSkin", nameSkin));
 
 		std::shared_ptr<XmlChunk> skinDefaultChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "skin", XmlAttribute("type", "default"), buttonChunk);
@@ -33,11 +33,11 @@ namespace urchin
 
 		if(!buttonText.empty())
 		{
-			std::shared_ptr<XmlChunk> textChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textSkin", XmlAttribute(), buttonChunk);
+			std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), buttonChunk);
 			removeChild(text);
-			text = new Text(Position(0, 0, Position::PIXEL), textChunk->getStringValue());
+			text = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
 			text->setText(buttonText);
-			text->setPosition(Position((int)(getWidth() - text->getWidth())/2, (int)(getHeight() - text->getHeight())/2, Position::PIXEL));
+			text->setPosition(Position((int)(getWidth() - text->getWidth()/2), (int)(getHeight() - text->getHeight()/2), Position::PIXEL));
 			addChild(text);
 		}
 
@@ -63,19 +63,19 @@ namespace urchin
 		return texInfoDefault->getTextureID();
 	}
 
-	bool Button::onKeyDownEvent(unsigned int key)
+	bool Button::onKeyDownEvent(unsigned int)
 	{
 		textureID = getTextureId();
 		return true;
 	}
 
-	bool Button::onKeyUpEvent(unsigned int key)
+	bool Button::onKeyUpEvent(unsigned int)
 	{
 		textureID = getTextureId();
 		return true;
 	}
 
-	bool Button::onMouseMoveEvent(int mouseX, int mouseY)
+	bool Button::onMouseMoveEvent(int, int)
 	{
 		textureID = getTextureId();
 		return true;

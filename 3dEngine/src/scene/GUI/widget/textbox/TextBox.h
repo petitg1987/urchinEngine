@@ -20,16 +20,16 @@ namespace urchin
 			TextBox(Position, Size, const std::string &);
 			~TextBox() override;
 			
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 
 			std::string getText();
 		
-			void display(int, float);
+			void display(int, float) override;
 			
 		private:
-			bool onKeyDownEvent(unsigned int);
-			bool onCharEvent(unsigned int);
-			void reset();
+			bool onKeyDownEvent(unsigned int) override;
+			bool onCharEvent(unsigned int) override;
+			void reset() override;
 		
 			void refreshText(int);
 			void computeCursorPosition();

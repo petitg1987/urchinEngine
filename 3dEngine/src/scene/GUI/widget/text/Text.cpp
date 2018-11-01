@@ -11,22 +11,12 @@
 namespace urchin
 {
 
-	Text::Text(Position position, const std::string &nameSkin) :
+	Text::Text(Position position, const std::string &fontFilename) :
 		Widget(position, Size(0, 0, Size::PIXEL)),
 		text(""),
 		maxLength(-1)
 	{
-		//skin information
-		std::shared_ptr<XmlChunk> fontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "text", XmlAttribute("nameSkin", nameSkin));
-		std::shared_ptr<XmlChunk> fileFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "ttf", XmlAttribute(), fontChunk);
-		std::shared_ptr<XmlChunk> sizeFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "size", XmlAttribute(), fontChunk);
-		std::shared_ptr<XmlChunk> colorFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "color", XmlAttribute(), fontChunk);
-
-		//visual
-		FontParameters textParameters;
-		textParameters.fontSize = sizeFontChunk->getIntValue();
-		textParameters.fontColor = colorFontChunk->getVector3Value();
-		font = MediaManager::instance()->getMedia<Font>(fileFontChunk->getStringValue(), (void*)(&textParameters));
+		font = MediaManager::instance()->getMedia<Font>(fontFilename);
 
 		setText(text);
 	}

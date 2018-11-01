@@ -28,7 +28,7 @@ namespace urchin
 		public:
 			~LoaderUrchinAnim() override = default;
 
-			ConstAnimation *loadFromFile(const std::string &, void *) override;
+			ConstAnimation *loadFromFile(const std::string &) override;
 	};
 
 }

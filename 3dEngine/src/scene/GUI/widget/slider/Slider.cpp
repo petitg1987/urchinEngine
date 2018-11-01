@@ -25,11 +25,11 @@ namespace urchin
 
 		std::shared_ptr<XmlChunk> sliderChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "slider", XmlAttribute("nameSkin", nameSkin));
 
-		std::shared_ptr<XmlChunk> buttonsTextSkinChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonTextSkin", XmlAttribute(), sliderChunk);
-		buttonNameSkin = buttonsTextSkinChunk->getStringValue();
+		std::shared_ptr<XmlChunk> buttonsTextFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "buttonTextFont", XmlAttribute(), sliderChunk);
+		buttonNameFont = buttonsTextFontChunk->getStringValue();
 
-		std::shared_ptr<XmlChunk> valuesTextChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextSkin", XmlAttribute(), sliderChunk);
-		valuesNameSkin = valuesTextChunk->getStringValue();
+		std::shared_ptr<XmlChunk> valuesTextFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "valuesTextFont", XmlAttribute(), sliderChunk);
+		valuesNameFont = valuesTextFontChunk->getStringValue();
 
 		std::shared_ptr<XmlChunk> leftButtonTextChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "leftButtonText", XmlAttribute(), sliderChunk);
 		leftButtonString = leftButtonTextChunk->getStringValue();
@@ -52,7 +52,7 @@ namespace urchin
 		valuesText.clear();
 
 		//buttons
-		leftButton = new Text(Position(0, 0, Position::PIXEL), buttonNameSkin);
+		leftButton = new Text(Position(0, 0, Position::PIXEL), buttonNameFont);
 		leftButton->setText(leftButtonString);
 		leftButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, true));
 		if(leftButtonEventListener)
@@ -61,7 +61,7 @@ namespace urchin
 		}
 		Widget::addChild(leftButton);
 
-		rightButton = new Text(Position(0, 0, Position::PIXEL), buttonNameSkin);
+		rightButton = new Text(Position(0, 0, Position::PIXEL), buttonNameFont);
 		rightButton->setText(rightButtonString);
 		rightButton->setPosition(Position(getWidth()-rightButton->getWidth(), 0, Position::PIXEL));
 		rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
@@ -75,7 +75,7 @@ namespace urchin
 		valuesText.resize(values.size());
 		for(unsigned int i=0; i<values.size(); ++i)
 		{
-			Text *valueText = new Text(Position(0, 0, Position::PIXEL), valuesNameSkin);
+			Text *valueText = new Text(Position(0, 0, Position::PIXEL), valuesNameFont);
 			valueText->setText(values[i]);
 			valueText->setPosition(Position((getWidth()-valueText->getWidth())/2.0, 0, Position::PIXEL));
 			valueText->setIsVisible(false);

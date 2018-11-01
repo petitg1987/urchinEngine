@@ -19,9 +19,9 @@ namespace urchin
 			StaticBitmap(Position, Size, const std::string &);
 			~StaticBitmap() override;
 			
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 
-			void display(int, float);
+			void display(int, float) override;
 			
 		private:
 			//properties

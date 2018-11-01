@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 14)
 add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES)
 
 set(SOURCE_FILES
-        src/loader/font/LoaderTTF.cpp
-        src/loader/font/LoaderTTF.h
+        src/loader/font/LoaderFNT.cpp
+        src/loader/font/LoaderFNT.h
         src/loader/image/LoaderTGA.cpp
         src/loader/image/LoaderTGA.h
         src/loader/material/LoaderMTR.cpp

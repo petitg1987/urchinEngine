@@ -296,7 +296,7 @@ namespace urchin
             grassTexture = nullptr;
         }else
         {
-            grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename, nullptr);
+            grassTexture = MediaManager::instance()->getMedia<Image>(grassTextureFilename);
             grassTexture->toTexture(true, true, false);
         }
     }
@@ -321,7 +321,7 @@ namespace urchin
             grassMaskTexture->toTexture(false, false, false);
         } else
         {
-            grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename, nullptr);
+            grassMaskTexture = MediaManager::instance()->getMedia<Image>(grassMaskFilename);
             grassMaskTexture->toTexture(false, false, false);
         }
     }

@@ -8,12 +8,6 @@
 
 namespace urchin
 {
-	
-	struct FontParameters
-	{
-		int fontSize;
-		Vector3<float> fontColor;
-	};
 
 	struct Glyph
 	{ //glyph is a letter

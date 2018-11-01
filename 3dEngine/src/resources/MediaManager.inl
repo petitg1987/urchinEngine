@@ -1,4 +1,4 @@
-template<class T> T* MediaManager::getMedia(const std::string &filename, void *params)
+template<class T> T* MediaManager::getMedia(const std::string &filename)
 {
 	//resource already charged ?
 	T *resource = ResourceManager::instance()->getResource<T>(filename);
@@ -17,7 +17,7 @@ template<class T> T* MediaManager::getMedia(const std::string &filename, void *p
 	}
 	
 	Loader<T> *loader = static_cast<Loader<T>*>(it->second);
-	resource = loader->loadFromFile(filename, params);
+	resource = loader->loadFromFile(filename);
 	
 	ResourceManager::instance()->addResource(filename, resource);
 	return resource;

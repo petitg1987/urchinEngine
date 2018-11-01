@@ -18,7 +18,7 @@ namespace urchin
             maskTexture->toTexture(false, false, false);
         }else
         {
-            maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename, nullptr);
+            maskTexture = MediaManager::instance()->getMedia<Image>(maskMapFilename);
             if(maskTexture->getImageFormat() != Image::IMAGE_RGBA)
             {
                 maskTexture->release();
@@ -69,7 +69,7 @@ namespace urchin
             throw std::runtime_error("Material position " + std::to_string(position) + " is already used.");
         }
 
-        materials[position] = MediaManager::instance()->getMedia<Material>(materialFilename, nullptr);
+        materials[position] = MediaManager::instance()->getMedia<Material>(materialFilename);
     }
 
     const std::string &TerrainMaterial::getMaskMapFilename() const

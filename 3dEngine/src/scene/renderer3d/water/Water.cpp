@@ -176,7 +176,7 @@ namespace urchin
             normalTexture = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 255, 0}));
         }else
         {
-            normalTexture = MediaManager::instance()->getMedia<Image>(normalFilename, nullptr);
+            normalTexture = MediaManager::instance()->getMedia<Image>(normalFilename);
             if(normalTexture->getImageFormat() != Image::IMAGE_RGB)
             {
                 normalTexture->release();
@@ -204,7 +204,7 @@ namespace urchin
             dudvMap = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({255, 0, 255}));
         }else
         {
-            dudvMap = MediaManager::instance()->getMedia<Image>(dudvFilename, nullptr);
+            dudvMap = MediaManager::instance()->getMedia<Image>(dudvFilename);
             if(dudvMap->getImageFormat() != Image::IMAGE_RGB)
             {
                 dudvMap->release();
