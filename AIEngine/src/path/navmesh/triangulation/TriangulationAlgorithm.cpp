@@ -256,7 +256,7 @@ namespace urchin
 
 		if(triangleOrientation==TriangulationAlgorithm::NONE)
 		{
-			return std::make_unique<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
+			return std::make_shared<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
 		}else if(triangleOrientation==TriangulationAlgorithm::CCW)
 		{
 			Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
@@ -265,10 +265,10 @@ namespace urchin
 			double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
 			if(crossProductZ > 0.0)
 			{
-				return std::make_unique<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
+				return std::make_shared<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
 			}else
 			{
-				return std::make_unique<NavTriangle>(pointIndex2, pointIndex1, pointIndex3);
+				return std::make_shared<NavTriangle>(pointIndex2, pointIndex1, pointIndex3);
 			}
 		}
 

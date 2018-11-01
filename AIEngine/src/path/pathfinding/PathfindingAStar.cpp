@@ -31,7 +31,7 @@ namespace urchin
 
         float startEndHScore = computeHScore(startTriangle, endPoint);
 
-        std::set<std::shared_ptr<NavTriangle>> closedList;
+        std::set<NavTriangle *> closedList;
         std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> openList;
         openList.insert(std::make_shared<PathNode>(startTriangle, 0.0, startEndHScore));
 
@@ -41,17 +41,17 @@ namespace urchin
             auto currentNodeIt = openList.begin(); //node with smallest fScore
             std::shared_ptr<PathNode> currentNode = *currentNodeIt;
 
-            closedList.insert(currentNode->getNavTriangle());
+            closedList.insert(currentNode->getNavTriangle().get());
             openList.erase(currentNodeIt);
 
-            const auto currTriangle = currentNode->getNavTriangle();
+            const auto &currTriangle = currentNode->getNavTriangle();
             for(unsigned int i=0; i<3; ++i)
             {
-                if(currentNode->getNavTriangle()->getNeighbor(i) != nullptr)
+                if(currTriangle->getNeighbor(i) != nullptr)
                 {
-                    const auto &neighborTriangle = currentNode->getNavTriangle()->getNeighbor(i);
+                    const std::shared_ptr<NavTriangle> &neighborTriangle = currTriangle->getNeighbor(i);
 
-                    if(closedList.find(neighborTriangle)!=closedList.end())
+                    if(closedList.find(neighborTriangle.get())!=closedList.end())
                     { //already processed
                         continue;
                     }
@@ -232,8 +232,8 @@ namespace urchin
                     Point3<float> startPoint = pathPoints.back().getPoint();
                     Point3<float> endPoint = pathPortal->getPivotPoint();
 
-                    const std::shared_ptr<NavPolygon> &navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
-                    std::vector<Point3<float>> topographyPoints = navPolygon.get()->getNavTopography()->followTopography(startPoint, endPoint);
+                    std::shared_ptr<NavPolygon> navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
+                    std::vector<Point3<float>> topographyPoints = navPolygon->getNavTopography()->followTopography(startPoint, endPoint);
 
                     pathPoints.pop_back();
                     pathPoints.emplace_back(PathPoint(topographyPoints[0], true));

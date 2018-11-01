@@ -29,15 +29,19 @@ namespace urchin
         this->centerPoint = (navPolygon->getPoints()[indices[0]] + navPolygon->getPoints()[indices[1]] + navPolygon->getPoints()[indices[2]]) / 3.0f;
     }
 
-    const std::shared_ptr<NavPolygon> &NavTriangle::getNavPolygon() const
+    std::shared_ptr<NavPolygon> NavTriangle::getNavPolygon() const
     {
-        return navPolygon;
+        #ifdef _DEBUG
+            assert(!navPolygon.expired());
+        #endif
+
+        return navPolygon.lock();
     }
 
     const Point3<float> &NavTriangle::getCenterPoint() const
     {
         #ifdef _DEBUG
-            assert(navPolygon != nullptr); //center point not computed until triangle is not linked to polygon
+            assert(getNavPolygon() != nullptr); //center point not computed until triangle is not linked to polygon
         #endif
 
         return centerPoint;
@@ -83,7 +87,7 @@ namespace urchin
         #endif
 
         unsigned int edgeEndIndex = (edgeStartIndex + 1) % 3;
-        return LineSegment3D<float>(navPolygon->getPoint(indices[edgeStartIndex]), navPolygon->getPoint(indices[edgeEndIndex]));
+        return LineSegment3D<float>(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));
     }
 
 }

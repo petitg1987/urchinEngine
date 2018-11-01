@@ -16,7 +16,7 @@ namespace urchin
 
             void attachNavPolygon(const std::shared_ptr<NavPolygon> &);
 
-            const std::shared_ptr<NavPolygon> &getNavPolygon() const;
+            std::shared_ptr<NavPolygon> getNavPolygon() const;
             const Point3<float> &getCenterPoint() const;
 
             const unsigned int *getIndices() const;
@@ -28,7 +28,7 @@ namespace urchin
             LineSegment3D<float> computeEdge(unsigned int) const;
 
         private:
-            std::shared_ptr<NavPolygon> navPolygon;
+            std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references between triangle and polygon
 
             unsigned int indices[3];
             std::shared_ptr<NavTriangle> neighbors[3];
