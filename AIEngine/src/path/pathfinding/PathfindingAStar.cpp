@@ -49,7 +49,7 @@ namespace urchin
             {
                 if(currTriangle->getNeighbor(i) != nullptr)
                 {
-                    const std::shared_ptr<NavTriangle> &neighborTriangle = currTriangle->getNeighbor(i);
+                    auto neighborTriangle = currTriangle->getNeighbor(i);
 
                     if(closedList.find(neighborTriangle.get())!=closedList.end())
                     { //already processed

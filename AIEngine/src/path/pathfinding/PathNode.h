@@ -25,7 +25,7 @@ namespace urchin
             LineSegment3D<float> computeEdgeWithPreviousNode() const;
 
         private:
-            const std::shared_ptr<NavTriangle> &navTriangle;
+            std::shared_ptr<NavTriangle> navTriangle;
 
             float gScore;
             float hScore;

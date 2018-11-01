@@ -23,7 +23,7 @@ namespace urchin
             unsigned int getIndex(unsigned int) const;
 
             void addNeighbor(unsigned int, const std::shared_ptr<NavTriangle> &);
-            const std::shared_ptr<NavTriangle> &getNeighbor(unsigned int) const;
+            std::shared_ptr<NavTriangle> getNeighbor(unsigned int) const;
 
             LineSegment3D<float> computeEdge(unsigned int) const;
 
@@ -31,7 +31,7 @@ namespace urchin
             std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references between triangle and polygon
 
             unsigned int indices[3];
-            std::shared_ptr<NavTriangle> neighbors[3];
+            std::weak_ptr<NavTriangle> neighbors[3]; //use weak_ptr to avoid cyclic references between triangles
 
             Point3<float> centerPoint;
     };

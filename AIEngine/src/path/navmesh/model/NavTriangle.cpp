@@ -16,9 +16,9 @@ namespace urchin
         this->indices[1] = index2;
         this->indices[2] = index3;
 
-        this->neighbors[0] = nullptr;
-        this->neighbors[1] = nullptr;
-        this->neighbors[2] = nullptr;
+        this->neighbors[0] = std::shared_ptr<NavTriangle>(nullptr);
+        this->neighbors[1] = std::shared_ptr<NavTriangle>(nullptr);
+        this->neighbors[2] = std::shared_ptr<NavTriangle>(nullptr);
 
         this->centerPoint = Point3<float>(0.0, 0.0, 0.0);
     }
@@ -65,19 +65,19 @@ namespace urchin
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
-            assert(neighbors[edgeIndex] == nullptr);
+            assert(getNeighbor(edgeIndex) == nullptr);
         #endif
 
         neighbors[edgeIndex] = navTriangleNeighbor;
     }
 
-    const std::shared_ptr<NavTriangle> &NavTriangle::getNeighbor(unsigned int edgeIndex) const
+    std::shared_ptr<NavTriangle> NavTriangle::getNeighbor(unsigned int edgeIndex) const
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
         #endif
 
-        return neighbors[edgeIndex];
+        return neighbors[edgeIndex].lock();
     }
 
     LineSegment3D<float> NavTriangle::computeEdge(unsigned int edgeStartIndex) const
