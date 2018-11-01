@@ -40,10 +40,10 @@ namespace urchin
 		unsigned int numLetters = 0;
 		std::stringstream cuttedTextStream((maxLength>0) ? cutText(text, maxLength) : text);
 		std::string item;
-		std::vector<std::string> cuttedTextLines;
+		std::vector<std::string> cutTextLines;
 		while (std::getline(cuttedTextStream, item, '\n'))
 		{
-			cuttedTextLines.push_back(item);
+			cutTextLines.push_back(item);
 			numLetters += item.size();
 		}
 
@@ -53,15 +53,15 @@ namespace urchin
 		unsigned int vertexIndex = 0, stIndex = 0;
 		unsigned int width = 0;
 		int offsetY = 0;
-		for (auto &cuttedTextLine : cuttedTextLines)
+		for (auto &cutTextLine : cutTextLines)
 		{ //each lines
 			unsigned int offsetX = 0;
-			for (char charLetter : cuttedTextLine)
+			for (char charLetter : cutTextLine)
 			{ //each letters
 				auto letter = static_cast<unsigned char>(charLetter);
 
-				float t = (float)((letter)>>4)/16.0;
-				float s = (float)((letter)%16)/16.0;
+				float t = (float)((letter)>>4) / 16.0f;
+				float s = (float)((letter)%16) / 16.0f;
 
 				vertexData[vertexIndex++] = offsetX;
 				vertexData[vertexIndex++] = -font->getGlyph(letter).shift + offsetY;
@@ -88,8 +88,12 @@ namespace urchin
 			offsetY += font->getSpaceBetweenLines();
 		}
 
-		unsigned int numberOfInterLines = static_cast<unsigned int>(std::max(0, ((int)cuttedTextLines.size()-1)));
-		setSize(Size(width, cuttedTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL));
+        if(cutTextLines.empty())
+        { //add fake line to compute height
+            cutTextLines.emplace_back("");
+        }
+		unsigned int numberOfInterLines = cutTextLines.size() - 1;
+		setSize(Size(width, cutTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL));
 
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->numberOfQuad(numLetters)

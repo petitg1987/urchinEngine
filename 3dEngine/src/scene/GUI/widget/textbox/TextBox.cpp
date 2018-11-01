@@ -51,7 +51,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), textBoxChunk);
 		removeChild(text);
 		text = new Text(Position(0, 0, Position::PIXEL),  textFontChunk->getStringValue());
-		text->setPosition(Position(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (int)(getHeight() - text->getHeight()/2), Position::PIXEL));
+		text->setPosition(Position(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (getHeight() - text->getHeight())/2.0f, Position::PIXEL));
 		addChild(text);
 		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
 		refreshText(cursorIndex);

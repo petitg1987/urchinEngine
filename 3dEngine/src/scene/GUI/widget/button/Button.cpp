@@ -37,7 +37,7 @@ namespace urchin
 			removeChild(text);
 			text = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
 			text->setText(buttonText);
-			text->setPosition(Position((int)(getWidth() - text->getWidth()/2), (int)(getHeight() - text->getHeight()/2), Position::PIXEL));
+			text->setPosition(Position((getWidth() - text->getWidth())/2.0f, (getHeight() - text->getHeight())/2.0f, Position::PIXEL));
 			addChild(text);
 		}
 

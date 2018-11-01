@@ -23,9 +23,9 @@ namespace urchin
 
 	Widget::~Widget()
 	{
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			delete (children[i]);
+			delete child;
 		}
 
 		eventListeners.clear();
@@ -38,9 +38,9 @@ namespace urchin
 
 		createOrUpdateWidget();
 
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			children[i]->onResize(sceneWidth, sceneHeight);
+			child->onResize(sceneWidth, sceneHeight);
 		}
 	}
 
@@ -64,7 +64,7 @@ namespace urchin
 	{
 		if(child!=nullptr)
 		{
-			std::vector<Widget *>::iterator it = std::find(children.begin(), children.end(), child);
+			auto it = std::find(children.begin(), children.end(), child);
 			delete child;
 			children.erase(it);
 		}
@@ -117,10 +117,10 @@ namespace urchin
 	{
 		if(position.getPositionTypeX()==Position::PERCENTAGE)
 		{
-			return position.getPositionX() * sceneWidth;
+			return static_cast<unsigned int>(position.getPositionX() * sceneWidth);
 		}
 
-		return position.getPositionX();
+		return static_cast<unsigned int>(position.getPositionX());
 	}
 
 	/**
@@ -130,10 +130,10 @@ namespace urchin
 	{
 		if(position.getPositionTypeY()==Position::PERCENTAGE)
 		{
-			return position.getPositionY() * sceneHeight;
+			return static_cast<unsigned int>(position.getPositionY() * sceneHeight);
 		}
 
-		return position.getPositionY();
+		return static_cast<unsigned int>(position.getPositionY());
 	}
 
 	int Widget::getGlobalPositionX() const
@@ -170,18 +170,18 @@ namespace urchin
 	{
 		if(size.getWidthSizeType()==Size::PERCENTAGE)
 		{
-			return size.getWidth() * sceneWidth;
+			return static_cast<unsigned int>(size.getWidth() * sceneWidth);
 		}
-		return size.getWidth();
+		return static_cast<unsigned int>(size.getWidth());
 	}
 
 	unsigned int Widget::getHeight() const
 	{
 		if(size.getHeightSizeType()==Size::PERCENTAGE)
 		{
-			return size.getHeight() * sceneHeight;
+			return static_cast<unsigned int>(size.getHeight() * sceneHeight);
 		}
-		return size.getHeight();
+		return static_cast<unsigned int>(size.getHeight());
 	}
 
 	void Widget::setIsVisible(bool isVisible)
@@ -200,9 +200,9 @@ namespace urchin
 
 		bool propagateEvent = onKeyDownEvent(key);
 
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible() && !children[i]->onKeyDown(key))
+			if(child->isVisible() && !child->onKeyDown(key))
 			{
 				return false;
 			}
@@ -211,7 +211,7 @@ namespace urchin
 		return propagateEvent;
 	}
 
-	bool Widget::onKeyDownEvent(unsigned int key)
+	bool Widget::onKeyDownEvent(unsigned int)
 	{
 		return true;
 	}
@@ -238,9 +238,9 @@ namespace urchin
 
 		bool propagateEvent = onKeyUpEvent(key);
 
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible() && !children[i]->onKeyUp(key))
+			if(child->isVisible() && !child->onKeyUp(key))
 			{
 				return false;
 			}
@@ -248,7 +248,7 @@ namespace urchin
 		return propagateEvent;
 	}
 
-	bool Widget::onKeyUpEvent(unsigned int key)
+	bool Widget::onKeyUpEvent(unsigned int)
 	{
 		return true;
 	}
@@ -285,9 +285,9 @@ namespace urchin
 			return false;
 		}
 
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible() && !children[i]->onChar(character))
+			if(child->isVisible() && !child->onChar(character))
 			{
 				return false;
 			}
@@ -295,7 +295,7 @@ namespace urchin
 		return true;
 	}
 
-	bool Widget::onCharEvent(unsigned int character)
+	bool Widget::onCharEvent(unsigned int)
 	{
 		return true;
 	}
@@ -322,7 +322,7 @@ namespace urchin
 		return propagateEvent;
 	}
 
-	bool Widget::onMouseMoveEvent(int mouseX, int mouseY)
+	bool Widget::onMouseMoveEvent(int, int)
 	{
 		return true;
 	}
@@ -362,11 +362,11 @@ namespace urchin
 
 	void Widget::reset()
 	{
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible())
+			if(child->isVisible())
 			{
-				children[i]->reset();
+				child->reset();
 			}
 		}
 	}
@@ -375,11 +375,11 @@ namespace urchin
 	{
 		handleDisable();
 
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible())
+			if(child->isVisible())
 			{
-				children[i]->onDisable();
+				child->onDisable();
 			}
 		}
 	}
@@ -407,14 +407,14 @@ namespace urchin
 
 	void Widget::display(int translateDistanceLoc, float invFrameRate)
 	{
-		for(unsigned int i=0;i<children.size();++i)
+		for (auto &child : children)
 		{
-			if(children[i]->isVisible())
+			if(child->isVisible())
 			{
-				Vector2<int> translateVector(children[i]->getGlobalPositionX(), children[i]->getGlobalPositionY());
+				Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
 				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 
-				children[i]->display(translateDistanceLoc, invFrameRate);
+				child->display(translateDistanceLoc, invFrameRate);
 			}
 		}
 	}

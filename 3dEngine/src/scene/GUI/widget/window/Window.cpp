@@ -41,7 +41,7 @@ namespace urchin
 			Widget::removeChild(title);
 			title = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
 			title->setText(stringTitle);
-			title->setPosition(Position(widgetOutline->leftWidth + 1, (int)(widgetOutline->topWidth - title->getHeight()/2), Position::PIXEL));
+			title->setPosition(Position(widgetOutline->leftWidth + 1, (widgetOutline->topWidth - title->getHeight())/2.0f, Position::PIXEL));
 			Widget::addChild(title);
 		}
 
