@@ -22,6 +22,8 @@ namespace urchin
     {
         std::vector<CSGPolygon<float>> obstaclePolygons;
 
+        float maxSlopeDotProduct = std::cos(maxSlopeInRadian);
+
         unsigned int obstacleIndex = 0;
         unsigned int maxSquareIndex = (xLength * (zLength - 1));
         std::vector<bool> squaresProcessed(maxSquareIndex, false);
@@ -36,9 +38,9 @@ namespace urchin
                 continue;
             }
 
-            if(!isWalkableSquare(squareIndex, maxSlopeInRadian))
+            if(!isWalkableSquare(squareIndex, maxSlopeDotProduct))
             {
-                std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, maxSlopeInRadian);
+                std::vector<unsigned int> inaccessibleSquares = findAllInaccessibleNeighbors(squareIndex, maxSlopeDotProduct);
                 obstaclePolygons.emplace_back(squaresToPolygon(inaccessibleSquares, obstacleIndex++));
 
                 for(unsigned int inaccessibleSquare : inaccessibleSquares)
@@ -51,7 +53,7 @@ namespace urchin
         return obstaclePolygons;
     }
 
-    bool TerrainObstacleService::isWalkableSquare(unsigned int squareIndex, float maxSlopeInRadian) const
+    bool TerrainObstacleService::isWalkableSquare(unsigned int squareIndex, float maxSlopeDotProduct) const
     {
         #ifdef _DEBUG
             assert((squareIndex + 1) % xLength != 0); //not an extreme right point
@@ -63,23 +65,23 @@ namespace urchin
         Point3<float> nearLeftPoint = localVertices[squareIndex + xLength];
         Point3<float> nearRightPoint = localVertices[squareIndex + xLength + 1];
 
-        float triangle1Slope = computeTriangleSlope({farLeftPoint, nearLeftPoint, nearRightPoint});
-        float triangle2Slope = computeTriangleSlope({farLeftPoint, nearRightPoint, farRightPoint});
+        float triangle1Slope = computeTriangleSlope(farLeftPoint, nearLeftPoint, nearRightPoint);
+        float triangle2Slope = computeTriangleSlope(farLeftPoint, nearRightPoint, farRightPoint);
 
-        return std::max(triangle1Slope, triangle2Slope) <= maxSlopeInRadian;
+        return std::max(triangle1Slope, triangle2Slope) >= maxSlopeDotProduct;
     }
 
-    float TerrainObstacleService::computeTriangleSlope(const std::vector<Point3<float>> &ccwPoints) const
+    float TerrainObstacleService::computeTriangleSlope(const Point3<float> &p0, const Point3<float> &p1, const Point3<float> &p2) const
     {
-        Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[2]);
-        Vector3<float> v2 = ccwPoints[1].vector(ccwPoints[0]);
+        Vector3<float> v1 = p0.vector(p2);
+        Vector3<float> v2 = p1.vector(p0);
         Vector3<float> normal = v1.crossProduct(v2).normalize();
 
         Vector3<float> upVector(0.0, 1.0, 0.0);
-        return std::acos(normal.dotProduct(upVector));
+        return normal.dotProduct(upVector);
     }
 
-    std::vector<unsigned int> TerrainObstacleService::findAllInaccessibleNeighbors(unsigned int squareIndex, float maxSlopeInRadian) const
+    std::vector<unsigned int> TerrainObstacleService::findAllInaccessibleNeighbors(unsigned int squareIndex, float maxSlopeDotProduct) const
     {
         std::vector<unsigned int> inaccessibleNeighbors;
         std::stack<unsigned int> squaresToProcess;
@@ -96,7 +98,7 @@ namespace urchin
             for(unsigned int neighborSquare : neighborSquares)
             {
                 bool notProcessed = std::find(inaccessibleNeighbors.begin(), inaccessibleNeighbors.end(), neighborSquare) == inaccessibleNeighbors.end();
-                if(notProcessed && !isWalkableSquare(neighborSquare, maxSlopeInRadian))
+                if(notProcessed && !isWalkableSquare(neighborSquare, maxSlopeDotProduct))
                 { //inaccessible square
                     squaresToProcess.push(neighborSquare);
                 }
