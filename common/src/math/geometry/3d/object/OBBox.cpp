@@ -312,16 +312,11 @@ namespace urchin
 		}
 
 		//case 15 (projectionAxis = axis[2].crossProduct(bbox.getAxis(2)))
-		if(std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(2)))) - epsilon
-			> std::abs(this->getHalfSize(0) * AdotB[1][2])
-			+ std::abs(this->getHalfSize(1) * AdotB[0][2])
-			+ std::abs(bbox.getHalfSize(0) * AdotB[2][1])
-			+ std::abs(bbox.getHalfSize(1) * AdotB[2][0]))
-		{
-			return false;
-		}
-
-		return true;
+		return !(std::abs(distCenterPoint.dotProduct(axis[2].crossProduct(bbox.getAxis(2)))) - epsilon
+				 > std::abs(this->getHalfSize(0) * AdotB[1][2])
+				 + std::abs(this->getHalfSize(1) * AdotB[0][2])
+				 + std::abs(bbox.getHalfSize(0) * AdotB[2][1])
+				 + std::abs(bbox.getHalfSize(1) * AdotB[2][0]));
 	}
 
 	/**

@@ -17,7 +17,7 @@ namespace urchin
 			~Meshes();
 		
 			unsigned int getNumberMeshes() const;
-			Mesh *getMesh(unsigned int);
+			Mesh *getMesh(unsigned int) const;
 			const AABBox<float> &getGlobalAABBox() const;
 			const std::vector<AABBox<float>> &getGlobalSplittedAABBox() const;
 			const AABBox<float> &getGlobalLocalAABBox() const;

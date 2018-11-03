@@ -71,7 +71,7 @@ namespace urchin
 		animationInformation.lastTime += invFrameRate;
 		if(animationInformation.lastTime >= animationInformation.maxTime) //move to next frame
 		{
-			animationInformation.lastTime = 0.0;
+			animationInformation.lastTime = 0.0f;
 			animationInformation.currFrame = animationInformation.nextFrame;
 			animationInformation.nextFrame++;
 
@@ -85,16 +85,20 @@ namespace urchin
 		float interp = animationInformation.lastTime * constAnimation->getFrameRate();
 		for(unsigned int i = 0; i < constAnimation->getNumberBones(); ++i)
 		{
+			//shortcut
+			const Bone &currentFrameBone = constAnimation->getBone(animationInformation.currFrame, i);
+			const Bone &nextFrameBone = constAnimation->getBone(animationInformation.nextFrame, i);
+
 			//copy parent index
-			skeleton[i].parent = constAnimation->getBone(animationInformation.currFrame, i).parent;
+			skeleton[i].parent = currentFrameBone.parent;
 
 			//linear interpolation for position
-			skeleton[i].pos.X = constAnimation->getBone(animationInformation.currFrame, i).pos.X + interp * (constAnimation->getBone(animationInformation.nextFrame, i).pos.X - constAnimation->getBone(animationInformation.currFrame, i).pos.X);
-			skeleton[i].pos.Y = constAnimation->getBone(animationInformation.currFrame, i).pos.Y + interp * (constAnimation->getBone(animationInformation.nextFrame, i).pos.Y - constAnimation->getBone(animationInformation.currFrame, i).pos.Y);
-			skeleton[i].pos.Z = constAnimation->getBone(animationInformation.currFrame, i).pos.Z + interp * (constAnimation->getBone(animationInformation.nextFrame, i).pos.Z - constAnimation->getBone(animationInformation.currFrame, i).pos.Z);
+			skeleton[i].pos.X = currentFrameBone.pos.X + interp * (nextFrameBone.pos.X - currentFrameBone.pos.X);
+			skeleton[i].pos.Y = currentFrameBone.pos.Y + interp * (nextFrameBone.pos.Y - currentFrameBone.pos.Y);
+			skeleton[i].pos.Z = currentFrameBone.pos.Z + interp * (nextFrameBone.pos.Z - currentFrameBone.pos.Z);
 
 			//spherical linear interpolation for orientation
-			skeleton[i].orient = constAnimation->getBone(animationInformation.currFrame, i).orient.slerp(constAnimation->getBone(animationInformation.nextFrame, i).orient, interp);
+			skeleton[i].orient = currentFrameBone.orient.slerp(nextFrameBone.orient, interp);
 		}
 
 		//update the vertex and normals

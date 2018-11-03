@@ -199,7 +199,7 @@ namespace urchin
 			customUniform->loadCustomUniforms();
 		}
 
-		for (auto model : models)
+		for (const auto &model : models)
 		{
 			glUniformMatrix4fv(mModelLoc, 1, GL_FALSE, (const float*) model->getTransform().getTransformMatrix());
 			if(displayMode==DEFAULT_MODE)

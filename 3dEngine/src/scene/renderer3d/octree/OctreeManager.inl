@@ -225,7 +225,7 @@ template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::
 template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject, 
 		const OctreeableFilter<TOctreeable> &filter) const
 {
-	ScopeProfiler profiler("3d", "getOctreeablesIn");
+    ScopeProfiler profiler("3d", "getOctreeablesIn");
 
 	std::set<TOctreeable *> visibleOctreeables;
 	mainOctree->getOctreeablesIn(visibleOctreeables, convexObject, filter);

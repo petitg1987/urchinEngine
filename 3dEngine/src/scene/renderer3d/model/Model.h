@@ -44,7 +44,7 @@ namespace urchin
 			bool isProduceShadow() const;
 
 			void updateAnimation(float);
-			void display(const MeshParameter &);
+			void display(const MeshParameter &) const;
 
 			#ifdef _DEBUG
 				void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
@@ -62,7 +62,7 @@ namespace urchin
 			//animations
 			std::map<std::string, Animation *> animations;
 			Animation *currAnimation;
-			bool stopAnimationAtEnd;
+			bool stopAnimationAtLastFrame;
 		
 			//transform
 			Transform<float> transform;

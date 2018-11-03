@@ -13,7 +13,7 @@ namespace urchin
 	Model::Model(const std::string &meshFilename) :
 			meshes(nullptr),
 			currAnimation(nullptr),
-			stopAnimationAtEnd(false),
+			stopAnimationAtLastFrame(false),
 			bIsProduceShadow(true)
 	{
         initialize(meshFilename);
@@ -22,7 +22,7 @@ namespace urchin
     Model::Model(const Model &model) : Octreeable(model),
             meshes(nullptr),
 			currAnimation(nullptr),
-			stopAnimationAtEnd(false)
+			stopAnimationAtLastFrame(false)
     {
         std::string meshFilename = model.getMeshes()!=nullptr ? model.getMeshes()->getName() : "";
         initialize(meshFilename);
@@ -101,7 +101,7 @@ namespace urchin
 			currAnimation = nullptr;
 		}else if(isAnimate())
 		{
-			stopAnimationAtEnd = true;
+			stopAnimationAtLastFrame = true;
 		}
 
 		onMoving(transform);
@@ -246,10 +246,10 @@ namespace urchin
 		//animate model
 		if(isAnimate())
 		{
-			if(stopAnimationAtEnd && currAnimation->getCurrFrame() == 0)
+			if(stopAnimationAtLastFrame && currAnimation->getCurrFrame() == 0)
 			{
 				stopAnimation(true);
-				stopAnimationAtEnd = false;
+				stopAnimationAtLastFrame = false;
 			}else
             {
                 currAnimation->animate(invFrameRate);
@@ -257,7 +257,7 @@ namespace urchin
 		}
 	}
 
-	void Model::display(const MeshParameter &meshParameter)
+	void Model::display(const MeshParameter &meshParameter) const
 	{
         if(meshes)
         {

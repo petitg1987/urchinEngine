@@ -23,14 +23,15 @@ namespace urchin
 			for(int j=0;j<constMesh->getStructVertex(i).weightCount;++j)
 			{
 				const Weight *weight = &constMesh->getWeight(static_cast<unsigned int>(constMesh->getStructVertex(i).weightStart + j));
+				const Bone &bone = skeleton[weight->bone];
 
 				//calculate transformed vertex for this weight
-				Point3<float> wv = skeleton[weight->bone].orient.rotatePoint(weight->pos);
+				Point3<float> wv = bone.orient.rotatePoint(weight->pos);
 
 				//the sum of all weight->bias should be 1.0
-				vertices[i].X += (skeleton[weight->bone].pos.X + wv.X) * weight->bias;
-				vertices[i].Y += (skeleton[weight->bone].pos.Y + wv.Y) * weight->bias;
-				vertices[i].Z += (skeleton[weight->bone].pos.Z + wv.Z) * weight->bias;
+				vertices[i].X += (bone.pos.X + wv.X) * weight->bias;
+				vertices[i].Y += (bone.pos.Y + wv.Y) * weight->bias;
+				vertices[i].Z += (bone.pos.Z + wv.Z) * weight->bias;
 			}
 		}
 	}
@@ -70,8 +71,8 @@ namespace urchin
             dataVertices[vertexIndex].normal = dataVertices[vertexIndex].normal.normalize();
 
             //computes tangent
-            const Vector3<float> &c1 = dataVertices[vertexIndex].normal.crossProduct(Vector3<float>(0.0, 0.0, 1.0));
-            const Vector3<float> &c2 = dataVertices[vertexIndex].normal.crossProduct(Vector3<float>(0.0, 1.0, 0.0));
+            const Vector3<float> &c1 = dataVertices[vertexIndex].normal.crossProduct(Vector3<float>(0.0f, 0.0f, 1.0f));
+            const Vector3<float> &c2 = dataVertices[vertexIndex].normal.crossProduct(Vector3<float>(0.0f, 1.0f, 0.0f));
             if(c1.squareLength() > c2.squareLength())
             {
                 dataVertices[vertexIndex].tangent = c1.normalize();

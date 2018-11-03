@@ -30,7 +30,7 @@ namespace urchin
 		return numMeshes;
 	}
 
-	Mesh *Meshes::getMesh(unsigned int index)
+	Mesh *Meshes::getMesh(unsigned int index) const
 	{
 		return meshes[index];
 	}
