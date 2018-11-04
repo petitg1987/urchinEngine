@@ -121,6 +121,9 @@ namespace urchin
         terrainGrass->setGrassLength(grassLength);
         terrainGrass->setWindDirection(windDirection);
         terrainGrass->setWindStrength(windStrength);
+
+        markModified();
+        return sceneTerrain;
     }
 
     SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain *constSceneTerrain)
