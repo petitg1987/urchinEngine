@@ -14,7 +14,7 @@ namespace urchin
         glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
-        terrainShader = ShaderManager::instance()->createProgram("terrain.vert", "terrain.frag");
+        terrainShader = ShaderManager::instance()->createProgram("terrain.vert", "", "terrain.frag");
         ShaderManager::instance()->bind(terrainShader);
 
         vPositionLoc = glGetUniformLocation(terrainShader, "vPosition");

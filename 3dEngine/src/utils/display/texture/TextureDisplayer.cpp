@@ -188,7 +188,7 @@ namespace urchin
 		textureDisplayTokens["IS_INVERSE_GRAYSCALE_VALUE"] = colorType==ColorType::INVERSE_GRAYSCALE_VALUE ? "true" : "false";
 
 		const std::string &fragShaderName = (layer==-1) ? "displayTexture.frag" : "displayTextureArray.frag";
-		displayTextureShader = ShaderManager::instance()->createProgram("displayTexture.vert", fragShaderName, textureDisplayTokens);
+		displayTextureShader = ShaderManager::instance()->createProgram("displayTexture.vert", "", fragShaderName, textureDisplayTokens);
 
 		ShaderManager::instance()->bind(displayTextureShader);
 		auto colorIntensityLoc = glGetUniformLocation(displayTextureShader, "colorIntensity");

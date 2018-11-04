@@ -99,7 +99,7 @@ namespace urchin
 		ambientOcclusionTokens["NOISE_TEXTURE_SIZE"] = std::to_string(noiseTextureSize);
 		ambientOcclusionTokens["BIAS"] = std::to_string(bias);
 		ShaderManager::instance()->removeProgram(ambientOcclusionShader);
-		ambientOcclusionShader = ShaderManager::instance()->createProgram("ambientOcclusion.vert", "ambientOcclusion.frag", ambientOcclusionTokens);
+		ambientOcclusionShader = ShaderManager::instance()->createProgram("ambientOcclusion.vert", "", "ambientOcclusion.frag", ambientOcclusionTokens);
 		ShaderManager::instance()->bind(ambientOcclusionShader);
 
 		mInverseViewProjectionLoc = glGetUniformLocation(ambientOcclusionShader, "mInverseViewProjection");

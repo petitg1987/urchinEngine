@@ -1,4 +1,4 @@
-#version 330
+#version 440
 
 smooth in vec2 vertexTextCoordinates;
 in vec3 grassNormal;

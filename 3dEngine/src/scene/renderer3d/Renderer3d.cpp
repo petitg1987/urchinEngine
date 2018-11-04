@@ -116,7 +116,7 @@ namespace urchin
 		tokens["SHADOW_MAP_BIAS"] = std::to_string(shadowManager->getShadowMapBias());
 		tokens["OUTPUT_LOCATION"] = "0"; // isAntiAliasingActivated ? "0" /*TEX_LIGHTING_PASS*/ : "0" /*Screen*/;
 		ShaderManager::instance()->removeProgram(deferredShadingShader);
-		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "deferredShading.frag", tokens);
+		deferredShadingShader = ShaderManager::instance()->createProgram("deferredShading.vert", "", "deferredShading.frag", tokens);
 		ShaderManager::instance()->bind(deferredShadingShader);
 
 		int depthTexLoc = glGetUniformLocation(deferredShadingShader, "depthTex");

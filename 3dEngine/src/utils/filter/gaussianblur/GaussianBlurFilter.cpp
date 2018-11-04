@@ -55,7 +55,7 @@ namespace urchin
 		std::vector<unsigned int> gaussianFactors(blurSize);
 		std::copy_n(pascalTriangleLineValues.begin()+2, blurSize, gaussianFactors.begin());
 
-		float factorsSum = std::accumulate(gaussianFactors.begin(), gaussianFactors.end(), 0);
+		float factorsSum = std::accumulate(gaussianFactors.begin(), gaussianFactors.end(), 0.0);
 		std::vector<float> weights(blurSize);
 		for(unsigned int i=0; i<blurSize; ++i)
 		{
@@ -88,7 +88,7 @@ namespace urchin
 	{
 		std::vector<float> offsetsLinearSampling(nbTextureFetch);
 
-		int firstOffset = -std::floor(blurSize / 2);
+		int firstOffset = -static_cast<int>(std::floor(blurSize / 2.0f));
 		for(unsigned int i=0; i<nbTextureFetch; ++i)
 		{
 			if(i*2+1>=blurSize)

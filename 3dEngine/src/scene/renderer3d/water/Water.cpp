@@ -30,7 +30,7 @@ namespace urchin
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
 
-        waterShader = ShaderManager::instance()->createProgram("water.vert", "water.frag");
+        waterShader = ShaderManager::instance()->createProgram("water.vert", "", "water.frag");
         ShaderManager::instance()->bind(waterShader);
 
         mProjectionLoc = glGetUniformLocation(waterShader, "mProjection");

@@ -18,7 +18,7 @@ namespace urchin
 		translateDistanceLoc(0),
 		diffuseTexSamplerLoc(0)
 	{
-		GUIShader = ShaderManager::instance()->createProgram("gui.vert", "gui.frag");
+		GUIShader = ShaderManager::instance()->createProgram("gui.vert", "", "gui.frag");
 
 		ShaderManager::instance()->bind(GUIShader);
 		mProjectionLoc  = glGetUniformLocation(GUIShader, "mProjection");

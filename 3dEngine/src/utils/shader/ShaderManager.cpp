@@ -27,14 +27,15 @@ namespace urchin
 		this->shadersParentDirectory = shadersParentDirectory;
 	}
 
-	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &fragmentShaderFilename)
+	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &geometryShaderFilename,
+			const std::string &fragmentShaderFilename)
 	{
 		std::map<std::string, std::string> emptyTokens;
-		return createProgram(vertexShaderFilename, fragmentShaderFilename, emptyTokens);
+		return createProgram(vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename, emptyTokens);
 	}
 
-	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &fragmentShaderFilename,
-			const std::map<std::string, std::string> &tokens)
+	unsigned int ShaderManager::createProgram(const std::string &vertexShaderFilename, const std::string &geometryShaderFilename,
+			const std::string &fragmentShaderFilename, const std::map<std::string, std::string> &tokens)
 	{
 		unsigned int programID = glCreateProgram();
 		programs.push_back(programID);
@@ -45,11 +46,25 @@ namespace urchin
 		const std::string &vertexShaderSource = loopUnrollerShader.unrollLoops(vertexShaderSourceStep1);
 		const char *vertexShaderSourceChar = vertexShaderSource.c_str();
 		unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
 		glShaderSource(vertexShader, 1, &vertexShaderSourceChar, nullptr);
 		glCompileShader(vertexShader);
 		checkShader(vertexShader, vertexShaderFilename);
 		glAttachShader(programID, vertexShader);
+
+		//geometry shader
+		if(!geometryShaderFilename.empty())
+		{
+			const std::string &geometryShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + geometryShaderFilename);
+			const std::string &geometryShaderSourceStep1 = tokenReplacerShader.replaceTokens(geometryShaderFileSource, tokens);
+			const std::string &geometryShaderSource = loopUnrollerShader.unrollLoops(geometryShaderSourceStep1);
+			const char *geometryShaderSourceChar = geometryShaderSource.c_str();
+			unsigned int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+
+			glShaderSource(geometryShader, 1, &geometryShaderSourceChar, nullptr);
+			glCompileShader(geometryShader);
+			checkShader(geometryShader, geometryShaderFilename);
+			glAttachShader(programID, geometryShader);
+		}
 
 		//fragment shader
 		const std::string &fragmentShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + fragmentShaderFilename);
@@ -57,7 +72,6 @@ namespace urchin
 		const std::string &fragmentShaderSource = loopUnrollerShader.unrollLoops(fragmentShaderSourceStep1);
 		const char *fragmentShaderSourceChar = fragmentShaderSource.c_str();
 		unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
 		glShaderSource(fragmentShader, 1, &fragmentShaderSourceChar, nullptr);
 		glCompileShader(fragmentShader);
 		checkShader(fragmentShader, fragmentShaderFilename);
@@ -65,35 +79,9 @@ namespace urchin
 
 		//link
 		glLinkProgram(programID);
-		checkProgram(programID, vertexShaderFilename + ", " + fragmentShaderFilename);
+		checkProgram(programID, vertexShaderFilename + ", " + geometryShaderFilename + ", " + fragmentShaderFilename);
 
 		return programID;
-	}
-
-	void ShaderManager::setGeometryShader(unsigned int programID, const std::string &geometryShaderFilename)
-	{
-		std::map<std::string, std::string> emptyTokens;
-		setGeometryShader(programID, geometryShaderFilename, emptyTokens);
-	}
-
-	void ShaderManager::setGeometryShader(unsigned int programID, const std::string &geometryShaderFilename,
-			const std::map<std::string, std::string> &tokens)
-	{
-		//geometry shader
-		const std::string &geometryShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + geometryShaderFilename);
-		const std::string &geometryShaderSourceStep1 = tokenReplacerShader.replaceTokens(geometryShaderFileSource, tokens);
-		const std::string &geometryShaderSource = loopUnrollerShader.unrollLoops(geometryShaderSourceStep1);
-		const char *geometryShaderSourceChar = geometryShaderSource.c_str();
-		unsigned int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
-
-		glShaderSource(geometryShader, 1, &geometryShaderSourceChar, nullptr);
-		glCompileShader(geometryShader);
-		checkShader(geometryShader, geometryShaderFilename);
-		glAttachShader(programID, geometryShader);
-
-		//link
-		glLinkProgram(programID);
-		checkProgram(programID, geometryShaderFilename);
 	}
 
 	void ShaderManager::removeProgram(unsigned int programID)
@@ -169,7 +157,7 @@ namespace urchin
 		}
 	}
 
-	void ShaderManager::checkProgram(unsigned int programID, const std::string &shaderFilename)
+	void ShaderManager::checkProgram(unsigned int programID, const std::string &shaderFilenames)
 	{
 		int infoLogLength = 0;
 		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
@@ -180,7 +168,7 @@ namespace urchin
 			glGetProgramInfoLog(programID, infoLogLength, nullptr, infoLog);
 
 			std::ostringstream buffer;
-			buffer<<"Error in shader file(s): "<<shaderFilename<<"."<<std::endl<<infoLog;
+			buffer<<"Error in shader file(s): "<<shaderFilenames<<"."<<std::endl<<infoLog;
 
 			delete [] infoLog;
 			throw std::runtime_error(buffer.str());

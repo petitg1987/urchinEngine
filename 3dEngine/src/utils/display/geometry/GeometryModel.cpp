@@ -13,7 +13,7 @@ namespace urchin
 			blendMode(NONE),
             alwaysVisible(false)
 	{
-		shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "displayGeometry.frag");
+		shader = ShaderManager::instance()->createProgram("displayGeometry.vert", "", "displayGeometry.frag");
 
 		mProjectionLoc = glGetUniformLocation(shader, "mProjection");
 		mViewLoc = glGetUniformLocation(shader, "mView");

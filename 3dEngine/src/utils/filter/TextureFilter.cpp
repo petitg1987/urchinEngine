@@ -60,15 +60,13 @@ namespace urchin
 
 		if(textureType==GL_TEXTURE_2D_ARRAY)
 		{
-			std::map<std::string, std::string> geometryTokens;
-			geometryTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
-			geometryTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
+            shaderTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
+            shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+"Array.frag", shaderTokens);
-			ShaderManager::instance()->setGeometryShader(textureFilterShader, "textureFilter.geo", geometryTokens);
+			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "textureFilter.geo", getShaderName()+"Array.frag", shaderTokens);
 		}else if(textureType==GL_TEXTURE_2D)
 		{
-			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", getShaderName()+".frag", shaderTokens);
+			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "", getShaderName()+".frag", shaderTokens);
 		}else
 		{
 			throw std::invalid_argument("Unsupported texture type for filter: " + std::to_string(textureType));

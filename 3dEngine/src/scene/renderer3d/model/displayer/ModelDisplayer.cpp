@@ -54,10 +54,6 @@ namespace urchin
 			{ //use default fragment shader
 				fragmentShaderName = "model.frag";
 			}
-			if(geometryShaderName.empty())
-			{ //use default geometry shader
-				geometryShaderName = "";
-			}
 			createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
 			mNormalLoc = glGetUniformLocation(modelShader, "mNormal");
@@ -83,10 +79,6 @@ namespace urchin
 			{ //use default fragment shader
 				fragmentShaderName = "modelDepthOnly.frag";
 			}
-			if(geometryShaderName.empty())
-			{ //use default geometry shader
-				geometryShaderName = "";
-			}
 			createShader(vertexShaderName, geometryShaderName, fragmentShaderName);
 
 			mNormalLoc = 0;
@@ -111,11 +103,11 @@ namespace urchin
 
 	void ModelDisplayer::createShader(const std::string &vertexShaderName, const std::string &geometryShaderName, const std::string &fragmentShaderName)
 	{
-		modelShader = ShaderManager::instance()->createProgram(vertexShaderName, fragmentShaderName, fragmentTokens);
-		if(!geometryShaderName.empty())
-		{
-			ShaderManager::instance()->setGeometryShader(modelShader, geometryShaderName, geometryTokens);
-		}
+		std::map<std::string, std::string> shaderTokens;
+		shaderTokens.insert(fragmentTokens.begin(), fragmentTokens.end());
+		shaderTokens.insert(geometryTokens.begin(), geometryTokens.end());
+
+		modelShader = ShaderManager::instance()->createProgram(vertexShaderName, geometryShaderName, fragmentShaderName, shaderTokens);
 		ShaderManager::instance()->bind(modelShader);
 
 		mProjectionLoc = glGetUniformLocation(modelShader, "mProjection");

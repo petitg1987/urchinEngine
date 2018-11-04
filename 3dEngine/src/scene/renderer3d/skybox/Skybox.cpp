@@ -83,7 +83,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		//visual
-		skyboxShader = ShaderManager::instance()->createProgram("skybox.vert", "skybox.frag");
+		skyboxShader = ShaderManager::instance()->createProgram("skybox.vert", "", "skybox.frag");
 
 		ShaderManager::instance()->bind(skyboxShader);
 		mProjectionLoc = glGetUniformLocation(skyboxShader, "mProjection");

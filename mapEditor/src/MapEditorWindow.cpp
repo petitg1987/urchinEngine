@@ -428,7 +428,7 @@ namespace urchin
 			return SceneControllerWidget::AI;
 		}
 
-		throw std::runtime_error("Impossible to find concerned tab for properties: " + viewProperties);
+		throw std::runtime_error("Impossible to find concerned tab for properties: " + std::to_string(viewProperties));
 	}
 
 }
