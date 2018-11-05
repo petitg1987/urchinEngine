@@ -41,7 +41,7 @@ namespace urchin
 
     const std::unique_ptr<AABBox<float>> &TerrainGrassQuadtree::getBox() const
     {
-        if(bbox==nullptr)
+        if(!bbox)
         {
             if(isLeaf())
             {

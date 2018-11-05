@@ -166,7 +166,7 @@ namespace urchin
 
 	void SceneDisplayer::refreshRigidBodyShapeModel()
 	{
-		if(viewProperties[MODEL_PHYSICS] && highlightSceneObject!=nullptr && highlightSceneObject->getRigidBody()!=nullptr)
+		if(viewProperties[MODEL_PHYSICS] && highlightSceneObject && highlightSceneObject->getRigidBody())
 		{
 			bodyShapeDisplayer->displayBodyShapeFor(highlightSceneObject);
 		}else
@@ -177,7 +177,7 @@ namespace urchin
 
 	void SceneDisplayer::refreshLightScopeModel()
 	{
-		if(viewProperties[LIGHT_SCOPE] && highlightSceneLight!=nullptr && highlightSceneLight->getLight()!=nullptr)
+		if(viewProperties[LIGHT_SCOPE] && highlightSceneLight && highlightSceneLight->getLight())
 		{
 			lightScopeDisplayer->displayLightScopeFor(highlightSceneLight);
 		}else
@@ -188,7 +188,7 @@ namespace urchin
 
 	void SceneDisplayer::refreshSoundTriggerModel()
 	{
-		if(viewProperties[SOUND_TRIGGER] && highlightSceneSound!=nullptr && highlightSceneSound->getSoundTrigger()!=nullptr)
+		if(viewProperties[SOUND_TRIGGER] && highlightSceneSound && highlightSceneSound->getSoundTrigger())
 		{
 			soundTriggerDisplayer->displaySoundTriggerFor(highlightSceneSound);
 		}else

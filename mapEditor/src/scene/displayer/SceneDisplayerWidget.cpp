@@ -16,16 +16,20 @@ namespace urchin
             mouseY(0)
 	{
 		QGLFormat glFormat;
-		glFormat.setVersion(4,4);
+		glFormat.setVersion(4, 4);
 		glFormat.setProfile(QGLFormat::CompatibilityProfile);
 		glFormat.setSampleBuffers(true);
 		glFormat.setDoubleBuffer(true);
 		glFormat.setSwapInterval(1); //vertical sync
 		setFormat(glFormat);
+
+		context()->makeCurrent();
 	}
 
 	SceneDisplayerWidget::~SceneDisplayerWidget()
 	{
+	    context()->doneCurrent();
+
 		delete sceneDisplayer;
 	}
 
@@ -72,7 +76,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::setHighlightSceneObject(const SceneObject *highlightSceneObject)
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->setHighlightSceneObject(highlightSceneObject);
 		}
@@ -80,7 +84,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->setHighlightCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
 		}
@@ -88,7 +92,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::setHighlightSceneLight(const SceneLight *highlightSceneLight)
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->setHighlightSceneLight(highlightSceneLight);
 		}
@@ -96,7 +100,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::setHighlightSceneSound(const SceneSound *highlightSceneSound)
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->setHighlightSceneSound(highlightSceneSound);
 		}
@@ -104,7 +108,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::updateSceneDisplayerViewProperties()
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			for(unsigned int i=0; i<SceneDisplayer::LAST_VIEW_PROPERTIES; ++i)
 			{
@@ -120,7 +124,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::paintGL()
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->paint();
 		}else
@@ -135,7 +139,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::resizeGL(int widget, int height)
 	{
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->resize(static_cast<unsigned int>(widget), static_cast<unsigned int>(height));
 		}
@@ -143,7 +147,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::keyPressEvent(QKeyEvent *event)
 	{
-		if(sceneDisplayer==nullptr)
+		if(!sceneDisplayer)
 		{
 			return;
 		}
@@ -170,7 +174,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::keyReleaseEvent(QKeyEvent *event)
 	{
-		if(sceneDisplayer==nullptr)
+		if(!sceneDisplayer)
 		{
 			return;
 		}
@@ -189,7 +193,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::mousePressEvent(QMouseEvent *event)
 	{
-		if(sceneDisplayer==nullptr)
+		if(!sceneDisplayer)
 		{
 			return;
 		}
@@ -229,7 +233,7 @@ namespace urchin
 
 	void SceneDisplayerWidget::mouseReleaseEvent(QMouseEvent *event)
 	{
-		if(sceneDisplayer==nullptr)
+		if(!sceneDisplayer)
 		{
 			return;
 		}
@@ -248,7 +252,7 @@ namespace urchin
         this->mouseX = event->x();
         this->mouseY = event->y();
 
-		if(sceneDisplayer!=nullptr)
+		if(sceneDisplayer)
 		{
 			sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
 		}

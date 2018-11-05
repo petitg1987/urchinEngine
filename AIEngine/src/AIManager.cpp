@@ -22,7 +22,7 @@ namespace urchin
 
     AIManager::~AIManager()
     {
-        if(aiSimulationThread!=nullptr)
+        if(aiSimulationThread)
         {
             interrupt();
             aiSimulationThread->join();
@@ -63,7 +63,7 @@ namespace urchin
      */
     void AIManager::start(float timeStep, bool startPaused)
     {
-        if(aiSimulationThread!=nullptr)
+        if(aiSimulationThread)
         {
             throw std::runtime_error("AI thread is already started");
         }

@@ -1,4 +1,4 @@
-#version 330
+#version 440
 
 layout(points) in;
 layout(triangle_strip) out;

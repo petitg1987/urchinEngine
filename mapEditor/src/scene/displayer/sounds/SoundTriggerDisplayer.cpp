@@ -22,7 +22,7 @@ namespace urchin
 	{
 		cleanCurrentDisplay();
 
-		if(sceneSound!=nullptr)
+		if(sceneSound)
 		{
 			const SoundTrigger *soundTrigger = sceneSound->getSoundTrigger();
 

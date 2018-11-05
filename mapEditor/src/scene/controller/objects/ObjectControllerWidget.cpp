@@ -412,7 +412,7 @@ namespace urchin
                 {
                     const std::string &bodyId = sceneDisplayerWidget->getLastPickedBodyId();
                     const SceneObject *sceneObject = objectController->findSceneObjectByBodyId(bodyId);
-                    if(sceneObject!=nullptr)
+                    if(sceneObject)
                     {
                         int row = this->objectTableView->getSceneObjectRow(sceneObject);
 						if(row >=0)
@@ -456,7 +456,7 @@ namespace urchin
 		disableObjectEvent = true;
 		const RigidBody *rigidBody = sceneObject->getRigidBody();
 		std::shared_ptr<const CollisionShape3D> bodyScaledShape(nullptr);
-		if(rigidBody!=nullptr)
+		if(rigidBody)
 		{
 			hasRigidBody->setChecked(true);
 			tabPhysicsRigidBody->show();
@@ -599,7 +599,7 @@ namespace urchin
 			updateObjectTransform();
 
 			const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
-			if(sceneObject->getRigidBody()!=nullptr)
+			if(sceneObject->getRigidBody())
 			{
 				std::shared_ptr<const CollisionShape3D> originalCollisionShape = sceneObject->getRigidBody()->getOriginalShape();
 				const SceneObject *updatedSceneObject = objectController->updateSceneObjectPhysicsShape(sceneObject, originalCollisionShape);

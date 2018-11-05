@@ -1,4 +1,4 @@
-#version 330
+#version 440
 #extension GL_EXT_gpu_shader4 : enable
 
 //deferred textures:

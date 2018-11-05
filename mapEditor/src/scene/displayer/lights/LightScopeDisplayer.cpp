@@ -21,7 +21,7 @@ namespace urchin
 	{
 		cleanCurrentDisplay();
 
-		if(sceneLight!=nullptr)
+		if(sceneLight)
 		{
 			const Light *light = sceneLight->getLight();
 

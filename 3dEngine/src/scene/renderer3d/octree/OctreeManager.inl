@@ -20,7 +20,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 
 template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
 {
-	if(mainOctree!=nullptr)
+	if(mainOctree)
 	{
 		std::set<TOctreeable *> allOctreeables;
 		mainOctree->getAllOctreeables(allOctreeables);
@@ -144,7 +144,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float
 
 	//gets all octreeables from the current octree
 	std::set<TOctreeable *> allOctreeables;
-	if(mainOctree!=nullptr)
+	if(mainOctree)
 	{
 		mainOctree->getAllOctreeables(allOctreeables);
 	}
@@ -157,7 +157,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 {
 	ScopeProfiler profiler("3d", "refreshOctreeables");
 
-	if(mainOctree!=nullptr)
+	if(mainOctree)
 	{
 		//1. remove octreeables which have been moved
         for(auto &movingOctreeable : movingOctreeables)
@@ -234,7 +234,7 @@ template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::
 
 template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable *newOctreeable)
 {
-	if(mainOctree!=nullptr)
+	if(mainOctree)
 	{
 		//need to resize ?
 		const Point3<float> &minOctree = mainOctree->getAABBox().getMin();
@@ -251,7 +251,7 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 
 	//gets all octreeables from the current octree
 	std::set<TOctreeable *> allOctreeables;
-	if(mainOctree!=nullptr)
+	if(mainOctree)
 	{
 		mainOctree->getAllOctreeables(allOctreeables);
 	}

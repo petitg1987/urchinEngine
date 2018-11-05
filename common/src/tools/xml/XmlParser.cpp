@@ -72,7 +72,7 @@ namespace urchin
 				if(!attribute.getAttributeName().empty())
 				{
 					const std::string *attributeValue = pChild->ToElement()->Attribute(attribute.getAttributeName());
-					if(attributeValue!=nullptr && (*attributeValue) == attribute.getAttributeValue())
+					if(attributeValue && (*attributeValue) == attribute.getAttributeValue())
 					{
 						chunks.push_back(std::make_shared<XmlChunk>(pChild->ToElement()));
 					}

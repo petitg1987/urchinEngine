@@ -136,7 +136,7 @@ namespace urchin
 
 	void ShadowManager::deleteLightsLocation()
 	{
-		if(lightsLocation!=nullptr)
+		if(lightsLocation)
 		{
 			for(unsigned int i=0;i<lightManager->getMaxLights();++i)
 			{
@@ -168,7 +168,7 @@ namespace urchin
 
 	void ShadowManager::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<LightManager *>(observable)!=nullptr)
+		if(dynamic_cast<LightManager *>(observable))
 		{
 			Light *light = lightManager->getLastUpdatedLight();
 			switch(notificationType)

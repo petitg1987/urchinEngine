@@ -14,7 +14,7 @@ namespace urchin
     {
         this->aiManager = aiManager;
 
-        if(aiManager!=nullptr)
+        if(aiManager)
         {
             aiManager->getNavMeshGenerator()->setNavMeshConfig(navMeshConfig);
         }
@@ -48,7 +48,7 @@ namespace urchin
     {
         this->navMeshConfig = navMeshConfig;
 
-        if(aiManager!=nullptr)
+        if(aiManager)
         {
             aiManager->getNavMeshGenerator()->setNavMeshConfig(navMeshConfig);
         }

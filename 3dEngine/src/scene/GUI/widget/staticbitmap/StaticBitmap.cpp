@@ -23,7 +23,7 @@ namespace urchin
 	void StaticBitmap::createOrUpdateWidget()
 	{
 		//loads the texture
-		if(tex!=nullptr)
+		if(tex)
 		{
 			tex->release();
 		}

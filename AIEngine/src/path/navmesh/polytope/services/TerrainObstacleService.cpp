@@ -68,7 +68,7 @@ namespace urchin
         float triangle1Slope = computeTriangleSlope(farLeftPoint, nearLeftPoint, nearRightPoint);
         float triangle2Slope = computeTriangleSlope(farLeftPoint, nearRightPoint, farRightPoint);
 
-        return std::max(triangle1Slope, triangle2Slope) >= maxSlopeDotProduct;
+        return std::min(triangle1Slope, triangle2Slope) >= maxSlopeDotProduct;
     }
 
     float TerrainObstacleService::computeTriangleSlope(const Point3<float> &p0, const Point3<float> &p1, const Point3<float> &p2) const

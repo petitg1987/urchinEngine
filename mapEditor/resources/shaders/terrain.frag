@@ -1,4 +1,4 @@
-#version 330
+#version 440
 
 in vec2 textCoordinates;
 in vec3 normal;

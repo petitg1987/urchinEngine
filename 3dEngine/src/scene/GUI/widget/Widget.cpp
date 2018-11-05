@@ -62,7 +62,7 @@ namespace urchin
 
 	void Widget::removeChild(Widget *child)
 	{
-		if(child!=nullptr)
+		if(child)
 		{
 			auto it = std::find(children.begin(), children.end(), child);
 			delete child;
@@ -138,7 +138,7 @@ namespace urchin
 
 	int Widget::getGlobalPositionX() const
 	{
-		if(parent==nullptr)
+		if(!parent)
 		{
 			return getPositionX();
 		}
@@ -148,7 +148,7 @@ namespace urchin
 
 	int Widget::getGlobalPositionY() const
 	{
-		if(parent==nullptr)
+		if(!parent)
 		{
 			return getPositionY();
 		}

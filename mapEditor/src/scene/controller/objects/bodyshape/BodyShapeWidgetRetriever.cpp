@@ -22,7 +22,7 @@ namespace urchin
 
 	BodyShapeWidget *BodyShapeWidgetRetriever::retrieveShapeWidget(std::shared_ptr<const CollisionShape3D> shape)
 	{
-		if(shape!=nullptr)
+		if(shape)
 		{
 			return retrieveShapeWidget(shape->getShapeType());
 		}

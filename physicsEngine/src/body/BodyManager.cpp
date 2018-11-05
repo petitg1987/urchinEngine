@@ -136,7 +136,7 @@ namespace urchin
 		for (auto &body : bodies)
 		{
 			AbstractWorkBody *workBody = body->getWorkBody();
-			if(workBody==nullptr)
+			if(!workBody)
 			{ //work body is not created yet
 				continue;
 			}

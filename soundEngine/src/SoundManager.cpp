@@ -35,7 +35,7 @@ namespace urchin
 
 	void SoundManager::addSound(Sound *sound, SoundTrigger *soundTrigger)
 	{
-		if(sound!=nullptr && soundTrigger!=nullptr)
+		if(sound && soundTrigger)
 		{
 			auto *audioController = new AudioController(sound, soundTrigger, streamUpdateWorker);
 			audioControllers.push_back(audioController);

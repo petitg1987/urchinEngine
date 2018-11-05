@@ -91,7 +91,7 @@ namespace urchin
 		}
 
 		std::shared_ptr<XmlChunk> volumeDecreasePercentageOnStopChunk = xmlParser.getUniqueChunk(false, VOLUME_DECREASE_PERCENTAGE_ON_STOP_TAG, XmlAttribute(), soundBehaviorChunk);
-		if(volumeDecreasePercentageOnStopChunk ==nullptr)
+		if(!volumeDecreasePercentageOnStopChunk)
 		{
 			return {playBehavior, stopBehavior};
 		}

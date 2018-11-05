@@ -43,7 +43,7 @@ namespace urchin
 	{
 		for(auto sceneObject : getSceneObjects())
 		{
-			if(sceneObject->getRigidBody()!=nullptr && sceneObject->getRigidBody()->getId()==bodyId)
+			if(sceneObject->getRigidBody() && sceneObject->getRigidBody()->getId()==bodyId)
 			{
 				return sceneObject;
 			}
@@ -76,7 +76,7 @@ namespace urchin
         newSceneObject->setModel(model);
 
         RigidBody *toCloneRigidBody = toCloneSceneObject->getRigidBody();
-        if(toCloneRigidBody!=nullptr)
+        if(toCloneRigidBody)
         {
             auto *rigidBody = new RigidBody(*toCloneRigidBody);
 			rigidBody->setId(newSceneObject->getName());
@@ -122,7 +122,7 @@ namespace urchin
 		Model *model = sceneObject->getModel();
 
 		model->setTransform(transform);
-		if(sceneObject->getRigidBody()!=nullptr)
+		if(sceneObject->getRigidBody())
 		{
 			sceneObject->getRigidBody()->setTransform(transform);
 		}

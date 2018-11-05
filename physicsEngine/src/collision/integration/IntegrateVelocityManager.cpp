@@ -25,7 +25,7 @@ namespace urchin
 		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
-			if(body!=nullptr && body->isActive())
+			if(body && body->isActive())
 			{
 				//integrate velocity
 				body->setLinearVelocity(body->getLinearVelocity() + (body->getTotalForce() * body->getInvMass()) * dt);
@@ -50,7 +50,7 @@ namespace urchin
 		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
-			if(body!=nullptr && body->isActive())
+			if(body && body->isActive())
 			{
 				body->applyCentralForce(gravity * body->getMass());
 			}
@@ -66,7 +66,7 @@ namespace urchin
 			for(unsigned int bodyIndex=0; bodyIndex<2; ++bodyIndex)
 			{
 				WorkRigidBody *body = WorkRigidBody::upCast(overlappingPair->getBody(bodyIndex));
-				if(body!=nullptr && body->isActive())
+				if(body && body->isActive())
 				{
 					Matrix3<float> inertia = body->getInvWorldInertia().inverse();
 					Vector3<float> currentTorqueForce = (body->getAngularVelocity() * inertia) / dt;

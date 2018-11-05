@@ -35,7 +35,7 @@ namespace urchin
         unscaledTransform.setScale(1.0); //scale not needed because shape is already scaled.
 
         std::shared_ptr<const CollisionHeightfieldShape> scaledHeightfieldShape = std::dynamic_pointer_cast<const CollisionHeightfieldShape>(scaledShape);
-        if(scaledHeightfieldShape!=nullptr)
+        if(scaledHeightfieldShape)
         {
             return buildAITerrain(std::move(name), scaledHeightfieldShape, unscaledTransform);
         }else

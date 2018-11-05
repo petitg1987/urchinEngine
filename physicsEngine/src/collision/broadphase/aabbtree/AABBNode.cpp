@@ -47,7 +47,7 @@ namespace urchin
 	void AABBNode::setLeftChild(AABBNode *leftChild)
 	{
 		this->children[0] = leftChild;
-		if(leftChild!=nullptr)
+		if(leftChild)
 		{
 			this->children[0]->setParent(this);
 		}
@@ -61,7 +61,7 @@ namespace urchin
 	void AABBNode::setRightChild(AABBNode *rightChild)
 	{
 		this->children[1] = rightChild;
-		if(rightChild!=nullptr)
+		if(rightChild)
 		{
 			this->children[1]->setParent(this);
 		}

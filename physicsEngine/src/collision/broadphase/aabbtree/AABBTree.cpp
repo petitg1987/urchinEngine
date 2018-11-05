@@ -27,7 +27,7 @@ namespace urchin
 		auto *nodeData = new BodyNodeData(body, alternativePairContainer);
 		auto *nodeToInsert = new AABBNode(nodeData);
 
-		if (rootNode!=nullptr)
+		if (rootNode)
 		{
 			nodeToInsert->updateAABBox(fatMargin);
 			insertNode(nodeToInsert, rootNode);
@@ -77,7 +77,7 @@ namespace urchin
 
 	void AABBTree::replaceNode(AABBNode *nodeToReplace, AABBNode *newNode)
 	{
-		if(nodeToReplace->getParent()!=nullptr)
+		if(nodeToReplace->getParent())
 		{
 			if(nodeToReplace->getParent()->getLeftChild()==nodeToReplace)
 			{
@@ -129,7 +129,7 @@ namespace urchin
 	{
 		AABBNode *parentNode = nodeToRemove->getParent();
 
-		if(parentNode==nullptr)
+		if(!parentNode)
 		{
 			rootNode = nullptr;
 		}else
@@ -270,7 +270,7 @@ namespace urchin
 			std::cout<<std::string(indentLevel, ' ')<<"- Leaf: "<<node->getBodyNodeData()->getBody()->getId()<<std::endl;
 		}else
 		{
-			if(node->getParent()==nullptr)
+			if(!node->getParent())
 			{
 				std::cout<<std::string(indentLevel, ' ')<<"Root:"<<std::endl;
 			}else

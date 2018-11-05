@@ -166,7 +166,7 @@ namespace urchin
 
     void Water::setNormalTexture(const std::string &normalFilename)
     {
-        if(normalTexture!=nullptr)
+        if(normalTexture)
         {
             normalTexture->release();
         }
@@ -194,7 +194,7 @@ namespace urchin
 
     void Water::setDudvMap(const std::string &dudvFilename)
     {
-        if(dudvMap!=nullptr)
+        if(dudvMap)
         {
             dudvMap->release();
         }

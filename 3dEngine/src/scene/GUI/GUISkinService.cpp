@@ -43,7 +43,7 @@ namespace urchin
 		unsigned int right = rightElem->getUnsignedIntValue();
 
 		//copy the information into the outline
-		if(widgetOutline!=nullptr)
+		if(widgetOutline)
 		{
 			widgetOutline->topWidth = top;
 			widgetOutline->bottomWidth = bottom;
@@ -152,7 +152,7 @@ namespace urchin
 
 	XmlParser *GUISkinService::getXmlSkin() const
 	{
-		if(xmlSkin==nullptr)
+		if(!xmlSkin)
 		{
 			throw std::runtime_error("Skin for the GUI isn't initialized.");
 		}

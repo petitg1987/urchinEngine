@@ -104,7 +104,7 @@ namespace urchin
 
 	void LightManager::addLight(Light *light)
 	{
-		if(light!=nullptr)
+		if(light)
 		{
 			if(light->hasParallelBeams())
 			{
@@ -120,7 +120,7 @@ namespace urchin
 
 	void LightManager::removeLight(Light *light)
 	{
-		if(light!=nullptr)
+		if(light)
 		{
 			if(light->hasParallelBeams())
 			{

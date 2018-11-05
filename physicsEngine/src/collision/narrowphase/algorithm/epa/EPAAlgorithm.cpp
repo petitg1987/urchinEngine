@@ -20,7 +20,7 @@ namespace urchin
 
 		//handle sub triangle cases
 		std::unique_ptr<EPAResult<T>> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
-		if(subTriangleResult!=nullptr)
+		if(subTriangleResult)
 		{
 			return subTriangleResult;
 		}

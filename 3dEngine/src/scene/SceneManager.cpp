@@ -96,7 +96,7 @@ namespace urchin
 		//renderer
 		for(unsigned int i=0; i<NUM_RENDERER; ++i)
 		{
-			if(activeRenderers[i]!=nullptr)
+			if(activeRenderers[i])
 			{
 				activeRenderers[i]->onResize(sceneWidth, sceneHeight);
 			}
@@ -155,13 +155,13 @@ namespace urchin
 
 	void SceneManager::enableRenderer3d(Renderer3d *renderer3d)
 	{
-		if(activeRenderers[RENDERER_3D]!=nullptr)
+		if(activeRenderers[RENDERER_3D])
 		{
 			activeRenderers[RENDERER_3D]->onDisable();
 		}
 
 		activeRenderers[RENDERER_3D] = renderer3d;
-		if(renderer3d!=nullptr)
+		if(renderer3d)
 		{
 			renderer3d->onResize(sceneWidth, sceneHeight);
 		}
@@ -197,13 +197,13 @@ namespace urchin
 
 	void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer)
 	{
-		if(activeRenderers[GUI_RENDERER]!=nullptr)
+		if(activeRenderers[GUI_RENDERER])
 		{
 			activeRenderers[GUI_RENDERER]->onDisable();
 		}
 
 		activeRenderers[GUI_RENDERER] = guiRenderer;
-		if(guiRenderer!=nullptr)
+		if(guiRenderer)
 		{
 			guiRenderer->onResize(sceneWidth, sceneHeight);
 		}
@@ -234,7 +234,7 @@ namespace urchin
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onKeyDown(key))
+			if(activeRenderers[i] && !activeRenderers[i]->onKeyDown(key))
 			{
 				return false;
 			}
@@ -246,7 +246,7 @@ namespace urchin
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onKeyUp(key))
+			if(activeRenderers[i] && !activeRenderers[i]->onKeyUp(key))
 			{
 				return false;
 			}
@@ -258,7 +258,7 @@ namespace urchin
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onChar(character))
+			if(activeRenderers[i] && !activeRenderers[i]->onChar(character))
 			{
 				return false;
 			}
@@ -270,7 +270,7 @@ namespace urchin
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
-			if(activeRenderers[i]!=nullptr && !activeRenderers[i]->onMouseMove(mouseX, mouseY))
+			if(activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY))
 			{
 				break;
 			}
@@ -288,7 +288,7 @@ namespace urchin
 		//renderer
 		for(unsigned int i=0; i<NUM_RENDERER; ++i)
 		{
-			if(activeRenderers[i]!=nullptr)
+			if(activeRenderers[i])
 			{
 				activeRenderers[i]->display(invFrameRate);
 			}

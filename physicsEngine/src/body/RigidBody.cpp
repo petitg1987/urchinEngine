@@ -61,7 +61,7 @@ namespace urchin
 		AbstractBody::updateTo(workBody);
 
 		WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
-		if(workRigidBody!=nullptr)
+		if(workRigidBody)
 		{
 			workRigidBody->setTotalForce(totalForce);
 			workRigidBody->setTotalTorque(totalTorque);
@@ -84,7 +84,7 @@ namespace urchin
 		AbstractBody::applyFrom(workBody);
 
 		const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
-		if(workRigidBody!=nullptr)
+		if(workRigidBody)
 		{
 			linearVelocity = workRigidBody->getLinearVelocity();
 			angularVelocity = workRigidBody->getAngularVelocity();

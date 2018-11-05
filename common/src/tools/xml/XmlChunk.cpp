@@ -38,7 +38,7 @@ namespace urchin
 
 	std::string XmlChunk::getStringValue() const
 	{
-		if(chunk->FirstChild()==nullptr)
+		if(!chunk->FirstChild())
 		{
 			return "";
 		}else if(chunk->FirstChild()->Type()==TiXmlNode::TEXT)

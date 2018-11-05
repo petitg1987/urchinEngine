@@ -37,7 +37,7 @@ namespace urchin
         for(unsigned int i=0; i<4; ++i)
         {
             std::shared_ptr<XmlChunk> materialFilenameChunk = xmlParser.getUniqueChunk(false, MATERIAL_FILENAME, XmlAttribute(INDEX_ATTR, std::to_string(i)), materialFilenamesChunk);
-            if(materialFilenameChunk!=nullptr)
+            if(materialFilenameChunk)
             {
                 terrainMaterial->addMaterial(i, materialFilenameChunk->getStringValue());
             }
@@ -96,7 +96,7 @@ namespace urchin
     void TerrainReaderWriter::loadGrassOn(Terrain *terrain, std::shared_ptr<XmlChunk> terrainChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> grassChunk = xmlParser.getUniqueChunk(false, GRASS_TAG, XmlAttribute(), std::move(terrainChunk));
-        if(grassChunk!=nullptr)
+        if(grassChunk)
         {
             std::shared_ptr<XmlChunk> grassTextureFilenameChunk = xmlParser.getUniqueChunk(true, GRASS_TEXTURE_FILENAME_TAG, XmlAttribute(), grassChunk);
             terrain->getGrass()->setGrassTexture(grassTextureFilenameChunk->getStringValue());
@@ -126,7 +126,7 @@ namespace urchin
 
     void TerrainReaderWriter::writeGrassOn(std::shared_ptr<XmlChunk> terrainChunk, const Terrain *terrain, XmlWriter &xmlWriter) const
     {
-        if(terrain->getGrass()!=nullptr)
+        if(terrain->getGrass())
         {
             std::shared_ptr<XmlChunk> grassChunk = xmlWriter.createChunk(GRASS_TAG, XmlAttribute(), std::move(terrainChunk));
 

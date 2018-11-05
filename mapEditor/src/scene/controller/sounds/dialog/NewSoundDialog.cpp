@@ -119,7 +119,7 @@ namespace urchin
 		}catch(std::exception &e)
 		{
 			QMessageBox::critical(this, "Error", e.what());
-			if(sceneSound!=nullptr)
+			if(sceneSound)
 			{
 				delete sceneSound;
 			}

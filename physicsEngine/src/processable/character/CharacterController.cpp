@@ -40,7 +40,7 @@ namespace urchin
 
 	CharacterController::~CharacterController()
 	{
-		if(physicsWorld!=nullptr)
+		if(physicsWorld)
 		{
 			physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBody(ghostBody);
 		}

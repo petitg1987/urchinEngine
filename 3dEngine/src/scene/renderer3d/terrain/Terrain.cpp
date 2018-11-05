@@ -105,7 +105,7 @@ namespace urchin
 
     void Terrain::refreshMaterial()
     {
-        if(material!=nullptr)
+        if(material)
         {
             material->refreshWith(mesh->getXSize(), mesh->getZSize());
 
@@ -128,7 +128,7 @@ namespace urchin
 
     void Terrain::refreshGrassMesh()
     {
-        if(grass!=nullptr)
+        if(grass)
         {
             grass->refreshWith(mesh, position);
         }
@@ -136,7 +136,7 @@ namespace urchin
 
     void Terrain::refreshGrassAmbient()
     {
-        if(grass!=nullptr)
+        if(grass)
         {
             grass->refreshWith(ambient);
         }
@@ -197,7 +197,7 @@ namespace urchin
         glBindVertexArray(vertexArrayObject);
         glDrawElements(GL_TRIANGLE_STRIP, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 
-        if(grass!=nullptr)
+        if(grass)
         {
             grass->display(camera, invFrameRate);
         }

@@ -29,11 +29,11 @@ namespace urchin
 
 	void SceneObject::setObjectManagers(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, AIManager *aiManager)
 	{
-		if(this->renderer3d!=nullptr)
+		if(this->renderer3d)
 		{
 			throw std::invalid_argument("Cannot add the scene object on two different object managers.");
 		}
-		if(renderer3d==nullptr)
+		if(!renderer3d)
 		{
 			throw std::invalid_argument("Cannot specify a null renderer 3d for a scene object.");
 		}
@@ -44,12 +44,12 @@ namespace urchin
 
 		renderer3d->addModel(model);
 
-		if(physicsWorld!=nullptr && rigidBody!=nullptr)
+		if(physicsWorld && rigidBody)
 		{
 			physicsWorld->addBody(rigidBody);
 		}
 
-		if(aiManager!=nullptr && aiObject!=nullptr)
+		if(aiManager && aiObject)
 		{
 			aiManager->addEntity(aiObject);
 		}
@@ -79,7 +79,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> modelChunk = xmlWriter.createChunk(MODEL_TAG, XmlAttribute(), chunk);
 		ModelReaderWriter().writeOn(modelChunk, model, xmlWriter);
 
-		if(rigidBody!=nullptr)
+		if(rigidBody)
 		{
 			std::shared_ptr<XmlChunk> physicsChunk = xmlWriter.createChunk(PHYSICS_TAG, XmlAttribute(), chunk);
 			RigidBodyReaderWriter().writeOn(physicsChunk, rigidBody, xmlWriter);
@@ -103,12 +103,12 @@ namespace urchin
 
 	void SceneObject::setModel(Model *model)
 	{
-		if(model==nullptr)
+		if(!model)
 		{
 			throw std::invalid_argument("Cannot set a null model on scene object.");
 		}
 
-		if(renderer3d!=nullptr)
+		if(renderer3d)
 		{
 			renderer3d->removeModel(this->model);
 			renderer3d->addModel(model);
@@ -134,7 +134,7 @@ namespace urchin
 	void SceneObject::moveTo(const Transform<float> &newTransform)
 	{
 		model->setTransform(newTransform);
-		if(aiObject!=nullptr)
+		if(aiObject)
 		{
 			aiObject->updateTransform(newTransform.getPosition(), newTransform.getOrientation());
 		}
@@ -145,7 +145,7 @@ namespace urchin
 		deleteRigidBody();
 
 		this->rigidBody = rigidBody;
-		if(physicsWorld!=nullptr && rigidBody!=nullptr)
+		if(physicsWorld && rigidBody)
 		{
 			physicsWorld->addBody(rigidBody);
 		}
@@ -155,14 +155,14 @@ namespace urchin
 	{
 		deleteAIObjects();
 
-		if(rigidBody==nullptr || model->getMeshes()==nullptr)
+		if(!rigidBody || !model->getMeshes())
 		{
 			this->aiObject = nullptr;
 		} else
 		{
 			std::string aiObjectName = "#" + rigidBody->getId(); //prefix to avoid collision name with terrains
 			this->aiObject = AIEntityBuilder::instance()->buildAIObject(aiObjectName, rigidBody->getScaledShape(), rigidBody->getTransform());
-			if(aiManager!=nullptr)
+			if(aiManager)
 			{
 				aiManager->addEntity(aiObject);
 			}
@@ -171,7 +171,7 @@ namespace urchin
 
 	void SceneObject::deleteRigidBody()
 	{
-		if(physicsWorld!=nullptr && rigidBody!=nullptr)
+		if(physicsWorld && rigidBody)
 		{
 			physicsWorld->removeBody(rigidBody);
 		}else
@@ -184,7 +184,7 @@ namespace urchin
 
 	void SceneObject::deleteAIObjects()
 	{
-		if(aiManager!=nullptr && aiObject!=nullptr)
+		if(aiManager && aiObject)
 		{
 			aiManager->removeEntity(aiObject);
 		}

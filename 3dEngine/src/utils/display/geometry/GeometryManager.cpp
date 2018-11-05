@@ -7,7 +7,7 @@ namespace urchin
 
 	void GeometryManager::addGeometry(GeometryModel *geometry)
 	{
-		if(geometry!=nullptr)
+		if(geometry)
 		{
 			geometryModels.push_back(geometry);
 
@@ -17,7 +17,7 @@ namespace urchin
 
 	void GeometryManager::removeGeometry(GeometryModel *geometry)
 	{
-		if(geometry!=nullptr)
+		if(geometry)
 		{
 			auto it = std::find(geometryModels.begin(), geometryModels.end(), geometry);
 			if (it != geometryModels.end())

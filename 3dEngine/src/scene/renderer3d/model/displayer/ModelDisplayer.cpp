@@ -186,7 +186,7 @@ namespace urchin
 
 		ShaderManager::instance()->bind(modelShader);
 		glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float*)viewMatrix);
-		if(customUniform!=nullptr)
+		if(customUniform)
 		{
 			customUniform->loadCustomUniforms();
 		}
@@ -198,7 +198,7 @@ namespace urchin
 			{
 				glUniformMatrix3fv(mNormalLoc, 1, GL_TRUE, (const float*) model->getTransform().getTransformMatrix().toMatrix3().inverse());
 			}
-			if(customModelUniform!=nullptr)
+			if(customModelUniform)
 			{
 				customModelUniform->loadCustomUniforms(model);
 			}

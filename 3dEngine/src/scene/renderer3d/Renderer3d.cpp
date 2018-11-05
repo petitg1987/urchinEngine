@@ -91,12 +91,12 @@ namespace urchin
 		delete skybox;
 
 		//deferred shading (pass 1)
-		if(fboIDs!=nullptr)
+		if(fboIDs)
 		{
 			glDeleteFramebuffers(1, fboIDs);
 			delete [] fboIDs;
 		}
-		if(textureIDs!=nullptr)
+		if(textureIDs)
 		{
 			glDeleteTextures(4, textureIDs);
 			delete [] textureIDs;
@@ -146,7 +146,7 @@ namespace urchin
 		this->height = height;
 
 		//camera
-		if(camera!=nullptr)
+		if(camera)
 		{
 			camera->onResize(width, height);
 			onCameraProjectionUpdate();
@@ -201,7 +201,7 @@ namespace urchin
 
 	void Renderer3d::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<ShadowManager *>(observable)!=nullptr)
+		if(dynamic_cast<ShadowManager *>(observable))
 		{
 			switch(notificationType)
 			{
@@ -284,7 +284,7 @@ namespace urchin
 	void Renderer3d::setCamera(Camera *camera)
 	{
 		this->camera = camera;
-		if(camera!=nullptr)
+		if(camera)
 		{
 			onCameraProjectionUpdate();
 		}
@@ -325,7 +325,7 @@ namespace urchin
 
 	void Renderer3d::addModel(Model *model)
 	{
-		if(model!=nullptr)
+		if(model)
 		{
 			modelOctreeManager->addOctreeable(model);
 		}
@@ -333,7 +333,7 @@ namespace urchin
 
 	void Renderer3d::removeModel(Model *model)
 	{
-		if(model!=nullptr)
+		if(model)
 		{
 			modelOctreeManager->removeOctreeable(model);
 		}
@@ -348,7 +348,7 @@ namespace urchin
 
 	bool Renderer3d::onKeyDown(unsigned int key)
 	{
-		if(camera!=nullptr && key<260)
+		if(camera && key<260)
 		{
 			camera->onKeyDown(key);
 		}
@@ -357,7 +357,7 @@ namespace urchin
 
 	bool Renderer3d::onKeyUp(unsigned int key)
 	{
-		if(camera!=nullptr && key<260)
+		if(camera && key<260)
 		{
 			camera->onKeyUp(key);
 		}
@@ -372,7 +372,7 @@ namespace urchin
 
 	bool Renderer3d::onMouseMove(int mouseX, int mouseY)
 	{
-		if(camera!=nullptr)
+		if(camera)
 		{
 			camera->onMouseMove(mouseX, mouseY);
 		}
@@ -388,7 +388,7 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "renderer3dDisplay");
 
-		if(camera==nullptr)
+		if(!camera)
 		{ //nothing to display if camera doesn't exist
 			return;
 		}

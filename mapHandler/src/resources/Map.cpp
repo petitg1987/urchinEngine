@@ -47,12 +47,12 @@ namespace urchin
 
 	void Map::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser, LoadCallback &loadCallback)
 	{
-		if(physicsWorld!=nullptr && !physicsWorld->isPaused())
+		if(physicsWorld && !physicsWorld->isPaused())
 		{ //to avoid miss of collision between objects just loaded and on objects not loaded yet
 			throw std::runtime_error("Physics world should be paused while loading map.");
 		}
 
-        if(aiManager!=nullptr && !aiManager->isPaused())
+        if(aiManager && !aiManager->isPaused())
         { //to avoid compute path based on a world with missing objects
             throw std::runtime_error("AI manager should be paused while loading map.");
         }
@@ -413,7 +413,7 @@ namespace urchin
 	void Map::refreshSound()
 	{
 		//update sound event
-		if(renderer3d!=nullptr && renderer3d->getCamera()!=nullptr)
+		if(renderer3d && renderer3d->getCamera())
 		{
 			soundManager->process(renderer3d->getCamera()->getPosition());
 		}else

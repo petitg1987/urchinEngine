@@ -28,7 +28,7 @@ namespace urchin
 	{
 		cleanCurrentDisplay();
 
-		if(sceneObject!=nullptr)
+		if(sceneObject)
 		{
 			const Transform<float> &modelTransform = sceneObject->getModel()->getTransform();
 			std::shared_ptr<const CollisionShape3D> bodyShape = sceneObject->getRigidBody()->getScaledShape();

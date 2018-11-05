@@ -110,7 +110,7 @@ namespace urchin
 
 	void SceneControllerWidget::saveMap(const std::string &mapFilename)
 	{
-		if(sceneController!=nullptr)
+		if(sceneController)
 		{
 			sceneController->saveMapOnFile(mapFilename);
 		}

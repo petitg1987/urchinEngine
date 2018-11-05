@@ -30,7 +30,7 @@ namespace urchin
 
 	PhysicsWorld::~PhysicsWorld()
 	{
-		if(physicsSimulationThread!=nullptr)
+		if(physicsSimulationThread)
 		{
 			interrupt();
 			physicsSimulationThread->join();
@@ -63,7 +63,7 @@ namespace urchin
 
 	void PhysicsWorld::addBody(AbstractBody *body)
 	{
-		if(body!=nullptr)
+		if(body)
 		{
 			bodyManager->addBody(body);
 		}
@@ -71,7 +71,7 @@ namespace urchin
 
 	void PhysicsWorld::removeBody(AbstractBody *body)
 	{
-		if(body!=nullptr)
+		if(body)
 		{
 			bodyManager->removeBody(body);
 		}
@@ -135,7 +135,7 @@ namespace urchin
 	 */
 	void PhysicsWorld::start(float timeStep, bool startPaused)
 	{
-		if(physicsSimulationThread!=nullptr)
+		if(physicsSimulationThread)
 		{
 			throw std::runtime_error("Physics thread is already started");
 		}

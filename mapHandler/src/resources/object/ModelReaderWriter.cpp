@@ -37,7 +37,7 @@ namespace urchin
 	void ModelReaderWriter::loadAnimationsOn(Model *model, std::shared_ptr<XmlChunk> modelChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> animationsListChunk = xmlParser.getUniqueChunk(false, ANIMATIONS_TAG, XmlAttribute(), std::move(modelChunk));
-		if(animationsListChunk!=nullptr)
+		if(animationsListChunk)
 		{
 			std::vector<std::shared_ptr<XmlChunk>> animationsChunk = xmlParser.getChunks(ANIMATION_TAG, XmlAttribute(), animationsListChunk);
 			for (const auto &animationChunk : animationsChunk)
@@ -80,7 +80,7 @@ namespace urchin
 
 		std::shared_ptr<XmlChunk> scaleChunk = xmlParser.getUniqueChunk(false, SCALE_TAG, XmlAttribute(), transformChunk);
 		float scale = 1.0f;
-		if(scaleChunk!=nullptr)
+		if(scaleChunk)
 		{
 			scale = scaleChunk->getFloatValue();
 		}
@@ -104,7 +104,7 @@ namespace urchin
 	void ModelReaderWriter::loadFlagsOn(Model *model, std::shared_ptr<XmlChunk> modelChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> produceShadowChunk = xmlParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, XmlAttribute(), std::move(modelChunk));
-		if(produceShadowChunk!=nullptr)
+		if(produceShadowChunk)
 		{
 			model->setProduceShadow(produceShadowChunk->getBoolValue());
 		}else

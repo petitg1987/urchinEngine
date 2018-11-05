@@ -394,7 +394,7 @@ namespace urchin
             }
         }
 
-        if(terrain->getGrass()!=nullptr)
+        if(terrain->getGrass())
         {
             auto *terrainGrass = terrain->getGrass();
 

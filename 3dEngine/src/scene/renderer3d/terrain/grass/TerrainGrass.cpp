@@ -76,8 +76,14 @@ namespace urchin
         clearVBO();
         ShaderManager::instance()->removeProgram(terrainGrassShader);
 
-        grassTexture->release();
-        grassMaskTexture->release();
+        if(grassTexture)
+        {
+            grassTexture->release();
+        }
+        if(grassMaskTexture)
+        {
+            grassMaskTexture->release();
+        }
         delete mainGrassQuadtree;
     }
 
@@ -108,7 +114,7 @@ namespace urchin
     {
         const unsigned int NUM_THREADS = std::max(2u, std::thread::hardware_concurrency());
 
-        if(mesh!=nullptr)
+        if(mesh)
         {
             this->mesh = mesh;
             this->terrainPosition = terrainPosition;
@@ -116,11 +122,11 @@ namespace urchin
             std::default_random_engine generator;
             std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
 
-            unsigned int grassXQuantity = mesh->getXZScale() * mesh->getXSize() * grassQuantity;
-            unsigned int grassZQuantity = mesh->getXZScale() * mesh->getZSize() * grassQuantity;
+            auto grassXQuantity = static_cast<unsigned int>(mesh->getXZScale() * mesh->getXSize() * grassQuantity);
+            auto grassZQuantity = static_cast<unsigned int>(mesh->getXZScale() * mesh->getZSize() * grassQuantity);
 
-            unsigned int patchQuantityX = mesh->getXZScale() * mesh->getXSize() / grassPatchSize;
-            unsigned int patchQuantityZ = mesh->getXZScale() * mesh->getZSize() / grassPatchSize;
+            auto patchQuantityX = static_cast<unsigned int>(mesh->getXZScale() * mesh->getXSize() / grassPatchSize);
+            auto patchQuantityZ = static_cast<unsigned int>(mesh->getXZScale() * mesh->getZSize() / grassPatchSize);
             float adjustedPatchSizeX = mesh->getXZScale() * mesh->getXSize() / patchQuantityX;
             float adjustedPatchSizeZ = mesh->getXZScale() * mesh->getZSize() / patchQuantityZ;
 
@@ -211,8 +217,8 @@ namespace urchin
                 {
                     for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX)
                     {
-                        int xQuadtreeIndex = (depthNbQuadtreeX/static_cast<float>(childrenNbQuadtreeX)) * (childX + 0.5f);
-                        int zQuadtreeIndex = (depthNbQuadtreeZ/static_cast<float>(childrenNbQuadtreeZ)) * (childZ + 0.5f);
+                        auto xQuadtreeIndex = static_cast<int>((depthNbQuadtreeX/static_cast<float>(childrenNbQuadtreeX)) * (childX + 0.5f));
+                        auto zQuadtreeIndex = static_cast<int>((depthNbQuadtreeZ/static_cast<float>(childrenNbQuadtreeZ)) * (childZ + 0.5f));
 
                         unsigned int quadtreeIndex = (zQuadtreeIndex * depthNbQuadtreeX) + xQuadtreeIndex;
                         unsigned int childQuadtreeIndex = (childZ * childrenNbQuadtreeZ) + childX;
@@ -285,7 +291,7 @@ namespace urchin
     {
         this->grassTextureFilename = grassTextureFilename;
 
-        if(grassTexture!=nullptr)
+        if(grassTexture)
         {
             grassTexture->release();
         }
@@ -309,7 +315,7 @@ namespace urchin
     {
         this->grassMaskFilename = grassMaskFilename;
 
-        if(grassMaskTexture!=nullptr)
+        if(grassMaskTexture)
         {
             grassMaskTexture->release();
         }
@@ -417,7 +423,7 @@ namespace urchin
 
     void TerrainGrass::display(const Camera *camera, float invFrameRate)
     {
-        if(grassTexture!=nullptr)
+        if(grassTexture)
         {
             ScopeProfiler profiler("3d", "grassDisplay");
 

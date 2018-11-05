@@ -24,7 +24,7 @@ namespace urchin
     {
         std::shared_ptr<NavTriangle> startTriangle = findTriangle(startPoint);
         std::shared_ptr<NavTriangle> endTriangle = findTriangle(endPoint);
-        if(startTriangle==nullptr || endTriangle==nullptr)
+        if(!startTriangle || !endTriangle)
         {
             return {}; //no path exists
         }

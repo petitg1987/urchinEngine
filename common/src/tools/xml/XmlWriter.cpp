@@ -43,7 +43,7 @@ namespace urchin
 			chunk->SetAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
 		}
 
-		if(parent!=nullptr)
+		if(parent)
 		{
 			parent->getChunk()->LinkEndChild(chunk);
 		}else

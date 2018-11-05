@@ -130,7 +130,7 @@ namespace urchin
 
 	const ConstMeshes *Model::getMeshes() const
 	{
-	    if(meshes!=nullptr)
+	    if(meshes)
         {
             return meshes->getConstMeshes();
         }

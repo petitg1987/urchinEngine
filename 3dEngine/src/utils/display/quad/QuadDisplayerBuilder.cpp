@@ -86,7 +86,7 @@ namespace urchin
 
 	std::shared_ptr<QuadDisplayer> QuadDisplayerBuilder::build()
 	{
-		if(vertexCoord==nullptr)
+		if(!vertexCoord)
 		{
 			vertexCoord = new int[8]{
 					-1, 1,
@@ -95,7 +95,7 @@ namespace urchin
 					-1, -1};
 		}
 
-		if(textureCoord==nullptr)
+		if(!textureCoord)
 		{
 			textureCoord = new int[8]{
 					0, 1,

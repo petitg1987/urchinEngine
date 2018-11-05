@@ -13,7 +13,7 @@ namespace urchin
 	{
 		#ifdef _DEBUG
 			ALCcontext *context = alcGetCurrentContext();
-			if(context==nullptr)
+			if(!context)
 			{
 				throw std::runtime_error("No OpenAL context found: check that a sound manager has been created.");
 			}

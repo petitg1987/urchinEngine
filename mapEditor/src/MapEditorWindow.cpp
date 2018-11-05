@@ -143,6 +143,7 @@ namespace urchin
 		sizePolicy.setVerticalStretch(0);
 		sizePolicy.setHeightForWidth(sceneDisplayerWidget->sizePolicy().hasHeightForWidth());
 		sceneDisplayerWidget->setSizePolicy(sizePolicy);
+        sceneDisplayerWidget->show();
 
 		executeViewPropertiesChangeAction();
 
@@ -172,7 +173,7 @@ namespace urchin
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<SceneControllerWidget *>(observable)!=nullptr)
+		if(dynamic_cast<SceneControllerWidget *>(observable))
 		{
 			switch(notificationType)
 			{

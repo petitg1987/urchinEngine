@@ -9,17 +9,17 @@ namespace urchin
 	MapHandler::MapHandler(Renderer3d *renderer3d, PhysicsWorld *physicsWorld, SoundManager *soundManager, AIManager *aiManager) :
 		map(nullptr)
 	{
-		if(renderer3d==nullptr)
+		if(!renderer3d)
 		{
 			throw std::invalid_argument("Renderer 3d cannot be null in map handler");
 		}
 
-		if(soundManager==nullptr)
+		if(!soundManager)
 		{
 			throw std::invalid_argument("Sound manager cannot be null in map handler");
 		}
 
-		if(aiManager==nullptr)
+		if(!aiManager)
 		{
 			throw std::invalid_argument("AI manager cannot be null in map handler");
 		}

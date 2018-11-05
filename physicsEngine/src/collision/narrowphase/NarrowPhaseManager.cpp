@@ -74,7 +74,7 @@ namespace urchin
 	std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair *overlappingPair)
 	{
 		std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = overlappingPair->getCollisionAlgorithm();
-		if(collisionAlgorithm==nullptr)
+		if(!collisionAlgorithm)
 		{
 			AbstractWorkBody *body1 = overlappingPair->getBody1();
 			AbstractWorkBody *body2 = overlappingPair->getBody2();
@@ -94,7 +94,7 @@ namespace urchin
 		for (auto workBody : bodyManager->getWorkBodies())
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(workBody);
-			if(body!=nullptr && body->isActive())
+			if(body && body->isActive())
 			{
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
 				PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);

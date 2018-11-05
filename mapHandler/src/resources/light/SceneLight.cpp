@@ -20,11 +20,11 @@ namespace urchin
 
 	void SceneLight::setLightManager(LightManager *lightManager)
 	{
-		if(this->lightManager!=nullptr)
+		if(this->lightManager)
 		{
 			throw std::invalid_argument("Cannot add the scene light on two different light managers.");
 		}
-		if(lightManager==nullptr)
+		if(!lightManager)
 		{
 			throw std::invalid_argument("Cannot specify a null light manager for a scene light.");
 		}
@@ -65,12 +65,12 @@ namespace urchin
 
 	void SceneLight::setLight(Light *light)
 	{
-		if(light==nullptr)
+		if(!light)
 		{
 			throw std::invalid_argument("Cannot set a null light on scene light.");
 		}
 
-		if(lightManager!=nullptr)
+		if(lightManager)
 		{
 			lightManager->removeLight(this->light);
 			lightManager->addLight(light);

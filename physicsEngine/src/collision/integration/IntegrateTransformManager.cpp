@@ -26,7 +26,7 @@ namespace urchin
 		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
-			if(body!=nullptr && body->isActive())
+			if(body && body->isActive())
 			{
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
 				PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);

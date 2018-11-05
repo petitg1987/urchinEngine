@@ -23,7 +23,7 @@ namespace urchin
 
     void TerrainManager::addTerrain(Terrain *terrain)
     {
-        if(terrain!=nullptr)
+        if(terrain)
         {
             terrains.push_back(terrain);
 
@@ -34,7 +34,7 @@ namespace urchin
 
     void TerrainManager::removeTerrain(Terrain *terrain)
     {
-        if(terrain!=nullptr)
+        if(terrain)
         {
             terrains.erase(std::remove(terrains.begin(), terrains.end(), terrain), terrains.end());
             delete terrain;

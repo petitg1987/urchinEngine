@@ -40,7 +40,7 @@ namespace urchin
 
 	const SoundShape *SoundShapeWidget::retrieveShape()
 	{
-		if(shape==nullptr)
+		if(!shape)
 		{
 			shape = createSoundShape();
 		}

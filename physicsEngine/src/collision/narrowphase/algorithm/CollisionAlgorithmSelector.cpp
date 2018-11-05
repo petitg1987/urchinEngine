@@ -20,7 +20,7 @@ namespace urchin
 		{
 			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
 			{
-				if(collisionAlgorithmBuilderMatrix[i][j]==nullptr)
+				if(!collisionAlgorithmBuilderMatrix[i][j])
 				{
 					deleteCollisionAlgorithmBuilderMatrix();
 					throw std::invalid_argument("Collision algorithm builder not initialized for shape type: " + std::to_string(i) + " and " + std::to_string(j) + ".");
@@ -71,7 +71,7 @@ namespace urchin
 		{
 			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
 			{
-				if(collisionAlgorithmBuilderMatrix[i][j]==nullptr)
+				if(!collisionAlgorithmBuilderMatrix[i][j])
 				{
 					collisionAlgorithmBuilderMatrix[i][j] = new ConvexConvexCollisionAlgorithm::Builder();
 				}
@@ -97,12 +97,12 @@ namespace urchin
 	{
 		for(unsigned int shapeId=0; shapeId<CollisionShape3D::SHAPE_MAX; ++shapeId)
 		{
-			if(collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId]==nullptr)
+			if(!collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId])
 			{
 				collisionAlgorithmBuilderMatrix[CollisionShape3D::COMPOUND_SHAPE][shapeId] = new CompoundAnyCollisionAlgorithm::Builder();
 			}
 
-			if(shapeId!=CollisionShape3D::COMPOUND_SHAPE && collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE]==nullptr)
+			if(shapeId!=CollisionShape3D::COMPOUND_SHAPE && !collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE])
 			{
 				collisionAlgorithmBuilderMatrix[shapeId][CollisionShape3D::COMPOUND_SHAPE] = new CompoundAnyCollisionAlgorithm::Builder();
 			}

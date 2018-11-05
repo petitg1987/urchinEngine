@@ -16,7 +16,7 @@ namespace urchin
 
     void WaterManager::addWater(Water *water)
     {
-        if(water!=nullptr)
+        if(water)
         {
             waters.push_back(water);
 
@@ -26,7 +26,7 @@ namespace urchin
 
     void WaterManager::removeWater(Water *water)
     {
-        if(water!=nullptr)
+        if(water)
         {
             waters.erase(std::remove(waters.begin(), waters.end(), water), waters.end());
             delete water;

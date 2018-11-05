@@ -23,7 +23,7 @@ namespace urchin
 
 	std::shared_ptr<const CollisionShape3D> BodyShapeWidget::retrieveShape()
 	{
-		if(shape.get()==nullptr)
+		if(!shape)
 		{
 			shape = createBodyShape();
 		}

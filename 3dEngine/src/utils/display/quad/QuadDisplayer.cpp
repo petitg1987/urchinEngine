@@ -35,7 +35,7 @@ namespace urchin
 			glDeleteVertexArrays(1, &vertexArrayObject);
 		}
 
-		if(bufferIDs!=nullptr)
+		if(bufferIDs)
 		{
 			glDeleteBuffers(2, bufferIDs);
 		}
