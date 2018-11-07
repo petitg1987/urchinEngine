@@ -21,7 +21,7 @@ namespace urchin
 		{
 			originalGlobalBBox = originalGlobalBBox.merge(*bboxes[i]);
 		}
-		originalGlobalSplittedBBox = SplitBoundingBox().split(originalGlobalBBox);
+		originalGlobalSplitBBoxes = SplitBoundingBox().split(originalGlobalBBox);
 	}
 
 	ConstAnimation::~ConstAnimation()
@@ -66,9 +66,9 @@ namespace urchin
 		return originalGlobalBBox;
 	}
 
-	const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplittedAABBox() const
+	const std::vector<AABBox<float>> &ConstAnimation::getOriginalGlobalSplitAABBoxes() const
 	{
-		return originalGlobalSplittedBBox;
+		return originalGlobalSplitBBoxes;
 	}
 
 }

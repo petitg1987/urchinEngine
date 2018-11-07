@@ -10,7 +10,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 	
 	overflowSize += 0.001f; //add offset to avoid rounding problem when overflow size is 0.0f.
 	
-	std::set<TOctreeable *> emptyOctreeable;
+	std::unordered_set<TOctreeable *> emptyOctreeable;
 	buildOctree(emptyOctreeable);
 	
 	#ifdef _DEBUG
@@ -22,7 +22,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
 {
 	if(mainOctree)
 	{
-		std::set<TOctreeable *> allOctreeables;
+		std::unordered_set<TOctreeable *> allOctreeables;
 		mainOctree->getAllOctreeables(allOctreeables);
 
         for(const auto &octreeable : allOctreeables)
@@ -49,7 +49,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *
 	}
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::set<TOctreeable *> &octreeables)
+template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::unordered_set<TOctreeable *> &octreeables)
 {
 	if(!octreeables.empty())
 	{
@@ -143,7 +143,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float
 	this->minSize = minSize;
 
 	//gets all octreeables from the current octree
-	std::set<TOctreeable *> allOctreeables;
+	std::unordered_set<TOctreeable *> allOctreeables;
 	if(mainOctree)
 	{
 		mainOctree->getAllOctreeables(allOctreeables);
@@ -204,30 +204,32 @@ template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable
 /**
  * Returns octreeables which move. This list is valid from the time the octreeables move until a call to postRefreshOctreeables method is done.
  */
-template<class TOctreeable> const std::set<TOctreeable *> &OctreeManager<TOctreeable>::getMovingOctreeables() const
+template<class TOctreeable> const std::unordered_set<TOctreeable *> &OctreeManager<TOctreeable>::getMovingOctreeables() const
 {
 	return movingOctreeables;
 }
 
-template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeables() const
+template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeables() const
 {
-	std::set<TOctreeable *> allOctreeables;
+	std::unordered_set<TOctreeable *> allOctreeables;
 	mainOctree->getAllOctreeables(allOctreeables);
 	
 	return allOctreeables;
 }
 
-template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject) const
+template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject) const
 {
 	return getOctreeablesIn(convexObject, AcceptAllFilter<TOctreeable>());
 }
 
-template<class TOctreeable> std::set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject, 
+template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
 		const OctreeableFilter<TOctreeable> &filter) const
 {
     ScopeProfiler profiler("3d", "getOctreeablesIn");
 
-	std::set<TOctreeable *> visibleOctreeables;
+	std::unordered_set<TOctreeable *> visibleOctreeables;
+    visibleOctreeables.reserve(2500); //TODO define unoredered_set outside this method
+
 	mainOctree->getOctreeablesIn(visibleOctreeables, convexObject, filter);
 	return visibleOctreeables;
 }
@@ -250,7 +252,7 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 	}
 
 	//gets all octreeables from the current octree
-	std::set<TOctreeable *> allOctreeables;
+	std::unordered_set<TOctreeable *> allOctreeables;
 	if(mainOctree)
 	{
 		mainOctree->getAllOctreeables(allOctreeables);

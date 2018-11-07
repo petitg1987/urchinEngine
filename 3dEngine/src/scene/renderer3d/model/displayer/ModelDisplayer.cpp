@@ -160,7 +160,7 @@ namespace urchin
 		this->customModelUniform = customModelUniform;
 	}
 
-	void ModelDisplayer::setModels(const std::set<Model *> &models)
+	void ModelDisplayer::setModels(const std::unordered_set<Model *> &models)
 	{
 		this->models = models;
 	}

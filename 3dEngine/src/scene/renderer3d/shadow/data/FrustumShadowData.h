@@ -21,8 +21,8 @@ namespace urchin
 			const Matrix4<float> &getLightProjectionMatrix() const;
 			bool isShadowCasterReceiverBoxUpdated() const;
 
-			void updateModels(const std::set<Model *> &);
-			const std::set<Model *> &getModels() const;
+			void updateModels(const std::unordered_set<Model *> &);
+			const std::unordered_set<Model *> &getModels() const;
 
 			bool needShadowMapUpdate() const;
 
@@ -36,7 +36,7 @@ namespace urchin
 			AABBox<float> shadowCasterReceiverBox;
 			bool shadowCasterReceiverBoxUpdated;
 
-			std::set<Model *> models;
+			std::unordered_set<Model *> models;
 			bool modelsRequireUpdate;
 	};
 

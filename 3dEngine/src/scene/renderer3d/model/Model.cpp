@@ -166,16 +166,16 @@ namespace urchin
 	}
 
 	/**
-	 * @return identical to getAABBox() method but the bounding box is splitted to the limit size configured
+	 * @return identical to getAABBox() method but the bounding box is split to the limit size configured
 	 */
-	std::vector<AABBox<float>> Model::getSplittedAABBox() const
+	std::vector<AABBox<float>> Model::getSplitAABBoxes() const
 	{
 		if(isAnimate())
 		{
-			return currAnimation->getGlobalSplittedAABBox();
+			return currAnimation->getGlobalSplitAABBoxes();
 		}else if(meshes)
 		{
-			return meshes->getGlobalSplittedAABBox();
+			return meshes->getGlobalSplitAABBoxes();
 		}else
         {
             return {defaultModelAABBox};

@@ -109,7 +109,7 @@ template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeab
 	}
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<TOctreeable *> &visibleOctreeables, const ConvexObject3D<float> &convexObject, const OctreeableFilter<TOctreeable> &filter) const
+template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::unordered_set<TOctreeable *> &visibleOctreeables, const ConvexObject3D<float> &convexObject, const OctreeableFilter<TOctreeable> &filter) const
 {
 	if(convexObject.collideWithAABBox(bbox))
 	{		
@@ -132,7 +132,7 @@ template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::set<
 	}
 }
 
-template<class TOctreeable> void Octree<TOctreeable>::getAllOctreeables(std::set<TOctreeable *> &allOctreeables) const
+template<class TOctreeable> void Octree<TOctreeable>::getAllOctreeables(std::unordered_set<TOctreeable *> &allOctreeables) const
 {
 	if(isLeaf)
 	{

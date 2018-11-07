@@ -2,7 +2,7 @@
 #define URCHINENGINE_OCTREE_H
 
 #include <vector>
-#include <set>
+#include <unordered_set>
 #include <limits>
 #include <memory>
 #include <algorithm>
@@ -28,8 +28,8 @@ namespace urchin
 			void addOctreeable(TOctreeable *, bool addRef);
 			void removeOctreeable(TOctreeable *, bool removeRef);
 
-			void getOctreeablesIn(std::set<TOctreeable *> &, const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &) const;
-			void getAllOctreeables(std::set<TOctreeable *> &) const;
+			void getOctreeablesIn(std::unordered_set<TOctreeable *> &, const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &) const;
+			void getAllOctreeables(std::unordered_set<TOctreeable *> &) const;
 
 			void getAllLeafOctrees(std::vector<const Octree<TOctreeable> *> &) const;
 

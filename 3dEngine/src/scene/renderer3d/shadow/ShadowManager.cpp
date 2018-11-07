@@ -305,16 +305,16 @@ namespace urchin
 	/**
 	 * @return All visible models from all lights
 	 */
-	std::set<Model *> ShadowManager::getVisibleModels()
+	std::unordered_set<Model *> ShadowManager::getVisibleModels()
 	{
 		ScopeProfiler profiler("3d", "shadowGetVisibleModels");
 
-		std::set<Model *> visibleModels;
+		std::unordered_set<Model *> visibleModels;
 		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
 		{
 			for(unsigned int i=0; i<nbShadowMaps; ++i)
 			{
-				const std::set<Model *> &visibleModelsForLightInFrustumSplit = it->second->getFrustumShadowData(i)->getModels();
+				const std::unordered_set<Model *> &visibleModelsForLightInFrustumSplit = it->second->getFrustumShadowData(i)->getModels();
 				visibleModels.insert(visibleModelsForLightInFrustumSplit.begin(), visibleModelsForLightInFrustumSplit.end());
 			}
 		}
@@ -403,7 +403,7 @@ namespace urchin
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
 
-				const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
+				const std::unordered_set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
 				shadowData->getFrustumShadowData(i)->updateModels(models);
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
@@ -461,31 +461,23 @@ namespace urchin
 	 * @return Box in light space containing shadow caster and receiver (scene dependent)
 	 */
 	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
-			const std::set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
+			const std::unordered_set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
 		ScopeProfiler profiler("3d", "createSceneDependentBox");
 
-		AABBox<float> aabboxSceneDependent;
-
-        if(!models.empty())
+		AABBox<float> aabboxSceneDependent; //TODO init with extreme values: min=maxFloat, max=minFloat
+        for (const auto &model : models)
         {
-			bool boxInitialized = false;
-
-            for (const auto &model : models)
+            if(model->getSplitAABBoxes().size() == 1)
             {
-                const std::vector<AABBox<float>> &splittedAABBox = model->getSplittedAABBox();
-                for (unsigned int i = 0; i < splittedAABBox.size(); ++i)
+                aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getSplitAABBoxes()[0]);
+            }else
+            {
+                for(const auto &splitAABBox : model->getSplitAABBoxes())
                 {
-                    if (splittedAABBox.size() == 1 || obboxSceneIndependentViewSpace.collideWithAABBox(splittedAABBox[i]))
+                    if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox))
                     {
-                        if (boxInitialized)
-                        {
-                            aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splittedAABBox[i]);
-                        } else
-                        {
-                            aabboxSceneDependent = lightViewMatrix * splittedAABBox[i];
-                            boxInitialized = true;
-                        }
+                        aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splitAABBox);
                     }
                 }
             }
@@ -501,12 +493,12 @@ namespace urchin
                 std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Y),
                 std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
-		cutMin.X = (cutMin.X<0.0f) ? cutMin.X-(lightViewOverflowStepSize+fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X-fmod(cutMin.X, lightViewOverflowStepSize);
-		cutMin.Y = (cutMin.Y<0.0f) ? cutMin.Y-(lightViewOverflowStepSize+fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y-fmod(cutMin.Y, lightViewOverflowStepSize);
-		cutMin.Z = (cutMin.Z<0.0f) ? cutMin.Z-(lightViewOverflowStepSize+fmod(cutMin.Z, lightViewOverflowStepSize)) : cutMin.Z-fmod(cutMin.Z, lightViewOverflowStepSize);
-		cutMax.X = (cutMax.X<0.0f) ? cutMax.X-fmod(cutMax.X, lightViewOverflowStepSize) : cutMax.X+(lightViewOverflowStepSize-fmod(cutMax.X, lightViewOverflowStepSize));
-		cutMax.Y = (cutMax.Y<0.0f) ? cutMax.Y-fmod(cutMax.Y, lightViewOverflowStepSize) : cutMax.Y+(lightViewOverflowStepSize-fmod(cutMax.Y, lightViewOverflowStepSize));
-		cutMax.Z = (cutMax.Z<0.0f) ? cutMax.Z-fmod(cutMax.Z, lightViewOverflowStepSize) : cutMax.Z+(lightViewOverflowStepSize-fmod(cutMax.Z, lightViewOverflowStepSize));
+		cutMin.X = (cutMin.X < 0.0f) ? cutMin.X - (lightViewOverflowStepSize + fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X - fmod(cutMin.X, lightViewOverflowStepSize);
+		cutMin.Y = (cutMin.Y < 0.0f) ? cutMin.Y - (lightViewOverflowStepSize + fmod(cutMin.Y, lightViewOverflowStepSize)) : cutMin.Y - fmod(cutMin.Y, lightViewOverflowStepSize);
+		cutMin.Z = (cutMin.Z < 0.0f) ? cutMin.Z - (lightViewOverflowStepSize + fmod(cutMin.Z, lightViewOverflowStepSize)) : cutMin.Z - fmod(cutMin.Z, lightViewOverflowStepSize);
+		cutMax.X = (cutMax.X < 0.0f) ? cutMax.X - fmod(cutMax.X, lightViewOverflowStepSize) : cutMax.X + (lightViewOverflowStepSize - fmod(cutMax.X, lightViewOverflowStepSize));
+		cutMax.Y = (cutMax.Y < 0.0f) ? cutMax.Y - fmod(cutMax.Y, lightViewOverflowStepSize) : cutMax.Y + (lightViewOverflowStepSize - fmod(cutMax.Y, lightViewOverflowStepSize));
+		cutMax.Z = (cutMax.Z < 0.0f) ? cutMax.Z - fmod(cutMax.Z, lightViewOverflowStepSize) : cutMax.Z + (lightViewOverflowStepSize - fmod(cutMax.Z, lightViewOverflowStepSize));
 
 		return AABBox<float>(cutMin, cutMax);
 	}
@@ -725,7 +717,7 @@ namespace urchin
 		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 
-		const std::set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
+		const std::unordered_set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
 		if(!models.empty())
 		{
 			AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, models, lightViewMatrix);

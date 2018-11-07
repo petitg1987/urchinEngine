@@ -69,7 +69,7 @@ namespace urchin
 	Renderer3d::~Renderer3d()
 	{
 		//models
-		std::set<Model *> allOctreeableModels = modelOctreeManager->getOctreeables();
+		std::unordered_set<Model *> allOctreeableModels = modelOctreeManager->getOctreeables();
 		for (auto allOctreeableModel : allOctreeableModels)
 		{
 			delete allOctreeableModel;
@@ -342,7 +342,7 @@ namespace urchin
 
 	bool Renderer3d::isModelExist(Model *model)
 	{
-		std::set<Model *> allOctreeables = modelOctreeManager->getOctreeables();
+		std::unordered_set<Model *> allOctreeables = modelOctreeManager->getOctreeables();
 		return allOctreeables.find(model)!=allOctreeables.end();
 	}
 

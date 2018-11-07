@@ -30,9 +30,9 @@ namespace urchin
 		return globalBBox;
 	}
 
-	const std::vector<AABBox<float>> &Animation::getGlobalSplittedAABBox() const
+	const std::vector<AABBox<float>> &Animation::getGlobalSplitAABBoxes() const
 	{
-		return globalSplittedBBox;
+		return globalSplitBBoxes;
 	}
 
 	/**
@@ -57,11 +57,11 @@ namespace urchin
 	{
 		globalBBox = constAnimation->getOriginalGlobalAABBox().moveAABBox(newTransform);
 
-		globalSplittedBBox.clear();
-		const std::vector<AABBox<float>> &originalGlobalSplittedAABBox = constAnimation->getOriginalGlobalSplittedAABBox();
-		for (const auto &originalGlobalSplitAABBox : originalGlobalSplittedAABBox)
+		globalSplitBBoxes.clear();
+		const std::vector<AABBox<float>> &originalGlobalSplitAABBoxes = constAnimation->getOriginalGlobalSplitAABBoxes();
+		for (const auto &originalGlobalSplitAABBox : originalGlobalSplitAABBoxes)
 		{
-			globalSplittedBBox.push_back(originalGlobalSplitAABBox.moveAABBox(newTransform));
+			globalSplitBBoxes.push_back(originalGlobalSplitAABBox.moveAABBox(newTransform));
 		}
 	}
 

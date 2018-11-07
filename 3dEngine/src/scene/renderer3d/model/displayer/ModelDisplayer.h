@@ -38,7 +38,7 @@ namespace urchin
 			void setCustomFragmentShader(const std::string &, const std::map<std::string, std::string> &);
 			void setCustomUniform(CustomUniform *);
 			void setCustomModelUniform(CustomModelUniform *);
-			void setModels(const std::set<Model *> &);
+			void setModels(const std::unordered_set<Model *> &);
 
 			void updateAnimation(float);
 			void display(const Matrix4<float> &);
@@ -65,7 +65,7 @@ namespace urchin
 			CustomUniform *customUniform;
 			CustomModelUniform *customModelUniform;
 
-			std::set<Model *> models;
+			std::unordered_set<Model *> models;
 	};
 
 }
