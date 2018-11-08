@@ -285,9 +285,9 @@ namespace urchin
 		return blurShadow;
 	}
 
-	const std::vector<Frustum<float>> &ShadowManager::getSplittedFrustums() const
+	const std::vector<Frustum<float>> &ShadowManager::getSplitFrustums() const
 	{
-		return splittedFrustums;
+		return splitFrustums;
 	}
 
 	const ShadowData &ShadowManager::getShadowData(const Light *light) const
@@ -398,16 +398,17 @@ namespace urchin
 		if(light->hasParallelBeams())
 		{ //sun light
             Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
-			for(unsigned int i=0; i<splittedFrustums.size(); ++i)
+			for(unsigned int i=0; i<splitFrustums.size(); ++i)
 			{
-				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splittedFrustums[i], shadowData->getLightViewMatrix());
+				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums[i], shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
 
-				const std::unordered_set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
-				shadowData->getFrustumShadowData(i)->updateModels(models);
+                obboxModels.clear();
+				modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
+				shadowData->getFrustumShadowData(i)->updateModels(obboxModels);
 
 				AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace,
-						models, shadowData->getLightViewMatrix());
+                                                                             obboxModels, shadowData->getLightViewMatrix());
 				shadowData->getFrustumShadowData(i)->updateShadowCasterReceiverBox(aabboxSceneDependent, bForceUpdateAllShadowMaps);
 			}
 		}else
@@ -465,23 +466,29 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "createSceneDependentBox");
 
-		AABBox<float> aabboxSceneDependent; //TODO init with extreme values: min=maxFloat, max=minFloat
-        for (const auto &model : models)
+        AABBox<float> aabboxSceneDependent;
+        if(!models.empty())
         {
-            if(model->getSplitAABBoxes().size() == 1)
+            aabboxSceneDependent = AABBox<float>::initMergeableAABBox();
+
+            for (const auto &model : models)
             {
-                aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getSplitAABBoxes()[0]);
-            }else
-            {
-                for(const auto &splitAABBox : model->getSplitAABBoxes())
+                if (model->getSplitAABBoxes().size() == 1)
                 {
-                    if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox))
+                    aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * model->getSplitAABBoxes()[0]);
+                } else
+                {
+                    for (const auto &splitAABBox : model->getSplitAABBoxes())
                     {
-                        aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splitAABBox);
+                        if (obboxSceneIndependentViewSpace.collideWithAABBox(splitAABBox))
+                        {
+                            aabboxSceneDependent = aabboxSceneDependent.merge(lightViewMatrix * splitAABBox);
+                        }
                     }
                 }
             }
         }
+
 
 		Point3<float> cutMin(
 		        std::min(std::max(aabboxSceneDependent.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),
@@ -507,8 +514,8 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "splitFrustum");
 
-		splittedDistance.clear();
-		splittedFrustums.clear();
+		splitDistances.clear();
+		splitFrustums.clear();
 
 		float near = frustum.computeNearDistance();
 		float far = viewingShadowDistance;
@@ -526,8 +533,8 @@ namespace urchin
 
 			float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0 - percentageUniformSplit) * logarithmicSplit);
 
-			splittedDistance.push_back(splitDistance);
-			splittedFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
+			splitDistances.push_back(splitDistance);
+			splitFrustums.push_back(frustum.splitFrustum(previousSplitDistance, splitDistance));
 
 			previousSplitDistance = splitDistance;
 		}
@@ -697,7 +704,7 @@ namespace urchin
 		float depthSplitDistance[nbShadowMaps];
 		for(unsigned int shadowMapIndex=0; shadowMapIndex<nbShadowMaps; ++shadowMapIndex)
 		{
-			float currSplitDistance = splittedDistance[shadowMapIndex];
+			float currSplitDistance = splitDistances[shadowMapIndex];
 			depthSplitDistance[shadowMapIndex] = ((projectionMatrix(2, 2)*-currSplitDistance + projectionMatrix(2, 3)) / (currSplitDistance)) / 2.0f + 0.5f;
 		}
 
@@ -717,7 +724,8 @@ namespace urchin
 		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 
-		const std::unordered_set<Model *> models = modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, ModelProduceShadowFilter());
+		std::unordered_set<Model *> models;
+		modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
 		if(!models.empty())
 		{
 			AABBox<float> aabboxSceneDependent = createSceneDependentBox(aabboxSceneIndependent, obboxSceneIndependentViewSpace, models, lightViewMatrix);

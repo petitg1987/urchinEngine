@@ -189,6 +189,21 @@ namespace urchin
 				aabb.getMin().Z > min.Z && aabb.getMax().Z < max.Z;
 	}
 
+	template<class T> AABBox<T> AABBox<T>::initMergeableAABBox()
+	{
+		AABBox aabbox;
+
+		aabbox.min.X = std::numeric_limits<T>::max();
+		aabbox.min.Y = std::numeric_limits<T>::max();
+		aabbox.min.Z = std::numeric_limits<T>::max();
+
+		aabbox.max.X = -std::numeric_limits<T>::max();
+		aabbox.max.Y = -std::numeric_limits<T>::max();
+		aabbox.max.Z = -std::numeric_limits<T>::max();
+
+		return aabbox;
+	}
+
 	template<class T> AABBox<T> AABBox<T>::merge(const AABBox<T> &aabb) const
 	{
 		Point3<T> mergedMin(std::min(min.X, aabb.getMin().X), std::min(min.Y, aabb.getMin().Y), std::min(min.Z, aabb.getMin().Z));

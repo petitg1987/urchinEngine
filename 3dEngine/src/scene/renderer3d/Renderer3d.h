@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <unordered_set>
 #include "UrchinCommon.h"
 
 #include "scene/Renderer.h"
@@ -84,6 +85,9 @@ namespace urchin
 			void createOrUpdateDeferredShadingShader();
 			void onCameraProjectionUpdate();
 
+			//model
+            void updateModelsInFrustum();
+
 			//scene
 			void updateScene(float);
 			void deferredGeometryRendering(float);
@@ -96,6 +100,7 @@ namespace urchin
 			//managers
 			ModelDisplayer *modelDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
+			std::unordered_set<Model *> modelsInFrustum;
 
 			FogManager *fogManager;
 

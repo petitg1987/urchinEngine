@@ -69,7 +69,7 @@ namespace urchin
 	Renderer3d::~Renderer3d()
 	{
 		//models
-		std::unordered_set<Model *> allOctreeableModels = modelOctreeManager->getOctreeables();
+		std::unordered_set<Model *> allOctreeableModels = modelOctreeManager->getAllOctreeables();
 		for (auto allOctreeableModel : allOctreeableModels)
 		{
 			delete allOctreeableModel;
@@ -307,6 +307,12 @@ namespace urchin
 		ambientOcclusionManager->onCameraProjectionUpdate(camera);
 	}
 
+	void Renderer3d::updateModelsInFrustum()
+    {
+        modelsInFrustum.clear();
+        modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
+    }
+
 	Camera *Renderer3d::getCamera() const
 	{
 		return camera;
@@ -342,7 +348,7 @@ namespace urchin
 
 	bool Renderer3d::isModelExist(Model *model)
 	{
-		std::unordered_set<Model *> allOctreeables = modelOctreeManager->getOctreeables();
+		std::unordered_set<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
 		return allOctreeables.find(model)!=allOctreeables.end();
 	}
 
@@ -483,7 +489,8 @@ namespace urchin
 			modelDisplayer->setModels(shadowManager->getVisibleModels());
 		}else
 		{
-			modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
+            updateModelsInFrustum();
+			modelDisplayer->setModels(modelsInFrustum);
 		}
 		modelDisplayer->updateAnimation(invFrameRate);
 
@@ -506,7 +513,9 @@ namespace urchin
 
 		skybox->display(camera->getViewMatrix(), camera->getPosition());
 
-		modelDisplayer->setModels(modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum()));
+        updateModelsInFrustum();
+        modelDisplayer->setModels(modelsInFrustum);
+
 		modelDisplayer->display(camera->getViewMatrix());
 
 		terrainManager->display(camera, invFrameRate);

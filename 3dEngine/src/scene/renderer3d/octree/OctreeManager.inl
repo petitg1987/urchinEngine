@@ -209,7 +209,7 @@ template<class TOctreeable> const std::unordered_set<TOctreeable *> &OctreeManag
 	return movingOctreeables;
 }
 
-template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeables() const
+template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getAllOctreeables() const
 {
 	std::unordered_set<TOctreeable *> allOctreeables;
 	mainOctree->getAllOctreeables(allOctreeables);
@@ -217,21 +217,18 @@ template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOct
 	return allOctreeables;
 }
 
-template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject) const
+template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
+        std::unordered_set<TOctreeable *> &octreeables) const
 {
-	return getOctreeablesIn(convexObject, AcceptAllFilter<TOctreeable>());
+	getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<TOctreeable>());
 }
 
-template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
-		const OctreeableFilter<TOctreeable> &filter) const
+template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
+        std::unordered_set<TOctreeable *> &octreeables, const OctreeableFilter<TOctreeable> &filter) const
 {
     ScopeProfiler profiler("3d", "getOctreeablesIn");
 
-	std::unordered_set<TOctreeable *> visibleOctreeables;
-    visibleOctreeables.reserve(2500); //TODO define unoredered_set outside this method
-
-	mainOctree->getOctreeablesIn(visibleOctreeables, convexObject, filter);
-	return visibleOctreeables;
+	mainOctree->getOctreeablesIn(octreeables, convexObject, filter);
 }
 
 template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable *newOctreeable)

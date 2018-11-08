@@ -22,7 +22,7 @@ namespace urchin
 
 	LightManager::~LightManager()
 	{
-		std::unordered_set<Light *> allOctreeableLights = lightOctreeManager->getOctreeables();
+		std::unordered_set<Light *> allOctreeableLights = lightOctreeManager->getAllOctreeables();
 		for (auto allOctreeableLight : allOctreeableLights)
         {
 			delete allOctreeableLight;
@@ -152,19 +152,20 @@ namespace urchin
 		ScopeProfiler profiler("3d", "updateLights");
 
 		lightOctreeManager->refreshOctreeables();
-		std::unordered_set<Light *> lightInFrustum = lightOctreeManager->getOctreeablesIn(frustum);
+        lightsInFrustum.clear();
+		lightOctreeManager->getOctreeablesIn(frustum, lightsInFrustum);
 
 		visibleLights.clear();
-		visibleLights.assign(lightInFrustum.begin(), lightInFrustum.end());
+		visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
 		visibleLights.insert(visibleLights.end(), parallelBeamsLights.begin(), parallelBeamsLights.end());
 	}
 
 	void LightManager::loadLights()
 	{
 		const std::vector<Light *> &lights = getVisibleLights();
-		for(unsigned int i=0;i<maxLights; ++i)
+		for(unsigned int i=0; i < maxLights; ++i)
 		{
-			if(lights.size()>i)
+			if(lights.size() > i)
 			{
 				const Light *light = lights[i];
 

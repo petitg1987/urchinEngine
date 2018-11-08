@@ -48,6 +48,7 @@ namespace urchin
 			//lights container
 			std::vector<Light *> parallelBeamsLights; //sun lights
 			OctreeManager<Light> *lightOctreeManager; //others lights
+			std::unordered_set<Light *> lightsInFrustum;
 			std::vector<Light *> visibleLights;
 
 			Light *lastUpdatedLight;

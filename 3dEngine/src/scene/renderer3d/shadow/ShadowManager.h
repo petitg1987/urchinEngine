@@ -54,7 +54,7 @@ namespace urchin
 			void setBlurShadow(BlurShadow);
 			BlurShadow getBlurShadow() const;
 
-			const std::vector<Frustum<float>> &getSplittedFrustums() const;
+			const std::vector<Frustum<float>> &getSplitFrustums() const;
 			const ShadowData &getShadowData(const Light *) const;
 			std::unordered_set<Model *> getVisibleModels();
 
@@ -104,6 +104,7 @@ namespace urchin
 			ModelDisplayer *shadowModelDisplayer;
 			LightManager *lightManager;
 			OctreeManager<Model> *modelOctreeManager;
+			std::unordered_set<Model *> obboxModels;
 			Matrix4<float> projectionMatrix;
 			ShadowUniform *shadowUniform;
 			ShadowModelUniform *shadowModelUniform;
@@ -111,8 +112,8 @@ namespace urchin
 			//shadow information
 			int depthComponent;
 			float frustumDistance;
-			std::vector<float> splittedDistance;
-			std::vector<Frustum<float>> splittedFrustums;
+			std::vector<float> splitDistances;
+			std::vector<Frustum<float>> splitFrustums;
 			std::map<const Light *, ShadowData *> shadowDatas;
 			bool bForceUpdateAllShadowMaps;
 			unsigned int depthSplitDistanceLoc;
