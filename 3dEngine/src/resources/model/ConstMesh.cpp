@@ -65,7 +65,7 @@ namespace urchin
 	 * Vertices can be duplicated because they have different texture coordinates.
 	 * This method returns all duplicates vertices thanks to 'linked vertices group ID' stored on each vertex.
 	 */
-	std::vector<unsigned int> ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const
+	const std::vector<unsigned int> &ConstMesh::getLinkedVertices(unsigned int linkedVerticesGroupId) const
 	{
 		auto it = linkedVertices.find(linkedVerticesGroupId);
 		if(it!=linkedVertices.end())

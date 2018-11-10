@@ -60,9 +60,9 @@ namespace urchin
 		globalBBox = constMeshes->getOriginalAABBox().moveAABBox(newTransform);
 
 		globalSplitBBoxes.clear();
-		for (const auto &originalSplittedAABBox : constMeshes->getOriginalSplittedAABBoxes())
+		for (const auto &originalSplitAABBox : constMeshes->getOriginalSplitAABBoxes())
 		{
-			globalSplitBBoxes.push_back(originalSplittedAABBox.moveAABBox(newTransform));
+			globalSplitBBoxes.push_back(originalSplitAABBox.moveAABBox(newTransform));
 		}
 	}
 

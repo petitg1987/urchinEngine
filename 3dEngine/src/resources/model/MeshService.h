@@ -15,8 +15,8 @@ namespace urchin
 		public:
 			friend class Singleton<MeshService>;
 
-			void computeVertices(const ConstMesh *const, const std::vector<Bone> &, Point3<float> *const);
-			void computeNormals(const ConstMesh *const, const Point3<float> *const,  DataVertex *const);
+			void computeVertices(const ConstMesh *, const std::vector<Bone> &, Point3<float> *);
+			void computeNormals(const ConstMesh *, const Point3<float> *,  DataVertex *);
 
 		private:
 			MeshService();

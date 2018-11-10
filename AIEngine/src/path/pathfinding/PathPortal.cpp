@@ -7,7 +7,7 @@ namespace urchin
         portal(portal),
         previousPathNode(previousPathNode),
         nextPathNode(nextPathNode),
-        pivotPoint(Point3<float>(NAN, NAN, NAN))
+        bHasPivotPoint(false)
     {
 
     }
@@ -15,11 +15,12 @@ namespace urchin
     void PathPortal::setPivotPoint(const Point3<float> &pivotPoint)
     {
         this->pivotPoint = pivotPoint;
+        this->bHasPivotPoint = true;
     }
 
     bool PathPortal::hasPivotPoint() const
     {
-        return !std::isnan(pivotPoint.X);
+        return bHasPivotPoint;
     }
 
     /**

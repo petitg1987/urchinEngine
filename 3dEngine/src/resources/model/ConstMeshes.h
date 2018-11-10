@@ -27,14 +27,14 @@ namespace urchin
 			const std::vector<const ConstMesh *> &getConstMeshes() const;
 
 			const AABBox<float> &getOriginalAABBox() const;
-			const std::vector<AABBox<float>> &getOriginalSplittedAABBoxes() const;
+			const std::vector<AABBox<float>> &getOriginalSplitAABBoxes() const;
 		
 		private:
 			std::string meshFilename;
 			std::vector<const ConstMesh *> constMeshes;
 
 			AABBox<float> *originalBBox; //bounding box (not transformed)
-			std::vector<AABBox<float>> originalSplittedBBoxes;
+			std::vector<AABBox<float>> originalSplitBBoxes;
 	};
 
 }

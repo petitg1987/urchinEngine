@@ -135,7 +135,8 @@ namespace urchin
 
 	std::unordered_set<Model *> ShadowData::retrieveModels() const
 	{
-		std::unordered_set<Model *> models;
+        models.clear();
+
 		for(unsigned int i=0; i<getNbFrustumShadowData(); ++i)
 		{
 			if(getFrustumShadowData(i)->needShadowMapUpdate())
@@ -144,6 +145,7 @@ namespace urchin
 				models.insert(frustumSplitModels.begin(), frustumSplitModels.end());
 			}
 		}
+
 		return models;
 	}
 }

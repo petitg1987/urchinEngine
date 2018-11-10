@@ -91,6 +91,7 @@ namespace urchin
             Image *grassTexture, *grassMaskTexture;
             std::string grassTextureFilename, grassMaskFilename;
             TerrainGrassQuadtree *mainGrassQuadtree;
+            std::vector<const TerrainGrassQuadtree *> grassQuadtrees;
             unsigned int numGrassInTex;
             float grassDisplayDistance;
             float grassHeight, grassLength;

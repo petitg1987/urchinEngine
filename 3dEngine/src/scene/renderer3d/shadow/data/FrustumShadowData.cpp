@@ -58,7 +58,7 @@ namespace urchin
 	{
         modelsRequireUpdate = false;
 
-        if(models!=this->models)
+        if(models != this->models)
         {
             modelsRequireUpdate = true;
         }else

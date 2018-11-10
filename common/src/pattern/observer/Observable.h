@@ -1,7 +1,7 @@
 #ifndef URCHINENGINE_OBSERVABLE_H
 #define URCHINENGINE_OBSERVABLE_H
 
-#include <set>
+#include <unordered_set>
 #include <map>
 
 #include "pattern/observer/Observer.h"
@@ -19,7 +19,7 @@ namespace urchin
 			void notifyObservers(Observable *, int);
 
 		private:
-			mutable std::map<int, std::set<Observer *> *> mapObservers;
+			mutable std::map<int, std::unordered_set<Observer *> *> mapObservers;
 	};
 
 }

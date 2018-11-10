@@ -31,7 +31,7 @@ namespace urchin
 			std::map<std::string, const ConstAnimation *> getAnimations() const;
 
 			const AABBox<float> &getAABBox() const override;
-			std::vector<AABBox<float>> getSplitAABBoxes() const;
+			const std::vector<AABBox<float>> &getSplitAABBoxes() const;
 			const AABBox<float> &getLocalAABBox() const;
 			
 			void setPosition(const Point3<float> &);
@@ -54,7 +54,7 @@ namespace urchin
 			void initialize(const std::string &);
 			void onMoving(const Transform<float> &);
 
-			static AABBox<float> defaultModelAABBox;
+			static std::vector<AABBox<float>> defaultModelAABBoxes;
 
 			//meshes
 			Meshes *meshes;

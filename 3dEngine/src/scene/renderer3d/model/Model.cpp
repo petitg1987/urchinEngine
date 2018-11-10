@@ -8,7 +8,7 @@ namespace urchin
 {
 
     //static
-    AABBox<float> Model::defaultModelAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
+    std::vector<AABBox<float>> Model::defaultModelAABBoxes = {AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f))};
 
 	Model::Model(const std::string &meshFilename) :
 			meshes(nullptr),
@@ -161,14 +161,14 @@ namespace urchin
 			return meshes->getGlobalAABBox();
 		}else
         {
-            return defaultModelAABBox;
+            return defaultModelAABBoxes[0];
         }
 	}
 
 	/**
 	 * @return identical to getAABBox() method but the bounding box is split to the limit size configured
 	 */
-	std::vector<AABBox<float>> Model::getSplitAABBoxes() const
+	const std::vector<AABBox<float>> &Model::getSplitAABBoxes() const
 	{
 		if(isAnimate())
 		{
@@ -178,7 +178,7 @@ namespace urchin
 			return meshes->getGlobalSplitAABBoxes();
 		}else
         {
-            return {defaultModelAABBox};
+            return defaultModelAABBoxes;
         }
 	}
 
@@ -195,7 +195,7 @@ namespace urchin
 			return meshes->getGlobalLocalAABBox();
 		}else
         {
-            return defaultModelAABBox;
+            return defaultModelAABBoxes[0];
         }
 	}
 

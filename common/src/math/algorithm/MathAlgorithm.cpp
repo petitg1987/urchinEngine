@@ -41,8 +41,7 @@ namespace urchin
 
 	unsigned int MathAlgorithm::powerOfTwo(unsigned int exponent)
 	{
-		unsigned int result = 1;
-		return result << exponent;
+		return 1u << exponent;
 	}
 
 	int MathAlgorithm::pow(int base, int exp)

@@ -24,8 +24,12 @@ namespace urchin
 			void loadCustomUniforms() override;
 
 		private:
+			void updateProjectionMatrices();
+
 			int mModelProjectionMatrixLoc;
 			const ShadowData *shadowData;
+
+			std::vector<Matrix4<float>> projectionMatrices;
 	};
 
 }

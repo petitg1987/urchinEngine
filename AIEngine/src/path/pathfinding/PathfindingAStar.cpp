@@ -262,7 +262,7 @@ namespace urchin
             }
         #endif
 
-        Point3<float> previousPivotPoint(NAN, NAN, NAN);
+        Point3<float> previousPivotPoint;
         for (auto &portal : portals)
         {
             if(portal->hasPivotPoint())

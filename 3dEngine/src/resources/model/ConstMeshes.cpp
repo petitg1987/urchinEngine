@@ -45,7 +45,7 @@ namespace urchin
 			}
 		}
 		originalBBox = new AABBox<float>(min, max);
-		originalSplittedBBoxes = SplitBoundingBox().split(*originalBBox);
+		originalSplitBBoxes = SplitBoundingBox().split(*originalBBox);
 	}
 
 	ConstMeshes::~ConstMeshes()
@@ -83,9 +83,9 @@ namespace urchin
 		return *originalBBox;
 	}
 
-	const std::vector<AABBox<float>> &ConstMeshes::getOriginalSplittedAABBoxes() const
+	const std::vector<AABBox<float>> &ConstMeshes::getOriginalSplitAABBoxes() const
 	{
-		return originalSplittedBBoxes;
+		return originalSplitBBoxes;
 	}
 
 }

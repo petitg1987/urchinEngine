@@ -65,7 +65,7 @@ namespace urchin
 			unsigned int getNumberVertices() const;
 			const Vertex &getStructVertex(unsigned int) const;
 			const std::vector<TextureCoordinate> &getTextureCoordinates() const;
-			std::vector<unsigned int> getLinkedVertices(unsigned int) const;
+			const std::vector<unsigned int> &getLinkedVertices(unsigned int) const;
 
 			unsigned int getNumberTriangles() const;
 			const std::vector<Triangle> &getTriangles() const;

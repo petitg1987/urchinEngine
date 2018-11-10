@@ -56,7 +56,7 @@ namespace urchin
         for (unsigned int vertexIndex = 0; vertexIndex < constMesh->getNumberVertices(); ++vertexIndex)
         {
             unsigned int linkedVerticesGroupId = constMesh->getStructVertex(vertexIndex).linkedVerticesGroupId;
-            std::vector<unsigned int> linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
+            const std::vector<unsigned int> &linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
             assert(!linkedVertices.empty()); //contains at least 'vertexIndex'
 
             for(unsigned int linkedVertex : linkedVertices)
@@ -97,8 +97,7 @@ namespace urchin
 
             //by group id
             unsigned int linkedVerticesGroupId = constMesh->getStructVertex(triVertexIndex).linkedVerticesGroupId;
-            std::vector<unsigned int> linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
-            for (unsigned int linkedVertexIndex : linkedVertices)
+            for (unsigned int linkedVertexIndex : constMesh->getLinkedVertices(linkedVerticesGroupId))
             {
                 if (linkedVertexIndex == vertexIndex)
                 {

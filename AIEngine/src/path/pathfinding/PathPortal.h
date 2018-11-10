@@ -26,6 +26,7 @@ namespace urchin
             std::shared_ptr<PathNode> nextPathNode;
 
             Point3<float> pivotPoint;
+            bool bHasPivotPoint;
     };
 
 }

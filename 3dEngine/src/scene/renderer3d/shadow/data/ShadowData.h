@@ -54,6 +54,7 @@ namespace urchin
 
 			Matrix4<float> lightViewMatrix;
 			std::vector<FrustumShadowData *> frustumShadowData;
+			mutable std::unordered_set<Model *> models;
 	};
 
 }

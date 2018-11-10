@@ -446,12 +446,12 @@ namespace urchin
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
             glUniform3fv(cameraPositionLoc, 1, (const float *)camera->getPosition());
 
-            std::stack<const TerrainGrassQuadtree *> grassQuadtrees;
-            grassQuadtrees.push(mainGrassQuadtree);
-            while (!grassQuadtrees.empty())
+            grassQuadtrees.clear();
+            grassQuadtrees.push_back(mainGrassQuadtree);
+
+            for(unsigned int i=0; i<grassQuadtrees.size(); ++i)
             {
-                const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees.top();
-                grassQuadtrees.pop();
+                const TerrainGrassQuadtree *grassQuadtree = grassQuadtrees[i];
 
                 if (camera->getFrustum().cutFrustum(grassDisplayDistance).collideWithAABBox(*grassQuadtree->getBox()))
                 {
@@ -463,7 +463,7 @@ namespace urchin
                     {
                         for (const auto *child : grassQuadtree->getChildren())
                         {
-                            grassQuadtrees.push(child);
+                            grassQuadtrees.push_back(child);
                         }
                     }
                 }
