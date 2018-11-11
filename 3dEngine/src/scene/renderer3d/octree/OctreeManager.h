@@ -55,7 +55,7 @@ namespace urchin
 			int minSize;
 			Octree<TOctreeable> *mainOctree;
 
-			std::set<TOctreeable *> movingOctreeables;
+			std::unordered_set<TOctreeable *> movingOctreeables;
 
 			#ifdef _DEBUG
 				unsigned int refreshModCount, postRefreshModCount;

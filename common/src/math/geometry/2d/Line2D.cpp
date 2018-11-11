@@ -107,7 +107,7 @@ namespace urchin
 	}
 
 	/**
-	 * Returns the intersection point of the two lines. If intersection doesn't exist: return a Point2<T> of NAN.
+	 * Returns the intersection point of the two lines.
 	 * When lines are collinear and intersect: returns this->getA().
 	 */
 	template<class T> Point2<T> Line2D<T>::intersectPoint(const Line2D<T> &other, bool &hasIntersection) const

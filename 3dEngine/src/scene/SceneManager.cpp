@@ -11,8 +11,8 @@ namespace urchin
 {
 	
 	SceneManager::SceneManager() :
-			sceneWidth(0),
-			sceneHeight(0),
+			sceneWidth(500),
+			sceneHeight(500),
 			previousTime(std::chrono::high_resolution_clock::now()),
 			currFrame(0),
 			nbrFps(START_FPS),
@@ -88,17 +88,20 @@ namespace urchin
 
 	void SceneManager::onResize(unsigned int width, unsigned int height)
 	{
-		//scene properties
-		sceneWidth = width;
-		sceneHeight = height;
-		glViewport(0, 0, sceneWidth, sceneHeight);
-
-		//renderer
-		for(unsigned int i=0; i<NUM_RENDERER; ++i)
+		if(width!=0 && height!=0)
 		{
-			if(activeRenderers[i])
+			//scene properties
+			sceneWidth = width;
+			sceneHeight = height;
+			glViewport(0, 0, sceneWidth, sceneHeight);
+
+			//renderer
+			for(unsigned int i=0; i<NUM_RENDERER; ++i)
 			{
-				activeRenderers[i]->onResize(sceneWidth, sceneHeight);
+				if(activeRenderers[i])
+				{
+					activeRenderers[i]->onResize(sceneWidth, sceneHeight);
+				}
 			}
 		}
 	}

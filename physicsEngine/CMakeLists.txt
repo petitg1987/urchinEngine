@@ -4,6 +4,8 @@ project(urchinPhysicsEngine)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-ffast-math)
+
 set(SOURCE_FILES
         src/body/work/AbstractWorkBody.cpp
         src/body/work/AbstractWorkBody.h

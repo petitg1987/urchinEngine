@@ -20,7 +20,8 @@ namespace urchin
 			AbstractWorkBody *body2) const
 	{
 		T timeToHit = 0.0; //0.0 represents initial situation (from transformation), 1.0 represents final situation (to transformation).
-		Vector3<T> normalFromObject2(NAN, NAN, NAN);
+		Vector3<T> normalFromObject2;
+		bool normalFromObject2Defined = false;
 		Simplex<T> simplex;
 
 		PhysicsTransform interpolatedTransform1 = object1.getFrom();
@@ -64,6 +65,7 @@ namespace urchin
 				interpolatedTransform2.setPosition(interpolate(object2.getFrom().getPosition(), object2.getTo().getPosition(), timeToHit));
 
                 normalFromObject2 = -direction;
+				normalFromObject2Defined = true;
 			}
 
 			if(!simplex.isPointInSimplex(newPoint))
@@ -76,7 +78,7 @@ namespace urchin
 
 			if(closestPointSquareDistance < terminationTolerance)
 			{
-				if(simplex.getSize()==4 && std::isnan(normalFromObject2.X))
+				if(simplex.getSize()==4 && !normalFromObject2Defined)
 				{
                     if(timeToHit==(T)0.0 && simplex.getClosestPointToOrigin()==Point3<T>((T)0.0, (T)0.0, (T)0.0))
                     {
@@ -90,7 +92,7 @@ namespace urchin
                         logInputData(object1, object2, wrongSituation, Logger::ERROR);
                         return std::shared_ptr<ContinuousCollisionResult<U>>(nullptr);
                     }
-				}else if(!std::isnan(normalFromObject2.X))
+				}else if(normalFromObject2Defined)
 				{
 					normalFromObject2 = normalFromObject2.normalize();
 

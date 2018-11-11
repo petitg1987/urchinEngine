@@ -134,8 +134,9 @@ namespace urchin
                     childTotalTime += child->computeTotalTimes();
                 }
                 double unTrackedTime = averageTime - (childTotalTime / getNbValidTimes());
+                double unTrackedPercentageTime = (unTrackedTime / averageTime) * 100.0;
 
-                logStream << ", un-tracked: " << std::to_string(unTrackedTime) << "ms";
+                logStream << ", un-tracked: " << std::to_string(unTrackedTime) << "ms/" << unTrackedPercentageTime << "%";
             }
 
             logStream << ")" <<std::endl;

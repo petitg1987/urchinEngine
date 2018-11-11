@@ -5,6 +5,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-ffast-math)
+
 set(SOURCE_FILES
         src/ai/path/navmesh/MonotonePolygonTest.cpp
         src/ai/path/navmesh/MonotonePolygonTest.h

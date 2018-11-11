@@ -305,16 +305,16 @@ namespace urchin
 	/**
 	 * @return All visible models from all lights
 	 */
-	std::unordered_set<Model *> ShadowManager::getVisibleModels()
+	const std::unordered_set<Model *> &ShadowManager::computeVisibleModels()
 	{
 		ScopeProfiler profiler("3d", "shadowGetVisibleModels");
 
-		std::unordered_set<Model *> visibleModels;
-		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
-		{
+		visibleModels.clear();
+		for (const auto &shadowData : shadowDatas)
+        {
 			for(unsigned int i=0; i<nbShadowMaps; ++i)
 			{
-				const std::unordered_set<Model *> &visibleModelsForLightInFrustumSplit = it->second->getFrustumShadowData(i)->getModels();
+				const std::unordered_set<Model *> &visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
 				visibleModels.insert(visibleModelsForLightInFrustumSplit.begin(), visibleModelsForLightInFrustumSplit.end());
 			}
 		}
@@ -347,13 +347,14 @@ namespace urchin
 	 */
 	void ShadowManager::updateShadowLights()
 	{
-		std::set<const Light *> allLights;
-		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
+		std::unordered_set<const Light *> allLights;
+        allLights.reserve(shadowDatas.size());
+		for (const auto &shadowData : shadowDatas)
 		{
-			allLights.insert(it->first);
+			allLights.insert(shadowData.first);
 		}
 
-		for (auto allLight : allLights)
+		for (const auto &allLight : allLights)
 		{
 			removeShadowLight(allLight);
 			addShadowLight(allLight);

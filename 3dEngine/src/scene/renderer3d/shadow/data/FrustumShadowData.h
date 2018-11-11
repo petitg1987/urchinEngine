@@ -9,7 +9,7 @@ namespace urchin
 {
 
 	/**
-	* Shadow execution data for a light and a splitted frustum
+	* Shadow execution data for a light and a split frustum
 	*/
 	class FrustumShadowData
 	{

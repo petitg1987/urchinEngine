@@ -4,6 +4,8 @@ project(urchinMapHandler)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-ffast-math)
+
 set(SOURCE_FILES
         src/resources/common/OrientationReaderWriter.cpp
         src/resources/common/OrientationReaderWriter.h

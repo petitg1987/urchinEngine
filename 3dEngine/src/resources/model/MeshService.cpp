@@ -39,7 +39,10 @@ namespace urchin
 	void MeshService::computeNormals(const ConstMesh *const constMesh, const Point3<float> *const vertices, DataVertex *const dataVertices)
     {
         //compute weighted normals
-        std::vector<Vector3<float>> vertexNormals(constMesh->getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
+        static std::vector<Vector3<float>> vertexNormals;
+        vertexNormals.clear();
+        vertexNormals.resize(constMesh->getNumberVertices(), Vector3<float>(0.0f, 0.0f, 0.0f));
+
         for(unsigned int triIndex=0; triIndex<constMesh->getNumberTriangles(); ++triIndex)
         {
             const Triangle &tri = constMesh->getTriangle(triIndex);
@@ -56,10 +59,7 @@ namespace urchin
         for (unsigned int vertexIndex = 0; vertexIndex < constMesh->getNumberVertices(); ++vertexIndex)
         {
             unsigned int linkedVerticesGroupId = constMesh->getStructVertex(vertexIndex).linkedVerticesGroupId;
-            const std::vector<unsigned int> &linkedVertices = constMesh->getLinkedVertices(linkedVerticesGroupId);
-            assert(!linkedVertices.empty()); //contains at least 'vertexIndex'
-
-            for(unsigned int linkedVertex : linkedVertices)
+            for(unsigned int linkedVertex : constMesh->getLinkedVertices(linkedVerticesGroupId))
             {
                 dataVertices[vertexIndex].normal += vertexNormals[linkedVertex];
             }

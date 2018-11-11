@@ -14,7 +14,7 @@ namespace urchin
             xLength(xLength),
             zLength(zLength)
     {
-        lastTransform.setPosition(Point3<float>(NAN, NAN, NAN));
+        lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 
         assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();

@@ -56,7 +56,7 @@ namespace urchin
 
 			const std::vector<Frustum<float>> &getSplitFrustums() const;
 			const ShadowData &getShadowData(const Light *) const;
-			std::unordered_set<Model *> getVisibleModels();
+			const std::unordered_set<Model *> &computeVisibleModels();
 
 			void updateVisibleModels(const Frustum<float> &);
 			void forceUpdateAllShadowMaps();
@@ -108,6 +108,7 @@ namespace urchin
 			Matrix4<float> projectionMatrix;
 			ShadowUniform *shadowUniform;
 			ShadowModelUniform *shadowModelUniform;
+			std::unordered_set<Model *> visibleModels;
 
 			//shadow information
 			int depthComponent;

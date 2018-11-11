@@ -4,7 +4,7 @@ project(urchin3dEngine)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 
-add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES)
+add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES -ffast-math)
 
 set(SOURCE_FILES
         src/loader/font/LoaderFNT.cpp
