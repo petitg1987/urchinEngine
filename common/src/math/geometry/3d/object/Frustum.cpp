@@ -57,15 +57,14 @@ namespace urchin
 		T farHalfWidth = farHalfHeight * ratio;
 
 		//building frustum points
-		frustumPoints.clear();
-		frustumPoints.push_back(Point3<T>(-nearHalfWidth, nearHalfHeight, -nearDistance)); //ntl
-		frustumPoints.push_back(Point3<T>(nearHalfWidth, nearHalfHeight, -nearDistance)); //ntr
-		frustumPoints.push_back(Point3<T>(-nearHalfWidth, -nearHalfHeight, -nearDistance)); //nbl
-		frustumPoints.push_back(Point3<T>(nearHalfWidth, -nearHalfHeight, -nearDistance)); //nbr
-		frustumPoints.push_back(Point3<T>(-farHalfWidth, farHalfHeight, -farDistance)); //ftl
-		frustumPoints.push_back(Point3<T>(farHalfWidth, farHalfHeight, -farDistance)); //ftr
-		frustumPoints.push_back(Point3<T>(-farHalfWidth, -farHalfHeight, -farDistance)); //fbl
-		frustumPoints.push_back(Point3<T>(farHalfWidth, -farHalfHeight, -farDistance)); //fbr
+		frustumPoints[0] = Point3<T>(-nearHalfWidth, nearHalfHeight, -nearDistance); //ntl
+		frustumPoints[1] = Point3<T>(nearHalfWidth, nearHalfHeight, -nearDistance); //ntr
+		frustumPoints[2] = Point3<T>(-nearHalfWidth, -nearHalfHeight, -nearDistance); //nbl
+		frustumPoints[3] = Point3<T>(nearHalfWidth, -nearHalfHeight, -nearDistance); //nbr
+		frustumPoints[4] = Point3<T>(-farHalfWidth, farHalfHeight, -farDistance); //ftl
+		frustumPoints[5] = Point3<T>(farHalfWidth, farHalfHeight, -farDistance); //ftr
+		frustumPoints[6] = Point3<T>(-farHalfWidth, -farHalfHeight, -farDistance); //fbl
+		frustumPoints[7] = Point3<T>(farHalfWidth, -farHalfHeight, -farDistance); //fbr
 
 		//building frustum data
 		buildData();
@@ -84,16 +83,15 @@ namespace urchin
 	template<class T> void Frustum<T>::buildFrustum(const Point3<T> &ntl, const Point3<T> &ntr, const Point3<T> &nbl, const Point3<T> &nbr,
 		const Point3<T> &ftl, const Point3<T> &ftr, const Point3<T> &fbl, const Point3<T> &fbr)
 	{
-		//builting frustum points
-		frustumPoints.clear();
-		frustumPoints.push_back(ntl);
-		frustumPoints.push_back(ntr);
-		frustumPoints.push_back(nbl);
-		frustumPoints.push_back(nbr);
-		frustumPoints.push_back(ftl);
-		frustumPoints.push_back(ftr);
-		frustumPoints.push_back(fbl);
-		frustumPoints.push_back(fbr);
+		//building frustum points
+		frustumPoints[0] = ntl;
+		frustumPoints[1] = ntr;
+		frustumPoints[2] = nbl;
+		frustumPoints[3] = nbr;
+		frustumPoints[4] = ftl;
+		frustumPoints[5] = ftr;
+		frustumPoints[6] = fbl;
+		frustumPoints[7] = fbr;
 
 		//building frustum data
 		buildData();
@@ -118,7 +116,7 @@ namespace urchin
 		position = middlePlane.intersectPoint(sideLine);
 	}
 
-	template<class T> const std::vector<Point3<T>> &Frustum<T>::getFrustumPoints() const
+	template<class T> const Point3<T> *Frustum<T>::getFrustumPoints() const
 	{
 		return frustumPoints;
 	}
@@ -225,9 +223,9 @@ namespace urchin
 
 	template<class T> bool Frustum<T>::collideWithPoint(const Point3<T> &point) const
 	{
-		for(int i=0; i < 6; i++)
+		for (auto &plane : planes)
 		{
-			if (planes[i].distance(point) > 0.0)
+			if (plane.distance(point) > 0.0)
 			{
 				return false;
 			}
@@ -241,9 +239,9 @@ namespace urchin
 	*/
 	template<class T> bool Frustum<T>::collideWithAABBox(const AABBox<T> &bbox) const
 	{
-		for(int i=0; i < 6; i++)
+		for (auto &plane : planes)
 		{
-			const Vector3<T> &normal = planes[i].getNormal();
+			const Vector3<T> &normal = plane.getNormal();
 
 			Point3<T> nVertex(bbox.getMax());
 			if(normal.X >= 0.0)
@@ -259,7 +257,7 @@ namespace urchin
 				nVertex.Z = bbox.getMin().Z;
 			}
 
-			if (planes[i].distance(nVertex) > 0.0)
+			if (plane.distance(nVertex) > 0.0)
 			{
 				return false;
 			}
@@ -273,9 +271,9 @@ namespace urchin
 	*/
 	template<class T> bool Frustum<T>::collideWithSphere(const Sphere<T> &sphere) const
 	{
-		for(int i=0; i < 6; i++)
+		for (auto &plane : planes)
 		{
-			if (planes[i].distance(sphere.getCenterOfMass()) > sphere.getRadius())
+			if (plane.distance(sphere.getCenterOfMass()) > sphere.getRadius())
 			{
 				return false;
 			}

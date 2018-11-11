@@ -27,9 +27,9 @@ namespace urchin
 		previousTime = std::chrono::high_resolution_clock::now();
 
 		//renderer
-		for(unsigned int i=0; i < NUM_RENDERER; ++i)
+		for (auto &activeRenderer : activeRenderers)
 		{
-			activeRenderers[i] = nullptr;
+			activeRenderer = nullptr;
 		}
 	}
 
@@ -96,11 +96,11 @@ namespace urchin
 			glViewport(0, 0, sceneWidth, sceneHeight);
 
 			//renderer
-			for(unsigned int i=0; i<NUM_RENDERER; ++i)
+			for (auto &activeRenderer : activeRenderers)
 			{
-				if(activeRenderers[i])
+				if(activeRenderer)
 				{
-					activeRenderers[i]->onResize(sceneWidth, sceneHeight);
+					activeRenderer->onResize(sceneWidth, sceneHeight);
 				}
 			}
 		}
@@ -289,11 +289,11 @@ namespace urchin
 		float invFrameRate = getOneOnFps();
 
 		//renderer
-		for(unsigned int i=0; i<NUM_RENDERER; ++i)
+		for (auto &activeRenderer : activeRenderers)
 		{
-			if(activeRenderers[i])
+			if(activeRenderer)
 			{
-				activeRenderers[i]->display(invFrameRate);
+				activeRenderer->display(invFrameRate);
 			}
 		}
 

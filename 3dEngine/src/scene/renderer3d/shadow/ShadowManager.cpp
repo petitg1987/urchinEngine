@@ -430,26 +430,27 @@ namespace urchin
 		const Frustum<float> &frustumLightSpace = lightViewMatrix * splittedFrustum;
 
 		//determine point belonging to shadow caster/receiver box
-		std::vector<Point3<float>> shadowReceiverAndCasterVertex;
-		shadowReceiverAndCasterVertex.reserve(16);
+		Point3<float> shadowReceiverAndCasterVertex[16];
 		float nearCapZ = computeNearZForSceneIndependentBox(frustumLightSpace);
-		for (const auto &frustumPoint : frustumLightSpace.getFrustumPoints())
+		for (unsigned int i=0; i<8; ++i)
 		{
+			const Point3<float> &frustumPoint = frustumLightSpace.getFrustumPoints()[i];
+
 			//add shadow receiver points
-			shadowReceiverAndCasterVertex.push_back(frustumPoint);
+			shadowReceiverAndCasterVertex[i*2] = frustumPoint;
 
 			//add shadow caster points
-			shadowReceiverAndCasterVertex.emplace_back(Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ));
+			shadowReceiverAndCasterVertex[i*2 + 1] = Point3<float>(frustumPoint.X, frustumPoint.Y, nearCapZ);
 		}
 
 		//build shadow receiver/caster bounding box from points
-		return AABBox<float>(shadowReceiverAndCasterVertex);
+		return AABBox<float>(shadowReceiverAndCasterVertex, 16);
 	}
 
 	float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float> &splittedFrustumLightSpace) const
 	{
 		float nearestPointFromLight = splittedFrustumLightSpace.getFrustumPoints()[0].Z;
-		for(unsigned int i=1; i<splittedFrustumLightSpace.getFrustumPoints().size(); ++i)
+		for(unsigned int i=1; i<8; ++i)
 		{
 			if(splittedFrustumLightSpace.getFrustumPoints()[i].Z > nearestPointFromLight)
 			{

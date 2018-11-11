@@ -39,7 +39,7 @@ namespace urchin
 			void buildFrustum(T, T, T, T);
 			void buildFrustum(const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &, const Point3<T> &);
 
-			const std::vector<Point3<T>> &getFrustumPoints() const;
+			const Point3<T> *getFrustumPoints() const;
 			const Point3<T> &getFrustumPoint(FrustumPoint frustumPoint) const;
 			const Point3<T> &getPosition() const;
 			
@@ -56,7 +56,7 @@ namespace urchin
 		private:
 			void buildData();
 
-			std::vector<Point3<T>> frustumPoints;
+			Point3<T> frustumPoints[8];
 			Point3<T> position; //eye/camera position
 			Plane<T> planes[6];
 			enum {

@@ -193,10 +193,8 @@ namespace urchin
             {
                 for(unsigned int i = beginI; i<endI; i++)
                 {
-                    std::vector<unsigned int> triangleIndices = findTriangleIndices(i);
-
                     Vector3<float> vertexNormal(0.0, 0.0, 0.0);
-                    for(unsigned int triangleIndex : triangleIndices)
+                    for(unsigned int triangleIndex : findTriangleIndices(i))
                     {
                         vertexNormal += normalTriangles[triangleIndex];
                     }

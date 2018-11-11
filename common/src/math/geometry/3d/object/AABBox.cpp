@@ -44,31 +44,33 @@ namespace urchin
 	{
 		for(const auto &point : points)
 		{
-			if(min.X > point.X)
-			{
-				min.X = point.X;
-			}
-			if(min.Y > point.Y)
-			{
-				min.Y = point.Y;
-			}
-			if(min.Z > point.Z)
-			{
-				min.Z = point.Z;
-			}
+			min.X = std::min(min.X, point.X);
+			min.Y = std::min(min.Y, point.Y);
+			min.Z = std::min(min.Z, point.Z);
 
-			if(max.X < point.X)
-			{
-				max.X = point.X;
-			}
-			if(max.Y < point.Y)
-			{
-				max.Y = point.Y;
-			}
-			if(max.Z < point.Z)
-			{
-				max.Z = point.Z;
-			}
+			max.X = std::max(max.X, point.X);
+			max.Y = std::max(max.Y, point.Y);
+			max.Z = std::max(max.Z, point.Z);
+		}
+
+		boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
+	}
+
+	template<class T> AABBox<T>::AABBox(const Point3<T> *points, unsigned int size) :
+            min(Point3<T>(std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max())),
+            max(Point3<T>(-std::numeric_limits<T>::max(), -std::numeric_limits<T>::max(), -std::numeric_limits<T>::max()))
+	{
+		for(unsigned int i=0; i<size; ++i)
+		{
+			const Point3<T> &point = points[i];
+
+			min.X = std::min(min.X, point.X);
+			min.Y = std::min(min.Y, point.Y);
+			min.Z = std::min(min.Z, point.Z);
+
+			max.X = std::max(max.X, point.X);
+			max.Y = std::max(max.Y, point.Y);
+			max.Z = std::max(max.Z, point.Z);
 		}
 
 		boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));

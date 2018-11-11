@@ -25,6 +25,7 @@ namespace urchin
 			AABBox(const Point3<T> &, const Point3<T> &);
 			AABBox(const Point3<T> &, const Vector3<T>&);
 			explicit AABBox(const std::vector<Point3<T>> &);
+			AABBox(const Point3<T> *, unsigned int);
 			AABBox(const AABBox<T> &);
 
 			const T getHalfSize(unsigned int) const;

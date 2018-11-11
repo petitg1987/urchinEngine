@@ -156,8 +156,8 @@ namespace urchin
 		lightOctreeManager->getOctreeablesIn(frustum, lightsInFrustum);
 
 		visibleLights.clear();
+		visibleLights = parallelBeamsLights;
 		visibleLights.insert(visibleLights.end(), lightsInFrustum.begin(), lightsInFrustum.end());
-		visibleLights.insert(visibleLights.end(), parallelBeamsLights.begin(), parallelBeamsLights.end());
 	}
 
 	void LightManager::loadLights()
