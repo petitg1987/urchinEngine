@@ -25,20 +25,20 @@ namespace urchin
 		
 			const AABBox<float> &getAABBox() const;
 
+			bool isLeaf() const;
+
+			const std::vector<Octree<TOctreeable> *> &getChildren() const;
+
+            const std::vector<TOctreeable *> &getOctreeables() const;
 			void addOctreeable(TOctreeable *, bool addRef);
 			void removeOctreeable(TOctreeable *, bool removeRef);
-
-			void getOctreeablesIn(std::unordered_set<TOctreeable *> &, const ConvexObject3D<float> &, const OctreeableFilter<TOctreeable> &) const;
-			void getAllOctreeables(std::unordered_set<TOctreeable *> &) const;
-
-			void getAllLeafOctrees(std::vector<const Octree<TOctreeable> *> &) const;
 
 		private:
 			std::vector<Octree *> children;
 			std::vector<TOctreeable *> octreeables;
-			
+
 			AABBox<float> bbox;
-			bool isLeaf;
+			bool bIsLeaf;
 	};
 
 	#include "Octree.inl"

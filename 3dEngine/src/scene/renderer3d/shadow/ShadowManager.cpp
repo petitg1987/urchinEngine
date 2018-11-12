@@ -309,7 +309,7 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "shadowGetVisibleModels");
 
-		visibleModels.clear();
+		visibleModels.clear(); //TODO clear of unordered_set is slow
 		for (const auto &shadowData : shadowDatas)
         {
 			for(unsigned int i=0; i<nbShadowMaps; ++i)
@@ -404,7 +404,7 @@ namespace urchin
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums[i], shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
 
-                obboxModels.clear();
+                obboxModels.clear(); //TODO clear of unordered_set is slow
 				modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
 				shadowData->getFrustumShadowData(i)->updateModels(obboxModels);
 
@@ -490,7 +490,6 @@ namespace urchin
                 }
             }
         }
-
 
 		Point3<float> cutMin(
 		        std::min(std::max(aabboxSceneDependent.getMin().X, aabboxSceneIndependent.getMin().X), aabboxSceneIndependent.getMax().X),

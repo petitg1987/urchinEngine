@@ -309,7 +309,7 @@ namespace urchin
 
 	void Renderer3d::updateModelsInFrustum()
     {
-        modelsInFrustum.clear();
+        modelsInFrustum.clear(); //TODO clear of unordered_set is slow
         modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
     }
 

@@ -23,10 +23,10 @@ template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &pos
 
     if(splitX.size()==1 && splitY.size()==1 && splitZ.size()==1)
     {
-        isLeaf = true;
+        bIsLeaf = true;
     }else
     {
-        isLeaf = false;
+        bIsLeaf = false;
 
         for (float xValue : splitX)
         {
@@ -44,7 +44,7 @@ template<class TOctreeable> Octree<TOctreeable>::Octree(const Point3<float> &pos
 
 template<class TOctreeable> Octree<TOctreeable>::~Octree()
 {
-	if(isLeaf)
+	if(bIsLeaf)
 	{
 		//remove references to this octree
 		for(auto &octreeable : octreeables)
@@ -66,96 +66,47 @@ template<class TOctreeable> const AABBox<float> &Octree<TOctreeable>::getAABBox(
 	return bbox;
 }
 
+template<class TOctreeable> bool Octree<TOctreeable>::isLeaf() const
+{
+    return bIsLeaf;
+}
+
+template<class TOctreeable> const std::vector<Octree<TOctreeable> *> &Octree<TOctreeable>::getChildren() const
+{
+	return children;
+}
+
+template<class TOctreeable> const std::vector<TOctreeable *> &Octree<TOctreeable>::getOctreeables() const
+{
+	return octreeables;
+}
+
 template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable *octreeable, bool addRef)
 {
-	const Point3<float> &minOctree = bbox.getMin();
-	const Point3<float> &maxOctree = bbox.getMax();
+    #ifdef _DEBUG
+        assert(bIsLeaf);
+    #endif
 
-	if(	octreeable->getAABBox().getMin().X <= maxOctree.X && octreeable->getAABBox().getMax().X >= minOctree.X &&
-		octreeable->getAABBox().getMin().Y <= maxOctree.Y && octreeable->getAABBox().getMax().Y >= minOctree.Y &&
-		octreeable->getAABBox().getMin().Z <= maxOctree.Z && octreeable->getAABBox().getMax().Z >= minOctree.Z
-	)
-	{
-		if(isLeaf)
-		{
-			octreeables.push_back(octreeable);
-			if(addRef)
-			{
-				octreeable->addRefOctree(this);
-			}
-		}else
-		{
-			for(auto &child : children)
-			{
-				child->addOctreeable(octreeable, addRef);
-			}
-		}
-	}
+    octreeables.push_back(octreeable);
+    if(addRef)
+    {
+        octreeable->addRefOctree(this);
+    }
 }
 
 template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeable *octreeable, bool removeRef)
 {
-	if(isLeaf)
-	{
-		auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);
-		if(it!=octreeables.end())
-		{
-			VectorEraser::erase(octreeables, it);
-			if(removeRef)
-			{
-				octreeable->removeRefOctree(this);
-			}
-		}
-	}
-}
+    #ifdef _DEBUG
+        assert(bIsLeaf);
+    #endif
 
-template<class TOctreeable> void Octree<TOctreeable>::getOctreeablesIn(std::unordered_set<TOctreeable *> &visibleOctreeables, const ConvexObject3D<float> &convexObject, const OctreeableFilter<TOctreeable> &filter) const
-{
-	if(convexObject.collideWithAABBox(bbox))
-	{		
-		if(isLeaf)
-		{
-			for(unsigned int i=0;i<octreeables.size();i++)
-			{
-				if(octreeables[i]->isVisible() && filter.isAccepted(octreeables[i], convexObject))
-				{
-					visibleOctreeables.insert(octreeables[i]);
-				}
-			}
-		}else
-		{
-			for(const auto &child : children)
-			{
-				child->getOctreeablesIn(visibleOctreeables, convexObject, filter);
-			}
-		}
-	}
-}
-
-template<class TOctreeable> void Octree<TOctreeable>::getAllOctreeables(std::unordered_set<TOctreeable *> &allOctreeables) const
-{
-	if(isLeaf)
-	{
-		allOctreeables.insert(octreeables.begin(), octreeables.end());
-	}else
-	{
-		for(const auto &child : children)
-		{
-			child->getAllOctreeables(allOctreeables);
-		}
-	}
-}
-
-template<class TOctreeable> void Octree<TOctreeable>::getAllLeafOctrees(std::vector<const Octree<TOctreeable> *> &allOctrees) const
-{
-	if(isLeaf)
-	{
-		allOctrees.push_back(this);
-	}else
-	{
-		for(const auto &child : children)
-		{
-			child->getAllLeafOctrees(allOctrees);
-		}
-	}
+    auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);
+    if(it!=octreeables.end())
+    {
+        VectorEraser::erase(octreeables, it);
+        if(removeRef)
+        {
+            octreeable->removeRefOctree(this);
+        }
+    }
 }

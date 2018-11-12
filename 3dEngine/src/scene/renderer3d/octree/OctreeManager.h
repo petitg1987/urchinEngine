@@ -56,6 +56,7 @@ namespace urchin
 			Octree<TOctreeable> *mainOctree;
 
 			std::unordered_set<TOctreeable *> movingOctreeables;
+			mutable std::vector<Octree<TOctreeable> *> browseNodes;
 
 			#ifdef _DEBUG
 				unsigned int refreshModCount, postRefreshModCount;

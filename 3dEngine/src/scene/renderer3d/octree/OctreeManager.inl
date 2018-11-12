@@ -22,10 +22,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
 {
 	if(mainOctree)
 	{
-		std::unordered_set<TOctreeable *> allOctreeables;
-		mainOctree->getAllOctreeables(allOctreeables);
-
-        for(const auto &octreeable : allOctreeables)
+        for(const auto &octreeable : getAllOctreeables())
 		{
 			removeOctreeable(octreeable);
 		}
@@ -118,7 +115,23 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
 	bool resized = resizeOctree(octreeable);
 	if(!resized)
 	{
-		mainOctree->addOctreeable(octreeable, true);
+        browseNodes.clear();
+        browseNodes.push_back(mainOctree);
+        for (unsigned int i = 0; i < browseNodes.size(); ++i)
+        {
+            Octree<TOctreeable> *octree = browseNodes[i];
+
+            if (octreeable->getAABBox().collideWithAABBox(octree->getAABBox()))
+            {
+                if (octree->isLeaf())
+                {
+                    octree->addOctreeable(octreeable, true);
+                } else
+                {
+                    browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+                }
+            }
+        }
 	}
 	
 	octreeable->addObserver(this, TOctreeable::MOVE);
@@ -212,8 +225,25 @@ template<class TOctreeable> const std::unordered_set<TOctreeable *> &OctreeManag
 template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getAllOctreeables() const
 {
 	std::unordered_set<TOctreeable *> allOctreeables;
-	mainOctree->getAllOctreeables(allOctreeables);
-	
+
+	if(mainOctree)
+    {
+        browseNodes.clear();
+        browseNodes.push_back(mainOctree);
+        for (unsigned int i = 0; i < browseNodes.size(); ++i)
+        {
+            const Octree<TOctreeable> *octree = browseNodes[i];
+
+            if (octree->isLeaf())
+            {
+                allOctreeables.insert(octree->getOctreeables().begin(), octree->getOctreeables().end());
+            } else
+            {
+                browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+            }
+        }
+    }
+
 	return allOctreeables;
 }
 
@@ -224,11 +254,33 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
-        std::unordered_set<TOctreeable *> &octreeables, const OctreeableFilter<TOctreeable> &filter) const
+        std::unordered_set<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable> &filter) const
 {
     ScopeProfiler profiler("3d", "getOctreeablesIn");
 
-	mainOctree->getOctreeablesIn(octreeables, convexObject, filter);
+	browseNodes.clear();
+	browseNodes.push_back(mainOctree);
+	for(unsigned int i=0; i<browseNodes.size(); ++i)
+	{
+		const Octree<TOctreeable> *octree = browseNodes[i];
+
+		if(convexObject.collideWithAABBox(octree->getAABBox()))
+		{
+			if(octree->isLeaf())
+			{
+				for(unsigned int octreeableI=0;octreeableI<octree->getOctreeables().size();octreeableI++)
+				{
+					if(octree->getOctreeables()[octreeableI]->isVisible() && filter.isAccepted(octree->getOctreeables()[octreeableI], convexObject))
+					{
+						visibleOctreeables.insert(octree->getOctreeables()[octreeableI]);
+					}
+				}
+			}else
+			{
+                browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+			}
+		}
+	}
 }
 
 template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable *newOctreeable)
@@ -249,11 +301,7 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 	}
 
 	//gets all octreeables from the current octree
-	std::unordered_set<TOctreeable *> allOctreeables;
-	if(mainOctree)
-	{
-		mainOctree->getAllOctreeables(allOctreeables);
-	}
+	std::unordered_set<TOctreeable *> allOctreeables = getAllOctreeables();
 	allOctreeables.insert(newOctreeable);
 
 	//rebuild the octree
@@ -265,8 +313,22 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 #ifdef _DEBUG
 	template<class TOctreeable> void OctreeManager<TOctreeable>::drawOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
-		std::vector<const Octree<TOctreeable> *> leafOctrees;
-        mainOctree->getAllLeafOctrees(leafOctrees);
+        std::vector<const Octree<TOctreeable> *> leafOctrees;
+
+        browseNodes.clear();
+        browseNodes.push_back(mainOctree);
+        for(unsigned int i=0; i<browseNodes.size(); ++i)
+        {
+            const Octree<TOctreeable> *octree = browseNodes[i];
+
+            if(octree->isLeaf())
+            {
+                leafOctrees.push_back(octree);
+            }else
+            {
+                browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+            }
+        }
 
 		std::vector<AABBox<float>> aabboxes;
 		aabboxes.reserve(leafOctrees.size());
