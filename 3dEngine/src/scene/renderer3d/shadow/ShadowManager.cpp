@@ -498,7 +498,7 @@ namespace urchin
 
 		Point3<float> cutMax(
 				std::max(std::min(aabboxSceneDependent.getMax().X, aabboxSceneIndependent.getMax().X), aabboxSceneIndependent.getMin().X),
-                std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Y),
+                std::max(std::min(aabboxSceneDependent.getMax().Y, aabboxSceneIndependent.getMax().Y), aabboxSceneIndependent.getMin().Y),
                 std::max(std::min(aabboxSceneDependent.getMax().Z, aabboxSceneIndependent.getMax().Z), aabboxSceneIndependent.getMin().Z));
 
 		cutMin.X = (cutMin.X < 0.0f) ? cutMin.X - (lightViewOverflowStepSize + fmod(cutMin.X, lightViewOverflowStepSize)) : cutMin.X - fmod(cutMin.X, lightViewOverflowStepSize);
