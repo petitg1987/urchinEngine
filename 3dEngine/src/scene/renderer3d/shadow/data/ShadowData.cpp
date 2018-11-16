@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "ShadowData.h"
+#include "scene/renderer3d/octree/helper/OctreeableHelper.h"
 
 namespace urchin
 {
@@ -133,7 +134,7 @@ namespace urchin
 		return frustumShadowData[index];
 	}
 
-	std::unordered_set<Model *> ShadowData::retrieveModels() const
+	std::vector<Model *> ShadowData::retrieveModels() const
 	{
         models.clear();
 
@@ -141,8 +142,8 @@ namespace urchin
 		{
 			if(getFrustumShadowData(i)->needShadowMapUpdate())
 			{
-				const std::unordered_set<Model *> &frustumSplitModels = getFrustumShadowData(i)->getModels();
-				models.insert(frustumSplitModels.begin(), frustumSplitModels.end());
+				const std::vector<Model *> &frustumSplitModels = getFrustumShadowData(i)->getModels();
+				OctreeableHelper<Model>::merge(models, frustumSplitModels);
 			}
 		}
 

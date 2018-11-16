@@ -1,13 +1,15 @@
 template<class TOctreeable> Octreeable<TOctreeable>::Octreeable() :
 	bIsMovingInOctree(false),
-	bIsVisible(true)
+	bIsVisible(true),
+	bIsProcessed(false)
 {
 
 }
 
 template<class TOctreeable> Octreeable<TOctreeable>::Octreeable(const Octreeable<TOctreeable> &octreeable) :
 	bIsMovingInOctree(false),
-	bIsVisible(octreeable.isVisible())
+	bIsVisible(octreeable.isVisible()),
+	bIsProcessed(octreeable.isProcessed())
 {
 
 }
@@ -28,8 +30,8 @@ template<class TOctreeable> Octreeable<TOctreeable>::~Octreeable()
 template<class TOctreeable> void Octreeable<TOctreeable>::notifyOctreeableMove()
 {
 	notifyObservers(this, Octreeable::MOVE);
-	
-	if(refOctree.size()>0)
+
+	if (refOctree.size() > 0)
 	{ //octreeable can move in an octree only if it's attached to an octree
 		bIsMovingInOctree = true;
 	}
@@ -60,6 +62,16 @@ template<class TOctreeable> void Octreeable<TOctreeable>::setVisible(bool isVisi
 template<class TOctreeable> bool Octreeable<TOctreeable>::isVisible() const
 {
 	return bIsVisible;
+}
+
+template<class TOctreeable> void Octreeable<TOctreeable>::setProcessed(bool isProcessed)
+{
+	bIsProcessed = isProcessed;
+}
+
+template<class TOctreeable> bool Octreeable<TOctreeable>::isProcessed() const
+{
+	return bIsProcessed;
 }
 
 template<class TOctreeable> const std::vector<Octree<TOctreeable> *> &Octreeable<TOctreeable>::getRefOctree() const

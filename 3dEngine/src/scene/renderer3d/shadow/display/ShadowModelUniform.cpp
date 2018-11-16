@@ -24,14 +24,14 @@ namespace urchin
 		this->shadowData = shadowData;
 	}
 
-	void ShadowModelUniform::loadCustomUniforms(const Model *model)
+	void ShadowModelUniform::loadCustomUniforms(const Model *)
 	{
 		unsigned int layersToUpdate = 0;
 
 		for(unsigned int i=0; i<shadowData->getNbFrustumShadowData(); ++i)
 		{
 			const FrustumShadowData *frustumShadowData = shadowData->getFrustumShadowData(i);
-			if(frustumShadowData->needShadowMapUpdate() && frustumShadowData->getModels().find((Model *)model)!=frustumShadowData->getModels().end())
+			if(frustumShadowData->needShadowMapUpdate())
 			{
                 layersToUpdate = layersToUpdate | MathAlgorithm::powerOfTwo(i);
 			}

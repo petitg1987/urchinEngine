@@ -2,7 +2,6 @@
 #define URCHINENGINE_OCTREE_H
 
 #include <vector>
-#include <unordered_set>
 #include <limits>
 #include <memory>
 #include <algorithm>

@@ -31,7 +31,10 @@ namespace urchin
 			bool isMovingInOctree() const;
 
 			void setVisible(bool);
-			bool isVisible()const;
+			bool isVisible() const;
+
+			void setProcessed(bool);
+			bool isProcessed() const;
 		
 			const std::vector<Octree<TOctreeable> *> &getRefOctree() const;
 			void addRefOctree(Octree<TOctreeable> *);
@@ -49,6 +52,7 @@ namespace urchin
 
 			bool bIsMovingInOctree;
 			bool bIsVisible;
+			bool bIsProcessed;
 	};
 
 	#include "Octreeable.inl"

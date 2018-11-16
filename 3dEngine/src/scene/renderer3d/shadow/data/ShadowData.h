@@ -41,7 +41,7 @@ namespace urchin
 			FrustumShadowData *getFrustumShadowData(unsigned int);
 			const FrustumShadowData *getFrustumShadowData(unsigned int) const;
 
-			std::unordered_set<Model *> retrieveModels() const;
+			std::vector<Model *> retrieveModels() const;
 
 		private:
 			const Light *const light;
@@ -54,7 +54,7 @@ namespace urchin
 
 			Matrix4<float> lightViewMatrix;
 			std::vector<FrustumShadowData *> frustumShadowData;
-			mutable std::unordered_set<Model *> models;
+			mutable std::vector<Model *> models;
 	};
 
 }

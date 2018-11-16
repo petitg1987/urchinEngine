@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <set>
 #include <stdexcept>
 #include <locale>
 
@@ -69,8 +68,7 @@ namespace urchin
 	Renderer3d::~Renderer3d()
 	{
 		//models
-		std::unordered_set<Model *> allOctreeableModels = modelOctreeManager->getAllOctreeables();
-		for (auto allOctreeableModel : allOctreeableModels)
+		for (auto allOctreeableModel : modelOctreeManager->getAllOctreeables())
 		{
 			delete allOctreeableModel;
 		}
@@ -309,7 +307,7 @@ namespace urchin
 
 	void Renderer3d::updateModelsInFrustum()
     {
-        modelsInFrustum.clear(); //TODO clear of unordered_set is slow
+        modelsInFrustum.clear();
         modelOctreeManager->getOctreeablesIn(getCamera()->getFrustum(), modelsInFrustum);
     }
 
@@ -348,8 +346,8 @@ namespace urchin
 
 	bool Renderer3d::isModelExist(Model *model)
 	{
-		std::unordered_set<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
-		return allOctreeables.find(model)!=allOctreeables.end();
+		std::vector<Model *> allOctreeables = modelOctreeManager->getAllOctreeables();
+		return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
 	}
 
 	bool Renderer3d::onKeyDown(unsigned int key)

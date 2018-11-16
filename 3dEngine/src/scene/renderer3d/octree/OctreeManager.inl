@@ -10,7 +10,7 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 	
 	overflowSize += 0.001f; //add offset to avoid rounding problem when overflow size is 0.0f.
 	
-	std::unordered_set<TOctreeable *> emptyOctreeable;
+	std::vector<TOctreeable *> emptyOctreeable;
 	buildOctree(emptyOctreeable);
 	
 	#ifdef _DEBUG
@@ -40,13 +40,13 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *
 			case TOctreeable::MOVE:
 			{
 				TOctreeable *octreeable = dynamic_cast<TOctreeable *>(observable);
-				movingOctreeables.insert(octreeable);
+				movingOctreeables.emplace_back(octreeable);
 			}
 		}
 	}
 }
 
-template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::unordered_set<TOctreeable *> &octreeables)
+template<class TOctreeable> void OctreeManager<TOctreeable>::buildOctree(std::vector<TOctreeable *> &octreeables)
 {
 	if(!octreeables.empty())
 	{
@@ -156,7 +156,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float
 	this->minSize = minSize;
 
 	//gets all octreeables from the current octree
-	std::unordered_set<TOctreeable *> allOctreeables;
+	std::vector<TOctreeable *> allOctreeables;
 	if(mainOctree)
 	{
 		mainOctree->getAllOctreeables(allOctreeables);
@@ -172,13 +172,13 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 
 	if(mainOctree)
 	{
-		//1. remove octreeables which have been moved
+        movingOctreeables.erase(std::unique(movingOctreeables.begin(), movingOctreeables.end() ), movingOctreeables.end());
+
         for(auto &movingOctreeable : movingOctreeables)
 		{
 			removeOctreeable(movingOctreeable);
 		}
 
-		//2. add the octreeables which have been moved and recreate the octree if necessary
         for(auto &movingOctreeable : movingOctreeables)
 		{
 			addOctreeable(movingOctreeable);
@@ -214,17 +214,9 @@ template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable
 	return *mainOctree;
 }
 
-/**
- * Returns octreeables which move. This list is valid from the time the octreeables move until a call to postRefreshOctreeables method is done.
- */
-template<class TOctreeable> const std::unordered_set<TOctreeable *> &OctreeManager<TOctreeable>::getMovingOctreeables() const
+template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable>::getAllOctreeables() const
 {
-	return movingOctreeables;
-}
-
-template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOctreeable>::getAllOctreeables() const
-{
-	std::unordered_set<TOctreeable *> allOctreeables;
+	std::vector<TOctreeable *> allOctreeables;
 
 	if(mainOctree)
     {
@@ -236,7 +228,16 @@ template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOct
 
             if (octree->isLeaf())
             {
-                allOctreeables.insert(octree->getOctreeables().begin(), octree->getOctreeables().end());
+                for(unsigned int octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++)
+                {
+                    TOctreeable *octreeable = octree->getOctreeables()[octreeableI];
+
+                    if(!octreeable->isProcessed())
+                    {
+                        octreeable->setProcessed(true);
+                        allOctreeables.emplace_back(octreeable);
+                    }
+                }
             } else
             {
                 browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
@@ -244,17 +245,19 @@ template<class TOctreeable> std::unordered_set<TOctreeable *> OctreeManager<TOct
         }
     }
 
+    std::for_each(allOctreeables.begin(), allOctreeables.end(), [](TOctreeable *o){o->setProcessed(false);});
+
 	return allOctreeables;
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
-        std::unordered_set<TOctreeable *> &octreeables) const
+        std::vector<TOctreeable *> &octreeables) const
 {
 	getOctreeablesIn(convexObject, octreeables, AcceptAllFilter<TOctreeable>());
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
-        std::unordered_set<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable> &filter) const
+        std::vector<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable> &filter) const
 {
     ScopeProfiler profiler("3d", "getOctreeablesIn");
 
@@ -268,11 +271,14 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 		{
 			if(octree->isLeaf())
 			{
-				for(unsigned int octreeableI=0;octreeableI<octree->getOctreeables().size();octreeableI++)
+				for(unsigned int octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++)
 				{
-					if(octree->getOctreeables()[octreeableI]->isVisible() && filter.isAccepted(octree->getOctreeables()[octreeableI], convexObject))
+					TOctreeable *octreeable = octree->getOctreeables()[octreeableI];
+
+					if(octreeable->isVisible() && !octreeable->isProcessed() && filter.isAccepted(octreeable, convexObject))
 					{
-						visibleOctreeables.insert(octree->getOctreeables()[octreeableI]);
+						octreeable->setProcessed(true);
+						visibleOctreeables.push_back(octreeable);
 					}
 				}
 			}else
@@ -281,6 +287,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 			}
 		}
 	}
+
+	std::for_each(visibleOctreeables.begin(), visibleOctreeables.end(), [](TOctreeable *o){o->setProcessed(false);});
 }
 
 template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctreeable *newOctreeable)
@@ -301,8 +309,8 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 	}
 
 	//gets all octreeables from the current octree
-	std::unordered_set<TOctreeable *> allOctreeables = getAllOctreeables();
-	allOctreeables.insert(newOctreeable);
+	std::vector<TOctreeable *> allOctreeables = getAllOctreeables();
+	allOctreeables.emplace_back(newOctreeable);
 
 	//rebuild the octree
 	buildOctree(allOctreeables);

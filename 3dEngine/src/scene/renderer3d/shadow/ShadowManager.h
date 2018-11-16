@@ -1,7 +1,6 @@
 #ifndef URCHINENGINE_SHADOWMANAGER_H
 #define URCHINENGINE_SHADOWMANAGER_H
 
-#include <set>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/shadow/data/ShadowData.h"
@@ -56,7 +55,7 @@ namespace urchin
 
 			const std::vector<Frustum<float>> &getSplitFrustums() const;
 			const ShadowData &getShadowData(const Light *) const;
-			const std::unordered_set<Model *> &computeVisibleModels();
+			const std::vector<Model *> &computeVisibleModels();
 
 			void updateVisibleModels(const Frustum<float> &);
 			void forceUpdateAllShadowMaps();
@@ -83,7 +82,7 @@ namespace urchin
 			AABBox<float> createSceneIndependentBox(const Frustum<float> &, const Matrix4<float> &) const;
 			float computeNearZForSceneIndependentBox(const Frustum<float> &) const;
 			AABBox<float> createSceneDependentBox(const AABBox<float> &, const OBBox<float> &,
-					const std::unordered_set<Model *> &, const Matrix4<float> &) const;
+					const std::vector<Model *> &, const Matrix4<float> &) const;
 			void splitFrustum(const Frustum<float> &);
 
 			//shadow map handling
@@ -104,11 +103,11 @@ namespace urchin
 			ModelDisplayer *shadowModelDisplayer;
 			LightManager *lightManager;
 			OctreeManager<Model> *modelOctreeManager;
-			std::unordered_set<Model *> obboxModels;
+			std::vector<Model *> obboxModels;
 			Matrix4<float> projectionMatrix;
 			ShadowUniform *shadowUniform;
 			ShadowModelUniform *shadowModelUniform;
-			std::unordered_set<Model *> visibleModels;
+			std::vector<Model *> visibleModels;
 
 			//shadow information
 			int depthComponent;

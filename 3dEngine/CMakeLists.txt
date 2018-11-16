@@ -210,7 +210,9 @@ set(SOURCE_FILES
         src/scene/renderer3d/fog/FogManager.cpp
         src/scene/renderer3d/fog/FogManager.h
         src/scene/renderer3d/fog/Fog.cpp
-        src/scene/renderer3d/fog/Fog.h)
+        src/scene/renderer3d/fog/Fog.h
+        src/scene/renderer3d/octree/helper/OctreeableHelper.cpp
+        src/scene/renderer3d/octree/helper/OctreeableHelper.h)
 
 include_directories(src ../common/src /usr/include/freetype2)
 

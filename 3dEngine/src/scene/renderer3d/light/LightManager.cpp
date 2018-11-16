@@ -22,7 +22,7 @@ namespace urchin
 
 	LightManager::~LightManager()
 	{
-		std::unordered_set<Light *> allOctreeableLights = lightOctreeManager->getAllOctreeables();
+		std::vector<Light *> allOctreeableLights = lightOctreeManager->getAllOctreeables();
 		for (auto allOctreeableLight : allOctreeableLights)
         {
 			delete allOctreeableLight;

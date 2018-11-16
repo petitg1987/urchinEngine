@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include <unordered_set>
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "scene/Renderer.h"
@@ -100,7 +100,7 @@ namespace urchin
 			//managers
 			ModelDisplayer *modelDisplayer;
 			OctreeManager<Model> *modelOctreeManager;
-			std::unordered_set<Model *> modelsInFrustum;
+			std::vector<Model *> modelsInFrustum;
 
 			FogManager *fogManager;
 

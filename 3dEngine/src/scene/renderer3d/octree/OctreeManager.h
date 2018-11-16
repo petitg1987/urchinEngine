@@ -2,7 +2,6 @@
 #define URCHINENGINE_OCTREEMANAGER_H
 
 #include <limits>
-#include <unordered_set>
 #include <stdexcept>
 #include <vector>
 #include "UrchinCommon.h"
@@ -37,25 +36,24 @@ namespace urchin
 			void postRefreshOctreeables();
 
 			const Octree<TOctreeable> &getMainOctree() const;
-			const std::unordered_set<TOctreeable *> &getMovingOctreeables() const;
 
-			std::unordered_set<TOctreeable *> getAllOctreeables() const;
-			void getOctreeablesIn(const ConvexObject3D<float> &, std::unordered_set<TOctreeable *> &) const;
-			void getOctreeablesIn(const ConvexObject3D<float> &, std::unordered_set<TOctreeable *> &, const OctreeableFilter<TOctreeable> &) const;
+			std::vector<TOctreeable *> getAllOctreeables() const;
+			void getOctreeablesIn(const ConvexObject3D<float> &, std::vector<TOctreeable *> &) const;
+			void getOctreeablesIn(const ConvexObject3D<float> &, std::vector<TOctreeable *> &, const OctreeableFilter<TOctreeable> &) const;
 		
 			#ifdef _DEBUG
 				void drawOctree(const Matrix4<float> &, const Matrix4<float> &) const;
 			#endif
 		
 		private:
-			void buildOctree(std::unordered_set<TOctreeable *> &);
+			void buildOctree(std::vector<TOctreeable *> &);
 			bool resizeOctree(TOctreeable *);
 		
 			float overflowSize;
 			int minSize;
 			Octree<TOctreeable> *mainOctree;
 
-			std::unordered_set<TOctreeable *> movingOctreeables;
+			std::vector<TOctreeable *> movingOctreeables;
 			mutable std::vector<Octree<TOctreeable> *> browseNodes;
 
 			#ifdef _DEBUG

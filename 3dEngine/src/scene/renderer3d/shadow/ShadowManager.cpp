@@ -9,6 +9,7 @@
 
 #include "ShadowManager.h"
 #include "scene/renderer3d/shadow/filter/ModelProduceShadowFilter.h"
+#include "scene/renderer3d/octree/helper/OctreeableHelper.h"
 #include "utils/filter/TextureFilter.h"
 #include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "utils/filter/downsample/DownSampleFilterBuilder.h"
@@ -305,17 +306,17 @@ namespace urchin
 	/**
 	 * @return All visible models from all lights
 	 */
-	const std::unordered_set<Model *> &ShadowManager::computeVisibleModels()
+	const std::vector<Model *> &ShadowManager::computeVisibleModels()
 	{
 		ScopeProfiler profiler("3d", "shadowGetVisibleModels");
 
-		visibleModels.clear(); //TODO clear of unordered_set is slow
+		visibleModels.clear();
 		for (const auto &shadowData : shadowDatas)
         {
 			for(unsigned int i=0; i<nbShadowMaps; ++i)
 			{
-				const std::unordered_set<Model *> &visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
-				visibleModels.insert(visibleModelsForLightInFrustumSplit.begin(), visibleModelsForLightInFrustumSplit.end());
+				const std::vector<Model *> &visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
+				OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
 			}
 		}
 
@@ -347,11 +348,11 @@ namespace urchin
 	 */
 	void ShadowManager::updateShadowLights()
 	{
-		std::unordered_set<const Light *> allLights;
+		std::vector<const Light *> allLights;
         allLights.reserve(shadowDatas.size());
 		for (const auto &shadowData : shadowDatas)
 		{
-			allLights.insert(shadowData.first);
+			allLights.emplace_back(shadowData.first);
 		}
 
 		for (const auto &allLight : allLights)
@@ -404,7 +405,7 @@ namespace urchin
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums[i], shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
 
-                obboxModels.clear(); //TODO clear of unordered_set is slow
+                obboxModels.clear();
 				modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, obboxModels, ModelProduceShadowFilter());
 				shadowData->getFrustumShadowData(i)->updateModels(obboxModels);
 
@@ -464,7 +465,7 @@ namespace urchin
 	 * @return Box in light space containing shadow caster and receiver (scene dependent)
 	 */
 	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
-			const std::unordered_set<Model *> &models, const Matrix4<float> &lightViewMatrix) const
+			const std::vector<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
 		ScopeProfiler profiler("3d", "createSceneDependentBox");
 
@@ -725,7 +726,7 @@ namespace urchin
 		AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(frustum, lightViewMatrix);
 		OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrix.inverse() * OBBox<float>(aabboxSceneIndependent);
 
-		std::unordered_set<Model *> models;
+		std::vector<Model *> models;
 		modelOctreeManager->getOctreeablesIn(obboxSceneIndependentViewSpace, models, ModelProduceShadowFilter());
 		if(!models.empty())
 		{
