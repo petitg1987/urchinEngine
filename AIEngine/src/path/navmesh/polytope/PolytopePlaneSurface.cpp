@@ -70,9 +70,9 @@ namespace urchin
 		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
 	}
 
-	std::vector<CSGPolygon<float>> PolytopePlaneSurface::getSelfObstacles() const
+	const std::vector<CSGPolygon<float>> &PolytopePlaneSurface::getSelfObstacles() const
 	{
-		return {};
+		return selfObstacles;
 	}
 
 	/**

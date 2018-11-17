@@ -13,7 +13,6 @@
 	- (2) [OPTIMIZATION] Ray test on heightfield performs CCD on thousand triangles: find way to improve performance
 	- (3) [OPTIMIZATION] GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
 	- (3) [OPTIMIZATION] EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
-	- (2) [OPTIMIZATION] Use a memory pool when create a result of GJK and EPA algorithm
 - PROCESSABLE
     - (2) [OPTIMIZATION] Improve ray test performance against terrain (better triangles selection ?)
 	- (2) [NEW FEATURE] Handle stair for character controller

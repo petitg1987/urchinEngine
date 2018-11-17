@@ -29,7 +29,7 @@ namespace urchin
 		const Simplex<T> &simplex = gjkResult.getSimplex();
 		if(simplex.getSize()==1)
 		{ //simplex point is the origin
-			return std::make_unique<EPAResultNoCollide<T>>();
+			return std::make_unique<EPAResultNoCollide<T>>(); //TODO fix mem alloc
 		}
 
 		//2. initialize global variables
@@ -49,7 +49,7 @@ namespace urchin
 
 		if(indexedTriangles.size()!=4)
 		{//due to numerical imprecision, it's impossible to create indexed triangles correctly
-			return std::make_unique<EPAResultInvalid<T>>();
+			return std::make_unique<EPAResultInvalid<T>>(); //TODO fix mem alloc
 		}
 
 		ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
@@ -135,7 +135,7 @@ namespace urchin
 			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
 		#endif
 
-		return std::make_unique<EPAResultCollide<T>>(contactPointA, contactPointB, normal, distanceToOrigin);
+		return std::make_unique<EPAResultCollide<T>>(contactPointA, contactPointB, normal, distanceToOrigin); //TODO fix mem alloc
 	}
 
     template<class T> std::unique_ptr<EPAResult<T>> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D &convexObject1,

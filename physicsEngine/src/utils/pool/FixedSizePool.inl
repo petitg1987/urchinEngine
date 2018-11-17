@@ -2,12 +2,13 @@
  * @param maxElementSize Size of element to store in pool. If there are several classes which extends 'BaseType', the biggest one
  *  should be provided
  * @param maxElement Maximum of elements which can be stored in the pool. If the maximum is exceed, a classical allocation
- *  (new/delete) will be performed and performance will be bad.
+ *  (new/delete) will be performed.
  */
 template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(unsigned int maxElementSize, unsigned int maxElements) :
 		maxElementSize(maxElementSize),
 		maxElements(maxElements),
-		freeCount(maxElements)
+		freeCount(maxElements),
+		fullPoolLogged(false)
 {
 	//create pool
 	pool = static_cast<unsigned char *>(operator new(this->maxElementSize * this->maxElements));
@@ -72,12 +73,17 @@ template<class BaseType> inline void FixedSizePool<BaseType>::free(BaseType *ptr
 	}
 }
 
-template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull() const
+template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull()
 {
-	std::stringstream logStream;
-	logStream<<"Pool is full of elements."<<std::endl;
-	logStream<<" - Element size: "<<maxElementSize<<std::endl;
-	logStream<<" - Maximum elements: "<<maxElements;
-	Logger::logger().logWarning(logStream.str());
+	if(!fullPoolLogged)
+	{
+		std::stringstream logStream;
+		logStream << "Pool is full of elements." << std::endl;
+		logStream << " - Element size: " << maxElementSize << std::endl;
+		logStream << " - Maximum elements: " << maxElements;
+		Logger::logger().logWarning(logStream.str());
+
+		fullPoolLogged = true;
+	}
 }
 

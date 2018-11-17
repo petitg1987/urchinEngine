@@ -65,7 +65,7 @@ namespace urchin
         clipper.Execute(ClipperLib::ctUnion, solution, ClipperLib::pftEvenOdd, ClipperLib::pftEvenOdd);
 
         std::vector<CSGPolygonPath> result;
-        result.reserve(solution.Childs.size());
+        result.reserve(solution.Childs.size()); //TODO fix mem alloc
 
         if(solution.Childs.size()==1)
         {

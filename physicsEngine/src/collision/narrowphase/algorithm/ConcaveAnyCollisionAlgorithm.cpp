@@ -29,7 +29,7 @@ namespace urchin
         AABBox<float> aabboxLocalToObject1 = object2.getShape().toAABBox(object1.getShapeWorldTransform().inverse() * object2.getShapeWorldTransform());
         const auto &concaveShape = dynamic_cast<const CollisionConcaveShape &>(object1.getShape());
 
-        std::vector<CollisionTriangleShape> triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
+        const std::vector<CollisionTriangleShape> &triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
         for(const auto &triangle : triangles)
         {
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(

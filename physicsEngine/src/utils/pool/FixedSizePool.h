@@ -22,7 +22,7 @@ namespace urchin
 			void free(BaseType *ptr);
 
 		private:
-			void logPoolIsFull() const;
+			void logPoolIsFull();
 
 			unsigned int maxElementSize;
 			unsigned int maxElements;
@@ -30,6 +30,8 @@ namespace urchin
 
 			unsigned char* pool;
 			void* firstFree;
+
+			bool fullPoolLogged;
 	};
 
 	#include "FixedSizePool.inl"

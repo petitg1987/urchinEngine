@@ -7,9 +7,9 @@
 namespace urchin
 {
 
-	template<class T> inline Simplex<T>::Simplex()
+	template<class T> inline Simplex<T>::Simplex() :
+	    simplexPointsSize(0)
 	{
-		simplexPoints.reserve(4);
 	}
 
 	/**
@@ -18,20 +18,27 @@ namespace urchin
 	 */
 	template<class T> void Simplex<T>::addPoint(const Point3<T> &supportPointA, const Point3<T> &supportPointB)
 	{
-		SupportMapping<T> supportMapping;
-		supportMapping.supportPointA = supportPointA;
-		supportMapping.supportPointB = supportPointB;
-		supportMapping.point = supportPointA - supportPointB;
-		supportMapping.barycentric = std::numeric_limits<T>::max();
+        #ifdef _DEBUG
+	        assert(simplexPointsSize < 4);
+        #endif
 
-		simplexPoints.push_back(supportMapping);
+        if(simplexPointsSize < 4)
+        {
+            SupportMapping<T> supportMapping;
+            supportMapping.supportPointA = supportPointA;
+            supportMapping.supportPointB = supportPointB;
+            supportMapping.point = supportPointA - supportPointB;
+            supportMapping.barycentric = std::numeric_limits<T>::max();
 
-		updateSimplex();
+            simplexPoints[simplexPointsSize++] = supportMapping;
+
+            updateSimplex();
+        }
 	}
 
 	template<class T> inline unsigned int Simplex<T>::getSize() const
 	{
-		return simplexPoints.size();
+		return simplexPointsSize;
 	}
 
 	template<class T> inline const Point3<T> &Simplex<T>::getPoint(unsigned int index) const
@@ -64,9 +71,9 @@ namespace urchin
 
 	template<class T> bool Simplex<T>::isPointInSimplex(const Point3<T> &p) const
 	{
-		for(auto it = simplexPoints.begin(); it!=simplexPoints.end(); ++it)
+		for(unsigned int i=0; i<simplexPointsSize; ++i)
 		{
-			const Point3<T> &simplexPoint = it->point;
+			const Point3<T> &simplexPoint = simplexPoints[i].point;
 			if(simplexPoint.X==p.X && simplexPoint.Y==p.Y && simplexPoint.Z==p.Z)
 			{
 				return true;
@@ -83,24 +90,24 @@ namespace urchin
 	 */
 	template<class T> void Simplex<T>::computeClosestPoints(Point3<T> &closestPointA, Point3<T> &closestPointB) const
 	{
-		if(simplexPoints.size() == 1)
+		if(getSize() == 1)
 		{ //simplex is a point
 
 			closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA;
 			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB;
-		}else if(simplexPoints.size() == 2)
+		}else if(getSize() == 2)
 		{ //simplex is a line (1D)
 
 			closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA + simplexPoints[1].barycentric * simplexPoints[1].supportPointA;
 			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB + simplexPoints[1].barycentric * simplexPoints[1].supportPointB;
-		}else if(simplexPoints.size() == 3)
+		}else if(getSize() == 3)
 		{ //simplex is a triangle (2D)
 
 			closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA + simplexPoints[1].barycentric * simplexPoints[1].supportPointA
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointA;
 			closestPointB = simplexPoints[0].barycentric * simplexPoints[0].supportPointB + simplexPoints[1].barycentric * simplexPoints[1].supportPointB
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointB;
-		}else if(simplexPoints.size() == 4)
+		}else if(getSize() == 4)
 		{ //simplex is a tetrahedron (3D)
 			closestPointA = simplexPoints[0].barycentric * simplexPoints[0].supportPointA + simplexPoints[1].barycentric * simplexPoints[1].supportPointA
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointA + simplexPoints[3].barycentric * simplexPoints[3].supportPointA;
@@ -108,7 +115,7 @@ namespace urchin
 					+ simplexPoints[2].barycentric * simplexPoints[2].supportPointB + simplexPoints[3].barycentric * simplexPoints[3].supportPointB;
 		}else
 		{
-			throw std::invalid_argument("Size of simplex unsupported to compute closest points: " + std::to_string(simplexPoints.size()) + ".");
+			throw std::invalid_argument("Size of simplex unsupported to compute closest points: " + std::to_string(simplexPointsSize) + ".");
 		}
 	}
 
@@ -203,7 +210,15 @@ namespace urchin
 
 	template<class T> inline void Simplex<T>::removePoint(unsigned int index)
 	{
-		simplexPoints.erase(simplexPoints.begin() + index);
+		#ifdef _DEBUG
+			assert(simplexPointsSize > 0);
+        #endif
+
+		for (int i = index; i < simplexPointsSize - 1; ++i)
+		{
+			simplexPoints[i] = simplexPoints[i + 1];
+		}
+		simplexPointsSize--;
 	}
 
 	template<class T> inline void Simplex<T>::setBarycentric(unsigned int index, T barycentric)

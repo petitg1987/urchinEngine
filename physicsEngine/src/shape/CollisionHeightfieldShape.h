@@ -33,7 +33,7 @@ namespace urchin
 
             CollisionShape3D *clone() const override;
 
-            std::vector<CollisionTriangleShape> findTrianglesInAABBox(const AABBox<float> &) const override;
+            const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float> &) const override;
 
         private:
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
@@ -46,6 +46,8 @@ namespace urchin
 
             mutable AABBox<float> lastAABBox;
             mutable PhysicsTransform lastTransform;
+
+            mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
     };
 
 }

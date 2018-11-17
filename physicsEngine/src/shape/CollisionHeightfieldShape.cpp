@@ -140,8 +140,10 @@ namespace urchin
         return new CollisionHeightfieldShape(vertices, xLength, zLength);
     }
 
-    std::vector<CollisionTriangleShape> CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const
+    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInAABBox(const AABBox<float> &checkAABBox) const
     {
+        trianglesInAABBox.clear();
+
         float verticesDistanceX = vertices[1].X - vertices[0].X;
         auto rawStartVertexX = static_cast<int>((checkAABBox.getMin().X + localAABBox->getHalfSizes().X) / verticesDistanceX);
         auto startVertexX = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertexX, 0, static_cast<int>(xLength-1)));
@@ -155,8 +157,7 @@ namespace urchin
         auto endVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexZ, 0, static_cast<int>(zLength-1)));
 
         unsigned int nbTriangles = (endVertexX-startVertexX) * (endVertexZ-startVertexZ) * 2;
-        std::vector<CollisionTriangleShape> triangles;
-        triangles.reserve(nbTriangles); //estimated memory size
+        trianglesInAABBox.reserve(nbTriangles); //estimated memory size
 
         for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
         {
@@ -171,17 +172,17 @@ namespace urchin
 
                 if(hasDiagonalPointAbove || point1.Y > checkAABBox.getMin().Y)
                 {
-                    triangles.emplace_back(CollisionTriangleShape(point1, point3, point2));
+                    trianglesInAABBox.emplace_back(CollisionTriangleShape(point1, point3, point2));
                 }
 
                 if(hasDiagonalPointAbove || point4.Y > checkAABBox.getMin().Y)
                 {
-                    triangles.emplace_back(CollisionTriangleShape(point2, point3, point4));
+                    trianglesInAABBox.emplace_back(CollisionTriangleShape(point2, point3, point4));
                 }
             }
         }
 
-        return triangles;
+        return trianglesInAABBox;
     }
 
 }

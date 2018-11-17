@@ -236,13 +236,18 @@ namespace urchin
 	}
 
 	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
-	{
+	{ //TODO fix mem alloc
 		ScopeProfiler scopeProfiler("ai", "computeObstacles");
 
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableSurface = polytope->getSurface(polytopeWalkableSurface.faceIndex);
+		const std::vector<CSGPolygon<float>> &selfObstaclePolygons = walkableSurface->getSelfObstacles();
 
-		std::vector<CSGPolygon<float>> holePolygons = walkableSurface->getSelfObstacles();
+        holePolygons.clear();
+        for(const auto &selfObstaclePolygon : selfObstaclePolygons)
+        {
+            holePolygons.emplace_back(selfObstaclePolygon);
+        }
         for (const auto &expandedPolytopeObstacle : expandedPolytopes)
         {
 			if(expandedPolytopeObstacle.second->getName()!=polytope->getName() && expandedPolytopeObstacle.second->isObstacleCandidate())
@@ -294,7 +299,7 @@ namespace urchin
 	}
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
-	{
+	{ //TODO fix mem alloc
 		ScopeProfiler scopeProfiler("ai", "elevateTriangulatedPoints");
 
 		std::vector<Point3<float>> elevatedPoints;

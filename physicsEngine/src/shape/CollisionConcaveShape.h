@@ -12,7 +12,7 @@ namespace urchin
     class CollisionConcaveShape
     {
         public:
-            virtual std::vector<CollisionTriangleShape> findTrianglesInAABBox(const AABBox<float> &) const = 0;
+            virtual const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float> &) const = 0;
     };
 
 }

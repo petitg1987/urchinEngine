@@ -19,7 +19,7 @@ namespace urchin
      */
     template<class T> std::vector<CSGPolygon<T>> PolygonsSubtraction<T>::subtractPolygons(const CSGPolygon<T> &minuendPolygon, const CSGPolygon<T> &subtrahendPolygon, bool &subtrahendInside) const
     {
-        std::vector<CSGPolygon<T>> subtractedPolygons;
+        std::vector<CSGPolygon<T>> subtractedPolygons; //TODO fix mem alloc
 
         CSGPolygonPath minuendPolygonPath(minuendPolygon);
         CSGPolygonPath subtrahendPolygonPath(subtrahendPolygon);

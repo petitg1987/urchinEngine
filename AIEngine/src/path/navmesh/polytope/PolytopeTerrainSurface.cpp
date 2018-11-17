@@ -75,7 +75,7 @@ namespace urchin
         return plane;
     }
 
-    std::vector<CSGPolygon<float>> PolytopeTerrainSurface::getSelfObstacles() const
+    const std::vector<CSGPolygon<float>> &PolytopeTerrainSurface::getSelfObstacles() const
     {
         return selfObstacles;
     }

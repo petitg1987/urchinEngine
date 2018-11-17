@@ -65,6 +65,8 @@ namespace urchin
 
 			std::shared_ptr<NavMesh> navMesh;
 			std::atomic_bool needFullRefresh;
+
+			mutable std::vector<CSGPolygon<float>> holePolygons;
 	};
 
 }

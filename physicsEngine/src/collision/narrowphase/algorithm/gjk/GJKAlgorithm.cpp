@@ -46,10 +46,10 @@ namespace urchin
 			{
 				if(closestPointDotNewPoint <= 0.0)
 				{ //collision detected
-					return std::make_unique<GJKResultCollide<T>>(simplex);
+					return std::make_unique<GJKResultCollide<T>>(simplex); //TODO fix mem alloc
 				}
 
-				return std::make_unique<GJKResultNoCollide<T>>(std::sqrt(closestPointSquareDistance), simplex);
+				return std::make_unique<GJKResultNoCollide<T>>(std::sqrt(closestPointSquareDistance), simplex); //TODO fix mem alloc
 			}
 
 			simplex.addPoint(supportPointA, supportPointB);
@@ -58,7 +58,7 @@ namespace urchin
 		}
 
 		logMaximumIterationReach(convexObject1, convexObject2, includeMargin);
-		return std::make_unique<GJKResultInvalid<T>>();
+		return std::make_unique<GJKResultInvalid<T>>(); //TODO fix mem alloc
 	}
 
 	template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D &convexObject1,
