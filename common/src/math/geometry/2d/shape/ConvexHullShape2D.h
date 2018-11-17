@@ -14,8 +14,8 @@ namespace urchin
 	{
 		public:
 			ConvexHullShape2D();
-			ConvexHullShape2D(const std::vector<Point2<T>> &);
-			~ConvexHullShape2D();
+			explicit ConvexHullShape2D(const std::vector<Point2<T>> &);
+			~ConvexHullShape2D() override;
 			static std::unique_ptr<ConvexHullShape2D<T>> createFromCcwConvexPoints(const std::vector<Point2<T>> &);
 
 			const std::vector<Point2<T>> &getPoints() const;

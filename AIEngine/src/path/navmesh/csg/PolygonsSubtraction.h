@@ -16,12 +16,14 @@ namespace urchin
         public:
             friend class Singleton<PolygonsSubtraction<T>>;
 
-            std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
-            std::vector<CSGPolygon<T>> subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &, bool &) const;
+            const std::vector<CSGPolygon<T>> &subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &) const;
+            const std::vector<CSGPolygon<T>> &subtractPolygons(const CSGPolygon<T> &, const CSGPolygon<T> &, bool &) const;
 
         private:
             PolygonsSubtraction() = default;
             ~PolygonsSubtraction() override = default;
+
+            mutable std::vector<CSGPolygon<T>> subtractedPolygons;
     };
 
 }

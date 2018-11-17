@@ -12,8 +12,8 @@ class GJKTestHelper
 		static std::shared_ptr<GJKResult<float>> executeGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &);
 
 	private:
-		GJKTestHelper();
-		~GJKTestHelper();
+		GJKTestHelper() = default;
+		~GJKTestHelper() = default;
 };
 
 #endif

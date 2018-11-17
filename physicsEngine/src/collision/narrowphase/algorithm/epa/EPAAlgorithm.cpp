@@ -176,13 +176,13 @@ namespace urchin
 
             if(needSwap)
             {
-                return std::make_unique<EPAResultCollide<T>>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
+                return std::make_unique<EPAResultCollide<T>>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin); //TODO fix mem alloc
             }
 
-			return std::make_unique<EPAResultCollide<T>>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
+			return std::make_unique<EPAResultCollide<T>>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin); //TODO fix mem alloc
 		}
 
-        return std::unique_ptr<EPAResult<T>>(nullptr);
+        return std::unique_ptr<EPAResult<T>>(nullptr); //TODO fix mem alloc
     }
 
 	/**

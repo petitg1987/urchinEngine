@@ -12,8 +12,8 @@ class EPATestHelper
 		static std::shared_ptr<EPAResult<float>> executeEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &);
 
 	private:
-		EPATestHelper();
-		~EPATestHelper();
+		EPATestHelper() = default;
+		~EPATestHelper() = default;
 };
 
 #endif

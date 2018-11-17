@@ -15,15 +15,19 @@ namespace urchin
 		public:
 			friend class Singleton<PolygonsUnion<T>>;
 
-			std::vector<CSGPolygon<T>> unionPolygons(const std::vector<CSGPolygon<T>> &) const;
+			const std::vector<CSGPolygon<T>> &unionPolygons(const std::vector<CSGPolygon<T>> &) const;
 
 		private:
 			PolygonsUnion() = default;
 			~PolygonsUnion() override = default;
 
-			std::vector<CSGPolygonPath> unionTwoPolygonPaths(const CSGPolygonPath &, const CSGPolygonPath &) const;
+			const std::vector<CSGPolygonPath> &unionTwoPolygonPaths(const CSGPolygonPath &, const CSGPolygonPath &) const;
 
 			void logInputData(const std::vector<CSGPolygon<T>> &, const std::string &, Logger::CriticalityLevel) const;
+
+			mutable std::vector<CSGPolygon<T>> mergedPolygons;
+			mutable std::vector<CSGPolygonPath> allPolygonPaths;
+			mutable std::vector<CSGPolygonPath> twoPolygonUnions;
 	};
 
 }

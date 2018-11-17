@@ -147,9 +147,9 @@ namespace urchin
 		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
 		std::string walkableName = polytope->getName() + "[" + std::to_string(polytopeWalkableSurface.faceIndex) + "]";
-        std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints())};
+        std::vector<CSGPolygon<float>> walkablePolygons = {CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints())}; //TODO fix mem alloc
 
-        auto obstaclePolygons = computeObstacles(polytopeWalkableSurface);
+        const auto &obstaclePolygons = computeObstacles(polytopeWalkableSurface);
 		std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 		remainingObstaclePolygons.reserve(2); //estimated memory size
 
@@ -164,7 +164,7 @@ namespace urchin
                     const CSGPolygon<float> &walkablePolygon = walkablePolygons[0];
 
                     bool obstacleInsideWalkable;
-                    std::vector<CSGPolygon<float>> subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
+                    const std::vector<CSGPolygon<float>> &subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
                             walkablePolygon, simplifiedObstaclePolygon, obstacleInsideWalkable);
 
                     //replace 'walkablePolygon' by 'subtractedPolygons'
@@ -187,7 +187,7 @@ namespace urchin
 		}
 
 		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
-		navPolygons.reserve(walkablePolygons.size());
+		navPolygons.reserve(walkablePolygons.size()); //TODO fix mem alloc
 		for(auto &walkablePolygon : walkablePolygons)
 		{
             //simplify polygon to improve performance and avoid degenerated walkable face
@@ -195,11 +195,12 @@ namespace urchin
             if(simplifiedWalkablePolygons.getCwPoints().size() > 2)
             {
                 //slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
-                std::vector<Point2<float>> extendedWalkableCwPoints = ResizePolygon2DService<float>::instance()->resizePolygon(
+                std::vector<Point2<float>> extendedWalkablePoints = ResizePolygon2DService<float>::instance()->resizePolygon(
                         simplifiedWalkablePolygons.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE);
 
 				std::string navPolygonName = "<" + simplifiedWalkablePolygons.getName() + ">";
-				TriangulationAlgorithm triangulation(reversePoints(extendedWalkableCwPoints), simplifiedWalkablePolygons.getName(), TriangulationAlgorithm::CCW);
+				std::reverse(extendedWalkablePoints.begin(), extendedWalkablePoints.end()); //CW to CCW
+				TriangulationAlgorithm triangulation(extendedWalkablePoints, simplifiedWalkablePolygons.getName(), TriangulationAlgorithm::CCW);
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
                 {
@@ -222,21 +223,8 @@ namespace urchin
 		return navPolygons;
 	}
 
-	std::vector<Point2<float>> NavMeshGenerator::reversePoints(const std::vector<Point2<float>> &points) const
+	const std::vector<CSGPolygon<float>> &NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		std::vector<Point2<float>> reversePoints;
-		reversePoints.reserve(points.size());
-
-		for(auto it = points.rbegin(); it!=points.rend(); ++it)
-		{
-			reversePoints.emplace_back(*it);
-		}
-
-		return reversePoints;
-	}
-
-	std::vector<CSGPolygon<float>> NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
-	{ //TODO fix mem alloc
 		ScopeProfiler scopeProfiler("ai", "computeObstacles");
 
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;

@@ -5,7 +5,7 @@ namespace urchin
 
 	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
 		name(std::move(name)),
-		cwPoints(cwPoints)
+		cwPoints(cwPoints) //TODO fix mem alloc
 	{
 		#ifdef _DEBUG
             if(cwPoints.size()>=3)
@@ -121,7 +121,7 @@ namespace urchin
 	template<class T> CSGPolygon<T> CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold) const
 	{
 		std::vector<Point2<T>> simplifiedCwPoints;
-		simplifiedCwPoints.reserve(cwPoints.size());
+		simplifiedCwPoints.reserve(cwPoints.size()); //TODO fix mem allocation
 
 		const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)

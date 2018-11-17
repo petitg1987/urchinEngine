@@ -39,7 +39,9 @@ template<class BaseType> inline FixedSizePool<BaseType>::~FixedSizePool()
  */
 template<class BaseType> inline void* FixedSizePool<BaseType>::allocate(unsigned int elementSize)
 {
-	assert(elementSize<=maxElementSize);
+    #ifdef _DEBUG
+        assert(elementSize<=maxElementSize);
+    #endif
 	
 	if(freeCount!=0)
 	{ //pool is not full
