@@ -127,10 +127,7 @@ namespace urchin
 					TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
 					ccd_set localizedShapeCcdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
 
-					for(auto &localizedShapeCcdResult : localizedShapeCcdResults)
-					{
-						ccdResults.insert(localizedShapeCcdResult);
-					}
+                    ccdResults.merge(localizedShapeCcdResults);
 				}
 			}else if(bodyShape->isConvex())
 			{
@@ -143,7 +140,7 @@ namespace urchin
 
 			if(!ccdResults.empty())
 			{
-				std::shared_ptr<ContinuousCollisionResult<float>> firstCCDResult = *ccdResults.begin();
+				const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &firstCCDResult = *ccdResults.begin();
 
 				Vector3<float> distanceVector = from.getPosition().vector(to.getPosition()) * firstCCDResult->getTimeToHit();
 				float depth = distanceVector.dotProduct(-firstCCDResult->getNormalFromObject2());
@@ -214,12 +211,12 @@ namespace urchin
 	void NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const TemporalObject &temporalObject2,
 			AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
 	{
-		std::shared_ptr<ContinuousCollisionResult<float>> continuousCollisionResult = gjkContinuousCollisionAlgorithm
+		std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> continuousCollisionResult = gjkContinuousCollisionAlgorithm
 				.calculateTimeOfImpact(temporalObject1, temporalObject2, body2);
 
 		if(continuousCollisionResult)
 		{
-			continuousCollisionResults.insert(continuousCollisionResult);
+			continuousCollisionResults.insert(std::move(continuousCollisionResult));
 		}
 	}
 

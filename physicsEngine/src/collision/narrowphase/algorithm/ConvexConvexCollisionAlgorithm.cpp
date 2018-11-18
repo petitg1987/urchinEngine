@@ -19,7 +19,7 @@ namespace urchin
 		std::shared_ptr<CollisionConvexObject3D> convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
 
 		//process GJK and EPA hybrid algorithms
-		std::unique_ptr<GJKResult<double>> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, false);
+		std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, false);
 
 		if(gjkResultWithoutMargin->isValidResult())
 		{
@@ -46,11 +46,11 @@ namespace urchin
 	void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const std::shared_ptr<CollisionConvexObject3D> &convexObject1,
 																			 const std::shared_ptr<CollisionConvexObject3D> &convexObject2)
 	{
-		std::unique_ptr<GJKResult<double>> gjkResultWithMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, true);
+		std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, true);
 
 		if(gjkResultWithMargin->isValidResult() && gjkResultWithMargin->isCollide())
 		{
-			std::unique_ptr<EPAResult<double>> epaResult = epaAlgorithm.processEPA(*convexObject1, *convexObject2, *gjkResultWithMargin);
+			std::unique_ptr<EPAResult<double>, AlgorithmResultDeleter> epaResult = epaAlgorithm.processEPA(*convexObject1, *convexObject2, *gjkResultWithMargin);
 
 			if(epaResult->isValidResult() && epaResult->isCollide())
 			{ //should be always true except for problems due to float imprecision

@@ -10,9 +10,9 @@ namespace urchin
 		resultReady.store(false, std::memory_order_relaxed);
 	}
 
-	void RayTestResult::addResults(const ccd_set &rayTestResults)
+	void RayTestResult::addResults(ccd_set &rayTestResults)
 	{
-		this->rayTestResults = rayTestResults;
+		this->rayTestResults.merge(rayTestResults);
 
 		resultReady.store(true, std::memory_order_relaxed);
 	}
@@ -36,7 +36,7 @@ namespace urchin
 		return !rayTestResults.empty();
 	}
 
-	std::shared_ptr<ContinuousCollisionResult<float>> RayTestResult::getNearestResult() const
+	const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &RayTestResult::getNearestResult() const
 	{
 		if(!resultReady.load(std::memory_order_relaxed))
 		{

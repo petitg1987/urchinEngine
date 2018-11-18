@@ -10,7 +10,7 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 #include "collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h"
-#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
+#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 #include "collision/broadphase/BroadPhaseManager.h"
 #include "body/BodyManager.h"
 #include "body/work/AbstractWorkBody.h"

@@ -1,4 +1,5 @@
-#include <object/CollisionTriangleObject.h>
+#include "object/CollisionTriangleObject.h"
+#include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
 
 namespace urchin
@@ -11,7 +12,7 @@ namespace urchin
 
 	}
 
-	template<class T> std::unique_ptr<EPAResult<T>> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D &convexObject1, const CollisionConvexObject3D &convexObject2,
+	template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D &convexObject1, const CollisionConvexObject3D &convexObject2,
 			const GJKResult<T> &gjkResult) const
 	{
 		#ifdef _DEBUG
@@ -19,7 +20,7 @@ namespace urchin
         #endif
 
 		//handle sub triangle cases
-		std::unique_ptr<EPAResult<T>> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
+		std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);
 		if(subTriangleResult)
 		{
 			return subTriangleResult;
@@ -29,7 +30,7 @@ namespace urchin
 		const Simplex<T> &simplex = gjkResult.getSimplex();
 		if(simplex.getSize()==1)
 		{ //simplex point is the origin
-			return std::make_unique<EPAResultNoCollide<T>>(); //TODO fix mem alloc
+			return AlgorithmResultAllocator::instance()->newEPAResultNoCollide<T>();
 		}
 
 		//2. initialize global variables
@@ -49,7 +50,7 @@ namespace urchin
 
 		if(indexedTriangles.size()!=4)
 		{//due to numerical imprecision, it's impossible to create indexed triangles correctly
-			return std::make_unique<EPAResultInvalid<T>>(); //TODO fix mem alloc
+			return AlgorithmResultAllocator::instance()->newEPAResultInvalid<T>();
 		}
 
 		ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
@@ -135,10 +136,10 @@ namespace urchin
 			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
 		#endif
 
-		return std::make_unique<EPAResultCollide<T>>(contactPointA, contactPointB, normal, distanceToOrigin); //TODO fix mem alloc
+		return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin);
 	}
 
-    template<class T> std::unique_ptr<EPAResult<T>> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D &convexObject1,
+    template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::handleSubTriangle(const CollisionConvexObject3D &convexObject1,
                                                                                        const CollisionConvexObject3D &convexObject2) const
     {
         //Handle specific case for triangles mesh. EPA algorithm is not aware of others triangles of the mesh and can lead to wrong results.
@@ -162,7 +163,7 @@ namespace urchin
 			needSwap = true;
 		}else
 		{
-			return std::unique_ptr<EPAResult<T>>(nullptr);
+			return std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter>(nullptr);
 		}
 
 		Triangle3D<float> triangle = triangleObject->retrieveTriangle();
@@ -176,13 +177,13 @@ namespace urchin
 
             if(needSwap)
             {
-                return std::make_unique<EPAResultCollide<T>>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin); //TODO fix mem alloc
+            	return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointOther.template cast<T>(), contactPointTriangle.template cast<T>(), -normal, distanceToOrigin);
             }
 
-			return std::make_unique<EPAResultCollide<T>>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin); //TODO fix mem alloc
+			return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointTriangle.template cast<T>(), contactPointOther.template cast<T>(), normal, distanceToOrigin);
 		}
 
-        return std::unique_ptr<EPAResult<T>>(nullptr); //TODO fix mem alloc
+        return std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter>(nullptr);
     }
 
 	/**

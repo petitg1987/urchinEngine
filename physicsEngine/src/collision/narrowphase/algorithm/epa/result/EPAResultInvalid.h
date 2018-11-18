@@ -1,15 +1,18 @@
-#ifndef URCHINENGINE_EPARESULTNOCOLLIDE_H
-#define URCHINENGINE_EPARESULTNOCOLLIDE_H
+#ifndef URCHINENGINE_EPARESULTINVALID_H
+#define URCHINENGINE_EPARESULTINVALID_H
 
 #include <stdexcept>
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/epa/EPAResult.h"
+#include "EPAResult.h"
 
 namespace urchin
 {
 
-	template<class T> class EPAResultNoCollide : public EPAResult<T>
+	/**
+	* Invalid result of EPA algorithm. Invalid result is returned by EPA algorithm when no solution is found due to numerical imprecision.
+	*/
+	template<class T> class EPAResultInvalid : public EPAResult<T>
 	{
 		public:
 			bool isValidResult() const override;

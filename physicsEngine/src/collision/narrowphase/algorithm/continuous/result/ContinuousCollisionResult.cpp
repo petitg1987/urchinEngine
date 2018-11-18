@@ -1,4 +1,4 @@
-#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
+#include "ContinuousCollisionResult.h"
 
 namespace urchin
 {
@@ -37,10 +37,10 @@ namespace urchin
 		return timeToHit;
 	}
 
-	template<class T> bool ContinuousCollisionResultComparator<T>::operator()(std::shared_ptr<ContinuousCollisionResult<T>> result1, std::shared_ptr<ContinuousCollisionResult<T>> result2) const
+	template<class T> bool ContinuousCollisionResultComparator<T>::operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &result1,
+			const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &result2) const
 	{
 		return result1->getTimeToHit() < result2->getTimeToHit();
-
 	}
 
 	//explicit template

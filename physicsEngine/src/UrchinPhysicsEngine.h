@@ -31,10 +31,10 @@
 #include "collision/ManifoldContactPoint.h"
 #include "collision/broadphase/aabbtree/AABBTreeAlgorithm.h"
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
-#include "collision/narrowphase/algorithm/epa/EPAResult.h"
+#include "collision/narrowphase/algorithm/epa/result/EPAResult.h"
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
-#include "collision/narrowphase/algorithm/gjk/GJKResult.h"
-#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
+#include "collision/narrowphase/algorithm/gjk/result/GJKResult.h"
+#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 #include "collision/island/IslandContainer.h"
 #include "collision/island/IslandElement.h"
 

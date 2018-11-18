@@ -6,11 +6,13 @@
 #include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
+#include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
+#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 
 namespace urchin
 {
 
-	template<class T> class ContinuousCollisionResult
+	template<class T> class ContinuousCollisionResult : public AlgorithmResult
 	{
 		public:
 			ContinuousCollisionResult(AbstractWorkBody *, const Vector3<T> &, const Point3<T> &, T);
@@ -31,10 +33,10 @@ namespace urchin
 
 	template<class T> struct ContinuousCollisionResultComparator
 	{
-		bool operator()(std::shared_ptr<ContinuousCollisionResult<T>>, std::shared_ptr<ContinuousCollisionResult<T>>) const;
+		bool operator()(const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &, const std::unique_ptr<ContinuousCollisionResult<T>, AlgorithmResultDeleter> &) const;
 	};
 
-	typedef std::set<std::shared_ptr<ContinuousCollisionResult<float>>, ContinuousCollisionResultComparator<float>> ccd_set;
+	typedef std::set<std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>, ContinuousCollisionResultComparator<float>> ccd_set;
 
 }
 

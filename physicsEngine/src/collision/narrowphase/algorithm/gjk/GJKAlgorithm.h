@@ -4,10 +4,11 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/gjk/GJKResult.h"
-#include "collision/narrowphase/algorithm/gjk/GJKResultCollide.h"
-#include "collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h"
-#include "collision/narrowphase/algorithm/gjk/GJKResultInvalid.h"
+#include "collision/narrowphase/algorithm/gjk/result/GJKResult.h"
+#include "collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h"
+#include "collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h"
+#include "collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.h"
+#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 #include "object/CollisionConvexObject3D.h"
 
 namespace urchin
@@ -21,7 +22,7 @@ namespace urchin
 		public:
 			GJKAlgorithm();
 
-			std::unique_ptr<GJKResult<T>> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
+			std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> processGJK(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;
 
 		private:
 			void logMaximumIterationReach(const CollisionConvexObject3D &, const CollisionConvexObject3D &, bool) const;

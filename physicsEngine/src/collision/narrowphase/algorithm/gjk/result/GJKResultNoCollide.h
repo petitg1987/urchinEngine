@@ -1,19 +1,19 @@
-#ifndef URCHINENGINE_GJKRESULTCOLLIDE_H
-#define URCHINENGINE_GJKRESULTCOLLIDE_H
+#ifndef URCHINENGINE_GJKRESULTNOCOLLIDE_H
+#define URCHINENGINE_GJKRESULTNOCOLLIDE_H
 
 #include <stdexcept>
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/gjk/GJKResult.h"
+#include "GJKResult.h"
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 
 namespace urchin
 {
 
-	template<class T> class GJKResultCollide : public GJKResult<T>
+	template<class T> class GJKResultNoCollide : public GJKResult<T>
 	{
 		public:
-			explicit GJKResultCollide(const Simplex<T> &);
+			GJKResultNoCollide(T, const Simplex<T> &);
 
 			bool isValidResult() const override;
 
@@ -25,6 +25,9 @@ namespace urchin
 			const Simplex<T> &getSimplex() const override;
 
 		private:
+			T separatingDistance;
+			Point3<T> closestPointA, closestPointB;
+
 			Simplex<T> simplex;
 	};
 

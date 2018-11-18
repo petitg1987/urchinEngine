@@ -1,20 +1,21 @@
-#ifndef URCHINENGINE_GJKRESULTNOCOLLIDE_H
-#define URCHINENGINE_GJKRESULTNOCOLLIDE_H
+#ifndef URCHINENGINE_GJKRESULTINVALID_H
+#define URCHINENGINE_GJKRESULTINVALID_H
 
 #include <stdexcept>
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/gjk/GJKResult.h"
+#include "GJKResult.h"
 #include "collision/narrowphase/algorithm/utils/Simplex.h"
 
 namespace urchin
 {
 
-	template<class T> class GJKResultNoCollide : public GJKResult<T>
+	/**
+	* Invalid result of GJK algorithm. Invalid result is returned by GJK algorithm when no solution is found after reach maximum iteration.
+	*/
+	template<class T> class GJKResultInvalid : public GJKResult<T>
 	{
 		public:
-			GJKResultNoCollide(T, const Simplex<T> &);
-
 			bool isValidResult() const override;
 
 			bool isCollide() const override;
@@ -23,12 +24,6 @@ namespace urchin
 			const Point3<T> &getClosestPointB() const override;
 
 			const Simplex<T> &getSimplex() const override;
-
-		private:
-			T separatingDistance;
-			Point3<T> closestPointA, closestPointB;
-
-			Simplex<T> simplex;
 	};
 
 }

@@ -4,7 +4,7 @@
 #include <atomic>
 #include <memory>
 
-#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
+#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
 
 namespace urchin
 {
@@ -18,12 +18,12 @@ namespace urchin
 		public:
 			RayTestResult();
 
-			void addResults(const ccd_set &rayTestResults);
+			void addResults(ccd_set &rayTestResults);
 
 			bool isResultReady() const;
 
 			bool hasHit() const;
-			std::shared_ptr<ContinuousCollisionResult<float>> getNearestResult() const;
+			const std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter> &getNearestResult() const;
 			const ccd_set &getResults() const;
 
 		private:

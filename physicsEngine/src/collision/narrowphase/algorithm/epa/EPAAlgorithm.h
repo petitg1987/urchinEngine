@@ -11,12 +11,13 @@
 #include "UrchinCommon.h"
 
 #include "collision/narrowphase/algorithm/epa/EPATriangleData.h"
-#include "collision/narrowphase/algorithm/epa/EPAResult.h"
-#include "collision/narrowphase/algorithm/epa/EPAResultCollide.h"
-#include "collision/narrowphase/algorithm/epa/EPAResultNoCollide.h"
-#include "collision/narrowphase/algorithm/epa/EPAResultInvalid.h"
+#include "collision/narrowphase/algorithm/epa/result/EPAResult.h"
+#include "collision/narrowphase/algorithm/epa/result/EPAResultCollide.h"
+#include "collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h"
+#include "collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h"
+#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 #include "object/CollisionConvexObject3D.h"
-#include "collision/narrowphase/algorithm/gjk/GJKResult.h"
+#include "collision/narrowphase/algorithm/gjk/result/GJKResult.h"
 
 namespace urchin
 {
@@ -26,10 +27,10 @@ namespace urchin
 		public:
 			EPAAlgorithm();
 
-			std::unique_ptr<EPAResult<T>> processEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &) const;
+			std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> processEPA(const CollisionConvexObject3D &, const CollisionConvexObject3D &, const GJKResult<T> &) const;
 
 		private:
-			std::unique_ptr<EPAResult<T>> handleSubTriangle(const CollisionConvexObject3D &, const CollisionConvexObject3D &) const;
+			std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> handleSubTriangle(const CollisionConvexObject3D &, const CollisionConvexObject3D &) const;
 
 			void determineInitialPoints(const Simplex<T> &, const CollisionConvexObject3D &, const CollisionConvexObject3D &,
 					std::map<unsigned int, ConvexHullPoint<T>> &, std::map<unsigned int, Point3<T>> &, std::map<unsigned int, Point3<T>> &) const;

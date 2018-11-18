@@ -5,7 +5,8 @@
 
 #include "body/work/AbstractWorkBody.h"
 #include "object/TemporalObject.h"
-#include "collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h"
+#include "collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h"
+#include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 
 namespace urchin
 {
@@ -18,7 +19,7 @@ namespace urchin
 		public:
 			GJKContinuousCollisionAlgorithm();
 
-			std::shared_ptr<ContinuousCollisionResult<U>> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
+			std::unique_ptr<ContinuousCollisionResult<U>, AlgorithmResultDeleter> calculateTimeOfImpact(const TemporalObject &, const TemporalObject &, AbstractWorkBody *) const;
 
 		private:
 			Point3<T> getWorldSupportPoint(const TemporalObject &, const Vector3<T> &, const PhysicsTransform &) const;

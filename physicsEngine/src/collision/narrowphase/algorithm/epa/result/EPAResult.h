@@ -3,10 +3,12 @@
 
 #include "UrchinCommon.h"
 
+#include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
+
 namespace urchin
 {
 
-	template<class T> class EPAResult
+	template<class T> class EPAResult : public AlgorithmResult
 	{
 		public:
 			virtual ~EPAResult() = default;

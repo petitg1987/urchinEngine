@@ -2,6 +2,7 @@
 #include <cmath>
 #include <sstream>
 
+#include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
 
 namespace urchin
@@ -17,7 +18,7 @@ namespace urchin
 	/**
 	* @param includeMargin Indicate whether algorithm operates on objects with margin
 	*/
-	template<class T> std::unique_ptr<GJKResult<T>> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D &convexObject1,
+	template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> GJKAlgorithm<T>::processGJK(const CollisionConvexObject3D &convexObject1,
 			const CollisionConvexObject3D &convexObject2, bool includeMargin) const
 	{
 		//get point which belongs to the outline of the shape (Minkowski difference)
@@ -46,10 +47,10 @@ namespace urchin
 			{
 				if(closestPointDotNewPoint <= 0.0)
 				{ //collision detected
-					return std::make_unique<GJKResultCollide<T>>(simplex); //TODO fix mem alloc
+                    return AlgorithmResultAllocator::instance()->newGJKResultCollide<T>(simplex);
 				}
 
-				return std::make_unique<GJKResultNoCollide<T>>(std::sqrt(closestPointSquareDistance), simplex); //TODO fix mem alloc
+                return AlgorithmResultAllocator::instance()->newGJKResultNoCollide<T>(std::sqrt(closestPointSquareDistance), simplex);
 			}
 
 			simplex.addPoint(supportPointA, supportPointB);
@@ -58,7 +59,8 @@ namespace urchin
 		}
 
 		logMaximumIterationReach(convexObject1, convexObject2, includeMargin);
-		return std::make_unique<GJKResultInvalid<T>>(); //TODO fix mem alloc
+
+        return AlgorithmResultAllocator::instance()->newGJKResultInvalid<T>();
 	}
 
 	template<class T> void GJKAlgorithm<T>::logMaximumIterationReach(const CollisionConvexObject3D &convexObject1,

@@ -1,4 +1,4 @@
-#include "collision/narrowphase/algorithm/epa/EPAResultCollide.h"
+#include "EPAResultCollide.h"
 
 namespace urchin
 {

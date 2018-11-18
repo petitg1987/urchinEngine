@@ -3,7 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "collision/narrowphase/algorithm/epa/EPAResult.h"
+#include "EPAResult.h"
 
 namespace urchin
 {

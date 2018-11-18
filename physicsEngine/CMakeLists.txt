@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 project(urchinPhysicsEngine)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 add_definitions(-ffast-math)
 
@@ -59,32 +59,32 @@ set(SOURCE_FILES
         src/collision/island/IslandElementLink.h
         src/collision/island/IslandManager.cpp
         src/collision/island/IslandManager.h
-        src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.cpp
-        src/collision/narrowphase/algorithm/continuous/ContinuousCollisionResult.h
+        src/collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.cpp
+        src/collision/narrowphase/algorithm/continuous/result/ContinuousCollisionResult.h
         src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.cpp
         src/collision/narrowphase/algorithm/continuous/GJKContinuousCollisionAlgorithm.h
         src/collision/narrowphase/algorithm/epa/EPAAlgorithm.cpp
         src/collision/narrowphase/algorithm/epa/EPAAlgorithm.h
-        src/collision/narrowphase/algorithm/epa/EPAResult.cpp
-        src/collision/narrowphase/algorithm/epa/EPAResult.h
-        src/collision/narrowphase/algorithm/epa/EPAResultCollide.cpp
-        src/collision/narrowphase/algorithm/epa/EPAResultCollide.h
-        src/collision/narrowphase/algorithm/epa/EPAResultInvalid.cpp
-        src/collision/narrowphase/algorithm/epa/EPAResultInvalid.h
-        src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.cpp
-        src/collision/narrowphase/algorithm/epa/EPAResultNoCollide.h
+        src/collision/narrowphase/algorithm/epa/result/EPAResult.cpp
+        src/collision/narrowphase/algorithm/epa/result/EPAResult.h
+        src/collision/narrowphase/algorithm/epa/result/EPAResultCollide.cpp
+        src/collision/narrowphase/algorithm/epa/result/EPAResultCollide.h
+        src/collision/narrowphase/algorithm/epa/result/EPAResultInvalid.cpp
+        src/collision/narrowphase/algorithm/epa/result/EPAResultInvalid.h
+        src/collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.cpp
+        src/collision/narrowphase/algorithm/epa/result/EPAResultNoCollide.h
         src/collision/narrowphase/algorithm/epa/EPATriangleData.cpp
         src/collision/narrowphase/algorithm/epa/EPATriangleData.h
         src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.cpp
         src/collision/narrowphase/algorithm/gjk/GJKAlgorithm.h
-        src/collision/narrowphase/algorithm/gjk/GJKResult.cpp
-        src/collision/narrowphase/algorithm/gjk/GJKResult.h
-        src/collision/narrowphase/algorithm/gjk/GJKResultCollide.cpp
-        src/collision/narrowphase/algorithm/gjk/GJKResultCollide.h
-        src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.cpp
-        src/collision/narrowphase/algorithm/gjk/GJKResultInvalid.h
-        src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.cpp
-        src/collision/narrowphase/algorithm/gjk/GJKResultNoCollide.h
+        src/collision/narrowphase/algorithm/gjk/result/GJKResult.cpp
+        src/collision/narrowphase/algorithm/gjk/result/GJKResult.h
+        src/collision/narrowphase/algorithm/gjk/result/GJKResultCollide.cpp
+        src/collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h
+        src/collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.cpp
+        src/collision/narrowphase/algorithm/gjk/result/GJKResultInvalid.h
+        src/collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.cpp
+        src/collision/narrowphase/algorithm/gjk/result/GJKResultNoCollide.h
         src/collision/narrowphase/algorithm/utils/Simplex.cpp
         src/collision/narrowphase/algorithm/utils/Simplex.h
         src/collision/narrowphase/algorithm/CollisionAlgorithm.cpp
@@ -171,7 +171,7 @@ set(SOURCE_FILES
         src/object/CollisionTriangleObject.cpp
         src/object/CollisionTriangleObject.h
         src/shape/CollisionConcaveShape.cpp
-        src/shape/CollisionConcaveShape.h)
+        src/shape/CollisionConcaveShape.h src/collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.cpp src/collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h src/collision/narrowphase/algorithm/utils/AlgorithmResult.cpp src/collision/narrowphase/algorithm/utils/AlgorithmResult.h src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.cpp src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h)
 
 include_directories(src ../common/src)
 
