@@ -20,11 +20,6 @@ namespace urchin
 
 	}
 
-	template<class T> ConvexHull2D<T>::~ConvexHull2D()
-	{
-
-	}
-
 	template<class T> std::unique_ptr<ConvexHull2D<T>> ConvexHull2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>> &ccwConvexPoints)
 	{
 		std::unique_ptr<ConvexHull2D<T>> convexHull = std::make_unique<ConvexHull2D<T>>();

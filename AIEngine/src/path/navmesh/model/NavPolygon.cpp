@@ -3,9 +3,9 @@
 namespace urchin
 {
 
-	NavPolygon::NavPolygon(std::string name, const std::vector<Point3<float>> &points, const NavTopography *navTopography) :
+	NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>> &&points, const NavTopography *navTopography) :
         	name(std::move(name)),
-			points(points),
+			points(std::move(points)),
 			navTopography(navTopography)
 	{
 

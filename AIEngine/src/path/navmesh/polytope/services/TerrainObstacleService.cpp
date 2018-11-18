@@ -259,7 +259,7 @@ namespace urchin
         }
 
         std::string obstacleName = terrainName + "_obstacle" + std::to_string(obstacleIndex);
-        return CSGPolygon<float>(obstacleName, cwPoints);
+        return CSGPolygon<float>(obstacleName, std::move(cwPoints));
     }
 
 }

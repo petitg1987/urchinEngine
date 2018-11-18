@@ -43,7 +43,7 @@ namespace urchin
             }
         }
 
-        return CSGPolygon<T>(name, cwPoints);
+        return CSGPolygon<T>(name, std::move(cwPoints));
     }
 
     const ClipperLib::Path &CSGPolygonPath::getPath() const

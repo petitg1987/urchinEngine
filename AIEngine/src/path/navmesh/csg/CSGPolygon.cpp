@@ -3,31 +3,31 @@
 namespace urchin
 {
 
-	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
-		name(std::move(name)),
-		cwPoints(cwPoints) //TODO fix mem alloc
+	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>> &&cwPoints) :
+			name(std::move(name)),
+			cwPoints(std::move(cwPoints))
 	{
 		#ifdef _DEBUG
-            if(cwPoints.size()>=3)
-            {
+			if(cwPoints.size()>=3)
+			{
 				//assert no duplicate points
-                for (unsigned int i = 0; i < cwPoints.size(); ++i)
-                {
-                    for (unsigned int j = 0; j < cwPoints.size(); ++j)
-                    {
-                        assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
-                    }
-                }
+				for (unsigned int i = 0; i < cwPoints.size(); ++i)
+				{
+					for (unsigned int j = 0; j < cwPoints.size(); ++j)
+					{
+						assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
+					}
+				}
 
 				//assert clockwise order
-                double area = 0.0;
-                for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
-                {
-                    area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
-                }
-               	assert(area >= 0.0);
-            }
-    	#endif
+				double area = 0.0;
+				for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
+				{
+					area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
+				}
+				assert(area >= 0.0);
+			}
+		#endif
 	}
 
 	template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :
@@ -121,7 +121,7 @@ namespace urchin
 	template<class T> CSGPolygon<T> CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold) const
 	{
 		std::vector<Point2<T>> simplifiedCwPoints;
-		simplifiedCwPoints.reserve(cwPoints.size()); //TODO fix mem allocation
+		simplifiedCwPoints.reserve(cwPoints.size());
 
 		const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
@@ -151,7 +151,7 @@ namespace urchin
 			return CSGPolygon<T>("[[null]]", std::vector<Point2<T>>());
 		}
 
-		return CSGPolygon<T>(name, simplifiedCwPoints);
+		return CSGPolygon<T>(name, std::move(simplifiedCwPoints));
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)

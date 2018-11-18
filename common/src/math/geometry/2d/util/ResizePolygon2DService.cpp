@@ -19,7 +19,7 @@ namespace urchin
 	template<class T> std::vector<Point2<T>> ResizePolygon2DService<T>::resizePolygon(const std::vector<Point2<T>> &polygonPoints, T distance) const
 	{
 		std::vector<Point2<T>> offsetPoints;
-		offsetPoints.reserve(polygonPoints.size()); //TODO fix mem alloc
+		offsetPoints.reserve(polygonPoints.size());
 
 		for(unsigned int i=0, previousI=polygonPoints.size()-1; i<polygonPoints.size(); previousI=i++)
 		{
