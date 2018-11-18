@@ -14,13 +14,9 @@ namespace urchin
 	{
 		if(objectSwapped)
 		{
-            ScopeProfiler profiler("physics", "doProcessCollisionAlgorithm");
-
 			doProcessCollisionAlgorithm(object2, object1);
 		}else
 		{
-            ScopeProfiler profiler("physics", "doProcessCollisionAlgorithm");
-
 			doProcessCollisionAlgorithm(object1, object2);
 		}
 

@@ -21,6 +21,8 @@ namespace urchin
 
 	void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
+		ScopeProfiler profiler("physics", "doProcessCollisionAlgorithm-CompoundAny");
+
 		const auto &compoundShape = dynamic_cast<const CollisionCompoundShape &>(object1.getShape());
 		const CollisionShape3D &otherShape = object2.getShape();
 

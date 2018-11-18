@@ -156,9 +156,6 @@ namespace urchin
         auto rawEndVertexZ = static_cast<int>((checkAABBox.getMax().Z + localAABBox->getHalfSizes().Z) / verticesDistanceZ) + 1;
         auto endVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexZ, 0, static_cast<int>(zLength-1)));
 
-        unsigned int nbTriangles = (endVertexX-startVertexX) * (endVertexZ-startVertexZ) * 2;
-        trianglesInAABBox.reserve(nbTriangles); //estimated memory size
-
         for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
         {
             for (unsigned int x = startVertexX; x < endVertexX; ++x)

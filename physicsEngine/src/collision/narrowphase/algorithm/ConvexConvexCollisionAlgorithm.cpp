@@ -14,6 +14,8 @@ namespace urchin
 
 	void ConvexConvexCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
+		ScopeProfiler profiler("physics", "doProcessCollisionAlgorithm-ConvexConvex");
+
 		//transform convex hull shapes
 		std::shared_ptr<CollisionConvexObject3D> convexObject1 = object1.getShape().toConvexObject(object1.getShapeWorldTransform());
 		std::shared_ptr<CollisionConvexObject3D> convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());

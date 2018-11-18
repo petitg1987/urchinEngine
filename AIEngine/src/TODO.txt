@@ -3,13 +3,13 @@
 ############################################
 - NAVIGATION MESH
 	- (2) [NEW FEATURE] Create jump links in navigation mesh
+	- (2) [OPTIMIZATION] Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
 	- (2) [OPTIMIZATION] TerrainObstacleService: apply a roughly simplification on self obstacles polygons
 	- (2) [OPTIMIZATION] NavMeshGenerator#computeObstacles: select only 'expandedPolyhedrons' above 'walkableFace' with octree/AABBTree (+ reserve memory on vector 'holePolygons')
 	- (2) [OPTIMIZATION] Exclude small objects from navigation mesh
 	- (2) [OPTIMIZATION] Divide big surfaces in squares and refresh only squares
 	- (3) [OPTIMIZATION] NavMeshGenerator#computePolytopeFootprint: put result in cache
 	- (3) [OPTIMIZATION] Exclude fast moving objects from walkable face
-	- (3) [OPTIMIZATION] Reduce memory allocation during process
 	- (3) [QUALITY IMPROVEMENT] Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
 - A STAR
 	- (2) [OPTIMIZATION] When compute A* G score: avoid to execute funnel algorithm from start each time
