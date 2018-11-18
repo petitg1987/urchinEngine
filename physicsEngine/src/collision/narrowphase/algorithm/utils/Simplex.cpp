@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-	template<class T> inline Simplex<T>::Simplex() :
+	template<class T> Simplex<T>::Simplex() :
 	    simplexPointsSize(0)
 	{
 	}
@@ -36,27 +36,27 @@ namespace urchin
         }
 	}
 
-	template<class T> inline unsigned int Simplex<T>::getSize() const
+	template<class T> unsigned int Simplex<T>::getSize() const
 	{
 		return simplexPointsSize;
 	}
 
-	template<class T> inline const Point3<T> &Simplex<T>::getPoint(unsigned int index) const
+	template<class T> const Point3<T> &Simplex<T>::getPoint(unsigned int index) const
 	{
 		return simplexPoints[index].point;
 	}
 
-	template<class T> inline const Point3<T> &Simplex<T>::getSupportPointA(unsigned int index) const
+	template<class T> const Point3<T> &Simplex<T>::getSupportPointA(unsigned int index) const
 	{
 		return simplexPoints[index].supportPointA;
 	}
 
-	template<class T> inline const Point3<T> &Simplex<T>::getSupportPointB(unsigned int index) const
+	template<class T> const Point3<T> &Simplex<T>::getSupportPointB(unsigned int index) const
 	{
 		return simplexPoints[index].supportPointB;
 	}
 
-	template<class T> inline T Simplex<T>::getBarycentric(unsigned int index) const
+	template<class T> T Simplex<T>::getBarycentric(unsigned int index) const
 	{
 		return simplexPoints[index].barycentric;
 	}
@@ -64,7 +64,7 @@ namespace urchin
 	/**
 	 * @return Closest point to origin belonging to simplex
 	 */
-	template<class T> inline const Point3<T> &Simplex<T>::getClosestPointToOrigin() const
+	template<class T> const Point3<T> &Simplex<T>::getClosestPointToOrigin() const
 	{
 		return closestPointToOrigin;
 	}
@@ -208,7 +208,7 @@ namespace urchin
 		}
 	}
 
-	template<class T> inline void Simplex<T>::removePoint(unsigned int index)
+	template<class T> void Simplex<T>::removePoint(unsigned int index)
 	{
 		#ifdef _DEBUG
 			assert(simplexPointsSize > 0);
@@ -221,7 +221,7 @@ namespace urchin
 		simplexPointsSize--;
 	}
 
-	template<class T> inline void Simplex<T>::setBarycentric(unsigned int index, T barycentric)
+	template<class T> void Simplex<T>::setBarycentric(unsigned int index, T barycentric)
 	{
 		simplexPoints[index].barycentric = barycentric;
 	}

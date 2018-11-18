@@ -15,7 +15,7 @@ void FileHandlerTest::simplifyDirectoryPathUnix()
 	std::string result = FileHandler::simplifyDirectoryPath(directoryPath);
 
 	std::string expectedResult = "xxx/zzz/rrr/";
-	AssertHelper::assertTrue(result.compare(expectedResult)==0);
+	AssertHelper::assertTrue(result == expectedResult);
 }
 
 /**
@@ -23,11 +23,11 @@ void FileHandlerTest::simplifyDirectoryPathUnix()
  */
 void FileHandlerTest::simplifyDirectoryPathWindow()
 {
-	std::string directoryPath = "xxx\\yyy\\..\\zzz\\www\\..\\rrr\\";
+	std::string directoryPath = R"(xxx\yyy\..\zzz\www\..\rrr\)";
 	std::string result = FileHandler::simplifyDirectoryPath(directoryPath);
 
-	std::string expectedResult = "xxx\\zzz\\rrr\\";
-	AssertHelper::assertTrue(result.compare(expectedResult)==0);
+	std::string expectedResult = R"(xxx\zzz\rrr\)";
+	AssertHelper::assertTrue(result == expectedResult);
 }
 
 void FileHandlerTest::relativePath()
@@ -37,7 +37,7 @@ void FileHandlerTest::relativePath()
 	std::string result = FileHandler::getRelativePath(referenceDirectory, path);
 
 	std::string expectedResult = "../../aaa/bbb/";
-	AssertHelper::assertTrue(result.compare(expectedResult)==0);
+	AssertHelper::assertTrue(result == expectedResult);
 }
 
 void FileHandlerTest::relativePathEqual()
@@ -46,8 +46,7 @@ void FileHandlerTest::relativePathEqual()
 	std::string path = "xxx/yyy/";
 	std::string result = FileHandler::getRelativePath(referenceDirectory, path);
 
-	std::string expectedResult = "";
-	AssertHelper::assertTrue(result.compare(expectedResult)==0);
+	AssertHelper::assertTrue(result.empty());
 }
 
 CppUnit::Test *FileHandlerTest::suite()

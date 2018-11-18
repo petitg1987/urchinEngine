@@ -5,28 +5,18 @@
 namespace urchin
 {
 
-	CollisionCapsuleReaderWriter::CollisionCapsuleReaderWriter()
-	{
-
-	}
-
-	CollisionCapsuleReaderWriter::~CollisionCapsuleReaderWriter()
-	{
-
-	}
-
 	CollisionShape3D *CollisionCapsuleReaderWriter::loadFrom(std::shared_ptr<XmlChunk> shapeChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), shapeChunk);
 		std::string orientationValue = orientationChunk->getStringValue();
 		CapsuleShape<float>::CapsuleOrientation orientation;
-		if(orientationValue.compare(X_VALUE)==0)
+		if(orientationValue == X_VALUE)
 		{
 			orientation = CapsuleShape<float>::CapsuleOrientation::CAPSULE_X;
-		}else if(orientationValue.compare(Y_VALUE)==0)
+		}else if(orientationValue == Y_VALUE)
 		{
 			orientation = CapsuleShape<float>::CapsuleOrientation::CAPSULE_Y;
-		}else if(orientationValue.compare(Z_VALUE)==0)
+		}else if(orientationValue == Z_VALUE)
 		{
 			orientation = CapsuleShape<float>::CapsuleOrientation::CAPSULE_Z;
 		}else
@@ -47,7 +37,7 @@ namespace urchin
 	{
 		shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CAPSULE_VALUE));
 
-		const CollisionCapsuleShape *capsuleShape = static_cast<const CollisionCapsuleShape *>(collisionShape);
+		const auto *capsuleShape = dynamic_cast<const CollisionCapsuleShape *>(collisionShape);
 
 		std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
 		CapsuleShape<float>::CapsuleOrientation orientationValue = capsuleShape->getCapsuleOrientation();
@@ -62,7 +52,7 @@ namespace urchin
 			orientationChunk->setStringValue(Z_VALUE);
 		}else
 		{
-			throw std::invalid_argument("Capsule orientation type unknown: " + orientationValue);
+			throw std::invalid_argument("Capsule orientation type unknown: " + std::to_string(orientationValue));
 		}
 
 		std::shared_ptr<XmlChunk> radiusChunk = xmlWriter.createChunk(RADIUS_TAG, XmlAttribute(), shapeChunk);

@@ -17,11 +17,10 @@ namespace urchin
 		#define POINT_TAG "point"
 
 		public:
-			CollisionConvexHullReaderWriter();
-			virtual ~CollisionConvexHullReaderWriter();
+			~CollisionConvexHullReaderWriter() override = default;
 
-			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const;
+			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
+			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const override;
 	};
 
 }

@@ -16,11 +16,10 @@ namespace urchin
 		#define RADIUS_TAG "radius"
 
 		public:
-			CollisionSphereReaderWriter();
-			virtual ~CollisionSphereReaderWriter();
+			~CollisionSphereReaderWriter() override = default;
 
-			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const;
+			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
+			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const override;
 	};
 
 }

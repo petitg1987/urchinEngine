@@ -5,37 +5,27 @@
 namespace urchin
 {
 
-	CollisionConeReaderWriter::CollisionConeReaderWriter()
-	{
-
-	}
-
-	CollisionConeReaderWriter::~CollisionConeReaderWriter()
-	{
-
-	}
-
 	CollisionShape3D *CollisionConeReaderWriter::loadFrom(std::shared_ptr<XmlChunk> shapeChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), shapeChunk);
 		std::string orientationValue = orientationChunk->getStringValue();
 		ConeShape<float>::ConeOrientation orientation;
-		if(orientationValue.compare(X_POSITIVE_VALUE)==0)
+		if(orientationValue == X_POSITIVE_VALUE)
 		{
 			orientation = ConeShape<float>::ConeOrientation::CONE_X_POSITIVE;
-		}else if(orientationValue.compare(X_NEGATIVE_VALUE)==0)
+		}else if(orientationValue == X_NEGATIVE_VALUE)
 		{
 			orientation = ConeShape<float>::ConeOrientation::CONE_X_NEGATIVE;
-		}else if(orientationValue.compare(Y_POSITIVE_VALUE)==0)
+		}else if(orientationValue == Y_POSITIVE_VALUE)
 		{
 			orientation = ConeShape<float>::ConeOrientation::CONE_Y_POSITIVE;
-		}else if(orientationValue.compare(Y_NEGATIVE_VALUE)==0)
+		}else if(orientationValue == Y_NEGATIVE_VALUE)
 		{
 			orientation = ConeShape<float>::ConeOrientation::CONE_Y_NEGATIVE;
-		}else if(orientationValue.compare(Z_POSITIVE_VALUE)==0)
+		}else if(orientationValue == Z_POSITIVE_VALUE)
 		{
 			orientation = ConeShape<float>::ConeOrientation::CONE_Z_POSITIVE;
-		}else if(orientationValue.compare(Z_NEGATIVE_VALUE)==0)
+		}else if(orientationValue == Z_NEGATIVE_VALUE)
 		{
 			orientation = ConeShape<float>::ConeOrientation::CONE_Z_NEGATIVE;
 		}else
@@ -56,7 +46,7 @@ namespace urchin
 	{
 		shapeChunk->setAttribute(XmlAttribute(TYPE_ATTR, CONE_VALUE));
 
-		const CollisionConeShape *coneShape = static_cast<const CollisionConeShape *>(collisionShape);
+		const auto *coneShape = dynamic_cast<const CollisionConeShape *>(collisionShape);
 
 		std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), shapeChunk);
 		ConeShape<float>::ConeOrientation orientationValue = coneShape->getConeOrientation();
@@ -80,7 +70,7 @@ namespace urchin
 			orientationChunk->setStringValue(Z_NEGATIVE_VALUE);
 		}else
 		{
-			throw std::invalid_argument("Cone orientation type unknown: " + orientationValue);
+			throw std::invalid_argument("Cone orientation type unknown: " + std::to_string(orientationValue));
 		}
 
 		std::shared_ptr<XmlChunk> radiusChunk = xmlWriter.createChunk(RADIUS_TAG, XmlAttribute(), shapeChunk);

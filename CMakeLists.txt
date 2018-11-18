@@ -6,7 +6,7 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
     add_definitions(-D_DEBUG)
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(common)
 add_subdirectory(3dEngine)

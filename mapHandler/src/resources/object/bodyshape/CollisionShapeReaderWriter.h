@@ -23,8 +23,7 @@ namespace urchin
 		#define COMPOUND_SHAPE_VALUE "COMPOUND_SHAPE"
 
 		public:
-			CollisionShapeReaderWriter();
-			virtual ~CollisionShapeReaderWriter();
+			virtual ~CollisionShapeReaderWriter() = default;
 
 			virtual CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const = 0;
 			virtual void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const = 0;

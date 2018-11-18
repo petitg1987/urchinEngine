@@ -26,11 +26,10 @@ namespace urchin
 		#define Z_NEGATIVE_VALUE "ZNegative"
 
 		public:
-			CollisionConeReaderWriter();
-			virtual ~CollisionConeReaderWriter();
+			~CollisionConeReaderWriter() override = default;
 
-			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const;
+			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
+			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const override;
 	};
 
 }

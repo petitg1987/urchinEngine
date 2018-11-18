@@ -72,7 +72,7 @@ namespace urchin
 		sceneLight->setName(lightName);
 
 		QVariant variant = lightTypeComboBox->currentData();
-		Light::LightType lightType = static_cast<Light::LightType>(variant.toInt());
+		auto lightType = static_cast<Light::LightType>(variant.toInt());
 
 		Light *light;
 		if(lightType==Light::OMNIDIRECTIONAL)
@@ -105,7 +105,7 @@ namespace urchin
 			updateLightName();
 			LabelStyleHelper::applyNormalStyle(lightNameLabel);
 
-			if(lightName.compare("")==0)
+			if(lightName.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(lightNameLabel, "Light name is mandatory");
 				hasError = true;
@@ -129,9 +129,9 @@ namespace urchin
 	bool NewLightDialog::isSceneLightExist(const std::string &name)
 	{
 		std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-		for(std::list<const SceneLight *>::const_iterator it = sceneLights.begin(); it!=sceneLights.end(); ++it)
+		for (auto &sceneLight : sceneLights)
 		{
-			if((*it)->getName().compare(name)==0)
+			if(sceneLight->getName() == name)
 			{
 				return true;
 			}

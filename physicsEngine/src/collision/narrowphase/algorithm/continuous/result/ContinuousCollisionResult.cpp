@@ -13,6 +13,15 @@ namespace urchin
 
 	}
 
+	template<class T> ContinuousCollisionResult<T>::ContinuousCollisionResult(const ContinuousCollisionResult &continuousCollisionResult) :
+			body2(continuousCollisionResult.getBody2()),
+			normalFromObject2(continuousCollisionResult.getNormalFromObject2()),
+			hitPointOnObject2(continuousCollisionResult.getHitPointOnObject2()),
+			timeToHit(continuousCollisionResult.getTimeToHit())
+	{
+
+	}
+
 	template<class T> AbstractWorkBody *ContinuousCollisionResult<T>::getBody2() const
 	{
 		return body2;

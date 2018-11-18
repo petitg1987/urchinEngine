@@ -25,7 +25,7 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(unsigned int max
 	*(void**)p = 0;
 }
 
-template<class BaseType> inline FixedSizePool<BaseType>::~FixedSizePool()
+template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 {
 	#ifdef _DEBUG
 		assert(freeCount==maxElements); //ensure that destructors have been called
@@ -37,7 +37,7 @@ template<class BaseType> inline FixedSizePool<BaseType>::~FixedSizePool()
 /**
  * @return Memory pointer which can be used to instantiate an element.
  */
-template<class BaseType> inline void* FixedSizePool<BaseType>::allocate(unsigned int elementSize)
+template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int elementSize)
 {
     #ifdef _DEBUG
         assert(elementSize<=maxElementSize);
@@ -60,7 +60,7 @@ template<class BaseType> inline void* FixedSizePool<BaseType>::allocate(unsigned
  * Call destructor of pointer and free location in the pool.
  * @param ptr Pointer to free
  */
-template<class BaseType> inline void FixedSizePool<BaseType>::free(BaseType *ptr)
+template<class BaseType> void FixedSizePool<BaseType>::free(BaseType *ptr)
 {
 	if (((unsigned char*)ptr >= pool && (unsigned char*)ptr < pool + maxElementSize*maxElements))
 	{ //ptr is in the pool

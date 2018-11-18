@@ -12,7 +12,15 @@ namespace urchin
 
 	void RayTestResult::addResults(ccd_set &rayTestResults)
 	{
-		this->rayTestResults.merge(rayTestResults);
+		#ifdef _DEBUG
+			assert(this->rayTestResults.empty());
+    	#endif
+
+		for(const auto &rayTestResult : rayTestResults)
+		{
+			auto copiedRayTestResult = std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>(new ContinuousCollisionResult<float>(*rayTestResult));
+			this->rayTestResults.insert(std::move(copiedRayTestResult));
+		}
 
 		resultReady.store(true, std::memory_order_relaxed);
 	}

@@ -17,14 +17,14 @@ namespace urchin
 		this->resize(530, 195);
 		this->setFixedSize(this->width(),this->height());
 
-		QGridLayout *mainLayout = new QGridLayout(this);
+		auto *mainLayout = new QGridLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
 		setupNameFields(mainLayout);
 		setupDirectoryFields(mainLayout);
 		setupWorkingDirectoryFields(mainLayout);
 
-		QDialogButtonBox *buttonBox = new QDialogButtonBox();
+		auto *buttonBox = new QDialogButtonBox();
 		mainLayout->addWidget(buttonBox, 5, 0, 1, 3, Qt::AlignRight);
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -135,7 +135,7 @@ namespace urchin
 
 	void NewDialog::updateRelativeWorkingDirectory()
 	{
-		if(mapDirectory.compare("")!=0 && mapWorkingDirectory.compare("")!=0)
+		if(!mapDirectory.empty() && !mapWorkingDirectory.empty())
 		{
 			mapRelWorkingDirectory = FileHandler::getRelativePath(mapDirectory, mapWorkingDirectory);
 			mapRelWorkingDirectoryText->setText(QString::fromStdString(mapRelWorkingDirectory));
@@ -153,7 +153,7 @@ namespace urchin
 			LabelStyleHelper::applyNormalStyle(mapDirectoryLabel);
 			LabelStyleHelper::applyNormalStyle(mapWorkingDirectoryLabel);
 
-			if(mapFilename.compare("")==0)
+			if(mapFilename.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name is mandatory");
 				hasError = true;
@@ -162,12 +162,12 @@ namespace urchin
 				LabelStyleHelper::applyErrorStyle(mapNameLabel, "Map name cannot contains slash character");
 				hasError = true;
 			}
-			if(mapDirectory.compare("")==0)
+			if(mapDirectory.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(mapDirectoryLabel, "Map directory is mandatory");
 				hasError = true;
 			}
-			if(mapWorkingDirectory.compare("")==0)
+			if(mapWorkingDirectory.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(mapWorkingDirectoryLabel, "Map working directory is mandatory");
 				hasError = true;

@@ -99,7 +99,7 @@ namespace urchin
 			std::string relativeSoundFilename = FileHandler::getRelativePath(resourcesDirectory, soundFilename);
 
 			QVariant variant = soundTypeComboBox->currentData();
-			Sound::SoundType soundType = static_cast<Sound::SoundType>(variant.toInt());
+			auto soundType = static_cast<Sound::SoundType>(variant.toInt());
 
 			Sound *sound;
 			if(soundType==Sound::AMBIENT)
@@ -119,10 +119,7 @@ namespace urchin
 		}catch(std::exception &e)
 		{
 			QMessageBox::critical(this, "Error", e.what());
-			if(sceneSound)
-			{
-				delete sceneSound;
-			}
+			delete sceneSound;
 
 			return QDialog::Rejected;
 		}
@@ -139,7 +136,7 @@ namespace urchin
 	void NewSoundDialog::showSoundFilenameDialog()
 	{
 		QString directory = preferredSoundPath.isEmpty() ? QString::fromStdString(FileSystem::instance()->getResourcesDirectory()) : preferredSoundPath;
-		QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.wav)", 0, QFileDialog::DontUseNativeDialog);
+		QString filename = QFileDialog::getOpenFileName(this, tr("Open sound file"), directory, "Sound file (*.wav)", nullptr, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull())
 		{
 			this->soundFilename = filename.toUtf8().constData();
@@ -160,7 +157,7 @@ namespace urchin
 			LabelStyleHelper::applyNormalStyle(soundNameLabel);
 			LabelStyleHelper::applyNormalStyle(soundFilenameLabel);
 
-			if(soundName.compare("")==0)
+			if(soundName.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is mandatory");
 				hasError = true;
@@ -169,7 +166,7 @@ namespace urchin
 				LabelStyleHelper::applyErrorStyle(soundNameLabel, "Sound name is already used");
 				hasError = true;
 			}
-			if(soundFilename.compare("")==0)
+			if(soundFilename.empty())
 			{
 				LabelStyleHelper::applyErrorStyle(soundFilenameLabel, "Sound file is mandatory");
 				hasError = true;
@@ -189,9 +186,9 @@ namespace urchin
 	bool NewSoundDialog::isSceneSoundExist(const std::string &name)
 	{
 		std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
-		for(std::list<const SceneSound *>::const_iterator it = sceneSounds.begin(); it!=sceneSounds.end(); ++it)
+		for (auto &sceneSound : sceneSounds)
 		{
-			if((*it)->getName().compare(name)==0)
+			if(sceneSound->getName() == name)
 			{
 				return true;
 			}
