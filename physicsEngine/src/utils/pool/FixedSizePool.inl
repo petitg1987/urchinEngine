@@ -38,12 +38,8 @@ template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 /**
  * @return Memory pointer which can be used to instantiate an element.
  */
-template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int elementSize)
+template<class BaseType> void* FixedSizePool<BaseType>::allocate()
 {
-    #ifdef _DEBUG
-        assert(elementSize<=maxElementSize);
-    #endif
-	
 	if(freeCount!=0)
 	{ //pool is not full
 		void* result = firstFree;
@@ -54,7 +50,7 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int el
 	
 	//pool is full: allocate new memory location
 	logPoolIsFull();
-	return operator new(elementSize);
+	return operator new(maxElementSize);
 }
 
 /**

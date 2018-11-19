@@ -11,7 +11,7 @@ namespace urchin
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    CollisionTriangleShape::CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>> &triangleShape) :
+    CollisionTriangleShape::CollisionTriangleShape(const std::shared_ptr<TriangleShape3D<float>> &triangleShape) :
             CollisionShape3D(),
             triangleShape(triangleShape)
     {

@@ -130,7 +130,7 @@ namespace urchin
 		CollisionAlgorithmBuilder *collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
         std::set<CollisionShape3D::ShapeType> firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
-		void *memPtr = algorithmPool->allocate(collisionAlgorithmBuilder->getAlgorithmSize());
+		void *memPtr = algorithmPool->allocate();
 		if(firstExpectedShapeType.find(shape1->getShapeType())!=firstExpectedShapeType.end())
 		{
 			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(

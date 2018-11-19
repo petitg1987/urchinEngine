@@ -136,7 +136,7 @@ namespace urchin
 
     float CollisionHeightfieldShape::getMaxDistanceToCenter() const
     {
-        throw std::runtime_error("Impossible to get max distance to center for heightfield shape. Only static bodies are supported for this shape.");
+        throw std::runtime_error("Impossible to get max distance to center for heightfield shape. A heightfield body must be static.");
     }
 
     float CollisionHeightfieldShape::getMinDistanceToCenter() const
@@ -178,18 +178,16 @@ namespace urchin
 
                 if(hasDiagonalPointAbove || point1.Y > checkAABBox.getMin().Y)
                 {
-                    void *memPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
-                    std::shared_ptr<TriangleShape3D<float>> collisionTriangleShape(new (memPtr) TriangleShape3D<float>(point1, point3, point2), TriangleShapeDeleter(triangleShapesPool));
-
-                    trianglesInAABBox.emplace_back(CollisionTriangleShape(collisionTriangleShape));
+                    void *memPtr = triangleShapesPool->allocate();
+                    trianglesInAABBox.emplace_back(CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>>(
+                            new (memPtr) TriangleShape3D<float>(point1, point3, point2), TriangleShapeDeleter(triangleShapesPool))));
                 }
 
                 if(hasDiagonalPointAbove || point4.Y > checkAABBox.getMin().Y)
                 {
-                    void *memPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
-                    std::shared_ptr<TriangleShape3D<float>> collisionTriangleShape(new (memPtr) TriangleShape3D<float>(point2, point3, point4), TriangleShapeDeleter(triangleShapesPool));
-
-                    trianglesInAABBox.emplace_back(CollisionTriangleShape(collisionTriangleShape));
+                    void *memPtr = triangleShapesPool->allocate();
+                    trianglesInAABBox.emplace_back(CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>>(
+                            new (memPtr) TriangleShape3D<float>(point2, point3, point4), TriangleShapeDeleter(triangleShapesPool))));
                 }
             }
         }

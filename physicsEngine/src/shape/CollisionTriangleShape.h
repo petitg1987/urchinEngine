@@ -16,7 +16,7 @@ namespace urchin
     {
         public:
             explicit CollisionTriangleShape(const Point3<float> *);
-            explicit CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>> &);
+            explicit CollisionTriangleShape(const std::shared_ptr<TriangleShape3D<float>> &);
 
             CollisionShape3D::ShapeType getShapeType() const override;
             std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
