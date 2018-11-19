@@ -46,8 +46,8 @@ namespace urchin
 	}
 
 	/**
-	* Deleter for std::shared_ptr
-	*/
+	 * Deleter for std::shared_ptr
+	 */
 	void Resource::ResourceDeleter::operator()(Resource *const resource)
 	{
 		resource->release();

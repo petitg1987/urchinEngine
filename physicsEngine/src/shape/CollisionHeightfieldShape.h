@@ -7,6 +7,7 @@
 
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionConcaveShape.h"
+#include "utils/pool/FixedSizePool.h"
 
 namespace urchin
 {
@@ -15,6 +16,7 @@ namespace urchin
     {
         public:
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
+            ~CollisionHeightfieldShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
             std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
@@ -36,6 +38,16 @@ namespace urchin
             const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float> &) const override;
 
         private:
+            class TriangleShapeDeleter
+            {
+                public:
+                    explicit TriangleShapeDeleter(FixedSizePool<TriangleShape3D<float>> *);
+                    void operator()(TriangleShape3D<float> *);
+
+                private:
+                    FixedSizePool<TriangleShape3D<float>> *const triangleShapesPool;
+            };
+
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
 
             std::vector<Point3<float>> vertices;
@@ -48,6 +60,7 @@ namespace urchin
             mutable PhysicsTransform lastTransform;
 
             mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
+            FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;
     };
 
 }

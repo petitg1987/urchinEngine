@@ -4,7 +4,8 @@
  * @param maxElement Maximum of elements which can be stored in the pool. If the maximum is exceed, a classical allocation
  *  (new/delete) will be performed.
  */
-template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(unsigned int maxElementSize, unsigned int maxElements) :
+template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::string &poolName, unsigned int maxElementSize, unsigned int maxElements) :
+		poolName(poolName),
 		maxElementSize(maxElementSize),
 		maxElements(maxElements),
 		freeCount(maxElements),
@@ -81,6 +82,7 @@ template<class BaseType> void FixedSizePool<BaseType>::logPoolIsFull()
 	{
 		std::stringstream logStream;
 		logStream << "Pool is full of elements." << std::endl;
+        logStream << " - Pool name: " << poolName << std::endl;
 		logStream << " - Element size: " << maxElementSize << std::endl;
 		logStream << " - Maximum elements: " << maxElements;
 		Logger::logger().logWarning(logStream.str());

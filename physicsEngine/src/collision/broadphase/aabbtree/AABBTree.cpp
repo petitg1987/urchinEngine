@@ -95,13 +95,12 @@ namespace urchin
 
 	void AABBTree::computeOverlappingPairsFor(AABBNode *leafNode, AABBNode *rootNode)
 	{
-		std::stack<AABBNode *> stackNodes;
-		stackNodes.push(rootNode);
+		browseNodes.clear();
+		browseNodes.push_back(rootNode);
 
-		while(!stackNodes.empty())
+		for(unsigned int i=0; i<browseNodes.size(); ++i)
 		{ //tree traversal: pre-order (iterative)
-			AABBNode *currentNode = stackNodes.top();
-			stackNodes.pop();
+			const AABBNode *currentNode = browseNodes[i];
 
 			if(leafNode!=currentNode && leafNode->getAABBox().collideWithAABBox(currentNode->getAABBox()))
 			{
@@ -110,8 +109,8 @@ namespace urchin
 					createOverlappingPair(leafNode->getBodyNodeData(), currentNode->getBodyNodeData());
 				}else
 				{
-					stackNodes.push(currentNode->getRightChild());
-					stackNodes.push(currentNode->getLeftChild());
+					browseNodes.push_back(currentNode->getRightChild());
+					browseNodes.push_back(currentNode->getLeftChild());
 				}
 			}
 		}

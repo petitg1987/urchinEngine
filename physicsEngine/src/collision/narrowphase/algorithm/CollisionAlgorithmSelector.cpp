@@ -38,7 +38,7 @@ namespace urchin
 			}
 		}
 		unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
-		algorithmPool = new FixedSizePool<CollisionAlgorithm>(maxElementSize, algorithmPoolSize);
+		algorithmPool = new FixedSizePool<CollisionAlgorithm>("algorithmPool", maxElementSize, algorithmPoolSize);
 	}
 
 	CollisionAlgorithmSelector::~CollisionAlgorithmSelector()
@@ -152,9 +152,6 @@ namespace urchin
 
 	}
 
-	/**
-	* Deleter for std::shared_ptr
-	*/
 	void CollisionAlgorithmSelector::AlgorithmDeleter::operator()(CollisionAlgorithm *const collisionAlgorithm)
 	{
 		algorithmPool->free(collisionAlgorithm);

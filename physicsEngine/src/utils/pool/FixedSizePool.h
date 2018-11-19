@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <sstream>
+#include <string>
 #include "UrchinCommon.h"
 
 namespace urchin
@@ -15,7 +16,7 @@ namespace urchin
 	template<class BaseType> class FixedSizePool
 	{
 		public:
-			FixedSizePool(unsigned int, unsigned int);
+			FixedSizePool(const std::string &, unsigned int, unsigned int);
 			~FixedSizePool();
 
 			void* allocate(unsigned int);
@@ -24,6 +25,7 @@ namespace urchin
 		private:
 			void logPoolIsFull();
 
+			std::string poolName;
 			unsigned int maxElementSize;
 			unsigned int maxElements;
 			unsigned int freeCount; //number of free locations

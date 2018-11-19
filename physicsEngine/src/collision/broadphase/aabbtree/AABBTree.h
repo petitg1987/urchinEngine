@@ -42,6 +42,8 @@ namespace urchin
 			std::map<AbstractWorkBody *, AABBNode *> bodiesNode;
 			PairContainer *defaultPairContainer;
 
+			std::vector<AABBNode *> browseNodes;
+
 			#ifdef _DEBUG
 				void printTree(AABBNode *, unsigned int);
 			#endif

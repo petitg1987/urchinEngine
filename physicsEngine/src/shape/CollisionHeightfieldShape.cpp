@@ -18,6 +18,15 @@ namespace urchin
 
         assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();
+
+        unsigned int triangleShapesPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTriangleShapesPoolSize");
+        triangleShapesPool = new FixedSizePool<TriangleShape3D<float>>("triangleShapesPool", sizeof(TriangleShape3D<float>), triangleShapesPoolSize);
+    }
+
+    CollisionHeightfieldShape::~CollisionHeightfieldShape()
+    {
+        trianglesInAABBox.clear();
+        delete triangleShapesPool;
     }
 
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const
@@ -169,17 +178,34 @@ namespace urchin
 
                 if(hasDiagonalPointAbove || point1.Y > checkAABBox.getMin().Y)
                 {
-                    trianglesInAABBox.emplace_back(CollisionTriangleShape(point1, point3, point2));
+                    void *memPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
+                    std::shared_ptr<TriangleShape3D<float>> collisionTriangleShape(new (memPtr) TriangleShape3D<float>(point1, point3, point2), TriangleShapeDeleter(triangleShapesPool));
+
+                    trianglesInAABBox.emplace_back(CollisionTriangleShape(collisionTriangleShape));
                 }
 
                 if(hasDiagonalPointAbove || point4.Y > checkAABBox.getMin().Y)
                 {
-                    trianglesInAABBox.emplace_back(CollisionTriangleShape(point2, point3, point4));
+                    void *memPtr = triangleShapesPool->allocate(sizeof(TriangleShape3D<float>));
+                    std::shared_ptr<TriangleShape3D<float>> collisionTriangleShape(new (memPtr) TriangleShape3D<float>(point2, point3, point4), TriangleShapeDeleter(triangleShapesPool));
+
+                    trianglesInAABBox.emplace_back(CollisionTriangleShape(collisionTriangleShape));
                 }
             }
         }
 
         return trianglesInAABBox;
+    }
+
+    CollisionHeightfieldShape::TriangleShapeDeleter::TriangleShapeDeleter(FixedSizePool<TriangleShape3D<float>> *const triangleShapesPool) :
+            triangleShapesPool(triangleShapesPool)
+    {
+
+    }
+
+    void CollisionHeightfieldShape::TriangleShapeDeleter::operator()(TriangleShape3D<float> *const triangleShape)
+    {
+        triangleShapesPool->free(triangleShape);
     }
 
 }

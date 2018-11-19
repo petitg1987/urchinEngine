@@ -18,7 +18,7 @@ namespace urchin
 
         unsigned int maxElementSize = *std::max_element(resultSizes.begin(), resultSizes.end());
         unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
-        algorithmResultPool = new FixedSizePool<AlgorithmResult>(maxElementSize, algorithmPoolSize);
+        algorithmResultPool = new FixedSizePool<AlgorithmResult>("algorithmResultPool", maxElementSize, algorithmPoolSize);
     }
 
     AlgorithmResultAllocator::~AlgorithmResultAllocator()

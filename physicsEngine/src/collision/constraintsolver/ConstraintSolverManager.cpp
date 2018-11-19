@@ -12,7 +12,7 @@ namespace urchin
 			restitutionVelocityThreshold(ConfigService::instance()->getFloatValue("constraintSolver.restitutionVelocityThreshold"))
 	{
 		unsigned int constraintSolvingPoolSize = ConfigService::instance()->getUnsignedIntValue("constraintSolver.constraintSolvingPoolSize");
-		constraintSolvingPool = new FixedSizePool<ConstraintSolving>(sizeof(ConstraintSolving), constraintSolvingPoolSize);
+		constraintSolvingPool = new FixedSizePool<ConstraintSolving>("constraintSolvingPool", sizeof(ConstraintSolving), constraintSolvingPoolSize);
 	}
 
 	ConstraintSolverManager::~ConstraintSolverManager()
