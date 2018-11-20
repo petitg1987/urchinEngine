@@ -6,10 +6,16 @@ namespace urchin
 
 	CollisionCylinderShape::CollisionCylinderShape(float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
 			CollisionShape3D(),
-			cylinderShape(std::make_shared<CylinderShape<float>>(radius, height, cylinderOrientation))
+			cylinderShape(std::make_shared<CylinderShape<float>>(radius, height, cylinderOrientation)),
+			lastConvexObject(nullptr)
 	{
 		computeSafeMargin();
 	}
+
+    CollisionCylinderShape::~CollisionCylinderShape()
+    {
+        delete lastConvexObject;
+    }
 
 	void CollisionCylinderShape::computeSafeMargin()
 	{
@@ -67,21 +73,27 @@ namespace urchin
 		return AABBox<float>(position - extend, position + extend);
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		float reducedRadius = getRadius() - getInnerMargin();
 		float reducedHeight = getHeight() - (2.0f * getInnerMargin());
-		return std::make_shared<CollisionCylinderObject>(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
+
+        if(lastConvexObject==nullptr)
+        {
+            lastConvexObject = new CollisionCylinderObject(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
+            return lastConvexObject;
+        }
+		return new (lastConvexObject) CollisionCylinderObject(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
 	}
 
 	Vector3<float> CollisionCylinderShape::computeLocalInertia(float mass) const
 	{
-		float interiaValue = (1.0f/12.0f) * mass * (3.0f*getRadius()*getRadius() + getHeight()*getHeight());
+		float inertiaValue = (1.0f/12.0f) * mass * (3.0f*getRadius()*getRadius() + getHeight()*getHeight());
 
-		Vector3<float> inertia(interiaValue, interiaValue, interiaValue);
+		Vector3<float> inertia(inertiaValue, inertiaValue, inertiaValue);
 		inertia[getCylinderOrientation()] = 0.5f * mass * getRadius() * getRadius();
 
 		return inertia;

@@ -80,7 +80,7 @@ namespace urchin
 		return globalCompoundBox;
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		throw std::runtime_error("Impossible to transform compound shape to convex object");
 	}

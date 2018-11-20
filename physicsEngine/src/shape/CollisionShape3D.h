@@ -48,7 +48,7 @@ namespace urchin
 			virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
 
 			virtual AABBox<float> toAABBox(const PhysicsTransform &) const = 0;
-			virtual std::shared_ptr<CollisionConvexObject3D> toConvexObject(const PhysicsTransform &) const = 0;
+			virtual CollisionConvexObject3D *toConvexObject(const PhysicsTransform &) const = 0;
 
 			virtual Vector3<float> computeLocalInertia(float) const = 0;
 			virtual float getMaxDistanceToCenter() const = 0;

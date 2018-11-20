@@ -17,8 +17,8 @@ namespace urchin
 		ScopeProfiler profiler("physics", "doProcessCollisionAlgorithm-ConvexConvex");
 
 		//transform convex hull shapes
-		std::shared_ptr<CollisionConvexObject3D> convexObject1 = object1.getShape().toConvexObject(object1.getShapeWorldTransform());
-		std::shared_ptr<CollisionConvexObject3D> convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
+		CollisionConvexObject3D *convexObject1 = object1.getShape().toConvexObject(object1.getShapeWorldTransform());
+		CollisionConvexObject3D *convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
 
 		//process GJK and EPA hybrid algorithms
 		std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, false);
@@ -45,8 +45,7 @@ namespace urchin
 		}
 	}
 
-	void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const std::shared_ptr<CollisionConvexObject3D> &convexObject1,
-																			 const std::shared_ptr<CollisionConvexObject3D> &convexObject2)
+	void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const CollisionConvexObject3D *convexObject1, const CollisionConvexObject3D *convexObject2)
 	{
 		std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, true);
 

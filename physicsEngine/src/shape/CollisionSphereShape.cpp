@@ -9,9 +9,15 @@ namespace urchin
 	*/
 	CollisionSphereShape::CollisionSphereShape(float innerMargin) :
 			CollisionShape3D(innerMargin),
-			sphereShape(std::make_shared<SphereShape<float>>(innerMargin))
+			sphereShape(std::make_shared<SphereShape<float>>(innerMargin)),
+			lastConvexObject(nullptr)
 	{
 
+	}
+
+	CollisionSphereShape::~CollisionSphereShape()
+	{
+        delete lastConvexObject;
 	}
 
 	CollisionShape3D::ShapeType CollisionSphereShape::getShapeType() const
@@ -41,10 +47,16 @@ namespace urchin
 		return AABBox<float>(position - sphereShape->getRadius(), position + sphereShape->getRadius());
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionSphereShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionSphereShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
-		return std::make_shared<CollisionSphereObject>(getInnerMargin(), position);
+
+        if(lastConvexObject==nullptr)
+        {
+            lastConvexObject = new CollisionSphereObject(getInnerMargin(), position);
+            return lastConvexObject;
+        }
+		return new (lastConvexObject) CollisionSphereObject(getInnerMargin(), position);
 	}
 
 	Vector3<float> CollisionSphereShape::computeLocalInertia(float mass) const

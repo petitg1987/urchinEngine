@@ -19,8 +19,8 @@ namespace urchin
         assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();
 
-        unsigned int triangleShapesPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTriangleShapesPoolSize");
-        triangleShapesPool = new FixedSizePool<TriangleShape3D<float>>("triangleShapesPool", sizeof(TriangleShape3D<float>), triangleShapesPoolSize);
+        unsigned int trianglesPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTriangleShapesPoolSize");
+        triangleShapesPool = new FixedSizePool<TriangleShape3D<float>>("triangleShapesPool", sizeof(TriangleShape3D<float>), trianglesPoolSize);
     }
 
     CollisionHeightfieldShape::~CollisionHeightfieldShape()
@@ -116,7 +116,7 @@ namespace urchin
         return lastAABBox;
     }
 
-    std::shared_ptr<CollisionConvexObject3D> CollisionHeightfieldShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+    CollisionConvexObject3D *CollisionHeightfieldShape::toConvexObject(const PhysicsTransform &physicsTransform) const
     {
         throw std::runtime_error("Impossible to transform heightfield shape to convex object");
     }

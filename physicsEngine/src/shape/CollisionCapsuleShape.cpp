@@ -6,9 +6,15 @@ namespace urchin
 
 	CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
 			CollisionShape3D(),
-			capsuleShape(std::make_shared<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation))
+			capsuleShape(std::make_shared<CapsuleShape<float>>(radius, cylinderHeight, capsuleOrientation)),
+			lastConvexObject(nullptr)
 	{
 		computeSafeMargin();
+	}
+
+	CollisionCapsuleShape::~CollisionCapsuleShape()
+	{
+		delete lastConvexObject;
 	}
 
 	void CollisionCapsuleShape::computeSafeMargin()
@@ -66,13 +72,19 @@ namespace urchin
 		return AABBox<float>(position - extend, position + extend);
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		float reducedRadius = getRadius() - getInnerMargin();
-		return std::make_shared<CollisionCapsuleObject>(getInnerMargin(), reducedRadius, getCylinderHeight(), getCapsuleOrientation(), position, orientation);
+
+        if(lastConvexObject==nullptr)
+        {
+            lastConvexObject = new CollisionCapsuleObject(getInnerMargin(), reducedRadius, getCylinderHeight(), getCapsuleOrientation(), position, orientation);
+            return lastConvexObject;
+        }
+		return new (lastConvexObject) CollisionCapsuleObject(getInnerMargin(), reducedRadius, getCylinderHeight(), getCapsuleOrientation(), position, orientation);
 	}
 
 	Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const

@@ -28,7 +28,7 @@ namespace urchin
 			};
 
 		private:
-			void processCollisionAlgorithmWithMargin(const std::shared_ptr<CollisionConvexObject3D> &, const std::shared_ptr<CollisionConvexObject3D> &);
+			void processCollisionAlgorithmWithMargin(const CollisionConvexObject3D *, const CollisionConvexObject3D *);
 
 			GJKAlgorithm<double> gjkAlgorithm;
 			EPAAlgorithm<double> epaAlgorithm;

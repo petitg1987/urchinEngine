@@ -8,12 +8,18 @@ namespace urchin
 
 	CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
 			CollisionShape3D(),
-			boxShape(std::make_shared<BoxShape<float>>(halfSizes))
+			boxShape(std::make_shared<BoxShape<float>>(halfSizes)),
+			lastConvexObject(nullptr)
 	{
 		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 
 		computeSafeMargin();
 	}
+
+	CollisionBoxShape::~CollisionBoxShape()
+    {
+        delete lastConvexObject;
+    }
 
 	void CollisionBoxShape::computeSafeMargin()
 	{
@@ -68,13 +74,19 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		Vector3<float> halfSizeSubtractMargin = boxShape->getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
-		return std::make_shared<CollisionBoxObject>(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
+
+		if(lastConvexObject==nullptr)
+        {
+            lastConvexObject = new CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
+            return lastConvexObject;
+        }
+		return new (lastConvexObject) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
 	}
 
 	Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const

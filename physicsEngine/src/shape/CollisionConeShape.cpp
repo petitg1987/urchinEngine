@@ -6,9 +6,15 @@ namespace urchin
 
 	CollisionConeShape::CollisionConeShape(float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
 			CollisionShape3D(),
-			coneShape(std::make_shared<ConeShape<float>>(radius, height, coneOrientation))
+			coneShape(std::make_shared<ConeShape<float>>(radius, height, coneOrientation)),
+			lastConvexObject(nullptr)
 	{
 		computeSafeMargin();
+	}
+
+	CollisionConeShape::~CollisionConeShape()
+	{
+        delete lastConvexObject;
 	}
 
 	void CollisionConeShape::computeSafeMargin()
@@ -71,14 +77,20 @@ namespace urchin
 		return AABBox<float>(centerPosition - extend, centerPosition + extend);
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		float reducedRadius = getRadius() - getInnerMargin();
 		float reducedHeight = getHeight() - (2.0f * getInnerMargin());
-		return std::make_shared<CollisionConeObject>(getInnerMargin(), reducedRadius, reducedHeight, getConeOrientation(), position, orientation);
+
+        if(lastConvexObject==nullptr)
+        {
+            lastConvexObject = new CollisionConeObject(getInnerMargin(), reducedRadius, reducedHeight, getConeOrientation(), position, orientation);
+            return lastConvexObject;
+        }
+		return new (lastConvexObject) CollisionConeObject(getInnerMargin(), reducedRadius, reducedHeight, getConeOrientation(), position, orientation);
 	}
 
 	Vector3<float> CollisionConeShape::computeLocalInertia(float mass) const

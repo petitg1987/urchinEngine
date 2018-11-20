@@ -13,16 +13,23 @@ namespace urchin
 	*/
 	CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>> &points) :
 			CollisionShape3D(),
-			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points))
+			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points)),
+            lastConvexObject(nullptr)
 	{
 		initialize();
 	}
 
 	CollisionConvexHullShape::CollisionConvexHullShape(const std::shared_ptr<ConvexHullShape3D<float>> &convexHullShape) :
 			CollisionShape3D(),
-			convexHullShape(convexHullShape)
+			convexHullShape(convexHullShape),
+            lastConvexObject(nullptr)
 	{
 		initialize();
+	}
+
+	CollisionConvexHullShape::~CollisionConvexHullShape()
+	{
+        delete lastConvexObject;
 	}
 
 	void CollisionConvexHullShape::initialize()
@@ -131,7 +138,7 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	std::shared_ptr<CollisionConvexObject3D> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	CollisionConvexObject3D *CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		Transform<float> transform = physicsTransform.toTransform();
         auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
@@ -141,12 +148,24 @@ namespace urchin
 			#ifdef _DEBUG
             	assert(getInnerMargin()==0.0f);
     		#endif
-            std::shared_ptr<ConvexHull3D<float>> convexHullWithoutMargin(convexHullWithMargin);
-            return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+            const std::shared_ptr<ConvexHull3D<float>> &convexHullWithoutMargin(convexHullWithMargin);
+
+            if(lastConvexObject==nullptr)
+            {
+                lastConvexObject = new CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+                return lastConvexObject;
+            }
+            return new (lastConvexObject) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
 		}
 
         auto convexHullWithoutMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShapeReduced->toConvexObject(transform).release()));
-		return std::make_shared<CollisionConvexHullObject>(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+
+        if(lastConvexObject==nullptr)
+        {
+            lastConvexObject = new CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+            return lastConvexObject;
+        }
+        return new (lastConvexObject) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
 	}
 
 	Vector3<float> CollisionConvexHullShape::computeLocalInertia(float mass) const
