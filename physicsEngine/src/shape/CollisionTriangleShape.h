@@ -7,7 +7,9 @@
 
 #include "shape/CollisionShape3D.h"
 #include "object/CollisionConvexObject3D.h"
+#include "object/CollisionTriangleObject.h"
 #include "utils/math/PhysicsTransform.h"
+#include "utils/pool/FixedSizePool.h"
 
 namespace urchin
 {
@@ -17,6 +19,8 @@ namespace urchin
         public:
             explicit CollisionTriangleShape(const Point3<float> *);
             explicit CollisionTriangleShape(const std::shared_ptr<TriangleShape3D<float>> &);
+            CollisionTriangleShape(CollisionTriangleShape &&) noexcept;
+            CollisionTriangleShape(const CollisionTriangleShape &) = delete;
             ~CollisionTriangleShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
@@ -25,6 +29,7 @@ namespace urchin
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
             AABBox<float> toAABBox(const PhysicsTransform &) const override;
+            void setupConvexObjectPool(FixedSizePool<CollisionTriangleObject> *);
             CollisionConvexObject3D *toConvexObject(const PhysicsTransform &) const override;
 
             Vector3<float> computeLocalInertia(float) const override;
@@ -34,9 +39,10 @@ namespace urchin
             CollisionShape3D *clone() const override;
 
         private:
-            const std::shared_ptr<TriangleShape3D<float>> triangleShape; //shape including margin
+            std::shared_ptr<TriangleShape3D<float>> triangleShape; //shape including margin
 
-            mutable CollisionConvexObject3D *lastConvexObject;
+            mutable CollisionTriangleObject *lastConvexObject;
+            FixedSizePool<CollisionTriangleObject> *collisionTriangleObjectsPool;
 
     };
 

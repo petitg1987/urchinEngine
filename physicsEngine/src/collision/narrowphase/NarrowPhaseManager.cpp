@@ -192,7 +192,7 @@ namespace urchin
 
 				const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
 
-				std::vector<CollisionTriangleShape> triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
+				const std::vector<CollisionTriangleShape> &triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 				for(const auto &triangle : triangles)
 				{
 					const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();

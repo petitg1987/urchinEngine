@@ -7,6 +7,7 @@
 
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionConcaveShape.h"
+#include "object/CollisionTriangleObject.h"
 #include "utils/pool/FixedSizePool.h"
 
 namespace urchin
@@ -49,6 +50,7 @@ namespace urchin
             };
 
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
+            void createCollisionTriangleShape(const Point3<float> &, const Point3<float> &, const Point3<float> &) const;
 
             std::vector<Point3<float>> vertices;
             unsigned int xLength;
@@ -61,6 +63,7 @@ namespace urchin
 
             mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
             FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;
+            FixedSizePool<CollisionTriangleObject> *collisionTriangleObjectsPool;
     };
 
 }

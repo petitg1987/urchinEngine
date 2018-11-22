@@ -19,14 +19,16 @@ namespace urchin
         assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();
 
-        unsigned int trianglesPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTriangleShapesPoolSize");
+        unsigned int trianglesPoolSize = ConfigService::instance()->getUnsignedIntValue("collisionShape.heightfieldTrianglesPoolSize");
         triangleShapesPool = new FixedSizePool<TriangleShape3D<float>>("triangleShapesPool", sizeof(TriangleShape3D<float>), trianglesPoolSize);
+        collisionTriangleObjectsPool = new FixedSizePool<CollisionTriangleObject>("collisionTriangleObjectsPool", sizeof(CollisionTriangleObject), trianglesPoolSize);
     }
 
     CollisionHeightfieldShape::~CollisionHeightfieldShape()
     {
         trianglesInAABBox.clear();
         delete triangleShapesPool;
+        delete collisionTriangleObjectsPool;
     }
 
     std::unique_ptr<BoxShape<float>> CollisionHeightfieldShape::buildLocalAABBox() const
@@ -178,21 +180,26 @@ namespace urchin
 
                 if(hasDiagonalPointAbove || point1.Y > checkAABBox.getMin().Y)
                 {
-                    void *memPtr = triangleShapesPool->allocate();
-                    trianglesInAABBox.emplace_back(CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>>(
-                            new (memPtr) TriangleShape3D<float>(point1, point3, point2), TriangleShapeDeleter(triangleShapesPool))));
+                    createCollisionTriangleShape(point1, point3, point2);
                 }
 
                 if(hasDiagonalPointAbove || point4.Y > checkAABBox.getMin().Y)
                 {
-                    void *memPtr = triangleShapesPool->allocate();
-                    trianglesInAABBox.emplace_back(CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>>(
-                            new (memPtr) TriangleShape3D<float>(point2, point3, point4), TriangleShapeDeleter(triangleShapesPool))));
+                    createCollisionTriangleShape(point2, point3, point4);
                 }
             }
         }
 
         return trianglesInAABBox;
+    }
+
+    void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float> &p1, const Point3<float> &p2, const Point3<float> &p3) const
+    {
+        void *shapeMemPtr = triangleShapesPool->allocate();
+        trianglesInAABBox.emplace_back(CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>>(
+                new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), TriangleShapeDeleter(triangleShapesPool))));
+
+        trianglesInAABBox[trianglesInAABBox.size()-1].setupConvexObjectPool(collisionTriangleObjectsPool);
     }
 
     CollisionHeightfieldShape::TriangleShapeDeleter::TriangleShapeDeleter(FixedSizePool<TriangleShape3D<float>> *const triangleShapesPool) :
