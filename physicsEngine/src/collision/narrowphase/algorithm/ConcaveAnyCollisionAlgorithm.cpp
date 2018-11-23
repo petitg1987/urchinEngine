@@ -82,7 +82,7 @@ namespace urchin
         return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, result);
     }
 
-    std::set<CollisionShape3D::ShapeType> ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
+    const std::vector<CollisionShape3D::ShapeType> &ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
     {
         return CollisionShape3D::CONCAVE_SHAPES;
     }

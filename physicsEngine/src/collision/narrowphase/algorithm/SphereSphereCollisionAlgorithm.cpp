@@ -48,9 +48,9 @@ namespace urchin
 		return new(memPtr) SphereSphereCollisionAlgorithm(objectSwapped, result);
 	}
 
-	std::set<CollisionShape3D::ShapeType> SphereSphereCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
+	const std::vector<CollisionShape3D::ShapeType> &SphereSphereCollisionAlgorithm::Builder::getFirstExpectedShapeType() const
 	{
-		return {CollisionShape3D::SPHERE_SHAPE};
+		return CollisionShape3D::SPHERE_SHAPES;
 	}
 
 	unsigned int SphereSphereCollisionAlgorithm::Builder::getAlgorithmSize() const

@@ -22,7 +22,7 @@ namespace urchin
 			{
 				CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, void*) const override;
 
-				std::set<CollisionShape3D::ShapeType> getFirstExpectedShapeType() const override;
+				const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const override;
 				unsigned int getAlgorithmSize() const override;
 			};
 

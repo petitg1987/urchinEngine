@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <fstream>
+#include <algorithm>
 
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 #include "collision/narrowphase/algorithm/SphereSphereCollisionAlgorithm.h"
@@ -128,14 +129,14 @@ namespace urchin
 			AbstractWorkBody *body1, const CollisionShape3D *shape1, AbstractWorkBody *body2, const CollisionShape3D *shape2)
 	{
 		CollisionAlgorithmBuilder *collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
-        std::set<CollisionShape3D::ShapeType> firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
+        const std::vector<CollisionShape3D::ShapeType> &firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
 		void *memPtr = algorithmPool->allocate();
-		if(firstExpectedShapeType.find(shape1->getShapeType())!=firstExpectedShapeType.end())
+		if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1->getShapeType())!=firstExpectedShapeType.end())
 		{
 			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
 					false, ManifoldResult(body1, body2), memPtr), AlgorithmDeleter(algorithmPool));
-		}else if(firstExpectedShapeType.find(shape2->getShapeType())!=firstExpectedShapeType.end())
+		}else if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2->getShapeType())!=firstExpectedShapeType.end())
 		{ //objects must be swap to match algorithm shape types
 			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
 					true, ManifoldResult(body2, body1), memPtr), AlgorithmDeleter(algorithmPool));
