@@ -6,16 +6,18 @@ namespace urchin
 
     CollisionTriangleShape::CollisionTriangleShape(const Point3<float> *points) :
             CollisionShape3D(),
-            triangleShape(std::make_shared<TriangleShape3D<float>>(points)),
+            triangleShape(new TriangleShape3D<float>(points)),
+            triangleShapesPool(nullptr),
             lastConvexObject(nullptr),
             collisionTriangleObjectsPool(nullptr)
     {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
 
-    CollisionTriangleShape::CollisionTriangleShape(const std::shared_ptr<TriangleShape3D<float>> &triangleShape) :
+    CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float> *triangleShape, FixedSizePool<TriangleShape3D<float>> *triangleShapesPool) :
             CollisionShape3D(),
             triangleShape(triangleShape),
+            triangleShapesPool(triangleShapesPool),
             lastConvexObject(nullptr),
             collisionTriangleObjectsPool(nullptr)
     {
@@ -23,16 +25,24 @@ namespace urchin
     }
 
     CollisionTriangleShape::CollisionTriangleShape(CollisionTriangleShape &&collisionTriangleShape) noexcept :
-            CollisionShape3D(),
-            triangleShape(std::move(collisionTriangleShape.triangleShape)),
+            CollisionShape3D(collisionTriangleShape),
+            triangleShape(std::exchange(collisionTriangleShape.triangleShape, nullptr)),
+            triangleShapesPool(std::exchange(collisionTriangleShape.triangleShapesPool, nullptr)),
             lastConvexObject(std::exchange(collisionTriangleShape.lastConvexObject, nullptr)),
             collisionTriangleObjectsPool(std::exchange(collisionTriangleShape.collisionTriangleObjectsPool, nullptr))
     {
-        refreshInnerMargin(0.0f); //no margin for triangle
     }
 
     CollisionTriangleShape::~CollisionTriangleShape()
     {
+        if(triangleShapesPool)
+        {
+            triangleShapesPool->free(triangleShape);
+        }else
+        {
+            delete triangleShape;
+        }
+
         if(collisionTriangleObjectsPool)
         {
             collisionTriangleObjectsPool->free(lastConvexObject);
@@ -47,7 +57,7 @@ namespace urchin
         return CollisionShape3D::TRIANGLE_SHAPE;
     }
 
-    std::shared_ptr<ConvexShape3D<float>> CollisionTriangleShape::getSingleShape() const
+    const ConvexShape3D<float> *CollisionTriangleShape::getSingleShape() const
     {
         return triangleShape;
     }

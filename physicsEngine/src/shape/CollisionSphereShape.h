@@ -16,10 +16,12 @@ namespace urchin
 	{
 		public:
 			explicit CollisionSphereShape(float);
+            CollisionSphereShape(CollisionSphereShape &&) noexcept;
+            CollisionSphereShape(const CollisionSphereShape &) = delete;
 			~CollisionSphereShape() override;
 
 			CollisionShape3D::ShapeType getShapeType() const override;
-			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+			const ConvexShape3D<float> *getSingleShape() const override;
 			float getRadius() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const override;
@@ -34,7 +36,7 @@ namespace urchin
 			CollisionShape3D *clone() const override;
 
 		private:
-			const std::shared_ptr<SphereShape<float>> sphereShape; //shape including margin
+			SphereShape<float> *sphereShape; //shape including margin
 
 			mutable CollisionConvexObject3D *lastConvexObject;
 	};

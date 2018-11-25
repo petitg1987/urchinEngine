@@ -6,14 +6,22 @@ namespace urchin
 
 	CollisionConeShape::CollisionConeShape(float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
 			CollisionShape3D(),
-			coneShape(std::make_shared<ConeShape<float>>(radius, height, coneOrientation)),
+			coneShape(new ConeShape<float>(radius, height, coneOrientation)),
 			lastConvexObject(nullptr)
 	{
 		computeSafeMargin();
 	}
 
+	CollisionConeShape::CollisionConeShape(CollisionConeShape &&collisionConeShape) noexcept :
+			CollisionShape3D(collisionConeShape),
+			coneShape(std::exchange(collisionConeShape.coneShape, nullptr)),
+			lastConvexObject(std::exchange(collisionConeShape.lastConvexObject, nullptr))
+	{
+	}
+
 	CollisionConeShape::~CollisionConeShape()
 	{
+		delete coneShape;
         delete lastConvexObject;
 	}
 
@@ -31,7 +39,7 @@ namespace urchin
 		return CollisionShape3D::CONE_SHAPE;
 	}
 
-	std::shared_ptr<ConvexShape3D<float>> CollisionConeShape::getSingleShape() const
+	const ConvexShape3D<float> *CollisionConeShape::getSingleShape() const
 	{
 		return coneShape;
 	}
@@ -59,22 +67,28 @@ namespace urchin
 
 	AABBox<float> CollisionConeShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
-		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-		boxHalfSizes[getConeOrientation()/2] = getHeight() / 2.0f;
-		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
-		Point3<float> extend(
-			boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
-			boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
-			boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
-		);
+		if(!lastTransform.equals(physicsTransform))
+		{
+			Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
+			boxHalfSizes[getConeOrientation() / 2] = getHeight() / 2.0f;
+			const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
+			Point3<float> extend(
+					boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
+					boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
+					boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
+			);
 
-		const Point3<float> &centerOfMass = physicsTransform.getPosition();
-		Point3<float> localCentralAxis(0.0, 0.0, 0.0);
-		localCentralAxis[getConeOrientation()/2] = (getConeOrientation()%2==0) ? 1.0f : -1.0f;
-		Vector3<float> centralAxis = physicsTransform.getOrientation().rotatePoint(localCentralAxis).toVector();
-		Point3<float> centerPosition = centerOfMass.translate(centralAxis * (1.0f/4.0f)*getHeight());
+			const Point3<float> &centerOfMass = physicsTransform.getPosition();
+			Point3<float> localCentralAxis(0.0, 0.0, 0.0);
+			localCentralAxis[getConeOrientation() / 2] = (getConeOrientation() % 2 == 0) ? 1.0f : -1.0f;
+			Vector3<float> centralAxis = physicsTransform.getOrientation().rotatePoint(localCentralAxis).toVector();
+			Point3<float> centerPosition = centerOfMass.translate(centralAxis * (1.0f / 4.0f) * getHeight());
 
-		return AABBox<float>(centerPosition - extend, centerPosition + extend);
+			lastAABBox = AABBox<float>(centerPosition - extend, centerPosition + extend);
+			lastTransform = physicsTransform;
+		}
+
+		return lastAABBox;
 	}
 
 	CollisionConvexObject3D *CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const

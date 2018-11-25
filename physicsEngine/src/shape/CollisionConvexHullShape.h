@@ -16,11 +16,13 @@ namespace urchin
 	{
 		public:
 			explicit CollisionConvexHullShape(const std::vector<Point3<float>> &);
-			explicit CollisionConvexHullShape(const std::shared_ptr<ConvexHullShape3D<float>> &);
+			explicit CollisionConvexHullShape(ConvexHullShape3D<float> *);
+			CollisionConvexHullShape(CollisionConvexHullShape &&) noexcept;
+			CollisionConvexHullShape(const CollisionConvexHullShape &) = delete;
 			~CollisionConvexHullShape() override;
 
 			CollisionShape3D::ShapeType getShapeType() const override;
-			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+			const ConvexShape3D<float> *getSingleShape() const override;
 			std::vector<Point3<float>> getPoints() const;
 
 			std::shared_ptr<CollisionShape3D> scale(float) const override;
@@ -39,14 +41,12 @@ namespace urchin
 			void initializeConvexHullReduced();
 			void initializeDistances();
 
-			const std::shared_ptr<ConvexHullShape3D<float>> convexHullShape; //shape including margin
+			ConvexHullShape3D<float> *convexHullShape; //shape including margin
 			std::unique_ptr<ConvexHullShape3D<float>> convexHullShapeReduced; //shape where margin has been subtracted
 
 			float minDistanceToCenter;
 			float maxDistanceToCenter;
 
-			mutable AABBox<float> lastAABBox;
-			mutable PhysicsTransform lastTransform;
 			mutable CollisionConvexObject3D *lastConvexObject;
 	};
 

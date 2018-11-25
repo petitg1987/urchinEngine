@@ -24,7 +24,8 @@ namespace urchin
 			T getHeight() const;
 			CylinderOrientation getCylinderOrientation() const;
 
-			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const;
+			ConvexShape3D<T> *clone() const override;
+			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
 
 		private:
 			T radius;

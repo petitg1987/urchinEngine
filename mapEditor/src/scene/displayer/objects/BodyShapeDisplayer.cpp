@@ -48,9 +48,9 @@ namespace urchin
 				for (const auto &localizedShape : localizedShapes)
 				{
 					PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
-					std::shared_ptr<CollisionConvexObject3D> bodyObject = localizedShape->shape->toConvexObject(transform);
+					CollisionConvexObject3D *bodyObject = localizedShape->shape->toConvexObject(transform);
 
-					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject.get());
+					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject);
 
 					if (selectedCompoundShapeComponent != nullptr && selectedCompoundShapeComponent->position == localizedShape->position)
 					{
@@ -65,9 +65,9 @@ namespace urchin
 			} else if(bodyShape->isConvex())
 			{
 				PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
-				std::shared_ptr<CollisionConvexObject3D> bodyObject = bodyShape->toConvexObject(transform);
+				CollisionConvexObject3D *bodyObject = bodyShape->toConvexObject(transform);
 
-				GeometryModel *geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject.get());
+				GeometryModel *geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject);
 				geometryModel->setColor(0.0, 1.0, 0.0);
 				bodyShapeModels.push_back(geometryModel);
 			} else

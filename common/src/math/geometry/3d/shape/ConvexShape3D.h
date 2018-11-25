@@ -18,6 +18,7 @@ namespace urchin
 		public:
 			virtual ~ConvexShape3D() = default;
 
+			virtual ConvexShape3D<T> *clone() const = 0;
 			virtual std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const = 0;
 	};
 

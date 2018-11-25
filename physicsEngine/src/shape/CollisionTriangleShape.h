@@ -18,13 +18,13 @@ namespace urchin
     {
         public:
             explicit CollisionTriangleShape(const Point3<float> *);
-            explicit CollisionTriangleShape(const std::shared_ptr<TriangleShape3D<float>> &);
+            CollisionTriangleShape(TriangleShape3D<float> *, FixedSizePool<TriangleShape3D<float>> *);
             CollisionTriangleShape(CollisionTriangleShape &&) noexcept;
             CollisionTriangleShape(const CollisionTriangleShape &) = delete;
             ~CollisionTriangleShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+            const ConvexShape3D<float> *getSingleShape() const override;
 
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
@@ -39,7 +39,8 @@ namespace urchin
             CollisionShape3D *clone() const override;
 
         private:
-            std::shared_ptr<TriangleShape3D<float>> triangleShape; //shape including margin
+            TriangleShape3D<float> *triangleShape; //shape including margin
+            FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;
 
             mutable CollisionTriangleObject *lastConvexObject;
             FixedSizePool<CollisionTriangleObject> *collisionTriangleObjectsPool;

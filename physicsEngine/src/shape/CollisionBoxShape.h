@@ -16,10 +16,12 @@ namespace urchin
 	{
 		public:
 			explicit CollisionBoxShape(const Vector3<float> &);
+			CollisionBoxShape(CollisionBoxShape &&) noexcept;
+			CollisionBoxShape(const CollisionBoxShape &) = delete;
 			~CollisionBoxShape() override;
 
 			CollisionShape3D::ShapeType getShapeType() const override;
-			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+			const ConvexShape3D<float> *getSingleShape() const override;
 			float getHalfSize(unsigned int) const;
 			const Vector3<float> &getHalfSizes() const;
 
@@ -37,10 +39,8 @@ namespace urchin
 		private:
 			void computeSafeMargin();
 
-			const std::shared_ptr<BoxShape<float>> boxShape; //shape including margin
+			BoxShape<float> *boxShape; //shape including margin
 
-			mutable AABBox<float> lastAABBox;
-			mutable PhysicsTransform lastTransform;
             mutable CollisionConvexObject3D *lastConvexObject;
 	};
 

@@ -27,6 +27,10 @@ namespace urchin
 		return coneOrientation;
 	}
 
+	template<class T> ConvexShape3D<T> *ConeShape<T>::clone() const
+	{
+		return new ConeShape<T>(*this);
+	}
 
 	template<class T> std::unique_ptr<ConvexObject3D<T>> ConeShape<T>::toConvexObject(const Transform<T> &transform) const
 	{

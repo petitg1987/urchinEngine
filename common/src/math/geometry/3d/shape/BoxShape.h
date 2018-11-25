@@ -26,7 +26,8 @@ namespace urchin
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 			T getVolume() const;
 
-			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const;
+			ConvexShape3D<T> *clone() const override;
+			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
 
 		private:
 			Vector3<T> halfSizes; //half sizes (width, height and depth) of box

@@ -15,10 +15,12 @@ namespace urchin
 	{
 		public:
 			CollisionCylinderShape(float, float, CylinderShape<float>::CylinderOrientation);
+            CollisionCylinderShape(CollisionCylinderShape &&) noexcept;
+            CollisionCylinderShape(const CollisionCylinderShape &) = delete;
             ~CollisionCylinderShape() override;
 
 			CollisionShape3D::ShapeType getShapeType() const override;
-			std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+			const ConvexShape3D<float> *getSingleShape() const override;
 			float getRadius() const;
 			float getHeight() const;
 			CylinderShape<float>::CylinderOrientation getCylinderOrientation() const;
@@ -37,7 +39,7 @@ namespace urchin
 		private:
 			void computeSafeMargin();
 
-			const std::shared_ptr<CylinderShape<float>> cylinderShape; //shape including margin
+			CylinderShape<float> *cylinderShape; //shape including margin
 
 			mutable CollisionConvexObject3D *lastConvexObject;
 	};

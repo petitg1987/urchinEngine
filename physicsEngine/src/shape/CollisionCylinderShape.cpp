@@ -6,14 +6,22 @@ namespace urchin
 
 	CollisionCylinderShape::CollisionCylinderShape(float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
 			CollisionShape3D(),
-			cylinderShape(std::make_shared<CylinderShape<float>>(radius, height, cylinderOrientation)),
+			cylinderShape(new CylinderShape<float>(radius, height, cylinderOrientation)),
 			lastConvexObject(nullptr)
 	{
 		computeSafeMargin();
 	}
 
+	CollisionCylinderShape::CollisionCylinderShape(CollisionCylinderShape &&collisionCylinderShape) noexcept :
+			CollisionShape3D(collisionCylinderShape),
+			cylinderShape(std::exchange(collisionCylinderShape.cylinderShape, nullptr)),
+			lastConvexObject(std::exchange(collisionCylinderShape.lastConvexObject, nullptr))
+	{
+	}
+
     CollisionCylinderShape::~CollisionCylinderShape()
     {
+		delete cylinderShape;
         delete lastConvexObject;
     }
 
@@ -31,7 +39,7 @@ namespace urchin
 		return CollisionShape3D::CYLINDER_SHAPE;
 	}
 
-	std::shared_ptr<ConvexShape3D<float>> CollisionCylinderShape::getSingleShape() const
+	const ConvexShape3D<float> *CollisionCylinderShape::getSingleShape() const
 	{
 		return cylinderShape;
 	}
@@ -59,18 +67,24 @@ namespace urchin
 
 	AABBox<float> CollisionCylinderShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
-		Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
-		boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
-		const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
-		Point3<float> extend(
-			boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
-			boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
-			boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
-		);
+        if(!lastTransform.equals(physicsTransform))
+        {
+            Vector3<float> boxHalfSizes(getRadius(), getRadius(), getRadius());
+            boxHalfSizes[getCylinderOrientation()] = getHeight() / 2.0f;
+            const Matrix3<float> &orientation = physicsTransform.retrieveOrientationMatrix();
+            Point3<float> extend(
+                    boxHalfSizes.X * std::abs(orientation(0)) + boxHalfSizes.Y * std::abs(orientation(3)) + boxHalfSizes.Z * std::abs(orientation(6)),
+                    boxHalfSizes.X * std::abs(orientation(1)) + boxHalfSizes.Y * std::abs(orientation(4)) + boxHalfSizes.Z * std::abs(orientation(7)),
+                    boxHalfSizes.X * std::abs(orientation(2)) + boxHalfSizes.Y * std::abs(orientation(5)) + boxHalfSizes.Z * std::abs(orientation(8))
+            );
 
-		const Point3<float> &position = physicsTransform.getPosition();
+            const Point3<float> &position = physicsTransform.getPosition();
 
-		return AABBox<float>(position - extend, position + extend);
+            lastAABBox = AABBox<float>(position - extend, position + extend);
+            lastTransform = physicsTransform;
+        }
+
+        return lastAABBox;
 	}
 
 	CollisionConvexObject3D *CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const

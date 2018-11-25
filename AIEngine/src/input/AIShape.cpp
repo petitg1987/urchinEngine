@@ -3,22 +3,27 @@
 namespace urchin
 {
 
-    AIShape::AIShape(std::shared_ptr<const ConvexShape3D<float>> shape) :
-        shape(std::move(shape)),
+    AIShape::AIShape(const ConvexShape3D<float> *shape) :
+        shape(shape->clone()),
         bHasLocalTransform(false)
     {
 
     }
 
-    AIShape::AIShape(std::shared_ptr<const ConvexShape3D<float>> shape, Transform<float> localTransform) :
-        shape(std::move(shape)),
+    AIShape::AIShape(const ConvexShape3D<float> *shape, const Transform<float> &localTransform) :
+        shape(shape->clone()),
         bHasLocalTransform(true),
-        localTransform(std::move(localTransform))
+        localTransform(localTransform)
     {
 
     }
 
-    const std::shared_ptr<const ConvexShape3D<float>> &AIShape::getShape() const
+    AIShape::~AIShape()
+    {
+        delete shape;
+    }
+
+    const ConvexShape3D<float> *AIShape::getShape() const
     {
         return shape;
     }

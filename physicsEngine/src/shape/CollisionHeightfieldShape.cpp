@@ -14,8 +14,6 @@ namespace urchin
             xLength(xLength),
             zLength(zLength)
     {
-        lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
-
         assert(this->vertices.size()==xLength*zLength);
         localAABBox = buildLocalAABBox();
 
@@ -68,7 +66,7 @@ namespace urchin
         return CollisionHeightfieldShape::HEIGHTFIELD_SHAPE;
     }
 
-    std::shared_ptr<ConvexShape3D<float>> CollisionHeightfieldShape::getSingleShape() const
+    const ConvexShape3D<float> *CollisionHeightfieldShape::getSingleShape() const
     {
         throw std::runtime_error("Impossible to retrieve single convex shape for heightfield shape");
     }
@@ -196,21 +194,8 @@ namespace urchin
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float> &p1, const Point3<float> &p2, const Point3<float> &p3) const
     {
         void *shapeMemPtr = triangleShapesPool->allocate();
-        trianglesInAABBox.emplace_back(CollisionTriangleShape(std::shared_ptr<TriangleShape3D<float>>(
-                new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), TriangleShapeDeleter(triangleShapesPool))));
-
+        trianglesInAABBox.emplace_back(CollisionTriangleShape(new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), triangleShapesPool));
         trianglesInAABBox[trianglesInAABBox.size()-1].setupConvexObjectPool(collisionTriangleObjectsPool);
-    }
-
-    CollisionHeightfieldShape::TriangleShapeDeleter::TriangleShapeDeleter(FixedSizePool<TriangleShape3D<float>> *const triangleShapesPool) :
-            triangleShapesPool(triangleShapesPool)
-    {
-
-    }
-
-    void CollisionHeightfieldShape::TriangleShapeDeleter::operator()(TriangleShape3D<float> *const triangleShape)
-    {
-        triangleShapesPool->free(triangleShape);
     }
 
 }

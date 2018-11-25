@@ -17,7 +17,8 @@ namespace urchin
 
 			const Point3<T> *getPoints() const;
 
-			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const;
+			ConvexShape3D<T> *clone() const override;
+			std::unique_ptr<ConvexObject3D<T>> toConvexObject(const Transform<T> &) const override;
 
 		private:
 			Point3<T> points[3];

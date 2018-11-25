@@ -19,14 +19,14 @@ namespace urchin
 			innerMargin(ConfigService::instance()->getFloatValue("collisionShape.innerMargin")),
 			initialInnerMargin(innerMargin)
 	{
-
+		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 	}
 
 	CollisionShape3D::CollisionShape3D(float innerMargin) :
 			innerMargin(innerMargin),
 			initialInnerMargin(innerMargin)
 	{
-
+		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
 	}
 
 	void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin)

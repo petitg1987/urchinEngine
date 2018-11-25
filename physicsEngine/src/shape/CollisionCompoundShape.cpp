@@ -37,7 +37,7 @@ namespace urchin
 		return CollisionShape3D::COMPOUND_SHAPE;
 	}
 
-	std::shared_ptr<ConvexShape3D<float>> CollisionCompoundShape::getSingleShape() const
+	const ConvexShape3D<float> *CollisionCompoundShape::getSingleShape() const
 	{
 		throw std::runtime_error("Impossible to retrieve single convex shape for compound shape");
 	}
@@ -66,18 +66,24 @@ namespace urchin
 
 	AABBox<float> CollisionCompoundShape::toAABBox(const PhysicsTransform &physicsTransform) const
 	{
-		PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
-		AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
-
-		for(unsigned int i=1; i<localizedShapes.size(); ++i)
+		if(!lastTransform.equals(physicsTransform))
 		{
-			shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
-			AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);
+			PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
+			AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
 
-			globalCompoundBox = globalCompoundBox.merge(compoundBox);
+			for (unsigned int i = 1; i < localizedShapes.size(); ++i)
+			{
+				shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
+				AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);
+
+				globalCompoundBox = globalCompoundBox.merge(compoundBox);
+			}
+
+			lastAABBox = globalCompoundBox;
+			lastTransform = physicsTransform;
 		}
 
-		return globalCompoundBox;
+		return lastAABBox;
 	}
 
 	CollisionConvexObject3D *CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cassert>
 
 #include "BoxShape.h"
 #include "math/geometry/3d/object/OBBox.h"
@@ -18,7 +19,11 @@ namespace urchin
 	template<class T> BoxShape<T>::BoxShape(const Vector3<T> &halfSizes) :
 			halfSizes(halfSizes)
 	{
-
+		#ifdef _DEBUG
+			assert(halfSizes.X >= 0.0);
+			assert(halfSizes.Y >= 0.0);
+			assert(halfSizes.Z >= 0.0);
+		#endif
 	}
 
 	template<class T> const T BoxShape<T>::getHalfSize(unsigned int index) const
@@ -84,6 +89,11 @@ namespace urchin
 	template<class T> T BoxShape<T>::getVolume() const
 	{
 		return halfSizes.X * halfSizes.Y * halfSizes.Z * 8.0;
+	}
+
+	template<class T> ConvexShape3D<T> *BoxShape<T>::clone() const
+	{
+		return new BoxShape<T>(*this);
 	}
 
 	template<class T> std::unique_ptr<ConvexObject3D<T>> BoxShape<T>::toConvexObject(const Transform<T> &transform) const

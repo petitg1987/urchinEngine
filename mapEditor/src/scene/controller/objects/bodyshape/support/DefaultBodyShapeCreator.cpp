@@ -40,7 +40,7 @@ namespace urchin
 			shape = new CollisionConeShape(radius, height, ConeShape<float>::CONE_X_POSITIVE);
 		}else if(shapeType==CollisionShape3D::ShapeType::CONVEX_HULL_SHAPE)
 		{
-			std::shared_ptr<ConvexHullShape3D<float>> convexHullShape = buildConvexHullShape(sceneObject->getModel());
+			ConvexHullShape3D<float> *convexHullShape = buildConvexHullShape(sceneObject->getModel());
 			shape = new CollisionConvexHullShape(convexHullShape);
 		} else if(shapeType==CollisionShape3D::ShapeType::COMPOUND_SHAPE)
 		{
@@ -69,7 +69,7 @@ namespace urchin
 		return std::shared_ptr<const CollisionShape3D>(shape);
 	}
 
-	std::shared_ptr<ConvexHullShape3D<float>> DefaultBodyShapeCreator::buildConvexHullShape(const Model *model) const
+	ConvexHullShape3D<float> *DefaultBodyShapeCreator::buildConvexHullShape(const Model *model) const
 	{
 		std::set<Point3<float>> allVertices;
 		for(const auto *constMesh : model->getMeshes()->getConstMeshes())
@@ -80,6 +80,6 @@ namespace urchin
 			}
 		}
 
-		return std::make_shared<ConvexHullShape3D<float>>(std::vector<Point3<float>>(allVertices.begin(), allVertices.end()));
+		return new ConvexHullShape3D<float>(std::vector<Point3<float>>(allVertices.begin(), allVertices.end()));
 	}
 }

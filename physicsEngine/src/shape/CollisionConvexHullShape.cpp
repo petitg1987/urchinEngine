@@ -13,13 +13,13 @@ namespace urchin
 	*/
 	CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>> &points) :
 			CollisionShape3D(),
-			convexHullShape(std::make_shared<ConvexHullShape3D<float>>(points)),
+			convexHullShape(new ConvexHullShape3D<float>(points)),
             lastConvexObject(nullptr)
 	{
 		initialize();
 	}
 
-	CollisionConvexHullShape::CollisionConvexHullShape(const std::shared_ptr<ConvexHullShape3D<float>> &convexHullShape) :
+	CollisionConvexHullShape::CollisionConvexHullShape(ConvexHullShape3D<float> *convexHullShape) :
 			CollisionShape3D(),
 			convexHullShape(convexHullShape),
             lastConvexObject(nullptr)
@@ -27,15 +27,24 @@ namespace urchin
 		initialize();
 	}
 
+	CollisionConvexHullShape::CollisionConvexHullShape(CollisionConvexHullShape &&collisionConvexHullShape) noexcept :
+			CollisionShape3D(collisionConvexHullShape),
+			convexHullShape(std::exchange(collisionConvexHullShape.convexHullShape, nullptr)),
+			convexHullShapeReduced(std::move(collisionConvexHullShape.convexHullShapeReduced)),
+			minDistanceToCenter(std::exchange(collisionConvexHullShape.minDistanceToCenter, 0.0f)),
+			maxDistanceToCenter(std::exchange(collisionConvexHullShape.maxDistanceToCenter, 0.0f)),
+			lastConvexObject(std::exchange(collisionConvexHullShape.lastConvexObject, nullptr))
+	{
+	}
+
 	CollisionConvexHullShape::~CollisionConvexHullShape()
 	{
+		delete convexHullShape;
         delete lastConvexObject;
 	}
 
 	void CollisionConvexHullShape::initialize()
 	{
-		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
-
 		initializeDistances();
 		initializeConvexHullReduced();
 	}
@@ -63,7 +72,7 @@ namespace urchin
 		return CollisionShape3D::CONVEX_HULL_SHAPE;
 	}
 
-	std::shared_ptr<ConvexShape3D<float>> CollisionConvexHullShape::getSingleShape() const
+	const ConvexShape3D<float> *CollisionConvexHullShape::getSingleShape() const
 	{
 		return convexHullShape;
 	}
@@ -103,31 +112,13 @@ namespace urchin
 			{
 				const Point3<float> point = orientation.rotatePoint(convexHullShapePoint);
 
-				if (min.X > point.X)
-				{
-					min.X = point.X;
-				}
-				if (min.Y > point.Y)
-				{
-					min.Y = point.Y;
-				}
-				if (min.Z > point.Z)
-				{
-					min.Z = point.Z;
-				}
+				min.X = std::min(min.X, point.X);
+				min.Y = std::min(min.Y, point.Y);
+				min.Z = std::min(min.Z, point.Z);
 
-				if (max.X < point.X)
-				{
-					max.X = point.X;
-				}
-				if (max.Y < point.Y)
-				{
-					max.Y = point.Y;
-				}
-				if (max.Z < point.Z)
-				{
-					max.Z = point.Z;
-				}
+				max.X = std::max(max.X, point.X);
+				max.Y = std::max(max.Y, point.Y);
+				max.Z = std::max(max.Z, point.Z);
 			}
 
 			const Point3<float> &position = physicsTransform.getPosition();

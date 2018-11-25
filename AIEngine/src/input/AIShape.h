@@ -9,15 +9,16 @@ namespace urchin
     class AIShape
     {
         public:
-            explicit AIShape(std::shared_ptr<const ConvexShape3D<float>>);
-            AIShape(std::shared_ptr<const ConvexShape3D<float>>, Transform<float> localTransform);
+            explicit AIShape(const ConvexShape3D<float> *);
+            AIShape(const ConvexShape3D<float> *, const Transform<float> &localTransform);
+            ~AIShape();
 
-            const std::shared_ptr<const ConvexShape3D<float>> &getShape() const;
+            const ConvexShape3D<float> *getShape() const;
             bool hasLocalTransform() const;
             const Transform<float> &getLocalTransform() const;
 
         private:
-            std::shared_ptr<const ConvexShape3D<float>> shape;
+            ConvexShape3D<float> *shape;
 
             bool bHasLocalTransform;
             Transform<float> localTransform;

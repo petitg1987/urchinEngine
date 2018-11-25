@@ -8,16 +8,22 @@ namespace urchin
 
 	CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
 			CollisionShape3D(),
-			boxShape(std::make_shared<BoxShape<float>>(halfSizes)),
+			boxShape(new BoxShape<float>(halfSizes)),
 			lastConvexObject(nullptr)
 	{
-		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
-
 		computeSafeMargin();
+	}
+
+	CollisionBoxShape::CollisionBoxShape(CollisionBoxShape &&collisionBoxShape) noexcept :
+            CollisionShape3D(collisionBoxShape),
+			boxShape(std::exchange(collisionBoxShape.boxShape, nullptr)),
+			lastConvexObject(std::exchange(collisionBoxShape.lastConvexObject, nullptr))
+	{
 	}
 
 	CollisionBoxShape::~CollisionBoxShape()
     {
+		delete boxShape;
         delete lastConvexObject;
     }
 
@@ -34,7 +40,7 @@ namespace urchin
 		return CollisionShape3D::BOX_SHAPE;
 	}
 
-	std::shared_ptr<ConvexShape3D<float>> CollisionBoxShape::getSingleShape() const
+	const ConvexShape3D<float> *CollisionBoxShape::getSingleShape() const
 	{
 		return boxShape;
 	}

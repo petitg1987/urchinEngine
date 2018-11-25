@@ -17,10 +17,12 @@ namespace urchin
     {
         public:
             CollisionHeightfieldShape(std::vector<Point3<float>>, unsigned int, unsigned int);
+            CollisionHeightfieldShape(CollisionHeightfieldShape &&) = delete;
+            CollisionHeightfieldShape(const CollisionHeightfieldShape &) = delete;
             ~CollisionHeightfieldShape() override;
 
             CollisionShape3D::ShapeType getShapeType() const override;
-            std::shared_ptr<ConvexShape3D<float>> getSingleShape() const override;
+            const ConvexShape3D<float> *getSingleShape() const override;
             const std::vector<Point3<float>> &getVertices() const;
             unsigned int getXLength() const;
             unsigned int getZLength() const;
@@ -39,16 +41,6 @@ namespace urchin
             const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float> &) const override;
 
         private:
-            class TriangleShapeDeleter
-            {
-                public:
-                    explicit TriangleShapeDeleter(FixedSizePool<TriangleShape3D<float>> *);
-                    void operator()(TriangleShape3D<float> *);
-
-                private:
-                    FixedSizePool<TriangleShape3D<float>> *const triangleShapesPool;
-            };
-
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
             void createCollisionTriangleShape(const Point3<float> &, const Point3<float> &, const Point3<float> &) const;
 
@@ -57,9 +49,6 @@ namespace urchin
             unsigned int zLength;
 
             std::unique_ptr<BoxShape<float>> localAABBox;
-
-            mutable AABBox<float> lastAABBox;
-            mutable PhysicsTransform lastTransform;
 
             mutable std::vector<CollisionTriangleShape> trianglesInAABBox;
             FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;

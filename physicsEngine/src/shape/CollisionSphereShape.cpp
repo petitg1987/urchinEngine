@@ -9,14 +9,22 @@ namespace urchin
 	*/
 	CollisionSphereShape::CollisionSphereShape(float innerMargin) :
 			CollisionShape3D(innerMargin),
-			sphereShape(std::make_shared<SphereShape<float>>(innerMargin)),
+			sphereShape(new SphereShape<float>(innerMargin)),
 			lastConvexObject(nullptr)
 	{
 
 	}
 
+	CollisionSphereShape::CollisionSphereShape(CollisionSphereShape &&collisionSphereShape) noexcept :
+			CollisionShape3D(collisionSphereShape),
+			sphereShape(std::exchange(collisionSphereShape.sphereShape, nullptr)),
+			lastConvexObject(std::exchange(collisionSphereShape.lastConvexObject, nullptr))
+	{
+	}
+
 	CollisionSphereShape::~CollisionSphereShape()
 	{
+		delete sphereShape;
         delete lastConvexObject;
 	}
 
@@ -25,7 +33,7 @@ namespace urchin
 		return CollisionShape3D::SPHERE_SHAPE;
 	}
 
-	std::shared_ptr<ConvexShape3D<float>> CollisionSphereShape::getSingleShape() const
+	const ConvexShape3D<float> *CollisionSphereShape::getSingleShape() const
 	{
 		return sphereShape;
 	}

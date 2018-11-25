@@ -193,6 +193,11 @@ namespace urchin
 		return ResizeConvexHull3DService<T>::instance()->resizeConvexHullShape(*this, distance);
 	}
 
+	template<class T> ConvexShape3D<T> *ConvexHullShape3D<T>::clone() const
+	{
+		return new ConvexHullShape3D<T>(*this);
+	}
+
 	template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T> &transform) const
 	{
 		std::map<unsigned int, ConvexHullPoint<T>> transformedConvexHullPoints = points;
