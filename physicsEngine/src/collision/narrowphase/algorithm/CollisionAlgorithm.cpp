@@ -1,14 +1,21 @@
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
+#include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
 
 namespace urchin
 {
 
 	CollisionAlgorithm::CollisionAlgorithm(bool objectSwapped, const ManifoldResult &manifoldResult) :
 			objectSwapped(objectSwapped),
-			manifoldResult(manifoldResult)
+			manifoldResult(manifoldResult),
+            collisionAlgorithmSelector(nullptr)
 	{
 
 	}
+
+    void CollisionAlgorithm::setupCollisionAlgorithmSelector(const CollisionAlgorithmSelector *collisionAlgorithmSelector)
+    {
+	    this->collisionAlgorithmSelector = collisionAlgorithmSelector;
+    }
 
 	void CollisionAlgorithm::processCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2, bool refreshContractPoints)
 	{
@@ -34,6 +41,11 @@ namespace urchin
 	bool CollisionAlgorithm::isObjectSwapped() const
 	{
 		return objectSwapped;
+	}
+
+	const CollisionAlgorithmSelector *CollisionAlgorithm::getCollisionAlgorithmSelector() const
+	{
+		return collisionAlgorithmSelector;
 	}
 
 	ManifoldResult &CollisionAlgorithm::getManifoldResult()

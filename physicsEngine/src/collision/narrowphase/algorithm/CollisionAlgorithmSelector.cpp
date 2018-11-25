@@ -126,25 +126,29 @@ namespace urchin
 	 * @param shape2 Shape or partial shape composing the body 2
 	 */
 	std::shared_ptr<CollisionAlgorithm> CollisionAlgorithmSelector::createCollisionAlgorithm(
-			AbstractWorkBody *body1, const CollisionShape3D *shape1, AbstractWorkBody *body2, const CollisionShape3D *shape2)
+			AbstractWorkBody *body1, const CollisionShape3D *shape1, AbstractWorkBody *body2, const CollisionShape3D *shape2) const
 	{
 		CollisionAlgorithmBuilder *collisionAlgorithmBuilder = collisionAlgorithmBuilderMatrix[shape1->getShapeType()][shape2->getShapeType()];
         const std::vector<CollisionShape3D::ShapeType> &firstExpectedShapeType = collisionAlgorithmBuilder->getFirstExpectedShapeType();
 
 		void *memPtr = algorithmPool->allocate();
+		std::shared_ptr<CollisionAlgorithm> collisionAlgorithm;
 		if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape1->getShapeType())!=firstExpectedShapeType.end())
 		{
-			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
+			collisionAlgorithm = std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
 					false, ManifoldResult(body1, body2), memPtr), AlgorithmDeleter(algorithmPool));
 		}else if(std::find(firstExpectedShapeType.begin(), firstExpectedShapeType.end(), shape2->getShapeType())!=firstExpectedShapeType.end())
 		{ //objects must be swap to match algorithm shape types
-			return std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
+			collisionAlgorithm = std::shared_ptr<CollisionAlgorithm>(collisionAlgorithmBuilder->createCollisionAlgorithm(
 					true, ManifoldResult(body2, body1), memPtr), AlgorithmDeleter(algorithmPool));
 		}else
 		{
 			throw std::runtime_error("Impossible to initialize collision algorithm for shape types: " + std::to_string(shape1->getShapeType())
 									 + " and " + std::to_string(shape2->getShapeType()));
 		}
+
+		collisionAlgorithm->setupCollisionAlgorithmSelector(this);
+		return collisionAlgorithm;
 	}
 
 	CollisionAlgorithmSelector::AlgorithmDeleter::AlgorithmDeleter(FixedSizePool<CollisionAlgorithm> *const algorithmPool) :

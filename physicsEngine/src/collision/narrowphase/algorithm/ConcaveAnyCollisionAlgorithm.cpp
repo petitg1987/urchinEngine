@@ -8,15 +8,9 @@ namespace urchin
 {
 
     ConcaveAnyCollisionAlgorithm::ConcaveAnyCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
-            CollisionAlgorithm(objectSwapped, result),
-            collisionAlgorithmSelector(new CollisionAlgorithmSelector())
+            CollisionAlgorithm(objectSwapped, result)
     {
 
-    }
-
-    ConcaveAnyCollisionAlgorithm::~ConcaveAnyCollisionAlgorithm()
-    {
-        delete collisionAlgorithmSelector;
     }
 
     void ConcaveAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
@@ -34,7 +28,7 @@ namespace urchin
         const std::vector<CollisionTriangleShape> &triangles = concaveShape.findTrianglesInAABBox(aabboxLocalToObject1);
         for(const auto &triangle : triangles)
         {
-            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(
+            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
                     body1, &triangle, body2, &otherShape);
             const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 

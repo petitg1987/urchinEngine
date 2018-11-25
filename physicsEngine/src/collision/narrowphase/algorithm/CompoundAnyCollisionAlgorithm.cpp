@@ -8,15 +8,9 @@ namespace urchin
 {
 
 	CompoundAnyCollisionAlgorithm::CompoundAnyCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
-			CollisionAlgorithm(objectSwapped, result),
-			collisionAlgorithmSelector(new CollisionAlgorithmSelector())
+			CollisionAlgorithm(objectSwapped, result)
 	{
 
-	}
-
-	CompoundAnyCollisionAlgorithm::~CompoundAnyCollisionAlgorithm()
-	{
-		delete collisionAlgorithmSelector;
 	}
 
 	void CompoundAnyCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
@@ -32,7 +26,7 @@ namespace urchin
 		const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape.getLocalizedShapes();
 		for (const auto &localizedShape : localizedShapes)
 		{
-			std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = collisionAlgorithmSelector->createCollisionAlgorithm(
+			std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
 					body1, localizedShape->shape.get(), body2, &otherShape);
 			const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 

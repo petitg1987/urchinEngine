@@ -14,7 +14,7 @@ namespace urchin
     {
         public:
             ConcaveAnyCollisionAlgorithm(bool, const ManifoldResult &);
-            ~ConcaveAnyCollisionAlgorithm() override;
+            ~ConcaveAnyCollisionAlgorithm() override = default;
 
             void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
 
@@ -28,8 +28,6 @@ namespace urchin
 
         private:
             void addContactPointsToManifold(const ManifoldResult &, bool);
-
-            CollisionAlgorithmSelector *const collisionAlgorithmSelector;
     };
 
 }
