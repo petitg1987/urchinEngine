@@ -45,7 +45,7 @@ namespace urchin
 	 */
 	void CollisionWorld::process(float dt, const Vector3<float> &gravity)
 	{
-		ScopeProfiler profiler("physics", "collisionWordProcess");
+		ScopeProfiler profiler("physics", "colWorldProc");
 
 		//initialize work bodies from bodies
 		bodyManager->setupWorkBodies();

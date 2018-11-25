@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "Profiler.h"
 #include "tools/ConfigService.h"
@@ -41,6 +42,10 @@ namespace urchin
     {
         if(isEnable)
         {
+            #ifdef _DEBUG
+                assert(nodeName.length() <= 15); //ensure to use "small string optimization"
+            #endif
+
             if (currentNode->getName() == nodeName)
             {
                 currentNode->startTimer();

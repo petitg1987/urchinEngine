@@ -24,6 +24,7 @@ namespace urchin
 			bool isBodyMoving(const WorkRigidBody *) const;
 
 			const BodyManager *bodyManager;
+			std::vector<IslandElement *> islandElements;
 			IslandContainer islandContainer;
 
 			const float squaredLinearSleepingThreshold;

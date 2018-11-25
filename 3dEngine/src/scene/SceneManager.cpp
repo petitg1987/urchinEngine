@@ -282,7 +282,7 @@ namespace urchin
 
 	void SceneManager::display()
 	{
-		ScopeProfiler profiler("3d", "sceneManagerDisplay");
+		ScopeProfiler profiler("3d", "sceneMgrDisplay");
 
 		//FPS
 		computeFps();

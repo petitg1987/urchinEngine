@@ -308,7 +308,7 @@ namespace urchin
 	 */
 	const std::vector<Model *> &ShadowManager::computeVisibleModels()
 	{
-		ScopeProfiler profiler("3d", "shadowGetVisibleModels");
+		ScopeProfiler profiler("3d", "coVisibleModel");
 
 		visibleModels.clear();
 		for (const auto &shadowData : shadowDatas)
@@ -395,7 +395,7 @@ namespace urchin
 	 */
 	void ShadowManager::updateFrustumShadowData(const Light *light, ShadowData *shadowData)
 	{
-		ScopeProfiler profiler("3d", "updateFrustumShadowData");
+		ScopeProfiler profiler("3d", "upFrustumShadow");
 
 		if(light->hasParallelBeams())
 		{ //sun light
@@ -426,7 +426,7 @@ namespace urchin
 	 */
 	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splittedFrustum, const Matrix4<float> &lightViewMatrix) const
 	{
-		ScopeProfiler profiler("3d", "createSceneIndependentBox");
+		ScopeProfiler profiler("3d", "sceneIndepBox");
 
 		const Frustum<float> &frustumLightSpace = lightViewMatrix * splittedFrustum;
 
@@ -467,7 +467,7 @@ namespace urchin
 	AABBox<float> ShadowManager::createSceneDependentBox(const AABBox<float> &aabboxSceneIndependent, const OBBox<float> &obboxSceneIndependentViewSpace,
 			const std::vector<Model *> &models, const Matrix4<float> &lightViewMatrix) const
 	{
-		ScopeProfiler profiler("3d", "createSceneDependentBox");
+		ScopeProfiler profiler("3d", "sceneDepBox");
 
         AABBox<float> aabboxSceneDependent;
         if(!models.empty())
@@ -635,7 +635,7 @@ namespace urchin
 
 	void ShadowManager::updateVisibleModels(const Frustum<float> &frustum)
 	{
-		ScopeProfiler profiler("3d", "shadowUpdateVisibleModels");
+		ScopeProfiler profiler("3d", "upVisibleModel");
 
 		splitFrustum(frustum);
 
@@ -652,7 +652,7 @@ namespace urchin
 
 	void ShadowManager::updateShadowMaps()
 	{
-		ScopeProfiler profiler("3d", "updateShadowMaps");
+		ScopeProfiler profiler("3d", "updateShadowMap");
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 

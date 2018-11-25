@@ -77,7 +77,7 @@ namespace urchin
 
 	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
 	{
-        ScopeProfiler scopeProfiler("ai", "updateExpandedPolytopes");
+        ScopeProfiler scopeProfiler("ai", "upExpandPoly");
 
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
@@ -114,7 +114,7 @@ namespace urchin
 
 	std::vector<PolytopeSurfaceIndex> NavMeshGenerator::findWalkableSurfaces() const
 	{
-		ScopeProfiler scopeProfiler("ai", "findWalkableSurfaces");
+		ScopeProfiler scopeProfiler("ai", "walkableSurface");
 
 		std::vector<PolytopeSurfaceIndex> walkableFaces;
 		walkableFaces.reserve(expandedPolytopes.size()/8); //estimated memory size
@@ -141,7 +141,7 @@ namespace urchin
 
 	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygon(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		ScopeProfiler scopeProfiler("ai", "createNavigationPolygon");
+		ScopeProfiler scopeProfiler("ai", "creatNavPolygon");
 
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
@@ -226,7 +226,7 @@ namespace urchin
 
 	const std::vector<CSGPolygon<float>> &NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		ScopeProfiler scopeProfiler("ai", "computeObstacles");
+		ScopeProfiler scopeProfiler("ai", "computeObstacle");
 
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableSurface = polytope->getSurface(polytopeWalkableSurface.faceIndex);
@@ -289,7 +289,7 @@ namespace urchin
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
-		ScopeProfiler scopeProfiler("ai", "elevateTriangulatedPoints");
+		ScopeProfiler scopeProfiler("ai", "elevateTriPoint");
 
 		std::vector<Point3<float>> elevatedPoints;
 		elevatedPoints.reserve(triangulation.getAllPointsSize());

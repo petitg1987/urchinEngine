@@ -32,7 +32,7 @@ namespace urchin
 	 */
 	void ConstraintSolverManager::solveConstraints(float dt, std::vector<ManifoldResult> &manifoldResults)
 	{
-		ScopeProfiler profiler("physics", "solveConstraints");
+		ScopeProfiler profiler("physics", "solveConstraint");
 
 		//setup step to solve constraints
 		setupConstraints(manifoldResults, dt);

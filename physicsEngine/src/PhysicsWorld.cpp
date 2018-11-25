@@ -238,7 +238,7 @@ namespace urchin
 
 	void PhysicsWorld::processPhysicsUpdate(float frameTimeStep)
 	{
-		ScopeProfiler profiler("physics", "processPhysicsUpdate");
+		ScopeProfiler profiler("physics", "procPhysicsUp");
 
 		//copy for local thread
 		bool paused;
@@ -273,7 +273,7 @@ namespace urchin
 	 */
 	void PhysicsWorld::setupProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
-		ScopeProfiler profiler("physics", "setupProcessables");
+		ScopeProfiler profiler("physics", "stpProcessable");
 
 		for (const auto &processable : processables)
 		{
@@ -287,7 +287,7 @@ namespace urchin
 	 */
 	void PhysicsWorld::executeProcessables(const std::vector<std::shared_ptr<Processable>> &processables, float dt, const Vector3<float> &gravity)
 	{
-		ScopeProfiler profiler("physics", "executeProcessables");
+		ScopeProfiler profiler("physics", "execProcessable");
 
 		for (const auto &processable : processables)
 		{

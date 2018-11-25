@@ -18,7 +18,7 @@ namespace urchin
 	 */
 	void IslandManager::refreshBodyActiveState(const std::vector<ManifoldResult> &manifoldResults)
 	{
-		ScopeProfiler profiler("physics", "refreshBodyActiveState");
+		ScopeProfiler profiler("physics", "refreshBodyStat");
 
 		buildIslands(manifoldResults);
 		const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
@@ -71,8 +71,7 @@ namespace urchin
 	void IslandManager::buildIslands(const std::vector<ManifoldResult> &manifoldResults)
 	{
 		//1. create an island for each body
-		std::vector<IslandElement *> islandElements;
-		islandElements.reserve(bodyManager->getWorkBodies().size());
+		islandElements.clear();
 		for (auto body : bodyManager->getWorkBodies())
 		{
 			if(!body->isStatic())

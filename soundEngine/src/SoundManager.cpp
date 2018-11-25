@@ -135,7 +135,7 @@ namespace urchin
 
 	void SoundManager::process()
 	{
-		ScopeProfiler profiler("sound", "soundManagerProcess");
+		ScopeProfiler profiler("sound", "soundMgrProc");
 
 		process(Point3<float>(0.0, 0.0, 0.0));
 	}

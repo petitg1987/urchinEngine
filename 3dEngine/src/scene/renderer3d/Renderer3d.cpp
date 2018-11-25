@@ -390,7 +390,7 @@ namespace urchin
 
 	void Renderer3d::display(float invFrameRate)
 	{
-		ScopeProfiler profiler("3d", "renderer3dDisplay");
+		ScopeProfiler profiler("3d", "rendererDisplay");
 
 		if(!camera)
 		{ //nothing to display if camera doesn't exist
@@ -505,7 +505,7 @@ namespace urchin
 	 */
 	void Renderer3d::deferredGeometryRendering(float invFrameRate)
 	{
-		ScopeProfiler profiler("3d", "deferredGeometryRendering");
+		ScopeProfiler profiler("3d", "defGeoRender");
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -556,7 +556,7 @@ namespace urchin
 	 */
 	void Renderer3d::lightingPassRendering()
 	{
-        ScopeProfiler profiler("3d", "lightingPassRendering");
+        ScopeProfiler profiler("3d", "lightPassRender");
 
 		ShaderManager::instance()->bind(deferredShadingShader);
 		unsigned int nextTextureUnit = 0;

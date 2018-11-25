@@ -168,7 +168,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::updateMinSize(float
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables()
 {
-	ScopeProfiler profiler("3d", "refreshOctreeables");
+	ScopeProfiler profiler("3d", "refreshOctreeab");
 
 	if(mainOctree)
 	{
@@ -259,7 +259,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(const ConvexObject3D<float> &convexObject,
         std::vector<TOctreeable *> &visibleOctreeables, const OctreeableFilter<TOctreeable> &filter) const
 {
-    ScopeProfiler profiler("3d", "getOctreeablesIn");
+    ScopeProfiler profiler("3d", "getOctreeables");
 
 	browseNodes.clear();
 	browseNodes.push_back(mainOctree);

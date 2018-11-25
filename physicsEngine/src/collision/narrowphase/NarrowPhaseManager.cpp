@@ -48,7 +48,7 @@ namespace urchin
 
 	void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
 	{
-		ScopeProfiler profiler("physics", "processOverlappingPairs");
+		ScopeProfiler profiler("physics", "procOverlapPair");
 
 		for(const auto &overlappingPair : overlappingPairs)
 		{
@@ -89,7 +89,7 @@ namespace urchin
 
 	void NarrowPhaseManager::processPredictiveContacts(float dt, std::vector<ManifoldResult> &manifoldResults)
 	{
-		ScopeProfiler profiler("physics", "processPredictiveContacts");
+		ScopeProfiler profiler("physics", "proPrediContact");
 
 		for (auto workBody : bodyManager->getWorkBodies())
 		{

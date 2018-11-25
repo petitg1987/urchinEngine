@@ -52,7 +52,7 @@ namespace urchin
 
 	void CollisionAlgorithm::refreshContactPoints()
 	{
-		ScopeProfiler profiler("physics", "refreshContactPoints");
+		ScopeProfiler profiler("physics", "reContactPts");
 
 		manifoldResult.refreshContactPoints();
 	}
