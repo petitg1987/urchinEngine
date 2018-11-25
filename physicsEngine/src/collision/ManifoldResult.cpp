@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "collision/ManifoldResult.h"
+#include "utils/property/EagerPropertyLoader.h"
 
 namespace urchin
 {
@@ -9,7 +10,7 @@ namespace urchin
 			body1(body1),
 			body2(body2),
 			nbContactPoint(0),
-			contactBreakingThreshold(ConfigService::instance()->getFloatValue("narrowPhase.contactBreakingThreshold"))
+			contactBreakingThreshold(EagerPropertyLoader::instance()->getNarrowPhaseContactBreakingThreshold())
 	{
 
 	}

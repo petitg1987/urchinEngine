@@ -28,7 +28,7 @@ namespace urchin
 			};
 
 			//general methods
-			virtual std::vector<Vector3<float>> getDirections() const = 0;
+			virtual const std::vector<Vector3<float>> &getDirections() const = 0;
 			virtual const Point3<float> &getPosition() const = 0;
 			virtual bool hasParallelBeams() const = 0;
 			virtual LightType getLightType() const = 0;

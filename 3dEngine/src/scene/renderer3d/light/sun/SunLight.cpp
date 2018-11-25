@@ -6,24 +6,21 @@ namespace urchin
 {
 
 	SunLight::SunLight(const Vector3<float> &direction) :
-		Light(),
-		direction(direction)
+		Light()
 	{
-
+		this->directions.emplace_back(direction);
 	}
 
 	void SunLight::setDirection(const Vector3<float> &direction)
 	{
-		this->direction = direction;
+		this->directions.clear();
+		this->directions.emplace_back(direction);
 
 		notifyObservers(this, Light::LIGHT_MOVE);
 	}
 
-	std::vector<Vector3<float>> SunLight::getDirections() const
+	const std::vector<Vector3<float>> &SunLight::getDirections() const
 	{
-		std::vector<Vector3<float>> directions;
-		directions.emplace_back(Vector3<float>(direction.X, direction.Y, direction.Z));
-
 		return directions;
 	}
 

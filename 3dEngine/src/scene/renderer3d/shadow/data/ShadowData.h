@@ -41,7 +41,7 @@ namespace urchin
 			FrustumShadowData *getFrustumShadowData(unsigned int);
 			const FrustumShadowData *getFrustumShadowData(unsigned int) const;
 
-			std::vector<Model *> retrieveModels() const;
+			const std::vector<Model *> &retrieveModels() const;
 
 		private:
 			const Light *const light;

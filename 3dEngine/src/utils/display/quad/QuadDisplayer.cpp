@@ -35,10 +35,7 @@ namespace urchin
 			glDeleteVertexArrays(1, &vertexArrayObject);
 		}
 
-		if(bufferIDs)
-		{
-			glDeleteBuffers(2, bufferIDs);
-		}
+		glDeleteBuffers(2, bufferIDs);
 	}
 
 	void QuadDisplayer::initializeDisplay()

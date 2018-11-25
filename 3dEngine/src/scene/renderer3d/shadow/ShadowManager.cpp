@@ -680,12 +680,12 @@ namespace urchin
 	void ShadowManager::loadShadowMaps(const Matrix4<float> &viewMatrix, unsigned int shadowMapTextureUnitStart)
 	{
 		int i = 0;
-		std::vector<Light *> visibleLights = lightManager->getVisibleLights();
-		for(std::vector<Light *>::const_iterator itLights = visibleLights.begin(); itLights!=visibleLights.end(); ++itLights)
+		const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
+		for (auto visibleLight : visibleLights)
 		{
-			if((*itLights)->isProduceShadow())
+			if(visibleLight->isProduceShadow())
 			{
-				std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.find(*itLights);
+				std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.find(visibleLight);
 				const ShadowData *shadowData = it->second;
 
 				unsigned int shadowMapTextureUnit = shadowMapTextureUnitStart + i;

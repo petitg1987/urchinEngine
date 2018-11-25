@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "shape/CollisionShape3D.h"
+#include "utils/property/EagerPropertyLoader.h"
 
 namespace urchin
 {
@@ -16,7 +17,7 @@ namespace urchin
 	std::vector<CollisionShape3D::ShapeType> CollisionShape3D::SPHERE_SHAPES = {CollisionShape3D::SPHERE_SHAPE};
 
 	CollisionShape3D::CollisionShape3D() :
-			innerMargin(ConfigService::instance()->getFloatValue("collisionShape.innerMargin")),
+			innerMargin(EagerPropertyLoader::instance()->getCollisionShapeInnerMargin()),
 			initialInnerMargin(innerMargin)
 	{
 		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));

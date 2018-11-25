@@ -16,6 +16,13 @@ namespace urchin
 			sphereScope(nullptr),
 			bboxScope(nullptr)
 	{
+		directions.emplace_back(Vector3<float>(1.0, 0.0, 0.0)); //Left
+		directions.emplace_back(Vector3<float>(-1.0, 0.0, 0.0)); //Right
+		directions.emplace_back(Vector3<float>(0.0, 1.0, 0.0)); //Top
+		directions.emplace_back(Vector3<float>(0.0, -1.0, 0.0)); //Bottom
+		directions.emplace_back(Vector3<float>(0.0, 0.0, 1.0)); //Back
+		directions.emplace_back(Vector3<float>(0.0, 0.0, -1.0)); //Front
+
 		computeScope();
 	}
 
@@ -39,17 +46,8 @@ namespace urchin
 		return position;
 	}
 
-	std::vector<Vector3<float>> OmnidirectionalLight::getDirections() const
+	const std::vector<Vector3<float>> &OmnidirectionalLight::getDirections() const
 	{
-		std::vector<Vector3<float>> directions;
-
-		directions.emplace_back(Vector3<float>(1.0, 0.0, 0.0)); //Left
-		directions.emplace_back(Vector3<float>(-1.0, 0.0, 0.0)); //Right
-		directions.emplace_back(Vector3<float>(0.0, 1.0, 0.0)); //Top
-		directions.emplace_back(Vector3<float>(0.0, -1.0, 0.0)); //Bottom
-		directions.emplace_back(Vector3<float>(0.0, 0.0, 1.0)); //Back
-		directions.emplace_back(Vector3<float>(0.0, 0.0, -1.0)); //Front
-
 		return directions;
 	}
 

@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_OMNIDIRECTIONALLIGHT_H
 #define URCHINENGINE_OMNIDIRECTIONALLIGHT_H
 
+#include <vector>
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/light/Light.h"
@@ -17,7 +18,7 @@ namespace urchin
 			//general methods
 			void setPosition(const Point3<float> &);
 			const Point3<float> &getPosition() const override;
-			std::vector<Vector3<float>> getDirections() const override;
+			const std::vector<Vector3<float>> &getDirections() const override;
 			LightType getLightType() const override;
 			bool hasParallelBeams() const override;
 			const AABBox<float> &getAABBox() const override;
@@ -33,6 +34,7 @@ namespace urchin
 
 			//general properties
 			Point3<float> position;
+			std::vector<Vector3<float>> directions;
 
 			//attenuation properties
 			const float attenuationNoEffect; //defines when the attenuation of a light has no light effect on objects

@@ -134,7 +134,7 @@ namespace urchin
 		return frustumShadowData[index];
 	}
 
-	std::vector<Model *> ShadowData::retrieveModels() const
+	const std::vector<Model *> &ShadowData::retrieveModels() const
 	{
         models.clear();
 

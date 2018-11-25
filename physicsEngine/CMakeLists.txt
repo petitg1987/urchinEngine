@@ -171,7 +171,15 @@ set(SOURCE_FILES
         src/object/CollisionTriangleObject.cpp
         src/object/CollisionTriangleObject.h
         src/shape/CollisionConcaveShape.cpp
-        src/shape/CollisionConcaveShape.h src/collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.cpp src/collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h src/collision/narrowphase/algorithm/utils/AlgorithmResult.cpp src/collision/narrowphase/algorithm/utils/AlgorithmResult.h src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.cpp src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h)
+        src/shape/CollisionConcaveShape.h
+        src/collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.cpp
+        src/collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h
+        src/collision/narrowphase/algorithm/utils/AlgorithmResult.cpp
+        src/collision/narrowphase/algorithm/utils/AlgorithmResult.h
+        src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.cpp
+        src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h
+        src/utils/property/EagerPropertyLoader.cpp
+        src/utils/property/EagerPropertyLoader.h)
 
 include_directories(src ../common/src)
 

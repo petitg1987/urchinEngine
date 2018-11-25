@@ -1,13 +1,14 @@
 #include "object/CollisionTriangleObject.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
 #include "collision/narrowphase/algorithm/epa/EPAAlgorithm.h"
+#include "utils/property/EagerPropertyLoader.h"
 
 namespace urchin
 {
 
 	template<class T> EPAAlgorithm<T>::EPAAlgorithm() :
-		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.epaMaxIteration")),
-		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.epaTerminationTolerance"))
+		maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseEpaMaxIteration()),
+		terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseEpaTerminationTolerance())
 	{
 
 	}

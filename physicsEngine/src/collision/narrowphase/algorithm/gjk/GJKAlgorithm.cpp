@@ -4,13 +4,14 @@
 
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultAllocator.h"
 #include "collision/narrowphase/algorithm/gjk/GJKAlgorithm.h"
+#include "utils/property/EagerPropertyLoader.h"
 
 namespace urchin
 {
 
 	template<class T> GJKAlgorithm<T>::GJKAlgorithm() :
-		maxIteration(ConfigService::instance()->getUnsignedIntValue("narrowPhase.gjkMaxIteration")),
-		terminationTolerance(ConfigService::instance()->getFloatValue("narrowPhase.gjkTerminationTolerance"))
+		maxIteration(EagerPropertyLoader::instance()->getNarrowPhaseGjkMaxIteration()),
+		terminationTolerance(EagerPropertyLoader::instance()->getNarrowPhaseGjkTerminationTolerance())
 	{
 
 	}
