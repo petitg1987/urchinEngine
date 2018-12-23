@@ -85,6 +85,7 @@ namespace urchin
         std::string readBuffer;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK)
