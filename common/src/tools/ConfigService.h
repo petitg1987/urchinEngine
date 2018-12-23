@@ -17,10 +17,10 @@ namespace urchin
 		public:
 			friend class Singleton<ConfigService>;
 
-			bool isInitialized() const;
-
 			void loadProperties(const std::string &, const std::map<std::string, std::string> &placeholder={});
 			void loadProperties(const std::string &, const std::string &, const std::map<std::string, std::string> &placeholders={});
+
+			bool isExist(const std::string &) const;
 
 			unsigned getUnsignedIntValue(const std::string &) const;
 			float getFloatValue(const std::string &) const;
@@ -32,13 +32,9 @@ namespace urchin
 			ConfigService();
 			~ConfigService() override = default;
 
-			void checkState() const;
-
 			std::map<std::string, std::string> properties;
 			std::map<std::string, float> floatProperties;
 			std::map<std::string, unsigned int> unsignedIntProperties;
-
-			bool bIsInitialized;
 	};
 }
 

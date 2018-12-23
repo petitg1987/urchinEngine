@@ -9,23 +9,9 @@ namespace urchin
 {
 
 	ConfigService::ConfigService() :
-			Singleton<ConfigService>(),
-			bIsInitialized(false)
+			Singleton<ConfigService>()
 	{
 
-	}
-
-	void ConfigService::checkState() const
-	{
-		if(!bIsInitialized)
-		{
-			throw std::runtime_error("Impossible to get this property: the configuration service hasn't been initialized.");
-		}
-	}
-
-	bool ConfigService::isInitialized() const
-	{
-		return bIsInitialized;
 	}
 
 	void ConfigService::loadProperties(const std::string &propertiesFile, const std::map<std::string, std::string> &placeholders)
@@ -41,11 +27,10 @@ namespace urchin
 	{
 		std::string propertiesFilePath = workingDirectory + propertiesFile;
 		PropertyFileHandler propertyFileHandler(propertiesFilePath);
-		
-		properties = propertyFileHandler.loadPropertyFile();
+		auto loadedProperties = propertyFileHandler.loadPropertyFile();
 
 		//replace placeholders
-		for(auto &property : properties)
+		for(auto &property : loadedProperties)
 		{
 			auto itFind = placeholders.find(property.second);
 			if(itFind!=placeholders.end())
@@ -54,8 +39,11 @@ namespace urchin
 			}
 		}
 
-		//build specific maps for performance reason (numeric conversion is slow)
-        for(const auto &property : properties)
+        //copy loaded properties into properties
+        properties.insert(loadedProperties.begin(), loadedProperties.end());
+
+        //build specific maps for performance reason (numeric conversion is slow)
+        for(const auto &property : loadedProperties)
         {
             if(Converter::isUnsignedInt(property.second))
             {
@@ -66,14 +54,16 @@ namespace urchin
                 floatProperties[property.first] = Converter::toFloat(property.second);
             }
         }
+	}
 
-		bIsInitialized = true;
+	bool ConfigService::isExist(const std::string &propertyName) const
+	{
+		auto it = properties.find(propertyName);
+		return it!=properties.end();
 	}
 
 	unsigned int ConfigService::getUnsignedIntValue(const std::string &propertyName) const
 	{
-		checkState();
-
 		auto it = unsignedIntProperties.find(propertyName);
 		if(it!=unsignedIntProperties.end())
 		{
@@ -85,8 +75,6 @@ namespace urchin
 
 	float ConfigService::getFloatValue(const std::string &propertyName) const
 	{
-		checkState();
-
 		auto it = floatProperties.find(propertyName);
 		if(it!=floatProperties.end())
 		{
@@ -98,8 +86,6 @@ namespace urchin
 
 	std::string ConfigService::getStringValue(const std::string &propertyName) const
 	{
-		checkState();
-
 		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
@@ -111,8 +97,6 @@ namespace urchin
 	
 	char ConfigService::getCharValue(const std::string &propertyName) const
 	{
-		checkState();
-
 		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
@@ -124,8 +108,6 @@ namespace urchin
 
 	bool ConfigService::getBoolValue(const std::string &propertyName) const
 	{
-		checkState();
-
 		auto it = properties.find(propertyName);
 		if(it!=properties.end())
 		{
