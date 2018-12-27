@@ -51,7 +51,7 @@ namespace urchin
 	 * @param parent Name of the tag parent of "chunkName"
 	 * @return XML chunks according to the parameters
 	 */
-	std::vector<std::shared_ptr<XmlChunk>> XmlParser::getChunks(const std::string &chunkName, const XmlAttribute &attribute, std::shared_ptr<XmlChunk> parent) const
+	std::vector<std::shared_ptr<XmlChunk>> XmlParser::getChunks(const std::string &chunkName, const XmlAttribute &attribute, const std::shared_ptr<XmlChunk> &parent) const
 	{
 		std::vector<std::shared_ptr<XmlChunk>> chunks;
 
@@ -94,9 +94,9 @@ namespace urchin
 	 * @param parent Name of the tag parent of "chunkName"
 	 * @return Unique XML chunk according to the parameters
 	 */
-	std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string &chunkName, const XmlAttribute &attribute, std::shared_ptr<XmlChunk> parent) const
+	std::shared_ptr<XmlChunk> XmlParser::getUniqueChunk(bool mandatory, const std::string &chunkName, const XmlAttribute &attribute, const std::shared_ptr<XmlChunk> &parent) const
 	{
-		std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, std::move(parent));
+		std::vector<std::shared_ptr<XmlChunk>> chunks = getChunks(chunkName, attribute, parent);
 
 		if(chunks.size()>1)
 		{

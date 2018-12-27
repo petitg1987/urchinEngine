@@ -76,7 +76,7 @@ namespace urchin
 
 	void Map::loadSceneObjectsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> objectsListChunk = xmlParser.getUniqueChunk(true, OBJECTS_TAG, XmlAttribute(), chunk);
 		std::vector<std::shared_ptr<XmlChunk>> objectsChunk = xmlParser.getChunks(OBJECT_TAG, XmlAttribute(), objectsListChunk);
 
 		for (const auto &objectChunk : objectsChunk)
@@ -90,7 +90,7 @@ namespace urchin
 
 	void Map::loadSceneLightsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> lightsListChunk = xmlParser.getUniqueChunk(true, LIGHTS_TAG, XmlAttribute(), chunk);
 		std::vector<std::shared_ptr<XmlChunk>> lightsChunk = xmlParser.getChunks(LIGHT_TAG, XmlAttribute(), lightsListChunk);
 
 		for (const auto &lightChunk : lightsChunk)
@@ -104,7 +104,7 @@ namespace urchin
 
 	void Map::loadSceneTerrainFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> terrainsListChunk = xmlParser.getUniqueChunk(true, TERRAINS_TAG, XmlAttribute(), chunk);
 		std::vector<std::shared_ptr<XmlChunk>> terrainsChunk = xmlParser.getChunks(TERRAIN_TAG, XmlAttribute(), terrainsListChunk);
 
 		for (const auto &terrainChunk : terrainsChunk)
@@ -118,7 +118,7 @@ namespace urchin
 
 	void Map::loadSceneWaterFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> watersListChunk = xmlParser.getUniqueChunk(true, WATERS_TAG, XmlAttribute(), chunk);
 		std::vector<std::shared_ptr<XmlChunk>> watersChunk = xmlParser.getChunks(WATER_TAG, XmlAttribute(), watersListChunk);
 
 		for (const auto &waterChunk : watersChunk)
@@ -132,7 +132,7 @@ namespace urchin
 
 	void Map::loadSceneSoundsFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
 		std::vector<std::shared_ptr<XmlChunk>> soundElementsChunk = xmlParser.getChunks(SOUND_ELEMENT_TAG, XmlAttribute(), soundElementsListChunk);
 
 		for (const auto &soundElementChunk : soundElementsChunk)
@@ -146,7 +146,7 @@ namespace urchin
 
 	void Map::loadSceneAIFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
 	{
-		std::shared_ptr<XmlChunk> aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, XmlAttribute(), chunk);
 
 		auto *sceneAI = new SceneAI();
 		sceneAI->loadFrom(aiElementsListChunk, xmlParser);
@@ -166,7 +166,7 @@ namespace urchin
 
 	void Map::writeSceneObjectsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> objectsListChunk = xmlWriter.createChunk(OBJECTS_TAG, XmlAttribute(), chunk);
 
 		for (auto sceneObject : sceneObjects)
 		{
@@ -177,7 +177,7 @@ namespace urchin
 
 	void Map::writeSceneLightsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> lightsListChunk = xmlWriter.createChunk(LIGHTS_TAG, XmlAttribute(), chunk);
 
 		for (auto sceneLight : sceneLights)
 		{
@@ -188,7 +188,7 @@ namespace urchin
 
 	void Map::writeSceneTerrainsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> terrainsListChunk = xmlWriter.createChunk(TERRAINS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> terrainsListChunk = xmlWriter.createChunk(TERRAINS_TAG, XmlAttribute(), chunk);
 
 		for (auto sceneTerrain : sceneTerrains)
 		{
@@ -199,7 +199,7 @@ namespace urchin
 
 	void Map::writeSceneWatersOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> watersListChunk = xmlWriter.createChunk(WATERS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> watersListChunk = xmlWriter.createChunk(WATERS_TAG, XmlAttribute(), chunk);
 
 		for (auto sceneWater : sceneWaters)
 		{
@@ -210,7 +210,7 @@ namespace urchin
 
 	void Map::writeSceneSoundsOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
+		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlWriter.createChunk(SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
 
 		for (auto sceneSound : sceneSounds)
 		{
@@ -221,7 +221,7 @@ namespace urchin
 
     void Map::writeSceneAIOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
     {
-        std::shared_ptr<XmlChunk> aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, XmlAttribute(), std::move(chunk));
+        std::shared_ptr<XmlChunk> aiElementsListChunk = xmlWriter.createChunk(AI_ELEMENTS_TAG, XmlAttribute(), chunk);
 
         sceneAI->writeOn(aiElementsListChunk, xmlWriter);
     }

@@ -31,7 +31,7 @@ namespace urchin
 
         private:
             void loadGeneralPropertiesOn(Water *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
-            void writeGeneralPropertiesOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
+            void writeGeneralPropertiesOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;
 
             void loadWaterSurfaceProperties(Water *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void writeWaterSurfacePropertiesOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;

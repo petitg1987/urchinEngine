@@ -21,9 +21,9 @@ namespace urchin
         std::locale::global(std::locale("C")); //for float
 
         XmlParser parserXml(fontFilename);
-        std::string ttfFilename = std::shared_ptr<XmlChunk>(parserXml.getUniqueChunk(false, "ttf"))->getStringValue();
-        int fontSize = std::shared_ptr<XmlChunk>(parserXml.getUniqueChunk(false, "size"))->getIntValue();
-        Vector3<float> fontColor =  std::shared_ptr<XmlChunk>(parserXml.getUniqueChunk(false, "color"))->getVector3Value();
+        std::string ttfFilename = parserXml.getUniqueChunk(false, "ttf")->getStringValue();
+        int fontSize = parserXml.getUniqueChunk(false, "size")->getIntValue();
+        Vector3<float> fontColor =  parserXml.getUniqueChunk(false, "color")->getVector3Value();
 
 		//initialize freetype
 		std::string fileFontPath = FileSystem::instance()->getResourcesDirectory() + ttfFilename;

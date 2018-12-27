@@ -30,14 +30,14 @@ namespace urchin
 			void writeOn(std::shared_ptr<XmlChunk>, const Light *, XmlWriter &) const;
 
 		private:
-			Light *buildLightFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void buildChunkFrom(std::shared_ptr<XmlChunk>, const Light *, XmlWriter &) const;
+			Light *buildLightFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const Light *, XmlWriter &) const;
 
-			void loadPropertiesOn(Light *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writePropertiesOn(std::shared_ptr<XmlChunk>, const Light *, XmlWriter &) const;
+			void loadPropertiesOn(Light *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void writePropertiesOn(const std::shared_ptr<XmlChunk> &, const Light *, XmlWriter &) const;
 
-			void loadFlagsOn(Light *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeFlagsOn(std::shared_ptr<XmlChunk>, const Light *, XmlWriter &) const;
+			void loadFlagsOn(Light *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void writeFlagsOn(const std::shared_ptr<XmlChunk> &, const Light *, XmlWriter &) const;
 	};
 
 }

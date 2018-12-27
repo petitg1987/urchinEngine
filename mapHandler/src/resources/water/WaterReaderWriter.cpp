@@ -31,7 +31,7 @@ namespace urchin
         water->setZSize(zSizeChunk->getFloatValue());
     }
 
-    void WaterReaderWriter::writeGeneralPropertiesOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
+    void WaterReaderWriter::writeGeneralPropertiesOn(const std::shared_ptr<XmlChunk> &waterChunk, const Water *water, XmlWriter &xmlWriter) const
     {
         std::shared_ptr<XmlChunk> centerPositionChunk = xmlWriter.createChunk(CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
         centerPositionChunk->setPoint3Value(water->getCenterPosition());

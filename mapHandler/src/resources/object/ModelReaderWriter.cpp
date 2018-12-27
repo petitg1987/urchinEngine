@@ -36,7 +36,7 @@ namespace urchin
 
 	void ModelReaderWriter::loadAnimationsOn(Model *model, std::shared_ptr<XmlChunk> modelChunk, const XmlParser &xmlParser) const
 	{
-		std::shared_ptr<XmlChunk> animationsListChunk = xmlParser.getUniqueChunk(false, ANIMATIONS_TAG, XmlAttribute(), std::move(modelChunk));
+		std::shared_ptr<XmlChunk> animationsListChunk = xmlParser.getUniqueChunk(false, ANIMATIONS_TAG, XmlAttribute(), modelChunk);
 		if(animationsListChunk)
 		{
 			std::vector<std::shared_ptr<XmlChunk>> animationsChunk = xmlParser.getChunks(ANIMATION_TAG, XmlAttribute(), animationsListChunk);
@@ -55,7 +55,7 @@ namespace urchin
 		std::map<std::string, const ConstAnimation *> animations = model->getAnimations();
 		if(!animations.empty())
 		{
-			std::shared_ptr<XmlChunk> animationsListChunk = xmlWriter.createChunk(ANIMATIONS_TAG, XmlAttribute(), std::move(modelChunk));
+			std::shared_ptr<XmlChunk> animationsListChunk = xmlWriter.createChunk(ANIMATIONS_TAG, XmlAttribute(), modelChunk);
 			for(std::map<std::string, const ConstAnimation *>::const_iterator it = animations.begin(); it!=animations.end(); ++it)
 			{
 				std::shared_ptr<XmlChunk> animationChunk = xmlWriter.createChunk(ANIMATION_TAG, XmlAttribute(), animationsListChunk);
@@ -71,7 +71,7 @@ namespace urchin
 
 	void ModelReaderWriter::loadTransformOn(Model *model, std::shared_ptr<XmlChunk> modelChunk, const XmlParser &xmlParser) const
 	{
-		std::shared_ptr<XmlChunk> transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), std::move(modelChunk));
+		std::shared_ptr<XmlChunk> transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), modelChunk);
 
 		std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), transformChunk);
 		Point3<float> position = positionChunk->getPoint3Value();
@@ -90,7 +90,7 @@ namespace urchin
 
 	void ModelReaderWriter::writeTransformOn(std::shared_ptr<XmlChunk> modelChunk, const Model *model, XmlWriter &xmlWriter) const
 	{
-		std::shared_ptr<XmlChunk> transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, XmlAttribute(), std::move(modelChunk));
+		std::shared_ptr<XmlChunk> transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, XmlAttribute(), modelChunk);
 
 		std::shared_ptr<XmlChunk> positionChunk = xmlWriter.createChunk(POSITION_TAG, XmlAttribute(), transformChunk);
 		positionChunk->setPoint3Value(model->getTransform().getPosition());
@@ -103,7 +103,7 @@ namespace urchin
 
 	void ModelReaderWriter::loadFlagsOn(Model *model, std::shared_ptr<XmlChunk> modelChunk, const XmlParser &xmlParser) const
 	{
-		std::shared_ptr<XmlChunk> produceShadowChunk = xmlParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, XmlAttribute(), std::move(modelChunk));
+		std::shared_ptr<XmlChunk> produceShadowChunk = xmlParser.getUniqueChunk(false, PRODUCE_SHADOW_TAG, XmlAttribute(), modelChunk);
 		if(produceShadowChunk)
 		{
 			model->setProduceShadow(produceShadowChunk->getBoolValue());
@@ -117,7 +117,7 @@ namespace urchin
 	{
 		if(!model->isProduceShadow())
 		{
-			std::shared_ptr<XmlChunk> produceShadowChunk = xmlWriter.createChunk(PRODUCE_SHADOW_TAG, XmlAttribute(), std::move(modelChunk));
+			std::shared_ptr<XmlChunk> produceShadowChunk = xmlWriter.createChunk(PRODUCE_SHADOW_TAG, XmlAttribute(), modelChunk);
 			produceShadowChunk->setBoolValue(model->isProduceShadow());
 		}
 	}

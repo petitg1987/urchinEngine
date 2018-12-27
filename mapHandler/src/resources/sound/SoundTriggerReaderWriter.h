@@ -35,11 +35,11 @@ namespace urchin
 			void writeOn(std::shared_ptr<XmlChunk>, const SoundTrigger *, XmlWriter &) const;
 
 		private:
-			SoundTrigger *buildSoundTriggerFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void buildChunkFrom(std::shared_ptr<XmlChunk>, const SoundTrigger *, XmlWriter &) const;
+			SoundTrigger *buildSoundTriggerFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const SoundTrigger *, XmlWriter &) const;
 
-			SoundBehavior buildSoundBehaviorFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void buildChunkFrom(std::shared_ptr<XmlChunk>, const SoundBehavior &, XmlWriter &xmlWriter) const;
+			SoundBehavior buildSoundBehaviorFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const SoundBehavior &, XmlWriter &xmlWriter) const;
 	};
 
 }
