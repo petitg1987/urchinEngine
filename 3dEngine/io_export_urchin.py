@@ -499,24 +499,27 @@ def saveUrchin(settings):
   meshes = []
   for obj in bpy.context.selected_objects:
     if (obj.type == 'MESH') and (len(obj.data.vertices.values()) > 0):
-      mesh = Mesh(obj.name)
-      obj.data.update(calc_tessface=True)
-      print("[INFO] Processing mesh: " + obj.name)
+      apply_modifiers = True
+      modifiedMesh = obj.to_mesh(bpy.context.scene, apply_modifiers, 'PREVIEW') #Apply modifier (triangulation...)
+
+      mesh = Mesh(modifiedMesh.name)
+      modifiedMesh.update(calc_tessface=True)
+      print("[INFO] Processing mesh: " + modifiedMesh.name)
       meshes.append(mesh)
 
       numTris = 0
       numWeights = 0
-      for f in obj.data.polygons:
+      for f in modifiedMesh.polygons:
         numTris += len(f.vertices) - 2
-      for v in obj.data.vertices:
+      for v in modifiedMesh.vertices:
         numWeights += len(v.groups)
 
       wMatrix = obj.matrix_world
-      verts = obj.data.vertices
+      verts = modifiedMesh.vertices
 
-      uv_textures = obj.data.tessface_uv_textures
+      uv_textures = modifiedMesh.tessface_uv_textures
       faces = []
-      for f in obj.data.polygons:
+      for f in modifiedMesh.polygons:
         faces.append(f)
 
       createVertexA = 0 # normal vertex
@@ -525,7 +528,7 @@ def saveUrchin(settings):
 
       while faces:
         materialIndex = faces[0].material_index
-        material = Material(obj.data.materials[0].name)
+        material = Material(modifiedMesh.materials[0].name)
 
         subMesh = SubMesh(mesh, material)
         vertices = {}
@@ -561,8 +564,8 @@ def saveUrchin(settings):
                 createVertexA += 1
 
                 influences = []
-                for j in range(len(obj.data.vertices[ face.vertices[i] ].groups)):
-                  inf = [obj.vertex_groups[ obj.data.vertices[ face.vertices[i] ].groups[j].group ].name, obj.data.vertices[ face.vertices[i] ].groups[j].weight]
+                for j in range(len(modifiedMesh.vertices[ face.vertices[i] ].groups)):
+                  inf = [obj.vertex_groups[ modifiedMesh.vertices[ face.vertices[i] ].groups[j].group ].name, modifiedMesh.vertices[ face.vertices[i] ].groups[j].weight]
                   influences.append(inf)
 
                 if not influences:
@@ -610,6 +613,7 @@ def saveUrchin(settings):
           else:
             print("[ERROR] Found face with invalid material")
       print("[INFO] Created vertices: A " + str(createVertexA) + ", B " + str(createVertexB) + ", C " + str(createVertexC))
+      bpy.data.meshes.remove(modifiedMesh)
 
   # ANIMATION EXPORT
   animations = {}
