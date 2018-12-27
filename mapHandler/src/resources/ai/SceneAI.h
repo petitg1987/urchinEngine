@@ -24,8 +24,8 @@ namespace urchin
             void changeNavMeshConfig(std::shared_ptr<NavMeshConfig>);
 
         private:
-            void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-            void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
             void setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig);
 

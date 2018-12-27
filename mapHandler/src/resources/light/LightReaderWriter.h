@@ -26,8 +26,8 @@ namespace urchin
 		#define PRODUCE_SHADOW_TAG "produceShadow"
 
 		public:
-			Light *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-			void writeOn(std::shared_ptr<XmlChunk>, const Light *, XmlWriter &) const;
+			Light *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void writeOn(const std::shared_ptr<XmlChunk> &, const Light *, XmlWriter &) const;
 
 		private:
 			Light *buildLightFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;

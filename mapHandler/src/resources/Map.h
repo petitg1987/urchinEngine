@@ -76,21 +76,21 @@ namespace urchin
 			void refreshMap();
 
 		private:
-			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &, LoadCallback &);
-			void loadSceneObjectsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-			void loadSceneLightsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-			void loadSceneTerrainFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-			void loadSceneWaterFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-			void loadSceneSoundsFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-			void loadSceneAIFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
+			void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &, LoadCallback &);
+			void loadSceneObjectsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+			void loadSceneLightsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+			void loadSceneTerrainFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+			void loadSceneWaterFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+			void loadSceneSoundsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+			void loadSceneAIFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
 
-			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
-			void writeSceneObjectsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
-			void writeSceneLightsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
-			void writeSceneTerrainsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
-			void writeSceneWatersOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
-			void writeSceneSoundsOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
-			void writeSceneAIOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+			void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+			void writeSceneObjectsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+			void writeSceneLightsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+			void writeSceneTerrainsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+			void writeSceneWatersOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+			void writeSceneSoundsOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
+			void writeSceneAIOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
 			void refreshEntities();
             void refreshSound();

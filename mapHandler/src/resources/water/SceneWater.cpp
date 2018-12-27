@@ -33,14 +33,14 @@ namespace urchin
         renderer3d->getWaterManager()->addWater(water);
     }
 
-    void SceneWater::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+    void SceneWater::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
     {
         this->name = chunk->getAttributeValue(NAME_ATTR);
 
         setWater(WaterReaderWriter().loadFrom(chunk, xmlParser));
     }
 
-    void SceneWater::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+    void SceneWater::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
     {
         chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 

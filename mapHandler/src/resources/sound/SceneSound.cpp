@@ -37,7 +37,7 @@ namespace urchin
 		}
 	}
 
-	void SceneSound::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+	void SceneSound::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
 	{
 		this->name = chunk->getAttributeValue(NAME_ATTR);
 
@@ -48,7 +48,7 @@ namespace urchin
 				SoundTriggerReaderWriter().loadFrom(soundTriggerChunk, xmlParser));
 	}
 
-	void SceneSound::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+	void SceneSound::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
 	{
 		chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 

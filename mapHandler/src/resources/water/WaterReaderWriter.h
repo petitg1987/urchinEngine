@@ -26,11 +26,11 @@ namespace urchin
             #define GRADIENT_TAG "gradient"
 
         public:
-            Water *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-            void writeOn(std::shared_ptr<XmlChunk>, const Water *, XmlWriter &) const;
+            Water *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            void writeOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;
 
         private:
-            void loadGeneralPropertiesOn(Water *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
+            void loadGeneralPropertiesOn(Water *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void writeGeneralPropertiesOn(const std::shared_ptr<XmlChunk> &, const Water *, XmlWriter &) const;
 
             void loadWaterSurfaceProperties(Water *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;

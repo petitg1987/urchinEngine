@@ -3,7 +3,7 @@
 namespace urchin
 {
 
-	Light *LightReaderWriter::loadFrom(std::shared_ptr<XmlChunk> lightChunk, const XmlParser &xmlParser) const
+	Light *LightReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &lightChunk, const XmlParser &xmlParser) const
 	{
 		Light *light = buildLightFrom(lightChunk, xmlParser);
 
@@ -13,7 +13,7 @@ namespace urchin
 		return light;
 	}
 
-	void LightReaderWriter::writeOn(std::shared_ptr<XmlChunk> lightChunk, const Light *light, XmlWriter &xmlWriter) const
+	void LightReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &lightChunk, const Light *light, XmlWriter &xmlWriter) const
 	{
 		buildChunkFrom(lightChunk, light, xmlWriter);
 

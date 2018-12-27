@@ -5,7 +5,7 @@
 namespace urchin
 {
 
-	Sound *SoundReaderWriter::loadFrom(std::shared_ptr<XmlChunk> soundChunk, const XmlParser &xmlParser) const
+	Sound *SoundReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &soundChunk, const XmlParser &xmlParser) const
 	{
 		Sound *sound = buildSoundFrom(soundChunk, xmlParser);
 
@@ -14,14 +14,14 @@ namespace urchin
 		return sound;
 	}
 
-	void SoundReaderWriter::writeOn(std::shared_ptr<XmlChunk> soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
+	void SoundReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
 	{
 		buildChunkFrom(soundChunk, sound, xmlWriter);
 
 		writePropertiesOn(soundChunk, sound, xmlWriter);
 	}
 
-	Sound *SoundReaderWriter::buildSoundFrom(std::shared_ptr<XmlChunk> soundChunk, const XmlParser &xmlParser) const
+	Sound *SoundReaderWriter::buildSoundFrom(const std::shared_ptr<XmlChunk> &soundChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> filenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), soundChunk);
 		std::string filename = filenameChunk->getStringValue();
@@ -44,7 +44,7 @@ namespace urchin
 		throw std::invalid_argument("Unknown sound type read from map: " + soundType);
 	}
 
-	void SoundReaderWriter::buildChunkFrom(std::shared_ptr<XmlChunk> soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
+	void SoundReaderWriter::buildChunkFrom(const std::shared_ptr<XmlChunk> &soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
 	{
 		std::shared_ptr<XmlChunk> filenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), soundChunk);
 		filenameChunk->setStringValue(sound->getFilename());
@@ -68,13 +68,13 @@ namespace urchin
 		}
 	}
 
-	void SoundReaderWriter::loadPropertiesOn(Sound *sound, std::shared_ptr<XmlChunk> soundChunk, const XmlParser &xmlParser) const
+	void SoundReaderWriter::loadPropertiesOn(Sound *sound, const std::shared_ptr<XmlChunk> &soundChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> volumeChunk = xmlParser.getUniqueChunk(true, VOLUME_TAG, XmlAttribute(), soundChunk);
 		sound->setVolume(volumeChunk->getFloatValue());
 	}
 
-	void SoundReaderWriter::writePropertiesOn(std::shared_ptr<XmlChunk> soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
+	void SoundReaderWriter::writePropertiesOn(const std::shared_ptr<XmlChunk> &soundChunk, const Sound *sound, XmlWriter &xmlWriter) const
 	{
 		std::shared_ptr<XmlChunk> volumeChunk = xmlWriter.createChunk(VOLUME_TAG, XmlAttribute(), soundChunk);
 		volumeChunk->setFloatValue(sound->getVolume());

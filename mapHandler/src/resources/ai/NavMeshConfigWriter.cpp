@@ -2,7 +2,7 @@
 
 namespace urchin
 {
-    std::shared_ptr<NavMeshConfig> NavMeshConfigWriter::loadFrom(std::shared_ptr<XmlChunk> navMeshConfigChunk, const XmlParser &xmlParser) const
+    std::shared_ptr<NavMeshConfig> NavMeshConfigWriter::loadFrom(const std::shared_ptr<XmlChunk> &navMeshConfigChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> maxSlopeInRadianChunk = xmlParser.getUniqueChunk(true, MAX_SLOPE_IN_RADIAN_TAG, XmlAttribute(), navMeshConfigChunk);
         float maxSlopeInRadian = maxSlopeInRadianChunk->getFloatValue();
@@ -19,7 +19,7 @@ namespace urchin
         return navMeshConfig;
     }
 
-    void NavMeshConfigWriter::writeOn(std::shared_ptr<XmlChunk> navMeshConfigChunk, std::shared_ptr<const NavMeshConfig> navMeshConfig, XmlWriter &xmlWriter) const
+    void NavMeshConfigWriter::writeOn(const std::shared_ptr<XmlChunk> &navMeshConfigChunk, const std::shared_ptr<const NavMeshConfig> &navMeshConfig, XmlWriter &xmlWriter) const
     {
         std::shared_ptr<XmlChunk> maxSlopeInRadianChunk = xmlWriter.createChunk(MAX_SLOPE_IN_RADIAN_TAG, XmlAttribute(), navMeshConfigChunk);
         maxSlopeInRadianChunk->setFloatValue(navMeshConfig->getMaxSlope());

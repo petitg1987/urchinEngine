@@ -30,14 +30,14 @@ namespace urchin
         setNavMeshConfig(std::move(navMeshConfig));
     }
 
-    void SceneAI::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+    void SceneAI::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
     {
         std::shared_ptr<XmlChunk> navMeshConfigChunk = xmlParser.getUniqueChunk(true, NAV_MESH_CONFIG_TAG, XmlAttribute(), chunk);
 
         setNavMeshConfig(NavMeshConfigWriter().loadFrom(navMeshConfigChunk, xmlParser));
     }
 
-    void SceneAI::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+    void SceneAI::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
     {
         std::shared_ptr<XmlChunk> navMeshConfigChunk = xmlWriter.createChunk(NAV_MESH_CONFIG_TAG, XmlAttribute(), chunk);
 

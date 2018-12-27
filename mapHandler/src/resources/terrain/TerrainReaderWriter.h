@@ -38,17 +38,17 @@ namespace urchin
         #define WIND_STRENGTH_TAG "windStrength"
 
         public:
-            Terrain *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-            void writeOn(std::shared_ptr<XmlChunk>, const Terrain *, XmlWriter &) const;
+            Terrain *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            void writeOn(const std::shared_ptr<XmlChunk> &, const Terrain *, XmlWriter &) const;
 
         private:
-            Terrain *buildTerrainFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
+            Terrain *buildTerrainFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void buildChunkFrom(const std::shared_ptr<XmlChunk> &, const Terrain *, XmlWriter &) const;
 
-            void loadPropertiesOn(Terrain *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
+            void loadPropertiesOn(Terrain *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void writePropertiesOn(const std::shared_ptr<XmlChunk> &, const Terrain *, XmlWriter &) const;
 
-            void loadGrassOn(Terrain *, std::shared_ptr<XmlChunk>, const XmlParser &) const;
+            void loadGrassOn(Terrain *, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void writeGrassOn(const std::shared_ptr<XmlChunk> &, const Terrain *, XmlWriter &) const;
     };
 

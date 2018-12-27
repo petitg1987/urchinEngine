@@ -55,7 +55,7 @@ namespace urchin
 		}
 	}
 
-	void SceneObject::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+	void SceneObject::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
 	{
 		this->name = chunk->getAttributeValue(NAME_ATTR);
 
@@ -72,7 +72,7 @@ namespace urchin
 		}
 	}
 
-	void SceneObject::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+	void SceneObject::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
 	{
 		chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 

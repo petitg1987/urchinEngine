@@ -34,14 +34,14 @@ namespace urchin
 		lightManager->addLight(light);
 	}
 
-	void SceneLight::loadFrom(std::shared_ptr<XmlChunk> chunk, const XmlParser &xmlParser)
+	void SceneLight::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
 	{
 		this->name = chunk->getAttributeValue(NAME_ATTR);
 
 		setLight(LightReaderWriter().loadFrom(chunk, xmlParser));
 	}
 
-	void SceneLight::writeOn(std::shared_ptr<XmlChunk> chunk, XmlWriter &xmlWriter) const
+	void SceneLight::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
 	{
 		chunk->setAttribute(XmlAttribute(NAME_ATTR, this->name));
 

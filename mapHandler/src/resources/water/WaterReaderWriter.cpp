@@ -2,7 +2,7 @@
 
 namespace urchin
 {
-    Water *WaterReaderWriter::loadFrom(std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
+    Water *WaterReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &waterChunk, const XmlParser &xmlParser) const
     {
         auto *water = new Water();
         loadGeneralPropertiesOn(water, waterChunk, xmlParser);
@@ -12,14 +12,14 @@ namespace urchin
         return water;
     }
 
-    void WaterReaderWriter::writeOn(std::shared_ptr<XmlChunk> waterChunk, const Water *water, XmlWriter &xmlWriter) const
+    void WaterReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &waterChunk, const Water *water, XmlWriter &xmlWriter) const
     {
         writeGeneralPropertiesOn(waterChunk, water, xmlWriter);
         writeWaterSurfacePropertiesOn(waterChunk, water, xmlWriter);
         writeUnderWaterPropertiesOn(waterChunk, water, xmlWriter);
     }
 
-    void WaterReaderWriter::loadGeneralPropertiesOn(Water *water, std::shared_ptr<XmlChunk> waterChunk, const XmlParser &xmlParser) const
+    void WaterReaderWriter::loadGeneralPropertiesOn(Water *water, const std::shared_ptr<XmlChunk> &waterChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> centerPositionChunk = xmlParser.getUniqueChunk(true, CENTER_POSITION_TAG, XmlAttribute(), waterChunk);
         water->setCenterPosition(centerPositionChunk->getPoint3Value());

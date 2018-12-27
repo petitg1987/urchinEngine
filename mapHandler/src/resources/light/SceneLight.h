@@ -30,8 +30,8 @@ namespace urchin
 			void setLight(Light *);
 
 		private:
-			void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-			void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+			void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+			void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
 			LightManager *lightManager;
 

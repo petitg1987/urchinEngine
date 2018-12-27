@@ -7,14 +7,14 @@
 namespace urchin
 {
 
-	SoundTrigger *SoundTriggerReaderWriter::loadFrom(std::shared_ptr<XmlChunk> soundTriggerChunk, const XmlParser &xmlParser) const
+	SoundTrigger *SoundTriggerReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &soundTriggerChunk, const XmlParser &xmlParser) const
 	{
 		SoundTrigger *soundTrigger = buildSoundTriggerFrom(soundTriggerChunk, xmlParser);
 
 		return soundTrigger;
 	}
 
-	void SoundTriggerReaderWriter::writeOn(std::shared_ptr<XmlChunk> soundTriggerChunk, const SoundTrigger *soundTrigger, XmlWriter &xmlWriter) const
+	void SoundTriggerReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &soundTriggerChunk, const SoundTrigger *soundTrigger, XmlWriter &xmlWriter) const
 	{
 		buildChunkFrom(soundTriggerChunk, soundTrigger, xmlWriter);
 	}

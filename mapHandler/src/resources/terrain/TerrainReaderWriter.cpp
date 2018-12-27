@@ -2,7 +2,7 @@
 
 namespace urchin
 {
-    Terrain *TerrainReaderWriter::loadFrom(std::shared_ptr<XmlChunk> terrainChunk, const XmlParser &xmlParser) const
+    Terrain *TerrainReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &terrainChunk, const XmlParser &xmlParser) const
     {
         Terrain *terrain = buildTerrainFrom(terrainChunk, xmlParser);
 
@@ -12,7 +12,7 @@ namespace urchin
         return terrain;
     }
 
-    void TerrainReaderWriter::writeOn(std::shared_ptr<XmlChunk> terrainChunk, const Terrain *terrain, XmlWriter &xmlWriter) const
+    void TerrainReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &terrainChunk, const Terrain *terrain, XmlWriter &xmlWriter) const
     {
         buildChunkFrom(terrainChunk, terrain, xmlWriter);
 
@@ -20,7 +20,7 @@ namespace urchin
         writeGrassOn(terrainChunk, terrain, xmlWriter);
     }
 
-    Terrain *TerrainReaderWriter::buildTerrainFrom(std::shared_ptr<XmlChunk> terrainChunk, const XmlParser &xmlParser) const
+    Terrain *TerrainReaderWriter::buildTerrainFrom(const std::shared_ptr<XmlChunk> &terrainChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> meshChunk = xmlParser.getUniqueChunk(true, MESH_TAG, XmlAttribute(), terrainChunk);
         std::shared_ptr<XmlChunk> heightFilenameChunk = xmlParser.getUniqueChunk(true, HEIGHT_FILENAME_TAG, XmlAttribute(), meshChunk);
@@ -81,7 +81,7 @@ namespace urchin
         positionChunk->setPoint3Value(terrain->getPosition());
     }
 
-    void TerrainReaderWriter::loadPropertiesOn(Terrain *terrain, std::shared_ptr<XmlChunk> terrainChunk, const XmlParser &xmlParser) const
+    void TerrainReaderWriter::loadPropertiesOn(Terrain *terrain, const std::shared_ptr<XmlChunk> &terrainChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> ambientChunk = xmlParser.getUniqueChunk(true, AMBIENT_TAG, XmlAttribute(), terrainChunk);
         terrain->setAmbient(ambientChunk->getFloatValue());
@@ -93,7 +93,7 @@ namespace urchin
         ambientChunk->setFloatValue(terrain->getAmbient());
     }
 
-    void TerrainReaderWriter::loadGrassOn(Terrain *terrain, std::shared_ptr<XmlChunk> terrainChunk, const XmlParser &xmlParser) const
+    void TerrainReaderWriter::loadGrassOn(Terrain *terrain, const std::shared_ptr<XmlChunk> &terrainChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> grassChunk = xmlParser.getUniqueChunk(false, GRASS_TAG, XmlAttribute(), terrainChunk);
         if(grassChunk)

@@ -29,8 +29,8 @@ namespace urchin
             void setWater(Water *);
 
         private:
-            void loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &);
-            void writeOn(std::shared_ptr<XmlChunk>, XmlWriter &) const;
+            void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
+            void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
             Renderer3d *renderer3d;
 

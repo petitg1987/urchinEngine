@@ -17,8 +17,8 @@ namespace urchin
         #define AGENT_RADIUS_TAG "agentRadius"
 
         public:
-            std::shared_ptr<NavMeshConfig> loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const;
-            void writeOn(std::shared_ptr<XmlChunk>, std::shared_ptr<const NavMeshConfig>, XmlWriter &) const;
+            std::shared_ptr<NavMeshConfig> loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            void writeOn(const std::shared_ptr<XmlChunk> &, const std::shared_ptr<const NavMeshConfig> &, XmlWriter &) const;
     };
 
 }

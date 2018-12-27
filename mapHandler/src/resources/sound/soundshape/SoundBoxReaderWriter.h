@@ -23,8 +23,8 @@ namespace urchin
 		public:
 			~SoundBoxReaderWriter() override = default;
 
-			SoundShape *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
-			void writeOn(std::shared_ptr<XmlChunk>, const SoundShape *, XmlWriter &) const override;
+			SoundShape *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const override;
+			void writeOn(const std::shared_ptr<XmlChunk> &, const SoundShape *, XmlWriter &) const override;
 	};
 
 }

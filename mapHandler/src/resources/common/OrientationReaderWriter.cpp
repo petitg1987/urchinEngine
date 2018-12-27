@@ -5,7 +5,7 @@
 namespace urchin
 {
 
-	Quaternion<float> OrientationReaderWriter::loadOrientation(std::shared_ptr<XmlChunk> parentChunk, const XmlParser &xmlParser) const
+	Quaternion<float> OrientationReaderWriter::loadOrientation(const std::shared_ptr<XmlChunk> &parentChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> orientationChunk = xmlParser.getUniqueChunk(true, ORIENTATION_TAG, XmlAttribute(), parentChunk);
 
@@ -15,7 +15,7 @@ namespace urchin
 		return {orientationAxisChunk->getVector3Value(), orientationAngleChunk->getFloatValue()};
 	}
 
-	void OrientationReaderWriter::writeOrientation(std::shared_ptr<XmlChunk> parentChunk, const Quaternion<float> &orientation, XmlWriter &xmlWriter) const
+	void OrientationReaderWriter::writeOrientation(const std::shared_ptr<XmlChunk> &parentChunk, const Quaternion<float> &orientation, XmlWriter &xmlWriter) const
 	{
 		std::shared_ptr<XmlChunk> orientationChunk = xmlWriter.createChunk(ORIENTATION_TAG, XmlAttribute(), parentChunk);
 

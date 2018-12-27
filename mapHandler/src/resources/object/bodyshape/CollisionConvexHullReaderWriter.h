@@ -19,8 +19,8 @@ namespace urchin
 		public:
 			~CollisionConvexHullReaderWriter() override = default;
 
-			CollisionShape3D *loadFrom(std::shared_ptr<XmlChunk>, const XmlParser &) const override;
-			void writeOn(std::shared_ptr<XmlChunk>, const CollisionShape3D *, XmlWriter &) const override;
+			CollisionShape3D *loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const override;
+			void writeOn(const std::shared_ptr<XmlChunk> &, const CollisionShape3D *, XmlWriter &) const override;
 	};
 
 }
