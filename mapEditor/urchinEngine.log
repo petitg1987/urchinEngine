@@ -1,8 +1,0 @@
-[2018-12-27 11:30:04] (WW) Pool is full of elements.
- - Pool name: triangleShapesPool
- - Element size: 48
- - Maximum elements: 2048
-[2018-12-27 11:30:04] (WW) Pool is full of elements.
- - Pool name: collisionTriangleObjectsPool
- - Element size: 72
- - Maximum elements: 2048

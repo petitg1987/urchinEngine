@@ -8,11 +8,6 @@
 namespace urchin
 {
 
-	template<class T> ConvexHullShape2D<T>::ConvexHullShape2D()
-	{
-
-	}
-
 	/**
 	 * @param points Points used to construct the convex hull shape. Points inside the convex hull shape are accepted but will unused.
 	 * Duplicate points are supported.
@@ -60,12 +55,7 @@ namespace urchin
 			}
 		}
 
-		convexHullPoints.resize(std::max(((int)k)-1, 0)); //k-1: remove the last point which is the same that the first point of lower list
-	}
-
-	template<class T> ConvexHullShape2D<T>::~ConvexHullShape2D()
-	{
-
+		convexHullPoints.resize(static_cast<unsigned long>(std::max((static_cast<int>(k))-1, 0))); //k-1: remove the last point which is the same that the first point of lower list
 	}
 
 	template<class T> std::unique_ptr<ConvexHullShape2D<T>> ConvexHullShape2D<T>::createFromCcwConvexPoints(const std::vector<Point2<T>> &ccwConvexPoints)

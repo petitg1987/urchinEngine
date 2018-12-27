@@ -66,6 +66,7 @@ namespace urchin
 			std::atomic_bool needFullRefresh;
 
 			mutable std::vector<CSGPolygon<float>> holePolygons;
+			mutable std::vector<Point2<float>> footprintPoints;
 			mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> walkablePolygons;
 	};

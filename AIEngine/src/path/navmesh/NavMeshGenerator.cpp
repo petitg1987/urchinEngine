@@ -61,17 +61,21 @@ namespace urchin
 		updateExpandedPolytopes(aiWorld);
 		std::vector<PolytopeSurfaceIndex> polytopeWalkableSurfaces = findWalkableSurfaces();
 
-		std::lock_guard<std::mutex> lock(navMeshMutex);
-        navMesh.reset(new NavMesh());
+        std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
+        allNavPolygons.reserve(aiWorld.getEntities().size() * 2); //estimated memory size
+
         for (const auto &polytopeWalkableSurface : polytopeWalkableSurfaces)
         {
             std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygon(polytopeWalkableSurface);
-            for (const auto &navPolygon : navPolygons)
-            {
-                navMesh->addPolygon(navPolygon);
-            }
+            allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
         }
 
+        std::lock_guard<std::mutex> lock(navMeshMutex);
+        navMesh.reset(new NavMesh());
+        for (const auto &navPolygon : allNavPolygons)
+        {
+            navMesh->addPolygon(navPolygon);
+        }
 		return navMesh;
 	}
 
@@ -255,9 +259,7 @@ namespace urchin
 
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytopeObstacle, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
-		std::vector<Point2<float>> footprintPoints;
-        footprintPoints.reserve(4); //estimated memory size
-
+		footprintPoints.clear();
         Plane<float> walkablePlane = walkableSurface->getPlane(*polytopeObstacle->getXZRectangle(), navMeshConfig->getAgent());
 
 		for(const auto &polytopeSurface : polytopeObstacle->getSurfaces())
