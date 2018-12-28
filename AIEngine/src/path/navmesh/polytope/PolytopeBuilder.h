@@ -17,10 +17,10 @@ namespace urchin
 
     struct PointFace
     {
-        PointFace(const Point3<float> &, const std::vector<unsigned int> &);
+        PointFace(const Point3<float> &, unsigned int, unsigned int, unsigned int);
 
         Point3<float> point;
-        std::vector<unsigned int> faceIndices;
+        unsigned int faceIndex0, faceIndex1, faceIndex2;
     };
 
     class PolytopeBuilder : public Singleton<PolytopeBuilder>

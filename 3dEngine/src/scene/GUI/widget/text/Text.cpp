@@ -40,7 +40,7 @@ namespace urchin
 		unsigned int numLetters = 0;
 		std::stringstream cuttedTextStream((maxLength>0) ? cutText(text, maxLength) : text);
 		std::string item;
-		std::vector<std::string> cutTextLines;
+		cutTextLines.clear();
 		while (std::getline(cuttedTextStream, item, '\n'))
 		{
 			cutTextLines.push_back(item);

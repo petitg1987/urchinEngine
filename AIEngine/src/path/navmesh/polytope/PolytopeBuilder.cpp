@@ -9,9 +9,11 @@
 namespace urchin
 {
 
-    PointFace::PointFace(const Point3<float> &point, const std::vector<unsigned int> &faceIndices) :
+    PointFace::PointFace(const Point3<float> &point, unsigned int faceIndex0, unsigned int faceIndex1, unsigned int faceIndex2) :
         point(point),
-        faceIndices(faceIndices)
+        faceIndex0(faceIndex0),
+        faceIndex1(faceIndex1),
+        faceIndex2(faceIndex2)
     {
 
     }
@@ -181,15 +183,19 @@ namespace urchin
      */
     std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(OBBox<float> *box, const NavMeshAgent &navMeshAgent) const
     {
+        std::vector<Point3<float>> points = box->getPoints();
+
         std::vector<PointFace> pointFaces;
         pointFaces.reserve(8);
 
-        std::vector<Point3<float>> points = box->getPoints();
-        constexpr unsigned int faceIndicesTab[8][3] = {{0, 2, 4}, {0, 2, 5}, {0, 3, 4}, {0, 3, 5}, {1, 2, 4}, {1, 2, 5}, {1, 3, 4}, {1, 3, 5}};
-        for(unsigned int i=0; i<8; ++i)
-        {
-            pointFaces.emplace_back(PointFace(points[i], {faceIndicesTab[i][0], faceIndicesTab[i][1], faceIndicesTab[i][2]}));
-        }
+        pointFaces.emplace_back(PointFace(points[0], 0, 2, 4));
+        pointFaces.emplace_back(PointFace(points[1], 0, 2, 5));
+        pointFaces.emplace_back(PointFace(points[2], 0, 3, 4));
+        pointFaces.emplace_back(PointFace(points[3], 0, 3, 5));
+        pointFaces.emplace_back(PointFace(points[4], 1, 2, 4));
+        pointFaces.emplace_back(PointFace(points[5], 1, 2, 5));
+        pointFaces.emplace_back(PointFace(points[6], 1, 3, 4));
+        pointFaces.emplace_back(PointFace(points[7], 1, 3, 5));
 
         std::vector<Plane<float>> expandedPlanes = createExpandedBoxPlanes(points, navMeshAgent);
         return expandBoxPoints(pointFaces, expandedPlanes);
@@ -231,22 +237,18 @@ namespace urchin
 
         for(auto &pointFace : pointFaces)
         {
-            #ifdef _DEBUG
-                assert(pointFace.faceIndices.size()==3);
-            #endif
+            const Plane<float> &plane0 = expandedPlanes[pointFace.faceIndex0];
+            const Plane<float> &plane1 = expandedPlanes[pointFace.faceIndex1];
+            const Plane<float> &plane2 = expandedPlanes[pointFace.faceIndex2];
 
-            std::vector<Plane<float>> threePlanes = {expandedPlanes[pointFace.faceIndices[0]],
-                                                     expandedPlanes[pointFace.faceIndices[1]],
-                                                     expandedPlanes[pointFace.faceIndices[2]]};
+            Vector3<float> n1CrossN2 = plane0.getNormal().crossProduct(plane1.getNormal());
+            Vector3<float> n2CrossN3 = plane1.getNormal().crossProduct(plane2.getNormal());
+            Vector3<float> n3CrossN1 = plane2.getNormal().crossProduct(plane0.getNormal());
 
-            Vector3<float> n1CrossN2 = threePlanes[0].getNormal().crossProduct(threePlanes[1].getNormal());
-            Vector3<float> n2CrossN3 = threePlanes[1].getNormal().crossProduct(threePlanes[2].getNormal());
-            Vector3<float> n3CrossN1 = threePlanes[2].getNormal().crossProduct(threePlanes[0].getNormal());
-
-            Point3<float> newPoint = Point3<float>(n2CrossN3 * threePlanes[0].getDistanceToOrigin());
-            newPoint += Point3<float>(n3CrossN1 * threePlanes[1].getDistanceToOrigin());
-            newPoint += Point3<float>(n1CrossN2 * threePlanes[2].getDistanceToOrigin());
-            newPoint *= -1.0 / threePlanes[0].getNormal().dotProduct(n2CrossN3);
+            Point3<float> newPoint = Point3<float>(n2CrossN3 * plane0.getDistanceToOrigin());
+            newPoint += Point3<float>(n3CrossN1 * plane1.getDistanceToOrigin());
+            newPoint += Point3<float>(n1CrossN2 * plane2.getDistanceToOrigin());
+            newPoint *= -1.0 / plane0.getNormal().dotProduct(n2CrossN3);
 
             expandedPoints.emplace_back(newPoint);
         }

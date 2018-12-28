@@ -34,6 +34,7 @@ namespace urchin
 			int maxLength;
 
 			//data
+			std::vector<std::string> cutTextLines;
 			std::vector<int> vertexData;
 			std::vector<float> textureData;
 
