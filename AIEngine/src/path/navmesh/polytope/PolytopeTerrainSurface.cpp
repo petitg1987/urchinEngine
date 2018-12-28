@@ -57,7 +57,7 @@ namespace urchin
         return Rectangle<float>(minPoint, maxPoint);
     }
 
-    std::vector<Point2<float>> PolytopeTerrainSurface::getOutlineCwPoints() const
+    const std::vector<Point2<float>> &PolytopeTerrainSurface::getOutlineCwPoints() const
     {
         return outlineCwPoints;
     }

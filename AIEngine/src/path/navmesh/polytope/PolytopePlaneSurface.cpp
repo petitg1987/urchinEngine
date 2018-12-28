@@ -32,6 +32,16 @@ namespace urchin
 		angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
 	}
 
+	void PolytopePlaneSurface::buildOutlineCwPoints()
+	{
+		outlineCwPoints.reserve(ccwPoints.size());
+
+		for(auto it = ccwPoints.rbegin(); it!=ccwPoints.rend(); ++it)
+		{
+			outlineCwPoints.emplace_back(Point2<float>(it->X, -it->Z));
+		}
+	}
+
 	bool PolytopePlaneSurface::isWalkable(float maxSlopeInRadian) const
 	{
 		return isWalkableCandidate() && std::fabs(getAngleToHorizontal()) < maxSlopeInRadian;
@@ -41,7 +51,7 @@ namespace urchin
 	{
 		Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 		Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-		for(auto point : ccwPoints)
+		for(const auto &point : ccwPoints)
 		{
 			minPoint.X = minPoint.X > point.X ? point.X : minPoint.X;
 			minPoint.Y = minPoint.Y > -point.Z ? -point.Z : minPoint.Y;
@@ -52,17 +62,9 @@ namespace urchin
 		return Rectangle<float>(minPoint, maxPoint);
 	}
 
-    std::vector<Point2<float>> PolytopePlaneSurface::getOutlineCwPoints() const
+    const std::vector<Point2<float>> &PolytopePlaneSurface::getOutlineCwPoints() const
     {
-        std::vector<Point2<float>> reverseFlatPoints;
-        reverseFlatPoints.reserve(ccwPoints.size());
-
-        for(auto it = ccwPoints.rbegin(); it!=ccwPoints.rend(); ++it)
-        {
-            reverseFlatPoints.emplace_back(Point2<float>(it->X, -it->Z));
-        }
-
-        return reverseFlatPoints;
+        return outlineCwPoints;
     }
 
 	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &box, const NavMeshAgent &agent) const

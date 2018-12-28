@@ -3,30 +3,21 @@
 namespace urchin
 {
 
+	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, const std::vector<Point2<T>> &cwPoints) :
+			name(std::move(name)),
+			cwPoints(cwPoints)
+	{
+		#ifdef _DEBUG
+			checkCwPoints();
+		#endif
+	}
+
 	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>> &&cwPoints) :
 			name(std::move(name)),
 			cwPoints(std::move(cwPoints))
 	{
 		#ifdef _DEBUG
-			if(cwPoints.size()>=3)
-			{
-				//assert no duplicate points
-				for (unsigned int i = 0; i < cwPoints.size(); ++i)
-				{
-					for (unsigned int j = 0; j < cwPoints.size(); ++j)
-					{
-						assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
-					}
-				}
-
-				//assert clockwise order
-				double area = 0.0;
-				for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
-				{
-					area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
-				}
-				assert(area >= 0.0);
-			}
+			checkCwPoints();
 		#endif
 	}
 
@@ -49,6 +40,29 @@ namespace urchin
 		this->name = std::move(polygon.name);
 		this->cwPoints = std::move(polygon.cwPoints);
 		return *this;
+	}
+
+	template<class T> void CSGPolygon<T>::checkCwPoints() const
+	{
+		if(cwPoints.size()>=3)
+		{
+			//assert no duplicate points
+			for (unsigned int i = 0; i < cwPoints.size(); ++i)
+			{
+				for (unsigned int j = 0; j < cwPoints.size(); ++j)
+				{
+					assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
+				}
+			}
+
+			//assert clockwise order
+			double area = 0.0;
+			for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
+			{
+				area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
+			}
+			assert(area >= 0.0);
+		}
 	}
 
 	template<class T> const std::string &CSGPolygon<T>::getName() const
@@ -119,7 +133,7 @@ namespace urchin
 	}
 
 	template<class T> CSGPolygon<T> CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold) const
-	{
+	{ //TODO: simplify "this"
 		std::vector<Point2<T>> simplifiedCwPoints;
 		simplifiedCwPoints.reserve(cwPoints.size());
 

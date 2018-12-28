@@ -156,7 +156,7 @@ namespace urchin
         walkablePolygons.clear();
 
         std::string walkableName = polytope->getName() + "[" + std::to_string(polytopeWalkableSurface.faceIndex) + "]";
-        walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, std::move(walkableFace->getOutlineCwPoints())));
+        walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints()));
 
 		for(const auto &obstaclePolygon : obstaclePolygons)
 		{

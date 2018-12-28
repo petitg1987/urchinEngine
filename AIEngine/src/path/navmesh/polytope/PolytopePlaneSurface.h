@@ -17,7 +17,7 @@ namespace urchin
 			bool isWalkable(float) const override;
 			Rectangle<float> computeXZRectangle() const override;
 
-			std::vector<Point2<float>> getOutlineCwPoints() const override;
+			const std::vector<Point2<float>> &getOutlineCwPoints() const override;
 			Plane<float> getPlane(const Rectangle<float> &, const NavMeshAgent &) const override;
 			const std::vector<CSGPolygon<float>> &getSelfObstacles() const override;
 			Point3<float> computeRealPoint(const Point2<float> &, const NavMeshAgent &) const override;
@@ -28,10 +28,13 @@ namespace urchin
 			float getAngleToHorizontal() const;
 
 		private:
+			void buildOutlineCwPoints();
+
 			std::vector<Point3<float>> ccwPoints;
 			Vector3<float> normal;
 			float angleToHorizontalInRadian;
 
+			std::vector<Point2<float>> outlineCwPoints;
 			std::vector<CSGPolygon<float>> selfObstacles;
 	};
 
