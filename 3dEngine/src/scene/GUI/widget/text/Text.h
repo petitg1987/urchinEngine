@@ -33,6 +33,10 @@ namespace urchin
 			std::string text;
 			int maxLength;
 
+			//data
+			std::vector<int> vertexData;
+			std::vector<float> textureData;
+
 			//visual
 			Font *font;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;

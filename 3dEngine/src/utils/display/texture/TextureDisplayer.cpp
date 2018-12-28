@@ -173,7 +173,7 @@ namespace urchin
 
 		//update the display
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
-				->vertexData(GL_FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY})
+				->vertexData(GL_FLOAT, new float[8]{minX, minY, maxX, minY, maxX, maxY, minX, maxY}, true)
 				->build();
 
 		isInitialized = true;

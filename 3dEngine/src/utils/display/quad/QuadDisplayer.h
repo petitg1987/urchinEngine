@@ -15,7 +15,7 @@ namespace urchin
 			void display() const;
 
 		private:
-			void initializeDisplay();
+			void initializeDisplay(bool, bool);
 
 			unsigned int numberOfQuad;
 			unsigned int dimension; //2=2D, 3=3D

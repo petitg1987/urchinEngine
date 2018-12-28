@@ -11,8 +11,10 @@ namespace urchin
 		pBufferUsage(GL_STATIC_DRAW),
 		vertexDataType(GL_INT),
 		vertexCoord(nullptr),
+        deleteVertexCoord(false),
 		textureDataType(GL_INT),
-		textureCoord(nullptr)
+		textureCoord(nullptr),
+        deleteTextureCoord(false)
 	{
 
 	}
@@ -50,10 +52,11 @@ namespace urchin
 		return pBufferUsage;
 	}
 
-	QuadDisplayerBuilder *QuadDisplayerBuilder::vertexData(unsigned int vertexDataType, void *vertexCoord)
+	QuadDisplayerBuilder *QuadDisplayerBuilder::vertexData(unsigned int vertexDataType, void *vertexCoord, bool deleteVertexCoord)
 	{
 		this->vertexDataType = vertexDataType;
 		this->vertexCoord = vertexCoord;
+		this->deleteVertexCoord = deleteVertexCoord;
 		return this;
 	}
 
@@ -67,10 +70,16 @@ namespace urchin
 		return vertexCoord;
 	}
 
-	QuadDisplayerBuilder *QuadDisplayerBuilder::textureData(unsigned int textureDataType, void *textureCoord)
+	bool QuadDisplayerBuilder::isDeleteVertexCoord() const
+	{
+		return deleteVertexCoord;
+	}
+
+	QuadDisplayerBuilder *QuadDisplayerBuilder::textureData(unsigned int textureDataType, void *textureCoord, bool deleteTextureCoord)
 	{
 		this->textureDataType = textureDataType;
 		this->textureCoord = textureCoord;
+		this->deleteTextureCoord = deleteTextureCoord;
 		return this;
 	}
 
@@ -84,24 +93,23 @@ namespace urchin
 		return textureCoord;
 	}
 
+	bool QuadDisplayerBuilder::isDeleteTextureCoord() const
+	{
+		return deleteTextureCoord;
+	}
+
 	std::shared_ptr<QuadDisplayer> QuadDisplayerBuilder::build()
 	{
 		if(!vertexCoord)
 		{
-			vertexCoord = new int[8]{
-					-1, 1,
-					1, 1,
-					1, -1,
-					-1, -1};
+			vertexCoord = new int[8]{-1, 1, 1, 1, 1, -1, -1, -1};
+            deleteVertexCoord = true;
 		}
 
 		if(!textureCoord)
 		{
-			textureCoord = new int[8]{
-					0, 1,
-					1, 1,
-					1, 0,
-					0, 0};
+			textureCoord = new int[8]{0, 1, 1, 1, 1, 0, 0, 0};
+            deleteTextureCoord = true;
 		}
 
 		return std::make_shared<QuadDisplayer>(this);

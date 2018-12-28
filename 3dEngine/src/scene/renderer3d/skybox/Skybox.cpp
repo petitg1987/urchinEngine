@@ -91,7 +91,7 @@ namespace urchin
 		int diffuseTexSamplerLoc = glGetUniformLocation(skyboxShader, "diffuseTexture");
 		glUniform1i(diffuseTexSamplerLoc, GL_TEXTURE0-GL_TEXTURE0);
 
-		void *vertexCoord = new float[72]{
+		std::vector<float> vertexCoord = {
 			//x negative:
 			-SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE,
 			//x positive:
@@ -106,7 +106,7 @@ namespace urchin
 			SIZE, -SIZE, SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE,
 		};
 
-		void *textureCoord = new float[72]{
+		std::vector<float> textureCoord = {
 			//x negative:
 			-SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, -SIZE,
 			//x positive:
@@ -124,8 +124,8 @@ namespace urchin
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->numberOfQuad(6)
 				->dimension(3) //3D
-				->vertexData(GL_FLOAT, vertexCoord)
-				->textureData(GL_FLOAT, textureCoord)
+				->vertexData(GL_FLOAT, &vertexCoord[0], false)
+				->textureData(GL_FLOAT, &textureCoord[0], false)
 				->build();
 	}
 

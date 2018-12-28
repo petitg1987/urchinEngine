@@ -22,13 +22,15 @@ namespace urchin
 			QuadDisplayerBuilder *bufferUsage(unsigned int);
 			unsigned int getBufferUsage() const;
 
-			QuadDisplayerBuilder *vertexData(unsigned int, void *);
+			QuadDisplayerBuilder *vertexData(unsigned int, void *, bool);
 			unsigned int getVertexDataType() const;
 			void *getVertexCoord() const;
+			bool isDeleteVertexCoord() const;
 
-			QuadDisplayerBuilder *textureData(unsigned int, void *);
+			QuadDisplayerBuilder *textureData(unsigned int, void *, bool);
 			unsigned int getTextureDataType() const;
 			void *getTextureCoord() const;
+			bool isDeleteTextureCoord() const;
 
 			std::shared_ptr<QuadDisplayer> build();
 
@@ -40,9 +42,11 @@ namespace urchin
 
 			unsigned int vertexDataType;
 			void *vertexCoord;
+			bool deleteVertexCoord;
 
 			unsigned int textureDataType;
 			void *textureCoord;
+			bool deleteTextureCoord;
 	};
 
 }

@@ -48,8 +48,8 @@ namespace urchin
 		}
 
 		//creates the vertex array and texture array
-		auto *vertexData = new int[numLetters*8];
-		auto *textureData = new float[numLetters*8];
+		vertexData.resize(numLetters*8);
+		textureData.resize(numLetters*8);
 		unsigned int vertexIndex = 0, stIndex = 0;
 		unsigned int width = 0;
 		int offsetY = 0;
@@ -97,8 +97,8 @@ namespace urchin
 
 		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
 				->numberOfQuad(numLetters)
-				->vertexData(GL_INT, vertexData)
-				->textureData(GL_FLOAT, textureData)
+				->vertexData(GL_INT, &vertexData[0], false)
+				->textureData(GL_FLOAT, &textureData[0], false)
 				->build();
 	}
 

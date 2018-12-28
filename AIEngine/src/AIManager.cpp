@@ -4,6 +4,14 @@
 #include "AIManager.h"
 #include "path/pathfinding/PathfindingAStar.h"
 
+void* operator new(std::size_t sz){ //TODO remove
+    return std::malloc(sz);
+}
+
+void* operator new[](std::size_t sz) {
+    return std::malloc(sz);
+}
+
 namespace urchin
 {
 
