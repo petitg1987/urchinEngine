@@ -30,6 +30,8 @@ namespace urchin
 
 		Vector3<float> upVector(0.0, 1.0, 0.0);
 		angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
+
+		buildOutlineCwPoints();
 	}
 
 	void PolytopePlaneSurface::buildOutlineCwPoints()

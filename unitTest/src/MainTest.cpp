@@ -24,6 +24,7 @@
 #include "physics/algorithm/epa/EPAConvexObjectTest.h"
 #include "physics/algorithm/inertia/InertiaCalculationTest.h"
 #include "physics/island/IslandContainerTest.h"
+#include "ai/path/navmesh/CSGPolygonTest.h"
 #include "ai/path/navmesh/MonotonePolygonTest.h"
 #include "ai/path/navmesh/TriangulationTest.h"
 #include "ai/path/navmesh/PolygonsUnionTest.h"
@@ -80,6 +81,7 @@ int main()
 	runner.addTest(IslandContainerTest::suite());
 
 	//ai - navigation mesh
+	runner.addTest(CSGPolygonTest::suite());
 	runner.addTest(MonotonePolygonTest::suite());
 	runner.addTest(TriangulationTest::suite());
 	runner.addTest(PolygonsUnionTest::suite());
