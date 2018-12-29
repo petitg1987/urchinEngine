@@ -14,7 +14,7 @@ namespace urchin
 		public:
 			friend class Singleton<ResizePolygon2DService<T>>;
 
-			std::vector<Point2<T>> resizePolygon(const std::vector<Point2<T>> &, T) const;
+			void resizePolygon(std::vector<Point2<T>> &, T) const;
 
 		private:
 			ResizePolygon2DService();

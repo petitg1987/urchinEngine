@@ -25,10 +25,10 @@ namespace urchin
 			assert(distance > (0.0 - std::numeric_limits<T>::epsilon()));
 		#endif
 
-		const std::vector<Point2<T>> &ccwPoints = originalConvexHullShape.getPoints();
-		std::vector<Point2<T>> resizedCcwPoints = ResizePolygon2DService<T>::instance()->resizePolygon(ccwPoints, distance);
+		std::vector<Point2<T>> ccwPoints = originalConvexHullShape.getPoints();
+		ResizePolygon2DService<T>::instance()->resizePolygon(ccwPoints, distance);
 
-		return ConvexHullShape2D<T>::createFromCcwConvexPoints(resizedCcwPoints);
+		return ConvexHullShape2D<T>::createFromCcwConvexPoints(ccwPoints);
 	}
 
 	template<class T> std::unique_ptr<ConvexHull2D<T>> ResizeConvexHull2DService<T>::resizeConvexHull(const ConvexHull2D<T> &originalConvexHull, T distance) const

@@ -12,32 +12,29 @@ namespace urchin
 	}
 
 	/**
-	 * @param polygonPoints Points of the polygon which must be sorted in CCW or CW order.
+	 * @param polygonPoints Points of the polygon which will be re-sized. Points must be sorted in CCW or CW order.
 	 * @param distance All edge of polygon will be moved along their normal to the specified distance.
 	 * Positive distance will extend polygon if points are sorted in CCW order.
 	 */
-	template<class T> std::vector<Point2<T>> ResizePolygon2DService<T>::resizePolygon(const std::vector<Point2<T>> &polygonPoints, T distance) const
+	template<class T> void ResizePolygon2DService<T>::resizePolygon(std::vector<Point2<T>> &polygonPoints, T distance) const
 	{
-		std::vector<Point2<T>> offsetPoints;
-		offsetPoints.reserve(polygonPoints.size());
-
-		for(unsigned int i=0, previousI=polygonPoints.size()-1; i<polygonPoints.size(); previousI=i++)
+		Point2<T> previousPoint = polygonPoints[polygonPoints.size()-1];
+		for(unsigned int i=0; i<polygonPoints.size(); i++)
 		{
 			unsigned int nextI = (i+1) % polygonPoints.size();
 
-			Vector2<double> toPreviousPoint = polygonPoints[i].vector(polygonPoints[previousI]).template cast<double>().normalize();
+			Vector2<double> toPreviousPoint = polygonPoints[i].vector(previousPoint).template cast<double>().normalize();
 			Vector2<double> firstNormal = Vector2<double>(-toPreviousPoint.Y, toPreviousPoint.X);
 
 			Vector2<double> fromNextPoint = polygonPoints[nextI].vector(polygonPoints[i]).template cast<double>().normalize();
 			Vector2<double> secondNormal = Vector2<double>(-fromNextPoint.Y, fromNextPoint.X);
 
 			double moveLength = static_cast<double>(distance) / (1.0 + firstNormal.dotProduct(secondNormal));
-			offsetPoints.emplace_back(Point2<T>(
+			previousPoint = polygonPoints[i];
+			polygonPoints[i] = Point2<T>(
 					polygonPoints[i].X + (T) ((firstNormal.X + secondNormal.X) * moveLength),
-					polygonPoints[i].Y + (T) ((firstNormal.Y + secondNormal.Y) * moveLength)));
+					polygonPoints[i].Y + (T) ((firstNormal.Y + secondNormal.Y) * moveLength));
 		}
-
-		return offsetPoints;
 	}
 
 	//explicit template

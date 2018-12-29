@@ -127,9 +127,9 @@ namespace urchin
 		return inside;
 	}
 
-	template<class T> CSGPolygon<T> CSGPolygon<T>::expand(T distance) const
-	{ //TODO update "this" ?
-		return CSGPolygon<T>(name, ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance));
+	template<class T> void CSGPolygon<T>::expand(T distance)
+	{
+		ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
 	}
 
 	template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold)

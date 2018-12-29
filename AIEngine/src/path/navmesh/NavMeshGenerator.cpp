@@ -182,8 +182,8 @@ namespace urchin
                     if (obstacleInsideWalkable)
                     {
                         //slightly reduce to avoid obstacle points touch others obstacles points (not supported by triangulation)
-						CSGPolygon<float> reducedObstaclePolygon = obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
-                        remainingObstaclePolygons.emplace_back(reducedObstaclePolygon);
+						obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
+                        remainingObstaclePolygons.emplace_back(obstaclePolygon);
                     }
                 }
             }
@@ -198,12 +198,12 @@ namespace urchin
             if(walkablePolygon.getCwPoints().size() > 2)
             {
                 //slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
-				CSGPolygon<float> extendedWalkablePolygon = walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
-				std::vector<Point2<float>> extendedWalkablePoints = extendedWalkablePolygon.getCwPoints();
+				walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
+				std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
 
 				std::string navPolygonName = "<" + walkablePolygon.getName() + ">";
-				std::reverse(extendedWalkablePoints.begin(), extendedWalkablePoints.end()); //CW to CCW
-				TriangulationAlgorithm triangulation(extendedWalkablePoints, walkablePolygon.getName(), TriangulationAlgorithm::CCW);
+				std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
+				TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName(), TriangulationAlgorithm::CCW);
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
                 {

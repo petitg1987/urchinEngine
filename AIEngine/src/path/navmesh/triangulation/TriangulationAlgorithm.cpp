@@ -23,18 +23,18 @@ namespace urchin
 	/**
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
-	TriangulationAlgorithm::TriangulationAlgorithm(const std::vector<Point2<float>> &ccwPolygonPoints, const std::string &name, TriangleOrientation triangleOrientation) :
-			polygonPoints(ccwPolygonPoints),
+	TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string &name, TriangleOrientation triangleOrientation) :
+			polygonPoints(std::move(ccwPolygonPoints)),
 			triangleOrientation(triangleOrientation)
 	{
-		this->endContourIndices.push_back(ccwPolygonPoints.size());
+		this->endContourIndices.push_back(polygonPoints.size());
 		this->contourNames.push_back(name);
 
         #ifdef _DEBUG
             double area = 0.0;
-            for (unsigned int i = 0, prevI = ccwPolygonPoints.size() - 1; i < ccwPolygonPoints.size(); prevI=i++)
+            for (unsigned int i = 0, prevI = polygonPoints.size() - 1; i < polygonPoints.size(); prevI=i++)
             {
-                area += (ccwPolygonPoints[i].X - ccwPolygonPoints[prevI].X) * (ccwPolygonPoints[i].Y + ccwPolygonPoints[prevI].Y);
+                area += (polygonPoints[i].X - polygonPoints[prevI].X) * (polygonPoints[i].Y + polygonPoints[prevI].Y);
             }
             if(area > 0.0)
             {
