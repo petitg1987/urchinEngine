@@ -201,7 +201,7 @@ namespace urchin
 				walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
 				std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
 
-				std::string navPolygonName = "<" + walkablePolygon.getName() + ">";
+				navPolygonName = "<" + walkablePolygon.getName() + ">";
 				std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
 				TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName(), TriangulationAlgorithm::CCW);
 
@@ -247,7 +247,7 @@ namespace urchin
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
                     footprintPolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
-					holePolygons.push_back(footprintPolygon);
+					holePolygons.push_back(std::move(footprintPolygon));
 				}
 			}
 		}

@@ -40,6 +40,7 @@ namespace urchin
 
 			//visual
 			Font *font;
+			std::unique_ptr<QuadDisplayerBuilder> quadDisplayerBuilder;
 			std::shared_ptr<QuadDisplayer> quadDisplayer;
 	};
 	

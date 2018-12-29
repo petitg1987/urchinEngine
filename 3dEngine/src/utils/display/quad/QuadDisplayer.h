@@ -12,6 +12,8 @@ namespace urchin
 			explicit QuadDisplayer(const QuadDisplayerBuilder *);
 			~QuadDisplayer();
 
+			void update(const QuadDisplayerBuilder *);
+
 			void display() const;
 
 		private:

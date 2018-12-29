@@ -17,6 +17,8 @@ namespace urchin
 		maxLength(-1)
 	{
 		font = MediaManager::instance()->getMedia<Font>(fontFilename);
+		quadDisplayerBuilder = std::make_unique<QuadDisplayerBuilder>();
+		quadDisplayer = quadDisplayerBuilder->numberOfQuad(0)->build();
 
 		setText(text);
 	}
@@ -95,11 +97,11 @@ namespace urchin
 		unsigned int numberOfInterLines = cutTextLines.size() - 1;
 		setSize(Size(width, cutTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL));
 
-		quadDisplayer = std::make_unique<QuadDisplayerBuilder>()
+		quadDisplayerBuilder
 				->numberOfQuad(numLetters)
 				->vertexData(GL_INT, &vertexData[0], false)
-				->textureData(GL_FLOAT, &textureData[0], false)
-				->build();
+				->textureData(GL_FLOAT, &textureData[0], false);
+		quadDisplayer->update(quadDisplayerBuilder.get());
 	}
 
 	std::string Text::cutText(const std::string &constText, int maxLength)

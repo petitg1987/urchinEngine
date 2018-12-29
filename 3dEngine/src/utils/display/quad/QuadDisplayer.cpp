@@ -8,24 +8,13 @@ namespace urchin
 {
 
 	QuadDisplayer::QuadDisplayer(const QuadDisplayerBuilder *quadDisplayerBuilder) :
-			numberOfQuad(quadDisplayerBuilder->getNumberOfQuad()),
-			dimension(quadDisplayerBuilder->getDimension()),
-			bufferUsage(quadDisplayerBuilder->getBufferUsage()),
-			vertexDataType(quadDisplayerBuilder->getVertexDataType()),
-			vertexCoord(quadDisplayerBuilder->getVertexCoord()),
-			textureDataType(quadDisplayerBuilder->getTextureDataType()),
-			textureCoord(quadDisplayerBuilder->getTextureCoord()),
 			vertexArrayObject(0)
 	{
-		if(vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT)
-		{
-			throw std::invalid_argument("Vertex data type not supported: " + std::to_string(vertexDataType));
-		}else if(textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT)
-		{
-			throw std::invalid_argument("Texture data type not supported: " + std::to_string(textureDataType));
-		}
+		glGenBuffers(2, bufferIDs);
+		glGenVertexArrays(1, &vertexArrayObject);
+		glBindVertexArray(vertexArrayObject);
 
-		initializeDisplay(quadDisplayerBuilder->isDeleteVertexCoord(), quadDisplayerBuilder->isDeleteTextureCoord());
+		update(quadDisplayerBuilder);
 	}
 
 	QuadDisplayer::~QuadDisplayer()
@@ -38,12 +27,29 @@ namespace urchin
 		glDeleteBuffers(2, bufferIDs);
 	}
 
+	void QuadDisplayer::update(const QuadDisplayerBuilder *quadDisplayerBuilder)
+	{
+		numberOfQuad = quadDisplayerBuilder->getNumberOfQuad();
+		dimension = quadDisplayerBuilder->getDimension();
+		bufferUsage = quadDisplayerBuilder->getBufferUsage();
+		vertexDataType = quadDisplayerBuilder->getVertexDataType();
+		vertexCoord = quadDisplayerBuilder->getVertexCoord();
+		textureDataType = quadDisplayerBuilder->getTextureDataType();
+		textureCoord = quadDisplayerBuilder->getTextureCoord();
+
+		if(vertexDataType!=GL_FLOAT && vertexDataType!=GL_INT && vertexDataType!=GL_UNSIGNED_INT)
+		{
+			throw std::invalid_argument("Vertex data type not supported: " + std::to_string(vertexDataType));
+		}else if(textureDataType!=GL_FLOAT && textureDataType!=GL_INT && textureDataType!=GL_UNSIGNED_INT)
+		{
+			throw std::invalid_argument("Texture data type not supported: " + std::to_string(textureDataType));
+		}
+
+		initializeDisplay(quadDisplayerBuilder->isDeleteVertexCoord(), quadDisplayerBuilder->isDeleteTextureCoord());
+	}
+
 	void QuadDisplayer::initializeDisplay(bool deleteVertexCoord, bool deleteTextureCoord)
 	{
-		glGenBuffers(2, bufferIDs);
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-
 		glBindBuffer(GL_ARRAY_BUFFER, bufferIDs[VAO_VERTEX_POSITION]);
 		const unsigned int vertexSize = (vertexDataType==GL_FLOAT ? sizeof(float) : sizeof(int)) * 4*dimension*numberOfQuad;
 		glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexCoord, bufferUsage);

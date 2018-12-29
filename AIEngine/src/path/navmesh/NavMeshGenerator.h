@@ -69,6 +69,7 @@ namespace urchin
 			mutable std::vector<Point2<float>> footprintPoints;
 			mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> walkablePolygons;
+			mutable std::string navPolygonName;
 	};
 
 }
