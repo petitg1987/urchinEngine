@@ -128,44 +128,45 @@ namespace urchin
 	}
 
 	template<class T> CSGPolygon<T> CSGPolygon<T>::expand(T distance) const
-	{
+	{ //TODO update "this" ?
 		return CSGPolygon<T>(name, ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance));
 	}
 
-	template<class T> CSGPolygon<T> CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold) const
-	{ //TODO: simplify "this"
-		std::vector<Point2<T>> simplifiedCwPoints;
-		simplifiedCwPoints.reserve(cwPoints.size());
+	template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold)
+	{
+        const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 
-		const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
-		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
-		{
-            if(simplifiedCwPoints.empty() || cwPoints[i].squareDistance(simplifiedCwPoints[simplifiedCwPoints.size()-1]) > mergePointsSquareDistance) //exclude points too close
-            {
-                unsigned int nextI = (i+1) % cwPoints.size();
-
-                Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
-                Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
-                T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
-
-                if(absDotProduct < polygonMinDotProductThreshold) //exclude angles near to 180 and 0/360 degrees
-                {
-                    simplifiedCwPoints.emplace_back(cwPoints[i]);
-                }
+        for(int i=0; i<cwPoints.size(); i++)
+        {
+            int nextI = (i+1) % cwPoints.size();
+            if(cwPoints[i].squareDistance(cwPoints[nextI]) <= mergePointsSquareDistance)
+            { //exclude points too close
+                cwPoints.erase(cwPoints.begin()+nextI);
+                i--;
+                continue;
             }
-		}
 
-		if(simplifiedCwPoints.size() > 2 && simplifiedCwPoints[0].squareDistance(simplifiedCwPoints[simplifiedCwPoints.size()-1]) <= mergePointsSquareDistance)
-		{ //first point and last point are too close: remove last one
-			simplifiedCwPoints.resize(simplifiedCwPoints.size()-1);
-		}
+            int previousI = (i==0) ? cwPoints.size()-1 : i-1;
+            Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
+            Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
+            T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
+            if(absDotProduct >= polygonMinDotProductThreshold)
+            { //exclude angles near to 180 and 0/360 degrees
+                cwPoints.erase(cwPoints.begin()+i);
+                i--;
+                continue;
+            }
+        }
 
-		if(simplifiedCwPoints.size() < 3)
-		{
-			return CSGPolygon<T>("[[null]]", std::vector<Point2<T>>());
-		}
+        if(cwPoints.size() > 2 && cwPoints[0].squareDistance(cwPoints.back()) <= mergePointsSquareDistance)
+        { //first point and last point are too close: remove last one
+            cwPoints.resize(cwPoints.size()-1);
+        }
 
-		return CSGPolygon<T>(name, std::move(simplifiedCwPoints));
+        if(cwPoints.size() < 3)
+        {
+            cwPoints.clear();
+        }
 	}
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)

@@ -25,7 +25,7 @@ namespace urchin
 			bool pointInsideOrOnPolygon(const Point2<T> &) const;
 
 			CSGPolygon<T> expand(T) const;
-			CSGPolygon<T> simplify(T, T) const;
+			void simplify(T, T);
 
 		private:
 			void checkCwPoints() const;

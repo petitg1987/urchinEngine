@@ -51,7 +51,7 @@ namespace urchin
 			std::vector<PolytopeSurfaceIndex> findWalkableSurfaces() const;
 
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygon(const PolytopeSurfaceIndex &) const;
-			const std::vector<CSGPolygon<float>> &computeObstacles(const PolytopeSurfaceIndex &) const;
+			std::vector<CSGPolygon<float>> &computeObstacles(const PolytopeSurfaceIndex &) const;
 			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::unique_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::unique_ptr<PolytopeSurface> &) const;
 

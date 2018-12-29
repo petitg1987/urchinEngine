@@ -9,7 +9,7 @@ namespace urchin
   	 * Perform an union of polygons.
   	 * When polygons cannot be put together because there is no contact: there are returned apart.
   	 */
-    template<class T> const std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
+    template<class T> std::vector<CSGPolygon<T>> &PolygonsUnion<T>::unionPolygons(const std::vector<CSGPolygon<T>> &polygons) const
 	{
         mergedPolygons.clear();
 

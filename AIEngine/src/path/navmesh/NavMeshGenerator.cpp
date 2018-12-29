@@ -150,7 +150,7 @@ namespace urchin
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
-        const auto &obstaclePolygons = computeObstacles(polytopeWalkableSurface);
+		std::vector<CSGPolygon<float>> &obstaclePolygons = computeObstacles(polytopeWalkableSurface);
 
         remainingObstaclePolygons.clear();
         walkablePolygons.clear();
@@ -158,10 +158,10 @@ namespace urchin
         std::string walkableName = polytope->getName() + "[" + std::to_string(polytopeWalkableSurface.faceIndex) + "]";
         walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints()));
 
-		for(const auto &obstaclePolygon : obstaclePolygons)
+		for(auto &obstaclePolygon : obstaclePolygons)
 		{
-            CSGPolygon<float> simplifiedObstaclePolygon = obstaclePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
-            if (simplifiedObstaclePolygon.getCwPoints().size() > 2)
+            obstaclePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
+            if (obstaclePolygon.getCwPoints().size() > 2)
             {
                 auto walkablePolygonsCounter = static_cast<int>(walkablePolygons.size());
                 while (walkablePolygonsCounter-- != 0)
@@ -170,7 +170,7 @@ namespace urchin
 
                     bool obstacleInsideWalkable;
                     const std::vector<CSGPolygon<float>> &subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
-                            walkablePolygon, simplifiedObstaclePolygon, obstacleInsideWalkable);
+                            walkablePolygon, obstaclePolygon, obstacleInsideWalkable);
 
                     //replace 'walkablePolygon' by 'subtractedPolygons'
                     walkablePolygons.erase(walkablePolygons.begin());
@@ -182,10 +182,8 @@ namespace urchin
                     if (obstacleInsideWalkable)
                     {
                         //slightly reduce to avoid obstacle points touch others obstacles points (not supported by triangulation)
-                        std::vector<Point2<float>> reducedObstacleCwPoints = ResizePolygon2DService<float>::instance()->resizePolygon(
-                                simplifiedObstaclePolygon.getCwPoints(), OBSTACLE_REDUCE_SIZE);
-
-                        remainingObstaclePolygons.emplace_back(CSGPolygon<float>(simplifiedObstaclePolygon.getName(), std::move(reducedObstacleCwPoints)));
+						CSGPolygon<float> reducedObstaclePolygon = obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
+                        remainingObstaclePolygons.emplace_back(reducedObstaclePolygon);
                     }
                 }
             }
@@ -196,20 +194,20 @@ namespace urchin
 		for(auto &walkablePolygon : walkablePolygons)
 		{
             //simplify polygon to improve performance and avoid degenerated walkable face
-			CSGPolygon<float> simplifiedWalkablePolygons = walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
-            if(simplifiedWalkablePolygons.getCwPoints().size() > 2)
+			walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
+            if(walkablePolygon.getCwPoints().size() > 2)
             {
                 //slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
-                std::vector<Point2<float>> extendedWalkablePoints = ResizePolygon2DService<float>::instance()->resizePolygon(
-                        simplifiedWalkablePolygons.getCwPoints(), -WALKABLE_FACE_EXPAND_SIZE);
+				CSGPolygon<float> extendedWalkablePolygon = walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
+				std::vector<Point2<float>> extendedWalkablePoints = extendedWalkablePolygon.getCwPoints();
 
-				std::string navPolygonName = "<" + simplifiedWalkablePolygons.getName() + ">";
+				std::string navPolygonName = "<" + walkablePolygon.getName() + ">";
 				std::reverse(extendedWalkablePoints.begin(), extendedWalkablePoints.end()); //CW to CCW
-				TriangulationAlgorithm triangulation(extendedWalkablePoints, simplifiedWalkablePolygons.getName(), TriangulationAlgorithm::CCW);
+				TriangulationAlgorithm triangulation(extendedWalkablePoints, walkablePolygon.getName(), TriangulationAlgorithm::CCW);
 
                 for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
                 {
-                    if(simplifiedWalkablePolygons.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
+                    if(walkablePolygon.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
                     { //obstacle fully inside walkable polygon
                         triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints(), remainingObstaclePolygon.getName());
 						navPolygonName += " - <" + remainingObstaclePolygon.getName() + ">";
@@ -228,7 +226,7 @@ namespace urchin
 		return navPolygons;
 	}
 
-	const std::vector<CSGPolygon<float>> &NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
+	std::vector<CSGPolygon<float>> &NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
 		ScopeProfiler scopeProfiler("ai", "computeObstacle");
 
@@ -248,8 +246,8 @@ namespace urchin
 				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle.second, walkableSurface);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
-                    CSGPolygon<float> simplifiedFootprintPolygon = footprintPolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
-					holePolygons.push_back(simplifiedFootprintPolygon);
+                    footprintPolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
+					holePolygons.push_back(footprintPolygon);
 				}
 			}
 		}

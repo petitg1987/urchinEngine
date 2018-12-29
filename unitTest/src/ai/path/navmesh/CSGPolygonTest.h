@@ -13,7 +13,8 @@ class CSGPolygonTest : public CppUnit::TestFixture
         void simplifyMergeTwoNearPoints();
         void simplifyWithThreeNearPoints();
         void simplifyMergeStartEndPoints();
-        void simplifyFlatTriangle();
+        void simplifyFlatTriangle1();
+        void simplifyFlatTriangle2();
         void simplifyUselessPoint();
         void simplifyTwoUselessPoints();
 };

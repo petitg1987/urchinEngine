@@ -15,7 +15,7 @@ namespace urchin
 		public:
 			friend class Singleton<PolygonsUnion<T>>;
 
-			const std::vector<CSGPolygon<T>> &unionPolygons(const std::vector<CSGPolygon<T>> &) const;
+			std::vector<CSGPolygon<T>> &unionPolygons(const std::vector<CSGPolygon<T>> &) const;
 
 		private:
 			PolygonsUnion() = default;
