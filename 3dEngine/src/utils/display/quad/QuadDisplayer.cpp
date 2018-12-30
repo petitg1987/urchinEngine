@@ -12,7 +12,6 @@ namespace urchin
 	{
 		glGenBuffers(2, bufferIDs);
 		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
 
 		update(quadDisplayerBuilder);
 	}
@@ -29,6 +28,8 @@ namespace urchin
 
 	void QuadDisplayer::update(const QuadDisplayerBuilder *quadDisplayerBuilder)
 	{
+		glBindVertexArray(vertexArrayObject);
+
 		numberOfQuad = quadDisplayerBuilder->getNumberOfQuad();
 		dimension = quadDisplayerBuilder->getDimension();
 		bufferUsage = quadDisplayerBuilder->getBufferUsage();

@@ -32,7 +32,7 @@ namespace urchin
 			void setRadius(float);
 			void setAmbientOcclusionStrength(float);
 			void setDistanceAttenuation(float, float);
-            void setNoiseTextureSize(float);
+            void setNoiseTextureSize(unsigned int);
 			void setBias(float);
 			void setBlurSize(unsigned int);
 			void setBlurSharpness(float);

@@ -188,8 +188,9 @@ namespace urchin
 
 	void AmbientOcclusionManager::generateKernelSamples()
     {
+		unsigned int seed = 0; //no need to generate different random numbers at each start
         std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
-        std::default_random_engine generator;
+        std::default_random_engine generator(seed);
 
         std::vector<Vector3<float>> ssaoKernel;
         for (unsigned int i = 0; i < kernelSamples; ++i)
@@ -217,8 +218,9 @@ namespace urchin
 
 	void AmbientOcclusionManager::generateNoiseTexture()
 	{
+		unsigned int seed = 0; //no need to generate different random numbers at each start
         std::uniform_real_distribution<float> randomFloats(0.0, 1.0);
-        std::default_random_engine generator;
+        std::default_random_engine generator(seed);
 
         std::vector<Vector3<float>> ssaoNoise;
         for (unsigned int i = 0; i < 16; i++)
@@ -308,7 +310,7 @@ namespace urchin
 		createOrUpdateAOShader();
     }
 
-    void AmbientOcclusionManager::setNoiseTextureSize(float noiseTextureSize)
+    void AmbientOcclusionManager::setNoiseTextureSize(unsigned int noiseTextureSize)
     {
 	    this->noiseTextureSize = noiseTextureSize;
 
