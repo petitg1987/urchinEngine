@@ -14,13 +14,17 @@ namespace urchin
 			friend class Singleton<FileSystem>;
 
 			void setupResourcesDirectory(const std::string &);
-			const std::string &getResourcesDirectory();
+			const std::string &getResourcesDirectory() const;
+
+			void setupSaveDirectory(const std::string &);
+			const std::string &getSaveDirectory() const;
 
 		private:
 			FileSystem();
 			~FileSystem() override = default;
 
 			std::string resourcesDirectory;
+			std::string saveDirectory;
 	};
 
 }

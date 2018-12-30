@@ -24,11 +24,15 @@ namespace urchin
 		private:
 			void setupGenerateNavMeshBox(QVBoxLayout *);
 
+			void setupGenerateNavMeshDataFrom(const std::shared_ptr<NavMeshConfig> &);
+
 			AIController *aiController;
 
 			QDoubleSpinBox *agentHeight;
 			QDoubleSpinBox *agentRadius;
 			QDoubleSpinBox *maxSlope;
+
+			bool disableAIEvent;
 
 		private slots:
 			void navMeshConfigChanged();

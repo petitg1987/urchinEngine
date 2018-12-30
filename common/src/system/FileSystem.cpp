@@ -4,7 +4,8 @@ namespace urchin
 {
 
 	FileSystem::FileSystem() : Singleton<FileSystem>(),
-			resourcesDirectory("./")
+			resourcesDirectory("./"),
+			saveDirectory("./")
 	{
 
 	}
@@ -14,9 +15,19 @@ namespace urchin
 		this->resourcesDirectory = resourcesDirectory;
 	}
 
-	const std::string &FileSystem::getResourcesDirectory()
+	const std::string &FileSystem::getResourcesDirectory() const
 	{
 		return resourcesDirectory;
+	}
+
+	void FileSystem::setupSaveDirectory(const std::string &saveDirectory)
+	{
+		this->saveDirectory = saveDirectory;
+	}
+
+	const std::string &FileSystem::getSaveDirectory() const
+	{
+		return saveDirectory;
 	}
 
 }

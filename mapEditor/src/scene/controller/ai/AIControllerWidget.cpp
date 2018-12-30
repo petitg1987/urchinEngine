@@ -10,7 +10,8 @@ namespace urchin
 {
 
 	AIControllerWidget::AIControllerWidget() :
-			aiController(nullptr)
+			aiController(nullptr),
+			disableAIEvent(false)
 	{
 		auto *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignTop);
@@ -24,10 +25,7 @@ namespace urchin
 		this->aiController = aiController;
 
 		std::shared_ptr<NavMeshConfig> navMeshConfig = aiController->getSceneAI()->getNavMeshConfig();
-
-		agentHeight->setValue(navMeshConfig->getAgent().getAgentHeight());
-		agentRadius->setValue(navMeshConfig->getAgent().getAgentRadius());
-		maxSlope->setValue(AngleConverter<float>::toDegree(navMeshConfig->getMaxSlope()));
+        setupGenerateNavMeshDataFrom(navMeshConfig);
 	}
 
 	void AIControllerWidget::unload()
@@ -44,7 +42,7 @@ namespace urchin
 
 		auto *generateNavMeshLayout = new QGridLayout(generateNavMeshGroupBox);
 
-		QLabel *agentHeightLabel= new QLabel("Agent Height:");
+		QLabel *agentHeightLabel = new QLabel("Agent Height:");
 		generateNavMeshLayout->addWidget(agentHeightLabel, 0, 0);
 
 		agentHeight = new QDoubleSpinBox();
@@ -53,7 +51,7 @@ namespace urchin
 		agentHeight->setMinimum(0.0);
 		connect(agentHeight, SIGNAL(valueChanged(double)), this, SLOT(navMeshConfigChanged()));
 
-		QLabel *agentRadiusLabel= new QLabel("Agent Radius:");
+		QLabel *agentRadiusLabel = new QLabel("Agent Radius:");
 		generateNavMeshLayout->addWidget(agentRadiusLabel, 0, 2);
 
 		agentRadius = new QDoubleSpinBox();
@@ -62,7 +60,7 @@ namespace urchin
 		agentRadius->setMinimum(0.0);
 		connect(agentRadius, SIGNAL(valueChanged(double)), this, SLOT(navMeshConfigChanged()));
 
-		QLabel *maxSlopeLabel= new QLabel("Max Slope (°):");
+		QLabel *maxSlopeLabel = new QLabel("Max Slope (°):");
 		generateNavMeshLayout->addWidget(maxSlopeLabel, 1, 0);
 
 		maxSlope = new QDoubleSpinBox();
@@ -75,10 +73,22 @@ namespace urchin
 
 	void AIControllerWidget::navMeshConfigChanged()
 	{
-		std::shared_ptr<NavMeshConfig> navMeshConfig = std::make_shared<NavMeshConfig>(NavMeshAgent(agentHeight->value(), agentRadius->value()));
-		navMeshConfig->setMaxSlope(AngleConverter<float>::toRadian(maxSlope->value()));
+		if(!disableAIEvent)
+		{
+			std::shared_ptr<NavMeshConfig> navMeshConfig = std::make_shared<NavMeshConfig>(NavMeshAgent(agentHeight->value(), agentRadius->value()));
+			navMeshConfig->setMaxSlope(AngleConverter<float>::toRadian(maxSlope->value()));
 
-		aiController->updateNavMeshConfig(navMeshConfig);
+			aiController->updateNavMeshConfig(navMeshConfig);
+		}
 	}
+
+    void AIControllerWidget::setupGenerateNavMeshDataFrom(const std::shared_ptr<NavMeshConfig> &navMeshConfig)
+    {
+        disableAIEvent = true;
+        agentHeight->setValue(navMeshConfig->getAgent().getAgentHeight());
+        agentRadius->setValue(navMeshConfig->getAgent().getAgentRadius());
+        maxSlope->setValue(AngleConverter<float>::toDegree(navMeshConfig->getMaxSlope()));
+        disableAIEvent = false;
+    }
 
 }

@@ -15,7 +15,7 @@ namespace urchin
 		this->filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 
 		this->doc = new TiXmlDocument();
-		auto* decl = new TiXmlDeclaration( "1.0", "", "" );
+		auto* decl = new TiXmlDeclaration("1.0", "", "");
 		doc->LinkEndChild(decl);
 	}
 
