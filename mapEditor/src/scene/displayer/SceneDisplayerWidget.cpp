@@ -217,7 +217,7 @@ namespace urchin
 
             while(!rayTestResult->isResultReady())
             {
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
             }
             const ccd_set &pickedObjects = rayTestResult->getResults();
             if(!pickedObjects.empty())

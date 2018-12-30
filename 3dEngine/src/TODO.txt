@@ -2,7 +2,7 @@
 # To do :
 ############################################
 - LIGHTING
-	- (2) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
+	- (1) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - MODEL
     - (2) [OPTIMIZATION] Group same models in same octree to perform one draw call
 	- (3) [OPTIMIZATION] Models LOD

@@ -1,21 +1,18 @@
 ############################################
 # To do :
 ############################################
-- GLOBAL
-	- (3) [OPTIMIZATION] Use PGO in g++
 - BROADPHASE
 	- (2) [OPTIMIZATION] Use a memory pool when create new OverlappingPair
 	- (2) [OPTIMIZATION] Implement double AABBox trees: static and dynamic (see Bullet)
 	- (2) [OPTIMIZATION] Rebalance AABBox tree for better performance
 - NARROWPHASE
 	- (2) [NEW FEATURE] Support joints between shapes
-	- (2) [OPTIMIZATION] Use a memory pool when transform a shape to object (i.e.: CollisionBoxShape#toConvexObject)
 	- (2) [OPTIMIZATION] Ray test on heightfield performs CCD on thousand triangles: find way to improve performance
 	- (3) [OPTIMIZATION] GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
 	- (3) [OPTIMIZATION] EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
 	- (3) [OPTIMIZATION] Use std::set#merge from C++17 in RayTestResult::addResults and NarrowPhaseManager::handleContinuousCollision
 - PROCESSABLE
-    - (2) [OPTIMIZATION] Improve ray test performance against terrain (better triangles selection ?)
+    - (1) [OPTIMIZATION] Improve ray test performance against terrain (better triangles selection ?)
 	- (2) [NEW FEATURE] Handle stair for character controller
 	- (3) [NEW FEATURE] Apply impulse on objects hit by character
 

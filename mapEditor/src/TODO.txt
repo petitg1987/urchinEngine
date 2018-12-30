@@ -2,8 +2,10 @@
 # To do :
 ############################################
 - RENDER
-	- (2) [NEW FEATURE] Allow to move objects with mouse
+	- (1) [NEW FEATURE] Allow to move objects with mouse
 	- (2) [QUALITY IMPROVEMENT] When change orientation of cylinder/capsule: resize physics shape to fit the object size
+	- (2) [QUALITY IMPROVEMENT] Make objects without physics selectable with left click
+	- (2) [NEW FEATURE] Display box around objects which don't have mesh (allow to select them easily with left click)
     - (3) [NEW FEATURE] Handle skybox
 - UI
 	- (3) [NEW FEATURE] Allow CTRL+Y to return in previous value
