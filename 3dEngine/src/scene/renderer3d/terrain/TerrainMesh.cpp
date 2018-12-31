@@ -1,9 +1,13 @@
 #include <thread>
 #include <algorithm>
 #include <functional>
+#include <fstream>
 
 #include "TerrainMesh.h"
 #include "resources/MediaManager.h"
+
+#define FRL_FILE_EXTENSION ".frl" //Extension for FRL files (Fast Resource Loading)
+#define TERRAIN_FRL_FILE_VERSION 1
 
 namespace urchin
 {
@@ -23,9 +27,27 @@ namespace urchin
         xSize = imgTerrain->getWidth();
         zSize = imgTerrain->getHeight();
 
-        buildVertices(imgTerrain);
-        buildIndices();
-        buildNormals();
+        std::string terrainFilePath = FileSystem::instance()->getResourcesDirectory() + imgTerrain->getName();
+        std::string terrainFrlFilePath = FileSystem::instance()->getSaveDirectory() + FileHandler::getFileNameNoExtension(terrainFilePath) + FRL_FILE_EXTENSION;
+        std::string terrainMd5Sum = std::string(MD5().digestFile(terrainFilePath.c_str()));
+
+        std::ifstream terrainFrlFile;
+        terrainFrlFile.open(terrainFrlFilePath, std::ios::in | std::ios::binary);
+
+        if(terrainFrlFile.is_open() && readVersion(terrainFrlFile)==TERRAIN_FRL_FILE_VERSION && readMd5(terrainFrlFile)==terrainMd5Sum)
+        {
+            loadTerrainMeshFile(terrainFrlFile);
+        } else
+        {
+            terrainFrlFile.close();
+
+            buildVertices(imgTerrain);
+            buildIndices();
+            buildNormals();
+
+            writeTerrainMeshFile(terrainFrlFilePath, terrainMd5Sum);
+        }
+
         heightfieldPointHelper = std::make_unique<HeightfieldPointHelper<float>>(vertices, xSize);
 
         imgTerrain->release();
@@ -81,29 +103,41 @@ namespace urchin
         return heightfieldPointHelper->findHeightAt(xzCoordinate);
     }
 
+    unsigned int TerrainMesh::computeNumberVertices() const
+    {
+        return xSize * zSize;
+    }
+
+    unsigned int TerrainMesh::computeNumberIndices() const
+    {
+        return ((zSize-1) * xSize * 2) + (zSize-1);
+    }
+
+    unsigned int TerrainMesh::computeNumberNormals() const
+    {
+        return xSize * zSize;
+    }
+
     std::vector<Point3<float>> TerrainMesh::buildVertices(const Image *imgTerrain)
     {
-        unsigned int xLength = imgTerrain->getWidth();;
-        unsigned int zLength = imgTerrain->getHeight();
+        vertices.reserve(computeNumberVertices());
 
-        vertices.reserve(xLength * zLength);
+        float xStart = (-(xSize * xzScale) / 2.0) + (xzScale / 2.0);
+        float zStart = (-(zSize * xzScale) / 2.0) + (xzScale / 2.0);
 
-        float xStart = (-(xLength * xzScale) / 2.0) + (xzScale / 2.0);
-        float zStart = (-(zLength * xzScale) / 2.0) + (xzScale / 2.0);
-
-        for(unsigned int z=0; z<zLength; ++z)
+        for(unsigned int z=0; z<zSize; ++z)
         {
             float zFloat = zStart + static_cast<float>(z) * xzScale;
-            for (unsigned int x = 0; x < xLength; ++x)
+            for (unsigned int x = 0; x < xSize; ++x)
             {
                 float elevation = 0.0f;
                 if(imgTerrain->getChannelPrecision()==Image::CHANNEL_8)
                 {
-                    elevation = imgTerrain->getTexels()[x + xLength * z] * yScale;
+                    elevation = imgTerrain->getTexels()[x + xSize * z] * yScale;
                 }else if(imgTerrain->getChannelPrecision()==Image::CHANNEL_16)
                 {
                     constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
-                    elevation = imgTerrain->getTexels16Bits()[x + xLength * z] * scale16BitsTo8Bits * yScale;
+                    elevation = imgTerrain->getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
                 }
 
                 float xFloat = xStart + static_cast<float>(x) * xzScale;
@@ -116,7 +150,7 @@ namespace urchin
 
     std::vector<unsigned int> TerrainMesh::buildIndices()
     {
-        indices.reserve(((zSize-1) * xSize * 2) + (zSize-1));
+        indices.reserve(computeNumberIndices());
 
         for(unsigned int z = 0; z < zSize - 1; ++z)
         {
@@ -181,7 +215,7 @@ namespace urchin
         #endif
 
         //2. compute normal of vertex
-        normals.resize(vertices.size());
+        normals.resize(computeNumberNormals());
         unsigned int numLoopNormalVertex = vertices.size();
         std::vector<std::thread> threadsNormalVertex(NUM_THREADS);
         for(unsigned int threadI=0; threadI<NUM_THREADS; threadI++)
@@ -260,4 +294,59 @@ namespace urchin
 
         return triangleIndices;
     }
+
+    void TerrainMesh::writeTerrainMeshFile(const std::string &filePath, const std::string &md5) const
+    {
+        std::ofstream file;
+        file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
+
+        writeVersion(file, TERRAIN_FRL_FILE_VERSION);
+        writeMd5(file, md5);
+
+        file.write(reinterpret_cast<const char*>(&vertices[0]), vertices.size()*sizeof(float)*3);
+        file.write(reinterpret_cast<const char*>(&indices[0]), indices.size()*sizeof(unsigned int));
+        file.write(reinterpret_cast<const char*>(&normals[0]), normals.size()*sizeof(float)*3);
+
+        file.close();
+    }
+
+    void TerrainMesh::writeVersion(std::ofstream &file, unsigned int version) const
+    {
+        file.write(reinterpret_cast<char*>(&version), sizeof(version));
+    }
+
+    void TerrainMesh::writeMd5(std::ofstream &file, const std::string &md5) const
+    {
+        file.write(md5.c_str(), md5.size()*sizeof(char));
+    }
+
+    void TerrainMesh::loadTerrainMeshFile(std::ifstream &file)
+    {
+        vertices.resize(computeNumberVertices());
+        file.read(reinterpret_cast<char*>(&vertices[0]), vertices.size()*sizeof(float)*3);
+
+        indices.resize(computeNumberIndices());
+        file.read(reinterpret_cast<char*>(&indices[0]), indices.size()*sizeof(unsigned int));
+
+        normals.resize(computeNumberNormals());
+        file.read(reinterpret_cast<char*>(&normals[0]), normals.size()*sizeof(float)*3);
+
+        file.close();
+    }
+
+    unsigned int TerrainMesh::readVersion(std::ifstream &file) const
+    {
+        unsigned int version;
+        file.read(reinterpret_cast<char*>(&version), sizeof(version));
+        return version;
+    }
+
+    std::string TerrainMesh::readMd5(std::ifstream &file) const
+    {
+        unsigned int md5Size = 32;
+        char md5[md5Size];
+        file.read(&md5[0], sizeof(md5));
+        return std::string(md5, md5Size);
+    }
+
 }
