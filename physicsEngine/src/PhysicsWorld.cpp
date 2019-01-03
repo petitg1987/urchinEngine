@@ -243,7 +243,7 @@ namespace urchin
 		//copy for local thread
 		bool paused;
 		Vector3<float> gravity;
-		std::vector<std::shared_ptr<Processable>> processables;
+		copiedProcessables.clear();
 		{
 			std::lock_guard<std::mutex> lock(mutex);
 
@@ -251,19 +251,19 @@ namespace urchin
 
 			gravity = this->gravity;
 
-			processables = this->processables;
-			processables.insert(processables.end(), oneShotProcessables.begin(), oneShotProcessables.end());
+			copiedProcessables = this->processables;
+			copiedProcessables.insert(copiedProcessables.end(), oneShotProcessables.begin(), oneShotProcessables.end());
 			oneShotProcessables.clear();
 		}
 
 		//physics execution
 		if(!paused)
 		{
-			setupProcessables(processables, frameTimeStep, gravity);
+			setupProcessables(copiedProcessables, frameTimeStep, gravity);
 
 			collisionWorld->process(frameTimeStep, gravity);
 
-			executeProcessables(processables, frameTimeStep, gravity);
+			executeProcessables(copiedProcessables, frameTimeStep, gravity);
 		}
 	}
 

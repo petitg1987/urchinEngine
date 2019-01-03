@@ -53,6 +53,7 @@ namespace urchin
             NavMeshGenerator *navMeshGenerator;
             AIWorld aiWorld;
             std::vector<std::shared_ptr<PathRequest>> pathRequests;
+            std::vector<std::shared_ptr<PathRequest>> copiedPathRequests;
     };
 
 }

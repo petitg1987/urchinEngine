@@ -157,12 +157,12 @@ namespace urchin
     {
         //copy for local thread
         bool paused;
-        std::vector<std::shared_ptr<PathRequest>> pathRequests;
+        copiedPathRequests.clear();
         {
             std::lock_guard<std::mutex> lock(mutex);
 
             paused = this->paused;
-            pathRequests = this->pathRequests;
+            copiedPathRequests = this->pathRequests;
         }
 
         //AI execution
@@ -171,7 +171,7 @@ namespace urchin
             std::shared_ptr<NavMesh> navMesh = navMeshGenerator->generate(aiWorld);
 
             PathfindingAStar pathfindingAStar(navMesh);
-            for (auto &pathRequest : pathRequests)
+            for (auto &pathRequest : copiedPathRequests)
             {
                 pathRequest->setPath(pathfindingAStar.findPath(pathRequest->getStartPoint(), pathRequest->getEndPoint()));
             }

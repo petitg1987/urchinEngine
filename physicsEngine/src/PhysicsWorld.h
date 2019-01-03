@@ -71,6 +71,7 @@ namespace urchin
 
 			std::vector<std::shared_ptr<Processable>> processables;
 			std::vector<std::shared_ptr<Processable>> oneShotProcessables;
+			std::vector<std::shared_ptr<Processable>> copiedProcessables;
 
 			#ifdef _DEBUG
 				CollisionVisualizer *collisionVisualizer;
