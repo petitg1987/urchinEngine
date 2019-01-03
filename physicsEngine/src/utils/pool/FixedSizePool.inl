@@ -28,9 +28,10 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 {
-	#ifdef _DEBUG
-		assert(freeCount==maxElements); //ensure that destructors have been called
-	#endif
+	if(freeCount != maxElements) //ensure that destructors have been called
+	{
+		Logger::logger().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
+	}
 	
 	delete pool;
 }

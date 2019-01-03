@@ -30,6 +30,9 @@ namespace urchin
             delete aiSimulationThread;
         }
 
+        copiedPathRequests.clear();
+        pathRequests.clear();
+
         delete navMeshGenerator;
 
         Profiler::getInstance("ai")->log();

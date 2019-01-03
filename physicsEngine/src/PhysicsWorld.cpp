@@ -38,6 +38,7 @@ namespace urchin
 			delete physicsSimulationThread;
 		}
 
+		copiedProcessables.clear();
 		processables.clear();
 		oneShotProcessables.clear();
 
