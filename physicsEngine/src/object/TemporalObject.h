@@ -18,6 +18,8 @@ namespace urchin
 			const PhysicsTransform &getFrom() const;
 			const PhysicsTransform &getTo() const;
 
+			bool isRay() const;
+
 		private:
 			const CollisionShape3D *shape;
 			const CollisionConvexObject3D *localObject;

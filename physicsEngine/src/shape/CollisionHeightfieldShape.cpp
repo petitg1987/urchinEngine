@@ -191,6 +191,15 @@ namespace urchin
         return trianglesInAABBox;
     }
 
+    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInLineSegment(const LineSegment3D<float> &ray) const
+    { //TODO improve + update TODO.txt
+        AABBox<float> fromAABBox(ray.getA(), ray.getA());
+        AABBox<float> toAABBox(ray.getB(), ray.getB());
+        AABBox<float> rayAABBox = fromAABBox.merge(toAABBox);
+
+        return findTrianglesInAABBox(rayAABBox);
+    }
+
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float> &p1, const Point3<float> &p2, const Point3<float> &p3) const
     {
         void *shapeMemPtr = triangleShapesPool->allocate();

@@ -3,7 +3,6 @@
 #include "shape/CollisionSphereShape.h"
 #include "shape/CollisionCompoundShape.h"
 #include "shape/CollisionConcaveShape.h"
-#include "shape/CollisionTriangleShape.h"
 #include "body/work/WorkRigidBody.h"
 #include "object/TemporalObject.h"
 
@@ -185,21 +184,25 @@ namespace urchin
                 continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
             }else if(bodyShape->isConcave())
             {
+                const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
+
                 PhysicsTransform inverseTransformObject2 = bodyAABBoxHit->getPhysicsTransform().inverse();
                 AABBox<float> fromAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getFrom());
                 AABBox<float> toAABBoxLocalToObject1 = temporalObject1.getShape()->toAABBox(inverseTransformObject2 * temporalObject1.getTo());
-                AABBox<float> temporalAABBoxLocalToObject1 = fromAABBoxLocalToObject1.merge(toAABBoxLocalToObject1);
 
-				const auto *concaveShape = dynamic_cast<const CollisionConcaveShape *>(bodyShape);
+                if(temporalObject1.isRay())
+                {
+                    LineSegment3D<float> ray(fromAABBoxLocalToObject1.getMin(), toAABBoxLocalToObject1.getMin());
+                    const std::vector<CollisionTriangleShape> &triangles = concaveShape->findTrianglesInLineSegment(ray);
 
-				const std::vector<CollisionTriangleShape> &triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
-				for(const auto &triangle : triangles)
-				{
-					const PhysicsTransform &fromToObject2 = bodyAABBoxHit->getPhysicsTransform();
-					TemporalObject temporalObject2(&triangle, fromToObject2, fromToObject2);
+                    trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
+                }else
+                {
+                    AABBox<float> temporalAABBoxLocalToObject1 = fromAABBoxLocalToObject1.merge(toAABBoxLocalToObject1);
+                    const std::vector<CollisionTriangleShape> &triangles = concaveShape->findTrianglesInAABBox(temporalAABBoxLocalToObject1);
 
-					continuousCollisionTest(temporalObject1, temporalObject2, bodyAABBoxHit, continuousCollisionResults);
-				}
+                    trianglesContinuousCollisionTest(triangles, temporalObject1, bodyAABBoxHit, continuousCollisionResults);
+                }
 			}else
 			{
                 throw std::invalid_argument("Unknown shape type category: " + std::to_string(bodyShape->getShapeType()));
@@ -208,6 +211,21 @@ namespace urchin
 
 		return continuousCollisionResults;
 	}
+
+    /**
+     * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details
+     */
+	void NarrowPhaseManager::trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape> &triangles, const TemporalObject &temporalObject1,
+	        AbstractWorkBody *body2, ccd_set &continuousCollisionResults) const
+    {
+        for(const auto &triangle : triangles)
+        {
+            const PhysicsTransform &fromToObject2 = body2->getPhysicsTransform();
+            TemporalObject temporalObject2(&triangle, fromToObject2, fromToObject2);
+
+            continuousCollisionTest(temporalObject1, temporalObject2, body2, continuousCollisionResults);
+        }
+    }
 
 	/**
 	 * @param continuousCollisionResults [OUT] In case of collision detected: continuous collision result will be updated with collision details

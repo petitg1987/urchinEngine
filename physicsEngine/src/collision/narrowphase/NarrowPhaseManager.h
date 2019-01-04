@@ -16,6 +16,7 @@
 #include "body/work/AbstractWorkBody.h"
 #include "body/work/WorkGhostBody.h"
 #include "object/TemporalObject.h"
+#include "shape/CollisionTriangleShape.h"
 
 namespace urchin
 {
@@ -37,6 +38,7 @@ namespace urchin
 
 			void processPredictiveContacts(float, std::vector<ManifoldResult> &);
 			void handleContinuousCollision(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &, std::vector<ManifoldResult> &);
+			void trianglesContinuousCollisionTest(const std::vector<CollisionTriangleShape> &, const TemporalObject &, AbstractWorkBody *, ccd_set &) const;
 			void continuousCollisionTest(const TemporalObject &, const TemporalObject &, AbstractWorkBody *, ccd_set &) const;
 
 			const BodyManager *bodyManager;
