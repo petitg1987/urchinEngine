@@ -234,31 +234,30 @@ namespace urchin
 	void AABBTree::enlargedRayTest(const Ray<float> &ray, float enlargeNodeBoxHalfSize, const AbstractWorkBody *testedBody,
 			std::vector<AbstractWorkBody *> &bodiesAABBoxHitEnlargedRay) const
 	{
-		std::stack<AABBNode *> stackNodes;
-		stackNodes.push(rootNode);
+        browseNodes.clear();
+        browseNodes.push_back(rootNode);
 
-		while(!stackNodes.empty())
-		{ //tree traversal: pre-order (iterative)
-			AABBNode *currentNode = stackNodes.top();
-			stackNodes.pop();
+        for(unsigned int i=0; i<browseNodes.size(); ++i)
+        { //tree traversal: pre-order (iterative)
+            const AABBNode *currentNode = browseNodes[i];
 
-			AABBox<float> extendedNodeAABBox = currentNode->getAABBox().enlarge(enlargeNodeBoxHalfSize, enlargeNodeBoxHalfSize);
-			if(extendedNodeAABBox.collideWithRay(ray))
-			{
-				if (currentNode->isLeaf())
-				{
-					AbstractWorkBody *body = currentNode->getBodyNodeData()->getBody();
-					if(body!=testedBody)
-					{
-						bodiesAABBoxHitEnlargedRay.push_back(body);
-					}
-				}else
-				{
-					stackNodes.push(currentNode->getRightChild());
-					stackNodes.push(currentNode->getLeftChild());
-				}
-			}
-		}
+            AABBox<float> extendedNodeAABBox = currentNode->getAABBox().enlarge(enlargeNodeBoxHalfSize, enlargeNodeBoxHalfSize);
+            if(extendedNodeAABBox.collideWithRay(ray))
+            {
+                if (currentNode->isLeaf())
+                {
+                    AbstractWorkBody *body = currentNode->getBodyNodeData()->getBody();
+                    if(body!=testedBody)
+                    {
+                        bodiesAABBoxHitEnlargedRay.push_back(body);
+                    }
+                }else
+                {
+                    browseNodes.push_back(currentNode->getRightChild());
+                    browseNodes.push_back(currentNode->getLeftChild());
+                }
+            }
+        }
 	}
 
 #ifdef _DEBUG
