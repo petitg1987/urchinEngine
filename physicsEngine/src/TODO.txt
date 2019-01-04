@@ -8,8 +8,8 @@
 - NARROWPHASE
 	- (2) [NEW FEATURE] Support joints between shapes
 	- (1) [OPTIMIZATION] Ray test on heightfield performs CCD on thousand triangles: find way to improve performance
-            - Tips 1: in CollisionConcaveShape::findTrianglesInAABBox(): provide in argument a list of small AABBoxes which cover the ray instead of one big AABBox
-            - Tips 2: create CollisionConcaveShape::findTrianglesInAABBox(Ray ray) method and use LineSegment2D::hasProperIntersection() between ray and heightfield squares/triangles
+            - Tips 1: create CollisionConcaveShape::findTrianglesInRay(LineSegment2D ray) method and use LineSegment2D::hasProperIntersection() between ray and heightfield squares/triangles
+            - Tips 2: create small AABBoxes which cover ray and use them as rough filter to find heightfield squares/triangles
 	- (3) [OPTIMIZATION] GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
 	- (3) [OPTIMIZATION] EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
 	- (3) [OPTIMIZATION] Use std::set#merge from C++17 in RayTestResult::addResults and NarrowPhaseManager::handleContinuousCollision
