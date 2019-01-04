@@ -195,7 +195,7 @@ namespace urchin
     {
         void *shapeMemPtr = triangleShapesPool->allocate();
         trianglesInAABBox.emplace_back(CollisionTriangleShape(new (shapeMemPtr) TriangleShape3D<float>(p1, p2, p3), triangleShapesPool));
-        trianglesInAABBox[trianglesInAABBox.size()-1].setupConvexObjectPool(collisionTriangleObjectsPool);
+        trianglesInAABBox.back().setupConvexObjectPool(collisionTriangleObjectsPool);
     }
 
 }

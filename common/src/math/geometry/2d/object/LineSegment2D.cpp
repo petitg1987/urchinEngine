@@ -201,6 +201,21 @@ namespace urchin
         return Point2<T>(0, 0);
     }
 
+    /**
+     * Returns proper intersection boolean of the two lines segment.
+     * Touch cases and collinear are not considered as proper intersection.
+     */
+	template<class T> bool LineSegment2D<T>::hasProperIntersection(const LineSegment2D<T> &other) const
+	{
+		return (ccw(a, b, other.getA()) * ccw(a, b, other.getB())) < 0.0
+			&& ccw(other.getA(), other.getB(), a) * ccw(other.getA(), other.getB(), b) < 0.0;
+	}
+
+	template<class T> T LineSegment2D<T>::ccw(const Point2<T> &a, const Point2<T> &b, const Point2<T> &c) const
+	{
+		return (b.X - a.X) * (c.Y - a.Y) - ((b.Y - a.Y) * (c.X - a.X));
+	}
+
 	template<class T> template<class NEW_TYPE> LineSegment2D<NEW_TYPE> LineSegment2D<T>::cast() const
 	{
 		return LineSegment2D<NEW_TYPE>(a.template cast<NEW_TYPE>(), b.template cast<NEW_TYPE>());

@@ -25,10 +25,13 @@ namespace urchin
 
 			Point2<T> intersectPoint(const LineSegment2D<T> &, bool &) const;
 			Point2<T> intersectPoint(const LineSegment2D<T> &, bool &, Point2<T> &, bool &) const;
+			bool hasProperIntersection(const LineSegment2D<T> &) const;
 
 			template<class NEW_TYPE> LineSegment2D<NEW_TYPE> cast() const;
 
 		private:
+			T ccw(const Point2<T> &, const Point2<T> &, const Point2<T> &) const;
+
 			Point2<T> a, b;
 	};
 

@@ -14,6 +14,7 @@ void LineSegment2DCollisionTest::noIntersection()
 	firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertTrue(!hasIntersection);
+	AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::parallelLines()
@@ -25,6 +26,7 @@ void LineSegment2DCollisionTest::parallelLines()
 	firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertTrue(!hasIntersection);
+	AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::intersection()
@@ -36,6 +38,7 @@ void LineSegment2DCollisionTest::intersection()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(0.0, 0.0));
+	AssertHelper::assertTrue(firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::intersectionOnOnePoint()
@@ -47,6 +50,7 @@ void LineSegment2DCollisionTest::intersectionOnOnePoint()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(0.0, 0.0));
+	AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::intersectionOnOnePointInt()
@@ -58,6 +62,7 @@ void LineSegment2DCollisionTest::intersectionOnOnePointInt()
 	Point2<int> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2IntEquals(intersectionPoint, Point2<int>(-180, -6062));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearIntersectionOnOnePoint()
@@ -69,6 +74,7 @@ void LineSegment2DCollisionTest::collinearIntersectionOnOnePoint()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(0.0, 0.0));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesNoIntersectionSameDirection()
@@ -80,6 +86,7 @@ void LineSegment2DCollisionTest::collinearLinesNoIntersectionSameDirection()
 	firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertTrue(!hasIntersection);
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesNoIntersectionOppositeDirection()
@@ -91,6 +98,7 @@ void LineSegment2DCollisionTest::collinearLinesNoIntersectionOppositeDirection()
 	firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertTrue(!hasIntersection);
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesIntersectionSameDirection()
@@ -102,6 +110,7 @@ void LineSegment2DCollisionTest::collinearLinesIntersectionSameDirection()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(0.0, 0.0));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesIntersectionSameDirection2()
@@ -113,6 +122,7 @@ void LineSegment2DCollisionTest::collinearLinesIntersectionSameDirection2()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(1.0, 1.0));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesIntersectionOppositeDirection()
@@ -124,6 +134,7 @@ void LineSegment2DCollisionTest::collinearLinesIntersectionOppositeDirection()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(-1.25, -1.25));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesIntersectionOppositeDirection2()
@@ -135,6 +146,7 @@ void LineSegment2DCollisionTest::collinearLinesIntersectionOppositeDirection2()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(-2.5, -2.5));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesFullIntersectionSameDirection()
@@ -146,6 +158,7 @@ void LineSegment2DCollisionTest::collinearLinesFullIntersectionSameDirection()
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(-1.5, 0.0));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 void LineSegment2DCollisionTest::collinearLinesFullIntersectionOppositeDirection()
@@ -157,6 +170,7 @@ void LineSegment2DCollisionTest::collinearLinesFullIntersectionOppositeDirection
 	Point2<float> intersectionPoint = firstLine.intersectPoint(secondLine, hasIntersection);
 
 	AssertHelper::assertPoint2FloatEquals(intersectionPoint, Point2<float>(-1.5, 0.0));
+    AssertHelper::assertTrue(!firstLine.hasProperIntersection(secondLine));
 }
 
 CppUnit::Test *LineSegment2DCollisionTest::suite()
