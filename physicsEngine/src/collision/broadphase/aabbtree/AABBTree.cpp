@@ -1,4 +1,3 @@
-#include <stack>
 #include "UrchinCommon.h"
 
 #include "collision/broadphase/aabbtree/AABBTree.h"
