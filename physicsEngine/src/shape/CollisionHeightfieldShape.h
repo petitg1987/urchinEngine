@@ -39,14 +39,10 @@ namespace urchin
             CollisionShape3D *clone() const override;
 
             const std::vector<CollisionTriangleShape> &findTrianglesInAABBox(const AABBox<float> &) const override;
-            const std::vector<CollisionTriangleShape> &findTrianglesInLineSegment(const LineSegment3D<float> &) const override;
+            const std::vector<CollisionTriangleShape> &findTrianglesHitByRay(const LineSegment3D<float> &) const override;
 
         private:
-            enum Axis
-            {
-                X,
-                Z
-            };
+            enum Axis{X, Z};
 
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
             std::pair<unsigned int, unsigned int> computeStartEndIndices(float, float, Axis) const;

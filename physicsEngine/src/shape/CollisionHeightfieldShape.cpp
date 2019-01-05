@@ -1,7 +1,7 @@
 #include <limits>
 #include <cmath>
 #include <cassert>
-#include <utility>
+#include <algorithm>
 
 #include "CollisionHeightfieldShape.h"
 
@@ -167,7 +167,7 @@ namespace urchin
         return trianglesInAABBox;
     }
 
-    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInLineSegment(const LineSegment3D<float> &ray) const
+    const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesHitByRay(const LineSegment3D<float> &ray) const
     {
         trianglesInAABBox.clear();
 
@@ -177,8 +177,10 @@ namespace urchin
         //2d line equation variables
         float slopeLineZX = (ray.getB().X - ray.getA().X) / (ray.getB().Z - ray.getA().Z);
         float slopeLineXY = (ray.getB().Y - ray.getA().Y) / (ray.getB().X - ray.getA().X);
+        float slopeLineZY = (ray.getB().Y - ray.getA().Y) / (ray.getB().Z - ray.getA().Z);
         float interceptLineZX = ray.getA().X - (slopeLineZX * ray.getA().Z);
         float interceptLineXY = ray.getA().Y - (slopeLineXY * ray.getA().X);
+        float interceptLineZY = ray.getA().Y - (slopeLineZY * ray.getA().Z);
 
         float rayMinZ = std::min(ray.getA().Z, ray.getB().Z);
         float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
@@ -188,25 +190,29 @@ namespace urchin
         {
             float zStartValue = vertices[xLength * z].Z;
             float zEndValue = vertices[xLength * (z + 1)].Z;
-            float xStartValue = raySameZValues ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
-            float xEndValue = raySameZValues ? ray.getB().X : slopeLineZX * zEndValue + interceptLineZX;
-            if(xStartValue > xEndValue)
-            {
-                std::swap(xStartValue, xEndValue);
-            }
+            float xFirstValue = raySameZValues ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
+            float xSecondValue = raySameZValues ? ray.getB().X : slopeLineZX * zEndValue + interceptLineZX;
+            auto xMinMaxValue = std::minmax(xFirstValue, xSecondValue);
 
-            auto vertexXRange = computeStartEndIndices(xStartValue, xEndValue, Axis::X);
+            auto vertexXRange = computeStartEndIndices(xMinMaxValue.first, xMinMaxValue.second, Axis::X);
 
             for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x)
             {
+                //compute min and max Y values based on X value (don't give satisfying result when ray is parallel to Z axis)
                 float xCurrentValue = vertices[x].X;
                 float xNextValue = vertices[x + 1].X;
-                float rayMinY = raySameXValues ? ray.getA().Y : slopeLineXY * xCurrentValue + interceptLineXY;
-                float rayMaxY = raySameXValues ? ray.getB().Y : slopeLineXY * xNextValue + interceptLineXY;
-                if(rayMinY > rayMaxY)
-                {
-                    std::swap(rayMinY, rayMaxY);
-                }
+                float yFirstValue1 = raySameXValues ? ray.getA().Y : slopeLineXY * xCurrentValue + interceptLineXY;
+                float ySecondValue1 = raySameXValues ? ray.getB().Y : slopeLineXY * xNextValue + interceptLineXY;
+                auto yMinMaxValue1 = std::minmax(yFirstValue1, ySecondValue1);
+
+                //compute min and max Y values based on Z value (don't give satisfying result when ray is parallel to X axis)
+                float yFirstValue2 = raySameZValues ? ray.getA().Y : slopeLineZY * zStartValue + interceptLineZY;
+                float ySecondValue2 = raySameZValues ? ray.getB().Y : slopeLineZY * zEndValue + interceptLineZY;
+                auto yMinMaxValue2 = std::minmax(yFirstValue2, ySecondValue2);
+
+                //combine both results to get a more satisfying result
+                float rayMinY = std::max(yMinMaxValue1.first, yMinMaxValue2.first);
+                float rayMaxY = std::min(yMinMaxValue1.second, yMinMaxValue2.second);
 
                 createTrianglesMatchHeight(x, z, rayMinY, rayMaxY);
             }
