@@ -171,6 +171,9 @@ namespace urchin
     {
         trianglesInAABBox.clear();
 
+        bool raySameXValues = ray.getA().X == ray.getB().X;
+        bool raySameZValues = ray.getA().Z == ray.getB().Z;
+
         //2d line equation variables
         float slopeLineZX = (ray.getB().X - ray.getA().X) / (ray.getB().Z - ray.getA().Z);
         float slopeLineXY = (ray.getB().Y - ray.getA().Y) / (ray.getB().X - ray.getA().X);
@@ -185,8 +188,8 @@ namespace urchin
         {
             float zStartValue = vertices[xLength * z].Z;
             float zEndValue = vertices[xLength * (z + 1)].Z;
-            float xStartValue = std::isinf(slopeLineZX) ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
-            float xEndValue = std::isinf(slopeLineZX) ? ray.getA().X : slopeLineZX * zEndValue + interceptLineZX;
+            float xStartValue = raySameZValues ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
+            float xEndValue = raySameZValues ? ray.getB().X : slopeLineZX * zEndValue + interceptLineZX;
             if(xStartValue > xEndValue)
             {
                 std::swap(xStartValue, xEndValue);
@@ -198,8 +201,8 @@ namespace urchin
             {
                 float xCurrentValue = vertices[x].X;
                 float xNextValue = vertices[x + 1].X;
-                float rayMinY = std::isinf(slopeLineXY) ? std::min(ray.getA().Y, ray.getB().Y) : slopeLineXY * xCurrentValue + interceptLineXY;
-                float rayMaxY = std::isinf(slopeLineXY) ? std::max(ray.getA().Y, ray.getB().Y) : slopeLineXY * xNextValue + interceptLineXY;
+                float rayMinY = raySameXValues ? ray.getA().Y : slopeLineXY * xCurrentValue + interceptLineXY;
+                float rayMaxY = raySameXValues ? ray.getB().Y : slopeLineXY * xNextValue + interceptLineXY;
                 if(rayMinY > rayMaxY)
                 {
                     std::swap(rayMinY, rayMaxY);
