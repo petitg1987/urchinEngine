@@ -171,13 +171,11 @@ namespace urchin
     {
         trianglesInAABBox.clear();
 
-        //2d line equation on XZ
-        float mLineEquationXZ = (ray.getB().Z - ray.getA().Z) / (ray.getB().X - ray.getA().X); //line slope //TODO handle infinite slope
-        float bLineEquationXZ = ray.getA().Z - (mLineEquationXZ * ray.getA().X);
-
-        //2d line equation on XY
-        float mLineEquationXY = (ray.getB().Y - ray.getA().Y) / (ray.getB().X - ray.getA().X); //line slope //TODO handle infinite slope
-        float bLineEquationXY = ray.getA().Y - (mLineEquationXY * ray.getA().X);
+        //2d line equation variables
+        float slopeLineZX = (ray.getB().X - ray.getA().X) / (ray.getB().Z - ray.getA().Z);
+        float slopeLineXY = (ray.getB().Y - ray.getA().Y) / (ray.getB().X - ray.getA().X);
+        float interceptLineZX = ray.getA().X - (slopeLineZX * ray.getA().Z);
+        float interceptLineXY = ray.getA().Y - (slopeLineXY * ray.getA().X);
 
         float rayMinZ = std::min(ray.getA().Z, ray.getB().Z);
         float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
@@ -187,8 +185,8 @@ namespace urchin
         {
             float zStartValue = vertices[xLength * z].Z;
             float zEndValue = vertices[xLength * (z + 1)].Z;
-            float xStartValue = (zStartValue - bLineEquationXZ) / mLineEquationXZ; //TODO handle divide by zero
-            float xEndValue = (zEndValue - bLineEquationXZ) / mLineEquationXZ; //TODO handle divide by zero
+            float xStartValue = std::isinf(slopeLineZX) ? ray.getA().X : slopeLineZX * zStartValue + interceptLineZX;
+            float xEndValue = std::isinf(slopeLineZX) ? ray.getA().X : slopeLineZX * zEndValue + interceptLineZX;
             if(xStartValue > xEndValue)
             {
                 std::swap(xStartValue, xEndValue);
@@ -198,8 +196,10 @@ namespace urchin
 
             for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x)
             {
-                float rayMinY = mLineEquationXY * vertices[x].X + bLineEquationXY;
-                float rayMaxY = mLineEquationXY * vertices[x + 1].X + bLineEquationXY;
+                float xCurrentValue = vertices[x].X;
+                float xNextValue = vertices[x + 1].X;
+                float rayMinY = std::isinf(slopeLineXY) ? std::min(ray.getA().Y, ray.getB().Y) : slopeLineXY * xCurrentValue + interceptLineXY;
+                float rayMaxY = std::isinf(slopeLineXY) ? std::max(ray.getA().Y, ray.getB().Y) : slopeLineXY * xNextValue + interceptLineXY;
                 if(rayMinY > rayMaxY)
                 {
                     std::swap(rayMinY, rayMaxY);
