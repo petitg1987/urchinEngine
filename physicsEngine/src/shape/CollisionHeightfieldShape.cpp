@@ -153,39 +153,14 @@ namespace urchin
     {
         trianglesInAABBox.clear();
 
-        float verticesDistanceX = vertices[1].X - vertices[0].X;
-        auto rawStartVertexX = static_cast<int>((checkAABBox.getMin().X + localAABBox->getHalfSizes().X) / verticesDistanceX);
-        auto startVertexX = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertexX, 0, static_cast<int>(xLength-1)));
-        auto rawEndVertexX = static_cast<int>((checkAABBox.getMax().X + localAABBox->getHalfSizes().X) / verticesDistanceX) + 1;
-        auto endVertexX = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexX, 0, static_cast<int>(xLength-1)));
+        auto vertexXRange = computeStartEndIndices(checkAABBox.getMin().X, checkAABBox.getMax().X, Axis::X);
+        auto vertexZRange = computeStartEndIndices(checkAABBox.getMin().Z, checkAABBox.getMax().Z, Axis::Z);
 
-        float verticesDistanceZ = vertices[xLength].Z - vertices[0].Z;
-        auto rawStartVertexZ = static_cast<int>((checkAABBox.getMin().Z + localAABBox->getHalfSizes().Z) / verticesDistanceZ);
-        auto startVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertexZ, 0, static_cast<int>(zLength-1)));
-        auto rawEndVertexZ = static_cast<int>((checkAABBox.getMax().Z + localAABBox->getHalfSizes().Z) / verticesDistanceZ) + 1;
-        auto endVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexZ, 0, static_cast<int>(zLength-1)));
-
-        for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
+        for(unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z)
         {
-            for (unsigned int x = startVertexX; x < endVertexX; ++x)
+            for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x)
             {
-                Point3<float> point1 = vertices[x + xLength * z]; //far-left
-                Point3<float> point2 = vertices[x + 1 + xLength * z]; //far-right
-                Point3<float> point3 = vertices[x + xLength * (z + 1)]; //near-left
-                Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
-
-                bool hasDiagonalPointAbove = point2.Y > checkAABBox.getMin().Y || point3.Y > checkAABBox.getMin().Y;
-                bool hasDiagonalPointBelow = point2.Y < checkAABBox.getMax().Y || point3.Y < checkAABBox.getMax().Y;
-
-                if( (point1.Y > checkAABBox.getMin().Y || hasDiagonalPointAbove) && (point1.Y < checkAABBox.getMax().Y || hasDiagonalPointBelow) )
-                {
-                    createCollisionTriangleShape(point1, point3, point2);
-                }
-
-                if( (point4.Y > checkAABBox.getMin().Y || hasDiagonalPointAbove) && (point4.Y < checkAABBox.getMax().Y || hasDiagonalPointBelow) )
-                {
-                    createCollisionTriangleShape(point2, point3, point4);
-                }
+                createTrianglesMatchHeight(x, z, checkAABBox.getMin().Y, checkAABBox.getMax().Y);
             }
         }
 
@@ -193,11 +168,8 @@ namespace urchin
     }
 
     const std::vector<CollisionTriangleShape> &CollisionHeightfieldShape::findTrianglesInLineSegment(const LineSegment3D<float> &ray) const
-    { //TODO update TODO.txt
+    {
         trianglesInAABBox.clear();
-
-        float rayMinZ = std::min(ray.getA().Z, ray.getB().Z);
-        float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
 
         //2d line equation on XZ
         float mLineEquationXZ = (ray.getB().Z - ray.getA().Z) / (ray.getB().X - ray.getA().X); //line slope //TODO handle infinite slope
@@ -207,30 +179,25 @@ namespace urchin
         float mLineEquationXY = (ray.getB().Y - ray.getA().Y) / (ray.getB().X - ray.getA().X); //line slope //TODO handle infinite slope
         float bLineEquationXY = ray.getA().Y - (mLineEquationXY * ray.getA().X);
 
-        float verticesDistanceZ = vertices[xLength].Z - vertices[0].Z; //TODO avoid code duplication
-        auto rawStartVertexZ = static_cast<int>((rayMinZ + localAABBox->getHalfSizes().Z) / verticesDistanceZ);
-        auto startVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertexZ, 0, static_cast<int>(zLength-1)));
-        auto rawEndVertexZ = static_cast<int>((rayMaxZ + localAABBox->getHalfSizes().Z) / verticesDistanceZ) + 1;
-        auto endVertexZ = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertexZ, 0, static_cast<int>(zLength-1)));
+        float rayMinZ = std::min(ray.getA().Z, ray.getB().Z);
+        float rayMaxZ = std::max(ray.getA().Z, ray.getB().Z);
+        auto vertexZRange = computeStartEndIndices(rayMinZ, rayMaxZ, Axis::Z);
 
-        float verticesDistanceX = vertices[1].X - vertices[0].X;
-
-        for(unsigned int z = startVertexZ; z < endVertexZ; ++z)
+        for(unsigned int z = vertexZRange.first; z < vertexZRange.second; ++z)
         {
             float zStartValue = vertices[xLength * z].Z;
             float zEndValue = vertices[xLength * (z + 1)].Z;
-            float xStartValue = (zStartValue - bLineEquationXZ) / mLineEquationXZ;
-            float xEndValue = (zEndValue - bLineEquationXZ) / mLineEquationXZ;
+            float xStartValue = (zStartValue - bLineEquationXZ) / mLineEquationXZ; //TODO handle divide by zero
+            float xEndValue = (zEndValue - bLineEquationXZ) / mLineEquationXZ; //TODO handle divide by zero
             if(xStartValue > xEndValue)
             {
                 std::swap(xStartValue, xEndValue);
             }
 
-            auto startVertexX = static_cast<unsigned int>((xStartValue - vertices[0].X) / verticesDistanceX); //TODO clamp to min/max
-            auto endVertexX = static_cast<unsigned int>((xEndValue - vertices[0].X) / verticesDistanceX) + 1; //TODO clamp to min/max
+            auto vertexXRange = computeStartEndIndices(xStartValue, xEndValue, Axis::X);
 
-            for (unsigned int x = startVertexX; x < endVertexX; ++x)
-            { //TODO avoid code duplication
+            for (unsigned int x = vertexXRange.first; x < vertexXRange.second; ++x)
+            {
                 float rayMinY = mLineEquationXY * vertices[x].X + bLineEquationXY;
                 float rayMaxY = mLineEquationXY * vertices[x + 1].X + bLineEquationXY;
                 if(rayMinY > rayMaxY)
@@ -238,28 +205,51 @@ namespace urchin
                     std::swap(rayMinY, rayMaxY);
                 }
 
-                Point3<float> point1 = vertices[x + xLength * z]; //far-left
-                Point3<float> point2 = vertices[x + 1 + xLength * z]; //far-right
-                Point3<float> point3 = vertices[x + xLength * (z + 1)]; //near-left
-                Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
-
-                bool hasDiagonalPointAbove = point2.Y > rayMinY || point3.Y > rayMinY;
-                bool hasDiagonalPointBelow = point2.Y < rayMaxY || point3.Y < rayMaxY;
-
-                if( (point1.Y > rayMinY || hasDiagonalPointAbove) && (point1.Y < rayMaxY || hasDiagonalPointBelow) )
-                {
-                    createCollisionTriangleShape(point1, point3, point2);
-                }
-
-                if( (point4.Y > rayMinY || hasDiagonalPointAbove) && (point4.Y < rayMaxY || hasDiagonalPointBelow) )
-                {
-                    createCollisionTriangleShape(point2, point3, point4);
-                }
+                createTrianglesMatchHeight(x, z, rayMinY, rayMaxY);
             }
         }
 
-        std::cout<<" => Total: "<<trianglesInAABBox.size()<<std::endl; //TODO remove
         return trianglesInAABBox;
+    }
+
+    /**
+     * @param minValue Lower bound value on X (or Z) axis
+     * @param maxValue Upper bound value on X (or Z) axis
+     */
+    std::pair<unsigned int, unsigned int> CollisionHeightfieldShape::computeStartEndIndices(float minValue, float maxValue, Axis axis) const
+    {
+        float halfSize = axis==Axis::X ? localAABBox->getHalfSizes().X : localAABBox->getHalfSizes().Z;
+        float verticesDistance = axis==Axis::X ? vertices[1].X - vertices[0].X : vertices[xLength].Z - vertices[0].Z;
+        int maxLength = axis==Axis::X ? static_cast<int>(xLength-1) : static_cast<int>(zLength-1);
+
+        auto rawStartVertex = static_cast<int>((minValue + halfSize) / verticesDistance);
+        auto startVertex = static_cast<unsigned int>(MathAlgorithm::clamp(rawStartVertex, 0, maxLength));
+
+        auto rawEndVertex = static_cast<int>((maxValue + halfSize) / verticesDistance) + 1;
+        auto endVertex = static_cast<unsigned int>(MathAlgorithm::clamp(rawEndVertex, 0, maxLength));
+
+        return std::make_pair(startVertex, endVertex);
+    }
+
+    void CollisionHeightfieldShape::createTrianglesMatchHeight(unsigned int x, unsigned int z, float minY, float maxY) const
+    {
+        Point3<float> point1 = vertices[x + xLength * z]; //far-left
+        Point3<float> point2 = vertices[x + 1 + xLength * z]; //far-right
+        Point3<float> point3 = vertices[x + xLength * (z + 1)]; //near-left
+        Point3<float> point4 = vertices[x + 1 + xLength * (z + 1)]; //near-right
+
+        bool hasDiagonalPointAbove = point2.Y > minY || point3.Y > minY;
+        bool hasDiagonalPointBelow = point2.Y < maxY || point3.Y < maxY;
+
+        if( (point1.Y > minY || hasDiagonalPointAbove) && (point1.Y < maxY || hasDiagonalPointBelow) )
+        {
+            createCollisionTriangleShape(point1, point3, point2);
+        }
+
+        if( (point4.Y > minY || hasDiagonalPointAbove) && (point4.Y < maxY || hasDiagonalPointBelow) )
+        {
+            createCollisionTriangleShape(point2, point3, point4);
+        }
     }
 
     void CollisionHeightfieldShape::createCollisionTriangleShape(const Point3<float> &p1, const Point3<float> &p2, const Point3<float> &p3) const

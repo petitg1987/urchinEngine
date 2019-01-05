@@ -42,7 +42,15 @@ namespace urchin
             const std::vector<CollisionTriangleShape> &findTrianglesInLineSegment(const LineSegment3D<float> &) const override;
 
         private:
+            enum Axis
+            {
+                X,
+                Z
+            };
+
             std::unique_ptr<BoxShape<float>> buildLocalAABBox() const;
+            std::pair<unsigned int, unsigned int> computeStartEndIndices(float, float, Axis) const;
+            void createTrianglesMatchHeight(unsigned int, unsigned int, float, float) const;
             void createCollisionTriangleShape(const Point3<float> &, const Point3<float> &, const Point3<float> &) const;
 
             std::vector<Point3<float>> vertices;
