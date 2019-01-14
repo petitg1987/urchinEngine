@@ -87,7 +87,7 @@ namespace urchin
 			bool isOnGround; //character is on the ground
 			bool hitRoof; //character has hit the roof
 			float timeInTheAir; //time (sec.) character is not on the ground
-			float jumping; //character is jumping
+			bool jumping; //character is jumping
 			float slopeInPercentage; //slope in percentage (a positive value means that character climb)
 	};
 
