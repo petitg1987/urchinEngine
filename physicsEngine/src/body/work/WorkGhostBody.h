@@ -4,7 +4,6 @@
 #include <string>
 #include "UrchinCommon.h"
 
-#include "collision/broadphase/PairContainer.h"
 #include "body/work/AbstractWorkBody.h"
 
 namespace urchin
@@ -22,7 +21,7 @@ namespace urchin
 			static WorkGhostBody *upCast(AbstractWorkBody *);
 			static const WorkGhostBody *upCast(const AbstractWorkBody *);
 
-			PairContainer *getPairContainer() const;
+			PairContainer *getPairContainer() const override;
 
 			bool isGhostBody() const override;
 

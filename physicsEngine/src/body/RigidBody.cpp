@@ -112,14 +112,14 @@ namespace urchin
 		return totalForce;
 	}
 
-	void RigidBody::applyCentralForce(const Vector3<float> &force)
+	void RigidBody::applyCentralForce(const Vector3<float> &force) //TODO provide momentum instead force to be independent of dt ?
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		totalForce += force;
 	}
 
-	void RigidBody::applyForce(const Vector3<float> &force, const Point3<float> &pos)
+	void RigidBody::applyForce(const Vector3<float> &force, const Point3<float> &pos) //TODO provide momentum instead force to be independent of dt ?
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 

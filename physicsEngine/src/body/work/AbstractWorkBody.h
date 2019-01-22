@@ -13,6 +13,8 @@
 namespace urchin
 {
 
+	class PairContainer;
+
 	/**
 	* A work body is copy of the body. This copy is useful when working on concurrent environment in order to avoid
 	* concurrent access each times we want to access to body methods.
@@ -42,6 +44,8 @@ namespace urchin
 
 			float getCcdMotionThreshold() const;
 			void setCcdMotionThreshold(float);
+
+            virtual PairContainer *getPairContainer() const;
 
 			static void disableAllBodies(bool);
 			bool isStatic() const;

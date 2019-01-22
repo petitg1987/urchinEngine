@@ -9,21 +9,20 @@
 #include "collision/broadphase/PairContainer.h"
 #include "PhysicsWorld.h"
 
-#define DEFAULT_MAX_SLOPE (PI_VALUE/4.0f) //45 degrees
 #define MIN_RECOVERABLE_DEPTH 0.0001f
 #define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f;
-#define MAX_VERTICAL_VELOCITY 55.0f
+#define MAX_VERTICAL_SPEED 55.0f
 
 namespace urchin
 {
 
-	CharacterController::CharacterController(const std::shared_ptr<const CollisionShape3D> &characterShape, const PhysicsTransform &transform) :
+	CharacterController::CharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter) :
+		physicsCharacter(physicsCharacter),
 		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
 		physicsWorld(nullptr),
-		ghostBody(new WorkGhostBody("character", transform, characterShape)),
-		verticalVelocity(0.0f),
-		jumpSpeed(5.0f),
+		ghostBody(new WorkGhostBody("character", physicsCharacter->getTransform(), physicsCharacter->getShape())),
+		verticalSpeed(0.0f),
 		makeJump(false),
 		numberOfHit(0),
 		isOnGround(false),
@@ -32,10 +31,7 @@ namespace urchin
 		jumping(false),
 		slopeInPercentage(0.0f)
 	{
-		setMaxSlope(DEFAULT_MAX_SLOPE);
 		ghostBody->setIsActive(true); //always active for get better reactivity
-
-		setTransform(ghostBody->getPhysicsTransform());
 	}
 
 	CharacterController::~CharacterController()
@@ -52,92 +48,31 @@ namespace urchin
 	{
 		this->physicsWorld = physicsWorld;
 
-		PairContainer *pairContainer = ghostBody->getPairContainer();
-		physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody, pairContainer);
+		physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody);
 	}
 
-	void CharacterController::setWalkDirection(const Vector3<float> &walkDirection)
+	void CharacterController::setMomentum(const Vector3<float> &momentum)
 	{
 		std::lock_guard<std::mutex> lock(characterMutex);
 
-		this->walkDirection = walkDirection;
+		this->velocity = (momentum / physicsCharacter->getMass());
 	}
 
-	const Vector3<float> &CharacterController::getWalkDirection() const
+	Vector3<float> CharacterController::getVelocity() const
 	{
 		std::lock_guard<std::mutex> lock(characterMutex);
 
-		return walkDirection;
-	}
-
-	void CharacterController::setJumpSpeed(float jumpSpeed)
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		this->jumpSpeed = jumpSpeed;
-	}
-
-	float CharacterController::getJumpSpeed() const
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		return jumpSpeed;
+		return velocity;
 	}
 
 	void CharacterController::jump()
 	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		this->makeJump = true;
+		makeJump.store(true, std::memory_order_relaxed);
 	}
 
-	bool CharacterController::needJumpAndUpdateFlag()
+	bool CharacterController::needJumpAndResetFlag()
 	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		if(makeJump)
-		{
-			makeJump = false;
-			return true;
-		}
-
-		return false;
-	}
-
-	void CharacterController::setMaxSlope(float maxSlopeInRadian)
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		this->maxSlopeInRadian = maxSlopeInRadian;
-		this->maxSlopeInPercentage = std::tan(maxSlopeInRadian);
-	}
-
-	float CharacterController::getMaxSlopeInRadian() const
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		return maxSlopeInRadian;
-	}
-
-	float CharacterController::getMaxSlopeInPercentage() const
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		return maxSlopeInPercentage;
-	}
-
-	void CharacterController::setTransform(const PhysicsTransform &ghostBodyTransform)
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		this->ghostBodyTransform = ghostBodyTransform;
-	}
-
-	const PhysicsTransform &CharacterController::getTransform() const
-	{
-		std::lock_guard<std::mutex> lock(characterMutex);
-
-		return ghostBodyTransform;
+		return makeJump.exchange(false, std::memory_order_relaxed);
 	}
 
 	/**
@@ -157,27 +92,28 @@ namespace urchin
 		Point3<float> targetPosition = ghostBody->getPosition();
 		if(isOnGround)
 		{
-			Vector3<float> walkDirection = getWalkDirection();
-			float slopeSpeedDecrease = MathAlgorithm::clamp(1.0f - (slopeInPercentage / getMaxSlopeInPercentage()), MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
-			targetPosition = targetPosition.translate(walkDirection * dt * slopeSpeedDecrease);
+			Vector3<float> velocity = getVelocity();
+			float slopeSpeedDecrease = 1.0f - (slopeInPercentage / physicsCharacter->getMaxSlopeInPercentage());
+			slopeSpeedDecrease = MathAlgorithm::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
+			targetPosition = targetPosition.translate(velocity * dt * slopeSpeedDecrease);
 
-			lastWalkDirection = walkDirection;
+			lastVelocity = velocity;
 		}else if(timeInTheAir < timeKeepMoveInAir)
 		{
+			Vector3<float> velocity = getVelocity();
 			float momentumSpeedDecrease = 1.0f - (timeInTheAir / timeKeepMoveInAir);
-			Vector3<float> walkDirectionInAir = lastWalkDirection*(1.0f-percentageControlInAir)
-					+ walkDirection*percentageControlInAir;
+			Vector3<float> walkDirectionInAir = velocity * (1.0f - percentageControlInAir) + velocity * percentageControlInAir;
 			targetPosition = targetPosition.translate(walkDirectionInAir * dt * momentumSpeedDecrease);
 		}else
 		{
-			lastWalkDirection.X = lastWalkDirection.Y = lastWalkDirection.Z = 0.0f;
+			lastVelocity.setNull();
 		}
 
 		//jump
 		bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
-		if(needJumpAndUpdateFlag() && closeToTheGround && !jumping)
+		if(needJumpAndResetFlag() && closeToTheGround && !jumping)
 		{
-			verticalVelocity += getJumpSpeed();
+            verticalSpeed += physicsCharacter->getJumpSpeed();
 			isOnGround = false;
 			jumping = true;
 		}else if(isOnGround && jumping)
@@ -188,15 +124,15 @@ namespace urchin
 		//compute gravity velocity
 		if(!isOnGround || numberOfHit > 1)
 		{
-			verticalVelocity -= (-gravity.Y) * dt;
-			if(verticalVelocity < -MAX_VERTICAL_VELOCITY)
+            verticalSpeed -= (-gravity.Y) * dt;
+			if(verticalSpeed < -MAX_VERTICAL_SPEED)
 			{
-				verticalVelocity = -MAX_VERTICAL_VELOCITY;
+                verticalSpeed = -MAX_VERTICAL_SPEED;
 			}
 		}
 
 		//apply data on body
-		targetPosition.Y += verticalVelocity * dt;
+		targetPosition.Y += verticalSpeed * dt;
 		ghostBody->setPosition(targetPosition);
 	}
 
@@ -215,16 +151,16 @@ namespace urchin
 		slopeInPercentage = 0.0f;
 		if(isOnGround)
 		{
-			verticalVelocity = 0.0f;
+			verticalSpeed = 0.0f;
 			slopeInPercentage = computeSlope();
 		}
 		if(hitRoof)
 		{
-			verticalVelocity = 0.0f;
+			verticalSpeed = 0.0f;
 		}
 
 		//set new transform on character
-		setTransform(ghostBody->getPhysicsTransform());
+		physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
 	}
 
 	void CharacterController::recoverFromPenetration(float dt)
@@ -296,8 +232,8 @@ namespace urchin
 	void CharacterController::computeSignificantContactValues(SignificantContactValues &significantContactValues, float dt)
 	{
 		numberOfHit = significantContactValues.numberOfHit;
-		isOnGround = numberOfHit>0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < getMaxSlopeInRadian();
-		hitRoof = numberOfHit>0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < getMaxSlopeInRadian();
+		isOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
+		hitRoof = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductDownNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
 		timeInTheAir = isOnGround ? 0.0f : timeInTheAir+dt;
 	}
 

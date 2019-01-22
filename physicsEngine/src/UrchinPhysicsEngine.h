@@ -40,6 +40,7 @@
 
 #include "processable/Processable.h"
 #include "processable/character/CharacterController.h"
+#include "processable/character/PhysicsCharacter.h"
 #include "processable/raytest/RayTestResult.h"
 
 #include "visualizer/CollisionVisualizer.h"

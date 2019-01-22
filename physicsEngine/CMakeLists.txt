@@ -179,7 +179,9 @@ set(SOURCE_FILES
         src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.cpp
         src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h
         src/utils/property/EagerPropertyLoader.cpp
-        src/utils/property/EagerPropertyLoader.h)
+        src/utils/property/EagerPropertyLoader.h
+        src/processable/character/PhysicsCharacter.cpp
+        src/processable/character/PhysicsCharacter.h)
 
 include_directories(src ../common/src)
 

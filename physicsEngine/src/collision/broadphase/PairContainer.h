@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_PAIRCONTAINER_H
 #define URCHINENGINE_PAIRCONTAINER_H
 
+#include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
 
 namespace urchin

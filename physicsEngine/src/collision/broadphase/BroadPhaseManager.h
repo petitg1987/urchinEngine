@@ -24,7 +24,7 @@ namespace urchin
 
 			void notify(Observable *, int) override;
 
-			void addBody(AbstractWorkBody *, PairContainer *);
+			void addBody(AbstractWorkBody *);
 			void removeBody(AbstractWorkBody *);
 
 			const std::vector<OverlappingPair *> &computeOverlappingPairs();

@@ -3,11 +3,11 @@
 
 #include <memory>
 #include <mutex>
+#include <atomic>
 
+#include "processable/character/PhysicsCharacter.h"
 #include "processable/Processable.h"
-#include "utils/math/PhysicsTransform.h"
-#include "shape/CollisionShape3D.h"
-#include "body/work/WorkGhostBody.h"
+#include "collision/ManifoldResult.h"
 
 #define RECOVER_PENETRATION_SUB_STEPS 4 //number of steps to recover character from penetration
 #define MIN_WALK_SPEED_PERCENTAGE 0.75f
@@ -33,30 +33,20 @@ namespace urchin
 	class CharacterController : public Processable
 	{
 		public:
-			CharacterController(const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
+			explicit CharacterController(const std::shared_ptr<PhysicsCharacter> &);
 			~CharacterController() override;
 
 			void initialize(PhysicsWorld *) override;
 
-			void setWalkDirection(const Vector3<float> &);
-			const Vector3<float> &getWalkDirection() const;
-
-			void setJumpSpeed(float);
-			float getJumpSpeed() const;
+			void setMomentum(const Vector3<float> &);
 			void jump();
-
-			void setMaxSlope(float);
-			float getMaxSlopeInRadian() const;
-			float getMaxSlopeInPercentage() const;
-
-			const PhysicsTransform &getTransform() const;
 
 			void setup(float, const Vector3<float> &) override;
 			void execute(float, const Vector3<float> &) override;
 
 		private:
-			bool needJumpAndUpdateFlag();
-			void setTransform(const PhysicsTransform &);
+			Vector3<float> getVelocity() const;
+			bool needJumpAndResetFlag();
 
 			void recoverFromPenetration(float);
 			SignificantContactValues resetSignificantContactValues();
@@ -69,20 +59,18 @@ namespace urchin
 			const float timeKeepMoveInAir;
 			const float percentageControlInAir;
 
+            std::shared_ptr<PhysicsCharacter> physicsCharacter;
 			PhysicsWorld *physicsWorld;
 			std::vector<ManifoldResult> manifoldResults;
 			mutable std::mutex characterMutex;
-			WorkGhostBody *ghostBody;
-			PhysicsTransform ghostBodyTransform;
-			float verticalVelocity;
+            WorkGhostBody *ghostBody;
+			float verticalSpeed;
 
-			Vector3<float> walkDirection;
-			float maxSlopeInRadian, maxSlopeInPercentage;
-			float jumpSpeed;
-			bool makeJump;
+			Vector3<float> velocity;
+			std::atomic_bool makeJump;
 
 			Point3<float> previousBodyPosition;
-			Vector3<float> lastWalkDirection;
+			Vector3<float> lastVelocity;
 			unsigned int numberOfHit; //number of contact point touching the character
 			bool isOnGround; //character is on the ground
 			bool hitRoof; //character has hit the roof

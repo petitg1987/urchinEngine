@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "body/work/AbstractWorkBody.h"
+#include "collision/broadphase/PairContainer.h"
 
 namespace urchin
 {
@@ -124,6 +125,11 @@ namespace urchin
 	void AbstractWorkBody::setCcdMotionThreshold(float ccdMotionThreshold)
 	{
 		this->ccdMotionThreshold = ccdMotionThreshold;
+	}
+
+	PairContainer *AbstractWorkBody::getPairContainer() const
+	{
+		return nullptr;
 	}
 
 	void AbstractWorkBody::disableAllBodies(bool value)

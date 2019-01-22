@@ -27,7 +27,7 @@ namespace urchin
 			{
 				case BodyManager::ADD_WORK_BODY:
 				{
-					addBody(updatedBody, nullptr);
+					addBody(updatedBody);
 					break;
 				}
 				case BodyManager::REMOVE_WORK_BODY:
@@ -44,9 +44,9 @@ namespace urchin
 	/**
 	 * @param alternativePairContainer Alternative pair container to default one
 	 */
-	void BroadPhaseManager::addBody(AbstractWorkBody *body, PairContainer *alternativePairContainer)
+	void BroadPhaseManager::addBody(AbstractWorkBody *body)
 	{
-		broadPhaseAlgorithm->addBody(body, alternativePairContainer);
+		broadPhaseAlgorithm->addBody(body, body->getPairContainer());
 	}
 
 	void BroadPhaseManager::removeBody(AbstractWorkBody *body)
