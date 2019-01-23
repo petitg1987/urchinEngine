@@ -63,8 +63,8 @@ namespace urchin
 		WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
 		if(workRigidBody)
 		{
-			workRigidBody->setTotalForce(totalForce);
-			workRigidBody->setTotalTorque(totalTorque);
+			workRigidBody->setTotalMomentum(totalMomentum);
+			workRigidBody->setTotalTorqueMomentum(totalTorqueMomentum);
 			workRigidBody->setMassProperties(mass, localInertia);
 			workRigidBody->setDamping(linearDamping, angularDamping);
 			workRigidBody->setLinearFactor(linearFactor);
@@ -72,8 +72,8 @@ namespace urchin
 
 			workRigidBody->refreshInvWorldInertia();
 
-			totalForce.setNull();
-			totalTorque.setNull();
+			totalMomentum.setNull();
+			totalTorqueMomentum.setNull();
 		}
 	}
 
@@ -105,43 +105,43 @@ namespace urchin
 		return angularVelocity;
 	}
 
-	Vector3<float> RigidBody::getTotalForce() const
+	Vector3<float> RigidBody::getTotalMomentum() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return totalForce;
+		return totalMomentum;
 	}
 
-	void RigidBody::applyCentralForce(const Vector3<float> &force) //TODO provide momentum instead force to be independent of dt ?
+	void RigidBody::applyCentralMomentum(const Vector3<float> &momentum)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		totalForce += force;
+		totalMomentum += momentum;
 	}
 
-	void RigidBody::applyForce(const Vector3<float> &force, const Point3<float> &pos) //TODO provide momentum instead force to be independent of dt ?
+	void RigidBody::applyMomentum(const Vector3<float> &momentum, const Point3<float> &pos)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		//apply central force
-		totalForce += force;
+		totalMomentum += momentum;
 
 		//apply torque
-		totalTorque += pos.toVector().crossProduct(force);
+		totalTorqueMomentum += pos.toVector().crossProduct(momentum);
 	}
 
-	Vector3<float> RigidBody::getTotalTorque() const
+	Vector3<float> RigidBody::getTotalTorqueMomentum() const
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		return totalTorque;
+		return totalTorqueMomentum;
 	}
 
-	void RigidBody::applyTorque(const Vector3<float> &torque)
+	void RigidBody::applyTorqueMomentum(const Vector3<float> &torqueMomentum)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		totalTorque += torque;
+		totalTorqueMomentum += torqueMomentum;
 	}
 
 	void RigidBody::setMass(float mass)

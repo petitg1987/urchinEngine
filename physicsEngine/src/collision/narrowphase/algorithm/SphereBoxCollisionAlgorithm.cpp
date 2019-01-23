@@ -15,7 +15,7 @@ namespace urchin
 
 	void SphereBoxCollisionAlgorithm::doProcessCollisionAlgorithm(const CollisionObjectWrapper &object1, const CollisionObjectWrapper &object2)
 	{
-		ScopeProfiler profiler("physics", "algoSphereBox");
+		ScopeProfiler profiler("physics", "algSphereBox");
 
 		const auto &sphere1 = dynamic_cast<const CollisionSphereShape &>(object1.getShape());
 		const auto &box2 = dynamic_cast<const CollisionBoxShape &>(object2.getShape());

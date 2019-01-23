@@ -35,8 +35,8 @@ namespace urchin
 	{
 		if(!isStatic() && !isActive())
 		{
-			if(totalForce.squareLength() > std::numeric_limits<float>::epsilon()
-					|| totalTorque.squareLength() > std::numeric_limits<float>::epsilon())
+			if(totalMomentum.squareLength() > std::numeric_limits<float>::epsilon()
+					|| totalMomentum.squareLength() > std::numeric_limits<float>::epsilon())
 			{
 				setIsActive(true);
 			}
@@ -63,57 +63,57 @@ namespace urchin
 		return angularVelocity;
 	}
 
-	const Vector3<float> &WorkRigidBody::getTotalForce() const
+	const Vector3<float> &WorkRigidBody::getTotalMomentum() const
 	{
-		return totalForce;
+		return totalMomentum;
 	}
 
-	void WorkRigidBody::setTotalForce(const Vector3<float> &totalForce)
+	void WorkRigidBody::setTotalMomentum(const Vector3<float> &totalMomentum)
 	{
-		this->totalForce = totalForce;
+		this->totalMomentum = totalMomentum;
 
 		refreshBodyActiveState();
 	}
 
-	void WorkRigidBody::applyCentralForce(const Vector3<float> &force)
+	void WorkRigidBody::applyCentralMomentum(const Vector3<float> &momentum)
 	{
-		totalForce += force * linearFactor;
+		totalMomentum += momentum * linearFactor;
 	}
 
-	void WorkRigidBody::applyForce(const Vector3<float> &force, const Point3<float> &forcePoint)
+	void WorkRigidBody::applyMomentum(const Vector3<float> &momentum, const Point3<float> &momentumPoint)
 	{
 		//apply central force
-		totalForce += force * linearFactor;
+		totalMomentum += momentum * linearFactor;
 
 		//apply torque
-		totalTorque += forcePoint.toVector().crossProduct(force * linearFactor);
+		totalTorqueMomentum += momentumPoint.toVector().crossProduct(momentum * linearFactor);
 	}
 
-	void WorkRigidBody::resetForce()
+	void WorkRigidBody::resetMomentum()
 	{
-		totalForce.setValues(0.0, 0.0, 0.0);
+		totalMomentum.setValues(0.0, 0.0, 0.0);
 	}
 
-	const Vector3<float> &WorkRigidBody::getTotalTorque() const
+	const Vector3<float> &WorkRigidBody::getTotalTorqueMomentum() const
 	{
-		return totalTorque;
+		return totalTorqueMomentum;
 	}
 
-	void WorkRigidBody::setTotalTorque(const Vector3<float> &totalTorque)
+	void WorkRigidBody::setTotalTorqueMomentum(const Vector3<float> &totalTorqueMomentum)
 	{
-		this->totalTorque = totalTorque;
+		this->totalTorqueMomentum = totalTorqueMomentum;
 
 		refreshBodyActiveState();
 	}
 
-	void WorkRigidBody::applyTorque(const Vector3<float> &torque)
+	void WorkRigidBody::applyTorqueMomentum(const Vector3<float> &torqueMomentum)
 	{
-		totalTorque += torque * angularFactor;
+		totalTorqueMomentum += torqueMomentum * angularFactor;
 	}
 
-	void WorkRigidBody::resetTorque()
+	void WorkRigidBody::resetTorqueMomentum()
 	{
-		totalTorque.setValues(0.0, 0.0, 0.0);
+		totalTorqueMomentum.setValues(0.0, 0.0, 0.0);
 	}
 
 	void WorkRigidBody::setMassProperties(float mass, const Vector3<float> &localInertia)

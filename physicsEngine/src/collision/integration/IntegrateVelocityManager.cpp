@@ -18,7 +18,7 @@ namespace urchin
 	void IntegrateVelocityManager::integrateVelocity(float dt, const std::vector<OverlappingPair *> &overlappingPairs, const Vector3<float> &gravity)
 	{
 		//apply internal forces
-		applyGravityForce(gravity);
+		applyGravityForce(gravity, dt);
 		applyRollingFrictionResistanceForce(dt, overlappingPairs);
 
 		//integrate velocities and apply damping
@@ -28,16 +28,16 @@ namespace urchin
 			if(body && body->isActive())
 			{
 				//integrate velocity
-				body->setLinearVelocity(body->getLinearVelocity() + (body->getTotalForce() * body->getInvMass()) * dt);
-				body->setAngularVelocity(body->getAngularVelocity() + (body->getTotalTorque() * body->getInvWorldInertia()) * dt);
+				body->setLinearVelocity(body->getLinearVelocity() + (body->getTotalMomentum() * body->getInvMass()));
+				body->setAngularVelocity(body->getAngularVelocity() + (body->getTotalTorqueMomentum() * body->getInvWorldInertia()));
 
 				//apply damping
 				body->setLinearVelocity(body->getLinearVelocity() * powf(1.0-body->getLinearDamping(), dt));
 				body->setAngularVelocity(body->getAngularVelocity() * powf(1.0-body->getAngularDamping(), dt));
 
-				//reset forces
-				body->resetForce();
-				body->resetTorque();
+				//reset momentum
+				body->resetMomentum();
+				body->resetTorqueMomentum();
 			}
 		}
 	}
@@ -45,14 +45,14 @@ namespace urchin
 	/**
 	 * @param gravity Gravity expressed in units/s^2
 	 */
-	void IntegrateVelocityManager::applyGravityForce(const Vector3<float> &gravity)
+	void IntegrateVelocityManager::applyGravityForce(const Vector3<float> &gravity, float dt)
 	{
 		for (auto abstractBody : bodyManager->getWorkBodies())
 		{
 			WorkRigidBody *body = WorkRigidBody::upCast(abstractBody);
 			if(body && body->isActive())
 			{
-				body->applyCentralForce(gravity * body->getMass());
+				body->applyCentralMomentum(gravity * body->getMass() * dt);
 			}
 		}
 	}
@@ -84,7 +84,7 @@ namespace urchin
 						}
 					}
 
-					body->applyTorque(rollingFrictionForce);
+					body->applyTorqueMomentum(rollingFrictionForce * dt);
 				}
 			}
 		}

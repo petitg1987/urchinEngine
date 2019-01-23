@@ -21,7 +21,7 @@ namespace urchin
 			void integrateVelocity(float, const std::vector<OverlappingPair *> &, const Vector3<float> &);
 
 		private:
-			void applyGravityForce(const Vector3<float> &);
+			void applyGravityForce(const Vector3<float> &, float);
 			void applyRollingFrictionResistanceForce(float , const std::vector<OverlappingPair *> &);
 
 			const BodyManager *bodyManager;

@@ -4,6 +4,7 @@
 - LIGHTING
 	- (1) [QUALITY IMPROVEMENT] No limit for number of light (use texture instead of uniform)
 - MODEL
+    - (1) [OPTIMIZATION] Avoid octree resize continuously when physics object fall in nothingness
     - (2) [OPTIMIZATION] Group same models in same octree to perform one draw call
 	- (3) [OPTIMIZATION] Models LOD
 	- (3) [OPTIMIZATION] Coherent hierarchical culling revisited

@@ -26,12 +26,12 @@ namespace urchin
 			Vector3<float> getLinearVelocity() const;
 			Vector3<float> getAngularVelocity() const;
 
-			Vector3<float> getTotalForce() const;
-			void applyCentralForce(const Vector3<float> &);
-			void applyForce(const Vector3<float> &, const Point3<float> &);
+			Vector3<float> getTotalMomentum() const;
+			void applyCentralMomentum(const Vector3<float> &);
+			void applyMomentum(const Vector3<float> &, const Point3<float> &);
 
-			Vector3<float> getTotalTorque() const;
-			void applyTorque(const Vector3<float> &);
+			Vector3<float> getTotalTorqueMomentum() const;
+			void applyTorqueMomentum(const Vector3<float> &);
 
 			void setMass(float);
 			float getMass() const;
@@ -55,8 +55,8 @@ namespace urchin
 			Vector3<float> linearVelocity;
 			Vector3<float> angularVelocity;
 
-			Vector3<float> totalForce;
-			Vector3<float> totalTorque;
+			Vector3<float> totalMomentum;
+			Vector3<float> totalTorqueMomentum;
 
 			//rigid body description data
 			float mass;

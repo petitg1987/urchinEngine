@@ -314,7 +314,7 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 
 	//rebuild the octree
 	buildOctree(allOctreeables);
-	
+
 	return true;
 }
 
