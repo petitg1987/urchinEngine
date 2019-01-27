@@ -24,7 +24,7 @@ namespace urchin
             NonPlayerCharacter *npc;
             AIManager *aiManager;
 
-            Vector3<float> steering;
+            Vector3<float> steeringMomentum;
 
             std::shared_ptr<urchin::PathRequest> pathRequest;
             std::vector<urchin::PathPoint> pathPoints;

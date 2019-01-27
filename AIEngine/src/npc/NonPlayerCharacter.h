@@ -9,16 +9,19 @@ namespace urchin
     class NonPlayerCharacter
     {
         public:
-            explicit NonPlayerCharacter(const Point3<float> &);
+            NonPlayerCharacter(float, const Point3<float> &);
 
-            void setVelocity(const Vector3<float> &);
-            const Vector3<float> &getVelocity() const;
+            float getMass() const;
 
-            void setPosition(const Point3<float> &);
+            void updateMomentum(const Vector3<float> &);
+            const Vector3<float> &getMomentum() const;
+
+            void updatePosition(const Point3<float> &);
             const Point3<float> &getPosition() const;
 
         private:
-            Vector3<float> velocity;
+            float mass;
+            Vector3<float> momentum;
             Point3<float> position;
     };
 

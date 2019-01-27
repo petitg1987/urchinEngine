@@ -36,13 +36,13 @@ namespace urchin
     {
         float maxVelocity = 0.01f;
         Vector3<float> desiredVelocity = npc->getPosition().vector(target).normalize() * maxVelocity;
-        steering = desiredVelocity - npc->getVelocity();
+        Vector3<float> desiredMomentum = desiredVelocity * npc->getMass();
+        steeringMomentum = (desiredMomentum - npc->getMomentum());
     }
 
     void NPCController::applyForce()
     {
-        npc->setVelocity(npc->getVelocity() + steering);
-        npc->setPosition(npc->getPosition().translate(npc->getVelocity()));
+        npc->updateMomentum(steeringMomentum);
     }
 
 }
