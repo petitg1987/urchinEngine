@@ -36,13 +36,18 @@ namespace urchin
 	}
 
 	/**
+	 * Process ghost body. This method can be called in different thread that physics thread.
 	 * @param ghostBody Ghost body to process
 	 * @param manifoldResults [OUT] Collision constraints
 	 */
 	void NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody, std::vector<ManifoldResult> &manifoldResults)
 	{
-		const std::vector<OverlappingPair *> &overlappingPairs = ghostBody->getPairContainer()->getOverlappingPairs();
-		processOverlappingPairs(overlappingPairs, manifoldResults);
+		std::vector<OverlappingPair> &overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
+
+        for(auto &overlappingPair : overlappingPairs)
+        {
+            processOverlappingPair(&overlappingPair, manifoldResults);
+        }
 	}
 
 	void NarrowPhaseManager::processOverlappingPairs(const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
@@ -51,24 +56,29 @@ namespace urchin
 
 		for(const auto &overlappingPair : overlappingPairs)
 		{
-			AbstractWorkBody *body1 = overlappingPair->getBody1();
-			AbstractWorkBody *body2 = overlappingPair->getBody2();
-
-			if(body1->isActive() || body2->isActive())
-			{
-				std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
-
-				CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getPhysicsTransform());
-				CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
-				collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
-
-				if(collisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0)
-				{
-					manifoldResults.push_back(collisionAlgorithm->getConstManifoldResult());
-				}
-			}
+            processOverlappingPair(overlappingPair, manifoldResults);
 		}
 	}
+
+	void NarrowPhaseManager::processOverlappingPair(OverlappingPair *overlappingPair, std::vector<ManifoldResult> &manifoldResults)
+    {
+        AbstractWorkBody *body1 = overlappingPair->getBody1();
+        AbstractWorkBody *body2 = overlappingPair->getBody2();
+
+        if(body1->isActive() || body2->isActive())
+        {
+            std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
+
+            CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getPhysicsTransform());
+            CollisionObjectWrapper collisionObject2(*body2->getShape(), body2->getPhysicsTransform());
+            collisionAlgorithm->processCollisionAlgorithm(collisionObject1, collisionObject2, true);
+
+            if(collisionAlgorithm->getConstManifoldResult().getNumContactPoints()!=0)
+            {
+                manifoldResults.push_back(collisionAlgorithm->getConstManifoldResult());
+            }
+        }
+    }
 
 	std::shared_ptr<CollisionAlgorithm> NarrowPhaseManager::retrieveCollisionAlgorithm(OverlappingPair *overlappingPair)
 	{

@@ -6,7 +6,7 @@ namespace urchin
     NPCController::NPCController(NonPlayerCharacter *nonPlayerCharacter, AIManager *aiManager) :
             npc(nonPlayerCharacter),
             aiManager(aiManager)
-    { //TODO apply gravity on character
+    {
 
     }
 
@@ -29,20 +29,21 @@ namespace urchin
             updateSeekForce(seekTarget);
         }
 
-        applyForce();
+        applyMomentum();
     }
 
     void NPCController::updateSeekForce(const Point3<float> &target)
     {
-        float maxVelocity = 0.01f;
-        Vector3<float> desiredVelocity = npc->getPosition().vector(target).normalize() * maxVelocity;
+        float maxVelocityKmByHour = 5.0f;
+        float maxVelocityMBySec = (maxVelocityKmByHour * 1000.0) / (60.0f * 60.0f);
+        Vector3<float> desiredVelocity = npc->getPosition().vector(target).normalize() * maxVelocityMBySec;
         Vector3<float> desiredMomentum = desiredVelocity * npc->getMass();
-        steeringMomentum = (desiredMomentum - npc->getMomentum());
+        steeringMomentum = (desiredMomentum - npc->getMomentum()); //TODO apply a truncate ? see https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-seek--gamedev-849
     }
 
-    void NPCController::applyForce()
+    void NPCController::applyMomentum()
     {
-        npc->updateMomentum(steeringMomentum);
+        npc->updateMomentum(npc->getMomentum() + steeringMomentum); //TODO apply a max speed ? see https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-seek--gamedev-849
     }
 
 }

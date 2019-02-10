@@ -129,8 +129,6 @@ set(SOURCE_FILES
         src/object/CollisionSphereObject.h
         src/object/TemporalObject.cpp
         src/object/TemporalObject.h
-        src/processable/character/CharacterController.cpp
-        src/processable/character/CharacterController.h
         src/processable/raytest/RayTester.cpp
         src/processable/raytest/RayTester.h
         src/processable/raytest/RayTestResult.cpp
@@ -180,8 +178,12 @@ set(SOURCE_FILES
         src/collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h
         src/utils/property/EagerPropertyLoader.cpp
         src/utils/property/EagerPropertyLoader.h
-        src/processable/character/PhysicsCharacter.cpp
-        src/processable/character/PhysicsCharacter.h)
+        src/character/PhysicsCharacter.cpp
+        src/character/PhysicsCharacter.h
+        src/character/CharacterController.cpp
+        src/character/CharacterController.h
+        src/collision/broadphase/SyncVectorPairContainer.cpp
+        src/collision/broadphase/SyncVectorPairContainer.h)
 
 include_directories(src ../common/src)
 

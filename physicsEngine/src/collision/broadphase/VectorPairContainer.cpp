@@ -69,4 +69,15 @@ namespace urchin
 	{
 		return overlappingPairs;
 	}
+
+	std::vector<OverlappingPair> &VectorPairContainer::retrieveCopyOverlappingPairs() const
+	{
+		copiedOverlappingPairs.clear();
+		for(const auto &overlappingPair : overlappingPairs)
+		{
+			copiedOverlappingPairs.emplace_back(OverlappingPair(overlappingPair->getBody1(), overlappingPair->getBody2()));
+		}
+
+		return copiedOverlappingPairs;
+	}
 }

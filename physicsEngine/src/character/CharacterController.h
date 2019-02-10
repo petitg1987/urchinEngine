@@ -5,7 +5,7 @@
 #include <mutex>
 #include <atomic>
 
-#include "processable/character/PhysicsCharacter.h"
+#include "PhysicsCharacter.h"
 #include "processable/Processable.h"
 #include "collision/ManifoldResult.h"
 
@@ -30,21 +30,20 @@ namespace urchin
 	/**
 	* Character controller: allow to move a character in a world
 	*/
-	class CharacterController : public Processable
+	class CharacterController
 	{
 		public:
-			explicit CharacterController(const std::shared_ptr<PhysicsCharacter> &);
-			~CharacterController() override;
-
-			void initialize(PhysicsWorld *) override;
+			explicit CharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
+			~CharacterController();
 
 			void setMomentum(const Vector3<float> &);
 			void jump();
 
-			void setup(float, const Vector3<float> &) override;
-			void execute(float, const Vector3<float> &) override;
+			void update(float);
 
 		private:
+			void setup(float);
+
 			Vector3<float> getVelocity() const;
 			bool needJumpAndResetFlag();
 

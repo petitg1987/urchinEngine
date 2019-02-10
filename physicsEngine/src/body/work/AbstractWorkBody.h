@@ -62,8 +62,6 @@ namespace urchin
 		private:
 			//work body representation data
 			PhysicsTransform physicsTransform;
-
-			//work body description data
 			std::shared_ptr<const CollisionShape3D> shape;
 			std::string id;
 			float restitution;

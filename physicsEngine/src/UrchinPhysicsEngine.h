@@ -39,9 +39,10 @@
 #include "collision/island/IslandElement.h"
 
 #include "processable/Processable.h"
-#include "processable/character/CharacterController.h"
-#include "processable/character/PhysicsCharacter.h"
 #include "processable/raytest/RayTestResult.h"
+
+#include "character/CharacterController.h"
+#include "character/PhysicsCharacter.h"
 
 #include "visualizer/CollisionVisualizer.h"
 

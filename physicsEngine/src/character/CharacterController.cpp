@@ -3,7 +3,7 @@
 #include <limits>
 #include <cmath>
 
-#include "processable/character/CharacterController.h"
+#include "CharacterController.h"
 #include "collision/ManifoldResult.h"
 #include "collision/ManifoldContactPoint.h"
 #include "collision/broadphase/PairContainer.h"
@@ -16,11 +16,11 @@
 namespace urchin
 {
 
-	CharacterController::CharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter) :
-		physicsCharacter(physicsCharacter),
+	CharacterController::CharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld *physicsWorld) :
 		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
-		physicsWorld(nullptr),
+        physicsCharacter(physicsCharacter),
+        physicsWorld(physicsWorld),
 		ghostBody(new WorkGhostBody("character", physicsCharacter->getTransform(), physicsCharacter->getShape())),
 		verticalSpeed(0.0f),
 		makeJump(false),
@@ -32,6 +32,7 @@ namespace urchin
 		slopeInPercentage(0.0f)
 	{
 		ghostBody->setIsActive(true); //always active for get better reactivity
+        physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody);
 	}
 
 	CharacterController::~CharacterController()
@@ -42,13 +43,6 @@ namespace urchin
 		}
 
 		delete ghostBody;
-	}
-
-	void CharacterController::initialize(PhysicsWorld *physicsWorld)
-	{
-		this->physicsWorld = physicsWorld;
-
-		physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody);
 	}
 
 	void CharacterController::setMomentum(const Vector3<float> &momentum)
@@ -76,10 +70,35 @@ namespace urchin
 	}
 
 	/**
-	 * @param dt Delta of time (sec.) between two simulation steps
-	 * @param gravity Gravity expressed in units/s^2
+	 * @param dt Delta of time between two simulation steps
 	 */
-	void CharacterController::setup(float dt, const Vector3<float> &gravity)
+	void CharacterController::update(float dt)
+	{
+		ScopeProfiler profiler("physics", "charactCtrlExec");
+
+		//setup values
+		setup(dt);
+
+		//recover from penetration
+		recoverFromPenetration(dt);
+
+		//compute values
+		slopeInPercentage = 0.0f;
+		if(isOnGround)
+		{
+			verticalSpeed = 0.0f;
+			slopeInPercentage = computeSlope();
+		}
+		if(hitRoof)
+		{
+			verticalSpeed = 0.0f;
+		}
+
+		//set new transform on character
+		physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
+	}
+
+	void CharacterController::setup(float dt)
 	{
 		#ifdef _DEBUG
 			assert(physicsWorld!=nullptr);
@@ -113,7 +132,7 @@ namespace urchin
 		bool closeToTheGround = timeInTheAir < MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND;
 		if(needJumpAndResetFlag() && closeToTheGround && !jumping)
 		{
-            verticalSpeed += physicsCharacter->getJumpSpeed();
+			verticalSpeed += physicsCharacter->getJumpSpeed();
 			isOnGround = false;
 			jumping = true;
 		}else if(isOnGround && jumping)
@@ -124,43 +143,16 @@ namespace urchin
 		//compute gravity velocity
 		if(!isOnGround || numberOfHit > 1)
 		{
-            verticalSpeed -= (-gravity.Y) * dt;
+			verticalSpeed -= (-physicsWorld->getGravity().Y) * dt;
 			if(verticalSpeed < -MAX_VERTICAL_SPEED)
 			{
-                verticalSpeed = -MAX_VERTICAL_SPEED;
+				verticalSpeed = -MAX_VERTICAL_SPEED;
 			}
 		}
 
 		//apply data on body
 		targetPosition.Y += verticalSpeed * dt;
 		ghostBody->setPosition(targetPosition);
-	}
-
-	/**
-	 * @param dt Delta of time between two simulation steps
-	 * @param gravity Gravity expressed in units/s^2
-	 */
-	void CharacterController::execute(float dt, const Vector3<float> &gravity)
-	{
-		ScopeProfiler profiler("physics", "charactCtrlExec");
-
-		//recover from penetration
-		recoverFromPenetration(dt);
-
-		//compute values
-		slopeInPercentage = 0.0f;
-		if(isOnGround)
-		{
-			verticalSpeed = 0.0f;
-			slopeInPercentage = computeSlope();
-		}
-		if(hitRoof)
-		{
-			verticalSpeed = 0.0f;
-		}
-
-		//set new transform on character
-		physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
 	}
 
 	void CharacterController::recoverFromPenetration(float dt)

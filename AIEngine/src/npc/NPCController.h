@@ -19,7 +19,7 @@ namespace urchin
 
         private:
             void updateSeekForce(const Point3<float> &);
-            void applyForce();
+            void applyMomentum();
 
             NonPlayerCharacter *npc;
             AIManager *aiManager;

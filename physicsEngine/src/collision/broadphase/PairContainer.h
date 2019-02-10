@@ -20,6 +20,7 @@ namespace urchin
 			virtual void removeOverlappingPairs(AbstractWorkBody *) = 0;
 
 			virtual const std::vector<OverlappingPair *> &getOverlappingPairs() const = 0;
+			virtual std::vector<OverlappingPair> &retrieveCopyOverlappingPairs() const = 0; //TODO should return const ? or provide std::vector in input
 	};
 
 }
