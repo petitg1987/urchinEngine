@@ -39,7 +39,7 @@ namespace urchin
 	{
 		if(physicsWorld)
 		{
-			physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBody(ghostBody);
+			physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBody(ghostBody); //TODO generate crash: to review
 		}
 
 		delete ghostBody;
