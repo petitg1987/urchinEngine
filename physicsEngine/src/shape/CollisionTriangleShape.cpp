@@ -7,9 +7,7 @@ namespace urchin
     CollisionTriangleShape::CollisionTriangleShape(const Point3<float> *points) :
             CollisionShape3D(),
             triangleShape(new TriangleShape3D<float>(points)),
-            triangleShapesPool(nullptr),
-            lastConvexObject(nullptr),
-            collisionTriangleObjectsPool(nullptr)
+            triangleShapesPool(nullptr)
     {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
@@ -17,9 +15,7 @@ namespace urchin
     CollisionTriangleShape::CollisionTriangleShape(TriangleShape3D<float> *triangleShape, FixedSizePool<TriangleShape3D<float>> *triangleShapesPool) :
             CollisionShape3D(),
             triangleShape(triangleShape),
-            triangleShapesPool(triangleShapesPool),
-            lastConvexObject(nullptr),
-            collisionTriangleObjectsPool(nullptr)
+            triangleShapesPool(triangleShapesPool)
     {
         refreshInnerMargin(0.0f); //no margin for triangle
     }
@@ -27,9 +23,7 @@ namespace urchin
     CollisionTriangleShape::CollisionTriangleShape(CollisionTriangleShape &&collisionTriangleShape) noexcept :
             CollisionShape3D(collisionTriangleShape),
             triangleShape(std::exchange(collisionTriangleShape.triangleShape, nullptr)),
-            triangleShapesPool(std::exchange(collisionTriangleShape.triangleShapesPool, nullptr)),
-            lastConvexObject(std::exchange(collisionTriangleShape.lastConvexObject, nullptr)),
-            collisionTriangleObjectsPool(std::exchange(collisionTriangleShape.collisionTriangleObjectsPool, nullptr))
+            triangleShapesPool(std::exchange(collisionTriangleShape.triangleShapesPool, nullptr))
     {
     }
 
@@ -41,14 +35,6 @@ namespace urchin
         }else
         {
             delete triangleShape;
-        }
-
-        if(collisionTriangleObjectsPool)
-        {
-            collisionTriangleObjectsPool->free(lastConvexObject);
-        }else
-        {
-            delete lastConvexObject;
         }
     }
 
@@ -72,35 +58,18 @@ namespace urchin
         throw std::runtime_error("Retrieving AABBox is currently not supported (triangle is only usable as a sub-shape)");
     }
 
-    void CollisionTriangleShape::setupConvexObjectPool(FixedSizePool<CollisionTriangleObject> *collisionTriangleObjectsPool)
-    {
-        #ifdef _DEBUG
-            assert(lastConvexObject==nullptr);
-        #endif
-
-        void *objectMemPtr = collisionTriangleObjectsPool->allocate();
-        this->lastConvexObject = new (objectMemPtr) CollisionTriangleObject(0.0, Point3<float>(), Point3<float>(),Point3<float>());
-        this->collisionTriangleObjectsPool = collisionTriangleObjectsPool;
-    }
-
-    CollisionConvexObject3D *CollisionTriangleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionTriangleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
     {
         #ifdef _DEBUG
             assert(getInnerMargin()==0.0f);
         #endif
 
-        if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionTriangleObject(getInnerMargin(),
-                    physicsTransform.transform(triangleShape->getPoints()[0]),
-                    physicsTransform.transform(triangleShape->getPoints()[1]),
-                    physicsTransform.transform(triangleShape->getPoints()[2]));
-            return lastConvexObject;
-        }
-        return new (lastConvexObject) CollisionTriangleObject(getInnerMargin(),
+        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionTriangleObject));
+        auto *collisionObjectPtr = new (memPtr) CollisionTriangleObject(getInnerMargin(),
                 physicsTransform.transform(triangleShape->getPoints()[0]),
                 physicsTransform.transform(triangleShape->getPoints()[1]),
                 physicsTransform.transform(triangleShape->getPoints()[2]));
+        return std::unique_ptr<CollisionTriangleObject, ObjectDeleter>(collisionObjectPtr);
     }
 
     Vector3<float> CollisionTriangleShape::computeLocalInertia(float) const
@@ -115,7 +84,7 @@ namespace urchin
 
     float CollisionTriangleShape::getMinDistanceToCenter() const
     {
-        return 0.0;
+        return 0.0f;
     }
 
     CollisionShape3D *CollisionTriangleShape::clone() const

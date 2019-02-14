@@ -4,10 +4,13 @@
 #include <memory>
 #include <vector>
 #include <set>
+#include <mutex>
 #include "UrchinCommon.h"
 
 #include "utils/math/PhysicsTransform.h"
 #include "object/CollisionConvexObject3D.h"
+#include "utils/pool/FixedSizePool.h"
+#include "object/pool/ObjectDeleter.h"
 
 namespace urchin
 {
@@ -49,7 +52,7 @@ namespace urchin
 			virtual std::shared_ptr<CollisionShape3D> scale(float) const = 0;
 
 			virtual AABBox<float> toAABBox(const PhysicsTransform &) const = 0;
-			virtual CollisionConvexObject3D *toConvexObject(const PhysicsTransform &) const = 0; //TODO make method thread-safe
+			virtual std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform &) const = 0;
 
 			virtual Vector3<float> computeLocalInertia(float) const = 0;
 			virtual float getMaxDistanceToCenter() const = 0;
@@ -60,6 +63,7 @@ namespace urchin
 			virtual CollisionShape3D *clone() const = 0;
 
 		protected:
+            FixedSizePool<CollisionConvexObject3D> *getObjectsPool() const;
 			void refreshInnerMargin(float);
 
 			mutable AABBox<float> lastAABBox;

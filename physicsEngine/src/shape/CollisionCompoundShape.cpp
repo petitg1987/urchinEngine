@@ -86,7 +86,7 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	CollisionConvexObject3D *CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCompoundShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		throw std::runtime_error("Impossible to transform compound shape to convex object");
 	}

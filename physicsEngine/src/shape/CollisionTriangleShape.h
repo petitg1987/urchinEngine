@@ -29,8 +29,7 @@ namespace urchin
             std::shared_ptr<CollisionShape3D> scale(float) const override;
 
             AABBox<float> toAABBox(const PhysicsTransform &) const override;
-            void setupConvexObjectPool(FixedSizePool<CollisionTriangleObject> *);
-            CollisionConvexObject3D *toConvexObject(const PhysicsTransform &) const override;
+            std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> toConvexObject(const PhysicsTransform &) const override;
 
             Vector3<float> computeLocalInertia(float) const override;
             float getMaxDistanceToCenter() const override;
@@ -41,10 +40,6 @@ namespace urchin
         private:
             TriangleShape3D<float> *triangleShape; //shape including margin
             FixedSizePool<TriangleShape3D<float>> *triangleShapesPool;
-
-            mutable CollisionTriangleObject *lastConvexObject;
-            FixedSizePool<CollisionTriangleObject> *collisionTriangleObjectsPool;
-
     };
 
 }

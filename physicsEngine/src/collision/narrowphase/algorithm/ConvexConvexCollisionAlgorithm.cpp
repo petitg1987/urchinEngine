@@ -17,8 +17,8 @@ namespace urchin
 		ScopeProfiler profiler("physics", "algConvConv");
 
 		//transform convex hull shapes
-		CollisionConvexObject3D *convexObject1 = object1.getShape().toConvexObject(object1.getShapeWorldTransform());
-		CollisionConvexObject3D *convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
+		std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> convexObject1 = object1.getShape().toConvexObject(object1.getShapeWorldTransform());
+		std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> convexObject2 = object2.getShape().toConvexObject(object2.getShapeWorldTransform());
 
 		//process GJK and EPA hybrid algorithms
 		std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithoutMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, false);
@@ -45,7 +45,8 @@ namespace urchin
 		}
 	}
 
-	void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const CollisionConvexObject3D *convexObject1, const CollisionConvexObject3D *convexObject2)
+	void ConvexConvexCollisionAlgorithm::processCollisionAlgorithmWithMargin(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &convexObject1,
+			const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &convexObject2)
 	{
 		std::unique_ptr<GJKResult<double>, AlgorithmResultDeleter> gjkResultWithMargin = gjkAlgorithm.processGJK(*convexObject1, *convexObject2, true);
 
@@ -64,8 +65,9 @@ namespace urchin
 		}
 	}
 
-	CollisionAlgorithm *ConvexConvexCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, void* memPtr) const
+	CollisionAlgorithm *ConvexConvexCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
 	{
+		void *memPtr = algorithmPool->allocate(sizeof(ConvexConvexCollisionAlgorithm));
 		return new(memPtr) ConvexConvexCollisionAlgorithm(objectSwapped, result);
 	}
 

@@ -6,23 +6,20 @@ namespace urchin
 
 	CollisionCapsuleShape::CollisionCapsuleShape(float radius, float cylinderHeight, CapsuleShape<float>::CapsuleOrientation capsuleOrientation) :
 			CollisionShape3D(),
-			capsuleShape(new CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation)),
-			lastConvexObject(nullptr)
+			capsuleShape(new CapsuleShape<float>(radius, cylinderHeight, capsuleOrientation))
 	{
 		computeSafeMargin();
 	}
 
 	CollisionCapsuleShape::CollisionCapsuleShape(CollisionCapsuleShape &&collisionCapsuleShape) noexcept :
 			CollisionShape3D(collisionCapsuleShape),
-			capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr)),
-			lastConvexObject(std::exchange(collisionCapsuleShape.lastConvexObject, nullptr))
+			capsuleShape(std::exchange(collisionCapsuleShape.capsuleShape, nullptr))
 	{
 	}
 
 	CollisionCapsuleShape::~CollisionCapsuleShape()
 	{
 		delete capsuleShape;
-		delete lastConvexObject;
 	}
 
 	void CollisionCapsuleShape::computeSafeMargin()
@@ -86,19 +83,16 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	CollisionConvexObject3D *CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCapsuleShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		float reducedRadius = getRadius() - getInnerMargin();
 
-        if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionCapsuleObject(getInnerMargin(), reducedRadius, getCylinderHeight(), getCapsuleOrientation(), position, orientation);
-            return lastConvexObject;
-        }
-		return new (lastConvexObject) CollisionCapsuleObject(getInnerMargin(), reducedRadius, getCylinderHeight(), getCapsuleOrientation(), position, orientation);
+		void *memPtr = getObjectsPool()->allocate(sizeof(CollisionCapsuleObject));
+		auto *collisionObjectPtr = new (memPtr) CollisionCapsuleObject(getInnerMargin(), reducedRadius, getCylinderHeight(), getCapsuleOrientation(), position, orientation);
+		return std::unique_ptr<CollisionCapsuleObject, ObjectDeleter>(collisionObjectPtr);
 	}
 
 	Vector3<float> CollisionCapsuleShape::computeLocalInertia(float mass) const

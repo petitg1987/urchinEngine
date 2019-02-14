@@ -1,4 +1,5 @@
 #include <cmath>
+#include <utility>
 
 #include "shape/CollisionBoxShape.h"
 #include "object/CollisionBoxObject.h"
@@ -8,23 +9,20 @@ namespace urchin
 
 	CollisionBoxShape::CollisionBoxShape(const Vector3<float> &halfSizes) :
 			CollisionShape3D(),
-			boxShape(new BoxShape<float>(halfSizes)),
-			lastConvexObject(nullptr)
+			boxShape(new BoxShape<float>(halfSizes))
 	{
 		computeSafeMargin();
 	}
 
 	CollisionBoxShape::CollisionBoxShape(CollisionBoxShape &&collisionBoxShape) noexcept :
             CollisionShape3D(collisionBoxShape),
-			boxShape(std::exchange(collisionBoxShape.boxShape, nullptr)),
-			lastConvexObject(std::exchange(collisionBoxShape.lastConvexObject, nullptr))
+			boxShape(std::exchange(collisionBoxShape.boxShape, nullptr))
 	{
 	}
 
 	CollisionBoxShape::~CollisionBoxShape()
     {
 		delete boxShape;
-        delete lastConvexObject;
     }
 
 	void CollisionBoxShape::computeSafeMargin()
@@ -80,19 +78,16 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	CollisionConvexObject3D *CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionBoxShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
 
 		Vector3<float> halfSizeSubtractMargin = boxShape->getHalfSizes() - Vector3<float>(getInnerMargin(), getInnerMargin(), getInnerMargin());
 
-		if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
-            return lastConvexObject;
-        }
-		return new (lastConvexObject) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
+		void *memPtr = getObjectsPool()->allocate(sizeof(CollisionBoxObject));
+        auto *collisionObjectPtr = new (memPtr) CollisionBoxObject(getInnerMargin(), halfSizeSubtractMargin, position, orientation);
+		return std::unique_ptr<CollisionBoxObject, ObjectDeleter>(collisionObjectPtr);
 	}
 
 	Vector3<float> CollisionBoxShape::computeLocalInertia(float mass) const

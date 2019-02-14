@@ -9,23 +9,20 @@ namespace urchin
 	*/
 	CollisionSphereShape::CollisionSphereShape(float innerMargin) :
 			CollisionShape3D(innerMargin),
-			sphereShape(new SphereShape<float>(innerMargin)),
-			lastConvexObject(nullptr)
+			sphereShape(new SphereShape<float>(innerMargin))
 	{
 
 	}
 
 	CollisionSphereShape::CollisionSphereShape(CollisionSphereShape &&collisionSphereShape) noexcept :
 			CollisionShape3D(collisionSphereShape),
-			sphereShape(std::exchange(collisionSphereShape.sphereShape, nullptr)),
-			lastConvexObject(std::exchange(collisionSphereShape.lastConvexObject, nullptr))
+			sphereShape(std::exchange(collisionSphereShape.sphereShape, nullptr))
 	{
 	}
 
 	CollisionSphereShape::~CollisionSphereShape()
 	{
 		delete sphereShape;
-        delete lastConvexObject;
 	}
 
 	CollisionShape3D::ShapeType CollisionSphereShape::getShapeType() const
@@ -55,16 +52,13 @@ namespace urchin
 		return AABBox<float>(position - sphereShape->getRadius(), position + sphereShape->getRadius());
 	}
 
-	CollisionConvexObject3D *CollisionSphereShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionSphereShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 
-        if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionSphereObject(getInnerMargin(), position);
-            return lastConvexObject;
-        }
-		return new (lastConvexObject) CollisionSphereObject(getInnerMargin(), position);
+		void *memPtr = getObjectsPool()->allocate(sizeof(CollisionSphereObject));
+		auto *collisionObjectPtr = new (memPtr) CollisionSphereObject(getInnerMargin(), position);
+		return std::unique_ptr<CollisionSphereObject, ObjectDeleter>(collisionObjectPtr);
 	}
 
 	Vector3<float> CollisionSphereShape::computeLocalInertia(float mass) const

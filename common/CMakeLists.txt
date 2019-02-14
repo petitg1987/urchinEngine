@@ -174,7 +174,11 @@ set(SOURCE_FILES
         src/tools/profiler/ProfilerNode.cpp
         src/tools/profiler/ProfilerNode.h
         src/tools/profiler/ScopeProfiler.cpp
-        src/tools/profiler/ScopeProfiler.h)
+        src/tools/profiler/ScopeProfiler.h
+        src/tools/thread/ThreadLocalRepo.cpp
+        src/tools/thread/ThreadLocalRepo.h
+        src/tools/thread/LockById.cpp
+        src/tools/thread/LockById.h)
 
 include_directories(src)
 

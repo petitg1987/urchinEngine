@@ -13,7 +13,7 @@ namespace urchin
 			TemporalObject(const CollisionShape3D *, const PhysicsTransform &, const PhysicsTransform &);
 
 			const CollisionShape3D *getShape() const;
-			const CollisionConvexObject3D *getLocalObject() const;
+			const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &getLocalObject() const;
 
 			const PhysicsTransform &getFrom() const;
 			const PhysicsTransform &getTo() const;
@@ -22,7 +22,7 @@ namespace urchin
 
 		private:
 			const CollisionShape3D *shape;
-			const CollisionConvexObject3D *localObject;
+			std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> localObject;
 
 			PhysicsTransform from;
 			PhysicsTransform to;

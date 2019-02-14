@@ -183,7 +183,11 @@ set(SOURCE_FILES
         src/character/CharacterController.cpp
         src/character/CharacterController.h
         src/collision/broadphase/SyncVectorPairContainer.cpp
-        src/collision/broadphase/SyncVectorPairContainer.h)
+        src/collision/broadphase/SyncVectorPairContainer.h
+        src/object/pool/CollisionConvexObjectPool.cpp
+        src/object/pool/CollisionConvexObjectPool.h
+        src/object/pool/ObjectDeleter.cpp
+        src/object/pool/ObjectDeleter.h)
 
 include_directories(src ../common/src)
 

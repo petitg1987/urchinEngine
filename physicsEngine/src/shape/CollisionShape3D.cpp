@@ -3,6 +3,7 @@
 
 #include "shape/CollisionShape3D.h"
 #include "utils/property/EagerPropertyLoader.h"
+#include "object/pool/CollisionConvexObjectPool.h"
 
 namespace urchin
 {
@@ -28,6 +29,11 @@ namespace urchin
 			initialInnerMargin(innerMargin)
 	{
 		lastTransform.setPosition(Point3<float>(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max()));
+	}
+
+	FixedSizePool<CollisionConvexObject3D> *CollisionShape3D::getObjectsPool() const
+	{
+		return CollisionConvexObjectPool::instance()->getObjectsPool();
 	}
 
 	void CollisionShape3D::refreshInnerMargin(float maximumInnerMargin)

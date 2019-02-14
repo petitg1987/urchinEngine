@@ -39,8 +39,13 @@ template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 /**
  * @return Memory pointer which can be used to instantiate an element.
  */
-template<class BaseType> void* FixedSizePool<BaseType>::allocate()
+template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int size)
 {
+	if(size > maxElementSize)
+	{
+		throw std::runtime_error("Fixed size pool '" + poolName + "' cannot allocate " + std::to_string(size) + " bytes because max allowed allocation is " + std::to_string(maxElementSize) + " bytes");
+	}
+
 	if(freeCount!=0)
 	{ //pool is not full
 		void* result = firstFree;

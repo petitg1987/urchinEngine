@@ -67,7 +67,7 @@ namespace urchin
 
 				WorkRigidBody *body1 = WorkRigidBody::upCast(manifoldResult.getBody1());
 				WorkRigidBody *body2 = WorkRigidBody::upCast(manifoldResult.getBody2());
-				void *memPtr = constraintSolvingPool->allocate();
+				void *memPtr = constraintSolvingPool->allocate(sizeof(ConstraintSolving));
 				auto *constraintSolving = new(memPtr) ConstraintSolving(body1, body2, contact);
 
 				const CommonSolvingData &commonSolvingData = fillCommonSolvingData(manifoldResult, contact);

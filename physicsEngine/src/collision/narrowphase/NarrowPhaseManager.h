@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <mutex>
 #include "UrchinCommon.h"
 
 #include "collision/ManifoldResult.h"
@@ -46,8 +47,9 @@ namespace urchin
 			const BroadPhaseManager *broadPhaseManager;
 
 			CollisionAlgorithmSelector *const collisionAlgorithmSelector;
-
 			const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
+
+			std::mutex mutex;
 	};
 
 }

@@ -19,7 +19,7 @@ namespace urchin
 			FixedSizePool(const std::string &, unsigned int, unsigned int);
 			~FixedSizePool();
 
-			void* allocate();
+			void* allocate(unsigned int);
 			void free(BaseType *ptr);
 
 		private:

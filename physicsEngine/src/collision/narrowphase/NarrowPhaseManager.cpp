@@ -62,6 +62,8 @@ namespace urchin
 
 	void NarrowPhaseManager::processOverlappingPair(OverlappingPair *overlappingPair, std::vector<ManifoldResult> &manifoldResults)
     {
+        std::lock_guard<std::mutex> lock(mutex); //TODO do better lock (by body ids)
+
         AbstractWorkBody *body1 = overlappingPair->getBody1();
         AbstractWorkBody *body2 = overlappingPair->getBody2();
 

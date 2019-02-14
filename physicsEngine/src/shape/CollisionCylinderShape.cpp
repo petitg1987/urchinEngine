@@ -6,23 +6,20 @@ namespace urchin
 
 	CollisionCylinderShape::CollisionCylinderShape(float radius, float height, CylinderShape<float>::CylinderOrientation cylinderOrientation) :
 			CollisionShape3D(),
-			cylinderShape(new CylinderShape<float>(radius, height, cylinderOrientation)),
-			lastConvexObject(nullptr)
+			cylinderShape(new CylinderShape<float>(radius, height, cylinderOrientation))
 	{
 		computeSafeMargin();
 	}
 
 	CollisionCylinderShape::CollisionCylinderShape(CollisionCylinderShape &&collisionCylinderShape) noexcept :
 			CollisionShape3D(collisionCylinderShape),
-			cylinderShape(std::exchange(collisionCylinderShape.cylinderShape, nullptr)),
-			lastConvexObject(std::exchange(collisionCylinderShape.lastConvexObject, nullptr))
+			cylinderShape(std::exchange(collisionCylinderShape.cylinderShape, nullptr))
 	{
 	}
 
     CollisionCylinderShape::~CollisionCylinderShape()
     {
 		delete cylinderShape;
-        delete lastConvexObject;
     }
 
 	void CollisionCylinderShape::computeSafeMargin()
@@ -87,7 +84,7 @@ namespace urchin
         return lastAABBox;
 	}
 
-	CollisionConvexObject3D *CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionCylinderShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
@@ -95,12 +92,9 @@ namespace urchin
 		float reducedRadius = getRadius() - getInnerMargin();
 		float reducedHeight = getHeight() - (2.0f * getInnerMargin());
 
-        if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionCylinderObject(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
-            return lastConvexObject;
-        }
-		return new (lastConvexObject) CollisionCylinderObject(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
+        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionCylinderObject));
+        auto *collisionObjectPtr = new (memPtr) CollisionCylinderObject(getInnerMargin(), reducedRadius, reducedHeight, getCylinderOrientation(), position, orientation);
+        return std::unique_ptr<CollisionCylinderObject, ObjectDeleter>(collisionObjectPtr);
 	}
 
 	Vector3<float> CollisionCylinderShape::computeLocalInertia(float mass) const

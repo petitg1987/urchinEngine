@@ -6,23 +6,20 @@ namespace urchin
 
 	CollisionConeShape::CollisionConeShape(float radius, float height, ConeShape<float>::ConeOrientation coneOrientation) :
 			CollisionShape3D(),
-			coneShape(new ConeShape<float>(radius, height, coneOrientation)),
-			lastConvexObject(nullptr)
+			coneShape(new ConeShape<float>(radius, height, coneOrientation))
 	{
 		computeSafeMargin();
 	}
 
 	CollisionConeShape::CollisionConeShape(CollisionConeShape &&collisionConeShape) noexcept :
 			CollisionShape3D(collisionConeShape),
-			coneShape(std::exchange(collisionConeShape.coneShape, nullptr)),
-			lastConvexObject(std::exchange(collisionConeShape.lastConvexObject, nullptr))
+			coneShape(std::exchange(collisionConeShape.coneShape, nullptr))
 	{
 	}
 
 	CollisionConeShape::~CollisionConeShape()
 	{
 		delete coneShape;
-        delete lastConvexObject;
 	}
 
 	void CollisionConeShape::computeSafeMargin()
@@ -91,7 +88,7 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	CollisionConvexObject3D *CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionConeShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		const Point3<float> &position = physicsTransform.getPosition();
 		const Quaternion<float> &orientation = physicsTransform.getOrientation();
@@ -99,12 +96,9 @@ namespace urchin
 		float reducedRadius = getRadius() - getInnerMargin();
 		float reducedHeight = getHeight() - (2.0f * getInnerMargin());
 
-        if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionConeObject(getInnerMargin(), reducedRadius, reducedHeight, getConeOrientation(), position, orientation);
-            return lastConvexObject;
-        }
-		return new (lastConvexObject) CollisionConeObject(getInnerMargin(), reducedRadius, reducedHeight, getConeOrientation(), position, orientation);
+		void *memPtr = getObjectsPool()->allocate(sizeof(CollisionConeObject));
+		auto *collisionObjectPtr = new (memPtr) CollisionConeObject(getInnerMargin(), reducedRadius, reducedHeight, getConeOrientation(), position, orientation);
+		return std::unique_ptr<CollisionConeObject, ObjectDeleter>(collisionObjectPtr);
 	}
 
 	Vector3<float> CollisionConeShape::computeLocalInertia(float mass) const

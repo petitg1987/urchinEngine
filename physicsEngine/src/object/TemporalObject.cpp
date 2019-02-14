@@ -17,7 +17,7 @@ namespace urchin
 		return shape;
 	}
 
-	const CollisionConvexObject3D *TemporalObject::getLocalObject() const
+	const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &TemporalObject::getLocalObject() const
 	{
 		return localObject;
 	}

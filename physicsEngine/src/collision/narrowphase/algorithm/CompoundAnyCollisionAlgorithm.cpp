@@ -70,8 +70,9 @@ namespace urchin
 		}
 	}
 
-	CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, void* memPtr) const
+	CollisionAlgorithm *CompoundAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
 	{
+		void *memPtr = algorithmPool->allocate(sizeof(CompoundAnyCollisionAlgorithm));
 		return new(memPtr) CompoundAnyCollisionAlgorithm(objectSwapped, result);
 	}
 

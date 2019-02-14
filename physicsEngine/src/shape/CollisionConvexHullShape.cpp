@@ -13,16 +13,14 @@ namespace urchin
 	*/
 	CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>> &points) :
 			CollisionShape3D(),
-			convexHullShape(new ConvexHullShape3D<float>(points)),
-            lastConvexObject(nullptr)
+			convexHullShape(new ConvexHullShape3D<float>(points))
 	{
 		initialize();
 	}
 
 	CollisionConvexHullShape::CollisionConvexHullShape(ConvexHullShape3D<float> *convexHullShape) :
 			CollisionShape3D(),
-			convexHullShape(convexHullShape),
-            lastConvexObject(nullptr)
+			convexHullShape(convexHullShape)
 	{
 		initialize();
 	}
@@ -32,15 +30,13 @@ namespace urchin
 			convexHullShape(std::exchange(collisionConvexHullShape.convexHullShape, nullptr)),
 			convexHullShapeReduced(std::move(collisionConvexHullShape.convexHullShapeReduced)),
 			minDistanceToCenter(std::exchange(collisionConvexHullShape.minDistanceToCenter, 0.0f)),
-			maxDistanceToCenter(std::exchange(collisionConvexHullShape.maxDistanceToCenter, 0.0f)),
-			lastConvexObject(std::exchange(collisionConvexHullShape.lastConvexObject, nullptr))
+			maxDistanceToCenter(std::exchange(collisionConvexHullShape.maxDistanceToCenter, 0.0f))
 	{
 	}
 
 	CollisionConvexHullShape::~CollisionConvexHullShape()
 	{
 		delete convexHullShape;
-        delete lastConvexObject;
 	}
 
 	void CollisionConvexHullShape::initialize()
@@ -129,10 +125,12 @@ namespace urchin
 		return lastAABBox;
 	}
 
-	CollisionConvexObject3D *CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+	std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionConvexHullShape::toConvexObject(const PhysicsTransform &physicsTransform) const
 	{
 		Transform<float> transform = physicsTransform.toTransform();
         auto convexHullWithMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShape->toConvexObject(transform).release()));
+
+        void *memPtr = getObjectsPool()->allocate(sizeof(CollisionConvexHullObject));
 
 		if(!convexHullShapeReduced)
 		{ //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
@@ -141,22 +139,14 @@ namespace urchin
     		#endif
             const std::shared_ptr<ConvexHull3D<float>> &convexHullWithoutMargin(convexHullWithMargin);
 
-            if(lastConvexObject==nullptr)
-            {
-                lastConvexObject = new CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
-                return lastConvexObject;
-            }
-            return new (lastConvexObject) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+            auto *collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+            return std::unique_ptr<CollisionConvexHullObject, ObjectDeleter>(collisionObjectPtr);
 		}
 
         auto convexHullWithoutMargin = std::shared_ptr<ConvexHull3D<float>>(dynamic_cast<ConvexHull3D<float>*>(convexHullShapeReduced->toConvexObject(transform).release()));
 
-        if(lastConvexObject==nullptr)
-        {
-            lastConvexObject = new CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
-            return lastConvexObject;
-        }
-        return new (lastConvexObject) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+        auto *collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);
+        return std::unique_ptr<CollisionConvexHullObject, ObjectDeleter>(collisionObjectPtr);
 	}
 
 	Vector3<float> CollisionConvexHullShape::computeLocalInertia(float mass) const
