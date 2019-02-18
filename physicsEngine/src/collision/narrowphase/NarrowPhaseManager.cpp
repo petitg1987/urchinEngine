@@ -29,6 +29,8 @@ namespace urchin
 	 */
 	void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
 	{
+        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
+
 		ScopeProfiler profiler("physics", "narrowPhase");
 
 		processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -42,6 +44,8 @@ namespace urchin
 	 */
 	void NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody, std::vector<ManifoldResult> &manifoldResults)
 	{
+        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
+
 		std::vector<OverlappingPair> &overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
         for(auto &overlappingPair : overlappingPairs)
@@ -62,8 +66,6 @@ namespace urchin
 
 	void NarrowPhaseManager::processOverlappingPair(OverlappingPair *overlappingPair, std::vector<ManifoldResult> &manifoldResults)
     {
-        std::lock_guard<std::mutex> lock(mutex); //TODO do better lock (by body ids) & lock for CCD
-
         AbstractWorkBody *body1 = overlappingPair->getBody1();
         AbstractWorkBody *body2 = overlappingPair->getBody2();
 
@@ -172,6 +174,8 @@ namespace urchin
 
 	ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const
 	{
+        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
+
 		ccd_set continuousCollisionResults;
 
 		for(auto bodyAABBoxHit : bodiesAABBoxHit)
@@ -256,6 +260,8 @@ namespace urchin
 
 	ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
+        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
+
 		CollisionSphereShape pointShape(0.0f);
 		PhysicsTransform from = PhysicsTransform(ray.getOrigin());
 		PhysicsTransform to = PhysicsTransform(ray.computeTo());

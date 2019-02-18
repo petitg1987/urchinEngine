@@ -2,7 +2,7 @@
 #define URCHINENGINE_COLLISIONCONVEXOBJECTPOOL_H
 
 #include "UrchinCommon.h"
-#include "utils/pool/FixedSizePool.h"
+#include "utils/pool/SyncFixedSizePool.h"
 
 namespace urchin
 {
@@ -17,12 +17,12 @@ namespace urchin
             CollisionConvexObjectPool();
             ~CollisionConvexObjectPool() override;
 
-            FixedSizePool<CollisionConvexObject3D> *getObjectsPool();
+            SyncFixedSizePool<CollisionConvexObject3D> *getObjectsPool();
 
         private:
             unsigned int maxObjectSize(std::vector<unsigned int>);
 
-            FixedSizePool<CollisionConvexObject3D> *objectsPool;
+            SyncFixedSizePool<CollisionConvexObject3D> *objectsPool;
     };
 
 }

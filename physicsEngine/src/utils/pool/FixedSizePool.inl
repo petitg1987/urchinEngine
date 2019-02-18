@@ -14,7 +14,7 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 	//create pool
 	pool = static_cast<unsigned char *>(operator new(this->maxElementSize * this->maxElements));
 	firstFree = pool;
-	
+
 	//initialize pool: each element contains address of next element and last one contains 0
 	unsigned char *p = pool;
 	int count = this->maxElements;
@@ -28,11 +28,11 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 {
-	if(freeCount != maxElements) //ensure that destructors have been called
+	if(freeCount != maxElements) //ensure that 'free' method has been called
 	{
 		Logger::logger().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
 	}
-	
+
 	delete pool;
 }
 
@@ -51,6 +51,7 @@ template<class BaseType> void* FixedSizePool<BaseType>::allocate(unsigned int si
 		void* result = firstFree;
 		firstFree = *(void**)firstFree;
 		--freeCount;
+
 		return result;
 	}
 	

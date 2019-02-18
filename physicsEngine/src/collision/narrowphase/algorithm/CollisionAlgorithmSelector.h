@@ -6,7 +6,7 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithm.h"
 #include "collision/narrowphase/algorithm/CollisionAlgorithmBuilder.h"
-#include "utils/pool/FixedSizePool.h"
+#include "utils/pool/SyncFixedSizePool.h"
 
 namespace urchin
 {
@@ -25,6 +25,8 @@ namespace urchin
 			void initializeCompoundAlgorithm();
 			void deleteCollisionAlgorithmBuilderMatrix();
 
+			void initializeAlgorithmPool();
+
 			class AlgorithmDeleter
 			{
 				public:
@@ -35,7 +37,7 @@ namespace urchin
 					FixedSizePool<CollisionAlgorithm> *const algorithmPool;
 			};
 
-			FixedSizePool<CollisionAlgorithm> *algorithmPool;
+			SyncFixedSizePool<CollisionAlgorithm> *algorithmPool;
 			CollisionAlgorithmBuilder *collisionAlgorithmBuilderMatrix[CollisionShape3D::SHAPE_MAX][CollisionShape3D::SHAPE_MAX];
 	};
 

@@ -261,8 +261,8 @@ namespace urchin
 		//Rotate point only works with normalized quaternion
 		#ifdef _DEBUG
 			const T normValue = norm();
-			assert(normValue >= (T)0.9999);
-			assert(normValue <= (T)1.0001);
+			assert(normValue >= (T)0.999);
+			assert(normValue <= (T)1.001);
 		#endif
 
 		Quaternion<T> final = (*this) * point * this->conjugate();

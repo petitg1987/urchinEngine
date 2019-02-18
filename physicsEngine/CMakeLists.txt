@@ -187,7 +187,9 @@ set(SOURCE_FILES
         src/object/pool/CollisionConvexObjectPool.cpp
         src/object/pool/CollisionConvexObjectPool.h
         src/object/pool/ObjectDeleter.cpp
-        src/object/pool/ObjectDeleter.h)
+        src/object/pool/ObjectDeleter.h
+        src/utils/pool/SyncFixedSizePool.cpp
+        src/utils/pool/SyncFixedSizePool.h)
 
 include_directories(src ../common/src)
 

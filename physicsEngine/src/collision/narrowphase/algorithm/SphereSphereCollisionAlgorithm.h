@@ -12,14 +12,14 @@ namespace urchin
 	class SphereSphereCollisionAlgorithm : public CollisionAlgorithm
 	{
 		public:
-			SphereSphereCollisionAlgorithm(bool, const ManifoldResult &);
+			SphereSphereCollisionAlgorithm(bool, ManifoldResult &&);
 			~SphereSphereCollisionAlgorithm() override = default;
 
 			void doProcessCollisionAlgorithm(const CollisionObjectWrapper &, const CollisionObjectWrapper &) override;
 
 			struct Builder : public CollisionAlgorithmBuilder
 			{
-				CollisionAlgorithm *createCollisionAlgorithm(bool, const ManifoldResult &, FixedSizePool<CollisionAlgorithm> *) const override;
+				CollisionAlgorithm *createCollisionAlgorithm(bool, ManifoldResult &&, FixedSizePool<CollisionAlgorithm> *) const override;
 
 				const std::vector<CollisionShape3D::ShapeType> &getFirstExpectedShapeType() const override;
 				unsigned int getAlgorithmSize() const override;

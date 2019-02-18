@@ -7,8 +7,8 @@
 namespace urchin
 {
 
-    ConcaveAnyCollisionAlgorithm::ConcaveAnyCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result) :
-            CollisionAlgorithm(objectSwapped, result)
+    ConcaveAnyCollisionAlgorithm::ConcaveAnyCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result) :
+            CollisionAlgorithm(objectSwapped, std::move(result))
     {
 
     }
@@ -71,10 +71,10 @@ namespace urchin
         }
     }
 
-    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, const ManifoldResult &result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
+    CollisionAlgorithm *ConcaveAnyCollisionAlgorithm::Builder::createCollisionAlgorithm(bool objectSwapped, ManifoldResult &&result, FixedSizePool<CollisionAlgorithm> *algorithmPool) const
     {
         void *memPtr = algorithmPool->allocate(sizeof(ConcaveAnyCollisionAlgorithm));
-        return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, result);
+        return new(memPtr) ConcaveAnyCollisionAlgorithm(objectSwapped, std::move(result));
     }
 
     const std::vector<CollisionShape3D::ShapeType> &ConcaveAnyCollisionAlgorithm::Builder::getFirstExpectedShapeType() const

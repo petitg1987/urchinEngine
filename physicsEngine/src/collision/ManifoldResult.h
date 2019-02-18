@@ -18,6 +18,8 @@ namespace urchin
 	{
 		public:
 			ManifoldResult(AbstractWorkBody *, AbstractWorkBody *);
+            ManifoldResult(const ManifoldResult &) = default;
+            ManifoldResult(ManifoldResult &&) = default;
 
 			AbstractWorkBody *getBody(unsigned int) const;
 			AbstractWorkBody *getBody1() const;

@@ -12,11 +12,10 @@
 namespace urchin
 {
 
-	CollisionAlgorithmSelector::CollisionAlgorithmSelector()
+	CollisionAlgorithmSelector::CollisionAlgorithmSelector() :
+			algorithmPool(nullptr)
 	{
-		//initialize algorithm builder
 		initializeCollisionAlgorithmBuilderMatrix();
-
 		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
 		{
 			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
@@ -29,17 +28,7 @@ namespace urchin
 			}
 		}
 
-		//initialize algorithm pool
-		unsigned int maxElementSize = 0;
-		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
-		{
-			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
-			{
-				maxElementSize = std::max(maxElementSize, collisionAlgorithmBuilderMatrix[i][j]->getAlgorithmSize());
-			}
-		}
-		unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
-		algorithmPool = new FixedSizePool<CollisionAlgorithm>("algorithmPool", maxElementSize, algorithmPoolSize);
+		initializeAlgorithmPool();
 	}
 
 	CollisionAlgorithmSelector::~CollisionAlgorithmSelector()
@@ -119,6 +108,22 @@ namespace urchin
 				delete collisionAlgorithmBuilderMatrix[i][j];
 			}
 		}
+	}
+
+	void CollisionAlgorithmSelector::initializeAlgorithmPool()
+	{
+		unsigned int maxElementSize = 0;
+		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
+		{
+			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
+			{
+				maxElementSize = std::max(maxElementSize, collisionAlgorithmBuilderMatrix[i][j]->getAlgorithmSize());
+			}
+		}
+		unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
+
+		//pool is synchronized because elements are created in narrow phase (= synchronized phase called by different threads) and deleted by different threads outside the narrow phase
+		algorithmPool = new SyncFixedSizePool<CollisionAlgorithm>("algorithmPool", maxElementSize, algorithmPoolSize);
 	}
 
 	/**
