@@ -176,7 +176,9 @@ set(SOURCE_FILES
         src/tools/profiler/ScopeProfiler.cpp
         src/tools/profiler/ScopeProfiler.h
         src/tools/thread/LockById.cpp
-        src/tools/thread/LockById.h)
+        src/tools/thread/LockById.h
+        src/tools/thread/ScopeLockById.cpp
+        src/tools/thread/ScopeLockById.h)
 
 include_directories(src)
 

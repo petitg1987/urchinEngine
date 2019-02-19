@@ -49,7 +49,7 @@ namespace urchin
 			CollisionAlgorithmSelector *const collisionAlgorithmSelector;
 			const GJKContinuousCollisionAlgorithm<double, float> gjkContinuousCollisionAlgorithm;
 
-			mutable std::recursive_mutex mutex;
+			std::shared_ptr<LockById> bodiesMutex;
 	};
 
 }

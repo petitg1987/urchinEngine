@@ -20,6 +20,8 @@
 #include "tools/xml/XmlAttribute.h"
 #include "tools/xml/XmlChunk.h"
 #include "tools/vector/VectorEraser.h"
+#include "tools/thread/LockById.h"
+#include "tools/thread/ScopeLockById.h"
 
 #include "pattern/observer/Observable.h"
 #include "pattern/observer/Observer.h"

@@ -15,10 +15,11 @@ namespace urchin
                 sizeof(GJKResultCollide<double>),
                 sizeof(GJKResultInvalid<double>),
                 sizeof(GJKResultNoCollide<double>)};
-
         unsigned int maxElementSize = *std::max_element(resultSizes.begin(), resultSizes.end());
         unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");
-        algorithmResultPool = new FixedSizePool<AlgorithmResult>("algorithmResultPool", maxElementSize, algorithmPoolSize);
+
+        //pool is synchronized because elements could be created/deleted by different threads as narrow phase can be called by different threads
+        algorithmResultPool = new SyncFixedSizePool<AlgorithmResult>("algorithmResultPool", maxElementSize, algorithmPoolSize);
     }
 
     AlgorithmResultAllocator::~AlgorithmResultAllocator()
@@ -26,7 +27,7 @@ namespace urchin
         delete algorithmResultPool;
     }
 
-    FixedSizePool<AlgorithmResult> *AlgorithmResultAllocator::getAlgorithmResultPool() const
+    SyncFixedSizePool<AlgorithmResult> *AlgorithmResultAllocator::getAlgorithmResultPool() const
     {
         return algorithmResultPool;
     }

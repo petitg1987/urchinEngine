@@ -3,7 +3,7 @@
 
 #include "UrchinCommon.h"
 
-#include "utils/pool/FixedSizePool.h"
+#include "utils/pool/SyncFixedSizePool.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResult.h"
 #include "collision/narrowphase/algorithm/utils/AlgorithmResultDeleter.h"
 #include "collision/narrowphase/algorithm/gjk/result/GJKResultCollide.h"
@@ -22,7 +22,7 @@ namespace urchin
         public:
             friend class Singleton<AlgorithmResultAllocator>;
 
-            FixedSizePool<AlgorithmResult> *getAlgorithmResultPool() const;
+            SyncFixedSizePool<AlgorithmResult> *getAlgorithmResultPool() const;
 
             template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultCollide(const Simplex<T> &);
             template<class T> std::unique_ptr<GJKResult<T>, AlgorithmResultDeleter> newGJKResultInvalid();
@@ -38,7 +38,7 @@ namespace urchin
             AlgorithmResultAllocator();
             ~AlgorithmResultAllocator() override;
 
-            FixedSizePool<AlgorithmResult> *algorithmResultPool;
+            SyncFixedSizePool<AlgorithmResult> *algorithmResultPool;
     };
 
 }

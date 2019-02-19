@@ -12,7 +12,8 @@ namespace urchin
 	NarrowPhaseManager::NarrowPhaseManager(const BodyManager *bodyManager, const BroadPhaseManager *broadPhaseManager) :
 			bodyManager(bodyManager),
 			broadPhaseManager(broadPhaseManager),
-			collisionAlgorithmSelector(new CollisionAlgorithmSelector())
+			collisionAlgorithmSelector(new CollisionAlgorithmSelector()),
+			bodiesMutex(LockById::getInstance("narrowPhaseBodyIds"))
 	{
 
 	}
@@ -29,8 +30,6 @@ namespace urchin
 	 */
 	void NarrowPhaseManager::process(float dt, const std::vector<OverlappingPair *> &overlappingPairs, std::vector<ManifoldResult> &manifoldResults)
 	{
-        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
-
 		ScopeProfiler profiler("physics", "narrowPhase");
 
 		processOverlappingPairs(overlappingPairs, manifoldResults);
@@ -44,8 +43,6 @@ namespace urchin
 	 */
 	void NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody, std::vector<ManifoldResult> &manifoldResults)
 	{
-        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
-
 		std::vector<OverlappingPair> &overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
         for(auto &overlappingPair : overlappingPairs)
@@ -71,6 +68,9 @@ namespace urchin
 
         if(body1->isActive() || body2->isActive())
         {
+            ScopeLockById lockBody1(bodiesMutex, body1->getObjectId());
+            ScopeLockById lockBody2(bodiesMutex, body2->getObjectId());
+
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = retrieveCollisionAlgorithm(overlappingPair);
 
             CollisionObjectWrapper collisionObject1(*body1->getShape(), body1->getPhysicsTransform());
@@ -109,6 +109,8 @@ namespace urchin
 			WorkRigidBody *body = WorkRigidBody::upCast(workBody);
 			if(body && body->isActive())
 			{
+                ScopeLockById lockBody(bodiesMutex, body->getObjectId());
+
 				const PhysicsTransform &currentTransform = body->getPhysicsTransform();
 				PhysicsTransform newTransform = body->getPhysicsTransform().integrate(body->getLinearVelocity(), body->getAngularVelocity(), dt);
 
@@ -174,12 +176,12 @@ namespace urchin
 
 	ccd_set NarrowPhaseManager::continuousCollisionTest(const TemporalObject &temporalObject1, const std::vector<AbstractWorkBody *> &bodiesAABBoxHit) const
 	{
-        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
-
 		ccd_set continuousCollisionResults;
 
 		for(auto bodyAABBoxHit : bodiesAABBoxHit)
 		{
+			ScopeLockById lockBody(bodiesMutex, bodyAABBoxHit->getObjectId());
+
 			const CollisionShape3D *bodyShape = bodyAABBoxHit->getShape();
 			if(bodyShape->isCompound())
 			{
@@ -260,8 +262,6 @@ namespace urchin
 
 	ccd_set NarrowPhaseManager::rayTest(const Ray<float> &ray, const std::vector<AbstractWorkBody *> &bodiesAABBoxHitRay) const
 	{
-        std::lock_guard<std::recursive_mutex> lock(mutex); //TODO sync by body ids
-
 		CollisionSphereShape pointShape(0.0f);
 		PhysicsTransform from = PhysicsTransform(ray.getOrigin());
 		PhysicsTransform to = PhysicsTransform(ray.computeTo());
