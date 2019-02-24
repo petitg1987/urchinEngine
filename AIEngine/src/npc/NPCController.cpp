@@ -2,6 +2,8 @@
 
 #include "NPCController.h"
 
+#define CHANGE_PATH_POINT_DISTANCE 0.5f
+
 namespace urchin
 {
 
@@ -9,7 +11,7 @@ namespace urchin
             npc(nonPlayerCharacter),
             aiManager(aiManager),
             nextPathPointIndex(0)
-    {
+    { //see https://gamedevelopment.tutsplus.com/series/understanding-steering-behaviors--gamedev-12732
 
     }
 
@@ -37,7 +39,7 @@ namespace urchin
     void NPCController::pathFollowing()
     {
         Point2<float> nextTarget = retrieveNextTarget();
-        if (retrieveCharacterPosition().distance(nextTarget) <= 0.5f) //TODO define distant in #define
+        if (retrieveCharacterPosition().distance(nextTarget) <= CHANGE_PATH_POINT_DISTANCE)
         {
             nextPathPointIndex = std::min(nextPathPointIndex + 1, static_cast<unsigned int>(pathPoints.size() - 1));
             nextTarget = retrieveNextTarget();
