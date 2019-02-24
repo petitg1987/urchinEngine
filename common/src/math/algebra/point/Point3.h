@@ -32,7 +32,9 @@ namespace urchin
 			Vector3<T> toVector() const;
 			Point3<T> translate(const Vector3<T> &) const;
 			Point3<T> divideByZ() const;
-			Point2<T> toPoint2() const;
+			Point2<T> toPoint2XY() const;
+			Point2<T> toPoint2XZ() const;
+			Point2<T> toPoint2YZ() const;
 
 			Point3<T> operator +() const;
 			Point3<T> operator -() const;

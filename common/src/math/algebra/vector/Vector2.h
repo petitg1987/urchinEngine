@@ -24,6 +24,7 @@ namespace urchin
 			T squareLength() const;
 			T dotProduct(const Vector2<T> &) const;
 			T crossProduct(const Vector2<T> &) const;
+			Vector2<T> truncate(T) const;
 		
 			Vector2<T> operator +() const;
 			Vector2<T> operator -() const;

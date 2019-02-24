@@ -70,6 +70,31 @@ namespace urchin
 					X*v.Y - Y*v.X);
 	}
 
+    template<class T> Vector3<T> Vector3<T>::truncate(T maxLength) const
+    {
+        T vLength = length();
+        if(vLength < maxLength)
+        {
+            return Vector3<T>(X, Y, Z);
+        }
+        return Vector3<T>(X, Y, Z) * (maxLength / vLength);
+    }
+
+	template<class T> Vector2<T> Vector3<T>::toVector2XY() const
+	{
+		return Vector2<T>(X, Y);
+	}
+
+	template<class T> Vector2<T> Vector3<T>::toVector2XZ() const
+	{
+		return Vector2<T>(X, Z);
+	}
+
+	template<class T> Vector2<T> Vector3<T>::toVector2YZ() const
+	{
+		return Vector2<T>(Y, Z);
+	}
+
 	template<class T> Vector3<T> Vector3<T>::operator +() const
 	{
 		return Vector3<T>(X, Y, Z);

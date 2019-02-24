@@ -95,14 +95,19 @@ namespace urchin
 		return *this;
 	}
 
-	template<class T> Point2<T> Point3<T>::toPoint2() const
+	template<class T> Point2<T> Point3<T>::toPoint2XY() const
 	{
-		if(Z!=0.0)
-		{
-			return Point2<T>(X/Z, Y/Z);
-		}
-
 		return Point2<T>(X, Y);
+	}
+
+	template<class T> Point2<T> Point3<T>::toPoint2XZ() const
+	{
+		return Point2<T>(X, Z);
+	}
+
+	template<class T> Point2<T> Point3<T>::toPoint2YZ() const
+	{
+		return Point2<T>(Y, Z);
 	}
 
 	template<class T> Point3<T> Point3<T>::operator +() const

@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "NPCController.h"
 
 namespace urchin
@@ -5,7 +7,8 @@ namespace urchin
 
     NPCController::NPCController(NonPlayerCharacter *nonPlayerCharacter, AIManager *aiManager) :
             npc(nonPlayerCharacter),
-            aiManager(aiManager)
+            aiManager(aiManager),
+            nextPathPointIndex(0)
     {
 
     }
@@ -17,7 +20,7 @@ namespace urchin
     }
 
     void NPCController::update()
-    { //TODO should be automatically call ?: add in processables ?
+    {
         if(pathPoints.empty() && pathRequest->isPathReady())
         {
             pathPoints = pathRequest->getPath();
@@ -25,25 +28,50 @@ namespace urchin
 
         if(pathPoints.size() >= 2)
         {
-            Point3<float> seekTarget = pathPoints.back().getPoint();
-            updateSeekForce(seekTarget);
+            pathFollowing();
         }
 
         applyMomentum();
     }
 
-    void NPCController::updateSeekForce(const Point3<float> &target)
+    void NPCController::pathFollowing()
     {
-        float maxVelocityKmByHour = 5.0f;
-        float maxVelocityMBySec = (maxVelocityKmByHour * 1000.0) / (60.0f * 60.0f);
-        Vector3<float> desiredVelocity = npc->getPosition().vector(target).normalize() * maxVelocityMBySec;
-        Vector3<float> desiredMomentum = desiredVelocity * npc->getMass();
-        steeringMomentum = (desiredMomentum - npc->getMomentum()); //TODO apply a truncate ? see https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-seek--gamedev-849
+        Point2<float> nextTarget = retrieveNextTarget();
+        if (retrieveCharacterPosition().distance(nextTarget) <= 0.5f) //TODO define distant in #define
+        {
+            nextPathPointIndex = std::min(nextPathPointIndex + 1, static_cast<unsigned int>(pathPoints.size() - 1));
+            nextTarget = retrieveNextTarget();
+        }
+
+        computeSteeringMomentum(nextTarget);
+    }
+
+    Point2<float> NPCController::retrieveNextTarget() const
+    {
+        return pathPoints[nextPathPointIndex].getPoint().toPoint2XZ();
+    }
+
+    Point2<float> NPCController::retrieveCharacterPosition() const
+    {
+        return npc->getPosition().toPoint2XZ();
+    }
+
+    void NPCController::computeSteeringMomentum(const Point2<float> &target)
+    {
+        Vector2<float> desiredVelocity = retrieveCharacterPosition().vector(target).normalize() * npc->retrieveMaxVelocityInMs();
+        Vector2<float> desiredMomentum = desiredVelocity * npc->getMass();
+
+        steeringMomentum = desiredMomentum - npc->getMomentum().toVector2XZ();
+        steeringMomentum = steeringMomentum.truncate(npc->retrieveMaxMomentum());
     }
 
     void NPCController::applyMomentum()
     {
-        npc->updateMomentum(npc->getMomentum() + steeringMomentum); //TODO apply a max speed ? see https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-seek--gamedev-849
+        Vector3<float> steeringMomentum3D(steeringMomentum.X, 0.0f, steeringMomentum.Y);
+        Vector3<float> updatedMomentum = npc->getMomentum() + steeringMomentum3D;
+        updatedMomentum = updatedMomentum.truncate(npc->retrieveMaxMomentum());
+
+        npc->updateMomentum(updatedMomentum);
     }
 
 }

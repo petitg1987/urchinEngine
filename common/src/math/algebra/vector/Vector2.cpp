@@ -62,6 +62,16 @@ namespace urchin
 		return (X*v.Y - Y*v.X);
 	}
 
+	template<class T> Vector2<T> Vector2<T>::truncate(T maxLength) const
+	{
+		T vLength = length();
+		if(vLength < maxLength)
+		{
+			return Vector2<T>(X, Y);
+		}
+		return Vector2<T>(X, Y) * (maxLength / vLength);
+	}
+
 	template<class T> Vector2<T> Vector2<T>::operator +() const
 	{
 		return Vector2<T>(X, Y);
