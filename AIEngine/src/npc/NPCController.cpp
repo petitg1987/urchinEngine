@@ -59,14 +59,12 @@ namespace urchin
 
             if (!pathPoints.empty())
             {
-                pathFollowing();
+                followPath();
             }
-
-            applyMomentum();
         }
     }
 
-    void NPCController::pathFollowing()
+    void NPCController::followPath()
     {
         Point2<float> nextTarget = retrieveNextTarget();
         if (retrieveCharacterPosition().distance(nextTarget) <= CHANGE_PATH_POINT_DISTANCE)
@@ -83,6 +81,7 @@ namespace urchin
         }
 
         computeSteeringMomentum(nextTarget);
+        applyMomentum();
     }
 
     Point2<float> NPCController::retrieveNextTarget() const

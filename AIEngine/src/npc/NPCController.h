@@ -22,7 +22,7 @@ namespace urchin
             void update();
 
         private:
-            void pathFollowing();
+            void followPath();
 
             Point2<float> retrieveNextTarget() const;
             Point2<float> retrieveCharacterPosition() const;
