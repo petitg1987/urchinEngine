@@ -1,8 +1,9 @@
 #ifndef URCHINENGINE_NPCCONTROLLER_H
 #define URCHINENGINE_NPCCONTROLLER_H
 
-#include "npc/NonPlayerCharacter.h"
 #include "AIManager.h"
+#include "npc/NonPlayerCharacter.h"
+#include "npc/NPCEventHandler.h"
 #include "path/PathRequest.h"
 
 namespace urchin
@@ -13,7 +14,10 @@ namespace urchin
         public:
             explicit NPCController(NonPlayerCharacter *, AIManager *);
 
+            void setupEventHandler(const std::shared_ptr<NPCEventHandler> &);
+
             void moveTo(const Point3<float> &);
+            void stopMoving();
 
             void update();
 
@@ -28,11 +32,12 @@ namespace urchin
             
             NonPlayerCharacter *npc;
             AIManager *aiManager;
+            std::shared_ptr<NPCEventHandler> npcEventHandler;
 
             Vector2<float> steeringMomentum;
 
-            std::shared_ptr<urchin::PathRequest> pathRequest;
-            std::vector<urchin::PathPoint> pathPoints;
+            std::shared_ptr<PathRequest> pathRequest;
+            std::vector<PathPoint> pathPoints;
             unsigned int nextPathPointIndex;
 
     };

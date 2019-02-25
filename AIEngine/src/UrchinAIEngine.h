@@ -28,5 +28,6 @@
 
 #include "npc/NonPlayerCharacter.h"
 #include "npc/NPCController.h"
+#include "npc/NPCEventHandler.h"
 
 #endif

@@ -29,6 +29,7 @@ namespace urchin
             void removeEntity(const std::shared_ptr<AIEntity> &);
 
             void addPathRequest(const std::shared_ptr<PathRequest> &);
+            void removePathRequest(const std::shared_ptr<PathRequest> &);
 
             void start(float, bool startPaused = false);
             void pause();

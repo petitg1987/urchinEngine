@@ -78,7 +78,9 @@ set(SOURCE_FILES
         src/npc/NonPlayerCharacter.cpp
         src/npc/NonPlayerCharacter.h
         src/npc/NPCController.cpp
-        src/npc/NPCController.h)
+        src/npc/NPCController.h
+        src/npc/NPCEventHandler.cpp
+        src/npc/NPCEventHandler.h)
 
 include_directories(src ../common/src)
 

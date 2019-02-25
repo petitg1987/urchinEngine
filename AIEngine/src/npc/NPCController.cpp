@@ -10,30 +10,60 @@ namespace urchin
     NPCController::NPCController(NonPlayerCharacter *nonPlayerCharacter, AIManager *aiManager) :
             npc(nonPlayerCharacter),
             aiManager(aiManager),
+            npcEventHandler(nullptr),
             nextPathPointIndex(0)
     { //see https://gamedevelopment.tutsplus.com/series/understanding-steering-behaviors--gamedev-12732
 
     }
 
+    void NPCController::setupEventHandler(const std::shared_ptr<NPCEventHandler> &npcEventHandler)
+    {
+        this->npcEventHandler = npcEventHandler;
+    }
+
     void NPCController::moveTo(const Point3<float> &seekTarget)
     {
+        stopMoving();
         pathRequest = std::make_shared<PathRequest>(npc->getPosition(), seekTarget);
         aiManager->addPathRequest(pathRequest);
     }
 
+    void NPCController::stopMoving()
+    {
+        if(npcEventHandler)
+        {
+            npcEventHandler->stopMoving();
+        }
+
+        nextPathPointIndex = 0;
+
+        aiManager->removePathRequest(pathRequest);
+        pathRequest = std::shared_ptr<PathRequest>(nullptr);
+        pathPoints.clear();
+
+        npc->updateMomentum(Vector3<float>(0.0f, 0.0f, 0.0f));
+    }
+
     void NPCController::update()
     {
-        if(pathPoints.empty() && pathRequest->isPathReady())
+        if(pathRequest)
         {
-            pathPoints = pathRequest->getPath();
-        }
+            if (pathPoints.empty() && pathRequest->isPathReady())
+            {
+                pathPoints = pathRequest->getPath();
+                if(!pathPoints.empty() && npcEventHandler)
+                {
+                    npcEventHandler->startMoving();
+                }
+            }
 
-        if(pathPoints.size() >= 2)
-        {
-            pathFollowing();
-        }
+            if (!pathPoints.empty())
+            {
+                pathFollowing();
+            }
 
-        applyMomentum();
+            applyMomentum();
+        }
     }
 
     void NPCController::pathFollowing()
@@ -41,7 +71,14 @@ namespace urchin
         Point2<float> nextTarget = retrieveNextTarget();
         if (retrieveCharacterPosition().distance(nextTarget) <= CHANGE_PATH_POINT_DISTANCE)
         {
-            nextPathPointIndex = std::min(nextPathPointIndex + 1, static_cast<unsigned int>(pathPoints.size() - 1));
+            nextPathPointIndex++;
+
+            if(nextPathPointIndex >= pathPoints.size())
+            { //end of path reached
+                stopMoving();
+                return;
+            }
+
             nextTarget = retrieveNextTarget();
         }
 

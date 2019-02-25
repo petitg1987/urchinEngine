@@ -60,6 +60,16 @@ namespace urchin
         pathRequests.push_back(pathRequest);
     }
 
+    void AIManager::removePathRequest(const std::shared_ptr<PathRequest> &pathRequest)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+
+        if(pathRequest)
+        {
+            //TODO implement it
+        }
+    }
+
     /**
      * Launch the AI simulation in new thread
      * @param timeStep Frequency updates expressed in second
