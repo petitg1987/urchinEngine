@@ -30,7 +30,7 @@ namespace urchin
 	/**
 	* Character controller: allow to move a character in a world
 	*/
-	class CharacterController
+	class CharacterController //TODO rename in PhysicsCharacterController
 	{
 		public:
 			explicit CharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
@@ -69,6 +69,7 @@ namespace urchin
 			std::atomic_bool makeJump;
 
 			Point3<float> previousBodyPosition;
+			Quaternion<float> initialOrientation;
 			Vector3<float> lastVelocity;
 			unsigned int numberOfHit; //number of contact point touching the character
 			bool isOnGround; //character is on the ground

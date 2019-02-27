@@ -1,4 +1,5 @@
 #include <utility>
+#include <algorithm>
 #include "UrchinCommon.h"
 
 #include "AIManager.h"
@@ -66,7 +67,11 @@ namespace urchin
 
         if(pathRequest)
         {
-            //TODO implement it
+            auto itFind = std::find(pathRequests.begin(), pathRequests.end(), pathRequest);
+            if(itFind!=pathRequests.end())
+            {
+                VectorEraser::erase(pathRequests, itFind);
+            }
         }
     }
 

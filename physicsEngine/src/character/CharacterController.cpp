@@ -24,6 +24,7 @@ namespace urchin
 		ghostBody(new WorkGhostBody("character", physicsCharacter->getTransform(), physicsCharacter->getShape())),
 		verticalSpeed(0.0f),
 		makeJump(false),
+        initialOrientation(physicsCharacter->getTransform().getOrientation()),
 		numberOfHit(0),
 		isOnGround(false),
 		hitRoof(false),
@@ -109,9 +110,9 @@ namespace urchin
 
 		//apply user move
 		Point3<float> targetPosition = ghostBody->getPosition();
+		Vector3<float> velocity = getVelocity();
 		if(isOnGround)
 		{
-			Vector3<float> velocity = getVelocity();
 			float slopeSpeedDecrease = 1.0f - (slopeInPercentage / physicsCharacter->getMaxSlopeInPercentage());
 			slopeSpeedDecrease = MathAlgorithm::clamp(slopeSpeedDecrease, MIN_WALK_SPEED_PERCENTAGE, MAX_WALK_SPEED_PERCENTAGE);
 			targetPosition = targetPosition.translate(velocity * dt * slopeSpeedDecrease);
@@ -119,7 +120,6 @@ namespace urchin
 			lastVelocity = velocity;
 		}else if(timeInTheAir < timeKeepMoveInAir)
 		{
-			Vector3<float> velocity = getVelocity();
 			float momentumSpeedDecrease = 1.0f - (timeInTheAir / timeKeepMoveInAir);
 			Vector3<float> walkDirectionInAir = velocity * (1.0f - percentageControlInAir) + velocity * percentageControlInAir;
 			targetPosition = targetPosition.translate(walkDirectionInAir * dt * momentumSpeedDecrease);
@@ -148,6 +148,13 @@ namespace urchin
 			{
 				verticalSpeed = -MAX_VERTICAL_SPEED;
 			}
+		}
+
+		//compute and apply orientation
+		if(!MathAlgorithm::isZero(velocity.squareLength(), 0.001f))
+		{
+			Quaternion<float> orientation = Quaternion<float>((-velocity).normalize()).normalize();
+			ghostBody->setOrientation(orientation * initialOrientation);
 		}
 
 		//apply data on body
