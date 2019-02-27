@@ -23,6 +23,16 @@ namespace urchin
 
 	}
 
+	PhysicsTransform::PhysicsTransform(const Transform<float> &transform) :
+		position(transform.getPosition()),
+		orientation(transform.getOrientation())
+	{
+		if(!MathAlgorithm::isOne(transform.getScale(), 0.001f))
+		{
+			throw std::runtime_error("Cannot construct physics transform from transform having a scale: " + std::to_string(transform.getScale()));
+		}
+	}
+
 	void PhysicsTransform::setPosition(const Point3<float> &position)
 	{
 		this->position = position;
