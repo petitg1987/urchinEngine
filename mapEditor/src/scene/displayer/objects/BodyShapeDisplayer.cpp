@@ -48,7 +48,7 @@ namespace urchin
 				for (const auto &localizedShape : localizedShapes)
 				{
 					PhysicsTransform transform = PhysicsTransform(modelTransform.getPosition(), modelTransform.getOrientation()) * localizedShape->transform;
-					CollisionConvexObject3D *bodyObject = localizedShape->shape->toConvexObject(transform);
+					std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = localizedShape->shape->toConvexObject(transform);
 
 					GeometryModel *geometryModel = retrieveSingleGeometry(localizedShape->shape->getShapeType(), bodyObject);
 
@@ -65,7 +65,7 @@ namespace urchin
 			} else if(bodyShape->isConvex())
 			{
 				PhysicsTransform transform(modelTransform.getPosition(), modelTransform.getOrientation());
-				CollisionConvexObject3D *bodyObject = bodyShape->toConvexObject(transform);
+				std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> bodyObject = bodyShape->toConvexObject(transform);
 
 				GeometryModel *geometryModel = retrieveSingleGeometry(bodyShape->getShapeType(), bodyObject);
 				geometryModel->setColor(0.0, 1.0, 0.0);
@@ -82,7 +82,7 @@ namespace urchin
 		}
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const CollisionConvexObject3D *bodyObject)
+	GeometryModel *BodyShapeDisplayer::retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject)
 	{
 		if(shapeType==CollisionShape3D::SPHERE_SHAPE)
 		{
@@ -116,39 +116,39 @@ namespace urchin
 		throw std::invalid_argument("Unknown shape type to retrieve geometry: " + std::to_string(shapeType));
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const CollisionConvexObject3D *bodyObject) const
+	GeometryModel *BodyShapeDisplayer::retrieveSphereGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const
 	{
-		const auto *sphereObject = dynamic_cast<const CollisionSphereObject *>(bodyObject);
+		const auto *sphereObject = dynamic_cast<const CollisionSphereObject *>(bodyObject.get());
 		return new SphereModel(sphereObject->retrieveSphere(), 15);
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveBoxGeometry(const CollisionConvexObject3D *bodyObject) const
+	GeometryModel *BodyShapeDisplayer::retrieveBoxGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const
 	{
-		const auto *boxObject = dynamic_cast<const CollisionBoxObject *>(bodyObject);
+		const auto *boxObject = dynamic_cast<const CollisionBoxObject *>(bodyObject.get());
 		return new OBBoxModel(boxObject->retrieveOBBox());
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveCylinderGeometry(const CollisionConvexObject3D *bodyObject) const
+	GeometryModel *BodyShapeDisplayer::retrieveCylinderGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const
 	{
-		const auto *cylinderObject = dynamic_cast<const CollisionCylinderObject *>(bodyObject);
+		const auto *cylinderObject = dynamic_cast<const CollisionCylinderObject *>(bodyObject.get());
 		return new CylinderModel(cylinderObject->retrieveCylinder(), 15);
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveConeGeometry(const CollisionConvexObject3D *bodyObject) const
+	GeometryModel *BodyShapeDisplayer::retrieveConeGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const
 	{
-		const auto *coneObject = dynamic_cast<const CollisionConeObject *>(bodyObject);
+		const auto *coneObject = dynamic_cast<const CollisionConeObject *>(bodyObject.get());
 		return new ConeModel(coneObject->retrieveCone(), 15);
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const CollisionConvexObject3D *bodyObject) const
+	GeometryModel *BodyShapeDisplayer::retrieveCapsuleGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const
 	{
-		const auto *capsuleObject = dynamic_cast<const CollisionCapsuleObject *>(bodyObject);
+		const auto *capsuleObject = dynamic_cast<const CollisionCapsuleObject *>(bodyObject.get());
 		return new CapsuleModel(capsuleObject->retrieveCapsule(), 15, 15);
 	}
 
-	GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const CollisionConvexObject3D *bodyObject) const
+	GeometryModel *BodyShapeDisplayer::retrieveConvexHullGeometry(const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &bodyObject) const
 	{
-		const auto *convexHullObject = dynamic_cast<const CollisionConvexHullObject *>(bodyObject);
+		const auto *convexHullObject = dynamic_cast<const CollisionConvexHullObject *>(bodyObject.get());
 		return new PointsModel(convexHullObject->getPointsWithMargin(), 5.0);
 	}
 

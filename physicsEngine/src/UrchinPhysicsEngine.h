@@ -41,7 +41,7 @@
 #include "processable/Processable.h"
 #include "processable/raytest/RayTestResult.h"
 
-#include "character/CharacterController.h"
+#include "character/PhysicsCharacterController.h"
 #include "character/PhysicsCharacter.h"
 
 #include "visualizer/CollisionVisualizer.h"

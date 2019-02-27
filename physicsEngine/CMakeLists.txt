@@ -180,8 +180,8 @@ set(SOURCE_FILES
         src/utils/property/EagerPropertyLoader.h
         src/character/PhysicsCharacter.cpp
         src/character/PhysicsCharacter.h
-        src/character/CharacterController.cpp
-        src/character/CharacterController.h
+        src/character/PhysicsCharacterController.cpp
+        src/character/PhysicsCharacterController.h
         src/collision/broadphase/SyncVectorPairContainer.cpp
         src/collision/broadphase/SyncVectorPairContainer.h
         src/object/pool/CollisionConvexObjectPool.cpp

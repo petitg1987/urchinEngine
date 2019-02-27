@@ -26,8 +26,8 @@
 #include "path/PathRequest.h"
 #include "path/PathPoint.h"
 
-#include "npc/NonPlayerCharacter.h"
-#include "npc/NPCController.h"
-#include "npc/NPCEventHandler.h"
+#include "character/AICharacter.h"
+#include "character/AICharacterController.h"
+#include "character/AICharacterEventHandler.h"
 
 #endif

@@ -1,10 +1,10 @@
-#ifndef URCHINENGINE_NPCEVENTHANDLER_H
-#define URCHINENGINE_NPCEVENTHANDLER_H
+#ifndef URCHINENGINE_AICHARACTEREVENTHANDLER_H
+#define URCHINENGINE_AICHARACTEREVENTHANDLER_H
 
 namespace urchin
 {
 
-    class NPCEventHandler
+    class AICharacterEventHandler
     {
         public:
             virtual void startMoving();

@@ -75,12 +75,12 @@ set(SOURCE_FILES
         src/path/PathPoint.h
         src/path/navmesh/csg/CSGPolygonPath.cpp
         src/path/navmesh/csg/CSGPolygonPath.h
-        src/npc/NonPlayerCharacter.cpp
-        src/npc/NonPlayerCharacter.h
-        src/npc/NPCController.cpp
-        src/npc/NPCController.h
-        src/npc/NPCEventHandler.cpp
-        src/npc/NPCEventHandler.h)
+        src/character/AICharacter.cpp
+        src/character/AICharacter.h
+        src/character/AICharacterController.cpp
+        src/character/AICharacterController.h
+        src/character/AICharacterEventHandler.cpp
+        src/character/AICharacterEventHandler.h)
 
 include_directories(src ../common/src)
 

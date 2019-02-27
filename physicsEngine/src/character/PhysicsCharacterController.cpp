@@ -3,7 +3,7 @@
 #include <limits>
 #include <cmath>
 
-#include "CharacterController.h"
+#include "PhysicsCharacterController.h"
 #include "collision/ManifoldResult.h"
 #include "collision/ManifoldContactPoint.h"
 #include "collision/broadphase/PairContainer.h"
@@ -16,7 +16,7 @@
 namespace urchin
 {
 
-	CharacterController::CharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld *physicsWorld) :
+	PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld *physicsWorld) :
 		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
         physicsCharacter(physicsCharacter),
@@ -36,7 +36,7 @@ namespace urchin
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody);
 	}
 
-	CharacterController::~CharacterController()
+	PhysicsCharacterController::~PhysicsCharacterController()
 	{
 		if(physicsWorld)
 		{
@@ -46,26 +46,26 @@ namespace urchin
 		delete ghostBody;
 	}
 
-	void CharacterController::setMomentum(const Vector3<float> &momentum)
+	void PhysicsCharacterController::setMomentum(const Vector3<float> &momentum)
 	{
 		std::lock_guard<std::mutex> lock(characterMutex);
 
 		this->velocity = (momentum / physicsCharacter->getMass());
 	}
 
-	Vector3<float> CharacterController::getVelocity() const
+	Vector3<float> PhysicsCharacterController::getVelocity() const
 	{
 		std::lock_guard<std::mutex> lock(characterMutex);
 
 		return velocity;
 	}
 
-	void CharacterController::jump()
+	void PhysicsCharacterController::jump()
 	{
 		makeJump.store(true, std::memory_order_relaxed);
 	}
 
-	bool CharacterController::needJumpAndResetFlag()
+	bool PhysicsCharacterController::needJumpAndResetFlag()
 	{
 		return makeJump.exchange(false, std::memory_order_relaxed);
 	}
@@ -73,7 +73,7 @@ namespace urchin
 	/**
 	 * @param dt Delta of time between two simulation steps
 	 */
-	void CharacterController::update(float dt)
+	void PhysicsCharacterController::update(float dt)
 	{
 		ScopeProfiler profiler("physics", "charactCtrlExec");
 
@@ -99,7 +99,7 @@ namespace urchin
 		physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
 	}
 
-	void CharacterController::setup(float dt)
+	void PhysicsCharacterController::setup(float dt)
 	{
 		#ifdef _DEBUG
 			assert(physicsWorld!=nullptr);
@@ -153,8 +153,8 @@ namespace urchin
 		//compute and apply orientation
 		if(!MathAlgorithm::isZero(velocity.squareLength(), 0.001f))
 		{
-			Quaternion<float> orientation = Quaternion<float>((-velocity).normalize()).normalize();
-			ghostBody->setOrientation(orientation * initialOrientation);
+			Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
+			ghostBody->setOrientation(orientation * initialOrientation); //TODO at startup, character make 180 degree rotation
 		}
 
 		//apply data on body
@@ -162,7 +162,7 @@ namespace urchin
 		ghostBody->setPosition(targetPosition);
 	}
 
-	void CharacterController::recoverFromPenetration(float dt)
+	void PhysicsCharacterController::recoverFromPenetration(float dt)
 	{
 		SignificantContactValues significantContactValues = resetSignificantContactValues();
 
@@ -198,7 +198,7 @@ namespace urchin
 		computeSignificantContactValues(significantContactValues, dt);
 	}
 
-	SignificantContactValues CharacterController::resetSignificantContactValues()
+	SignificantContactValues PhysicsCharacterController::resetSignificantContactValues()
 	{
 		SignificantContactValues significantContactValues;
 		significantContactValues.numberOfHit = 0;
@@ -209,7 +209,7 @@ namespace urchin
 		return significantContactValues;
 	}
 
-	void CharacterController::saveSignificantContactValues(SignificantContactValues &significantContactValues, const Vector3<float> &normal)
+	void PhysicsCharacterController::saveSignificantContactValues(SignificantContactValues &significantContactValues, const Vector3<float> &normal)
 	{
 		significantContactValues.numberOfHit++;
 
@@ -228,7 +228,7 @@ namespace urchin
 		}
 	}
 
-	void CharacterController::computeSignificantContactValues(SignificantContactValues &significantContactValues, float dt)
+	void PhysicsCharacterController::computeSignificantContactValues(SignificantContactValues &significantContactValues, float dt)
 	{
 		numberOfHit = significantContactValues.numberOfHit;
 		isOnGround = numberOfHit > 0 && std::acos(significantContactValues.maxDotProductUpNormalAxis) < physicsCharacter->getMaxSlopeInRadian();
@@ -240,7 +240,7 @@ namespace urchin
 	 * Compute slope based on previous body position.
 	 * Slope is expressed in percentage. A positive value means that character climb.
 	 */
-	float CharacterController::computeSlope()
+	float PhysicsCharacterController::computeSlope()
 	{
 		Point2<float> p1 = Point2<float>(ghostBody->getPosition().X, ghostBody->getPosition().Z);
 		Point2<float> p2 = Point2<float>(previousBodyPosition.X, previousBodyPosition.Z);

@@ -1,15 +1,15 @@
-#ifndef URCHINENGINE_NONPLAYERCHARACTER_H
-#define URCHINENGINE_NONPLAYERCHARACTER_H
+#ifndef URCHINENGINE_AICHARACTER_H
+#define URCHINENGINE_AICHARACTER_H
 
 #include "UrchinCommon.h"
 
 namespace urchin
 {
 
-    class NonPlayerCharacter
+    class AICharacter
     {
         public:
-            NonPlayerCharacter(float, float, const Point3<float> &);
+            AICharacter(float, float, const Point3<float> &);
 
             float getMass() const;
             float getMaxVelocityInKmH() const;

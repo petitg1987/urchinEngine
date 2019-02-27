@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_CHARATERCONTROLLER_H
-#define URCHINENGINE_CHARATERCONTROLLER_H
+#ifndef URCHINENGINE_PHYSICSCHARATERCONTROLLER_H
+#define URCHINENGINE_PHYSICSCHARATERCONTROLLER_H
 
 #include <memory>
 #include <mutex>
@@ -30,11 +30,11 @@ namespace urchin
 	/**
 	* Character controller: allow to move a character in a world
 	*/
-	class CharacterController //TODO rename in PhysicsCharacterController
+	class PhysicsCharacterController
 	{
 		public:
-			explicit CharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
-			~CharacterController();
+			explicit PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &, PhysicsWorld *);
+			~PhysicsCharacterController();
 
 			void setMomentum(const Vector3<float> &);
 			void jump();
