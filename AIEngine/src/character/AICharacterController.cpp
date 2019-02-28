@@ -7,7 +7,7 @@
 namespace urchin
 {
 
-    AICharacterController::AICharacterController(AICharacter *character, AIManager *aiManager) :
+    AICharacterController::AICharacterController(const std::shared_ptr<AICharacter> &character, AIManager *aiManager) :
             character(character),
             aiManager(aiManager),
             eventHandler(nullptr),

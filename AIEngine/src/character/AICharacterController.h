@@ -1,6 +1,8 @@
 #ifndef URCHINENGINE_AICHARACTERCONTROLLER_H
 #define URCHINENGINE_AICHARACTERCONTROLLER_H
 
+#include <memory>
+
 #include "AIManager.h"
 #include "character/AICharacter.h"
 #include "character/AICharacterEventHandler.h"
@@ -12,7 +14,7 @@ namespace urchin
     class AICharacterController
     {
         public:
-            explicit AICharacterController(AICharacter *, AIManager *);
+            AICharacterController(const std::shared_ptr<AICharacter> &, AIManager *);
 
             void setupEventHandler(const std::shared_ptr<AICharacterEventHandler> &);
 
@@ -30,7 +32,7 @@ namespace urchin
             void computeSteeringMomentum(const Point2<float> &);
             void applyMomentum();
             
-            AICharacter *character;
+            std::shared_ptr<AICharacter> character;
             AIManager *aiManager;
             std::shared_ptr<AICharacterEventHandler> eventHandler;
 
