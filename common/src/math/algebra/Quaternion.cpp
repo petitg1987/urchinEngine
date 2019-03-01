@@ -408,7 +408,7 @@ namespace urchin
 
 	template<class T> void Quaternion<T>::toAxisAngle(Vector3<T> &axis, T &angle) const
 	{
-		angle = std::acos(W) * 2;
+		angle = std::acos(W) * 2.0;
 
 		T norm = sqrtf(X*X + Y*Y + Z*Z);
 		if(std::fabs(norm) > 0.0)

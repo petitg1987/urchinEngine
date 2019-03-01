@@ -152,9 +152,9 @@ namespace urchin
 
 		//compute and apply orientation
 		if(!MathAlgorithm::isZero(velocity.squareLength(), 0.001f))
-		{
-			Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
-			ghostBody->setOrientation(orientation * initialOrientation); //TODO at startup, character make 180 degree rotation
+        {
+            Quaternion<float> orientation = Quaternion<float>(velocity.normalize()).normalize();
+            ghostBody->setOrientation(orientation * initialOrientation);
 		}
 
 		//apply data on body
