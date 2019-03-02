@@ -3,7 +3,7 @@
 
 #include "SceneManager.h"
 
-#define START_FPS 60
+#define START_FPS 1000 //high number of FPS to avoid pass through the ground at startup
 #define RENDERER_3D 0
 #define GUI_RENDERER 1
 
