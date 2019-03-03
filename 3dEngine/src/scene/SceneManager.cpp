@@ -14,16 +14,15 @@ namespace urchin
 	SceneManager::SceneManager() :
 			sceneWidth(500),
 			sceneHeight(500),
-			previousTime(std::chrono::high_resolution_clock::now()),
 			fps(START_FPS),
-			fpsForDisplay(START_FPS),
-			indexFps(0)
+			fpsForDisplay(START_FPS)
 	{
 		//initialize GL
 		initializeGl();
 
-		//initialize FPS
-		previousFps[0] = START_FPS; previousFps[1] = START_FPS; previousFps[2] = START_FPS;
+		//initialize fps
+		previousFps.fill(START_FPS);
+        indexFps = previousFps.size();
 		previousTime = std::chrono::high_resolution_clock::now();
 
 		//renderer
@@ -146,7 +145,7 @@ namespace urchin
 		float timeInterval = static_cast<float>(std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count());
 
         previousFps[indexFps%3] = 1000000.0f / timeInterval;
-		fps = (previousFps[indexFps%3]*9 + previousFps[(indexFps-1)%3]*3 + previousFps[(indexFps-2)%3]) / 13.0f;
+		fps = (previousFps.at(indexFps%3)*9 + previousFps.at((indexFps-1)%3)*3 + previousFps.at((indexFps-2)%3)) / 13.0f;
 
         indexFps++;
         previousTime = currentTime;
@@ -292,7 +291,7 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "sceneMgrDisplay");
 
-		//FPS
+		//fps
 		computeFps();
 		float dt = getDeltaTime();
 

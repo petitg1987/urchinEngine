@@ -65,10 +65,11 @@ namespace urchin
 			std::vector<GUIRenderer *> guiRenderers;
 			Renderer *activeRenderers[NUM_RENDERER];
 		
-			//FPS
+			//fps
 			std::chrono::high_resolution_clock::time_point previousTime;
-			int indexFps;
-			float previousFps[3], fps;
+			unsigned int indexFps;
+			std::array<float, 3> previousFps;
+			float fps;
 			unsigned int fpsForDisplay;
 	};
 
