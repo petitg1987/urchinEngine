@@ -165,13 +165,13 @@ namespace urchin
 		this->models = models;
 	}
 
-	void ModelDisplayer::updateAnimation(float invFrameRate)
+	void ModelDisplayer::updateAnimation(float dt)
 	{
 		ScopeProfiler profiler("3d", "updateAnimation");
 
 		for (auto model : models)
 		{
-			model->updateAnimation(invFrameRate);
+			model->updateAnimation(dt);
 		}
 	}
 

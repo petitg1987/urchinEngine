@@ -81,13 +81,13 @@ namespace urchin
 		return true;
 	}
 
-	void Button::display(int translateDistanceLoc, float invFrameRate)
+	void Button::display(int translateDistanceLoc, float dt)
 	{
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
 		quadDisplayer->display();
 
-		Widget::display(translateDistanceLoc, invFrameRate);
+		Widget::display(translateDistanceLoc, dt);
 	}
 	
 }

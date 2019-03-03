@@ -187,7 +187,7 @@ namespace urchin
         return mesh->findHeightAt(localCoordinate) + position.Y;
     }
 
-    void Terrain::display(const Camera *camera, float invFrameRate) const
+    void Terrain::display(const Camera *camera, float dt) const
     {
         ShaderManager::instance()->bind(terrainShader);
 
@@ -199,7 +199,7 @@ namespace urchin
 
         if(grass)
         {
-            grass->display(camera, invFrameRate);
+            grass->display(camera, dt);
         }
     }
 }

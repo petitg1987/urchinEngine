@@ -37,7 +37,7 @@ namespace urchin
 				->build();
 	}
 
-	void StaticBitmap::display(int translateDistanceLoc, float invFrameRate)
+	void StaticBitmap::display(int translateDistanceLoc, float dt)
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -48,7 +48,7 @@ namespace urchin
 
 		glDisable(GL_BLEND);
 
-		Widget::display(translateDistanceLoc, invFrameRate);
+		Widget::display(translateDistanceLoc, dt);
 	}
 
 }

@@ -125,13 +125,13 @@ namespace urchin
 		return true;
 	}
 
-	void Window::display(int translateDistanceLoc, float invFrameRate)
+	void Window::display(int translateDistanceLoc, float dt)
 	{
 		glBindTexture(GL_TEXTURE_2D, texWindow->getTextureID());
 
 		quadDisplayer->display();
 
-		Widget::display(translateDistanceLoc, invFrameRate);
+		Widget::display(translateDistanceLoc, dt);
 	}
 
 }

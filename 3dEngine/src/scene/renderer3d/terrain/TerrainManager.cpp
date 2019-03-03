@@ -56,7 +56,7 @@ namespace urchin
         }
     }
 
-    void TerrainManager::display(const Camera *camera, float invFrameRate) const
+    void TerrainManager::display(const Camera *camera, float dt) const
     {
         ScopeProfiler profiler("3d", "terrainDisplay");
 
@@ -65,7 +65,7 @@ namespace urchin
 
         for(const auto terrain : terrains)
         {
-            terrain->display(camera, invFrameRate);
+            terrain->display(camera, dt);
         }
 
         glDisable(GL_PRIMITIVE_RESTART);

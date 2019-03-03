@@ -25,9 +25,10 @@ namespace urchin
 			int getSceneWidth() const;
 			int getSceneHeight() const;
 
-			//FPS
-			int getFps() const;
-			float getOneOnFps() const;
+			//Fps
+			float getFps() const;
+			unsigned int getFpsForDisplay();
+			float getDeltaTime() const;
 
 			//renderer
 			Renderer3d *newRenderer3d(bool);
@@ -66,8 +67,9 @@ namespace urchin
 		
 			//FPS
 			std::chrono::high_resolution_clock::time_point previousTime;
-			int currFrame, nbrFps, previousFps[3], indexFps;
-			float refreshRateFps;
+			int indexFps;
+			float previousFps[3], fps;
+			unsigned int fpsForDisplay;
 	};
 
 }

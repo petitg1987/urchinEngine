@@ -3,9 +3,10 @@
 
 #include "SceneManager.h"
 
-#define START_FPS 1000 //high number of FPS to avoid pass through the ground at startup
+#define START_FPS 1000.0f //high number of FPS to avoid pass through the ground at startup
 #define RENDERER_3D 0
 #define GUI_RENDERER 1
+#define REFRESH_RATE_FPS 0.35f
 
 namespace urchin
 {
@@ -14,16 +15,15 @@ namespace urchin
 			sceneWidth(500),
 			sceneHeight(500),
 			previousTime(std::chrono::high_resolution_clock::now()),
-			currFrame(0),
-			nbrFps(START_FPS),
-			indexFps(0),
-			refreshRateFps(ConfigService::instance()->getFloatValue("sceneManager.refreshRateFps"))
+			fps(START_FPS),
+			fpsForDisplay(START_FPS),
+			indexFps(0)
 	{
 		//initialize GL
 		initializeGl();
 
 		//initialize FPS
-		previousFps[0] = nbrFps; previousFps[1] = nbrFps; previousFps[2] = nbrFps;
+		previousFps[0] = START_FPS; previousFps[1] = START_FPS; previousFps[2] = START_FPS;
 		previousTime = std::chrono::high_resolution_clock::now();
 
 		//renderer
@@ -116,32 +116,40 @@ namespace urchin
 		return sceneHeight;
 	}
 
-	int SceneManager::getFps() const
+	float SceneManager::getFps() const
 	{
-		return (nbrFps==0 ? START_FPS : nbrFps);
+		return (fps==0.0f ? START_FPS : fps);
 	}
 
-	float SceneManager::getOneOnFps() const
+	unsigned int SceneManager::getFpsForDisplay()
 	{
-		return (1.0/(float)getFps());
+		static float timeElapse = 0.0f;
+		timeElapse += getDeltaTime();
+
+		if(timeElapse > REFRESH_RATE_FPS)
+		{ //refresh fps every REFRESH_RATE_FPS_MS
+			fpsForDisplay = std::lround(fps);
+			timeElapse = 0.0f;
+		}
+
+		return fpsForDisplay;
+	}
+
+	float SceneManager::getDeltaTime() const
+	{
+		return 1.0f / getFps();
 	}
 
 	void SceneManager::computeFps()
 	{
-		currFrame++;
-		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-		int timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime).count();
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		float timeInterval = static_cast<float>(std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count());
 
-		if(timeInterval > refreshRateFps)
-		{
-			previousFps[indexFps%3] = (int)(currFrame / (timeInterval/1000.0f));
-			indexFps++;
+        previousFps[indexFps%3] = 1000000.0f / timeInterval;
+		fps = (previousFps[indexFps%3]*9 + previousFps[(indexFps-1)%3]*3 + previousFps[(indexFps-2)%3]) / 13.0f;
 
-			nbrFps = (int)((previousFps[(indexFps-0)%3]*2 + previousFps[(indexFps-1)%3]*2 + previousFps[(indexFps-2)%3]*1) / 5.0);
-
-			previousTime = currentTime;
-			currFrame = 0;
-		}
+        indexFps++;
+        previousTime = currentTime;
 	}
 
 	Renderer3d *SceneManager::newRenderer3d(bool enable)
@@ -158,7 +166,7 @@ namespace urchin
 
 	void SceneManager::enableRenderer3d(Renderer3d *renderer3d)
 	{
-		if(activeRenderers[RENDERER_3D])
+		if(activeRenderers[RENDERER_3D] && activeRenderers[RENDERER_3D]!=renderer3d)
 		{
 			activeRenderers[RENDERER_3D]->onDisable();
 		}
@@ -200,7 +208,7 @@ namespace urchin
 
 	void SceneManager::enableGUIRenderer(GUIRenderer *guiRenderer)
 	{
-		if(activeRenderers[GUI_RENDERER])
+		if(activeRenderers[GUI_RENDERER] && activeRenderers[GUI_RENDERER]!=guiRenderer)
 		{
 			activeRenderers[GUI_RENDERER]->onDisable();
 		}
@@ -286,14 +294,14 @@ namespace urchin
 
 		//FPS
 		computeFps();
-		float invFrameRate = getOneOnFps();
+		float dt = getDeltaTime();
 
 		//renderer
 		for (auto &activeRenderer : activeRenderers)
 		{
 			if(activeRenderer)
 			{
-				activeRenderer->display(invFrameRate);
+				activeRenderer->display(dt);
 			}
 		}
 

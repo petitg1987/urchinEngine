@@ -65,10 +65,10 @@ namespace urchin
 		}
 	}
 
-	void Animation::animate(float invFrameRate)
+	void Animation::animate(float dt)
 	{
 		//calculate current and next frames
-		animationInformation.lastTime += invFrameRate;
+		animationInformation.lastTime += dt;
 		if(animationInformation.lastTime >= animationInformation.maxTime) //move to next frame
 		{
 			animationInformation.lastTime = 0.0f;

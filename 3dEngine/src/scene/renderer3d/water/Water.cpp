@@ -302,7 +302,7 @@ namespace urchin
         glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
     }
 
-    void Water::display(const Camera *camera, FogManager *fogManager, float invFrameRate)
+    void Water::display(const Camera *camera, FogManager *fogManager, float dt)
     {
         if(camera->getPosition().Y < centerPosition.Y && waterRectangle->collideWithPoint(Point2<float>(camera->getPosition().X, camera->getPosition().Z)))
         {
@@ -322,7 +322,7 @@ namespace urchin
             ShaderManager::instance()->bind(waterShader);
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
 
-            sumTimeStep += invFrameRate;
+            sumTimeStep += dt;
             glUniform1f(sumTimeStepLoc, sumTimeStep);
 
             glActiveTexture(GL_TEXTURE0);

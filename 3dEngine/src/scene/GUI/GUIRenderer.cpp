@@ -165,7 +165,7 @@ namespace urchin
 		widgets.erase(it);
 	}
 
-	void GUIRenderer::display(float invFrameRate)
+	void GUIRenderer::display(float dt)
 	{
 		ScopeProfiler profiler("3d", "uiRenderDisplay");
 
@@ -181,7 +181,7 @@ namespace urchin
 				Vector2<int> translateVector(widget->getGlobalPositionX(), widget->getGlobalPositionY());
 				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 
-				widget->display(translateDistanceLoc, invFrameRate);
+				widget->display(translateDistanceLoc, dt);
 			}
 		}
 

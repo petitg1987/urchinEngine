@@ -388,7 +388,7 @@ namespace urchin
 		//nothing to do
 	}
 
-	void Renderer3d::display(float invFrameRate)
+	void Renderer3d::display(float dt)
 	{
 		ScopeProfiler profiler("3d", "rendererDisplay");
 
@@ -397,11 +397,11 @@ namespace urchin
 			return;
 		}
 
-		updateScene(invFrameRate);
+		updateScene(dt);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
 		glDrawBuffers(2, &fboAttachments[0]);
-		deferredGeometryRendering(invFrameRate);
+		deferredGeometryRendering(dt);
 
 		if(isAntiAliasingActivated)
 		{
@@ -462,12 +462,12 @@ namespace urchin
 		#endif
 	}
 
-	void Renderer3d::updateScene(float invFrameRate)
+	void Renderer3d::updateScene(float dt)
 	{
 		ScopeProfiler profiler("3d", "updateScene");
 
 		//move the camera
-		camera->updateCameraView(invFrameRate);
+		camera->updateCameraView(dt);
 
 		//refresh models in octree
 		modelOctreeManager->refreshOctreeables();
@@ -490,7 +490,7 @@ namespace urchin
             updateModelsInFrustum();
 			modelDisplayer->setModels(modelsInFrustum);
 		}
-		modelDisplayer->updateAnimation(invFrameRate);
+		modelDisplayer->updateAnimation(dt);
 
 		//update shadow maps
 		if(isShadowActivated)
@@ -503,7 +503,7 @@ namespace urchin
 	 * First pass of deferred shading algorithm.
 	 * Render depth, color, normal, etc. into buffers.
 	 */
-	void Renderer3d::deferredGeometryRendering(float invFrameRate)
+	void Renderer3d::deferredGeometryRendering(float dt)
 	{
 		ScopeProfiler profiler("3d", "defGeoRender");
 
@@ -516,9 +516,9 @@ namespace urchin
 
 		modelDisplayer->display(camera->getViewMatrix());
 
-		terrainManager->display(camera, invFrameRate);
+		terrainManager->display(camera, dt);
 
-		waterManager->display(camera, fogManager, invFrameRate);
+		waterManager->display(camera, fogManager, dt);
 
 		geometryManager->display(camera->getViewMatrix());
 

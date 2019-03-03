@@ -405,7 +405,7 @@ namespace urchin
 		}
 	}
 
-	void Widget::display(int translateDistanceLoc, float invFrameRate)
+	void Widget::display(int translateDistanceLoc, float dt)
 	{
 		for (auto &child : children)
 		{
@@ -414,7 +414,7 @@ namespace urchin
 				Vector2<int> translateVector(child->getGlobalPositionX(), child->getGlobalPositionY());
 				glUniform2iv(translateDistanceLoc, 1, (const int*)translateVector);
 
-				child->display(translateDistanceLoc, invFrameRate);
+				child->display(translateDistanceLoc, dt);
 			}
 		}
 	}

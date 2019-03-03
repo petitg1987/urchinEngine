@@ -77,26 +77,26 @@ namespace urchin
 		}
 	}
 
-	void FpsCamera::updateCameraView(float invFrameRate)
+	void FpsCamera::updateCameraView(float dt)
 	{
 		if(isKeyLeftPressed)
 		{
-			moveX(invFrameRate*speed);
+			moveX(dt*speed);
 		}
 		
 		if(isKeyRightPressed)
 		{
-			moveX(-invFrameRate*speed);
+			moveX(-dt*speed);
 		}
 		
 		if(isKeyFrontPressed)
 		{
-			moveZ(invFrameRate*speed);
+			moveZ(dt*speed);
 		}
 		
 		if(isKeyBackPressed)
 		{
-			moveZ(-invFrameRate*speed);
+			moveZ(-dt*speed);
 		}
 	}
 

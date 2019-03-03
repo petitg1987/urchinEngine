@@ -241,7 +241,7 @@ namespace urchin
 		return bIsProduceShadow;
 	}
 
-	void Model::updateAnimation(float invFrameRate)
+	void Model::updateAnimation(float dt)
 	{
 		//animate model
 		if(isAnimate())
@@ -252,7 +252,7 @@ namespace urchin
 				stopAnimationAtLastFrame = false;
 			}else
             {
-                currAnimation->animate(invFrameRate);
+                currAnimation->animate(dt);
             }
 		}
 	}

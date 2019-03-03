@@ -89,16 +89,16 @@ namespace urchin
 		}
 	}
 
-	void FreeCamera::updateCameraView(float invFrameRate)
+	void FreeCamera::updateCameraView(float dt)
 	{
 		if(isKeyLeftPressed)
 		{
 			if(isUseMouseToMoveCamera())
 			{
-				moveX(invFrameRate*speed);
+				moveX(dt*speed);
 			}else
 			{
-				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), invFrameRate*rotateSpeed));
+				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), dt*rotateSpeed));
 			}
 		}
 		
@@ -106,21 +106,21 @@ namespace urchin
 		{
 			if(isUseMouseToMoveCamera())
 			{
-				moveX(-invFrameRate*speed);
+				moveX(-dt*speed);
 			}else
 			{
-				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), -invFrameRate*rotateSpeed));
+				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), -dt*rotateSpeed));
 			}
 		}
 		
 		if(isKeyFrontPressed)
 		{
-			moveZ(invFrameRate*speed);
+			moveZ(dt*speed);
 		}
 		
 		if(isKeyBackPressed)
 		{
-			moveZ(-invFrameRate*speed);
+			moveZ(-dt*speed);
 		}
 	}
 

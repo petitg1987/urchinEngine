@@ -225,7 +225,7 @@ namespace urchin
 		computeCursorPosition();
 	}
 
-	void TextBox::display(int translateDistanceLoc, float invFrameRate)
+	void TextBox::display(int translateDistanceLoc, float dt)
 	{
 		//display the text box
 		glBindTexture(GL_TEXTURE_2D, textureID);
@@ -233,7 +233,7 @@ namespace urchin
 		quadDisplayer->display();
 
 		//displays the cursor
-		cursorBlink+=invFrameRate*CURSOR_BLINK_SPEED;
+		cursorBlink += dt * CURSOR_BLINK_SPEED;
 		if(state==ACTIVE && ((int)cursorBlink%2)>0)
 		{
 			Vector2<int> widgetPosition(getGlobalPositionX(), getGlobalPositionY());
@@ -252,7 +252,7 @@ namespace urchin
 			glUniform2iv(translateDistanceLoc, 1, (const int*)widgetPosition);
 		}
 
-		Widget::display(translateDistanceLoc, invFrameRate);
+		Widget::display(translateDistanceLoc, dt);
 	}
 
 }

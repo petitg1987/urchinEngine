@@ -119,7 +119,8 @@ namespace urchin
             this->mesh = mesh;
             this->terrainPosition = terrainPosition;
 
-            std::default_random_engine generator;
+            unsigned int seed = 0; //no need to generate different random numbers at each start
+            std::default_random_engine generator(seed);
             std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
 
             auto grassXQuantity = static_cast<unsigned int>(mesh->getXZScale() * mesh->getXSize() * grassQuantity);
@@ -421,7 +422,7 @@ namespace urchin
         glUniform1f(windStrengthLoc, windStrength);
     }
 
-    void TerrainGrass::display(const Camera *camera, float invFrameRate)
+    void TerrainGrass::display(const Camera *camera, float dt)
     {
         if(grassTexture)
         {
@@ -441,7 +442,7 @@ namespace urchin
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, grassMaskTexture->getTextureID());
 
-            sumTimeStep += invFrameRate;
+            sumTimeStep += dt;
             glUniform1f(sumTimeStepLoc, sumTimeStep);
             glUniformMatrix4fv(mViewLoc, 1, GL_FALSE, (const float *) camera->getViewMatrix());
             glUniform3fv(cameraPositionLoc, 1, (const float *)camera->getPosition());

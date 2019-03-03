@@ -116,12 +116,12 @@ namespace urchin
 		this->rightButton->addEventListener(rightButtonEventListener);
 	}
 
-	void Slider::display(int translateDistanceLoc, float invFrameRate)
+	void Slider::display(int translateDistanceLoc, float dt)
 	{
 		if(leftButton->getWidgetState()==Widget::WidgetStates::CLICKING)
 		{
-			timeInClickingState += invFrameRate;
-			timeSinceLastChange += invFrameRate;
+			timeInClickingState += dt;
+			timeSinceLastChange += dt;
 
 			if(timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
 					&& getSelectedIndex() > 0)
@@ -131,8 +131,8 @@ namespace urchin
 			}
 		}else if(rightButton->getWidgetState()==Widget::WidgetStates::CLICKING)
 		{
-			timeInClickingState += invFrameRate;
-			timeSinceLastChange += invFrameRate;
+			timeInClickingState += dt;
+			timeSinceLastChange += dt;
 
 			if(timeInClickingState>TIME_BEFORE_AUTO_CLICK && timeSinceLastChange>TIME_BEFORE_AUTO_NEXT_CLICK
 					&& getSelectedIndex()+1 < values.size())
@@ -146,7 +146,7 @@ namespace urchin
 			timeSinceLastChange = 0.0f;
 		}
 
-		Widget::display(translateDistanceLoc, invFrameRate);
+		Widget::display(translateDistanceLoc, dt);
 	}
 
 	Slider::ButtonSliderEventListener::ButtonSliderEventListener(Slider *slider, bool isLeftButton) :
