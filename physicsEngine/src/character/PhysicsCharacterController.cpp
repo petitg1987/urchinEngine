@@ -21,7 +21,7 @@ namespace urchin
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
         physicsCharacter(physicsCharacter),
         physicsWorld(physicsWorld),
-		ghostBody(new WorkGhostBody("character", physicsCharacter->getTransform(), physicsCharacter->getShape())), //TODO name should be unique
+		ghostBody(new WorkGhostBody(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->getShape())),
 		verticalSpeed(0.0f),
 		makeJump(false),
         initialOrientation(physicsCharacter->getTransform().getOrientation()),
@@ -37,13 +37,12 @@ namespace urchin
         #endif
 
 		ghostBody->setIsActive(true); //always active for get better reactivity
-        physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody);
+        physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ghostBody);
 	}
 
 	PhysicsCharacterController::~PhysicsCharacterController()
 	{
-	    physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBody(ghostBody); //TODO review remove to remove in physics thread...
-        delete ghostBody; //TODO to move in removeBody...
+	    physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBodyAsync(ghostBody);
 	}
 
 	void PhysicsCharacterController::setMomentum(const Vector3<float> &momentum)

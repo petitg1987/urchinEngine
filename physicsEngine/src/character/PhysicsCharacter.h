@@ -12,8 +12,10 @@ namespace urchin
     class PhysicsCharacter
     {
         public:
-            PhysicsCharacter(float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
-            PhysicsCharacter(float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &, float, float);
+            PhysicsCharacter(const std::string &, float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
+            PhysicsCharacter(const std::string &, float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &, float, float);
+
+            const std::string &getName() const;
 
             float getMass() const;
 
@@ -28,6 +30,7 @@ namespace urchin
             float getMaxSlopeInPercentage() const;
 
         private:
+            std::string name;
             float mass;
             std::shared_ptr<const CollisionShape3D> shape;
             PhysicsTransform transform;

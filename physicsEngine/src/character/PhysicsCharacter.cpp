@@ -8,14 +8,15 @@
 namespace urchin
 {
 
-    PhysicsCharacter::PhysicsCharacter(float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform) :
-        PhysicsCharacter(mass, shape, transform, DEFAULT_JUMP_SPEED, DEFAULT_MAX_SLOPE)
+    PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform) :
+        PhysicsCharacter(name, mass, shape, transform, DEFAULT_JUMP_SPEED, DEFAULT_MAX_SLOPE)
     {
 
     }
 
-    PhysicsCharacter::PhysicsCharacter(float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform,
+    PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform,
             float jumpSpeed, float maxSlopeInRadian) :
+            name(name),
             mass(mass),
             shape(shape),
             transform(transform),
@@ -24,6 +25,11 @@ namespace urchin
             maxSlopeInPercentage(std::tan(maxSlopeInRadian))
     {
 
+    }
+
+    const std::string &PhysicsCharacter::getName() const
+    {
+        return name;
     }
 
     float PhysicsCharacter::getMass() const

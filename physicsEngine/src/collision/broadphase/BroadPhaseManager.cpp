@@ -14,6 +14,7 @@ namespace urchin
 
 	BroadPhaseManager::~BroadPhaseManager()
 	{
+        synchronizeBodies();
 		delete broadPhaseAlgorithm;
 	}
 
@@ -42,21 +43,58 @@ namespace urchin
 	}
 
 	/**
-	 * @param alternativePairContainer Alternative pair container to default one
+	 * Add body to broad phase. Method can be called from thread different of the physics thread.
 	 */
+    void BroadPhaseManager::addBodyAsync(AbstractWorkBody *body)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+
+        bodiesToAdd.push_back(body);
+    }
+
 	void BroadPhaseManager::addBody(AbstractWorkBody *body)
 	{
 		broadPhaseAlgorithm->addBody(body, body->getPairContainer());
 	}
 
-	void BroadPhaseManager::removeBody(AbstractWorkBody *body)
+    /**
+     * Remove body from broad phase. Method can be called from thread different of the physics thread.
+     */
+	void BroadPhaseManager::removeBodyAsync(AbstractWorkBody *body)
 	{
-		broadPhaseAlgorithm->removeBody(body);
+		std::lock_guard<std::mutex> lock(mutex);
+
+		bodiesToRemove.push_back(body);
+	}
+
+    void BroadPhaseManager::removeBody(AbstractWorkBody *body)
+    {
+        broadPhaseAlgorithm->removeBody(body);
+    }
+
+	void BroadPhaseManager::synchronizeBodies()
+	{
+		std::lock_guard<std::mutex> lock(mutex);
+
+        for(auto &bodyToAdd : bodiesToAdd)
+        {
+            addBody(bodyToAdd);
+        }
+        bodiesToAdd.clear();
+
+        for(auto &bodyToRemove : bodiesToRemove)
+		{
+			removeBody(bodyToRemove);
+			delete bodyToRemove;
+		}
+        bodiesToRemove.clear();
 	}
 
 	const std::vector<OverlappingPair *> &BroadPhaseManager::computeOverlappingPairs()
 	{
 		ScopeProfiler profiler("physics", "coOverlapPair");
+
+		synchronizeBodies();
 
 		broadPhaseAlgorithm->updateBodies();
 		return broadPhaseAlgorithm->getOverlappingPairs();

@@ -24,8 +24,8 @@ namespace urchin
 
 			void notify(Observable *, int) override;
 
-			void addBody(AbstractWorkBody *);
-			void removeBody(AbstractWorkBody *);
+			void addBodyAsync(AbstractWorkBody *);
+			void removeBodyAsync(AbstractWorkBody *);
 
 			const std::vector<OverlappingPair *> &computeOverlappingPairs();
 
@@ -33,7 +33,15 @@ namespace urchin
 			std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const;
 
 		private:
+            void addBody(AbstractWorkBody *);
+			void removeBody(AbstractWorkBody *);
+			void synchronizeBodies();
+
 			BroadPhaseAlgorithm *broadPhaseAlgorithm;
+
+			std::mutex mutex;
+            std::vector<AbstractWorkBody *> bodiesToAdd;
+			std::vector<AbstractWorkBody *> bodiesToRemove;
 	};
 
 }
