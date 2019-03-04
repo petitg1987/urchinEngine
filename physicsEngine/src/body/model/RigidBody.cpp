@@ -2,7 +2,7 @@
 #include <limits>
 #include <mutex>
 
-#include "body/RigidBody.h"
+#include "RigidBody.h"
 
 namespace urchin
 {

@@ -3,9 +3,8 @@
 
 #include "PhysicsWorld.h"
 
-#include "body/RigidBody.h"
+#include "body/model/RigidBody.h"
 #include "body/InertiaCalculation.h"
-#include "body/work/AbstractWorkBody.h"
 
 #include "shape/CollisionShape3D.h"
 #include "shape/CollisionSphereShape.h"

@@ -3,7 +3,7 @@
 
 #include <chrono>
 #include <vector>
-#include <string>
+#include <array>
 #include "UrchinCommon.h"
 
 #include "renderer3d/Renderer3d.h"

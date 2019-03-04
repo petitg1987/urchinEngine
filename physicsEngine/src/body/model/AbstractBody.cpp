@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <limits>
 
-#include "body/AbstractBody.h"
+#include "AbstractBody.h"
 
 namespace urchin
 {

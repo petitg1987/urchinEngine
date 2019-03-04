@@ -13,14 +13,14 @@ set(SOURCE_FILES
         src/body/work/WorkGhostBody.h
         src/body/work/WorkRigidBody.cpp
         src/body/work/WorkRigidBody.h
-        src/body/AbstractBody.cpp
-        src/body/AbstractBody.h
+        src/body/model/AbstractBody.cpp
+        src/body/model/AbstractBody.h
         src/body/BodyManager.cpp
         src/body/BodyManager.h
         src/body/InertiaCalculation.cpp
         src/body/InertiaCalculation.h
-        src/body/RigidBody.cpp
-        src/body/RigidBody.h
+        src/body/model/RigidBody.cpp
+        src/body/model/RigidBody.h
         src/collision/broadphase/aabbtree/AABBNode.cpp
         src/collision/broadphase/aabbtree/AABBNode.h
         src/collision/broadphase/aabbtree/AABBTree.cpp

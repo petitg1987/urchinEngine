@@ -3,7 +3,7 @@
 
 #include <mutex>
 
-#include "body/AbstractBody.h"
+#include "body/model/AbstractBody.h"
 #include "body/work/AbstractWorkBody.h"
 
 namespace urchin

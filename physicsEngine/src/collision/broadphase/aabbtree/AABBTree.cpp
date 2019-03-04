@@ -212,7 +212,7 @@ namespace urchin
 		}
 
 		for(auto &ownerPairContainer : nodeData->getOwnerPairContainers())
-		{ //TODO fail here on stop (after several resume / play)
+		{
 			ownerPairContainer->removeOverlappingPairs(nodeData->getBody());
 		}
 	}

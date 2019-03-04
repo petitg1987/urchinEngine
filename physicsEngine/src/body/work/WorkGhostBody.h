@@ -2,7 +2,6 @@
 #define URCHINENGINE_WORKGHOSTBODY_H
 
 #include <string>
-#include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
 

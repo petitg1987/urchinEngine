@@ -21,7 +21,7 @@ namespace urchin
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
         physicsCharacter(physicsCharacter),
         physicsWorld(physicsWorld),
-		ghostBody(new WorkGhostBody("character", physicsCharacter->getTransform(), physicsCharacter->getShape())),
+		ghostBody(new WorkGhostBody("character", physicsCharacter->getTransform(), physicsCharacter->getShape())), //TODO name should be unique
 		verticalSpeed(0.0f),
 		makeJump(false),
         initialOrientation(physicsCharacter->getTransform().getOrientation()),
@@ -32,18 +32,18 @@ namespace urchin
 		jumping(false),
 		slopeInPercentage(0.0f)
 	{
+		#ifdef _DEBUG
+			assert(physicsWorld!=nullptr);
+        #endif
+
 		ghostBody->setIsActive(true); //always active for get better reactivity
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBody(ghostBody);
 	}
 
 	PhysicsCharacterController::~PhysicsCharacterController()
 	{
-		if(physicsWorld)
-		{
-			physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBody(ghostBody);
-		}
-
-		delete ghostBody;
+	    physicsWorld->getCollisionWorld()->getBroadPhaseManager()->removeBody(ghostBody); //TODO review remove to remove in physics thread...
+        delete ghostBody; //TODO to move in removeBody...
 	}
 
 	void PhysicsCharacterController::setMomentum(const Vector3<float> &momentum)
@@ -96,15 +96,11 @@ namespace urchin
 		}
 
 		//set new transform on character
-		physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
+        physicsCharacter->updateTransform(ghostBody->getPhysicsTransform());
 	}
 
 	void PhysicsCharacterController::setup(float dt)
 	{
-		#ifdef _DEBUG
-			assert(physicsWorld!=nullptr);
-		#endif
-
 		//save values
 		previousBodyPosition = ghostBody->getPosition();
 

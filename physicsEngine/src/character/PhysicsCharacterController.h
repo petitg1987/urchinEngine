@@ -6,6 +6,7 @@
 #include <atomic>
 
 #include "PhysicsCharacter.h"
+#include "body/work/WorkGhostBody.h"
 #include "processable/Processable.h"
 #include "collision/ManifoldResult.h"
 

@@ -8,7 +8,7 @@
 #include <mutex>
 #include "UrchinCommon.h"
 
-#include "body/AbstractBody.h"
+#include "body/model/AbstractBody.h"
 #include "body/BodyManager.h"
 #include "collision/CollisionWorld.h"
 #include "processable/Processable.h"

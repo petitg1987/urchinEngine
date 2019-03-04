@@ -1,5 +1,7 @@
 #include <GL/glew.h>
 #include <stdexcept>
+#include <string>
+#include <iostream>
 
 #include "SceneManager.h"
 

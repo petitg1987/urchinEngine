@@ -5,7 +5,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "body/AbstractBody.h"
+#include "AbstractBody.h"
 #include "body/work/WorkRigidBody.h"
 
 namespace urchin
