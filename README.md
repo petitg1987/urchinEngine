@@ -8,7 +8,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - Texture manager: TGA & PNG, anisotropy, mip-maps, normal mapping
   - Dynamic shadow (cached parallel split shadow maps, variance shadow map, blur)
   - Dynamic lighting with deferred shading: omni-directional & directional
-  - Terrain multi-layered
+  - Terrain multi-layered and grass
   - Ambient occlusion (SSAO+)
   - Anti-aliasing (FXAA)
   - Space partitioning (octree)
@@ -25,6 +25,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - Continuous collision detection (CCD)
   - Island
   - Ray cast
+  - Character controller
 
 - Sound Engine:
   - Ambience sound and 3D sound
@@ -34,6 +35,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 - IA Engine:
   - Automatic navigation mesh generator
   - Pathfinding A* with funnel algorithm
+  - Character controller
   
 - Network Engine:
   - HTTP request sender

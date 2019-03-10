@@ -1,0 +1,58 @@
+# To do
+- Lighting
+	- (1) **QUALITY IMPROVEMENT**: No limit for number of light (use texture instead of uniform)
+- Model
+    - (1) **OPTIMIZATION**: Avoid octree resize continuously when physics object fall in nothingness
+    - (2) **OPTIMIZATION**: Group same models in same octree to perform one draw call
+	- (3) **OPTIMIZATION**: Models LOD
+	- (3) **OPTIMIZATION**: Coherent hierarchical culling revisited
+- Shadow
+    - (2) **OPTIMIZATION**: Improve performance ShadowManager::updateVisibleModels
+        - Tips 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
+        - Tips 2: call octree manager one times for all frustum splits and then split the models
+	- (2) **QUALITY IMPROVEMENT**: Blur variance shadow map with 'summed area' technique.
+        - Note 1: decreased light bleeding to improve quality
+        - Note 2: force usage of 32 bits shadow map
+	- (2) **QUALITY IMPROVEMENT**: Use mipmap on shadow map (on blured shadow maps when blur used)
+	- (2) **QUALITY IMPROVEMENT**: Use anisotropic on shadow map (on blured shadow maps when blur used)
+	- (3) **NEW FEATURE**: Shadow on omnidirectional light
+	- (3) **NEW FEATURE**: Implement PCSS
+	- (3) **OPTIMIZATION**: Use models LOD
+	- (3) **OPTIMIZATION**: Create shadow map texture only for visible lights
+- Terrain
+    - (2) **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
+    - (2) **NEW FEATURE**: Use material textures (normal map...) for terrain
+    - (2) **NEW FEATURE**: Add auto shadow on terrain
+    - (2) **OPTIMIZATION**: Don't build grass quadtree which are 100% discarded by grass mask
+- GUI
+	- (3) **NEW FEATURE**: Combo list
+	- (3) **NEW FEATURE**: Drag and drop
+	- (3) **NEW FEATURE**: Textarea
+	- (3) **NEW FEATURE**: Scrollbar
+	- (3) **NEW FEATURE**: Text selection
+	- (3) **NEW FEATURE**: Use 'glutBitmapCharacter' to display characters
+- Graphic effect
+	- (3) **QUALITY IMPROVEMENT**: Water (https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh)
+	- (3) **NEW FEATURE**: Reflects
+	- (3) **NEW FEATURE**: Smoke
+	- (3) **NEW FEATURE**: Fire & explosion
+	- (3) **NEW FEATURE**: Alpha management
+	- (3) **OPTIMIZATION**: Textures compression
+
+# Known bugs
+-
+
+# Notes
+- Mesh
+	- Call Of Duty 4: characters of 6000 triangles + normal mapping
+	- Crysis 1: scene with 500 000 to 1 million of triangles displayed
+- Texel density
+	- Crysis: average of 512 pixels/m for textures
+- Shadow
+	- Skyrim: shadow map resolution 4096*4096 (high quality), 2048*2048 (medium quality), 2 shadow maps: primary and secondary
+	- GTA V: shadow map resolution 1024*4096 (4 rendering). http://www.adriancourreges.com/blog/2015/11/02/gta-v-graphics-study/
+	- Assassin Creed Syncidate: PCSS Ultra use VRAM > 400Mo
+	- The Division & Watch Dog 2: use Hybrid Frustum Traced Shadows
+- Anti aliasing
+	- Assassin Creed Syndicate: MSAA4x+FXAA (VRAM=392Mo) or TXAA4x+FXAA (VRAM=410Mo)
+	- Far Cry 5: SMAA or TAA

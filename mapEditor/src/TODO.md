@@ -1,0 +1,17 @@
+# To do
+- Render
+	- (1) **NEW FEATURE**: Allow to move objects with mouse
+	- (2) **QUALITY IMPROVEMENT**: When change orientation of cylinder/capsule: resize physics shape to fit the object size
+	- (2) **QUALITY IMPROVEMENT**: Make objects without physics selectable with left click
+	- (2) **NEW FEATURE**: Display box around objects which don't have mesh (allow to select them easily with left click)
+    - (3) **NEW FEATURE**: Handle skybox
+- UI
+	- (3) **NEW FEATURE**: Allow CTRL+Y to return in previous value
+	- (2) **NEW FEATURE**: When save (CTRL+S): change window title from "(not saved)" to "(saved)"
+	- (3) **NEW FEATURE**: Remove 'ifdef _DEBUG' from code and allow to display debug information in map editor
+
+# Known bugs
+- 
+
+# Notes
+-
