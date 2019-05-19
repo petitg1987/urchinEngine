@@ -2,19 +2,19 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
       <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="unitTest" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
-      <config projectName="urchinEngine" targetName="copyShaders" />
-      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -24,11 +24,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Ray test on concave shape: improve performance">
-      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Add workspace file">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/.target/release/" />
@@ -51,12 +48,12 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FavoritesManager">
     <favorites_list name="urchinEngine" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
@@ -497,10 +494,10 @@
     </configuration>
     <list>
       <item itemvalue="CMake Application.Build All" />
-      <item itemvalue="CMake Application.unitTest" />
       <item itemvalue="CMake Application.unitTest (memcheck)" />
-      <item itemvalue="CMake Application.urchinMapEditor" />
+      <item itemvalue="CMake Application.unitTest" />
       <item itemvalue="CMake Application.urchinMapEditor (memcheck)" />
+      <item itemvalue="CMake Application.urchinMapEditor" />
       <item itemvalue="CMake Application.urchinMapEditor_autogen" />
     </list>
   </component>
@@ -1074,7 +1071,8 @@
       <workItem from="1551296135729" duration="855000" />
       <workItem from="1551370350169" duration="503000" />
       <workItem from="1551724759302" duration="2642000" />
-      <workItem from="1558267066572" duration="277000" />
+      <workItem from="1558267066572" duration="467000" />
+      <workItem from="1558267610609" duration="7000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1244,11 +1242,18 @@
       <option name="project" value="LOCAL" />
       <updated>1546727374353</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Add workspace file">
+      <created>1558267517163</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1558267517163</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1851273000" />
+    <option name="totallyTimeSpent" value="1851470000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1261,9 +1266,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.2022412" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.20437567" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
       <window_info id="Data View" order="3" />
@@ -1277,7 +1281,7 @@
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.3697749" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3287234" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" visible="true" weight="0.3687031" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" visible="true" weight="0.3687031" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
       <window_info anchor="bottom" id="Salesforce" order="12" />
       <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />
@@ -1389,7 +1393,8 @@
     <MESSAGE value="Physics: prepare for faster ray test" />
     <MESSAGE value="Ray test via small aabboxes" />
     <MESSAGE value="Ray test on concave shape: improve performance" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ray test on concave shape: improve performance" />
+    <MESSAGE value="Add workspace file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add workspace file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
