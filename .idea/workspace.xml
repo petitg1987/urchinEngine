@@ -1,0 +1,1843 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="urchin3dEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
+      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" GENERATION_DIR=".build/debug" />
+      <configuration PROFILE_NAME="Release" CONFIG_NAME="Release" GENERATION_DIR=".build/release" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Ray test on concave shape: improve performance">
+      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
+    <ignored path="$PROJECT_DIR$/.target/release/" />
+    <ignored path="$PROJECT_DIR$/.target/debug/" />
+    <ignored path="$PROJECT_DIR$/.build/debug/" />
+    <ignored path="$PROJECT_DIR$/.build/release/" />
+    <ignored path="$PROJECT_DIR$/.idea/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+    </option>
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FavoritesManager">
+    <favorites_list name="urchinEngine" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>twoAlignedSquares</find>
+      <find>isWalk</find>
+      <find>getOctreeablesIn</find>
+      <find>&quot;subtrahend&quot;, subtrahendPoly</find>
+      <find>&quot;p2&quot;, polyPoints2</find>
+      <find>.merge(</find>
+      <find>std::make_shared</find>
+      <find>cwPoints</find>
+      <find>holeOnWalkableFace</find>
+      <find>navMesh.polygon.removeAngleThresholdInDegree</find>
+      <find>simplifyMergeStartEndPoints</find>
+      <find>OBSTACLE_REDUCE_SIZE</find>
+      <find>resizePolygon</find>
+      <find>ResizePolygon2DService</find>
+      <find>resizeConvexHullShape</find>
+      <find>collisionTriangleObjectsPool&quot;</find>
+      <find>heightfieldTrianglesPoolSize</find>
+      <find>Pool is full of elements</find>
+      <find>ray</find>
+      <find>load</find>
+      <find>engine.pro</find>
+      <find>shaders.shadersLocation</find>
+      <find>resources</find>
+      <find>findTrianglesInAABBox</find>
+      <find>isLeaf())</find>
+      <find>stack</find>
+      <find>collinearLinesNoIntersectionSameDirection</find>
+      <find>findTrian</find>
+      <find>findTrianglesInLineSegment</find>
+      <find>frl</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>long double&gt;</replace>
+      <replace>long long&gt;</replace>
+      <replace>int</replace>
+      <replace>&lt;long long&gt;</replace>
+      <replace>assertPoint2LongLongEquals</replace>
+      <replace>assertPoint2FloatEquals</replace>
+      <replace>Terrain</replace>
+      <replace>height</replace>
+      <replace>quadtree</replace>
+      <replace>Water</replace>
+      <replace>water</replace>
+      <replace>CloneObjectDialog</replace>
+      <replace>getNeighbors()</replace>
+      <replace>),\n</replace>
+      <replace>\t\tPoint2&lt;float&gt;(</replace>
+      <replace>&lt;&lt;</replace>
+      <replace>&quot;subtrahend&quot;, std::move(subtrahendPoly)</replace>
+      <replace>&quot;p2&quot;, std::move(polyPoints2)</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/unitTest/src</dir>
+      <dir>$PROJECT_DIR$/unitTest</dir>
+      <dir>$PROJECT_DIR$/soundEngine/src</dir>
+      <dir>$PROJECT_DIR$/3dEngine/src</dir>
+      <dir>$PROJECT_DIR$/3dEngine/src/scene/renderer3d/</dir>
+      <dir>$PROJECT_DIR$/AIEngine/src</dir>
+      <dir>$PROJECT_DIR$/AIEngine/src/path</dir>
+      <dir>$PROJECT_DIR$/common/src</dir>
+      <dir>$PROJECT_DIR$/AIEngine/src/path/navmesh/csg</dir>
+      <dir>$PROJECT_DIR$/3dEngine/resources/shaders</dir>
+      <dir>$PROJECT_DIR$</dir>
+      <dir>$PROJECT_DIR$/AIEngine/src/path/navmesh</dir>
+      <dir>$PROJECT_DIR$/mapHandler</dir>
+      <dir>$PROJECT_DIR$/mapEditor/src/scene/controller</dir>
+      <dir>$PROJECT_DIR$/mapEditor/src/scene/displayer</dir>
+      <dir>$PROJECT_DIR$/mapEditor/src</dir>
+      <dir>$PROJECT_DIR$/AIEngine</dir>
+      <dir>$PROJECT_DIR$/3dEngine</dir>
+      <dir>$PROJECT_DIR$/physicsEngine</dir>
+      <dir>$PROJECT_DIR$/mapEditor/src/scene</dir>
+      <dir>$PROJECT_DIR$/mapEditor</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/3dEngine/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/AIEngine/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/common/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/mapEditor/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/mapHandler/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/networkEngine/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/physicsEngine/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/soundEngine/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/unitTest/src/physics/shape/ShapeToConvexObjectTest.cpp" />
+        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/NavMeshGeneratorTest.cpp" />
+        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/objects/BodyShapeDisplayer.cpp" />
+        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/ai/NavMeshDisplayer.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" />
+        <option value="$PROJECT_DIR$/unitTest/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/CSGPolygonTest.h" />
+        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/CSGPolygonTest.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/PolygonsUnion.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/PolygonsUnion.h" />
+        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/util/ResizePolygon2DService.h" />
+        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/util/ResizePolygon2DService.cpp" />
+        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/util/ResizeConvexHull2DService.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.h" />
+        <option value="$PROJECT_DIR$/unitTest/src/math/geometry/ResizePolygon2DServiceTest.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.h" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" />
+        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TriangulationTest.cpp" />
+        <option value="$PROJECT_DIR$/unitTest/resources/engine.properties" />
+        <option value="$PROJECT_DIR$/mapEditor/resources/engine.properties" />
+        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.cpp" />
+        <option value="$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.h" />
+        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp" />
+        <option value="$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.cpp" />
+        <option value="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/terrain/TerrainMesh.cpp" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp" />
+        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.h" />
+        <option value="$PROJECT_DIR$/unitTest/src/math/geometry/LineSegment2DCollisionTest.cpp" />
+        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.cpp" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/TODO.txt" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.cpp" />
+        <option value="$PROJECT_DIR$/mapEditor/urchinEngine.log" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionConcaveShape.h" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.h" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.cpp" />
+        <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-1" />
+    <option name="width" value="1914" />
+    <option name="height" value="1051" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Assignment issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Bitwise operation issuesJavaScript</id>
+          </State>
+          <State>
+            <id>C/C++</id>
+          </State>
+          <State>
+            <id>CSS</id>
+          </State>
+          <State>
+            <id>Code style issuesCSS</id>
+          </State>
+          <State>
+            <id>Code style issuesJavaScript</id>
+          </State>
+          <State>
+            <id>CoffeeScript</id>
+          </State>
+          <State>
+            <id>Control flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>DOM issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Data flow analysisC/C++</id>
+          </State>
+          <State>
+            <id>Data flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Declaration orderC/C++</id>
+          </State>
+          <State>
+            <id>ECMAScript 6 migration aidsJavaScript</id>
+          </State>
+          <State>
+            <id>Error handlingJavaScript</id>
+          </State>
+          <State>
+            <id>FunctionsC/C++</id>
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>GeneralC/C++</id>
+          </State>
+          <State>
+            <id>GeneralCoffeeScript</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>HTML</id>
+          </State>
+          <State>
+            <id>Ignore</id>
+          </State>
+          <State>
+            <id>Internationalization issues</id>
+          </State>
+          <State>
+            <id>Invalid elementsCSS</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript function metricsJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript validity issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Less</id>
+          </State>
+          <State>
+            <id>Naming conventionsJavaScript</id>
+          </State>
+          <State>
+            <id>Potentially confusing code constructsJavaScript</id>
+          </State>
+          <State>
+            <id>Probable bugsCSS</id>
+          </State>
+          <State>
+            <id>Probable bugsCoffeeScript</id>
+          </State>
+          <State>
+            <id>Probable bugsJavaScript</id>
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+          <State>
+            <id>RELAX NG</id>
+          </State>
+          <State>
+            <id>RegExp</id>
+          </State>
+          <State>
+            <id>Type checksC/C++</id>
+          </State>
+          <State>
+            <id>TypeScript</id>
+          </State>
+          <State>
+            <id>Unused codeC/C++</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+          <State>
+            <id>XPath</id>
+          </State>
+          <State>
+            <id>XSLT</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>ValueMayNotFitIntoReceiver</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="urchinEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="urchinEngine" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SearchEverywhereHistoryKey" value="push&#9;ACTION&#9;Vcs.Push&#10;plugin&#9;ACTION&#9;WelcomeScreen.Plugins" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js.buildTools.gulp.gulp_package_dir" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../testEngineSfml" />
+    <property name="nodejs_interpreter_path" value="node" />
+    <property name="settings.editor.selected.configurable" value="debugger.dataViews" />
+    <property name="vcs.patch.path" value="$USER_HOME$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/unitTest/resources/ai/path" />
+      <recent name="$PROJECT_DIR$/3dEngine/resources/shaders" />
+      <recent name="$PROJECT_DIR$/common/src/libs/clipper" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/common/src/libs" />
+      <recent name="$PROJECT_DIR$/unitTest/src/ai/path/navmesh" />
+      <recent name="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/ref" />
+      <recent name="$PROJECT_DIR$/unitTest/resources/ai/path" />
+      <recent name="$PROJECT_DIR$/unitTest/resources/ai/path/csg" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="CMake Application.urchinMapEditor">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="unitTest (memcheck)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="--tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=no --log-file=valMemcheck.log ./unitTest" WORKING_DIR="file://$PROJECT_DIR$/unitTest" PASS_PARENT_ENVS_2="true" PROJECT_NAME="urchinEngine" TARGET_NAME="unitTest" CONFIG_NAME="Debug" RUN_PATH="/usr/bin/valgrind">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="unitTest" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="urchinEngine" TARGET_NAME="unitTest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="unitTest">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="urchinMapEditor (memcheck)" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="--tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=no --log-file=valMemcheck.log ./urchinMapEditor" WORKING_DIR="file://$PROJECT_DIR$/mapEditor" PASS_PARENT_ENVS_2="true" PROJECT_NAME="urchinEngine" TARGET_NAME="urchinMapEditor" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="urchinMapEditor" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="urchinEngine" TARGET_NAME="urchinMapEditor" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="urchinMapEditor_autogen" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="urchinEngine" TARGET_NAME="urchinMapEditor_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="js.build_tools.grunt">
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <module name="urchinEngine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <module name="urchinEngine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <module name="urchinEngine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.Build All" />
+      <item itemvalue="CMake Application.unitTest" />
+      <item itemvalue="CMake Application.unitTest (memcheck)" />
+      <item itemvalue="CMake Application.urchinMapEditor" />
+      <item itemvalue="CMake Application.urchinMapEditor (memcheck)" />
+      <item itemvalue="CMake Application.urchinMapEditor_autogen" />
+    </list>
+  </component>
+  <component name="SFStoredExecutionPersistentComponent">
+    <executions>
+      <execution name="Default" sourceToExecute="" />
+    </executions>
+    <lastSelectedExecutionName>Default</lastSelectedExecutionName>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="" />
+      <created>1495952389669</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1495952389669</updated>
+      <workItem from="1495952392328" duration="2032000" />
+      <workItem from="1495954978883" duration="11351000" />
+      <workItem from="1495967620365" duration="4142000" />
+      <workItem from="1495988739187" duration="6322000" />
+      <workItem from="1495998959601" duration="534000" />
+      <workItem from="1496082290286" duration="1462000" />
+      <workItem from="1496167999396" duration="3889000" />
+      <workItem from="1496334748320" duration="6979000" />
+      <workItem from="1496346097830" duration="659000" />
+      <workItem from="1496417795559" duration="30000" />
+      <workItem from="1496424510193" duration="2385000" />
+      <workItem from="1496430635392" duration="609000" />
+      <workItem from="1496431956961" duration="2521000" />
+      <workItem from="1496492736416" duration="3342000" />
+      <workItem from="1496560598084" duration="24341000" />
+      <workItem from="1496600151331" duration="1975000" />
+      <workItem from="1496605271712" duration="4186000" />
+      <workItem from="1496639346272" duration="6643000" />
+      <workItem from="1496651389887" duration="2191000" />
+      <workItem from="1496653593350" duration="6064000" />
+      <workItem from="1496664235560" duration="1817000" />
+      <workItem from="1496687379971" duration="1163000" />
+      <workItem from="1496853106297" duration="3967000" />
+      <workItem from="1496935879135" duration="37000" />
+      <workItem from="1496935945576" duration="1800000" />
+      <workItem from="1496942782787" duration="275000" />
+      <workItem from="1496955302392" duration="314000" />
+      <workItem from="1497037360228" duration="2615000" />
+      <workItem from="1497072926644" duration="13207000" />
+      <workItem from="1497093706448" duration="8324000" />
+      <workItem from="1497123479471" duration="2086000" />
+      <workItem from="1497205685660" duration="835000" />
+      <workItem from="1497282538337" duration="2374000" />
+      <workItem from="1497288254026" duration="5706000" />
+      <workItem from="1497297741085" duration="1619000" />
+      <workItem from="1497299707523" duration="988000" />
+      <workItem from="1497368915569" duration="12439000" />
+      <workItem from="1497546587646" duration="4082000" />
+      <workItem from="1497630362470" duration="2190000" />
+      <workItem from="1497680372676" duration="945000" />
+      <workItem from="1497803702546" duration="4588000" />
+      <workItem from="1497890151567" duration="9513000" />
+      <workItem from="1497973340507" duration="6933000" />
+      <workItem from="1497984080263" duration="1863000" />
+      <workItem from="1498059034879" duration="9405000" />
+      <workItem from="1498071054070" duration="2031000" />
+      <workItem from="1498152356231" duration="3666000" />
+      <workItem from="1498211198301" duration="2158000" />
+      <workItem from="1498237861154" duration="8666000" />
+      <workItem from="1498283827869" duration="9487000" />
+      <workItem from="1498336058153" duration="1762000" />
+      <workItem from="1498370791615" duration="5261000" />
+      <workItem from="1498377373331" duration="1419000" />
+      <workItem from="1498490908823" duration="12000" />
+      <workItem from="1498493337163" duration="6967000" />
+      <workItem from="1498505199638" duration="2453000" />
+      <workItem from="1498578825667" duration="11022000" />
+      <workItem from="1499489662353" duration="1954000" />
+      <workItem from="1499586138067" duration="1226000" />
+      <workItem from="1499709236329" duration="30000" />
+      <workItem from="1499714183464" duration="2097000" />
+      <workItem from="1499786866567" duration="3238000" />
+      <workItem from="1499796037983" duration="3457000" />
+      <workItem from="1499882593999" duration="1386000" />
+      <workItem from="1499966963165" duration="5197000" />
+      <workItem from="1500058914662" duration="6423000" />
+      <workItem from="1500098042308" duration="4430000" />
+      <workItem from="1500104501389" duration="8000000" />
+      <workItem from="1500137712597" duration="5694000" />
+      <workItem from="1500147436553" duration="2135000" />
+      <workItem from="1500180639141" duration="4171000" />
+      <workItem from="1500218484882" duration="2855000" />
+      <workItem from="1500229315076" duration="3790000" />
+      <workItem from="1500309384572" duration="4840000" />
+      <workItem from="1500319431233" duration="1422000" />
+      <workItem from="1500393509834" duration="703000" />
+      <workItem from="1500400492167" duration="4964000" />
+      <workItem from="1500408829950" duration="93000" />
+      <workItem from="1500409149232" duration="282000" />
+      <workItem from="1500493293963" duration="79000" />
+      <workItem from="1500650432784" duration="89000" />
+      <workItem from="1500650574212" duration="559000" />
+      <workItem from="1500651190568" duration="3879000" />
+      <workItem from="1500702250623" duration="4603000" />
+      <workItem from="1500706872333" duration="1637000" />
+      <workItem from="1500711656618" duration="3112000" />
+      <workItem from="1500728020121" duration="1528000" />
+      <workItem from="1500738917516" duration="3269000" />
+      <workItem from="1500917166537" duration="4654000" />
+      <workItem from="1500997434092" duration="6844000" />
+      <workItem from="1501082348635" duration="6431000" />
+      <workItem from="1501093831871" duration="2714000" />
+      <workItem from="1501174848424" duration="7745000" />
+      <workItem from="1501259379715" duration="5525000" />
+      <workItem from="1501271334671" duration="1110000" />
+      <workItem from="1501305420595" duration="1780000" />
+      <workItem from="1501514089381" duration="11207000" />
+      <workItem from="1501618167156" duration="554000" />
+      <workItem from="1501686819260" duration="10851000" />
+      <workItem from="1501785848800" duration="1874000" />
+      <workItem from="1501876355077" duration="16000" />
+      <workItem from="1501876394372" duration="1128000" />
+      <workItem from="1502000820609" duration="15542000" />
+      <workItem from="1502039296083" duration="2896000" />
+      <workItem from="1502042275523" duration="2126000" />
+      <workItem from="1502120366676" duration="3599000" />
+      <workItem from="1502126239808" duration="2543000" />
+      <workItem from="1502211844143" duration="7908000" />
+      <workItem from="1502292189453" duration="8789000" />
+      <workItem from="1502310385386" duration="793000" />
+      <workItem from="1502383755732" duration="7876000" />
+      <workItem from="1502473830591" duration="2269000" />
+      <workItem from="1502523929208" duration="8216000" />
+      <workItem from="1502532177320" duration="6908000" />
+      <workItem from="1502605283305" duration="154000" />
+      <workItem from="1502605496474" duration="9499000" />
+      <workItem from="1502624676539" duration="5751000" />
+      <workItem from="1502630460442" duration="19116000" />
+      <workItem from="1502653182684" duration="83000" />
+      <workItem from="1502653275837" duration="132000" />
+      <workItem from="1502656007423" duration="1271000" />
+      <workItem from="1502727089273" duration="781000" />
+      <workItem from="1502744995305" duration="621000" />
+      <workItem from="1502774753787" duration="6498000" />
+      <workItem from="1502786190144" duration="5664000" />
+      <workItem from="1502797324052" duration="954000" />
+      <workItem from="1502828834186" duration="610000" />
+      <workItem from="1502895830272" duration="12740000" />
+      <workItem from="1502914176635" duration="563000" />
+      <workItem from="1502983006008" duration="7741000" />
+      <workItem from="1503000395982" duration="2002000" />
+      <workItem from="1503087808307" duration="3610000" />
+      <workItem from="1503123548237" duration="2919000" />
+      <workItem from="1503130897412" duration="4086000" />
+      <workItem from="1503149815258" duration="3347000" />
+      <workItem from="1503215476501" duration="7451000" />
+      <workItem from="1503235336853" duration="8726000" />
+      <workItem from="1503249936384" duration="4339000" />
+      <workItem from="1503260799763" duration="177000" />
+      <workItem from="1503332560156" duration="1816000" />
+      <workItem from="1503595077073" duration="711000" />
+      <workItem from="1503602218541" duration="2819000" />
+      <workItem from="1503735974052" duration="685000" />
+      <workItem from="1503737298070" duration="204000" />
+      <workItem from="1503821074187" duration="7454000" />
+      <workItem from="1503833082390" duration="2177000" />
+      <workItem from="1503837006049" duration="790000" />
+      <workItem from="1503861785069" duration="2275000" />
+      <workItem from="1503937331359" duration="7336000" />
+      <workItem from="1504020559704" duration="5808000" />
+      <workItem from="1504026402798" duration="3628000" />
+      <workItem from="1504194520130" duration="88000" />
+      <workItem from="1504194630354" duration="4904000" />
+      <workItem from="1504331320133" duration="1974000" />
+      <workItem from="1504334760990" duration="6629000" />
+      <workItem from="1504357391535" duration="8643000" />
+      <workItem from="1504371932843" duration="9677000" />
+      <workItem from="1504419970335" duration="10346000" />
+      <workItem from="1504465622871" duration="2453000" />
+      <workItem from="1504542782421" duration="9598000" />
+      <workItem from="1504555634373" duration="1326000" />
+      <workItem from="1504624024214" duration="8285000" />
+      <workItem from="1504638432423" duration="2926000" />
+      <workItem from="1504711799314" duration="9103000" />
+      <workItem from="1504723023263" duration="4003000" />
+      <workItem from="1504799788372" duration="3572000" />
+      <workItem from="1504808146803" duration="4529000" />
+      <workItem from="1504887003503" duration="8689000" />
+      <workItem from="1504934953150" duration="1942000" />
+      <workItem from="1505028135568" duration="4432000" />
+      <workItem from="1505056739480" duration="2436000" />
+      <workItem from="1505146367149" duration="9675000" />
+      <workItem from="1505237193097" duration="7422000" />
+      <workItem from="1505408183971" duration="2572000" />
+      <workItem from="1505491914990" duration="597000" />
+      <workItem from="1505498917552" duration="284000" />
+      <workItem from="1505499213331" duration="3587000" />
+      <workItem from="1505543190885" duration="3838000" />
+      <workItem from="1505547059793" duration="147000" />
+      <workItem from="1505638848152" duration="5028000" />
+      <workItem from="1505650464276" duration="5839000" />
+      <workItem from="1505667944421" duration="8412000" />
+      <workItem from="1505681194300" duration="811000" />
+      <workItem from="1505750068123" duration="7040000" />
+      <workItem from="1505765390108" duration="985000" />
+      <workItem from="1505836103453" duration="5028000" />
+      <workItem from="1505933260167" duration="3879000" />
+      <workItem from="1506017698944" duration="249000" />
+      <workItem from="1506024855888" duration="87000" />
+      <workItem from="1506099292281" duration="1903000" />
+      <workItem from="1506144745736" duration="4715000" />
+      <workItem from="1506235490346" duration="1421000" />
+      <workItem from="1506238089341" duration="3407000" />
+      <workItem from="1506365219171" duration="2207000" />
+      <workItem from="1506450451600" duration="167000" />
+      <workItem from="1506453102961" duration="4036000" />
+      <workItem from="1506532911493" duration="596000" />
+      <workItem from="1506539863405" duration="257000" />
+      <workItem from="1507057627979" duration="64000" />
+      <workItem from="1507133958614" duration="10223000" />
+      <workItem from="1507308805210" duration="3270000" />
+      <workItem from="1507356270514" duration="8350000" />
+      <workItem from="1507377780001" duration="1349000" />
+      <workItem from="1507380910035" duration="1340000" />
+      <workItem from="1507387169843" duration="10988000" />
+      <workItem from="1507457239891" duration="691000" />
+      <workItem from="1507473115540" duration="204000" />
+      <workItem from="1507491648480" duration="43000" />
+      <workItem from="1507493254883" duration="779000" />
+      <workItem from="1507494428934" duration="72000" />
+      <workItem from="1507572923571" duration="3409000" />
+      <workItem from="1507665194113" duration="121000" />
+      <workItem from="1507743848579" duration="5775000" />
+      <workItem from="1507833492003" duration="4430000" />
+      <workItem from="1507911528985" duration="2557000" />
+      <workItem from="1507919894709" duration="1525000" />
+      <workItem from="1507963037067" duration="1408000" />
+      <workItem from="1507986908964" duration="8070000" />
+      <workItem from="1508044633428" duration="8331000" />
+      <workItem from="1508166697459" duration="9802000" />
+      <workItem from="1508181205479" duration="2500000" />
+      <workItem from="1508257602657" duration="5744000" />
+      <workItem from="1508269287705" duration="821000" />
+      <workItem from="1508270124372" duration="1073000" />
+      <workItem from="1508427381394" duration="6558000" />
+      <workItem from="1508528063533" duration="1564000" />
+      <workItem from="1508571212151" duration="1191000" />
+      <workItem from="1508598195063" duration="2161000" />
+      <workItem from="1508651683122" duration="5372000" />
+      <workItem from="1508660578446" duration="849000" />
+      <workItem from="1508667576200" duration="17000" />
+      <workItem from="1508673470755" duration="760000" />
+      <workItem from="1508680674819" duration="3316000" />
+      <workItem from="1508695261216" duration="264000" />
+      <workItem from="1508773371587" duration="51000" />
+      <workItem from="1508869598909" duration="293000" />
+      <workItem from="1508873716925" duration="1954000" />
+      <workItem from="1508958445494" duration="8000" />
+      <workItem from="1508958619294" duration="2855000" />
+      <workItem from="1509030597374" duration="8188000" />
+      <workItem from="1509168719421" duration="9990000" />
+      <workItem from="1509189932990" duration="3883000" />
+      <workItem from="1509198800735" duration="1289000" />
+      <workItem from="1509265444820" duration="3809000" />
+      <workItem from="1509286544856" duration="978000" />
+      <workItem from="1509290858678" duration="2641000" />
+      <workItem from="1509293572714" duration="1039000" />
+      <workItem from="1509296558012" duration="244000" />
+      <workItem from="1509302192604" duration="86000" />
+      <workItem from="1509304709475" duration="786000" />
+      <workItem from="1509380780940" duration="4652000" />
+      <workItem from="1509390356320" duration="1204000" />
+      <workItem from="1509519822752" duration="3000000" />
+      <workItem from="1509529104152" duration="9605000" />
+      <workItem from="1509555558016" duration="7551000" />
+      <workItem from="1509641639830" duration="2063000" />
+      <workItem from="1509740895855" duration="107000" />
+      <workItem from="1509777226463" duration="4137000" />
+      <workItem from="1509788229017" duration="16475000" />
+      <workItem from="1509817152339" duration="6337000" />
+      <workItem from="1509828995511" duration="3652000" />
+      <workItem from="1509861679335" duration="10141000" />
+      <workItem from="1509873952513" duration="1860000" />
+      <workItem from="1509985085312" duration="2715000" />
+      <workItem from="1509997240807" duration="1263000" />
+      <workItem from="1510074478204" duration="97000" />
+      <workItem from="1510074586802" duration="3882000" />
+      <workItem from="1510157137606" duration="7525000" />
+      <workItem from="1510252645909" duration="5059000" />
+      <workItem from="1510332574783" duration="8839000" />
+      <workItem from="1510380820062" duration="11168000" />
+      <workItem from="1510397393418" duration="771000" />
+      <workItem from="1510403059748" duration="1596000" />
+      <workItem from="1510470295317" duration="5582000" />
+      <workItem from="1510482349692" duration="1265000" />
+      <workItem from="1510590277328" duration="172000" />
+      <workItem from="1510599648555" duration="1638000" />
+      <workItem from="1510677461615" duration="9700000" />
+      <workItem from="1510693562312" duration="1264000" />
+      <workItem from="1510695199863" duration="1017000" />
+      <workItem from="1510765939220" duration="982000" />
+      <workItem from="1510772081835" duration="1288000" />
+      <workItem from="1510859176294" duration="267000" />
+      <workItem from="1510866039409" duration="432000" />
+      <workItem from="1511029266937" duration="5466000" />
+      <workItem from="1511076934235" duration="11468000" />
+      <workItem from="1511096597769" duration="4213000" />
+      <workItem from="1511107129068" duration="11062000" />
+      <workItem from="1511193704561" duration="3595000" />
+      <workItem from="1511197423942" duration="6149000" />
+      <workItem from="1511284132437" duration="2742000" />
+      <workItem from="1511375322451" duration="15000" />
+      <workItem from="1511375352387" duration="2027000" />
+      <workItem from="1511545227575" duration="1098000" />
+      <workItem from="1511596519959" duration="2707000" />
+      <workItem from="1511689098811" duration="2342000" />
+      <workItem from="1511701617241" duration="2282000" />
+      <workItem from="1511716014419" duration="7848000" />
+      <workItem from="1511772773740" duration="1695000" />
+      <workItem from="1511777867589" duration="599000" />
+      <workItem from="1511809069866" duration="586000" />
+      <workItem from="1511885671592" duration="5350000" />
+      <workItem from="1511899443142" duration="4417000" />
+      <workItem from="1511904417702" duration="1436000" />
+      <workItem from="1511979030075" duration="856000" />
+      <workItem from="1512223155668" duration="70000" />
+      <workItem from="1512223276978" duration="1494000" />
+      <workItem from="1512243236229" duration="4182000" />
+      <workItem from="1512284723211" duration="1543000" />
+      <workItem from="1512286642229" duration="2210000" />
+      <workItem from="1512296396562" duration="2550000" />
+      <workItem from="1512302450098" duration="4437000" />
+      <workItem from="1512315076332" duration="7485000" />
+      <workItem from="1512330786016" duration="5904000" />
+      <workItem from="1512371431759" duration="15066000" />
+      <workItem from="1512405687781" duration="98000" />
+      <workItem from="1512407782647" duration="5393000" />
+      <workItem from="1512493159906" duration="7982000" />
+      <workItem from="1512509302198" duration="977000" />
+      <workItem from="1512582945249" duration="7059000" />
+      <workItem from="1512752059927" duration="2992000" />
+      <workItem from="1512816329148" duration="993000" />
+      <workItem from="1512827954366" duration="2834000" />
+      <workItem from="1512892633355" duration="2433000" />
+      <workItem from="1512897769984" duration="18809000" />
+      <workItem from="1512929497163" duration="4006000" />
+      <workItem from="1512970209089" duration="599000" />
+      <workItem from="1513008783225" duration="2610000" />
+      <workItem from="1513098266207" duration="9206000" />
+      <workItem from="1513183561416" duration="8786000" />
+      <workItem from="1513269178126" duration="4951000" />
+      <workItem from="1513274144920" duration="2184000" />
+      <workItem from="1513277015403" duration="3188000" />
+      <workItem from="1513282190428" duration="81000" />
+      <workItem from="1513416407520" duration="364000" />
+      <workItem from="1513427385459" duration="4610000" />
+      <workItem from="1513580114068" duration="597000" />
+      <workItem from="1513587986682" duration="1646000" />
+      <workItem from="1513598699598" duration="8231000" />
+      <workItem from="1513623914244" duration="265000" />
+      <workItem from="1513625532716" duration="6706000" />
+      <workItem from="1513666457881" duration="18390000" />
+      <workItem from="1513694681739" duration="1907000" />
+      <workItem from="1513697258942" duration="30000" />
+      <workItem from="1513698153224" duration="130000" />
+      <workItem from="1513702375518" duration="1132000" />
+      <workItem from="1513713332085" duration="1071000" />
+      <workItem from="1513721014994" duration="683000" />
+      <workItem from="1513756738704" duration="66000" />
+      <workItem from="1513758771562" duration="3769000" />
+      <workItem from="1513797902357" duration="5546000" />
+      <workItem from="1513805500393" duration="339000" />
+      <workItem from="1513877471259" duration="139000" />
+      <workItem from="1513885652517" duration="1544000" />
+      <workItem from="1513927269229" duration="760000" />
+      <workItem from="1513933891363" duration="2603000" />
+      <workItem from="1513938974813" duration="273000" />
+      <workItem from="1514012876097" duration="2942000" />
+      <workItem from="1514017771085" duration="468000" />
+      <workItem from="1514115275407" duration="2864000" />
+      <workItem from="1514119585392" duration="7267000" />
+      <workItem from="1514144250995" duration="16000" />
+      <workItem from="1514189676786" duration="912000" />
+      <workItem from="1514220475513" duration="7060000" />
+      <workItem from="1514227550310" duration="1218000" />
+      <workItem from="1514239951222" duration="139000" />
+      <workItem from="1514271289739" duration="1590000" />
+      <workItem from="1514280812223" duration="4717000" />
+      <workItem from="1514293644726" duration="41000" />
+      <workItem from="1514317052930" duration="1318000" />
+      <workItem from="1514328321726" duration="1133000" />
+      <workItem from="1514360265311" duration="16612000" />
+      <workItem from="1514391865272" duration="17000" />
+      <workItem from="1514408448734" duration="27000" />
+      <workItem from="1514454323003" duration="13017000" />
+      <workItem from="1514475818569" duration="933000" />
+      <workItem from="1514479160482" duration="95000" />
+      <workItem from="1514506349350" duration="841000" />
+      <workItem from="1514558833810" duration="2318000" />
+      <workItem from="1514588238757" duration="1579000" />
+      <workItem from="1514649220889" duration="4000" />
+      <workItem from="1514652315319" duration="17362000" />
+      <workItem from="1514708489069" duration="15910000" />
+      <workItem from="1514838772489" duration="3817000" />
+      <workItem from="1514877395086" duration="41000" />
+      <workItem from="1514878004227" duration="1367000" />
+      <workItem from="1514896281837" duration="1670000" />
+      <workItem from="1514903108544" duration="2594000" />
+      <workItem from="1514914849249" duration="162000" />
+      <workItem from="1514924019204" duration="78000" />
+      <workItem from="1515003755479" duration="1986000" />
+      <workItem from="1515317884892" duration="641000" />
+      <workItem from="1515520291069" duration="5060000" />
+      <workItem from="1515529496205" duration="91000" />
+      <workItem from="1515601018303" duration="3597000" />
+      <workItem from="1515615395592" duration="85000" />
+      <workItem from="1515689461788" duration="10973000" />
+      <workItem from="1515774593141" duration="13707000" />
+      <workItem from="1515792073481" duration="208000" />
+      <workItem from="1515920881671" duration="5249000" />
+      <workItem from="1516037351398" duration="1670000" />
+      <workItem from="1516045802304" duration="76000" />
+      <workItem from="1516437357762" duration="1961000" />
+      <workItem from="1516521502610" duration="257000" />
+      <workItem from="1516522793753" duration="1910000" />
+      <workItem from="1516528420722" duration="108000" />
+      <workItem from="1516725415254" duration="9458000" />
+      <workItem from="1516817860026" duration="458000" />
+      <workItem from="1516822981902" duration="229000" />
+      <workItem from="1516826693796" duration="1671000" />
+      <workItem from="1517153829997" duration="7480000" />
+      <workItem from="1517245760456" duration="1849000" />
+      <workItem from="1517328408955" duration="3997000" />
+      <workItem from="1517338810722" duration="457000" />
+      <workItem from="1517343022898" duration="61000" />
+      <workItem from="1517343422566" duration="164000" />
+      <workItem from="1517343711575" duration="68000" />
+      <workItem from="1517429604855" duration="889000" />
+      <workItem from="1517517357257" duration="288000" />
+      <workItem from="1517587312702" duration="4405000" />
+      <workItem from="1517644309889" duration="3060000" />
+      <workItem from="1517653984672" duration="250000" />
+      <workItem from="1517735802441" duration="3095000" />
+      <workItem from="1517859290212" duration="567000" />
+      <workItem from="1517859930542" duration="37000" />
+      <workItem from="1517865319597" duration="443000" />
+      <workItem from="1517935655735" duration="2270000" />
+      <workItem from="1517943071156" duration="638000" />
+      <workItem from="1518019872777" duration="3569000" />
+      <workItem from="1518248893812" duration="1505000" />
+      <workItem from="1518541813250" duration="680000" />
+      <workItem from="1518543393670" duration="5000" />
+      <workItem from="1518553956278" duration="1593000" />
+      <workItem from="1518624613923" duration="5625000" />
+      <workItem from="1518632359159" duration="4397000" />
+      <workItem from="1518814845416" duration="453000" />
+      <workItem from="1518861875384" duration="9655000" />
+      <workItem from="1518936891725" duration="379000" />
+      <workItem from="1519487879764" duration="3272000" />
+      <workItem from="1519545467825" duration="7902000" />
+      <workItem from="1519566545854" duration="2639000" />
+      <workItem from="1519589075233" duration="936000" />
+      <workItem from="1519662661907" duration="5801000" />
+      <workItem from="1519673878081" duration="3466000" />
+      <workItem from="1519757444817" duration="1304000" />
+      <workItem from="1520178279241" duration="1336000" />
+      <workItem from="1520271287149" duration="598000" />
+      <workItem from="1520619606571" duration="12000" />
+      <workItem from="1520619644463" duration="795000" />
+      <workItem from="1520755475948" duration="1420000" />
+      <workItem from="1520764428717" duration="303000" />
+      <workItem from="1520771677361" duration="160000" />
+      <workItem from="1520878919339" duration="1276000" />
+      <workItem from="1520883859978" duration="108000" />
+      <workItem from="1520960706268" duration="561000" />
+      <workItem from="1521400459966" duration="117000" />
+      <workItem from="1521650767056" duration="82000" />
+      <workItem from="1521652618741" duration="688000" />
+      <workItem from="1521746044358" duration="3081000" />
+      <workItem from="1521753639057" duration="490000" />
+      <workItem from="1521825643935" duration="30000" />
+      <workItem from="1521876583875" duration="511000" />
+      <workItem from="1521877458834" duration="611000" />
+      <workItem from="1521964831529" duration="278000" />
+      <workItem from="1522177344386" duration="625000" />
+      <workItem from="1522476537667" duration="293000" />
+      <workItem from="1525714427248" duration="318000" />
+      <workItem from="1528644723620" duration="175000" />
+      <workItem from="1530344438503" duration="145000" />
+      <workItem from="1532631404450" duration="728000" />
+      <workItem from="1532770797133" duration="366000" />
+      <workItem from="1533456895376" duration="716000" />
+      <workItem from="1534448181520" duration="2071000" />
+      <workItem from="1534521731418" duration="601000" />
+      <workItem from="1534622439037" duration="902000" />
+      <workItem from="1534662456949" duration="3134000" />
+      <workItem from="1534776239521" duration="9172000" />
+      <workItem from="1535223394548" duration="793000" />
+      <workItem from="1535256605588" duration="1370000" />
+      <workItem from="1535467598191" duration="5383000" />
+      <workItem from="1535742006739" duration="2895000" />
+      <workItem from="1535778699078" duration="5713000" />
+      <workItem from="1535996425437" duration="287000" />
+      <workItem from="1536171467695" duration="625000" />
+      <workItem from="1536174090454" duration="2399000" />
+      <workItem from="1536257921575" duration="598000" />
+      <workItem from="1536333922206" duration="7418000" />
+      <workItem from="1536385288393" duration="10214000" />
+      <workItem from="1536420756523" duration="7692000" />
+      <workItem from="1536470752977" duration="13632000" />
+      <workItem from="1536486849498" duration="470000" />
+      <workItem from="1536505261907" duration="4721000" />
+      <workItem from="1536591230032" duration="6713000" />
+      <workItem from="1536606052381" duration="2235000" />
+      <workItem from="1536677084882" duration="248000" />
+      <workItem from="1536691774258" duration="1450000" />
+      <workItem from="1536866296031" duration="1774000" />
+      <workItem from="1536993997992" duration="1145000" />
+      <workItem from="1537000805910" duration="516000" />
+      <workItem from="1537121920969" duration="1778000" />
+      <workItem from="1537286144541" duration="27000" />
+      <workItem from="1537286208682" duration="5384000" />
+      <workItem from="1537377191937" duration="4116000" />
+      <workItem from="1537683559964" duration="4549000" />
+      <workItem from="1537689360100" duration="44000" />
+      <workItem from="1538506077494" duration="635000" />
+      <workItem from="1538581483452" duration="6356000" />
+      <workItem from="1538664228876" duration="12888000" />
+      <workItem from="1538753379367" duration="8881000" />
+      <workItem from="1538810060482" duration="137000" />
+      <workItem from="1540409365136" duration="446000" />
+      <workItem from="1540450192150" duration="504000" />
+      <workItem from="1540450860686" duration="1201000" />
+      <workItem from="1540456019651" duration="7000" />
+      <workItem from="1540715111768" duration="411000" />
+      <workItem from="1541094510050" duration="691000" />
+      <workItem from="1541194665527" duration="150000" />
+      <workItem from="1541322186132" duration="1819000" />
+      <workItem from="1541326738036" duration="566000" />
+      <workItem from="1541429459266" duration="7604000" />
+      <workItem from="1541925239586" duration="2783000" />
+      <workItem from="1542462362607" duration="131000" />
+      <workItem from="1542463109442" duration="600000" />
+      <workItem from="1542562733884" duration="3049000" />
+      <workItem from="1543140945058" duration="786000" />
+      <workItem from="1545855936037" duration="820000" />
+      <workItem from="1545904087841" duration="1259000" />
+      <workItem from="1545910544826" duration="209000" />
+      <workItem from="1545939178049" duration="1798000" />
+      <workItem from="1545946184742" duration="26000" />
+      <workItem from="1546006880082" duration="822000" />
+      <workItem from="1546016428447" duration="745000" />
+      <workItem from="1546025787938" duration="2392000" />
+      <workItem from="1546035527218" duration="1341000" />
+      <workItem from="1546078402537" duration="9340000" />
+      <workItem from="1546091465275" duration="320000" />
+      <workItem from="1546164047464" duration="4596000" />
+      <workItem from="1546205668302" duration="3422000" />
+      <workItem from="1546253363986" duration="1880000" />
+      <workItem from="1546596028105" duration="5356000" />
+      <workItem from="1546620037570" duration="5248000" />
+      <workItem from="1546637873971" duration="3074000" />
+      <workItem from="1546676932578" duration="4899000" />
+      <workItem from="1546685145309" duration="8776000" />
+      <workItem from="1546709794310" duration="17000" />
+      <workItem from="1546721983896" duration="3245000" />
+      <workItem from="1547372329394" duration="33000" />
+      <workItem from="1547372387662" duration="41000" />
+      <workItem from="1547928537287" duration="644000" />
+      <workItem from="1549808446281" duration="88000" />
+      <workItem from="1549831265402" duration="110000" />
+      <workItem from="1551296135729" duration="855000" />
+      <workItem from="1551370350169" duration="503000" />
+      <workItem from="1551724759302" duration="2642000" />
+      <workItem from="1558267066572" duration="277000" />
+    </task>
+    <task id="LOCAL-00001" summary="Fix heightfield point helper">
+      <created>1536385364670</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1536385364670</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Review terrain origin center">
+      <created>1536390428755</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1536390428755</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Heightfield point helper: find path">
+      <created>1536471341935</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1536471341935</updated>
+    </task>
+    <task id="LOCAL-00004" summary="AI: replace NavTriangleRef by NavTriangle">
+      <created>1536484674409</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1536484674409</updated>
+    </task>
+    <task id="LOCAL-00005" summary="AI: add NavTopography class">
+      <created>1536608262207</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1536608262207</updated>
+    </task>
+    <task id="LOCAL-00006" summary="AI: fix follow topography">
+      <created>1536693195076</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1536693195076</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Monotone polygon: add fail test">
+      <created>1537297333927</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1537297333927</updated>
+    </task>
+    <task id="LOCAL-00008" summary="CSG polygon: detect self intersect polygon">
+      <created>1537688071933</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1537688071933</updated>
+    </task>
+    <task id="LOCAL-00009" summary="CSG polygon: detect self intersect polygon (fix logs)">
+      <created>1537689386373</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1537689386373</updated>
+    </task>
+    <task id="LOCAL-00010" summary="CSG polygon: improve polygon subtraction">
+      <created>1538679809081</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1538679809081</updated>
+    </task>
+    <task id="LOCAL-00011" summary="CSG polygon: improve polygon subtraction">
+      <created>1538765029188</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1538765029188</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Model: allow stop animation when end is reached">
+      <created>1538769070194</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1538769070194</updated>
+    </task>
+    <task id="LOCAL-00013" summary="MapEditor: fix for new Qt version&#10;Simplify conditions with nullptr&#10;Terrain obstacle: bug fix (unit tests fail)">
+      <created>1541437202627</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1541437202627</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Review localized shape writer">
+      <created>1545906404277</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1545906404277</updated>
+    </task>
+    <task id="LOCAL-00015" summary="AI: reduce memory allocation">
+      <created>1546084334087</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1546084334087</updated>
+    </task>
+    <task id="LOCAL-00016" summary="AI: reduce memory allocation">
+      <created>1546087642308</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1546087642308</updated>
+    </task>
+    <task id="LOCAL-00017" summary="AI: reduce memory allocation (fix tests)">
+      <created>1546091693667</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1546091693667</updated>
+    </task>
+    <task id="LOCAL-00018" summary="AABBTree: improve memory allocation">
+      <created>1546598191808</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1546598191809</updated>
+    </task>
+    <task id="LOCAL-00019" summary="AABBTree: improve memory allocation">
+      <created>1546598424788</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1546598424788</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Physics: prepare for faster ray test">
+      <created>1546628420735</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1546628420735</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Physics: prepare for faster ray test">
+      <created>1546639036838</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1546639036838</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Ray test via small aabboxes">
+      <created>1546680211498</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1546680211499</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Ray test on concave shape: improve performance">
+      <created>1546696889817</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1546696889818</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Ray test on concave shape: improve performance">
+      <created>1546727374353</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1546727374353</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1851273000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.2022412" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
+      <window_info id="Data View" order="3" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.5988403" weight="0.10839532" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7206115" weight="0.3762058" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.36131775" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.7590933" weight="0.2858661" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.3697749" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3287234" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" visible="true" weight="0.3687031" />
+      <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
+      <window_info anchor="bottom" id="Salesforce" order="12" />
+      <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />
+      <window_info anchor="bottom" id="Execute Anonymous" order="14" weight="0.3290461" />
+      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.18516542" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.28068304" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
+      <window_info id="Data View" order="3" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.5988403" weight="0.454448" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7206115" weight="0.26595744" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3319149" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.7590933" weight="0.34512326" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.2744681" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3290461" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.3106383" />
+      <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
+      <window_info anchor="bottom" id="Salesforce" order="12" />
+      <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />
+      <window_info anchor="bottom" id="Execute Anonymous" order="14" weight="0.3290461" />
+      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.18516542" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="Fix heightfield point helper" />
+    <MESSAGE value="Review terrain origin center" />
+    <MESSAGE value="Heightfield point helper: find path" />
+    <MESSAGE value="AI: replace NavTriangleRef by NavTriangle" />
+    <MESSAGE value="AI: add NavTopography class" />
+    <MESSAGE value="AI: fix follow topography" />
+    <MESSAGE value="Monotone polygon: add fail test" />
+    <MESSAGE value="CSG polygon: detect self intersect polygon" />
+    <MESSAGE value="CSG polygon: detect self intersect polygon (fix logs)" />
+    <MESSAGE value="CSG polygon: improve polygon subtraction" />
+    <MESSAGE value="Model: allow stop animation when end is reached" />
+    <MESSAGE value="MapEditor: fix for new Qt version&#10;Simplify conditions with nullptr&#10;Terrain obstacle: bug fix (unit tests fail)" />
+    <MESSAGE value="Review localized shape writer" />
+    <MESSAGE value="AI: reduce memory allocation" />
+    <MESSAGE value="AI: reduce memory allocation (fix tests)" />
+    <MESSAGE value="AABBTree: improve memory allocation" />
+    <MESSAGE value="Physics: prepare for faster ray test" />
+    <MESSAGE value="Ray test via small aabboxes" />
+    <MESSAGE value="Ray test on concave shape: improve performance" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ray test on concave shape: improve performance" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/unitTest/src/ai/path/navmesh/NavMeshGeneratorTest.cpp</url>
+          <line>21</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIController.cpp</url>
+          <line>23</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="mLineEquationXY * currentXValue + bLineEquationXY" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>mLineEquationXY * currentXValue + bLineEquationXY</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices[155000+xLength/2].Y</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices[155000+xLength].Y</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices[155000].Y</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices[150000].Y</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices.size()</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices[20000].Y</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>vertices[2000].Y</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ccw(other.getA(), other.getB(), b)</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ccw(other.getA(), other.getB(), a)</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/unitTest/resources/engine.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="26" column="50" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/utils/pool/FixedSizePool.inl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="76" column="16" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectTableView.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="66" column="5" lean-forward="true" selection-start-line="66" selection-start-column="5" selection-end-line="66" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectControllerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="363" column="37" selection-start-line="363" selection-start-column="33" selection-end-line="363" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/waters/WaterControllerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="296" column="8" selection-start-line="296" selection-start-column="8" selection-end-line="296" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/terrains/TerrainControllerWidget.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/terrains/TerrainControllerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="364" column="5" selection-start-line="364" selection-start-column="5" selection-end-line="364" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#105#137#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="59" column="31" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/resources/engine.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/MapEditorWindow.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="290" column="31" selection-start-line="290" selection-start-column="31" selection-end-line="290" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneControllerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="114" column="50" selection-start-line="114" selection-start-column="50" selection-end-line="114" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" column="34" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/system/FileHandler.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1156">
+          <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIController.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="75" column="27" lean-forward="true" selection-start-line="75" selection-start-column="27" selection-end-line="75" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/3dEngine/src/scene/renderer3d/terrain/TerrainMesh.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="262" lean-forward="true" selection-start-line="262" selection-end-line="262" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/system/FileSystem.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="103" column="100" lean-forward="true" selection-start-line="103" selection-start-column="100" selection-end-line="103" selection-end-column="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneController.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="68" column="32" selection-start-line="68" selection-start-column="32" selection-end-line="68" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/save/aa.txt" />
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="30" column="36" lean-forward="true" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="66" column="40" lean-forward="true" selection-start-line="66" selection-start-column="40" selection-end-line="66" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="24" column="52" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="42" column="18" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionSphereShape.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionSphereShape.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-323">
+          <caret line="9" column="57" lean-forward="true" selection-start-line="9" selection-start-column="57" selection-end-line="9" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3606">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+          <folding>
+            <element signature="e#1#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
+          <folding>
+            <element signature="e#65#90#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/8/bits/stl_vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="1029" column="6" selection-start-line="1029" selection-start-column="6" selection-end-line="1029" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/math/algebra/point/Point2.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unitTest/src/math/geometry/LineSegment2DCollisionTest.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="172" column="30" selection-start-line="172" selection-start-column="30" selection-end-line="172" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="205" column="62" selection-start-line="205" selection-start-column="62" selection-end-line="205" selection-end-column="62" />
+          <folding>
+            <element signature="e#2816#2825#0" expanded="true" />
+            <element signature="e#3425#3434#0" expanded="true" />
+            <element signature="e#6976#6985#0" expanded="true" />
+            <element signature="e#7082#7091#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AIEngine/src/TODO.txt" />
+    <entry file="file://$PROJECT_DIR$/3dEngine/src/TODO.txt" />
+    <entry file="file://$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+          <folding>
+            <element signature="e#237#246#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="884">
+          <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3570">
+          <caret line="210" column="137" selection-start-line="209" selection-start-column="16" selection-end-line="210" selection-end-column="137" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/math/geometry/3d/shape/BoxShape.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="38" column="79" selection-start-line="38" selection-start-column="79" selection-end-line="38" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/urchinEngine.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/TODO.txt" />
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionShape3D.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-112">
+          <caret line="14" column="10" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionConcaveShape.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="84" selection-start-line="15" selection-start-column="84" selection-end-line="15" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="195" column="116" selection-start-line="195" selection-start-column="116" selection-end-line="195" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="210" column="28" selection-start-line="210" selection-start-column="28" selection-end-line="210" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="41" column="76" selection-start-line="41" selection-start-column="76" selection-end-line="41" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

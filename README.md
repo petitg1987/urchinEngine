@@ -1,4 +1,5 @@
 # UrchinEngine
+## Features
 Game engine library: 3D, Physics, Sound, Network, IA, Map Editor
 
 Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
@@ -43,3 +44,6 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 - Map Editor:
   - Add > 3d model, rigid body and sound on scene
   - Debug > view light scope, hitbox, sound trigger, navigation mesh
+
+## Build
+- Pre-requisites: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
