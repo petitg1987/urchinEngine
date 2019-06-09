@@ -43,12 +43,11 @@ namespace urchin
 			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
 
 			std::shared_ptr<NavMesh> generate(AIWorld &);
-			NavMesh retrieveLastGeneratedNavMesh() const;
+			NavMesh copyLastGeneratedNavMesh() const;
 
 		private:
 			void updateExpandedPolytopes(AIWorld &);
-
-			std::vector<PolytopeSurfaceIndex> findWalkableSurfaces() const;
+			void resolveWalkableSurfaces() const;
 
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygon(const PolytopeSurfaceIndex &) const;
 			std::vector<CSGPolygon<float>> &computeObstacles(const PolytopeSurfaceIndex &) const;
@@ -60,16 +59,17 @@ namespace urchin
 
             mutable std::mutex navMeshMutex;
 			std::shared_ptr<NavMeshConfig> navMeshConfig;
+            std::shared_ptr<NavMesh> navMesh;
+            std::atomic_bool needFullRefresh;
+
 			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>, AIEntityComp> expandedPolytopes;
-
-			std::shared_ptr<NavMesh> navMesh;
-			std::atomic_bool needFullRefresh;
-
+            mutable std::vector<PolytopeSurfaceIndex> walkableSurfaces;
+            mutable std::vector<CSGPolygon<float>> walkablePolygons;
+            mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> holePolygons;
 			mutable std::vector<Point2<float>> footprintPoints;
-			mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
-			mutable std::vector<CSGPolygon<float>> walkablePolygons;
 			mutable std::string navPolygonName;
+            std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
 	};
 
 }

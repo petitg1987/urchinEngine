@@ -5,15 +5,15 @@
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
       <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
-      <config projectName="urchinEngine" targetName="unitTest" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
@@ -25,7 +25,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Add workspace file">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/displayer/ai/NavMeshDisplayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/displayer/ai/NavMeshDisplayer.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/.target/release/" />
@@ -48,22 +54,12 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FavoritesManager">
     <favorites_list name="urchinEngine" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -1073,6 +1069,7 @@
       <workItem from="1551724759302" duration="2642000" />
       <workItem from="1558267066572" duration="467000" />
       <workItem from="1558267610609" duration="7000" />
+      <workItem from="1560064666585" duration="123000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1253,7 +1250,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1851470000" />
+    <option name="totallyTimeSpent" value="1851593000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1267,7 +1264,7 @@
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.20437567" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.20651014" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
       <window_info id="Data View" order="3" />
@@ -1281,7 +1278,7 @@
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.3697749" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3287234" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" visible="true" weight="0.3687031" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.1800643" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
       <window_info anchor="bottom" id="Salesforce" order="12" />
       <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />

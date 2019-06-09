@@ -6,16 +6,16 @@ namespace urchin
 {
 
 	//static
-	unsigned int NavMesh::nextId = 0;
+	unsigned int NavMesh::nextUpdateId = 0;
 
 	NavMesh::NavMesh() :
-		id(nextId++)
+        updateId(changeUpdateId())
 	{
 
 	}
 
 	NavMesh::NavMesh(const NavMesh &navMesh) :
-		id(navMesh.getId())
+        updateId(changeUpdateId())
 	{
         polygons.reserve(navMesh.getPolygons().size());
         for(const std::shared_ptr<NavPolygon> &polygon : navMesh.getPolygons())
@@ -24,15 +24,17 @@ namespace urchin
         }
 	}
 
-	unsigned int NavMesh::getId() const
+	unsigned int NavMesh::getUpdateId() const
 	{
-		return id;
+		return updateId;
 	}
 
-	unsigned int NavMesh::addPolygon(std::shared_ptr<NavPolygon> polygon)
+	void NavMesh::replaceAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &allPolygons)
 	{
-		polygons.push_back(polygon);
-		return polygons.size()-1;
+        changeUpdateId();
+
+	    polygons.clear();
+        polygons.insert(polygons.end(), allPolygons.begin(), allPolygons.end());
 	}
 
 	const std::vector<std::shared_ptr<NavPolygon>> &NavMesh::getPolygons() const
@@ -112,4 +114,10 @@ namespace urchin
 
         svgExporter.generateSVG(400);
 	}
+
+    unsigned int NavMesh::changeUpdateId()
+    {
+        updateId = ++nextUpdateId;
+        return updateId;
+    }
 }

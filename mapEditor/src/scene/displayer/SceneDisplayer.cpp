@@ -203,7 +203,7 @@ namespace urchin
 	{
 		if(viewProperties[NAV_MESH])
 		{
-			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->retrieveLastGeneratedNavMesh());
+			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->copyLastGeneratedNavMesh());
 		}else
 		{
 			navMeshDisplayer->displayNavMesh(NavMesh());

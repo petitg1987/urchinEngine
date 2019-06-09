@@ -47,7 +47,7 @@ namespace urchin
         this->needFullRefresh.store(true, std::memory_order_relaxed);
 	}
 
-    NavMesh NavMeshGenerator::retrieveLastGeneratedNavMesh() const
+    NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const
     {
         std::lock_guard<std::mutex> lock(navMeshMutex);
 
@@ -59,23 +59,17 @@ namespace urchin
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
-		std::vector<PolytopeSurfaceIndex> polytopeWalkableSurfaces = findWalkableSurfaces();
+		resolveWalkableSurfaces();
 
-        std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
-        allNavPolygons.reserve(aiWorld.getEntities().size() * 2); //estimated memory size
-
-        for (const auto &polytopeWalkableSurface : polytopeWalkableSurfaces)
+        allNavPolygons.clear();
+        for (const auto &polytopeWalkableSurface : walkableSurfaces)
         {
             std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygon(polytopeWalkableSurface);
             allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
         }
 
         std::lock_guard<std::mutex> lock(navMeshMutex);
-        navMesh.reset(new NavMesh());
-        for (const auto &navPolygon : allNavPolygons)
-        {
-            navMesh->addPolygon(navPolygon);
-        }
+        navMesh->replaceAllPolygons(allNavPolygons);
 		return navMesh;
 	}
 
@@ -107,7 +101,6 @@ namespace urchin
                 {
 					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
 					std::unique_ptr<Polytope> terrainExpandedPolytope = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshConfig);
-
 					expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiTerrain, std::move(terrainExpandedPolytope)));
                 }
 
@@ -116,12 +109,11 @@ namespace urchin
 		}
 	}
 
-	std::vector<PolytopeSurfaceIndex> NavMeshGenerator::findWalkableSurfaces() const
+	void NavMeshGenerator::resolveWalkableSurfaces() const
 	{
 		ScopeProfiler scopeProfiler("ai", "walkableSurface");
 
-		std::vector<PolytopeSurfaceIndex> walkableFaces;
-		walkableFaces.reserve(expandedPolytopes.size()/8); //estimated memory size
+        walkableSurfaces.clear();
 
         for(auto itPolytope = expandedPolytopes.begin(); itPolytope!=expandedPolytopes.end(); ++itPolytope)
 		{
@@ -134,13 +126,11 @@ namespace urchin
 
 					if(surface->isWalkable(navMeshConfig->getMaxSlope()))
 					{
-						walkableFaces.emplace_back(PolytopeSurfaceIndex(itPolytope, surfaceIndex));
+                        walkableSurfaces.emplace_back(PolytopeSurfaceIndex(itPolytope, surfaceIndex));
 					}
 				}
 			}
 		}
-
-		return walkableFaces;
 	}
 
 	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygon(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
@@ -152,8 +142,8 @@ namespace urchin
 
 		std::vector<CSGPolygon<float>> &obstaclePolygons = computeObstacles(polytopeWalkableSurface);
 
-        remainingObstaclePolygons.clear();
         walkablePolygons.clear();
+        remainingObstaclePolygons.clear();
 
         std::string walkableName = polytope->getName() + "[" + std::to_string(polytopeWalkableSurface.faceIndex) + "]";
         walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints()));

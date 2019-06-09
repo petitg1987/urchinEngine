@@ -19,7 +19,7 @@ namespace urchin
 
 	void NavMeshDisplayer::displayNavMesh(const NavMesh &navMesh)
 	{
-		if(loadedNavMeshId!=navMesh.getId())
+		if(loadedNavMeshId!=navMesh.getUpdateId())
 		{
             cleanCurrentDisplay();
 
@@ -51,7 +51,7 @@ namespace urchin
 				sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(navMeshModel);
 			}
 
-			loadedNavMeshId = navMesh.getId();
+			loadedNavMeshId = navMesh.getUpdateId();
 		}
 	}
 

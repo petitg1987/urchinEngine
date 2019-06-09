@@ -173,6 +173,8 @@ namespace urchin
 
     void AIManager::processAIUpdate()
     {
+        ScopeProfiler profiler("ai", "procAIUpdate");
+
         //copy for local thread
         bool paused;
         copiedPathRequests.clear();

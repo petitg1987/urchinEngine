@@ -18,16 +18,18 @@ namespace urchin
 			NavMesh();
 			NavMesh(const NavMesh &);
 
-			unsigned int getId() const;
+			unsigned int getUpdateId() const;
 
-			unsigned int addPolygon(std::shared_ptr<NavPolygon>);
+            void replaceAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &);
 			const std::vector<std::shared_ptr<NavPolygon>> &getPolygons() const;
 
 			void logNavMesh() const;
 			void svgMeshExport(const std::string &) const;
 		private:
-			static unsigned int nextId;
-			unsigned int id;
+	        unsigned int changeUpdateId();
+
+			static unsigned int nextUpdateId;
+			unsigned int updateId;
 
 			std::vector<std::shared_ptr<NavPolygon>> polygons;
 	};
