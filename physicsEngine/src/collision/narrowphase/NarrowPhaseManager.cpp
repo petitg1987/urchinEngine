@@ -140,13 +140,7 @@ namespace urchin
 				for(const auto &localizedShape : localizedShapes)
 				{
 					TemporalObject temporalObject(localizedShape->shape.get(), from * localizedShape->transform, to * localizedShape->transform);
-					ccd_set localizedShapeCcdResults = continuousCollisionTest(temporalObject, bodiesAABBoxHitBody);
-
-					for(const auto &localizedShapeCcdResult : localizedShapeCcdResults)
-					{
-						auto copiedLocalizedShapeCcdResult = std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>(new ContinuousCollisionResult<float>(*localizedShapeCcdResult));
-						ccdResults.insert(std::move(copiedLocalizedShapeCcdResult));
-					}
+                    ccdResults.merge(continuousCollisionTest(temporalObject, bodiesAABBoxHitBody));
 				}
 			}else if(bodyShape->isConvex())
 			{

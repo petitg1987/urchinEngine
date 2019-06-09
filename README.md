@@ -1,6 +1,6 @@
 # UrchinEngine
 ## Features
-Game engine library: 3D, Physics, Sound, Network, IA, Map Editor
+Game engine library in C++17: 3D, Physics, Sound, Network, IA, Map Editor
 
 Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 

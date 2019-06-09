@@ -16,11 +16,7 @@ namespace urchin
 			assert(this->rayTestResults.empty());
     	#endif
 
-		for(const auto &rayTestResult : rayTestResults)
-		{
-			auto copiedRayTestResult = std::unique_ptr<ContinuousCollisionResult<float>, AlgorithmResultDeleter>(new ContinuousCollisionResult<float>(*rayTestResult));
-			this->rayTestResults.insert(std::move(copiedRayTestResult));
-		}
+        this->rayTestResults.merge(rayTestResults);
 
 		resultReady.store(true, std::memory_order_relaxed);
 	}

@@ -5,15 +5,15 @@
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
       <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchin3dEngine" />
-      <config projectName="urchinEngine" targetName="unitTest" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
       <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
       <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
@@ -25,13 +25,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Add workspace file">
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/displayer/ai/NavMeshDisplayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/displayer/ai/NavMeshDisplayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapHandler/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mapHandler/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/networkEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/networkEngine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTestResult.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTestResult.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unitTest/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/unitTest/CMakeLists.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/.target/release/" />
@@ -59,7 +67,7 @@
     <favorites_list name="urchinEngine" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -399,7 +407,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.urchinMapEditor">
+  <component name="RunManager" selected="CMake Application.unitTest">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -1070,6 +1078,8 @@
       <workItem from="1558267066572" duration="467000" />
       <workItem from="1558267610609" duration="7000" />
       <workItem from="1560064666585" duration="123000" />
+      <workItem from="1560110976627" duration="353000" />
+      <workItem from="1560111493110" duration="12000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1250,7 +1260,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1851593000" />
+    <option name="totallyTimeSpent" value="1851958000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1264,7 +1274,7 @@
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.20651014" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.21077909" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
       <window_info id="Data View" order="3" />
