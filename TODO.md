@@ -1,82 +1,86 @@
+[minor]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/minor.png 
+[medium]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/medium.png
+[major]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/major.png 
+
 # Global
 - Performance
-	- (3) **OPTIMIZATION**: Use PGO in g++
-	- (3) **OPTIMIZATION**: Use SSE (3 dot products: Triangle3D<T>::getSupportPoint()...)
+	- **OPTIMIZATION** (![minor]): Use PGO in g++
+	- **OPTIMIZATION** (![minor]): Use SSE (3 dot products: Triangle3D<T>::getSupportPoint()...)
 
 # 3d Engine
 - Lighting
-	- (1) **QUALITY IMPROVEMENT**: No limit for number of light (use texture instead of uniform)
+	- **QUALITY IMPROVEMENT** (![major]): No limit for number of light (use texture instead of uniform)
 - Model
-    - (1) **OPTIMIZATION**: Avoid octree resize continuously when physics object fall in nothingness
-    - (2) **OPTIMIZATION**: Group same models in same octree to perform one draw call
-	- (3) **OPTIMIZATION**: Models LOD
-	- (3) **OPTIMIZATION**: Coherent hierarchical culling revisited
+    - **OPTIMIZATION** (![major]): Avoid octree resize continuously when physics object fall in nothingness
+    - **OPTIMIZATION** (![medium]): Group same models in same octree to perform one draw call
+	- **OPTIMIZATION** (![minor]): Models LOD
+	- **OPTIMIZATION** (![minor]): Coherent hierarchical culling revisited
 - Shadow
-    - (2) **OPTIMIZATION**: Improve performance ShadowManager::updateVisibleModels
+    - **OPTIMIZATION** (![medium]): Improve performance ShadowManager::updateVisibleModels
         - Tips 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
         - Tips 2: call octree manager one times for all frustum splits and then split the models
-	- (2) **QUALITY IMPROVEMENT**: Blur variance shadow map with 'summed area' technique.
+	- **QUALITY IMPROVEMENT** (![medium]): Blur variance shadow map with 'summed area' technique.
         - Note 1: decreased light bleeding to improve quality
         - Note 2: force usage of 32 bits shadow map
-	- (2) **QUALITY IMPROVEMENT**: Use mipmap on shadow map (on blured shadow maps when blur used)
-	- (2) **QUALITY IMPROVEMENT**: Use anisotropic on shadow map (on blured shadow maps when blur used)
-	- (3) **NEW FEATURE**: Shadow on omnidirectional light
-	- (3) **NEW FEATURE**: Implement PCSS
-	- (3) **OPTIMIZATION**: Use models LOD
-	- (3) **OPTIMIZATION**: Create shadow map texture only for visible lights
+	- **QUALITY IMPROVEMENT** (![medium]): Use mipmap on shadow map (on blured shadow maps when blur used)
+	- **QUALITY IMPROVEMENT** (![medium]): Use anisotropic on shadow map (on blured shadow maps when blur used)
+	- **NEW FEATURE** (![minor]): Shadow on omnidirectional light
+	- **NEW FEATURE** (![minor]): Implement PCSS
+	- **OPTIMIZATION** (![minor]): Use models LOD
+	- **OPTIMIZATION** (![minor]): Create shadow map texture only for visible lights
 - Terrain
-    - (2) **OPTIMIZATION**: Terrain class should have methods for LOD (usable for physics and AI)
-    - (2) **NEW FEATURE**: Use material textures (normal map...) for terrain
-    - (2) **NEW FEATURE**: Add auto shadow on terrain
-    - (2) **OPTIMIZATION**: Don't build grass quadtree which are 100% discarded by grass mask
+    - **OPTIMIZATION** (![medium]): Terrain class should have methods for LOD (usable for physics and AI)
+    - **NEW FEATURE** (![medium]): Use material textures (normal map...) for terrain
+    - **NEW FEATURE** (![medium]): Add auto shadow on terrain
+    - **OPTIMIZATION** (![medium]): Don't build grass quadtree which are 100% discarded by grass mask
 - GUI
-	- (3) **NEW FEATURE**: Combo list
-	- (3) **NEW FEATURE**: Drag and drop
-	- (3) **NEW FEATURE**: Textarea
-	- (3) **NEW FEATURE**: Scrollbar
-	- (3) **NEW FEATURE**: Text selection
-	- (3) **NEW FEATURE**: Use 'glutBitmapCharacter' to display characters
+	- **NEW FEATURE** (![minor]): Combo list
+	- **NEW FEATURE** (![minor]): Drag and drop
+	- **NEW FEATURE** (![minor]): Textarea
+	- **NEW FEATURE** (![minor]): Scrollbar
+	- **NEW FEATURE** (![minor]): Text selection
+	- **NEW FEATURE** (![minor]): Use 'glutBitmapCharacter' to display characters
 - Graphic effect
-	- (3) **QUALITY IMPROVEMENT**: Water (https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh)
-	- (3) **NEW FEATURE**: Reflects
-	- (3) **NEW FEATURE**: Smoke
-	- (3) **NEW FEATURE**: Fire & explosion
-	- (3) **NEW FEATURE**: Alpha management
-	- (3) **OPTIMIZATION**: Textures compression
+	- **QUALITY IMPROVEMENT** (![minor]): Water (https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh)
+	- **NEW FEATURE** (![minor]): Reflects
+	- **NEW FEATURE** (![minor]): Smoke
+	- **NEW FEATURE** (![minor]): Fire & explosion
+	- **NEW FEATURE** (![minor]): Alpha management
+	- **OPTIMIZATION** (![minor]): Textures compression
 
 # AI engine
 - Navigation mesh
-	- (1) **NEW FEATURE**: Create jump links in navigation mesh
-	- (3) **OPTIMIZATION**: Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
-	- (2) **OPTIMIZATION**: TerrainObstacleService: apply a roughly simplification on self obstacles polygons
-	- (2) **OPTIMIZATION**: NavMeshGenerator#computeObstacles: select only 'expandedPolyhedrons' above 'walkableFace' with octree/AABBTree (+ reserve memory on vector 'holePolygons')
-	- (2) **OPTIMIZATION**: Exclude small objects from navigation mesh
-	- (1) **OPTIMIZATION**: Divide big surfaces in squares and refresh only squares
-	- (3) **OPTIMIZATION**: NavMeshGenerator#computePolytopeFootprint: put result in cache
-	- (3) **OPTIMIZATION**: Exclude fast moving objects from walkable face
-	- (3) **QUALITY IMPROVEMENT**: Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
+	- **NEW FEATURE** (![major]): Create jump links in navigation mesh
+	- **OPTIMIZATION** (![minor]): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
+	- **OPTIMIZATION** (![medium]): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
+	- **OPTIMIZATION** (![medium]): NavMeshGenerator#computeObstacles: select only 'expandedPolyhedrons' above 'walkableFace' with octree/AABBTree (+ reserve memory on vector 'holePolygons')
+	- **OPTIMIZATION** (![medium]): Exclude small objects from navigation mesh
+	- **OPTIMIZATION** (![major]): Divide big surfaces in squares and refresh only squares
+	- **OPTIMIZATION** (![minor]): NavMeshGenerator#computePolytopeFootprint: put result in cache
+	- **OPTIMIZATION** (![minor]): Exclude fast moving objects from walkable face
+	- **QUALITY IMPROVEMENT** (![minor]): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
 - Pathfinding
-	- (2) **OPTIMIZATION**: When compute A* G score: avoid to execute funnel algorithm from start each time
-	- (2) **OPTIMIZATION**: When search start and end triangles: use AABBox Tree algorithm
-	- (1) **NEW FEATURE**: Implement steering behaviour (https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777)
+	- **OPTIMIZATION** (![medium]): When compute A* G score: avoid to execute funnel algorithm from start each time
+	- **OPTIMIZATION** (![medium]): When search start and end triangles: use AABBox Tree algorithm
+	- **NEW FEATURE** (![major]): Implement steering behaviour (https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777)
 
 # Physics engine
 - Broad phase
-	- (2) **OPTIMIZATION**: Implement double AABBox trees: static and dynamic (see Bullet)
-	- (2) **OPTIMIZATION**: Re-balance AABBox tree for better performance
+	- **OPTIMIZATION** (![medium]): Implement double AABBox trees: static and dynamic (see Bullet)
+	- **OPTIMIZATION** (![medium]): Re-balance AABBox tree for better performance
 - Narrow phase
-	- (2) **NEW FEATURE**: Support joints between shapes
-	- (3) **OPTIMIZATION**: GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
-	- (3) **OPTIMIZATION**: EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
+	- **NEW FEATURE** (![medium]): Support joints between shapes
+	- **OPTIMIZATION** (![minor]): GJK, don't test voronoi region opposite to last point added (2D: A, B, AB | 3D: ABC)
+	- **OPTIMIZATION** (![minor]): EPA, add new point on convex hull to improve thanks to adjacent edges: find more faster triangles visible by new point (see Reactphysics3d code)
 - Island
-    - (2) **BUG**: A body balancing from one side to the other side (e.g.: cone on his base) could sleep when velocity reach zero
+    - **BUG** (![medium]): A body balancing from one side to the other side (e.g.: cone on his base) could sleep when velocity reach zero
 - Constraints solver
-    - (2) **BUG**: A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
+    - **BUG** (![medium]): A restitution of 1.0 introduce new force in the system. Example: a superball bounces more and more higher at each collision
 - Character
-	- (2) **NEW FEATURE**: Handle stair for character controller
-	- (3) **NEW FEATURE**: Apply impulse on objects hit by character
+	- **NEW FEATURE** (![medium]): Handle stair for character controller
+	- **NEW FEATURE** (![minor]): Apply impulse on objects hit by character
 	
 # Sound engine
 - Sound trigger
-	- (2) **NEW FEATURE**: Support convex hull sound shape
-	- (2) **NEW FEATURE**: Support portal IN and portal OUT to trigger sound
+	- **NEW FEATURE** (![medium]): Support convex hull sound shape
+	- **NEW FEATURE** (![medium]): Support portal IN and portal OUT to trigger sound
