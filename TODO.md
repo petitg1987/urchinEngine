@@ -1,6 +1,6 @@
-[minor]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/minor.png 
-[medium]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/medium.png
-[major]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/major.png 
+[minor]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/lowest.png
+[medium]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/high.png
+[major]: http://support.universum.com/jira/atlassian-jira/images/icons/priorities/highest.png
 
 # Global
 - Performance
@@ -22,8 +22,8 @@
 	- **QUALITY IMPROVEMENT** (![medium]): Blur variance shadow map with 'summed area' technique.
         - Note 1: decreased light bleeding to improve quality
         - Note 2: force usage of 32 bits shadow map
-	- **QUALITY IMPROVEMENT** (![medium]): Use mipmap on shadow map (on blured shadow maps when blur used)
-	- **QUALITY IMPROVEMENT** (![medium]): Use anisotropic on shadow map (on blured shadow maps when blur used)
+	- **QUALITY IMPROVEMENT** (![medium]): Use mipmap on shadow map (on blurred shadow maps when blur used)
+	- **QUALITY IMPROVEMENT** (![medium]): Use anisotropic on shadow map (on blurred shadow maps when blur used)
 	- **NEW FEATURE** (![minor]): Shadow on omnidirectional light
 	- **NEW FEATURE** (![minor]): Implement PCSS
 	- **OPTIMIZATION** (![minor]): Use models LOD
