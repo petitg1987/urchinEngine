@@ -182,8 +182,6 @@ set(SOURCE_FILES
         src/utils/filter/TextureFilter.h
         src/utils/filter/TextureFilterBuilder.cpp
         src/utils/filter/TextureFilterBuilder.h
-        src/utils/shader/LoopUnrollerShader.cpp
-        src/utils/shader/LoopUnrollerShader.h
         src/utils/shader/ShaderManager.cpp
         src/utils/shader/ShaderManager.h
         src/utils/shader/TokenReplacerShader.cpp

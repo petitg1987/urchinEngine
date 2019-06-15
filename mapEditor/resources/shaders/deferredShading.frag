@@ -1,6 +1,12 @@
 #version 440
 #extension GL_EXT_gpu_shader4 : enable
 
+//values are replaced at compilation time:
+#define NUMBER_SHADOW_MAPS 0
+#define SHADOW_MAP_BIAS 0
+#define MAX_LIGHTS 0
+#define OUTPUT_LOCATION 0
+
 //deferred textures:
 //|-------------------------------------------------------------------|
 //| Depth (32 bits)                                                   |
@@ -33,10 +39,10 @@ struct StructLightInfo{
 	
 	sampler2DArray shadowMapTex;
 
-	mat4 mLightProjectionView[#NUMBER_SHADOW_MAPS#];
+	mat4 mLightProjectionView[NUMBER_SHADOW_MAPS];
 };
-uniform StructLightInfo lightsInfo[#MAX_LIGHTS#];
-uniform float depthSplitDistance[#NUMBER_SHADOW_MAPS#];
+uniform StructLightInfo lightsInfo[MAX_LIGHTS];
+uniform float depthSplitDistance[NUMBER_SHADOW_MAPS];
 uniform vec4 globalAmbient;
 
 //fog
@@ -46,7 +52,7 @@ uniform float fogGradient;
 uniform vec4 fogColor;
 uniform float fogMaxHeight;
 
-layout (location = #OUTPUT_LOCATION#) out vec4 fragColor;
+layout (location = OUTPUT_LOCATION) out vec4 fragColor;
 
 vec4 fetchPosition(vec2 textCoord, float depthValue){
 	vec4 texPosition = vec4(
@@ -66,7 +72,7 @@ float linearStep(float min, float max, float v){
 
 float computePercentLit(float shadowMapZ, vec2 moments, float NdotL){
     float tanAcosNdotL = sqrt(1 - NdotL * NdotL) / NdotL; //=tan(acos(NdotL))
-    float bias = max(#SHADOW_MAP_BIAS# * tanAcosNdotL, 0.00001);
+    float bias = max(SHADOW_MAP_BIAS * tanAcosNdotL, 0.00001);
     float shadowMapZBias = shadowMapZ - bias;
     float isInHardShadow = float(shadowMapZBias <= moments.x);
     
@@ -83,21 +89,20 @@ float computeShadowContribution(int lightIndex, float depthValue, vec4 position,
 	float shadowContribution = 1.0;
 	
 	if(lightsInfo[lightIndex].produceShadow){
-		#LOOP1_START(#NUMBER_SHADOW_MAPS#)#
-			if(depthValue < depthSplitDistance[#LOOP1_COUNTER#]){
-			
-				vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[#LOOP1_COUNTER#] * position) / 2.0) + 0.5);
+		for(int i=0; i<NUMBER_SHADOW_MAPS; ++i){
+			if(depthValue < depthSplitDistance[i]){
+
+				vec4 shadowCoord = (((lightsInfo[lightIndex].mLightProjectionView[i] * position) / 2.0) + 0.5);
 
 				//model has produceShadow flag to true ?
 				if(shadowCoord.s<=1.0 && shadowCoord.s>=0.0 && shadowCoord.t<=1.0 && shadowCoord.t>=0.0){
-					vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, #LOOP1_COUNTER#)).rg;
-
+					vec2 moments = texture2DArray(lightsInfo[lightIndex].shadowMapTex, vec3(shadowCoord.st, i)).rg;
 					shadowContribution = computePercentLit(shadowCoord.z, moments, NdotL);
 				}
 
-				#LOOP1_STOP#
+				break;
 			}
-		#LOOP1_END#
+		}
 	}
 	
 	return shadowContribution;
@@ -141,7 +146,7 @@ void main(){
 		fragColor -= vec4(ambientOcclusionFactor, ambientOcclusionFactor, ambientOcclusionFactor, 0.0f);
 	}
 
-    for(int i=0; i<#MAX_LIGHTS#;++i){
+    for(int i=0; i<MAX_LIGHTS; ++i){
         if(lightsInfo[i].isExist){
             vec3 vertexToLightNormalized;
             float lightAttenuation;
@@ -178,11 +183,10 @@ void main(){
 	vec4 splitColors[5] = vec4[](
 		vec4(colorValue, 0.0, 0.0, 1.0), vec4(0.0, colorValue, 0.0, 1.0), vec4(0.0, 0.0, colorValue, 1.0),
 		vec4(colorValue, 0.0, colorValue, 1.0),	vec4(colorValue, colorValue, 0.0, 1.0));
-	#LOOP2_START(#NUMBER_SHADOW_MAPS#)#
-		if(depthValue < depthSplitDistance[#LOOP2_COUNTER#]){
-			fragColor += splitColors[#LOOP2_COUNTER#%5];
-			
-			#LOOP2_STOP#
+	for(int i=0; i<NUMBER_SHADOW_MAPS; ++i){
+		if(depthValue < depthSplitDistance[i]){
+			fragColor += splitColors[i%5];
+			break;
 		}
-	#LOOP2_END# */
+	}*/
 }

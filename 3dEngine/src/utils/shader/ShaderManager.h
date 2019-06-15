@@ -7,7 +7,6 @@
 #include "UrchinCommon.h"
 
 #include "utils/shader/TokenReplacerShader.h"
-#include "utils/shader/LoopUnrollerShader.h"
 
 namespace urchin
 {
@@ -41,7 +40,6 @@ namespace urchin
 			std::string shadersDirectoryName;
 
 			TokenReplacerShader tokenReplacerShader;
-			LoopUnrollerShader loopUnrollerShader;
 			std::list<unsigned int> programs;
 			unsigned int currentProgramID;
 	};

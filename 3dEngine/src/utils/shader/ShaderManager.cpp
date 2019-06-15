@@ -16,9 +16,9 @@ namespace urchin
 
 	ShaderManager::~ShaderManager()
 	{
-		for(std::list<unsigned int>::const_iterator it = programs.begin(); it!=programs.end(); ++it)
+		for(unsigned int &program : programs)
 		{
-			clearProgram(*it);
+			clearProgram(program);
 		}
 	}
 
@@ -42,8 +42,7 @@ namespace urchin
 
 		//vertex shader
 		const std::string &vertexShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + vertexShaderFilename);
-		const std::string &vertexShaderSourceStep1 = tokenReplacerShader.replaceTokens(vertexShaderFileSource, tokens);
-		const std::string &vertexShaderSource = loopUnrollerShader.unrollLoops(vertexShaderSourceStep1);
+		const std::string &vertexShaderSource = tokenReplacerShader.replaceTokens(vertexShaderFileSource, tokens);
 		const char *vertexShaderSourceChar = vertexShaderSource.c_str();
 		unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertexShader, 1, &vertexShaderSourceChar, nullptr);
@@ -55,8 +54,7 @@ namespace urchin
 		if(!geometryShaderFilename.empty())
 		{
 			const std::string &geometryShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + geometryShaderFilename);
-			const std::string &geometryShaderSourceStep1 = tokenReplacerShader.replaceTokens(geometryShaderFileSource, tokens);
-			const std::string &geometryShaderSource = loopUnrollerShader.unrollLoops(geometryShaderSourceStep1);
+			const std::string &geometryShaderSource = tokenReplacerShader.replaceTokens(geometryShaderFileSource, tokens);
 			const char *geometryShaderSourceChar = geometryShaderSource.c_str();
 			unsigned int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
@@ -68,8 +66,7 @@ namespace urchin
 
 		//fragment shader
 		const std::string &fragmentShaderFileSource = readEntireFile(shadersParentDirectory + shadersDirectoryName + fragmentShaderFilename);
-		const std::string &fragmentShaderSourceStep1 = tokenReplacerShader.replaceTokens(fragmentShaderFileSource, tokens);
-		const std::string &fragmentShaderSource = loopUnrollerShader.unrollLoops(fragmentShaderSourceStep1);
+		const std::string &fragmentShaderSource = tokenReplacerShader.replaceTokens(fragmentShaderFileSource, tokens);
 		const char *fragmentShaderSourceChar = fragmentShaderSource.c_str();
 		unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fragmentShader, 1, &fragmentShaderSourceChar, nullptr);

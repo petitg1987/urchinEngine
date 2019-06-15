@@ -44,6 +44,7 @@ namespace urchin
 
 		private:
 			void onLightEvent(Light *, NotificationType);
+            void checkMaxLight(const std::vector<Light *> &);
 
 			//lights container
 			std::vector<Light *> parallelBeamsLights; //sun lights

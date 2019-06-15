@@ -8,8 +8,6 @@
 	- **OPTIMIZATION** (![minor]): Use SSE (3 dot products: Triangle3D<T>::getSupportPoint()...)
 
 # 3d Engine
-- Lighting
-	- **QUALITY IMPROVEMENT** (![major]): No limit for number of light (use texture instead of uniform)
 - Model
     - **OPTIMIZATION** (![major]): Avoid octree resize continuously when physics object fall in nothingness
     - **OPTIMIZATION** (![medium]): Group same models in same octree to perform one draw call

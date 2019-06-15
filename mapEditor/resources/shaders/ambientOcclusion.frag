@@ -1,11 +1,20 @@
 #version 440
 
+//values are replaced at compilation time:
+#define KERNEL_SAMPLES 0
+#define RADIUS 0
+#define BIAS 0
+#define AO_STRENGTH 0
+#define NOISE_TEXTURE_SIZE 0
+#define DEPTH_START_ATTENUATION 0
+#define DEPTH_END_ATTENUATION 0
+
 uniform sampler2D depthTex;
 uniform sampler2D normalAndAmbientTex;
 uniform sampler2D noiseTex;
 
 in vec2 textCoordinates;
-uniform vec3 samples[#KERNEL_SAMPLES#];
+uniform vec3 samples[KERNEL_SAMPLES];
 uniform mat4 mInverseViewProjection;
 uniform mat4 mProjection;
 uniform mat4 mView;
@@ -46,16 +55,16 @@ void main(){
 
     float depthValue = texture2D(depthTex, textCoordinates).r;
     float distanceReduceFactor = 1.0;
-    if(depthValue > #DEPTH_END_ATTENUATION#){
+    if(depthValue > DEPTH_END_ATTENUATION){
         fragColor = 0.0;
         return;
-    }else if(depthValue > #DEPTH_START_ATTENUATION#){
-        distanceReduceFactor = (#DEPTH_END_ATTENUATION# - depthValue) / (#DEPTH_END_ATTENUATION# - #DEPTH_START_ATTENUATION#);
+    }else if(depthValue > DEPTH_START_ATTENUATION){
+        distanceReduceFactor = (DEPTH_END_ATTENUATION - depthValue) / (DEPTH_END_ATTENUATION - DEPTH_START_ATTENUATION);
     }
 
     vec3 position = fetchPosition(textCoordinates, depthValue);
 	vec3 normal = normalAndAmbient.xyz * 2.0f - 1.0f;
-	vec2 noiseScale = vec2(resolution.x / #NOISE_TEXTURE_SIZE#, resolution.y / #NOISE_TEXTURE_SIZE#);
+	vec2 noiseScale = vec2(resolution.x / NOISE_TEXTURE_SIZE, resolution.y / NOISE_TEXTURE_SIZE);
 	vec3 randomVector = normalize(texture(noiseTex, textCoordinates * noiseScale).xyz * 2.0f - 1.0f);
 
 	vec3 tangent = normalize(randomVector - dot(randomVector, normal) * normal);
@@ -63,10 +72,10 @@ void main(){
     mat3 kernelMatrix = mat3(tangent, bitangent, normal);
 
     float occlusion = 0.0;
-    for(int i = 0; i < #KERNEL_SAMPLES#; ++i)
+    for(int i = 0; i < KERNEL_SAMPLES; ++i)
     {
         vec3 sampleVectorWorldSpace = kernelMatrix * samples[i];
-        vec3 samplePointWorldSpace = position + #RADIUS# * sampleVectorWorldSpace;
+        vec3 samplePointWorldSpace = position + RADIUS * sampleVectorWorldSpace;
         vec4 samplePointEyeSpace = mView * vec4(samplePointWorldSpace, 1.0);
         vec4 samplePointClipSpace = mProjection * samplePointEyeSpace;
         vec3 samplePointNDC = samplePointClipSpace.xyz / samplePointClipSpace.w;
@@ -75,11 +84,11 @@ void main(){
         float zSceneNDC = texture(depthTex, samplePointTexCoord).r;
         vec3 scenePositionEyeSpace = fetchEyePosition(samplePointTexCoord, zSceneNDC);
 
-        float rangeCheck = smoothstep(0.0, 1.0, #RADIUS# / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
-        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + #BIAS# ? 1.0 : 0.0) * rangeCheck;
+        float rangeCheck = smoothstep(0.0, 1.0, RADIUS / abs(scenePositionEyeSpace.z - samplePointEyeSpace.z));
+        occlusion += (scenePositionEyeSpace.z >= samplePointEyeSpace.z + BIAS ? 1.0 : 0.0) * rangeCheck;
     }
 
-    fragColor = (occlusion / float(#KERNEL_SAMPLES#)) * distanceReduceFactor * #AO_STRENGTH#;
+    fragColor = (occlusion / float(KERNEL_SAMPLES)) * distanceReduceFactor * AO_STRENGTH;
 
 	//DEBUG: display random texture
 /*	fragColor = texture(noiseTex, textCoordinates * noiseScale).x; */

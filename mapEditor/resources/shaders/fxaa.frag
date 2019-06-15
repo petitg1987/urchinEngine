@@ -1,14 +1,15 @@
 #version 440
 #extension GL_EXT_gpu_shader4 : enable
 
+//values are replaced at compilation time:
+#define FXAA_QUALITY 0 //0=Low, 1=Medium, 2=High, 3=Very high
+
 in vec2 textCoordinates;
 
 uniform sampler2D tex;
 uniform vec2 invSceneSize;
 
 out vec4 fragColor;
-
-#define FXAA_QUALITY #QUALITY# //0=Low, 1=Medium, 2=High, 3=Very high
 
 #if(FXAA_QUALITY == 0)
 	#define FXAA_QUALITY_PS 6

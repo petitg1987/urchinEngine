@@ -27,11 +27,10 @@ namespace urchin
         {
 			delete allOctreeableLight;
 		}
-		for(std::vector<Light *>::const_iterator it=parallelBeamsLights.begin(); it!=parallelBeamsLights.end(); ++it)
+		for(auto &parallelBeamsLight : parallelBeamsLights)
 		{
-			delete (*it);
+			delete parallelBeamsLight;
 		}
-
 
 		delete lightOctreeManager;
 		delete [] lightsInfo;
@@ -163,6 +162,8 @@ namespace urchin
 	void LightManager::loadLights()
 	{
 		const std::vector<Light *> &lights = getVisibleLights();
+        checkMaxLight(lights);
+
 		for(unsigned int i=0; i < maxLights; ++i)
 		{
 			if(lights.size() > i)
@@ -198,6 +199,16 @@ namespace urchin
 
 		glUniform4fv(globalAmbientColorLoc, 1, (const float *)getGlobalAmbientColor());
 	}
+
+	void LightManager::checkMaxLight(const std::vector<Light *> &lights)
+    {
+        static bool maxLightReachLogged = false;
+        if(lights.size() > maxLights && !maxLightReachLogged)
+        {
+            Logger::logger().logWarning("Light in scene (" + std::to_string(lights.size()) + ") is higher that max light (" + std::to_string(maxLights) + ") authorized");
+            maxLightReachLogged = true;
+        }
+    }
 
 	void LightManager::postUpdateLights()
 	{

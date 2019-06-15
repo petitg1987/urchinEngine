@@ -11,6 +11,7 @@ namespace urchin
 	{
 		public:
 			static void replaceAll(std::string &, const std::string &, const std::string &);
+            static void replaceLine(std::string &, const std::string &, const std::string &);
 
 			static void split(const std::string &, const char &, std::vector<std::string> &);
 

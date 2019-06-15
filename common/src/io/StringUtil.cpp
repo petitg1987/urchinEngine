@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <stdexcept>
 
 #include "io/StringUtil.h"
 
@@ -15,17 +16,32 @@ namespace urchin
 	    }
 	}
 
-	void StringUtil::split(const std::string &str, const char &delimitor, std::vector<std::string> &tokens)
+    void StringUtil::replaceLine(std::string &str, const std::string &startLineValue, const std::string &newLineValue)
+    {
+        size_t startPos = 0;
+        if((startPos = str.find(startLineValue)) != std::string::npos)
+        {
+            size_t endOfLinePos = str.find('\n', startPos);
+            if(endOfLinePos == std::string::npos)
+            {
+                throw std::runtime_error("Impossible to replace '" + startLineValue + "' by '" + newLineValue + "' because EOL not found");
+            }
+
+            str.replace(startPos, endOfLinePos - startPos, newLineValue);
+        }
+    }
+
+	void StringUtil::split(const std::string &str, const char &delimiter, std::vector<std::string> &tokens)
 	{
 	    std::string::const_iterator start = str.begin();
 
 	    while(start != str.end())
 	    {
-	    	std::string::const_iterator temp = std::find(start, str.end(), delimitor);
+	    	std::string::const_iterator temp = std::find(start, str.end(), delimiter);
 	        tokens.emplace_back(std::string(start, temp));
 
 	        start = temp;
-	        while((start != str.end()) && (*start == delimitor))
+	        while((start != str.end()) && (*start == delimiter))
 	        {
 	        	start++;
 	        }

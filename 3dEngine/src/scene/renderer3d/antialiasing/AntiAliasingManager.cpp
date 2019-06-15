@@ -33,7 +33,7 @@ namespace urchin
 	void AntiAliasingManager::loadFxaaShader()
 	{
 		std::map<std::string, std::string> fxaaTokens;
-		fxaaTokens["QUALITY"] = std::to_string(static_cast<int>(quality));
+		fxaaTokens["FXAA_QUALITY"] = std::to_string(static_cast<int>(quality));
 
 		ShaderManager::instance()->removeProgram(fxaaShader);
 		fxaaShader = ShaderManager::instance()->createProgram("fxaa.vert", "", "fxaa.frag", fxaaTokens);
