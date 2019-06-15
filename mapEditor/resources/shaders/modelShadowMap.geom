@@ -8,9 +8,9 @@ layout(triangles) in;
 layout(triangle_strip, max_vertices=MAX_VERTICES) out;
 
 uniform mat4 projectionMatrix[NUMBER_SHADOW_MAPS];
-uniform unsigned int layersToUpdate;
+uniform uint layersToUpdate;
 
-const unsigned int POWER_TWO_TAB[13] = unsigned int[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096);
+const uint POWER_TWO_TAB[13] = uint[](1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096);
 
 out int gl_Layer;
 

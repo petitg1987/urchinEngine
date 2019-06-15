@@ -33,7 +33,7 @@ namespace urchin
     {
         std::map<std::string, std::string> tokens;
         tokens["GRASS_ALPHA_TEST"] = ConfigService::instance()->getStringValue("terrain.grassAlphaTest");
-        terrainGrassShader = ShaderManager::instance()->createProgram("terrainGrass.vert", "terrainGrass.geo", "terrainGrass.frag", tokens);
+        terrainGrassShader = ShaderManager::instance()->createProgram("terrainGrass.vert", "terrainGrass.geom", "terrainGrass.frag", tokens);
         ShaderManager::instance()->bind(terrainGrassShader);
 
         mProjectionLoc = glGetUniformLocation(terrainGrassShader, "mProjection");

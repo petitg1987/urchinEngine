@@ -63,7 +63,7 @@ namespace urchin
             shaderTokens["MAX_VERTICES"] = std::to_string(3*textureNumberLayer);
             shaderTokens["NUMBER_LAYER"] = std::to_string(textureNumberLayer);
 
-			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "textureFilter.geo", getShaderName()+"Array.frag", shaderTokens);
+			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "textureFilter.geom", getShaderName()+"Array.frag", shaderTokens);
 		}else if(textureType==GL_TEXTURE_2D)
 		{
 			textureFilterShader = ShaderManager::instance()->createProgram("textureFilter.vert", "", getShaderName()+".frag", shaderTokens);

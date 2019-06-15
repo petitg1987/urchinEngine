@@ -120,7 +120,7 @@ namespace urchin
 		geometryTokens["NUMBER_SHADOW_MAPS"] = std::to_string(nbShadowMaps);
 		delete shadowModelDisplayer;
 		shadowModelDisplayer = new ModelDisplayer(ModelDisplayer::DEPTH_ONLY_MODE);
-		shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geo", geometryTokens);
+		shadowModelDisplayer->setCustomGeometryShader("modelShadowMap.geom", geometryTokens);
 		shadowModelDisplayer->setCustomFragmentShader("modelShadowMap.frag", fragmentTokens);
 		shadowModelDisplayer->initialize();
 
@@ -152,9 +152,9 @@ namespace urchin
 		sceneWidth = width;
 		sceneHeight = height;
 
-		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
+		for(auto &shadowData : shadowDatas)
 		{
-			updateViewMatrix(it->first);
+			updateViewMatrix(shadowData.first);
 		}
 	}
 
@@ -639,9 +639,9 @@ namespace urchin
 
 		splitFrustum(frustum);
 
-		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
+		for(auto &shadowData : shadowDatas)
 		{
-			updateFrustumShadowData(it->first, it->second);
+			updateFrustumShadowData(shadowData.first, shadowData.second);
 		}
 	}
 
@@ -656,9 +656,9 @@ namespace urchin
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		for(std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.begin(); it!=shadowDatas.end(); ++it)
+		for(auto & it : shadowDatas)
 		{
-			ShadowData *shadowData = it->second;
+			ShadowData *shadowData = it.second;
 
 			glViewport(0, 0, shadowMapResolution, shadowMapResolution);
 			glBindFramebuffer(GL_FRAMEBUFFER, shadowData->getFboID());
@@ -685,7 +685,7 @@ namespace urchin
 		{
 			if(visibleLight->isProduceShadow())
 			{
-				std::map<const Light *, ShadowData *>::const_iterator it = shadowDatas.find(visibleLight);
+				auto it = shadowDatas.find(visibleLight);
 				const ShadowData *shadowData = it->second;
 
 				unsigned int shadowMapTextureUnit = shadowMapTextureUnitStart + i;

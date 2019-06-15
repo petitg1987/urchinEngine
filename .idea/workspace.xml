@@ -2,19 +2,19 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="unitTest" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchin3dEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
-      <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
       <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchin3dEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -25,44 +25,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Add workspace file">
-      <change beforePath="$PROJECT_DIR$/3dEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/ambientOcclusion.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/ambientOcclusion.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/bilateralBlurTex.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/bilateralBlurTex.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/deferredShading.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/deferredShading.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/displayTexture.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/displayTexture.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/displayTextureArray.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/displayTextureArray.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/downSampleTex.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/downSampleTex.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/downSampleTexArray.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/downSampleTexArray.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/fxaa.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/fxaa.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/gaussianBlurTex.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/gaussianBlurTex.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/gaussianBlurTexArray.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/gaussianBlurTexArray.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/modelShadowMap.geo" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/modelShadowMap.geo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/terrainGrass.frag" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/terrainGrass.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/textureFilter.geo" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/textureFilter.geo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/antialiasing/AntiAliasingManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/light/LightManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/light/LightManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/light/LightManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/light/LightManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/shader/LoopUnrollerShader.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/shader/LoopUnrollerShader.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/shader/TokenReplacerShader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/shader/TokenReplacerShader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/io/StringUtil.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/io/StringUtil.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/io/StringUtil.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/io/StringUtil.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/ambientOcclusion.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/ambientOcclusion.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/bilateralBlurTex.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/bilateralBlurTex.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/deferredShading.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/deferredShading.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/displayTexture.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/displayTexture.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/displayTextureArray.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/displayTextureArray.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/downSampleTex.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/downSampleTex.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/downSampleTexArray.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/downSampleTexArray.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/fxaa.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/fxaa.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/gaussianBlurTex.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/gaussianBlurTex.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/gaussianBlurTexArray.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/gaussianBlurTexArray.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/modelShadowMap.geo" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/modelShadowMap.geo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/terrainGrass.frag" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/terrainGrass.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/textureFilter.geo" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/textureFilter.geo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/modelShadowMap.geo" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/modelShadowMap.geom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/terrainGrass.geo" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/terrainGrass.geom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/resources/shaders/textureFilter.geo" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/resources/shaders/textureFilter.geom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/terrain/grass/TerrainGrass.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/terrain/grass/TerrainGrass.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/filter/TextureFilter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/filter/TextureFilter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/modelShadowMap.geo" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/modelShadowMap.geom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/terrainGrass.geo" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/terrainGrass.geom" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/resources/shaders/textureFilter.geo" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/shaders/textureFilter.geom" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/.target/release/" />
@@ -387,6 +359,24 @@
             <path>
               <item name="urchinEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="urchinEngine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="urchinEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="urchinEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="mapEditor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="urchinEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="urchinEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="mapEditor" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="urchinEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="urchinEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="mapEditor" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="shaders" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -1103,7 +1093,8 @@
       <workItem from="1560064666585" duration="123000" />
       <workItem from="1560110976627" duration="353000" />
       <workItem from="1560111493110" duration="12000" />
-      <workItem from="1560608224456" duration="263000" />
+      <workItem from="1560608224456" duration="514000" />
+      <workItem from="1560633051075" duration="112000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1284,7 +1275,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1852221000" />
+    <option name="totallyTimeSpent" value="1852584000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1297,9 +1288,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.21291356" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.21504803" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
       <window_info id="Data View" order="3" />
@@ -1310,7 +1300,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.7590933" weight="0.2858661" />
-      <window_info active="true" anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" visible="true" weight="0.3697749" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" visible="true" weight="0.20364416" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3287234" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
       <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.1800643" />
@@ -1830,9 +1820,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/urchinEngine.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/physicsEngine/src/TODO.txt" />
     <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionShape3D.h">
       <provider selected="true" editor-type-id="text-editor">
@@ -1875,6 +1862,9 @@
           <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mapEditor/urchinEngine.log">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
