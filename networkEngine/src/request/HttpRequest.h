@@ -16,7 +16,7 @@ namespace urchin
     class HttpRequest
     {
         public:
-            explicit HttpRequest(const std::string &);
+            explicit HttpRequest(std::string );
             ~HttpRequest();
 
             void postTextPlain(const std::string &, const std::string &) const;

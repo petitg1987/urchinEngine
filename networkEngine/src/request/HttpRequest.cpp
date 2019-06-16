@@ -1,3 +1,5 @@
+#include <utility>
+
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -29,8 +31,8 @@ namespace urchin
         curl_global_cleanup();
     }
 
-    HttpRequest::HttpRequest(const std::string &basePath) :
-        basePath(basePath)
+    HttpRequest::HttpRequest(std::string basePath) :
+        basePath(std::move(basePath))
     {
         static HttpRequestInitializer instance;
 

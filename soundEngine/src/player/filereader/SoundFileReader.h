@@ -16,7 +16,7 @@ namespace urchin
 	class SoundFileReader
 	{
 		public:
-			SoundFileReader(const std::string &);
+			explicit SoundFileReader(const std::string &);
 			~SoundFileReader();
 
 			void readNextChunk(std::vector<ALshort> &, unsigned int &, bool);

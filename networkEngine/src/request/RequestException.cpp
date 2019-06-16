@@ -1,9 +1,11 @@
+#include <utility>
+
 #include "RequestException.h"
 
 namespace urchin
 {
-    RequestException::RequestException(const std::string& message) :
-        message(message)
+    RequestException::RequestException(std::string message) :
+        message(std::move(message))
     {
 
     }

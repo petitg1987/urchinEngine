@@ -1,3 +1,5 @@
+#include <utility>
+
 #include <iostream>
 #include <stdexcept>
 #include <AL/alc.h>
@@ -7,8 +9,9 @@
 namespace urchin
 {
 
-	Sound::Sound(const std::string &filename) :
-		filename(filename),
+	Sound::Sound(std::string filename) :
+        sourceId(0),
+		filename(std::move(filename)),
 		volume(1.0f)
 	{
 		#ifdef _DEBUG

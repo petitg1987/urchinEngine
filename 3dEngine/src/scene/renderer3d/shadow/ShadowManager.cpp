@@ -638,21 +638,19 @@ namespace urchin
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		for(auto & it : shadowDatas)
+		for(auto &shadowData : shadowDatas)
 		{
-			ShadowData *shadowData = it.second;
-
 			glViewport(0, 0, shadowMapResolution, shadowMapResolution);
-			glBindFramebuffer(GL_FRAMEBUFFER, shadowData->getFboID());
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowData.second->getFboID());
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-			shadowUniform->setUniformData(shadowData);
-			shadowModelUniform->setModelUniformData(shadowData);
+			shadowUniform->setUniformData(shadowData.second);
+			shadowModelUniform->setModelUniformData(shadowData.second);
 
-			shadowModelDisplayer->setModels(shadowData->retrieveModels());
-			shadowModelDisplayer->display(shadowData->getLightViewMatrix());
+			shadowModelDisplayer->setModels(shadowData.second->retrieveModels());
+			shadowModelDisplayer->display(shadowData.second->getLightViewMatrix());
 
-			shadowData->applyTextureFilters();
+			shadowData.second->applyTextureFilters();
 		}
 
 		glViewport(0, 0, sceneWidth, sceneHeight);
