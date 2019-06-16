@@ -197,7 +197,7 @@ namespace urchin
 		ButtonStyleHelper::applyNormalStyle(changeSoundShapeTypeButton);
 		connect(changeSoundShapeTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundShapeDialog()));
 
-		QFrame *frameLine = new QFrame();
+		auto *frameLine = new QFrame();
 		triggerShapeLayout->addWidget(frameLine);
 		FrameStyleHelper::applyLineStyle(frameLine);
 
@@ -214,9 +214,9 @@ namespace urchin
 		this->soundController = soundController;
 
 		std::list<const SceneSound *> sceneSounds = soundController->getSceneSounds();
-		for(std::list<const SceneSound *>::const_iterator it=sceneSounds.begin(); it!=sceneSounds.end(); ++it)
+		for(auto &sceneSound : sceneSounds)
 		{
-			soundTableView->addSound((*it));
+			soundTableView->addSound(sceneSound);
 		}
 	}
 
@@ -231,27 +231,23 @@ namespace urchin
 	{
 		if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case SoundTableView::SELECTION_CHANGED:
-					if(soundTableView->hasSceneSoundSelected())
-					{
-						const SceneSound *sceneSound = soundTableView->getSelectedSceneSound();
-						setupSoundDataFrom(sceneSound);
+		    if(notificationType==SoundTableView::SELECTION_CHANGED)
+            {
+                if(soundTableView->hasSceneSoundSelected())
+                {
+                    const SceneSound *sceneSound = soundTableView->getSelectedSceneSound();
+                    setupSoundDataFrom(sceneSound);
 
-						removeSoundButton->setEnabled(true);
-						soundPropertiesGroupBox->show();
-						soundTriggerGroupBox->show();
-					}else
-					{
-						removeSoundButton->setEnabled(false);
-						soundPropertiesGroupBox->hide();
-						soundTriggerGroupBox->hide();
-					}
-					break;
-				default:
-					;
-			}
+                    removeSoundButton->setEnabled(true);
+                    soundPropertiesGroupBox->show();
+                    soundTriggerGroupBox->show();
+                }else
+                {
+                    removeSoundButton->setEnabled(false);
+                    soundPropertiesGroupBox->hide();
+                    soundTriggerGroupBox->hide();
+                }
+            }
 		}
 	}
 

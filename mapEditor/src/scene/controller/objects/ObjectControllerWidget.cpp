@@ -55,7 +55,7 @@ namespace urchin
 		tabWidget->hide();
 
 		//general properties
-		QWidget *tabGeneral = new QWidget();
+		auto *tabGeneral = new QWidget();
 		auto *generalLayout = new QVBoxLayout(tabGeneral);
 		generalLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		generalLayout->setContentsMargins(1, 1, 1, 1);
@@ -64,7 +64,7 @@ namespace urchin
 		tabWidget->addTab(tabGeneral, "General");
 
 		//physics properties
-		QWidget *tabPhysics = new QWidget();
+        auto *tabPhysics = new QWidget();
 		auto *physicsLayout = new QVBoxLayout(tabPhysics);
 		physicsLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		physicsLayout->setContentsMargins(1, 1, 1, 1);
@@ -182,7 +182,7 @@ namespace urchin
 		tabPhysicsRigidBody = new QTabWidget();
 		physicsLayout->addWidget(tabPhysicsRigidBody);
 
-		QWidget *tabPhysicsProperties = new QWidget();
+		auto *tabPhysicsProperties = new QWidget();
 		auto *physicsPropertiesLayout = new QVBoxLayout(tabPhysicsProperties);
 		physicsPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		physicsPropertiesLayout->setContentsMargins(1, 1, 1, 1);
@@ -191,7 +191,7 @@ namespace urchin
 		setupPhysicsFactorPropertiesBox(physicsPropertiesLayout);
 		tabPhysicsRigidBody->addTab(tabPhysicsProperties, "Properties");
 
-		QWidget *tabPhysicsShape = new QWidget();
+		auto *tabPhysicsShape = new QWidget();
 		physicsShapeLayout = new QVBoxLayout(tabPhysicsShape);
 		physicsShapeLayout->setAlignment(Qt::AlignmentFlag::AlignTop);
 		physicsShapeLayout->setContentsMargins(1, 1, 1, 1);
@@ -354,7 +354,7 @@ namespace urchin
 		ButtonStyleHelper::applyNormalStyle(changeBodyShapeButton);
 		connect(changeBodyShapeButton, SIGNAL(clicked()), this, SLOT(showChangeBodyShapeDialog()));
 
-		QFrame *frameLine = new QFrame();
+		auto *frameLine = new QFrame();
 		physicsShapeLayout->addWidget(frameLine);
 		FrameStyleHelper::applyLineStyle(frameLine);
 
@@ -366,9 +366,9 @@ namespace urchin
 		this->objectController = objectController;
 
 		std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-		for(std::list<const SceneObject *>::const_iterator it=sceneObjects.begin(); it!=sceneObjects.end(); ++it)
+		for(auto &sceneObject : sceneObjects)
 		{
-			objectTableView->addObject((*it));
+			objectTableView->addObject(sceneObject);
 		}
 	}
 
@@ -383,48 +383,38 @@ namespace urchin
 	{
 		if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case ObjectTableView::SELECTION_CHANGED:
-					if(objectTableView->hasSceneObjectSelected())
-					{
-						const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
-						setupObjectDataFrom(sceneObject);
+		    if(notificationType==ObjectTableView::SELECTION_CHANGED)
+            {
+                if(objectTableView->hasSceneObjectSelected())
+                {
+                    const SceneObject *sceneObject = objectTableView->getSelectedSceneObject();
+                    setupObjectDataFrom(sceneObject);
 
-						removeObjectButton->setEnabled(true);
-						cloneObjectButton->setEnabled(true);
-						tabWidget->show();
-					}else
-					{
-						removeObjectButton->setEnabled(false);
-						cloneObjectButton->setEnabled(false);
-						tabWidget->hide();
-					}
-					break;
-				default:
-					;
-			}
+                    removeObjectButton->setEnabled(true);
+                    cloneObjectButton->setEnabled(true);
+                    tabWidget->show();
+                }else
+                {
+                    removeObjectButton->setEnabled(false);
+                    cloneObjectButton->setEnabled(false);
+                    tabWidget->hide();
+                }
+            }
 		}else if(auto *sceneDisplayerWidget = dynamic_cast<SceneDisplayerWidget *>(observable))
 		{
-			switch(notificationType)
-			{
-				case SceneDisplayerWidget::BODY_PICKED:
+		    if(notificationType==SceneDisplayerWidget::BODY_PICKED)
+            {
+                const std::string &bodyId = sceneDisplayerWidget->getLastPickedBodyId();
+                const SceneObject *sceneObject = objectController->findSceneObjectByBodyId(bodyId);
+                if(sceneObject)
                 {
-                    const std::string &bodyId = sceneDisplayerWidget->getLastPickedBodyId();
-                    const SceneObject *sceneObject = objectController->findSceneObjectByBodyId(bodyId);
-                    if(sceneObject)
+                    int row = this->objectTableView->getSceneObjectRow(sceneObject);
+                    if(row >=0)
                     {
-                        int row = this->objectTableView->getSceneObjectRow(sceneObject);
-						if(row >=0)
-						{
-							this->objectTableView->selectRow(row);
-						}
+                        this->objectTableView->selectRow(row);
                     }
-                    break;
                 }
-				default:
-					;
-			}
+            }
 		}
 	}
 
@@ -671,7 +661,7 @@ namespace urchin
 		}
 	}
 
-	void ObjectControllerWidget::bodyShapeChanged(std::shared_ptr<const CollisionShape3D> scaledShape)
+	void ObjectControllerWidget::bodyShapeChanged(const std::shared_ptr<const CollisionShape3D>& scaledShape)
 	{
 		if(!disableObjectEvent)
 		{

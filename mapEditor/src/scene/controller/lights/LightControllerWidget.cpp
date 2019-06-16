@@ -165,9 +165,9 @@ namespace urchin
 		this->lightController = lightController;
 
 		std::list<const SceneLight *> sceneLights = lightController->getSceneLights();
-		for(std::list<const SceneLight *>::const_iterator it=sceneLights.begin(); it!=sceneLights.end(); ++it)
+		for(auto &sceneLight : sceneLights)
 		{
-			lightTableView->addLight((*it));
+			lightTableView->addLight(sceneLight);
 		}
 	}
 
@@ -182,25 +182,21 @@ namespace urchin
 	{
 		if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case LightTableView::SELECTION_CHANGED:
-					if(lightTableView->hasSceneLightSelected())
-					{
-						const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
-						setupLightDataFrom(sceneLight);
+		    if(notificationType==LightTableView::SELECTION_CHANGED)
+            {
+                if(lightTableView->hasSceneLightSelected())
+                {
+                    const SceneLight *sceneLight = lightTableView->getSelectedSceneLight();
+                    setupLightDataFrom(sceneLight);
 
-						removeLightButton->setEnabled(true);
-						generalPropertiesGroupBox->show();
-					}else
-					{
-						removeLightButton->setEnabled(false);
-						generalPropertiesGroupBox->hide();
-					}
-					break;
-				default:
-					;
-			}
+                    removeLightButton->setEnabled(true);
+                    generalPropertiesGroupBox->show();
+                }else
+                {
+                    removeLightButton->setEnabled(false);
+                    generalPropertiesGroupBox->hide();
+                }
+            }
 		}
 	}
 
@@ -304,14 +300,11 @@ namespace urchin
 
 			if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL)
 			{
-				float expententialAttenuation = attenuation->value();
 				Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
-
-				lightController->updateSceneOmnidirectionalLightProperties(sceneLight, expententialAttenuation, position);
+				lightController->updateSceneOmnidirectionalLightProperties(sceneLight, attenuation->value(), position);
 			}else if(light->getLightType()==Light::LightType::SUN)
 			{
 				Vector3<float> direction(directionX->value(), directionY->value(), directionZ->value());
-
 				lightController->updateSceneSunLightProperties(sceneLight, direction);
 			}else
 			{

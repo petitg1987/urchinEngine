@@ -78,7 +78,7 @@ namespace urchin
 		}
 	}
 
-	void PhysicsWorld::addProcessable(std::shared_ptr<Processable> processable)
+	void PhysicsWorld::addProcessable(const std::shared_ptr<Processable>& processable)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 
@@ -87,7 +87,7 @@ namespace urchin
 		processables.push_back(processable);
 	}
 
-	void PhysicsWorld::removeProcessable(std::shared_ptr<Processable> processable)
+	void PhysicsWorld::removeProcessable(const std::shared_ptr<Processable>& processable)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 

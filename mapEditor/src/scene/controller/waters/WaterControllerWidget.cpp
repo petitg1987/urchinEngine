@@ -249,9 +249,9 @@ namespace urchin
         this->waterController = waterController;
 
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for(std::list<const SceneWater *>::const_iterator it=sceneWaters.begin(); it!=sceneWaters.end(); ++it)
+        for(auto &sceneWater : sceneWaters)
         {
-            waterTableView->addWater((*it));
+            waterTableView->addWater(sceneWater);
         }
     }
 
@@ -266,28 +266,24 @@ namespace urchin
     {
         if(auto *waterTableView = dynamic_cast<WaterTableView *>(observable))
         {
-            switch(notificationType)
+            if(notificationType==WaterTableView::SELECTION_CHANGED)
             {
-                case WaterTableView::SELECTION_CHANGED:
-                    if(waterTableView->hasSceneWaterSelected())
-                    {
-                        const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
-                        setupWaterDataFrom(sceneWater);
+                if(waterTableView->hasSceneWaterSelected())
+                {
+                    const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
+                    setupWaterDataFrom(sceneWater);
 
-                        removeWaterButton->setEnabled(true);
-                        generalPropertiesGroupBox->show();
-                        waterSurfacePropertiesGroupBox->show();
-                        underWaterPropertiesGroupBox->show();
-                    }else
-                    {
-                        removeWaterButton->setEnabled(false);
-                        generalPropertiesGroupBox->hide();
-                        waterSurfacePropertiesGroupBox->hide();
-                        underWaterPropertiesGroupBox->hide();
-                    }
-                    break;
-                default:
-                    ;
+                    removeWaterButton->setEnabled(true);
+                    generalPropertiesGroupBox->show();
+                    waterSurfacePropertiesGroupBox->show();
+                    underWaterPropertiesGroupBox->show();
+                }else
+                {
+                    removeWaterButton->setEnabled(false);
+                    generalPropertiesGroupBox->hide();
+                    waterSurfacePropertiesGroupBox->hide();
+                    underWaterPropertiesGroupBox->hide();
+                }
             }
         }
     }

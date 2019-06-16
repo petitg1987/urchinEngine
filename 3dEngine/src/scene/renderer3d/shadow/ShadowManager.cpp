@@ -172,54 +172,36 @@ namespace urchin
 		if(dynamic_cast<LightManager *>(observable))
 		{
 			Light *light = lightManager->getLastUpdatedLight();
-			switch(notificationType)
+			if(notificationType==LightManager::ADD_LIGHT)
 			{
-				case LightManager::ADD_LIGHT:
-				{
-					light->addObserver(this, Light::PRODUCE_SHADOW);
-
-					if(light->isProduceShadow())
-					{
-						addShadowLight(light);
-					}
-					break;
-				}
-				case LightManager::REMOVE_LIGHT:
-				{
-					light->removeObserver(this, Light::PRODUCE_SHADOW);
-
-					if(light->isProduceShadow())
-					{
-						removeShadowLight(light);
-					}
-					break;
-				}
-				default:
-					;
-			}
+                light->addObserver(this, Light::PRODUCE_SHADOW);
+                if(light->isProduceShadow())
+                {
+                    addShadowLight(light);
+                }
+			}else if(notificationType==LightManager::REMOVE_LIGHT)
+            {
+                light->removeObserver(this, Light::PRODUCE_SHADOW);
+                if(light->isProduceShadow())
+                {
+                    removeShadowLight(light);
+                }
+            }
 		}else if(auto *light = dynamic_cast<Light *>(observable))
 		{
-			switch(notificationType)
-			{
-				case Light::LIGHT_MOVE:
-				{
-					updateViewMatrix(light);
-					break;
-				}
-				case Light::PRODUCE_SHADOW:
-				{
-					if(light->isProduceShadow())
-					{
-						addShadowLight(light);
-					}else
-					{
-						removeShadowLight(light);
-					}
-					break;
-				}
-				default:
-					;
-			}
+		    if(notificationType==Light::LIGHT_MOVE)
+            {
+                updateViewMatrix(light);
+            }else if(notificationType==Light::PRODUCE_SHADOW)
+            {
+                if(light->isProduceShadow())
+                {
+                    addShadowLight(light);
+                }else
+                {
+                    removeShadowLight(light);
+                }
+            }
 		}
 	}
 

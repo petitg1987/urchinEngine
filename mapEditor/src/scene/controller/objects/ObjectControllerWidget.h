@@ -101,7 +101,7 @@ namespace urchin
 			void showChangeBodyShapeDialog();
 			void rigidBodyToggled(int);
 			void updateObjectPhysicsProperties();
-			void bodyShapeChanged(std::shared_ptr<const CollisionShape3D>);
+			void bodyShapeChanged(const std::shared_ptr<const CollisionShape3D> &);
 	};
 
 }

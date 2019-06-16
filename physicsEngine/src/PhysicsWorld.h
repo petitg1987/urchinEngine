@@ -30,8 +30,8 @@ namespace urchin
 			void addBody(AbstractBody *);
 			void removeBody(AbstractBody *);
 
-			void addProcessable(std::shared_ptr<Processable>);
-			void removeProcessable(std::shared_ptr<Processable>);
+			void addProcessable(const std::shared_ptr<Processable> &);
+			void removeProcessable(const std::shared_ptr<Processable> &);
 
 			std::shared_ptr<const RayTestResult> rayTest(const Ray<float> &);
 

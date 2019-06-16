@@ -25,7 +25,7 @@ namespace urchin
 		localizedShapeTableView->setFixedHeight(100);
 		localizedShapeTableView->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
 
-		QHBoxLayout *buttonLayout = new QHBoxLayout();
+        auto *buttonLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonLayout, 2, 0);
 		buttonLayout->setAlignment(Qt::AlignLeft);
 
@@ -62,12 +62,12 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
 	{
-		const CollisionCompoundShape *compoundShape = static_cast<const CollisionCompoundShape *>(shape.get());
+		const auto *compoundShape = dynamic_cast<const CollisionCompoundShape *>(shape.get());
 
 		const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes = compoundShape->getLocalizedShapes();
-		for(unsigned int i=0; i<localizedShapes.size(); ++i)
+		for(const auto &localizedShape : localizedShapes)
 		{
-			localizedShapeTableView->addLocalizedShape(localizedShapes[i]);
+			localizedShapeTableView->addLocalizedShape(localizedShape);
 		}
 		localizedShapeTableView->selectLocalizedShape(0);
 	}
@@ -88,42 +88,40 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::notify(Observable *observable, int notificationType)
 	{
-		if(LocalizedShapeTableView *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
+		if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case LocalizedShapeTableView::SELECTION_CHANGED:
-					if(localizedShapeTableView->hasLocalizedShapeSelected())
-					{
-						std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
+		    if(notificationType==LocalizedShapeTableView::SELECTION_CHANGED)
+            {
+                if(localizedShapeTableView->hasLocalizedShapeSelected())
+                {
+                    std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
-						delete localizedShapeDetails;
-						localizedShapeDetails = new QWidget();
-						mainLayout->addWidget(localizedShapeDetails, 3, 0);
+                    delete localizedShapeDetails;
+                    localizedShapeDetails = new QWidget();
+                    mainLayout->addWidget(localizedShapeDetails, 3, 0);
 
-						QVBoxLayout *localizedShapeLayout = new QVBoxLayout(localizedShapeDetails);
-						setupTransformBox(localizedShapeLayout, localizedShape);
-						setupShapeBox(localizedShapeLayout, localizedShape);
+                    auto *localizedShapeLayout = new QVBoxLayout(localizedShapeDetails);
+                    setupTransformBox(localizedShapeLayout, localizedShape);
+                    setupShapeBox(localizedShapeLayout, localizedShape);
 
-						localizedShapeDetails->show();
-					}else
-					{
-						delete localizedShapeDetails;
-						localizedShapeDetails = nullptr;
-					}
-					break;
-			}
+                    localizedShapeDetails->show();
+                }else
+                {
+                    delete localizedShapeDetails;
+                    localizedShapeDetails = nullptr;
+                }
+            }
 		}
 	}
 
-	void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout *localizedShapeLayout, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout *localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
 		QGroupBox *transformGroupBox = new QGroupBox("Transform");
 		localizedShapeLayout->addWidget(transformGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 		transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *transformLayout = new QGridLayout(transformGroupBox);
+        auto *transformLayout = new QGridLayout(transformGroupBox);
 		setupPosition(transformLayout, localizedShape->transform.getPosition());
 		setupOrientation(transformLayout,localizedShape->transform.getOrientation());
 	}
@@ -133,7 +131,7 @@ namespace urchin
 		QLabel *positionLabel= new QLabel("Position:");
 		transformLayout->addWidget(positionLabel, 0, 0);
 
-		QHBoxLayout *positionLayout = new QHBoxLayout();
+        auto *positionLayout = new QHBoxLayout();
 		transformLayout->addLayout(positionLayout, 0, 1);
 		positionX = new QDoubleSpinBox();
 		positionLayout->addWidget(positionX);
@@ -166,10 +164,10 @@ namespace urchin
 		transformLayout->addWidget(eulerAngleLabel, 2, 0);
 
 		QVariant variant = orientationType->currentData();
-		Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+		auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 		Vector3<float> eulerAngle = orientation.toEulerAngle(newRotationSequence);
 
-		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
+		auto *eulerAxisLayout = new QHBoxLayout();
 		transformLayout->addLayout(eulerAxisLayout, 2, 1);
 		eulerAxis0 = new QDoubleSpinBox();
 		eulerAxisLayout->addWidget(eulerAxis0);
@@ -188,14 +186,14 @@ namespace urchin
 		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSelectedLocalizedShape()));
 	}
 
-	void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout *localizedShapeLayout, std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout *localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
 		QGroupBox *shapeGroupBox = new QGroupBox("Shape");
 		localizedShapeLayout->addWidget(shapeGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
 		shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-		QGridLayout *shapeLayout = new QGridLayout(shapeGroupBox);
+		auto *shapeLayout = new QGridLayout(shapeGroupBox);
 		bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).retrieveShapeWidget(localizedShape->shape->getShapeType());
 		shapeLayout->addWidget(bodyShapeWidget, 0, 0);
 		bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -210,7 +208,7 @@ namespace urchin
 			std::shared_ptr<const LocalizedCollisionShape> localizedShape = localizedShapeTableView->getSelectedLocalizedShape();
 
 			QVariant variant = orientationType->currentData();
-			Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 			Vector3<float> eulerAngle = localizedShape->transform.getOrientation().toEulerAngle(newRotationSequence);
 
 			eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
@@ -241,7 +239,7 @@ namespace urchin
 					AngleConverter<float>::toRadian(eulerAxis2->value())
 			);
 			QVariant variant = orientationType->currentData();
-			Quaternion<float>::RotationSequence rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 			localizedShape->transform = PhysicsTransform(
 					Point3<float>(positionX->value(), positionY->value(), positionZ->value()),
 					Quaternion<float>(eulerAngle, rotationSequence));

@@ -319,9 +319,9 @@ namespace urchin
         this->terrainController = terrainController;
 
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        for(std::list<const SceneTerrain *>::const_iterator it=sceneTerrains.begin(); it!=sceneTerrains.end(); ++it)
+        for(auto &sceneTerrain : sceneTerrains)
         {
-            terrainTableView->addTerrain((*it));
+            terrainTableView->addTerrain(sceneTerrain);
         }
     }
 
@@ -336,30 +336,26 @@ namespace urchin
     {
         if(auto *terrainTableView = dynamic_cast<TerrainTableView *>(observable))
         {
-            switch(notificationType)
+            if(notificationType==TerrainTableView::SELECTION_CHANGED)
             {
-                case TerrainTableView::SELECTION_CHANGED:
-                    if(terrainTableView->hasSceneTerrainSelected())
-                    {
-                        const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
-                        setupTerrainDataFrom(sceneTerrain);
+                if(terrainTableView->hasSceneTerrainSelected())
+                {
+                    const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
+                    setupTerrainDataFrom(sceneTerrain);
 
-                        removeTerrainButton->setEnabled(true);
-                        generalPropertiesGroupBox->show();
-                        meshGroupBox->show();
-                        materialGroupBox->show();
-                        grassGroupBox->show();
-                    }else
-                    {
-                        removeTerrainButton->setEnabled(false);
-                        generalPropertiesGroupBox->hide();
-                        meshGroupBox->hide();
-                        materialGroupBox->hide();
-                        grassGroupBox->hide();
-                    }
-                    break;
-                default:
-                    ;
+                    removeTerrainButton->setEnabled(true);
+                    generalPropertiesGroupBox->show();
+                    meshGroupBox->show();
+                    materialGroupBox->show();
+                    grassGroupBox->show();
+                }else
+                {
+                    removeTerrainButton->setEnabled(false);
+                    generalPropertiesGroupBox->hide();
+                    meshGroupBox->hide();
+                    materialGroupBox->hide();
+                    grassGroupBox->hide();
+                }
             }
         }
     }

@@ -25,7 +25,7 @@ namespace urchin
 		this->setAttribute(Qt::WA_DeleteOnClose);
 		this->setWindowTitle(WINDOW_TITLE);
 		this->resize(1200, 675);
-		QWidget *centralWidget = new QWidget(this);
+		auto *centralWidget = new QWidget(this);
 
 		auto *horizontalLayout = new QHBoxLayout(centralWidget);
 		horizontalLayout->setSpacing(6);
@@ -175,44 +175,28 @@ namespace urchin
 	{
 		if(dynamic_cast<SceneControllerWidget *>(observable))
 		{
-			switch(notificationType)
-			{
-				case SceneControllerWidget::TAB_SELECTED:
-					executeViewPropertiesChangeAction();
-					break;
-				default:
-					;
-			}
+		    if(notificationType==SceneControllerWidget::TAB_SELECTED)
+            {
+                executeViewPropertiesChangeAction();
+            }
 		}else if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case ObjectTableView::SELECTION_CHANGED:
-					sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
-					break;
-				default:
-					;
-			}
+		    if(notificationType==ObjectTableView::SELECTION_CHANGED)
+            {
+                sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
+            }
 		}else if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case LightTableView::SELECTION_CHANGED:
-					sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
-					break;
-				default:
-					;
-			}
+		    if(notificationType==LightTableView::SELECTION_CHANGED)
+            {
+                sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
+            }
 		}else if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case SoundTableView::SELECTION_CHANGED:
-					sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
-					break;
-				default:
-					;
-			}
+		    if(notificationType==SoundTableView::SELECTION_CHANGED)
+            {
+                sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
+            }
 		}
 
 		handleCompoundShapeSelectionChange(observable, notificationType);
@@ -222,32 +206,20 @@ namespace urchin
 	{
 		if(auto *objectControllerWidget = dynamic_cast<ObjectControllerWidget *>(observable))
 		{
-			switch(notificationType)
-			{
-				case ObjectControllerWidget::BODY_SHAPE_INITIALIZED:
-				{
-					BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
-					if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
-					{
-						bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
-					}
-					break;
-				}
-				default:
-					;
-			}
+		    if(notificationType==ObjectControllerWidget::BODY_SHAPE_INITIALIZED)
+            {
+                BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
+                if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
+                {
+                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
+                }
+            }
 		}else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
 		{
-			switch(notificationType)
-			{
-				case LocalizedShapeTableView::SELECTION_CHANGED:
-                {
-                    sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
-                    break;
-                }
-				default:
-					;
-			}
+		    if(notificationType==LocalizedShapeTableView::SELECTION_CHANGED)
+            {
+                sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
+            }
 		}
 	}
 

@@ -201,16 +201,10 @@ namespace urchin
 	{
 		if(dynamic_cast<ShadowManager *>(observable))
 		{
-			switch(notificationType)
-			{
-				case ShadowManager::NUMBER_SHADOW_MAPS_UPDATE:
-				{
-					createOrUpdateDeferredShadingShader();
-					break;
-				}
-				default:
-					;
-			}
+		    if(notificationType==ShadowManager::NUMBER_SHADOW_MAPS_UPDATE)
+            {
+                createOrUpdateDeferredShadingShader();
+            }
 		}
 	}
 

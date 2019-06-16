@@ -56,27 +56,20 @@ namespace urchin
 	{
 		if(auto *widget = dynamic_cast<Widget *>(observable))
 		{
-			switch(notificationType)
+			if(notificationType==Widget::SET_IN_FOREGROUND)
 			{
-				case Widget::SET_IN_FOREGROUND:
-				{
-					auto it = std::find(widgets.begin(), widgets.end(), widget);
-					widgets.erase(it);
-					widgets.push_back(widget);
+                auto it = std::find(widgets.begin(), widgets.end(), widget);
+                widgets.erase(it);
+                widgets.push_back(widget);
 
-					//reset the other widgets
-					for(int i=widgets.size()-2;i>=0;--i)
-					{
-						if(widgets[i]->isVisible())
-						{
-							widgets[i]->reset();
-						}
-					}
-
-					break;
-				}
-				default:
-					;
+                //reset the other widgets
+                for(int i=widgets.size()-2;i>=0;--i)
+                {
+                    if(widgets[i]->isVisible())
+                    {
+                        widgets[i]->reset();
+                    }
+                }
 			}
 		}
 	}
