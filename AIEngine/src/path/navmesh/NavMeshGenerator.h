@@ -47,10 +47,10 @@ namespace urchin
 
 		private:
 			void updateExpandedPolytopes(AIWorld &);
-			void resolveWalkableSurfaces() const;
+			void determineWalkableSurfaces() const;
 
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygon(const PolytopeSurfaceIndex &) const;
-			std::vector<CSGPolygon<float>> &computeObstacles(const PolytopeSurfaceIndex &) const;
+			std::vector<CSGPolygon<float>> &determineObstacles(const PolytopeSurfaceIndex &) const;
 			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::unique_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::unique_ptr<PolytopeSurface> &) const;
 

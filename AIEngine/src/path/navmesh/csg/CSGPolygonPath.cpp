@@ -1,11 +1,13 @@
+#include <utility>
+
 #include "CSGPolygonPath.h"
 
 namespace urchin
 {
 
-    CSGPolygonPath::CSGPolygonPath(const ClipperLib::Path &path, const std::string &name) :
-        path(path),
-        name(name)
+    CSGPolygonPath::CSGPolygonPath(ClipperLib::Path path, std::string name) :
+        path(std::move(path)),
+        name(std::move(name))
     {
 
     }

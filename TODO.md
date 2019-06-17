@@ -48,12 +48,14 @@
 
 # AI engine
 - Navigation mesh
+    - **BUG** (![major]): Walkable surface shouldn't be expanded
+    - **OPTIMIZATION** (![major]): Use AABBTree for NavMeshGenerator#expandedPolytopes to find more quickly obstacles and jump links
 	- **NEW FEATURE** (![major]): Create jump links in navigation mesh
+	- **OPTIMIZATION** (![major]): Divide big surfaces in squares and refresh only squares 
 	- **OPTIMIZATION** (![minor]): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
 	- **OPTIMIZATION** (![medium]): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
 	- **OPTIMIZATION** (![medium]): NavMeshGenerator#computeObstacles: select only 'expandedPolyhedrons' above 'walkableFace' with octree/AABBTree (+ reserve memory on vector 'holePolygons')
 	- **OPTIMIZATION** (![medium]): Exclude small objects from navigation mesh
-	- **OPTIMIZATION** (![major]): Divide big surfaces in squares and refresh only squares
 	- **OPTIMIZATION** (![minor]): NavMeshGenerator#computePolytopeFootprint: put result in cache
 	- **OPTIMIZATION** (![minor]): Exclude fast moving objects from walkable face
 	- **QUALITY IMPROVEMENT** (![minor]): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)

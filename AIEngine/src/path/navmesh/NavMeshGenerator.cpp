@@ -59,7 +59,7 @@ namespace urchin
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
-		resolveWalkableSurfaces();
+        determineWalkableSurfaces();
 
         allNavPolygons.clear();
         for (const auto &polytopeWalkableSurface : walkableSurfaces)
@@ -109,7 +109,7 @@ namespace urchin
 		}
 	}
 
-	void NavMeshGenerator::resolveWalkableSurfaces() const
+	void NavMeshGenerator::determineWalkableSurfaces() const
 	{
 		ScopeProfiler scopeProfiler("ai", "walkableSurface");
 
@@ -140,7 +140,7 @@ namespace urchin
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
 
-		std::vector<CSGPolygon<float>> &obstaclePolygons = computeObstacles(polytopeWalkableSurface);
+		std::vector<CSGPolygon<float>> &obstaclePolygons = determineObstacles(polytopeWalkableSurface);
 
         walkablePolygons.clear();
         remainingObstaclePolygons.clear();
@@ -216,9 +216,9 @@ namespace urchin
 		return navPolygons;
 	}
 
-	std::vector<CSGPolygon<float>> &NavMeshGenerator::computeObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
+	std::vector<CSGPolygon<float>> &NavMeshGenerator::determineObstacles(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		ScopeProfiler scopeProfiler("ai", "computeObstacle");
+		ScopeProfiler scopeProfiler("ai", "getObstacles");
 
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableSurface = polytope->getSurface(polytopeWalkableSurface.faceIndex);
