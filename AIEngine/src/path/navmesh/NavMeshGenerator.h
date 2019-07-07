@@ -20,7 +20,7 @@
 namespace urchin
 {
 
-	typedef std::map<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>::const_iterator it_polytope;
+	typedef std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>::const_iterator it_polytope;
 
 	struct PolytopeSurfaceIndex
 	{

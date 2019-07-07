@@ -258,7 +258,7 @@ namespace urchin
                 {
                     float distance1 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[previousI]);
                     float distance2 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[i]);
-                    if ((distance1 < 0.0 && distance2 > 0.0) || (distance1 > 0.0 && distance2 < 0.0))
+                    if (std::signbit(distance1) != std::signbit(distance2))
                     {
                         Line3D<float> polytopeEdgeLine(polytopePlaneSurface->getCcwPoints()[previousI], polytopePlaneSurface->getCcwPoints()[i]);
                         Point3<float> intersectionPoint = walkablePlane.intersectPoint(polytopeEdgeLine);

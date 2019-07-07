@@ -89,7 +89,7 @@ namespace urchin
 		float t = shortestFaceDistance / normal.Y;
 		Point3<float> pointOnExpandedSurface = point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
 
-        float reduceDistance =  - agent.computeExpandDistance(normal);
+        float reduceDistance = - agent.computeExpandDistance(normal);
         return pointOnExpandedSurface.translate(normal * reduceDistance);
 	}
 

@@ -3,17 +3,17 @@
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="copyShaders" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchin3dEngine" />
-      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
       <config projectName="urchinEngine" targetName="copyShader" />
       <config projectName="urchinEngine" targetName="urchinSoundEngine" />
       <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
@@ -24,26 +24,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Add workspace file">
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/GUI/GUIRenderer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/GUI/GUIRenderer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/math/algorithm/PascalTriangle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/algorithm/PascalTriangle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/math/trigonometry/AngleConverter.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/trigonometry/AngleConverter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/MapEditorWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/MapEditorWindow.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/lights/LightControllerWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/lights/LightControllerWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectControllerWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectControllerWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectControllerWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectControllerWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/sounds/SoundControllerWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/sounds/SoundControllerWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/terrains/TerrainControllerWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/terrains/TerrainControllerWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/waters/WaterControllerWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/waters/WaterControllerWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/visualizer/CollisionVisualizer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/visualizer/CollisionVisualizer.cpp" afterDir="false" />
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="AI: rename methods">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/.target/release/" />
@@ -72,17 +55,7 @@
     <favorites_list name="urchinEngine" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -168,7 +141,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/AIEngine/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/common/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/mapEditor/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/mapHandler/CMakeLists.txt" />
@@ -194,7 +166,6 @@
         <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" />
         <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.h" />
         <option value="$PROJECT_DIR$/unitTest/src/math/geometry/ResizePolygon2DServiceTest.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" />
         <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.h" />
         <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" />
         <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TriangulationTest.cpp" />
@@ -219,6 +190,8 @@
         <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/mapEditor/src/TODO.md" />
+        <option value="$PROJECT_DIR$/TODO.md" />
+        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" />
       </list>
     </option>
   </component>
@@ -1098,6 +1071,8 @@
       <workItem from="1560608224456" duration="514000" />
       <workItem from="1560633051075" duration="112000" />
       <workItem from="1560670364578" duration="722000" />
+      <workItem from="1560799769758" duration="744000" />
+      <workItem from="1561012733092" duration="90000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1274,11 +1249,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558267517163</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="AI: rename methods">
+      <created>1560800490684</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1560800490684</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1853306000" />
+    <option name="totallyTimeSpent" value="1854140000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1292,7 +1274,7 @@
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.4615795" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.19530416" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
       <window_info id="Data View" order="3" />
@@ -1303,10 +1285,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.7590933" weight="0.2858661" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" visible="true" weight="0.30868167" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.30868167" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.3287234" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.40943193" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.40899357" />
       <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
       <window_info anchor="bottom" id="Salesforce" order="12" />
       <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />
@@ -1419,7 +1401,8 @@
     <MESSAGE value="Ray test via small aabboxes" />
     <MESSAGE value="Ray test on concave shape: improve performance" />
     <MESSAGE value="Add workspace file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add workspace file" />
+    <MESSAGE value="AI: rename methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="AI: rename methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1504,13 +1487,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/utils/pool/FixedSizePool.inl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="76" column="16" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneController.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1860,6 +1836,18 @@
         <state split_layout="SECOND">
           <first_editor relative-caret-position="238">
             <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+          </first_editor>
+          <second_editor>
+            <markdownNavigatorState />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TODO.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SECOND">
+          <first_editor relative-caret-position="850">
+            <caret line="50" column="64" selection-start-line="50" selection-start-column="64" selection-end-line="50" selection-end-column="64" />
           </first_editor>
           <second_editor>
             <markdownNavigatorState />
