@@ -46,4 +46,7 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
   - Debug > view light scope, hitbox, sound trigger, navigation mesh
 
 ## Build
-- Pre-requisites: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
+- Pre-requisites: 
+  - Linux: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
+  - Windows: [here](./WIN_SETUP.md)
+

@@ -3,16 +3,16 @@
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
-      <config projectName="urchinEngine" targetName="unitTest" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
       <config projectName="urchinEngine" targetName="copyShaders" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
       <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="unitTest" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
@@ -25,15 +25,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="AI: rename methods">
+      <change afterPath="$PROJECT_DIR$/WIN_SETUP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
-    <ignored path="$PROJECT_DIR$/.target/release/" />
-    <ignored path="$PROJECT_DIR$/.target/debug/" />
-    <ignored path="$PROJECT_DIR$/.build/debug/" />
-    <ignored path="$PROJECT_DIR$/.build/release/" />
-    <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,9 +50,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FavoritesManager">
     <favorites_list name="urchinEngine" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -138,69 +132,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/common/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/mapEditor/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/mapHandler/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/networkEngine/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/physicsEngine/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/soundEngine/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/unitTest/src/physics/shape/ShapeToConvexObjectTest.cpp" />
-        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/NavMeshGeneratorTest.cpp" />
-        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/objects/BodyShapeDisplayer.cpp" />
-        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/ai/NavMeshDisplayer.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" />
-        <option value="$PROJECT_DIR$/unitTest/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/CSGPolygonTest.h" />
-        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/CSGPolygonTest.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/PolygonsUnion.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/PolygonsUnion.h" />
-        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/util/ResizePolygon2DService.h" />
-        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/util/ResizePolygon2DService.cpp" />
-        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/util/ResizeConvexHull2DService.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.h" />
-        <option value="$PROJECT_DIR$/unitTest/src/math/geometry/ResizePolygon2DServiceTest.cpp" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.h" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" />
-        <option value="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TriangulationTest.cpp" />
-        <option value="$PROJECT_DIR$/unitTest/resources/engine.properties" />
-        <option value="$PROJECT_DIR$/mapEditor/resources/engine.properties" />
-        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.cpp" />
-        <option value="$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.h" />
-        <option value="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp" />
-        <option value="$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.cpp" />
-        <option value="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/terrain/TerrainMesh.cpp" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp" />
-        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.h" />
-        <option value="$PROJECT_DIR$/unitTest/src/math/geometry/LineSegment2DCollisionTest.cpp" />
-        <option value="$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.cpp" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/TODO.txt" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.cpp" />
-        <option value="$PROJECT_DIR$/mapEditor/urchinEngine.log" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionConcaveShape.h" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.h" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.cpp" />
-        <option value="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/mapEditor/src/TODO.md" />
-        <option value="$PROJECT_DIR$/TODO.md" />
-        <option value="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" />
-      </list>
-    </option>
-  </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-1" />
     <option name="width" value="1914" />
     <option name="height" value="1051" />
   </component>
+  <component name="ProjectId" id="1P135Fq0QIREjDWxIaVQTCZqEAH" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
@@ -339,25 +277,6 @@
         </selected-state>
       </profile-state>
     </entry>
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="urchinEngine" type="b2602c69:ProjectViewProjectNode" />
-              <item name="urchinEngine" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -1073,6 +992,8 @@
       <workItem from="1560670364578" duration="722000" />
       <workItem from="1560799769758" duration="744000" />
       <workItem from="1561012733092" duration="90000" />
+      <workItem from="1565027590832" duration="1480000" />
+      <workItem from="1565029195827" duration="278000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1259,9 +1180,6 @@
     <option name="localTasksCounter" value="27" />
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1854140000" />
-  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -1270,61 +1188,6 @@
       <are-packages-shown value="true" />
       <is-autoscroll-to-source value="true" />
     </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1922" height="1054" extended-state="6" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.19530416" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
-      <window_info id="Data View" order="3" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.5988403" weight="0.10839532" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7206115" weight="0.19185424" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.36131775" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.7590933" weight="0.2858661" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.30868167" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3287234" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.40899357" />
-      <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
-      <window_info anchor="bottom" id="Salesforce" order="12" />
-      <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />
-      <window_info anchor="bottom" id="Execute Anonymous" order="14" weight="0.3290461" />
-      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.18516542" />
-      <window_info anchor="right" id="Database" order="3" />
-    </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950249" visible="true" weight="0.28068304" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" sideWeight="0.50497514" side_tool="true" weight="0.22403796" />
-      <window_info id="Data View" order="3" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.5988403" weight="0.454448" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7206115" weight="0.26595744" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3319149" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.7590933" weight="0.34512326" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.63205063" weight="0.2744681" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3290461" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.27938852" side_tool="true" weight="0.36441585" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49815497" weight="0.3106383" />
-      <window_info anchor="bottom" id="CMake" order="11" weight="0.5106383" />
-      <window_info anchor="bottom" id="Salesforce" order="12" />
-      <window_info anchor="bottom" id="Debug Logs" order="13" weight="0.3290461" />
-      <window_info anchor="bottom" id="Execute Anonymous" order="14" weight="0.3290461" />
-      <window_info anchor="bottom" id="Database Changes" order="15" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.18516542" />
-      <window_info anchor="right" id="Database" order="3" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1345,20 +1208,7 @@
         <entry key="MAIN">
           <value>
             <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
+              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
@@ -1485,382 +1335,5 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneController.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="16" column="10" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectTableView.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="66" column="5" lean-forward="true" selection-start-line="66" selection-start-column="5" selection-end-line="66" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/objects/ObjectControllerWidget.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="363" column="37" selection-start-line="363" selection-start-column="33" selection-end-line="363" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/waters/WaterControllerWidget.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="296" column="8" selection-start-line="296" selection-start-column="8" selection-end-line="296" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/terrains/TerrainControllerWidget.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/terrains/TerrainControllerWidget.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="364" column="5" selection-start-line="364" selection-start-column="5" selection-end-line="364" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="e#105#137#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="59" column="31" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/resources/engine.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="109" selection-start-line="109" selection-end-line="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/MapEditorWindow.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="290" column="31" selection-start-line="290" selection-start-column="31" selection-end-line="290" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneControllerWidget.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="114" column="50" selection-start-line="114" selection-start-column="50" selection-end-line="114" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="19" column="34" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/system/FileHandler.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/3dEngine/src/utils/shader/ShaderManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIController.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="42" selection-start-line="42" selection-end-line="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="75" column="27" lean-forward="true" selection-start-line="75" selection-start-column="27" selection-end-line="75" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/3dEngine/src/scene/renderer3d/terrain/TerrainMesh.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="262" lean-forward="true" selection-start-line="262" selection-end-line="262" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/system/FileSystem.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="15" column="30" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="103" column="100" lean-forward="true" selection-start-line="103" selection-start-column="100" selection-end-line="103" selection-end-column="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/scene/controller/SceneController.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="68" column="32" selection-start-line="68" selection-start-column="32" selection-end-line="68" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/save/aa.txt" />
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="30" column="36" lean-forward="true" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="66" column="40" lean-forward="true" selection-start-line="66" selection-start-column="40" selection-end-line="66" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="24" column="52" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="42" column="18" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionSphereShape.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionSphereShape.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-323">
-          <caret line="9" column="57" lean-forward="true" selection-start-line="9" selection-start-column="57" selection-end-line="9" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3606">
-          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-          <folding>
-            <element signature="e#1#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="24" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
-          <folding>
-            <element signature="e#65#90#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/c++/8/bits/stl_vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="1029" column="6" selection-start-line="1029" selection-start-column="6" selection-end-line="1029" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/math/algebra/point/Point2.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unitTest/src/math/geometry/LineSegment2DCollisionTest.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="172" column="30" selection-start-line="172" selection-start-column="30" selection-end-line="172" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="205" column="62" selection-start-line="205" selection-start-column="62" selection-end-line="205" selection-end-column="62" />
-          <folding>
-            <element signature="e#2816#2825#0" expanded="true" />
-            <element signature="e#3425#3434#0" expanded="true" />
-            <element signature="e#6976#6985#0" expanded="true" />
-            <element signature="e#7082#7091#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AIEngine/src/TODO.txt" />
-    <entry file="file://$PROJECT_DIR$/3dEngine/src/TODO.txt" />
-    <entry file="file://$PROJECT_DIR$/common/src/math/geometry/2d/object/LineSegment2D.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
-          <folding>
-            <element signature="e#237#246#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="884">
-          <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/math/geometry/3d/shape/BoxShape.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="38" column="79" selection-start-line="38" selection-start-column="79" selection-end-line="38" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/TODO.txt" />
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionShape3D.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-112">
-          <caret line="14" column="10" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionConcaveShape.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" column="84" selection-start-line="15" selection-start-column="84" selection-end-line="15" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/collision/narrowphase/NarrowPhaseManager.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="195" column="116" selection-start-line="195" selection-start-column="116" selection-end-line="195" selection-end-column="116" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="210" column="28" selection-start-line="210" selection-start-column="28" selection-end-line="210" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="41" column="76" selection-start-line="41" selection-start-column="76" selection-end-line="41" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/urchinEngine.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mapEditor/src/TODO.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="SECOND">
-          <first_editor relative-caret-position="238">
-            <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
-          </first_editor>
-          <second_editor>
-            <markdownNavigatorState />
-          </second_editor>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TODO.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="SECOND">
-          <first_editor relative-caret-position="850">
-            <caret line="50" column="64" selection-start-line="50" selection-start-column="64" selection-end-line="50" selection-end-column="64" />
-          </first_editor>
-          <second_editor>
-            <markdownNavigatorState />
-          </second_editor>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="137" column="5" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>
