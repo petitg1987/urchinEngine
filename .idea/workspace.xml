@@ -4,16 +4,16 @@
     <generated>
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
       <config projectName="urchinEngine" targetName="copyShaders" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
-      <config projectName="urchinEngine" targetName="unitTest" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
@@ -24,12 +24,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="AI: rename methods">
-      <change afterPath="$PROJECT_DIR$/WIN_SETUP.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" beforeDir="false" />
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Review doc">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,93 +50,10 @@
   <component name="FavoritesManager">
     <favorites_list name="urchinEngine" />
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>twoAlignedSquares</find>
-      <find>isWalk</find>
-      <find>getOctreeablesIn</find>
-      <find>&quot;subtrahend&quot;, subtrahendPoly</find>
-      <find>&quot;p2&quot;, polyPoints2</find>
-      <find>.merge(</find>
-      <find>std::make_shared</find>
-      <find>cwPoints</find>
-      <find>holeOnWalkableFace</find>
-      <find>navMesh.polygon.removeAngleThresholdInDegree</find>
-      <find>simplifyMergeStartEndPoints</find>
-      <find>OBSTACLE_REDUCE_SIZE</find>
-      <find>resizePolygon</find>
-      <find>ResizePolygon2DService</find>
-      <find>resizeConvexHullShape</find>
-      <find>collisionTriangleObjectsPool&quot;</find>
-      <find>heightfieldTrianglesPoolSize</find>
-      <find>Pool is full of elements</find>
-      <find>ray</find>
-      <find>load</find>
-      <find>engine.pro</find>
-      <find>shaders.shadersLocation</find>
-      <find>resources</find>
-      <find>findTrianglesInAABBox</find>
-      <find>isLeaf())</find>
-      <find>stack</find>
-      <find>collinearLinesNoIntersectionSameDirection</find>
-      <find>findTrian</find>
-      <find>findTrianglesInLineSegment</find>
-      <find>frl</find>
-    </findStrings>
-    <replaceStrings>
-      <replace />
-      <replace>long double&gt;</replace>
-      <replace>long long&gt;</replace>
-      <replace>int</replace>
-      <replace>&lt;long long&gt;</replace>
-      <replace>assertPoint2LongLongEquals</replace>
-      <replace>assertPoint2FloatEquals</replace>
-      <replace>Terrain</replace>
-      <replace>height</replace>
-      <replace>quadtree</replace>
-      <replace>Water</replace>
-      <replace>water</replace>
-      <replace>CloneObjectDialog</replace>
-      <replace>getNeighbors()</replace>
-      <replace>),\n</replace>
-      <replace>\t\tPoint2&lt;float&gt;(</replace>
-      <replace>&lt;&lt;</replace>
-      <replace>&quot;subtrahend&quot;, std::move(subtrahendPoly)</replace>
-      <replace>&quot;p2&quot;, std::move(polyPoints2)</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>$PROJECT_DIR$/unitTest/src</dir>
-      <dir>$PROJECT_DIR$/unitTest</dir>
-      <dir>$PROJECT_DIR$/soundEngine/src</dir>
-      <dir>$PROJECT_DIR$/3dEngine/src</dir>
-      <dir>$PROJECT_DIR$/3dEngine/src/scene/renderer3d/</dir>
-      <dir>$PROJECT_DIR$/AIEngine/src</dir>
-      <dir>$PROJECT_DIR$/AIEngine/src/path</dir>
-      <dir>$PROJECT_DIR$/common/src</dir>
-      <dir>$PROJECT_DIR$/AIEngine/src/path/navmesh/csg</dir>
-      <dir>$PROJECT_DIR$/3dEngine/resources/shaders</dir>
-      <dir>$PROJECT_DIR$</dir>
-      <dir>$PROJECT_DIR$/AIEngine/src/path/navmesh</dir>
-      <dir>$PROJECT_DIR$/mapHandler</dir>
-      <dir>$PROJECT_DIR$/mapEditor/src/scene/controller</dir>
-      <dir>$PROJECT_DIR$/mapEditor/src/scene/displayer</dir>
-      <dir>$PROJECT_DIR$/mapEditor/src</dir>
-      <dir>$PROJECT_DIR$/AIEngine</dir>
-      <dir>$PROJECT_DIR$/3dEngine</dir>
-      <dir>$PROJECT_DIR$/physicsEngine</dir>
-      <dir>$PROJECT_DIR$/mapEditor/src/scene</dir>
-      <dir>$PROJECT_DIR$/mapEditor</dir>
-    </dirStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1" />
-    <option name="width" value="1914" />
-    <option name="height" value="1051" />
-  </component>
   <component name="ProjectId" id="1P135Fq0QIREjDWxIaVQTCZqEAH" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -314,7 +230,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.urchinMapEditor">
+  <component name="RunManager" selected="CMake Application.unitTest">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -993,7 +909,12 @@
       <workItem from="1560799769758" duration="744000" />
       <workItem from="1561012733092" duration="90000" />
       <workItem from="1565027590832" duration="1480000" />
-      <workItem from="1565029195827" duration="278000" />
+      <workItem from="1565029195827" duration="506000" />
+      <workItem from="1565031470758" duration="8000" />
+      <workItem from="1565104093059" duration="30000" />
+      <workItem from="1565104131733" duration="1779000" />
+      <workItem from="1565113076273" duration="1820000" />
+      <workItem from="1565198071022" duration="401000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1177,7 +1098,14 @@
       <option name="project" value="LOCAL" />
       <updated>1560800490684</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Review doc">
+      <created>1565029497901</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1565029497901</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1252,7 +1180,8 @@
     <MESSAGE value="Ray test on concave shape: improve performance" />
     <MESSAGE value="Add workspace file" />
     <MESSAGE value="AI: rename methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="AI: rename methods" />
+    <MESSAGE value="Review doc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Review doc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -20,7 +20,7 @@ namespace urchin
         buildXZRectangle();
 	}
 
-	const std::string Polytope::getName() const
+	const std::string &Polytope::getName() const
 	{
 		return name;
 	}

@@ -17,7 +17,7 @@ namespace urchin
 		public:
 			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &);
 
-			const std::string getName() const;
+			const std::string &getName() const;
 
 			const std::vector<std::unique_ptr<PolytopeSurface>> &getSurfaces() const;
 			const std::unique_ptr<PolytopeSurface> &getSurface(unsigned int) const;
