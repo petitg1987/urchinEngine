@@ -8,31 +8,28 @@
 namespace urchin
 {
 
-	/**
-	 * @param ccwPointIndices Point indices of the plane which must be coplanar and counter clockwise oriented
-	 */
-	PolytopePlaneSurface::PolytopePlaneSurface(const std::vector<unsigned int> &ccwPointIndices, const std::vector<Point3<float>> &points)
-	{
-		if(ccwPointIndices.size()<3)
-		{
-			throw std::runtime_error("A indexed face must be composed of at least three points. Number of points: " + std::to_string(ccwPointIndices.size()));
-		}
+    /**
+     * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
+     */
+    PolytopePlaneSurface::PolytopePlaneSurface(std::initializer_list<Point3<float>> ccwPointsList) :
+        ccwPoints(ccwPointsList)
+    {
+        #ifdef _DEBUG
+            if(ccwPoints.size()<3)
+            {
+                throw std::runtime_error("A polytope plane face must be composed of at least three points. Number of points: " + std::to_string(ccwPoints.size()));
+            }
+        #endif
 
-		ccwPoints.reserve(ccwPointIndices.size());
-		for(unsigned int ccwPointIndex : ccwPointIndices)
-		{
-			ccwPoints.push_back(points[ccwPointIndex]);
-		}
+        Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[2]);
+        Vector3<float> v2 = ccwPoints[1].vector(ccwPoints[0]);
+        normal = v1.crossProduct(v2).normalize();
 
-		Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[2]);
-		Vector3<float> v2 = ccwPoints[1].vector(ccwPoints[0]);
-		normal = v1.crossProduct(v2).normalize();
+        Vector3<float> upVector(0.0, 1.0, 0.0);
+        angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
 
-		Vector3<float> upVector(0.0, 1.0, 0.0);
-		angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
-
-		buildOutlineCwPoints();
-	}
+        buildOutlineCwPoints();
+    }
 
 	void PolytopePlaneSurface::buildOutlineCwPoints()
 	{

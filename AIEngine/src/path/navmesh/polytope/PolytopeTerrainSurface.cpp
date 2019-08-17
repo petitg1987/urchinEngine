@@ -1,21 +1,23 @@
+#include <utility>
+
 #include "PolytopeTerrainSurface.h"
 #include "path/navmesh/model/topography/NavTerrainTopography.h"
 
 namespace urchin
 {
 
-    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, const std::vector<Point3<float>> &localVertices, unsigned int xLength,
-                                                   unsigned int zLength, const std::vector<CSGPolygon<float>> &selfObstacles) :
+    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, std::vector<Point3<float>> localVertices, unsigned int xLength,
+                                                   unsigned int zLength, std::vector<CSGPolygon<float>> selfObstacles) :
             PolytopeSurface(),
             position(position),
-            localVertices(localVertices),
+            localVertices(std::move(localVertices)),
             xLength(xLength),
             zLength(zLength),
-            selfObstacles(selfObstacles)
+            selfObstacles(std::move(selfObstacles))
     {
         buildOutlineCwPoints();
 
-        heightfieldPointHelper = std::make_shared<HeightfieldPointHelper<float>>(localVertices, xLength);
+        heightfieldPointHelper = std::make_shared<HeightfieldPointHelper<float>>(this->localVertices, this->xLength);
     }
 
     void PolytopeTerrainSurface::buildOutlineCwPoints()
@@ -105,7 +107,7 @@ namespace urchin
         return position;
     }
 
-    const std::vector<Point3<float>> PolytopeTerrainSurface::getLocalVertices() const
+    const std::vector<Point3<float>> &PolytopeTerrainSurface::getLocalVertices() const
     {
         return localVertices;
     }

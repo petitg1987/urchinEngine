@@ -2,6 +2,7 @@
 #define URCHINENGINE_POLYTOPEPLANESURFACE_H
 
 #include <vector>
+#include <initializer_list>
 #include "UrchinCommon.h"
 
 #include "path/navmesh/polytope/PolytopeSurface.h"
@@ -12,7 +13,7 @@ namespace urchin
 	class PolytopePlaneSurface : public PolytopeSurface
 	{
 		public:
-			PolytopePlaneSurface(const std::vector<unsigned int> &, const std::vector<Point3<float>> &);
+            PolytopePlaneSurface(std::initializer_list<Point3<float>>);
 
 			bool isWalkable(float) const override;
 			Rectangle<float> computeXZRectangle() const override;

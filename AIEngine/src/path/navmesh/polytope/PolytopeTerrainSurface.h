@@ -12,7 +12,7 @@ namespace urchin
     class PolytopeTerrainSurface : public PolytopeSurface
     {
         public:
-            PolytopeTerrainSurface(const Point3<float> &, const std::vector<Point3<float>> &, unsigned int, unsigned int, const std::vector<CSGPolygon<float>> &);
+            PolytopeTerrainSurface(const Point3<float> &, std::vector<Point3<float>>, unsigned int, unsigned int, std::vector<CSGPolygon<float>>);
 
             bool isWalkable(float) const override;
             Rectangle<float> computeXZRectangle() const override;
@@ -24,7 +24,7 @@ namespace urchin
             NavTopography *newNavTopography() const override;
 
             const Point3<float> &getPosition() const;
-            const std::vector<Point3<float>> getLocalVertices() const;
+            const std::vector<Point3<float>> &getLocalVertices() const;
             unsigned int getXLength() const;
             unsigned int getZLength() const;
 

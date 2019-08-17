@@ -117,24 +117,17 @@ namespace urchin
 
         std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::instance()->resizeConvexHull(*convexHull, expandedPlanes);
 
-        std::vector<std::vector<unsigned int>> pointIndicesByFaces;
-        pointIndicesByFaces.reserve(expandedConvexHull->getIndexedTriangles().size());
+        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+        expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
         for(const auto &indexedTriangle : expandedConvexHull->getIndexedTriangles())
         {
             const unsigned int *indices = indexedTriangle.second.getIndices();
 
-            auto point0Index = static_cast<unsigned int>(std::distance(expandedConvexHull->getConvexHullPoints().begin(), expandedConvexHull->getConvexHullPoints().find(indices[0])));
-            auto point1Index = static_cast<unsigned int>(std::distance(expandedConvexHull->getConvexHullPoints().begin(), expandedConvexHull->getConvexHullPoints().find(indices[1])));
-            auto point2Index = static_cast<unsigned int>(std::distance(expandedConvexHull->getConvexHullPoints().begin(), expandedConvexHull->getConvexHullPoints().find(indices[2])));
-
-            pointIndicesByFaces.emplace_back(std::vector<unsigned int>({point0Index, point1Index, point2Index}));
-        }
-
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
-        expandedSurfaces.reserve(pointIndicesByFaces.size());
-        for(const auto &pointIndicesByFace : pointIndicesByFaces)
-        {
-            expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(pointIndicesByFace, expandedConvexHull->getPoints()));
+            expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>({
+                expandedConvexHull->getConvexHullPoints().find(indices[0])->second.point,
+                expandedConvexHull->getConvexHullPoints().find(indices[1])->second.point,
+                expandedConvexHull->getConvexHullPoints().find(indices[2])->second.point
+            })));
         }
 
         std::unique_ptr<Polytope> polytope = std::make_unique<Polytope>(name, expandedSurfaces);
@@ -253,12 +246,18 @@ namespace urchin
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(6);
 
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({0, 2, 3, 1}), expandedPoints)); //right
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({4, 5, 7, 6}), expandedPoints)); //left
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({0, 1, 5, 4}), expandedPoints)); //top
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({3, 2, 6, 7}), expandedPoints)); //bottom
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({0, 4, 6, 2}), expandedPoints)); //front
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::vector<unsigned int>({1, 3, 7, 5}), expandedPoints)); //back
+        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
+                {expandedPoints[0], expandedPoints[2], expandedPoints[3], expandedPoints[1]}))); //right
+        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
+                {expandedPoints[4], expandedPoints[5], expandedPoints[7], expandedPoints[6]}))); //left
+        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
+                {expandedPoints[0], expandedPoints[1], expandedPoints[5], expandedPoints[4]}))); //top
+        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
+                {expandedPoints[3], expandedPoints[2], expandedPoints[6], expandedPoints[7]}))); //bottom
+        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
+                {expandedPoints[0], expandedPoints[4], expandedPoints[6], expandedPoints[2]}))); //front
+        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
+                {expandedPoints[1], expandedPoints[3], expandedPoints[7], expandedPoints[5]}))); //back
 
         return expandedSurfaces;
     }
