@@ -9,15 +9,6 @@
 namespace urchin
 {
 
-    PointFace::PointFace(const Point3<float> &point, unsigned int faceIndex0, unsigned int faceIndex1, unsigned int faceIndex2) :
-        point(point),
-        faceIndex0(faceIndex0),
-        faceIndex1(faceIndex1),
-        faceIndex2(faceIndex2)
-    {
-
-    }
-
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject> &aiObject, const NavMeshAgent &agent)
     {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
@@ -161,7 +152,7 @@ namespace urchin
         std::vector<Point3<float>> expandedPoints = createExpandedPoints(&cylinderBox, agent);
 
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces = createExpandedPolytopeSurfaces(expandedPoints);
-        for(unsigned int i=0; i<expandedSurfaces.size(); ++i)
+        for(std::size_t i=0; i<expandedSurfaces.size(); ++i)
         {
             expandedSurfaces[i]->setWalkableCandidate(cylinder->getCylinderOrientation()==i/2);
         }
@@ -184,21 +175,8 @@ namespace urchin
     std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(OBBox<float> *box, const NavMeshAgent &navMeshAgent) const
     {
         std::vector<Point3<float>> points = box->getPoints();
-
-        std::vector<PointFace> pointFaces;
-        pointFaces.reserve(8);
-
-        pointFaces.emplace_back(PointFace(points[0], 0, 2, 4));
-        pointFaces.emplace_back(PointFace(points[1], 0, 2, 5));
-        pointFaces.emplace_back(PointFace(points[2], 0, 3, 4));
-        pointFaces.emplace_back(PointFace(points[3], 0, 3, 5));
-        pointFaces.emplace_back(PointFace(points[4], 1, 2, 4));
-        pointFaces.emplace_back(PointFace(points[5], 1, 2, 5));
-        pointFaces.emplace_back(PointFace(points[6], 1, 3, 4));
-        pointFaces.emplace_back(PointFace(points[7], 1, 3, 5));
-
-        std::vector<Plane<float>> expandedPlanes = createExpandedBoxPlanes(points, navMeshAgent);
-        return expandBoxPoints(pointFaces, expandedPlanes);
+        std::vector<Plane<float>> sortedExpandedPlanes = createExpandedBoxPlanes(points, navMeshAgent);
+        return expandBoxPoints(sortedExpandedPlanes);
     }
 
     /**
@@ -230,16 +208,26 @@ namespace urchin
         return plane;
     }
 
-    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<PointFace> &pointFaces, const std::vector<Plane<float>> &expandedPlanes) const
+    std::vector<Point3<float>> PolytopeBuilder::expandBoxPoints(const std::vector<Plane<float>> &sortedExpandedPlanes) const
     {
         std::vector<Point3<float>> expandedPoints;
-        expandedPoints.reserve(pointFaces.size());
+        expandedPoints.reserve(8);
 
-        for(auto &pointFace : pointFaces)
+        const unsigned int pointsByFace[8][3] = {
+                {0, 2, 4}, //NTR
+                {0, 2, 5}, //FTR
+                {0, 3, 4}, //NBR
+                {0, 3, 5}, //FBR
+                {1, 2, 4}, //NTL
+                {1, 2, 5}, //FTL
+                {1, 3, 4}, //NBL
+                {1, 3, 5}}; //FBL
+
+        for(auto pointIndex : pointsByFace)
         {
-            const Plane<float> &plane0 = expandedPlanes[pointFace.faceIndex0];
-            const Plane<float> &plane1 = expandedPlanes[pointFace.faceIndex1];
-            const Plane<float> &plane2 = expandedPlanes[pointFace.faceIndex2];
+            const Plane<float> &plane0 = sortedExpandedPlanes[pointIndex[0]];
+            const Plane<float> &plane1 = sortedExpandedPlanes[pointIndex[1]];
+            const Plane<float> &plane2 = sortedExpandedPlanes[pointIndex[2]];
 
             Vector3<float> n1CrossN2 = plane0.getNormal().crossProduct(plane1.getNormal());
             Vector3<float> n2CrossN3 = plane1.getNormal().crossProduct(plane2.getNormal());

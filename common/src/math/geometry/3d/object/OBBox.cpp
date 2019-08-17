@@ -46,7 +46,7 @@ namespace urchin
 		axis[2] = Vector3<T>(0.0, 0.0, 1.0);
 	}
 
-	template<class T> const T OBBox<T>::getHalfSize(unsigned int index) const
+	template<class T> T OBBox<T>::getHalfSize(unsigned int index) const
 	{
 		return boxShape.getHalfSize(index);
 	}
@@ -56,7 +56,7 @@ namespace urchin
 		return boxShape.getHalfSizes();
 	}
 
-	template<class T> const T OBBox<T>::getMaxHalfSize() const
+	template<class T> T OBBox<T>::getMaxHalfSize() const
 	{
 		return boxShape.getMaxHalfSize();
 	}
@@ -66,7 +66,7 @@ namespace urchin
 		return boxShape.getMaxHalfSizeIndex();
 	}
 
-	template<class T> const T OBBox<T>::getMinHalfSize() const
+	template<class T> T OBBox<T>::getMinHalfSize() const
 	{
 		return boxShape.getMinHalfSize();
 	}
@@ -94,10 +94,26 @@ namespace urchin
 		return axis[index];
 	}
 
+    /**
+     * Points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
+     */
+    template<class T> std::vector<Point3<T>> OBBox<T>::getPoints() const
+    {
+        std::vector<Point3<T>> points;
+        points.reserve(8);
+
+        for(unsigned int i=0; i<8; ++i)
+        {
+            points.push_back(getPoint(i));
+        }
+
+        return points;
+    }
+
 	/**
 	 * Points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
 	 */
-	template<class T> const Point3<T> OBBox<T>::getPoint(unsigned int index) const
+	template<class T> Point3<T> OBBox<T>::getPoint(unsigned int index) const
 	{
 		switch(index)
 		{
@@ -122,22 +138,6 @@ namespace urchin
 		}
 
 		throw std::invalid_argument("Invalid index: " + std::to_string(index));
-	}
-
-	/**
-	 * Points of OBBox sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
-	 */
-	template<class T> const std::vector<Point3<T>> OBBox<T>::getPoints() const
-	{
-		std::vector<Point3<T>> points;
-		points.reserve(8);
-
-		for(unsigned int i=0; i<8; ++i)
-		{
-			points.push_back(getPoint(i));
-		}
-
-		return points;
 	}
 
 	template<class T> Point3<T> OBBox<T>::getSupportPoint(const Vector3<T> &direction) const

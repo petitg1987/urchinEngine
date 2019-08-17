@@ -27,17 +27,17 @@ namespace urchin
 			explicit OBBox(const AABBox<T> &);
 			explicit OBBox(const Sphere<T> &);
 
-			const T getHalfSize(unsigned int) const;
+			T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;
-			const T getMaxHalfSize() const;
+			T getMaxHalfSize() const;
 			unsigned int getMaxHalfSizeIndex() const;
-			const T getMinHalfSize() const;
+			T getMinHalfSize() const;
 			unsigned int getMinHalfSizeIndex() const;
 			const Point3<T> &getCenterOfMass() const;
 			const Vector3<T> &getAxis(unsigned int) const;
 			const Quaternion<T> &getOrientation() const;
-			const std::vector<Point3<T>> getPoints() const;
-			const Point3<T> getPoint(unsigned int) const;
+			std::vector<Point3<T>> getPoints() const;
+			Point3<T> getPoint(unsigned int) const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
 			AABBox<T> toAABBox() const;

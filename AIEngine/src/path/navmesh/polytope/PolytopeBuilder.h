@@ -15,14 +15,6 @@
 namespace urchin
 {
 
-    struct PointFace
-    {
-        PointFace(const Point3<float> &, unsigned int, unsigned int, unsigned int);
-
-        Point3<float> point;
-        unsigned int faceIndex0, faceIndex1, faceIndex2;
-    };
-
     class PolytopeBuilder : public Singleton<PolytopeBuilder>
     {
         public:
@@ -42,7 +34,7 @@ namespace urchin
             std::vector<Point3<float>> createExpandedPoints(OBBox<float> *, const NavMeshAgent &) const;
             std::vector<Plane<float>> createExpandedBoxPlanes(const std::vector<Point3<float>> &, const NavMeshAgent &) const;
             Plane<float> createExpandedPlane(const Point3<float> &, const Point3<float> &, const Point3<float> &, const NavMeshAgent &) const;
-            std::vector<Point3<float>> expandBoxPoints(const std::vector<PointFace> &, const std::vector<Plane<float>> &) const;
+            std::vector<Point3<float>> expandBoxPoints(const std::vector<Plane<float>> &) const;
 
             std::vector<std::unique_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &) const;
     };
