@@ -34,9 +34,10 @@ namespace urchin
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygon.removeAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold")),
 			navMeshConfig(std::make_shared<NavMeshConfig>(NavMeshAgent())),
-			navMesh(std::make_shared<NavMesh>())
+			navMesh(std::make_shared<NavMesh>()),
+			needFullRefresh(false)
     {
-		needFullRefresh.store(false, std::memory_order_relaxed);
+
 	}
 
 	void NavMeshGenerator::setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
@@ -254,7 +255,7 @@ namespace urchin
 		{
             if(auto *polytopePlaneSurface = dynamic_cast<PolytopePlaneSurface *>(polytopeSurface.get()))
             {
-                for (unsigned int i = 0, previousI = polytopePlaneSurface->getCcwPoints().size() - 1; i < polytopePlaneSurface->getCcwPoints().size(); previousI = i++)
+                for (std::size_t i = 0, previousI = polytopePlaneSurface->getCcwPoints().size() - 1; i < polytopePlaneSurface->getCcwPoints().size(); previousI = i++)
                 {
                     float distance1 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[previousI]);
                     float distance2 = walkablePlane.distance(polytopePlaneSurface->getCcwPoints()[i]);

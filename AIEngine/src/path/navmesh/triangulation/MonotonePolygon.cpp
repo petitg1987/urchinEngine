@@ -31,7 +31,7 @@ namespace urchin
     uint_fast64_t MonotonePolygon::computeEdgeId(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
     {
         auto edgeId = static_cast<uint_fast64_t>(std::min(edgeStartIndex, edgeEndIndex));
-        edgeId = edgeId << 32;
+        edgeId = edgeId << 32u;
         return edgeId + std::max(edgeStartIndex, edgeEndIndex);
     }
 

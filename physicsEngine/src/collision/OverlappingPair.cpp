@@ -59,7 +59,7 @@ namespace urchin
 		}
 
 		uint_fast64_t key = body1->getObjectId();
-		key = key << 32;
+		key = key << 32u;
 		key += body2->getObjectId();
 
 		return key;
