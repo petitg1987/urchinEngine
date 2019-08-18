@@ -24,6 +24,9 @@ namespace urchin
             std::unique_ptr<Polytope> buildExpandedPolytope(const std::shared_ptr<AITerrain> &, const std::shared_ptr<NavMeshConfig> &);
 
         private:
+            static const unsigned int POINT_INDEX_TO_PLANES[][4];
+            static const unsigned int PLANE_INDEX_TO_POINTS[][3];
+
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, OBBox<float> *, const NavMeshAgent &) const;
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Capsule<float> *, const NavMeshAgent &) const;
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Cone<float> *, const NavMeshAgent &) const;

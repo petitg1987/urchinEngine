@@ -9,6 +9,26 @@
 namespace urchin
 {
 
+    //static
+    const unsigned int PolytopeBuilder::POINT_INDEX_TO_PLANES[6][4] = {
+            {0, 2, 3, 1}, //right
+            {4, 5, 7, 6}, //left
+            {0, 1, 5, 4}, //top
+            {3, 2, 6, 7}, //bottom
+            {0, 4, 6, 2}, //front
+            {1, 3, 7, 5} //back
+    };
+    const unsigned int PolytopeBuilder::PLANE_INDEX_TO_POINTS[8][3] = {
+            {0, 2, 4}, //NTR
+            {0, 2, 5}, //FTR
+            {0, 3, 4}, //NBR
+            {0, 3, 5}, //FBR
+            {1, 2, 4}, //NTL
+            {1, 2, 5}, //FTL
+            {1, 3, 4}, //NBL
+            {1, 3, 5} //FBL
+    };
+
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject> &aiObject, const NavMeshAgent &agent)
     {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
@@ -163,30 +183,29 @@ namespace urchin
     }
 
     /**
-     * Return box points. This method suppose that faces index (0 to 5) are in the following order: right, left, top, bottom, front, back.
+     * Return box points. Points are in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
     std::vector<Point3<float>> PolytopeBuilder::createExpandedPoints(OBBox<float> *box, const NavMeshAgent &navMeshAgent) const
     {
-        std::vector<Point3<float>> points = box->getPoints();
-        std::vector<Plane<float>> sortedExpandedPlanes = createExpandedBoxPlanes(points, navMeshAgent);
+        std::vector<Point3<float>> sortedPoints = box->getPoints();
+        std::vector<Plane<float>> sortedExpandedPlanes = createExpandedBoxPlanes(sortedPoints, navMeshAgent);
         return expandBoxPoints(sortedExpandedPlanes);
     }
 
     /**
-     * Returns expanded planes. Planes are guaranteed to be in the following order: right, left, top, bottom, front, back
-     * @param points Points are sorted first on positive X axis, then on positive Y axis and then on positive Z axis
+     * Returns expanded planes.
+     * @param sortedPoints Points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
+     * @return Expanded planes in the following order: right, left, top, bottom, front, back
      */
-    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>> &points, const NavMeshAgent &navMeshAgent) const
+    std::vector<Plane<float>> PolytopeBuilder::createExpandedBoxPlanes(const std::vector<Point3<float>> &sortedPoints, const NavMeshAgent &navMeshAgent) const
     {
         std::vector<Plane<float>> expandedPlanes;
         expandedPlanes.reserve(6);
 
-        expandedPlanes.emplace_back(createExpandedPlane(points[0], points[2], points[3], navMeshAgent));
-        expandedPlanes.emplace_back(createExpandedPlane(points[4], points[5], points[7], navMeshAgent));
-        expandedPlanes.emplace_back(createExpandedPlane(points[0], points[1], points[5], navMeshAgent));
-        expandedPlanes.emplace_back(createExpandedPlane(points[3], points[2], points[6], navMeshAgent));
-        expandedPlanes.emplace_back(createExpandedPlane(points[0], points[4], points[6], navMeshAgent));
-        expandedPlanes.emplace_back(createExpandedPlane(points[1], points[3], points[7], navMeshAgent));
+        for(auto pointIndex : POINT_INDEX_TO_PLANES)
+        {
+            expandedPlanes.emplace_back(createExpandedPlane(sortedPoints[pointIndex[0]], sortedPoints[pointIndex[1]], sortedPoints[pointIndex[2]], navMeshAgent));
+        }
 
         return expandedPlanes;
     }
@@ -206,21 +225,11 @@ namespace urchin
         std::vector<Point3<float>> expandedPoints;
         expandedPoints.reserve(8);
 
-        const unsigned int pointsByFace[8][3] = {
-                {0, 2, 4}, //NTR
-                {0, 2, 5}, //FTR
-                {0, 3, 4}, //NBR
-                {0, 3, 5}, //FBR
-                {1, 2, 4}, //NTL
-                {1, 2, 5}, //FTL
-                {1, 3, 4}, //NBL
-                {1, 3, 5}}; //FBL
-
-        for(auto pointIndex : pointsByFace)
+        for(auto planeIndex : PLANE_INDEX_TO_POINTS)
         {
-            const Plane<float> &plane0 = sortedExpandedPlanes[pointIndex[0]];
-            const Plane<float> &plane1 = sortedExpandedPlanes[pointIndex[1]];
-            const Plane<float> &plane2 = sortedExpandedPlanes[pointIndex[2]];
+            const Plane<float> &plane0 = sortedExpandedPlanes[planeIndex[0]];
+            const Plane<float> &plane1 = sortedExpandedPlanes[planeIndex[1]];
+            const Plane<float> &plane2 = sortedExpandedPlanes[planeIndex[2]];
 
             Vector3<float> n1CrossN2 = plane0.getNormal().crossProduct(plane1.getNormal());
             Vector3<float> n2CrossN3 = plane1.getNormal().crossProduct(plane2.getNormal());
@@ -238,26 +247,23 @@ namespace urchin
     }
 
     /**
-     * Return expanded box surfaces. Surfaces are guaranteed to be in the following order: right, left, top, bottom, front, back when
-     * points are sorted first on positive X axis, then on positive Y axis and then on positive Z axis.
+     * Return expanded box surfaces. Surfaces are guaranteed to be in the following order: right, left, top, bottom, front, back
+     * @param expandedPoints Points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
     std::vector<std::unique_ptr<PolytopeSurface>> PolytopeBuilder::createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &expandedPoints) const
     {
         std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(6);
 
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
-                {expandedPoints[0], expandedPoints[2], expandedPoints[3], expandedPoints[1]}))); //right
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
-                {expandedPoints[4], expandedPoints[5], expandedPoints[7], expandedPoints[6]}))); //left
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
-                {expandedPoints[0], expandedPoints[1], expandedPoints[5], expandedPoints[4]}))); //top
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
-                {expandedPoints[3], expandedPoints[2], expandedPoints[6], expandedPoints[7]}))); //bottom
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
-                {expandedPoints[0], expandedPoints[4], expandedPoints[6], expandedPoints[2]}))); //front
-        expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>(
-                {expandedPoints[1], expandedPoints[3], expandedPoints[7], expandedPoints[5]}))); //back
+        for(auto pointIndex : POINT_INDEX_TO_PLANES)
+        {
+            expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::initializer_list<Point3<float>>({
+                expandedPoints[pointIndex[0]],
+                expandedPoints[pointIndex[1]],
+                expandedPoints[pointIndex[2]],
+                expandedPoints[pointIndex[3]]
+            })));
+        }
 
         return expandedSurfaces;
     }
