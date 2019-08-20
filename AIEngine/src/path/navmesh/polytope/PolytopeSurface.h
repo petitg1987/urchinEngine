@@ -19,7 +19,7 @@ namespace urchin
             void setWalkableCandidate(bool);
             bool isWalkableCandidate() const;
 
-            virtual bool isWalkable(float maxSlopeInRadian) const = 0;
+            virtual bool isWalkable() const = 0;
             virtual Rectangle<float> computeXZRectangle() const = 0;
 
             virtual const std::vector<Point2<float>> &getOutlineCwPoints() const = 0;

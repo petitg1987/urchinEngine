@@ -13,9 +13,10 @@ namespace urchin
 	class PolytopePlaneSurface : public PolytopeSurface
 	{
 		public:
-            PolytopePlaneSurface(std::initializer_list<Point3<float>>);
+            PolytopePlaneSurface(std::vector<Point3<float>>, bool);
+            PolytopePlaneSurface(std::vector<Point3<float>>, const Vector3<float> &, bool);
 
-			bool isWalkable(float) const override;
+			bool isWalkable() const override;
 			Rectangle<float> computeXZRectangle() const override;
 
 			const std::vector<Point2<float>> &getOutlineCwPoints() const override;
@@ -26,14 +27,13 @@ namespace urchin
 
 			const std::vector<Point3<float>> &getCcwPoints() const;
 			const Vector3<float> &getNormal() const;
-			float getAngleToHorizontal() const;
 
 		private:
 			void buildOutlineCwPoints();
 
 			std::vector<Point3<float>> ccwPoints;
 			Vector3<float> normal;
-			float angleToHorizontalInRadian;
+			bool isSlopeWalkable;
 
 			std::vector<Point2<float>> outlineCwPoints;
 			std::vector<CSGPolygon<float>> selfObstacles;

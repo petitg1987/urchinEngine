@@ -44,8 +44,7 @@
 
 # AI engine
 - Navigation mesh
-    - **BUG** (`major`): Walkable surface shouldn't be expanded
-    - **OPTIMIZATION** (`major`): Use AABBTree/Octree for NavMeshGenerator#expandedPolytopes to find more quickly obstacles and jump links
+    - **OPTIMIZATION** (`medium`): Use AABBTree/Octree for NavMeshGenerator#expandedPolytopes to find more quickly obstacles and jump links
 	- **NEW FEATURE** (`major`): Create jump links in navigation mesh
 	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh only squares 
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon

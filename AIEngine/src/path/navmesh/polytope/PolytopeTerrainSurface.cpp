@@ -37,7 +37,7 @@ namespace urchin
         outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
     }
 
-    bool PolytopeTerrainSurface::isWalkable(float) const
+    bool PolytopeTerrainSurface::isWalkable() const
     {
         return isWalkableCandidate();
     }

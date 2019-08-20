@@ -60,7 +60,7 @@ namespace urchin
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
-        determineWalkableSurfaces();
+        determineWalkableSurfaces(); //TODO should maintain and returned by updateExpandedPolytopes ?
 
         allNavPolygons.clear();
         for (const auto &polytopeWalkableSurface : walkableSurfaces)
@@ -93,7 +93,7 @@ namespace urchin
                 if(aiEntity->getType()==AIEntity::OBJECT)
                 {
                     auto aiObject = std::dynamic_pointer_cast<AIObject>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, navMeshConfig->getAgent());
+                    std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, navMeshConfig);
                     for (auto &objectExpandedPolytope : objectExpandedPolytopes)
                     {
                         expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiObject, std::move(objectExpandedPolytope)));
@@ -123,9 +123,7 @@ namespace urchin
 			{
 				for(unsigned int surfaceIndex=0; surfaceIndex<expandedPolytope->getSurfaces().size(); ++surfaceIndex)
 				{
-					const std::unique_ptr<PolytopeSurface> &surface = expandedPolytope->getSurface(surfaceIndex);
-
-					if(surface->isWalkable(navMeshConfig->getMaxSlope()))
+					if(expandedPolytope->getSurface(surfaceIndex)->isWalkable())
 					{
                         walkableSurfaces.emplace_back(PolytopeSurfaceIndex(itPolytope, surfaceIndex));
 					}

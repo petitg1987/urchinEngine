@@ -14,7 +14,7 @@ namespace urchin
         public:
             PolytopeTerrainSurface(const Point3<float> &, std::vector<Point3<float>>, unsigned int, unsigned int, std::vector<CSGPolygon<float>>);
 
-            bool isWalkable(float) const override;
+            bool isWalkable() const override;
             Rectangle<float> computeXZRectangle() const override;
 
             const std::vector<Point2<float>> &getOutlineCwPoints() const override;

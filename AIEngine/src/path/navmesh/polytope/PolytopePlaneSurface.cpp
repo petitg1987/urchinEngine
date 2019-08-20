@@ -1,6 +1,5 @@
-#include <stdexcept>
 #include <algorithm>
-#include <cmath>
+#include <utility>
 
 #include "PolytopePlaneSurface.h"
 #include "path/navmesh/model/topography/NavFlatTopography.h"
@@ -11,23 +10,25 @@ namespace urchin
     /**
      * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
      */
-    PolytopePlaneSurface::PolytopePlaneSurface(std::initializer_list<Point3<float>> ccwPointsList) :
-        ccwPoints(ccwPointsList)
+    PolytopePlaneSurface::PolytopePlaneSurface(std::vector<Point3<float>> ccwPoints, bool isSlopeWalkable) :
+        ccwPoints(std::move(ccwPoints)),
+        isSlopeWalkable(isSlopeWalkable)
     {
-        #ifdef _DEBUG
-            if(ccwPoints.size()<3)
-            {
-                throw std::runtime_error("A polytope plane face must be composed of at least three points. Number of points: " + std::to_string(ccwPoints.size()));
-            }
-        #endif
-
-        Vector3<float> v1 = ccwPoints[0].vector(ccwPoints[2]);
-        Vector3<float> v2 = ccwPoints[1].vector(ccwPoints[0]);
+        Vector3<float> v1 = this->ccwPoints[0].vector(this->ccwPoints[2]);
+        Vector3<float> v2 = this->ccwPoints[1].vector(this->ccwPoints[0]);
         normal = v1.crossProduct(v2).normalize();
 
-        Vector3<float> upVector(0.0, 1.0, 0.0);
-        angleToHorizontalInRadian = std::acos(normal.dotProduct(upVector));
+        buildOutlineCwPoints();
+    }
 
+    /**
+     * @param ccwPoints Points of the plane which must be coplanar and counter clockwise oriented
+     */
+    PolytopePlaneSurface::PolytopePlaneSurface(std::vector<Point3<float>> ccwPoints, const Vector3<float> &normal, bool isSlopeWalkable) :
+            ccwPoints(std::move(ccwPoints)),
+            normal(normal),
+            isSlopeWalkable(isSlopeWalkable)
+    {
         buildOutlineCwPoints();
     }
 
@@ -41,9 +42,9 @@ namespace urchin
 		}
 	}
 
-	bool PolytopePlaneSurface::isWalkable(float maxSlopeInRadian) const
+	bool PolytopePlaneSurface::isWalkable() const
 	{
-		return isWalkableCandidate() && std::fabs(getAngleToHorizontal()) < maxSlopeInRadian;
+		return isWalkableCandidate() && isSlopeWalkable;
 	}
 
 	Rectangle<float> PolytopePlaneSurface::computeXZRectangle() const
@@ -81,10 +82,10 @@ namespace urchin
  	 */
 	Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const NavMeshAgent &agent) const
 	{
-		Point3<float> point3D(point.X, 0.0, -point.Y);
-		float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
-		float t = shortestFaceDistance / normal.Y;
-		Point3<float> pointOnExpandedSurface = point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
+        Point3<float> point3D(point.X, 0.0, -point.Y);
+        float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
+        float t = shortestFaceDistance / normal.Y;
+        Point3<float> pointOnExpandedSurface = point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
 
         float reduceDistance = - agent.computeExpandDistance(normal);
         return pointOnExpandedSurface.translate(normal * reduceDistance);
@@ -105,8 +106,4 @@ namespace urchin
 		return normal;
 	}
 
-	float PolytopePlaneSurface::getAngleToHorizontal() const
-	{
-		return angleToHorizontalInRadian;
-	}
 }

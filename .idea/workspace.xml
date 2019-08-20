@@ -24,12 +24,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Review doc">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Fix warning bitwise operator">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/MonotonePolygon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/MonotonePolygon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/OverlappingPair.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/OverlappingPair.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -200,23 +205,24 @@
     <property name="SearchEverywhereHistoryKey" value="push&#9;ACTION&#9;Vcs.Push&#10;plugin&#9;ACTION&#9;WelcomeScreen.Plugins" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.buildTools.gulp.gulp_package_dir" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../testEngineSfml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="settings.editor.selected.configurable" value="debugger.dataViews" />
     <property name="vcs.patch.path" value="$USER_HOME$" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/unitTest/resources/ai/path" />
-      <recent name="$PROJECT_DIR$/3dEngine/resources/shaders" />
-      <recent name="$PROJECT_DIR$/common/src/libs/clipper" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/common/src/libs" />
       <recent name="$PROJECT_DIR$/unitTest/src/ai/path/navmesh" />
       <recent name="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/ref" />
       <recent name="$PROJECT_DIR$/unitTest/resources/ai/path" />
       <recent name="$PROJECT_DIR$/unitTest/resources/ai/path/csg" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc" />
+      <recent name="$PROJECT_DIR$/unitTest/resources/ai/path" />
+      <recent name="$PROJECT_DIR$/3dEngine/resources/shaders" />
+      <recent name="$PROJECT_DIR$/common/src/libs/clipper" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -918,7 +924,15 @@
       <workItem from="1565198071022" duration="401000" />
       <workItem from="1565627118178" duration="1250000" />
       <workItem from="1565966937800" duration="1798000" />
-      <workItem from="1566020616338" duration="5495000" />
+      <workItem from="1566020616338" duration="8160000" />
+      <workItem from="1566046626921" duration="6008000" />
+      <workItem from="1566066775019" duration="6297000" />
+      <workItem from="1566126191216" duration="4911000" />
+      <workItem from="1566152362359" duration="4344000" />
+      <workItem from="1566225132947" duration="8123000" />
+      <workItem from="1566320994342" duration="153000" />
+      <workItem from="1566324470348" duration="3850000" />
+      <workItem from="1566328329319" duration="642000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1109,7 +1123,42 @@
       <option name="project" value="LOCAL" />
       <updated>1565029497901</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Fix warning bitwise operator">
+      <created>1566026170692</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1566026170692</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Simplify polytope creation">
+      <created>1566056030904</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1566056030904</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Simplify polytope plane surface construction">
+      <created>1566072950544</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1566072950544</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Add doc for nav mesh">
+      <created>1566134889867</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1566134889867</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Use constants for polytope builder">
+      <created>1566156690514</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1566156690514</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1163,8 +1212,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="Fix heightfield point helper" />
-    <MESSAGE value="Review terrain origin center" />
     <MESSAGE value="Heightfield point helper: find path" />
     <MESSAGE value="AI: replace NavTriangleRef by NavTriangle" />
     <MESSAGE value="AI: add NavTopography class" />
@@ -1185,22 +1232,15 @@
     <MESSAGE value="Add workspace file" />
     <MESSAGE value="AI: rename methods" />
     <MESSAGE value="Review doc" />
-    <option name="LAST_COMMIT_MESSAGE" value="Review doc" />
+    <MESSAGE value="Fix warning bitwise operator" />
+    <MESSAGE value="Simplify polytope creation" />
+    <MESSAGE value="Simplify polytope plane surface construction" />
+    <MESSAGE value="Add doc for nav mesh" />
+    <MESSAGE value="Use constants for polytope builder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use constants for polytope builder" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/unitTest/src/ai/path/navmesh/NavMeshGeneratorTest.cpp</url>
-          <line>21</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIController.cpp</url>
-          <line>23</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -1214,59 +1254,5 @@
         <watch expression="mLineEquationXY * currentXValue + bLineEquationXY" language="ObjectiveC" />
       </configuration>
     </watches-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="watch">
-      <expression>
-        <expression-string>mLineEquationXY * currentXValue + bLineEquationXY</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices[155000+xLength/2].Y</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices[155000+xLength].Y</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices[155000].Y</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices[150000].Y</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices.size()</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices[20000].Y</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>vertices[2000].Y</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ccw(other.getA(), other.getB(), b)</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ccw(other.getA(), other.getB(), a)</expression-string>
-        <language-id>ObjectiveC</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
 </project>
