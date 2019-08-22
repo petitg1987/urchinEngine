@@ -60,12 +60,12 @@ namespace urchin
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
-        determineWalkableSurfaces(); //TODO should maintain and returned by updateExpandedPolytopes ?
+        determineWalkableSurfaces(); //TODO should maintain and returned by updateExpandedPolytopes ? + update doc
 
         allNavPolygons.clear();
         for (const auto &polytopeWalkableSurface : walkableSurfaces)
         {
-            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygon(polytopeWalkableSurface);
+            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygons(polytopeWalkableSurface);
             allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
         }
 
@@ -121,7 +121,7 @@ namespace urchin
 			const std::unique_ptr<Polytope> &expandedPolytope = itPolytope->second;
 			if(expandedPolytope->isWalkableCandidate())
 			{
-				for(unsigned int surfaceIndex=0; surfaceIndex<expandedPolytope->getSurfaces().size(); ++surfaceIndex)
+				for(std::size_t surfaceIndex=0; surfaceIndex<expandedPolytope->getSurfaces().size(); ++surfaceIndex)
 				{
 					if(expandedPolytope->getSurface(surfaceIndex)->isWalkable())
 					{
@@ -132,14 +132,12 @@ namespace urchin
 		}
 	}
 
-	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygon(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
+	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const PolytopeSurfaceIndex &polytopeWalkableSurface) const
 	{
-		ScopeProfiler scopeProfiler("ai", "creatNavPolygon");
+		ScopeProfiler scopeProfiler("ai", "createNavPolys");
 
 		const std::unique_ptr<Polytope> &polytope = polytopeWalkableSurface.polytopeRef->second;
 		const std::unique_ptr<PolytopeSurface> &walkableFace = polytope->getSurface(polytopeWalkableSurface.faceIndex);
-
-		std::vector<CSGPolygon<float>> &obstaclePolygons = determineObstacles(polytopeWalkableSurface);
 
         walkablePolygons.clear();
         remainingObstaclePolygons.clear();
@@ -147,36 +145,8 @@ namespace urchin
         std::string walkableName = polytope->getName() + "[" + std::to_string(polytopeWalkableSurface.faceIndex) + "]";
         walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints()));
 
-		for(auto &obstaclePolygon : obstaclePolygons)
-		{
-            obstaclePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
-            if (obstaclePolygon.getCwPoints().size() > 2)
-            {
-                auto walkablePolygonsCounter = static_cast<int>(walkablePolygons.size());
-                while (walkablePolygonsCounter-- != 0)
-                {
-                    const CSGPolygon<float> &walkablePolygon = walkablePolygons[0];
-
-                    bool obstacleInsideWalkable;
-                    const std::vector<CSGPolygon<float>> &subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
-                            walkablePolygon, obstaclePolygon, obstacleInsideWalkable);
-
-                    //replace 'walkablePolygon' by 'subtractedPolygons'
-                    walkablePolygons.erase(walkablePolygons.begin());
-                    for (auto &subtractedPolygon : subtractedPolygons)
-                    {
-                        walkablePolygons.emplace_back(subtractedPolygon);
-                    }
-
-                    if (obstacleInsideWalkable)
-                    {
-                        //slightly reduce to avoid obstacle points touch others obstacles points (not supported by triangulation)
-						obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
-                        remainingObstaclePolygons.emplace_back(obstaclePolygon);
-                    }
-                }
-            }
-		}
+        std::vector<CSGPolygon<float>> &obstaclePolygons = determineObstacles(polytopeWalkableSurface);
+        subtractObstaclesOnOutline(obstaclePolygons);
 
 		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
 		navPolygons.reserve(walkablePolygons.size());
@@ -186,28 +156,7 @@ namespace urchin
 			walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
             if(walkablePolygon.getCwPoints().size() > 2)
             {
-                //slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
-				walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
-				std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
-
-				navPolygonName = "<" + walkablePolygon.getName() + ">";
-				std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
-				TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName(), TriangulationAlgorithm::CCW);
-
-                for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
-                {
-                    if(walkablePolygon.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
-                    { //obstacle fully inside walkable polygon
-                        triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints(), remainingObstaclePolygon.getName());
-						navPolygonName += " - <" + remainingObstaclePolygon.getName() + ">";
-                    }
-                }
-
-                std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
-                NavTopography *navTopography = walkableFace->newNavTopography();
-
-				std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(points), navTopography);
-				navPolygon->addTriangles(triangulation.triangulate(), navPolygon);
+                std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygon(walkablePolygon, walkableFace);
                 navPolygons.push_back(navPolygon);
             }
 		}
@@ -275,6 +224,72 @@ namespace urchin
 		std::reverse(cwPoints.begin(), cwPoints.end());
 		return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
 	}
+
+	void NavMeshGenerator::subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &obstaclePolygons) const
+    {
+        ScopeProfiler scopeProfiler("ai", "subObstacles");
+
+        for(auto &obstaclePolygon : obstaclePolygons)
+        {
+            obstaclePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
+            if (obstaclePolygon.getCwPoints().size() > 2)
+            {
+                auto walkablePolygonsCounter = static_cast<int>(walkablePolygons.size());
+                while (walkablePolygonsCounter-- != 0)
+                {
+                    const CSGPolygon<float> &walkablePolygon = walkablePolygons[0];
+
+                    bool obstacleInsideWalkable;
+                    const std::vector<CSGPolygon<float>> &subtractedPolygons = PolygonsSubtraction<float>::instance()->subtractPolygons(
+                            walkablePolygon, obstaclePolygon, obstacleInsideWalkable);
+
+                    //replace 'walkablePolygon' by 'subtractedPolygons'
+                    walkablePolygons.erase(walkablePolygons.begin());
+                    for (auto &subtractedPolygon : subtractedPolygons)
+                    {
+                        walkablePolygons.emplace_back(subtractedPolygon);
+                    }
+
+                    if (obstacleInsideWalkable)
+                    {
+                        //slightly reduce to avoid obstacle points touch others obstacles points (not supported by triangulation)
+                        obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
+                        remainingObstaclePolygons.emplace_back(obstaclePolygon);
+                    }
+                }
+            }
+        }
+    }
+
+    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float> &walkablePolygon, const std::unique_ptr<PolytopeSurface> &walkableFace) const
+    {
+        ScopeProfiler scopeProfiler("ai", "createNavPoly");
+
+        //slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
+        walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
+        std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
+
+        navPolygonName = "<" + walkablePolygon.getName() + ">";
+        std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
+        TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName(), TriangulationAlgorithm::CCW);
+
+        for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
+        {
+            if(walkablePolygon.pointInsideOrOnPolygon(remainingObstaclePolygon.getCwPoints()[0]))
+            { //obstacle fully inside walkable polygon
+                triangulation.addHolePoints(remainingObstaclePolygon.getCwPoints(), remainingObstaclePolygon.getName());
+                navPolygonName += " - <" + remainingObstaclePolygon.getName() + ">";
+            }
+        }
+
+        std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
+        NavTopography *navTopography = walkableFace->newNavTopography();
+
+        std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(points), navTopography);
+        navPolygon->addTriangles(triangulation.triangulate(), navPolygon);
+
+        return std::move(navPolygon);
+    }
 
 	std::vector<Point3<float>> NavMeshGenerator::elevateTriangulatedPoints(const TriangulationAlgorithm &triangulation, const std::unique_ptr<PolytopeSurface> &walkableSurface) const
 	{
