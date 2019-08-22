@@ -125,17 +125,17 @@ namespace urchin
         walkableSurfaces.erase(aiEntity);
     }
 
-	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<PolytopeSurface> &walkableFace) const
+	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		ScopeProfiler scopeProfiler("ai", "createNavPolys");
 
         walkablePolygons.clear();
         remainingObstaclePolygons.clear();
 
-        std::string walkableName = walkableFace->getPolytope()->getName() + "[" + std::to_string(walkableFace->getSurfacePosition()) + "]";
-        walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableFace->getOutlineCwPoints()));
+        std::string walkableName = walkableSurface->getPolytope()->getName() + "[" + std::to_string(walkableSurface->getSurfacePosition()) + "]";
+        walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableSurface->getOutlineCwPoints()));
 
-        std::vector<CSGPolygon<float>> &obstaclePolygons = determineObstacles(walkableFace);
+        std::vector<CSGPolygon<float>> &obstaclePolygons = determineObstacles(walkableSurface);
         subtractObstaclesOnOutline(obstaclePolygons);
 
 		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
@@ -146,7 +146,7 @@ namespace urchin
 			walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
             if(walkablePolygon.getCwPoints().size() > 2)
             {
-                std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygon(walkablePolygon, walkableFace);
+                std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygon(walkablePolygon, walkableSurface);
                 navPolygons.push_back(navPolygon);
             }
 		}
@@ -249,7 +249,7 @@ namespace urchin
         }
     }
 
-    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float> &walkablePolygon, const std::shared_ptr<PolytopeSurface> &walkableFace) const
+    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float> &walkablePolygon, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
     {
         ScopeProfiler scopeProfiler("ai", "createNavPoly");
 
@@ -270,8 +270,8 @@ namespace urchin
             }
         }
 
-        std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableFace);
-        NavTopography *navTopography = walkableFace->newNavTopography();
+        std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableSurface);
+        NavTopography *navTopography = walkableSurface->newNavTopography();
 
         std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(points), navTopography);
         navPolygon->addTriangles(triangulation.triangulate(), navPolygon);
