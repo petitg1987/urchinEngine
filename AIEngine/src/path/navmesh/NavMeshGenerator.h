@@ -19,17 +19,6 @@
 
 namespace urchin
 {
-
-	typedef std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>::const_iterator it_polytope;
-
-	struct PolytopeSurfaceIndex
-	{
-		PolytopeSurfaceIndex(it_polytope, unsigned int);
-
-		it_polytope polytopeRef;
-		unsigned int faceIndex;
-	};
-
 	struct AIEntityComp
 	{
 		bool operator() (const std::shared_ptr<AIEntity>& left, const std::shared_ptr<AIEntity>& right) const;
@@ -47,17 +36,18 @@ namespace urchin
 
 		private:
 			void updateExpandedPolytopes(AIWorld &);
-			void determineWalkableSurfaces() const;
+            void addExpandedPolygon(const std::shared_ptr<AIEntity> &, std::unique_ptr<Polytope>);
+            void removeExpandedPolygon(const std::shared_ptr<AIEntity> &);
 
-			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const PolytopeSurfaceIndex &) const;
+			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<PolytopeSurface> &) const;
 
-			std::vector<CSGPolygon<float>> &determineObstacles(const PolytopeSurfaceIndex &) const;
-			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::unique_ptr<PolytopeSurface> &) const;
+			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<PolytopeSurface> &) const;
+			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::shared_ptr<PolytopeSurface> &) const;
 
             void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &) const;
 
-            std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::unique_ptr<PolytopeSurface> &) const;
-			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::unique_ptr<PolytopeSurface> &) const;
+            std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::shared_ptr<PolytopeSurface> &) const;
+			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
 
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
@@ -68,7 +58,7 @@ namespace urchin
             std::atomic_bool needFullRefresh;
 
 			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>, AIEntityComp> expandedPolytopes;
-            mutable std::vector<PolytopeSurfaceIndex> walkableSurfaces;
+            std::multimap<std::shared_ptr<AIEntity>, std::shared_ptr<PolytopeSurface>, AIEntityComp> walkableSurfaces;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> holePolygons;

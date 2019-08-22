@@ -10,11 +10,17 @@
 namespace urchin
 {
 
+    class Polytope;
+
     class PolytopeSurface
     {
         public:
             PolytopeSurface();
             virtual ~PolytopeSurface() = default;
+
+            void setPolytope(const Polytope *);
+            const Polytope *getPolytope() const;
+            std::size_t getSurfacePosition() const;
 
             void setWalkableCandidate(bool);
             bool isWalkableCandidate() const;
@@ -29,6 +35,10 @@ namespace urchin
             virtual NavTopography *newNavTopography() const = 0;
 
         private:
+            std::size_t computeSurfacePosition();
+
+            const Polytope *polytope;
+            std::size_t surfacePosition; //position/index of surface in polytope
             bool walkableCandidate;
     };
 

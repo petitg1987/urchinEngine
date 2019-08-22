@@ -15,12 +15,12 @@ namespace urchin
 	class Polytope
 	{
 		public:
-			Polytope(const std::string &, std::vector<std::unique_ptr<PolytopeSurface>> &);
+			Polytope(std::string, std::vector<std::shared_ptr<PolytopeSurface>> &);
 
 			const std::string &getName() const;
 
-			const std::vector<std::unique_ptr<PolytopeSurface>> &getSurfaces() const;
-			const std::unique_ptr<PolytopeSurface> &getSurface(unsigned int) const;
+			const std::vector<std::shared_ptr<PolytopeSurface>> &getSurfaces() const;
+			const std::shared_ptr<PolytopeSurface> &getSurface(unsigned int) const;
 
 			const std::unique_ptr<Rectangle<float>> &getXZRectangle() const;
 
@@ -34,7 +34,7 @@ namespace urchin
 			void buildXZRectangle();
 
 			std::string name;
-			std::vector<std::unique_ptr<PolytopeSurface>> surfaces;
+			std::vector<std::shared_ptr<PolytopeSurface>> surfaces;
 
 			std::unique_ptr<Rectangle<float>> xzRectangle;
 

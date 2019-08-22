@@ -1,5 +1,4 @@
-#include <algorithm>
-#include <cmath>
+#include <utility>
 
 #include "Polytope.h"
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
@@ -11,12 +10,17 @@ namespace urchin
 	/**
 	 * @param surfaces Indexed faces of the polytope. Surfaces must have their points in counter-clockwise to have face normal pointing outside the polyhedron.
 	 */
-	Polytope::Polytope(const std::string &name, std::vector<std::unique_ptr<PolytopeSurface>> &surfaces) :
-			name(name),
+	Polytope::Polytope(std::string name, std::vector<std::shared_ptr<PolytopeSurface>> &surfaces) :
+			name(std::move(name)),
 			surfaces(std::move(surfaces)),
 			walkableCandidate(true),
             obstacleCandidate(true)
 	{
+	    for(auto &surface : this->surfaces)
+        {
+	        surface->setPolytope(this);
+        }
+
         buildXZRectangle();
 	}
 
@@ -25,12 +29,12 @@ namespace urchin
 		return name;
 	}
 
-	const std::vector<std::unique_ptr<PolytopeSurface>> &Polytope::getSurfaces() const
+	const std::vector<std::shared_ptr<PolytopeSurface>> &Polytope::getSurfaces() const
 	{
 		return surfaces;
 	}
 
-	const std::unique_ptr<PolytopeSurface> &Polytope::getSurface(unsigned int surfaceIndex) const
+	const std::shared_ptr<PolytopeSurface> &Polytope::getSurface(unsigned int surfaceIndex) const
 	{
 		return surfaces[surfaceIndex];
 	}
@@ -63,7 +67,7 @@ namespace urchin
 	void Polytope::buildXZRectangle()
 	{
 		Rectangle<float> xzRectangle = surfaces[0]->computeXZRectangle();
-		for(unsigned int i=1; i<surfaces.size(); ++i)
+		for(std::size_t i=1; i<surfaces.size(); ++i)
 		{
 			xzRectangle = xzRectangle.merge(surfaces[i]->computeXZRectangle());
 		}

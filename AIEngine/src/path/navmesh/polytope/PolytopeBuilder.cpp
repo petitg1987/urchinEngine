@@ -78,11 +78,11 @@ namespace urchin
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
         #endif
 
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+        std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
                                                       aiTerrain->getXLength(), aiTerrain->getZLength());
         std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshConfig->getMaxSlope());
-        auto expandedSurface = std::make_unique<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
+        auto expandedSurface = std::make_shared<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
                                                                         aiTerrain->getXLength(), aiTerrain->getZLength(), selfObstacles);
         expandedSurface->setWalkableCandidate(true);
         expandedSurfaces.emplace_back(std::move(expandedSurface));
@@ -97,7 +97,7 @@ namespace urchin
     {
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshConfig);
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshConfig);
+        std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshConfig);
         return std::make_unique<Polytope>(name, expandedPolytopeSurfaces);
     }
 
@@ -138,7 +138,7 @@ namespace urchin
 
         std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::instance()->resizeConvexHull(*convexHull, expandedPlanes);
 
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+        std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
         for(const auto &indexedTriangle : expandedConvexHull->getIndexedTriangles())
         {
@@ -149,7 +149,7 @@ namespace urchin
                     expandedConvexHull->getConvexHullPoints().find(indices[1])->second.point,
                     expandedConvexHull->getConvexHullPoints().find(indices[2])->second.point};
 
-            expandedSurfaces.emplace_back(std::make_unique<PolytopePlaneSurface>(std::move(surfacePoints), true));
+            expandedSurfaces.emplace_back(std::make_shared<PolytopePlaneSurface>(std::move(surfacePoints), true));
         }
 
         std::unique_ptr<Polytope> polytope = std::make_unique<Polytope>(name, expandedSurfaces);
@@ -167,7 +167,7 @@ namespace urchin
         std::vector<Point3<float>> sortedOriginalPoints = cylinderBox.getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshConfig);
 
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshConfig);
+        std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshConfig);
 
         for(std::size_t i=0; i<expandedSurfaces.size(); ++i)
         {
@@ -254,10 +254,10 @@ namespace urchin
      * @param sortedOriginalPoints Original points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      * @param sortedExpandedPoints Expanded points in the following order: NTR, FTR, NBR, FBR, NTL, FTL, NBL, FBL
      */
-    std::vector<std::unique_ptr<PolytopeSurface>> PolytopeBuilder::createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &sortedOriginalPoints,
+    std::vector<std::shared_ptr<PolytopeSurface>> PolytopeBuilder::createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &sortedOriginalPoints,
             const std::vector<Point3<float>> &sortedExpandedPoints, const std::shared_ptr<NavMeshConfig> &navMeshConfig) const
     {
-        std::vector<std::unique_ptr<PolytopeSurface>> expandedSurfaces;
+        std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(6);
 
         for(auto pointIndex : POINT_INDEX_TO_PLANES)
@@ -284,7 +284,7 @@ namespace urchin
                 }
             }
 
-            expandedSurfaces.push_back(std::make_unique<PolytopePlaneSurface>(std::move(surfacePoints), normal, isSlopeWalkable));
+            expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(std::move(surfacePoints), normal, isSlopeWalkable));
         }
 
         return expandedSurfaces;

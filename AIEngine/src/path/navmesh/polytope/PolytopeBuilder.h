@@ -39,7 +39,7 @@ namespace urchin
             Plane<float> createExpandedPlane(const Point3<float> &, const Point3<float> &, const Point3<float> &, const std::shared_ptr<NavMeshConfig> &) const;
             std::vector<Point3<float>> expandBoxPoints(const std::vector<Plane<float>> &) const;
 
-            std::vector<std::unique_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &,
+            std::vector<std::shared_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &,
                     const std::vector<Point3<float>> &, const std::shared_ptr<NavMeshConfig> &) const;
     };
 

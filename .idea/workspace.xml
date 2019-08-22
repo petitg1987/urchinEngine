@@ -5,15 +5,15 @@
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
       <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
-      <config projectName="urchinEngine" targetName="unitTest" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
+      <config projectName="urchinEngine" targetName="unitTest" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
@@ -24,17 +24,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Fix warning bitwise operator">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Don't expand walkable surface">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc/algorithm.md" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc/algorithm.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -932,7 +932,8 @@
       <workItem from="1566225132947" duration="8123000" />
       <workItem from="1566320994342" duration="153000" />
       <workItem from="1566324470348" duration="3850000" />
-      <workItem from="1566328329319" duration="642000" />
+      <workItem from="1566328329319" duration="1952000" />
+      <workItem from="1566488094458" duration="7988000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1158,7 +1159,21 @@
       <option name="project" value="LOCAL" />
       <updated>1566156690514</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Don't expand walkable surface">
+      <created>1566329126613</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1566329126613</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Nav mesh generator: reorganize methods">
+      <created>1566490697621</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1566490697621</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1212,8 +1227,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="Heightfield point helper: find path" />
-    <MESSAGE value="AI: replace NavTriangleRef by NavTriangle" />
     <MESSAGE value="AI: add NavTopography class" />
     <MESSAGE value="AI: fix follow topography" />
     <MESSAGE value="Monotone polygon: add fail test" />
@@ -1237,7 +1250,9 @@
     <MESSAGE value="Simplify polytope plane surface construction" />
     <MESSAGE value="Add doc for nav mesh" />
     <MESSAGE value="Use constants for polytope builder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use constants for polytope builder" />
+    <MESSAGE value="Don't expand walkable surface" />
+    <MESSAGE value="Nav mesh generator: reorganize methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nav mesh generator: reorganize methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
