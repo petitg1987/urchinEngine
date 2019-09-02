@@ -86,6 +86,9 @@ namespace urchin
 
 		synchronizeBodies();
 
+		//TODO if isInitPhase=true: compute boundary
+        //TODO set isInitPhase=false
+
 		broadPhaseAlgorithm->updateBodies();
 		return broadPhaseAlgorithm->getOverlappingPairs();
 	}

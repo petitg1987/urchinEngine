@@ -50,10 +50,12 @@ namespace urchin
 			void setAngularFactor(const Vector3<float> &);
 			const Vector3<float> &getAngularFactor() const;
 
+            void setIsStatic(bool) override;
 			bool isGhostBody() const override;
 
 		private:
 			void refreshBodyActiveState();
+			void makeBodyStatic();
 
 			//work rigid body representation data
 			Vector3<float> linearVelocity;

@@ -2,19 +2,19 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="copyShaders" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchin3dEngine" />
-      <config projectName="urchinEngine" targetName="unitTest" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="copyShader" />
       <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="unitTest" />
       <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
+      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -24,17 +24,19 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Don't expand walkable surface">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Nav mesh generator: rename walkableFace into walkableSurface">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc/algorithm.md" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc/algorithm.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeBuilder.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/OctreeManager.inl" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/OctreeManager.inl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/3d/object/AABBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/3d/object/AABBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/3d/object/AABBox.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/3d/object/AABBox.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/PhysicsWorld.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/body/work/AbstractWorkBody.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/body/work/AbstractWorkBody.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/body/work/AbstractWorkBody.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/body/work/AbstractWorkBody.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unitTest/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/unitTest/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/broadphase/BodyTestHelper.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/broadphase/BodyTestHelper.h" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -237,7 +239,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.urchinMapEditor">
+  <component name="RunManager" selected="CMake Application.unitTest">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -933,7 +935,13 @@
       <workItem from="1566320994342" duration="153000" />
       <workItem from="1566324470348" duration="3850000" />
       <workItem from="1566328329319" duration="1952000" />
-      <workItem from="1566488094458" duration="7988000" />
+      <workItem from="1566488094458" duration="9664000" />
+      <workItem from="1566759483105" duration="681000" />
+      <workItem from="1566839886426" duration="1134000" />
+      <workItem from="1566931078374" duration="41000" />
+      <workItem from="1566931131564" duration="112000" />
+      <workItem from="1566931251579" duration="639000" />
+      <workItem from="1567185260493" duration="131000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1173,7 +1181,35 @@
       <option name="project" value="LOCAL" />
       <updated>1566490697621</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Nav mesh generator: improve performance to determine walkable surface">
+      <created>1566496940077</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1566496940077</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Nav mesh generator: rename walkableFace into walkableSurface">
+      <created>1566497110101</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1566497110101</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Nav mesh generator: update documentation">
+      <created>1566497599882</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1566497599882</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Nav mesh generator: update documentation">
+      <created>1566497889520</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1566497889520</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1227,9 +1263,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="AI: add NavTopography class" />
-    <MESSAGE value="AI: fix follow topography" />
-    <MESSAGE value="Monotone polygon: add fail test" />
     <MESSAGE value="CSG polygon: detect self intersect polygon" />
     <MESSAGE value="CSG polygon: detect self intersect polygon (fix logs)" />
     <MESSAGE value="CSG polygon: improve polygon subtraction" />
@@ -1252,7 +1285,10 @@
     <MESSAGE value="Use constants for polytope builder" />
     <MESSAGE value="Don't expand walkable surface" />
     <MESSAGE value="Nav mesh generator: reorganize methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nav mesh generator: reorganize methods" />
+    <MESSAGE value="Nav mesh generator: improve performance to determine walkable surface" />
+    <MESSAGE value="Nav mesh generator: rename walkableFace into walkableSurface" />
+    <MESSAGE value="Nav mesh generator: update documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nav mesh generator: update documentation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

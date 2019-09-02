@@ -97,7 +97,7 @@ namespace urchin
 		browseNodes.clear();
 		browseNodes.push_back(rootNode);
 
-		for(unsigned int i=0; i<browseNodes.size(); ++i)
+		for(std::size_t i=0; i<browseNodes.size(); ++i)
 		{ //tree traversal: pre-order (iterative)
 			const AABBNode *currentNode = browseNodes[i];
 
@@ -154,18 +154,22 @@ namespace urchin
 			if(body->isActive())
 			{
 				AABBNode *leaf = it->second;
-				const AABBox<float> &leafFatAABBox = leaf->getAABBox();
-				const AABBox<float> &bodyAABBox = leaf->getBodyNodeData()->retrieveBodyAABBox();
+
+                controlBoundaries(leaf, body);
+
+                const AABBox<float> &leafFatAABBox = leaf->getAABBox();
+                const AABBox<float> &bodyAABBox = leaf->getBodyNodeData()->retrieveBodyAABBox();
+
 				if(!leafFatAABBox.include(bodyAABBox))
-				{
-					PairContainer *alternativePairContainer = leaf->getBodyNodeData()->getAlternativePairContainer();
+                {
+                    PairContainer *alternativePairContainer = leaf->getBodyNodeData()->getAlternativePairContainer();
 
-					removeNode(leaf);
-					it = bodiesNode.erase(it);
-					removed = true;
+                    removeNode(leaf);
+                    it = bodiesNode.erase(it);
+                    removed = true;
 
-					addBody(body, alternativePairContainer);
-				}
+                    addBody(body, alternativePairContainer);
+                }
 			}
 
 			if(!removed)
@@ -217,6 +221,21 @@ namespace urchin
 		}
 	}
 
+    void AABBTree::controlBoundaries(AABBNode *leaf, AbstractWorkBody *body)
+    {
+        const AABBox<float> &bodyAABBox = leaf->getBodyNodeData()->retrieveBodyAABBox(); //TODO computed 2 times: also by caller !
+        float lowerYBoundary = -100.0f; //TODO review boundary
+        if(bodyAABBox.getMax().Y < lowerYBoundary)
+        {
+            std::stringstream logStream;
+            logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(lowerYBoundary)<<": "<<body->getPosition();
+            Logger::logger().log(Logger::CriticalityLevel::WARNING, logStream.str());
+
+            body->setIsStatic(true);
+            body->setPosition(Point3<float>(body->getPosition().X, lowerYBoundary + bodyAABBox.getHalfSizes().Y + 0.01f, body->getPosition().Z));
+        }
+    }
+
 	/**
 	 * @param bodiesAABBoxHitRay [out] Bodies AABBox hit by the ray
 	 */
@@ -236,7 +255,7 @@ namespace urchin
         browseNodes.clear();
         browseNodes.push_back(rootNode);
 
-        for(unsigned int i=0; i<browseNodes.size(); ++i)
+        for(std::size_t i=0; i<browseNodes.size(); ++i)
         { //tree traversal: pre-order (iterative)
             const AABBNode *currentNode = browseNodes[i];
 

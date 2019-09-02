@@ -28,18 +28,18 @@ namespace urchin
 			AABBox(const Point3<T> *, unsigned int);
 			AABBox(const AABBox<T> &);
 
-			const T getHalfSize(unsigned int) const;
+			T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;
-			const T getMaxHalfSize() const;
+			T getMaxHalfSize() const;
 			unsigned int getMaxHalfSizeIndex() const;
-			const T getMinHalfSize() const;
+			T getMinHalfSize() const;
 			unsigned int getMinHalfSizeIndex() const;
 			const Point3<T> &getMin() const;
 			const Point3<T> &getMax() const;
 			Point3<T> getCenterOfMass() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;
-			const std::vector<Point3<T>> getPoints() const;
+			std::vector<Point3<T>> getPoints() const;
 			T getVolume() const;
 
 			AABBox<T> moveAABBox(const Transform<T> &) const;

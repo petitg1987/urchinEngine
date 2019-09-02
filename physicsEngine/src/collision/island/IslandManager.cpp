@@ -113,7 +113,6 @@ namespace urchin
 
 		for(endElementIndex = startElementIndex; islandElementsLink.size()>endElementIndex && islandId==islandElementsLink[endElementIndex].islandIdRef; ++endElementIndex)
 		{
-			;
 		}
 
 		return endElementIndex - startElementIndex;

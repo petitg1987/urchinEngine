@@ -30,8 +30,6 @@ set(SOURCE_FILES
         src/math/geometry/ResizeConvexHull3DTest.h
         src/math/geometry/SortPointsTest.cpp
         src/math/geometry/SortPointsTest.h
-        src/physics/algorithm/broadphase/BodyTestHelper.cpp
-        src/physics/algorithm/broadphase/BodyTestHelper.h
         src/physics/algorithm/epa/EPABoxTest.cpp
         src/physics/algorithm/epa/EPABoxTest.h
         src/physics/algorithm/epa/EPAConvexHullTest.cpp

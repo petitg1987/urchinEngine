@@ -32,8 +32,8 @@ namespace urchin
 				body->setAngularVelocity(body->getAngularVelocity() + (body->getTotalTorqueMomentum() * body->getInvWorldInertia()));
 
 				//apply damping
-				body->setLinearVelocity(body->getLinearVelocity() * powf(1.0-body->getLinearDamping(), dt));
-				body->setAngularVelocity(body->getAngularVelocity() * powf(1.0-body->getAngularDamping(), dt));
+				body->setLinearVelocity(body->getLinearVelocity() * powf(1.0f - body->getLinearDamping(), dt));
+				body->setAngularVelocity(body->getAngularVelocity() * powf(1.0f - body->getAngularDamping(), dt));
 
 				//reset momentum
 				body->resetMomentum();
@@ -74,7 +74,7 @@ namespace urchin
 					Vector3<float> rollingFrictionForceDirection = -currentTorqueForce.normalize();
 					Vector3<float> rollingFrictionForce = rollingFrictionForceDirection * rollingFriction * body->getMass();
 
-					for(unsigned int i=0; i<3; ++i)
+					for(std::size_t i=0; i<3; ++i)
 					{
 						if(fabs(rollingFrictionForce[i]) > fabs(currentTorqueForce[i]))
 						{

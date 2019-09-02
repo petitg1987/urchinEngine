@@ -120,19 +120,19 @@ namespace urchin
 	{
 		if(MathAlgorithm::isZero(mass))
 		{
-			setIsStatic(true);
+            setIsStatic(true);
 			setIsActive(false);
 			this->invMass = 0.0f;
 		}else
 		{
-			if(isStatic())
-			{ //avoid wake up of body (isActive flag) when static flag is already correct
+			if(isStatic()) //avoid wake up of body (isActive flag) when static flag is already correct
+			{
 				setIsStatic(false);
 				setIsActive(true);
 			}
 			this->invMass = 1.0f / mass;
 		}
-		this->mass = mass;
+        this->mass = mass;
 
 		this->invLocalInertia.X = MathAlgorithm::isZero(localInertia.X) ? 0.0 : 1.0/localInertia.X;
 		this->invLocalInertia.Y = MathAlgorithm::isZero(localInertia.Y) ? 0.0 : 1.0/localInertia.Y;
@@ -225,9 +225,27 @@ namespace urchin
 		return angularFactor;
 	}
 
+    void WorkRigidBody::setIsStatic(bool bIsStatic)
+    {
+	    if(bIsStatic)
+        {
+            makeBodyStatic();
+        } else {
+            AbstractWorkBody::setIsStatic(false);
+	    }
+    }
+
 	bool WorkRigidBody::isGhostBody() const
 	{
 		return false;
 	}
+
+    void WorkRigidBody::makeBodyStatic()
+    {
+        AbstractWorkBody::setIsStatic(true);
+        AbstractWorkBody::setIsActive(false);
+        setLinearVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));
+        setAngularVelocity(Vector3<float>(0.0f, 0.0f, 0.0f));
+    }
 
 }

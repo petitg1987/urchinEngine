@@ -21,7 +21,7 @@ namespace urchin
 			AbstractWorkBody *createWorkBody() const override;
 
 			void updateTo(AbstractWorkBody *) override;
-			void applyFrom(const AbstractWorkBody *) override;
+			bool applyFrom(const AbstractWorkBody *) override;
 
 			Vector3<float> getLinearVelocity() const;
 			Vector3<float> getAngularVelocity() const;
@@ -47,8 +47,9 @@ namespace urchin
 			Vector3<float> getAngularFactor() const;
 
 		private:
-			void initializeRigidBody();
+			void initializeRigidBody(float, float, float, const Vector3<float> &, const Vector3<float> &);
 			void refreshScaledShape() override;
+            void refreshMassProperties();
 			void refreshLocalInertia();
 
 			//rigid body representation data

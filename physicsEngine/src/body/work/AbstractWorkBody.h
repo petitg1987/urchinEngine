@@ -22,7 +22,7 @@ namespace urchin
 	class AbstractWorkBody : public IslandElement
 	{
 		public:
-			AbstractWorkBody(const std::string &, const PhysicsTransform &, const std::shared_ptr<const CollisionShape3D> &);
+			AbstractWorkBody(std::string , const PhysicsTransform &, std::shared_ptr<const CollisionShape3D> );
 			~AbstractWorkBody() override = default;
 
 			const PhysicsTransform &getPhysicsTransform() const;
@@ -49,7 +49,7 @@ namespace urchin
 
 			static void disableAllBodies(bool);
 			bool isStatic() const;
-			void setIsStatic(bool);
+            virtual void setIsStatic(bool);
 			bool isActive() const override;
 			void setIsActive(bool);
 			virtual bool isGhostBody() const = 0;

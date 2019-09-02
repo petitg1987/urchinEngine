@@ -84,7 +84,7 @@ namespace urchin
 
 	}
 
-	template<class T> const T AABBox<T>::getHalfSize(unsigned int index) const
+	template<class T> T AABBox<T>::getHalfSize(unsigned int index) const
 	{
 		return boxShape.getHalfSize(index);
 	}
@@ -94,7 +94,7 @@ namespace urchin
 		return boxShape.getHalfSizes();
 	}
 
-	template<class T> const T AABBox<T>::getMaxHalfSize() const
+	template<class T> T AABBox<T>::getMaxHalfSize() const
 	{
 		return boxShape.getMaxHalfSize();
 	}
@@ -104,7 +104,7 @@ namespace urchin
 		return boxShape.getMaxHalfSizeIndex();
 	}
 
-	template<class T> const T AABBox<T>::getMinHalfSize() const
+	template<class T> T AABBox<T>::getMinHalfSize() const
 	{
 		return boxShape.getMinHalfSize();
 	}
@@ -141,7 +141,7 @@ namespace urchin
 				signZ * boxShape.getHalfSize(2) * 2.0);
 	}
 
-	template<class T> const std::vector<Point3<T>> AABBox<T>::getPoints() const
+	template<class T> std::vector<Point3<T>> AABBox<T>::getPoints() const
 	{
 		std::vector<Point3<T>> result;
 		result.reserve(8);

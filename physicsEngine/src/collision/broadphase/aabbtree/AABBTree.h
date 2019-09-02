@@ -36,6 +36,8 @@ namespace urchin
 			void createOverlappingPair(BodyNodeData *, BodyNodeData *);
 			void removeOverlappingPairs(const BodyNodeData *);
 
+			void controlBoundaries(AABBNode *, AbstractWorkBody *);
+
 			const float fatMargin;
 
 			AABBNode *rootNode;

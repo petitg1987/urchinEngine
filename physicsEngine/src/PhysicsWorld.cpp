@@ -209,7 +209,7 @@ namespace urchin
 
 				auto frameEndTime = std::chrono::high_resolution_clock::now();
 				auto diffTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(frameEndTime - frameStartTime).count();
-				remainingTime = (timeStep + additionalTimeStep) - (diffTimeMicroSeconds / 1000000.0);
+				remainingTime = (timeStep + additionalTimeStep) - static_cast<float>(diffTimeMicroSeconds / 1000000.0);
 
 				if (remainingTime >= 0.0f)
 				{

@@ -1,4 +1,4 @@
-#include <cassert>
+#include <utility>
 
 #include "body/work/AbstractWorkBody.h"
 #include "collision/broadphase/PairContainer.h"
@@ -10,11 +10,10 @@ namespace urchin
 	uint_fast32_t AbstractWorkBody::nextObjectId = 0;
 	bool AbstractWorkBody::bDisableAllBodies = false;
 
-	AbstractWorkBody::AbstractWorkBody(const std::string &id, const PhysicsTransform &physicsTransform,
-		const std::shared_ptr<const CollisionShape3D> &shape) :
+	AbstractWorkBody::AbstractWorkBody(std::string id, const PhysicsTransform &physicsTransform, std::shared_ptr<const CollisionShape3D> shape) :
 			physicsTransform(physicsTransform),
-			shape(shape),
-			id(id),
+			shape(std::move(shape)),
+			id(std::move(id)),
 			restitution(0.0f),
 			friction(0.0f),
 			rollingFriction(0.0f),

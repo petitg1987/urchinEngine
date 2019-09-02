@@ -1,20 +1,21 @@
 #include <stdexcept>
 #include <limits>
+#include <utility>
 
 #include "AbstractBody.h"
 
 namespace urchin
 {
 
-	AbstractBody::AbstractBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
+	AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
 			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
 			workBody(nullptr),
-			transform(transform),
+			transform(std::move(transform)),
 			isManuallyMoved(false),
-			id(id),
-			originalShape(shape)
+			id(std::move(id)),
+			originalShape(std::move(shape))
 	{
-		initialize();
+		initialize(0.2f, 0.5f, 0.0f);
 	}
 
 	AbstractBody::AbstractBody(const AbstractBody &abstractBody) :
@@ -25,15 +26,11 @@ namespace urchin
 			id(abstractBody.getId()),
 			originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone()))
 	{
-		initialize();
-
+		initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
 		setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());
-		setFriction(abstractBody.getFriction());
-		setRestitution(abstractBody.getRestitution());
-		setRollingFriction(abstractBody.getRollingFriction());
 	}
 
-	void AbstractBody::initialize()
+	void AbstractBody::initialize(float restitution, float friction, float rollingFriction)
 	{
 		//technical data
 		bIsNew.store(false, std::memory_order_relaxed);
@@ -44,9 +41,9 @@ namespace urchin
 
 		//body description data
 		refreshScaledShape();
-		restitution = 0.2f;
-		friction = 0.5f;
-		rollingFriction = 0.0f;
+		this->restitution = restitution;
+		this->friction = friction;
+		this->rollingFriction = rollingFriction;
 	}
 
 	void AbstractBody::refreshScaledShape()
@@ -112,7 +109,7 @@ namespace urchin
 		workBody->setCcdMotionThreshold(ccdMotionThreshold);
 	}
 
-	void AbstractBody::applyFrom(const AbstractWorkBody *workBody)
+	bool AbstractBody::applyFrom(const AbstractWorkBody *workBody)
 	{
 		#ifdef _DEBUG
 			if(bodyMutex.try_lock())
@@ -121,13 +118,16 @@ namespace urchin
 			}
 		#endif
 
-		if(!bNeedFullRefresh.load(std::memory_order_relaxed))
+		bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
+		if(!fullRefreshRequested)
 		{
 			bIsActive.store(workBody->isActive(), std::memory_order_relaxed);
 
 			transform.setPosition(workBody->getPosition());
 			transform.setOrientation(workBody->getOrientation());
 		}
+
+		return fullRefreshRequested;
 	}
 
 	void AbstractBody::setTransform(const Transform<float> &transform)
@@ -193,13 +193,6 @@ namespace urchin
 
 	Vector3<float> AbstractBody::computeScaledShapeLocalInertia(float mass) const
 	{
-		#ifdef _DEBUG
-			if(bodyMutex.try_lock())
-			{
-				throw std::runtime_error("Body mutex should be locked before call this method.");
-			}
-		#endif
-
 		return scaledShape->computeLocalInertia(mass);
 	}
 

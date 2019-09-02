@@ -10,28 +10,28 @@ namespace urchin
 	RigidBody::RigidBody(const std::string &id, const Transform<float> &transform, const std::shared_ptr<const CollisionShape3D> &shape) :
 			AbstractBody(id, transform, shape)
 	{
-		initializeRigidBody();
+		initializeRigidBody(0.0f, 0.0f, 0.0f,
+		        Vector3<float>(1.0f, 1.0f, 1.0f), Vector3<float>(1.0f, 1.0f, 1.0f));
 	}
 
 	RigidBody::RigidBody(const RigidBody &rigidBody) :
 		AbstractBody(rigidBody)
 	{
-		initializeRigidBody();
-
-		setLinearFactor(rigidBody.getLinearFactor());
-		setAngularFactor(rigidBody.getAngularFactor());
-		setDamping(rigidBody.getLinearDamping(), rigidBody.getAngularDamping());
-		setMass(rigidBody.getMass());
+		initializeRigidBody(rigidBody.getMass(), rigidBody.getLinearDamping(), rigidBody.getAngularDamping(),
+		        rigidBody.getLinearFactor(), rigidBody.getAngularFactor());
 	}
 
-	void RigidBody::initializeRigidBody()
+	void RigidBody::initializeRigidBody(float mass, float linearDamping, float angularDamping,
+	        const Vector3<float> &linearFactor, const Vector3<float> &angularFactor)
 	{
-		//default values
-		setMass(0.0f);
-		linearDamping = 0.0f;
-		angularDamping = 0.0f;
-		linearFactor.setValues(1.0, 1.0, 1.0);
-		angularFactor.setValues(1.0, 1.0, 1.0);
+		this->mass = mass;
+        refreshMassProperties();
+
+        this->linearDamping = linearDamping;
+        this->angularDamping = angularDamping;
+
+        this->linearFactor = linearFactor;
+        this->angularFactor = angularFactor;
 	}
 
 	void RigidBody::refreshScaledShape()
@@ -40,6 +40,12 @@ namespace urchin
 
 		refreshLocalInertia();
 	}
+
+    void RigidBody::refreshMassProperties()
+    {
+        refreshLocalInertia();
+        setIsStatic(mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon());
+    }
 
 	void RigidBody::refreshLocalInertia()
 	{
@@ -51,7 +57,11 @@ namespace urchin
 		const Transform<float> &transform = getTransform();
 		PhysicsTransform physicsTransform(transform.getPosition(), transform.getOrientation());
 
-		return new WorkRigidBody(getId(), physicsTransform, getScaledShape());
+        auto *workRigidBody = new WorkRigidBody(getId(), physicsTransform, getScaledShape());
+        workRigidBody->setMassProperties(getMass(), getLocalInertia());
+        workRigidBody->setLinearVelocity(getLinearVelocity());
+        workRigidBody->setAngularVelocity(getAngularVelocity());
+        return workRigidBody;
 	}
 
 	void RigidBody::updateTo(AbstractWorkBody *workBody)
@@ -65,7 +75,6 @@ namespace urchin
 		{
 			workRigidBody->setTotalMomentum(totalMomentum);
 			workRigidBody->setTotalTorqueMomentum(totalTorqueMomentum);
-			workRigidBody->setMassProperties(mass, localInertia);
 			workRigidBody->setDamping(linearDamping, angularDamping);
 			workRigidBody->setLinearFactor(linearFactor);
 			workRigidBody->setAngularFactor(angularFactor);
@@ -77,18 +86,23 @@ namespace urchin
 		}
 	}
 
-	void RigidBody::applyFrom(const AbstractWorkBody *workBody)
+	bool RigidBody::applyFrom(const AbstractWorkBody *workBody)
 	{
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
-		AbstractBody::applyFrom(workBody);
+		bool fullRefreshRequested = AbstractBody::applyFrom(workBody);
+        const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
 
-		const WorkRigidBody *workRigidBody = WorkRigidBody::upCast(workBody);
-		if(workRigidBody)
+		if(workRigidBody && !fullRefreshRequested)
 		{
+            mass = workRigidBody->getMass();
+            refreshMassProperties();
+
 			linearVelocity = workRigidBody->getLinearVelocity();
 			angularVelocity = workRigidBody->getAngularVelocity();
 		}
+
+		return fullRefreshRequested;
 	}
 
 	Vector3<float> RigidBody::getLinearVelocity() const
@@ -149,9 +163,8 @@ namespace urchin
 		std::lock_guard<std::mutex> lock(bodyMutex);
 
 		this->mass = mass;
-		refreshLocalInertia();
-
-		setIsStatic(mass > -std::numeric_limits<float>::epsilon() && mass < std::numeric_limits<float>::epsilon());
+        refreshMassProperties();
+        this->setNeedFullRefresh(true);
 	}
 
 	float RigidBody::getMass() const
