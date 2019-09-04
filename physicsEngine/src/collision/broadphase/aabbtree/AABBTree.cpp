@@ -4,11 +4,15 @@
 #include "collision/broadphase/aabbtree/BodyNodeData.h"
 #include "collision/broadphase/VectorPairContainer.h"
 
+#define BOUNDARIES_MARGIN_PERCENTAGE 0.3f
+
 namespace urchin
 {
 
 	AABBTree::AABBTree() :
 			fatMargin(ConfigService::instance()->getFloatValue("broadPhase.aabbTreeFatMargin")),
+            inInitializationPhase(true),
+            minYBoundary(std::numeric_limits<float>::max()),
 			rootNode(nullptr),
 			defaultPairContainer(new VectorPairContainer())
 	{
@@ -147,6 +151,12 @@ namespace urchin
 
 	void AABBTree::updateBodies()
 	{
+        if(inInitializationPhase)
+        {
+            computeWorldBoundary();
+            inInitializationPhase = false;
+        }
+
 		for(auto it = bodiesNode.begin(); it!=bodiesNode.end();)
 		{
 			bool removed = false;
@@ -221,18 +231,31 @@ namespace urchin
 		}
 	}
 
+	void AABBTree::computeWorldBoundary()
+    {
+	    float maxYBoundary = -std::numeric_limits<float>::max();
+        for(auto &bodyNode : bodiesNode)
+        {
+            const AABBox<float> &nodeAABBox = bodyNode.second->getAABBox();
+            minYBoundary = std::min(nodeAABBox.getMin().Y, minYBoundary);
+            maxYBoundary = std::max(nodeAABBox.getMax().Y, maxYBoundary);
+        }
+
+        float worldHeight = maxYBoundary - minYBoundary;
+        minYBoundary -= worldHeight * BOUNDARIES_MARGIN_PERCENTAGE;
+    }
+
     void AABBTree::controlBoundaries(AABBNode *leaf, AbstractWorkBody *body)
     {
-        const AABBox<float> &bodyAABBox = leaf->getBodyNodeData()->retrieveBodyAABBox(); //TODO computed 2 times: also by caller !
-        float lowerYBoundary = -100.0f; //TODO review boundary
-        if(bodyAABBox.getMax().Y < lowerYBoundary)
+        const AABBox<float> &bodyAABBox = leaf->getBodyNodeData()->retrieveBodyAABBox();
+        if(bodyAABBox.getMax().Y < minYBoundary)
         {
             std::stringstream logStream;
-            logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(lowerYBoundary)<<": "<<body->getPosition();
+            logStream<<"Body "<<body->getId()<<" is below the limit of "<<std::to_string(minYBoundary)<<": "<<body->getPosition();
             Logger::logger().log(Logger::CriticalityLevel::WARNING, logStream.str());
 
             body->setIsStatic(true);
-            body->setPosition(Point3<float>(body->getPosition().X, lowerYBoundary + bodyAABBox.getHalfSizes().Y + 0.01f, body->getPosition().Z));
+            body->setPosition(Point3<float>(body->getPosition().X, minYBoundary + bodyAABBox.getHalfSizes().Y + 0.01f, body->getPosition().Z));
         }
     }
 

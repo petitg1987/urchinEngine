@@ -36,9 +36,13 @@ namespace urchin
 			void createOverlappingPair(BodyNodeData *, BodyNodeData *);
 			void removeOverlappingPairs(const BodyNodeData *);
 
+            void computeWorldBoundary();
 			void controlBoundaries(AABBNode *, AbstractWorkBody *);
 
 			const float fatMargin;
+
+            bool inInitializationPhase;
+            float minYBoundary;
 
 			AABBNode *rootNode;
 			std::map<AbstractWorkBody *, AABBNode *> bodiesNode;

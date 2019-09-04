@@ -7,7 +7,7 @@ namespace urchin
         RigidBody *rigidBody = getRigidBody();
         if(rigidBody)
         {
-            if((!rigidBody->isStatic() && rigidBody->isActive()) || (rigidBody->isManuallyMovedAndResetFlag()))
+            if(rigidBody->isActive() || rigidBody->isManuallyMovedAndResetFlag())
             {
                 moveTo(rigidBody->getTransform());
             }

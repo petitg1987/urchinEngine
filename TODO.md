@@ -5,7 +5,6 @@
 
 # 3d Engine
 - Model
-    - **OPTIMIZATION** (`major`): Avoid octree resize continuously when physics object fall in nothingness
     - **OPTIMIZATION** (`medium`): Group same models in same octree to perform one draw call
 	- **OPTIMIZATION** (`minor`): Models LOD
 	- **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
