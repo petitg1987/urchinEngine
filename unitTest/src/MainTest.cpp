@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cppunit/ui/text/TestRunner.h>
 
 #include "system/FileHandlerTest.h"
