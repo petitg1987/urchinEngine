@@ -24,106 +24,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Nav mesh generator: rename walkableFace into walkableSurface">
-      <change afterPath="$PROJECT_DIR$/test/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Review CMake configuration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/common/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapHandler/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mapHandler/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/networkEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/networkEngine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundEngine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonTwoHoles2.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonTwoHoles2.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonTwoHoles3.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonTwoHoles3.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionCorner3.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionCorner3.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionCorner4.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionCorner4.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionMaxIteration.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionMaxIteration.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionMinuendInsideContactEdge.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionMinuendInsideContactEdge.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionSameEdge3.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionSameEdge3.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionSameEdge4.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionSameEdge4.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/polygonsSubtractionTwoSameEdge5.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/polygonsSubtractionTwoSameEdge5.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/twoAlmostIdenticalTrapeze.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/twoAlmostIdenticalTrapeze.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/twoPolygonsIntersectionIsAlmostEdgeA2.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/twoPolygonsIntersectionIsAlmostEdgeA2.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/twoPolygonsUnionAlmostSameEdge4.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/twoPolygonsUnionAlmostSameEdge4.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/twoPolygonsUnionAlmostSameEdge5.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/twoPolygonsUnionAlmostSameEdge5.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/ai/path/twoPolygonsUnionAlmostSameEdge6.ggb" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/ai/path/twoPolygonsUnionAlmostSameEdge6.ggb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/resources/engine.properties" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/engine.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/AssertHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/AssertHelper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/AssertHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/AssertHelper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/MainTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/MainTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/CSGPolygonTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/CSGPolygonTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/CSGPolygonTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/CSGPolygonTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/MonotonePolygonTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/MonotonePolygonTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/MonotonePolygonTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/MonotonePolygonTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/NavMeshGeneratorTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/NavMeshGeneratorTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/NavMeshGeneratorTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/NavMeshGeneratorTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/PolygonsSubtractionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/PolygonsSubtractionTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/PolygonsSubtractionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/PolygonsSubtractionTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/PolygonsUnionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/PolygonsUnionTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/PolygonsUnionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/PolygonsUnionTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TerrainObstacleServiceTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/TerrainObstacleServiceTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TerrainObstacleServiceTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/TerrainObstacleServiceTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TriangulationTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/TriangulationTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/navmesh/TriangulationTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/navmesh/TriangulationTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/pathfinding/FunnelAlgorithmTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/pathfinding/FunnelAlgorithmTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/ai/path/pathfinding/FunnelAlgorithmTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/ai/path/pathfinding/FunnelAlgorithmTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/algebra/QuaternionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/algebra/QuaternionTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/algebra/QuaternionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/algebra/QuaternionTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/AABBoxCollisionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/AABBoxCollisionTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/AABBoxCollisionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/AABBoxCollisionTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ClosestPointTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ClosestPointTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ClosestPointTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ClosestPointTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ConvexHullShape2DTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ConvexHullShape2DTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ConvexHullShape2DTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ConvexHullShape2DTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/LineSegment2DCollisionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/LineSegment2DCollisionTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/LineSegment2DCollisionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/LineSegment2DCollisionTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/OrthogonalProjectionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/OrthogonalProjectionTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/OrthogonalProjectionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/OrthogonalProjectionTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ResizeConvexHull3DTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ResizeConvexHull3DTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ResizeConvexHull3DTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ResizeConvexHull3DTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ResizePolygon2DServiceTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ResizePolygon2DServiceTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/ResizePolygon2DServiceTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/ResizePolygon2DServiceTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/SortPointsTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/SortPointsTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/math/geometry/SortPointsTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/math/geometry/SortPointsTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPABoxTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPABoxTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPABoxTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPABoxTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPAConvexHullTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPAConvexHullTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPAConvexHullTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPAConvexHullTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPAConvexObjectTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPAConvexObjectTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPAConvexObjectTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPAConvexObjectTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPASphereTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPASphereTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPASphereTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPASphereTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPATestHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPATestHelper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/epa/EPATestHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/epa/EPATestHelper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKBoxTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKBoxTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKBoxTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKBoxTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKConvexHullTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKConvexHullTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKConvexHullTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKConvexHullTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKConvexObjectTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKConvexObjectTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKConvexObjectTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKConvexObjectTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKSphereTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKSphereTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKSphereTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKSphereTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKTestHelper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKTestHelper.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/gjk/GJKTestHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/gjk/GJKTestHelper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/inertia/InertiaCalculationTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/inertia/InertiaCalculationTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/algorithm/inertia/InertiaCalculationTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/algorithm/inertia/InertiaCalculationTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/island/IslandContainerTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/island/IslandContainerTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/island/IslandContainerTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/island/IslandContainerTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/object/SupportPointTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/object/SupportPointTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/object/SupportPointTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/object/SupportPointTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/shape/ShapeToAABBoxTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/shape/ShapeToAABBoxTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/shape/ShapeToAABBoxTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/shape/ShapeToAABBoxTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/shape/ShapeToConvexObjectTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/shape/ShapeToConvexObjectTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/physics/shape/ShapeToConvexObjectTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/shape/ShapeToConvexObjectTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/system/FileHandlerTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/system/FileHandlerTest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/src/system/FileHandlerTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/system/FileHandlerTest.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTest/valMemcheck.log" beforeDir="false" afterPath="$PROJECT_DIR$/test/valMemcheck.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WIN_SETUP.md" beforeDir="false" afterPath="$PROJECT_DIR$/WIN_SETUP.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1032,7 +935,7 @@
       <workItem from="1567621173216" duration="2608000" />
       <workItem from="1567698604444" duration="9663000" />
       <workItem from="1567785842571" duration="8126000" />
-      <workItem from="1567838019156" duration="5517000" />
+      <workItem from="1567838019156" duration="7190000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1307,7 +1210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567710817383</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Review CMake configuration">
+      <created>1567846279632</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1567846279632</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1352,7 +1262,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="CSG polygon: detect self intersect polygon (fix logs)" />
     <MESSAGE value="CSG polygon: improve polygon subtraction" />
     <MESSAGE value="Model: allow stop animation when end is reached" />
     <MESSAGE value="MapEditor: fix for new Qt version&#10;Simplify conditions with nullptr&#10;Terrain obstacle: bug fix (unit tests fail)" />
@@ -1377,7 +1286,8 @@
     <MESSAGE value="Nav mesh generator: rename walkableFace into walkableSurface" />
     <MESSAGE value="Nav mesh generator: update documentation" />
     <MESSAGE value="Unit test: fix warning" />
-    <option name="LAST_COMMIT_MESSAGE" value="Unit test: fix warning" />
+    <MESSAGE value="Review CMake configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Review CMake configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

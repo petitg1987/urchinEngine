@@ -60,18 +60,3 @@
     * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\soundEngine`
     * `C:\Users\greg\Desktop\Project\greenCity\.build\debug\urchinEngine\networkEngine`
     * `C:\Users\greg\Desktop\Project\greenCity\release\windows\resources\lib`
-
-# Setup for "Windows Installer Creator"
-* Download and install ".NET framework 3.5.x" from microsoft Web site
-* Download and install "WIX": https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe
-* Add in PATH variable: C:\Program Files (x86)\WiX Toolset v3.11\bin
-
-# Compile and release
-* Copy "Project" folder (only urchin & greenCity) from Linux to "Project" folder of Windows using Ext2Fsd-0.68.exe (version 0.69 not working !)
-* Open CLion
-* File > Settings... > Build, Execution, Deployment > CMake: remove Debug, Debug01 and Debug03
-* File > Reload CMake project
-* Select "greenCity | Release"
-* Clean
-* Build
-* Execute Project\greenCity\release\window\release.bat
