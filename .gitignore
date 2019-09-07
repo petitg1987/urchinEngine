@@ -1,4 +1,4 @@
 .build/
 mapEditor/save/*.frl
 mapEditor/urchinMapEditor
-unitTest/unitTest
+test/testRunner

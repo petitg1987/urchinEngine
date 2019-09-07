@@ -79,7 +79,7 @@ void AssertHelper::assertPoints2FloatEquals(const std::vector<Point2<float>> &po
 {
     AssertHelper::assertUnsignedInt(points.size(), expectedPoints.size());
 
-    for(unsigned int i=0; i<points.size(); ++i)
+    for(std::size_t i=0; i<points.size(); ++i)
     {
         assertPoint2FloatEquals(points[i], expectedPoints[i], epsilon);
     }
@@ -89,7 +89,7 @@ void AssertHelper::assertPoints2LongLongEquals(const std::vector<Point2<long lon
 {
 	AssertHelper::assertUnsignedInt(points.size(), expectedPoints.size());
 
-	for(unsigned int i=0; i<points.size(); ++i)
+	for(std::size_t i=0; i<points.size(); ++i)
 	{
 		assertPoint2LongLongEquals(points[i], expectedPoints[i]);
 	}
@@ -135,7 +135,7 @@ void AssertHelper::assertPolygonFloatEquals(std::vector<Point2<float>> orientedP
 {
     AssertHelper::assertUnsignedInt(orientedPoints.size(), orientedExpectedPoints.size());
 
-    for(unsigned int i=0; i<orientedPoints.size(); ++i)
+    for(std::size_t i=0; i<orientedPoints.size(); ++i)
     {
         try
         {
@@ -156,7 +156,7 @@ void AssertHelper::assertPolygonLongLongEquals(std::vector<Point2<long long>> or
 {
     AssertHelper::assertUnsignedInt(orientedPoints.size(), orientedExpectedPoints.size());
 
-    for(unsigned int i=0; i<orientedPoints.size(); ++i)
+    for(std::size_t i=0; i<orientedPoints.size(); ++i)
     {
         try
         {

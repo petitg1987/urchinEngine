@@ -70,7 +70,7 @@ namespace urchin
 		return boxObject.getSupportPoint(direction);
 	}
 
-	const OBBox<float> CollisionBoxObject::retrieveOBBox() const
+	OBBox<float> CollisionBoxObject::retrieveOBBox() const
 	{
 		return OBBox<float>(getHalfSizes(), getCenterOfMass(), getOrientation());
 	}

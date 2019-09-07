@@ -17,5 +17,5 @@ add_subdirectory(AIEngine)
 add_subdirectory(mapHandler)
 if (NOT WIN32) #not handled on Windows OS
     add_subdirectory(mapEditor)
-    add_subdirectory(unitTest)
+    add_subdirectory(test)
 endif()

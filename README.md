@@ -49,4 +49,27 @@ Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
 - Pre-requisites: 
   - Linux: `sudo apt install qt5-default qtbase5-dev libglew-dev libopenal-dev libsndfile1-dev libfreetype6-dev libcppunit-dev libcurl4-gnutls-dev`
   - Windows: [here](./WIN_SETUP.md)
+- Build:
+  - Debug:
+    ```
+    git clone https://github.com/petitg1987/UrchinEngine.git
+    cmake -DCMAKE_BUILD_TYPE=Debug -S UrchinEngine/ -B UrchinEngine/.build/debug/
+    cmake --build UrchinEngine/.build/debug/ --target all -- -j 6
+    ```
+  - Release:
+    ```
+    git clone https://github.com/petitg1987/UrchinEngine.git
+    cmake -DCMAKE_BUILD_TYPE=Release -S UrchinEngine/ -B UrchinEngine/.build/release/
+    cmake --build UrchinEngine/.build/release/ --target all -- -j 6
+    ```
+- Execute tests:
+    ```
+    cd UrchinEngine/test/
+    ./testRunner
+    ```
 
+## Launch map editor
+```
+cd UrchinEngine/mapEditor/
+./urchinMapEditor
+```
