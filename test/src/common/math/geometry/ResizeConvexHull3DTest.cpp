@@ -4,7 +4,7 @@
 #include <memory>
 #include "UrchinCommon.h"
 
-#include "math/geometry/ResizeConvexHull3DTest.h"
+#include "common/math/geometry/ResizeConvexHull3DTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 

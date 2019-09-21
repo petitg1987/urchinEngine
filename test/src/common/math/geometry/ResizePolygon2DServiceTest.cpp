@@ -3,7 +3,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "math/geometry/ResizePolygon2DServiceTest.h"
+#include "common/math/geometry/ResizePolygon2DServiceTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 

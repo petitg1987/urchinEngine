@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "UrchinCommon.h"
 
-#include "LineSegment2DCollisionTest.h"
+#include "common/math/geometry/LineSegment2DCollisionTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 

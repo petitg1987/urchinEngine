@@ -1,6 +1,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "QuaternionTest.h"
+#include "common/math/algebra/QuaternionTest.h"
 #include "math/algebra/MathValue.h"
 #include "AssertHelper.h"
 using namespace urchin;

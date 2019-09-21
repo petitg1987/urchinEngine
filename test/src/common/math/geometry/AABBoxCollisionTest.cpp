@@ -1,6 +1,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "math/geometry/AABBoxCollisionTest.h"
+#include "common/math/geometry/AABBoxCollisionTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 

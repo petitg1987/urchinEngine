@@ -2,8 +2,8 @@
 #include <cppunit/TestCaller.h>
 #include "UrchinCommon.h"
 
+#include "common/system/FileHandlerTest.h"
 #include "AssertHelper.h"
-#include "system/FileHandlerTest.h"
 using namespace urchin;
 
 /**

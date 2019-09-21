@@ -1,7 +1,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "UrchinCommon.h"
 
-#include "math/geometry/ClosestPointTest.h"
+#include "common/math/geometry/ClosestPointTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 

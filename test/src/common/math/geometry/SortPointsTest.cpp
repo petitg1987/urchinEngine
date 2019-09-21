@@ -3,7 +3,7 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "math/geometry/SortPointsTest.h"
+#include "common/math/geometry/SortPointsTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 

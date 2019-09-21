@@ -24,9 +24,29 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Review CMake configuration">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Move common test in common folder">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WIN_SETUP.md" beforeDir="false" afterPath="$PROJECT_DIR$/WIN_SETUP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/MainTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/MainTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/algebra/QuaternionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/algebra/QuaternionTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/algebra/QuaternionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/algebra/QuaternionTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/AABBoxCollisionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/AABBoxCollisionTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/AABBoxCollisionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/AABBoxCollisionTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ClosestPointTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ClosestPointTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ClosestPointTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ClosestPointTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ConvexHullShape2DTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ConvexHullShape2DTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ConvexHullShape2DTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ConvexHullShape2DTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/LineSegment2DCollisionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/LineSegment2DCollisionTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/LineSegment2DCollisionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/LineSegment2DCollisionTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/OrthogonalProjectionTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/OrthogonalProjectionTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/OrthogonalProjectionTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/OrthogonalProjectionTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ResizeConvexHull3DTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ResizeConvexHull3DTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ResizeConvexHull3DTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ResizeConvexHull3DTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ResizePolygon2DServiceTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ResizePolygon2DServiceTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/ResizePolygon2DServiceTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/ResizePolygon2DServiceTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/SortPointsTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/SortPointsTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/math/geometry/SortPointsTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/math/geometry/SortPointsTest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/system/FileHandlerTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/system/FileHandlerTest.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/src/system/FileHandlerTest.h" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/common/system/FileHandlerTest.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -229,7 +249,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.urchinMapEditor">
+  <component name="RunManager" selected="CMake Application.testRunner">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -935,7 +955,11 @@
       <workItem from="1567621173216" duration="2608000" />
       <workItem from="1567698604444" duration="9663000" />
       <workItem from="1567785842571" duration="8126000" />
-      <workItem from="1567838019156" duration="7190000" />
+      <workItem from="1567838019156" duration="7468000" />
+      <workItem from="1567877913300" duration="2000" />
+      <workItem from="1568555605576" duration="1709000" />
+      <workItem from="1568558165629" duration="50000" />
+      <workItem from="1569049809864" duration="541000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
