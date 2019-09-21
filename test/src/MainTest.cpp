@@ -23,6 +23,7 @@
 #include "physics/algorithm/epa/EPAConvexObjectTest.h"
 #include "physics/algorithm/inertia/InertiaCalculationTest.h"
 #include "physics/island/IslandContainerTest.h"
+#include "physics/it/FallingObjectIT.h"
 #include "ai/path/navmesh/CSGPolygonTest.h"
 #include "ai/path/navmesh/MonotonePolygonTest.h"
 #include "ai/path/navmesh/TriangulationTest.h"
@@ -32,65 +33,77 @@
 #include "ai/path/navmesh/TerrainObstacleServiceTest.h"
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 
+void commonTests(CppUnit::TextUi::TestRunner &runner)
+{
+    //system - file
+    runner.addTest(FileHandlerTest::suite());
+
+    //math - algebra
+    runner.addTest(QuaternionTest::suite());
+
+    //math - geometry
+    runner.addTest(OrthogonalProjectionTest::suite());
+    runner.addTest(ClosestPointTest::suite());
+    runner.addTest(AABBoxCollissionTest::suite());
+    runner.addTest(LineSegment2DCollisionTest::suite());
+    runner.addTest(ResizeConvexHull3DTest::suite());
+    runner.addTest(ResizePolygon2DServiceTest::suite());
+    runner.addTest(ConvexHullShape2DTest::suite());
+    runner.addTest(SortPointsTest::suite());
+}
+
+void physicsTests(CppUnit::TextUi::TestRunner &runner)
+{
+    //shape
+    runner.addTest(ShapeToAABBoxTest::suite());
+    runner.addTest(ShapeToConvexObjectTest::suite());
+
+    //object
+    runner.addTest(SupportPointTest::suite());
+
+    //algorithm
+    runner.addTest(GJKSphereTest::suite());
+    runner.addTest(GJKBoxTest::suite());
+    runner.addTest(GJKConvexHullTest::suite());
+    runner.addTest(GJKConvexObjectTest::suite());
+    runner.addTest(EPABoxTest::suite());
+    runner.addTest(EPASphereTest::suite());
+    runner.addTest(EPAConvexHullTest::suite());
+    runner.addTest(EPAConvexObjectTest::suite());
+
+    //constraint solver
+    runner.addTest(InertiaCalculationTest::suite());
+
+    //container
+    runner.addTest(IslandContainerTest::suite());
+
+    //integration tests (IT)
+    runner.addTest(FallingObjectIT::suite());
+}
+
+void aiTests(CppUnit::TextUi::TestRunner &runner)
+{
+    //navigation mesh
+    runner.addTest(CSGPolygonTest::suite());
+    runner.addTest(MonotonePolygonTest::suite());
+    runner.addTest(TriangulationTest::suite());
+    runner.addTest(PolygonsUnionTest::suite());
+    runner.addTest(PolygonsSubtractionTest::suite());
+    runner.addTest(NavMeshGeneratorTest::suite());
+    runner.addTest(TerrainObstacleServiceTest::suite());
+
+    //pathfinding
+    runner.addTest(FunnelAlgorithmTest::suite());
+}
+
 int main()
 {
-	CppUnit::TextUi::TestRunner runner;
-
-	//engine configuration
 	urchin::ConfigService::instance()->loadProperties("resources/engine.properties");
 
-	//system - file
-	runner.addTest(FileHandlerTest::suite());
-
-	//math - algebra
-	runner.addTest(QuaternionTest::suite());
-
-	//math - geometry
-	runner.addTest(OrthogonalProjectionTest::suite());
-	runner.addTest(ClosestPointTest::suite());
-	runner.addTest(AABBoxCollissionTest::suite());
-	runner.addTest(LineSegment2DCollisionTest::suite());
-	runner.addTest(ResizeConvexHull3DTest::suite());
-	runner.addTest(ResizePolygon2DServiceTest::suite());
-	runner.addTest(ConvexHullShape2DTest::suite());
-	runner.addTest(SortPointsTest::suite());
-
-	//physics - shape
-	runner.addTest(ShapeToAABBoxTest::suite());
-	runner.addTest(ShapeToConvexObjectTest::suite());
-
-	//physics - object
-	runner.addTest(SupportPointTest::suite());
-
-	//physics - algorithm
-	runner.addTest(GJKSphereTest::suite());
-	runner.addTest(GJKBoxTest::suite());
-	runner.addTest(GJKConvexHullTest::suite());
-	runner.addTest(GJKConvexObjectTest::suite());
-
-	runner.addTest(EPABoxTest::suite());
-	runner.addTest(EPASphereTest::suite());
-	runner.addTest(EPAConvexHullTest::suite());
-	runner.addTest(EPAConvexObjectTest::suite());
-
-	//physics - constraint solver
-	runner.addTest(InertiaCalculationTest::suite());
-
-	//physics - container
-	runner.addTest(IslandContainerTest::suite());
-
-	//ai - navigation mesh
-	runner.addTest(CSGPolygonTest::suite());
-	runner.addTest(MonotonePolygonTest::suite());
-	runner.addTest(TriangulationTest::suite());
-	runner.addTest(PolygonsUnionTest::suite());
-	runner.addTest(PolygonsSubtractionTest::suite());
-	runner.addTest(NavMeshGeneratorTest::suite());
-	runner.addTest(TerrainObstacleServiceTest::suite());
-
-	//ai - pathfinding
-	runner.addTest(FunnelAlgorithmTest::suite());
-
+    CppUnit::TextUi::TestRunner runner;
+    commonTests(runner);
+    physicsTests(runner);
+    aiTests(runner);
 	runner.run();
 
 	urchin::SingletonManager::destroyAllSingletons();
