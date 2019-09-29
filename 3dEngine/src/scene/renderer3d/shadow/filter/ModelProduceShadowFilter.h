@@ -4,7 +4,6 @@
 #include "UrchinCommon.h"
 
 #include "scene/renderer3d/model/Model.h"
-#include "scene/renderer3d/octree/filter/OctreeableFilter.h"
 
 namespace urchin
 {

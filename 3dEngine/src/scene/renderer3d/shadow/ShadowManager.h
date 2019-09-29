@@ -8,7 +8,6 @@
 #include "scene/renderer3d/shadow/display/ShadowModelUniform.h"
 #include "scene/renderer3d/light/Light.h"
 #include "scene/renderer3d/light/LightManager.h"
-#include "scene/renderer3d/octree/OctreeManager.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/camera/Camera.h"

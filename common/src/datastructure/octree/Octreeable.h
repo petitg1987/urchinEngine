@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <stdexcept>
-#include "UrchinCommon.h"
 
 #include "Octree.h"
 

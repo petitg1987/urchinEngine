@@ -10,7 +10,6 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/model/displayer/ModelDisplayer.h"
 #include "scene/renderer3d/antialiasing/AntiAliasingManager.h"
-#include "scene/renderer3d/octree/OctreeManager.h"
 #include "scene/renderer3d/shadow/ShadowManager.h"
 #include "scene/renderer3d/ambientocclusion/AmbientOcclusionManager.h"
 #include "scene/renderer3d/model/Model.h"

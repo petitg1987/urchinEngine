@@ -3,7 +3,6 @@
 #include <stdexcept>
 
 #include "ShadowData.h"
-#include "scene/renderer3d/octree/helper/OctreeableHelper.h"
 
 namespace urchin
 {

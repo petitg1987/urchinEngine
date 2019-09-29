@@ -9,7 +9,6 @@
 
 #include "ShadowManager.h"
 #include "scene/renderer3d/shadow/filter/ModelProduceShadowFilter.h"
-#include "scene/renderer3d/octree/helper/OctreeableHelper.h"
 #include "utils/filter/TextureFilter.h"
 #include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "utils/filter/downsample/DownSampleFilterBuilder.h"

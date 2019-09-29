@@ -5,10 +5,9 @@
 #include <limits>
 #include <memory>
 #include <algorithm>
-#include "UrchinCommon.h"
 
-#include "scene/renderer3d/octree/filter/OctreeableFilter.h"
-#include "utils/display/geometry/aabbox/AABBoxModel.h"
+#include "math/geometry/3d/object/AABBox.h"
+#include "datastructure/octree/filter/OctreeableFilter.h"
 
 namespace urchin
 {

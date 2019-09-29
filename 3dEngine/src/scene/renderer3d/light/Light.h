@@ -4,8 +4,6 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "scene/renderer3d//octree/Octreeable.h"
-
 namespace urchin
 {
 

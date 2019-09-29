@@ -8,7 +8,6 @@
 
 #include "Meshes.h"
 #include "Animation.h"
-#include "scene/renderer3d/octree/Octreeable.h"
 #include "resources/model/ConstMeshes.h"
 #include "resources/model/ConstAnimation.h"
 

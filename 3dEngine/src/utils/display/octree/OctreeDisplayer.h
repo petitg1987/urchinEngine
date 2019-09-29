@@ -1,7 +1,9 @@
 #ifndef URCHINENGINE_OCTREEDISPLAYER_H
 #define URCHINENGINE_OCTREEDISPLAYER_H
 
-#include "scene/renderer3d/octree/OctreeManager.h"
+#include "UrchinCommon.h"
+
+#include "utils/display/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin
 {

@@ -29,12 +29,21 @@
 #include "pattern/singleton/SingletonManager.h"
 #include "pattern/singleton/SingletonInterface.h"
 
+#include "datastructure/octree/Octreeable.h"
+#include "datastructure/octree/OctreeManager.h"
+#include "datastructure/octree/Octree.h"
+#include "datastructure/octree/filter/OctreeableFilter.h"
+#include "datastructure/octree/filter/AcceptAllFilter.h"
+#include "datastructure/octree/helper/OctreeableHelper.h"
+
 #include "io/Converter.h"
 #include "io/StringUtil.h"
 #include "io/FileReaderUtil.h"
+
 #include "system/FileSystem.h"
 #include "system/FileHandler.h"
 #include "system/NumericalCheck.h"
+
 #include "math/algebra/matrix/Matrix2.h"
 #include "math/algebra/matrix/Matrix3.h"
 #include "math/algebra/matrix/Matrix4.h"

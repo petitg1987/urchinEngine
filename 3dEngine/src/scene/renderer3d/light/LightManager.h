@@ -5,7 +5,6 @@
 #include "UrchinCommon.h"
 
 #include "Light.h"
-#include "scene/renderer3d/octree/OctreeManager.h"
 
 namespace urchin
 {

@@ -4,11 +4,10 @@
 #include <limits>
 #include <stdexcept>
 #include <vector>
-#include "UrchinCommon.h"
 
 #include "Octree.h"
-#include "scene/renderer3d/octree/filter/OctreeableFilter.h"
-#include "scene/renderer3d/octree/filter/AcceptAllFilter.h"
+#include "datastructure/octree/filter/OctreeableFilter.h"
+#include "datastructure/octree/filter/AcceptAllFilter.h"
 
 namespace urchin
 {

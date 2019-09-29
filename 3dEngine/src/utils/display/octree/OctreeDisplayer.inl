@@ -17,7 +17,7 @@ template<class T> void OctreeDisplayer<T>::drawOctree(const Matrix4<float> &proj
         aabboxes.push_back(leafOctree->getAABBox());
     }
 
-    AABBoxModel aabboxModel(aabboxes);
+    urchin::AABBoxModel aabboxModel(aabboxes);
     aabboxModel.onCameraProjectionUpdate(projectionMatrix);
     aabboxModel.display(viewMatrix);
 }
