@@ -95,12 +95,3 @@ template<class TOctreeable> void Octreeable<TOctreeable>::removeRefOctree(Octree
 		throw std::invalid_argument("Impossible to find the reference octree to remove.");
 	}
 }
-
-#ifdef _DEBUG
-	template<class TOctreeable> void Octreeable<TOctreeable>::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
-	{
-		std::unique_ptr<AABBoxModel> aabboxModel = std::make_unique<AABBoxModel>(getAABBox());
-		aabboxModel->onCameraProjectionUpdate(projectionMatrix);
-		aabboxModel->display(viewMatrix);
-	}
-#endif

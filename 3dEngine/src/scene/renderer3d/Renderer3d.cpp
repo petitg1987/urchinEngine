@@ -5,6 +5,7 @@
 #include "Renderer3d.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 #include "utils/display/texture/TextureDisplayer.h"
+#include "utils/display/octree/OctreeDisplayer.h"
 #include "utils/shader/ShaderManager.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
@@ -522,7 +523,8 @@ namespace urchin
 
 		#ifdef _DEBUG
 			//display the octree
-//			modelOctreeManager->drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+//			OctreeDisplayer octreeDisplayer(modelOctreeManager);
+//			octreeDisplayer.drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
 
 			//display models bounding box
 //			modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());

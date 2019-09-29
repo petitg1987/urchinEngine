@@ -35,14 +35,11 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::notify(Observable *
 {
 	if(dynamic_cast<TOctreeable *>(observable))
 	{
-		switch(notificationType)
-		{
-			case TOctreeable::MOVE:
-			{
-				TOctreeable *octreeable = dynamic_cast<TOctreeable *>(observable);
-				movingOctreeables.emplace_back(octreeable);
-			}
-		}
+	    if(notificationType==TOctreeable::MOVE)
+        {
+            TOctreeable *octreeable = dynamic_cast<TOctreeable *>(observable);
+            movingOctreeables.emplace_back(octreeable);
+        }
 	}
 }
 
@@ -214,6 +211,28 @@ template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable
 	return *mainOctree;
 }
 
+template<class TOctreeable> std::vector<const Octree<TOctreeable> *> OctreeManager<TOctreeable>::getAllLeafOctrees() const
+{
+    std::vector<const Octree<TOctreeable> *> leafOctrees;
+
+    browseNodes.clear();
+    browseNodes.push_back(mainOctree);
+    for(unsigned int i=0; i<browseNodes.size(); ++i)
+    {
+        const Octree<TOctreeable> *octree = browseNodes[i];
+
+        if(octree->isLeaf())
+        {
+            leafOctrees.push_back(octree);
+        }else
+        {
+            browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
+        }
+    }
+
+    return leafOctrees;
+}
+
 template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable>::getAllOctreeables() const
 {
 	std::vector<TOctreeable *> allOctreeables;
@@ -317,37 +336,3 @@ template<class TOctreeable> bool OctreeManager<TOctreeable>::resizeOctree(TOctre
 
 	return true;
 }
-
-#ifdef _DEBUG
-	template<class TOctreeable> void OctreeManager<TOctreeable>::drawOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
-	{
-        std::vector<const Octree<TOctreeable> *> leafOctrees;
-
-        browseNodes.clear();
-        browseNodes.push_back(mainOctree);
-        for(unsigned int i=0; i<browseNodes.size(); ++i)
-        {
-            const Octree<TOctreeable> *octree = browseNodes[i];
-
-            if(octree->isLeaf())
-            {
-                leafOctrees.push_back(octree);
-            }else
-            {
-                browseNodes.insert(browseNodes.end(), octree->getChildren().begin(), octree->getChildren().end());
-            }
-        }
-
-		std::vector<AABBox<float>> aabboxes;
-		aabboxes.reserve(leafOctrees.size());
-
-		for(const auto &leafOctree : leafOctrees)
-		{
-			aabboxes.push_back(leafOctree->getAABBox());
-		}
-
-		AABBoxModel aabboxModel(aabboxes);
-		aabboxModel.onCameraProjectionUpdate(projectionMatrix);
-		aabboxModel.display(viewMatrix);
-	}
-#endif

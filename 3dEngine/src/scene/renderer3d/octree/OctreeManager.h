@@ -9,7 +9,6 @@
 #include "Octree.h"
 #include "scene/renderer3d/octree/filter/OctreeableFilter.h"
 #include "scene/renderer3d/octree/filter/AcceptAllFilter.h"
-#include "utils/display/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin
 {
@@ -35,15 +34,12 @@ namespace urchin
 			void postRefreshOctreeables();
 
 			const Octree<TOctreeable> &getMainOctree() const;
+			std::vector<const Octree<TOctreeable> *> getAllLeafOctrees() const;
 
 			std::vector<TOctreeable *> getAllOctreeables() const;
 			void getOctreeablesIn(const ConvexObject3D<float> &, std::vector<TOctreeable *> &) const;
 			void getOctreeablesIn(const ConvexObject3D<float> &, std::vector<TOctreeable *> &, const OctreeableFilter<TOctreeable> &) const;
-		
-			#ifdef _DEBUG
-				void drawOctree(const Matrix4<float> &, const Matrix4<float> &) const;
-			#endif
-		
+
 		private:
 			void buildOctree(std::vector<TOctreeable *> &);
 			bool resizeOctree(TOctreeable *);

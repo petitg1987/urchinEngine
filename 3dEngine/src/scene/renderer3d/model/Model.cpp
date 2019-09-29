@@ -269,6 +269,13 @@ namespace urchin
 	}
 
 #ifdef _DEBUG
+    void Model::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
+    {
+        AABBoxModel aabboxModel(getAABBox());
+        aabboxModel.onCameraProjectionUpdate(projectionMatrix);
+        aabboxModel.display(viewMatrix);
+    }
+
 	void Model::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
 		if(meshes)

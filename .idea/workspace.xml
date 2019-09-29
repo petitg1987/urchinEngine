@@ -24,16 +24,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Move common test in common folder">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Fix init warning">
+      <change afterPath="$PROJECT_DIR$/3dEngine/src/utils/display/octree/OctreeDisplayer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/3dEngine/src/utils/display/octree/OctreeDisplayer.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/3dEngine/src/utils/display/octree/OctreeDisplayer.inl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/SceneManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/SceneManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/SceneManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/SceneManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/light/LightManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/light/LightManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Model.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Model.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Model.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Model.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/OctreeManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/OctreeManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/OctreeManager.inl" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/OctreeManager.inl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/Octreeable.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/Octreeable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/Octreeable.inl" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/octree/Octreeable.inl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/displayer/SceneDisplayerWidget.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,6 +63,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="1-urchin3dEngine" />
+  </component>
   <component name="ProjectId" id="1P135Fq0QIREjDWxIaVQTCZqEAH" />
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -952,7 +959,8 @@
       <workItem from="1569336991646" duration="1513000" />
       <workItem from="1569513570258" duration="4070000" />
       <workItem from="1569739644416" duration="145000" />
-      <workItem from="1569739804891" duration="3192000" />
+      <workItem from="1569739804891" duration="3726000" />
+      <workItem from="1569780207462" duration="2649000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1248,7 +1256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569075080316</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Fix init warning">
+      <created>1569749288479</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1569749288480</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1296,7 +1311,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="MapEditor: fix for new Qt version&#10;Simplify conditions with nullptr&#10;Terrain obstacle: bug fix (unit tests fail)" />
     <MESSAGE value="Review localized shape writer" />
     <MESSAGE value="AI: reduce memory allocation" />
     <MESSAGE value="AI: reduce memory allocation (fix tests)" />
@@ -1321,7 +1335,8 @@
     <MESSAGE value="Review CMake configuration" />
     <MESSAGE value="Move common test in common folder" />
     <MESSAGE value="Add physics integration tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add physics integration tests" />
+    <MESSAGE value="Fix init warning" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix init warning" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

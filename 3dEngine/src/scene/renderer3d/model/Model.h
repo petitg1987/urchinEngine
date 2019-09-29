@@ -47,6 +47,7 @@ namespace urchin
 			void display(const MeshParameter &) const;
 
 			#ifdef _DEBUG
+                void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
 				void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
 			#endif
 

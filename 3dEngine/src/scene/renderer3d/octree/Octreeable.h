@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include "UrchinCommon.h"
 
-#include "utils/display/geometry/aabbox/AABBoxModel.h"
 #include "Octree.h"
 
 namespace urchin
@@ -43,10 +42,6 @@ namespace urchin
 			virtual const AABBox<float> &getAABBox() const = 0;
 			virtual const Transform<float> &getTransform() const = 0;
 
-			#ifdef _DEBUG
-				void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
-			#endif
-		
 		private:
 			std::vector<Octree<TOctreeable> *> refOctree;
 
