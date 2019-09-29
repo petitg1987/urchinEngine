@@ -1,7 +1,6 @@
 #include <GL/glew.h>
 #include <stdexcept>
 #include <string>
-#include <iostream>
 
 #include "SceneManager.h"
 
@@ -107,12 +106,12 @@ namespace urchin
 		}
 	}
 
-	int SceneManager::getSceneWidth() const
+	unsigned int SceneManager::getSceneWidth() const
 	{
 		return sceneWidth;
 	}
 
-	int SceneManager::getSceneHeight() const
+	unsigned int SceneManager::getSceneHeight() const
 	{
 		return sceneHeight;
 	}

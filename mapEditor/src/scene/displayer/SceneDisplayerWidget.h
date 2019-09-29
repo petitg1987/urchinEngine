@@ -17,7 +17,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SceneDisplayerWidget(QWidget *, const std::string &);
+			SceneDisplayerWidget(QWidget *, std::string );
 			~SceneDisplayerWidget() override;
 
 			enum NotificationType

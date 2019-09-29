@@ -5,6 +5,7 @@
 #include "Renderer3d.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 #include "utils/display/texture/TextureDisplayer.h"
+#include "utils/shader/ShaderManager.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
 
@@ -22,6 +23,7 @@ namespace urchin
 			camera(nullptr),
 			skybox(nullptr),
 			fboIDs(nullptr),
+            fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2},
 			textureIDs(nullptr),
 			deferredShadingShader(0),
 			mInverseViewProjectionLoc(0),
@@ -152,9 +154,6 @@ namespace urchin
 
 		//deferred shading
 		glBindFramebuffer(GL_FRAMEBUFFER, fboIDs[FBO_SCENE]);
-		fboAttachments[0] = GL_COLOR_ATTACHMENT0;
-		fboAttachments[1] = GL_COLOR_ATTACHMENT1;
-		fboAttachments[2] = GL_COLOR_ATTACHMENT2;
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DEPTH]); //depth buffer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

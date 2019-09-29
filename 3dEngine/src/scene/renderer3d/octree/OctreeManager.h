@@ -10,7 +10,6 @@
 #include "scene/renderer3d/octree/filter/OctreeableFilter.h"
 #include "scene/renderer3d/octree/filter/AcceptAllFilter.h"
 #include "utils/display/geometry/aabbox/AABBoxModel.h"
-#include "utils/shader/ShaderManager.h"
 
 namespace urchin
 {

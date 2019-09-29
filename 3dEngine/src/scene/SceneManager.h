@@ -22,8 +22,8 @@ namespace urchin
 
 			//scene properties
 			void onResize(unsigned int, unsigned int);
-			int getSceneWidth() const;
-			int getSceneHeight() const;
+			unsigned int getSceneWidth() const;
+			unsigned int getSceneHeight() const;
 
 			//Fps
 			float getFps() const;

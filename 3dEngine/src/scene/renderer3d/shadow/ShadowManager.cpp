@@ -13,6 +13,7 @@
 #include "utils/filter/TextureFilter.h"
 #include "utils/filter/gaussianblur/GaussianBlurFilterBuilder.h"
 #include "utils/filter/downsample/DownSampleFilterBuilder.h"
+#include "utils/shader/ShaderManager.h"
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
 #define DEFAULT_NUMBER_SHADOW_MAPS 5

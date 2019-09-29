@@ -7,6 +7,7 @@
 - Model
     - **OPTIMIZATION** (`medium`): Group same models in same octree to perform one draw call
 	- **OPTIMIZATION** (`minor`): Models LOD
+	- **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
 	- **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
 - Shadow
     - **OPTIMIZATION** (`medium`): Improve performance ShadowManager::updateVisibleModels
@@ -43,7 +44,7 @@
 
 # AI engine
 - Navigation mesh
-    - **OPTIMIZATION** (`medium`): Use AABBTree/Octree for NavMeshGenerator#expandedPolytopes to find more quickly obstacles and jump links
+    - **OPTIMIZATION** (`major`): Use AABBTree/Octree/SweepAndPrune for NavMeshGenerator#expandedPolytopes to find more quickly obstacles and jump links
 	- **NEW FEATURE** (`major`): Create jump links in navigation mesh
 	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh only squares 
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
