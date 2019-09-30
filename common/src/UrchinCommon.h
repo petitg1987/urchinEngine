@@ -29,12 +29,12 @@
 #include "pattern/singleton/SingletonManager.h"
 #include "pattern/singleton/SingletonInterface.h"
 
-#include "datastructure/octree/Octreeable.h"
-#include "datastructure/octree/OctreeManager.h"
-#include "datastructure/octree/Octree.h"
-#include "datastructure/octree/filter/OctreeableFilter.h"
-#include "datastructure/octree/filter/AcceptAllFilter.h"
-#include "datastructure/octree/helper/OctreeableHelper.h"
+#include "partitioning/octree/Octreeable.h"
+#include "partitioning/octree/OctreeManager.h"
+#include "partitioning/octree/Octree.h"
+#include "partitioning/octree/filter/OctreeableFilter.h"
+#include "partitioning/octree/filter/AcceptAllFilter.h"
+#include "partitioning/octree/helper/OctreeableHelper.h"
 
 #include "io/Converter.h"
 #include "io/StringUtil.h"

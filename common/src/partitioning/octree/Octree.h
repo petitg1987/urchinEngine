@@ -7,7 +7,7 @@
 #include <algorithm>
 
 #include "math/geometry/3d/object/AABBox.h"
-#include "datastructure/octree/filter/OctreeableFilter.h"
+#include "partitioning/octree/filter/OctreeableFilter.h"
 
 namespace urchin
 {
