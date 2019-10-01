@@ -1,8 +1,9 @@
-#ifndef GREENCITY_AABBNODEDATA_H
-#define GREENCITY_AABBNODEDATA_H
+#ifndef URCHINENGINE_AABBNODEDATA_H
+#define URCHINENGINE_AABBNODEDATA_H
 
 #include <string>
-#include "UrchinCommon.h"
+
+#include "math/geometry/3d/object/AABBox.h"
 
 namespace urchin
 {

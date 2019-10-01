@@ -2,10 +2,10 @@
 #define URCHINENGINE_BODYAABBNODEDATA_H
 
 #include <set>
+#include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
 #include "collision/broadphase/PairContainer.h"
-#include "collision/broadphase/aabbtree/AABBNodeData.h"
 
 namespace urchin
 {

@@ -1,10 +1,9 @@
 #ifndef URCHINENGINE_AABBTREE_H
 #define URCHINENGINE_AABBTREE_H
 
-#include "UrchinCommon.h"
-
-#include "collision/broadphase/aabbtree/AABBNode.h"
-#include "collision/broadphase/aabbtree/AABBNodeData.h"
+#include "partitioning/aabbtree/AABBNode.h"
+#include "partitioning/aabbtree/AABBNodeData.h"
+#include "math/geometry/3d/Ray.h"
 
 #define BOUNDARIES_MARGIN_PERCENTAGE 0.3f
 

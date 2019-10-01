@@ -1,11 +1,12 @@
-#ifndef GREENCITY_BODYAABBTREE_H
-#define GREENCITY_BODYAABBTREE_H
+#ifndef URCHINENGINE_BODYAABBTREE_H
+#define URCHINENGINE_BODYAABBTREE_H
+
+#include "UrchinCommon.h"
 
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
 #include "collision/broadphase/PairContainer.h"
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
-#include "collision/broadphase/aabbtree/AABBTree.h"
 #include "collision/broadphase/aabbtree/BodyAABBNodeData.h"
 
 namespace urchin

@@ -29,6 +29,9 @@
 #include "pattern/singleton/SingletonManager.h"
 #include "pattern/singleton/SingletonInterface.h"
 
+#include "partitioning/aabbtree/AABBTree.h"
+#include "partitioning/aabbtree/AABBNode.h"
+#include "partitioning/aabbtree/AABBNodeData.h"
 #include "partitioning/octree/Octreeable.h"
 #include "partitioning/octree/OctreeManager.h"
 #include "partitioning/octree/Octree.h"
