@@ -29,6 +29,7 @@ void FallingObjectIT::fallOnPlane()
     }
 
     AssertHelper::assertFloatEquals(cubeBody->getTransform().getPosition().Y, 0.5f, 0.1f);
+    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it doesn't move");
 }
 
 void FallingObjectIT::fallForever()
@@ -53,6 +54,7 @@ void FallingObjectIT::fallForever()
     }
 
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -3.0f, "Check cube doesn't fall forever");
+    AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
     AssertHelper::assertTrue(LogsUtils::logFileContain("(WW) Body cube is below the limit of"), "Log must contain warning about body falling forever");
     LogsUtils::emptyLogFile();
 }

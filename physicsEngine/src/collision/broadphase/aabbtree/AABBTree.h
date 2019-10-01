@@ -3,57 +3,53 @@
 
 #include "UrchinCommon.h"
 
-#include "body/work/AbstractWorkBody.h"
-#include "collision/OverlappingPair.h"
-#include "collision/broadphase/PairContainer.h"
-#include "collision/broadphase/BroadPhaseAlgorithm.h"
 #include "collision/broadphase/aabbtree/AABBNode.h"
+#include "collision/broadphase/aabbtree/AABBNodeData.h"
+
+#define BOUNDARIES_MARGIN_PERCENTAGE 0.3f
 
 namespace urchin
 {
 
-	class AABBTree
+	template<class OBJ> class AABBTree
 	{
 		public:
-			AABBTree();
-			~AABBTree();
+			explicit AABBTree(float);
+			virtual ~AABBTree();
 
-			void addBody(AbstractWorkBody *, PairContainer *);
-			void removeBody(AbstractWorkBody *);
-			void updateBodies();
+            AABBNode<OBJ> *getRootNode() const;
+            AABBNodeData<OBJ> *getNodeData(OBJ *) const;
 
-			const std::vector<OverlappingPair *> &getOverlappingPairs() const;
+			void addObject(AABBNodeData<OBJ> *);
+            virtual void postAddObjectCallback(AABBNode<OBJ> *);
 
-			void rayTest(const Ray<float> &, std::vector<AbstractWorkBody *> &) const;
-			void enlargedRayTest(const Ray<float> &, float, const AbstractWorkBody *, std::vector<AbstractWorkBody *> &) const;
+			void removeObject(AABBNodeData<OBJ> *);
+            virtual void preRemoveObjectCallback(AABBNode<OBJ> *);
+
+			void updateObjects();
+			virtual void preUpdateObject(AABBNode<OBJ> *);
+
+			void rayTest(const Ray<float> &, std::vector<OBJ *> &) const;
+			void enlargedRayTest(const Ray<float> &, float, const OBJ *, std::vector<OBJ *> &) const;
+
+	    protected:
+            std::map<OBJ *, AABBNode<OBJ> *> objectsNode;
+            mutable std::vector<AABBNode<OBJ> *> browseNodes;
 
 		private:
-			void insertNode(AABBNode *, AABBNode *);
-			void replaceNode(AABBNode *, AABBNode *);
-			void removeNode(AABBNode *);
-
-			void computeOverlappingPairsFor(AABBNode *, AABBNode *);
-			void createOverlappingPair(BodyNodeData *, BodyNodeData *);
-			void removeOverlappingPairs(const BodyNodeData *);
-
-            void computeWorldBoundary();
-			void controlBoundaries(AABBNode *, AbstractWorkBody *);
+			void insertNode(AABBNode<OBJ> *, AABBNode<OBJ> *);
+			void replaceNode(AABBNode<OBJ> *, AABBNode<OBJ> *);
+			void removeNode(AABBNode<OBJ> *);
 
 			const float fatMargin;
-
-            bool inInitializationPhase;
-            float minYBoundary;
-
-			AABBNode *rootNode;
-			std::map<AbstractWorkBody *, AABBNode *> bodiesNode;
-			PairContainer *defaultPairContainer;
-
-			mutable std::vector<AABBNode *> browseNodes;
+			AABBNode<OBJ> *rootNode;
 
 			#ifdef _DEBUG
-				void printTree(AABBNode *, unsigned int);
+				void printTree(AABBNode<OBJ> *, unsigned int);
 			#endif
 	};
+
+    #include "AABBTree.inl"
 
 }
 

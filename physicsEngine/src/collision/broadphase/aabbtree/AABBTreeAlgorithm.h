@@ -6,7 +6,7 @@
 #include "body/work/AbstractWorkBody.h"
 #include "collision/OverlappingPair.h"
 #include "collision/broadphase/BroadPhaseAlgorithm.h"
-#include "collision/broadphase/aabbtree/AABBTree.h"
+#include "collision/broadphase/aabbtree/BodyAABBTree.h"
 
 namespace urchin
 {
@@ -27,7 +27,7 @@ namespace urchin
 			std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const override;
 
 		private:
-			AABBTree *tree;
+            BodyAABBTree *tree;
 
 	};
 

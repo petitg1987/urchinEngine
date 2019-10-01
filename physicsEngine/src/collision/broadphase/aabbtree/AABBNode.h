@@ -3,18 +3,18 @@
 
 #include "UrchinCommon.h"
 
-#include "collision/broadphase/aabbtree/BodyNodeData.h"
+#include "collision/broadphase/aabbtree/AABBNodeData.h"
 
 namespace urchin
 {
 
-	class AABBNode
+	template<class OBJ> class AABBNode
 	{
 		public:
-			explicit AABBNode(BodyNodeData *);
+			explicit AABBNode(AABBNodeData<OBJ> *);
 			~AABBNode();
 
-			BodyNodeData *getBodyNodeData() const;
+            AABBNodeData<OBJ> *getNodeData() const;
 
 			bool isLeaf() const;
 			bool isRoot() const;
@@ -33,12 +33,14 @@ namespace urchin
 			void updateAABBox(float);
 
 		private:
-			BodyNodeData *bodyNodeData;
+            AABBNodeData<OBJ> *nodeData;
 			AABBox<float> aabbox;
 
-			AABBNode *parentNode;
-			AABBNode *children[2];
+			AABBNode<OBJ> *parentNode;
+			AABBNode<OBJ> *children[2];
 	};
+
+    #include "AABBNode.inl"
 
 }
 

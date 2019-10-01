@@ -5,7 +5,7 @@ namespace urchin
 {
 
 	AABBTreeAlgorithm::AABBTreeAlgorithm() :
-			tree(new AABBTree())
+			tree(new BodyAABBTree())
 	{
 
 	}
