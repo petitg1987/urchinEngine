@@ -27,6 +27,7 @@ namespace urchin
 
             virtual bool isWalkable() const = 0;
             virtual Rectangle<float> computeXZRectangle() const = 0;
+            virtual AABBox<float> computeAABBox() const = 0;
 
             virtual const std::vector<Point2<float>> &getOutlineCwPoints() const = 0;
             virtual Plane<float> getPlane(const Rectangle<float> &, const NavMeshAgent &) const = 0;

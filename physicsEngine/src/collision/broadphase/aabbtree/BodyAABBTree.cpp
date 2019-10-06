@@ -52,7 +52,7 @@ namespace urchin
         AABBTree::updateObjects();
     }
 
-    void BodyAABBTree::preUpdateObject(AABBNode<AbstractWorkBody> *nodeToUpdate)
+    void BodyAABBTree::preUpdateObjectCallback(AABBNode<AbstractWorkBody> *nodeToUpdate)
     {
         controlBoundaries(nodeToUpdate);
     }

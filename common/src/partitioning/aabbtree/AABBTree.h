@@ -26,7 +26,7 @@ namespace urchin
             virtual void preRemoveObjectCallback(AABBNode<OBJ> *);
 
 			void updateObjects();
-			virtual void preUpdateObject(AABBNode<OBJ> *);
+			virtual void preUpdateObjectCallback(AABBNode<OBJ> *);
 
 			void rayTest(const Ray<float> &, std::vector<OBJ *> &) const;
 			void enlargedRayTest(const Ray<float> &, float, const OBJ *, std::vector<OBJ *> &) const;

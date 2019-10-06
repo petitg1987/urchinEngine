@@ -59,6 +59,19 @@ namespace urchin
         return Rectangle<float>(minPoint, maxPoint);
     }
 
+    AABBox<float> PolytopeTerrainSurface::computeAABBox() const
+    {
+        std::vector<Point3<float>> globalVertices;
+        globalVertices.reserve(localVertices.size());
+
+        for(const auto &localVertex : localVertices)
+        {
+            globalVertices.push_back(position + localVertex);
+        }
+
+        return AABBox<float>(globalVertices);
+    }
+
     const std::vector<Point2<float>> &PolytopeTerrainSurface::getOutlineCwPoints() const
     {
         return outlineCwPoints;

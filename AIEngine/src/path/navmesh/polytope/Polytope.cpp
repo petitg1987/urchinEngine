@@ -22,6 +22,7 @@ namespace urchin
         }
 
         buildXZRectangle();
+        buildAABBox();
 	}
 
 	const std::string &Polytope::getName() const
@@ -39,10 +40,15 @@ namespace urchin
 		return surfaces[surfaceIndex];
 	}
 
-	const std::unique_ptr<Rectangle<float>> &Polytope::getXZRectangle() const
+	const Rectangle<float> &Polytope::getXZRectangle() const
 	{
 		return xzRectangle;
 	}
+
+    const AABBox<float> &Polytope::getAABBox() const
+    {
+	    return aabbox;
+    }
 
 	void Polytope::setWalkableCandidate(bool walkableCandidate)
 	{
@@ -66,13 +72,21 @@ namespace urchin
 
 	void Polytope::buildXZRectangle()
 	{
-		Rectangle<float> xzRectangle = surfaces[0]->computeXZRectangle();
+		xzRectangle = surfaces[0]->computeXZRectangle();
 		for(std::size_t i=1; i<surfaces.size(); ++i)
 		{
 			xzRectangle = xzRectangle.merge(surfaces[i]->computeXZRectangle());
 		}
-		this->xzRectangle = std::make_unique<Rectangle<float>>(xzRectangle.getMin(), xzRectangle.getDiagonal());
 	}
+
+    void Polytope::buildAABBox()
+    {
+	    aabbox = surfaces[0]->computeAABBox();
+        for(std::size_t i=1; i<surfaces.size(); ++i)
+        {
+            aabbox = aabbox.merge(surfaces[i]->computeAABBox());
+        }
+    }
 
     std::ostream& operator <<(std::ostream &stream, const Polytope &polytope)
     {

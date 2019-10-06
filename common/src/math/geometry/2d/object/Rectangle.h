@@ -14,6 +14,7 @@ namespace urchin
 	template<class T> class Rectangle : public ConvexObject2D<T>
 	{
 		public:
+	        Rectangle();
 			Rectangle(const Point2<T> &, const Vector2<T> &);
 			Rectangle(const Point2<T> &, const Point2<T> &);
 

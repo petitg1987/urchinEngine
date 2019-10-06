@@ -184,7 +184,7 @@ namespace urchin
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytopeObstacle, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		footprintPoints.clear();
-        Plane<float> walkablePlane = walkableSurface->getPlane(*polytopeObstacle->getXZRectangle(), navMeshConfig->getAgent());
+        Plane<float> walkablePlane = walkableSurface->getPlane(polytopeObstacle->getXZRectangle(), navMeshConfig->getAgent());
 
 		for(const auto &polytopeSurface : polytopeObstacle->getSurfaces())
 		{

@@ -140,7 +140,7 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects()
         AABBNode<OBJ> *leaf = it->second;
         if(it->second->getNodeData()->isObjectMoving())
         {
-            preUpdateObject(leaf);
+            preUpdateObjectCallback(leaf);
 
             const AABBox<float> &leafFatAABBox = leaf->getAABBox();
             const AABBox<float> &objectAABBox = leaf->getNodeData()->retrieveObjectAABBox();
@@ -155,7 +155,7 @@ template<class OBJ> void AABBTree<OBJ>::updateObjects()
     }
 }
 
-template<class OBJ> void AABBTree<OBJ>::preUpdateObject(AABBNode<OBJ> *)
+template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ> *)
 {
     //can be override
 }

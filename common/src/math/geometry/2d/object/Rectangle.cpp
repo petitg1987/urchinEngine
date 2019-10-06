@@ -3,6 +3,13 @@
 namespace urchin
 {
 
+    template<class T> Rectangle<T>::Rectangle() :
+            rectangleShape(RectangleShape<T>(Vector2<T>(0.0, 0.0))),
+            origin(Point2<T>(0.0, 0.0))
+    {
+
+    }
+
 	/**
 	 * @param origin Origin of the rectangle (minimum point on X and Y axis)
 	 */

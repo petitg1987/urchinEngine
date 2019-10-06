@@ -22,7 +22,8 @@ namespace urchin
 			const std::vector<std::shared_ptr<PolytopeSurface>> &getSurfaces() const;
 			const std::shared_ptr<PolytopeSurface> &getSurface(unsigned int) const;
 
-			const std::unique_ptr<Rectangle<float>> &getXZRectangle() const;
+			const Rectangle<float> &getXZRectangle() const;
+			const AABBox<float> &getAABBox() const;
 
 			void setWalkableCandidate(bool);
 			bool isWalkableCandidate() const;
@@ -32,11 +33,13 @@ namespace urchin
 
 		private:
 			void buildXZRectangle();
+			void buildAABBox();
 
 			std::string name;
 			std::vector<std::shared_ptr<PolytopeSurface>> surfaces;
 
-			std::unique_ptr<Rectangle<float>> xzRectangle;
+			Rectangle<float> xzRectangle;
+			AABBox<float> aabbox;
 
 			bool walkableCandidate;
 			bool obstacleCandidate;

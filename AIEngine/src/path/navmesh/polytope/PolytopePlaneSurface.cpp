@@ -62,6 +62,11 @@ namespace urchin
 		return Rectangle<float>(minPoint, maxPoint);
 	}
 
+    AABBox<float> PolytopePlaneSurface::computeAABBox() const
+    {
+        return AABBox<float>(ccwPoints);
+    }
+
     const std::vector<Point2<float>> &PolytopePlaneSurface::getOutlineCwPoints() const
     {
         return outlineCwPoints;

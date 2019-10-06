@@ -2,19 +2,19 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapHandler" />
+      <config projectName="urchinEngine" targetName="testRunner" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
       <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
-      <config projectName="urchinEngine" targetName="copyShaders" />
-      <config projectName="urchinEngine" targetName="testRunner" />
-      <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -25,20 +25,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Fix init warning">
+      <change afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/UrchinCommon.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/UrchinCommon.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBNode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNode.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNode.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBNode.inl" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNode.inl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBNodeData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBNodeData.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBNodeData.inl" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.inl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTree.inl" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.inl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBNodeData.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBNodeData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBTree.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBTree.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/pool/ObjectDeleter.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/pool/ObjectDeleter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -241,7 +240,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.testRunner">
+  <component name="RunManager" selected="CMake Application.urchinMapEditor">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="urchinEngine" RUN_TARGET_NAME="urchinMapEditor" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -961,6 +960,7 @@
       <workItem from="1569780207462" duration="2649000" />
       <workItem from="1569948398029" duration="90000" />
       <workItem from="1569948557856" duration="2166000" />
+      <workItem from="1570370801114" duration="136000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>

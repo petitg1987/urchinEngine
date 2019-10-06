@@ -18,6 +18,7 @@ namespace urchin
 
 			bool isWalkable() const override;
 			Rectangle<float> computeXZRectangle() const override;
+            AABBox<float> computeAABBox() const override;
 
 			const std::vector<Point2<float>> &getOutlineCwPoints() const override;
 			Plane<float> getPlane(const Rectangle<float> &, const NavMeshAgent &) const override;
