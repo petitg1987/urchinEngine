@@ -11,6 +11,8 @@
 namespace urchin
 {
 
+    class Polytope;
+
     class AIEntity
     {
         public:
@@ -20,7 +22,7 @@ namespace urchin
                 TERRAIN
             };
 
-            AIEntity(std::string, const Transform<float> &, bool);
+            AIEntity(std::string, Transform<float> , bool);
             virtual ~AIEntity() = default;
 
             void updateTransform(const Point3<float> &, const Quaternion<float> &);
@@ -33,6 +35,9 @@ namespace urchin
             Transform<float> getTransform() const;
             bool isObstacleCandidate() const;
 
+            void addExpandedPolytope(const std::shared_ptr<Polytope> &);
+            const std::vector<std::shared_ptr<Polytope>> &getExpandedPolytopes() const;
+
         private:
             mutable std::mutex mutex;
             std::atomic_bool bToRebuild;
@@ -40,6 +45,8 @@ namespace urchin
             std::string name;
             Transform<float> transform;
             bool bIsObstacleCandidate;
+
+            std::vector<std::shared_ptr<Polytope>> expandedPolytopes; //TODO add comment or interface on Polytope ?
     };
 
 }

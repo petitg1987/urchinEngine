@@ -1,11 +1,13 @@
+#include <utility>
+
 #include "AITerrain.h"
 
 namespace urchin
 {
     AITerrain::AITerrain(std::string name, const Transform<float> &transform, bool bIsObstacleCandidate,
-                         const std::vector<Point3<float>> &vertices, unsigned int xLength, unsigned int zLength) :
+                         std::vector<Point3<float>> vertices, unsigned int xLength, unsigned int zLength) :
             AIEntity(std::move(name), transform, bIsObstacleCandidate),
-            vertices(vertices), xLength(xLength), zLength(zLength)
+            vertices(std::move(vertices)), xLength(xLength), zLength(zLength)
     {
 
     }

@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "AIObject.h"
 #include "AIEntity.h"
 
@@ -10,9 +12,9 @@ namespace urchin
 		shapes.push_back(shape);
 	}
 
-	AIObject::AIObject(std::string name, const Transform<float> &transform, bool bIsObstacleCandidate, const std::vector<std::shared_ptr<AIShape>> &shapes) :
+	AIObject::AIObject(std::string name, const Transform<float> &transform, bool bIsObstacleCandidate, std::vector<std::shared_ptr<AIShape>> shapes) :
 			AIEntity(std::move(name), transform, bIsObstacleCandidate),
-			shapes(shapes)
+			shapes(std::move(shapes))
 	{
 
 	}

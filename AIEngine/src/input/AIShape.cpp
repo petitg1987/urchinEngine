@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "AIShape.h"
 
 namespace urchin
@@ -10,10 +12,10 @@ namespace urchin
 
     }
 
-    AIShape::AIShape(const ConvexShape3D<float> *shape, const Transform<float> &localTransform) :
+    AIShape::AIShape(const ConvexShape3D<float> *shape, Transform<float> localTransform) :
         shape(shape->clone()),
         bHasLocalTransform(true),
-        localTransform(localTransform)
+        localTransform(std::move(localTransform))
     {
 
     }

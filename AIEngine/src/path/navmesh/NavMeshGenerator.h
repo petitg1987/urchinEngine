@@ -19,10 +19,6 @@
 
 namespace urchin
 {
-	struct AIEntityComp
-	{
-		bool operator() (const std::shared_ptr<AIEntity>& left, const std::shared_ptr<AIEntity>& right) const;
-	};
 
 	class NavMeshGenerator
 	{
@@ -36,13 +32,13 @@ namespace urchin
 
 		private:
 			void updateExpandedPolytopes(AIWorld &);
-            void addExpandedPolygon(const std::shared_ptr<AIEntity> &, std::unique_ptr<Polytope>);
+            void addExpandedPolygon(const std::shared_ptr<AIEntity> &, const std::shared_ptr<Polytope> &);
             void removeExpandedPolygon(const std::shared_ptr<AIEntity> &);
 
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<PolytopeSurface> &) const;
 
 			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<PolytopeSurface> &) const;
-			CSGPolygon<float> computePolytopeFootprint(const std::unique_ptr<Polytope> &, const std::shared_ptr<PolytopeSurface> &) const;
+			CSGPolygon<float> computePolytopeFootprint(const std::shared_ptr<Polytope> &, const std::shared_ptr<PolytopeSurface> &) const;
 
             void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &) const;
 
@@ -57,8 +53,8 @@ namespace urchin
             std::shared_ptr<NavMesh> navMesh;
             std::atomic_bool needFullRefresh;
 
-			std::multimap<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>, AIEntityComp> expandedPolytopes;
-            std::multimap<std::shared_ptr<AIEntity>, std::shared_ptr<PolytopeSurface>, AIEntityComp> walkableSurfaces;
+            std::vector<std::shared_ptr<Polytope>> expandedPolytopes;
+            std::map<std::shared_ptr<Polytope>, std::shared_ptr<PolytopeSurface>> walkableSurfaces;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> holePolygons;

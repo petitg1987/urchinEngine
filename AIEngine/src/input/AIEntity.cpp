@@ -1,11 +1,14 @@
 #include "AIEntity.h"
 
+#include <utility>
+#include "path/navmesh/polytope/Polytope.h"
+
 namespace urchin
 {
-    AIEntity::AIEntity(std::string name, const Transform<float> &transform, bool bIsObstacleCandidate) :
+    AIEntity::AIEntity(std::string name, Transform<float> transform, bool bIsObstacleCandidate) :
             bToRebuild(true),
             name(std::move(name)),
-            transform(transform),
+            transform(std::move(transform)),
             bIsObstacleCandidate(bIsObstacleCandidate)
     {
 
@@ -45,6 +48,16 @@ namespace urchin
     bool AIEntity::isObstacleCandidate() const
     {
         return bIsObstacleCandidate;
+    }
+
+    void AIEntity::addExpandedPolytope(const std::shared_ptr<Polytope> &polytope)
+    {
+        expandedPolytopes.push_back(polytope);
+    }
+
+    const std::vector<std::shared_ptr<Polytope>> &AIEntity::getExpandedPolytopes() const
+    {
+        return expandedPolytopes;
     }
 
 }

@@ -5,14 +5,14 @@
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
       <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="testRunner" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
-      <config projectName="urchinEngine" targetName="copyShader" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
       <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
       <config projectName="urchinEngine" targetName="urchinAIEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="testRunner" />
       <config projectName="urchinEngine" targetName="urchin3dEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
@@ -25,19 +25,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Fix init warning">
-      <change afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AIEntity.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AIEntity.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AIEntity.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AIEntity.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AIObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AIObject.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AIObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AIObject.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AIShape.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AIShape.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AIShape.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AIShape.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AITerrain.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AITerrain.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AITerrain.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AITerrain.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/Polytope.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopePlaneSurface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeSurface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/PolytopeTerrainSurface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/2d/object/Rectangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -961,6 +958,7 @@
       <workItem from="1569948398029" duration="90000" />
       <workItem from="1569948557856" duration="2166000" />
       <workItem from="1570370801114" duration="136000" />
+      <workItem from="1570471599879" duration="356000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>

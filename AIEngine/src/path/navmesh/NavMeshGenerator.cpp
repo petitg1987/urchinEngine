@@ -18,11 +18,6 @@
 namespace urchin
 {
 
-	bool AIEntityComp::operator() (const std::shared_ptr<AIEntity>& left, const std::shared_ptr<AIEntity>& right) const
-	{
-		return left->getName().compare(right->getName()) > 0;
-	}
-
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygon.removeAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold")),
@@ -102,7 +97,7 @@ namespace urchin
 		}
 	}
 
-	void NavMeshGenerator::addExpandedPolygon(const std::shared_ptr<AIEntity> &aiEntity, std::unique_ptr<Polytope> expandedPolytope)
+	void NavMeshGenerator::addExpandedPolygon(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
     {
         if(expandedPolytope->isWalkableCandidate())
         {
@@ -111,18 +106,22 @@ namespace urchin
                 const std::shared_ptr<PolytopeSurface> &polytopeSurface = expandedPolytope->getSurface(surfaceIndex);
                 if(polytopeSurface->isWalkable())
                 {
-                    walkableSurfaces.insert(std::pair<std::shared_ptr<AIEntity>, std::shared_ptr<PolytopeSurface>>(aiEntity, polytopeSurface));
+                    walkableSurfaces.insert(std::pair<std::shared_ptr<Polytope>, std::shared_ptr<PolytopeSurface>>(expandedPolytope, polytopeSurface));
                 }
             }
         }
 
-        expandedPolytopes.insert(std::pair<std::shared_ptr<AIEntity>, std::unique_ptr<Polytope>>(aiEntity, std::move(expandedPolytope)));
+        expandedPolytopes.push_back(expandedPolytope);
+        aiEntity->addExpandedPolytope(expandedPolytope);
     }
 
     void NavMeshGenerator::removeExpandedPolygon(const std::shared_ptr<AIEntity> &aiEntity)
     {
-        expandedPolytopes.erase(aiEntity);
-        walkableSurfaces.erase(aiEntity);
+        for(const auto &expandedPolytope : aiEntity->getExpandedPolytopes())
+        {
+            expandedPolytopes.erase(std::remove(expandedPolytopes.begin(), expandedPolytopes.end(), expandedPolytope), expandedPolytopes.end());
+            walkableSurfaces.erase(expandedPolytope);
+        }
     }
 
 	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<PolytopeSurface> &walkableSurface) const
@@ -167,9 +166,9 @@ namespace urchin
         }
         for (const auto &expandedPolytopeObstacle : expandedPolytopes)
         {
-			if(expandedPolytopeObstacle.second->getName()!=walkableSurface->getPolytope()->getName() && expandedPolytopeObstacle.second->isObstacleCandidate())
+			if(expandedPolytopeObstacle->getName()!=walkableSurface->getPolytope()->getName() && expandedPolytopeObstacle->isObstacleCandidate())
 			{
-				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle.second, walkableSurface);
+				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle, walkableSurface);
 				if(footprintPolygon.getCwPoints().size() >= 3)
 				{
                     footprintPolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
@@ -181,7 +180,7 @@ namespace urchin
 		return PolygonsUnion<float>::instance()->unionPolygons(holePolygons);
 	}
 
-	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::unique_ptr<Polytope> &polytopeObstacle, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
+	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::shared_ptr<Polytope> &polytopeObstacle, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		footprintPoints.clear();
         Plane<float> walkablePlane = walkableSurface->getPlane(polytopeObstacle->getXZRectangle(), navMeshConfig->getAgent());
