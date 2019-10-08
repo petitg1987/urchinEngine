@@ -2,19 +2,25 @@
 
 #define DEFAULT_AGENT_HEIGHT 1.8
 #define DEFAULT_AGENT_RADIUS 0.25
+#define DEFAULT_MAX_SLOPE (PI_VALUE/4.0f) //45 degrees
+#define DEFAULT_JUMP_DISTANCE 1.5
 
 namespace urchin {
 
     NavMeshAgent::NavMeshAgent() :
             agentHeight(DEFAULT_AGENT_HEIGHT),
-            agentRadius(DEFAULT_AGENT_RADIUS)
+            agentRadius(DEFAULT_AGENT_RADIUS),
+            maxSlopeInRadian(DEFAULT_MAX_SLOPE),
+            jumpDistance(DEFAULT_JUMP_DISTANCE)
     {
 
     }
 
     NavMeshAgent::NavMeshAgent(float agentHeight, float agentRadius) :
             agentHeight(agentHeight),
-            agentRadius(agentRadius)
+            agentRadius(agentRadius),
+            maxSlopeInRadian(DEFAULT_MAX_SLOPE),
+            jumpDistance(DEFAULT_JUMP_DISTANCE)
     {
 
     }
@@ -27,6 +33,26 @@ namespace urchin {
     float NavMeshAgent::getAgentRadius() const
     {
         return agentRadius;
+    }
+
+    void NavMeshAgent::setMaxSlope(float maxSlopeInRadian)
+    {
+        this->maxSlopeInRadian = maxSlopeInRadian;
+    }
+
+    float NavMeshAgent::getMaxSlope() const
+    {
+        return maxSlopeInRadian;
+    }
+
+    void NavMeshAgent::setJumpDistance(float jumpDistance)
+    {
+        this->jumpDistance = jumpDistance;
+    }
+
+    float NavMeshAgent::getJumpDistance() const
+    {
+        return jumpDistance;
     }
 
     CylinderShape<float> NavMeshAgent::getAgentCylinder() const

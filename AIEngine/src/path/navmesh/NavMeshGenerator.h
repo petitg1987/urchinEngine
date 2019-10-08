@@ -9,7 +9,7 @@
 #include "UrchinCommon.h"
 
 #include "input/AIWorld.h"
-#include "path/navmesh/model/NavMeshConfig.h"
+#include "path/navmesh/model/NavMeshAgent.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"
 #include "path/navmesh/polytope/Polytope.h"
@@ -25,7 +25,7 @@ namespace urchin
 		public:
             NavMeshGenerator();
 
-			void setNavMeshConfig(std::shared_ptr<NavMeshConfig>);
+			void setNavMeshAgent(std::shared_ptr<NavMeshAgent>);
 
 			std::shared_ptr<NavMesh> generate(AIWorld &);
 			NavMesh copyLastGeneratedNavMesh() const;
@@ -49,10 +49,11 @@ namespace urchin
 			const float polygonMergePointsDistanceThreshold;
 
             mutable std::mutex navMeshMutex;
-			std::shared_ptr<NavMeshConfig> navMeshConfig;
+			std::shared_ptr<NavMeshAgent> navMeshAgent;
             std::shared_ptr<NavMesh> navMesh;
             std::atomic_bool needFullRefresh;
 
+            //TODO AABBTree<std::shared_ptr<Polytope>> expandedPolytopes;
             std::vector<std::shared_ptr<Polytope>> expandedPolytopes;
             std::map<std::shared_ptr<Polytope>, std::shared_ptr<PolytopeSurface>> walkableSurfaces;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;

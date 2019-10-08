@@ -19,9 +19,9 @@ namespace urchin
             AABBox<float> computeAABBox() const override;
 
             const std::vector<Point2<float>> &getOutlineCwPoints() const override;
-            Plane<float> getPlane(const Rectangle<float> &, const NavMeshAgent &) const override;
+            Plane<float> getPlane(const Rectangle<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
             const std::vector<CSGPolygon<float>> &getSelfObstacles() const override;
-            Point3<float> computeRealPoint(const Point2<float> &, const NavMeshAgent &) const override;
+            Point3<float> computeRealPoint(const Point2<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
             NavTopography *newNavTopography() const override;
 
             const Point3<float> &getPosition() const;

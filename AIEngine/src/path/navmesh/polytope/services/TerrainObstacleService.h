@@ -3,7 +3,6 @@
 
 #include "UrchinCommon.h"
 
-#include "path/navmesh/model/NavMeshConfig.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 
 namespace urchin

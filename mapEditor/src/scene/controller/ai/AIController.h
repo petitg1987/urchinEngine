@@ -17,7 +17,7 @@ namespace urchin
 
 			const SceneAI *getSceneAI() const;
 
-			SceneAI *updateNavMeshConfig(std::shared_ptr<NavMeshConfig>);
+			SceneAI *updateNavMeshAgent(std::shared_ptr<NavMeshAgent>);
 
 		private:
 			void markModified();

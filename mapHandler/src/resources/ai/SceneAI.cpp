@@ -1,5 +1,5 @@
 #include "SceneAI.h"
-#include "resources/ai/NavMeshConfigWriter.h"
+#include "resources/ai/NavMeshAgentWriter.h"
 
 namespace urchin
 {
@@ -16,41 +16,41 @@ namespace urchin
 
         if(aiManager)
         {
-            aiManager->getNavMeshGenerator()->setNavMeshConfig(navMeshConfig);
+            aiManager->getNavMeshGenerator()->setNavMeshAgent(navMeshAgent);
         }
     }
 
-    std::shared_ptr<NavMeshConfig> SceneAI::getNavMeshConfig() const
+    std::shared_ptr<NavMeshAgent> SceneAI::getNavMeshAgent() const
     {
-        return navMeshConfig;
+        return navMeshAgent;
     }
 
-    void SceneAI::changeNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
+    void SceneAI::changeNavMeshAgent(std::shared_ptr<NavMeshAgent> navMeshAgent)
     {
-        setNavMeshConfig(std::move(navMeshConfig));
+        setNavMeshAgent(std::move(navMeshAgent));
     }
 
     void SceneAI::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
     {
-        std::shared_ptr<XmlChunk> navMeshConfigChunk = xmlParser.getUniqueChunk(true, NAV_MESH_CONFIG_TAG, XmlAttribute(), chunk);
+        std::shared_ptr<XmlChunk> navMeshAgentChunk = xmlParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
 
-        setNavMeshConfig(NavMeshConfigWriter().loadFrom(navMeshConfigChunk, xmlParser));
+        setNavMeshAgent(NavMeshAgentWriter().loadFrom(navMeshAgentChunk, xmlParser));
     }
 
     void SceneAI::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
     {
-        std::shared_ptr<XmlChunk> navMeshConfigChunk = xmlWriter.createChunk(NAV_MESH_CONFIG_TAG, XmlAttribute(), chunk);
+        std::shared_ptr<XmlChunk> navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
 
-        NavMeshConfigWriter().writeOn(navMeshConfigChunk, navMeshConfig, xmlWriter);
+        NavMeshAgentWriter().writeOn(navMeshAgentChunk, navMeshAgent, xmlWriter);
     }
 
-    void SceneAI::setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig)
+    void SceneAI::setNavMeshAgent(const std::shared_ptr<NavMeshAgent>& navMeshAgent)
     {
-        this->navMeshConfig = navMeshConfig;
+        this->navMeshAgent = navMeshAgent;
 
         if(aiManager)
         {
-            aiManager->getNavMeshGenerator()->setNavMeshConfig(navMeshConfig);
+            aiManager->getNavMeshGenerator()->setNavMeshAgent(navMeshAgent);
         }
     }
 }

@@ -17,7 +17,7 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
     aiWorld.addEntity(walkableFaceObject);
     aiWorld.addEntity(holeObject);
     NavMeshGenerator navMeshGenerator;
-    navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
+    navMeshGenerator.setNavMeshAgent(buildNavMeshAgent());
 
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
@@ -40,7 +40,7 @@ void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
     aiWorld.addEntity(walkableFaceObject);
     aiWorld.addEntity(holeObject);
     NavMeshGenerator navMeshGenerator;
-    navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
+    navMeshGenerator.setNavMeshAgent(buildNavMeshAgent());
 
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
@@ -63,7 +63,7 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     aiWorld.addEntity(walkableFaceObject);
     aiWorld.addEntity(holeObject);
     NavMeshGenerator navMeshGenerator;
-    navMeshGenerator.setNavMeshConfig(buildNavMeshConfig());
+    navMeshGenerator.setNavMeshAgent(buildNavMeshAgent());
 
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
@@ -86,10 +86,10 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
 }
 
-std::shared_ptr<NavMeshConfig> NavMeshGeneratorTest::buildNavMeshConfig()
+std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent()
 {
     NavMeshAgent navMeshAgent(2.0, 0.0);
-    return std::make_shared<NavMeshConfig>(navMeshAgent);
+    return std::make_shared<NavMeshAgent>(navMeshAgent);
 }
 
 void NavMeshGeneratorTest::assert3UnsignedInts(const unsigned int *ui, const std::vector<unsigned int> &expectedUi)
@@ -103,7 +103,7 @@ void NavMeshGeneratorTest::assert3UnsignedInts(const unsigned int *ui, const std
 
 CppUnit::Test *NavMeshGeneratorTest::suite()
 {
-    CppUnit::TestSuite *suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
+    auto *suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeEdgeOnWalkableFace", &NavMeshGeneratorTest::holeEdgeOnWalkableFace));

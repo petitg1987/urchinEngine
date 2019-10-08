@@ -9,7 +9,6 @@
 #include "input/AIShape.h"
 
 #include "path/navmesh/NavMeshGenerator.h"
-#include "path/navmesh/model/NavMeshConfig.h"
 #include "path/navmesh/model/NavMeshAgent.h"
 #include "path/navmesh/model/NavMesh.h"
 #include "path/navmesh/model/NavPolygon.h"

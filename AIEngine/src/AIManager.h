@@ -12,7 +12,6 @@
 #include "path/PathRequest.h"
 #include "path/navmesh/NavMeshGenerator.h"
 #include "path/navmesh/model/NavMesh.h"
-#include "path/navmesh/model/NavMeshConfig.h"
 
 namespace urchin
 {

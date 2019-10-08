@@ -46,7 +46,7 @@ namespace urchin
             Transform<float> transform;
             bool bIsObstacleCandidate;
 
-            std::vector<std::shared_ptr<Polytope>> expandedPolytopes; //TODO add comment or interface on Polytope ?
+            std::vector<std::shared_ptr<Polytope>> expandedPolytopes;
     };
 
 }

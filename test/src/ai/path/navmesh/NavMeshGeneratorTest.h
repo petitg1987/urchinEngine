@@ -17,7 +17,7 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture
         void holeOverlapOnWalkableFace();
 
     private:
-        std::shared_ptr<urchin::NavMeshConfig> buildNavMeshConfig();
+        std::shared_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
         void assert3UnsignedInts(const unsigned int *, const std::vector<unsigned int> &);
 };
 

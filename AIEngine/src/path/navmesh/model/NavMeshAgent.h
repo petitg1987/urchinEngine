@@ -12,16 +12,24 @@ namespace urchin {
             NavMeshAgent(float, float);
 
             float getAgentHeight() const;
+
             float getAgentRadius() const;
+
+            void setMaxSlope(float);
+            float getMaxSlope() const;
+
+            void setJumpDistance(float);
+            float getJumpDistance() const;
 
             CylinderShape<float> getAgentCylinder() const;
             BoxShape<float> getAgentBox() const;
-
             float computeExpandDistance(const Vector3<float> &) const;
 
         private:
             float agentHeight;
             float agentRadius;
+            float maxSlopeInRadian;
+            float jumpDistance;
     };
 
 }

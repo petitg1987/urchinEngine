@@ -72,7 +72,7 @@ namespace urchin
         return outlineCwPoints;
     }
 
-	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &box, const NavMeshAgent &agent) const
+	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &box, const std::shared_ptr<NavMeshAgent> &agent) const
 	{
 		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
 	}
@@ -85,14 +85,14 @@ namespace urchin
 	/**
  	 * Return point on un-expanded surface
  	 */
-	Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const NavMeshAgent &agent) const
+	Point3<float> PolytopePlaneSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const
 	{
         Point3<float> point3D(point.X, 0.0, -point.Y);
         float shortestFaceDistance = normal.dotProduct(point3D.vector(ccwPoints[0]));
         float t = shortestFaceDistance / normal.Y;
         Point3<float> pointOnExpandedSurface = point3D.translate(t * Vector3<float>(0.0, 1.0, 0.0));
 
-        float reduceDistance = - agent.computeExpandDistance(normal);
+        float reduceDistance = - agent->computeExpandDistance(normal);
         return pointOnExpandedSurface.translate(normal * reduceDistance);
 	}
 

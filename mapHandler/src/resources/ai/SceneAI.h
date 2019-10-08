@@ -11,7 +11,7 @@ namespace urchin
     class SceneAI
     {
         //XML tags
-        #define NAV_MESH_CONFIG_TAG "navMeshConfig"
+        #define NAV_MESH_AGENT_TAG "navMeshAgent"
 
         public:
             friend class Map;
@@ -20,17 +20,17 @@ namespace urchin
 
             void setAIManager(AIManager *);
 
-            std::shared_ptr<NavMeshConfig> getNavMeshConfig() const;
-            void changeNavMeshConfig(std::shared_ptr<NavMeshConfig>);
+            std::shared_ptr<NavMeshAgent> getNavMeshAgent() const;
+            void changeNavMeshAgent(std::shared_ptr<NavMeshAgent>);
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);
             void writeOn(const std::shared_ptr<XmlChunk> &, XmlWriter &) const;
 
-            void setNavMeshConfig(std::shared_ptr<NavMeshConfig> navMeshConfig);
+            void setNavMeshAgent(const std::shared_ptr<NavMeshAgent>&);
 
             AIManager *aiManager;
-            std::shared_ptr<NavMeshConfig> navMeshConfig;
+            std::shared_ptr<NavMeshAgent> navMeshAgent;
     };
 
 }
