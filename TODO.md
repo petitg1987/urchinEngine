@@ -35,7 +35,7 @@
 	- **NEW FEATURE** (`minor`): Text selection
 	- **NEW FEATURE** (`minor`): Use 'glutBitmapCharacter' to display characters
 - Graphic effect
-	- **QUALITY IMPROVEMENT** (`minor`): Water (https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh)
+	- **QUALITY IMPROVEMENT** (`minor`): Water (<https://www.youtube.com/watch?v=HusvGeEDU_U&list=PLRIWtICgwaX23jiqVByUs0bqhnalNTNZh>)
 	- **NEW FEATURE** (`minor`): Reflects
 	- **NEW FEATURE** (`minor`): Smoke
 	- **NEW FEATURE** (`minor`): Fire & explosion
@@ -44,7 +44,6 @@
 
 # AI engine
 - Navigation mesh
-    - **OPTIMIZATION** (`major`): Use AABBTree/Octree/SweepAndPrune for NavMeshGenerator#expandedPolytopes to find more quickly obstacles and jump links
 	- **NEW FEATURE** (`major`): Create jump links in navigation mesh
 	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh only squares 
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
@@ -57,7 +56,7 @@
 - Pathfinding
 	- **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
 	- **OPTIMIZATION** (`medium`): When search start and end triangles: use AABBox Tree algorithm
-	- **NEW FEATURE** (`major`): Implement steering behaviour (https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777)
+	- **NEW FEATURE** (`major`): Implement steering behaviour (<https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777>)
 
 # Physics engine
 - Broad phase

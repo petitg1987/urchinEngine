@@ -8,12 +8,12 @@
 namespace urchin
 {
 
-    class PolytopeAABBNodeData : public AABBNodeData<Polytope>
+    class PolytopeAABBNodeData : public AABBNodeData<std::shared_ptr<Polytope>>
     {
         public:
-            explicit PolytopeAABBNodeData(Polytope *);
+            explicit PolytopeAABBNodeData(const std::shared_ptr<Polytope> &);
 
-            AABBNodeData<Polytope> *clone() const override;
+            AABBNodeData<std::shared_ptr<Polytope>> *clone() const override;
 
             const std::string &getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;

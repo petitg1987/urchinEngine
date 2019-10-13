@@ -3,13 +3,13 @@
 namespace urchin
 {
 
-    PolytopeAABBNodeData::PolytopeAABBNodeData(Polytope *polytope) :
+    PolytopeAABBNodeData::PolytopeAABBNodeData(const std::shared_ptr<Polytope> &polytope) :
             AABBNodeData(polytope)
     {
 
     }
 
-    AABBNodeData<Polytope> *PolytopeAABBNodeData::clone() const
+    AABBNodeData<std::shared_ptr<Polytope>> *PolytopeAABBNodeData::clone() const
     {
         throw std::logic_error("Clone not required for static polytope");
     }

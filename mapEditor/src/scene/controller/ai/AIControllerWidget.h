@@ -16,7 +16,7 @@ namespace urchin
 
 		public:
 			AIControllerWidget();
-			virtual ~AIControllerWidget() = default;
+			~AIControllerWidget() override = default;
 
 			void load(AIController *);
 			void unload();

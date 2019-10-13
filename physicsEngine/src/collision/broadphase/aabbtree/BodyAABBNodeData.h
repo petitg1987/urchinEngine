@@ -10,12 +10,12 @@
 namespace urchin
 {
 
-	class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody>
+	class BodyAABBNodeData : public AABBNodeData<AbstractWorkBody *>
 	{
 		public:
 			BodyAABBNodeData(AbstractWorkBody *, PairContainer *);
 
-            AABBNodeData<AbstractWorkBody> *clone() const override;
+            AABBNodeData<AbstractWorkBody *> *clone() const override;
 
             const std::string &getObjectId() const override;
 			AABBox<float> retrieveObjectAABBox() const override;

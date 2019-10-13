@@ -24,7 +24,7 @@ namespace urchin
 			const std::vector<OverlappingPair *> &getOverlappingPairs() const override;
 
 			std::vector<AbstractWorkBody *> rayTest(const Ray<float> &) const override;
-			std::vector<AbstractWorkBody *> bodyTest(const AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const override;
+			std::vector<AbstractWorkBody *> bodyTest(AbstractWorkBody *, const PhysicsTransform &, const PhysicsTransform &) const override;
 
 		private:
             BodyAABBTree *tree;

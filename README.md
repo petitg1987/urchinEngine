@@ -2,7 +2,7 @@
 ## Features
 Game engine library in C++17: 3D, Physics, Sound, Network, IA, Map Editor
 
-Video: https://www.youtube.com/watch?v=lSbCx7u6RtE
+Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 
 - 3D Engine:
   - Skeleton animate 3d models

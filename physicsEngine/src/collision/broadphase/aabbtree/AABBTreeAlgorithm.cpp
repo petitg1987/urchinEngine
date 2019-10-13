@@ -40,12 +40,12 @@ namespace urchin
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitRay;
 		bodiesAABBoxHitRay.reserve(10);
 
-		tree->rayTest(ray, bodiesAABBoxHitRay);
+		tree->rayQuery(ray, bodiesAABBoxHitRay);
 
 		return bodiesAABBoxHitRay;
 	}
 
-	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::bodyTest(const AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
+	std::vector<AbstractWorkBody *> AABBTreeAlgorithm::bodyTest(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
 	{
 		std::vector<AbstractWorkBody *> bodiesAABBoxHitBody;
 		bodiesAABBoxHitBody.reserve(15);
@@ -53,7 +53,7 @@ namespace urchin
 		Ray<float> ray(from.getPosition(), to.getPosition());
 		float bodyBoundingSphereRadius = body->getShape()->getMaxDistanceToCenter();
 
-		tree->enlargedRayTest(ray, bodyBoundingSphereRadius, body, bodiesAABBoxHitBody);
+		tree->enlargedRayQuery(ray, bodyBoundingSphereRadius, body, bodiesAABBoxHitBody);
 
 		return bodiesAABBoxHitBody;
 	}

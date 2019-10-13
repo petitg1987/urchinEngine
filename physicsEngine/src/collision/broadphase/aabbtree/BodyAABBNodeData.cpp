@@ -10,7 +10,7 @@ namespace urchin
 
 	}
 
-    AABBNodeData<AbstractWorkBody> *BodyAABBNodeData::clone() const
+    AABBNodeData<AbstractWorkBody *> *BodyAABBNodeData::clone() const
     {
 	    return new BodyAABBNodeData(getNodeObject(), alternativePairContainer);
     }

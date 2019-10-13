@@ -17,22 +17,24 @@ namespace urchin
 			virtual ~AABBTree();
 
             AABBNode<OBJ> *getRootNode() const;
-            AABBNodeData<OBJ> *getNodeData(OBJ *) const;
+            AABBNodeData<OBJ> *getNodeData(OBJ) const;
 
 			void addObject(AABBNodeData<OBJ> *);
             virtual void postAddObjectCallback(AABBNode<OBJ> *);
 
 			void removeObject(AABBNodeData<OBJ> *);
+			void removeObject(OBJ);
             virtual void preRemoveObjectCallback(AABBNode<OBJ> *);
 
 			void updateObjects();
 			virtual void preUpdateObjectCallback(AABBNode<OBJ> *);
 
-			void rayTest(const Ray<float> &, std::vector<OBJ *> &) const;
-			void enlargedRayTest(const Ray<float> &, float, const OBJ *, std::vector<OBJ *> &) const;
+			void aabboxQuery(const AABBox<float> &, std::vector<OBJ> &) const;
+			void rayQuery(const Ray<float> &, std::vector<OBJ> &) const;
+			void enlargedRayQuery(const Ray<float> &, float, const OBJ, std::vector<OBJ> &) const;
 
 	    protected:
-            std::map<OBJ *, AABBNode<OBJ> *> objectsNode;
+            std::map<OBJ, AABBNode<OBJ> *> objectsNode;
             mutable std::vector<AABBNode<OBJ> *> browseNodes;
 
 		private:

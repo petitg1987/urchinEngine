@@ -11,9 +11,9 @@ namespace urchin
     template<class OBJ> class AABBNodeData
     {
         public:
-            explicit AABBNodeData(OBJ *);
+            explicit AABBNodeData(OBJ);
 
-            OBJ *getNodeObject() const;
+            OBJ getNodeObject() const;
 
             virtual AABBNodeData<OBJ> *clone() const = 0;
 
@@ -22,7 +22,7 @@ namespace urchin
             virtual bool isObjectMoving() const = 0;
 
         private:
-            OBJ *nodeObject;
+            OBJ nodeObject;
     };
 
     #include "AABBNodeData.inl"

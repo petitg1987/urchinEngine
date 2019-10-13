@@ -2,13 +2,14 @@
 #include <algorithm>
 #include <string>
 #include <numeric>
-#include <path/navmesh/polytope/PolytopeTerrainSurface.h>
+
 
 #include "NavMeshGenerator.h"
 #include "input/AIObject.h"
 #include "input/AITerrain.h"
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
 #include "path/navmesh/polytope/PolytopeBuilder.h"
+#include "path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 
@@ -23,8 +24,8 @@ namespace urchin
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold")),
 			navMeshAgent(std::make_shared<NavMeshAgent>()),
 			navMesh(std::make_shared<NavMesh>()),
-			needFullRefresh(false)
-            //TODO expandedPolytopes(AABBTree<std::shared_ptr<Polytope>>(0.0f)) //TODO define fatMargin to jump distance
+			needFullRefresh(false),
+            expandedPolytopes(AABBTree<std::shared_ptr<Polytope>>(1.0f)) //TODO define fatMargin (=jump distance ?)
     {
 
 	}
@@ -112,7 +113,7 @@ namespace urchin
             }
         }
 
-        expandedPolytopes.push_back(expandedPolytope);
+        expandedPolytopes.addObject(new PolytopeAABBNodeData(expandedPolytope));
         aiEntity->addExpandedPolytope(expandedPolytope);
     }
 
@@ -120,7 +121,7 @@ namespace urchin
     {
         for(const auto &expandedPolytope : aiEntity->getExpandedPolytopes())
         {
-            expandedPolytopes.erase(std::remove(expandedPolytopes.begin(), expandedPolytopes.end(), expandedPolytope), expandedPolytopes.end());
+            expandedPolytopes.removeObject(expandedPolytope);
             walkableSurfaces.erase(expandedPolytope);
         }
     }
@@ -165,7 +166,10 @@ namespace urchin
         {
             holePolygons.emplace_back(selfObstaclePolygon);
         }
-        for (const auto &expandedPolytopeObstacle : expandedPolytopes)
+
+        expandedPolytopeObstacles.clear();
+        expandedPolytopes.aabboxQuery(walkableSurface->computeAABBox(), expandedPolytopeObstacles);
+        for (const auto &expandedPolytopeObstacle : expandedPolytopeObstacles)
         {
 			if(expandedPolytopeObstacle->getName()!=walkableSurface->getPolytope()->getName() && expandedPolytopeObstacle->isObstacleCandidate())
 			{

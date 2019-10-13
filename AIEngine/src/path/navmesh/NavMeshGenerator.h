@@ -53,10 +53,10 @@ namespace urchin
             std::shared_ptr<NavMesh> navMesh;
             std::atomic_bool needFullRefresh;
 
-            //TODO AABBTree<std::shared_ptr<Polytope>> expandedPolytopes;
-            std::vector<std::shared_ptr<Polytope>> expandedPolytopes;
+            AABBTree<std::shared_ptr<Polytope>> expandedPolytopes;
             std::map<std::shared_ptr<Polytope>, std::shared_ptr<PolytopeSurface>> walkableSurfaces;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
+            mutable std::vector<std::shared_ptr<Polytope>> expandedPolytopeObstacles;
             mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> holePolygons;
 			mutable std::vector<Point2<float>> footprintPoints;

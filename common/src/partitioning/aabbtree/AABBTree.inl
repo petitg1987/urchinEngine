@@ -16,7 +16,7 @@ template <class OBJ> AABBNode<OBJ> *AABBTree<OBJ>::getRootNode() const
     return rootNode;
 }
 
-template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ *object) const
+template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ object) const
 {
     return objectsNode.find(object)->second->getNodeData();
 }
@@ -98,11 +98,20 @@ template<class OBJ> void AABBTree<OBJ>::replaceNode(AABBNode<OBJ> *nodeToReplace
 
 template<class OBJ> void AABBTree<OBJ>::removeObject(AABBNodeData<OBJ> *nodeData)
 {
-    AABBNode<OBJ> *nodeToRemove = objectsNode.find(nodeData->getNodeObject())->second;
-    preRemoveObjectCallback(nodeToRemove);
+    removeObject(nodeData->getNodeObject());
+}
 
-    objectsNode.erase(nodeData->getNodeObject());
-    removeNode(nodeToRemove);
+template<class OBJ> void AABBTree<OBJ>::removeObject(OBJ object)
+{
+    auto itFind = objectsNode.find(object);
+    if(itFind!=objectsNode.end())
+    {
+        AABBNode<OBJ> *nodeToRemove = itFind->second;
+        preRemoveObjectCallback(nodeToRemove);
+
+        objectsNode.erase(object);
+        removeNode(nodeToRemove);
+    }
 }
 
 template<class OBJ> void AABBTree<OBJ>::preRemoveObjectCallback(AABBNode<OBJ> *)
@@ -161,20 +170,65 @@ template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ> *)
 }
 
 /**
+ * @param objectsAABBoxHit [out] Objects AABBox hit by the aabbox
+ */
+template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float> &aabbox, std::vector<OBJ> &objectsAABBoxHit) const
+{
+    browseNodes.clear();
+    browseNodes.push_back(rootNode);
+
+    for(std::size_t i=0; i<browseNodes.size(); ++i)
+    { //tree traversal: pre-order (iterative)
+        const AABBNode<OBJ> *currentNode = browseNodes[i];
+
+        if(currentNode->getAABBox().collideWithAABBox(aabbox))
+        {
+            if (currentNode->isLeaf())
+            {
+                objectsAABBoxHit.push_back(currentNode->getNodeData()->getNodeObject());
+            }else
+            {
+                browseNodes.push_back(currentNode->getRightChild());
+                browseNodes.push_back(currentNode->getLeftChild());
+            }
+        }
+    }
+}
+
+/**
  * @param objectsAABBoxHitRay [out] Objects AABBox hit by the ray
  */
-template<class OBJ> void AABBTree<OBJ>::rayTest(const Ray<float> &ray, std::vector<OBJ *> &objectsAABBoxHitRay) const
+template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float> &ray, std::vector<OBJ> &objectsAABBoxHitRay) const
 {
-    enlargedRayTest(ray, 0.0f, nullptr, objectsAABBoxHitRay);
+    browseNodes.clear();
+    browseNodes.push_back(rootNode);
+
+    for(std::size_t i=0; i<browseNodes.size(); ++i)
+    { //tree traversal: pre-order (iterative)
+        const AABBNode<OBJ> *currentNode = browseNodes[i];
+
+        if(currentNode->getAABBox().collideWithRay(ray))
+        {
+            if (currentNode->isLeaf())
+            {
+                objectsAABBoxHitRay.push_back(currentNode->getNodeData()->getNodeObject());
+            }else
+            {
+                browseNodes.push_back(currentNode->getRightChild());
+                browseNodes.push_back(currentNode->getLeftChild());
+            }
+        }
+    }
 }
 
 /**
  * Enlarge each node box of a specified size and process a classical ray test. This method provide similar result to a OBB test but with better performance.
  * @param enlargeNodeBoxHalfSize Specify the size of the enlargement. A size of 0.5 will enlarge the node box from 1.0 (0.5 on left and 0.5 on right).
+ * @param objectToExclude Object to exclude from result
  * @param objectsAABBoxHitEnlargedRay [out] Objects AABBox hit by the enlarged ray
  */
-template<class OBJ> void AABBTree<OBJ>::enlargedRayTest(const Ray<float> &ray, float enlargeNodeBoxHalfSize, const OBJ *testedObject,
-                               std::vector<OBJ *> &objectsAABBoxHitEnlargedRay) const
+template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float> &ray, float enlargeNodeBoxHalfSize, const OBJ objectToExclude,
+                               std::vector<OBJ> &objectsAABBoxHitEnlargedRay) const
 {
     browseNodes.clear();
     browseNodes.push_back(rootNode);
@@ -188,8 +242,8 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayTest(const Ray<float> &ray, f
         {
             if (currentNode->isLeaf())
             {
-                OBJ *object = currentNode->getNodeData()->getNodeObject();
-                if(object!=testedObject)
+                OBJ object = currentNode->getNodeData()->getNodeObject();
+                if(object!=objectToExclude)
                 {
                     objectsAABBoxHitEnlargedRay.push_back(object);
                 }

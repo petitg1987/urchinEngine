@@ -95,7 +95,7 @@ namespace urchin
 		return broadPhaseAlgorithm->rayTest(ray);
 	}
 
-	std::vector<AbstractWorkBody *> BroadPhaseManager::bodyTest(const AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
+	std::vector<AbstractWorkBody *> BroadPhaseManager::bodyTest(AbstractWorkBody *body, const PhysicsTransform &from, const PhysicsTransform &to) const
 	{
 		return broadPhaseAlgorithm->bodyTest(body, from, to);
 	}
