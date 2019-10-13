@@ -1,6 +1,4 @@
 #include <utility>
-
-#include <iostream>
 #include <stdexcept>
 #include <AL/alc.h>
 

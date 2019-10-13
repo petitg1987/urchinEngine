@@ -26,7 +26,7 @@ namespace urchin
 
     float AICharacter::retrieveMaxVelocityInMs() const
     {
-        return (maxVelocityInKmH * 1000.0) / (60.0f * 60.0f);
+        return (maxVelocityInKmH * 1000.0f) / (60.0f * 60.0f);
     }
 
     /**

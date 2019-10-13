@@ -38,7 +38,7 @@ namespace urchin
 
 		if(shadowData!=nullptr)
         {
-            for (unsigned int i = 0; i < shadowData->getNbFrustumShadowData(); ++i)
+            for (std::size_t i = 0; i < shadowData->getNbFrustumShadowData(); ++i)
             {
                 projectionMatrices.push_back(shadowData->getFrustumShadowData(i)->getLightProjectionMatrix());
             }

@@ -2,16 +2,17 @@
 #include <cmath>
 #include <stack>
 #include <algorithm>
+#include <utility>
 
 #include "TerrainObstacleService.h"
 
 namespace urchin
 {
-    TerrainObstacleService::TerrainObstacleService(std::string terrainName, const Point3<float> &position, const std::vector<Point3<float>> &localVertices,
+    TerrainObstacleService::TerrainObstacleService(std::string terrainName, const Point3<float> &position, std::vector<Point3<float>> localVertices,
                                                    unsigned int xLength, unsigned int zLength) :
             terrainName(std::move(terrainName)),
             position(position),
-            localVertices(localVertices),
+            localVertices(std::move(localVertices)),
             xLength(xLength),
             zLength(zLength)
     {
@@ -207,28 +208,28 @@ namespace urchin
             { //no right point
                 return -1;
             }
-            return pointIndex + 1;
+            return static_cast<int>(pointIndex) + 1;
         }else if(EdgeDirection::BOTTOM==direction)
         {
             if(pointIndex >= xLength * (zLength - 1))
-            { //not bottom point
+            { //no bottom point
                 return -1;
             }
-            return pointIndex + xLength;
+            return static_cast<int>(pointIndex + xLength);
         }else if(EdgeDirection::LEFT==direction)
         {
             if(pointIndex % xLength == 0)
             { //no left point
                 return -1;
             }
-            return pointIndex - 1;
+            return static_cast<int>(pointIndex) - 1;
         }else if(EdgeDirection::TOP==direction)
         {
             if(pointIndex < xLength)
             { //no top point
                 return -1;
             }
-            return pointIndex - xLength;
+            return static_cast<int>(pointIndex - xLength);
         }
 
         throw std::runtime_error("Unknown edge direction: " + std::to_string(direction));

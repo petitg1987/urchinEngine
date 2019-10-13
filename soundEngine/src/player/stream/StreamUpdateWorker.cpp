@@ -14,14 +14,13 @@ namespace urchin
 	StreamUpdateWorker::StreamUpdateWorker() :
 		nbChunkBuffer(ConfigService::instance()->getUnsignedIntValue("player.numberOfStreamBuffer")),
 		nbSecondByChunk(ConfigService::instance()->getUnsignedIntValue("player.streamChunkSizeInSecond")),
-		updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.updateStreamBufferPauseTime"))
+		updateStreamBufferPauseTime(ConfigService::instance()->getUnsignedIntValue("player.updateStreamBufferPauseTime")),
+        streamUpdateWorkerStopper(false)
 	{
 		if(nbChunkBuffer <= 1)
 		{
 			throw std::domain_error("Number of chunk buffer must be greater than one.");
 		}
-
-		streamUpdateWorkerStopper.store(false, std::memory_order_relaxed);
 	}
 
 	StreamUpdateWorker::~StreamUpdateWorker()

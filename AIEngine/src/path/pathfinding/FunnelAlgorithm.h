@@ -13,7 +13,7 @@ namespace urchin
     class FunnelAlgorithm
     {
         public:
-            explicit FunnelAlgorithm(const std::vector<std::shared_ptr<PathPortal>> &);
+            explicit FunnelAlgorithm(std::vector<std::shared_ptr<PathPortal>> );
 
             const std::vector<std::shared_ptr<PathPortal>> &computePivotPoints();
 

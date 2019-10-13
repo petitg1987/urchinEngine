@@ -49,12 +49,12 @@ namespace urchin
 
 		logStream<<"Mav mesh:"<<std::endl;
 
-		for(unsigned int i=0; i<getPolygons().size(); ++i)
+		for(std::size_t i=0; i<getPolygons().size(); ++i)
 		{
 			const std::shared_ptr<NavPolygon> &polygon = getPolygons()[i];
 			logStream<<" - Polygon "<<i<<": "<<polygon->getName()<<std::endl;
 
-			for(unsigned int j=0; j<polygon->getTriangles().size(); ++j)
+			for(std::size_t j=0; j<polygon->getTriangles().size(); ++j)
 			{
 				const std::shared_ptr<NavTriangle> &triangle = polygon->getTriangle(j);
 				logStream<<"  - Triangle "<<j<<": "

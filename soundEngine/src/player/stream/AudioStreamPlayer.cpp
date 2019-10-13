@@ -1,6 +1,4 @@
 #include <AL/al.h>
-#include <AL/alc.h>
-#include <stdexcept>
 
 #include "player/stream/AudioStreamPlayer.h"
 

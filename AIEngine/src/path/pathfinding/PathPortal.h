@@ -10,7 +10,7 @@ namespace urchin
     class PathPortal
     {
         public:
-            PathPortal(const LineSegment3D<float> &, const std::shared_ptr<PathNode> &, const std::shared_ptr<PathNode> &);
+            PathPortal(LineSegment3D<float> , std::shared_ptr<PathNode> , std::shared_ptr<PathNode> );
 
             void setPivotPoint(const Point3<float> &);
             bool hasPivotPoint() const;

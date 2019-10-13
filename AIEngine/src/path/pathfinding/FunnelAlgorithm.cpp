@@ -1,4 +1,5 @@
 #include <cassert>
+#include <utility>
 
 #include "FunnelAlgorithm.h"
 #include "path/navmesh/model/NavPolygon.h"
@@ -10,8 +11,8 @@ namespace urchin
      * @param portals List of portals to cross by the character to reach his target.
      * First point (getA()) of portal segment must be on left of character when it cross a portal.
      */
-    FunnelAlgorithm::FunnelAlgorithm(const std::vector<std::shared_ptr<PathPortal>> &portals) :
-        portals(portals)
+    FunnelAlgorithm::FunnelAlgorithm(std::vector<std::shared_ptr<PathPortal>> portals) :
+        portals(std::move(portals))
     {
 
     }
@@ -78,7 +79,7 @@ namespace urchin
                     updateSideIndex(otherSide, otherSideIndex+1);
                     updateSideIndex(updateSide, otherSideIndex+1);
 
-                    return otherSideIndex+1;
+                    return static_cast<int>(otherSideIndex + 1);
                 }
             }
         }

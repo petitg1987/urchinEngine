@@ -13,7 +13,11 @@ namespace urchin
 	 * Create black skybox
 	 */
 	Skybox::Skybox() :
-			offsetY(0.0)
+            textureID(0),
+			offsetY(0.0),
+            skyboxShader(0),
+            mProjectionLoc(0),
+            mViewLoc(0)
 	{
 		texSkybox = new Image*[6];
 		texSkybox[0] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
@@ -30,7 +34,11 @@ namespace urchin
 	* @param filenames Filenames of the textures in the following order: X-, X+, Y-, Y+, Z-, Z+
 	*/
 	Skybox::Skybox(const std::vector<std::string> &filenames) :
-			offsetY(0.0)
+            textureID(0),
+            offsetY(0.0),
+            skyboxShader(0),
+            mProjectionLoc(0),
+            mViewLoc(0)
 	{
 		if(filenames.size()!=6)
 		{

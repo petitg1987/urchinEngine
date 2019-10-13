@@ -2,19 +2,19 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
-      <config projectName="urchinEngine" targetName="urchinAIEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapHandler" />
-      <config projectName="urchinEngine" targetName="urchinCommon" />
-      <config projectName="urchinEngine" targetName="urchin3dEngine" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
-      <config projectName="urchinEngine" targetName="copyShaders" />
-      <config projectName="urchinEngine" targetName="testRunner" />
       <config projectName="urchinEngine" targetName="urchinPhysicsEngine" />
-      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="copyShaders" />
+      <config projectName="urchinEngine" targetName="urchinMapHandler" />
       <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
+      <config projectName="urchinEngine" targetName="urchinAIEngine" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
       <config projectName="urchinEngine" targetName="urchinMapEditor" />
+      <config projectName="urchinEngine" targetName="urchinSoundEngine" />
+      <config projectName="urchinEngine" targetName="copyShader" />
+      <config projectName="urchinEngine" targetName="urchinCommon" />
+      <config projectName="urchinEngine" targetName="testRunner" />
+      <config projectName="urchinEngine" targetName="urchin3dEngine" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor_autogen" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -24,15 +24,42 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Use AABBTree to find obstacles">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Use AABBTree to find obstacles (add properties)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/resources/model/boundingbox/SplitBoundingBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/resources/model/boundingbox/SplitBoundingBox.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Animation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Animation.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Mesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Mesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Model.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/model/Model.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/3d/object/Frustum.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/3d/object/Frustum.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/resources/engine.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/engine.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/resources/engine.properties" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/engine.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/data/ShadowData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/data/ShadowData.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/data/ShadowData.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/display/ShadowModelUniform.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/display/ShadowUniform.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/skybox/Skybox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/skybox/Skybox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/AIManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/character/AICharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/character/AICharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/character/AICharacterController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/character/AICharacterController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/character/AICharacterController.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/character/AICharacterController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavMesh.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/services/TerrainObstacleService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/services/TerrainObstacleService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/services/TerrainObstacleService.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/services/TerrainObstacleService.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/MonotonePolygonAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/MonotonePolygonAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/triangulation/TriangulationAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/FunnelAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/FunnelAlgorithm.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/FunnelAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/FunnelAlgorithm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathNode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathNode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathNode.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathNode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathPortal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathPortal.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathPortal.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathPortal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathfindingAStar.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/pathfinding/PathfindingAStar.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/src/behavior/SmoothStopAction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/behavior/SmoothStopAction.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/src/player/filereader/SoundFileReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/player/filereader/SoundFileReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/src/player/stream/AudioStreamPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/player/stream/AudioStreamPlayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/src/player/stream/StreamUpdateTask.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/player/stream/StreamUpdateTask.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/src/player/stream/StreamUpdateWorker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/player/stream/StreamUpdateWorker.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soundEngine/src/sound/Sound.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/sound/Sound.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -201,6 +228,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SearchEverywhereHistoryKey" value="push&#9;ACTION&#9;Vcs.Push&#10;plugin&#9;ACTION&#9;WelcomeScreen.Plugins" />
+    <property name="TODO_SCOPE" value="All Places" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.buildTools.gulp.gulp_package_dir" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/AIEngine/src/path/navmesh/_doc" />
@@ -959,7 +987,9 @@
       <workItem from="1570471599879" duration="594000" />
       <workItem from="1570546113060" duration="4154000" />
       <workItem from="1570553000771" duration="676000" />
-      <workItem from="1570948035985" duration="2770000" />
+      <workItem from="1570948035985" duration="3554000" />
+      <workItem from="1570978072055" duration="606000" />
+      <workItem from="1570987870392" duration="2477000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1276,7 +1306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570948593698</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Use AABBTree to find obstacles (add properties)">
+      <created>1570951014049</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1570951014049</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1324,7 +1361,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="AI: reduce memory allocation (fix tests)" />
     <MESSAGE value="AABBTree: improve memory allocation" />
     <MESSAGE value="Physics: prepare for faster ray test" />
     <MESSAGE value="Ray test via small aabboxes" />
@@ -1349,7 +1385,8 @@
     <MESSAGE value="Fix init warning" />
     <MESSAGE value="Remove NavMashConfig in favor of NavMeshAgent" />
     <MESSAGE value="Use AABBTree to find obstacles" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use AABBTree to find obstacles" />
+    <MESSAGE value="Use AABBTree to find obstacles (add properties)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use AABBTree to find obstacles (add properties)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

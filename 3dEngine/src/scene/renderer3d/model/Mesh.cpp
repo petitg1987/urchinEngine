@@ -10,7 +10,9 @@ namespace urchin
 	Mesh::Mesh(const ConstMesh *constMesh) :
 		constMesh(constMesh),
 		vertices(new Point3<float>[constMesh->getNumberVertices()]),
-		dataVertices(new DataVertex[constMesh->getNumberVertices()])
+		dataVertices(new DataVertex[constMesh->getNumberVertices()]),
+        bufferIDs(),
+        vertexArrayObject(0)
 	{
 		//visual
 		glGenBuffers(4, bufferIDs);

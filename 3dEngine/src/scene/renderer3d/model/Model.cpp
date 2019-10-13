@@ -1,4 +1,3 @@
-#include <limits>
 #include <stdexcept>
 
 #include "Model.h"
@@ -23,7 +22,8 @@ namespace urchin
     Model::Model(const Model &model) : Octreeable(model),
             meshes(nullptr),
 			currAnimation(nullptr),
-			stopAnimationAtLastFrame(false)
+			stopAnimationAtLastFrame(false),
+            bIsProduceShadow(true)
     {
         std::string meshFilename = model.getMeshes()!=nullptr ? model.getMeshes()->getName() : "";
         initialize(meshFilename);
@@ -72,7 +72,7 @@ namespace urchin
 		}
 
 		//we just check with mesh[0] && frame[0]
-		for(unsigned int i = 0; i<meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i)
+		for(std::size_t i = 0; i<meshes->getConstMeshes()->getConstMesh(0)->getNumberBones(); ++i)
 		{
 			//bones must have the same parent index
 			if(meshes->getConstMeshes()->getConstMesh(0)->getBaseBone(i).parent != constAnimation->getBone(0, i).parent)

@@ -58,7 +58,7 @@ namespace urchin
 		return triangles;
 	}
 
-	const std::shared_ptr<NavTriangle> &NavPolygon::getTriangle(unsigned int index) const
+	const std::shared_ptr<NavTriangle> &NavPolygon::getTriangle(std::size_t index) const
 	{
 		return triangles[index];
 	}

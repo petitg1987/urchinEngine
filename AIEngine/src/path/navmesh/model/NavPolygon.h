@@ -24,7 +24,7 @@ namespace urchin
 
 			void addTriangles(const std::vector<std::shared_ptr<NavTriangle>> &, const std::shared_ptr<NavPolygon> &);
 			const std::vector<std::shared_ptr<NavTriangle>> &getTriangles() const;
-			const std::shared_ptr<NavTriangle> &getTriangle(unsigned int) const;
+			const std::shared_ptr<NavTriangle> &getTriangle(std::size_t) const;
 
             const NavTopography *getNavTopography() const;
 

@@ -47,9 +47,9 @@ namespace urchin
 		if(cwPoints.size()>=3)
 		{
 			//assert no duplicate points
-			for (unsigned int i = 0; i < cwPoints.size(); ++i)
+			for (std::size_t i = 0; i < cwPoints.size(); ++i)
 			{
-				for (unsigned int j = 0; j < cwPoints.size(); ++j)
+				for (std::size_t j = 0; j < cwPoints.size(); ++j)
 				{
 					assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
 				}
@@ -57,7 +57,7 @@ namespace urchin
 
 			//assert clockwise order
 			double area = 0.0;
-			for (unsigned int i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
+			for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
 			{
 				area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
 			}
@@ -108,7 +108,7 @@ namespace urchin
 	{//see http://web.archive.org/web/20120323102807/http://local.wasp.uwa.edu.au/~pbourke/geometry/insidepoly/
 		bool inside = false;
 
-		for(unsigned int i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
+		for(std::size_t i=0, previousI=cwPoints.size()-1; i<cwPoints.size(); previousI=i++)
 		{
 			Point2<T> point1 = cwPoints[previousI];
 			Point2<T> point2 = cwPoints[i];

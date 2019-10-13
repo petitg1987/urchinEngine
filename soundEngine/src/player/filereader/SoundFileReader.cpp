@@ -8,7 +8,8 @@ namespace urchin
 {
 
 	SoundFileReader::SoundFileReader(const std::string &filename) :
-		bEndOfFileReached(false)
+		bEndOfFileReached(false),
+        fileInfos()
 	{
 		//open file
 		std::memset (&fileInfos, 0, sizeof (fileInfos)) ;

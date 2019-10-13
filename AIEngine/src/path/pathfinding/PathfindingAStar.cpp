@@ -105,7 +105,7 @@ namespace urchin
 
         for (const auto &polygon : navMesh->getPolygons())
         {
-            for (unsigned int triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex)
+            for (std::size_t triIndex = 0; triIndex < polygon->getTriangles().size(); ++triIndex)
             {
                 const auto &triangle = polygon->getTriangles()[triIndex];
                 Point2<float> flattenPoint(point.X, point.Z);
@@ -164,7 +164,7 @@ namespace urchin
         std::vector<PathPoint> path = pathPortalsToPathPoints(pathPortals, false);
 
         float pathDistance = 0.0;
-        for(int i=0; i<static_cast<long>(path.size())-1; i++)
+        for(std::size_t i=0; i<static_cast<long>(path.size())-1; i++)
         {
             pathDistance += path[i].getPoint().distance(path[i+1].getPoint());
         }
@@ -237,7 +237,7 @@ namespace urchin
 
                     pathPoints.pop_back();
                     pathPoints.emplace_back(PathPoint(topographyPoints[0], true));
-                    for(unsigned int i=1; i<topographyPoints.size()-1; ++i)
+                    for(std::size_t i=1; i<topographyPoints.size()-1; ++i)
                     {
                         pathPoints.emplace_back(PathPoint(topographyPoints[i], false));
                     }

@@ -75,7 +75,7 @@ namespace urchin
 	void ShadowData::applyTextureFilters()
 	{
 		unsigned int layersToUpdate = 0;
-		for(unsigned int i=0; i<getNbFrustumShadowData(); ++i)
+		for(std::size_t i=0; i<getNbFrustumShadowData(); ++i)
 		{
 			if(getFrustumShadowData(i)->needShadowMapUpdate())
 			{
@@ -120,7 +120,7 @@ namespace urchin
 	/**
 	 * @param index Index of frustum split (0: frustum split nearest to eye)
 	 */
-	FrustumShadowData *ShadowData::getFrustumShadowData(unsigned int index)
+	FrustumShadowData *ShadowData::getFrustumShadowData(std::size_t index)
 	{
 		return frustumShadowData[index];
 	}
@@ -128,7 +128,7 @@ namespace urchin
 	/**
 	 * @param index Index of frustum split (0: frustum split nearest to eye)
 	 */
-	const FrustumShadowData *ShadowData::getFrustumShadowData(unsigned int index) const
+	const FrustumShadowData *ShadowData::getFrustumShadowData(std::size_t index) const
 	{
 		return frustumShadowData[index];
 	}
@@ -137,7 +137,7 @@ namespace urchin
 	{
         models.clear();
 
-		for(unsigned int i=0; i<getNbFrustumShadowData(); ++i)
+		for(std::size_t i=0; i<getNbFrustumShadowData(); ++i)
 		{
 			if(getFrustumShadowData(i)->needShadowMapUpdate())
 			{

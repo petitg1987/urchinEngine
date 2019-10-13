@@ -1,14 +1,14 @@
-#include <algorithm>
-
 #include "AICharacterController.h"
+
+#include <utility>
 
 #define CHANGE_PATH_POINT_DISTANCE 0.4f
 
 namespace urchin
 {
 
-    AICharacterController::AICharacterController(const std::shared_ptr<AICharacter> &character, AIManager *aiManager) :
-            character(character),
+    AICharacterController::AICharacterController(std::shared_ptr<AICharacter> character, AIManager *aiManager) :
+            character(std::move(character)),
             aiManager(aiManager),
             eventHandler(nullptr),
             nextPathPointIndex(0)

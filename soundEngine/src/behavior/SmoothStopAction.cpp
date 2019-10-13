@@ -51,7 +51,7 @@ namespace urchin
 		int timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime).count();
 		previousTime = currentTime;
 
-		float changeVolumePercentage = - (static_cast<float>(timeInterval) / 1000.0) * soundBehavior.getVolumeDecreasePercentageOnStop();
+		float changeVolumePercentage = - (static_cast<float>(timeInterval) / 1000.0f) * soundBehavior.getVolumeDecreasePercentageOnStop();
 		totalChangeVolumePercentage += changeVolumePercentage;
 
 		return changeVolumePercentage;
@@ -77,7 +77,7 @@ namespace urchin
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		int timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startingTime).count();
 
-		int nbMillisecondToVolumeReachZero = (1.0 / soundBehavior.getVolumeDecreasePercentageOnStop()) * 1000.0;
+		int nbMillisecondToVolumeReachZero = static_cast<int>((1.0f / soundBehavior.getVolumeDecreasePercentageOnStop()) * 1000.0f);
 
 		return timeInterval < nbMillisecondToVolumeReachZero;
 	}

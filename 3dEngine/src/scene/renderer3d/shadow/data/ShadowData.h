@@ -38,8 +38,8 @@ namespace urchin
 			const Matrix4<float> &getLightViewMatrix() const;
 
 			unsigned int getNbFrustumShadowData() const;
-			FrustumShadowData *getFrustumShadowData(unsigned int);
-			const FrustumShadowData *getFrustumShadowData(unsigned int) const;
+			FrustumShadowData *getFrustumShadowData(std::size_t);
+			const FrustumShadowData *getFrustumShadowData(std::size_t) const;
 
 			const std::vector<Model *> &retrieveModels() const;
 

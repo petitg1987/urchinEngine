@@ -295,7 +295,7 @@ namespace urchin
 		visibleModels.clear();
 		for (const auto &shadowData : shadowDatas)
         {
-			for(unsigned int i=0; i<nbShadowMaps; ++i)
+			for(std::size_t i=0; i<nbShadowMaps; ++i)
 			{
 				const std::vector<Model *> &visibleModelsForLightInFrustumSplit = shadowData.second->getFrustumShadowData(i)->getModels();
 				OctreeableHelper<Model>::merge(visibleModels, visibleModelsForLightInFrustumSplit);
@@ -382,7 +382,7 @@ namespace urchin
 		if(light->hasParallelBeams())
 		{ //sun light
             Matrix4<float> lightViewMatrixInverse = shadowData->getLightViewMatrix().inverse();
-			for(unsigned int i=0; i<splitFrustums.size(); ++i)
+			for(std::size_t i=0; i<splitFrustums.size(); ++i)
 			{
 				AABBox<float> aabboxSceneIndependent = createSceneIndependentBox(splitFrustums[i], shadowData->getLightViewMatrix());
 				OBBox<float> obboxSceneIndependentViewSpace = lightViewMatrixInverse * OBBox<float>(aabboxSceneIndependent);
@@ -509,11 +509,10 @@ namespace urchin
 		}
 
 		float previousSplitDistance = near;
-
 		for(unsigned int i=1; i<=nbShadowMaps; ++i)
 		{
-			float uniformSplit = near + (far - near) * (i/static_cast<float>(nbShadowMaps));
-			float logarithmicSplit = near * std::pow(far/near, i/static_cast<float>(nbShadowMaps));
+			float uniformSplit = near + (far - near) * (static_cast<float>(i)/static_cast<float>(nbShadowMaps));
+			float logarithmicSplit = near * std::pow(far/near, static_cast<float>(i)/static_cast<float>(nbShadowMaps));
 
 			float splitDistance = (percentageUniformSplit * uniformSplit) + ((1.0f - percentageUniformSplit) * logarithmicSplit);
 
@@ -674,7 +673,7 @@ namespace urchin
 
 				glUniform1i(lightsLocation[i].shadowMapTexLoc, shadowMapTextureUnit);
 
-				for(unsigned int j=0; j<nbShadowMaps; ++j)
+				for(std::size_t j=0; j<nbShadowMaps; ++j)
 				{
 					glUniformMatrix4fv(lightsLocation[i].mLightProjectionViewLoc[j], 1, static_cast<GLboolean>(false),
 									   (float *)(shadowData->getFrustumShadowData(j)->getLightProjectionMatrix() * shadowData->getLightViewMatrix()));

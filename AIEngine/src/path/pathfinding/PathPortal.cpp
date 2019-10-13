@@ -1,12 +1,14 @@
 #include "PathPortal.h"
 
+#include <utility>
+
 namespace urchin
 {
 
-    PathPortal::PathPortal(const LineSegment3D<float> &portal, const std::shared_ptr<PathNode> &previousPathNode, const std::shared_ptr<PathNode> &nextPathNode) :
-        portal(portal),
-        previousPathNode(previousPathNode),
-        nextPathNode(nextPathNode),
+    PathPortal::PathPortal(LineSegment3D<float> portal, std::shared_ptr<PathNode> previousPathNode, std::shared_ptr<PathNode> nextPathNode) :
+        portal(std::move(portal)),
+        previousPathNode(std::move(previousPathNode)),
+        nextPathNode(std::move(nextPathNode)),
         bHasPivotPoint(false)
     {
 

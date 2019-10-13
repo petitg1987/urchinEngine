@@ -390,7 +390,7 @@ namespace urchin
 	{
 		Point2<float> point = polygonPoints[pointIndex];
 
-		float nearestDistance = -std::numeric_limits<float>::max();
+		double nearestDistance = -std::numeric_limits<double>::max();
 		auto nearestLeftEdgeHelperIt = edgeHelpers.end();
 
 		for(auto it=edgeHelpers.begin(); it!=edgeHelpers.end(); ++it)
@@ -531,7 +531,7 @@ namespace urchin
         std::copy(polygonPoints.begin(), polygonPoints.begin() + endContourIndices[0], std::back_inserter(svgPolygonPoints));
         svgExporter.addShape(new SVGPolygon(svgPolygonPoints, SVGPolygon::LIME));
 
-        for(unsigned int i=0; i<endContourIndices.size()-1; ++i)
+        for(std::size_t i=0; i<endContourIndices.size()-1; ++i)
         {
             std::vector<Point2<float>> svgHolePoints;
             std::copy(polygonPoints.begin()+endContourIndices[i], polygonPoints.begin() + endContourIndices[i + 1], std::back_inserter(svgHolePoints));
@@ -548,10 +548,10 @@ namespace urchin
 
 		logStream<<message<<std::endl;
 		logStream<<"Monotone polygon output data:"<<std::endl;
-		for(unsigned int i=0; i<yMonotonePolygons.size(); ++i)
+		for(std::size_t i=0; i<yMonotonePolygons.size(); ++i)
 		{
 			logStream<<" - Monotone polygon "<<i<<":"<<std::endl;
-			for(unsigned int pointIndex : yMonotonePolygons[i])
+			for(std::size_t pointIndex : yMonotonePolygons[i])
 			{
 				logStream<<" - "<<polygonPoints[pointIndex]<<std::endl;
 			}

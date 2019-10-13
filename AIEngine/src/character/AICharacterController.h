@@ -14,7 +14,7 @@ namespace urchin
     class AICharacterController
     {
         public:
-            AICharacterController(const std::shared_ptr<AICharacter> &, AIManager *);
+            AICharacterController(std::shared_ptr<AICharacter> , AIManager *);
 
             void setupEventHandler(const std::shared_ptr<AICharacterEventHandler> &);
 

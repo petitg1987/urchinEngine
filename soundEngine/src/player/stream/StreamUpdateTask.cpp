@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "player/stream/StreamUpdateTask.h"
 
 namespace urchin

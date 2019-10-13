@@ -25,14 +25,15 @@ namespace urchin
 	 */
 	TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string &name, TriangleOrientation triangleOrientation) :
 			polygonPoints(std::move(ccwPolygonPoints)),
-			triangleOrientation(triangleOrientation)
+			triangleOrientation(triangleOrientation),
+            missingTriangleNeighbor(0)
 	{
 		this->endContourIndices.push_back(polygonPoints.size());
 		this->contourNames.push_back(name);
 
         #ifdef _DEBUG
             double area = 0.0;
-            for (unsigned int i = 0, prevI = polygonPoints.size() - 1; i < polygonPoints.size(); prevI=i++)
+            for (std::size_t i = 0, prevI = polygonPoints.size() - 1; i < polygonPoints.size(); prevI=i++)
             {
                 area += (polygonPoints[i].X - polygonPoints[prevI].X) * (polygonPoints[i].Y + polygonPoints[prevI].Y);
             }
@@ -63,7 +64,7 @@ namespace urchin
 
         #ifdef _DEBUG
             double area = 0.0;
-            for (unsigned int i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI=i++)
+            for (std::size_t i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI=i++)
             {
                 area += (cwHolePoints[i].X - cwHolePoints[prevI].X) * (cwHolePoints[i].Y + cwHolePoints[prevI].Y);
             }
@@ -96,9 +97,9 @@ namespace urchin
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
 		#ifdef _DEBUG
             //assert no duplicate points
-			for (unsigned int i = 0; i < polygonPoints.size(); ++i)
+			for (std::size_t i = 0; i < polygonPoints.size(); ++i)
 			{
-				for (unsigned int j = 0; j < polygonPoints.size(); ++j)
+				for (std::size_t j = 0; j < polygonPoints.size(); ++j)
 				{
 					if(i!=j && polygonPoints[i] == polygonPoints[j])
 					{
@@ -148,7 +149,7 @@ namespace urchin
 		stack.push(sortedSidedPoints[0]);
 		stack.push(sortedSidedPoints[1]);
 
-		for(unsigned int j=2; j<sortedSidedPoints.size()-1; ++j)
+		for(std::size_t j=2; j<sortedSidedPoints.size()-1; ++j)
 		{
 			SidedPoint currentPoint = sortedSidedPoints[j];
 
@@ -222,7 +223,7 @@ namespace urchin
 		std::vector<SidedPoint> sortedSidedPoints;
 		sortedSidedPoints.reserve(monotonePolygonPoints.size());
 
-		for(unsigned int i=0; i<monotonePolygonPoints.size(); ++i)
+		for(std::size_t i=0; i<monotonePolygonPoints.size(); ++i)
 		{
 			unsigned int currentIndex = monotonePolygonPoints[i];
 			unsigned int nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
@@ -283,8 +284,8 @@ namespace urchin
 
     void TriangulationAlgorithm::determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles)
     {
-        int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
-        int prevMonotoneTriangleIndex = monotoneTriangles.size()-2;
+        long currMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 1;
+        long prevMonotoneTriangleIndex = static_cast<long>(monotoneTriangles.size()) - 2;
 		const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
         missingTriangleNeighbor += monotoneTriangles.size()>1 ? 1 : 0; //don't expect neighbor for first triangle
