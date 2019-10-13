@@ -535,9 +535,9 @@ namespace urchin
 			//display light octree
 //			lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
 
-			//display scene box visible from light based on splitted frustums
+			//display scene box visible from light based on split frustums
 //			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-//			for(auto &frustum : shadowManager->getSplittedFrustums())
+//			for(auto &frustum : shadowManager->getSplitFrustums())
 //			{
 //				shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
 //			}

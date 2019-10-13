@@ -24,28 +24,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Remove NavMashConfig in favor of NavMeshAgent">
+    <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Use AABBTree to find obstacles">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/resources/model/boundingbox/SplitBoundingBox.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/resources/model/boundingbox/SplitBoundingBox.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/Renderer3d.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/scene/renderer3d/shadow/ShadowManager.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/NavMeshGenerator.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.inl" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBNodeData.inl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.inl" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/partitioning/aabbtree/AABBTree.inl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/ai/AIControllerWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseAlgorithm.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/BroadPhaseManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/AABBTreeAlgorithm.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBNodeData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBNodeData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBNodeData.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBNodeData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBTree.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBTree.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBTree.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/collision/broadphase/aabbtree/BodyAABBTree.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/math/geometry/3d/object/Frustum.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/math/geometry/3d/object/Frustum.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapEditor/resources/engine.properties" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/resources/engine.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/resources/engine.properties" beforeDir="false" afterPath="$PROJECT_DIR$/test/resources/engine.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -972,7 +959,7 @@
       <workItem from="1570471599879" duration="594000" />
       <workItem from="1570546113060" duration="4154000" />
       <workItem from="1570553000771" duration="676000" />
-      <workItem from="1570948035985" duration="401000" />
+      <workItem from="1570948035985" duration="2770000" />
     </task>
     <task id="LOCAL-00001" summary="Fix heightfield point helper">
       <created>1536385364670</created>
@@ -1282,7 +1269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570553646808</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Use AABBTree to find obstacles">
+      <created>1570948593698</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1570948593698</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1330,7 +1324,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="AI: reduce memory allocation" />
     <MESSAGE value="AI: reduce memory allocation (fix tests)" />
     <MESSAGE value="AABBTree: improve memory allocation" />
     <MESSAGE value="Physics: prepare for faster ray test" />
@@ -1355,7 +1348,8 @@
     <MESSAGE value="Add physics integration tests" />
     <MESSAGE value="Fix init warning" />
     <MESSAGE value="Remove NavMashConfig in favor of NavMeshAgent" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove NavMashConfig in favor of NavMeshAgent" />
+    <MESSAGE value="Use AABBTree to find obstacles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use AABBTree to find obstacles" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

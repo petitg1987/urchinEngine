@@ -16,7 +16,7 @@ namespace urchin
 	std::vector<AABBox<float>> SplitBoundingBox::split(const AABBox<float> &aabbox) const
 	{
 		std::vector<float> axisSplits[3];
-		for(unsigned int axis=0; axis<3; ++axis)
+		for(std::size_t axis=0; axis<3; ++axis)
 		{
 			float size = aabbox.getHalfSize(axis) * 2.0f;
 			axisSplits[axis].push_back(aabbox.getMin()[axis]);
@@ -26,27 +26,27 @@ namespace urchin
 
 			for(int split = 0; split < nbSplits; ++split)
 			{
-				float splitValue = std::min(aabbox.getMin()[axis] + limitSize*(split+1), maxValue);
+				float splitValue = std::min(aabbox.getMin()[axis] + limitSize * (static_cast<float>(split) + 1.0f), maxValue);
 				axisSplits[axis].push_back(splitValue);
 			}
 		}
 
-		std::vector<AABBox<float>> splittedBoundingBox;
-		for(unsigned int x=1; x<axisSplits[0].size(); ++x)
+		std::vector<AABBox<float>> splitBoundingBox;
+		for(std::size_t x=1; x<axisSplits[0].size(); ++x)
 		{
-			for(unsigned int y=1; y<axisSplits[1].size(); ++y)
+			for(std::size_t y=1; y<axisSplits[1].size(); ++y)
 			{
-				for(unsigned int z=1; z<axisSplits[2].size(); ++z)
+				for(std::size_t z=1; z<axisSplits[2].size(); ++z)
 				{
 					Point3<float> minPoint(axisSplits[0][x-1], axisSplits[1][y-1], axisSplits[2][z-1]);
 					Point3<float> maxPoint(axisSplits[0][x], axisSplits[1][y], axisSplits[2][z]);
 
-					splittedBoundingBox.emplace_back(AABBox<float>(minPoint, maxPoint));
+                    splitBoundingBox.emplace_back(AABBox<float>(minPoint, maxPoint));
 				}
 			}
 		}
 
-		return splittedBoundingBox;
+		return splitBoundingBox;
 	}
 
 }

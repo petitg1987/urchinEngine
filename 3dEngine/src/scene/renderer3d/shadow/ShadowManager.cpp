@@ -406,11 +406,11 @@ namespace urchin
 	/**
 	 * @return Box in light space containing shadow caster and receiver (scene independent)
 	 */
-	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splittedFrustum, const Matrix4<float> &lightViewMatrix) const
+	AABBox<float> ShadowManager::createSceneIndependentBox(const Frustum<float> &splitFrustum, const Matrix4<float> &lightViewMatrix) const
 	{
 		ScopeProfiler profiler("3d", "sceneIndepBox");
 
-		const Frustum<float> &frustumLightSpace = lightViewMatrix * splittedFrustum;
+		const Frustum<float> &frustumLightSpace = lightViewMatrix * splitFrustum;
 
 		//determine point belonging to shadow caster/receiver box
 		Point3<float> shadowReceiverAndCasterVertex[16];
@@ -430,14 +430,14 @@ namespace urchin
 		return AABBox<float>(shadowReceiverAndCasterVertex, 16);
 	}
 
-	float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float> &splittedFrustumLightSpace) const
+	float ShadowManager::computeNearZForSceneIndependentBox(const Frustum<float> &splitFrustumLightSpace) const
 	{
-		float nearestPointFromLight = splittedFrustumLightSpace.getFrustumPoints()[0].Z;
+		float nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[0].Z;
 		for(unsigned int i=1; i<8; ++i)
 		{
-			if(splittedFrustumLightSpace.getFrustumPoints()[i].Z > nearestPointFromLight)
+			if(splitFrustumLightSpace.getFrustumPoints()[i].Z > nearestPointFromLight)
 			{
-				nearestPointFromLight = splittedFrustumLightSpace.getFrustumPoints()[i].Z;
+				nearestPointFromLight = splitFrustumLightSpace.getFrustumPoints()[i].Z;
 			}
 		}
 		return nearestPointFromLight + frustumDistance;

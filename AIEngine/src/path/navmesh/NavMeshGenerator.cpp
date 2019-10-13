@@ -20,12 +20,12 @@ namespace urchin
 {
 
     NavMeshGenerator::NavMeshGenerator() :
-            polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygon.removeAngleThresholdInDegree")))),
-            polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygon.mergePointsDistanceThreshold")),
+            polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
+            polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
 			navMeshAgent(std::make_shared<NavMeshAgent>()),
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
-            expandedPolytopes(AABBTree<std::shared_ptr<Polytope>>(1.0f)) //TODO define fatMargin (=jump distance ?)
+            expandedPolytopes(AABBTree<std::shared_ptr<Polytope>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
     {
 
 	}

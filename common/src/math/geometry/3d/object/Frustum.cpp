@@ -164,7 +164,7 @@ namespace urchin
 	/**
 	* @param splitPositionStart Split position start (distance between original near plane and the asked near plane)
 	* @param splitPositionEnd Split position end (distance between original far plane and the asked far plane)
-	* @return Splitted frustum according to the given split positions
+	* @return Split frustum according to the given split positions
 	*/
 	template<class T> Frustum<T> Frustum<T>::splitFrustum(T splitPositionStart, T splitPositionEnd) const
 	{
