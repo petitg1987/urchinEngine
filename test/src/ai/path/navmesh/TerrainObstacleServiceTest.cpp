@@ -99,7 +99,7 @@ void TerrainObstacleServiceTest::squaresInUForm()
 
 CppUnit::Test *TerrainObstacleServiceTest::suite()
 {
-    CppUnit::TestSuite *suite = new CppUnit::TestSuite("TerrainObstacleServiceTest");
+    auto *suite = new CppUnit::TestSuite("TerrainObstacleServiceTest");
 
     suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("oneSquare", &TerrainObstacleServiceTest::oneSquare));
     suite->addTest(new CppUnit::TestCaller<TerrainObstacleServiceTest>("twoAlignedSquares", &TerrainObstacleServiceTest::twoAlignedSquares));

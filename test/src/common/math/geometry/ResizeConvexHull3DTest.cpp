@@ -57,7 +57,7 @@ void ResizeConvexHull3DTest::expandTetrahedron()
 
 CppUnit::Test *ResizeConvexHull3DTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("ResizeConvexHullTest");
+    auto *suite = new CppUnit::TestSuite("ResizeConvexHullTest");
 
 	suite->addTest(new CppUnit::TestCaller<ResizeConvexHull3DTest>("reduceBox", &ResizeConvexHull3DTest::reduceBox));
 

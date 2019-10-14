@@ -22,7 +22,7 @@ namespace urchin
 	/**
 	 * Points of convex hull indexed to be used with indexed triangles.
 	 */
-	template<class T> const typename std::map<unsigned int, ConvexHullPoint<T>> &ConvexHull3D<T>::getConvexHullPoints() const
+	template<class T> const typename std::map<std::size_t, ConvexHullPoint<T>> &ConvexHull3D<T>::getConvexHullPoints() const
 	{
 		return localizedConvexHullShape.getConvexHullPoints();
 	}
@@ -38,7 +38,7 @@ namespace urchin
 	/**
 	 * Triangles of convex hull where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
 	 */
-	template<class T> const typename std::map<unsigned int, IndexedTriangle3D<T>> &ConvexHull3D<T>::getIndexedTriangles() const
+	template<class T> const typename std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHull3D<T>::getIndexedTriangles() const
 	{
 		return localizedConvexHullShape.getIndexedTriangles();
 	}
@@ -55,7 +55,7 @@ namespace urchin
 	* @param removedTriangleIndices [out] Indices of removed triangles from convex hull
 	* @return Returns index of point added. If point doesn't make part of convex, result is zero.
 	*/
-	template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<unsigned int> &removedTriangleIndices)
+	template<class T> unsigned int ConvexHull3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<std::size_t> &removedTriangleIndices)
 	{
 		return localizedConvexHullShape.addNewPoint(newPoint, removedTriangleIndices);
 	}

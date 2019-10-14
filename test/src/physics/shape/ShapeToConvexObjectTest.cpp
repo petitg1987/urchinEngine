@@ -94,7 +94,7 @@ void ShapeToConvexObjectTest::sphereConversion()
 
 CppUnit::Test *ShapeToConvexObjectTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("ShapeToConvexObjectTest");
+    auto *suite = new CppUnit::TestSuite("ShapeToConvexObjectTest");
 
 	suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("boxConversion", &ShapeToConvexObjectTest::boxConversion));
 	suite->addTest(new CppUnit::TestCaller<ShapeToConvexObjectTest>("capsuleConversion", &ShapeToConvexObjectTest::capsuleConversion));

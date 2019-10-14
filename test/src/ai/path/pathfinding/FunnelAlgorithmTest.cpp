@@ -79,7 +79,7 @@ void FunnelAlgorithmTest::cornerPath4()
 
 CppUnit::Test *FunnelAlgorithmTest::suite()
 {
-    CppUnit::TestSuite *suite = new CppUnit::TestSuite("FunnelAlgorithmTest");
+    auto *suite = new CppUnit::TestSuite("FunnelAlgorithmTest");
 
     suite->addTest(new CppUnit::TestCaller<FunnelAlgorithmTest>("straightPath", &FunnelAlgorithmTest::straightPath));
 

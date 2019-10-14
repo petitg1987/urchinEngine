@@ -13,18 +13,18 @@ namespace urchin
 
 	struct SidedPoint
 	{
-		SidedPoint(unsigned int, bool);
+		SidedPoint(std::size_t, bool);
 
-		unsigned int pointIndex;
+        std::size_t pointIndex;
 		bool onLeft; //indicate if point is on left of monotone polygon or right
 	};
 
 	struct TriangleEdge
 	{
-		TriangleEdge(unsigned int, unsigned int);
+		TriangleEdge(std::size_t, std::size_t);
 
-		unsigned int triangleIndex;
-		unsigned int edgeIndex;
+        std::size_t triangleIndex;
+        std::size_t edgeIndex;
 	};
 
 	class TriangulationAlgorithm
@@ -40,32 +40,32 @@ namespace urchin
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 
-			unsigned int addHolePoints(const std::vector<Point2<float>> &, const std::string &);
-			unsigned int getHolesSize() const;
-			std::vector<Point2<float>> getHolePoints(unsigned int) const;
+            std::size_t addHolePoints(const std::vector<Point2<float>> &, const std::string &);
+            std::size_t getHolesSize() const;
+			std::vector<Point2<float>> getHolePoints(std::size_t) const;
 
-			unsigned int getAllPointsSize() const;
+            std::size_t getAllPointsSize() const;
 
 			const std::vector<std::shared_ptr<NavTriangle>> &triangulate();
 
 		private:
 			std::vector<std::shared_ptr<NavTriangle>> triangulateMonotonePolygon(const MonotonePolygon &);
-			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<unsigned int> &) const;
-			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
-			std::shared_ptr<NavTriangle> buildOrientedTriangle(unsigned int, unsigned int, unsigned int) const;
+			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<std::size_t> &) const;
+			bool isFirstPointAboveSecond(std::size_t, std::size_t) const;
+			std::shared_ptr<NavTriangle> buildOrientedTriangle(std::size_t, std::size_t, std::size_t) const;
 
 			void determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon &);
 			void determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &);
 			void determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon &);
-			bool areSameEdge(const std::shared_ptr<NavTriangle> &, unsigned int, unsigned int, const std::shared_ptr<NavTriangle> &, unsigned int, unsigned int) const;
-			uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
+			bool areSameEdge(const std::shared_ptr<NavTriangle> &, std::size_t, std::size_t, const std::shared_ptr<NavTriangle> &, std::size_t, std::size_t) const;
+			uint_fast64_t computeEdgeId(std::size_t, std::size_t) const;
 
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;
 			void logOutputData(const std::string &, const std::vector<std::shared_ptr<NavTriangle>> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
 			TriangleOrientation triangleOrientation;
-			std::vector<unsigned int> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
+			std::vector<std::size_t> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 			std::vector<std::string> contourNames;
 
 			std::vector<std::shared_ptr<NavTriangle>> triangles;

@@ -14,7 +14,7 @@ namespace urchin
 	 */
 	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, T distance) const
 	{
- 		std::map<unsigned int, Plane<T>> planes = buildPlanesFromConvexHullShape(originalConvexHullShape);
+ 		std::map<std::size_t, Plane<T>> planes = buildPlanesFromConvexHullShape(originalConvexHullShape);
 		shiftPlanes(planes, distance);
 
 		return resizeConvexHullShape(originalConvexHullShape, planes);
@@ -26,10 +26,10 @@ namespace urchin
 		return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
 	}
 
-	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, const std::map<unsigned int, Plane<T>> &expandedPlanes) const
+	template<class T> std::unique_ptr<ConvexHullShape3D<T>> ResizeConvexHull3DService<T>::resizeConvexHullShape(const ConvexHullShape3D<T> &originalConvexHullShape, const std::map<std::size_t, Plane<T>> &expandedPlanes) const
 	{
 		bool containUselessPoints = false;
-		std::map<unsigned int, ConvexHullPoint<T>> newConvexHullPoints;
+		std::map<std::size_t, ConvexHullPoint<T>> newConvexHullPoints;
 		for(const auto &itPoint : originalConvexHullShape.getConvexHullPoints())
 		{
 			std::vector<Plane<T>> threePlanes = findThreeNonParallelPlanes(itPoint.second.triangleIndices, expandedPlanes);
@@ -47,7 +47,7 @@ namespace urchin
 				ConvexHullPoint<T> convexHullPoint;
 				convexHullPoint.point = newPoint;
 				convexHullPoint.triangleIndices = itPoint.second.triangleIndices;
-				newConvexHullPoints.insert(std::pair<unsigned int, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
+				newConvexHullPoints.insert(std::pair<std::size_t, ConvexHullPoint<T>>(itPoint.first, convexHullPoint));
 			}else
 			{ //useless point found on convex hull (could be removed from convex hull without impact)
 				containUselessPoints = true;
@@ -69,15 +69,15 @@ namespace urchin
 		return std::make_unique<ConvexHullShape3D<T>>(newConvexHullPoints, originalConvexHullShape.getIndexedTriangles());
 	}
 
-	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, const std::map<unsigned int, Plane<T>> &expandedPlanes) const
+	template<class T> std::unique_ptr<ConvexHull3D<T>> ResizeConvexHull3DService<T>::resizeConvexHull(const ConvexHull3D<T> &originalConvexHull, const std::map<std::size_t, Plane<T>> &expandedPlanes) const
 	{
 		std::unique_ptr<ConvexHullShape3D<T>> convexHullShapeResized = resizeConvexHullShape(originalConvexHull.localizedConvexHullShape, expandedPlanes);
 		return std::make_unique<ConvexHull3D<T>>(*convexHullShapeResized);
 	}
 
-	template<class T> std::map<unsigned int, Plane<T>> ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull) const
+	template<class T> std::map<std::size_t, Plane<T>> ResizeConvexHull3DService<T>::buildPlanesFromConvexHullShape(const ConvexHullShape3D<T> &convexHull) const
 	{
-		std::map<unsigned int, Plane<T>> planes;
+		std::map<std::size_t, Plane<T>> planes;
 
 		for(const auto &itTriangles : convexHull.getIndexedTriangles())
 		{
@@ -86,13 +86,13 @@ namespace urchin
 			const Point3<T> &point2 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(1)).point;
 			const Point3<T> &point3 = convexHull.getConvexHullPoints().at(indexedTriangle.getIndex(2)).point;
 
-			planes.insert(std::pair<unsigned int, Plane<T>>(itTriangles.first, Plane<T>(point1, point2, point3))); //plane is built with normal outside convex hull
+			planes.insert(std::pair<std::size_t, Plane<T>>(itTriangles.first, Plane<T>(point1, point2, point3))); //plane is built with normal outside convex hull
 		}
 
 		return planes;
 	}
 
-	template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(std::map<unsigned int, Plane<T>> &planes, T distance) const
+	template<class T> void ResizeConvexHull3DService<T>::shiftPlanes(std::map<std::size_t, Plane<T>> &planes, T distance) const
 	{
 		for(auto &itPlanes : planes)
 		{
@@ -100,7 +100,7 @@ namespace urchin
 		}
 	}
 
-	template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<unsigned int> &planeIndices, const std::map<unsigned int, Plane<T>> &allPlanes) const
+	template<class T> std::vector<Plane<T>> ResizeConvexHull3DService<T>::findThreeNonParallelPlanes(const std::vector<std::size_t> &planeIndices, const std::map<std::size_t, Plane<T>> &allPlanes) const
 	{
 		constexpr float PARALLEL_COMPARISON_TOLERANCE = 0.01f;
 
@@ -108,7 +108,7 @@ namespace urchin
 		nonParallelPlanes.reserve(3);
 
 		const Plane<T> &plane1 = allPlanes.at(planeIndices[0]);
-		for(unsigned int i=1; i<planeIndices.size(); ++i)
+		for(std::size_t i=1; i<planeIndices.size(); ++i)
 		{
 			const Plane<T> &plane2 = allPlanes.at(planeIndices[i]);
 
@@ -117,7 +117,7 @@ namespace urchin
 				continue;
 			}
 
-			for(unsigned int j=i+1; j<planeIndices.size(); ++j)
+			for(std::size_t j=i+1; j<planeIndices.size(); ++j)
 			{
 				const Plane<T> &plane3 = allPlanes.at(planeIndices[j]);
 

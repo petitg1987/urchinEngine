@@ -35,13 +35,12 @@ namespace urchin
 		}
 
 		//2. initialize global variables
-		std::map<unsigned int, Point3<T>> supportPointsA, supportPointsB;  //first: index of point in convex hull, second: support points
-		std::map<unsigned int, EPATriangleData<T>> trianglesData; //first: index of triangle in convex hull, second: EPA triangle data
+		std::map<std::size_t, Point3<T>> supportPointsA, supportPointsB;  //first: index of point in convex hull, second: support points
+		std::map<std::size_t, EPATriangleData<T>> trianglesData; //first: index of triangle in convex hull, second: EPA triangle data
 
 		//3. create initial convex hull
-		std::map<unsigned int, ConvexHullPoint<T>> convexHullPoints;
-		std::map<unsigned int, IndexedTriangle3D<T>> indexedTriangles;
-		std::map<unsigned int, unsigned int> nbTrianglesByPoint;
+		std::map<std::size_t, ConvexHullPoint<T>> convexHullPoints;
+		std::map<std::size_t, IndexedTriangle3D<T>> indexedTriangles;
 
 		determineInitialPoints(simplex, convexObject1, convexObject2, convexHullPoints, supportPointsA, supportPointsB);
         if(convexHullPoints.size() >= 4)
@@ -55,14 +54,14 @@ namespace urchin
 		}
 
 		ConvexHullShape3D<T> convexHullShape(convexHullPoints, indexedTriangles);
-		for(typename std::map<unsigned int, IndexedTriangle3D<T>>::const_iterator it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it)
+		for(auto it = indexedTriangles.begin(); it!=indexedTriangles.end(); ++it)
 		{
-			trianglesData.insert(std::pair<unsigned int, EPATriangleData<T>>(it->first, createTriangleData(convexHullShape, it->first)));
+			trianglesData.insert(std::pair<std::size_t, EPATriangleData<T>>(it->first, createTriangleData(convexHullShape, it->first)));
 		}
 
 		//4. find closest plane of extended polytope
 		T upperBoundPenDepth = std::numeric_limits<T>::max();
-		typename std::map<unsigned int, EPATriangleData<T>>::const_iterator itClosestTriangleData;
+		typename std::map<std::size_t, EPATriangleData<T>>::const_iterator itClosestTriangleData;
 		unsigned int iterationNumber = 0;
 		Vector3<T> normal;
 		T distanceToOrigin;
@@ -90,22 +89,22 @@ namespace urchin
 
 			if(!closeEnough)
 			{ //polytope can be extended in direction of normal: add a new point
-				std::vector<unsigned int> removedTriangleIndices;
-				unsigned int index = convexHullShape.addNewPoint(minkowskiDiffPoint, removedTriangleIndices);
+				std::vector<std::size_t> removedTriangleIndices;
+                std::size_t index = convexHullShape.addNewPoint(minkowskiDiffPoint, removedTriangleIndices);
 				if(index==0)
 				{ //finally, polytope cannot by extended in direction of normal. Cause: numerical imprecision.
 					break;
 				}
 
 				//compute new triangles data
-				const std::vector<unsigned int> &newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
-				for (unsigned int newTriangleIndex : newTriangleIndices)
+				const std::vector<std::size_t> &newTriangleIndices = convexHullShape.getConvexHullPoints().at(index).triangleIndices;
+				for (std::size_t newTriangleIndex : newTriangleIndices)
 				{
-					trianglesData.insert(std::pair<unsigned int, EPATriangleData<T>>(newTriangleIndex, createTriangleData(convexHullShape, newTriangleIndex)));
+					trianglesData.insert(std::pair<std::size_t, EPATriangleData<T>>(newTriangleIndex, createTriangleData(convexHullShape, newTriangleIndex)));
 				}
 
 				//remove triangle data not used anymore
-				for (unsigned int removedTriangleIndex : removedTriangleIndices)
+				for (std::size_t removedTriangleIndex : removedTriangleIndices)
 				{
 					trianglesData.erase(removedTriangleIndex);
 				}
@@ -118,14 +117,14 @@ namespace urchin
 				break;
 			}
 			iterationNumber++;
-		};
+		}
 
 		//5. compute EPA result: normal, penetration depth and contact points of collision
 		const EPATriangleData<T> &closestTriangleData = itClosestTriangleData->second;
 		const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(itClosestTriangleData->first);
-		const unsigned int pointIndex1 = indexedTriangle.getIndex(0);
-		const unsigned int pointIndex2 = indexedTriangle.getIndex(1);
-		const unsigned int pointIndex3 = indexedTriangle.getIndex(2);
+		const std::size_t pointIndex1 = indexedTriangle.getIndex(0);
+		const std::size_t pointIndex2 = indexedTriangle.getIndex(1);
+		const std::size_t pointIndex3 = indexedTriangle.getIndex(2);
 
 		const Point3<T> contactPointA = closestTriangleData.getBarycentric(0) * supportPointsA[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsA[pointIndex2]
 				+ closestTriangleData.getBarycentric(2) * supportPointsA[pointIndex3];
@@ -195,8 +194,8 @@ namespace urchin
 	 * @param supportPointsB [out] Support points of object B used to compute indexed points
 	 */
 	template<class T> void EPAAlgorithm<T>::determineInitialPoints(const Simplex<T> &simplex, const CollisionConvexObject3D &convexObject1,
-			const CollisionConvexObject3D &convexObject2, std::map<unsigned int, ConvexHullPoint<T>> &convexHullPoints,
-			std::map<unsigned int, Point3<T>> &supportPointsA, std::map<unsigned int, Point3<T>> &supportPointsB) const
+			const CollisionConvexObject3D &convexObject2, std::map<std::size_t, ConvexHullPoint<T>> &convexHullPoints,
+			std::map<std::size_t, Point3<T>> &supportPointsA, std::map<std::size_t, Point3<T>> &supportPointsB) const
 	{
 		if(simplex.getSize()==2)
 		{ //simplex is a segment line containing the origin
@@ -208,7 +207,7 @@ namespace urchin
 			// product has the largest length.
 			int minAxis = 0; //0=X, 1=Y, 2=Z
 			T minValue = std::abs(lineDirection.X);
-			for(unsigned int i=1; i<3; ++i)
+			for(int i=1; i<3; ++i)
 			{
 				if(minValue > std::abs(lineDirection[i]))
 				{
@@ -237,13 +236,13 @@ namespace urchin
 					convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>(),
 					convexObject2.getSupportPoint((-v3).template cast<float>(), true).template cast<T>()};
 
-			for(unsigned int i=0; i<2; ++i)
+			for(std::size_t i=0; i<2; ++i)
 			{
 				convexHullPoints[i].point = simplex.getPoint(i);
 				supportPointsA[i] = simplex.getSupportPointA(i);
 				supportPointsB[i] = simplex.getSupportPointB(i);
 			}
-			for(unsigned int i=0; i<3; ++i)
+			for(std::size_t i=0; i<3; ++i)
 			{
 				convexHullPoints[i+2].point = supportPoints[i] - supportPointsMinus[i];
 				supportPointsA[i+2] = supportPoints[i];
@@ -282,13 +281,13 @@ namespace urchin
 					convexObject2.getSupportPoint((-v1).template cast<float>(), true).template cast<T>(),
 					convexObject2.getSupportPoint((-v2).template cast<float>(), true).template cast<T>()};
 
-			for(unsigned int i=0; i<3; ++i)
+			for(std::size_t i=0; i<3; ++i)
 			{
 				convexHullPoints[i].point = simplex.getPoint(i);
 				supportPointsA[i] = simplex.getSupportPointA(i);
 				supportPointsB[i] = simplex.getSupportPointB(i);
 			}
-			for(unsigned int i=0; i<2; ++i)
+			for(std::size_t i=0; i<2; ++i)
 			{
 				convexHullPoints[i+3].point = supportPoints[i] - supportPointsMinus[i];
 				supportPointsA[i+3] = supportPoints[i];
@@ -311,7 +310,7 @@ namespace urchin
             }
 		}else if(simplex.getSize()==4)
 		{ //simplex is a tetrahedron containing the origin
-			for(unsigned int i=0; i<4; ++i)
+			for(std::size_t i=0; i<4; ++i)
 			{
 				convexHullPoints[i].point = simplex.getPoint(i);
 				supportPointsA[i] = simplex.getSupportPointA(i);
@@ -329,12 +328,12 @@ namespace urchin
 	 * @param indexedTriangles [out] Triangle of initial convex hull. When points are too close together or almost on same
 	 * plane: the indexed triangles can be incomplete
 	 */
-	template<class T> void EPAAlgorithm<T>::determineInitialTriangles(std::map<unsigned int, ConvexHullPoint<T>> &convexHullPoints,
-			std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles) const
+	template<class T> void EPAAlgorithm<T>::determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>> &convexHullPoints,
+			std::map<std::size_t, IndexedTriangle3D<T>> &indexedTriangles) const
 	{
-		for(unsigned int i=0; i<3; ++i)
+		for(std::size_t i=0; i<3; ++i)
 		{
-			for(unsigned int j=i+1; j<4; ++j)
+			for(std::size_t j=i+1; j<4; ++j)
 			{
 				T distance = convexHullPoints.at(i).point.vector(convexHullPoints.at(j).point).length();
 				T minPointsDistance = (std::nextafter(distance, std::numeric_limits<T>::max()) - distance) * 10.0;
@@ -346,11 +345,11 @@ namespace urchin
 			}
 		}
 
-		constexpr unsigned int indices[4][3] = 		{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
-		constexpr unsigned int revIndices[4][3] = 	{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
-		for(unsigned int i=0; i<4; ++i)
+		constexpr std::size_t indices[4][3] = 		{{0, 1, 2}, {0, 3, 1}, {0, 2, 3}, {1, 3, 2}};
+		constexpr std::size_t revIndices[4][3] = 	{{0, 2, 1}, {0, 1, 3}, {0, 3, 2}, {1, 2, 3}};
+		for(std::size_t i=0; i<4; ++i)
 		{
-			const unsigned int pointOutsideTriangle = 6 - (indices[i][0] + indices[i][1] + indices[i][2]);
+			const std::size_t pointOutsideTriangle = 6 - (indices[i][0] + indices[i][1] + indices[i][2]);
 			const Vector3<T> normalTriangle = IndexedTriangle3D<T>(indices[i]).computeNormal(
 					convexHullPoints.at(indices[i][0]).point,
 					convexHullPoints.at(indices[i][1]).point,
@@ -363,15 +362,15 @@ namespace urchin
 
 			if(dotProduct < -dotProductTolerance)
 			{
-				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indices[i])));
-				for(unsigned int pointI=0; pointI<3; ++pointI)
+				indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(indices[i])));
+				for(std::size_t pointI=0; pointI<3; ++pointI)
 				{
 					convexHullPoints.at(indices[i][pointI]).triangleIndices.push_back(i);
 				}
 			}else if(dotProduct > dotProductTolerance)
 			{
-				indexedTriangles.insert(std::pair<unsigned int, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndices[i])));
-				for(unsigned int pointI=0; pointI<3; ++pointI)
+				indexedTriangles.insert(std::pair<std::size_t, IndexedTriangle3D<T>>(i, IndexedTriangle3D<T>(revIndices[i])));
+				for(std::size_t pointI=0; pointI<3; ++pointI)
 				{
 					convexHullPoints.at(revIndices[i][pointI]).triangleIndices.push_back(i);
 				}
@@ -387,11 +386,11 @@ namespace urchin
 	 * @param trianglesData Triangles data
 	 * @return Iterator on closest triangle data
 	 */
-	template<class T> typename std::map<unsigned int, EPATriangleData<T>>::const_iterator EPAAlgorithm<T>::getClosestTriangleData(
-			const typename std::map<unsigned int, EPATriangleData<T>> &trianglesData) const
+	template<class T> typename std::map<std::size_t, EPATriangleData<T>>::const_iterator EPAAlgorithm<T>::getClosestTriangleData(
+			const typename std::map<std::size_t, EPATriangleData<T>> &trianglesData) const
 	{
 		T minDistanceToOrigin = std::numeric_limits<T>::max();
-		typename std::map<unsigned int, EPATriangleData<T>>::const_iterator closestTriangleData;
+		typename std::map<std::size_t, EPATriangleData<T>>::const_iterator closestTriangleData;
 
 		for(auto it = trianglesData.begin(); it!=trianglesData.end(); ++it)
 		{
@@ -412,12 +411,12 @@ namespace urchin
 	 * @param triangleIndex Index of triangle in convex hull shape used to compute the data
 	 * @return Computed triangle data (normal, distance to origin...).
 	 */
-	template<class T> EPATriangleData<T> EPAAlgorithm<T>::createTriangleData(const ConvexHullShape3D<T> &convexHullShape, unsigned int triangleIndex) const
+	template<class T> EPATriangleData<T> EPAAlgorithm<T>::createTriangleData(const ConvexHullShape3D<T> &convexHullShape, std::size_t triangleIndex) const
 	{
 		const IndexedTriangle3D<T> &indexedTriangle = convexHullShape.getIndexedTriangles().at(triangleIndex);
-		const unsigned int pointIndex1 = indexedTriangle.getIndex(0);
-		const unsigned int pointIndex2 = indexedTriangle.getIndex(1);
-		const unsigned int pointIndex3 = indexedTriangle.getIndex(2);
+		const std::size_t pointIndex1 = indexedTriangle.getIndex(0);
+		const std::size_t pointIndex2 = indexedTriangle.getIndex(1);
+		const std::size_t pointIndex3 = indexedTriangle.getIndex(2);
 
 		const Point3<T> &point1 = convexHullShape.getConvexHullPoints().at(pointIndex1).point;
 		const Point3<T> &point2 = convexHullShape.getConvexHullPoints().at(pointIndex2).point;

@@ -15,7 +15,7 @@ void TriangulationTest::triangleTriangulation()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 1);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{1, 2, 0});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{1, 2, 0});
 	AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == nullptr);
 	AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
 	AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
@@ -30,12 +30,12 @@ void TriangulationTest::cubeTriangulation()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 2);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{0, 2, 3});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{0, 2, 3});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[1]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{1, 2, 0});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{1, 2, 0});
 	AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == nullptr);
 	AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == triangles[0]);
 	AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == nullptr);
@@ -51,37 +51,37 @@ void TriangulationTest::twoNearPoints()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 7);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{2, 0, 1});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{2, 0, 1});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[1]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{3, 0, 2});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{3, 0, 2});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == triangles[0]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{4, 0, 3});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{4, 0, 3});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == triangles[3]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == triangles[1]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[3]->getIndices(), new unsigned int[3]{5, 0, 4});
+	AssertHelper::assert3Sizes(triangles[3]->getIndices(), new std::size_t[3]{5, 0, 4});
     AssertHelper::assertTrue(triangles[3]->getNeighbor(0) == triangles[4]);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(1) == triangles[2]);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[4]->getIndices(), new unsigned int[3]{6, 0, 5});
+	AssertHelper::assert3Sizes(triangles[4]->getIndices(), new std::size_t[3]{6, 0, 5});
     AssertHelper::assertTrue(triangles[4]->getNeighbor(0) == triangles[6]);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(1) == triangles[3]);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[5]->getIndices(), new unsigned int[3]{8, 6, 7});
+	AssertHelper::assert3Sizes(triangles[5]->getIndices(), new std::size_t[3]{8, 6, 7});
     AssertHelper::assertTrue(triangles[5]->getNeighbor(0) == triangles[6]);
     AssertHelper::assertTrue(triangles[5]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[5]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[6]->getIndices(), new unsigned int[3]{8, 0, 6});
+	AssertHelper::assert3Sizes(triangles[6]->getIndices(), new std::size_t[3]{8, 0, 6});
     AssertHelper::assertTrue(triangles[6]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[6]->getNeighbor(1) == triangles[4]);
     AssertHelper::assertTrue(triangles[6]->getNeighbor(2) == triangles[5]);
@@ -96,22 +96,22 @@ void TriangulationTest::threeAlignedPoints()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 4);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{1, 5, 0});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{1, 5, 0});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[1]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{1, 4, 5});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{1, 4, 5});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == triangles[0]);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{1, 3, 4});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{1, 3, 4});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == triangles[3]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == triangles[1]);
 
-	AssertHelper::assert3UnsignedInts(triangles[3]->getIndices(), new unsigned int[3]{1, 2, 3});
+	AssertHelper::assert3Sizes(triangles[3]->getIndices(), new std::size_t[3]{1, 2, 3});
     AssertHelper::assertTrue(triangles[3]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(2) == triangles[2]);
@@ -127,27 +127,27 @@ void TriangulationTest::alternationPoints()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{1, 6, 0});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{1, 6, 0});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[1]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{1, 5, 6});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{1, 5, 6});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == triangles[0]);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{2, 5, 1});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{2, 5, 1});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == triangles[3]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == triangles[1]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[3]->getIndices(), new unsigned int[3]{2, 4, 5});
+	AssertHelper::assert3Sizes(triangles[3]->getIndices(), new std::size_t[3]{2, 4, 5});
     AssertHelper::assertTrue(triangles[3]->getNeighbor(0) == triangles[4]);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(2) == triangles[2]);
 
-	AssertHelper::assert3UnsignedInts(triangles[4]->getIndices(), new unsigned int[3]{2, 3, 4});
+	AssertHelper::assert3Sizes(triangles[4]->getIndices(), new std::size_t[3]{2, 3, 4});
     AssertHelper::assertTrue(triangles[4]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(2) == triangles[3]);
@@ -162,17 +162,17 @@ void TriangulationTest::cavityTriangulation1()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 3);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{2, 0, 1});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{2, 0, 1});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{4, 2, 3});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{4, 2, 3});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{4, 0, 2});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{4, 0, 2});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == triangles[0]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == triangles[1]);
@@ -188,27 +188,27 @@ void TriangulationTest::cavityTriangulation2()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{3, 1, 2});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{3, 1, 2});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{5, 3, 4});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{5, 3, 4});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{5, 1, 3});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{5, 1, 3});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == triangles[4]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == triangles[0]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == triangles[1]);
 
-	AssertHelper::assert3UnsignedInts(triangles[3]->getIndices(), new unsigned int[3]{0, 5, 6});
+	AssertHelper::assert3Sizes(triangles[3]->getIndices(), new std::size_t[3]{0, 5, 6});
     AssertHelper::assertTrue(triangles[3]->getNeighbor(0) == triangles[4]);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[4]->getIndices(), new unsigned int[3]{0, 1, 5});
+	AssertHelper::assert3Sizes(triangles[4]->getIndices(), new std::size_t[3]{0, 1, 5});
     AssertHelper::assertTrue(triangles[4]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(1) == triangles[2]);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(2) == triangles[3]);
@@ -223,17 +223,17 @@ void TriangulationTest::twoMonotonePolygons()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 3);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{4, 0, 3});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{4, 0, 3});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == triangles[1]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{1, 3, 0});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{1, 3, 0});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == triangles[2]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == triangles[0]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{1, 2, 3});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{1, 2, 3});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == triangles[1]);
@@ -249,27 +249,27 @@ void TriangulationTest::threeMonotonePolygons()
 	std::vector<std::shared_ptr<NavTriangle>> triangles = triangulationAlgorithm.triangulate();
 
 	AssertHelper::assertUnsignedInt(triangles.size(), 5);
-	AssertHelper::assert3UnsignedInts(triangles[0]->getIndices(), new unsigned int[3]{5, 0, 3});
+	AssertHelper::assert3Sizes(triangles[0]->getIndices(), new std::size_t[3]{5, 0, 3});
     AssertHelper::assertTrue(triangles[0]->getNeighbor(0) == triangles[1]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(1) == triangles[2]);
     AssertHelper::assertTrue(triangles[0]->getNeighbor(2) == triangles[4]);
 
-	AssertHelper::assert3UnsignedInts(triangles[1]->getIndices(), new unsigned int[3]{6, 0, 5});
+	AssertHelper::assert3Sizes(triangles[1]->getIndices(), new std::size_t[3]{6, 0, 5});
     AssertHelper::assertTrue(triangles[1]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(1) == triangles[0]);
     AssertHelper::assertTrue(triangles[1]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[2]->getIndices(), new unsigned int[3]{1, 3, 0});
+	AssertHelper::assert3Sizes(triangles[2]->getIndices(), new std::size_t[3]{1, 3, 0});
     AssertHelper::assertTrue(triangles[2]->getNeighbor(0) == triangles[3]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(1) == triangles[0]);
     AssertHelper::assertTrue(triangles[2]->getNeighbor(2) == nullptr);
 
-	AssertHelper::assert3UnsignedInts(triangles[3]->getIndices(), new unsigned int[3]{1, 2, 3});
+	AssertHelper::assert3Sizes(triangles[3]->getIndices(), new std::size_t[3]{1, 2, 3});
     AssertHelper::assertTrue(triangles[3]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[3]->getNeighbor(2) == triangles[2]);
 
-	AssertHelper::assert3UnsignedInts(triangles[4]->getIndices(), new unsigned int[3]{3, 4, 5});
+	AssertHelper::assert3Sizes(triangles[4]->getIndices(), new std::size_t[3]{3, 4, 5});
     AssertHelper::assertTrue(triangles[4]->getNeighbor(0) == nullptr);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(1) == nullptr);
     AssertHelper::assertTrue(triangles[4]->getNeighbor(2) == triangles[0]);
@@ -277,7 +277,7 @@ void TriangulationTest::threeMonotonePolygons()
 
 CppUnit::Test *TriangulationTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("TriangulationTest");
+	auto *suite = new CppUnit::TestSuite("TriangulationTest");
 
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("triangleTriangulation", &TriangulationTest::triangleTriangulation));
 	suite->addTest(new CppUnit::TestCaller<TriangulationTest>("cubeTriangulation", &TriangulationTest::cubeTriangulation));

@@ -25,7 +25,7 @@ namespace urchin
 		islandElementsLink.clear();
 		islandElementsLink.resize(islandElements.size());
 
-		for(unsigned int i=0; i<islandElements.size(); ++i)
+		for(std::size_t i=0; i<islandElements.size(); ++i)
 		{
 			islandElements[i]->setIslandElementId(i);
 
@@ -65,7 +65,7 @@ namespace urchin
 	const std::vector<IslandElementLink> &IslandContainer::retrieveSortedIslandElements()
 	{
 		//store directly island ID on islandIdRef instead of reference
-		for(unsigned int i=0; i<islandElementsLink.size(); ++i)
+		for(std::size_t i=0; i<islandElementsLink.size(); ++i)
 		{
 			islandElementsLink[i].islandIdRef = findIslandId(i);
 		}

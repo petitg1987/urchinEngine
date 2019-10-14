@@ -95,7 +95,7 @@ namespace urchin
 		{
 			for (const auto &triangle : polygon->getTriangles())
 			{
-				for(unsigned int i=0; i<3; ++i)
+				for(std::size_t i=0; i<3; ++i)
 				{
 					std::shared_ptr<NavTriangle> neighbor = triangle->getNeighbor(i);
 					if(neighbor != nullptr)

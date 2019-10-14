@@ -1,8 +1,6 @@
 #include <utility>
-
 #include <iostream>
 #include <chrono>
-#include <thread>
 
 #include "HttpRequest.h"
 #include "RequestException.h"

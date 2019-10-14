@@ -23,29 +23,29 @@ namespace urchin
 
 	struct TypedPoint
 	{
-		TypedPoint(unsigned int, PointType);
+		TypedPoint(std::size_t, PointType);
 
-		unsigned int pointIndex;
+        std::size_t pointIndex;
 		PointType type;
 	};
 
 	struct Edge
 	{
-		Edge(unsigned int, unsigned int);
+		Edge(std::size_t, std::size_t);
 
-		unsigned int startIndex;
-		unsigned int endIndex;
+        std::size_t startIndex;
+        std::size_t endIndex;
 
 		bool isProcessed;
 	};
 
 	struct EdgeHelper
 	{
-		EdgeHelper(Edge, unsigned int, PointType);
+		EdgeHelper(Edge, std::size_t, PointType);
 
 		Edge edge;
 
-		unsigned int helperPointIndex;
+        std::size_t helperPointIndex;
 		PointType helperPointType;
 	};
 
@@ -58,47 +58,47 @@ namespace urchin
 	class MonotonePolygonAlgorithm
 	{
 		public:
-            MonotonePolygonAlgorithm(const std::vector<Point2<float>> &, const std::vector<unsigned int> &, const std::vector<std::string> &);
+            MonotonePolygonAlgorithm(const std::vector<Point2<float>> &, const std::vector<std::size_t> &, const std::vector<std::string> &);
 
 			std::vector<MonotonePolygon> createYMonotonePolygons();
 
 		private:
-			typedef std::multimap<unsigned int, Edge>::iterator it_diagonals;
+			typedef std::multimap<std::size_t, Edge>::iterator it_diagonals;
 
 			void createYMonotonePolygonsDiagonals();
 			std::vector<TypedPoint> buildSortedTypedPoints(bool &) const;
-			bool isFirstPointAboveSecond(unsigned int, unsigned int) const;
+			bool isFirstPointAboveSecond(std::size_t, std::size_t) const;
 
-			void handleStartVertex(unsigned int);
-			void handleSplitVertex(unsigned int);
-			void handleEndVertex(unsigned int);
-			void handleMergeVertex(unsigned int);
-			void handleRegularDownVertex(unsigned int);
-			void handleRegularUpVertex(unsigned int);
+			void handleStartVertex(std::size_t);
+			void handleSplitVertex(std::size_t);
+			void handleEndVertex(std::size_t);
+			void handleMergeVertex(std::size_t);
+			void handleRegularDownVertex(std::size_t);
+			void handleRegularUpVertex(std::size_t);
 
-			unsigned int nextPointIndex(unsigned int) const;
-			unsigned int previousPointIndex(unsigned int) const;
+            std::size_t nextPointIndex(std::size_t) const;
+            std::size_t previousPointIndex(std::size_t) const;
 
-			void createEdgeHelper(unsigned int, unsigned int, PointType);
-			std::vector<EdgeHelper>::iterator findEdgeHelper(unsigned int);
-			std::vector<EdgeHelper>::iterator findNearestLeftEdgeHelper(unsigned int);
-			void createDiagonals(unsigned int, unsigned int);
+			void createEdgeHelper(std::size_t, std::size_t, PointType);
+			std::vector<EdgeHelper>::iterator findEdgeHelper(std::size_t);
+			std::vector<EdgeHelper>::iterator findNearestLeftEdgeHelper(std::size_t);
+			void createDiagonals(std::size_t, std::size_t);
 
-			unsigned int retrieveNextPointIndex(unsigned int, unsigned int, unsigned int);
-			std::vector<std::pair<unsigned int, it_diagonals>> retrievePossibleNextPoints(unsigned int);
-			void markDiagonalProcessed(it_diagonals, unsigned int);
+            std::size_t retrieveNextPointIndex(std::size_t, std::size_t, std::size_t);
+			std::vector<std::pair<std::size_t, it_diagonals>> retrievePossibleNextPoints(std::size_t);
+			void markDiagonalProcessed(it_diagonals, std::size_t);
 
 			void logInputData(const std::string &, Logger::CriticalityLevel) const;
 			void exportSVG(const std::string &) const;
-			void logOutputData(const std::string &, const std::vector<std::vector<unsigned int>> &, Logger::CriticalityLevel) const;
+			void logOutputData(const std::string &, Logger::CriticalityLevel) const;
 
 			const std::vector<Point2<float>> &polygonPoints;
-			const std::vector<unsigned int> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
+			const std::vector<std::size_t> &endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 			const std::vector<std::string> &contourNames;
 
 			std::vector<MonotonePolygon> yMonotonePolygons;
 			std::vector<EdgeHelper> edgeHelpers;
-			std::multimap<unsigned int, Edge> diagonals;
+			std::multimap<std::size_t, Edge> diagonals;
 			std::map<uint_fast64_t, std::set<unsigned int>> sharedEdges;
 	};
 

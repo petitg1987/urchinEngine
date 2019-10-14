@@ -13,16 +13,16 @@ namespace urchin
 	template<class T> class IndexedTriangle3D
 	{
 		public:
-			explicit IndexedTriangle3D(const unsigned int *);
-			IndexedTriangle3D(unsigned int, unsigned int, unsigned int);
+			explicit IndexedTriangle3D(const std::size_t *);
+			IndexedTriangle3D(std::size_t, std::size_t, std::size_t);
 
-			const unsigned int *getIndices() const;
-			unsigned int getIndex(unsigned int) const;
+			const std::size_t *getIndices() const;
+            std::size_t getIndex(std::size_t) const;
 			Vector3<T> computeNormal(const std::vector<Point3<T>> &) const;
 			Vector3<T> computeNormal(const Point3<T> &, const Point3<T> &, const Point3<T> &) const;
 
 		private:
-			unsigned int indices[3];
+			std::size_t indices[3];
 	};
 
 }

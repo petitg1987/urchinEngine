@@ -85,7 +85,7 @@ void SortPointsTest::fourPointsCounterClockwiseYNormal()
 
 CppUnit::Test *SortPointsTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("SortPointsTest");
+    auto *suite = new CppUnit::TestSuite("SortPointsTest");
 
 	suite->addTest(new CppUnit::TestCaller<SortPointsTest>("threePointsClockwise", &SortPointsTest::threePointsClockwise));
 	suite->addTest(new CppUnit::TestCaller<SortPointsTest>("threePointsCounterClockwise", &SortPointsTest::threePointsCounterClockwise));

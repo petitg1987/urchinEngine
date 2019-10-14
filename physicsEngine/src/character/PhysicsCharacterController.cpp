@@ -4,13 +4,11 @@
 #include <cmath>
 
 #include "PhysicsCharacterController.h"
-#include "collision/ManifoldResult.h"
 #include "collision/ManifoldContactPoint.h"
-#include "collision/broadphase/PairContainer.h"
 #include "PhysicsWorld.h"
 
 #define MIN_RECOVERABLE_DEPTH 0.0001f
-#define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f;
+#define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f
 #define MAX_VERTICAL_SPEED 55.0f
 
 namespace urchin

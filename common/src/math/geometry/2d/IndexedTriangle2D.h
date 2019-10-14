@@ -13,14 +13,14 @@ namespace urchin
 	template<class T> class IndexedTriangle2D
 	{
 		public:
-			explicit IndexedTriangle2D(const unsigned int *);
-			IndexedTriangle2D(unsigned int, unsigned int, unsigned int);
+			explicit IndexedTriangle2D(const std::size_t *);
+			IndexedTriangle2D(std::size_t, std::size_t, std::size_t);
 
-			const unsigned int *getIndices() const;
-			unsigned int getIndex(unsigned int) const;
+			const std::size_t *getIndices() const;
+            std::size_t getIndex(std::size_t) const;
 
 		private:
-			unsigned int indices[3];
+            std::size_t indices[3];
 	};
 
 }

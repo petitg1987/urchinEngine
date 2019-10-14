@@ -3,12 +3,12 @@
 namespace urchin
 {
 
-    void MonotonePolygon::setCcwPoints(const std::vector<unsigned int> &ccwPoints)
+    void MonotonePolygon::setCcwPoints(const std::vector<std::size_t> &ccwPoints)
     {
         this->ccwPoints = ccwPoints;
     }
 
-    const std::vector<unsigned int> &MonotonePolygon::getCcwPoints() const
+    const std::vector<std::size_t> &MonotonePolygon::getCcwPoints() const
     {
         return ccwPoints;
     }

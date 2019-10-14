@@ -87,7 +87,7 @@ void CSGPolygonTest::simplifyTwoUselessPoints()
 
 CppUnit::Test *CSGPolygonTest::suite()
 {
-    CppUnit::TestSuite *suite = new CppUnit::TestSuite("CSGPolygonTest");
+    auto *suite = new CppUnit::TestSuite("CSGPolygonTest");
 
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifySquare", &CSGPolygonTest::simplifySquare));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyMergeTwoNearPoints", &CSGPolygonTest::simplifyMergeTwoNearPoints));

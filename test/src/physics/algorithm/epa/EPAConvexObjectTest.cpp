@@ -55,7 +55,7 @@ void EPAConvexObjectTest::overlapTriangleAndCapsule()
 
 CppUnit::Test *EPAConvexObjectTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("EPAConvexObjectTest");
+    auto *suite = new CppUnit::TestSuite("EPAConvexObjectTest");
 
 	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapSphereAndBox", &EPAConvexObjectTest::overlapSphereAndBox));
 	suite->addTest(new CppUnit::TestCaller<EPAConvexObjectTest>("overlapCapsuleAndTriangle", &EPAConvexObjectTest::overlapCapsuleAndTriangle));

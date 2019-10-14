@@ -7,19 +7,19 @@
 namespace urchin
 {
 
-	TypedPoint::TypedPoint(unsigned int pointIndex, PointType type) :
+	TypedPoint::TypedPoint(std::size_t pointIndex, PointType type) :
 			pointIndex(pointIndex), type(type)
 	{
 
 	}
 
-	Edge::Edge(unsigned int startIndex, unsigned int endIndex) :
+	Edge::Edge(std::size_t startIndex, std::size_t endIndex) :
 			startIndex(startIndex), endIndex(endIndex), isProcessed(false)
 	{
 
 	}
 
-	EdgeHelper:: EdgeHelper(Edge edge, unsigned int helperPointIndex, PointType helperPointType) :
+	EdgeHelper:: EdgeHelper(Edge edge, std::size_t helperPointIndex, PointType helperPointType) :
 			edge(edge), helperPointIndex(helperPointIndex), helperPointType(helperPointType)
 	{
 
@@ -35,7 +35,7 @@ namespace urchin
 	 * @param polygonPoints Polygon points are in CCW order and holes in CW order.
 	 * @param endContourIndices Delimiter between polygon points and holes points.
 	 */
-	MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>> &polygonPoints, const std::vector<unsigned int> &endContourIndices,
+	MonotonePolygonAlgorithm::MonotonePolygonAlgorithm(const std::vector<Point2<float>> &polygonPoints, const std::vector<std::size_t> &endContourIndices,
                                                        const std::vector<std::string> &contourNames) :
 			polygonPoints(polygonPoints),
 			endContourIndices(endContourIndices),
@@ -67,9 +67,9 @@ namespace urchin
 
 		if(diagonals.empty())
 		{
-			std::vector<unsigned int> monotonePointsIndices;
+			std::vector<std::size_t> monotonePointsIndices;
 			monotonePointsIndices.reserve(polygonPoints.size());
-			for(unsigned int i=0; i<polygonPoints.size(); ++i)
+			for(std::size_t i=0; i<polygonPoints.size(); ++i)
 			{
 				monotonePointsIndices.push_back(i);
 			}
@@ -84,21 +84,21 @@ namespace urchin
 				Edge &startDiagonal = itDiagonal->second;
 				if(!startDiagonal.isProcessed)
 				{
-					unsigned int yMonotonePolygonsIndex = yMonotonePolygons.size();
+                    std::size_t yMonotonePolygonsIndex = yMonotonePolygons.size();
 					MonotonePolygon monotonePolygon;
 					yMonotonePolygons.emplace_back(monotonePolygon);
 
-					std::vector<unsigned int> monotonePointsIndices;
+					std::vector<std::size_t> monotonePointsIndices;
 					monotonePointsIndices.reserve(polygonPoints.size()/2 + 1); //estimated memory size
 					monotonePointsIndices.push_back(startDiagonal.startIndex);
 					monotonePointsIndices.push_back(startDiagonal.endIndex);
 
-					unsigned int previousPointIndex = startDiagonal.startIndex;
-					unsigned int currentPointIndex = startDiagonal.endIndex;
+					auto previousPointIndex = startDiagonal.startIndex;
+					auto currentPointIndex = startDiagonal.endIndex;
 
 					while(true)
 					{
-						unsigned int nextPointIndex = retrieveNextPointIndex(previousPointIndex, currentPointIndex, yMonotonePolygonsIndex);
+                        std::size_t nextPointIndex = retrieveNextPointIndex(previousPointIndex, currentPointIndex, yMonotonePolygonsIndex);
 						if(nextPointIndex==startDiagonal.startIndex)
 						{
 							break;
@@ -106,7 +106,7 @@ namespace urchin
 
 						#ifdef _DEBUG
                             //check no duplicate points inserted in monotone
-							for(unsigned int monotonePointsIndex: monotonePointsIndices)
+							for(std::size_t monotonePointsIndex: monotonePointsIndices)
 							{
 								if(nextPointIndex==monotonePointsIndex)
 								{
@@ -139,7 +139,7 @@ namespace urchin
 		}
 
 		#ifdef _DEBUG
-//			logOutputData("Debug monotone polygon.", yMonotonePolygons, Logger::INFO);
+//			logOutputData("Debug monotone polygon.", Logger::INFO);
 		#endif
 
 		return yMonotonePolygons;
@@ -194,11 +194,11 @@ namespace urchin
 		sortedTypedPoints.reserve(polygonPoints.size());
 
 		isMonotonePolygon = true;
-		for(unsigned int i=0; i<polygonPoints.size(); ++i)
+		for(std::size_t i=0; i<polygonPoints.size(); ++i)
 		{
 			PointType pointType;
-			unsigned int previousIndex = previousPointIndex(i);
-			unsigned int nextIndex = nextPointIndex(i);
+            std::size_t previousIndex = previousPointIndex(i);
+            std::size_t nextIndex = nextPointIndex(i);
 
 			bool currentAbovePrevious = isFirstPointAboveSecond(i, previousIndex);
 			bool currentAboveNext = isFirstPointAboveSecond(i, nextIndex);
@@ -253,7 +253,7 @@ namespace urchin
 		return sortedTypedPoints;
 	}
 
-	bool MonotonePolygonAlgorithm::isFirstPointAboveSecond(unsigned int firstIndex, unsigned int secondIndex) const
+	bool MonotonePolygonAlgorithm::isFirstPointAboveSecond(std::size_t firstIndex, std::size_t secondIndex) const
 	{
 		if(polygonPoints[firstIndex].Y == polygonPoints[secondIndex].Y)
 		{
@@ -262,12 +262,12 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	void MonotonePolygonAlgorithm::handleStartVertex(unsigned int i)
+	void MonotonePolygonAlgorithm::handleStartVertex(std::size_t i)
 	{
 		createEdgeHelper(i, i, PointType::START_VERTEX);
 	}
 
-	void MonotonePolygonAlgorithm::handleSplitVertex(unsigned int i)
+	void MonotonePolygonAlgorithm::handleSplitVertex(std::size_t i)
 	{
 		auto edgeHelperIt = findNearestLeftEdgeHelper(i);
 
@@ -279,9 +279,9 @@ namespace urchin
 		createEdgeHelper(i, i, PointType::SPLIT_VERTEX);
 	}
 
-	void MonotonePolygonAlgorithm::handleEndVertex(unsigned int i)
+	void MonotonePolygonAlgorithm::handleEndVertex(std::size_t i)
 	{
-		unsigned int previousEdgeIndex = previousPointIndex(i);
+        std::size_t previousEdgeIndex = previousPointIndex(i);
 		auto edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
@@ -290,9 +290,9 @@ namespace urchin
 		VectorEraser::erase(edgeHelpers, edgeHelperIt);
 	}
 
-	void MonotonePolygonAlgorithm::handleMergeVertex(unsigned int i)
+	void MonotonePolygonAlgorithm::handleMergeVertex(std::size_t i)
 	{
-		unsigned int previousEdgeIndex = previousPointIndex(i);
+        std::size_t previousEdgeIndex = previousPointIndex(i);
 		auto edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
@@ -309,9 +309,9 @@ namespace urchin
 		nearestLeftEdgeHelperIt->helperPointType = PointType::MERGE_VERTEX;
 	}
 
-	void MonotonePolygonAlgorithm::handleRegularDownVertex(unsigned int i)
+	void MonotonePolygonAlgorithm::handleRegularDownVertex(std::size_t i)
 	{
-		unsigned int previousEdgeIndex = previousPointIndex(i);
+        std::size_t previousEdgeIndex = previousPointIndex(i);
 		auto edgeHelperIt = findEdgeHelper(previousEdgeIndex);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
 		{
@@ -322,7 +322,7 @@ namespace urchin
 		createEdgeHelper(i, i, PointType::REGULAR_DOWN_VERTEX);
 	}
 
-	void MonotonePolygonAlgorithm::handleRegularUpVertex(unsigned int i)
+	void MonotonePolygonAlgorithm::handleRegularUpVertex(std::size_t i)
 	{
 		auto edgeHelperIt = findNearestLeftEdgeHelper(i);
 		if(edgeHelperIt->helperPointType==PointType::MERGE_VERTEX)
@@ -333,9 +333,9 @@ namespace urchin
 		edgeHelperIt->helperPointType = PointType::REGULAR_UP_VERTEX;
 	}
 
-	unsigned int MonotonePolygonAlgorithm::nextPointIndex(unsigned int pointIndex) const
+    std::size_t MonotonePolygonAlgorithm::nextPointIndex(std::size_t pointIndex) const
 	{
-		unsigned int nextPointIndex = pointIndex + 1;
+        std::size_t nextPointIndex = pointIndex + 1;
 
 		auto it = std::find(endContourIndices.begin(), endContourIndices.end(), nextPointIndex);
 		if(it==endContourIndices.begin())
@@ -349,9 +349,9 @@ namespace urchin
 		return nextPointIndex;
 	}
 
-	unsigned int MonotonePolygonAlgorithm::previousPointIndex(unsigned int pointIndex) const
+    std::size_t MonotonePolygonAlgorithm::previousPointIndex(std::size_t pointIndex) const
 	{
-		unsigned int previousPointIndex = pointIndex - 1;
+        std::size_t previousPointIndex = pointIndex - 1;
 		if(pointIndex==0)
 		{
 			previousPointIndex = endContourIndices[0] - 1;
@@ -367,13 +367,13 @@ namespace urchin
 		return previousPointIndex;
 	}
 
-	void MonotonePolygonAlgorithm::createEdgeHelper(unsigned int edgeStartIndex, unsigned int helperPointIndex, PointType pointType)
+	void MonotonePolygonAlgorithm::createEdgeHelper(std::size_t edgeStartIndex, std::size_t helperPointIndex, PointType pointType)
 	{
 		Edge edge(edgeStartIndex, nextPointIndex(edgeStartIndex));
 		edgeHelpers.emplace_back(EdgeHelper(edge, helperPointIndex, pointType));
 	}
 
-	std::vector<EdgeHelper>::iterator MonotonePolygonAlgorithm::findEdgeHelper(unsigned int edgeIndex)
+	std::vector<EdgeHelper>::iterator MonotonePolygonAlgorithm::findEdgeHelper(std::size_t edgeIndex)
 	{
 		for(auto it=edgeHelpers.begin(); it!=edgeHelpers.end(); ++it)
 		{
@@ -386,7 +386,7 @@ namespace urchin
 		throw MonotonePolygonError("Impossible to find edge and his helper for edge index: " + std::to_string(edgeIndex));
 	}
 
-	std::vector<EdgeHelper>::iterator MonotonePolygonAlgorithm::findNearestLeftEdgeHelper(unsigned int pointIndex)
+	std::vector<EdgeHelper>::iterator MonotonePolygonAlgorithm::findNearestLeftEdgeHelper(std::size_t pointIndex)
 	{
 		Point2<float> point = polygonPoints[pointIndex];
 
@@ -414,7 +414,7 @@ namespace urchin
 		return nearestLeftEdgeHelperIt;
 	}
 
-	void MonotonePolygonAlgorithm::createDiagonals(unsigned int index1, unsigned int index2)
+	void MonotonePolygonAlgorithm::createDiagonals(std::size_t index1, std::size_t index2)
 	{
 		diagonals.insert(std::make_pair(index1, Edge(index1, index2)));
 		diagonals.insert(std::make_pair(index2, Edge(index2, index1)));
@@ -424,24 +424,24 @@ namespace urchin
 	 * Returns the next point after edge [edgeStartIndex, edgeEndIndex] in order to form a monotone polygon.
 	 * If edge [edgeEndIndex, nextPointIndex] is a diagonal: mark the diagonal as processed.
 	 */
-	unsigned int MonotonePolygonAlgorithm::retrieveNextPointIndex(unsigned int edgeStartIndex, unsigned int edgeEndIndex, unsigned int yMonotonePolygonsIndex)
+    std::size_t MonotonePolygonAlgorithm::retrieveNextPointIndex(std::size_t edgeStartIndex, std::size_t edgeEndIndex, std::size_t yMonotonePolygonsIndex)
 	{
-		std::vector<std::pair<unsigned int, it_diagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
+		std::vector<std::pair<std::size_t, it_diagonals>> possibleNextPoints = retrievePossibleNextPoints(edgeEndIndex);
 		if(possibleNextPoints.size()==1)
 		{ //only one possible edge
 			markDiagonalProcessed(possibleNextPoints[0].second, yMonotonePolygonsIndex);
 			return possibleNextPoints[0].first;
 		}
 
-		int bestCCWPointIndex = -1;
-		int bestCWPointIndex = -1;
+		long bestCCWPointIndex = -1;
+		long bestCWPointIndex = -1;
 		double minAngleCCW = std::numeric_limits<double>::max();
 		double maxAngleCW = -std::numeric_limits<double>::max();
 
 		Vector2<double> edgeVector = polygonPoints[edgeStartIndex].template cast<double>().vector(polygonPoints[edgeEndIndex].template cast<double>());
-		for(unsigned int i=0; i<possibleNextPoints.size(); ++i)
+		for(std::size_t i=0; i<possibleNextPoints.size(); ++i)
 		{
-			unsigned int testPointIndex = possibleNextPoints[i].first;
+            std::size_t testPointIndex = possibleNextPoints[i].first;
 			Vector2<double> nextEdgeVector = polygonPoints[edgeEndIndex].template cast<double>().vector(polygonPoints[testPointIndex].template cast<double>());
 			double orientationResult = edgeVector.crossProduct(nextEdgeVector);
 			double angle = edgeVector.normalize().dotProduct(nextEdgeVector.normalize());
@@ -469,12 +469,12 @@ namespace urchin
 		return nextPoint.first;
 	}
 
-	std::vector<std::pair<unsigned int, MonotonePolygonAlgorithm::it_diagonals>> MonotonePolygonAlgorithm::retrievePossibleNextPoints(unsigned int edgeEndIndex)
+	std::vector<std::pair<std::size_t, MonotonePolygonAlgorithm::it_diagonals>> MonotonePolygonAlgorithm::retrievePossibleNextPoints(std::size_t edgeEndIndex)
 	{
-		std::vector<std::pair<unsigned int, it_diagonals>> possibleNextPoints;
+		std::vector<std::pair<std::size_t, it_diagonals>> possibleNextPoints;
 		possibleNextPoints.reserve(diagonals.size());
 
-		unsigned int nextPolygonPointIndex = nextPointIndex(edgeEndIndex);
+        std::size_t nextPolygonPointIndex = nextPointIndex(edgeEndIndex);
 		possibleNextPoints.emplace_back(std::make_pair(nextPolygonPointIndex, diagonals.end()));
 
 		auto range = diagonals.equal_range(edgeEndIndex);
@@ -489,7 +489,7 @@ namespace urchin
 		return possibleNextPoints;
 	}
 
-	void MonotonePolygonAlgorithm::markDiagonalProcessed(MonotonePolygonAlgorithm::it_diagonals itDiagonal, unsigned int yMonotonePolygonsIndex)
+	void MonotonePolygonAlgorithm::markDiagonalProcessed(MonotonePolygonAlgorithm::it_diagonals itDiagonal, std::size_t yMonotonePolygonsIndex)
 	{
 		if(itDiagonal!=diagonals.end())
 		{
@@ -503,11 +503,11 @@ namespace urchin
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
 
-        unsigned int contourIndex = 0;
+        std::size_t contourIndex = 0;
 		logStream<<message<<std::endl;
 		logStream<<"Monotone polygon input data:"<<std::endl;
         logStream<<"\tPoints ("<<contourNames[contourIndex++]<<"):"<<std::endl;
-		for(unsigned int i=0; i<polygonPoints.size(); ++i)
+		for(std::size_t i=0; i<polygonPoints.size(); ++i)
 		{
 			logStream<<"\t\t"<<polygonPoints[i]<<std::endl;
 
@@ -541,7 +541,7 @@ namespace urchin
         svgExporter.generateSVG(250);
     }
 
-	void MonotonePolygonAlgorithm::logOutputData(const std::string &message, const std::vector<std::vector<unsigned int>> &yMonotonePolygons, Logger::CriticalityLevel logLevel) const
+	void MonotonePolygonAlgorithm::logOutputData(const std::string &message, Logger::CriticalityLevel logLevel) const
 	{
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
@@ -551,7 +551,7 @@ namespace urchin
 		for(std::size_t i=0; i<yMonotonePolygons.size(); ++i)
 		{
 			logStream<<" - Monotone polygon "<<i<<":"<<std::endl;
-			for(std::size_t pointIndex : yMonotonePolygons[i])
+			for(std::size_t pointIndex : yMonotonePolygons[i].getCcwPoints())
 			{
 				logStream<<" - "<<polygonPoints[pointIndex]<<std::endl;
 			}

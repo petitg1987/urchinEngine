@@ -12,25 +12,25 @@ namespace urchin
     class NavTriangle
     {
         public:
-            NavTriangle(unsigned int, unsigned int, unsigned int);
+            NavTriangle(std::size_t, std::size_t, std::size_t);
 
             void attachNavPolygon(const std::shared_ptr<NavPolygon> &);
 
             std::shared_ptr<NavPolygon> getNavPolygon() const;
             const Point3<float> &getCenterPoint() const;
 
-            const unsigned int *getIndices() const;
-            unsigned int getIndex(unsigned int) const;
+            const std::size_t *getIndices() const;
+            std::size_t getIndex(std::size_t) const;
 
-            void addNeighbor(unsigned int, const std::shared_ptr<NavTriangle> &);
-            std::shared_ptr<NavTriangle> getNeighbor(unsigned int) const;
+            void addNeighbor(std::size_t, const std::shared_ptr<NavTriangle> &);
+            std::shared_ptr<NavTriangle> getNeighbor(std::size_t) const;
 
-            LineSegment3D<float> computeEdge(unsigned int) const;
+            LineSegment3D<float> computeEdge(std::size_t) const;
 
         private:
             std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references between triangle and polygon
 
-            unsigned int indices[3];
+            std::size_t indices[3];
             std::weak_ptr<NavTriangle> neighbors[3]; //use weak_ptr to avoid cyclic references between triangles
 
             Point3<float> centerPoint;

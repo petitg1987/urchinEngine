@@ -18,7 +18,6 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture
 
     private:
         std::shared_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
-        void assert3UnsignedInts(const unsigned int *, const std::vector<unsigned int> &);
 };
 
 #endif

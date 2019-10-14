@@ -13,7 +13,7 @@ namespace urchin
     {
         public:
             PhysicsCharacter(const std::string &, float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &);
-            PhysicsCharacter(const std::string &, float, const std::shared_ptr<const CollisionShape3D> &, const PhysicsTransform &, float, float);
+            PhysicsCharacter(std::string , float, std::shared_ptr<const CollisionShape3D> , const PhysicsTransform &, float, float);
 
             const std::string &getName() const;
 

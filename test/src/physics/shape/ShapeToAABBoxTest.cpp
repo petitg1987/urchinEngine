@@ -60,7 +60,7 @@ void ShapeToAABBoxTest::convexHullConversion()
 
 CppUnit::Test *ShapeToAABBoxTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("ShapeToAABBoxTest");
+    auto *suite = new CppUnit::TestSuite("ShapeToAABBoxTest");
 
 	suite->addTest(new CppUnit::TestCaller<ShapeToAABBoxTest>("boxConversion", &ShapeToAABBoxTest::boxConversion));
 	suite->addTest(new CppUnit::TestCaller<ShapeToAABBoxTest>("coneConversion", &ShapeToAABBoxTest::coneConversion));

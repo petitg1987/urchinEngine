@@ -1,4 +1,5 @@
 #include <cmath>
+#include <utility>
 
 #include "PhysicsCharacter.h"
 
@@ -14,11 +15,11 @@ namespace urchin
 
     }
 
-    PhysicsCharacter::PhysicsCharacter(const std::string &name, float mass, const std::shared_ptr<const CollisionShape3D> &shape, const PhysicsTransform &transform,
+    PhysicsCharacter::PhysicsCharacter(std::string name, float mass, std::shared_ptr<const CollisionShape3D> shape, const PhysicsTransform &transform,
             float jumpSpeed, float maxSlopeInRadian) :
-            name(name),
+            name(std::move(name)),
             mass(mass),
-            shape(shape),
+            shape(std::move(shape)),
             transform(transform),
             jumpSpeed(jumpSpeed),
             maxSlopeInRadian(maxSlopeInRadian),

@@ -33,11 +33,11 @@ namespace urchin
 			std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> handleSubTriangle(const CollisionConvexObject3D &, const CollisionConvexObject3D &) const;
 
 			void determineInitialPoints(const Simplex<T> &, const CollisionConvexObject3D &, const CollisionConvexObject3D &,
-					std::map<unsigned int, ConvexHullPoint<T>> &, std::map<unsigned int, Point3<T>> &, std::map<unsigned int, Point3<T>> &) const;
-			void determineInitialTriangles(std::map<unsigned int, ConvexHullPoint<T>> &, std::map<unsigned int, IndexedTriangle3D<T>> &) const;
+					std::map<std::size_t, ConvexHullPoint<T>> &, std::map<std::size_t, Point3<T>> &, std::map<std::size_t, Point3<T>> &) const;
+			void determineInitialTriangles(std::map<std::size_t, ConvexHullPoint<T>> &, std::map<std::size_t, IndexedTriangle3D<T>> &) const;
 
-			EPATriangleData<T> createTriangleData(const ConvexHullShape3D<T> &, unsigned int) const;
-			typename std::map<unsigned int, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<unsigned int, EPATriangleData<T>> &) const;
+			EPATriangleData<T> createTriangleData(const ConvexHullShape3D<T> &, std::size_t) const;
+			typename std::map<std::size_t, EPATriangleData<T>>::const_iterator getClosestTriangleData(const typename std::map<std::size_t, EPATriangleData<T>> &) const;
 
 			const unsigned int maxIteration;
 			const float terminationTolerance;

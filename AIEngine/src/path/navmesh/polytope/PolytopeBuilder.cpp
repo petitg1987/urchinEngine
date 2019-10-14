@@ -127,13 +127,13 @@ namespace urchin
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, ConvexHull3D<float> *convexHull, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const
     {
-        std::map<unsigned int, Plane<float>> expandedPlanes;
+        std::map<std::size_t, Plane<float>> expandedPlanes;
         for(const auto &itTriangles : convexHull->getIndexedTriangles())
         {
             const Point3<float> &point1 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(0)).point;
             const Point3<float> &point2 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(1)).point;
             const Point3<float> &point3 = convexHull->getConvexHullPoints().at(itTriangles.second.getIndex(2)).point;
-            expandedPlanes.insert(std::pair<unsigned int, Plane<float>>(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent)));
+            expandedPlanes.insert(std::pair<std::size_t, Plane<float>>(itTriangles.first, createExpandedPlane(point1, point2, point3, navMeshAgent)));
         }
 
         std::unique_ptr<ConvexHull3D<float>> expandedConvexHull = ResizeConvexHull3DService<float>::instance()->resizeConvexHull(*convexHull, expandedPlanes);
@@ -142,7 +142,7 @@ namespace urchin
         expandedSurfaces.reserve(expandedConvexHull->getIndexedTriangles().size() * 3);
         for(const auto &indexedTriangle : expandedConvexHull->getIndexedTriangles())
         {
-            const unsigned int *indices = indexedTriangle.second.getIndices();
+            const std::size_t *indices = indexedTriangle.second.getIndices();
 
             std::vector<Point3<float>> surfacePoints = {
                     expandedConvexHull->getConvexHullPoints().find(indices[0])->second.point,

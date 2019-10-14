@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <fstream>
 #include <algorithm>
 
 #include "collision/narrowphase/algorithm/CollisionAlgorithmSelector.h"
@@ -13,7 +12,8 @@ namespace urchin
 {
 
 	CollisionAlgorithmSelector::CollisionAlgorithmSelector() :
-			algorithmPool(nullptr)
+			algorithmPool(nullptr),
+            collisionAlgorithmBuilderMatrix()
 	{
 		initializeCollisionAlgorithmBuilderMatrix();
 		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)

@@ -31,7 +31,7 @@ namespace urchin
             float hScore;
 
             std::shared_ptr<PathNode> previousNode;
-            unsigned int previousNodeLinkEdgeId; //edge ID on previous node which made link with this node
+            std::size_t previousNodeLinkEdgeId; //edge ID on previous node which made link with this node
     };
 
 }

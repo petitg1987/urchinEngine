@@ -127,7 +127,7 @@ void GJKBoxTest::overlapOBBoxAABBox()
 
 CppUnit::Test *GJKBoxTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("GJKBoxTest");
+    auto *suite = new CppUnit::TestSuite("GJKBoxTest");
 
 	suite->addTest(new CppUnit::TestCaller<GJKBoxTest>("identicalAABBox", &GJKBoxTest::identicalAABBox));
 	suite->addTest(new CppUnit::TestCaller<GJKBoxTest>("separateAABBox", &GJKBoxTest::separateAABBox));

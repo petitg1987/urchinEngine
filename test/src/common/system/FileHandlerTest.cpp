@@ -51,7 +51,7 @@ void FileHandlerTest::relativePathEqual()
 
 CppUnit::Test *FileHandlerTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("FileHandlerTest");
+    auto *suite = new CppUnit::TestSuite("FileHandlerTest");
 
 	suite->addTest(new CppUnit::TestCaller<FileHandlerTest>("simplifyDirectoryPathUnix", &FileHandlerTest::simplifyDirectoryPathUnix));
 	suite->addTest(new CppUnit::TestCaller<FileHandlerTest>("simplifyDirectoryPathWindow", &FileHandlerTest::simplifyDirectoryPathWindow));

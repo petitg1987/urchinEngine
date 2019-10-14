@@ -175,7 +175,7 @@ void LineSegment2DCollisionTest::collinearLinesFullIntersectionOppositeDirection
 
 CppUnit::Test *LineSegment2DCollisionTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("LineSegment2DCollisionTest");
+    auto *suite = new CppUnit::TestSuite("LineSegment2DCollisionTest");
 
 	suite->addTest(new CppUnit::TestCaller<LineSegment2DCollisionTest>("noIntersection", &LineSegment2DCollisionTest::noIntersection));
 	suite->addTest(new CppUnit::TestCaller<LineSegment2DCollisionTest>("parallelLines", &LineSegment2DCollisionTest::parallelLines));

@@ -6,7 +6,8 @@
 namespace urchin
 {
 
-    NavTriangle::NavTriangle(unsigned int index1, unsigned int index2, unsigned int index3)
+    NavTriangle::NavTriangle(std::size_t index1, std::size_t index2, std::size_t index3) :
+        indices()
     {
         #ifdef _DEBUG
             assert(index1!=index2 && index1!=index3 && index2!=index3);
@@ -20,7 +21,7 @@ namespace urchin
         this->neighbors[1] = std::shared_ptr<NavTriangle>(nullptr);
         this->neighbors[2] = std::shared_ptr<NavTriangle>(nullptr);
 
-        this->centerPoint = Point3<float>(0.0, 0.0, 0.0);
+        this->centerPoint = Point3<float>(0.0f, 0.0f, 0.0f);
     }
 
     void NavTriangle::attachNavPolygon(const std::shared_ptr<NavPolygon> &navPolygon)
@@ -47,12 +48,12 @@ namespace urchin
         return centerPoint;
     }
 
-    const unsigned int *NavTriangle::getIndices() const
+    const std::size_t *NavTriangle::getIndices() const
     {
         return indices;
     }
 
-    unsigned int NavTriangle::getIndex(unsigned int index) const
+    std::size_t NavTriangle::getIndex(std::size_t index) const
     {
         #ifdef _DEBUG
             assert(index <= 2);
@@ -61,7 +62,7 @@ namespace urchin
         return indices[index];
     }
 
-    void NavTriangle::addNeighbor(unsigned int edgeIndex, const std::shared_ptr<NavTriangle> &navTriangleNeighbor)
+    void NavTriangle::addNeighbor(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &navTriangleNeighbor)
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
@@ -71,7 +72,7 @@ namespace urchin
         neighbors[edgeIndex] = navTriangleNeighbor;
     }
 
-    std::shared_ptr<NavTriangle> NavTriangle::getNeighbor(unsigned int edgeIndex) const
+    std::shared_ptr<NavTriangle> NavTriangle::getNeighbor(std::size_t edgeIndex) const
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
@@ -80,13 +81,13 @@ namespace urchin
         return neighbors[edgeIndex].lock();
     }
 
-    LineSegment3D<float> NavTriangle::computeEdge(unsigned int edgeStartIndex) const
+    LineSegment3D<float> NavTriangle::computeEdge(std::size_t edgeStartIndex) const
     {
         #ifdef _DEBUG
             assert(edgeStartIndex <= 2);
         #endif
 
-        unsigned int edgeEndIndex = (edgeStartIndex + 1) % 3;
+        std::size_t edgeEndIndex = (edgeStartIndex + 1) % 3;
         return LineSegment3D<float>(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));
     }
 

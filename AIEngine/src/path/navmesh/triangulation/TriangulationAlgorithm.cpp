@@ -8,13 +8,13 @@
 namespace urchin
 {
 
-	SidedPoint::SidedPoint(unsigned int pointIndex, bool onLeft) :
+	SidedPoint::SidedPoint(std::size_t pointIndex, bool onLeft) :
 			pointIndex(pointIndex), onLeft(onLeft)
 	{
 
 	}
 
-    TriangleEdge::TriangleEdge(unsigned int triangleIndex, unsigned int edgeIndex) :
+    TriangleEdge::TriangleEdge(std::size_t triangleIndex, std::size_t edgeIndex) :
             triangleIndex(triangleIndex), edgeIndex(edgeIndex)
     {
 
@@ -56,7 +56,7 @@ namespace urchin
 	 * @param cwHolePoints Hole points in clockwise order. Points must be unique and not go outside the polygon contour.
 	 * @return Hole index (start to 0).
 	 */
-	unsigned int TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints, const std::string &holeName)
+    std::size_t TriangulationAlgorithm::addHolePoints(const std::vector<Point2<float>> &cwHolePoints, const std::string &holeName)
 	{
 		polygonPoints.insert(polygonPoints.end(), cwHolePoints.begin(), cwHolePoints.end());
 		endContourIndices.push_back(polygonPoints.size());
@@ -80,7 +80,7 @@ namespace urchin
 	/**
 	 * @return Number of holes
 	 */
-	unsigned int TriangulationAlgorithm::getHolesSize() const
+    std::size_t TriangulationAlgorithm::getHolesSize() const
 	{
 		return endContourIndices.size() - 1;
 	}
@@ -88,7 +88,7 @@ namespace urchin
 	/**
 	 * @return Hole points in clockwise order.
 	 */
-	std::vector<Point2<float>> TriangulationAlgorithm::getHolePoints(unsigned int holeIndex) const
+	std::vector<Point2<float>> TriangulationAlgorithm::getHolePoints(std::size_t holeIndex) const
 	{
 		return std::vector<Point2<float>>(polygonPoints.begin() + endContourIndices[holeIndex], polygonPoints.begin() + endContourIndices[holeIndex+1]);
 	}
@@ -131,7 +131,7 @@ namespace urchin
 	/**
 	 * Return points size for all points: point of main polygon + points of holes
 	 */
-	unsigned int TriangulationAlgorithm::getAllPointsSize() const
+    std::size_t TriangulationAlgorithm::getAllPointsSize() const
 	{
 		return polygonPoints.size();
 	}
@@ -139,7 +139,7 @@ namespace urchin
     std::vector<std::shared_ptr<NavTriangle>> TriangulationAlgorithm::triangulateMonotonePolygon(const MonotonePolygon &monotonePolygon)
 	{
         missingTriangleNeighbor = 0;
-        const std::vector<unsigned int> &monotonePolygonPoints = monotonePolygon.getCcwPoints();
+        const std::vector<std::size_t> &monotonePolygonPoints = monotonePolygon.getCcwPoints();
 		std::vector<SidedPoint> sortedSidedPoints = buildSortedSidedPoints(monotonePolygonPoints);
 
         std::vector<std::shared_ptr<NavTriangle>> monotoneTriangles;
@@ -218,15 +218,15 @@ namespace urchin
         return monotoneTriangles;
 	}
 
-	std::vector<SidedPoint> TriangulationAlgorithm::buildSortedSidedPoints(const std::vector<unsigned int> &monotonePolygonPoints) const
+	std::vector<SidedPoint> TriangulationAlgorithm::buildSortedSidedPoints(const std::vector<std::size_t> &monotonePolygonPoints) const
 	{
 		std::vector<SidedPoint> sortedSidedPoints;
 		sortedSidedPoints.reserve(monotonePolygonPoints.size());
 
 		for(std::size_t i=0; i<monotonePolygonPoints.size(); ++i)
 		{
-			unsigned int currentIndex = monotonePolygonPoints[i];
-			unsigned int nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
+            std::size_t currentIndex = monotonePolygonPoints[i];
+            std::size_t nextIndex = monotonePolygonPoints[(i+1)%monotonePolygonPoints.size()];
 
 			sortedSidedPoints.emplace_back(SidedPoint(currentIndex, isFirstPointAboveSecond(currentIndex, nextIndex)));
 		}
@@ -237,7 +237,7 @@ namespace urchin
 		return sortedSidedPoints;
 	}
 
-	bool TriangulationAlgorithm::isFirstPointAboveSecond(unsigned int firstIndex, unsigned int secondIndex) const
+	bool TriangulationAlgorithm::isFirstPointAboveSecond(std::size_t firstIndex, std::size_t secondIndex) const
 	{
 		if(polygonPoints[firstIndex].Y == polygonPoints[secondIndex].Y)
 		{
@@ -246,7 +246,7 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildOrientedTriangle(unsigned int pointIndex1, unsigned int pointIndex2, unsigned int pointIndex3) const
+	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const
 	{
 		#ifdef _DEBUG
 			if(pointIndex1==pointIndex2 || pointIndex1==pointIndex3 || pointIndex2==pointIndex3)
@@ -293,7 +293,7 @@ namespace urchin
         {
 			const auto &prevTriangle = monotoneTriangles[prevMonotoneTriangleIndex];
 
-            for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++)
+            for(std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3 && missingTriangleNeighbor>0; prevEdgeIndex=edgeIndex++)
             {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1))
                 {
@@ -319,15 +319,15 @@ namespace urchin
 
     void TriangulationAlgorithm::determineNeighborsBetweenMonotones(std::vector<std::shared_ptr<NavTriangle>> &monotoneTriangles, const MonotonePolygon &monotonePolygon)
     {
-        unsigned int currMonotoneTriangleIndex = monotoneTriangles.size()-1;
+        std::size_t currMonotoneTriangleIndex = monotoneTriangles.size() - 1;
 		const auto &currTriangle = monotoneTriangles[currMonotoneTriangleIndex];
 
-        for(unsigned int prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
+        for(std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
         {
             if(currTriangle->getNeighbor(prevEdgeIndex) == nullptr)
             {
-				unsigned int edgeStartIndex = currTriangle->getIndex(prevEdgeIndex);
-				unsigned int edgeEndIndex = currTriangle->getIndex(edgeIndex);
+                std::size_t edgeStartIndex = currTriangle->getIndex(prevEdgeIndex);
+                std::size_t edgeEndIndex = currTriangle->getIndex(edgeIndex);
 
 				if(monotonePolygon.isSharedEdge(edgeStartIndex, edgeEndIndex))
 				{
@@ -338,7 +338,7 @@ namespace urchin
 						sharedMonotoneEdges.insert(std::make_pair(edgeId, TriangleEdge(triangles.size() + currMonotoneTriangleIndex, prevEdgeIndex)));
 					} else
 					{
-						unsigned int neighborIndex = itFind->second.triangleIndex;
+                        std::size_t neighborIndex = itFind->second.triangleIndex;
 						currTriangle->addNeighbor(prevEdgeIndex, triangles[neighborIndex]);
 						triangles[neighborIndex]->addNeighbor(itFind->second.edgeIndex, currTriangle);
 
@@ -349,14 +349,14 @@ namespace urchin
         }
     }
 
-    bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle> &triangle1, unsigned int tri1Point1, unsigned int tri1Point2,
-                                             const std::shared_ptr<NavTriangle> &triangle2, unsigned int tri2Point1, unsigned int tri2Point2) const
+    bool TriangulationAlgorithm::areSameEdge(const std::shared_ptr<NavTriangle> &triangle1, std::size_t tri1Point1, std::size_t tri1Point2,
+                                             const std::shared_ptr<NavTriangle> &triangle2, std::size_t tri2Point1, std::size_t tri2Point2) const
     {
         return (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point1) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point2))
                || (triangle1->getIndex(tri1Point1)==triangle2->getIndex(tri2Point2) && triangle1->getIndex(tri1Point2)==triangle2->getIndex(tri2Point1));
     }
 
-    uint_fast64_t TriangulationAlgorithm::computeEdgeId(unsigned int edgeStartIndex, unsigned int edgeEndIndex) const
+    uint_fast64_t TriangulationAlgorithm::computeEdgeId(std::size_t edgeStartIndex, std::size_t edgeEndIndex) const
     {
         auto edgeId = static_cast<uint_fast64_t>(std::min(edgeStartIndex, edgeEndIndex));
         edgeId = edgeId << 32u;

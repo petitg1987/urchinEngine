@@ -295,7 +295,7 @@ namespace urchin
             elevatedPoints.push_back(walkableSurface->computeRealPoint(walkablePoint, navMeshAgent));
         }
 
-		for(unsigned int holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
+		for(std::size_t holeIndex=0; holeIndex<triangulation.getHolesSize(); ++holeIndex)
 		{
 			const std::vector<Point2<float>> &holePoints = triangulation.getHolePoints(holeIndex);
 			for(const auto &holePoint : holePoints)

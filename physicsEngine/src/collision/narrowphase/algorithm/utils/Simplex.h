@@ -22,11 +22,11 @@ namespace urchin
 
 			void addPoint(const Point3<T> &, const Point3<T> &);
 
-			unsigned int getSize() const;
-			const Point3<T> &getPoint(unsigned int) const;
-			const Point3<T> &getSupportPointA(unsigned int) const;
-			const Point3<T> &getSupportPointB(unsigned int) const;
-			T getBarycentric(unsigned int) const;
+            std::size_t getSize() const;
+			const Point3<T> &getPoint(std::size_t) const;
+			const Point3<T> &getSupportPointA(std::size_t) const;
+			const Point3<T> &getSupportPointB(std::size_t) const;
+			T getBarycentric(std::size_t) const;
 			const Point3<T> &getClosestPointToOrigin() const;
 			bool isPointInSimplex(const Point3<T> &) const;
 
@@ -34,8 +34,8 @@ namespace urchin
 
 		private:
 			void updateSimplex();
-			void removePoint(unsigned int);
-			void setBarycentric(unsigned int, T);
+			void removePoint(std::size_t);
+			void setBarycentric(std::size_t, T);
 
 			SupportMapping<T> simplexPoints[4];
 			unsigned int simplexPointsSize;

@@ -10,7 +10,7 @@ using namespace urchin;
 void MonotonePolygonTest::singleTriangle()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(-1.0, -1.0), Point2<float>(1.0, 1.0), Point2<float>(-1.0, 1.0)};
-	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
 	std::vector<std::string> contourNames = {"test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
@@ -27,7 +27,7 @@ void MonotonePolygonTest::singleTriangle()
 void MonotonePolygonTest::oneSplitVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(1.0, 2.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0)};
-	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
 	std::vector<std::string> contourNames = {"test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
@@ -52,7 +52,7 @@ void MonotonePolygonTest::twoSplitVertex()
 			Point2<float>(1.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0),
 			Point2<float>(3.0, 1.0), Point2<float>(4.0, 0.0), Point2<float>(3.0, 3.0)
 	};
-	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
 	std::vector<std::string> contourNames = {"test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
@@ -81,7 +81,7 @@ void MonotonePolygonTest::twoSplitVertex()
 void MonotonePolygonTest::oneMergeVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 0.0), Point2<float>(2.0, 2.0), Point2<float>(1.0, 1.0)};
-	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
 	std::vector<std::string> contourNames = {"test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
@@ -103,14 +103,14 @@ void MonotonePolygonTest::oneMergeVertex()
 void MonotonePolygonTest::twoRegularVertex()
 {
 	std::vector<Point2<float>> ccwPolygonPoints = {Point2<float>(0.0, 2.0), Point2<float>(1.0, 1.0), Point2<float>(0.0, 0.0), Point2<float>(2.0, 1.0)};
-	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
 	std::vector<std::string> contourNames = {"test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
 	std::vector<MonotonePolygon> monotonePolygons = monotonePolygonAlgorithm.createYMonotonePolygons();
 
 	AssertHelper::assertUnsignedInt(monotonePolygons.size(), 1);
-	for(unsigned int i=0; i<ccwPolygonPoints.size(); ++i)
+	for(std::size_t i=0; i<ccwPolygonPoints.size(); ++i)
 	{
 		AssertHelper::assertUnsignedInt(monotonePolygons[0].getCcwPoints()[i], i);
 	}
@@ -121,7 +121,7 @@ void MonotonePolygonTest::splitAndMergeVertex()
 	std::vector<Point2<float>> ccwPolygonPoints = {
 			Point2<float>(0.0, 3.0), Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(2.0, 0.0), Point2<float>(2.0, 3.0), Point2<float>(1.0, 2.0)
 	};
-	std::vector<unsigned int> endContourIndices = {(unsigned int)ccwPolygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {ccwPolygonPoints.size()};
 	std::vector<std::string> contourNames = {"test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(ccwPolygonPoints, endContourIndices, contourNames);
@@ -148,7 +148,7 @@ void MonotonePolygonTest::polygonOneHole()
 		Point2<float>(0.0, 0.0), Point2<float>(3.0, 0.0), Point2<float>(3.0, 3.0), Point2<float>(0.0, 3.0), //polygon points
 		Point2<float>(1.0, 1.0), Point2<float>(1.0, 2.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0) //hole points
 	};
-	std::vector<unsigned int> endContourIndices = {4, (unsigned int)polygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {4, polygonPoints.size()};
 	std::vector<std::string> contourNames = {"test", "test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
@@ -180,7 +180,7 @@ void MonotonePolygonTest::polygonTwoHoles1()
 		Point2<float>(1.0, 1.0), Point2<float>(2.0, 2.0), Point2<float>(2.0, 1.0), //hole 1 points
 		Point2<float>(4.0, 3.0), Point2<float>(3.0, 4.0), Point2<float>(4.0, 4.0) //hole 2 points
 	};
-	std::vector<unsigned int> endContourIndices = {4, 7, (unsigned int)polygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {4, 7, polygonPoints.size()};
 	std::vector<std::string> contourNames = {"test", "test", "test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
@@ -214,7 +214,7 @@ void MonotonePolygonTest::polygonTwoHoles2()
 			Point2<float>(52.2792969, 28.6201172), Point2<float>(52.609375, 28.9912109), Point2<float>(52.4365234, 28.4033203), //hole 1 points
 			Point2<float>(53.8388672, 29.7792969), Point2<float>(54.234375, 29.2304688), Point2<float>(54.0556641, 28.6269531), Point2<float>(53.8388672, 28.6269531) //hole 2 points
 	};
-	std::vector<unsigned int> endContourIndices = {4, 7, (unsigned int)polygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {4, 7, polygonPoints.size()};
 	std::vector<std::string> contourNames = {"test", "test", "test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
@@ -258,7 +258,7 @@ void MonotonePolygonTest::polygonTwoHoles3()
 			Point2<float>(0.23582153, -4.46464157), Point2<float>(0.383214414, -4.46464157), Point2<float>(0.383214414, -4.6838522), Point2<float>(0.898347199, -4.83087635),
 			Point2<float>(2.76441312, -4.29339933), Point2<float>(3.20787191, -5.65283394),
 	};
-	std::vector<unsigned int> endContourIndices = {4, 8, (unsigned int)polygonPoints.size()};
+	std::vector<std::size_t> endContourIndices = {4, 8, polygonPoints.size()};
 	std::vector<std::string> contourNames = {"test", "test", "test"};
 
 	MonotonePolygonAlgorithm monotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames);
@@ -274,7 +274,7 @@ void MonotonePolygonTest::polygonTwoHoles3()
 
 CppUnit::Test *MonotonePolygonTest::suite()
 {
-	CppUnit::TestSuite *suite = new CppUnit::TestSuite("MonotonePolygonTest");
+    auto *suite = new CppUnit::TestSuite("MonotonePolygonTest");
 
 	suite->addTest(new CppUnit::TestCaller<MonotonePolygonTest>("singleTriangle", &MonotonePolygonTest::singleTriangle));
 

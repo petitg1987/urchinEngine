@@ -11,8 +11,8 @@ namespace urchin
     class MonotonePolygon
     {
         public:
-            void setCcwPoints(const std::vector<unsigned int> &);
-            const std::vector<unsigned int> &getCcwPoints() const;
+            void setCcwPoints(const std::vector<std::size_t> &);
+            const std::vector<std::size_t> &getCcwPoints() const;
 
             void addSharedEdge(unsigned int, unsigned int);
             const std::set<uint_fast64_t> &getSharedEdges() const;
@@ -21,7 +21,7 @@ namespace urchin
         private:
             uint_fast64_t computeEdgeId(unsigned int, unsigned int) const;
 
-            std::vector<unsigned int> ccwPoints;
+            std::vector<std::size_t> ccwPoints;
             std::set<uint_fast64_t> sharedEdges;
     };
 

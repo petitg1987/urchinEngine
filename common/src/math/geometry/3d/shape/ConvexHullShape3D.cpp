@@ -5,7 +5,6 @@
 #include "math/geometry/3d/object/ConvexHull3D.h"
 #include "math/algebra/point/Point4.h"
 #include "tools/logger/Logger.h"
-#include "tools/logger/FileLogger.h"
 
 namespace urchin
 {
@@ -20,7 +19,7 @@ namespace urchin
 		std::set<unsigned int> pointsToExclude = buildTetrahedron(points);
 
 		//add each point to the tetrahedron
-		for(unsigned int i=0;i<points.size();i++)
+		for(std::size_t i=0; i<points.size(); i++)
 		{
 			if(pointsToExclude.find(i)==pointsToExclude.end())
 			{
@@ -33,7 +32,7 @@ namespace urchin
 	 * @param points Points of the convex hull shape (all points must belong to the convex hull shape)
 	 * @param indexedTriangles Triangles of the convex hull shape (the triangles must form a convex)
 	 */
-	template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<unsigned int, ConvexHullPoint<T>> &points, const std::map<unsigned int, IndexedTriangle3D<T>> &indexedTriangles) :
+	template<class T> ConvexHullShape3D<T>::ConvexHullShape3D(const std::map<std::size_t, ConvexHullPoint<T>> &points, const std::map<std::size_t, IndexedTriangle3D<T>> &indexedTriangles) :
 		nextPointIndex(points.rbegin()->first + 1),
 		nextTriangleIndex(indexedTriangles.rbegin()->first + 1),
 		points(points),
@@ -45,7 +44,7 @@ namespace urchin
 	/**
 	 * Points of convex hull shape indexed to be used with indexed triangles.
 	 */
-	template<class T> const typename std::map<unsigned int, ConvexHullPoint<T>> &ConvexHullShape3D<T>::getConvexHullPoints() const
+	template<class T> const typename std::map<std::size_t, ConvexHullPoint<T>> &ConvexHullShape3D<T>::getConvexHullPoints() const
 	{
 		return points;
 	}
@@ -69,7 +68,7 @@ namespace urchin
 	/**
 	 * Triangles of convex hull shape where points are sorted in counter clockwise direction in a right hand coordinate system (Z+ directed to the observer).
 	 */
-	template<class T> const typename std::map<unsigned int, IndexedTriangle3D<T>> &ConvexHullShape3D<T>::getIndexedTriangles() const
+	template<class T> const typename std::map<std::size_t, IndexedTriangle3D<T>> &ConvexHullShape3D<T>::getIndexedTriangles() const
 	{
 		return indexedTriangles;
 	}
@@ -77,9 +76,9 @@ namespace urchin
 	/**
 	 * @return Returns index of point added. If point doesn't make part of convex, result is zero.
 	 */
-	template<class T> unsigned int ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint)
+	template<class T> std::size_t ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint)
 	{
-		std::vector<unsigned int> removedTriangleIndices;
+		std::vector<std::size_t> removedTriangleIndices;
 		removedTriangleIndices.reserve(4);
 
 		return addNewPoint(newPoint, removedTriangleIndices);
@@ -89,10 +88,9 @@ namespace urchin
 	* @param removedTriangleIndices [out] Indices of removed triangles from convex hull shape
 	* @return Returns index of point added. If point doesn't make part of convex, result is zero.
 	*/
-	template<class T> unsigned int ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<unsigned int> &removedTriangleIndices)
+	template<class T> std::size_t ConvexHullShape3D<T>::addNewPoint(const Point3<T> &newPoint, std::vector<std::size_t> &removedTriangleIndices)
 	{
-		std::map<long long, std::pair<unsigned int, unsigned int>> edges;
-		constexpr int HALF_SIZE_INDEX = (sizeof(unsigned int) * 8) / 2;
+		std::map<uint_fast64_t, std::pair<std::size_t, std::size_t>> edges;
 
 		//deletes all triangles visible by the new point
         unsigned int trianglesRemoved = 0;
@@ -111,14 +109,17 @@ namespace urchin
 			{
 				for(int i=0; i<3; i++)
 				{ //each edge
-					int index1 = indexedTriangle.getIndices()[i];
-					int index2 = indexedTriangle.getIndices()[(i+1)%3];
+                    std::size_t index1 = indexedTriangle.getIndices()[i];
+                    std::size_t index2 = indexedTriangle.getIndices()[(i+1)%3];
 
-					long long idEdge = (std::min(index1, index2) << HALF_SIZE_INDEX) | std::max(index1, index2);
-					auto itEdge = edges.find(idEdge);
+                    auto edgeId = static_cast<uint_fast64_t>(std::min(index1, index2));
+                    edgeId = edgeId << 32u;
+                    edgeId = edgeId + std::max(index1, index2);
+
+					auto itEdge = edges.find(edgeId);
 					if(itEdge==edges.end())
 					{
-						edges[idEdge] = std::make_pair(index1, index2);
+						edges[edgeId] = std::make_pair(index1, index2);
 					}else
 					{
 						edges.erase(itEdge);
@@ -137,7 +138,7 @@ namespace urchin
 		//adds the new triangles
 		if(!edges.empty())
 		{
-			unsigned int newPointIndex = nextPointIndex++;
+            std::size_t newPointIndex = nextPointIndex++;
 			points[newPointIndex].point = newPoint;
 
 			for (auto &edge : edges)
@@ -200,7 +201,7 @@ namespace urchin
 
 	template<class T> std::unique_ptr<ConvexObject3D<T>> ConvexHullShape3D<T>::toConvexObject(const Transform<T> &transform) const
 	{
-		std::map<unsigned int, ConvexHullPoint<T>> transformedConvexHullPoints = points;
+		std::map<std::size_t, ConvexHullPoint<T>> transformedConvexHullPoints = points;
 		for(auto &it : transformedConvexHullPoints)
 		{
 			it.second.point = (transform.getTransformMatrix() * Point4<T>(it.second.point)).toPoint3();
@@ -222,13 +223,13 @@ namespace urchin
 		}
 	}
 
-	template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<unsigned int, IndexedTriangle3D<T>>::iterator &itTriangle)
+	template<class T> void ConvexHullShape3D<T>::removeTriangle(const typename std::map<std::size_t, IndexedTriangle3D<T>>::iterator &itTriangle)
 	{
 		//remove reference of triangles on points
-		const unsigned int *indices = itTriangle->second.getIndices();
-		for(unsigned int i=0;i<3;i++)
+		const std::size_t *indices = itTriangle->second.getIndices();
+		for(std::size_t i=0; i<3; i++)
 		{
-			std::vector<unsigned int> &pointTriangles = points.at(indices[i]).triangleIndices;
+			std::vector<std::size_t> &pointTriangles = points.at(indices[i]).triangleIndices;
 			pointTriangles.erase(std::remove(pointTriangles.begin(), pointTriangles.end(), itTriangle->first), pointTriangles.end());
             if(pointTriangles.empty())
             { //orphan point: remove it
@@ -259,7 +260,7 @@ namespace urchin
 		pointsUsed.insert(0);
 
 		//3. build a line (find two distinct points)
-		for(unsigned int i=1; i<points.size(); i++)
+		for(std::size_t i=1; i<points.size(); i++)
 		{
 			if(points[i]!=this->points[0].point)
 			{
@@ -276,7 +277,7 @@ namespace urchin
 
 		//4. build triangles (find a point which doesn't belong to line).
 		Vector3<T> lineVector = this->points[0].point.vector(this->points[1].point);
-		for(unsigned int i=1; i<points.size(); i++)
+		for(std::size_t i=1; i<points.size(); i++)
 		{
 			if(pointsUsed.find(i)!=pointsUsed.end())
 			{ //point already used to build the tetrahedron
@@ -314,7 +315,7 @@ namespace urchin
 				this->points.at(firstIndexedTriangle.getIndex(1)).point,
 				this->points.at(firstIndexedTriangle.getIndex(2)).point);
 		const Point3<T> &firstPoint = this->points.at(0).point;
-		for(unsigned int i=1;i<points.size();i++)
+		for(std::size_t i=1; i<points.size(); i++)
 		{
 			if(pointsUsed.find(i)!=pointsUsed.end())
 			{ //point already used to build the tetrahedron
@@ -380,7 +381,7 @@ namespace urchin
 		if(!points.empty())
 		{
 			logStream<<"Impossible to build a convex hull shape with following points:"<<std::endl;
-			for (unsigned int i=0; i<points.size(); ++i)
+			for (std::size_t i=0; i<points.size(); ++i)
 			{
 				logStream << " - " << points[i] << std::endl;
 			}

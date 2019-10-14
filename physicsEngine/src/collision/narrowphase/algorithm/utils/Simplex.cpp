@@ -36,27 +36,27 @@ namespace urchin
         }
 	}
 
-	template<class T> unsigned int Simplex<T>::getSize() const
+	template<class T> std::size_t Simplex<T>::getSize() const
 	{
 		return simplexPointsSize;
 	}
 
-	template<class T> const Point3<T> &Simplex<T>::getPoint(unsigned int index) const
+	template<class T> const Point3<T> &Simplex<T>::getPoint(std::size_t index) const
 	{
 		return simplexPoints[index].point;
 	}
 
-	template<class T> const Point3<T> &Simplex<T>::getSupportPointA(unsigned int index) const
+	template<class T> const Point3<T> &Simplex<T>::getSupportPointA(std::size_t index) const
 	{
 		return simplexPoints[index].supportPointA;
 	}
 
-	template<class T> const Point3<T> &Simplex<T>::getSupportPointB(unsigned int index) const
+	template<class T> const Point3<T> &Simplex<T>::getSupportPointB(std::size_t index) const
 	{
 		return simplexPoints[index].supportPointB;
 	}
 
-	template<class T> T Simplex<T>::getBarycentric(unsigned int index) const
+	template<class T> T Simplex<T>::getBarycentric(std::size_t index) const
 	{
 		return simplexPoints[index].barycentric;
 	}
@@ -208,20 +208,20 @@ namespace urchin
 		}
 	}
 
-	template<class T> void Simplex<T>::removePoint(unsigned int index)
+	template<class T> void Simplex<T>::removePoint(std::size_t index)
 	{
 		#ifdef _DEBUG
 			assert(simplexPointsSize > 0);
         #endif
 
-		for (int i = index; i < simplexPointsSize - 1; ++i)
+		for (long i = index; i < simplexPointsSize - 1; ++i)
 		{
 			simplexPoints[i] = simplexPoints[i + 1];
 		}
 		simplexPointsSize--;
 	}
 
-	template<class T> void Simplex<T>::setBarycentric(unsigned int index, T barycentric)
+	template<class T> void Simplex<T>::setBarycentric(std::size_t index, T barycentric)
 	{
 		simplexPoints[index].barycentric = barycentric;
 	}
