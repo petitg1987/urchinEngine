@@ -26,8 +26,8 @@ namespace urchin
 			void writeOn(const std::shared_ptr<XmlChunk> &, const CollisionShape3D *, XmlWriter &) const override;
 
 		private:
-			void loadTransformOn(std::shared_ptr<LocalizedCollisionShape>, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
-			void writeTransformOn(std::shared_ptr<XmlChunk>, const std::shared_ptr<const LocalizedCollisionShape> &, XmlWriter &) const;
+			void loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>&, const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+			void writeTransformOn(const std::shared_ptr<XmlChunk>&, const std::shared_ptr<const LocalizedCollisionShape> &, XmlWriter &) const;
 
 	};
 

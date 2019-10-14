@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+
+#include <utility>
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/textbox/TextBox.h"
@@ -13,9 +15,9 @@
 namespace urchin
 {
 
-	TextBox::TextBox(Position position, Size size, const std::string &nameSkin) :
+	TextBox::TextBox(Position position, Size size, std::string nameSkin) :
 		Widget(position, size),
-		nameSkin(nameSkin),
+		nameSkin(std::move(nameSkin)),
 		text(nullptr),
 		startTextIndex(0),
 		cursorIndex(0),
@@ -212,13 +214,13 @@ namespace urchin
 		for(cursorIndex=startTextIndex; cursorIndex<(int)allText.length(); ++cursorIndex)
 		{
 			auto letter = static_cast<unsigned char>(allText[cursorIndex]);
-			widthText += (float)font->getGlyph(letter).width/2.0;
+			widthText += (float)font->getGlyph(letter).width/2.0f;
 			if(widthText > approximateCursorPosition)
 			{
 				break;
 			}
 
-			widthText += (float)font->getGlyph(letter).width/2.0 + (float)font->getSpaceBetweenLetters();
+			widthText += (float)font->getGlyph(letter).width/2.0f + (float)font->getSpaceBetweenLetters();
 		}
 
 		//compute the correct cursor position

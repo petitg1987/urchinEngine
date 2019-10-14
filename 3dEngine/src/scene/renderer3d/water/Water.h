@@ -34,7 +34,7 @@ namespace urchin
             float getZSize() const;
 
             void setWaterColor(const Vector3<float> &);
-            const Vector3<float> getWaterColor() const;
+            const Vector3<float> &getWaterColor() const;
 
             void setNormalTexture(const std::string &);
             const Image *getNormalTexture() const;

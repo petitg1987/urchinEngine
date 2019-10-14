@@ -116,7 +116,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupTransformBox(QVBoxLayout *localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
-		QGroupBox *transformGroupBox = new QGroupBox("Transform");
+		auto *transformGroupBox = new QGroupBox("Transform");
 		localizedShapeLayout->addWidget(transformGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(transformGroupBox);
 		transformGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -128,7 +128,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupPosition(QGridLayout *transformLayout, const Point3<float> &position)
 	{
-		QLabel *positionLabel= new QLabel("Position:");
+		auto *positionLabel= new QLabel("Position:");
 		transformLayout->addWidget(positionLabel, 0, 0);
 
         auto *positionLayout = new QHBoxLayout();
@@ -152,7 +152,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupOrientation(QGridLayout *transformLayout, const Quaternion<float> &orientation)
 	{
-		QLabel *orientationTypeLabel = new QLabel("Orient. Type:");
+		auto *orientationTypeLabel = new QLabel("Orient. Type:");
 		transformLayout->addWidget(orientationTypeLabel, 1, 0);
 
 		orientationType = new QComboBox();
@@ -160,7 +160,7 @@ namespace urchin
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateLocalizedShapeOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel("Euler Angle:");
+        auto *eulerAngleLabel = new QLabel("Euler Angle:");
 		transformLayout->addWidget(eulerAngleLabel, 2, 0);
 
 		QVariant variant = orientationType->currentData();
@@ -188,7 +188,7 @@ namespace urchin
 
 	void BodyCompoundShapeWidget::setupShapeBox(QVBoxLayout *localizedShapeLayout, const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
-		QGroupBox *shapeGroupBox = new QGroupBox("Shape");
+        auto *shapeGroupBox = new QGroupBox("Shape");
 		localizedShapeLayout->addWidget(shapeGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(shapeGroupBox);
 		shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -260,8 +260,8 @@ namespace urchin
 			CollisionShape3D::ShapeType shapeType = changeBodyShapeDialog.getShapeType();
 			std::shared_ptr<const CollisionShape3D> defaultNewShape = DefaultBodyShapeCreator(getSceneObject()).createDefaultBodyShape(shapeType, true);
 
-			unsigned int nextPosition = 0;
-			for(unsigned int i=0; i<localizedShapeTableView->getLocalizedShapes().size(); ++i)
+			std::size_t nextPosition = 0;
+			for(std::size_t i=0; i<localizedShapeTableView->getLocalizedShapes().size(); ++i)
 			{
 				if(nextPosition<=localizedShapeTableView->getLocalizedShapes()[i]->position)
 				{

@@ -16,7 +16,7 @@ namespace urchin
 	class StaticBitmap : public Widget
 	{
 		public:
-			StaticBitmap(Position, Size, const std::string &);
+			StaticBitmap(Position, Size, std::string );
 			~StaticBitmap() override;
 			
 			void createOrUpdateWidget() override;

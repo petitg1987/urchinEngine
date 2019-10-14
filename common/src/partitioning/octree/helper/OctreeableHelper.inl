@@ -1,5 +1,3 @@
-#include "OctreeableHelper.h"
-
 template<class TOctreeable> void OctreeableHelper<TOctreeable>::merge(std::vector<TOctreeable *> &targetOctreeables,
         const std::vector<TOctreeable *> &additionalOctreeables)
 {

@@ -4,10 +4,7 @@
 
 #include "scene/GUI/GUIRenderer.h"
 #include "scene/GUI/GUISkinService.h"
-#include "resources/font/Font.h"
-#include "resources/MediaManager.h"
 #include "utils/shader/ShaderManager.h"
-#include "utils/display/texture/TextureDisplayer.h"
 
 namespace urchin
 {

@@ -11,8 +11,7 @@ namespace urchin
 	class ConvexShape2D
 	{
 		public:
-			ConvexShape2D();
-			virtual ~ConvexShape2D();
+			virtual ~ConvexShape2D() = default;
 	};
 
 }

@@ -13,7 +13,7 @@ namespace urchin
 	{
 		public:
 			XmlAttribute();
-			XmlAttribute(const std::string &, const std::string &);
+			XmlAttribute(std::string , std::string );
 
 			const std::string &getAttributeName() const;
 			const std::string &getAttributeValue() const;

@@ -8,7 +8,9 @@ namespace urchin
 
 	CollisionCompoundShape::CollisionCompoundShape(const std::vector<std::shared_ptr<const LocalizedCollisionShape>> &localizedShapes) :
 			CollisionShape3D(),
-			localizedShapes(localizedShapes)
+			localizedShapes(localizedShapes),
+            maxDistanceToCenter(0.0f),
+            minDistanceToCenter(0.0f)
 	{
 		if(localizedShapes.empty())
 		{
@@ -71,7 +73,7 @@ namespace urchin
 			PhysicsTransform shapeWorldTransform = physicsTransform * localizedShapes[0]->transform;
 			AABBox<float> globalCompoundBox = localizedShapes[0]->shape->toAABBox(shapeWorldTransform);
 
-			for (unsigned int i = 1; i < localizedShapes.size(); ++i)
+			for(std::size_t i = 1; i < localizedShapes.size(); ++i)
 			{
 				shapeWorldTransform = physicsTransform * localizedShapes[i]->transform;
 				AABBox<float> compoundBox = localizedShapes[i]->shape->toAABBox(shapeWorldTransform);

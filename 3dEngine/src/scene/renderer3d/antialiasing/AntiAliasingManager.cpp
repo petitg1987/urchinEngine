@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include <stdexcept>
 #include <map>
 #include <string>
 

@@ -1,9 +1,7 @@
 #include <GL/glew.h>
-#include <sstream>
 #include <memory>
 
 #include "scene/GUI/widget/text/Text.h"
-#include "scene/GUI/GUISkinService.h"
 #include "scene/GUI/widget/Size.h"
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"

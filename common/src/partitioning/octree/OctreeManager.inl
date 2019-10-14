@@ -114,7 +114,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::addOctreeable(TOctr
 	{
         browseNodes.clear();
         browseNodes.push_back(mainOctree);
-        for (unsigned int i = 0; i < browseNodes.size(); ++i)
+        for(std::size_t i = 0; i < browseNodes.size(); ++i)
         {
             Octree<TOctreeable> *octree = browseNodes[i];
 
@@ -217,7 +217,7 @@ template<class TOctreeable> std::vector<const Octree<TOctreeable> *> OctreeManag
 
     browseNodes.clear();
     browseNodes.push_back(mainOctree);
-    for(unsigned int i=0; i<browseNodes.size(); ++i)
+    for(std::size_t i=0; i<browseNodes.size(); ++i)
     {
         const Octree<TOctreeable> *octree = browseNodes[i];
 
@@ -241,13 +241,13 @@ template<class TOctreeable> std::vector<TOctreeable *> OctreeManager<TOctreeable
     {
         browseNodes.clear();
         browseNodes.push_back(mainOctree);
-        for (unsigned int i = 0; i < browseNodes.size(); ++i)
+        for (std::size_t i = 0; i < browseNodes.size(); ++i)
         {
             const Octree<TOctreeable> *octree = browseNodes[i];
 
             if (octree->isLeaf())
             {
-                for(unsigned int octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++)
+                for(std::size_t octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++)
                 {
                     TOctreeable *octreeable = octree->getOctreeables()[octreeableI];
 
@@ -282,7 +282,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 
 	browseNodes.clear();
 	browseNodes.push_back(mainOctree);
-	for(unsigned int i=0; i<browseNodes.size(); ++i)
+	for(std::size_t i=0; i<browseNodes.size(); ++i)
 	{
 		const Octree<TOctreeable> *octree = browseNodes[i];
 
@@ -290,7 +290,7 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::getOctreeablesIn(co
 		{
 			if(octree->isLeaf())
 			{
-				for(unsigned int octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++)
+				for(std::size_t octreeableI=0; octreeableI<octree->getOctreeables().size(); octreeableI++)
 				{
 					TOctreeable *octreeable = octree->getOctreeables()[octreeableI];
 

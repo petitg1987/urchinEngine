@@ -6,13 +6,15 @@ namespace urchin
 	template<class T> Ray<T>::Ray(const Point3<T> &origin, const Vector3<T> &direction, T length) :
 			origin(origin),
 			direction(direction.normalize()),
-			length(length)
+			length(length),
+            directionSigns()
 	{
 		initializeAdditionalData();
 	}
 
 	template<class T> Ray<T>::Ray(const Point3<T> &from, const Point3<T> &to) :
-			origin(from)
+			origin(from),
+            directionSigns()
 	{
 		Vector3<T> direction = from.vector(to);
 		this->length = direction.length();

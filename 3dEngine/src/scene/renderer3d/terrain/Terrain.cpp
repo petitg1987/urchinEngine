@@ -1,15 +1,17 @@
 #include <GL/glew.h>
-#include <cassert>
 #include <stdexcept>
 
 #include "Terrain.h"
 #include "utils/shader/ShaderManager.h"
 
-#define DEFAULT_AMBIENT 0.3
+#define DEFAULT_AMBIENT 0.3f
 
 namespace urchin
 {
-    Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position)
+    Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position) :
+            bufferIDs(),
+            vertexArrayObject(0),
+            ambient(0.0f)
     {
         glGenBuffers(4, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);

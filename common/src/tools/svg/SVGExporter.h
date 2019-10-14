@@ -15,7 +15,7 @@ namespace urchin
     class SVGExporter
     {
         public:
-            explicit SVGExporter(const std::string &);
+            explicit SVGExporter(std::string );
             ~SVGExporter();
 
             void addShape(const SVGShape *);

@@ -47,7 +47,7 @@ namespace urchin
 	 * respectively the following voronoi regions: ABC, ACD, ADB, BDC.
 	 * @return Point on tetrahedron closest to point p
 	 */
-	template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T> &p, T barycentrics[4], short voronoiRegionMask) const
+	template<class T> Point3<T> Tetrahedron<T>::closestPoint(const Point3<T> &p, T barycentrics[4], unsigned short voronoiRegionMask) const
 	{
 		Point3<T> closestPoint;
 		T triangleBarycentrics[3];
@@ -58,7 +58,7 @@ namespace urchin
 		bool pointOutsideOrInPlaneADB = pointOutsidePlane(p, a, d, b, c, true);
 		bool pointOutsideOrInPlaneBDC = pointOutsidePlane(p, b, d, c, a, true);
 
-		if((voronoiRegionMask & 1) && pointOutsideOrInPlaneABC)
+		if((voronoiRegionMask & 1u) && pointOutsideOrInPlaneABC)
 		{ //point outside face ABC: compute closest point on ABC
 			Point3<T> q = Triangle3D<T>(a, b, c).closestPoint(p, triangleBarycentrics);
 
@@ -76,7 +76,7 @@ namespace urchin
 			}
 		}
 
-		if((voronoiRegionMask & 2) && pointOutsideOrInPlaneACD)
+		if((voronoiRegionMask & 2u) && pointOutsideOrInPlaneACD)
 		{ //point outside face ACD: compute closest point on ACD
 			Point3<T> q = Triangle3D<T>(a, c, d).closestPoint(p, triangleBarycentrics);
 
@@ -94,7 +94,7 @@ namespace urchin
 			}
 		}
 
-		if((voronoiRegionMask & 4) && pointOutsideOrInPlaneADB)
+		if((voronoiRegionMask & 4u) && pointOutsideOrInPlaneADB)
 		{ //point outside face ADB: compute closest point on ADB
 			Point3<T> q = Triangle3D<T>(a, d, b).closestPoint(p, triangleBarycentrics);
 
@@ -112,8 +112,7 @@ namespace urchin
 			}
 		}
 
-
-		if((voronoiRegionMask & 8) && pointOutsideOrInPlaneBDC)
+		if((voronoiRegionMask & 8u) && pointOutsideOrInPlaneBDC)
 		{ //point outside face BDC: compute closest point on BDC
 			Point3<T> q = Triangle3D<T>(b, d, c).closestPoint(p, triangleBarycentrics);
 

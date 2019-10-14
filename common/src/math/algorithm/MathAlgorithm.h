@@ -13,9 +13,8 @@ namespace urchin
 			template<class T> static T sign(T);
 			template<class T> static T lerp(T, T, T);
 
-			static int nextPowerOfTwo(int);
 			static unsigned int powerOfTwo(unsigned int);
-			static int pow(int, int);
+			static int pow(int, unsigned int);
 
 			static bool isZero(float, float tolerance = std::numeric_limits<float>::epsilon());
 			static bool isOne(float, float tolerance = std::numeric_limits<float>::epsilon());

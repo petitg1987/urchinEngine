@@ -1,5 +1,7 @@
 #include "TerrainGrassQuadtree.h"
 
+#include <utility>
+
 namespace urchin
 {
 
@@ -9,9 +11,9 @@ namespace urchin
 
     }
 
-    TerrainGrassQuadtree::TerrainGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &children) :
+    TerrainGrassQuadtree::TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> children) :
             vertexArrayObjectId(0),
-            children(children)
+            children(std::move(children))
     {
 
     }
@@ -49,7 +51,7 @@ namespace urchin
             }else
             {
                 AABBox<float> localBbox = *children[0]->getBox();
-                for(unsigned int i=1; i<children.size(); ++i)
+                for(std::size_t i=1; i<children.size(); ++i)
                 {
                     localBbox = localBbox.merge(*children[i]->getBox());
                 }

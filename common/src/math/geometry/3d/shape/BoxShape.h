@@ -16,11 +16,11 @@ namespace urchin
 			BoxShape();
 			explicit BoxShape(const Vector3<T> &);
 
-			const T getHalfSize(unsigned int) const;
+			T getHalfSize(unsigned int) const;
 			const Vector3<T> &getHalfSizes() const;
-			const T getMaxHalfSize() const;
+			T getMaxHalfSize() const;
 			unsigned int getMaxHalfSizeIndex() const;
-			const T getMinHalfSize() const;
+			T getMinHalfSize() const;
 			unsigned int getMinHalfSizeIndex() const;
 
 			Point3<T> getSupportPoint(const Vector3<T> &) const;

@@ -1,9 +1,11 @@
 #include "SVGExporter.h"
 
+#include <utility>
+
 namespace urchin
 {
-    SVGExporter::SVGExporter(const std::string &filename) :
-        filename(filename)
+    SVGExporter::SVGExporter(std::string filename) :
+        filename(std::move(filename))
     {
 
     }

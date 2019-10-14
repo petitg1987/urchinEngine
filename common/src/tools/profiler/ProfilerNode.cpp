@@ -2,13 +2,14 @@
 #include <iostream>
 #include <numeric>
 #include <iomanip>
+#include <utility>
 
 #include "ProfilerNode.h"
 
 namespace urchin
 {
-    ProfilerNode::ProfilerNode(const std::string &name, ProfilerNode *parent) :
-            name(name),
+    ProfilerNode::ProfilerNode(std::string name, ProfilerNode *parent) :
+            name(std::move(name)),
             parent(parent),
             startCount(0)
     {
@@ -100,7 +101,7 @@ namespace urchin
 
     int ProfilerNode::getNbValidTimes() const
     { //remove first element (avoid counting time for potential initialization process)
-        return times.size() - 1;
+        return static_cast<int>(times.size()) - 1;
     }
 
     void ProfilerNode::log(unsigned int level, std::stringstream &logStream, double levelOneTotalTime)
@@ -121,7 +122,7 @@ namespace urchin
             double averageTime = totalTime / getNbValidTimes();
             double percentageTime = (totalTime / levelOneTotalTime) * 100.0;
 
-            logStream << std::setw(level * 4) << " - " << name;
+            logStream << std::setw(static_cast<int>(level) * 4) << " - " << name;
             logStream << " (average: " << averageTime <<"ms";
             logStream << ", total: " << totalTime / 1000.0 << "sec/" << percentageTime << "%";
             logStream << ", call: " << getNbValidTimes();

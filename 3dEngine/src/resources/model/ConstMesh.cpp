@@ -1,6 +1,6 @@
-#include <GL/glew.h>
 #include <stdexcept>
 #include <limits>
+#include <utility>
 
 #include "resources/model/ConstMesh.h"
 #include "resources/model/MeshService.h"
@@ -9,18 +9,18 @@
 namespace urchin
 {
 
-	ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, const std::vector<TextureCoordinate> &textureCoordinates,
-			const std::vector<Triangle> &triangles, const std::vector<Weight> &weights, const std::vector<Bone> &baseSkeleton) :
+	ConstMesh::ConstMesh(const std::string &materialFilename, const std::vector<Vertex> &vertices, std::vector<TextureCoordinate> textureCoordinates,
+			std::vector<Triangle> triangles, std::vector<Weight> weights, const std::vector<Bone> &baseSkeleton) :
 		vertices(vertices),
-		textureCoordinates(textureCoordinates),
-		triangles(triangles),
-		weights(weights),
+		textureCoordinates(std::move(textureCoordinates)),
+		triangles(std::move(triangles)),
+		weights(std::move(weights)),
 		baseSkeleton(baseSkeleton),
 		baseVertices(new Point3<float>[vertices.size()]),
 		baseDataVertices(new DataVertex[vertices.size()])
 	{
 		//regroup duplicate vertex due to their different texture coordinates
-		for(unsigned int i=0;i<vertices.size();++i)
+		for(std::size_t i=0;i<vertices.size();++i)
 		{
 			linkedVertices[vertices[i].linkedVerticesGroupId].push_back(i);
 		}

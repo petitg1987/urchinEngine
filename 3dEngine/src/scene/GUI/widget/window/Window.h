@@ -18,7 +18,7 @@ namespace urchin
 	class Window : public Widget
 	{
 		public:
-			Window(Position, Size, const std::string &, const std::string &stringTitle = "");
+			Window(Position, Size, std::string , std::string stringTitle = "");
 
 			~Window() override;
 		

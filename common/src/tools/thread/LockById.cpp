@@ -1,13 +1,15 @@
 #include "LockById.h"
 
+#include <utility>
+
 namespace urchin
 {
 
     //static
     std::map<std::string, std::shared_ptr<LockById>> LockById::instances;
 
-    LockById::LockById(const std::string &instanceName) :
-            instanceName(instanceName)
+    LockById::LockById(std::string instanceName) :
+            instanceName(std::move(instanceName))
     {
 
     }

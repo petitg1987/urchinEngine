@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+
+#include <utility>
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/button/Button.h"
@@ -8,11 +10,11 @@
 namespace urchin
 {
 
-	Button::Button(Position position, Size size, const std::string &nameSkin, const std::string &buttonText)
+	Button::Button(Position position, Size size, std::string nameSkin, std::string buttonText)
 		: Widget(position, size),
-		  nameSkin(nameSkin),
+		  nameSkin(std::move(nameSkin)),
 		  text(nullptr),
-		  buttonText(buttonText)
+		  buttonText(std::move(buttonText))
 	{
 		createOrUpdateWidget();
 	}

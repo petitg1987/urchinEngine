@@ -1,7 +1,6 @@
 #include <stdexcept>
 
 #include "NumericalCheck.h"
-#include "tools/logger/Logger.h"
 
 namespace urchin
 {

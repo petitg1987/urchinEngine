@@ -1,6 +1,4 @@
-#include <memory>
 #include <stdexcept>
-#include "UrchinCommon.h"
 
 #include "SoundTriggerDisplayer.h"
 
@@ -26,16 +24,16 @@ namespace urchin
 		{
 			const SoundTrigger *soundTrigger = sceneSound->getSoundTrigger();
 
-			if(const ShapeTrigger *shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger))
+			if(const auto *shapeTrigger = dynamic_cast<const ShapeTrigger *>(soundTrigger))
 			{
 				GeometryModel *geometryModel = retrieveGeometry(shapeTrigger->getSoundShape());
 				soundTriggerModels.push_back(geometryModel);
 			}
 
-			for(unsigned int i=0; i<soundTriggerModels.size(); ++i)
+			for(auto &soundTriggerModel : soundTriggerModels)
 			{
-				soundTriggerModels[i]->setColor(0.0, 1.0, 1.0);
-				sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(soundTriggerModels[i]);
+				soundTriggerModel->setColor(0.0, 1.0, 1.0);
+				sceneManager->getActiveRenderer3d()->getGeometryManager()->addGeometry(soundTriggerModel);
 			}
 		}
 	}
@@ -56,22 +54,22 @@ namespace urchin
 
 	GeometryModel *SoundTriggerDisplayer::retrieveSphereGeometry(const SoundShape *soundShape) const
 	{
-		const SoundSphere *soundSphere = static_cast<const SoundSphere *>(soundShape);
+		const auto *soundSphere = dynamic_cast<const SoundSphere *>(soundShape);
 		return new SphereModel(soundSphere->getPlayTriggerSphere(), 15);
 	}
 
 	GeometryModel *SoundTriggerDisplayer::retrieveBoxGeometry(const SoundShape *soundShape) const
 	{
-		const SoundBox *soundBox = static_cast<const SoundBox *>(soundShape);
+		const auto *soundBox = dynamic_cast<const SoundBox *>(soundShape);
 		return new OBBoxModel(soundBox->getPlayTriggerBox());
 	}
 
 	void SoundTriggerDisplayer::cleanCurrentDisplay()
 	{
-		for(unsigned int i=0; i<soundTriggerModels.size(); ++i)
+		for(auto &soundTriggerModel : soundTriggerModels)
 		{
-			sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(soundTriggerModels[i]);
-			delete soundTriggerModels[i];
+			sceneManager->getActiveRenderer3d()->getGeometryManager()->removeGeometry(soundTriggerModel);
+			delete soundTriggerModel;
 		}
 
 		soundTriggerModels.clear();

@@ -16,7 +16,8 @@ namespace urchin
 		lineValues[0] = 1;
 		for(unsigned int column=1; column<nbColumns; ++column)
 		{
-			lineValues[column] = std::lround(lineValues[column-1] * ((lineNumber - (column-1.0f)) / static_cast<float>(column)));
+		    auto columnFloat = static_cast<float>(column);
+			lineValues[column] = std::lround(lineValues[column-1] * ((static_cast<float>(lineNumber) - (columnFloat-1.0f)) / columnFloat));
 		}
 
 		return lineValues;

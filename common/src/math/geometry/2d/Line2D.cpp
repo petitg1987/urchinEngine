@@ -1,7 +1,4 @@
-#include <cmath>
 #include <cassert>
-#include <limits>
-#include <typeinfo>
 
 #include "math/geometry/2d/Line2D.h"
 #include "math/algebra/vector/Vector2.h"

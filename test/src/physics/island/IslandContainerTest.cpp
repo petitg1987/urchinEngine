@@ -23,7 +23,7 @@ void IslandContainerTest::cascadeMergeIslands()
 
 	AssertHelper::assertUnsignedInt(islandElementsLink.size(), 4);
 	unsigned int islandId = islandElementsLink[0].islandIdRef;
-	for(unsigned int i=1; i<islandElementsLink.size(); ++i)
+	for(std::size_t i=1; i<islandElementsLink.size(); ++i)
 	{
 		AssertHelper::assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
 	}
@@ -49,7 +49,7 @@ void IslandContainerTest::mergeAllIslands()
 
 	AssertHelper::assertUnsignedInt(islandElementsLink.size(), 3);
 	unsigned int islandId = islandElementsLink[0].islandIdRef;
-	for(unsigned int i=1; i<islandElementsLink.size(); ++i)
+	for(std::size_t i=1; i<islandElementsLink.size(); ++i)
 	{
 		AssertHelper::assertUnsignedInt(islandElementsLink[i].islandIdRef, islandId);
 	}

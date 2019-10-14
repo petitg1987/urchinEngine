@@ -77,21 +77,21 @@ namespace urchin
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
 
-        for(unsigned int i=7; i<pixelsRGBA16bits.size(); i+=8)
+        for(std::size_t i=7; i<pixelsRGBA16bits.size(); i+=8)
         {
-            if(channelsMask & 1)
+            if(channelsMask & 1u)
             { //red
                 pixels.push_back(pixelsRGBA16bits[i-6]);
             }
-            if(channelsMask & 2)
+            if(channelsMask & 2u)
             { //green
                 pixels.push_back(pixelsRGBA16bits[i-4]);
             }
-            if(channelsMask & 4)
+            if(channelsMask & 4u)
             { //blue
                 pixels.push_back(pixelsRGBA16bits[i-2]);
             }
-            if(channelsMask & 8)
+            if(channelsMask & 8u)
             { //alpha
                 pixels.push_back(pixelsRGBA16bits[i-0]);
             }
@@ -109,23 +109,23 @@ namespace urchin
         size_t nbChannels = std::bitset<8>(channelsMask).count();
         pixels.reserve((pixelsRGBA16bits.size()/(4*2))*nbChannels);
 
-        for(unsigned int i=7; i<pixelsRGBA16bits.size(); i+=8)
+        for(std::size_t i=7; i<pixelsRGBA16bits.size(); i+=8)
         {
-            if(channelsMask & 1)
+            if(channelsMask & 1u)
             { //red
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-7]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-6]));
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-7]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-6]));
             }
-            if(channelsMask & 2)
+            if(channelsMask & 2u)
             { //green
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-5]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-4]));
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-5]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-4]));
             }
-            if(channelsMask & 4)
+            if(channelsMask & 4u)
             { //blue
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-3]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-2]));
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-3]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-2]));
             }
-            if(channelsMask & 8)
+            if(channelsMask & 8u)
             { //alpha
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-1]) << 8) | static_cast<uint16_t>(pixelsRGBA16bits[i-0]));
+                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-1]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-0]));
             }
         }
 

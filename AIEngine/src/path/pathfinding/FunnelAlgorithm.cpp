@@ -33,7 +33,7 @@ namespace urchin
         apex = startPoint;
         sideIndices = std::make_pair(1, 1);
 
-        for (unsigned int portalIndex = 2; portalIndex < portals.size(); portalIndex++)
+        for (std::size_t portalIndex = 2; portalIndex < portals.size(); portalIndex++)
         {
             for(FunnelSide funnelSide : {FunnelSide::LEFT, FunnelSide::RIGHT})
             {

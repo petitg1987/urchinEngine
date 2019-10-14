@@ -12,7 +12,7 @@ namespace urchin
     {
         public:
             TerrainGrassQuadtree();
-            explicit TerrainGrassQuadtree(const std::vector<TerrainGrassQuadtree *> &);
+            explicit TerrainGrassQuadtree(std::vector<TerrainGrassQuadtree *> );
             ~TerrainGrassQuadtree();
 
             void setVertexArrayObjectId(unsigned int);

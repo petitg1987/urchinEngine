@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <memory>
+#include <utility>
 #include "UrchinCommon.h"
 
 #include "scene/GUI/widget/window/Window.h"
@@ -9,10 +10,10 @@
 namespace urchin
 {
 
-	Window::Window(Position position, Size size, const std::string &nameSkin, const std::string &stringTitle) :
+	Window::Window(Position position, Size size, std::string nameSkin, std::string stringTitle) :
 		Widget(position, size),
-		nameSkin(nameSkin),
-		stringTitle(stringTitle),
+		nameSkin(std::move(nameSkin)),
+		stringTitle(std::move(stringTitle)),
 		state(DEFAULT),
 		title(nullptr),
 		widgetOutline(new WidgetOutline())

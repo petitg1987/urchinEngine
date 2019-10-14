@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <iostream>
 
 #include "system/FileHandler.h"
 
@@ -73,7 +72,7 @@ namespace urchin
 		std::string relativePath = path.substr(commonMaxIndex);
 
 		//add '../' to relative path
-		for(unsigned int i=commonMaxIndex; i<simplifiedReferenceDirectory.size(); ++i)
+		for(std::size_t i=commonMaxIndex; i<simplifiedReferenceDirectory.size(); ++i)
 		{
 			if(simplifiedReferenceDirectory[i]=='/' || simplifiedReferenceDirectory[i]=='\\')
 			{

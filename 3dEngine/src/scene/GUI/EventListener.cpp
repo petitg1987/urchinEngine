@@ -1,5 +1,3 @@
-#include <stdexcept>
-
 #include "scene/GUI/EventListener.h"
 #include "scene/GUI/widget/Widget.h"
 

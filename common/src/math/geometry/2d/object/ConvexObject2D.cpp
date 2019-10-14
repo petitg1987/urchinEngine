@@ -2,17 +2,6 @@
 
 namespace urchin
 {
-
-	template<class T> ConvexObject2D<T>::ConvexObject2D()
-	{
-
-	}
-
-	template<class T> ConvexObject2D<T>::~ConvexObject2D()
-	{
-
-	}
-
 	//explicit template
 	template class ConvexObject2D<float>;
 

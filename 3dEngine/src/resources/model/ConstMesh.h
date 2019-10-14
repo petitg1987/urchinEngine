@@ -56,8 +56,8 @@ namespace urchin
 	class ConstMesh
 	{
 		public:
-			ConstMesh(const std::string &, const std::vector<Vertex> &, const std::vector<TextureCoordinate> &,
-					const std::vector<Triangle> &, const std::vector<Weight> &, const std::vector<Bone> &);
+			ConstMesh(const std::string &, const std::vector<Vertex> &, std::vector<TextureCoordinate> ,
+					std::vector<Triangle> , std::vector<Weight> , const std::vector<Bone> &);
 			~ConstMesh();
 
 			const Material *getMaterial() const;

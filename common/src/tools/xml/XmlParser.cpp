@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <utility>
 
 #include "tools/xml/XmlParser.h"
 #include "system/FileSystem.h"

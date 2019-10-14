@@ -13,14 +13,14 @@ namespace urchin
 		std::vector<Point3<T>> sortedPoints;
 		sortedPoints.reserve(coplanarPoints.size());
 
-		for(unsigned int i=0; i<2 && i<coplanarPoints.size(); i++)
+		for(std::size_t i=0; i<2 && i<coplanarPoints.size(); i++)
 		{
 			sortedPoints.push_back(coplanarPoints[i]);
 		}
 
-		for(unsigned int i=2; i<coplanarPoints.size(); ++i)
+		for(std::size_t i=2; i<coplanarPoints.size(); ++i)
 		{
-			unsigned int newPointIndex = sortedPoints.size();
+			std::size_t newPointIndex = sortedPoints.size();
 			sortedPoints.push_back(coplanarPoints[i]);
 			while(newPointIndex>1)
 			{

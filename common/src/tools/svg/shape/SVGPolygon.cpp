@@ -1,13 +1,14 @@
 #include <map>
 #include <limits>
+#include <utility>
 
 #include "SVGPolygon.h"
 
 namespace urchin
 {
-    SVGPolygon::SVGPolygon(const std::vector<Point2<float>> &polygonPoints, SVGColor color, float opacity) :
+    SVGPolygon::SVGPolygon(std::vector<Point2<float>> polygonPoints, SVGColor color, float opacity) :
             SVGShape(color, opacity),
-            polygonPoints(polygonPoints)
+            polygonPoints(std::move(polygonPoints))
     {
         for(auto &polygonPoint : this->polygonPoints)
         { //SVG Y axis is up side down

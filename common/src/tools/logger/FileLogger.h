@@ -13,7 +13,7 @@ namespace urchin
 		public:
 			explicit FileLogger(std::string);
 
-			const std::string getFilename() const;
+			const std::string &getFilename() const;
 
 			std::string readAll() const;
 			void clearLogs();

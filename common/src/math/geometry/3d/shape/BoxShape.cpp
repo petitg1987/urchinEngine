@@ -26,7 +26,7 @@ namespace urchin
 		#endif
 	}
 
-	template<class T> const T BoxShape<T>::getHalfSize(unsigned int index) const
+	template<class T> T BoxShape<T>::getHalfSize(unsigned int index) const
 	{
 		return halfSizes[index];
 	}
@@ -36,7 +36,7 @@ namespace urchin
 		return halfSizes;
 	}
 
-	template<class T> const T BoxShape<T>::getMaxHalfSize() const
+	template<class T> T BoxShape<T>::getMaxHalfSize() const
 	{
 		return std::max(std::max(halfSizes[0], halfSizes[1]), halfSizes[2]);
 	}
@@ -57,7 +57,7 @@ namespace urchin
 		return 2;
 	}
 
-	template<class T> const T BoxShape<T>::getMinHalfSize() const
+	template<class T> T BoxShape<T>::getMinHalfSize() const
 	{
 		return std::min(std::min(halfSizes[0], halfSizes[1]), halfSizes[2]);
 	}

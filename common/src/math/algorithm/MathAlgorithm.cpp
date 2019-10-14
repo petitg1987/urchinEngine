@@ -1,6 +1,5 @@
 #include <cassert>
 #include <algorithm>
-#include <typeinfo>
 
 #include "math/algorithm/MathAlgorithm.h"
 
@@ -29,31 +28,21 @@ namespace urchin
 		return (1.0 - t) * v0 + t * v1;
 	}
 
-	int MathAlgorithm::nextPowerOfTwo(int val)
-	{
-		int valPow2=1;
-		while(valPow2 < val)
-		{
-			valPow2<<=1;
-		}
-		return valPow2;
-	}
-
 	unsigned int MathAlgorithm::powerOfTwo(unsigned int exponent)
 	{
 		return 1u << exponent;
 	}
 
-	int MathAlgorithm::pow(int base, int exp)
+	int MathAlgorithm::pow(int base, unsigned int exp)
 	{
 		int result = 1;
 		while (exp)
 		{
-			if (exp & 1)
+			if (exp & 1u)
 			{
 				result *= base;
 			}
-			exp >>= 1;
+			exp >>= 1u;
 			base *= base;
 		}
 

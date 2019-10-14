@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 
 #include "tools/file/PropertyFileHandler.h"
 #include "io/FileReaderUtil.h"
@@ -8,8 +9,8 @@
 namespace urchin
 {
 
-	PropertyFileHandler::PropertyFileHandler(const std::string &propertiesFilePath) :
-		propertiesFilePath(propertiesFilePath)
+	PropertyFileHandler::PropertyFileHandler(std::string propertiesFilePath) :
+		propertiesFilePath(std::move(propertiesFilePath))
 	{
 
 	}

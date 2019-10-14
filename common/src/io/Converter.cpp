@@ -1,5 +1,4 @@
 #include <iostream>
-#include <sstream>
 #include <limits>
 #include <cmath>
 
@@ -74,8 +73,8 @@ namespace urchin
 
 	long long Converter::toLongLong(float value, float scale)
 	{
-		const float minValue = std::numeric_limits<long long>::min() / scale;
-		const float maxValue = std::numeric_limits<long long>::max() / scale;
+		const float minValue = static_cast<float>(std::numeric_limits<long long>::min()) / scale;
+		const float maxValue = static_cast<float>(std::numeric_limits<long long>::max()) / scale;
 
 		if(value < 0.0)
 		{
@@ -97,7 +96,7 @@ namespace urchin
 
 	float Converter::toFloat(long long value, float scale)
 	{
-		return value / scale;
+		return static_cast<float>(value) / scale;
 	}
 
 	Point2<float> Converter::toPoint2(const std::string &str)

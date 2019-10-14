@@ -1,7 +1,5 @@
-#include <limits>
 #include <cmath>
 #include <cassert>
-#include <typeinfo>
 
 #include "math/geometry/2d/object/LineSegment2D.h"
 #include "math/algorithm/MathAlgorithm.h"

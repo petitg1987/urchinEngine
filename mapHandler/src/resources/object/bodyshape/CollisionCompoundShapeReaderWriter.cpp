@@ -13,7 +13,7 @@ namespace urchin
 		std::vector<std::shared_ptr<XmlChunk>> localizedShapesChunk = xmlParser.getChunks(LOCALIZED_SHAPE, XmlAttribute(), localizedShapesListChunk);
 
 		std::vector<std::shared_ptr<const LocalizedCollisionShape>> compoundShapes;
-		for(unsigned int i=0; i<localizedShapesChunk.size(); ++i)
+		for(std::size_t i=0; i<localizedShapesChunk.size(); ++i)
 		{
 			std::shared_ptr<LocalizedCollisionShape> localizedShape(new LocalizedCollisionShape());
 
@@ -51,7 +51,7 @@ namespace urchin
 		}
 	}
 
-	void CollisionCompoundShapeReaderWriter::loadTransformOn(std::shared_ptr<LocalizedCollisionShape> localizedShape, const std::shared_ptr<XmlChunk> &localizedShapeChunk, const XmlParser &xmlParser) const
+	void CollisionCompoundShapeReaderWriter::loadTransformOn(const std::shared_ptr<LocalizedCollisionShape>& localizedShape, const std::shared_ptr<XmlChunk> &localizedShapeChunk, const XmlParser &xmlParser) const
 	{
 		std::shared_ptr<XmlChunk> transformChunk = xmlParser.getUniqueChunk(true, TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 
@@ -63,7 +63,7 @@ namespace urchin
 		localizedShape->transform = PhysicsTransform(position, orientation);
 	}
 
-	void CollisionCompoundShapeReaderWriter::writeTransformOn(std::shared_ptr<XmlChunk> localizedShapeChunk, const std::shared_ptr<const LocalizedCollisionShape> &localizedShape, XmlWriter &xmlWriter) const
+	void CollisionCompoundShapeReaderWriter::writeTransformOn(const std::shared_ptr<XmlChunk>& localizedShapeChunk, const std::shared_ptr<const LocalizedCollisionShape> &localizedShape, XmlWriter &xmlWriter) const
 	{
 		std::shared_ptr<XmlChunk> transformChunk = xmlWriter.createChunk(TRANSFORM_TAG, XmlAttribute(), localizedShapeChunk);
 

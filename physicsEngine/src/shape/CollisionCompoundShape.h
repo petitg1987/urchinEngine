@@ -13,7 +13,7 @@ namespace urchin
 {
 	struct LocalizedCollisionShape
 	{
-		unsigned int position;
+        std::size_t position;
 
 		std::shared_ptr<const CollisionShape3D> shape;
 		PhysicsTransform transform;

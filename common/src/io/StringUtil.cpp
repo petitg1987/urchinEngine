@@ -55,7 +55,7 @@ namespace urchin
 			return false;
 		}
 
-		for (unsigned int i = 0; i < a.size(); ++i)
+		for (std::size_t i = 0; i < a.size(); ++i)
 		{
 		        if (tolower(a[i]) != tolower(b[i]))
 		        {

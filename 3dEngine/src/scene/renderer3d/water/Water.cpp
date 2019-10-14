@@ -19,13 +19,19 @@ namespace urchin
 {
 
     Water::Water() :
+            bufferIDs(),
+            vertexArrayObject(0),
             sumTimeStep(0.0f),
             xSize(0.0f),
             zSize(0.0f),
             normalTexture(nullptr),
             dudvMap(nullptr),
+            waveSpeed(0.0f),
+            waveStrength(0.0f),
             sRepeat(0.0f),
-            tRepeat(0.0f)
+            tRepeat(0.0f),
+            density(0.0f),
+            gradient(0.0f)
     {
         glGenBuffers(2, bufferIDs);
         glGenVertexArrays(1, &vertexArrayObject);
@@ -159,7 +165,7 @@ namespace urchin
         glUniform3fv(waterColorLoc, 1, (const float*) waterColor);
     }
 
-    const Vector3<float> Water::getWaterColor() const
+    const Vector3<float> &Water::getWaterColor() const
     {
         return waterColor;
     }

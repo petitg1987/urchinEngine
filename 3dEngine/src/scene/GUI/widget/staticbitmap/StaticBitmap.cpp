@@ -1,5 +1,7 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "scene/GUI/widget/staticbitmap/StaticBitmap.h"
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
@@ -7,9 +9,9 @@
 namespace urchin
 {
 	
-	StaticBitmap::StaticBitmap(Position position, Size size, const std::string &filename) :
+	StaticBitmap::StaticBitmap(Position position, Size size, std::string filename) :
 		Widget(position, size),
-		filename(filename),
+		filename(std::move(filename)),
 		tex(nullptr)
 	{
 		createOrUpdateWidget();

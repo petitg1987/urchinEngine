@@ -122,8 +122,8 @@ namespace urchin
     {
         vertices.reserve(computeNumberVertices());
 
-        float xStart = (-(xSize * xzScale) / 2.0) + (xzScale / 2.0);
-        float zStart = (-(zSize * xzScale) / 2.0) + (xzScale / 2.0);
+        float xStart = (-(static_cast<float>(xSize) * xzScale) / 2.0f) + (xzScale / 2.0f);
+        float zStart = (-(static_cast<float>(zSize) * xzScale) / 2.0f) + (xzScale / 2.0f);
 
         for(unsigned int z=0; z<zSize; ++z)
         {
@@ -133,11 +133,11 @@ namespace urchin
                 float elevation = 0.0f;
                 if(imgTerrain->getChannelPrecision()==Image::CHANNEL_8)
                 {
-                    elevation = imgTerrain->getTexels()[x + xSize * z] * yScale;
+                    elevation = static_cast<float>(imgTerrain->getTexels()[x + xSize * z]) * yScale;
                 }else if(imgTerrain->getChannelPrecision()==Image::CHANNEL_16)
                 {
                     constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
-                    elevation = imgTerrain->getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
+                    elevation = static_cast<float>(imgTerrain->getTexels16Bits()[x + xSize * z]) * scale16BitsTo8Bits * yScale;
                 }
 
                 float xFloat = xStart + static_cast<float>(x) * xzScale;
