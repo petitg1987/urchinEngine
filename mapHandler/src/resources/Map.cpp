@@ -10,7 +10,8 @@ namespace urchin
 			renderer3d(renderer3d),
 			physicsWorld(physicsWorld),
 			soundManager(soundManager),
-			aiManager(aiManager)
+			aiManager(aiManager),
+            sceneAI(nullptr)
 	{
 
 	}

@@ -1,5 +1,3 @@
-#include <utility>
-
 #include "SoundTriggerReaderWriter.h"
 #include "resources/sound/soundshape/SoundShapeReaderWriterRetriever.h"
 #include "resources/sound/soundshape/SoundShapeReaderWriter.h"

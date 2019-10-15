@@ -1,5 +1,3 @@
-#include <utility>
-
 #include "SoundReaderWriter.h"
 
 namespace urchin
@@ -30,7 +28,7 @@ namespace urchin
 		if(soundType == POINT_VALUE)
 		{
 			std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), soundChunk);
-			PointSound *pointSound = new PointSound(filename, positionChunk->getPoint3Value());
+			auto *pointSound = new PointSound(filename, positionChunk->getPoint3Value());
 
 			std::shared_ptr<XmlChunk> inaudibleDistanceChunk = xmlParser.getUniqueChunk(true, INAUDIBLE_DISTANCE_TAG, XmlAttribute(), soundChunk);
 			pointSound->setInaudibleDistance(inaudibleDistanceChunk->getFloatValue());

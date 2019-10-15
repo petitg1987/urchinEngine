@@ -1,4 +1,3 @@
-#include <utility>
 #include <vector>
 
 #include "ModelReaderWriter.h"
@@ -12,7 +11,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> meshChunk = xmlParser.getUniqueChunk(true, MESH_TAG, XmlAttribute(), modelChunk);
 		std::shared_ptr<XmlChunk> meshFilenameChunk = xmlParser.getUniqueChunk(true, FILENAME_TAG, XmlAttribute(), meshChunk);
 
-		Model *model = new Model(meshFilenameChunk->getStringValue());
+		auto *model = new Model(meshFilenameChunk->getStringValue());
 		loadAnimationsOn(model, modelChunk, xmlParser);
 		loadTransformOn(model, modelChunk, xmlParser);
 		loadFlagsOn(model, modelChunk, xmlParser);
@@ -56,15 +55,15 @@ namespace urchin
 		if(!animations.empty())
 		{
 			std::shared_ptr<XmlChunk> animationsListChunk = xmlWriter.createChunk(ANIMATIONS_TAG, XmlAttribute(), modelChunk);
-			for(std::map<std::string, const ConstAnimation *>::const_iterator it = animations.begin(); it!=animations.end(); ++it)
+			for(auto &animation : animations)
 			{
 				std::shared_ptr<XmlChunk> animationChunk = xmlWriter.createChunk(ANIMATION_TAG, XmlAttribute(), animationsListChunk);
 
 				std::shared_ptr<XmlChunk> animationNameChunk = xmlWriter.createChunk(NAME_TAG, XmlAttribute(), animationChunk);
 				std::shared_ptr<XmlChunk> animationFilenameChunk = xmlWriter.createChunk(FILENAME_TAG, XmlAttribute(), animationChunk);
 
-				animationNameChunk->setStringValue(it->first);
-				animationFilenameChunk->setStringValue(it->second->getAnimationFilename());
+				animationNameChunk->setStringValue(animation.first);
+				animationFilenameChunk->setStringValue(animation.second->getAnimationFilename());
 			}
 		}
 	}

@@ -1,5 +1,3 @@
-#include <utility>
-
 #include "OrientationReaderWriter.h"
 
 namespace urchin

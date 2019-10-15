@@ -27,10 +27,10 @@ namespace urchin
 		if(lightType == OMNIDIRECTIONAL_VALUE)
 		{
 			std::shared_ptr<XmlChunk> positionChunk = xmlParser.getUniqueChunk(true, POSITION_TAG, XmlAttribute(), lightChunk);
-			OmnidirectionalLight *omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
+			auto *omnidirectional = new OmnidirectionalLight(positionChunk->getPoint3Value());
 
-			std::shared_ptr<XmlChunk> expenentialAttenuationChunk = xmlParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
-			omnidirectional->setAttenuation(expenentialAttenuationChunk->getFloatValue());
+			std::shared_ptr<XmlChunk> exponentialAttenuationChunk = xmlParser.getUniqueChunk(true, EXPONENTIAL_ATTENUATION_TAG, XmlAttribute(), lightChunk);
+			omnidirectional->setAttenuation(exponentialAttenuationChunk->getFloatValue());
 
 			return omnidirectional;
 		}else if(lightType == SUN_VALUE)

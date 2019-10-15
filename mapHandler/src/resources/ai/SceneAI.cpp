@@ -25,9 +25,9 @@ namespace urchin
         return navMeshAgent;
     }
 
-    void SceneAI::changeNavMeshAgent(std::shared_ptr<NavMeshAgent> navMeshAgent)
+    void SceneAI::changeNavMeshAgent(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
     {
-        setNavMeshAgent(std::move(navMeshAgent));
+        setNavMeshAgent(navMeshAgent);
     }
 
     void SceneAI::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
@@ -44,7 +44,7 @@ namespace urchin
         NavMeshAgentWriter().writeOn(navMeshAgentChunk, navMeshAgent, xmlWriter);
     }
 
-    void SceneAI::setNavMeshAgent(const std::shared_ptr<NavMeshAgent>& navMeshAgent)
+    void SceneAI::setNavMeshAgent(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
     {
         this->navMeshAgent = navMeshAgent;
 

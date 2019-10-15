@@ -21,7 +21,7 @@ namespace urchin
             void setAIManager(AIManager *);
 
             std::shared_ptr<NavMeshAgent> getNavMeshAgent() const;
-            void changeNavMeshAgent(std::shared_ptr<NavMeshAgent>);
+            void changeNavMeshAgent(const std::shared_ptr<NavMeshAgent>&);
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);

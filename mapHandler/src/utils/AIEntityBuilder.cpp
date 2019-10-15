@@ -5,7 +5,7 @@
 
 namespace urchin
 {
-    std::shared_ptr<AIObject> AIEntityBuilder::buildAIObject(std::string name, const std::shared_ptr<const CollisionShape3D> &scaledShape, const Transform<float> &transform)
+    std::shared_ptr<AIObject> AIEntityBuilder::buildAIObject(const std::string& name, const std::shared_ptr<const CollisionShape3D> &scaledShape, const Transform<float> &transform)
     {
         Transform<float> unscaledTransform = transform;
         unscaledTransform.setScale(1.0); //scale not needed because shape is already scaled.
@@ -29,7 +29,7 @@ namespace urchin
         throw std::invalid_argument("Unknown shape type category: " + std::to_string(scaledShape->getShapeType()));
     }
 
-    std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(std::string name, const std::shared_ptr<const CollisionShape3D> &scaledShape, const Transform<float> &transform)
+    std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(const std::string& name, const std::shared_ptr<const CollisionShape3D> &scaledShape, const Transform<float> &transform)
     {
         Transform<float> unscaledTransform = transform;
         unscaledTransform.setScale(1.0); //scale not needed because shape is already scaled.
@@ -37,14 +37,14 @@ namespace urchin
         std::shared_ptr<const CollisionHeightfieldShape> scaledHeightfieldShape = std::dynamic_pointer_cast<const CollisionHeightfieldShape>(scaledShape);
         if(scaledHeightfieldShape)
         {
-            return buildAITerrain(std::move(name), scaledHeightfieldShape, unscaledTransform);
+            return buildAITerrain(name, scaledHeightfieldShape, unscaledTransform);
         }else
         {
             throw std::invalid_argument("Unknown terrain shape type: " + std::string(typeid(*scaledShape).name()));
         }
     }
 
-    std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(std::string name, const std::shared_ptr<const CollisionHeightfieldShape> &heightfieldShape, const Transform<float> &transform)
+    std::shared_ptr<AITerrain> AIEntityBuilder::buildAITerrain(const std::string& name, const std::shared_ptr<const CollisionHeightfieldShape> &heightfieldShape, const Transform<float> &transform)
     {
         return std::make_shared<AITerrain>(name, transform, false, heightfieldShape->getVertices(), heightfieldShape->getXLength(), heightfieldShape->getZLength());
     }

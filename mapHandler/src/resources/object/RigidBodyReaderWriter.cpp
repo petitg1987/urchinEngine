@@ -12,7 +12,7 @@ namespace urchin
 		std::shared_ptr<CollisionShapeReaderWriter> shapeReaderWriter = CollisionShapeReaderWriterRetriever::retrieveShapeReaderWriter(shapeChunk);
 		CollisionShape3D *bodyShape = shapeReaderWriter->loadFrom(shapeChunk, xmlParser);
 
-		RigidBody *rigidBody = new RigidBody(id, modelTransform, std::shared_ptr<const CollisionShape3D>(bodyShape));
+		auto *rigidBody = new RigidBody(id, modelTransform, std::shared_ptr<const CollisionShape3D>(bodyShape));
 		loadBodyPropertiesOn(rigidBody, physicsChunk, xmlParser);
 
 		return rigidBody;
