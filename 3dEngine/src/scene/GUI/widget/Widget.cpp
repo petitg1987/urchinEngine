@@ -117,10 +117,10 @@ namespace urchin
 	{
 		if(position.getPositionTypeX()==Position::PERCENTAGE)
 		{
-			return static_cast<unsigned int>(position.getPositionX() * sceneWidth);
+			return static_cast<int>(position.getPositionX() * (float)sceneWidth);
 		}
 
-		return static_cast<unsigned int>(position.getPositionX());
+		return static_cast<int>(position.getPositionX());
 	}
 
 	/**
@@ -130,10 +130,10 @@ namespace urchin
 	{
 		if(position.getPositionTypeY()==Position::PERCENTAGE)
 		{
-			return static_cast<unsigned int>(position.getPositionY() * sceneHeight);
+			return static_cast<int>(position.getPositionY() * (float)sceneHeight);
 		}
 
-		return static_cast<unsigned int>(position.getPositionY());
+		return static_cast<int>(position.getPositionY());
 	}
 
 	int Widget::getGlobalPositionX() const
@@ -170,7 +170,7 @@ namespace urchin
 	{
 		if(size.getWidthSizeType()==Size::PERCENTAGE)
 		{
-			return static_cast<unsigned int>(size.getWidth() * sceneWidth);
+			return static_cast<unsigned int>(size.getWidth() * (float)sceneWidth);
 		}
 		return static_cast<unsigned int>(size.getWidth());
 	}
@@ -179,7 +179,7 @@ namespace urchin
 	{
 		if(size.getHeightSizeType()==Size::PERCENTAGE)
 		{
-			return static_cast<unsigned int>(size.getHeight() * sceneHeight);
+			return static_cast<unsigned int>(size.getHeight() * (float)sceneHeight);
 		}
 		return static_cast<unsigned int>(size.getHeight());
 	}

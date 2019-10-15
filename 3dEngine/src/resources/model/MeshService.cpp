@@ -1,5 +1,4 @@
 #include <limits>
-#include <chrono>
 
 #include "resources/model/MeshService.h"
 #include "resources/model/ConstAnimation.h"
@@ -85,7 +84,7 @@ namespace urchin
 
     int MeshService::indexOfVertexInTriangle(const Triangle &triangle, unsigned int vertexIndex, const ConstMesh *const constMesh)
     {
-        for(unsigned int i=0; i<3; ++i)
+        for(int i=0; i<3; ++i)
         {
             auto triVertexIndex = static_cast<unsigned int>(triangle.index[i]);
 

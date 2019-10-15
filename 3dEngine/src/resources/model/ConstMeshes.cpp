@@ -1,4 +1,5 @@
 #include <limits>
+#include <utility>
 
 #include "resources/model/ConstMeshes.h"
 #include "resources/model/boundingbox/SplitBoundingBox.h"
@@ -6,8 +7,8 @@
 namespace urchin
 {
 
-	ConstMeshes::ConstMeshes(const std::string &meshFilename, const std::vector<const ConstMesh *> &constMeshes) :
-			meshFilename(meshFilename),
+	ConstMeshes::ConstMeshes(std::string meshFilename, const std::vector<const ConstMesh *> &constMeshes) :
+			meshFilename(std::move(meshFilename)),
 			constMeshes(constMeshes)
 	{
 		//determines the bounding box

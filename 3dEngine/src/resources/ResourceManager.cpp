@@ -18,9 +18,9 @@ namespace urchin
 		{
 			std::stringstream logStream;
 			logStream<<"Resources not released:"<<std::endl;
-			for (std::map<std::string, Resource *>::const_iterator i = mResources.begin(); i != mResources.end(); ++i)
+			for (auto &mResource : mResources)
 			{
-				logStream<< " - " << i->second->getName() << std::endl;
+				logStream<< " - " << mResource.second->getName() << std::endl;
 			}
 			Logger::logger().logError(logStream.str());
 		}

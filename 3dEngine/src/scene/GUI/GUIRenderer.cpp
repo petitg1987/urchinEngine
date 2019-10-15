@@ -25,7 +25,7 @@ namespace urchin
 
 	GUIRenderer::~GUIRenderer()
 	{
-		for(int i=widgets.size()-1;i>=0;--i)
+		for(long i=(long)widgets.size()-1; i>=0; --i)
 		{
 			delete widgets[i];
 		}
@@ -43,7 +43,7 @@ namespace urchin
 		glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
 		//widgets resize
-		for(int i=widgets.size()-1;i>=0;--i)
+		for(long i=(long)widgets.size()-1; i>=0; --i)
 		{
 			widgets[i]->onResize(width, height);
 		}
@@ -60,7 +60,7 @@ namespace urchin
                 widgets.push_back(widget);
 
                 //reset the other widgets
-                for(int i=widgets.size()-2;i>=0;--i)
+                for(long i=(long)widgets.size()-2; i>=0; --i)
                 {
                     if(widgets[i]->isVisible())
                     {
@@ -78,9 +78,9 @@ namespace urchin
 
 	bool GUIRenderer::onKeyDown(unsigned int key)
 	{
-		if(key<260)
+		if(key < 260)
 		{
-			for(int i=widgets.size()-1;i>=0;--i)
+			for(long i=(long)widgets.size()-1; i>=0; --i)
 			{
 				if(widgets[i]->isVisible() && !widgets[i]->onKeyDown(key))
 				{
@@ -93,9 +93,9 @@ namespace urchin
 
 	bool GUIRenderer::onKeyUp(unsigned int key)
 	{
-		if(key<260)
+		if(key < 260)
 		{
-			for(int i=widgets.size()-1;i>=0;--i)
+			for(long i=(long)widgets.size()-1; i>=0; --i)
 			{
 				if(widgets[i]->isVisible() && !widgets[i]->onKeyUp(key))
 				{
@@ -108,7 +108,7 @@ namespace urchin
 
 	bool GUIRenderer::onChar(unsigned int character)
 	{
-		for(int i=widgets.size()-1;i>=0;--i)
+		for(long i=(long)widgets.size()-1; i>=0; --i)
 		{
 			if(widgets[i]->isVisible() && !widgets[i]->onChar(character))
 			{
@@ -120,7 +120,7 @@ namespace urchin
 
 	bool GUIRenderer::onMouseMove(int mouseX, int mouseY)
 	{
-		for(int i=widgets.size()-1;i>=0;--i)
+		for(long i=(long)widgets.size()-1; i>=0; --i)
 		{
 			if(widgets[i]->isVisible() && !widgets[i]->onMouseMove(mouseX, mouseY))
 			{
@@ -132,7 +132,7 @@ namespace urchin
 
 	void GUIRenderer::onDisable()
 	{
-		for(int i=widgets.size()-1;i>=0;--i)
+		for(long i=(long)widgets.size()-1; i>=0; --i)
 		{
 			if(widgets[i]->isVisible())
 			{

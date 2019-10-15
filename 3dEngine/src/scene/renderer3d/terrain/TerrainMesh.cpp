@@ -122,25 +122,25 @@ namespace urchin
     {
         vertices.reserve(computeNumberVertices());
 
-        float xStart = (-(static_cast<float>(xSize) * xzScale) / 2.0f) + (xzScale / 2.0f);
-        float zStart = (-(static_cast<float>(zSize) * xzScale) / 2.0f) + (xzScale / 2.0f);
+        float xStart = (-((float)xSize * xzScale) / 2.0f) + (xzScale / 2.0f);
+        float zStart = (-((float)zSize * xzScale) / 2.0f) + (xzScale / 2.0f);
 
         for(unsigned int z=0; z<zSize; ++z)
         {
-            float zFloat = zStart + static_cast<float>(z) * xzScale;
+            float zFloat = zStart + (float)z * xzScale;
             for (unsigned int x = 0; x < xSize; ++x)
             {
                 float elevation = 0.0f;
                 if(imgTerrain->getChannelPrecision()==Image::CHANNEL_8)
                 {
-                    elevation = static_cast<float>(imgTerrain->getTexels()[x + xSize * z]) * yScale;
+                    elevation = (float)imgTerrain->getTexels()[x + xSize * z] * yScale;
                 }else if(imgTerrain->getChannelPrecision()==Image::CHANNEL_16)
                 {
                     constexpr float scale16BitsTo8Bits = 255.0f / 65535.0f;
-                    elevation = static_cast<float>(imgTerrain->getTexels16Bits()[x + xSize * z]) * scale16BitsTo8Bits * yScale;
+                    elevation = (float)imgTerrain->getTexels16Bits()[x + xSize * z] * scale16BitsTo8Bits * yScale;
                 }
 
-                float xFloat = xStart + static_cast<float>(x) * xzScale;
+                float xFloat = xStart + (float)x * xzScale;
                 vertices.emplace_back(Point3<float>(xFloat, elevation, zFloat));
             }
         }
@@ -247,7 +247,7 @@ namespace urchin
         triangleIndices.reserve(6);
 
         unsigned int rowNum = vertexIndex / xSize;
-        int squareIndex = vertexIndex - xSize - rowNum;
+        long squareIndex = vertexIndex - xSize - rowNum;
 
         bool isLeftBorderVertex = (vertexIndex % xSize) == 0;
         bool isRightBorderVertex = ((vertexIndex + 1) % xSize) == 0;
@@ -257,7 +257,7 @@ namespace urchin
         //above triangles to the vertex
         if(!isFirstRowVertex)
         {
-            int firstLeftTopTriangle = (squareIndex * 2) + 1;
+            long firstLeftTopTriangle = (squareIndex * 2) + 1;
 
             //left triangle
             if (!isLeftBorderVertex)
@@ -276,7 +276,7 @@ namespace urchin
         //below triangles to the vertex
         if(!isLastRowVertex)
         {
-            int firstLeftBottomTriangle = (squareIndex * 2) + (xSize - 1) * 2;
+            long firstLeftBottomTriangle = (squareIndex * 2) + (xSize - 1) * 2;
 
             //left triangles
             if (!isLeftBorderVertex)

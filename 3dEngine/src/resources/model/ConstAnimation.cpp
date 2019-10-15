@@ -1,4 +1,4 @@
-#include <limits>
+#include <utility>
 
 #include "resources/model/ConstAnimation.h"
 #include "resources/model/boundingbox/SplitBoundingBox.h"
@@ -6,9 +6,9 @@
 namespace urchin
 {
 	
-	ConstAnimation::ConstAnimation(const std::string &animationFilename, unsigned int numFrames, unsigned int numBones,
+	ConstAnimation::ConstAnimation(std::string animationFilename, unsigned int numFrames, unsigned int numBones,
 			unsigned int frameRate,	const Bone *const * skeletonFrames, const AABBox<float>*const * bboxes) :
-		animationFilename(animationFilename),
+		animationFilename(std::move(animationFilename)),
 		numFrames(numFrames),
 		numBones(numBones),
 		frameRate(frameRate),

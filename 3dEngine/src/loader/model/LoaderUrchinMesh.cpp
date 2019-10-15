@@ -1,6 +1,5 @@
 #include <locale>
 #include <stdexcept>
-#include <memory>
 #include "UrchinCommon.h"
 
 #include "loader/model/LoaderUrchinMesh.h"

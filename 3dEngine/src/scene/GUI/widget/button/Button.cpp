@@ -14,7 +14,8 @@ namespace urchin
 		: Widget(position, size),
 		  nameSkin(std::move(nameSkin)),
 		  text(nullptr),
-		  buttonText(std::move(buttonText))
+		  buttonText(std::move(buttonText)),
+          textureID(0)
 	{
 		createOrUpdateWidget();
 	}
@@ -39,7 +40,7 @@ namespace urchin
 			removeChild(text);
 			text = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
 			text->setText(buttonText);
-			text->setPosition(Position((getWidth() - text->getWidth())/2.0f, (getHeight() - text->getHeight())/2.0f, Position::PIXEL));
+			text->setPosition(Position((float)(getWidth() - text->getWidth()) / 2.0f, (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
 			addChild(text);
 		}
 

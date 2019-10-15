@@ -24,7 +24,7 @@ namespace urchin
 	class ConstAnimation : public Resource
 	{
 		public:
-			ConstAnimation(const std::string &, unsigned int, unsigned int, unsigned int, const Bone *const *, const AABBox<float> *const *);
+			ConstAnimation(std::string , unsigned int, unsigned int, unsigned int, const Bone *const *, const AABBox<float> *const *);
 			~ConstAnimation() override;
 			
 			const std::string &getAnimationFilename() const;

@@ -6,6 +6,7 @@
 namespace urchin
 {
     FogManager::FogManager() :
+            deferredShaderID(0),
             hasFogLoc(0),
             fogDensityLoc(0),
             fogGradientLoc(0),

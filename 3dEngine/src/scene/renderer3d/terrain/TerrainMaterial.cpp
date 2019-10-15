@@ -100,8 +100,8 @@ namespace urchin
         {
             for (unsigned int x = 0; x < xSize; ++x)
             {
-                float s = static_cast<float>(x) / static_cast<float>(xSize) * sRepeat;
-                float t = static_cast<float>(z) / static_cast<float>(zSize) * tRepeat;
+                float s = (float)x / (float)xSize * sRepeat;
+                float t = (float)z / (float)zSize * tRepeat;
 
                 texCoordinates.emplace_back(Point2<float>(s, t));
             }

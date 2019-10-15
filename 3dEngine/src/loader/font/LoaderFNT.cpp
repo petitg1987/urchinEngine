@@ -22,7 +22,7 @@ namespace urchin
 
         XmlParser parserXml(fontFilename);
         std::string ttfFilename = parserXml.getUniqueChunk(false, "ttf")->getStringValue();
-        int fontSize = parserXml.getUniqueChunk(false, "size")->getIntValue();
+        unsigned int fontSize = parserXml.getUniqueChunk(false, "size")->getUnsignedIntValue();
         Vector3<float> fontColor =  parserXml.getUniqueChunk(false, "color")->getVector3Value();
 
 		//initialize freetype
@@ -41,7 +41,7 @@ namespace urchin
 			throw std::runtime_error("The font file is an invalid format or doesn't exist, filename: " + fileFontPath + ", error id: " + std::to_string(error) + ".");
 		}
 
-		if (FT_Set_Char_Size(face, 0, fontSize << 6, 96, 96))
+		if (FT_Set_Char_Size(face, 0, fontSize << 6u, 96, 96))
 		{
 			FT_Done_Face(face);
 			FT_Done_FreeType(library);
@@ -100,7 +100,7 @@ namespace urchin
 			if(glyph[i].width > 0 && glyph[i].height > 0)
 			{
 				glyph[i].buf = new unsigned char[glyph[i].width * glyph[i].height];
-				for(int j=0;j<glyph[i].width * glyph[i].height;j++)
+				for(unsigned int j=0; j < (glyph[i].width * glyph[i].height); j++)
 				{
 					glyph[i].buf[j] = face->glyph->bitmap.buffer[j];
 				}
@@ -116,13 +116,13 @@ namespace urchin
 		{
 			height = std::max(height, (unsigned int)glyph[i].height);
 		}
-		auto spaceBetweenLines = static_cast<unsigned int>(height * WIDTH_BETWEEN_LINES_RATE);
+		auto spaceBetweenLines = static_cast<unsigned int>((float)height * WIDTH_BETWEEN_LINES_RATE);
 		auto spaceBetweenLetters = static_cast<unsigned int>(WIDTH_BETWEEN_LETTERS);
 		glyph[' '].width = (int)((float)glyph['A'].width * WIDTH_SPACE_RATE);
 
 		//dimension of letters and texture
-		int dimensionLetters=0;
-		for(int i=0;i<NUM_LETTERS;++i) //seek the largest letter
+		unsigned int dimensionLetters=0;
+		for(unsigned int i=0; i<NUM_LETTERS; ++i) //seek the largest letter
 		{
 			if(glyph[i].width > dimensionLetters)
 			{
@@ -141,9 +141,9 @@ namespace urchin
 		{
 			for(unsigned int j=0; j<dimensionTexture; j+=dimensionLetters,c++)
 			{
-				for(int yy=0,m=0; yy<glyph[c].height; yy++)
+				for(unsigned int yy=0,m=0; yy < glyph[c].height; yy++)
 				{
-					for(int xx=0; xx<glyph[c].width; xx++,m++)
+					for(unsigned int xx=0; xx < glyph[c].width; xx++,m++)
 					{
 						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 0] = (glyph[c].buf[m]>0) ? static_cast<int>(fontColor.X*255) : 0;
 						texels[ ((i+yy)*dimensionTexture*NUM_COLORS) + ((j+xx)*NUM_COLORS) + 1] = (glyph[c].buf[m]>0) ? static_cast<int>(fontColor.Y*255) : 0;

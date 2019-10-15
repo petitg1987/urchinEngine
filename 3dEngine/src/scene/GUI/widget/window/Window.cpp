@@ -14,6 +14,8 @@ namespace urchin
 		Widget(position, size),
 		nameSkin(std::move(nameSkin)),
 		stringTitle(std::move(stringTitle)),
+        mousePositionX(0),
+        mousePositionY(0),
 		state(DEFAULT),
 		title(nullptr),
 		widgetOutline(new WidgetOutline())
@@ -42,7 +44,7 @@ namespace urchin
 			Widget::removeChild(title);
 			title = new Text(Position(0, 0, Position::PIXEL), textFontChunk->getStringValue());
 			title->setText(stringTitle);
-			title->setPosition(Position(widgetOutline->leftWidth + 1, (widgetOutline->topWidth - title->getHeight())/2.0f, Position::PIXEL));
+			title->setPosition(Position((float)(widgetOutline->leftWidth) + 1.0f, (float)(widgetOutline->topWidth - title->getHeight()) / 2.0f, Position::PIXEL));
 			Widget::addChild(title);
 		}
 
@@ -55,7 +57,7 @@ namespace urchin
 
 	void Window::addChild(Widget *child)
 	{
-		Position childPosition(child->getPositionX()+widgetOutline->leftWidth, child->getPositionY()+widgetOutline->topWidth, Position::PIXEL);
+		Position childPosition((float)(child->getPositionX() + widgetOutline->leftWidth), (float)(child->getPositionY() + widgetOutline->topWidth), Position::PIXEL);
 		child->setPosition(childPosition);
 		Widget::addChild(child);
 	}
@@ -108,16 +110,16 @@ namespace urchin
 	{
 		if(state==MOVING)
 		{
-			float positionX = mouseX - mousePositionX;
+			auto positionX = (float)(mouseX - mousePositionX);
 			if(getPosition().getPositionTypeX() == Position::PERCENTAGE)
 			{
-				positionX /= getSceneWidth();
+				positionX /= (float)getSceneWidth();
 			}
 
-			float positionY = mouseY - mousePositionY;
+            auto positionY = (float)(mouseY - mousePositionY);
 			if(getPosition().getPositionTypeY() == Position::PERCENTAGE)
 			{
-				positionY /= getSceneHeight();
+				positionY /= (float)getSceneHeight();
 			}
 
 			setPosition(Position(positionX, getPosition().getPositionTypeX(), positionY, getPosition().getPositionTypeY()));

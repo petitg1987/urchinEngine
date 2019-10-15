@@ -127,13 +127,13 @@ namespace urchin
             std::default_random_engine generator(seed);
             std::uniform_real_distribution<float> distribution(-grassPositionRandomPercentage / grassQuantity, grassPositionRandomPercentage/grassQuantity);
 
-            auto grassXQuantity = static_cast<unsigned int>(mesh->getXZScale() * static_cast<float>(mesh->getXSize()) * grassQuantity);
-            auto grassZQuantity = static_cast<unsigned int>(mesh->getXZScale() * static_cast<float>(mesh->getZSize()) * grassQuantity);
+            auto grassXQuantity = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getXSize() * grassQuantity);
+            auto grassZQuantity = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getZSize() * grassQuantity);
 
-            auto patchQuantityX = static_cast<unsigned int>(mesh->getXZScale() * static_cast<float>(mesh->getXSize()) / grassPatchSize);
-            auto patchQuantityZ = static_cast<unsigned int>(mesh->getXZScale() * static_cast<float>(mesh->getZSize()) / grassPatchSize);
-            float adjustedPatchSizeX = mesh->getXZScale() * static_cast<float>(mesh->getXSize()) / patchQuantityX;
-            float adjustedPatchSizeZ = mesh->getXZScale() * static_cast<float>(mesh->getZSize()) / patchQuantityZ;
+            auto patchQuantityX = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getXSize() / grassPatchSize);
+            auto patchQuantityZ = static_cast<unsigned int>(mesh->getXZScale() * (float)mesh->getZSize() / grassPatchSize);
+            float adjustedPatchSizeX = mesh->getXZScale() * (float)mesh->getXSize() / patchQuantityX;
+            float adjustedPatchSizeZ = mesh->getXZScale() * (float)mesh->getZSize() / patchQuantityZ;
 
             std::vector<TerrainGrassQuadtree *> leafGrassPatches;
             leafGrassPatches.reserve(patchQuantityX * patchQuantityZ);
@@ -155,12 +155,12 @@ namespace urchin
                 {
                     for (unsigned int xIndex = beginX; xIndex < endX; ++xIndex)
                     {
-                        const float xFixedValue = startX + static_cast<float>(xIndex) / grassQuantity;
+                        const float xFixedValue = startX + (float)xIndex / grassQuantity;
 
                         for (unsigned int zIndex = 0; zIndex < grassZQuantity; ++zIndex)
                         {
                             float xValue = xFixedValue + distribution(generator);
-                            float zValue = (startZ + static_cast<float>(zIndex) / grassQuantity) + distribution(generator);
+                            float zValue = (startZ + (float)zIndex / grassQuantity) + distribution(generator);
                             unsigned int vertexIndex = retrieveVertexIndex(Point2<float>(xValue, zValue));
                             float yValue = (mesh->getVertices()[vertexIndex] + terrainPosition).Y;
 
@@ -222,8 +222,8 @@ namespace urchin
                 {
                     for (unsigned int childX = 0; childX < childrenNbQuadtreeX; ++childX)
                     {
-                        auto xQuadtreeIndex = static_cast<int>((depthNbQuadtreeX/static_cast<float>(childrenNbQuadtreeX)) * (static_cast<float>(childX) + 0.5f));
-                        auto zQuadtreeIndex = static_cast<int>((depthNbQuadtreeZ/static_cast<float>(childrenNbQuadtreeZ)) * (static_cast<float>(childZ) + 0.5f));
+                        auto xQuadtreeIndex = static_cast<int>((depthNbQuadtreeX / (float)childrenNbQuadtreeX) * ((float)childX + 0.5f));
+                        auto zQuadtreeIndex = static_cast<int>((depthNbQuadtreeZ / (float)childrenNbQuadtreeZ) * ((float)childZ + 0.5f));
 
                         unsigned int quadtreeIndex = (zQuadtreeIndex * depthNbQuadtreeX) + xQuadtreeIndex;
                         unsigned int childQuadtreeIndex = (childZ * childrenNbQuadtreeZ) + childX;

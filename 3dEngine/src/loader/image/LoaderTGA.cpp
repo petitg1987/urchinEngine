@@ -42,12 +42,12 @@ namespace urchin
 		//extracts color map (color map is stored in BGR format)
 		if(header.colormapType)
 		{
-			colorMap = new unsigned char[header.cmLength*(header.cmSize>>3)];
-			file.read((char *)colorMap, header.cmLength*(header.cmSize>>3));
+			colorMap = new unsigned char[header.cmLength*(header.cmSize >> 3u)];
+			file.read((char *)colorMap, header.cmLength*(header.cmSize >> 3u));
 		}
 
 		//memory allocation for rough pixel data
-		int lengthData = length - file.tellg();
+		long lengthData = length - file.tellg();
 		data = new unsigned char[lengthData];
 		file.read((char *)data, lengthData);
 
@@ -147,7 +147,7 @@ namespace urchin
 		delete [] data;
 		
 		
-		short origin = ((int)header.imageDescriptor & 0x20)>>5; //0:origin bottom, 1:origin top
+		short origin = ((int)header.imageDescriptor & 0x20) >> 5u; //0:origin bottom, 1:origin top
 		if(origin==0)
 		{ //inverses the texels
 			std::vector<unsigned char> texelsInverse(width*height*componentsCount, 0);
@@ -234,12 +234,12 @@ namespace urchin
 		for(unsigned int i=0, j=0;i<width*height;++i, j+=2)
 		{
 			//reads color word
-			color = data[j] + (data[j+1] << 8);
+			color = data[j] + (data[j+1] << 8u);
 
 			//converts BGR to RGB
-			texels[(i*3)+0] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
-			texels[(i*3)+1] = (unsigned char)(((color & 0x03E0) >>  5) << 3);
-			texels[(i*3)+2] = (unsigned char)(((color & 0x001F) >>  0) << 3);
+			texels[(i*3)+0] = (unsigned char)(((color & 0x7C00) >> 10u) << 3u);
+			texels[(i*3)+1] = (unsigned char)(((color & 0x03E0) >>  5u) << 3u);
+			texels[(i*3)+2] = (unsigned char)(((color & 0x001F) >>  0u) << 3u);
 		}
 	}
 
@@ -329,7 +329,7 @@ namespace urchin
 			if(packetHeader & 0x80)
 			{
 				//run-length packet
-				color = data[j] + (data[j + 1] << 8);
+				color = data[j] + (data[j + 1] << 8u);
 				j+=2;
 
 				for(int i=0; i<size; ++i,ptrIndex+=3)
@@ -343,7 +343,7 @@ namespace urchin
 				//non run-length packet
 				for(int i=0; i<size; ++i,ptrIndex+=3,j+=2)
 				{
-					color = data[j] + (data[j + 1] << 8);
+					color = data[j] + (data[j + 1] << 8u);
 
 					texels[ptrIndex] = (unsigned char)(((color & 0x7C00) >> 10) << 3);
 					texels[ptrIndex+1] = (unsigned char)(((color & 0x03E0) >> 5) << 3);

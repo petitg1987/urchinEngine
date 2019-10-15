@@ -31,7 +31,7 @@ namespace urchin
 			bool onCharEvent(unsigned int) override;
 			void reset() override;
 		
-			void refreshText(int);
+			void refreshText(unsigned int);
 			void computeCursorPosition();
 			void computeCursorIndex(int);
 
@@ -41,10 +41,10 @@ namespace urchin
 			//display informations
 			Text *text; //text of the text box (widget)
 			std::string allText; //text of the text box (string)
-			int maxWidthText; //maximum length of text can be displayed
-			int startTextIndex; //index of the first letter to display
-			int cursorIndex; //index of the cursor
-			int cursorPosition; //position (in pixel) of the cursor
+			unsigned int maxWidthText; //maximum length of text can be displayed
+			unsigned int startTextIndex; //index of the first letter to display
+			unsigned int cursorIndex; //index of the cursor
+			unsigned int cursorPosition; //position (in pixel) of the cursor
 			float cursorBlink;
 
 			//state

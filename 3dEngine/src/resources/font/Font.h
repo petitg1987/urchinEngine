@@ -11,8 +11,8 @@ namespace urchin
 
 	struct Glyph
 	{ //glyph is a letter
-		int width;
-		int height;
+		unsigned int width;
+		unsigned int height;
 		int shift;
 		unsigned char *buf;
 	};

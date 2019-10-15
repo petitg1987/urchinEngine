@@ -10,7 +10,7 @@
 #define ADDITIONAL_LEFT_BORDER 1 //Additional border to outline->leftWidth
 #define LETTER_SHIFT 5 //When the text box is full of text, we shift all letters to left
 #define LETTER_AND_CURSOR_SHIFT 2 //Define space between the letters and cursor
-#define CURSOR_BLINK_SPEED 1.75
+#define CURSOR_BLINK_SPEED 1.75f
 
 namespace urchin
 {
@@ -19,11 +19,16 @@ namespace urchin
 		Widget(position, size),
 		nameSkin(std::move(nameSkin)),
 		text(nullptr),
+        maxWidthText(0),
 		startTextIndex(0),
 		cursorIndex(0),
+        cursorPosition(0),
 		cursorBlink(0.0f),
 		state(UNACTIVE),
-		widgetOutline(new WidgetOutline())
+        textureID(0),
+		widgetOutline(new WidgetOutline()),
+        cursorLineBufferID(0),
+        cursorLineVAO(0)
 	{
 		glGenBuffers(1, &cursorLineBufferID);
 		glGenVertexArrays(1, &cursorLineVAO);
@@ -53,7 +58,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> textFontChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "textFont", XmlAttribute(), textBoxChunk);
 		removeChild(text);
 		text = new Text(Position(0, 0, Position::PIXEL),  textFontChunk->getStringValue());
-		text->setPosition(Position(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER, (getHeight() - text->getHeight())/2.0f, Position::PIXEL));
+		text->setPosition(Position((float)(widgetOutline->leftWidth + ADDITIONAL_LEFT_BORDER), (float)(getHeight() - text->getHeight()) / 2.0f, Position::PIXEL));
 		addChild(text);
 		maxWidthText = getWidth() - (widgetOutline->leftWidth + widgetOutline->rightWidth + ADDITIONAL_LEFT_BORDER);
 		refreshText(cursorIndex);
@@ -151,7 +156,7 @@ namespace urchin
 		Widget::reset();
 	}
 
-	void TextBox::refreshText(int newCursorIndex)
+	void TextBox::refreshText(unsigned int newCursorIndex)
 	{
 		//refresh cursor index
 		if(	(newCursorIndex > cursorIndex && cursorIndex < (int)allText.length()) ||
@@ -164,7 +169,7 @@ namespace urchin
 		computeCursorPosition();
 		if(cursorPosition > maxWidthText)
 		{
-			startTextIndex = (startTextIndex<=(int)allText.length()) ? startTextIndex+LETTER_SHIFT : (int)allText.length();
+			startTextIndex = (startTextIndex <= (int)allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
 		}else if(cursorIndex <= startTextIndex)
 		{
 			startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
@@ -173,17 +178,17 @@ namespace urchin
 
 		//determine the text to display
 		const Font *font = text->getFont();
-		int widthText=0, endTextIndex;
+		unsigned int widthText = 0, endTextIndex;
 		for(endTextIndex=startTextIndex; endTextIndex<(int)allText.length(); ++endTextIndex)
 		{
 			auto letter = static_cast<unsigned char>(allText[endTextIndex]);
 			widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-			if(widthText>maxWidthText)
+			if(widthText > maxWidthText)
 			{
 				break;
 			}
 		}
-		text->setText(allText.substr(static_cast<unsigned long>(startTextIndex), static_cast<unsigned long>(endTextIndex-startTextIndex)));
+		text->setText(allText.substr(static_cast<unsigned long>(startTextIndex), static_cast<unsigned long>(endTextIndex - startTextIndex)));
 	}
 
 	void TextBox::computeCursorPosition()
@@ -191,7 +196,7 @@ namespace urchin
 		const Font *font = text->getFont();
 		cursorPosition = ADDITIONAL_LEFT_BORDER;
 
-		for(int i=startTextIndex;i<cursorIndex;++i)
+		for(unsigned int i=startTextIndex;i<cursorIndex;++i)
 		{
 			auto letter = static_cast<unsigned char>(allText[i]);
 			cursorPosition += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
@@ -209,18 +214,18 @@ namespace urchin
 	void TextBox::computeCursorIndex(int approximateCursorPosition)
 	{
 		const Font *font = text->getFont();
-		float widthText=0.0;
+		float widthText = 0.0f;
 
-		for(cursorIndex=startTextIndex; cursorIndex<(int)allText.length(); ++cursorIndex)
+		for(cursorIndex=startTextIndex; cursorIndex < (int)allText.length(); ++cursorIndex)
 		{
 			auto letter = static_cast<unsigned char>(allText[cursorIndex]);
-			widthText += (float)font->getGlyph(letter).width/2.0f;
-			if(widthText > approximateCursorPosition)
+			widthText += (float)font->getGlyph(letter).width / 2.0f;
+			if(widthText > (float)approximateCursorPosition)
 			{
 				break;
 			}
 
-			widthText += (float)font->getGlyph(letter).width/2.0f + (float)font->getSpaceBetweenLetters();
+			widthText += (float)font->getGlyph(letter).width / 2.0f + (float)font->getSpaceBetweenLetters();
 		}
 
 		//compute the correct cursor position

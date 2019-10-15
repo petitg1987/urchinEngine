@@ -43,7 +43,7 @@ namespace urchin
 		}
 
 		//projection matrix
-		float fov = 1.0/std::tan((angle*PI_VALUE)/360.0);
+		float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
 		float ratio = (float)width/(float)height;
 		mProjection.setValues(
 			fov/ratio, 	0, 		0, 		0,
@@ -219,12 +219,12 @@ namespace urchin
         updateMatrix();
 	}
 
-	void Camera::onKeyDown(unsigned int key)
+	void Camera::onKeyDown(unsigned int)
 	{
 		//do nothing
 	}
 
-	void Camera::onKeyUp(unsigned int key)
+	void Camera::onKeyUp(unsigned int)
 	{
 		//do nothing
 	}
@@ -249,8 +249,8 @@ namespace urchin
 
             //vector that describes mousePosition - center
             Vector2<float> mouseDirection;
-            mouseDirection.X = (static_cast<int>(middleScreenX) - mouseX) * mouseSensitivity;
-            mouseDirection.Y = (static_cast<int>(middleScreenY) - mouseY) * mouseSensitivity;
+            mouseDirection.X = (float)(static_cast<int>(middleScreenX) - mouseX) * mouseSensitivity;
+            mouseDirection.Y = (float)(static_cast<int>(middleScreenY) - mouseY) * mouseSensitivity;
 
             //we don't want to rotate up/down more than "MaxRotationX" percent
             Vector3<float> axis = position.vector(view).normalize();

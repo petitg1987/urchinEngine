@@ -63,7 +63,7 @@ namespace urchin
 
 		rightButton = new Text(Position(0, 0, Position::PIXEL), buttonNameFont);
 		rightButton->setText(rightButtonString);
-		rightButton->setPosition(Position(static_cast<float>(getWidth()-rightButton->getWidth()), 0, Position::PIXEL));
+		rightButton->setPosition(Position((float)(getWidth()-rightButton->getWidth()), 0, Position::PIXEL));
 		rightButton->addEventListener(std::make_shared<ButtonSliderEventListener>(this, false));
 		if(rightButtonEventListener)
 		{
@@ -77,7 +77,7 @@ namespace urchin
 		{
 			Text *valueText = new Text(Position(0, 0, Position::PIXEL), valuesNameFont);
 			valueText->setText(values[i]);
-			valueText->setPosition(Position(static_cast<float>(getWidth()-valueText->getWidth())/2.0f, 0, Position::PIXEL));
+			valueText->setPosition(Position((float)(getWidth()-valueText->getWidth()) / 2.0f, 0, Position::PIXEL));
 			valueText->setIsVisible(false);
 
 			Widget::addChild(valueText);

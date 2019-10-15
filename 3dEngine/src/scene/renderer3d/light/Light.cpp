@@ -4,7 +4,7 @@ namespace urchin
 {
 
 	Light::Light() :
-			ambientColor(Point3<float>(0.0, 0.0, 0.0)),
+			ambientColor(Point3<float>(0.0f, 0.0f, 0.0f)),
 			produceShadow(false)
 	{
 

@@ -52,7 +52,7 @@ namespace urchin
 		textureData.resize(numLetters*8);
 		unsigned int vertexIndex = 0, stIndex = 0;
 		unsigned int width = 0;
-		int offsetY = 0;
+		unsigned int offsetY = 0;
 		for (auto &cutTextLine : cutTextLines)
 		{ //each lines
 			unsigned int offsetX = 0;
@@ -60,8 +60,8 @@ namespace urchin
 			{ //each letters
 				auto letter = static_cast<unsigned char>(charLetter);
 
-				float t = (float)((letter)>>4) / 16.0f;
-				float s = (float)((letter)%16) / 16.0f;
+				float t = (float)(letter >> 4u) / 16.0f;
+				float s = (float)(letter % 16) / 16.0f;
 
 				vertexData[vertexIndex++] = offsetX;
 				vertexData[vertexIndex++] = -font->getGlyph(letter).shift + offsetY;
@@ -74,12 +74,12 @@ namespace urchin
 
 				textureData[stIndex++] = s;
 				textureData[stIndex++] = t;
-				textureData[stIndex++] = s+((float)font->getGlyph(letter).width/font->getDimensionTexture());
+				textureData[stIndex++] = s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture());
 				textureData[stIndex++] = t;
-				textureData[stIndex++] = s+((float)font->getGlyph(letter).width/font->getDimensionTexture());
-				textureData[stIndex++] = t+((float)font->getGlyph(letter).height/font->getDimensionTexture());
+				textureData[stIndex++] = s+((float)font->getGlyph(letter).width / (float)font->getDimensionTexture());
+				textureData[stIndex++] = t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture());
 				textureData[stIndex++] = s;
-				textureData[stIndex++] = t+((float)font->getGlyph(letter).height/font->getDimensionTexture());
+				textureData[stIndex++] = t+((float)font->getGlyph(letter).height / (float)font->getDimensionTexture());
 
 				offsetX += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
 
@@ -93,7 +93,7 @@ namespace urchin
             cutTextLines.emplace_back("");
         }
 		unsigned int numberOfInterLines = cutTextLines.size() - 1;
-		setSize(Size(width, cutTextLines.size()*font->getHeight() + numberOfInterLines*font->getSpaceBetweenLines(), Size::SizeType::PIXEL));
+		setSize(Size((float)width, (float)(cutTextLines.size() * font->getHeight() + numberOfInterLines * font->getSpaceBetweenLines()), Size::SizeType::PIXEL));
 
 		quadDisplayerBuilder
 				->numberOfQuad(numLetters)
@@ -106,9 +106,9 @@ namespace urchin
 	{
 		std::string text(constText);
 
-		int lineLength = 0;
-		int indexLastSpace = 0;
-		int lengthFromLastSpace = 0;
+		unsigned int lineLength = 0;
+		unsigned int indexLastSpace = 0;
+		unsigned int lengthFromLastSpace = 0;
 
 		for(int numLetter=0; text[numLetter]!=0; numLetter++)
 		{ //each letters
@@ -118,14 +118,14 @@ namespace urchin
 			{
 				lineLength = 0;
 				lengthFromLastSpace = 0;
-			}else	if(letter==' ')
+			}else if(letter==' ')
 			{
 				indexLastSpace = numLetter;
 				lengthFromLastSpace = 0;
 			}
 
-			int lengthLetter = font->getGlyph(letter).width + font->getSpaceBetweenLetters();
-			if(lineLength+lengthLetter >= maxLength)
+			unsigned int lengthLetter = font->getGlyph(letter).width + font->getSpaceBetweenLetters();
+			if(lineLength + lengthLetter >= maxLength)
 			{ //cut line
 				text[indexLastSpace] = '\n';
 				lineLength = lengthFromLastSpace;
