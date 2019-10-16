@@ -45,7 +45,7 @@ namespace urchin
 
     void WaterTableView::addWater(const SceneWater *sceneWater)
     {
-        QStandardItem *itemWaterName = new QStandardItem(QString::fromStdString(sceneWater->getName()));
+        auto *itemWaterName = new QStandardItem(QString::fromStdString(sceneWater->getName()));
         itemWaterName->setData(qVariantFromValue(sceneWater), Qt::UserRole + 1);
         itemWaterName->setEditable(false);
 

@@ -12,15 +12,19 @@
 #include <QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QFileDialog>
+#include <utility>
 
 namespace urchin
 {
 
-	MapEditorWindow::MapEditorWindow(const std::string &mapEditorPath) :
-		mapEditorPath(mapEditorPath),
-		preferredMapPath("./"),
-		sceneDisplayerWidget(nullptr),
-		sceneControllerWidget(nullptr)
+	MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
+            saveAction(nullptr),
+            saveAsAction(nullptr),
+            closeAction(nullptr),
+            mapEditorPath(std::move(mapEditorPath)),
+            preferredMapPath("./"),
+            sceneDisplayerWidget(nullptr),
+            sceneControllerWidget(nullptr)
 	{
 		this->setAttribute(Qt::WA_DeleteOnClose);
 		this->setWindowTitle(WINDOW_TITLE);
@@ -44,14 +48,14 @@ namespace urchin
 	{
 		auto *menu = new QMenuBar(this);
 
-		QMenu* fileMenu = new QMenu("File");
+		auto *fileMenu = new QMenu("File");
 
-		QAction *newAction = new QAction("New...", this);
+        auto *newAction = new QAction("New...", this);
 		newAction->setShortcut(QKeySequence("Ctrl+N"));
 		fileMenu->addAction(newAction);
 		connect(newAction, SIGNAL(triggered()), this, SLOT(showNewDialog()));
 
-		QAction *openAction = new QAction("Open...", this);
+        auto *openAction = new QAction("Open...", this);
 		openAction->setShortcut(QKeySequence("Ctrl+O"));
 		fileMenu->addAction(openAction);
 		connect(openAction, SIGNAL(triggered()), this, SLOT(showOpenDialog()));
@@ -76,15 +80,15 @@ namespace urchin
 
 		fileMenu->addSeparator();
 
-		QAction *exitAction = new QAction("Exit", this);
+        auto *exitAction = new QAction("Exit", this);
 		fileMenu->addAction(exitAction);
 		connect(exitAction, SIGNAL(triggered()), this, SLOT(executeExitAction()));
 
-		QMenu *viewMenu = new QMenu("View");
+        auto *viewMenu = new QMenu("View");
 
-		QMenu *viewObjectMenu = new QMenu("Object");
+        auto *viewObjectMenu = new QMenu("Object");
 		viewMenu->addMenu(viewObjectMenu);
-		QAction *viewPhysicsShapeAction = new QAction("Physics Shape", this);
+        auto *viewPhysicsShapeAction = new QAction("Physics Shape", this);
 		viewPhysicsShapeAction->setEnabled(false);
 		viewPhysicsShapeAction->setCheckable(true);
 		viewPhysicsShapeAction->setChecked(true);
@@ -92,9 +96,9 @@ namespace urchin
 		viewActions[SceneDisplayer::MODEL_PHYSICS] = viewPhysicsShapeAction;
 		connect(viewPhysicsShapeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-		QMenu *viewLightMenu = new QMenu("Light");
+        auto *viewLightMenu = new QMenu("Light");
 		viewMenu->addMenu(viewLightMenu);
-		QAction *viewLightScopeAction = new QAction("Light Scope", this);
+        auto *viewLightScopeAction = new QAction("Light Scope", this);
 		viewLightScopeAction->setEnabled(false);
 		viewLightScopeAction->setCheckable(true);
 		viewLightScopeAction->setChecked(true);
@@ -102,9 +106,9 @@ namespace urchin
 		viewActions[SceneDisplayer::LIGHT_SCOPE] = viewLightScopeAction;
 		connect(viewLightScopeAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-		QMenu *viewSoundMenu = new QMenu("Sound");
+        auto *viewSoundMenu = new QMenu("Sound");
 		viewMenu->addMenu(viewSoundMenu);
-		QAction *viewSoundTriggerAction = new QAction("Sound Trigger", this);
+        auto *viewSoundTriggerAction = new QAction("Sound Trigger", this);
 		viewSoundTriggerAction->setEnabled(false);
 		viewSoundTriggerAction->setCheckable(true);
 		viewSoundTriggerAction->setChecked(true);
@@ -112,9 +116,9 @@ namespace urchin
 		viewActions[SceneDisplayer::SOUND_TRIGGER] = viewSoundTriggerAction;
 		connect(viewSoundTriggerAction, SIGNAL(triggered()), this, SLOT(executeViewPropertiesChangeAction()));
 
-		QMenu *viewAIMenu = new QMenu("AI");
+        auto *viewAIMenu = new QMenu("AI");
 		viewMenu->addMenu(viewAIMenu);
-		QAction *viewNavMeshAction = new QAction("Navigation Mesh", this);
+        auto *viewNavMeshAction = new QAction("Navigation Mesh", this);
 		viewNavMeshAction->setEnabled(false);
 		viewNavMeshAction->setCheckable(true);
 		viewNavMeshAction->setChecked(true);
@@ -352,7 +356,7 @@ namespace urchin
 		}
 	}
 
-	void MapEditorWindow::updateMapFilename(QString qMapFilename)
+	void MapEditorWindow::updateMapFilename(const QString& qMapFilename)
 	{
 		mapFilename = qMapFilename.toUtf8().constData();
 

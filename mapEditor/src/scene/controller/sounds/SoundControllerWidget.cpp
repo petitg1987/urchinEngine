@@ -15,7 +15,25 @@ namespace urchin
 
 	SoundControllerWidget::SoundControllerWidget() :
 			soundController(nullptr),
-			disableSoundEvent(false)
+            soundTableView(nullptr),
+            addSoundButton(nullptr),
+            removeSoundButton(nullptr),
+            soundPropertiesGroupBox(nullptr),
+            soundTriggerGroupBox(nullptr),
+            specificTriggerShapeGroupBox(nullptr),
+            specificPointSoundGroupBox(nullptr),
+			disableSoundEvent(false),
+            volume(nullptr),
+            soundType(nullptr),
+            positionX(nullptr), positionY(nullptr), positionZ(nullptr), inaudibleDistance(nullptr),
+            playBehavior(nullptr), stopBehavior(nullptr),
+            volumeDecreasePercentageOnStop(nullptr),
+            soundTriggerType(nullptr),
+            triggerShapeLayout(nullptr),
+            changeSoundTriggerTypeButton(nullptr),
+            soundShapeType(nullptr),
+            changeSoundShapeTypeButton(nullptr),
+            soundShapeWidget(nullptr)
 	{
 		auto *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignTop);
@@ -64,14 +82,14 @@ namespace urchin
 
 	void SoundControllerWidget::setupSoundGeneralPropertiesBox(QVBoxLayout *soundPropertiesLayout)
 	{
-		QGroupBox *generalGroupBox = new QGroupBox("General");
+        auto *generalGroupBox = new QGroupBox("General");
 		soundPropertiesLayout->addWidget(generalGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(generalGroupBox);
 
 		auto *generalPropertiesLayout = new QGridLayout(generalGroupBox);
 		generalPropertiesLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QLabel *volumeLabel= new QLabel("Volume:");
+        auto *volumeLabel= new QLabel("Volume:");
 		generalPropertiesLayout->addWidget(volumeLabel, 0, 0);
 
 		volume = new QDoubleSpinBox();
@@ -80,7 +98,7 @@ namespace urchin
 		volume->setMinimum(0.0);
 		connect(volume, SIGNAL(valueChanged(double)), this, SLOT(updateSoundGeneralProperties()));
 
-		QLabel *soundTypeLabel= new QLabel("Sound Type:");
+        auto *soundTypeLabel= new QLabel("Sound Type:");
 		generalPropertiesLayout->addWidget(soundTypeLabel, 1, 0);
 
 		soundType = new QLabel();
@@ -97,7 +115,7 @@ namespace urchin
 		auto *pointSoundLayout = new QGridLayout(specificPointSoundGroupBox);
 		pointSoundLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QLabel *positionLabel= new QLabel("Position:");
+        auto *positionLabel= new QLabel("Position:");
 		pointSoundLayout->addWidget(positionLabel, 0, 0);
 
 		auto *positionLayout = new QHBoxLayout();
@@ -115,7 +133,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 
-		QLabel *inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
+        auto *inaudibleDistanceLabel= new QLabel("Inaudible\nDistance:");
 		pointSoundLayout->addWidget(inaudibleDistanceLabel, 1, 0);
 
 		inaudibleDistance = new QDoubleSpinBox();
@@ -127,14 +145,14 @@ namespace urchin
 
 	void SoundControllerWidget::setupSoundBehaviorPropertiesBox(QVBoxLayout *soundTriggerLayout)
 	{
-		QGroupBox *soundBehaviorGroupBox = new QGroupBox("Sound Behavior");
+        auto *soundBehaviorGroupBox = new QGroupBox("Sound Behavior");
 		soundTriggerLayout->addWidget(soundBehaviorGroupBox);
 		GroupBoxStyleHelper::applyNormalStyle(soundBehaviorGroupBox);
 
 		auto *behaviorLayout = new QGridLayout(soundBehaviorGroupBox);
 		behaviorLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QLabel *playBehaviorLabel= new QLabel("Play Behavior:");
+        auto *playBehaviorLabel= new QLabel("Play Behavior:");
 		behaviorLayout->addWidget(playBehaviorLabel, 0, 0);
 
 		playBehavior = new QComboBox();
@@ -143,7 +161,7 @@ namespace urchin
 		playBehavior->addItem(PLAY_LOOP_LABEL, QVariant(SoundBehavior::PLAY_LOOP));
 		connect(playBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
 
-		QLabel *stopBehaviorLabel= new QLabel("Stop Behavior:");
+        auto *stopBehaviorLabel= new QLabel("Stop Behavior:");
 		behaviorLayout->addWidget(stopBehaviorLabel, 1, 0);
 
 		stopBehavior = new QComboBox();
@@ -152,7 +170,7 @@ namespace urchin
 		stopBehavior->addItem(SMOOTH_STOP_LABEL, QVariant(SoundBehavior::SMOOTH_STOP));
 		connect(stopBehavior, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSoundBehaviorProperties()));
 
-		QLabel *volumeDecreasePercentageOnStopLabel= new QLabel("Vol. Decrease (%)\nper second:");
+        auto *volumeDecreasePercentageOnStopLabel= new QLabel("Vol. Decrease (%)\nper second:");
 		behaviorLayout->addWidget(volumeDecreasePercentageOnStopLabel, 2, 0);
 
 		volumeDecreasePercentageOnStop = new QDoubleSpinBox();
@@ -160,7 +178,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyPercentageStyleOn(volumeDecreasePercentageOnStop);
 		connect(volumeDecreasePercentageOnStop, SIGNAL(valueChanged(double)), this, SLOT(updateSoundBehaviorProperties()));
 
-		QLabel *soundTriggerTypeLabel= new QLabel("Trigger:");
+        auto *soundTriggerTypeLabel= new QLabel("Trigger:");
 		behaviorLayout->addWidget(soundTriggerTypeLabel, 3, 0);
 
 		soundTriggerType = new QLabel();
@@ -186,7 +204,7 @@ namespace urchin
 		shapeTypeLayout->setSpacing(15);
 		triggerShapeLayout->addLayout(shapeTypeLayout);
 
-		QLabel *soundShapeTypeLabel= new QLabel("Shape:");
+        auto *soundShapeTypeLabel= new QLabel("Shape:");
 		shapeTypeLayout->addWidget(soundShapeTypeLabel);
 
 		soundShapeType = new QLabel();
@@ -392,7 +410,7 @@ namespace urchin
 		{
 			const SceneSound *sceneSound = soundTableView->getSelectedSceneSound();
 
-			float volume = this->volume->value();
+			auto volume = (float)this->volume->value();
 
 			soundController->updateSceneSoundGeneralProperties(sceneSound, volume);
 		}
@@ -411,7 +429,7 @@ namespace urchin
 			}else if(sound->getSoundType()==Sound::POINT)
 			{
 				Point3<float> position(positionX->value(), positionY->value(), positionY->value());
-				float inaudibleDistance = this->inaudibleDistance->value();
+				auto inaudibleDistance = (float)this->inaudibleDistance->value();
 
 				soundController->updateScenePointSoundProperties(sceneSound, position, inaudibleDistance);
 			}else
@@ -433,7 +451,7 @@ namespace urchin
 			QVariant stopVariant = stopBehavior->currentData();
 			auto stopBehavior = static_cast<SoundBehavior::StopBehavior>(stopVariant.toInt());
 
-			float volumeDecreasePercentageOnStop = this->volumeDecreasePercentageOnStop->value() / 100.0;
+			float volumeDecreasePercentageOnStop = (float)this->volumeDecreasePercentageOnStop->value() / 100.0f;
 
 			soundController->updateSceneSoundBehaviorProperties(sceneSound, playBehavior, stopBehavior, volumeDecreasePercentageOnStop);
 		}

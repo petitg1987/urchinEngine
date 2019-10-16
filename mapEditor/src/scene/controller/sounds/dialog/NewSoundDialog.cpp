@@ -15,9 +15,15 @@ namespace urchin
 	QString NewSoundDialog::preferredSoundPath = QString();
 
 	NewSoundDialog::NewSoundDialog(QWidget *parent, const SoundController *soundController) :
-		QDialog(parent),
-		soundController(soundController),
-		sceneSound(nullptr)
+		    QDialog(parent),
+		    soundController(soundController),
+            soundNameLabel(nullptr),
+            soundNameText(nullptr),
+            soundFilenameLabel(nullptr),
+            soundFilenameText(nullptr),
+            soundTypeLabel(nullptr),
+            soundTypeComboBox(nullptr),
+		    sceneSound(nullptr)
 	{
 		this->setWindowTitle("New Sound");
 		this->resize(530, 160);
@@ -59,7 +65,7 @@ namespace urchin
 		soundFilenameText->setReadOnly(true);
 		soundFilenameText->setFixedWidth(360);
 
-		QPushButton *selectMeshFileButton = new QPushButton("...");
+		auto *selectMeshFileButton = new QPushButton("...");
 		mainLayout->addWidget(selectMeshFileButton, 1, 2);
 		ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
 		selectMeshFileButton->setFixedWidth(22);

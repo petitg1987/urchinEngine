@@ -11,7 +11,7 @@ namespace urchin
 	class SoundTriggerDisplayer
 	{
 		public:
-			SoundTriggerDisplayer(SceneManager *);
+			explicit SoundTriggerDisplayer(SceneManager *);
 			~SoundTriggerDisplayer();
 
 			void displaySoundTriggerFor(const SceneSound *);

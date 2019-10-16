@@ -36,7 +36,7 @@ namespace urchin
 			soundShapeWidget = new SoundBoxShapeWidget(sceneSound);
 		}else
 		{
-			throw new std::invalid_argument("Unknown shape type to retrieve sound shape widget: " + shapeType);
+			throw std::invalid_argument("Unknown shape type to retrieve sound shape widget: " + std::to_string(shapeType));
 		}
 
 		return soundShapeWidget;

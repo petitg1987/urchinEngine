@@ -20,7 +20,7 @@ namespace urchin
 
 	}
 
-	BodyShapeWidget *BodyShapeWidgetRetriever::retrieveShapeWidget(std::shared_ptr<const CollisionShape3D> shape)
+	BodyShapeWidget *BodyShapeWidgetRetriever::retrieveShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape)
 	{
 		if(shape)
 		{
@@ -57,7 +57,7 @@ namespace urchin
 			bodyShapeWidget = new BodyCompoundShapeWidget(sceneObject);
 		}else
 		{
-			throw std::invalid_argument("Unknown shape type to retrieve body shape widget: " + shapeType);
+			throw std::invalid_argument("Unknown shape type to retrieve body shape widget: " + std::to_string(shapeType));
 		}
 
 		return bodyShapeWidget;

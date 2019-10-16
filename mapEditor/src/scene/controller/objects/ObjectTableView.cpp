@@ -65,7 +65,7 @@ namespace urchin
 
 	int ObjectTableView::addObject(const SceneObject *sceneObject)
 	{
-		QStandardItem *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
+		auto *itemObjectName = new QStandardItem(QString::fromStdString(sceneObject->getName()));
 		itemObjectName->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
 		itemObjectName->setEditable(false);
 
@@ -74,7 +74,7 @@ namespace urchin
 		{
 			pathFileName = sceneObject->getModel()->getMeshes()->getMeshFilename();
 		}
-		QStandardItem *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
+        auto *itemMeshFile = new QStandardItem(QString::fromStdString(FileHandler::getFileName(pathFileName)));
 		itemMeshFile->setToolTip(QString::fromStdString(pathFileName));
 		itemMeshFile->setData(qVariantFromValue(sceneObject), Qt::UserRole + 1);
 		itemMeshFile->setEditable(false);

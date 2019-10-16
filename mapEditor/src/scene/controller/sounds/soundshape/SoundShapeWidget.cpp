@@ -18,7 +18,7 @@ namespace urchin
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft | Qt::AlignmentFlag::AlignTop);
 		mainLayout->setContentsMargins(0, 0, 0, 0);
 
-		QLabel *marginLabel = new QLabel("Margin:");
+        auto *marginLabel = new QLabel("Margin:");
 		mainLayout->addWidget(marginLabel, 0, 0);
 
 		margin = new QDoubleSpinBox();
@@ -26,11 +26,6 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(margin);
 		margin->setMinimum(0.0);
 		connect(margin, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
-	}
-
-	SoundShapeWidget::~SoundShapeWidget()
-	{
-
 	}
 
 	const SceneSound *SoundShapeWidget::getSceneSound() const
@@ -70,6 +65,6 @@ namespace urchin
 
 	float SoundShapeWidget::getMarginValue() const
 	{
-		return margin->value();
+		return (float)margin->value();
 	}
 }

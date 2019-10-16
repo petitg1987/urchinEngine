@@ -11,7 +11,22 @@ namespace urchin
 
 	LightControllerWidget::LightControllerWidget() :
 			lightController(nullptr),
-			disableLightEvent(false)
+            generalPropertiesGroupBox(nullptr),
+            specificOmnidirectionalLightGroupBox(nullptr),
+            specificSunLightGroupBox(nullptr),
+            disableLightEvent(false),
+            ambientR(nullptr),
+            ambientG(nullptr),
+            ambientB(nullptr),
+            produceShadowCheckBox(nullptr),
+            lightType(nullptr),
+            positionX(nullptr),
+            positionY(nullptr),
+            positionZ(nullptr),
+            attenuation(nullptr),
+            directionX(nullptr),
+            directionY(nullptr),
+            directionZ(nullptr)
 	{
 		auto *mainLayout = new QVBoxLayout(this);
 		mainLayout->setAlignment(Qt::AlignTop);
@@ -52,7 +67,7 @@ namespace urchin
 
 		auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-		QLabel *ambientLabel= new QLabel("Ambient:");
+        auto *ambientLabel= new QLabel("Ambient:");
 		generalPropertiesLayout->addWidget(ambientLabel, 0, 0);
 
 		auto *ambientLayout = new QHBoxLayout();
@@ -80,7 +95,7 @@ namespace urchin
 		generalPropertiesLayout->addWidget(produceShadowCheckBox, 1, 0, 1, 2);
 		connect(produceShadowCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateLightGeneralProperties()));
 
-		QLabel *lightTypeLabel= new QLabel("Light Type:");
+        auto *lightTypeLabel= new QLabel("Light Type:");
 		generalPropertiesLayout->addWidget(lightTypeLabel, 2, 0);
 
 		lightType = new QLabel();
@@ -97,7 +112,7 @@ namespace urchin
 
 		auto *omniLightLayout = new QGridLayout(specificOmnidirectionalLightGroupBox);
 
-		QLabel *positionLabel= new QLabel("Position:");
+        auto *positionLabel= new QLabel("Position:");
 		omniLightLayout->addWidget(positionLabel, 0, 0);
 
 		auto *positionLayout = new QHBoxLayout();
@@ -115,7 +130,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 
-		QLabel *attenuationLabel= new QLabel("Expo. Att.:");
+        auto *attenuationLabel= new QLabel("Expo. Att.:");
 		omniLightLayout->addWidget(attenuationLabel, 1, 0);
 
 		attenuation = new QDoubleSpinBox();
@@ -136,7 +151,7 @@ namespace urchin
 
 		auto *sunLightLayout = new QGridLayout(specificSunLightGroupBox);
 
-		QLabel *directionLabel= new QLabel("Direction:");
+        auto *directionLabel= new QLabel("Direction:");
 		sunLightLayout->addWidget(directionLabel, 0, 0);
 
 		auto *directionLayout = new QHBoxLayout();
@@ -301,7 +316,7 @@ namespace urchin
 			if(light->getLightType()==Light::LightType::OMNIDIRECTIONAL)
 			{
 				Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
-				lightController->updateSceneOmnidirectionalLightProperties(sceneLight, attenuation->value(), position);
+				lightController->updateSceneOmnidirectionalLightProperties(sceneLight, (float)attenuation->value(), position);
 			}else if(light->getLightType()==Light::LightType::SUN)
 			{
 				Vector3<float> direction(directionX->value(), directionY->value(), directionZ->value());

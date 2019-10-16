@@ -1,5 +1,4 @@
 #include <memory>
-#include "UrchinCommon.h"
 
 #include "LightScopeDisplayer.h"
 

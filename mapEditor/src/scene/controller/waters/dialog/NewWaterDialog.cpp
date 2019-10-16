@@ -2,7 +2,6 @@
 #include <QMessageBox>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
-#include "UrchinCommon.h"
 
 #include "NewWaterDialog.h"
 #include "support/LabelStyleHelper.h"
@@ -12,6 +11,8 @@ namespace urchin
     NewWaterDialog::NewWaterDialog(QWidget *parent, const WaterController *waterController) :
             QDialog(parent),
             waterController(waterController),
+            waterNameLabel(nullptr),
+            waterNameText(nullptr),
             sceneWater(nullptr)
     {
         this->setWindowTitle("New Water");
@@ -111,9 +112,9 @@ namespace urchin
     bool NewWaterDialog::isSceneWaterExist(const std::string &name)
     {
         std::list<const SceneWater *> sceneWaters = waterController->getSceneWaters();
-        for(std::list<const SceneWater *>::const_iterator it = sceneWaters.begin(); it!=sceneWaters.end(); ++it)
+        for(auto &sceneWater : sceneWaters)
         {
-            if((*it)->getName() == name)
+            if(sceneWater->getName() == name)
             {
                 return true;
             }

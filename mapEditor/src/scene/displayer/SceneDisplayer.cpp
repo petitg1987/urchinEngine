@@ -20,6 +20,7 @@ namespace urchin
 		lightScopeDisplayer(nullptr),
 		soundTriggerDisplayer(nullptr),
 		navMeshDisplayer(nullptr),
+        viewProperties(),
 		highlightSceneObject(nullptr),
 		highlightSceneLight(nullptr),
 		highlightSceneSound(nullptr)

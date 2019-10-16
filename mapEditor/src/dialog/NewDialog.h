@@ -14,7 +14,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			NewDialog(QWidget *parent=0);
+			explicit NewDialog(QWidget *parent = nullptr);
 
 			std::string getFilename() const;
 			std::string getRelativeWorkingDirectory() const;
@@ -27,7 +27,7 @@ namespace urchin
 			void updateMapFilename();
 			void updateRelativeWorkingDirectory();
 
-			void done(int);
+			void done(int) override;
 
 			QLabel *mapNameLabel;
 			QLineEdit *mapNameText;

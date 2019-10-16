@@ -31,9 +31,9 @@ namespace urchin
 			bool hasLocalizedShapeSelected() const;
 			std::shared_ptr<const LocalizedCollisionShape> getSelectedLocalizedShape() const;
 			std::vector<std::shared_ptr<const LocalizedCollisionShape>> getLocalizedShapes() const;
-			void updateSelectedLocalizedShape(std::shared_ptr<const LocalizedCollisionShape>);
+			void updateSelectedLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>&);
 
-			int addLocalizedShape(std::shared_ptr<const LocalizedCollisionShape>);
+			int addLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>&);
 			bool removeSelectedLocalizedShape();
 			void selectLocalizedShape(int);
 
@@ -43,7 +43,7 @@ namespace urchin
 
 			void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
-			void addLocalizedShapeInMap(std::shared_ptr<const LocalizedCollisionShape>);
+			void addLocalizedShapeInMap(const std::shared_ptr<const LocalizedCollisionShape>&);
 			void removeSelectedLocalizedShapeFromMap();
 	};
 

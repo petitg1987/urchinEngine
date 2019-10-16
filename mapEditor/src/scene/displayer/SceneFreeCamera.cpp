@@ -14,7 +14,7 @@ namespace urchin
 
 	void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
 	{
-		QPoint point(x, y);
+		QPoint point((int)x, (int)y);
 		QCursor::setPos(parentWidget->mapToGlobal(point));
 	}
 

@@ -19,7 +19,7 @@ namespace urchin
 		#define WINDOW_TITLE "Urchin - Map Editor"
 
 		public:
-			explicit MapEditorWindow(const std::string &);
+			explicit MapEditorWindow(std::string );
             ~MapEditorWindow() override = default;
 
 		protected:
@@ -33,7 +33,7 @@ namespace urchin
 
 			bool checkCurrentMapSaved();
 			void updateMenuStatus();
-			void updateMapFilename(QString);
+			void updateMapFilename(const QString&);
 
 			void notify(Observable *, int) override;
 			void handleCompoundShapeSelectionChange(Observable *, int);

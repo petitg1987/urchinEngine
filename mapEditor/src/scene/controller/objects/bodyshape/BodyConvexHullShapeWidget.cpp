@@ -76,7 +76,7 @@ namespace urchin
 			auto scaledShape = std::make_shared<const CollisionConvexHullShape>(getPoints());
 
 			//test construction of original shape because can throw an exception due to imprecision of float
-			float invScale = 1.0 / getSceneObject()->getModel()->getTransform().getScale();
+			float invScale = 1.0f / getSceneObject()->getModel()->getTransform().getScale();
 			scaledShape->scale(invScale);
 
 			return scaledShape;

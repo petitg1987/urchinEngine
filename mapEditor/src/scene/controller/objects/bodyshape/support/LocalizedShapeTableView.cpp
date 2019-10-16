@@ -37,7 +37,7 @@ namespace urchin
 		{
 			QModelIndex selectedIndex = this->currentIndex();
 
-			const LocalizedCollisionShape *selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
+			const auto *selectLocalizedShape = selectedIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
 			return localizedShapesMap.at(selectLocalizedShape);
 		}
 		return std::shared_ptr<const LocalizedCollisionShape>(nullptr);
@@ -50,14 +50,14 @@ namespace urchin
 		{
 			QModelIndex shapeIndex = localizedShapesTableModel->index(row, 0);
 
-			const LocalizedCollisionShape *localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
+			const auto *localizedCollisionShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
 			localizedCollisionShapes.push_back(localizedShapesMap.at(localizedCollisionShape));
 		}
 
 		return localizedCollisionShapes;
 	}
 
-	void LocalizedShapeTableView::updateSelectedLocalizedShape(std::shared_ptr<const LocalizedCollisionShape> newLocalizedShape)
+	void LocalizedShapeTableView::updateSelectedLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>& newLocalizedShape)
 	{
 		if(hasLocalizedShapeSelected())
 		{
@@ -70,13 +70,13 @@ namespace urchin
 		}
 	}
 
-	int LocalizedShapeTableView::addLocalizedShape(std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	int LocalizedShapeTableView::addLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
 		BodyShapeWidget *bodyShapeWidget = BodyShapeWidgetRetriever(nullptr).retrieveShapeWidget(localizedShape->shape->getShapeType());
 		std::string shapeTypeString = bodyShapeWidget->getBodyShapeName();
 		delete bodyShapeWidget;
 
-		QStandardItem *itemShape = new QStandardItem(QString::fromStdString(shapeTypeString));
+		auto *itemShape = new QStandardItem(QString::fromStdString(shapeTypeString));
 		addLocalizedShapeInMap(localizedShape);
 		itemShape->setData(qVariantFromValue(localizedShape.get()), Qt::UserRole + 1);
 		itemShape->setEditable(false);
@@ -115,7 +115,7 @@ namespace urchin
 		}
 	}
 
-	void LocalizedShapeTableView::addLocalizedShapeInMap(std::shared_ptr<const LocalizedCollisionShape> localizedShape)
+	void LocalizedShapeTableView::addLocalizedShapeInMap(const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
 		//allow to keep pointer alive when it's stored in a QVariant
 		localizedShapesMap[localizedShape.get()] = localizedShape;
@@ -126,7 +126,7 @@ namespace urchin
 		if(hasLocalizedShapeSelected())
 		{
 			QModelIndex shapeIndex = localizedShapesTableModel->index(this->currentIndex().row(), 0);
-			const LocalizedCollisionShape *localizedShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
+			const auto *localizedShape = shapeIndex.data(Qt::UserRole + 1).value<const LocalizedCollisionShape *>();
 
 			localizedShapesMap.erase(localizedShape);
 		}

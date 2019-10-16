@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <utility>
 
 #include "BodyShapeWidget.h"
 
@@ -34,7 +35,7 @@ namespace urchin
 	{
 		disableShapeEvent = true;
 
-		doSetupShapePropertiesFrom(shape);
+		doSetupShapePropertiesFrom(std::move(shape));
 
 		disableShapeEvent = false;
 	}

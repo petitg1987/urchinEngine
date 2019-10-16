@@ -2,7 +2,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 
-#include "UrchinCommon.h"
 #include "NotSavedDialog.h"
 
 namespace urchin
@@ -16,10 +15,10 @@ namespace urchin
 		this->resize(300, 120);
 		this->setFixedSize(this->width(),this->height());
 
-		QGridLayout *mainLayout = new QGridLayout(this);
+		auto *mainLayout = new QGridLayout(this);
 		mainLayout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		QLabel *saveMapLabel = new QLabel("A map is currently open but not saved.\n"
+        auto *saveMapLabel = new QLabel("A map is currently open but not saved.\n"
 				"Would you like to save it ?");
 		mainLayout->addWidget(saveMapLabel, 0, 0);
 

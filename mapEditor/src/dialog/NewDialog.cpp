@@ -11,7 +11,14 @@ namespace urchin
 {
 
 	NewDialog::NewDialog(QWidget *parent) :
-		QDialog(parent)
+		QDialog(parent),
+        mapNameLabel(nullptr),
+        mapNameText(nullptr),
+        mapDirectoryLabel(nullptr),
+        mapDirectoryText(nullptr),
+        mapWorkingDirectoryLabel(nullptr),
+        mapWorkingDirectoryText(nullptr),
+        mapRelWorkingDirectoryText(nullptr)
 	{
 		this->setWindowTitle("New Map File");
 		this->resize(530, 195);
@@ -53,7 +60,7 @@ namespace urchin
 		mapDirectoryText->setReadOnly(true);
 		mapDirectoryText->setFixedWidth(360);
 
-		QPushButton *selectMapDirButton = new QPushButton("...");
+		auto *selectMapDirButton = new QPushButton("...");
 		mainLayout->addWidget(selectMapDirButton, 1, 2);
 		ButtonStyleHelper::applyNormalStyle(selectMapDirButton);
 		selectMapDirButton->setFixedWidth(22);
@@ -70,14 +77,14 @@ namespace urchin
 		mapWorkingDirectoryText->setReadOnly(true);
 		mapWorkingDirectoryText->setFixedWidth(360);
 
-		QPushButton *selectMapWorkingDirButton = new QPushButton("...");
+		auto *selectMapWorkingDirButton = new QPushButton("...");
 		mainLayout->addWidget(selectMapWorkingDirButton, 2, 2);
 		ButtonStyleHelper::applyNormalStyle(selectMapWorkingDirButton);
 		selectMapWorkingDirButton->setFixedWidth(22);
 		connect(selectMapWorkingDirButton, SIGNAL(clicked()), this, SLOT(showMapWorkingDirectoryDialog()));
 
 		//relative working directory
-		QLabel *mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:");
+		auto *mapRelWorkingDirectoryLabel = new QLabel("Relative Working Dir.:");
 		mainLayout->addWidget(mapRelWorkingDirectoryLabel, 3, 0);
 
 		mapRelWorkingDirectoryText = new QLabel();

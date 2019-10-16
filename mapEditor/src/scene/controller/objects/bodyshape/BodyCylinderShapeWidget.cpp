@@ -9,7 +9,7 @@ namespace urchin
 	BodyCylinderShapeWidget::BodyCylinderShapeWidget(const SceneObject *sceneObject) :
 			BodyShapeWidget(sceneObject)
 	{
-		QLabel *radiusLabel = new QLabel("Radius:");
+        auto *radiusLabel = new QLabel("Radius:");
 		mainLayout->addWidget(radiusLabel, 0, 0);
 
 		radius = new QDoubleSpinBox();
@@ -18,7 +18,7 @@ namespace urchin
 		radius->setMinimum(0.0);
 		connect(radius, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *heightLabel = new QLabel("Height:");
+        auto *heightLabel = new QLabel("Height:");
 		mainLayout->addWidget(heightLabel, 1, 0);
 
 		height = new QDoubleSpinBox();
@@ -27,7 +27,7 @@ namespace urchin
 		height->setMinimum(0.0);
 		connect(height, SIGNAL(valueChanged(double)), this, SLOT(updateBodyShape()));
 
-		QLabel *orientationLabel = new QLabel("Orientation:");
+        auto *orientationLabel = new QLabel("Orientation:");
 		mainLayout->addWidget(orientationLabel, 2, 0);
 
 		orientation = new QComboBox();
@@ -45,7 +45,7 @@ namespace urchin
 
 	void BodyCylinderShapeWidget::doSetupShapePropertiesFrom(std::shared_ptr<const CollisionShape3D> shape)
 	{
-		const CollisionCylinderShape *cylinderShape = static_cast<const CollisionCylinderShape *>(shape.get());
+		const auto *cylinderShape = dynamic_cast<const CollisionCylinderShape *>(shape.get());
 
 		radius->setValue(cylinderShape->getRadius());
 		height->setValue(cylinderShape->getHeight());
@@ -60,7 +60,7 @@ namespace urchin
 	std::shared_ptr<const CollisionShape3D> BodyCylinderShapeWidget::createBodyShape() const
 	{
 		QVariant variant = orientation->currentData();
-		CylinderShape<float>::CylinderOrientation orientation = static_cast<CylinderShape<float>::CylinderOrientation>(variant.toInt());
+		auto orientation = static_cast<CylinderShape<float>::CylinderOrientation>(variant.toInt());
 
 		return std::make_shared<const CollisionCylinderShape>(radius->value(), height->value(), orientation);
 	}

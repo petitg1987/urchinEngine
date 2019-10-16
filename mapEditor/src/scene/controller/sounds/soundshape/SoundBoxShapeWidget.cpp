@@ -11,10 +11,10 @@ namespace urchin
 	SoundBoxShapeWidget::SoundBoxShapeWidget(const SceneSound *sceneSound) :
 			SoundShapeWidget(sceneSound)
 	{
-		QLabel *positionLabel = new QLabel("Position:");
+		auto *positionLabel = new QLabel("Position:");
 		mainLayout->addWidget(positionLabel, 1, 0);
 
-		QHBoxLayout *positionLayout = new QHBoxLayout();
+        auto *positionLayout = new QHBoxLayout();
 		mainLayout->addLayout(positionLayout, 1, 1);
 		positionX = new QDoubleSpinBox();
 		positionLayout->addWidget(positionX);
@@ -29,10 +29,10 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
 		connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-		QLabel *halfSizesLabel = new QLabel("Half Sizes:");
+        auto *halfSizesLabel = new QLabel("Half Sizes:");
 		mainLayout->addWidget(halfSizesLabel, 2, 0);
 
-		QHBoxLayout *halfSizeLayout = new QHBoxLayout();
+        auto *halfSizeLayout = new QHBoxLayout();
 		mainLayout->addLayout(halfSizeLayout, 2, 1);
 		halfSizeX = new QDoubleSpinBox();
 		halfSizeLayout->addWidget(halfSizeX);
@@ -47,7 +47,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyDefaultStyleOn(halfSizeZ);
 		connect(halfSizeZ, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 
-		QLabel *orientationTypeLabel = new QLabel("Orient. Type:");
+        auto *orientationTypeLabel = new QLabel("Orient. Type:");
 		mainLayout->addWidget(orientationTypeLabel, 3, 0);
 
 		orientationType = new QComboBox();
@@ -55,10 +55,10 @@ namespace urchin
 		ComboBoxStyleHelper::applyOrientationStyleOn(orientationType);
 		connect(orientationType, SIGNAL(currentIndexChanged(int)), this, SLOT(updateShapeOrientationType()));
 
-		QLabel *eulerAngleLabel = new QLabel("Euler Angle:");
+        auto *eulerAngleLabel = new QLabel("Euler Angle:");
 		mainLayout->addWidget(eulerAngleLabel, 4, 0);
 
-		QHBoxLayout *eulerAxisLayout = new QHBoxLayout();
+        auto *eulerAxisLayout = new QHBoxLayout();
 		mainLayout->addLayout(eulerAxisLayout, 4, 1);
 		eulerAxis0 = new QDoubleSpinBox();
 		eulerAxisLayout->addWidget(eulerAxis0);
@@ -74,11 +74,6 @@ namespace urchin
 		connect(eulerAxis2, SIGNAL(valueChanged(double)), this, SLOT(updateSoundShape()));
 	}
 
-	SoundBoxShapeWidget::~SoundBoxShapeWidget()
-	{
-
-	}
-
 	std::string SoundBoxShapeWidget::getSoundShapeName() const
 	{
 		return BOX_SHAPE_LABEL;
@@ -86,7 +81,7 @@ namespace urchin
 
 	void SoundBoxShapeWidget::doSetupShapePropertiesFrom(const SoundShape *shape)
 	{
-		const SoundBox *boxShape = static_cast<const SoundBox *>(shape);
+		const auto *boxShape = dynamic_cast<const SoundBox *>(shape);
 
 		positionX->setValue(boxShape->getCenterPosition().X);
 		positionY->setValue(boxShape->getCenterPosition().Y);
@@ -106,10 +101,10 @@ namespace urchin
 	{
 		if(!disableShapeEvent)
 		{
-			const SoundBox *boxShape = static_cast<const SoundBox *>(retrieveShape());
+			const auto *boxShape = dynamic_cast<const SoundBox *>(retrieveShape());
 
 			QVariant variant = orientationType->currentData();
-			Quaternion<float>::RotationSequence newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+			auto newRotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 			Vector3<float> eulerAngle = boxShape->getOrientation().toEulerAngle(newRotationSequence);
 
 			eulerAxis0->setValue(AngleConverter<float>::toDegree(eulerAngle.X));
@@ -132,7 +127,7 @@ namespace urchin
 			AngleConverter<float>::toRadian(eulerAxis2->value())
 		);
 		QVariant variant = orientationType->currentData();
-		Quaternion<float>::RotationSequence rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
+		auto rotationSequence = static_cast<Quaternion<float>::RotationSequence>(variant.toInt());
 		Quaternion<float> orientation(eulerAngle, rotationSequence);
 
 		return new SoundBox(halfSizes, position, orientation, getMarginValue());

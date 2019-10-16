@@ -57,7 +57,7 @@ namespace urchin
 			void setupObjectDataFrom(const SceneObject *);
 			void setupObjectPhysicsDataFrom(const SceneObject *);
 
-			BodyShapeWidget *retrieveBodyShapeWidget(std::shared_ptr<const CollisionShape3D>, const SceneObject *);
+			BodyShapeWidget *retrieveBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject *);
 
 			ObjectController *objectController;
 

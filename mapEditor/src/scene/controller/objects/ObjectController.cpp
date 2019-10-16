@@ -163,7 +163,7 @@ namespace urchin
 		return sceneObject;
 	}
 
-	const SceneObject *ObjectController::updateSceneObjectPhysicsShape(const SceneObject *constSceneObject, std::shared_ptr<const CollisionShape3D> newCollisionShape)
+	const SceneObject *ObjectController::updateSceneObjectPhysicsShape(const SceneObject *constSceneObject, const std::shared_ptr<const CollisionShape3D>& newCollisionShape)
 	{
 		SceneObject *sceneObject = findSceneObject(constSceneObject);
 		RigidBody *rigidBody = sceneObject->getRigidBody();

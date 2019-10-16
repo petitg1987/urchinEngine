@@ -16,6 +16,10 @@ namespace urchin
     NewTerrainDialog::NewTerrainDialog(QWidget *parent, const TerrainController *terrainController) :
             QDialog(parent),
             terrainController(terrainController),
+            terrainNameLabel(nullptr),
+            terrainNameText(nullptr),
+            heightFilenameLabel(nullptr),
+            heightFilenameText(nullptr),
             sceneTerrain(nullptr)
     {
         this->setWindowTitle("New Terrain");
@@ -57,7 +61,7 @@ namespace urchin
         heightFilenameText->setReadOnly(true);
         heightFilenameText->setFixedWidth(360);
 
-        QPushButton *selectHeightFileButton = new QPushButton("...");
+        auto *selectHeightFileButton = new QPushButton("...");
         mainLayout->addWidget(selectHeightFileButton, 1, 2);
         ButtonStyleHelper::applyNormalStyle(selectHeightFileButton);
         selectHeightFileButton->setFixedWidth(22);
@@ -159,9 +163,9 @@ namespace urchin
     bool NewTerrainDialog::isSceneTerrainExist(const std::string &name)
     {
         std::list<const SceneTerrain *> sceneTerrains = terrainController->getSceneTerrains();
-        for(std::list<const SceneTerrain *>::const_iterator it = sceneTerrains.begin(); it!=sceneTerrains.end(); ++it)
+        for(auto &sceneTerrain : sceneTerrains)
         {
-            if((*it)->getName() == name)
+            if(sceneTerrain->getName() == name)
             {
                 return true;
             }

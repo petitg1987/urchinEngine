@@ -1,5 +1,4 @@
 #include <memory>
-#include <utility>
 #include "UrchinAIEngine.h"
 
 #include "AIController.h"
@@ -34,11 +33,11 @@ namespace urchin
 		return mapHandler->getMap()->getSceneAI();
 	}
 
-	SceneAI *AIController::updateNavMeshAgent(std::shared_ptr<NavMeshAgent> navMeshAgent)
+	SceneAI *AIController::updateNavMeshAgent(const std::shared_ptr<NavMeshAgent>& navMeshAgent)
 	{
 		SceneAI *sceneAI = mapHandler->getMap()->getSceneAI();
 
-		sceneAI->changeNavMeshAgent(std::move(navMeshAgent));
+		sceneAI->changeNavMeshAgent(navMeshAgent);
 
 		markModified();
 		return sceneAI;

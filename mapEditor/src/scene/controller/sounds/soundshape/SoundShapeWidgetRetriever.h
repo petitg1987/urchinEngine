@@ -14,7 +14,7 @@ namespace urchin
 	class SoundShapeWidgetRetriever
 	{
 		public:
-			SoundShapeWidgetRetriever(const SceneSound *);
+			explicit SoundShapeWidgetRetriever(const SceneSound *);
 
 			SoundShapeWidget *retrieveShapeWidget(const SoundShape *);
 			SoundShapeWidget *retrieveShapeWidget(SoundShape::ShapeType);

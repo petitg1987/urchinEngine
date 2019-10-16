@@ -9,7 +9,10 @@ namespace urchin
 {
 
 	ChangeSoundShapeDialog::ChangeSoundShapeDialog(QWidget *parent) :
-		QDialog(parent)
+		QDialog(parent),
+        soundShapeTypeLabel(nullptr),
+        soundShapeTypeComboBox(nullptr),
+        shapeType(SoundShape::ShapeType::SPHERE_SHAPE)
 	{
 		this->setWindowTitle("Select Sound Trigger Shape");
 		this->resize(245, 80);

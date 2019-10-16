@@ -50,11 +50,11 @@ namespace urchin
 
 	void SoundTableView::addSound(const SceneSound *sceneSound)
 	{
-		QStandardItem *itemSoundName = new QStandardItem(QString::fromStdString(sceneSound->getName()));
+        auto *itemSoundName = new QStandardItem(QString::fromStdString(sceneSound->getName()));
 		itemSoundName->setData(qVariantFromValue(sceneSound), Qt::UserRole + 1);
 		itemSoundName->setEditable(false);
 
-		QStandardItem *itemSoundFile = new QStandardItem(QString::fromStdString(sceneSound->getSound()->getFilename()));
+        auto *itemSoundFile = new QStandardItem(QString::fromStdString(sceneSound->getSound()->getFilename()));
 		itemSoundFile->setData(qVariantFromValue(sceneSound), Qt::UserRole + 1);
 		itemSoundFile->setEditable(false);
 

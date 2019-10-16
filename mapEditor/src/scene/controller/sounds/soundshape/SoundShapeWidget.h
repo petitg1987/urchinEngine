@@ -21,8 +21,8 @@ namespace urchin
 		#define BOX_SHAPE_LABEL "Box"
 
 		public:
-			SoundShapeWidget(const SceneSound *);
-			virtual ~SoundShapeWidget();
+			explicit SoundShapeWidget(const SceneSound *);
+			~SoundShapeWidget() override = default;
 
 			const SceneSound *getSceneSound() const;
 			virtual std::string getSoundShapeName() const = 0;

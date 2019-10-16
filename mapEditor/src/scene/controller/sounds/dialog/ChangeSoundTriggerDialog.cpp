@@ -8,7 +8,10 @@ namespace urchin
 {
 
 	ChangeSoundTriggerDialog::ChangeSoundTriggerDialog(QWidget *parent) :
-		QDialog(parent)
+		QDialog(parent),
+        soundTriggerTypeLabel(nullptr),
+        soundTriggerTypeComboBox(nullptr),
+        triggerType(SoundTrigger::TriggerType::MANUAL_TRIGGER)
 	{
 		this->setWindowTitle("Select Sound Trigger Type");
 		this->resize(245, 80);

@@ -13,7 +13,7 @@ namespace urchin
 	{
 
 		public:
-			DefaultSoundShapeCreator(const SceneSound *);
+			explicit DefaultSoundShapeCreator(const SceneSound *);
 
 			const SoundShape *createDefaultSoundShape(SoundShape::ShapeType) const;
 

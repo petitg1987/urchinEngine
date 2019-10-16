@@ -31,7 +31,7 @@ namespace urchin
 			const SceneObject *updateSceneObjectFlags(const SceneObject *, bool);
 			const SceneObject *updateSceneObjectPhysicsProperties(const SceneObject *, float, float, float, float, float, float,
 					const Vector3<float> &, const Vector3<float> &);
-			const SceneObject *updateSceneObjectPhysicsShape(const SceneObject *, std::shared_ptr< const CollisionShape3D>);
+			const SceneObject *updateSceneObjectPhysicsShape(const SceneObject *, const std::shared_ptr< const CollisionShape3D>&);
 
 		private:
 			void markModified();

@@ -17,6 +17,10 @@ namespace urchin
 	NewObjectDialog::NewObjectDialog(QWidget *parent, const ObjectController *objectController) :
 		QDialog(parent),
 		objectController(objectController),
+        objectNameLabel(nullptr),
+        objectNameText(nullptr),
+        meshFilenameLabel(nullptr),
+        meshFilenameText(nullptr),
 		sceneObject(nullptr)
 	{
 		this->setWindowTitle("New Object");
@@ -58,7 +62,7 @@ namespace urchin
 		meshFilenameText->setReadOnly(true);
 		meshFilenameText->setFixedWidth(360);
 
-		QPushButton *selectMeshFileButton = new QPushButton("...");
+		auto *selectMeshFileButton = new QPushButton("...");
 		mainLayout->addWidget(selectMeshFileButton, 1, 2);
 		ButtonStyleHelper::applyNormalStyle(selectMeshFileButton);
 		selectMeshFileButton->setFixedWidth(22);
@@ -155,9 +159,9 @@ namespace urchin
 	bool NewObjectDialog::isSceneObjectExist(const std::string &name)
 	{
 		std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-		for(std::list<const SceneObject *>::const_iterator it = sceneObjects.begin(); it!=sceneObjects.end(); ++it)
+		for(auto &sceneObject : sceneObjects)
 		{
-			if((*it)->getName() == name)
+			if(sceneObject->getName() == name)
 			{
 				return true;
 			}

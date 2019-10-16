@@ -16,7 +16,19 @@ namespace urchin
 
     WaterControllerWidget::WaterControllerWidget() :
             waterController(nullptr),
-            disableWaterEvent(false)
+            waterTableView(nullptr),
+            addWaterButton(nullptr),
+            removeWaterButton(nullptr),
+            generalPropertiesGroupBox(nullptr),
+            waterSurfacePropertiesGroupBox(nullptr),
+            underWaterPropertiesGroupBox(nullptr),
+            disableWaterEvent(false),
+            positionX(nullptr), positionY(nullptr), positionZ(nullptr),
+            xSize(nullptr), zSize(nullptr),
+            waterColorR(nullptr), waterColorG(nullptr), waterColorB(nullptr),
+            normalTextureFilenameText(nullptr), dudvMapFilenameText(nullptr),
+            waveSpeed(nullptr), waveStrength(nullptr), sRepeat(nullptr), tRepeat(nullptr),
+            density(nullptr), gradient(nullptr)
     {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
@@ -57,7 +69,7 @@ namespace urchin
 
         auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-        QLabel *positionLabel= new QLabel("Position:");
+        auto *positionLabel= new QLabel("Position:");
         generalPropertiesLayout->addWidget(positionLabel, 0, 0);
 
         auto *positionLayout = new QHBoxLayout();
@@ -75,7 +87,7 @@ namespace urchin
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateWaterProperties()));
 
-        QLabel *xSizeLabel= new QLabel("XZ size:");
+        auto *xSizeLabel= new QLabel("XZ size:");
         generalPropertiesLayout->addWidget(xSizeLabel, 1, 0);
 
         auto *xzSizeLayout = new QHBoxLayout();
@@ -104,7 +116,7 @@ namespace urchin
 
         auto *waterSurfacePropertiesLayout = new QGridLayout(waterSurfacePropertiesGroupBox);
 
-        QLabel *waterColorLabel= new QLabel("Water color:");
+        auto *waterColorLabel= new QLabel("Water color:");
         waterSurfacePropertiesLayout->addWidget(waterColorLabel, 0, 0);
 
         auto *waterColorLayout = new QHBoxLayout();
@@ -128,7 +140,7 @@ namespace urchin
         waterColorB->setMaximum(1.0);
         connect(waterColorB, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
 
-        QLabel *normalTextureLabel= new QLabel("Normal:");
+        auto *normalTextureLabel= new QLabel("Normal:");
         waterSurfacePropertiesLayout->addWidget(normalTextureLabel, 2, 0);
 
         auto *normalTextureLayout = new QHBoxLayout();
@@ -137,19 +149,19 @@ namespace urchin
         normalTextureLayout->addWidget(normalTextureFilenameText);
         normalTextureFilenameText->setReadOnly(true);
 
-        QPushButton *selectNormalTextureFileButton = new QPushButton("...");
+        auto *selectNormalTextureFileButton = new QPushButton("...");
         normalTextureLayout->addWidget(selectNormalTextureFileButton);
         ButtonStyleHelper::applyNormalStyle(selectNormalTextureFileButton);
         selectNormalTextureFileButton->setFixedWidth(22);
         connect(selectNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(showNormalTextureFilenameDialog()));
 
-        QPushButton *clearNormalTextureFileButton = new QPushButton("Clr");
+        auto *clearNormalTextureFileButton = new QPushButton("Clr");
         normalTextureLayout->addWidget(clearNormalTextureFileButton);
         ButtonStyleHelper::applyNormalStyle(clearNormalTextureFileButton);
         clearNormalTextureFileButton->setFixedWidth(22);
         connect(clearNormalTextureFileButton, SIGNAL(clicked()), this, SLOT(clearNormalTextureFilename()));
 
-        QLabel *dudvMapLabel= new QLabel("Du-dv map:");
+        auto *dudvMapLabel= new QLabel("Du-dv map:");
         waterSurfacePropertiesLayout->addWidget(dudvMapLabel, 3, 0);
 
         auto *dudvMapLayout = new QHBoxLayout();
@@ -158,19 +170,19 @@ namespace urchin
         dudvMapLayout->addWidget(dudvMapFilenameText);
         dudvMapFilenameText->setReadOnly(true);
 
-        QPushButton *selectDudvMapFileButton = new QPushButton("...");
+        auto *selectDudvMapFileButton = new QPushButton("...");
         dudvMapLayout->addWidget(selectDudvMapFileButton);
         ButtonStyleHelper::applyNormalStyle(selectDudvMapFileButton);
         selectDudvMapFileButton->setFixedWidth(22);
         connect(selectDudvMapFileButton, SIGNAL(clicked()), this, SLOT(showDudvMapFilenameDialog()));
 
-        QPushButton *clearDudvMapFileButton = new QPushButton("Clr");
+        auto *clearDudvMapFileButton = new QPushButton("Clr");
         dudvMapLayout->addWidget(clearDudvMapFileButton);
         ButtonStyleHelper::applyNormalStyle(clearDudvMapFileButton);
         clearDudvMapFileButton->setFixedWidth(22);
         connect(clearDudvMapFileButton, SIGNAL(clicked()), this, SLOT(clearDudvMapFilename()));
 
-        QLabel *waveSpeedLabel= new QLabel("Wave speed:");
+        auto *waveSpeedLabel= new QLabel("Wave speed:");
         waterSurfacePropertiesLayout->addWidget(waveSpeedLabel, 4, 0);
 
         waveSpeed = new QDoubleSpinBox();
@@ -180,7 +192,7 @@ namespace urchin
         waveSpeed->setSingleStep(0.01);
         connect(waveSpeed, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
 
-        QLabel *waveStrengthLabel= new QLabel("Wave strength:");
+        auto *waveStrengthLabel= new QLabel("Wave strength:");
         waterSurfacePropertiesLayout->addWidget(waveStrengthLabel, 5, 0);
 
         waveStrength = new QDoubleSpinBox();
@@ -190,7 +202,7 @@ namespace urchin
         waveStrength->setSingleStep(0.01);
         connect(waveStrength, SIGNAL(valueChanged(double)), this, SLOT(updateSurfaceWaterProperties()));
 
-        QLabel *repeatLabel= new QLabel("Repeat:");
+        auto *repeatLabel= new QLabel("Repeat:");
         waterSurfacePropertiesLayout->addWidget(repeatLabel, 6, 0);
 
         auto *repeatLayout = new QHBoxLayout();
@@ -220,7 +232,7 @@ namespace urchin
 
         auto *underWaterPropertiesLayout = new QGridLayout(underWaterPropertiesGroupBox);
 
-        QLabel *densityLabel= new QLabel("Density:");
+        auto *densityLabel= new QLabel("Density:");
         underWaterPropertiesLayout->addWidget(densityLabel, 0, 0);
 
         density = new QDoubleSpinBox();
@@ -229,7 +241,7 @@ namespace urchin
         density->setMinimum(0.0);
         connect(density, SIGNAL(valueChanged(double)), this, SLOT(updateUnderWaterProperties()));
 
-        QLabel *gradientLabel= new QLabel("Gradient:");
+        auto *gradientLabel= new QLabel("Gradient:");
         underWaterPropertiesLayout->addWidget(gradientLabel, 1, 0);
 
         gradient = new QDoubleSpinBox();
@@ -351,7 +363,7 @@ namespace urchin
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
-            waterController->updateSceneWaterGeneral(sceneWater, position, xSize->value(), zSize->value());
+            waterController->updateSceneWaterGeneral(sceneWater, position, (float)xSize->value(), (float)zSize->value());
         }
     }
 
@@ -364,8 +376,8 @@ namespace urchin
             Vector3<float> waterColor(waterColorR->value(), waterColorG->value(), waterColorB->value());
             std::string normalTextureFilename = normalTextureFilenameText->text().toStdString();
             std::string dudvMapFilename = dudvMapFilenameText->text().toStdString();
-            waterController->updateSceneWaterSurface(sceneWater, waterColor, normalTextureFilename, dudvMapFilename, waveSpeed->value(), waveStrength->value(),
-                                                     sRepeat->value(), tRepeat->value());
+            waterController->updateSceneWaterSurface(sceneWater, waterColor, normalTextureFilename, dudvMapFilename, (float)waveSpeed->value(), (float)waveStrength->value(),
+                                                     (float)sRepeat->value(), (float)tRepeat->value());
         }
     }
 
@@ -375,7 +387,7 @@ namespace urchin
         {
             const SceneWater *sceneWater = waterTableView->getSelectedSceneWater();
 
-            waterController->updateSceneWaterUnderWater(sceneWater, density->value(), gradient->value());
+            waterController->updateSceneWaterUnderWater(sceneWater, (float)density->value(), (float)gradient->value());
         }
     }
 

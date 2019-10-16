@@ -17,14 +17,14 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SoundSphereShapeWidget(const SceneSound *);
-			virtual ~SoundSphereShapeWidget();
+			explicit SoundSphereShapeWidget(const SceneSound *);
+			~SoundSphereShapeWidget() override = default;
 
-			std::string getSoundShapeName() const;
+			std::string getSoundShapeName() const override;
 
 		protected:
-			void doSetupShapePropertiesFrom(const SoundShape *);
-			const SoundShape *createSoundShape() const;
+			void doSetupShapePropertiesFrom(const SoundShape *) override;
+			const SoundShape *createSoundShape() const override;
 
 		private:
 			QDoubleSpinBox *radius;

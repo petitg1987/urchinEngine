@@ -2,7 +2,6 @@
 #include <QMessageBox>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFileDialog>
-#include "UrchinCommon.h"
 
 #include "CloneObjectDialog.h"
 #include "support/LabelStyleHelper.h"
@@ -12,6 +11,8 @@ namespace urchin
     CloneObjectDialog::CloneObjectDialog(QWidget *parent, const ObjectController *objectController) :
             QDialog(parent),
             objectController(objectController),
+            objectNameLabel(nullptr),
+            objectNameText(nullptr),
             sceneObject(nullptr)
     {
         this->setWindowTitle("Clone Object");
@@ -106,9 +107,9 @@ namespace urchin
     bool CloneObjectDialog::isSceneObjectExist(const std::string &name)
     {
         std::list<const SceneObject *> sceneObjects = objectController->getSceneObjects();
-        for(std::list<const SceneObject *>::const_iterator it = sceneObjects.begin(); it!=sceneObjects.end(); ++it)
+        for(auto &sceneObject : sceneObjects)
         {
-            if((*it)->getName() == name)
+            if(sceneObject->getName() == name)
             {
                 return true;
             }

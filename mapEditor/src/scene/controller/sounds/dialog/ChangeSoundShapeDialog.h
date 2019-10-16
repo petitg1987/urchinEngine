@@ -18,7 +18,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			ChangeSoundShapeDialog(QWidget *parent);
+			explicit ChangeSoundShapeDialog(QWidget *parent);
 
 			SoundShape::ShapeType getShapeType() const;
 

@@ -12,9 +12,9 @@ namespace urchin
 	{
 		public:
 			SceneFreeCamera(float, float, float, const QWidget *);
-			virtual ~SceneFreeCamera() = default;
+			~SceneFreeCamera() override = default;
 
-			void moveMouse(unsigned int, unsigned int);
+			void moveMouse(unsigned int, unsigned int) override;
 
 		private:
 			const QWidget *parentWidget;

@@ -19,7 +19,24 @@ namespace urchin
 
     TerrainControllerWidget::TerrainControllerWidget() :
             terrainController(nullptr),
-            disableTerrainEvent(false)
+            terrainTableView(nullptr),
+            addTerrainButton(nullptr),
+            removeTerrainButton(nullptr),
+            generalPropertiesGroupBox(nullptr),
+            meshGroupBox(nullptr),
+            materialGroupBox(nullptr),
+            grassGroupBox(nullptr),
+            disableTerrainEvent(false),
+            positionX(nullptr), positionY(nullptr), positionZ(nullptr),
+            ambient(nullptr),
+            xzScale(nullptr), yScale(nullptr),
+            sRepeat(nullptr), tRepeat(nullptr),
+            maskMapFilenameText(nullptr),
+            grassTextureFilenameText(nullptr),
+            grassMaskFilenameText(nullptr),
+            numGrassInTex(nullptr),
+            grassQuantity(nullptr), grassHeight(nullptr), grassLength(nullptr),
+            windDirectionX(nullptr), windDirectionY(nullptr), windDirectionZ(nullptr), windStrength(nullptr)
     {
         auto *mainLayout = new QVBoxLayout(this);
         mainLayout->setAlignment(Qt::AlignTop);
@@ -61,7 +78,7 @@ namespace urchin
 
         auto *generalPropertiesLayout = new QGridLayout(generalPropertiesGroupBox);
 
-        QLabel *positionLabel= new QLabel("Position:");
+        auto *positionLabel= new QLabel("Position:");
         generalPropertiesLayout->addWidget(positionLabel, 0, 0);
 
         auto *positionLayout = new QHBoxLayout();
@@ -79,7 +96,7 @@ namespace urchin
         SpinBoxStyleHelper::applyDefaultStyleOn(positionZ);
         connect(positionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
 
-        QLabel *ambientLabel= new QLabel("Ambient:");
+        auto *ambientLabel= new QLabel("Ambient:");
         generalPropertiesLayout->addWidget(ambientLabel, 1, 0);
 
         ambient = new QDoubleSpinBox();
@@ -100,7 +117,7 @@ namespace urchin
 
         auto *meshLayout = new QGridLayout(meshGroupBox);
 
-        QLabel *xzScaleLabel= new QLabel("XZ scale:");
+        auto *xzScaleLabel= new QLabel("XZ scale:");
         meshLayout->addWidget(xzScaleLabel, 0, 0);
 
         xzScale = new QDoubleSpinBox();
@@ -110,7 +127,7 @@ namespace urchin
         xzScale->setSingleStep(0.05);
         connect(xzScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
 
-        QLabel *yScaleLabel= new QLabel("Y scale:");
+        auto *yScaleLabel= new QLabel("Y scale:");
         meshLayout->addWidget(yScaleLabel, 1, 0);
 
         yScale = new QDoubleSpinBox();
@@ -131,7 +148,7 @@ namespace urchin
 
         auto *materialLayout = new QGridLayout(materialGroupBox);
 
-        QLabel *repeatLabel= new QLabel("Repeat:");
+        auto *repeatLabel= new QLabel("Repeat:");
         materialLayout->addWidget(repeatLabel, 0, 0);
 
         sRepeat = new QDoubleSpinBox();
@@ -148,37 +165,37 @@ namespace urchin
         tRepeat->setSingleStep(1.0);
         connect(tRepeat, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMaterial()));
 
-        QLabel *maskMapLabel= new QLabel("Mask map:");
+        auto *maskMapLabel= new QLabel("Mask map:");
         materialLayout->addWidget(maskMapLabel, 1, 0);
 
         maskMapFilenameText = new QLineEdit();
         materialLayout->addWidget(maskMapFilenameText, 1, 1, 1, 2);
         maskMapFilenameText->setReadOnly(true);
 
-        QPushButton *selectMaskFileButton = new QPushButton("...");
+        auto *selectMaskFileButton = new QPushButton("...");
         materialLayout->addWidget(selectMaskFileButton, 1, 3);
         ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showMaskFilenameDialog()));
 
-        QPushButton *clearMaskFileButton = new QPushButton("Clr");
+        auto *clearMaskFileButton = new QPushButton("Clr");
         materialLayout->addWidget(clearMaskFileButton, 1, 4);
         ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearMaskFilename()));
 
         materialFilenameTexts.resize(MAX_MATERIAL);
-        for(unsigned int i=0; i<MAX_MATERIAL; ++i)
+        for(int i=0; i<MAX_MATERIAL; ++i)
         {
             std::string materialLabelStr = "Material " + std::to_string(i+1) +":";
-            QLabel *materialLabel= new QLabel(materialLabelStr.c_str());
+            auto *materialLabel= new QLabel(materialLabelStr.c_str());
             materialLayout->addWidget(materialLabel, 2+i, 0);
 
             materialFilenameTexts[i] = new QLineEdit();
             materialLayout->addWidget(materialFilenameTexts[i], 2+i, 1, 1, 2);
             materialFilenameTexts[i]->setReadOnly(true);
 
-            QPushButton *selectMaterialFileButton = new QPushButton("...");
+            auto *selectMaterialFileButton = new QPushButton("...");
             materialLayout->addWidget(selectMaterialFileButton, 2+i, 3);
             ButtonStyleHelper::applyNormalStyle(selectMaterialFileButton);
             selectMaterialFileButton->setFixedWidth(22);
@@ -187,7 +204,7 @@ namespace urchin
             selectSignalMapper->setMapping(selectMaterialFileButton, QString::fromStdString(std::to_string(i)));
             connect(selectSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(showMaterialFilenameDialog(const QString &)));
 
-            QPushButton *clearMaterialFileButton = new QPushButton("Clr");
+            auto *clearMaterialFileButton = new QPushButton("Clr");
             materialLayout->addWidget(clearMaterialFileButton, 2+i, 4);
             ButtonStyleHelper::applyNormalStyle(clearMaterialFileButton);
             clearMaterialFileButton->setFixedWidth(22);
@@ -208,45 +225,45 @@ namespace urchin
 
         auto *grassLayout = new QGridLayout(grassGroupBox);
 
-        QLabel *textureLabel= new QLabel("Texture:");
+        auto *textureLabel= new QLabel("Texture:");
         grassLayout->addWidget(textureLabel, 1, 0);
 
         grassTextureFilenameText = new QLineEdit();
         grassLayout->addWidget(grassTextureFilenameText, 1, 1, 1, 3);
         grassTextureFilenameText->setReadOnly(true);
 
-        QPushButton *selectTextureFileButton = new QPushButton("...");
+        auto *selectTextureFileButton = new QPushButton("...");
         grassLayout->addWidget(selectTextureFileButton, 1, 4);
         ButtonStyleHelper::applyNormalStyle(selectTextureFileButton);
         selectTextureFileButton->setFixedWidth(22);
         connect(selectTextureFileButton, SIGNAL(clicked()), this, SLOT(showGrassTextureFilenameDialog()));
 
-        QPushButton *clearTextureFileButton = new QPushButton("Clr");
+        auto *clearTextureFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearTextureFileButton, 1, 5);
         ButtonStyleHelper::applyNormalStyle(clearTextureFileButton);
         clearTextureFileButton->setFixedWidth(22);
         connect(clearTextureFileButton, SIGNAL(clicked()), this, SLOT(clearGrassTextureFilename()));
 
-        QLabel *maskLabel= new QLabel("Mask:");
+        auto *maskLabel= new QLabel("Mask:");
         grassLayout->addWidget(maskLabel, 2, 0);
 
         grassMaskFilenameText = new QLineEdit();
         grassLayout->addWidget(grassMaskFilenameText, 2, 1, 1, 3);
         grassMaskFilenameText->setReadOnly(true);
 
-        QPushButton *selectMaskFileButton = new QPushButton("...");
+        auto *selectMaskFileButton = new QPushButton("...");
         grassLayout->addWidget(selectMaskFileButton, 2, 4);
         ButtonStyleHelper::applyNormalStyle(selectMaskFileButton);
         selectMaskFileButton->setFixedWidth(22);
         connect(selectMaskFileButton, SIGNAL(clicked()), this, SLOT(showGrassMaskFilenameDialog()));
 
-        QPushButton *clearMaskFileButton = new QPushButton("Clr");
+        auto *clearMaskFileButton = new QPushButton("Clr");
         grassLayout->addWidget(clearMaskFileButton, 2, 5);
         ButtonStyleHelper::applyNormalStyle(clearMaskFileButton);
         clearMaskFileButton->setFixedWidth(22);
         connect(clearMaskFileButton, SIGNAL(clicked()), this, SLOT(clearGrassMaskFilename()));
 
-        QLabel *numGrassInTexLabel= new QLabel("Num grass in tex:");
+        auto *numGrassInTexLabel= new QLabel("Num grass in tex:");
         grassLayout->addWidget(numGrassInTexLabel, 3, 0);
 
         numGrassInTex = new QSpinBox();
@@ -256,7 +273,7 @@ namespace urchin
         numGrassInTex->setSingleStep(1);
         connect(numGrassInTex, SIGNAL(valueChanged(int)), this, SLOT(updateTerrainGrass()));
 
-        QLabel *grassQuantityLabel= new QLabel("Grass quantity:");
+        auto *grassQuantityLabel= new QLabel("Grass quantity:");
         grassLayout->addWidget(grassQuantityLabel, 4, 0);
 
         grassQuantity = new QDoubleSpinBox();
@@ -266,7 +283,7 @@ namespace urchin
         grassQuantity->setSingleStep(0.1);
         connect(grassQuantity, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        QLabel *grassHeightLabel= new QLabel("Height/length:");
+        auto *grassHeightLabel= new QLabel("Height/length:");
         grassLayout->addWidget(grassHeightLabel, 5, 0);
 
         grassHeight = new QDoubleSpinBox();
@@ -283,7 +300,7 @@ namespace urchin
         grassLength->setSingleStep(0.05);
         connect(grassLength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        QLabel *windDirectionLabel= new QLabel("Wind direction:");
+        auto *windDirectionLabel= new QLabel("Wind direction:");
         grassLayout->addWidget(windDirectionLabel, 6, 0);
 
         windDirectionX = new QDoubleSpinBox();
@@ -299,7 +316,7 @@ namespace urchin
         SpinBoxStyleHelper::applyDefaultStyleOn(windDirectionZ);
         connect(windDirectionZ, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
 
-        QLabel *windStrengthLabel= new QLabel("Wind strength:");
+        auto *windStrengthLabel= new QLabel("Wind strength:");
         grassLayout->addWidget(windStrengthLabel, 7, 0);
 
         windStrength = new QDoubleSpinBox();
@@ -396,7 +413,7 @@ namespace urchin
 
             this->grassTextureFilenameText->setText(QString::fromStdString(terrainGrass->getGrassTexture()));
             this->grassMaskFilenameText->setText(QString::fromStdString(terrainGrass->getMaskTexture()));
-            this->numGrassInTex->setValue(terrainGrass->getNumGrassInTexture());
+            this->numGrassInTex->setValue((int)terrainGrass->getNumGrassInTexture());
             this->grassHeight->setValue(terrainGrass->getGrassHeight());
             this->grassLength->setValue(terrainGrass->getGrassLength());
             this->grassQuantity->setValue(terrainGrass->getGrassQuantity());
@@ -441,7 +458,7 @@ namespace urchin
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
             Point3<float> position(positionX->value(), positionY->value(), positionZ->value());
-            terrainController->updateSceneTerrainGeneralProperties(sceneTerrain, position, ambient->value());
+            terrainController->updateSceneTerrainGeneralProperties(sceneTerrain, position, (float)ambient->value());
         }
     }
 
@@ -451,7 +468,7 @@ namespace urchin
         {
             const SceneTerrain *sceneTerrain = terrainTableView->getSelectedSceneTerrain();
 
-            terrainController->updateSceneTerrainMesh(sceneTerrain, xzScale->value(), yScale->value());
+            terrainController->updateSceneTerrainMesh(sceneTerrain, (float)xzScale->value(), (float)yScale->value());
         }
     }
 
@@ -467,7 +484,7 @@ namespace urchin
             {
                 materialFilenames.push_back(materialFilenameTexts[i]->text().toStdString());
             }
-            terrainController->updateSceneTerrainMaterial(sceneTerrain, sRepeat->value(), tRepeat->value(), maskMapFilename, materialFilenames);
+            terrainController->updateSceneTerrainMaterial(sceneTerrain, (float)sRepeat->value(), (float)tRepeat->value(), maskMapFilename, materialFilenames);
         }
     }
 
@@ -481,8 +498,8 @@ namespace urchin
             std::string grassMaskFilename = grassMaskFilenameText->text().toStdString();
             auto numGrassInTexValue = static_cast<unsigned int>(numGrassInTex->value());
             Vector3<float> windDirection(windDirectionX->value(), windDirectionY->value(), windDirectionZ->value());
-            terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, grassQuantity->value(),
-                                                       grassHeight->value(), grassLength->value(), windDirection, windStrength->value());
+            terrainController->updateSceneTerrainGrass(sceneTerrain, grassTextureFilename, grassMaskFilename, numGrassInTexValue, (float)grassQuantity->value(),
+                                                       (float)grassHeight->value(), (float)grassLength->value(), windDirection, (float)windStrength->value());
         }
     }
 

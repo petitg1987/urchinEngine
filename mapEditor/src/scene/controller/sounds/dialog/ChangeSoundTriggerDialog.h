@@ -21,7 +21,7 @@ namespace urchin
 		#define SHAPE_TRIGGER_LABEL "Shape"
 
 		public:
-			ChangeSoundTriggerDialog(QWidget *parent);
+			explicit ChangeSoundTriggerDialog(QWidget *parent);
 
 			SoundTrigger::TriggerType getTriggerType() const;
 

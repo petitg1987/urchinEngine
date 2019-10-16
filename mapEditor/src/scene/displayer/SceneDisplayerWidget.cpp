@@ -12,6 +12,7 @@ namespace urchin
 			QGLWidget(parent),
 			mapEditorPath(std::move(mapEditorPath)),
 			sceneDisplayer(nullptr),
+            viewProperties(),
             mouseX(0),
             mouseY(0)
 	{

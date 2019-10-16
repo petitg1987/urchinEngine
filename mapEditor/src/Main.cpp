@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
 	QFont defaultFont("Arial", 8, QFont::Normal);
 	defaultFont.setFamily(defaultFont.defaultFamily());
 	defaultFont.setStyleStrategy(QFont::PreferQuality);
-	app.setFont(defaultFont);
+    QApplication::setFont(defaultFont);
 
-	MapEditorWindow *window = new MapEditorWindow(std::string(argv[0]));
+	auto *window = new MapEditorWindow(std::string(argv[0]));
 	window->setVisible(true);
     window->showMaximized();
 
-	return app.exec();
+	return QApplication::exec();
 }

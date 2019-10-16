@@ -80,7 +80,7 @@ namespace urchin
         return sceneTerrain;
     }
 
-    const SceneTerrain *TerrainController::updateSceneTerrainMaterial(const SceneTerrain *constSceneTerrain, float sRepeat, float tRepeat, std::string maskMapFilename,
+    const SceneTerrain *TerrainController::updateSceneTerrainMaterial(const SceneTerrain *constSceneTerrain, float sRepeat, float tRepeat, const std::string& maskMapFilename,
                                                                       const std::vector<std::string> &materialFilenames)
     {
         SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
@@ -102,7 +102,7 @@ namespace urchin
         return sceneTerrain;
     }
 
-    const SceneTerrain *TerrainController::updateSceneTerrainGrass(const SceneTerrain *constSceneTerrain, std::string grassTextureFilename, std::string grassMaskFilename,
+    const SceneTerrain *TerrainController::updateSceneTerrainGrass(const SceneTerrain *constSceneTerrain, const std::string& grassTextureFilename, const std::string& grassMaskFilename,
                                                                    unsigned int numGrassInTex, float grassQuantity, float grassHeight, float grassLength,
                                                                    const Vector3<float> &windDirection, float windStrength)
     {

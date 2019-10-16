@@ -2,7 +2,6 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QVariant>
 
-#include "UrchinCommon.h"
 #include "ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidget.h"
 
@@ -11,7 +10,10 @@ namespace urchin
 
 	ChangeBodyShapeDialog::ChangeBodyShapeDialog(QWidget *parent, bool excludeCompoundShape) :
 		QDialog(parent),
-		excludeCompoundShape(excludeCompoundShape)
+		excludeCompoundShape(excludeCompoundShape),
+        bodyShapeTypeLabel(nullptr),
+        bodyShapeTypeComboBox(nullptr),
+        shapeType(CollisionShape3D::ShapeType::SHAPE_MAX)
 	{
 		this->setWindowTitle("Select Body Shape");
 		this->resize(245, 80);
