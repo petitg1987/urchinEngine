@@ -1,13 +1,15 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "TrianglesModel.h"
 
 namespace urchin
 {
 
-	TrianglesModel::TrianglesModel(const std::vector<Point3<float>> &points, const std::vector<IndexedTriangle3D<float>> &triangles):
-			points(points),
-			triangles(triangles)
+	TrianglesModel::TrianglesModel(std::vector<Point3<float>> points, std::vector<IndexedTriangle3D<float>> triangles):
+			points(std::move(points)),
+			triangles(std::move(triangles))
 	{
 		initialize();
 	}

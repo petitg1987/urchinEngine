@@ -15,15 +15,15 @@ namespace urchin
 	{
 		public:
 			FreeCamera(float, float, float);
-			virtual ~FreeCamera() = default;
+			~FreeCamera() override = default;
 		
 			void setKeys(unsigned int, unsigned int, unsigned int, unsigned int);
 			void setSpeed(float, float);
 		
-			void onKeyDown(unsigned int);
-			void onKeyUp(unsigned int);
+			void onKeyDown(unsigned int) override;
+			void onKeyUp(unsigned int) override;
 
-			void updateCameraView(float);
+			void updateCameraView(float) override;
 		
 		private:
 			unsigned int keyFront, keyBack, keyLeft, keyRight;

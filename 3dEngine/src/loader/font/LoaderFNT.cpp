@@ -6,12 +6,12 @@
 #include "loader/font/LoaderFNT.h"
 #include "resources/image/Image.h"
 
-#define WIDTH_BETWEEN_LETTERS 2
+#define WIDTH_BETWEEN_LETTERS 2u
 #define WIDTH_BETWEEN_LINES_RATE 1.9f
 #define WIDTH_SPACE_RATE 0.4f
-#define NUM_COLORS 4
-#define NUM_LETTERS 256
-#define NUM_LETTERS_BY_LINE 16
+#define NUM_COLORS 4u
+#define NUM_LETTERS 256u
+#define NUM_LETTERS_BY_LINE 16u
 
 namespace urchin
 {
@@ -114,7 +114,7 @@ namespace urchin
 		unsigned int height = 0;
 		for(int i='A'; i<'Z';i++)
 		{
-			height = std::max(height, (unsigned int)glyph[i].height);
+			height = std::max(height, glyph[i].height);
 		}
 		auto spaceBetweenLines = static_cast<unsigned int>((float)height * WIDTH_BETWEEN_LINES_RATE);
 		auto spaceBetweenLetters = static_cast<unsigned int>(WIDTH_BETWEEN_LETTERS);
@@ -133,7 +133,7 @@ namespace urchin
 				dimensionLetters = glyph[i].height;
 			}
 		}
-		auto dimensionTexture = static_cast<unsigned int>(dimensionLetters * NUM_LETTERS_BY_LINE);
+		unsigned int dimensionTexture = dimensionLetters * NUM_LETTERS_BY_LINE;
 		
 		//texture creation
 		std::vector<unsigned char> texels(dimensionTexture*dimensionTexture*NUM_COLORS, 0);

@@ -25,10 +25,10 @@ namespace urchin
 			void onCameraProjectionUpdate(float, float);
 
 		private:
-			std::string getShaderName() const;
-			void initializeAdditionalUniforms(unsigned int);
-			void bindAdditionalTextures() const;
-			void completeShaderTokens(std::map<std::string, std::string> &) const;
+			std::string getShaderName() const override;
+			void initializeAdditionalUniforms(unsigned int) override;
+			void bindAdditionalTextures() const override;
+			void completeShaderTokens(std::map<std::string, std::string> &) const override;
 
 			std::vector<float> computeOffsets() const;
 

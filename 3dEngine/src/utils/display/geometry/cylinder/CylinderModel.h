@@ -11,7 +11,7 @@ namespace urchin
 	class CylinderModel : public GeometryModel
 	{
 		public:
-			CylinderModel(const Cylinder<float> &, int);
+			CylinderModel(Cylinder<float> , int);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

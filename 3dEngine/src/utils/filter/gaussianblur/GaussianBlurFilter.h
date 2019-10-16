@@ -24,8 +24,8 @@ namespace urchin
 			GaussianBlurFilter(const GaussianBlurFilterBuilder *, BlurDirection);
 
 		private:
-			std::string getShaderName() const;
-			void completeShaderTokens(std::map<std::string, std::string> &) const;
+			std::string getShaderName() const override;
+			void completeShaderTokens(std::map<std::string, std::string> &) const override;
 
 			std::vector<float> computeWeights() const;
 			std::vector<float> computeWeightsLinearSampling(const std::vector<float> &) const;

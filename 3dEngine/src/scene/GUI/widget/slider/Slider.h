@@ -19,7 +19,7 @@ namespace urchin
 			Slider(Position, Size, const std::vector<std::string> &, const std::string &);
 			~Slider() override = default;
 
-			void createOrUpdateWidget();
+			void createOrUpdateWidget() override;
 
 			unsigned int getSelectedIndex() const;
 			void setSelectedIndex(unsigned int);

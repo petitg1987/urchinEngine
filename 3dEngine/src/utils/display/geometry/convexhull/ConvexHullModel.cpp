@@ -1,13 +1,13 @@
 #include <GL/glew.h>
-#include <map>
+#include <utility>
 
 #include "utils/display/geometry/convexhull/ConvexHullModel.h"
 
 namespace urchin
 {
 
-	ConvexHullModel::ConvexHullModel(const ConvexHull3D<float> &convexHull):
-			convexHull(convexHull)
+	ConvexHullModel::ConvexHullModel(ConvexHull3D<float> convexHull):
+			convexHull(std::move(convexHull))
 	{
 		initialize();
 	}

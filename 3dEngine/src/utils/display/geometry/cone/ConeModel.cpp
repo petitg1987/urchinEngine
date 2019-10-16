@@ -1,13 +1,14 @@
 #include <GL/glew.h>
 #include <cmath>
+#include <utility>
 
 #include "utils/display/geometry/cone/ConeModel.h"
 
 namespace urchin
 {
 
-	ConeModel::ConeModel(const Cone<float> &cone, int slices):
-			cone(cone),
+	ConeModel::ConeModel(Cone<float> cone, int slices):
+			cone(std::move(cone)),
 			slices(slices)
 	{
 		initialize();
@@ -27,7 +28,7 @@ namespace urchin
 		vertexArray.reserve(1+(slices+1));
 
 		float radius = cone.getRadius();
-		float angle = (2.0*PI_VALUE) / slices;
+		float angle = (2.0f * (float)PI_VALUE) / (float)slices;
 
 		Quaternion<float> qConeOrientation;
 		ConeShape<float>::ConeOrientation coneOrientation = cone.getConeOrientation();
@@ -56,8 +57,8 @@ namespace urchin
 		vertexArray.push_back(topPoint);
 		for (int i = 0; i <= slices; i++)
 		{
-		    float x = std::cos(i*angle) * radius;
-		    float z = std::sin(i*angle) * radius;
+		    float x = std::cos((float)i * angle) * radius;
+		    float z = std::sin((float)i * angle) * radius;
 
 		    Point3<float> bottomPoint = localOrientation.rotatePoint(Point3<float>(x, -cone.getHeight()*(1.0/4.0), z));
 		    vertexArray.push_back(bottomPoint);
@@ -68,7 +69,7 @@ namespace urchin
 
 	void ConeModel::drawGeometry() const
 	{
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 1+(slices+1));
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 1 + (slices + 1));
 	}
 
 }

@@ -17,8 +17,8 @@ namespace urchin
 			explicit DownSampleFilter(const DownSampleFilterBuilder *);
 
 		private:
-			std::string getShaderName() const;
-			void completeShaderTokens(std::map<std::string, std::string> &) const;
+			std::string getShaderName() const override;
+			void completeShaderTokens(std::map<std::string, std::string> &) const override;
 	};
 
 }

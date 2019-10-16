@@ -1,12 +1,14 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "LinesModel.h"
 
 namespace urchin
 {
 
-	LinesModel::LinesModel(const std::vector<Point3<float>> &linesPoints, float linesSize) :
-			linesPoints(linesPoints),
+	LinesModel::LinesModel(std::vector<Point3<float>> linesPoints, float linesSize) :
+			linesPoints(std::move(linesPoints)),
 			linesSize(linesSize)
 	{
 		initialize();

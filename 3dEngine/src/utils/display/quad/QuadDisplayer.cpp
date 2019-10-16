@@ -8,6 +8,14 @@ namespace urchin
 {
 
 	QuadDisplayer::QuadDisplayer(const QuadDisplayerBuilder *quadDisplayerBuilder) :
+            numberOfQuad(0),
+            dimension(0),
+            bufferUsage(0),
+            vertexDataType(0),
+            vertexCoord(nullptr),
+            textureDataType(0),
+            textureCoord(nullptr),
+            bufferIDs(),
 			vertexArrayObject(0)
 	{
 		glGenBuffers(2, bufferIDs);

@@ -1,12 +1,14 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "utils/display/geometry/points/PointsModel.h"
 
 namespace urchin
 {
 
-	PointsModel::PointsModel(const std::vector<Point3<float>> &points, float pointsSize):
-			points(points),
+	PointsModel::PointsModel(std::vector<Point3<float>> points, float pointsSize):
+			points(std::move(points)),
 			pointsSize(pointsSize)
 	{
 		initialize();

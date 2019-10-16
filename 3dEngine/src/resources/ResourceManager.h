@@ -21,7 +21,7 @@ namespace urchin
 			
 		private:
 			ResourceManager();
-			virtual ~ResourceManager();
+			~ResourceManager() override;
 
 			std::map<std::string, Resource *> mResources;
 	};

@@ -1,12 +1,14 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 
 namespace urchin
 {
 
-	OBBoxModel::OBBoxModel(const OBBox<float> &obbox):
-			obbox(obbox)
+	OBBoxModel::OBBoxModel(OBBox<float> obbox):
+			obbox(std::move(obbox))
 	{
 		initialize();
 	}

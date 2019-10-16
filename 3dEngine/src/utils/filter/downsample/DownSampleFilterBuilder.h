@@ -10,9 +10,9 @@ namespace urchin
 	{
 		public:
 			DownSampleFilterBuilder();
-			virtual ~DownSampleFilterBuilder() = default;
+			~DownSampleFilterBuilder() override = default;
 
-			std::shared_ptr<TextureFilter> build();
+			std::shared_ptr<TextureFilter> build() override;
 			std::shared_ptr<DownSampleFilter> buildDownSample();
 	};
 

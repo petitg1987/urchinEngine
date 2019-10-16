@@ -22,7 +22,7 @@ namespace urchin
 			class ResourceDeleter
 			{
 				public:
-					void operator()(Resource *const);
+					void operator()(Resource *);
 			};
 
 		private:

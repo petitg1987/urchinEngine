@@ -15,6 +15,8 @@ namespace urchin
 	SceneManager::SceneManager() :
 			sceneWidth(500),
 			sceneHeight(500),
+            activeRenderers(),
+            previousFps(),
 			fps(START_FPS),
 			fpsForDisplay(START_FPS)
 	{

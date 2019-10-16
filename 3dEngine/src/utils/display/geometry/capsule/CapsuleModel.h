@@ -11,7 +11,7 @@ namespace urchin
 	class CapsuleModel : public GeometryModel
 	{
 		public:
-			CapsuleModel(const Capsule<float> &, int, int);
+			CapsuleModel(Capsule<float> , int, int);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

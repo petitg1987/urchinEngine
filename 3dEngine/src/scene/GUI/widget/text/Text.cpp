@@ -110,7 +110,7 @@ namespace urchin
 		unsigned int indexLastSpace = 0;
 		unsigned int lengthFromLastSpace = 0;
 
-		for(int numLetter=0; text[numLetter]!=0; numLetter++)
+		for(unsigned int numLetter=0; text[numLetter]!=0; numLetter++)
 		{ //each letters
 			auto letter = static_cast<unsigned char>(text[numLetter]);
 

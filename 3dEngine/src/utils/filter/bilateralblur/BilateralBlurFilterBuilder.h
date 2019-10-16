@@ -16,7 +16,7 @@ namespace urchin
 			};
 
 			BilateralBlurFilterBuilder();
-			virtual ~BilateralBlurFilterBuilder() = default;
+			~BilateralBlurFilterBuilder() override = default;
 
 			BilateralBlurFilterBuilder *blurDirection(BlurDirection);
 
@@ -29,7 +29,7 @@ namespace urchin
 			BilateralBlurFilterBuilder *depthTextureID(unsigned int);
 			unsigned int getDepthTextureID() const;
 
-			std::shared_ptr<TextureFilter> build();
+			std::shared_ptr<TextureFilter> build() override;
 			std::shared_ptr<BilateralBlurFilter> buildBilateralBlur();
 
 		private:

@@ -92,7 +92,7 @@ namespace urchin
         return materials;
     }
 
-    std::vector<Point2<float>> TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize)
+    void TerrainMaterial::buildTexCoordinates(unsigned int xSize, unsigned int zSize)
     {
         texCoordinates.reserve(xSize * zSize);
 
@@ -106,8 +106,6 @@ namespace urchin
                 texCoordinates.emplace_back(Point2<float>(s, t));
             }
         }
-
-        return texCoordinates;
     }
 
     const std::vector<Point2<float>> &TerrainMaterial::getTexCoordinates() const

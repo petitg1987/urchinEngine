@@ -12,7 +12,7 @@ namespace urchin
 	class TrianglesModel : public GeometryModel
 	{
 		public:
-			TrianglesModel(const std::vector<Point3<float>> &, const std::vector<IndexedTriangle3D<float>> &);
+			TrianglesModel(std::vector<Point3<float>> , std::vector<IndexedTriangle3D<float>> );
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

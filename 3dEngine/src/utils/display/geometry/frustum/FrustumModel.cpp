@@ -1,12 +1,14 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "utils/display/geometry/frustum/FrustumModel.h"
 
 namespace urchin
 {
 
-	FrustumModel::FrustumModel(const Frustum<float> &frustum):
-			frustum(frustum)
+	FrustumModel::FrustumModel(Frustum<float> frustum):
+			frustum(std::move(frustum))
 	{
 		initialize();
 	}

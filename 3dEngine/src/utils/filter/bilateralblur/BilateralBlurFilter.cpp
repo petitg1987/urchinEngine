@@ -77,7 +77,7 @@ namespace urchin
 			float pixelSize = 1.0f / static_cast<float>(textureSize);
 			for(unsigned int i=1; i<=numOffsets; ++i)
 			{
-				offsets[i-1] = pixelSize * i;
+				offsets[i-1] = pixelSize * (float)i;
 			}
 		}
 

@@ -11,7 +11,7 @@ namespace urchin
 	class SphereModel : public GeometryModel
 	{
 		public:
-			SphereModel(const Sphere<float> &, int);
+			SphereModel(Sphere<float> , int);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

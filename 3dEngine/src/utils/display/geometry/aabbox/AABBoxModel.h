@@ -13,7 +13,7 @@ namespace urchin
 	{
 		public:
 			explicit AABBoxModel(const AABBox<float> &);
-			explicit AABBoxModel(const std::vector<AABBox<float>> &);
+			explicit AABBoxModel(std::vector<AABBox<float>> );
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

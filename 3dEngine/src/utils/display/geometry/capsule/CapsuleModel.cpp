@@ -1,13 +1,14 @@
 #include <GL/glew.h>
 #include <cmath>
+#include <utility>
 
 #include "utils/display/geometry/capsule/CapsuleModel.h"
 
 namespace urchin
 {
 
-	CapsuleModel::CapsuleModel(const Capsule<float> &capsule, int sides, int slices):
-			capsule(capsule),
+	CapsuleModel::CapsuleModel(Capsule<float> capsule, int sides, int slices):
+			capsule(std::move(capsule)),
 			sides(sides),
 			slices(slices)
 	{
@@ -28,8 +29,8 @@ namespace urchin
 		vertexArray.reserve(2*(sides+1) + 2*(slices)*(slices+1));
 
 		float radius = capsule.getRadius();
-		float halfCylinderHeight = capsule.getCylinderHeight() / 2.0;
-		float angle = (2.0*PI_VALUE) / (float)sides;
+		float halfCylinderHeight = capsule.getCylinderHeight() / 2.0f;
+		float angle = (2.0f * (float)PI_VALUE) / (float)sides;
 
 		CapsuleShape<float>::CapsuleOrientation capsuleOrientation = capsule.getCapsuleOrientation();
 		Quaternion<float> qCapsuleOrientation, qCapOrientation;
@@ -51,8 +52,8 @@ namespace urchin
 		Quaternion<float> localCylinderOrientation = capsule.getOrientation() * qCapsuleOrientation;
 		for (int i = 0; i <= sides; i++)
 		{
-		    float x = std::cos(i*angle) * radius;
-		    float y = std::sin(i*angle) * radius;
+		    float x = std::cos((float)i * angle) * radius;
+		    float y = std::sin((float)i * angle) * radius;
 
 		    Point3<float> p1 = localCylinderOrientation.rotatePoint(Point3<float>(x, y, halfCylinderHeight));
 		    Point3<float> p2 = localCylinderOrientation.rotatePoint(Point3<float>(x, y, -halfCylinderHeight));
@@ -77,11 +78,11 @@ namespace urchin
 		int nbLong = slices/2;
 		for(int i=1; i<=slices; i++)
 		{
-			float latitude0 = PI_VALUE * (-0.5 + (float) (i - 1) / slices);
+			float latitude0 = PI_VALUE * (-0.5 + (float)(i - 1) / (float)slices);
 			float z0 = std::sin(latitude0);
 			float zr0 = std::cos(latitude0);
 
-			float latitude1 = PI_VALUE * (-0.5 + (float) i / slices);
+			float latitude1 = PI_VALUE * (-0.5 + (float)i / (float)slices);
 			float z1 = std::sin(latitude1);
 			float zr1 = std::cos(latitude1);
 
@@ -108,11 +109,11 @@ namespace urchin
 		int nbLong = slices/2;
 		for(int i=1; i<=slices; i++)
 		{
-			float latitude0 = PI_VALUE * (-0.5 + (float) (i - 1) / slices);
+			float latitude0 = PI_VALUE * (-0.5 + (float)(i - 1) / (float)slices);
 			float z0 = std::sin(latitude0);
 			float zr0 = std::cos(latitude0);
 
-			float latitude1 = PI_VALUE * (-0.5 + (float) i / slices);
+			float latitude1 = PI_VALUE * (-0.5 + (float)i / (float)slices);
 			float z1 = std::sin(latitude1);
 			float zr1 = std::cos(latitude1);
 

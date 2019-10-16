@@ -32,7 +32,7 @@ namespace urchin
             void loadTextures() const;
 
         private:
-            std::vector<Point2<float>> buildTexCoordinates(unsigned int, unsigned int);
+            void buildTexCoordinates(unsigned int, unsigned int);
 
             std::string maskMapFilename;
             Image *maskTexture;

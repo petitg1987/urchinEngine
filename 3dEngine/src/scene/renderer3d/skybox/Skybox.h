@@ -20,7 +20,7 @@ namespace urchin
 			explicit Skybox(const std::vector<std::string> &);
 			~Skybox();
 
-			void onCameraProjectionUpdate(const Camera *const);
+			void onCameraProjectionUpdate(const Camera *);
 			void setOffsetY(float);
 
 			void display(const Matrix4<float> &, const Point3<float> &);

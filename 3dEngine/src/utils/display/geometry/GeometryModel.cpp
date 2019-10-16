@@ -7,6 +7,8 @@ namespace urchin
 {
 
 	GeometryModel::GeometryModel() :
+            bufferIDs(),
+            vertexArrayObject(0),
 			color(Vector4<float>(0.0, 1.0, 0.0, 1.0)),
 			polygonMode(WIREFRAME),
 			lineSize(1.3),

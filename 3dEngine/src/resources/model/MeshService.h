@@ -22,8 +22,8 @@ namespace urchin
 			MeshService();
 			~MeshService() override = default;
 
-			int indexOfVertexInTriangle(const Triangle &, unsigned int, const ConstMesh *const);
-			Vector3<float> computeWeightedVertexNormal(const Triangle &, unsigned int, const Point3<float> *const );
+			int indexOfVertexInTriangle(const Triangle &, unsigned int, const ConstMesh *);
+			Vector3<float> computeWeightedVertexNormal(const Triangle &, unsigned int, const Point3<float> *);
 	};
 
 }

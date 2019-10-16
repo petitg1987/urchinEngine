@@ -11,7 +11,7 @@ namespace urchin
 	class FrustumModel : public GeometryModel
 	{
 		public:
-			explicit FrustumModel(const Frustum<float> &);
+			explicit FrustumModel(Frustum<float> );
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

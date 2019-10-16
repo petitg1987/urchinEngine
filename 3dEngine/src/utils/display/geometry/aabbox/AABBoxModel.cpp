@@ -1,5 +1,7 @@
 #include <GL/glew.h>
 
+#include <utility>
+
 #include "utils/display/geometry/aabbox/AABBoxModel.h"
 
 namespace urchin
@@ -11,8 +13,8 @@ namespace urchin
 		initialize();
 	}
 
-	AABBoxModel::AABBoxModel(const std::vector<AABBox<float>> &aabboxes):
-			aabboxes(aabboxes)
+	AABBoxModel::AABBoxModel(std::vector<AABBox<float>> aabboxes):
+			aabboxes(std::move(aabboxes))
 	{
 		initialize();
 	}

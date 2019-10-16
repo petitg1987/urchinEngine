@@ -11,7 +11,7 @@ namespace urchin
 	class OBBoxModel : public GeometryModel
 	{
 		public:
-			explicit OBBoxModel(const OBBox<float> &);
+			explicit OBBoxModel(OBBox<float> );
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

@@ -1,13 +1,14 @@
 #include <GL/glew.h>
 #include <cmath>
+#include <utility>
 
 #include "utils/display/geometry/cylinder/CylinderModel.h"
 
 namespace urchin
 {
 
-	CylinderModel::CylinderModel(const Cylinder<float> &cylinder, int sides):
-			cylinder(cylinder),
+	CylinderModel::CylinderModel(Cylinder<float> cylinder, int sides):
+			cylinder(std::move(cylinder)),
 			sides(sides)
 	{
 		initialize();
@@ -27,8 +28,8 @@ namespace urchin
 		vertexArray.reserve(2*(sides+1));
 
 		float radius = cylinder.getRadius();
-		float halfHeight = cylinder.getHeight() / 2.0;
-		float angle = (2.0*PI_VALUE) / sides;
+		float halfHeight = cylinder.getHeight() / 2.0f;
+		float angle = (2.0f * (float)PI_VALUE) / (float)sides;
 
 		Quaternion<float> qCylinderOrientation;
 		CylinderShape<float>::CylinderOrientation cylinderOrientation = cylinder.getCylinderOrientation();
@@ -46,8 +47,8 @@ namespace urchin
 		Quaternion<float> localOrientation = cylinder.getOrientation() * qCylinderOrientation;
 		for (int i = 0; i <= sides; i++)
 		{
-		    float x = std::cos(i*angle) * radius;
-		    float y = std::sin(i*angle) * radius;
+		    float x = std::cos((float)i * angle) * radius;
+		    float y = std::sin((float)i * angle) * radius;
 
 		    Point3<float> p1 = localOrientation.rotatePoint(Point3<float>(x, y, halfHeight));
 		    Point3<float> p2 = localOrientation.rotatePoint(Point3<float>(x, y, -halfHeight));

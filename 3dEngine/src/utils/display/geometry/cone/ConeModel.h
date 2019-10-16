@@ -11,7 +11,7 @@ namespace urchin
 	class ConeModel : public GeometryModel
 	{
 		public:
-			ConeModel(const Cone<float> &, int);
+			ConeModel(Cone<float> , int);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

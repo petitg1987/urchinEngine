@@ -5,7 +5,6 @@
 #include "Renderer3d.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 #include "utils/display/texture/TextureDisplayer.h"
-#include "utils/display/octree/OctreeDisplayer.h"
 #include "utils/shader/ShaderManager.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f

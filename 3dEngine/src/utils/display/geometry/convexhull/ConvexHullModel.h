@@ -11,7 +11,7 @@ namespace urchin
 	class ConvexHullModel : public GeometryModel
 	{
 		public:
-			explicit ConvexHullModel(const ConvexHull3D<float> &);
+			explicit ConvexHullModel(ConvexHull3D<float> );
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;

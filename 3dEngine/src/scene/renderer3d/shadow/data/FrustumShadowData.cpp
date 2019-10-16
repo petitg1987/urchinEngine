@@ -5,6 +5,7 @@ namespace urchin
 
 	FrustumShadowData::FrustumShadowData(unsigned int frustumSplitIndex) :
 			frustumSplitIndex(frustumSplitIndex),
+            isFarFrustumSplit(false),
 			shadowCasterReceiverBoxUpdated(false),
             modelsRequireUpdate(false)
 	{

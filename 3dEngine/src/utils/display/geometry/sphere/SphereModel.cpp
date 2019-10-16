@@ -1,13 +1,14 @@
 #include <GL/glew.h>
 #include <cmath>
+#include <utility>
 
 #include "utils/display/geometry/sphere/SphereModel.h"
 
 namespace urchin
 {
 
-	SphereModel::SphereModel(const Sphere<float> &sphere, int slices):
-			sphere(sphere),
+	SphereModel::SphereModel(Sphere<float> sphere, int slices):
+			sphere(std::move(sphere)),
 			slices(slices)
 	{
 		initialize();
@@ -30,17 +31,17 @@ namespace urchin
 
 		for(int i=1; i<=slices; i++)
 		{
-			float latitude0 = PI_VALUE * (-0.5 + (float) (i - 1) / slices);
+			float latitude0 = PI_VALUE * (-0.5f + (float)(i - 1) / (float)slices);
 			float z0 = std::sin(latitude0);
 			float zr0 = std::cos(latitude0);
 
-			float latitude1 = PI_VALUE * (-0.5 + (float) i / slices);
+			float latitude1 = PI_VALUE * (-0.5f + (float)i / (float)slices);
 			float z1 = std::sin(latitude1);
 			float zr1 = std::cos(latitude1);
 
 			for(int j=0; j<=slices; j++)
 			{
-				float longitude = 2 * PI_VALUE * (float) (j - 1) / slices;
+				float longitude = 2.0f * (float)PI_VALUE * (float)(j - 1) / (float)slices;
 				float x = std::cos(longitude);
 				float y = std::sin(longitude);
 

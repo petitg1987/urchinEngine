@@ -41,7 +41,7 @@ namespace urchin
 			colorType(colorType),
 			colorIntensity(colorIntensity),
 			displayTextureShader(0),
-			layer(layer),
+			layer((int)layer),
 			mProjectionLoc(-1),
 			diffuseTexLoc(-1)
 	{
@@ -113,25 +113,25 @@ namespace urchin
 		float minX, maxX, minY, maxY;
 		if(fullScreen)
 		{
-			minX = 0.0;
-			maxX = sceneWidth;
-			minY = 0.0;
-			maxY = sceneHeight;
+			minX = 0.0f;
+			maxX = (float)sceneWidth;
+			minY = 0.0f;
+			maxY = (float)sceneHeight;
 		}else
 		{
 			switch(coordinateX)
 			{
 				case TextureDisplayer::LEFT:
-					minX = sceneWidth*0.025;
-					maxX = sceneWidth*0.325;
+					minX = (float)sceneWidth * 0.025f;
+					maxX = (float)sceneWidth * 0.325f;
 					break;
 				case TextureDisplayer::CENTER_X:
-					minX = sceneWidth*0.35;
-					maxX = sceneWidth*0.65;
+					minX = (float)sceneWidth * 0.35f;
+					maxX = (float)sceneWidth * 0.65f;
 					break;
 				case TextureDisplayer::RIGHT:
-					minX = sceneWidth*0.675;
-					maxX = sceneWidth*0.975;
+					minX = (float)sceneWidth * 0.675f;
+					maxX = (float)sceneWidth * 0.975f;
 					break;
 				case TextureDisplayer::USER_DEFINED_X:
 					minX = userMinX;
@@ -144,16 +144,16 @@ namespace urchin
 			switch(coordinateY)
 			{
 				case TextureDisplayer::BOTTOM:
-					minY = sceneHeight*0.675;
-					maxY = sceneHeight*0.975;
+					minY = (float)sceneHeight * 0.675f;
+					maxY = (float)sceneHeight * 0.975f;
 					break;
 				case TextureDisplayer::CENTER_Y:
-					minY = sceneHeight*0.35;
-					maxY = sceneHeight*0.65;
+					minY = (float)sceneHeight * 0.35f;
+					maxY = (float)sceneHeight * 0.65f;
 					break;
 				case TextureDisplayer::TOP:
-					minY = sceneHeight*0.025;
-					maxY = sceneHeight*0.325;
+					minY = (float)sceneHeight * 0.025f;
+					maxY = (float)sceneHeight * 0.325f;
 					break;
 				case TextureDisplayer::USER_DEFINED_Y:
 					minY = userMinY;
