@@ -13,14 +13,18 @@ namespace urchin
 	*/
 	CollisionConvexHullShape::CollisionConvexHullShape(const std::vector<Point3<float>> &points) :
 			CollisionShape3D(),
-			convexHullShape(new ConvexHullShape3D<float>(points))
+			convexHullShape(new ConvexHullShape3D<float>(points)),
+            minDistanceToCenter(0.0f),
+            maxDistanceToCenter(0.0f)
 	{
 		initialize();
 	}
 
 	CollisionConvexHullShape::CollisionConvexHullShape(ConvexHullShape3D<float> *convexHullShape) :
 			CollisionShape3D(),
-			convexHullShape(convexHullShape)
+			convexHullShape(convexHullShape),
+            minDistanceToCenter(0.0f),
+            maxDistanceToCenter(0.0f)
 	{
 		initialize();
 	}

@@ -14,7 +14,7 @@ namespace urchin
 	class RayTester : public Processable
 	{
 		public:
-			explicit RayTester(const Ray<float> &ray);
+			explicit RayTester(Ray<float> ray);
 
 			std::shared_ptr<const RayTestResult> getRayTestResult() const;
 

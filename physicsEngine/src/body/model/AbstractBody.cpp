@@ -9,22 +9,40 @@ namespace urchin
 
 	AbstractBody::AbstractBody(std::string id, Transform<float> transform, std::shared_ptr<const CollisionShape3D> shape) :
 			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+            bIsNew(false),
+            bIsDeleted(false),
+            bNeedFullRefresh(false),
 			workBody(nullptr),
 			transform(std::move(transform)),
 			isManuallyMoved(false),
 			id(std::move(id)),
-			originalShape(std::move(shape))
+            originalShape(std::move(shape)),
+            restitution(0.0f),
+            friction(0.0f),
+            rollingFriction(0.0f),
+            ccdMotionThreshold(0.0f),
+            bIsStatic(true),
+            bIsActive(false)
 	{
 		initialize(0.2f, 0.5f, 0.0f);
 	}
 
 	AbstractBody::AbstractBody(const AbstractBody &abstractBody) :
 			ccdMotionThresholdFactor(ConfigService::instance()->getFloatValue("collisionShape.ccdMotionThresholdFactor")),
+            bIsNew(false),
+            bIsDeleted(false),
+            bNeedFullRefresh(false),
 			workBody(nullptr),
 			transform(abstractBody.getTransform()),
 			isManuallyMoved(false),
 			id(abstractBody.getId()),
-			originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone()))
+			originalShape(std::shared_ptr<const CollisionShape3D>(abstractBody.getOriginalShape()->clone())),
+            restitution(0.0f),
+            friction(0.0f),
+            rollingFriction(0.0f),
+            ccdMotionThreshold(0.0f),
+            bIsStatic(true),
+            bIsActive(false)
 	{
 		initialize(abstractBody.getRestitution(), abstractBody.getFriction(), abstractBody.getRollingFriction());
 		setCcdMotionThreshold(abstractBody.getCcdMotionThreshold());

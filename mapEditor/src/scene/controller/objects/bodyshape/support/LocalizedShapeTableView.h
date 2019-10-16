@@ -21,7 +21,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			LocalizedShapeTableView(QWidget *parent = nullptr);
+			explicit LocalizedShapeTableView(QWidget *parent = nullptr);
 
 			enum NotificationType
 			{
@@ -41,7 +41,7 @@ namespace urchin
 			QStandardItemModel *localizedShapesTableModel;
 			std::map<const urchin::LocalizedCollisionShape *, std::shared_ptr<const LocalizedCollisionShape>> localizedShapesMap;
 
-			void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+			void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
 			void addLocalizedShapeInMap(const std::shared_ptr<const LocalizedCollisionShape>&);
 			void removeSelectedLocalizedShapeFromMap();

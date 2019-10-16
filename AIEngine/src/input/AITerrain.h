@@ -12,7 +12,7 @@ namespace urchin
     class AITerrain : public AIEntity
     {
         public:
-            AITerrain(std::string, const Transform<float> &, bool, std::vector<Point3<float>> , unsigned int, unsigned int);
+            AITerrain(std::string, const Transform<float> &, bool, std::vector<Point3<float>>, unsigned int, unsigned int);
 
             AIEntity::AIEntityType getType() const override;
 

@@ -40,7 +40,7 @@ namespace urchin
 		return sphereObject.getCenterOfMass();
 	}
 
-	const Sphere<float> CollisionSphereObject::retrieveSphere() const
+	Sphere<float> CollisionSphereObject::retrieveSphere() const
 	{
 		return Sphere<float>(getRadius(), getCenterOfMass());
 	}

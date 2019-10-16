@@ -24,7 +24,7 @@ namespace urchin
 			const Quaternion<float> &getOrientation() const;
 			Matrix3<float> retrieveOrientationMatrix() const;
 
-			const Transform<float> toTransform() const;
+			Transform<float> toTransform() const;
 			PhysicsTransform inverse() const;
 
 			bool equals(const PhysicsTransform &) const;

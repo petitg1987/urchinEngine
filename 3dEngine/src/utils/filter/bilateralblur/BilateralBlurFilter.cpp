@@ -1,8 +1,5 @@
 #include <GL/glew.h>
-#include <algorithm>
-#include <numeric>
 #include <stdexcept>
-#include "UrchinCommon.h"
 
 #include "BilateralBlurFilter.h"
 #include "utils/filter/bilateralblur/BilateralBlurFilterBuilder.h"

@@ -12,7 +12,7 @@ namespace urchin
 	class PointsModel : public GeometryModel
 	{
 		public:
-			PointsModel(std::vector<Point3<float>> , float);
+			PointsModel(std::vector<Point3<float>>, float);
 			PointsModel(const Point3<float> &, float);
 
 		protected:

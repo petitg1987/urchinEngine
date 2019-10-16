@@ -61,7 +61,7 @@ namespace urchin
 	/**
 	 * @return Transform object with a scale of 1.0
 	 */
-	const Transform<float> PhysicsTransform::toTransform() const
+	Transform<float> PhysicsTransform::toTransform() const
 	{
 		return Transform<float>(position, orientation, 1.0f);
 	}

@@ -19,12 +19,12 @@ namespace urchin
 		public:
 			SpinBoxDelegate(QObject *, BodyShapeWidget *, QTableView *, QStandardItemModel *);
 
-			QWidget *createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const;
+			QWidget *createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 
-			void setEditorData(QWidget *, const QModelIndex &) const;
-			void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const;
+			void setEditorData(QWidget *, const QModelIndex &) const override;
+			void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const override;
 
-			void updateEditorGeometry(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const;
+			void updateEditorGeometry(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const override;
 
 		private:
 			BodyShapeWidget *bodyShapeWidget;

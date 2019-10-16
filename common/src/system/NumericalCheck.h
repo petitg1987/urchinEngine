@@ -15,7 +15,7 @@ namespace urchin
 
         private:
             NumericalCheck() = default;
-            virtual ~NumericalCheck() = default;
+            ~NumericalCheck() override = default;
     };
 
 }

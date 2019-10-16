@@ -31,7 +31,7 @@ namespace urchin
         return triangleObject.getSupportPoint(direction);
     }
 
-    const Triangle3D<float> CollisionTriangleObject::retrieveTriangle() const
+    Triangle3D<float> CollisionTriangleObject::retrieveTriangle() const
     {
         #ifdef _DEBUG
             assert(getOuterMargin()==0.0f);

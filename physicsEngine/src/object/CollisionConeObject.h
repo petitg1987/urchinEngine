@@ -24,7 +24,7 @@ namespace urchin
 			CollisionConvexObject3D::ObjectType getObjectType() const override;
 			Point3<float> getSupportPoint(const Vector3<float> &, bool) const override;
 
-			const Cone<float> retrieveCone() const;
+			Cone<float> retrieveCone() const;
 			std::string toString() const override;
 
 		private:

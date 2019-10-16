@@ -64,7 +64,7 @@ namespace urchin
 		return capsuleObject.getSupportPoint(direction);
 	}
 
-	const Capsule<float> CollisionCapsuleObject::retrieveCapsule() const
+	Capsule<float> CollisionCapsuleObject::retrieveCapsule() const
 	{
 		return Capsule<float>(getRadius(), getCylinderHeight(), getCapsuleOrientation(), getCenterOfMass(), getOrientation());
 	}

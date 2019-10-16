@@ -5,9 +5,10 @@
 namespace urchin
 {
 
-	RayTestResult::RayTestResult()
+	RayTestResult::RayTestResult() :
+            resultReady(false)
 	{
-		resultReady.store(false, std::memory_order_relaxed);
+
 	}
 
 	void RayTestResult::addResults(ccd_set &rayTestResults)

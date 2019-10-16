@@ -136,7 +136,7 @@ namespace urchin
 	{
         const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 
-        for(int i=0; i<cwPoints.size(); i++)
+        for(int i=0; i<(int)cwPoints.size(); i++)
         {
             int nextI = (i+1) % cwPoints.size();
             if(cwPoints[i].squareDistance(cwPoints[nextI]) <= mergePointsSquareDistance)

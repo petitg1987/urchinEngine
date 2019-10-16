@@ -23,7 +23,7 @@ namespace urchin
 
 	float CollisionConeObject::getHeight() const
 	{
-		return coneObject.getHeight() + (2.0 * getOuterMargin());
+		return coneObject.getHeight() + (2.0f * getOuterMargin());
 	}
 
 	typename ConeShape<float>::ConeOrientation CollisionConeObject::getConeOrientation() const
@@ -67,7 +67,7 @@ namespace urchin
 		return coneObject.getSupportPoint(direction);
 	}
 
-	const Cone<float> CollisionConeObject::retrieveCone() const
+	Cone<float> CollisionConeObject::retrieveCone() const
 	{
 		return Cone<float>(getRadius(), getHeight(), getConeOrientation(), getCenterOfMass(), getOrientation());
 	}

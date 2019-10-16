@@ -23,7 +23,7 @@ namespace urchin
 
 	float CollisionCylinderObject::getHeight() const
 	{
-		return cylinderObject.getHeight() + (2.0 * getOuterMargin());
+		return cylinderObject.getHeight() + (2.0f * getOuterMargin());
 	}
 
 	typename CylinderShape<float>::CylinderOrientation CollisionCylinderObject::getCylinderOrientation() const
@@ -67,7 +67,7 @@ namespace urchin
 		return cylinderObject.getSupportPoint(direction);
 	}
 
-	const Cylinder<float> CollisionCylinderObject::retrieveCylinder() const
+	Cylinder<float> CollisionCylinderObject::retrieveCylinder() const
 	{
 		return Cylinder<float>(getRadius(), getHeight(), getCylinderOrientation(), getCenterOfMass(), getOrientation());
 	}

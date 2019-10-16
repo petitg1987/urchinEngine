@@ -1,6 +1,5 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
-#include <memory>
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
 

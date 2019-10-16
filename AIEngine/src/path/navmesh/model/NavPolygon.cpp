@@ -1,10 +1,12 @@
 #include "NavPolygon.h"
 
+#include <utility>
+
 namespace urchin
 {
 
-	NavPolygon::NavPolygon(const std::string &name, std::vector<Point3<float>> &&points, const NavTopography *navTopography) :
-        	name(name),
+	NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>> &&points, const NavTopography *navTopography) :
+        	name(std::move(name)),
 			points(std::move(points)),
 			navTopography(navTopography)
 	{
