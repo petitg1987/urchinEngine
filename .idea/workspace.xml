@@ -6,9 +6,9 @@
       <config projectName="urchinEngine" targetName="copyShaders" />
       <config projectName="urchinEngine" targetName="urchinMapHandler" />
       <config projectName="urchinEngine" targetName="testRunner" />
+      <config projectName="urchinEngine" targetName="urchinMapEditor" />
       <config projectName="urchinEngine" targetName="copyShader" />
       <config projectName="urchinEngine" targetName="urchinMapEditor_automoc" />
-      <config projectName="urchinEngine" targetName="urchinMapEditor" />
       <config projectName="urchinEngine" targetName="urchinSoundEngine" />
       <config projectName="urchinEngine" targetName="urchinNetworkEngine" />
       <config projectName="urchinEngine" targetName="urchinCommon" />
@@ -26,42 +26,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9158e33b-fd10-447f-8edb-3707d7cd27fb" name="Default" comment="Fix warning">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/display/geometry/lines/LinesModel.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/display/geometry/lines/LinesModel.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/display/geometry/points/PointsModel.h" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/display/geometry/points/PointsModel.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/3dEngine/src/utils/filter/bilateralblur/BilateralBlurFilter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/input/AITerrain.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/input/AITerrain.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/csg/CSGPolygon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/model/NavPolygon.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/services/TerrainObstacleService.h" beforeDir="false" afterPath="$PROJECT_DIR$/AIEngine/src/path/navmesh/polytope/services/TerrainObstacleService.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/system/NumericalCheck.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/system/NumericalCheck.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h" beforeDir="false" afterPath="$PROJECT_DIR$/mapEditor/src/scene/controller/objects/bodyshape/support/SpinBoxDelegate.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/body/model/AbstractBody.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/body/model/AbstractBody.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/body/model/RigidBody.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/body/model/RigidBody.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCapsuleObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCapsuleObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCapsuleObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCapsuleObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionConeObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionConeObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionConeObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionConeObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCylinderObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCylinderObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCylinderObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionCylinderObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionSphereObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionSphereObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionSphereObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionSphereObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionTriangleObject.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionTriangleObject.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/CollisionTriangleObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/CollisionTriangleObject.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/pool/CollisionConvexObjectPool.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/pool/CollisionConvexObjectPool.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/object/pool/CollisionConvexObjectPool.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/object/pool/CollisionConvexObjectPool.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTestResult.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTestResult.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/processable/raytest/RayTester.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/shape/CollisionConvexHullShape.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/shape/CollisionConvexHullShape.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/shape/CollisionHeightfieldShape.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/utils/math/PhysicsTransform.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/utils/math/PhysicsTransform.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physicsEngine/src/utils/math/PhysicsTransform.h" beforeDir="false" afterPath="$PROJECT_DIR$/physicsEngine/src/utils/math/PhysicsTransform.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundEngine/src/trigger/shape/SoundSphere.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/trigger/shape/SoundSphere.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soundEngine/src/trigger/shape/SoundSphere.h" beforeDir="false" afterPath="$PROJECT_DIR$/soundEngine/src/trigger/shape/SoundSphere.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/src/physics/shape/ShapeToConvexObjectTest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/src/physics/shape/ShapeToConvexObjectTest.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -999,7 +963,11 @@
       <workItem from="1571073856860" duration="5323000" />
       <workItem from="1571152594099" duration="2502000" />
       <workItem from="1571160148360" duration="552000" />
-      <workItem from="1571244582445" duration="11327000" />
+      <workItem from="1571244582445" duration="11491000" />
+      <workItem from="1571332752981" duration="599000" />
+      <workItem from="1571842080435" duration="1840000" />
+      <workItem from="1572082773302" duration="83000" />
+      <workItem from="1572119565129" duration="156000" />
     </task>
     <task id="LOCAL-00004" summary="AI: replace NavTriangleRef by NavTriangle">
       <created>1536484674409</created>
