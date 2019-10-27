@@ -73,3 +73,27 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 cd UrchinEngine/mapEditor/
 ./urchinMapEditor
 ```
+
+## CLion configuration
+- Add CMake profiles (File > Settings -> Build,Execution,Deployment > CMake)
+  - Profile **Debug**: 
+    - Name: `Debug`
+    - Build type: `Debug`
+    - Generation path: `.build/debug`
+  - Profile **Release**:
+    - Name: `Release`
+    - Build type: `Release`
+    - Generation path: `.build/release`
+- Add CMake applications
+  - Application **testRunner**:
+    - Target/executable: `testRunner`
+  - Application **testRunner (memecheck)**:
+    - Target/executable: `testRunner`
+    - Program arguments `--tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=no --log-file=valMemcheck.log ./testRunner`
+    - Working directory: `/home/greg/Project/urchin/urchinEngine/test`
+  - Application **urchinMapEditor**:
+    - Target/executable: `urchinMapEditor`
+  - Application **urchinMapEditor (memecheck)**:
+    - Target/executable: `urchinMapEditor`
+    - Program arguments `--tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=no --log-file=valMemcheck.log ./urchinMapEditor`
+    - Working directory: `/home/greg/Project/urchin/urchinEngine/mapEditor`
