@@ -1,7 +1,7 @@
 bl_info = {
   "name": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
   "version": (1, 0, 0),
-  "blender": (2, 6, 6),
+  "blender": (2, 80, 0),
   "api": 31847,
   "location": "File > Export",
   "description": "Export Urchin Engine (.urchinMesh, .urchinAnim)",
@@ -712,9 +712,8 @@ def saveUrchin(settings):
 # ---------------------------------------------------------------------------
 # UI
 # ---------------------------------------------------------------------------
-from bpy.props import *
 class ExportUrchin(bpy.types.Operator):
-  '''Export Urchin Engine (.urchinMesh .urchinAnim)'''
+  """Export Urchin Engine (.urchinMesh .urchinAnim)"""
   bl_idname = "export.urchin"
   bl_label = 'Export Urchin Engine'
 
@@ -722,9 +721,9 @@ class ExportUrchin(bpy.types.Operator):
                  ("anim only", "Anim only", "Export anim only"),
                  ("mesh only", "Mesh only", "Export mesh only")]
 
-  filepath = StringProperty(subtype='FILE_PATH', name="File Path", description="File path for exporting", maxlen=1024, default="")
-  exportMode = EnumProperty(name="Exports", items=exportModes, description="Choose export mode", default='mesh only')
-  meshScale = FloatProperty(name="Scale", description="Scale all objects from world origin (0,0,0)", min=0.001, max=1000.0, default=1.0, precision=6)
+  filepath: bpy.props.StringProperty(subtype='FILE_PATH', name="File Path", description="File path for exporting", maxlen=1024, default="")
+  exportMode: bpy.props.EnumProperty(name="Exports", items=exportModes, description="Choose export mode", default='mesh only')
+  meshScale: bpy.props.FloatProperty(name="Scale", description="Scale all objects from world origin (0,0,0)", min=0.001, max=1000.0, default=1.0, precision=6)
 
   def execute(self, context):
     global scale
@@ -734,21 +733,24 @@ class ExportUrchin(bpy.types.Operator):
     return {'FINISHED'}
 
   def invoke(self, context, event):
-    WindowManager = context.window_manager
-    WindowManager.fileselect_add(self)
+    context.window_manager.fileselect_add(self)
     return {"RUNNING_MODAL"}
 
 def menuFunc(self, context):
-  defaultPath = os.path.splitext(bpy.data.filepath)[0]
-  self.layout.operator(ExportUrchin.bl_idname, text="Urchin Engine (.urchinMesh .urchinAnim)", icon='BLENDER').filepath = defaultPath
+  default_path = os.path.splitext(bpy.data.filepath)[0]
+  self.layout.operator(ExportUrchin.bl_idname, text="Urchin Engine (.urchinMesh .urchinAnim)", icon='BLENDER').filepath = default_path
+
+classes = (
+  ExportUrchin
+)
 
 def register():
-  bpy.utils.register_module(__name__)
-  bpy.types.INFO_MT_file_export.append(menuFunc)
+  bpy.utils.register_classes_factory(classes)
+  bpy.types.TOPBAR_MT_file_export.append(menuFunc)
 
 def unregister():
-  bpy.utils.unregister_module(__name__)
-  bpy.types.INFO_MT_file_export.remove(menuFunc)
+  bpy.utils.register_classes_factory(classes)
+  bpy.types.TOPBAR_MT_file_export.remove(menuFunc)
 
 if __name__ == "__main__":
   register()
