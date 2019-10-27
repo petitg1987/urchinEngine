@@ -721,9 +721,9 @@ class ExportUrchin(bpy.types.Operator):
                  ("anim only", "Anim only", "Export anim only"),
                  ("mesh only", "Mesh only", "Export mesh only")]
 
-  filepath: bpy.props.StringProperty(subtype='FILE_PATH', name="File Path", description="File path for exporting", maxlen=1024, default="")
-  exportMode: bpy.props.EnumProperty(name="Exports", items=exportModes, description="Choose export mode", default='mesh only')
-  meshScale: bpy.props.FloatProperty(name="Scale", description="Scale all objects from world origin (0,0,0)", min=0.001, max=1000.0, default=1.0, precision=6)
+  filepath : bpy.props.StringProperty(subtype='FILE_PATH', name="File Path", description="File path for exporting", maxlen=1024, default="")
+  exportMode : bpy.props.EnumProperty(name="Exports", items=exportModes, description="Choose export mode", default='mesh only')
+  meshScale : bpy.props.FloatProperty(name="Scale", description="Scale all objects from world origin (0,0,0)", min=0.001, max=1000.0, default=1.0, precision=6)
 
   def execute(self, context):
     global scale
