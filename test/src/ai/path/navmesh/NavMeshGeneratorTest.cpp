@@ -22,12 +22,12 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
     AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 2);
-    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<walkableFace[2]> - <hole>");
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 8); //8 points for a square with a square hole inside
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 8); //8 triangles for a square with a square hole inside
-    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<hole[2]>");
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<hole[2]>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 4); //4 points of "hole" polygon
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<walkableFace[2]> - <hole>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 8); //8 points for a square with a square hole inside
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 8); //8 triangles for a square with a square hole inside
 }
 
 void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
@@ -45,12 +45,12 @@ void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
     AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 2);
-    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<[walkableFace[2]] - [hole]>");
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 6);
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 4);
-    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<hole[2]>");
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<hole[2]>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 4); //4 points of "hole" polygon
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<[walkableFace[2]] - [hole]>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 6);
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 4);
 }
 
 void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
@@ -68,22 +68,22 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
 
     AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 2);
-    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<[walkableFace[2]] - [hole]>");
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 6);
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[0], Point3<float>(2.0, 0.01, 2.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[1], Point3<float>(2.0, 0.01, -2.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[2], Point3<float>(-1.0, 0.01, -2.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[3], Point3<float>(-1.0, 0.01, -1.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[4], Point3<float>(-2.0, 0.01, -1.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[5], Point3<float>(-2.0, 0.01, 2.0));
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 4);
-    AssertHelper::assert3Sizes(navMesh->getPolygons()[0]->getTriangles()[0]->getIndices(), new std::size_t[3]{3, 1, 2});
-    AssertHelper::assert3Sizes(navMesh->getPolygons()[0]->getTriangles()[1]->getIndices(), new std::size_t[3]{5, 1, 3});
-    AssertHelper::assert3Sizes(navMesh->getPolygons()[0]->getTriangles()[2]->getIndices(), new std::size_t[3]{0, 1, 5});
-    AssertHelper::assert3Sizes(navMesh->getPolygons()[0]->getTriangles()[3]->getIndices(), new std::size_t[3]{4, 5, 3});
-    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<hole[2]>");
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
-    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<hole[2]>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 4); //4 points of "hole" polygon
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<[walkableFace[2]] - [hole]>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 6);
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[1]->getPoints()[0], Point3<float>(2.0, 0.01, 2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[1]->getPoints()[1], Point3<float>(2.0, 0.01, -2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[1]->getPoints()[2], Point3<float>(-1.0, 0.01, -2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[1]->getPoints()[3], Point3<float>(-1.0, 0.01, -1.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[1]->getPoints()[4], Point3<float>(-2.0, 0.01, -1.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[1]->getPoints()[5], Point3<float>(-2.0, 0.01, 2.0));
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 4);
+    AssertHelper::assert3Sizes(navMesh->getPolygons()[1]->getTriangles()[0]->getIndices(), new std::size_t[3]{3, 1, 2});
+    AssertHelper::assert3Sizes(navMesh->getPolygons()[1]->getTriangles()[1]->getIndices(), new std::size_t[3]{5, 1, 3});
+    AssertHelper::assert3Sizes(navMesh->getPolygons()[1]->getTriangles()[2]->getIndices(), new std::size_t[3]{0, 1, 5});
+    AssertHelper::assert3Sizes(navMesh->getPolygons()[1]->getTriangles()[3]->getIndices(), new std::size_t[3]{4, 5, 3});
 }
 
 std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent()
