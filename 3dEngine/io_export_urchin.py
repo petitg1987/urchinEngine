@@ -772,17 +772,19 @@ def menuFunc(self, context):
 
 
 classes = (
-    ExportUrchin
+    ExportUrchin,
 )
 
 
 def register():
-    bpy.utils.register_classes_factory(classes)
+    for cls in classes:
+        bpy.utils.register_class(cls)
     bpy.types.TOPBAR_MT_file_export.append(menuFunc)
 
 
 def unregister():
-    bpy.utils.register_classes_factory(classes)
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
     bpy.types.TOPBAR_MT_file_export.remove(menuFunc)
 
 
