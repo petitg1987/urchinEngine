@@ -519,7 +519,6 @@ def saveUrchin(settings) :
             modifiedMesh = object_eval.to_mesh()
 
             mesh = Mesh(modifiedMesh.name)
-            modifiedMesh.calc_loop_triangles()  #TODO Useful ?
             print("[INFO] Processing mesh: " + modifiedMesh.name)
             meshes.append(mesh)
 
@@ -605,12 +604,10 @@ def saveUrchin(settings) :
                                 vertex = Vertex(subMesh, vertex.coord, vertex, CloneReason.FLAT_FACE)
                                 createVertexB += 1
 
-                            uv_layer = modifiedMesh.uv_layers.active.data
-                            # uv_textures = modifiedMesh.tessface_uv_textures
-                            # hasFaceUV = len(uv_textures) > 0
-                            hasFaceUV = 1 > 0 #TODO improve
-                            if hasFaceUV :
-                                uv = [uv_layer[face.loop_start + i].uv[0], uv_layer[face.loop_start + i].uv[1]]
+                            active_uv_layer = modifiedMesh.uv_layers.active
+                            if active_uv_layer is not None and len(active_uv_layer.data) > 0 :
+                                uv_layer_data = active_uv_layer.data
+                                uv = [uv_layer_data[face.loop_start + i].uv[0], uv_layer_data[face.loop_start + i].uv[1]]
                                 uv[1] = 1.0 - uv[1]
                                 if not vertex.textureCoord :
                                     vertex.textureCoord = TextureCoordinate(*uv)
@@ -631,7 +628,6 @@ def saveUrchin(settings) :
                     else :
                         print("[ERROR] Found face with invalid material")
             print("[INFO] Created vertices: A " + str(createVertexA) + ", B " + str(createVertexB) + ", C " + str(createVertexC))
-            #TODO bpy.data.meshes.remove(modifiedMesh)
 
     # ANIMATION EXPORT
     animations = {}
