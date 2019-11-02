@@ -3,7 +3,6 @@
 #include <stack>
 #include <cassert>
 #include <thread>
-#include <algorithm>
 #include <functional>
 
 #include "TerrainGrass.h"

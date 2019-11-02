@@ -641,7 +641,7 @@ namespace urchin
 		{
 			glViewport(0, 0, shadowMapResolution, shadowMapResolution);
 			glBindFramebuffer(GL_FRAMEBUFFER, shadowData.second->getFboID());
-			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+			glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
 			shadowUniform->setUniformData(shadowData.second);
 			shadowModelUniform->setModelUniformData(shadowData.second);
