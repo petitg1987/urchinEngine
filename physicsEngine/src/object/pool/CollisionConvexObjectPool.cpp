@@ -5,7 +5,6 @@
 #include "object/CollisionConeObject.h"
 #include "object/CollisionConvexHullObject.h"
 #include "object/CollisionCylinderObject.h"
-#include "object/CollisionCylinderObject.h"
 #include "object/CollisionTriangleObject.h"
 
 namespace urchin

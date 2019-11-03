@@ -1,5 +1,3 @@
-#include <sstream>
-
 #include "object/CollisionConvexObject3D.h"
 
 namespace urchin

@@ -41,11 +41,11 @@ namespace urchin
 	void CollisionAlgorithmSelector::initializeCollisionAlgorithmBuilderMatrix()
 	{
 		//initialize matrix with nullptr collision algorithm builder
-		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
+		for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
 		{
-			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
+			for(auto & builderMatrixColumn : builderMatrixLine)
 			{
-				collisionAlgorithmBuilderMatrix[i][j] = nullptr;
+                builderMatrixColumn = nullptr;
 			}
 		}
 
@@ -57,13 +57,13 @@ namespace urchin
 		initializeCompoundAlgorithm();
 
 		//generic algorithm (convex hull vs. convex hull)
-		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
+		for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
 		{
-			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
+			for(auto & builderMatrixColumn : builderMatrixLine)
 			{
-				if(!collisionAlgorithmBuilderMatrix[i][j])
+				if(!builderMatrixColumn)
 				{
-					collisionAlgorithmBuilderMatrix[i][j] = new ConvexConvexCollisionAlgorithm::Builder();
+                    builderMatrixColumn = new ConvexConvexCollisionAlgorithm::Builder();
 				}
 			}
 		}
@@ -101,11 +101,11 @@ namespace urchin
 
 	void CollisionAlgorithmSelector::deleteCollisionAlgorithmBuilderMatrix()
 	{
-		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
+		for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
 		{
-			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
+			for(auto & builderMatrixColumn : builderMatrixLine)
 			{
-				delete collisionAlgorithmBuilderMatrix[i][j];
+				delete builderMatrixColumn;
 			}
 		}
 	}
@@ -113,11 +113,11 @@ namespace urchin
 	void CollisionAlgorithmSelector::initializeAlgorithmPool()
 	{
 		unsigned int maxElementSize = 0;
-		for(unsigned int i=0; i<CollisionShape3D::SHAPE_MAX; ++i)
+		for(auto & builderMatrixLine : collisionAlgorithmBuilderMatrix)
 		{
-			for(unsigned int j=0; j<CollisionShape3D::SHAPE_MAX; ++j)
+			for(auto & builderMatrixColumn : builderMatrixLine)
 			{
-				maxElementSize = std::max(maxElementSize, collisionAlgorithmBuilderMatrix[i][j]->getAlgorithmSize());
+				maxElementSize = std::max(maxElementSize, builderMatrixColumn->getAlgorithmSize());
 			}
 		}
 		unsigned int algorithmPoolSize = ConfigService::instance()->getUnsignedIntValue("narrowPhase.algorithmPoolSize");

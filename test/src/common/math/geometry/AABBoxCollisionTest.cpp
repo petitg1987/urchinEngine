@@ -4,7 +4,7 @@
 #include "AssertHelper.h"
 using namespace urchin;
 
-void AABBoxCollissionTest::rayRightToBox()
+void AABBoxCollisionTest::rayRightToBox()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(2.0, 0.5, 2.0), Vector3<float>(1.0, 0.0, 0.0), 10.0);
@@ -12,7 +12,7 @@ void AABBoxCollissionTest::rayRightToBox()
 	AssertHelper::assertTrue(!box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayRightTopToBox()
+void AABBoxCollisionTest::rayRightTopToBox()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(1.5, 2.0, 0.5), Vector3<float>(1.0, 1.0, 0.0), 10.0);
@@ -20,7 +20,7 @@ void AABBoxCollissionTest::rayRightTopToBox()
 	AssertHelper::assertTrue(!box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayInsideBox()
+void AABBoxCollisionTest::rayInsideBox()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(0.1, 0.1, 0.1), Vector3<float>(1.0, 1.0, 1.0), 1.0);
@@ -28,7 +28,7 @@ void AABBoxCollissionTest::rayInsideBox()
 	AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayThroughXPlanes()
+void AABBoxCollisionTest::rayThroughXPlanes()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(-1.0, 0.5, 0.5), Vector3<float>(1.0, 0.0, 0.0), 10.0);
@@ -36,7 +36,7 @@ void AABBoxCollissionTest::rayThroughXPlanes()
 	AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayThroughYPlanes()
+void AABBoxCollisionTest::rayThroughYPlanes()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(0.5, 2.0, 0.5), Vector3<float>(0.0, -1.0, 0.0), 2.0);
@@ -44,7 +44,7 @@ void AABBoxCollissionTest::rayThroughYPlanes()
 	AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayThroughZPlanes()
+void AABBoxCollisionTest::rayThroughZPlanes()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(0.5, 0.5, 2.0), Vector3<float>(0.0, 0.0, -1.0), 10.0);
@@ -52,7 +52,7 @@ void AABBoxCollissionTest::rayThroughZPlanes()
 	AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayThroughXYPlanes()
+void AABBoxCollisionTest::rayThroughXYPlanes()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(1.5, 2.0, 0.5), Vector3<float>(-1.0, -1.0, 0.0), 4.0);
@@ -60,7 +60,7 @@ void AABBoxCollissionTest::rayThroughXYPlanes()
 	AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-void AABBoxCollissionTest::rayInsideToXPlane()
+void AABBoxCollisionTest::rayInsideToXPlane()
 {
 	AABBox<float> box(Point3<float>(0.0, 0.0, 0.0), Point3<float>(1.0, 1.0, 1.0));
 	Ray<float> ray(Point3<float>(0.5, 0.5, 0.5), Vector3<float>(1.0, 0.0, 0.0), 5.0);
@@ -68,21 +68,21 @@ void AABBoxCollissionTest::rayInsideToXPlane()
 	AssertHelper::assertTrue(box.collideWithRay(ray));
 }
 
-CppUnit::Test *AABBoxCollissionTest::suite()
+CppUnit::Test *AABBoxCollisionTest::suite()
 {
-    auto *suite = new CppUnit::TestSuite("AABBoxCollissionTest");
+    auto *suite = new CppUnit::TestSuite("AABBoxCollisionTest");
 
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayRightToBox", &AABBoxCollissionTest::rayRightToBox));
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayRightTopToBox", &AABBoxCollissionTest::rayRightTopToBox));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayRightToBox", &AABBoxCollisionTest::rayRightToBox));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayRightTopToBox", &AABBoxCollisionTest::rayRightTopToBox));
 
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayInsideBox", &AABBoxCollissionTest::rayInsideBox));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayInsideBox", &AABBoxCollisionTest::rayInsideBox));
 
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayThroughXPlanes", &AABBoxCollissionTest::rayThroughXPlanes));
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayThroughYPlanes", &AABBoxCollissionTest::rayThroughYPlanes));
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayThroughZPlanes", &AABBoxCollissionTest::rayThroughZPlanes));
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayThroughXYPlanes", &AABBoxCollissionTest::rayThroughXYPlanes));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayThroughXPlanes", &AABBoxCollisionTest::rayThroughXPlanes));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayThroughYPlanes", &AABBoxCollisionTest::rayThroughYPlanes));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayThroughZPlanes", &AABBoxCollisionTest::rayThroughZPlanes));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayThroughXYPlanes", &AABBoxCollisionTest::rayThroughXYPlanes));
 
-	suite->addTest(new CppUnit::TestCaller<AABBoxCollissionTest>("rayInsideToXPlane", &AABBoxCollissionTest::rayInsideToXPlane));
+	suite->addTest(new CppUnit::TestCaller<AABBoxCollisionTest>("rayInsideToXPlane", &AABBoxCollisionTest::rayInsideToXPlane));
 
 	return suite;
 }

@@ -76,7 +76,7 @@ namespace urchin
 		{
 			if(simplifiedReferenceDirectory[i]=='/' || simplifiedReferenceDirectory[i]=='\\')
 			{
-				relativePath = "../" + relativePath;
+				relativePath = std::string("../").append(relativePath);
 			}
 		}
 

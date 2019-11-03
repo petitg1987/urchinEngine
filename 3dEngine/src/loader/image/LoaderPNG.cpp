@@ -113,19 +113,19 @@ namespace urchin
         {
             if(channelsMask & 1u)
             { //red
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-7]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-6]));
+                pixels.push_back(static_cast<uint16_t>(pixelsRGBA16bits[i-7] << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-6]));
             }
             if(channelsMask & 2u)
             { //green
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-5]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-4]));
+                pixels.push_back(static_cast<uint16_t>(pixelsRGBA16bits[i-5] << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-4]));
             }
             if(channelsMask & 4u)
             { //blue
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-3]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-2]));
+                pixels.push_back(static_cast<uint16_t>(pixelsRGBA16bits[i-3] << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-2]));
             }
             if(channelsMask & 8u)
             { //alpha
-                pixels.push_back((static_cast<uint16_t>(pixelsRGBA16bits[i-1]) << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-0]));
+                pixels.push_back(static_cast<uint16_t>(pixelsRGBA16bits[i-1] << 8u) | static_cast<uint16_t>(pixelsRGBA16bits[i-0]));
             }
         }
 

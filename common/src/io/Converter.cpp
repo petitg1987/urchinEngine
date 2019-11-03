@@ -12,7 +12,7 @@ namespace urchin
     bool Converter::isInt(const std::string &str)
     {
         std::istringstream iss(str);
-        int value;
+        int value = 0;
         iss >> std::noskipws >> value;
         return iss.eof() && !iss.fail();
     }
@@ -20,7 +20,7 @@ namespace urchin
 	int Converter::toInt(const std::string &str)
 	{
 		std::istringstream iss(str);
-		int value;
+		int value = 0;
 		iss >> value;
 		return value;
 	}
@@ -28,7 +28,7 @@ namespace urchin
     bool Converter::isUnsignedInt(const std::string &str)
     {
         std::istringstream iss(str);
-        unsigned int value;
+        unsigned int value = 0;
         iss >> std::noskipws >> value;
         return iss.eof() && !iss.fail();
     }
@@ -36,7 +36,7 @@ namespace urchin
 	unsigned int Converter::toUnsignedInt(const std::string &str)
 	{
 		std::istringstream iss(str);
-		unsigned int value;
+		unsigned int value = 0;
 		iss >> value;
 		return value;
 	}
@@ -46,7 +46,7 @@ namespace urchin
         std::locale::global(std::locale("C")); //for float
 
         std::istringstream iss(str);
-        float value;
+        float value = 0.0f;
         iss >> std::noskipws >> value;
         return iss.eof() && !iss.fail();
     }
@@ -56,7 +56,7 @@ namespace urchin
 		std::locale::global(std::locale("C")); //for float
 
 		std::istringstream iss(str);
-		float value;
+		float value = 0.0f;
 		iss >> value;
 		return value;
 	}

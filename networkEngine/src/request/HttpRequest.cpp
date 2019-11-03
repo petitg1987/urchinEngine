@@ -21,7 +21,7 @@ namespace urchin
              throw std::runtime_error("HttpRequestInitializer constructor cannot be called several times");
         }
 
-        curl_global_init(CURL_GLOBAL_ALL); //no thread-safe: cannot be called several times
+        curl_global_init(CURL_GLOBAL_DEFAULT); //no thread-safe: cannot be called several times
     }
 
     HttpRequestInitializer::~HttpRequestInitializer()

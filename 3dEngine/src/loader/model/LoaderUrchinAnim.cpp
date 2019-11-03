@@ -24,25 +24,25 @@ namespace urchin
 		}
 		
 		//numFrames
-		unsigned int numFrames;
+		unsigned int numFrames = 0;
         FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numFrames;
 		
 		//numBones
-		unsigned int numBones;
+		unsigned int numBones = 0;
         FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numBones;
 		
 		//frameRates
-		unsigned int frameRate;
+		unsigned int frameRate = 0;
         FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> frameRate;
 		
 		//numAnimatedComponents
-		unsigned int numAnimatedComponents;
+		unsigned int numAnimatedComponents = 0;
         FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numAnimatedComponents;

@@ -1,5 +1,4 @@
 #include <thread>
-#include <algorithm>
 #include <functional>
 #include <fstream>
 

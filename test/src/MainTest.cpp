@@ -44,7 +44,7 @@ void commonTests(CppUnit::TextUi::TestRunner &runner)
     //math - geometry
     runner.addTest(OrthogonalProjectionTest::suite());
     runner.addTest(ClosestPointTest::suite());
-    runner.addTest(AABBoxCollissionTest::suite());
+    runner.addTest(AABBoxCollisionTest::suite());
     runner.addTest(LineSegment2DCollisionTest::suite());
     runner.addTest(ResizeConvexHull3DTest::suite());
     runner.addTest(ResizePolygon2DServiceTest::suite());

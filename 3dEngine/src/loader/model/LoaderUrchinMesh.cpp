@@ -15,7 +15,7 @@ namespace urchin
 		std::istringstream iss;
 		std::string buffer;
 		std::string sdata;
-		int idata;
+		int idata = 0;
 
 		std::string filenamePath = FileSystem::instance()->getResourcesDirectory() + filename;
 		file.open(filenamePath, std::ios::in);
@@ -25,13 +25,13 @@ namespace urchin
 		}
 
 		//numBones
-		unsigned int numBones;
+		unsigned int numBones = 0;
 		FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numBones;
 		
 		//numMeshes
-		unsigned int numMeshes;
+		unsigned int numMeshes = 0;
 		FileReaderUtil::nextLine(file, buffer);
 		iss.clear(); iss.str(buffer);
 		iss >> sdata >> numMeshes;
@@ -63,7 +63,7 @@ namespace urchin
 			materialFilename = materialFilename.substr(1, materialFilename.length()-2); //remove quot
 			
 			//numVertices
-			unsigned int numVertices;
+			unsigned int numVertices = 0;
 			FileReaderUtil::nextLine(file, buffer);
 			iss.clear(); iss.str(buffer);
 			iss >> sdata >> numVertices;
@@ -95,7 +95,7 @@ namespace urchin
 			}
 			
 			//numWeights
-			unsigned int numWeights;
+			unsigned int numWeights = 0;
 			FileReaderUtil::nextLine(file, buffer);
 			iss.clear(); iss.str(buffer);
 			iss >> sdata >> numWeights;
