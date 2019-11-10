@@ -3,13 +3,12 @@
 #include <string>
 #include <numeric>
 
-
 #include "NavMeshGenerator.h"
 #include "input/AIObject.h"
 #include "input/AITerrain.h"
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
 #include "path/navmesh/polytope/PolytopeBuilder.h"
-#include "path/navmesh/polytope/aabbtree/PolytopeAABBNodeData.h"
+#include "path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 
@@ -25,7 +24,7 @@ namespace urchin
 			navMeshAgent(std::make_shared<NavMeshAgent>()),
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
-            expandedPolytopes(AABBTree<std::shared_ptr<Polytope>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
+            navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
     {
 
 	}
@@ -46,26 +45,30 @@ namespace urchin
     }
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
-	{
+	{ //TODO update doc with new algorithm
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
+		updateNavPolygons();
 
         allNavPolygons.clear();
-        for (const auto &polytopeWalkableSurface : walkableSurfaces)
+        navigationObjects.getAllNodeObjects(allNavObjects);
+        for(const auto &navObject : allNavObjects)
         {
-            std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygons(polytopeWalkableSurface.second);
+            const std::vector<std::shared_ptr<NavPolygon>> &navPolygons = navObject->getNavPolygons();
             allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
         }
-
         std::lock_guard<std::mutex> lock(navMeshMutex);
         navMesh->replaceAllPolygons(allNavPolygons);
+
 		return navMesh;
 	}
 
 	void NavMeshGenerator::updateExpandedPolytopes(AIWorld &aiWorld)
 	{
         ScopeProfiler scopeProfiler("ai", "upExpandPoly");
+
+        newlyCreatedNavObjects.clear();
 
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
@@ -101,6 +104,8 @@ namespace urchin
 
 	void NavMeshGenerator::addExpandedPolygon(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
     {
+        auto navObject = std::make_shared<NavObject>(expandedPolytope);
+
         if(expandedPolytope->isWalkableCandidate())
         {
             for(std::size_t surfaceIndex=0; surfaceIndex<expandedPolytope->getSurfaces().size(); ++surfaceIndex)
@@ -108,21 +113,36 @@ namespace urchin
                 const std::shared_ptr<PolytopeSurface> &polytopeSurface = expandedPolytope->getSurface(surfaceIndex);
                 if(polytopeSurface->isWalkable())
                 {
-                    walkableSurfaces.insert(std::pair<std::shared_ptr<Polytope>, std::shared_ptr<PolytopeSurface>>(expandedPolytope, polytopeSurface));
+                    navObject->addWalkableSurface(polytopeSurface);
                 }
             }
         }
 
-        expandedPolytopes.addObject(new PolytopeAABBNodeData(expandedPolytope));
-        aiEntity->addExpandedPolytope(expandedPolytope);
+        navigationObjects.addObject(new NavObjectAABBNodeData(navObject));
+        newlyCreatedNavObjects.push_back(navObject);
+        aiEntity->addNavObject(navObject);
     }
 
     void NavMeshGenerator::removeExpandedPolygon(const std::shared_ptr<AIEntity> &aiEntity)
     {
-        for(const auto &expandedPolytope : aiEntity->getExpandedPolytopes())
+        for(const auto &navObject : aiEntity->getNavObjects())
         {
-            expandedPolytopes.removeObject(expandedPolytope);
-            walkableSurfaces.erase(expandedPolytope);
+            navigationObjects.removeObject(navObject);
+        }
+    }
+
+    void NavMeshGenerator::updateNavPolygons()
+    {
+        //TODO: should update: 'newlyCreatedNavObjects' & polygons affected by new/updated polygons
+        navigationObjects.getAllNodeObjects(allNavObjects);
+        for(const auto &navObject : allNavObjects)
+        {
+            navObject->removeAllNavPolygons();
+            for(const auto &walkableSurface : navObject->getWalkableSurfaces())
+            {
+                std::vector<std::shared_ptr<NavPolygon>> navPolygons = createNavigationPolygons(walkableSurface);
+                navObject->addNavPolygons(navPolygons);
+            }
         }
     }
 
@@ -167,10 +187,11 @@ namespace urchin
             holePolygons.emplace_back(selfObstaclePolygon);
         }
 
-        expandedPolytopeObstacles.clear();
-        expandedPolytopes.aabboxQuery(walkableSurface->computeAABBox(), expandedPolytopeObstacles);
-        for (const auto &expandedPolytopeObstacle : expandedPolytopeObstacles)
+        navObjectObstacles.clear();
+        navigationObjects.aabboxQuery(walkableSurface->computeAABBox(), navObjectObstacles);
+        for (const auto &navObjectObstacle : navObjectObstacles)
         {
+            const std::shared_ptr<Polytope> &expandedPolytopeObstacle = navObjectObstacle->getExpandedPolytope();
 			if(expandedPolytopeObstacle->getName()!=walkableSurface->getPolytope()->getName() && expandedPolytopeObstacle->isObstacleCandidate())
 			{
 				CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle, walkableSurface);

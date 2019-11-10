@@ -5,7 +5,7 @@
 #include <map>
 #include "UrchinCommon.h"
 
-#include "path/navmesh/model/NavTriangle.h"
+#include "path/navmesh/model/output/NavTriangle.h"
 #include "path/navmesh/triangulation/MonotonePolygon.h"
 
 namespace urchin

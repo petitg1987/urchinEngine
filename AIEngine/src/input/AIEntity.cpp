@@ -1,7 +1,7 @@
-#include "AIEntity.h"
-
 #include <utility>
-#include "path/navmesh/polytope/Polytope.h"
+
+#include "AIEntity.h"
+#include "path/navmesh/model/NavObject.h"
 
 namespace urchin
 {
@@ -50,14 +50,14 @@ namespace urchin
         return bIsObstacleCandidate;
     }
 
-    void AIEntity::addExpandedPolytope(const std::shared_ptr<Polytope> &polytope)
+    void AIEntity::addNavObject(const std::shared_ptr<NavObject> &navObject)
     {
-        expandedPolytopes.push_back(polytope);
+        navObjects.push_back(navObject);
     }
 
-    const std::vector<std::shared_ptr<Polytope>> &AIEntity::getExpandedPolytopes() const
+    const std::vector<std::shared_ptr<NavObject>> &AIEntity::getNavObjects() const
     {
-        return expandedPolytopes;
+        return navObjects;
     }
 
 }

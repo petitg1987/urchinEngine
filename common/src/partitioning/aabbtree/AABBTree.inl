@@ -21,6 +21,32 @@ template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ object) c
     return objectsNode.find(object)->second->getNodeData();
 }
 
+/**
+ *
+ * @tparam nodeObjects [out] Returns all node objects in the tree
+ */
+template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ> &nodeObjects) const
+{
+    nodeObjects.clear();
+
+    browseNodes.clear();
+    browseNodes.push_back(rootNode);
+
+    for(std::size_t i=0; i<browseNodes.size(); ++i)
+    { //tree traversal: pre-order (iterative)
+        const AABBNode<OBJ> *currentNode = browseNodes[i];
+
+        if (currentNode->isLeaf())
+        {
+            nodeObjects.push_back(currentNode->getNodeData()->getNodeObject());
+        }else
+        {
+            browseNodes.push_back(currentNode->getRightChild());
+            browseNodes.push_back(currentNode->getLeftChild());
+        }
+    }
+}
+
 template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ> *nodeData)
 {
     auto *nodeToInsert = new AABBNode<OBJ>(nodeData);

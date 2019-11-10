@@ -9,7 +9,7 @@
 #include "input/AITerrain.h"
 #include "path/navmesh/polytope/Polytope.h"
 #include "path/navmesh/polytope/PolytopeSurface.h"
-#include "path/navmesh/model/NavMeshAgent.h"
+#include "path/navmesh/model/output/NavMeshAgent.h"
 
 namespace urchin
 {

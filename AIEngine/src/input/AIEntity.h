@@ -1,17 +1,15 @@
 #ifndef URCHINENGINE_AIENTITY_H
 #define URCHINENGINE_AIENTITY_H
 
-#include "UrchinCommon.h"
-
 #include <string>
 #include <mutex>
 #include <atomic>
-
+#include "UrchinCommon.h"
 
 namespace urchin
 {
 
-    class Polytope;
+    class NavObject;
 
     class AIEntity
     {
@@ -35,8 +33,8 @@ namespace urchin
             Transform<float> getTransform() const;
             bool isObstacleCandidate() const;
 
-            void addExpandedPolytope(const std::shared_ptr<Polytope> &);
-            const std::vector<std::shared_ptr<Polytope>> &getExpandedPolytopes() const;
+            void addNavObject(const std::shared_ptr<NavObject> &);
+            const std::vector<std::shared_ptr<NavObject>> &getNavObjects() const;
 
         private:
             mutable std::mutex mutex;
@@ -46,7 +44,7 @@ namespace urchin
             Transform<float> transform;
             bool bIsObstacleCandidate;
 
-            std::vector<std::shared_ptr<Polytope>> expandedPolytopes;
+            std::vector<std::shared_ptr<NavObject>> navObjects;
     };
 
 }

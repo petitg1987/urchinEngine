@@ -1,7 +1,7 @@
 #include <cassert>
 
 #include "NavTriangle.h"
-#include "path/navmesh/model/NavPolygon.h"
+#include "path/navmesh/model/output/NavPolygon.h"
 
 namespace urchin
 {

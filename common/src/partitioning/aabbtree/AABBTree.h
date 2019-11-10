@@ -18,6 +18,7 @@ namespace urchin
 
             AABBNode<OBJ> *getRootNode() const;
             AABBNodeData<OBJ> *getNodeData(OBJ) const;
+            void getAllNodeObjects(std::vector<OBJ> &) const;
 
 			void addObject(AABBNodeData<OBJ> *);
             virtual void postAddObjectCallback(AABBNode<OBJ> *);

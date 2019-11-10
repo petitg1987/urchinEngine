@@ -45,10 +45,9 @@
 # AI engine
 - Navigation mesh
 	- **NEW FEATURE** (`major`): Create jump links in navigation mesh
-	    - Step 1: links NavPolygon to expanded polytope (Polytope)
-        - Step 2: update NavMesh only for updated AIObject/expandedPolytopes
-        - Step 3: add a NavLink class in NavMesh model
-        - Step 4: compute NavLink for each updated NavPolygon based on AABBTree expandedPolytopes
+        - Step 1: update NavMesh only for updated NavObject
+        - Step 2: add a NavLink class in NavMesh model
+        - Step 3: compute NavLink for each updated NavPolygon based on AABBTree expandedPolytopes (update margin accordingly)
 	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh only squares
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
 	- **OPTIMIZATION** (`medium`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons

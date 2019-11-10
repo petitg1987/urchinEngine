@@ -2,7 +2,7 @@
 #include <utility>
 
 #include "PolytopePlaneSurface.h"
-#include "path/navmesh/model/topography/NavFlatTopography.h"
+#include "path/navmesh/model/output/topography/NavFlatTopography.h"
 
 namespace urchin
 {

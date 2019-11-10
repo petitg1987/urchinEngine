@@ -4,8 +4,8 @@
 #include <vector>
 #include "UrchinCommon.h"
 
-#include "path/navmesh/model/NavTriangle.h"
-#include "path/navmesh/model/topography/NavTopography.h"
+#include "path/navmesh/model/output/NavTriangle.h"
+#include "path/navmesh/model/output/topography/NavTopography.h"
 
 namespace urchin
 {

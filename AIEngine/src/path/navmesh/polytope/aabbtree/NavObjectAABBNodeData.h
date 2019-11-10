@@ -2,18 +2,17 @@
 #define URCHINENGINE_POLYTOPEAABBNODEDATA_H
 
 #include "UrchinCommon.h"
-
-#include "path/navmesh/polytope/Polytope.h"
+#include "path/navmesh/model/NavObject.h"
 
 namespace urchin
 {
 
-    class PolytopeAABBNodeData : public AABBNodeData<std::shared_ptr<Polytope>>
+    class NavObjectAABBNodeData : public AABBNodeData<std::shared_ptr<NavObject>>
     {
         public:
-            explicit PolytopeAABBNodeData(const std::shared_ptr<Polytope> &);
+            explicit NavObjectAABBNodeData(const std::shared_ptr<NavObject> &);
 
-            AABBNodeData<std::shared_ptr<Polytope>> *clone() const override;
+            AABBNodeData<std::shared_ptr<NavObject>> *clone() const override;
 
             const std::string &getObjectId() const override;
             AABBox<float> retrieveObjectAABBox() const override;

@@ -1,7 +1,7 @@
 #include <utility>
 
 #include "PolytopeTerrainSurface.h"
-#include "path/navmesh/model/topography/NavTerrainTopography.h"
+#include "path/navmesh/model/output/topography/NavTerrainTopography.h"
 
 namespace urchin
 {
