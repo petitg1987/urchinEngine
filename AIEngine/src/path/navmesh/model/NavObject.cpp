@@ -10,6 +10,9 @@ namespace urchin
     {
         walkableSurfaces.reserve(2); //estimated memory size
         navPolygons.reserve(4); //estimated memory size
+
+        obstacleObjects.reserve(5); //estimated memory size
+        obstacleObjectsPtr.reserve(5); //estimated memory size
     }
 
     const std::shared_ptr<Polytope> &NavObject::getExpandedPolytope()
@@ -27,6 +30,35 @@ namespace urchin
         return walkableSurfaces;
     }
 
+    void NavObject::addObstacleObject(const std::weak_ptr<NavObject> &obstacleObject)
+    {
+        obstacleObjects.push_back(obstacleObject);
+    }
+
+    const std::vector<std::shared_ptr<NavObject>> &NavObject::retrieveObstaclesObjects()
+    {
+        obstacleObjectsPtr.clear();
+        for(auto it = obstacleObjects.begin(); it != obstacleObjects.end();)
+        {
+            auto obstacleObjectPtr = it->lock();
+            if(obstacleObjectPtr)
+            {
+                obstacleObjectsPtr.push_back(obstacleObjectPtr);
+                ++it;
+            }
+            else
+            {
+                it = obstacleObjects.erase(it);
+            }
+        }
+        return obstacleObjectsPtr;
+    }
+
+    void NavObject::removeAllObstacleObjects()
+    {
+        obstacleObjects.clear();
+    }
+
     void NavObject::addNavPolygons(const std::vector<std::shared_ptr<NavPolygon>> &navPolygonsToAdd)
     {
         navPolygons.insert(navPolygons.end(), navPolygonsToAdd.begin(), navPolygonsToAdd.end());
@@ -41,5 +73,4 @@ namespace urchin
     {
         navPolygons.clear();
     }
-
 }

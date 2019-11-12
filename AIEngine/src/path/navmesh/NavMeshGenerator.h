@@ -5,7 +5,7 @@
 #include <vector>
 #include <mutex>
 #include <atomic>
-#include <map>
+#include <set>
 #include "UrchinCommon.h"
 
 #include "input/AIWorld.h"
@@ -33,12 +33,13 @@ namespace urchin
 
 		private:
 			void updateExpandedPolytopes(AIWorld &);
-            void addExpandedPolygon(const std::shared_ptr<AIEntity> &, const std::shared_ptr<Polytope> &);
-            void removeExpandedPolygon(const std::shared_ptr<AIEntity> &);
+            void addNaVObject(const std::shared_ptr<AIEntity> &, const std::shared_ptr<Polytope> &);
+            void removeNaVObject(const std::shared_ptr<AIEntity> &);
 
+            void updateNavObstacles();
             void updateNavPolygons();
-			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<PolytopeSurface> &) const;
-			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<PolytopeSurface> &) const;
+			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
+			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
 			CSGPolygon<float> computePolytopeFootprint(const std::shared_ptr<Polytope> &, const std::shared_ptr<PolytopeSurface> &) const;
             void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &) const;
             std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::shared_ptr<PolytopeSurface> &) const;
@@ -53,7 +54,7 @@ namespace urchin
             std::atomic_bool needFullRefresh;
 
             AABBTree<std::shared_ptr<NavObject>> navigationObjects;
-            mutable std::vector<std::shared_ptr<NavObject>> newlyCreatedNavObjects; //TODO remove if not used
+            mutable std::set<std::shared_ptr<NavObject>> navObjectsToRefresh, tmpNavObjectsToRefresh;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<std::shared_ptr<NavObject>> navObjectObstacles;
             mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
