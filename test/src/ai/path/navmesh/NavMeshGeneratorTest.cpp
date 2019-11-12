@@ -86,6 +86,39 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     AssertHelper::assert3Sizes(navMesh->getPolygons()[1]->getTriangles()[3]->getIndices(), new std::size_t[3]{4, 5, 3});
 }
 
+void NavMeshGeneratorTest::moveHoleOnWalkableFace()
+{
+    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
+    auto walkableFaceObjectLeft = std::make_shared<AIObject>("walkableFaceLeft", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
+    auto walkableFaceObjectRight = std::make_shared<AIObject>("walkableFaceRight", Transform<float>(Point3<float>(5.0, 0.0, 0.0)), true, walkableShape);
+    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(1.0, 0.01, 1.0)).get());
+    auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(0.0, 1.0, 0.0)), true, holeShape);
+    AIWorld aiWorld;
+    aiWorld.addEntity(walkableFaceObjectLeft);
+    aiWorld.addEntity(walkableFaceObjectRight);
+    aiWorld.addEntity(holeObject);
+    NavMeshGenerator navMeshGenerator;
+    navMeshGenerator.setNavMeshAgent(buildNavMeshAgent());
+
+    std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
+
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 3);
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<walkableFaceRight[2]>");
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<walkableFaceLeft[2]> - <hole>");
+    AssertHelper::assertTrue(navMesh->getPolygons()[2]->getName()=="<hole[2]>");
+
+    holeObject->updateTransform(Point3<float>(5.0, 1.0, 0.0), Quaternion<float>());
+
+    navMesh = navMeshGenerator.generate(aiWorld);
+
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 3);
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<walkableFaceLeft[2]>");
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<walkableFaceRight[2]> - <hole>");
+    AssertHelper::assertTrue(navMesh->getPolygons()[2]->getName()=="<hole[2]>");
+}
+
+//TODO add tests: remove 'hole' and 'walkableObject' shouldn't have hole anymore
+
 std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent()
 {
     NavMeshAgent navMeshAgent(2.0, 0.0);
@@ -99,6 +132,8 @@ CppUnit::Test *NavMeshGeneratorTest::suite()
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeEdgeOnWalkableFace", &NavMeshGeneratorTest::holeEdgeOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOverlapOnWalkableFace", &NavMeshGeneratorTest::holeOverlapOnWalkableFace));
+
+    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("moveHoleOnWalkableFace", &NavMeshGeneratorTest::moveHoleOnWalkableFace));
 
     return suite;
 }

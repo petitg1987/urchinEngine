@@ -35,6 +35,7 @@ namespace urchin
 
             void addNavObject(const std::shared_ptr<NavObject> &);
             const std::vector<std::shared_ptr<NavObject>> &getNavObjects() const;
+            void removeAllNavObjects();
 
         private:
             mutable std::mutex mutex;

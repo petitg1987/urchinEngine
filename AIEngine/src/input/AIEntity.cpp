@@ -60,4 +60,9 @@ namespace urchin
         return navObjects;
     }
 
+    void AIEntity::removeAllNavObjects()
+    {
+        navObjects.clear();
+    }
+
 }

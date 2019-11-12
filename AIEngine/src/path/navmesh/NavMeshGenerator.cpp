@@ -48,7 +48,6 @@ namespace urchin
 	{
         //TODO review algo and rename method / variables, etc.
         //TODO update doc with new algorithm
-        //TODO add tests
 
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
@@ -86,6 +85,7 @@ namespace urchin
 			if(aiEntity->isToRebuild() || refreshAllEntities)
 			{
                 removeNaVObject(aiEntity);
+                aiEntity->removeAllNavObjects();
 
                 if(aiEntity->getType()==AIEntity::OBJECT)
                 {
@@ -152,7 +152,7 @@ namespace urchin
             navObject->removeAllObstacleObjects();
             for (const auto &navObjectObstacle : navObjectObstacles)
             {
-                navObject->addObstacleObject(navObjectObstacle);
+                navObject->addObstacleObject(navObjectObstacle); //TODO filter on self obstacle and remove filter from "determineObstacles" + isObstacleCandidate()
                 tmpNavObjectsToRefresh.insert(navObjectObstacle); //TODO is 'tmpNavObjectsToRefresh' can contain element from navObjectsToRefresh ?
             }
         }
@@ -165,9 +165,11 @@ namespace urchin
             navObject->removeAllObstacleObjects();
             for (const auto &navObjectObstacle : navObjectObstacles)
             {
-                navObject->addObstacleObject(navObjectObstacle);
+                navObject->addObstacleObject(navObjectObstacle); //TODO filter on self obstacle and remove filter from "determineObstacles" + isObstacleCandidate()
             }
         }
+
+        //TODO add 'tmpNavObjectsToRefresh' in 'navObjectsToRefresh'
     }
 
     void NavMeshGenerator::updateNavPolygons()

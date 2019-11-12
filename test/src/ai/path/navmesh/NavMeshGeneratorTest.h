@@ -16,6 +16,8 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture
         void holeEdgeOnWalkableFace();
         void holeOverlapOnWalkableFace();
 
+        void moveHoleOnWalkableFace();
+
     private:
         std::shared_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
 };
