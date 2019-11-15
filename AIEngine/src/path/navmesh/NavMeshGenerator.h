@@ -37,6 +37,7 @@ namespace urchin
             void removeNaVObject(const std::shared_ptr<AIEntity> &);
 
             void updateNavObstacles();
+            void updateNavObstacles(const std::shared_ptr<NavObject> &);
             void updateNavPolygons();
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
 			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;

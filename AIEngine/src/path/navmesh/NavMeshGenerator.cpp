@@ -140,36 +140,45 @@ namespace urchin
     }
 
     void NavMeshGenerator::updateNavObstacles()
-    { //TODO bad looking source code
+    {
         ScopeProfiler scopeProfiler("ai", "upNavObstacles");
 
         tmpNavObjectsToRefresh.clear();
         for(const auto &navObject : navObjectsToRefresh)
         {
-            navObjectObstacles.clear();
-            navigationObjects.aabboxQuery(navObject->getExpandedPolytope()->getAABBox(), navObjectObstacles);
+            updateNavObstacles(navObject);
 
-            navObject->removeAllObstacleObjects();
-            for (const auto &navObjectObstacle : navObjectObstacles)
+            for(const auto &navObjectObstacle : navObject->retrieveObstaclesObjects())
             {
-                navObject->addObstacleObject(navObjectObstacle); //TODO filter on self obstacle and remove filter from "determineObstacles" + isObstacleCandidate()
-                tmpNavObjectsToRefresh.insert(navObjectObstacle); //TODO is 'tmpNavObjectsToRefresh' can contain element from navObjectsToRefresh ?
+                if(navObjectsToRefresh.find(navObjectObstacle)==navObjectsToRefresh.end())
+                {
+                    tmpNavObjectsToRefresh.insert(navObjectObstacle);
+                }
             }
         }
 
         for(const auto &navObject : tmpNavObjectsToRefresh)
         {
-            navObjectObstacles.clear();
-            navigationObjects.aabboxQuery(navObject->getExpandedPolytope()->getAABBox(), navObjectObstacles);
-
-            navObject->removeAllObstacleObjects();
-            for (const auto &navObjectObstacle : navObjectObstacles)
-            {
-                navObject->addObstacleObject(navObjectObstacle); //TODO filter on self obstacle and remove filter from "determineObstacles" + isObstacleCandidate()
-            }
+            updateNavObstacles(navObject);
         }
 
-        //TODO add 'tmpNavObjectsToRefresh' in 'navObjectsToRefresh'
+        navObjectsToRefresh.merge(tmpNavObjectsToRefresh);
+    }
+
+    void NavMeshGenerator::updateNavObstacles(const std::shared_ptr<NavObject> &navObject)
+    {
+        navObjectObstacles.clear();
+        navigationObjects.aabboxQuery(navObject->getExpandedPolytope()->getAABBox(), navObjectObstacles);
+
+        navObject->removeAllObstacleObjects();
+        for (const auto &navObjectObstacle : navObjectObstacles)
+        {
+            if (navObjectObstacle->getExpandedPolytope()->getName() != navObject->getExpandedPolytope()->getName()
+                    && navObjectObstacle->getExpandedPolytope()->isObstacleCandidate())
+            {
+                navObject->addObstacleObject(navObjectObstacle);
+            }
+        }
     }
 
     void NavMeshGenerator::updateNavPolygons()
@@ -235,8 +244,7 @@ namespace urchin
         {
             const std::shared_ptr<Polytope> &expandedPolytopeObstacle = navObjectObstacle->getExpandedPolytope();
 
-            if (expandedPolytopeObstacle->getName() != walkableSurface->getPolytope()->getName() && expandedPolytopeObstacle->isObstacleCandidate()
-                && expandedPolytopeObstacle->getAABBox().collideWithAABBox(walkableSurfaceAABBox))
+            if (expandedPolytopeObstacle->getAABBox().collideWithAABBox(walkableSurfaceAABBox))
             {
                 CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle, walkableSurface);
                 if (footprintPolygon.getCwPoints().size() >= 3)
