@@ -25,7 +25,7 @@ namespace urchin
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
-    {
+    { //TODO check testEngineSfml: terrain not refreshed !
 
 	}
 
@@ -46,9 +46,6 @@ namespace urchin
 
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
 	{
-        //TODO review algo and rename method / variables, etc.
-        //TODO update doc with new algorithm
-
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
@@ -143,26 +140,25 @@ namespace urchin
     {
         ScopeProfiler scopeProfiler("ai", "upNavObstacles");
 
-        tmpNavObjectsToRefresh.clear();
+        newAffectedNavObjects.clear();
         for(const auto &navObject : navObjectsToRefresh)
         {
             updateNavObstacles(navObject);
 
             for(const auto &navObjectObstacle : navObject->retrieveObstaclesObjects())
             {
-                if(navObjectsToRefresh.find(navObjectObstacle)==navObjectsToRefresh.end())
+                if(navObjectsToRefresh.find(navObjectObstacle) == navObjectsToRefresh.end())
                 {
-                    tmpNavObjectsToRefresh.insert(navObjectObstacle);
+                    newAffectedNavObjects.insert(navObjectObstacle);
                 }
             }
         }
 
-        for(const auto &navObject : tmpNavObjectsToRefresh)
+        for(const auto &navObject : newAffectedNavObjects)
         {
             updateNavObstacles(navObject);
         }
-
-        navObjectsToRefresh.merge(tmpNavObjectsToRefresh);
+        navObjectsToRefresh.merge(newAffectedNavObjects);
     }
 
     void NavMeshGenerator::updateNavObstacles(const std::shared_ptr<NavObject> &navObject)
@@ -239,7 +235,7 @@ namespace urchin
             holePolygons.emplace_back(selfObstaclePolygon);
         }
 
-        AABBox<float> walkableSurfaceAABBox = walkableSurface->computeAABBox(); //TODO compute only once (at least for terrain. Maybe already the case ?) ?
+        AABBox<float> walkableSurfaceAABBox = walkableSurface->computeAABBox();
         for (const auto &navObjectObstacle : navObject->retrieveObstaclesObjects())
         {
             const std::shared_ptr<Polytope> &expandedPolytopeObstacle = navObjectObstacle->getExpandedPolytope();
