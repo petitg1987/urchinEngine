@@ -25,7 +25,7 @@ namespace urchin
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
-    { //TODO check testEngineSfml: terrain not refreshed !
+    {
 
 	}
 
@@ -49,7 +49,7 @@ namespace urchin
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
-        updateNavObstacles();
+        updateNearObjects();
 		updateNavPolygons();
 
         allNavPolygons.clear();
@@ -129,50 +129,49 @@ namespace urchin
     {
         for(const auto &navObject : aiEntity->getNavObjects())
         {
-            const std::vector<std::shared_ptr<NavObject>> &obstaclesOfObjectToRemove = navObject->retrieveObstaclesObjects();
-            navObjectsToRefresh.insert(obstaclesOfObjectToRemove.begin(), obstaclesOfObjectToRemove.end());
+            const std::vector<std::shared_ptr<NavObject>> &nearObjects = navObject->retrieveNearObjects();
+            navObjectsToRefresh.insert(nearObjects.begin(), nearObjects.end());
 
             navigationObjects.removeObject(navObject);
         }
     }
 
-    void NavMeshGenerator::updateNavObstacles()
+    void NavMeshGenerator::updateNearObjects()
     {
-        ScopeProfiler scopeProfiler("ai", "upNavObstacles");
+        ScopeProfiler scopeProfiler("ai", "upNearObjects");
 
         newAffectedNavObjects.clear();
         for(const auto &navObject : navObjectsToRefresh)
         {
-            updateNavObstacles(navObject);
+            updateNearObjects(navObject);
 
-            for(const auto &navObjectObstacle : navObject->retrieveObstaclesObjects())
+            for(const auto &nearObject : navObject->retrieveNearObjects())
             {
-                if(navObjectsToRefresh.find(navObjectObstacle) == navObjectsToRefresh.end())
+                if(navObjectsToRefresh.find(nearObject) == navObjectsToRefresh.end())
                 {
-                    newAffectedNavObjects.insert(navObjectObstacle);
+                    newAffectedNavObjects.insert(nearObject);
                 }
             }
         }
 
         for(const auto &navObject : newAffectedNavObjects)
         {
-            updateNavObstacles(navObject);
+            updateNearObjects(navObject);
         }
         navObjectsToRefresh.merge(newAffectedNavObjects);
     }
 
-    void NavMeshGenerator::updateNavObstacles(const std::shared_ptr<NavObject> &navObject)
+    void NavMeshGenerator::updateNearObjects(const std::shared_ptr<NavObject> &navObject)
     {
-        navObjectObstacles.clear();
-        navigationObjects.aabboxQuery(navObject->getExpandedPolytope()->getAABBox(), navObjectObstacles);
+        nearObjects.clear();
+        navigationObjects.aabboxQuery(navObject->getExpandedPolytope()->getAABBox(), nearObjects);
 
-        navObject->removeAllObstacleObjects();
-        for (const auto &navObjectObstacle : navObjectObstacles)
+        navObject->removeAllNearObjects();
+        for (const auto &nearObject : nearObjects)
         {
-            if (navObjectObstacle->getExpandedPolytope()->getName() != navObject->getExpandedPolytope()->getName()
-                    && navObjectObstacle->getExpandedPolytope()->isObstacleCandidate())
+            if (nearObject->getExpandedPolytope()->getName() != navObject->getExpandedPolytope()->getName())
             {
-                navObject->addObstacleObject(navObjectObstacle);
+                navObject->addNearObject(nearObject);
             }
         }
     }
@@ -236,13 +235,13 @@ namespace urchin
         }
 
         AABBox<float> walkableSurfaceAABBox = walkableSurface->computeAABBox();
-        for (const auto &navObjectObstacle : navObject->retrieveObstaclesObjects())
+        for (const auto &nearObject : navObject->retrieveNearObjects())
         {
-            const std::shared_ptr<Polytope> &expandedPolytopeObstacle = navObjectObstacle->getExpandedPolytope();
+            const std::shared_ptr<Polytope> &nearExpandedPolytope = nearObject->getExpandedPolytope();
 
-            if (expandedPolytopeObstacle->getAABBox().collideWithAABBox(walkableSurfaceAABBox))
+            if (nearExpandedPolytope->isObstacleCandidate() && nearExpandedPolytope->getAABBox().collideWithAABBox(walkableSurfaceAABBox))
             {
-                CSGPolygon<float> footprintPolygon = computePolytopeFootprint(expandedPolytopeObstacle, walkableSurface);
+                CSGPolygon<float> footprintPolygon = computePolytopeFootprint(nearExpandedPolytope, walkableSurface);
                 if (footprintPolygon.getCwPoints().size() >= 3)
                 {
                     footprintPolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);

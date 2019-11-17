@@ -22,9 +22,9 @@ namespace urchin
             void addWalkableSurface(const std::shared_ptr<PolytopeSurface> &);
             const std::vector<std::shared_ptr<PolytopeSurface>> &getWalkableSurfaces() const;
 
-            void addObstacleObject(const std::weak_ptr<NavObject> &);
-            const std::vector<std::shared_ptr<NavObject>> &retrieveObstaclesObjects();
-            void removeAllObstacleObjects();
+            void addNearObject(const std::weak_ptr<NavObject> &);
+            const std::vector<std::shared_ptr<NavObject>> &retrieveNearObjects();
+            void removeAllNearObjects();
 
             void addNavPolygons(const std::vector<std::shared_ptr<NavPolygon>> &);
             const std::vector<std::shared_ptr<NavPolygon>> &getNavPolygons() const;
@@ -34,8 +34,8 @@ namespace urchin
             std::shared_ptr<Polytope> expandedPolytope;
 
             std::vector<std::shared_ptr<PolytopeSurface>> walkableSurfaces;
-            std::vector<std::weak_ptr<NavObject>> obstacleObjects;
-            mutable std::vector<std::shared_ptr<NavObject>> obstacleObjectsPtr;
+            std::vector<std::weak_ptr<NavObject>> nearObjects;
+            mutable std::vector<std::shared_ptr<NavObject>> nearObjectsPtr;
 
             std::vector<std::shared_ptr<NavPolygon>> navPolygons;
     };

@@ -5,11 +5,11 @@
   * For each new or updated `AIObject` in scene:
     * Create or update a `NavObject` and add it in *navObjectsToRefresh*
     * Compute expanded polytope and determine walkable surfaces
-* __NavMeshGenerator::updateNavObstacles()__:
+* __NavMeshGenerator::updateNearObjects()__:
   * For each *navObjectsToRefresh*
-    * Determine the obstacles and add them in *newAffectedNavObjects*
+    * Determine the near objects and add them in *newAffectedNavObjects*
   * For each *newAffectedNavObjects*
-    * Determine the obstacles
+    * Determine the near objects
   * Add all *newAffectedNavObjects* in *navObjectsToRefresh*
 * __NavMeshGenerator::updateNavPolygons()__:
   * For each *navObjectsToRefresh* and each walkable surfaces:

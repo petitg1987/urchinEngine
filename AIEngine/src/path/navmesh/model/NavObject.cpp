@@ -11,8 +11,8 @@ namespace urchin
         walkableSurfaces.reserve(2); //estimated memory size
         navPolygons.reserve(4); //estimated memory size
 
-        obstacleObjects.reserve(5); //estimated memory size
-        obstacleObjectsPtr.reserve(5); //estimated memory size
+        nearObjects.reserve(5); //estimated memory size
+        nearObjectsPtr.reserve(5); //estimated memory size
     }
 
     const std::shared_ptr<Polytope> &NavObject::getExpandedPolytope()
@@ -30,33 +30,33 @@ namespace urchin
         return walkableSurfaces;
     }
 
-    void NavObject::addObstacleObject(const std::weak_ptr<NavObject> &obstacleObject)
+    void NavObject::addNearObject(const std::weak_ptr<NavObject> &nearObject)
     {
-        obstacleObjects.push_back(obstacleObject);
+        nearObjects.push_back(nearObject);
     }
 
-    const std::vector<std::shared_ptr<NavObject>> &NavObject::retrieveObstaclesObjects()
+    const std::vector<std::shared_ptr<NavObject>> &NavObject::retrieveNearObjects()
     {
-        obstacleObjectsPtr.clear();
-        for(auto it = obstacleObjects.begin(); it != obstacleObjects.end();)
+        nearObjectsPtr.clear();
+        for(auto it = nearObjects.begin(); it != nearObjects.end();)
         {
-            auto obstacleObjectPtr = it->lock();
-            if(obstacleObjectPtr)
+            auto nearObjectPtr = it->lock();
+            if(nearObjectPtr)
             {
-                obstacleObjectsPtr.push_back(obstacleObjectPtr);
+                nearObjectsPtr.push_back(nearObjectPtr);
                 ++it;
             }
             else
             {
-                it = obstacleObjects.erase(it);
+                it = nearObjects.erase(it);
             }
         }
-        return obstacleObjectsPtr;
+        return nearObjectsPtr;
     }
 
-    void NavObject::removeAllObstacleObjects()
+    void NavObject::removeAllNearObjects()
     {
-        obstacleObjects.clear();
+        nearObjects.clear();
     }
 
     void NavObject::addNavPolygons(const std::vector<std::shared_ptr<NavPolygon>> &navPolygonsToAdd)

@@ -60,7 +60,7 @@ namespace urchin
     }
 
     AABBox<float> PolytopeTerrainSurface::computeAABBox() const
-    { //TODO Compute AABBox based on 'localVertices' if possible
+    { //TODO Compute AABBox based on 'localVertices' if possible & cache AABBox if call too much time
         std::vector<Point3<float>> globalVertices;
         globalVertices.reserve(localVertices.size());
 
