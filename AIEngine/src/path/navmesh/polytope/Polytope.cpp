@@ -81,10 +81,10 @@ namespace urchin
 
     void Polytope::buildAABBox()
     {
-	    aabbox = surfaces[0]->computeAABBox();
+	    aabbox = surfaces[0]->getAABBox();
         for(std::size_t i=1; i<surfaces.size(); ++i)
         {
-            aabbox = aabbox.merge(surfaces[i]->computeAABBox());
+            aabbox = aabbox.merge(surfaces[i]->getAABBox());
         }
     }
 

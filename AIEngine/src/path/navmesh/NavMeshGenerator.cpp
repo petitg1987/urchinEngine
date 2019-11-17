@@ -234,12 +234,11 @@ namespace urchin
             holePolygons.emplace_back(selfObstaclePolygon);
         }
 
-        AABBox<float> walkableSurfaceAABBox = walkableSurface->computeAABBox();
         for (const auto &nearObject : navObject->retrieveNearObjects())
         {
             const std::shared_ptr<Polytope> &nearExpandedPolytope = nearObject->getExpandedPolytope();
 
-            if (nearExpandedPolytope->isObstacleCandidate() && nearExpandedPolytope->getAABBox().collideWithAABBox(walkableSurfaceAABBox))
+            if (nearExpandedPolytope->isObstacleCandidate() && nearExpandedPolytope->getAABBox().collideWithAABBox(walkableSurface->getAABBox()))
             {
                 CSGPolygon<float> footprintPolygon = computePolytopeFootprint(nearExpandedPolytope, walkableSurface);
                 if (footprintPolygon.getCwPoints().size() >= 3)

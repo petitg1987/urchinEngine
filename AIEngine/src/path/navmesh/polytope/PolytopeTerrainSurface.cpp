@@ -16,6 +16,7 @@ namespace urchin
             selfObstacles(std::move(selfObstacles))
     {
         buildOutlineCwPoints();
+        buildAABBox();
 
         heightfieldPointHelper = std::make_shared<HeightfieldPointHelper<float>>(this->localVertices, this->xLength);
     }
@@ -35,6 +36,12 @@ namespace urchin
 
         Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
         outlineCwPoints.emplace_back(Point2<float>(nearLeftVertex.X, -nearLeftVertex.Z));
+    }
+
+    void PolytopeTerrainSurface::buildAABBox()
+    {
+        AABBox<float> localAABBox(localVertices);
+        aabbox = AABBox<float>(position + localAABBox.getMin(), position + localAABBox.getMax());
     }
 
     bool PolytopeTerrainSurface::isWalkable() const
@@ -59,17 +66,9 @@ namespace urchin
         return Rectangle<float>(minPoint, maxPoint);
     }
 
-    AABBox<float> PolytopeTerrainSurface::computeAABBox() const
-    { //TODO Compute AABBox based on 'localVertices' if possible & cache AABBox if call too much time
-        std::vector<Point3<float>> globalVertices;
-        globalVertices.reserve(localVertices.size());
-
-        for(const auto &localVertex : localVertices)
-        {
-            globalVertices.push_back(position + localVertex);
-        }
-
-        return AABBox<float>(globalVertices);
+    const AABBox<float> &PolytopeTerrainSurface::getAABBox() const
+    {
+        return aabbox;
     }
 
     const std::vector<Point2<float>> &PolytopeTerrainSurface::getOutlineCwPoints() const

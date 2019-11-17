@@ -30,6 +30,7 @@ namespace urchin
             isSlopeWalkable(isSlopeWalkable)
     {
         buildOutlineCwPoints();
+        buildAABBox();
     }
 
 	void PolytopePlaneSurface::buildOutlineCwPoints()
@@ -41,6 +42,11 @@ namespace urchin
 			outlineCwPoints.emplace_back(Point2<float>(it->X, -it->Z));
 		}
 	}
+
+    void PolytopePlaneSurface::buildAABBox()
+    {
+        aabbox = AABBox<float>(ccwPoints);
+    }
 
 	bool PolytopePlaneSurface::isWalkable() const
 	{
@@ -62,9 +68,9 @@ namespace urchin
 		return Rectangle<float>(minPoint, maxPoint);
 	}
 
-    AABBox<float> PolytopePlaneSurface::computeAABBox() const
+    const AABBox<float> &PolytopePlaneSurface::getAABBox() const
     {
-        return AABBox<float>(ccwPoints);
+        return aabbox;
     }
 
     const std::vector<Point2<float>> &PolytopePlaneSurface::getOutlineCwPoints() const

@@ -16,7 +16,7 @@ namespace urchin
 
             bool isWalkable() const override;
             Rectangle<float> computeXZRectangle() const override;
-            AABBox<float> computeAABBox() const override;
+            const AABBox<float> &getAABBox() const override;
 
             const std::vector<Point2<float>> &getOutlineCwPoints() const override;
             Plane<float> getPlane(const Rectangle<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
@@ -31,6 +31,7 @@ namespace urchin
 
         private:
             void buildOutlineCwPoints();
+            void buildAABBox();
             Point3<float> retrieveGlobalVertex(const Point2<float> &) const;
 
             Point3<float> position;
@@ -41,6 +42,8 @@ namespace urchin
 
             std::vector<Point2<float>> outlineCwPoints;
             std::vector<CSGPolygon<float>> selfObstacles;
+
+            AABBox<float> aabbox;
     };
 
 }
