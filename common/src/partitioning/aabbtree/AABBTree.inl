@@ -30,7 +30,10 @@ template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ> &nod
     nodeObjects.clear();
 
     browseNodes.clear();
-    browseNodes.push_back(rootNode);
+    if(rootNode != nullptr)
+    {
+        browseNodes.push_back(rootNode);
+    }
 
     for(std::size_t i=0; i<browseNodes.size(); ++i)
     { //tree traversal: pre-order (iterative)
@@ -201,7 +204,10 @@ template<class OBJ> void AABBTree<OBJ>::preUpdateObjectCallback(AABBNode<OBJ> *)
 template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float> &aabbox, std::vector<OBJ> &objectsAABBoxHit) const
 {
     browseNodes.clear();
-    browseNodes.push_back(rootNode);
+    if(rootNode != nullptr)
+    {
+        browseNodes.push_back(rootNode);
+    }
 
     for(std::size_t i=0; i<browseNodes.size(); ++i)
     { //tree traversal: pre-order (iterative)
@@ -227,7 +233,10 @@ template<class OBJ> void AABBTree<OBJ>::aabboxQuery(const AABBox<float> &aabbox,
 template<class OBJ> void AABBTree<OBJ>::rayQuery(const Ray<float> &ray, std::vector<OBJ> &objectsAABBoxHitRay) const
 {
     browseNodes.clear();
-    browseNodes.push_back(rootNode);
+    if(rootNode != nullptr)
+    {
+        browseNodes.push_back(rootNode);
+    }
 
     for(std::size_t i=0; i<browseNodes.size(); ++i)
     { //tree traversal: pre-order (iterative)
@@ -257,7 +266,10 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float> &ray, 
                                std::vector<OBJ> &objectsAABBoxHitEnlargedRay) const
 {
     browseNodes.clear();
-    browseNodes.push_back(rootNode);
+    if(rootNode != nullptr)
+    {
+        browseNodes.push_back(rootNode);
+    }
 
     for(std::size_t i=0; i<browseNodes.size(); ++i)
     { //tree traversal: pre-order (iterative)

@@ -19,6 +19,7 @@ namespace urchin
         normal = v1.crossProduct(v2).normalize();
 
         buildOutlineCwPoints();
+        buildAABBox();
     }
 
     /**
