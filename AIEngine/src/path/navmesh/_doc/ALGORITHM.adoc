@@ -69,11 +69,12 @@ latexmath:[D_x=(A_{2x}-B_{2x}-\left \{ {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} (
 [big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{1z}=] idem latexmath:[c_{1x}] but with latexmath:[z]#
 
 We need to find solution to following equation: +
+latexmath:[\|D\|^2 \le x^2] +
 latexmath:[D_x^2 + D_y^2 + D_z^2 \le x^2] +
 latexmath:[(c_{0x}\alpha + c_{1x})^2 + (c_{0y}\alpha + c_{1y})^2 + (c_{0z}\alpha + c_{1z})^2 \le x^2] +
 latexmath:[(c_{0x}^2+c_{0y}^2+c_{0z}^2)\alpha^2 + 2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z})\alpha + (c_{1x}^2 + c_{1y}^2 + c_{1z}^2) \le x^2]
 
-Last equation is a quadratic equation (latexmath:[ax^2+bx+c=0]) where we can find both root (latexmath:[t_1, t_2]) for: +
+Last equation is a quadratic equation where we can find both root (latexmath:[t_1, t_2]) for: +
 latexmath:[(c_{0x}^2+c_{0y}^2+c_{0z}^2)\alpha^2 + 2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z})\alpha + (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) = 0]
 [big yellow]#latexmath:[t_1=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) + \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]# +
 [big yellow]#latexmath:[t_2=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) - \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]#
