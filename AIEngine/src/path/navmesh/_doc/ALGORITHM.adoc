@@ -26,19 +26,47 @@ image:navmesh/triang.png[tr]
 * Add `NavPolygon` to `NavMesh`
 
 == Edges jump detection
-[underline]#Input#: two edges defined each by points latexmath:[$A_1 B_1$] and latexmath:[$A_2 B_2$] +
-[underline]#Goal#: find sub-edges (red) where a jump of length latexmath:[$x$] can be done between the two edges. +
+[underline]#Input#: two edges defined each by points latexmath:[A_1 B_1] and latexmath:[A_2 B_2] +
+[underline]#Goal#: find sub-edge (red) where a jump of length latexmath:[x] can be done from latexmath:[A_2 B_2] to latexmath:[A_1 B_1]. +
 image:jump/edgeJump.png[ej]
 
 [underline]#Solution#: +
-Projection of a point latexmath:[$P$] on line latexmath:[$A_1 B_1$] is defined by (see also: `LineSegment3D<T>::closestPoint()`): +
-latexmath:[${(B_1-A_1)\bullet(P-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1$]
+Projection of a point latexmath:[P] on line latexmath:[A_1 B_1] is defined by (see: `LineSegment3D<T>::closestPoint()`): +
+latexmath:[{(B_1-A_1)\bullet(P-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1]
 
-So, the vector measuring the orthogonal distance from latexmath:[$A_1 B_1$] to latexmath:[$P$] is: +
-latexmath:[$D=P-\left \{ {(B_1-A_1)\bullet(P-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1\right \}$]
+So, the vector measuring the orthogonal distance from latexmath:[A_1 B_1] to latexmath:[P] is: +
+latexmath:[D=P-\left \{ {(B_1-A_1)\bullet(P-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1\right \}]
 
-Every point latexmath:[$P$] on the line segment latexmath:[$A_2 B_2$] has the form: +
-latexmath:[$P=\alpha A_2+(1-\alpha)B_2$] for latexmath:[\alpha \in [0,1]]
+Every point latexmath:[$P$] on the line segment latexmath:[A_2 B_2] has the form: +
+latexmath:[P=\alpha A_2+(1-\alpha)B_2] for latexmath:[\alpha \in [0,1]]
 
 So, we can write latexmath:[$D$] in the form: +
-latexmath:[$D={\alpha A_2+(1-\alpha)B_2} - \left \{ {(B_1-A_1)\bullet(\alpha A_2+(1-\alpha)B_2-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1\right \}$]
+latexmath:[D={\alpha A_2+(1-\alpha)B_2} - \left \{ {(B_1-A_1)\bullet(\alpha A_2+(1-\alpha)B_2-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1\right \}]
+
+The above equation is linear. It is implies that there are constants latexmath:[c_{0x}, c_{1x}, c_{0y}, c_{1y}, c_{0z}, c_{1z}] such that: +
+latexmath:[D_x=c_{0x}\alpha + c_{1x}] +
+latexmath:[D_y=c_{0y}\alpha + c_{1y}] +
+latexmath:[D_z=c_{0z}\alpha + c_{1z}]
+
+Let transform the above equation to get these constants. Example with latexmath:[D_x] coordinate: +
+latexmath:[D={\alpha A_2+(1-\alpha)B_2-A_1} - {(B_1-A_1)\bullet(\alpha A_2+(1-\alpha)B_2-A_1) \over \|B_1-A_1\|^2} (B_1-A_1)] +
+_Define:_ +
+{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[E_x=\alpha A_{2x}+(1-\alpha)B_{2x}-A_{1x}]
+
+{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[E_x=\alpha A_{2x}-\alpha B_{2x}+B_{2x}-A_{1x}]
+
+{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[E_x=(A_{2x}-B_{2x})\alpha +B_{2x}-A_{1x}]
+
+latexmath:[D_x=E_x - {(B_{1x}-A_{1x})E_x \over \|B_1-A_1\|^2} (B_{1x}-A_{1x})] +
+latexmath:[D_x=E_x - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} E_x ] +
+latexmath:[D_x=(A_{2x}-B_{2x})\alpha +B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} \left \{ (A_{2x}-B_{2x})\alpha +B_{2x}-A_{1x} \right \}] +
+latexmath:[D_x=(A_{2x}-B_{2x})\alpha +B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 * (A_{2x}-B_{2x}) \over \|B_1-A_1\|^2}\alpha - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x}) ] +
+latexmath:[D_x=(A_{2x}-B_{2x}-\left \{ {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} (A_{2x}-B_{2x}) \right \})\alpha +B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x}) ] +
+
+{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{0x}=A_{2x}-B_{2x}-\left \{ {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} (A_{2x}-B_{2x}) \right \}]
+
+{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{1x}=B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x})]
+
+We need to find solution to following equation: +
+latexmath:[D_x^2 + D_y^2 + D_z^2 \le x^2] +
+latexmath:[(c_{0x}\alpha + c_{1x})^2 + (c_{0y}\alpha + c_{1y})^2 + (c_{0z}\alpha + c_{1z})^2 \le x^2]
