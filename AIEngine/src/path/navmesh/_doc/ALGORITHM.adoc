@@ -63,10 +63,28 @@ latexmath:[D_x=(A_{2x}-B_{2x})\alpha +B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \
 latexmath:[D_x=(A_{2x}-B_{2x})\alpha +B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 * (A_{2x}-B_{2x}) \over \|B_1-A_1\|^2}\alpha - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x}) ] +
 latexmath:[D_x=(A_{2x}-B_{2x}-\left \{ {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} (A_{2x}-B_{2x}) \right \})\alpha +B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x}) ] +
 
-{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{0x}=A_{2x}-B_{2x}-\left \{ {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} (A_{2x}-B_{2x}) \right \}]
+[big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{0x}=A_{2x}-B_{2x}-\left \{ {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2} (A_{2x}-B_{2x}) \right \}]#
 
-{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{1x}=B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x})]
+[big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{1x}=B_{2x}-A_{1x} - {(B_{1x}-A_{1x})^2 \over \|B_1-A_1\|^2}(B_{2x}-A_{1x})]#
+
+[big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{0y}=] idem latexmath:[c_{0x}] but with latexmath:[y]#
+
+[big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{1y}=] idem latexmath:[c_{1x}] but with latexmath:[y]#
+
+[big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{0z}=] idem latexmath:[c_{0x}] but with latexmath:[z]#
+
+[big yellow]#{nbsp}{nbsp}{nbsp}{nbsp} latexmath:[c_{1z}=] idem latexmath:[c_{1x}] but with latexmath:[z]#
 
 We need to find solution to following equation: +
 latexmath:[D_x^2 + D_y^2 + D_z^2 \le x^2] +
-latexmath:[(c_{0x}\alpha + c_{1x})^2 + (c_{0y}\alpha + c_{1y})^2 + (c_{0z}\alpha + c_{1z})^2 \le x^2]
+latexmath:[(c_{0x}\alpha + c_{1x})^2 + (c_{0y}\alpha + c_{1y})^2 + (c_{0z}\alpha + c_{1z})^2 \le x^2] +
+latexmath:[(c_{0x}^2+c_{0y}^2+c_{0z}^2)\alpha^2 + 2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z})\alpha + (c_{1x}^2 + c_{1y}^2 + c_{1z}^2) \le x^2]
+
+Last equation is a quadratic equation (latexmath:[ax^2+bx+c=0]) where we can find both root (latexmath:[t_1, t_2]) for: +
+latexmath:[(c_{0x}^2+c_{0y}^2+c_{0z}^2)\alpha^2 + 2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z})\alpha + (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) = 0]
+[big yellow]#latexmath:[t_1=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) + \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]# +
+[big yellow]#latexmath:[t_2=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) - \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]#
+
+The variables latexmath:[t_1, t_2] must be clamped between 0, 1. Finally, the red segment points can be found with: +
+[big yellow]#latexmath:[S_1=t_1A_2+(1-t_1)B_2]# +
+[big yellow]#latexmath:[S_2=t_2A_2+(1-t_2)B_2]#
