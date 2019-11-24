@@ -51,6 +51,7 @@ namespace urchin
 		updateExpandedPolytopes(aiWorld);
         updateNearObjects();
 		updateNavPolygons();
+		updateNavLinks();
 
         allNavPolygons.clear();
         navigationObjects.getAllNodeObjects(allNavObjects);
@@ -374,4 +375,60 @@ namespace urchin
 		return elevatedPoints;
 	}
 
+	void NavMeshGenerator::updateNavLinks()
+    {
+        ScopeProfiler scopeProfiler("ai", "upNavLinks");
+
+        for(const auto &navObject : navObjectsToRefresh)
+        {
+            extractExternalEdges(navObject, navObjectEdges);
+
+            for(const auto &nearNavObject : navObject->retrieveNearObjects())
+            {
+                extractExternalEdges(nearNavObject, nearNavObjectEdges);
+
+                detectLinks(navObject, navObjectEdges, nearNavObject, nearNavObjectEdges);
+            }
+        }
+
+        std::cout<<"----------------------------"<<std::endl;
+    }
+
+    /**
+     * @param edges [out] External edges of navigation object
+     */
+    void NavMeshGenerator::extractExternalEdges(const std::shared_ptr<NavObject> &navObject, std::vector<LineSegment3D<float>> &externalEdges) const
+    {
+        externalEdges.clear();
+        for(const auto &navPolygon : navObject->getNavPolygons())
+        {
+            for(const auto &triangle : navPolygon->getTriangles())
+            {
+                for(std::size_t i=0; i<3; ++i)
+                {
+                    std::shared_ptr<NavTriangle> neighborTriangles = triangle->getNeighbor(i);
+                    if(!neighborTriangles)
+                    {
+                        externalEdges.push_back(triangle->computeEdge(i));
+                    }
+                }
+            }
+        }
+    }
+
+    void NavMeshGenerator::detectLinks(const std::shared_ptr<NavObject> &navObject, const std::vector<LineSegment3D<float>> &navObjectEdges,
+                                       const std::shared_ptr<NavObject> &nearNavObject, const std::vector<LineSegment3D<float>> &nearNavObjectEdges) const
+    {
+        for(const auto &edge : navObjectEdges)
+        {
+            for(const auto &nearEdge : nearNavObjectEdges)
+            {
+                float edgeDistance = edge.getA().distance(nearEdge.getA());
+                if(edgeDistance <= 2.0f)
+                {
+                    std::cout<<"New link: "<<navObject->getExpandedPolytope()->getName()<<" <> "<<nearNavObject->getExpandedPolytope()->getName()<<": "<<edgeDistance<<std::endl;
+                }
+            }
+        }
+    }
 }

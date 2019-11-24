@@ -38,6 +38,7 @@ namespace urchin
 
             void updateNearObjects();
             void updateNearObjects(const std::shared_ptr<NavObject> &);
+
             void updateNavPolygons();
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
 			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
@@ -45,6 +46,11 @@ namespace urchin
             void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &) const;
             std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::shared_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
+
+			void updateNavLinks();
+            void extractExternalEdges(const std::shared_ptr<NavObject> &, std::vector<LineSegment3D<float>> &) const;
+            void detectLinks(const std::shared_ptr<NavObject> &, const std::vector<LineSegment3D<float>> &,
+                    const std::shared_ptr<NavObject> &, const std::vector<LineSegment3D<float>> &) const;
 
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
@@ -58,12 +64,15 @@ namespace urchin
             mutable std::set<std::shared_ptr<NavObject>> navObjectsToRefresh, newAffectedNavObjects;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<std::shared_ptr<NavObject>> nearObjects;
+
             mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> holePolygons;
 			mutable std::vector<Point2<float>> footprintPoints;
 			mutable std::string navPolygonName;
             mutable std::vector<std::shared_ptr<NavObject>> allNavObjects;
 			mutable std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
+
+			mutable std::vector<LineSegment3D<float>> navObjectEdges, nearNavObjectEdges;
 	};
 
 }

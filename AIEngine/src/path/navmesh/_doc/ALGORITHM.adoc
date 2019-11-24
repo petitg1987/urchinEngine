@@ -1,0 +1,44 @@
+:toc:
+
+== Nav mesh generation - overview
+* _Input:_ `AIWorld` (updated by mapHandler)
+* Create empty `NavMesh` object
+* `NavMeshGenerator::updateExpandedPolytopes()`:
+** For each new or updated `AIObject` in scene:
+*** Create or update a `NavObject` and add it in *navObjectsToRefresh*
+*** Compute expanded polytope and determine walkable surfaces
+* `NavMeshGenerator::updateNearObjects()`:
+** For each *navObjectsToRefresh*
+*** Determine the near objects and add them in *newAffectedNavObjects*
+** For each *newAffectedNavObjects*
+*** Determine the near objects
+** Add all *newAffectedNavObjects* in *navObjectsToRefresh*
+* `NavMeshGenerator::updateNavPolygons()`:
+** For each *navObjectsToRefresh* and each walkable surfaces:
+*** Walkable surface: +
+image:navmesh/ws.png[ws]
+*** Find all obstacles of the walkable surface: +
+image:navmesh/obstacles.png[ob]
+*** Subtract obstacles on walkable surface outline: +
+image:navmesh/subtract.png[su]
+*** Triangulate with remaining obstacles: +
+image:navmesh/triang.png[tr]
+* Add `NavPolygon` to `NavMesh`
+
+== Edges jump detection
+[underline]#Input#: two edges defined each by points latexmath:[$A_1 B_1$] and latexmath:[$A_2 B_2$] +
+[underline]#Goal#: find sub-edges (red) where a jump of length latexmath:[$x$] can be done between the two edges. +
+image:jump/edgeJump.png[ej]
+
+[underline]#Solution#: +
+Projection of a point latexmath:[$P$] on line latexmath:[$A_1 B_1$] is defined by (see also: `LineSegment3D<T>::closestPoint()`): +
+latexmath:[${(B_1-A_1)\bullet(P-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1$]
+
+So, the vector measuring the orthogonal distance from latexmath:[$A_1 B_1$] to latexmath:[$P$] is: +
+latexmath:[$D=P-\left \{ {(B_1-A_1)\bullet(P-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1\right \}$]
+
+Every point latexmath:[$P$] on the line segment latexmath:[$A_2 B_2$] has the form: +
+latexmath:[$P=\alpha A_2+(1-\alpha)B_2$] for latexmath:[\alpha \in [0,1]]
+
+So, we can write latexmath:[$D$] in the form: +
+latexmath:[$D={\alpha A_2+(1-\alpha)B_2} - \left \{ {(B_1-A_1)\bullet(\alpha A_2+(1-\alpha)B_2-A_1) \over \|B_1-A_1\|^2} (B_1-A_1) + A_1\right \}$]
