@@ -24,13 +24,15 @@
 #include "physics/algorithm/inertia/InertiaCalculationTest.h"
 #include "physics/island/IslandContainerTest.h"
 #include "physics/it/FallingObjectIT.h"
-#include "ai/path/navmesh/CSGPolygonTest.h"
-#include "ai/path/navmesh/MonotonePolygonTest.h"
-#include "ai/path/navmesh/TriangulationTest.h"
-#include "ai/path/navmesh/PolygonsUnionTest.h"
-#include "ai/path/navmesh/PolygonsSubtractionTest.h"
+#include "ai/path/navmesh/csg/CSGPolygonTest.h"
+#include "ai/path/navmesh/csg/PolygonsUnionTest.h"
+#include "ai/path/navmesh/csg/PolygonsSubtractionTest.h"
+#include "ai/path/navmesh/triangulation/MonotonePolygonTest.h"
+#include "ai/path/navmesh/triangulation/TriangulationTest.h"
+#include "ai/path/navmesh/polytope/services/TerrainObstacleServiceTest.h"
+#include "ai/path/navmesh/jump/EdgeJumpDetectionTest.h"
 #include "ai/path/navmesh/NavMeshGeneratorTest.h"
-#include "ai/path/navmesh/TerrainObstacleServiceTest.h"
+
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 
 void commonTests(CppUnit::TextUi::TestRunner &runner)
@@ -85,12 +87,13 @@ void aiTests(CppUnit::TextUi::TestRunner &runner)
 {
     //navigation mesh
     runner.addTest(CSGPolygonTest::suite());
-    runner.addTest(MonotonePolygonTest::suite());
-    runner.addTest(TriangulationTest::suite());
     runner.addTest(PolygonsUnionTest::suite());
     runner.addTest(PolygonsSubtractionTest::suite());
-    runner.addTest(NavMeshGeneratorTest::suite());
+    runner.addTest(MonotonePolygonTest::suite());
+    runner.addTest(TriangulationTest::suite());
     runner.addTest(TerrainObstacleServiceTest::suite());
+    runner.addTest(EdgeJumpDetectionTest::suite());
+    runner.addTest(NavMeshGeneratorTest::suite());
 
     //pathfinding
     runner.addTest(FunnelAlgorithmTest::suite());

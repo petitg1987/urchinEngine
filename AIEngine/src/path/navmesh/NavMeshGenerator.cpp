@@ -44,6 +44,9 @@ namespace urchin
         return NavMesh(*navMesh);
     }
 
+    /**
+     * See '_doc' for an algorithm overview
+     */
 	std::shared_ptr<NavMesh> NavMeshGenerator::generate(AIWorld &aiWorld)
 	{
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
@@ -391,7 +394,7 @@ namespace urchin
             }
         }
 
-        std::cout<<"----------------------------"<<std::endl;
+        //std::cout<<"----------------------------"<<std::endl;
     }
 
     /**
@@ -426,7 +429,7 @@ namespace urchin
                 float edgeDistance = edge.getA().distance(nearEdge.getA());
                 if(edgeDistance <= 2.0f)
                 {
-                    std::cout<<"New link: "<<navObject->getExpandedPolytope()->getName()<<" <> "<<nearNavObject->getExpandedPolytope()->getName()<<": "<<edgeDistance<<std::endl;
+                    //std::cout<<"New link: "<<navObject->getExpandedPolytope()->getName()<<" <> "<<nearNavObject->getExpandedPolytope()->getName()<<": "<<edgeDistance<<std::endl;
                 }
             }
         }

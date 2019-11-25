@@ -20,6 +20,7 @@
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 #include "path/navmesh/csg/CSGPolygon.h"
 #include "path/navmesh/polytope/services/TerrainObstacleService.h"
+#include "path/navmesh/jump/EdgeJumpDetection.h"
 #include "path/pathfinding/FunnelAlgorithm.h"
 #include "path/pathfinding/PathPortal.h"
 #include "path/PathRequest.h"
