@@ -74,11 +74,10 @@ latexmath:[D_x^2 + D_y^2 + D_z^2 \le x^2] +
 latexmath:[(c_{0x}\alpha + c_{1x})^2 + (c_{0y}\alpha + c_{1y})^2 + (c_{0z}\alpha + c_{1z})^2 \le x^2] +
 latexmath:[(c_{0x}^2+c_{0y}^2+c_{0z}^2)\alpha^2 + 2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z})\alpha + (c_{1x}^2 + c_{1y}^2 + c_{1z}^2) \le x^2]
 
-Last equation is a quadratic equation where we can find both root (latexmath:[t_1, t_2]) for: +
+Last equation is a quadratic equation where we can find both roots (latexmath:[r_1, r_2]) for: +
 latexmath:[(c_{0x}^2+c_{0y}^2+c_{0z}^2)\alpha^2 + 2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z})\alpha + (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) = 0]
-[big yellow]#latexmath:[t_1=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) + \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]# +
-[big yellow]#latexmath:[t_2=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) - \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]#
+[big yellow]#latexmath:[r_{1-2}=-2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}) \pm \sqrt{(2(c_{0x}c_{1x}+c_{0y}c_{1y}+c_{0z}c_{1z}))^2 - 4 * (c_{0x}^2+c_{0y}^2+c_{0z}^2) * (c_{1x}^2 + c_{1y}^2 + c_{1z}^2 - x^2) \over 2 * (c_{0x}^2+c_{0y}^2+c_{0z}^2)}]# +
 
-The variables latexmath:[t_1, t_2] must be clamped between 0, 1. Finally, the red segment points can be found with: +
-[big yellow]#latexmath:[S_1=t_1A_2+(1-t_1)B_2]# +
-[big yellow]#latexmath:[S_2=t_2A_2+(1-t_2)B_2]#
+The variables latexmath:[r_1, r_2] must be clamped between 0, 1. Finally, the red segment points can be found with: +
+[big yellow]#latexmath:[S_1=r_1A_2+(1-r_1)B_2]# +
+[big yellow]#latexmath:[S_2=r_2A_2+(1-r_2)B_2]#
