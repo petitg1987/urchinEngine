@@ -13,9 +13,10 @@ namespace urchin
     void EdgeJumpDetection::detectJumpFromEdge1ToEdge2(const LineSegment3D<float> &edge1, const LineSegment3D<float> &edge2, float jumpMaxLength) const
     { //TODO rename method + handle division by 0
         Vector3<float> edge1Vector = edge1.getA().vector(edge1.getB());
-        Vector3<float> cCommonFraction = ( edge1Vector * edge1Vector ) / (edge1Vector.squareLength());
-        Vector3<float> c0 = edge2.getB().vector(edge2.getA()) - (cCommonFraction * (edge2.getB().vector(edge2.getA())));
-        Vector3<float> c1 = edge1.getA().vector(edge2.getB()) - (cCommonFraction * (edge1.getA().vector(edge2.getB())));
+        float c0Fraction = (edge1Vector.dotProduct(edge2.getB().vector(edge2.getA()))) / edge1Vector.squareLength();
+        Vector3<float> c0 = edge2.getB().vector(edge2.getA()) - c0Fraction * edge1Vector;
+        float c1Fraction = (edge1Vector.dotProduct(edge1.getA().vector(edge2.getB()))) / edge1Vector.squareLength();
+        Vector3<float> c1 = edge1.getA().vector(edge2.getB()) - c1Fraction * edge1Vector;
 
         float quadraticA = c0.X*c0.X + c0.Y*c0.Y + c0.Z*c0.Z;
         float quadraticB = 2.0f * (c0.X*c1.X + c0.Y*c1.Y + c0.Z*c1.Z);
