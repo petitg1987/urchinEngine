@@ -24,6 +24,8 @@ namespace urchin
 			Point3<T> closestPoint(const Point3<T> &, T [2]) const;
 			T squareDistance(const Point3<T> &) const;
 
+            Vector3<T> toVector() const;
+
 		private:
 			Point3<T> a, b;
 	};

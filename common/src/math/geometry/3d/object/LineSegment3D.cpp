@@ -101,6 +101,11 @@ namespace urchin
 		return ap.dotProduct(ap) - ((e * e) / f);
 	}
 
+    template<class T> Vector3<T> LineSegment3D<T>::toVector() const
+    {
+        return a.vector(b);
+    }
+
 	template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment3D<T> &l)
 	{
 		return stream << l.getA().X << " " << l.getA().Y << " " << l.getA().Z << " - " << l.getB().X << " " << l.getB().Y << " " << l.getB().Z ;

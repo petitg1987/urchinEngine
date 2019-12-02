@@ -11,7 +11,9 @@ class EdgeJumpDetectionTest: public CppUnit::TestFixture
     public:
         static CppUnit::Test *suite();
 
-        void testParallelEdges();
+        void testNearParallelEdges();
+        void testFarParallelEdges();
+        void testCrossEdges();
 
 };
 

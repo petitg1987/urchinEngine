@@ -11,8 +11,6 @@ namespace urchin
         public:
             void detectJump(const LineSegment3D<float> &, const LineSegment3D<float> &, float) const;
 
-        private:
-            void detectJumpFromEdge1ToEdge2(const LineSegment3D<float> &, const LineSegment3D<float> &, float) const;
     };
 
 }
