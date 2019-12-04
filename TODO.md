@@ -46,7 +46,6 @@
 - Navigation mesh
 	- **NEW FEATURE** (`major`): Create jump links in navigation mesh
 	    - Step 1: find links between external edges of `NavObject` and external edges of obstacles `NavObject` (update AABBTree margin accordingly)
-	    - Step 2: update `NavMesh` model to add links
 	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh only squares
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
 	- **OPTIMIZATION** (`medium`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons

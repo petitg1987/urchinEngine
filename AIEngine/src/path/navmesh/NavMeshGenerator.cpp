@@ -407,12 +407,21 @@ namespace urchin
         {
             for(const auto &triangle : navPolygon->getTriangles())
             {
-                for(std::size_t i=0; i<3; ++i)
+                for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
                 {
-                    std::shared_ptr<NavTriangle> neighborTriangles = triangle->getNeighbor(i);
-                    if(!neighborTriangles)
+                    bool hasDirectLink = false;
+                    for(const auto &edgeLink : triangle->getEdgeLinks(edgeIndex))
                     {
-                        externalEdges.push_back(triangle->computeEdge(i));
+                        if(edgeLink.getLinkType() == NavLink::LinkType::DIRECT)
+                        {
+                            hasDirectLink = true;
+                            break;
+                        }
+                    }
+
+                    if(!hasDirectLink)
+                    {
+                        externalEdges.push_back(triangle->computeEdge(edgeIndex));
                     }
                 }
             }

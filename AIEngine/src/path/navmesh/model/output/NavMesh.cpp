@@ -47,7 +47,7 @@ namespace urchin
 		std::stringstream logStream;
 		logStream.precision(std::numeric_limits<float>::max_digits10);
 
-		logStream<<"Mav mesh:"<<std::endl;
+		logStream<<"Nav mesh:"<<std::endl;
 
 		for(std::size_t i=0; i<getPolygons().size(); ++i)
 		{
@@ -61,7 +61,7 @@ namespace urchin
                          <<"{"<<triangle->getIndex(0)<<": "<<polygon->getPoint(triangle->getIndex(0))
 						 <<"}, {"<<triangle->getIndex(1)<<": "<<polygon->getPoint(triangle->getIndex(1))
 						 <<"}, {"<<triangle->getIndex(2)<<": "<<polygon->getPoint(triangle->getIndex(2))<<"}"
-						 <<" {"<<triangle->getNeighbor(0)<<", "<<triangle->getNeighbor(1)<<", "<<triangle->getNeighbor(2)<<"}"<<std::endl;
+						 <<" {"<<triangle->getEdgeLinks(0).size()<<", "<<triangle->getEdgeLinks(1).size()<<", "<<triangle->getEdgeLinks(2).size()<<"}"<<std::endl;
 			}
 		}
 
@@ -95,19 +95,18 @@ namespace urchin
 		{
 			for (const auto &triangle : polygon->getTriangles())
 			{
-				for(std::size_t i=0; i<3; ++i)
+				for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
 				{
-					std::shared_ptr<NavTriangle> neighbor = triangle->getNeighbor(i);
-					if(neighbor != nullptr)
-					{
-						Point3<float> lineP1 = triangle->getCenterPoint();
-						Point3<float> lineP2 = neighbor->getCenterPoint();
-						LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
+				    for(const auto &edgeLink : triangle->getEdgeLinks(edgeIndex))
+                    {
+                        Point3<float> lineP1 = triangle->getCenterPoint();
+                        Point3<float> lineP2 = edgeLink.getTargetTriangle()->getCenterPoint();
+                        LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
-						auto *svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);
-						svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
-						svgExporter.addShape(svgLine);
-					}
+                        auto *svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);
+                        svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
+                        svgExporter.addShape(svgLine);
+                    }
 				}
 			}
 		}

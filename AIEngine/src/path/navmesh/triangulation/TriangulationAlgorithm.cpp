@@ -297,18 +297,18 @@ namespace urchin
             {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1))
                 {
-                    currTriangle->addNeighbor(0, prevTriangle);
-                    prevTriangle->addNeighbor(prevEdgeIndex, currTriangle);
+                    currTriangle->addDirectLink(0, prevTriangle);
+                    prevTriangle->addDirectLink(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 1, 2))
                 {
-                    currTriangle->addNeighbor(1, prevTriangle);
-                    prevTriangle->addNeighbor(prevEdgeIndex, currTriangle);
+                    currTriangle->addDirectLink(1, prevTriangle);
+                    prevTriangle->addDirectLink(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 2, 0))
                 {
-                    currTriangle->addNeighbor(2, prevTriangle);
-                    prevTriangle->addNeighbor(prevEdgeIndex, currTriangle);
+                    currTriangle->addDirectLink(2, prevTriangle);
+                    prevTriangle->addDirectLink(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 }
             }
@@ -324,7 +324,7 @@ namespace urchin
 
         for(std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
         {
-            if(currTriangle->getNeighbor(prevEdgeIndex) == nullptr)
+            if(currTriangle->getEdgeLinks(prevEdgeIndex).empty())
             {
                 std::size_t edgeStartIndex = currTriangle->getIndex(prevEdgeIndex);
                 std::size_t edgeEndIndex = currTriangle->getIndex(edgeIndex);
@@ -339,8 +339,8 @@ namespace urchin
 					} else
 					{
                         std::size_t neighborIndex = itFind->second.triangleIndex;
-						currTriangle->addNeighbor(prevEdgeIndex, triangles[neighborIndex]);
-						triangles[neighborIndex]->addNeighbor(itFind->second.edgeIndex, currTriangle);
+						currTriangle->addDirectLink(prevEdgeIndex, triangles[neighborIndex]);
+						triangles[neighborIndex]->addDirectLink(itFind->second.edgeIndex, currTriangle);
 
 						sharedMonotoneEdges.erase(itFind);
 					}
@@ -401,7 +401,7 @@ namespace urchin
 			logStream<<" - {"<<triangle->getIndex(0)<<": "<<polygonPoints[triangle->getIndex(0)]
                      <<"}, {"<<triangle->getIndex(1)<<": "<<polygonPoints[triangle->getIndex(1)]
                      <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"
-                     <<" {"<<triangle->getNeighbor(0)<<", "<<triangle->getNeighbor(1)<<", "<<triangle->getNeighbor(2)<<"}"<<std::endl;
+                     <<" {"<<triangle->getEdgeLinks(0).size()<<", "<<triangle->getEdgeLinks(1).size()<<", "<<triangle->getEdgeLinks(2).size()<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

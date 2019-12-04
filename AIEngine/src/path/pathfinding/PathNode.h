@@ -11,7 +11,7 @@ namespace urchin
     class PathNode
     {
         public:
-            PathNode(std::shared_ptr<NavTriangle> , float, float);
+            PathNode(std::shared_ptr<NavTriangle>, float, float);
 
             const std::shared_ptr<NavTriangle> &getNavTriangle() const;
 

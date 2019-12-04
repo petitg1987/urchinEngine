@@ -17,9 +17,9 @@ namespace urchin
         this->indices[1] = index2;
         this->indices[2] = index3;
 
-        this->neighbors[0] = std::shared_ptr<NavTriangle>(nullptr);
-        this->neighbors[1] = std::shared_ptr<NavTriangle>(nullptr);
-        this->neighbors[2] = std::shared_ptr<NavTriangle>(nullptr);
+        this->links[0] = std::vector<NavLink>();
+        this->links[1] = std::vector<NavLink>();
+        this->links[2] = std::vector<NavLink>();
 
         this->centerPoint = Point3<float>(0.0f, 0.0f, 0.0f);
     }
@@ -62,23 +62,39 @@ namespace urchin
         return indices[index];
     }
 
-    void NavTriangle::addNeighbor(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &navTriangleNeighbor)
+    void NavTriangle::addDirectLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
-            assert(getNeighbor(edgeIndex) == nullptr);
+            for(const auto &edgeLink : getEdgeLinks(edgeIndex))
+            {
+                assert(edgeLink.getLinkType() != NavLink::LinkType::DIRECT); //cannot have 2 direct links on same edge
+            }
         #endif
 
-        neighbors[edgeIndex] = navTriangleNeighbor;
+        links[edgeIndex].emplace_back(NavLink(NavLink::LinkType::DIRECT, navPolygon.lock(), targetTriangle));
     }
 
-    std::shared_ptr<NavTriangle> NavTriangle::getNeighbor(std::size_t edgeIndex) const
+    void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavPolygon> &targetPolygon, const std::shared_ptr<NavTriangle> &targetTriangle)
+    {
+        #ifdef _DEBUG
+            assert(edgeIndex <= 2);
+            for(const auto &edgeLink : getEdgeLinks(edgeIndex))
+            {
+                assert(edgeLink.getLinkType() != NavLink::LinkType::DIRECT); //cannot have a direct links and jump link on same edge
+            }
+        #endif
+
+        links[edgeIndex].emplace_back(NavLink(NavLink::LinkType::JUMP, targetPolygon, targetTriangle));
+    }
+
+    std::vector<NavLink> NavTriangle::getEdgeLinks(std::size_t edgeIndex) const
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
         #endif
 
-        return neighbors[edgeIndex].lock();
+        return links[edgeIndex];
     }
 
     LineSegment3D<float> NavTriangle::computeEdge(std::size_t edgeStartIndex) const

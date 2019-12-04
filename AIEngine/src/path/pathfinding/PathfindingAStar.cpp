@@ -47,11 +47,11 @@ namespace urchin
             openList.erase(currentNodeIt);
 
             const auto &currTriangle = currentNode->getNavTriangle();
-            for(unsigned int i=0; i<3; ++i)
+            for(unsigned int edgeIndex=0; edgeIndex<3; ++edgeIndex)
             {
-                if(currTriangle->getNeighbor(i) != nullptr)
+                for(const auto &edgeLink : currTriangle->getEdgeLinks(edgeIndex))
                 {
-                    auto neighborTriangle = currTriangle->getNeighbor(i);
+                    auto neighborTriangle = edgeLink.getTargetTriangle();
 
                     if(closedList.find(neighborTriangle.get())!=closedList.end())
                     { //already processed
@@ -61,10 +61,10 @@ namespace urchin
                     std::shared_ptr<PathNode> neighborNodePath = retrievePathNodeFrom(openList, neighborTriangle);
                     if(!neighborNodePath)
                     {
-                        float gScore = computeGScore(currentNode, neighborTriangle, startPoint, endPoint, i);
+                        float gScore = computeGScore(currentNode, neighborTriangle, startPoint, endPoint, edgeIndex);
                         float hScore = computeHScore(neighborTriangle, endPoint);
                         neighborNodePath.reset(new PathNode(neighborTriangle, gScore, hScore));
-                        neighborNodePath->setPreviousNode(currentNode, i);
+                        neighborNodePath->setPreviousNode(currentNode, edgeIndex);
 
                         if(!endNodePath || neighborNodePath->getFScore() < endNodePath->getFScore())
                         {
@@ -77,11 +77,11 @@ namespace urchin
                         }
                     }else
                     {
-                        float gScore = computeGScore(currentNode, neighborTriangle, startPoint, endPoint, i);
+                        float gScore = computeGScore(currentNode, neighborTriangle, startPoint, endPoint, edgeIndex);
                         if(neighborNodePath->getGScore() > gScore)
                         { //better path found to reach neighborNodePath: override previous values
                             neighborNodePath->setGScore(gScore);
-                            neighborNodePath->setPreviousNode(currentNode, i);
+                            neighborNodePath->setPreviousNode(currentNode, edgeIndex);
                         }
                     }
                 }
@@ -160,12 +160,12 @@ namespace urchin
     float PathfindingAStar::computeGScore(std::shared_ptr<PathNode> &currentNode, const std::shared_ptr<NavTriangle> &neighbor, const Point3<float> &startPoint,
                                           const Point3<float> &endPoint, unsigned previousNodeLinkEdgeId) const
     {
-        std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(neighbor, 0.0, 0.0);
+        std::shared_ptr<PathNode> neighborNodePath = std::make_shared<PathNode>(neighbor, 0.0f, 0.0f);
         neighborNodePath->setPreviousNode(currentNode, previousNodeLinkEdgeId);
         std::vector<std::shared_ptr<PathPortal>> pathPortals = determinePath(neighborNodePath, startPoint, neighbor->getCenterPoint());
         std::vector<PathPoint> path = pathPortalsToPathPoints(pathPortals, false);
 
-        float pathDistance = 0.0;
+        float pathDistance = 0.0f;
         for(std::size_t i=0; i<static_cast<long>(path.size())-1; i++)
         {
             pathDistance += path[i].getPoint().distance(path[i+1].getPoint());
