@@ -8,8 +8,7 @@ namespace urchin
     PathNode::PathNode(std::shared_ptr<NavTriangle> navTriangle, float gScore, float hScore) :
             navTriangle(std::move(navTriangle)),
             gScore(gScore),
-            hScore(hScore),
-            previousNodeLinkEdgeId(std::numeric_limits<unsigned int>::max())
+            hScore(hScore)
     {
 
     }
@@ -39,15 +38,15 @@ namespace urchin
         return gScore + hScore;
     }
 
-    void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, unsigned int previousNodeLinkEdgeId)
+    void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, const std::shared_ptr<NavLink> &navLink)
     {
         #ifdef _DEBUG
             assert(previousNode != nullptr);
-            assert(previousNodeLinkEdgeId <= 2);
+            assert(navLink != nullptr);
         #endif
 
         this->previousNode = previousNode;
-        this->previousNodeLinkEdgeId = previousNodeLinkEdgeId;
+        this->navLink = navLink;
     }
 
     const std::shared_ptr<PathNode> &PathNode::getPreviousNode() const
@@ -59,10 +58,10 @@ namespace urchin
     {
         #ifdef _DEBUG
             assert(previousNode != nullptr);
-            assert(previousNodeLinkEdgeId <= 2);
+            assert(navLink != nullptr);
         #endif
 
-        return previousNode->getNavTriangle()->computeEdge(previousNodeLinkEdgeId);
+        return previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
     }
 
 }

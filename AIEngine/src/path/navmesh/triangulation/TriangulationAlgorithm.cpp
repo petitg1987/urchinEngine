@@ -324,7 +324,7 @@ namespace urchin
 
         for(std::size_t prevEdgeIndex=2, edgeIndex=0; edgeIndex<3; prevEdgeIndex=edgeIndex++)
         {
-            if(currTriangle->getEdgeLinks(prevEdgeIndex).empty())
+            if(!currTriangle->hasEdgeLinks(prevEdgeIndex))
             {
                 std::size_t edgeStartIndex = currTriangle->getIndex(prevEdgeIndex);
                 std::size_t edgeEndIndex = currTriangle->getIndex(edgeIndex);
@@ -400,8 +400,7 @@ namespace urchin
 		{
 			logStream<<" - {"<<triangle->getIndex(0)<<": "<<polygonPoints[triangle->getIndex(0)]
                      <<"}, {"<<triangle->getIndex(1)<<": "<<polygonPoints[triangle->getIndex(1)]
-                     <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"
-                     <<" {"<<triangle->getEdgeLinks(0).size()<<", "<<triangle->getEdgeLinks(1).size()<<", "<<triangle->getEdgeLinks(2).size()<<"}"<<std::endl;
+                     <<"}, {"<<triangle->getIndex(2)<<": "<<polygonPoints[triangle->getIndex(2)]<<"}"<<std::endl;
 		}
 		Logger::logger().log(logLevel, logStream.str());
 	}

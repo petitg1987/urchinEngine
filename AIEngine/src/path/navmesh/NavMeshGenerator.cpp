@@ -410,9 +410,9 @@ namespace urchin
                 for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
                 {
                     bool hasDirectLink = false;
-                    for(const auto &edgeLink : triangle->getEdgeLinks(edgeIndex))
+                    for(const auto &link : triangle->getLinks())
                     {
-                        if(edgeLink.getLinkType() == NavLink::LinkType::DIRECT)
+                        if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLink::LinkType::DIRECT)
                         {
                             hasDirectLink = true;
                             break;

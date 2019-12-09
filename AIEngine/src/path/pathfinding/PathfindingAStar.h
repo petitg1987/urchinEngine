@@ -32,7 +32,7 @@ namespace urchin
             float sign(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
 
             std::shared_ptr<PathNode> retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &, const std::shared_ptr<NavTriangle> &) const;
-            float computeGScore(std::shared_ptr<PathNode> &, const std::shared_ptr<NavTriangle> &, const Point3<float> &, const Point3<float> &, unsigned int) const;
+            float computeGScore(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavTriangle> &, const Point3<float> &, const Point3<float> &, const std::shared_ptr<NavLink> &) const;
             float computeHScore(const std::shared_ptr<NavTriangle> &, const Point3<float> &) const;
 
             std::vector<std::shared_ptr<PathPortal>> determinePath(const std::shared_ptr<PathNode> &, const Point3<float> &, const Point3<float> &) const;

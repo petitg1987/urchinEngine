@@ -60,8 +60,7 @@ namespace urchin
 				logStream<<"  - Triangle "<<j<<": "
                          <<"{"<<triangle->getIndex(0)<<": "<<polygon->getPoint(triangle->getIndex(0))
 						 <<"}, {"<<triangle->getIndex(1)<<": "<<polygon->getPoint(triangle->getIndex(1))
-						 <<"}, {"<<triangle->getIndex(2)<<": "<<polygon->getPoint(triangle->getIndex(2))<<"}"
-						 <<" {"<<triangle->getEdgeLinks(0).size()<<", "<<triangle->getEdgeLinks(1).size()<<", "<<triangle->getEdgeLinks(2).size()<<"}"<<std::endl;
+						 <<"}, {"<<triangle->getIndex(2)<<": "<<polygon->getPoint(triangle->getIndex(2))<<"}"<<std::endl;
 			}
 		}
 
@@ -95,19 +94,16 @@ namespace urchin
 		{
 			for (const auto &triangle : polygon->getTriangles())
 			{
-				for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
-				{
-				    for(const auto &edgeLink : triangle->getEdgeLinks(edgeIndex))
-                    {
-                        Point3<float> lineP1 = triangle->getCenterPoint();
-                        Point3<float> lineP2 = edgeLink.getTargetTriangle()->getCenterPoint();
-                        LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
+                for(const auto &link : triangle->getLinks())
+                {
+                    Point3<float> lineP1 = triangle->getCenterPoint();
+                    Point3<float> lineP2 = link->getTargetTriangle()->getCenterPoint();
+                    LineSegment2D<float> line(Point2<float>(lineP1.X, -lineP1.Z), Point2<float>(lineP2.X, -lineP2.Z));
 
-                        auto *svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);
-                        svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
-                        svgExporter.addShape(svgLine);
-                    }
-				}
+                    auto *svgLine = new SVGLine(line, SVGPolygon::BLUE, 0.5f);
+                    svgLine->setStroke(SVGPolygon::BLUE, 0.05f);
+                    svgExporter.addShape(svgLine);
+                }
 			}
 		}
 

@@ -17,9 +17,7 @@ namespace urchin
         this->indices[1] = index2;
         this->indices[2] = index3;
 
-        this->links[0] = std::vector<NavLink>();
-        this->links[1] = std::vector<NavLink>();
-        this->links[2] = std::vector<NavLink>();
+        this->links.reserve(3); //estimated memory size
 
         this->centerPoint = Point3<float>(0.0f, 0.0f, 0.0f);
     }
@@ -66,35 +64,43 @@ namespace urchin
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
-            for(const auto &edgeLink : getEdgeLinks(edgeIndex))
+            for(const auto &link : getLinks())
             {
-                assert(edgeLink.getLinkType() != NavLink::LinkType::DIRECT); //cannot have 2 direct links on same edge
+                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLink::LinkType::DIRECT); //cannot have 2 direct links on same edge
             }
         #endif
 
-        links[edgeIndex].emplace_back(NavLink(NavLink::LinkType::DIRECT, navPolygon.lock(), targetTriangle));
+        links.emplace_back(std::make_shared<NavLink>(NavLink::LinkType::DIRECT, edgeIndex, navPolygon.lock(), targetTriangle));
     }
 
     void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavPolygon> &targetPolygon, const std::shared_ptr<NavTriangle> &targetTriangle)
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
-            for(const auto &edgeLink : getEdgeLinks(edgeIndex))
+            for(const auto &link : getLinks())
             {
-                assert(edgeLink.getLinkType() != NavLink::LinkType::DIRECT); //cannot have a direct links and jump link on same edge
+                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLink::LinkType::DIRECT); //cannot have a direct links and jump link on same edge
             }
         #endif
 
-        links[edgeIndex].emplace_back(NavLink(NavLink::LinkType::JUMP, targetPolygon, targetTriangle));
+        links.emplace_back(std::make_shared<NavLink>(NavLink::LinkType::JUMP, edgeIndex, targetPolygon, targetTriangle));
     }
 
-    std::vector<NavLink> NavTriangle::getEdgeLinks(std::size_t edgeIndex) const
+    std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const
     {
-        #ifdef _DEBUG
-            assert(edgeIndex <= 2);
-        #endif
+        return links;
+    }
 
-        return links[edgeIndex];
+    bool NavTriangle::hasEdgeLinks(std::size_t edgeIndex) const
+    {
+        for(const auto &link : links)
+        {
+            if(link->getSourceEdgeIndex() == edgeIndex)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     LineSegment3D<float> NavTriangle::computeEdge(std::size_t edgeStartIndex) const

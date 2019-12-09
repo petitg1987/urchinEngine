@@ -3,6 +3,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
+#include "UrchinAIEngine.h"
 
 class TriangulationTest : public CppUnit::TestFixture
 {
@@ -20,6 +21,10 @@ class TriangulationTest : public CppUnit::TestFixture
 
 		void twoMonotonePolygons();
 		void threeMonotonePolygons();
+
+	private:
+		void assertUniqueLink(const std::shared_ptr<urchin::NavTriangle> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
+		void assertLink(const std::shared_ptr<urchin::NavLink> &, unsigned int, const std::shared_ptr<urchin::NavTriangle> &);
 };
 
 #endif

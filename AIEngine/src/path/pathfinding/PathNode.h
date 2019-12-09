@@ -20,7 +20,7 @@ namespace urchin
             float getHScore() const;
             float getFScore() const;
 
-            void setPreviousNode(const std::shared_ptr<PathNode> &, unsigned int);
+            void setPreviousNode(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavLink> &);
             const std::shared_ptr<PathNode> &getPreviousNode() const;
             LineSegment3D<float> computeEdgeWithPreviousNode() const;
 
@@ -31,7 +31,7 @@ namespace urchin
             float hScore;
 
             std::shared_ptr<PathNode> previousNode;
-            std::size_t previousNodeLinkEdgeId; //edge ID on previous node which made link with this node
+            std::shared_ptr<NavLink> navLink; //link between previousNode and this
     };
 
 }
