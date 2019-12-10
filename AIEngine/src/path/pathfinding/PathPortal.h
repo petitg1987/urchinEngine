@@ -12,11 +12,12 @@ namespace urchin
         public:
             PathPortal(LineSegment3D<float>, std::shared_ptr<PathNode>, std::shared_ptr<PathNode>, bool);
 
-            void setPivotPoint(const Point3<float> &);
-            bool hasPivotPoint() const;
-            const Point3<float> &getPivotPoint() const;
+            void setTransitionPoint(const Point3<float> &);
+            bool hasTransitionPoint() const;
+            const Point3<float> &getTransitionPoint() const;
 
-            bool isJumpPortal() const;
+            bool isJumpOriginPortal() const;
+            bool isBetweenTwoPolygons() const;
 
             const LineSegment3D<float> &getPortal() const;
             const std::shared_ptr<PathNode> &getPreviousPathNode() const;
@@ -26,10 +27,10 @@ namespace urchin
             LineSegment3D<float> portal;
             std::shared_ptr<PathNode> previousPathNode;
             std::shared_ptr<PathNode> nextPathNode;
-            bool bIsJumpPortal;
+            bool bIsJumpOriginPortal;
 
-            Point3<float> pivotPoint;
-            bool bHasPivotPoint; //TODO review because pivotPoint is also used for jump (not very logical)
+            Point3<float> transitionPoint;
+            bool bHasTransitionPoint;
     };
 
 }

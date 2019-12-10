@@ -1,42 +1,52 @@
-#include "PathPortal.h"
-
 #include <utility>
+
+#include "PathPortal.h"
+#include "path/navmesh/model/output/NavPolygon.h"
 
 namespace urchin
 {
 
-    PathPortal::PathPortal(LineSegment3D<float> portal, std::shared_ptr<PathNode> previousPathNode, std::shared_ptr<PathNode> nextPathNode, bool bIsJumpPortal) :
+    PathPortal::PathPortal(LineSegment3D<float> portal, std::shared_ptr<PathNode> previousPathNode, std::shared_ptr<PathNode> nextPathNode, bool bIsJumpOriginPortal) :
         portal(std::move(portal)),
         previousPathNode(std::move(previousPathNode)),
         nextPathNode(std::move(nextPathNode)),
-        bHasPivotPoint(false),
-        bIsJumpPortal(bIsJumpPortal)
+        bHasTransitionPoint(false),
+        bIsJumpOriginPortal(bIsJumpOriginPortal)
     {
 
     }
 
-    void PathPortal::setPivotPoint(const Point3<float> &pivotPoint)
+    void PathPortal::setTransitionPoint(const Point3<float> &transitionPoint)
     {
-        this->pivotPoint = pivotPoint;
-        this->bHasPivotPoint = true;
+        this->transitionPoint = transitionPoint;
+        this->bHasTransitionPoint = true;
     }
 
-    bool PathPortal::hasPivotPoint() const
+    bool PathPortal::hasTransitionPoint() const
     {
-        return bHasPivotPoint;
+        return bHasTransitionPoint;
     }
 
     /**
-     * @return pivot point. Pivot point represents a change of rotation in path or a change of polygon
+     * Transition point represents a change of state: pivot/rotation, change of polygon, jump...
      */
-    const Point3<float> &PathPortal::getPivotPoint() const
+    const Point3<float> &PathPortal::getTransitionPoint() const
     {
-        return pivotPoint;
+        #ifdef _DEBUG
+            assert(bHasTransitionPoint);
+        #endif
+
+        return transitionPoint;
     }
 
-    bool PathPortal::isJumpPortal() const
+    bool PathPortal::isJumpOriginPortal() const
     {
-        return bIsJumpPortal;
+        return bIsJumpOriginPortal;
+    }
+
+    bool PathPortal::isBetweenTwoPolygons() const
+    {
+        return previousPathNode->getNavTriangle()->getNavPolygon()->getName() != nextPathNode->getNavTriangle()->getNavPolygon()->getName();
     }
 
     const LineSegment3D<float> &PathPortal::getPortal() const

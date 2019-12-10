@@ -67,10 +67,6 @@ namespace urchin
 
 	const NavTopography *NavPolygon::getNavTopography() const
 	{
-		#ifdef _DEBUG
-			assert(navTopography!=nullptr);
-        #endif
-
 		return navTopography;
 	}
 

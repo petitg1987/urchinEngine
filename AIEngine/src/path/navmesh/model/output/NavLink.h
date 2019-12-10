@@ -33,24 +33,21 @@ namespace urchin
     {
         public:
             ~NavLink();
-            static std::shared_ptr<NavLink> newDirectLink(unsigned int, const std::shared_ptr<NavPolygon> &, const std::shared_ptr<NavTriangle> &);
-            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavPolygon> &, const std::shared_ptr<NavTriangle> &, JumpConstraint *);
+            static std::shared_ptr<NavLink> newDirectLink(unsigned int, const std::shared_ptr<NavTriangle> &);
+            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, JumpConstraint *);
 
             NavLinkType getLinkType() const;
+            unsigned int getSourceEdgeIndex() const;
+            const std::shared_ptr<NavTriangle> &getTargetTriangle() const;
+
             const JumpConstraint *getJumpConstraint() const;
 
-            unsigned int getSourceEdgeIndex() const;
-
-            std::shared_ptr<NavPolygon> getTargetPolygon() const;
-            std::shared_ptr<NavTriangle> getTargetTriangle() const;
-
         private:
-            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavPolygon> &, const std::shared_ptr<NavTriangle> &, JumpConstraint *);
+            NavLink(NavLinkType, unsigned int, std::shared_ptr<NavTriangle> , JumpConstraint *);
 
             NavLinkType linkType;
             unsigned int sourceEdgeIndex;
-            std::weak_ptr<NavPolygon> targetPolygon;
-            std::weak_ptr<NavTriangle> targetTriangle; //use weak_ptr to avoid cyclic references between triangles //TODO review comment & weak_ptr ?
+            std::shared_ptr<NavTriangle> targetTriangle;
 
             JumpConstraint *jumpConstraint;
     };

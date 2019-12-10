@@ -40,8 +40,8 @@ namespace urchin
             Point3<float> middlePoint(const LineSegment3D<float> &) const;
 
             std::vector<PathPoint> pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &, bool) const;
-            void addMissingPivotPoints(std::vector<std::shared_ptr<PathPortal>> &) const;
-            bool portalIsBetweenTwoPolygons(const std::shared_ptr<PathPortal> &) const;
+            void addMissingTransitionPoints(std::vector<std::shared_ptr<PathPortal>> &) const;
+            Point3<float> computeTransitionPoint(const std::shared_ptr<PathPortal> &, const Point3<float> &) const;
 
             const float jumpAdditionalCost;
             std::shared_ptr<NavMesh> navMesh;

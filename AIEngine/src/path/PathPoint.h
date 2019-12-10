@@ -17,7 +17,6 @@ namespace urchin
         private:
             Point3<float> point;
             bool bIsJumpPoint;
-
     };
 
 }

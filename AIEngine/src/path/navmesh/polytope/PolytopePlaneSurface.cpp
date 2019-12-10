@@ -2,7 +2,6 @@
 #include <utility>
 
 #include "PolytopePlaneSurface.h"
-#include "path/navmesh/model/output/topography/NavFlatTopography.h"
 
 namespace urchin
 {
@@ -105,7 +104,7 @@ namespace urchin
 
 	NavTopography *PolytopePlaneSurface::newNavTopography() const
 	{
-		return new NavFlatTopography();
+		return nullptr; //no topography for flat surface
 	}
 
 	const std::vector<Point3<float>> &PolytopePlaneSurface::getCcwPoints() const

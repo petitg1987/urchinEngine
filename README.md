@@ -87,13 +87,13 @@ cd UrchinEngine/mapEditor/
 - Add CMake applications
   - Application **testRunner**:
     - Target/executable: `testRunner`
-  - Application **testRunner (memecheck)**:
+  - Application **testRunner (memcheck)**:
     - Target/executable: `testRunner`
     - Program arguments `--tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=no --log-file=valMemcheck.log ./testRunner`
     - Working directory: `/home/greg/Project/urchin/urchinEngine/test`
   - Application **urchinMapEditor**:
     - Target/executable: `urchinMapEditor`
-  - Application **urchinMapEditor (memecheck)**:
+  - Application **urchinMapEditor (memcheck)**:
     - Target/executable: `urchinMapEditor`
     - Program arguments `--tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=no --log-file=valMemcheck.log ./urchinMapEditor`
     - Working directory: `/home/greg/Project/urchin/urchinEngine/mapEditor`

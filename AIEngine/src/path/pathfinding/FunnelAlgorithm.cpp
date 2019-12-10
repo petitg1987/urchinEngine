@@ -28,7 +28,7 @@ namespace urchin
         const Point3<float> &startPoint = portals[0]->getPortal().getA();
         const Point3<float> &endPoint = portals.back()->getPortal().getA();
 
-        portals[0]->setPivotPoint(startPoint);
+        portals[0]->setTransitionPoint(startPoint);
 
         apex = startPoint;
         sideIndices = std::make_pair(1, 1);
@@ -46,7 +46,7 @@ namespace urchin
             }
         }
 
-        portals.back()->setPivotPoint(endPoint);
+        portals.back()->setTransitionPoint(endPoint);
 
         return portals;
     }
@@ -74,7 +74,7 @@ namespace urchin
                 }else
                 { //cross with other side: add new point
                     apex = getPortalPoint(otherSide, otherSideIndex);
-                    portals[otherSideIndex]->setPivotPoint(apex);
+                    portals[otherSideIndex]->setTransitionPoint(apex);
 
                     updateSideIndex(otherSide, otherSideIndex+1);
                     updateSideIndex(updateSide, otherSideIndex+1);

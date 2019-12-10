@@ -70,7 +70,7 @@ namespace urchin
             }
         #endif
 
-        links.emplace_back(NavLink::newDirectLink(edgeIndex, navPolygon.lock(), targetTriangle));
+        links.emplace_back(NavLink::newDirectLink(edgeIndex, targetTriangle));
     }
 
     void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavPolygon> &targetPolygon, const std::shared_ptr<NavTriangle> &targetTriangle, JumpConstraint *jumpConstraint)
@@ -83,7 +83,7 @@ namespace urchin
             }
         #endif
 
-        links.emplace_back(NavLink::newJumpLink(edgeIndex, targetPolygon, targetTriangle, jumpConstraint));
+        links.emplace_back(NavLink::newJumpLink(edgeIndex, targetTriangle, jumpConstraint));
     }
 
     std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const

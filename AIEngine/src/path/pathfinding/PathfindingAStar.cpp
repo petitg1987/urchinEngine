@@ -245,29 +245,34 @@ namespace urchin
         std::vector<PathPoint> pathPoints;
         pathPoints.reserve(pathPortals.size() / 2); //estimated memory size
 
-        addMissingPivotPoints(pathPortals);
+        addMissingTransitionPoints(pathPortals);
 
         for(const auto &pathPortal : pathPortals)
         {
-            if(pathPortal->hasPivotPoint())
+            if(pathPortal->hasTransitionPoint())
             {
                 if(followTopography && !pathPoints.empty())
                 {
-                    Point3<float> startPoint = pathPoints.back().getPoint();
-                    Point3<float> endPoint = pathPortal->getPivotPoint();
-
-                    std::shared_ptr<NavPolygon> navPolygon = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon();
-                    std::vector<Point3<float>> topographyPoints = navPolygon->getNavTopography()->followTopography(startPoint, endPoint);
-
-                    pathPoints.pop_back();
-                    for(std::size_t i=0; i<topographyPoints.size()-1; ++i)
+                    const NavTopography *navPolygonTopography = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon()->getNavTopography();
+                    if(navPolygonTopography)
                     {
-                        pathPoints.emplace_back(PathPoint(topographyPoints[i], false));
+                        const Point3<float> &startPoint = pathPoints.back().getPoint();
+                        const Point3<float> &endPoint = pathPortal->getTransitionPoint();
+                        std::vector<Point3<float>> topographyPoints = navPolygonTopography->followTopography(startPoint, endPoint);
+
+                        pathPoints.pop_back();
+                        for(std::size_t i=0; i<topographyPoints.size()-1; ++i)
+                        {
+                            pathPoints.emplace_back(PathPoint(topographyPoints[i], false));
+                        }
+                        pathPoints.emplace_back(PathPoint(topographyPoints.back(), pathPortal->isJumpOriginPortal()));
+                    }else
+                    {
+                        pathPoints.emplace_back(PathPoint(pathPortal->getTransitionPoint(), pathPortal->isJumpOriginPortal()));
                     }
-                    pathPoints.emplace_back(PathPoint(topographyPoints.back(), pathPortal->isJumpPortal()));
                 }else
                 {
-                    pathPoints.emplace_back(PathPoint(pathPortal->getPivotPoint(), pathPortal->isJumpPortal()));
+                    pathPoints.emplace_back(PathPoint(pathPortal->getTransitionPoint(), pathPortal->isJumpOriginPortal()));
                 }
             }
         }
@@ -275,34 +280,50 @@ namespace urchin
         return pathPoints;
     }
 
-    void PathfindingAStar::addMissingPivotPoints(std::vector<std::shared_ptr<PathPortal>> &portals) const
+    void PathfindingAStar::addMissingTransitionPoints(std::vector<std::shared_ptr<PathPortal>> &portals) const
     {
         #ifdef _DEBUG
             if(!portals.empty())
             {
-                assert(portals[0]->hasPivotPoint());
-                assert(portals.back()->hasPivotPoint());
+                assert(portals[0]->hasTransitionPoint());
+                assert(portals.back()->hasTransitionPoint());
             }
         #endif
 
-        Point3<float> previousPivotPoint;
-        for (auto &portal : portals)
+        Point3<float> previousTransitionPoint = portals[0]->getTransitionPoint();
+        for(std::size_t i=0; i<portals.size(); ++i)
         {
-            if(portal->hasPivotPoint())
+            if (!portals[i]->hasTransitionPoint())
             {
-                previousPivotPoint = portal->getPivotPoint();
-            }else if(portalIsBetweenTwoPolygons(portal) || portal->isJumpPortal())
+                if (portals[i]->isJumpOriginPortal())
+                {
+                    #ifdef _DEBUG
+                        assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
+                        assert(!portals[i + 1]->hasTransitionPoint());
+                    #endif
+
+                    Point3<float> jumpStartPoint = computeTransitionPoint(portals[i], previousTransitionPoint);
+                    portals[i]->setTransitionPoint(jumpStartPoint);
+
+                    Point3<float> jumpEndPoint = portals[i + 1]->getPortal().closestPoint(jumpStartPoint);
+                    portals[i + 1]->setTransitionPoint(jumpEndPoint);
+                } else if (portals[i]->isBetweenTwoPolygons())
+                {
+                    portals[i]->setTransitionPoint(computeTransitionPoint(portals[i], previousTransitionPoint));
+                }
+            }
+
+            if (portals[i]->hasTransitionPoint())
             {
-                //Compute approximate point for performance reason (note: real point is intersection of portal->getPortal() with previousPivotPoint-nextPivotPoint)
-                Point3<float> portalPivotPoint = portal->getPortal().closestPoint(previousPivotPoint);
-                portal->setPivotPoint(portalPivotPoint);
+                previousTransitionPoint = portals[i]->getTransitionPoint();
             }
         }
     }
 
-    bool PathfindingAStar::portalIsBetweenTwoPolygons(const std::shared_ptr<PathPortal> &portal) const
+    Point3<float> PathfindingAStar::computeTransitionPoint(const std::shared_ptr<PathPortal> &portal, const Point3<float> &previousTransitionPoint) const
     {
-        return portal->getPreviousPathNode()->getNavTriangle()->getNavPolygon()->getName() != portal->getNextPathNode()->getNavTriangle()->getNavPolygon()->getName();
+        //Compute approximate point for performance reason (note: real point is intersection of [portal->getPortal()] with [nextTransitionPoint.vector(previousTransitionPoint)])
+        return portal->getPortal().closestPoint(previousTransitionPoint);
     }
 
 }
