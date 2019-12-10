@@ -32,15 +32,18 @@ namespace urchin
             float sign(const Point2<float> &, const Point2<float> &, const Point2<float> &) const;
 
             std::shared_ptr<PathNode> retrievePathNodeFrom(const std::multiset<std::shared_ptr<PathNode>, PathNodeCompare> &, const std::shared_ptr<NavTriangle> &) const;
-            float computeGScore(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavTriangle> &, const Point3<float> &, const Point3<float> &, const std::shared_ptr<NavLink> &) const;
+            float computeGScore(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavLink> &, const Point3<float> &) const;
             float computeHScore(const std::shared_ptr<NavTriangle> &, const Point3<float> &) const;
 
             std::vector<std::shared_ptr<PathPortal>> determinePath(const std::shared_ptr<PathNode> &, const Point3<float> &, const Point3<float> &) const;
+            LineSegment3D<float> rearrangePortal(const LineSegment3D<float> &, const std::vector<std::shared_ptr<PathPortal>> &) const;
             Point3<float> middlePoint(const LineSegment3D<float> &) const;
 
             std::vector<PathPoint> pathPortalsToPathPoints(std::vector<std::shared_ptr<PathPortal>> &, bool) const;
-            void addPolygonsPivotPoints(std::vector<std::shared_ptr<PathPortal>> &) const;
+            void addMissingPivotPoints(std::vector<std::shared_ptr<PathPortal>> &) const;
+            bool portalIsBetweenTwoPolygons(const std::shared_ptr<PathPortal> &) const;
 
+            const float jumpAdditionalCost;
             std::shared_ptr<NavMesh> navMesh;
     };
 

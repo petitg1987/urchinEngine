@@ -54,14 +54,42 @@ namespace urchin
         return previousNode;
     }
 
-    LineSegment3D<float> PathNode::computeEdgeWithPreviousNode() const
+    /**
+     * @return Return crossing portals (edges) between previous PathNode and current PathNode
+     */
+    PathNodeEdgesLink PathNode::computePathNodeEdgesLink() const
     {
         #ifdef _DEBUG
             assert(previousNode != nullptr);
             assert(navLink != nullptr);
         #endif
 
-        return previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
+        PathNodeEdgesLink pathNodeEdgesLink;
+
+        if(navLink->getLinkType() == NavLinkType::DIRECT)
+        {
+            LineSegment3D<float> sourceAndTargetEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
+
+            pathNodeEdgesLink.sourceEdge = sourceAndTargetEdge;
+            pathNodeEdgesLink.targetEdge = sourceAndTargetEdge;
+            pathNodeEdgesLink.areIdenticalEdges = true;
+            return pathNodeEdgesLink;
+        }else if(navLink->getLinkType() == NavLinkType::JUMP)
+        {
+            LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
+            LineSegment3D<float> targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->targetEdgeIndex);
+
+            pathNodeEdgesLink.sourceEdge = LineSegment3D<float>(
+                    navLink->getJumpConstraint()->sourceEdgeStartPoint * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->sourceEdgeStartPoint) * sourceEdge.getB(),
+                    navLink->getJumpConstraint()->sourceEdgeEndPoint * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->sourceEdgeEndPoint) * sourceEdge.getB());
+            pathNodeEdgesLink.targetEdge = LineSegment3D<float>(
+                    navLink->getJumpConstraint()->targetEdgeStartPoint * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->targetEdgeStartPoint) * targetEdge.getB(),
+                    navLink->getJumpConstraint()->targetEdgeEndPoint * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->targetEdgeEndPoint) * targetEdge.getB());
+            pathNodeEdgesLink.areIdenticalEdges = false;
+            return pathNodeEdgesLink;
+        }
+
+        throw std::runtime_error("Unknown link type: " + std::to_string(navLink->getLinkType()));
     }
 
 }

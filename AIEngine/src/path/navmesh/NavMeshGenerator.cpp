@@ -412,7 +412,7 @@ namespace urchin
                     bool hasDirectLink = false;
                     for(const auto &link : triangle->getLinks())
                     {
-                        if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLink::LinkType::DIRECT)
+                        if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::DIRECT)
                         {
                             hasDirectLink = true;
                             break;

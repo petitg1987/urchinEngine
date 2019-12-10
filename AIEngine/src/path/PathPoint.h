@@ -12,11 +12,11 @@ namespace urchin
             PathPoint(const Point3<float> &, bool);
 
             const Point3<float> &getPoint() const;
-            bool isTurnPoint() const;
+            bool isJumpPoint() const;
 
         private:
             Point3<float> point;
-            bool bIsTurnPoint;
+            bool bIsJumpPoint;
 
     };
 

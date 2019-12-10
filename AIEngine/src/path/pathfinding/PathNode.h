@@ -8,6 +8,16 @@
 namespace urchin
 {
 
+    /**
+     * Represent a link between two PathNode.
+     */
+    struct PathNodeEdgesLink
+    {
+        LineSegment3D<float> sourceEdge;
+        LineSegment3D<float> targetEdge;
+        bool areIdenticalEdges = true;
+    };
+
     class PathNode
     {
         public:
@@ -22,7 +32,7 @@ namespace urchin
 
             void setPreviousNode(const std::shared_ptr<PathNode> &, const std::shared_ptr<NavLink> &);
             const std::shared_ptr<PathNode> &getPreviousNode() const;
-            LineSegment3D<float> computeEdgeWithPreviousNode() const;
+            PathNodeEdgesLink computePathNodeEdgesLink() const;
 
         private:
             std::shared_ptr<NavTriangle> navTriangle;

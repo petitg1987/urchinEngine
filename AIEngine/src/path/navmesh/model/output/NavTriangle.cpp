@@ -66,24 +66,24 @@ namespace urchin
             assert(edgeIndex <= 2);
             for(const auto &link : getLinks())
             {
-                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLink::LinkType::DIRECT); //cannot have 2 direct links on same edge
+                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have 2 direct links on same edge
             }
         #endif
 
-        links.emplace_back(std::make_shared<NavLink>(NavLink::LinkType::DIRECT, edgeIndex, navPolygon.lock(), targetTriangle));
+        links.emplace_back(NavLink::newDirectLink(edgeIndex, navPolygon.lock(), targetTriangle));
     }
 
-    void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavPolygon> &targetPolygon, const std::shared_ptr<NavTriangle> &targetTriangle)
+    void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavPolygon> &targetPolygon, const std::shared_ptr<NavTriangle> &targetTriangle, JumpConstraint *jumpConstraint)
     {
         #ifdef _DEBUG
             assert(edgeIndex <= 2);
             for(const auto &link : getLinks())
             {
-                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLink::LinkType::DIRECT); //cannot have a direct links and jump link on same edge
+                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have a direct links and jump link on same edge
             }
         #endif
 
-        links.emplace_back(std::make_shared<NavLink>(NavLink::LinkType::JUMP, edgeIndex, targetPolygon, targetTriangle));
+        links.emplace_back(NavLink::newJumpLink(edgeIndex, targetPolygon, targetTriangle, jumpConstraint));
     }
 
     std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const

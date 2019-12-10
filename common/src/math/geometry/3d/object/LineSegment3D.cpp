@@ -3,8 +3,16 @@
 namespace urchin
 {
 
+    template<class T> LineSegment3D<T>::LineSegment3D() :
+        a(Point3<T>(NAN, NAN, NAN)),
+        b(Point3<T>(NAN, NAN, NAN))
+    {
+
+    }
+
 	template<class T> LineSegment3D<T>::LineSegment3D(const Point3<T> &a,  const Point3<T> &b) :
-		a(a), b(b)
+		a(a),
+		b(b)
 	{
 
 	}

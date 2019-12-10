@@ -3,9 +3,9 @@
 namespace urchin
 {
 
-    PathPoint::PathPoint(const Point3<float> &point, bool bIsTurnPoint) :
+    PathPoint::PathPoint(const Point3<float> &point, bool bIsJumpPoint) :
         point(point),
-        bIsTurnPoint(bIsTurnPoint)
+        bIsJumpPoint(bIsJumpPoint)
     {
 
     }
@@ -16,11 +16,11 @@ namespace urchin
     }
 
     /**
-     * @return True when this point represent a turn in path
+     * @return True when this point represent a jump to next point
      */
-    bool PathPoint::isTurnPoint() const
+    bool PathPoint::isJumpPoint() const
     {
-        return bIsTurnPoint;
+        return bIsJumpPoint;
     }
 
 }

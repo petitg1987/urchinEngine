@@ -14,6 +14,7 @@ namespace urchin
 	template<class T> class LineSegment3D : public ConvexObject3D<T>
 	{
 		public:
+            LineSegment3D();
 			LineSegment3D(const Point3<T> &,  const Point3<T> &);
 
 			const Point3<T> &getA() const;

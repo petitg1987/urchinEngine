@@ -5,11 +5,12 @@
 namespace urchin
 {
 
-    PathPortal::PathPortal(LineSegment3D<float> portal, std::shared_ptr<PathNode> previousPathNode, std::shared_ptr<PathNode> nextPathNode) :
+    PathPortal::PathPortal(LineSegment3D<float> portal, std::shared_ptr<PathNode> previousPathNode, std::shared_ptr<PathNode> nextPathNode, bool bIsJumpPortal) :
         portal(std::move(portal)),
         previousPathNode(std::move(previousPathNode)),
         nextPathNode(std::move(nextPathNode)),
-        bHasPivotPoint(false)
+        bHasPivotPoint(false),
+        bIsJumpPortal(bIsJumpPortal)
     {
 
     }
@@ -31,6 +32,11 @@ namespace urchin
     const Point3<float> &PathPortal::getPivotPoint() const
     {
         return pivotPoint;
+    }
+
+    bool PathPortal::isJumpPortal() const
+    {
+        return bIsJumpPortal;
     }
 
     const LineSegment3D<float> &PathPortal::getPortal() const
