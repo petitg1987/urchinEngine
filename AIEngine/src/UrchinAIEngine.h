@@ -23,6 +23,7 @@
 #include "path/navmesh/jump/EdgeJumpDetection.h"
 #include "path/pathfinding/FunnelAlgorithm.h"
 #include "path/pathfinding/PathPortal.h"
+#include "path/pathfinding/PathfindingAStar.h"
 #include "path/PathRequest.h"
 #include "path/PathPoint.h"
 

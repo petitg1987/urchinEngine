@@ -6,7 +6,7 @@
 
 namespace urchin
 {
-    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, std::shared_ptr<NavTriangle> targetTriangle, JumpConstraint *jumpConstraint) :
+    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, std::shared_ptr<NavTriangle> targetTriangle, NavJumpConstraint *jumpConstraint) :
             linkType(linkType),
             sourceEdgeIndex(sourceEdgeIndex),
             targetTriangle(std::move(targetTriangle)),
@@ -25,12 +25,10 @@ namespace urchin
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::DIRECT, sourceEdgeIndex, targetTriangle, nullptr));
     }
 
-    std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, JumpConstraint *jumpConstraint)
+    std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint)
     {
         #ifdef _DEBUG
             assert(jumpConstraint != nullptr);
-            assert(jumpConstraint->sourceEdgeStartPoint <= jumpConstraint->sourceEdgeEndPoint);
-            assert(jumpConstraint->targetEdgeStartPoint <= jumpConstraint->targetEdgeEndPoint);
         #endif
 
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::JUMP, sourceEdgeIndex, targetTriangle, jumpConstraint));
@@ -51,7 +49,7 @@ namespace urchin
         return targetTriangle;
     }
 
-    const JumpConstraint *NavLink::getJumpConstraint() const
+    const NavJumpConstraint *NavLink::getJumpConstraint() const
     {
         #ifdef _DEBUG
             assert(linkType == NavLinkType::JUMP);

@@ -3,21 +3,13 @@
 
 #include <memory>
 
+#include "path/navmesh/model/output/NavJumpConstraint.h"
+
 namespace urchin
 {
 
     class NavPolygon;
     class NavTriangle;
-
-    struct JumpConstraint
-    {
-        float sourceEdgeStartPoint;
-        float sourceEdgeEndPoint;
-
-        float targetEdgeIndex;
-        float targetEdgeStartPoint;
-        float targetEdgeEndPoint;
-    };
 
     enum NavLinkType
     {
@@ -34,22 +26,22 @@ namespace urchin
         public:
             ~NavLink();
             static std::shared_ptr<NavLink> newDirectLink(unsigned int, const std::shared_ptr<NavTriangle> &);
-            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, JumpConstraint *);
+            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
 
             NavLinkType getLinkType() const;
             unsigned int getSourceEdgeIndex() const;
             const std::shared_ptr<NavTriangle> &getTargetTriangle() const;
 
-            const JumpConstraint *getJumpConstraint() const;
+            const NavJumpConstraint *getJumpConstraint() const;
 
         private:
-            NavLink(NavLinkType, unsigned int, std::shared_ptr<NavTriangle> , JumpConstraint *);
+            NavLink(NavLinkType, unsigned int, std::shared_ptr<NavTriangle>, NavJumpConstraint *);
 
             NavLinkType linkType;
             unsigned int sourceEdgeIndex;
             std::shared_ptr<NavTriangle> targetTriangle;
 
-            JumpConstraint *jumpConstraint;
+            NavJumpConstraint *jumpConstraint;
     };
 
 }

@@ -10,9 +10,7 @@ class PathfindingAStarTest : public CppUnit::TestFixture
         static CppUnit::Test *suite();
 
         void straightPath();
-
         void pathWithJump();
-        void pathWithoutJump();
 };
 
 

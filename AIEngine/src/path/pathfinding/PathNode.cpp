@@ -77,14 +77,14 @@ namespace urchin
         }else if(navLink->getLinkType() == NavLinkType::JUMP)
         {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
-            LineSegment3D<float> targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->targetEdgeIndex);
+            LineSegment3D<float> targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->getTargetEdgeIndex());
 
             pathNodeEdgesLink.sourceEdge = LineSegment3D<float>(
-                    navLink->getJumpConstraint()->sourceEdgeStartPoint * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->sourceEdgeStartPoint) * sourceEdge.getB(),
-                    navLink->getJumpConstraint()->sourceEdgeEndPoint * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->sourceEdgeEndPoint) * sourceEdge.getB());
+                    navLink->getJumpConstraint()->getSourceEdgeStartPoint() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeStartPoint()) * sourceEdge.getB(),
+                    navLink->getJumpConstraint()->getSourceEdgeEndPoint() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeEndPoint()) * sourceEdge.getB());
             pathNodeEdgesLink.targetEdge = LineSegment3D<float>(
-                    navLink->getJumpConstraint()->targetEdgeStartPoint * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->targetEdgeStartPoint) * targetEdge.getB(),
-                    navLink->getJumpConstraint()->targetEdgeEndPoint * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->targetEdgeEndPoint) * targetEdge.getB());
+                    navLink->getJumpConstraint()->getTargetEdgeStartPoint() * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->getTargetEdgeStartPoint()) * targetEdge.getB(),
+                    navLink->getJumpConstraint()->getTargetEdgeEndPoint() * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->getTargetEdgeEndPoint()) * targetEdge.getB());
             pathNodeEdgesLink.areIdenticalEdges = false;
             return pathNodeEdgesLink;
         }

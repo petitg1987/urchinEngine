@@ -113,7 +113,7 @@ namespace urchin
                 if (isPointInsideTriangle(flattenPoint, polygon, triangle))
                 {
                     float verticalDistance = point.Y - triangle->getCenterPoint().Y;
-                    if (verticalDistance > 0.0 && verticalDistance < bestVerticalDistance)
+                    if (verticalDistance >= 0.0 && verticalDistance < bestVerticalDistance)
                     {
                         bestVerticalDistance = verticalDistance;
                         result = triangle;
