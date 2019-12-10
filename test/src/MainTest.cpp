@@ -32,8 +32,8 @@
 #include "ai/path/navmesh/polytope/services/TerrainObstacleServiceTest.h"
 #include "ai/path/navmesh/jump/EdgeJumpDetectionTest.h"
 #include "ai/path/navmesh/NavMeshGeneratorTest.h"
-
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
+#include "ai/path/pathfinding/PathfindingAStarTest.h"
 
 void commonTests(CppUnit::TextUi::TestRunner &runner)
 {
@@ -97,6 +97,7 @@ void aiTests(CppUnit::TextUi::TestRunner &runner)
 
     //pathfinding
     runner.addTest(FunnelAlgorithmTest::suite());
+    runner.addTest(PathfindingAStarTest::suite());
 }
 
 int main()
