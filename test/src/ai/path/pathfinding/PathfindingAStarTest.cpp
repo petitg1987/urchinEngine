@@ -28,7 +28,7 @@ void PathfindingAStarTest::straightPath()
 
 void PathfindingAStarTest::jumpWithSmallConstraint()
 {
-    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(1.0f, 0.0f, 2, 1.0f, 0.0f));
+    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(1.0f, 0.0f, 2));
 
     AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
@@ -43,7 +43,7 @@ void PathfindingAStarTest::jumpWithSmallConstraint()
 
 void PathfindingAStarTest::jumpWithBigConstraint()
 {
-    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(0.01f, 0.0f, 2, 1.0f, 0.9f));
+    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(0.01f, 0.0f, 2));
 
     AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));

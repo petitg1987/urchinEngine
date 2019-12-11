@@ -83,8 +83,8 @@ namespace urchin
                     navLink->getJumpConstraint()->getSourceEdgeStartPoint() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeStartPoint()) * sourceEdge.getB(),
                     navLink->getJumpConstraint()->getSourceEdgeEndPoint() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeEndPoint()) * sourceEdge.getB());
             pathNodeEdgesLink.targetEdge = LineSegment3D<float>(
-                    navLink->getJumpConstraint()->getTargetEdgeStartPoint() * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->getTargetEdgeStartPoint()) * targetEdge.getB(),
-                    navLink->getJumpConstraint()->getTargetEdgeEndPoint() * targetEdge.getA() + (1.0f - navLink->getJumpConstraint()->getTargetEdgeEndPoint()) * targetEdge.getB());
+                    targetEdge.closestPoint(pathNodeEdgesLink.sourceEdge.getA()),
+                    targetEdge.closestPoint(pathNodeEdgesLink.sourceEdge.getB()));
             pathNodeEdgesLink.areIdenticalEdges = false;
             return pathNodeEdgesLink;
         }
