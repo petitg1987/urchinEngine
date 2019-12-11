@@ -3,6 +3,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
+#include "UrchinAIEngine.h"
 
 class PathfindingAStarTest : public CppUnit::TestFixture
 {
@@ -10,7 +11,11 @@ class PathfindingAStarTest : public CppUnit::TestFixture
         static CppUnit::Test *suite();
 
         void straightPath();
-        void pathWithJump();
+        void jumpWithSmallConstraint();
+        void jumpWithBigConstraint();
+
+    private:
+        std::vector<urchin::PathPoint> pathWithJump(urchin::NavJumpConstraint *);
 };
 
 

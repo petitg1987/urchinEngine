@@ -1,10 +1,10 @@
 #include <cppunit/TestSuite.h>
 #include <cppunit/TestCaller.h>
 #include "UrchinCommon.h"
-#include "UrchinAIEngine.h"
 
 #include "PathfindingAStarTest.h"
 #include "AssertHelper.h"
+using namespace urchin;
 
 void PathfindingAStarTest::straightPath()
 {
@@ -26,7 +26,37 @@ void PathfindingAStarTest::straightPath()
     AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(3.0f, 0.0f, 3.0f));
 }
 
-void PathfindingAStarTest::pathWithJump()
+void PathfindingAStarTest::jumpWithSmallConstraint()
+{
+    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(1.0f, 0.0f, 2, 1.0f, 0.0f));
+
+    AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
+    AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
+    AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(2.0f, 0.0f, 2.0f)); //info: not the best point due to simplification in PathfindingAStar::computeTransitionPoint
+    AssertHelper::assertTrue(pathPoints[1].isJumpPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPoints[2].getPoint(), Point3<float>(2.5f, 0.0f, 2.5f)); //info: not the best point due to simplification in PathfindingAStar::computeTransitionPoint
+    AssertHelper::assertTrue(!pathPoints[2].isJumpPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPoints[3].getPoint(), Point3<float>(3.0f, 0.0f, 4.0f));
+    AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
+}
+
+void PathfindingAStarTest::jumpWithBigConstraint()
+{
+    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(0.01f, 0.0f, 2, 1.0f, 0.9f));
+
+    AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
+    AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
+    AssertHelper::assertTrue(!pathPoints[0].isJumpPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(3.96f, 0.0f, 0.04f));
+    AssertHelper::assertTrue(pathPoints[1].isJumpPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPoints[2].getPoint(), Point3<float>(4.0f, 0.0f, 1.0f));
+    AssertHelper::assertTrue(!pathPoints[2].isJumpPoint());
+    AssertHelper::assertPoint3FloatEquals(pathPoints[3].getPoint(), Point3<float>(3.0f, 0.0f, 4.0f));
+    AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
+}
+
+std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavJumpConstraint *navJumpConstraint)
 {
     std::vector<Point3<float>> polygon1Points = {Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 4.0f), Point3<float>(4.0f, 0.0f, 0.0f)};
     auto navPolygon1 = std::make_shared<NavPolygon>("poly1TestName", std::move(polygon1Points), nullptr);
@@ -38,18 +68,12 @@ void PathfindingAStarTest::pathWithJump()
     auto navPolygon2Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
     navPolygon2->addTriangles({navPolygon2Triangle1}, navPolygon2);
 
-    navPolygon1Triangle1->addJumpLink(1, navPolygon2Triangle1, new NavJumpConstraint(0.01f, 0.0f, 2, 1.0f, 0.9f));
+    navPolygon1Triangle1->addJumpLink(1, navPolygon2Triangle1, navJumpConstraint);
     auto navMesh = std::make_shared<NavMesh>();
     navMesh->replaceAllPolygons({navPolygon1, navPolygon2});
     PathfindingAStar pathfindingAStar(navMesh);
 
-    std::vector<PathPoint> pathPoints = pathfindingAStar.findPath(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(3.0f, 0.0f, 4.0f));
-
-    AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
-    AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
-    AssertHelper::assertPoint3FloatEquals(pathPoints[1].getPoint(), Point3<float>(3.96f, 0.0f, 0.04f));
-    AssertHelper::assertPoint3FloatEquals(pathPoints[2].getPoint(), Point3<float>(4.0f, 0.0f, 1.0f));
-    AssertHelper::assertPoint3FloatEquals(pathPoints[3].getPoint(), Point3<float>(3.0f, 0.0f, 4.0f));
+    return pathfindingAStar.findPath(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(3.0f, 0.0f, 4.0f));
 }
 
 CppUnit::Test *PathfindingAStarTest::suite()
@@ -57,7 +81,8 @@ CppUnit::Test *PathfindingAStarTest::suite()
     auto *suite = new CppUnit::TestSuite("PathfindingAStarTest");
 
     suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("straightPath", &PathfindingAStarTest::straightPath));
-    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("pathWithJump", &PathfindingAStarTest::pathWithJump));
+    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("jumpWithSmallConstraint", &PathfindingAStarTest::jumpWithSmallConstraint));
+    suite->addTest(new CppUnit::TestCaller<PathfindingAStarTest>("jumpWithBigConstraint", &PathfindingAStarTest::jumpWithBigConstraint));
 
     return suite;
 }

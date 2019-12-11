@@ -5,6 +5,7 @@
 
 #include "FunnelAlgorithmTest.h"
 #include "AssertHelper.h"
+using namespace urchin;
 
 void FunnelAlgorithmTest::straightPath()
 {
