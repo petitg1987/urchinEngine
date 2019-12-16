@@ -3,32 +3,79 @@
 
 namespace urchin
 {
-    void EdgeJumpDetection::detectJump(const LineSegment3D<float> &edge1, const LineSegment3D<float> &edge2, float jumpMaxLength) const
-    { //TODO rename method and handle all cases.
-        const LineSegment3D<float> &smallestEdge = edge1.toVector().squareLength() < edge2.toVector().squareLength() ? edge1 : edge2;
-        const LineSegment3D<float> &greatestEdge = &smallestEdge==&edge1 ? edge2 : edge1;
+    EdgeJumpDetection::EdgeJumpDetection(float jumpMaxLength) :
+            jumpMaxLength(jumpMaxLength),
+            jumpMaxSquareLength(jumpMaxLength * jumpMaxLength)
+    {
+
+    }
+
+    /**
+     * @param startJumpEdge Start jump edge. Edge must be part of a polygon CCW oriented when looked from top
+     * @param endJumpEdge End jump edge. Edge must be part of a polygon CCW oriented when looked from top
+     */
+    EdgeJumpResult EdgeJumpDetection::detectJump(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge) const
+    {
+        if(startJumpEdge.toLine().minDistance(endJumpEdge.toLine()) > jumpMaxLength)
+        {
+            return EdgeJumpResult::noEdgeJump();
+        }
 
         const float sampleSpaces = 1.0f;
-        const float jumpMaxSquareLength = jumpMaxLength * jumpMaxLength;
-        const unsigned int samplesCount = 1 + (unsigned int)std::ceil(smallestEdge.toVector().length() / sampleSpaces);
+        const unsigned int samplesCount = 1 + (unsigned int)std::ceil(startJumpEdge.toVector().length() / sampleSpaces);
 
-        float minAlpha = std::numeric_limits<float>::max();
-        float maxAlpha = -std::numeric_limits<float>::max();
+        bool hasJumpPoints = false;
+        float jumpStartRange = -std::numeric_limits<float>::max();
+        float jumpEndRange = std::numeric_limits<float>::max();
 
         for(unsigned int i=0; i<samplesCount; ++i)
         {
             float alpha = (float)i / ((float)samplesCount - 1.0f);
-            Point3<float> testPoint = alpha * smallestEdge.getA() + (1.0f - alpha) * smallestEdge.getB();
-            Point3<float> projectedPoint = greatestEdge.closestPoint(testPoint);
+            Point3<float> testPoint = alpha * startJumpEdge.getA() + (1.0f - alpha) * startJumpEdge.getB();
+            Point3<float> projectedPoint = endJumpEdge.closestPoint(testPoint);
 
-            if(testPoint.squareDistance(projectedPoint) < jumpMaxSquareLength)
+            if(canJumpThatFar(testPoint, projectedPoint) && isProperJumpDirection(startJumpEdge, endJumpEdge, testPoint, projectedPoint))
             {
-                minAlpha = std::min(minAlpha, alpha);
-                maxAlpha = std::max(maxAlpha, alpha);
+                hasJumpPoints = true;
+
+                if(alpha > jumpStartRange)
+                {
+                    jumpStartRange = alpha;
+                }
+
+                if(alpha < jumpEndRange)
+                {
+                    jumpEndRange = alpha;
+                }
             }
         }
 
-        std::cout<<std::endl<<"Point 1 on smallest edge:"<<minAlpha * smallestEdge.getA() + (1.0f - minAlpha) * smallestEdge.getB()<<std::endl;
-        std::cout<<"Point 2 on smallest edge:"<<maxAlpha * smallestEdge.getA() + (1.0f - maxAlpha) * smallestEdge.getB()<<std::endl<<std::endl;
+        if(hasJumpPoints)
+        {
+            return EdgeJumpResult::edgeJump(jumpStartRange, jumpEndRange);
+        }
+
+        return EdgeJumpResult::noEdgeJump();
+    }
+
+    bool EdgeJumpDetection::canJumpThatFar(const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
+    {
+        return jumpStartPoint.squareDistance(jumpEndPoint) < jumpMaxSquareLength;
+    }
+
+    bool EdgeJumpDetection::isProperJumpDirection(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
+            const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
+    {
+        Vector2<float> jumpVectorXZ = Point2<float>(jumpStartPoint.X, jumpStartPoint.Z).vector(Point2<float>(jumpEndPoint.X, jumpEndPoint.Z));
+
+        Line2D<float> startJumpEdgeXZ(Point2<float>(startJumpEdge.getA().X, startJumpEdge.getA().Z), Point2<float>(startJumpEdge.getB().X, startJumpEdge.getB().Z));
+        Vector2<float> orthogonalStartJumpVectorXZ = startJumpEdgeXZ.getA().vector(startJumpEdgeXZ.getA().translate(startJumpEdgeXZ.computeNormal()));
+        bool jumpOutsideOfStartPolygon = orthogonalStartJumpVectorXZ.dotProduct(jumpVectorXZ) >= 0.0f;
+
+        Line2D<float> endJumpEdgeXZ(Point2<float>(endJumpEdge.getA().X, endJumpEdge.getA().Z), Point2<float>(endJumpEdge.getB().X, endJumpEdge.getB().Z));
+        Vector2<float> orthogonalEndJumpVectorXZ = endJumpEdgeXZ.getA().vector(endJumpEdgeXZ.getA().translate(endJumpEdgeXZ.computeNormal()));
+        bool jumpInsideOfEndPolygon = orthogonalEndJumpVectorXZ.dotProduct(jumpVectorXZ) < 0.0f;
+
+        return jumpOutsideOfStartPolygon && jumpInsideOfEndPolygon;
     }
 }

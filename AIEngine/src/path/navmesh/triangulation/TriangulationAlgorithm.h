@@ -30,13 +30,7 @@ namespace urchin
 	class TriangulationAlgorithm
 	{
 		public:
-			enum TriangleOrientation
-			{
-				NONE,
-				CCW
-			};
-
-			TriangulationAlgorithm(std::vector<Point2<float>> &&, const std::string &, TriangleOrientation triangleOrientation = TriangulationAlgorithm::NONE);
+			TriangulationAlgorithm(std::vector<Point2<float>> &&, const std::string &);
 
 			std::vector<Point2<float>> getPolygonPoints() const;
 
@@ -52,7 +46,7 @@ namespace urchin
 			std::vector<std::shared_ptr<NavTriangle>> triangulateMonotonePolygon(const MonotonePolygon &);
 			std::vector<SidedPoint> buildSortedSidedPoints(const std::vector<std::size_t> &) const;
 			bool isFirstPointAboveSecond(std::size_t, std::size_t) const;
-			std::shared_ptr<NavTriangle> buildOrientedTriangle(std::size_t, std::size_t, std::size_t) const;
+			std::shared_ptr<NavTriangle> buildCCWOrientedTriangle(std::size_t, std::size_t, std::size_t) const;
 
 			void determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &, const MonotonePolygon &);
 			void determineNeighborsInsideMonotone(std::vector<std::shared_ptr<NavTriangle>> &);
@@ -64,7 +58,6 @@ namespace urchin
 			void logOutputData(const std::string &, const std::vector<std::shared_ptr<NavTriangle>> &, Logger::CriticalityLevel) const;
 
 			std::vector<Point2<float>> polygonPoints;
-			TriangleOrientation triangleOrientation;
 			std::vector<std::size_t> endContourIndices; //e.g.: 'polygonPoints' contains 5 CCW points and 4 CW points (hole). So, 'endContourIndices' will have values: 5 and 9.
 			std::vector<std::string> contourNames;
 

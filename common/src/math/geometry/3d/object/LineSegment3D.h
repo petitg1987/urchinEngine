@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "math/geometry/3d/object/ConvexObject3D.h"
+#include "math/geometry/3d/Line3D.h"
 #include "math/algebra/point/Point3.h"
 #include "math/algebra/vector/Vector3.h"
 
@@ -26,6 +27,7 @@ namespace urchin
 			T squareDistance(const Point3<T> &) const;
 
             Vector3<T> toVector() const;
+            Line3D<T> toLine() const;
 
 		private:
 			Point3<T> a, b;

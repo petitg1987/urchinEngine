@@ -26,10 +26,9 @@ namespace urchin
 	template<class T> Point3<T> Line3D<T>::orthogonalProjection(const Point3<T> &p) const
 	{
 		Vector3<T> ab = a.vector(b);
-
-		T abSquareLength = ab.dotProduct(ab);
 		Vector3<T> ap = a.vector(p);
-		const T t = ap.dotProduct(ab) / abSquareLength;
+
+		const T t = ap.dotProduct(ab) / ab.squareLength();
 		return ((b-a)*t) + a;
 	}
 
@@ -52,6 +51,12 @@ namespace urchin
 		Vector3<T> ab = a.vector(b);
 		return Line3D<T>(p, p.translate(ab));
 	}
+
+    template<class T> T Line3D<T>::minDistance(const Line3D<T> &line) const
+    {
+        Vector3<T> linesVectorCrossProduction = a.vector(b).crossProduct(line.getA().vector(line.getB()));
+        return line.getA().vector(a).dotProduct(linesVectorCrossProduction) / linesVectorCrossProduction.length();
+    }
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const Line3D<T> &l)
 	{

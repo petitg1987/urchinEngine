@@ -106,6 +106,11 @@ namespace urchin
 		return a.vector(b);
 	}
 
+    template<class T> Line2D<T> LineSegment2D<T>::toLine() const
+    {
+        return Line2D<T>(a, b);
+    }
+
 	/**
 	 * Returns the intersection point of the two lines segment.
 	 * When line segments are collinear and intersect: returns the nearest intersection point between this->getA() and this->getB().

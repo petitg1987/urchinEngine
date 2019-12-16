@@ -6,6 +6,9 @@
 namespace urchin
 {
 
+    /**
+     * Indices of points in CCW order when looked from top
+     */
     NavTriangle::NavTriangle(std::size_t index1, std::size_t index2, std::size_t index3) :
         indices()
     {
@@ -46,11 +49,17 @@ namespace urchin
         return centerPoint;
     }
 
+    /**
+     * @return Indices of points in CCW order when looked from top
+     */
     const std::size_t *NavTriangle::getIndices() const
     {
         return indices;
     }
 
+    /**
+     * @return Index of point in CCW order when looked from top
+     */
     std::size_t NavTriangle::getIndex(std::size_t index) const
     {
         #ifdef _DEBUG

@@ -9,14 +9,14 @@ namespace urchin
         public:
             NavJumpConstraint(float, float, float);
 
-            float getSourceEdgeStartPoint() const;
-            float getSourceEdgeEndPoint() const;
+            float getSourceEdgeJumpStartRange() const;
+            float getSourceEdgeJumpEndRange() const;
 
             float getTargetEdgeIndex() const;
 
         private:
-            float sourceEdgeStartPoint;
-            float sourceEdgeEndPoint;
+            float sourceEdgeJumpStartRange;
+            float sourceEdgeJumpEndRange;
 
             float targetEdgeIndex;
     };

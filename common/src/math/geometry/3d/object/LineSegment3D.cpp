@@ -47,7 +47,7 @@ namespace urchin
 	{
 		Vector3<T> ab = a.vector(b);
 
-		T abSquareLength = ab.dotProduct(ab);
+		T abSquareLength = ab.squareLength();
 		if(abSquareLength==(T)0.0)
 		{
 			return a;
@@ -112,6 +112,11 @@ namespace urchin
     template<class T> Vector3<T> LineSegment3D<T>::toVector() const
     {
         return a.vector(b);
+    }
+
+    template<class T> Line3D<T> LineSegment3D<T>::toLine() const
+    {
+        return Line3D<T>(a, b);
     }
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const LineSegment3D<T> &l)

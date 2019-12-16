@@ -18,6 +18,8 @@ namespace urchin
 			T squareDistance(const Point3<T> &) const;
 			Line3D<T> parallelLine(const Point3<T> &) const;
 
+			T minDistance(const Line3D<T> &) const;
+
 		private:
 			Point3<T> a, b;
 	};

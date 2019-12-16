@@ -23,9 +23,8 @@ namespace urchin
 	/**
 	 * @param ccwPolygonPoints Polygon points in counter clockwise order. Points must be unique.
 	 */
-	TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string &name, TriangleOrientation triangleOrientation) :
+	TriangulationAlgorithm::TriangulationAlgorithm(std::vector<Point2<float>> &&ccwPolygonPoints, const std::string &name) :
 			polygonPoints(std::move(ccwPolygonPoints)),
-			triangleOrientation(triangleOrientation),
             missingTriangleNeighbor(0)
 	{
 		this->endContourIndices.push_back(polygonPoints.size());
@@ -161,7 +160,7 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-                    monotoneTriangles.emplace_back(buildOrientedTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
+                    monotoneTriangles.emplace_back(buildCCWOrientedTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
                     determineNeighbors(monotoneTriangles, monotonePolygon);
 				}
 				stack.pop();
@@ -182,7 +181,7 @@ namespace urchin
 
 					if((orientationResult <= 0.0 && topPoint.onLeft) || (orientationResult >= 0.0 && !topPoint.onLeft))
 					{
-                        monotoneTriangles.emplace_back(buildOrientedTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+                        monotoneTriangles.emplace_back(buildCCWOrientedTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
                         determineNeighbors(monotoneTriangles, monotonePolygon);
 						stack.pop();
 					}else
@@ -202,7 +201,7 @@ namespace urchin
 			stack.pop();
 			SidedPoint top2Point = stack.top();
 
-            monotoneTriangles.emplace_back(buildOrientedTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
+            monotoneTriangles.emplace_back(buildCCWOrientedTriangle(currentPoint.pointIndex, top2Point.pointIndex, topPoint.pointIndex));
             determineNeighbors(monotoneTriangles, monotonePolygon);
 		}
 
@@ -246,7 +245,7 @@ namespace urchin
 		return polygonPoints[firstIndex].Y > polygonPoints[secondIndex].Y;
 	}
 
-	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const
+	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildCCWOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const
 	{
 		#ifdef _DEBUG
 			if(pointIndex1==pointIndex2 || pointIndex1==pointIndex3 || pointIndex2==pointIndex3)
@@ -255,25 +254,17 @@ namespace urchin
 			}
     	#endif
 
-		if(triangleOrientation==TriangulationAlgorithm::NONE)
-		{
-			return std::make_shared<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
-		}else if(triangleOrientation==TriangulationAlgorithm::CCW)
-		{
-			Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
-			Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>());
+        Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
+        Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>());
 
-			double crossProductZ = v1.X*v2.Y - v1.Y*v2.X;
-			if(crossProductZ > 0.0)
-			{
-				return std::make_shared<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
-			}else
-			{
-				return std::make_shared<NavTriangle>(pointIndex2, pointIndex1, pointIndex3);
-			}
-		}
-
-		throw std::runtime_error("Unknown triangle orientation type: " + std::to_string(triangleOrientation));
+        double crossProductZ = v1.crossProduct(v2);
+        if(crossProductZ > 0.0)
+        {
+            return std::make_shared<NavTriangle>(pointIndex1, pointIndex2, pointIndex3);
+        }else
+        {
+            return std::make_shared<NavTriangle>(pointIndex2, pointIndex1, pointIndex3);
+        }
 	}
 
     void TriangulationAlgorithm::determineNeighbors(std::vector<std::shared_ptr<NavTriangle>> &triangles, const MonotonePolygon &monotonePolygon)
@@ -369,7 +360,6 @@ namespace urchin
 		logStream.precision(std::numeric_limits<float>::max_digits10);
 
 		logStream<<message<<std::endl;
-		logStream<<"Triangle orientation: "<<triangleOrientation<<std::endl;
 		logStream<<"Polygon points:"<<std::endl;
 		for(const auto &polygonPoint : polygonPoints)
 		{

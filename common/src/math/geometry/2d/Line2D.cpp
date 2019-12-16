@@ -34,18 +34,17 @@ namespace urchin
 	template<class T> Point2<T> Line2D<T>::orthogonalProjection(const Point2<T> &p) const
 	{
 		Vector2<T> ab = a.vector(b);
-
-		T abSquareLength = ab.dotProduct(ab);
 		Vector2<T> ap = a.vector(p);
 
 		T apDotAb = ap.dotProduct(ab);
 		if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
 		{
+            T abSquareLength = ab.squareLength();
 			Vector2<T> vTranslate(MathAlgorithm::roundDivision<T>(ab.X * apDotAb, abSquareLength),
 								  MathAlgorithm::roundDivision<T>(ab.Y * apDotAb, abSquareLength));
 			return a.translate(vTranslate);
 		}
-		return a.translate((ab * ap.dotProduct(ab)) / abSquareLength);
+		return a.translate((ab * ap.dotProduct(ab)) / ab.squareLength());
 	}
 
 	/**

@@ -2,6 +2,7 @@
 #define URCHINENGINE_LINESEGMENT2D_H
 
 #include "math/geometry/2d/object/ConvexObject2D.h"
+#include "math/geometry/2d/Line2D.h"
 #include "math/algebra/point/Point2.h"
 #include "math/algebra/vector/Vector2.h"
 
@@ -22,6 +23,7 @@ namespace urchin
 			bool onSegment(const Point2<T> &) const;
 
 			Vector2<T> toVector() const;
+			Line2D<T> toLine() const;
 
 			Point2<T> intersectPoint(const LineSegment2D<T> &, bool &) const;
 			Point2<T> intersectPoint(const LineSegment2D<T> &, bool &, Point2<T> &, bool &) const;

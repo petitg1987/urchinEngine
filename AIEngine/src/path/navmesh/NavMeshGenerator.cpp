@@ -334,7 +334,7 @@ namespace urchin
 
         navPolygonName = "<" + walkablePolygon.getName() + ">";
         std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
-        TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName(), TriangulationAlgorithm::CCW);
+        TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName());
 
         for(const auto &remainingObstaclePolygon : remainingObstaclePolygons)
         {

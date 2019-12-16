@@ -77,14 +77,10 @@ namespace urchin
         }else if(navLink->getLinkType() == NavLinkType::JUMP)
         {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
-            LineSegment3D<float> targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->getTargetEdgeIndex());
-
             pathNodeEdgesLink.sourceEdge = LineSegment3D<float>(
-                    navLink->getJumpConstraint()->getSourceEdgeStartPoint() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeStartPoint()) * sourceEdge.getB(),
-                    navLink->getJumpConstraint()->getSourceEdgeEndPoint() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeEndPoint()) * sourceEdge.getB());
-            pathNodeEdgesLink.targetEdge = LineSegment3D<float>(
-                    targetEdge.closestPoint(pathNodeEdgesLink.sourceEdge.getA()),
-                    targetEdge.closestPoint(pathNodeEdgesLink.sourceEdge.getB()));
+                    navLink->getJumpConstraint()->getSourceEdgeJumpStartRange() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeJumpStartRange()) * sourceEdge.getB(),
+                    navLink->getJumpConstraint()->getSourceEdgeJumpEndRange() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeJumpEndRange()) * sourceEdge.getB());
+            pathNodeEdgesLink.targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->getTargetEdgeIndex());
             pathNodeEdgesLink.areIdenticalEdges = false;
             return pathNodeEdgesLink;
         }

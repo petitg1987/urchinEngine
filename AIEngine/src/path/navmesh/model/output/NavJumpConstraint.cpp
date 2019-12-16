@@ -4,25 +4,25 @@
 
 namespace urchin
 {
-    NavJumpConstraint::NavJumpConstraint(float sourceEdgeStartPoint, float sourceEdgeEndPoint, float targetEdgeIndex) :
-            sourceEdgeStartPoint(sourceEdgeStartPoint),
-            sourceEdgeEndPoint(sourceEdgeEndPoint),
+    NavJumpConstraint::NavJumpConstraint(float sourceEdgeJumpStartRange, float sourceEdgeJumpEndRange, float targetEdgeIndex) :
+            sourceEdgeJumpStartRange(sourceEdgeJumpStartRange),
+            sourceEdgeJumpEndRange(sourceEdgeJumpEndRange),
             targetEdgeIndex(targetEdgeIndex)
     {
         #ifdef _DEBUG
             assert(targetEdgeIndex <= 2);
-            assert(sourceEdgeStartPoint >= sourceEdgeEndPoint);
+            assert(sourceEdgeJumpStartRange >= sourceEdgeJumpEndRange);
         #endif
     }
 
-    float NavJumpConstraint::getSourceEdgeStartPoint() const
+    float NavJumpConstraint::getSourceEdgeJumpStartRange() const
     {
-        return sourceEdgeStartPoint;
+        return sourceEdgeJumpStartRange;
     }
 
-    float NavJumpConstraint::getSourceEdgeEndPoint() const
+    float NavJumpConstraint::getSourceEdgeJumpEndRange() const
     {
-        return sourceEdgeEndPoint;
+        return sourceEdgeJumpEndRange;
     }
 
     float NavJumpConstraint::getTargetEdgeIndex() const
