@@ -77,9 +77,7 @@ namespace urchin
         }else if(navLink->getLinkType() == NavLinkType::JUMP)
         {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
-            pathNodeEdgesLink.sourceEdge = LineSegment3D<float>(
-                    navLink->getJumpConstraint()->getSourceEdgeJumpStartRange() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeJumpStartRange()) * sourceEdge.getB(),
-                    navLink->getJumpConstraint()->getSourceEdgeJumpEndRange() * sourceEdge.getA() + (1.0f - navLink->getJumpConstraint()->getSourceEdgeJumpEndRange()) * sourceEdge.getB());
+            pathNodeEdgesLink.sourceEdge = navLink->getJumpConstraint()->computeSourceJumpEdge(sourceEdge);
             pathNodeEdgesLink.targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->getTargetEdgeIndex());
             pathNodeEdgesLink.areIdenticalEdges = false;
             return pathNodeEdgesLink;

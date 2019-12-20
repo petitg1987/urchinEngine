@@ -48,9 +48,8 @@ namespace urchin
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
 
 			void updateNavLinks();
-            void extractExternalEdges(const std::shared_ptr<NavObject> &, std::vector<LineSegment3D<float>> &) const;
-            void detectLinks(const std::shared_ptr<NavObject> &, const std::vector<LineSegment3D<float>> &,
-                    const std::shared_ptr<NavObject> &, const std::vector<LineSegment3D<float>> &) const;
+            void updateNavLinks(const std::shared_ptr<NavObject> &, const std::shared_ptr<NavTriangle> &, std::size_t) const;
+            bool isExternalEdge(const std::shared_ptr<NavTriangle> &, std::size_t) const;
 
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
@@ -71,8 +70,6 @@ namespace urchin
 			mutable std::string navPolygonName;
             mutable std::vector<std::shared_ptr<NavObject>> allNavObjects;
 			mutable std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
-
-			mutable std::vector<LineSegment3D<float>> navObjectEdges, nearNavObjectEdges;
 	};
 
 }

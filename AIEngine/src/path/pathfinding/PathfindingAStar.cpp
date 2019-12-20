@@ -299,7 +299,6 @@ namespace urchin
                 {
                     #ifdef _DEBUG
                         assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
-                        assert(!portals[i + 1]->hasTransitionPoint());
                     #endif
 
                     Point3<float> jumpStartPoint = computeTransitionPoint(portals[i], previousTransitionPoint);

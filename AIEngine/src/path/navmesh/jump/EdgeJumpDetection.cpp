@@ -15,7 +15,7 @@ namespace urchin
      * @param endJumpEdge End jump edge. Edge must be part of a polygon CCW oriented when looked from top
      */
     EdgeJumpResult EdgeJumpDetection::detectJump(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge) const
-    {
+    { //TODO handle collinear edges (jump of length 0)
         if(startJumpEdge.toLine().minDistance(endJumpEdge.toLine()) > jumpMaxLength)
         {
             return EdgeJumpResult::noEdgeJump();
@@ -52,6 +52,10 @@ namespace urchin
 
         if(hasJumpPoints)
         {
+            if(jumpStartRange - jumpEndRange < 0.01f)
+            { //if the jump start edge is only one point or a thin line: ignore it
+                return EdgeJumpResult::noEdgeJump();
+            }
             return EdgeJumpResult::edgeJump(jumpStartRange, jumpEndRange);
         }
 
@@ -66,16 +70,21 @@ namespace urchin
     bool EdgeJumpDetection::isProperJumpDirection(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
             const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
     {
-        Vector2<float> jumpVectorXZ = Point2<float>(jumpStartPoint.X, jumpStartPoint.Z).vector(Point2<float>(jumpEndPoint.X, jumpEndPoint.Z));
+        constexpr float jumpFoV = 0.17364817766; //FoV of 80° = cos((PI_VALUE/180.0) * 80.0)
+        Vector2<float> normalizedJumpVectorXZ = Point2<float>(jumpStartPoint.X, jumpStartPoint.Z).vector(Point2<float>(jumpEndPoint.X, jumpEndPoint.Z)).normalize();
 
         Line2D<float> startJumpEdgeXZ(Point2<float>(startJumpEdge.getA().X, startJumpEdge.getA().Z), Point2<float>(startJumpEdge.getB().X, startJumpEdge.getB().Z));
         Vector2<float> orthogonalStartJumpVectorXZ = startJumpEdgeXZ.getA().vector(startJumpEdgeXZ.getA().translate(startJumpEdgeXZ.computeNormal()));
-        bool jumpOutsideOfStartPolygon = orthogonalStartJumpVectorXZ.dotProduct(jumpVectorXZ) >= 0.0f;
+        bool jumpOutsideOfStartPolygon = orthogonalStartJumpVectorXZ.normalize().dotProduct(normalizedJumpVectorXZ) >= jumpFoV;
 
-        Line2D<float> endJumpEdgeXZ(Point2<float>(endJumpEdge.getA().X, endJumpEdge.getA().Z), Point2<float>(endJumpEdge.getB().X, endJumpEdge.getB().Z));
-        Vector2<float> orthogonalEndJumpVectorXZ = endJumpEdgeXZ.getA().vector(endJumpEdgeXZ.getA().translate(endJumpEdgeXZ.computeNormal()));
-        bool jumpInsideOfEndPolygon = orthogonalEndJumpVectorXZ.dotProduct(jumpVectorXZ) < 0.0f;
+        if(jumpOutsideOfStartPolygon)
+        {
+            Line2D<float> endJumpEdgeXZ(Point2<float>(endJumpEdge.getA().X, endJumpEdge.getA().Z), Point2<float>(endJumpEdge.getB().X, endJumpEdge.getB().Z));
+            Vector2<float> orthogonalEndJumpVectorXZ = endJumpEdgeXZ.getA().vector(endJumpEdgeXZ.getA().translate(endJumpEdgeXZ.computeNormal()));
+            bool jumpInsideOfEndPolygon = orthogonalEndJumpVectorXZ.normalize().dotProduct(normalizedJumpVectorXZ) < -jumpFoV;
+            return jumpInsideOfEndPolygon;
+        }
 
-        return jumpOutsideOfStartPolygon && jumpInsideOfEndPolygon;
+        return false;
     }
 }

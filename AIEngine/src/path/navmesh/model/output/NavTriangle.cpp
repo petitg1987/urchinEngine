@@ -34,7 +34,7 @@ namespace urchin
     std::shared_ptr<NavPolygon> NavTriangle::getNavPolygon() const
     {
         #ifdef _DEBUG
-            assert(!navPolygon.expired());
+            assert(!navPolygon.expired()); //TODO fail sometimes: to fix
         #endif
 
         return navPolygon.lock();

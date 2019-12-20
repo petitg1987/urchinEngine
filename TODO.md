@@ -44,9 +44,8 @@
 
 # AI engine
 - Navigation mesh
-	- **NEW FEATURE** (`major`): Create jump links between two edges in navigation mesh (update AABBTree margin accordingly)
-	- **NEW FEATURE** (`medium`): Create jump links for drop in navigation mesh (update AABBTree margin accordingly)
-	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh only squares
+	- **NEW FEATURE** (`medium`): Create jump links for (jump) drop in navigation mesh (update AABBTree margin accordingly)
+	- **OPTIMIZATION** (`major`): Divide big surfaces in squares and refresh them only when required
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
 	- **OPTIMIZATION** (`medium`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
 	- **OPTIMIZATION** (`medium`): Exclude small objects from navigation mesh

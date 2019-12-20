@@ -11,6 +11,7 @@
 #include "path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
+#include "path/navmesh/jump/EdgeJumpDetection.h"
 
 #define WALKABLE_FACE_EXPAND_SIZE 0.0001f
 #define OBSTACLE_REDUCE_SIZE 0.0001f
@@ -35,6 +36,10 @@ namespace urchin
 
 		this->navMeshAgent = std::move(navMeshAgent);
         this->needFullRefresh.store(true, std::memory_order_relaxed);
+
+        //TODO float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
+        //TODO float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
+        //TODO this->navigationObjects.updateMargin(navigationObjectsMargin);
 	}
 
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const
@@ -384,63 +389,69 @@ namespace urchin
 
         for(const auto &navObject : navObjectsToRefresh)
         {
-            extractExternalEdges(navObject, navObjectEdges);
-
-            for(const auto &nearNavObject : navObject->retrieveNearObjects())
+            for(const auto &navPolygon : navObject->getNavPolygons())
             {
-                extractExternalEdges(nearNavObject, nearNavObjectEdges);
-
-                detectLinks(navObject, navObjectEdges, nearNavObject, nearNavObjectEdges);
-            }
-        }
-
-        //std::cout<<"----------------------------"<<std::endl;
-    }
-
-    /**
-     * @param edges [out] External edges of navigation object
-     */
-    void NavMeshGenerator::extractExternalEdges(const std::shared_ptr<NavObject> &navObject, std::vector<LineSegment3D<float>> &externalEdges) const
-    {
-        externalEdges.clear();
-        for(const auto &navPolygon : navObject->getNavPolygons())
-        {
-            for(const auto &triangle : navPolygon->getTriangles())
-            {
-                for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
+                for(const auto &triangle : navPolygon->getTriangles())
                 {
-                    bool hasDirectLink = false;
-                    for(const auto &link : triangle->getLinks())
+                    for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
                     {
-                        if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::DIRECT)
+                        if(isExternalEdge(triangle, edgeIndex))
                         {
-                            hasDirectLink = true;
-                            break;
+                            updateNavLinks(navObject, triangle, edgeIndex);
                         }
                     }
+                }
+            }
+        }
+    }
 
-                    if(!hasDirectLink)
+    void NavMeshGenerator::updateNavLinks(const std::shared_ptr<NavObject> &navObject, const std::shared_ptr<NavTriangle> &triangle, std::size_t edgeIndex) const
+    { //TODO: add jump on self object (but on different navPolygon) /!\ to terrain performance
+        EdgeJumpDetection edgeJumpDetection(navMeshAgent->getJumpDistance());
+        LineSegment3D<float> edge = triangle->computeEdge(edgeIndex);
+
+        for(const auto &nearNavObject : navObject->retrieveNearObjects())
+        {
+            for(const auto &nearNavPolygon : nearNavObject->getNavPolygons())
+            {
+                for (const auto &nearTriangle : nearNavPolygon->getTriangles())
+                {
+                    for (std::size_t nearEdgeIndex = 0; nearEdgeIndex < 3; ++nearEdgeIndex)
                     {
-                        externalEdges.push_back(triangle->computeEdge(edgeIndex));
+                        if (isExternalEdge(nearTriangle, nearEdgeIndex))
+                        {
+                            LineSegment3D<float> nearEdge = nearTriangle->computeEdge(nearEdgeIndex);
+
+                            EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(edge, nearEdge);
+                            if (edgeJumpResult.hasJumpRange())
+                            {
+                                auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), nearEdgeIndex);
+                                triangle->addJumpLink(edgeIndex, nearTriangle, navJumpConstraint);
+                            }
+
+                            //TODO performance: check is possible to un-comment below source code and not compute same jump 2 times
+//                            edgeJumpResult = edgeJumpDetection.detectJump(nearEdge, edge);
+//                            if (edgeJumpResult.hasJumpRange())
+//                            {
+//                                auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), edgeIndex);
+//                                nearTriangle->addJumpLink(nearEdgeIndex, triangle, navJumpConstraint);
+//                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    void NavMeshGenerator::detectLinks(const std::shared_ptr<NavObject> &navObject, const std::vector<LineSegment3D<float>> &navObjectEdges,
-                                       const std::shared_ptr<NavObject> &nearNavObject, const std::vector<LineSegment3D<float>> &nearNavObjectEdges) const
+    bool NavMeshGenerator::isExternalEdge(const std::shared_ptr<NavTriangle> &triangle, std::size_t edgeIndex) const
     {
-        for(const auto &edge : navObjectEdges)
+        for(const auto &link : triangle->getLinks())
         {
-            for(const auto &nearEdge : nearNavObjectEdges)
+            if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::DIRECT)
             {
-                float edgeDistance = edge.getA().distance(nearEdge.getA());
-                if(edgeDistance <= 2.0f)
-                {
-                    //std::cout<<"New link: "<<navObject->getExpandedPolytope()->getName()<<" <> "<<nearNavObject->getExpandedPolytope()->getName()<<": "<<edgeDistance<<std::endl;
-                }
+                return false;
             }
         }
+        return true;
     }
 }

@@ -13,7 +13,8 @@ namespace urchin
 	{
 		public:
 			LinesModel(std::vector<Point3<float>>, float);
-            LinesModel(const Line3D<float> &, float);
+            LinesModel(const std::vector<LineSegment3D<float>> &, float);
+            LinesModel(const LineSegment3D<float> &, float);
 
 		protected:
 			Matrix4<float> retrieveModelMatrix() const override;
@@ -23,6 +24,7 @@ namespace urchin
 
 		private:
 			std::vector<Point3<float>> linesPoints;
+			bool stripLines;
 			float linesSize;
 	};
 

@@ -43,6 +43,7 @@
 #include "utils/display/geometry/obbox/OBBoxModel.h"
 #include "utils/display/geometry/points/PointsModel.h"
 #include "utils/display/geometry/lines/LinesModel.h"
+#include "utils/display/geometry/quads/QuadsModel.h"
 #include "utils/display/geometry/triangles/TrianglesModel.h"
 #include "utils/display/geometry/sphere/SphereModel.h"
 #include "utils/display/geometry/convexhull/ConvexHullModel.h"
