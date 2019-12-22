@@ -28,6 +28,8 @@ namespace urchin
             static std::shared_ptr<NavLink> newDirectLink(unsigned int, const std::shared_ptr<NavTriangle> &);
             static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
 
+            std::shared_ptr<NavLink> copyLink(const std::shared_ptr<NavTriangle> &) const;
+
             NavLinkType getLinkType() const;
             unsigned int getSourceEdgeIndex() const;
             const std::shared_ptr<NavTriangle> &getTargetTriangle() const;

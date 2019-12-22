@@ -17,10 +17,45 @@ namespace urchin
 	NavMesh::NavMesh(const NavMesh &navMesh) :
         updateId(changeUpdateId())
 	{
+		std::map<const NavPolygon *, std::map<const NavTriangle *, std::pair<std::size_t, std::size_t>>> originalPositionsMap;
+
         polygons.reserve(navMesh.getPolygons().size());
-        for(const std::shared_ptr<NavPolygon> &polygon : navMesh.getPolygons())
+        for(std::size_t polygonIndex=0; polygonIndex < navMesh.getPolygons().size(); ++polygonIndex)
         {
-            polygons.push_back(std::make_shared<NavPolygon>(*polygon));
+            const auto &originalPolygon = navMesh.getPolygons()[polygonIndex];
+            auto copiedNavPolygon = std::make_shared<NavPolygon>(*originalPolygon);
+
+            //re-attach triangle to new polygons
+            for(auto &copiedNavTriangle : copiedNavPolygon->getTriangles())
+            {
+                copiedNavTriangle->attachNavPolygon(copiedNavPolygon);
+            }
+
+            //build map of original positions for polygons and triangles
+            std::map<const NavTriangle *, std::pair<std::size_t, std::size_t>> originalTrianglesPositionsMap;
+            for(std::size_t triangleIndex=0; triangleIndex < originalPolygon->getTriangles().size(); ++triangleIndex)
+            {
+                originalTrianglesPositionsMap.insert(std::make_pair(originalPolygon->getTriangles()[triangleIndex].get(), std::make_pair(polygonIndex, triangleIndex)));
+            }
+            originalPositionsMap.insert(std::make_pair(originalPolygon.get(), originalTrianglesPositionsMap));
+
+            polygons.push_back(copiedNavPolygon);
+        }
+
+        //build triangles links
+        for(std::size_t polygonIndex=0; polygonIndex < navMesh.getPolygons().size(); ++polygonIndex)
+        {
+            const auto &originalPolygon = navMesh.getPolygons()[polygonIndex];
+            for(std::size_t triangleIndex=0; triangleIndex < originalPolygon->getTriangles().size(); ++triangleIndex)
+            {
+                const auto &originalTriangle = originalPolygon->getTriangles()[triangleIndex];
+                for(const auto &originalLink : originalTriangle->getLinks())
+                {
+                    auto targetTrianglePositions = originalPositionsMap[originalLink->getTargetTriangle()->getNavPolygon().get()][originalLink->getTargetTriangle().get()];
+                    const std::shared_ptr<NavTriangle> &linkTargetTriangle = polygons[targetTrianglePositions.first]->getTriangles()[targetTrianglePositions.second];
+                    polygons[polygonIndex]->getTriangles()[triangleIndex]->addLink(originalLink->copyLink(linkTargetTriangle));
+                }
+            }
         }
 	}
 

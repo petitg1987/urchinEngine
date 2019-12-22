@@ -10,6 +10,7 @@ namespace urchin
     {
         public:
             NavJumpConstraint(float, float, float);
+            NavJumpConstraint(const NavJumpConstraint &) = default;
 
             float getSourceEdgeJumpStartRange() const;
             float getSourceEdgeJumpEndRange() const;

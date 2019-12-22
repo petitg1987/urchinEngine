@@ -10,7 +10,7 @@ namespace urchin
      * Indices of points in CCW order when looked from top
      */
     NavTriangle::NavTriangle(std::size_t index1, std::size_t index2, std::size_t index3) :
-        indices()
+            indices()
     {
         #ifdef _DEBUG
             assert(index1!=index2 && index1!=index3 && index2!=index3);
@@ -25,6 +25,18 @@ namespace urchin
         this->centerPoint = Point3<float>(0.0f, 0.0f, 0.0f);
     }
 
+    NavTriangle::NavTriangle(const NavTriangle &navTriangle) :
+            indices()
+    {
+        this->indices[0] = navTriangle.getIndex(0);
+        this->indices[1] = navTriangle.getIndex(1);
+        this->indices[2] = navTriangle.getIndex(2);
+
+        this->links.reserve(3); //estimated memory size
+
+        this->centerPoint = navTriangle.getCenterPoint();
+    }
+
     void NavTriangle::attachNavPolygon(const std::shared_ptr<NavPolygon> &navPolygon)
     {
         this->navPolygon = navPolygon;
@@ -34,7 +46,7 @@ namespace urchin
     std::shared_ptr<NavPolygon> NavTriangle::getNavPolygon() const
     {
         #ifdef _DEBUG
-            assert(!navPolygon.expired()); //TODO fail sometimes: to fix
+            assert(!navPolygon.expired());
         #endif
 
         return navPolygon.lock();
@@ -93,6 +105,11 @@ namespace urchin
         #endif
 
         links.emplace_back(NavLink::newJumpLink(edgeIndex, targetTriangle, jumpConstraint));
+    }
+
+    void NavTriangle::addLink(const std::shared_ptr<NavLink> &navLink)
+    {
+        links.emplace_back(navLink);
     }
 
     std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const

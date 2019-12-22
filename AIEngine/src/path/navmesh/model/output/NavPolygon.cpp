@@ -16,10 +16,12 @@ namespace urchin
 	NavPolygon::NavPolygon(const NavPolygon &navPolygon) :
 			name(navPolygon.getName()),
 			points(navPolygon.getPoints()),
-			triangles(navPolygon.getTriangles()),
 			navTopography(nullptr) //no copy because not used
 	{
-
+        for(const auto &triangle : navPolygon.getTriangles())
+        {
+            triangles.push_back(std::make_shared<NavTriangle>(*triangle));
+        }
 	}
 
 	NavPolygon::~NavPolygon()
