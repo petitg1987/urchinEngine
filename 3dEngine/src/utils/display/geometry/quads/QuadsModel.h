@@ -1,5 +1,5 @@
-#ifndef TESTENGINESFML_QUADSMODEL_H
-#define TESTENGINESFML_QUADSMODEL_H
+#ifndef URCHINENGINE_QUADSMODEL_H
+#define URCHINENGINE_QUADSMODEL_H
 
 #include <vector>
 #include "UrchinCommon.h"

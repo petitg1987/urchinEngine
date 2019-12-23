@@ -45,9 +45,7 @@ namespace urchin
 			void interrupt();
 			void controlExecution();
 
-			#ifdef _DEBUG
-				const CollisionVisualizer *getCollisionVisualizer() const;
-			#endif
+			const CollisionVisualizer *getCollisionVisualizer() const;
 
 		private:
 			void startPhysicsUpdate();
@@ -73,9 +71,7 @@ namespace urchin
 			std::vector<std::shared_ptr<Processable>> oneShotProcessables;
 			std::vector<std::shared_ptr<Processable>> copiedProcessables;
 
-			#ifdef _DEBUG
-				CollisionVisualizer *collisionVisualizer;
-			#endif
+			CollisionVisualizer *collisionVisualizer;
 	};
 
 }

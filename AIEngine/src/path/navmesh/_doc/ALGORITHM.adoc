@@ -23,4 +23,6 @@ image:navmesh/obstacles.png[ob]
 image:navmesh/subtract.png[su]
 *** Triangulate with remaining obstacles: +
 image:navmesh/triang.png[tr]
+* `NavMeshGenerator::updateNavLinks()`:
+** TODO
 * Add `NavPolygon` to `NavMesh`

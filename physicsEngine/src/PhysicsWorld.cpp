@@ -21,9 +21,7 @@ namespace urchin
 			bodyManager(new BodyManager()),
 			collisionWorld(new CollisionWorld(bodyManager))
 	{
-		#ifdef _DEBUG
-			collisionVisualizer = new CollisionVisualizer(collisionWorld);
-        #endif
+	    collisionVisualizer = new CollisionVisualizer(collisionWorld); //TODO activate only for _DEBUG
 
 		NumericalCheck::instance()->perform();
 	}
@@ -42,9 +40,7 @@ namespace urchin
 		processables.clear();
 		oneShotProcessables.clear();
 
-		#ifdef _DEBUG
-			delete collisionVisualizer;
-		#endif
+		delete collisionVisualizer;
 
 		delete collisionWorld;
 		delete bodyManager;
@@ -296,10 +292,9 @@ namespace urchin
 		}
 	}
 
-#ifdef _DEBUG
 	const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const
 	{
 		return collisionVisualizer;
 	}
-#endif
+
 }

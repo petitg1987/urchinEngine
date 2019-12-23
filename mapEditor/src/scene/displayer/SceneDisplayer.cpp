@@ -127,7 +127,6 @@ namespace urchin
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
         lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
-        navMeshDisplayer = new NavMeshDisplayer(sceneManager);
 
         //physics
 		physicsWorld = new PhysicsWorld();
@@ -137,6 +136,7 @@ namespace urchin
         //AI
 		aiManager = new AIManager();
 		aiManager->start(1.0/4.0, true);
+        navMeshDisplayer = new NavMeshDisplayer(aiManager, sceneManager->getActiveRenderer3d());
 
         //sound
         soundManager = new SoundManager();
@@ -204,10 +204,10 @@ namespace urchin
 	{
 		if(viewProperties[NAV_MESH])
 		{
-			navMeshDisplayer->displayNavMesh(aiManager->getNavMeshGenerator()->copyLastGeneratedNavMesh());
+			navMeshDisplayer->display();
 		}else
 		{
-			navMeshDisplayer->displayNavMesh(NavMesh());
+			navMeshDisplayer->clearDisplay();
 		}
 	}
 

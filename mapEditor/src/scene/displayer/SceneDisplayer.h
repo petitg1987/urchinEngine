@@ -13,7 +13,6 @@
 #include "scene/displayer/objects/BodyShapeDisplayer.h"
 #include "scene/displayer/lights/LightScopeDisplayer.h"
 #include "scene/displayer/sounds/SoundTriggerDisplayer.h"
-#include "scene/displayer/ai/NavMeshDisplayer.h"
 
 namespace urchin
 {
@@ -68,13 +67,13 @@ namespace urchin
 			BodyShapeDisplayer *bodyShapeDisplayer;
 			LightScopeDisplayer *lightScopeDisplayer;
 			SoundTriggerDisplayer *soundTriggerDisplayer;
-			NavMeshDisplayer *navMeshDisplayer;
 
 			//physics
 			PhysicsWorld *physicsWorld;
 
 			//AI
 			AIManager *aiManager;
+            NavMeshDisplayer *navMeshDisplayer;
 
 			//sound
 			SoundManager *soundManager;

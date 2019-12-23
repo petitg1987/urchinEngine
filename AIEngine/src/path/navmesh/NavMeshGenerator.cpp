@@ -17,7 +17,7 @@
 #define OBSTACLE_REDUCE_SIZE 0.0001f
 
 namespace urchin
-{
+{ //TODO split class in different services !
 
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
@@ -59,7 +59,7 @@ namespace urchin
 		updateExpandedPolytopes(aiWorld);
         updateNearObjects();
 		updateNavPolygons();
-		updateNavLinks();
+		updateNavLinks(); //TODO add in doc ?
 
         allNavPolygons.clear();
         navigationObjects.getAllNodeObjects(allNavObjects);
@@ -82,7 +82,7 @@ namespace urchin
 
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
-            removeNaVObject(aiObjectToRemove);
+            removeNavObject(aiObjectToRemove);
 		}
 
         bool refreshAllEntities = needFullRefresh.exchange(false, std::memory_order_relaxed);
@@ -90,7 +90,7 @@ namespace urchin
 		{
 			if(aiEntity->isToRebuild() || refreshAllEntities)
 			{
-                removeNaVObject(aiEntity);
+                removeNavObject(aiEntity);
                 aiEntity->removeAllNavObjects();
 
                 if(aiEntity->getType()==AIEntity::OBJECT)
@@ -99,13 +99,13 @@ namespace urchin
                     std::vector<std::unique_ptr<Polytope>> objectExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytopes(aiObject, navMeshAgent);
                     for (auto &objectExpandedPolytope : objectExpandedPolytopes)
                     {
-                        addNaVObject(aiObject, std::move(objectExpandedPolytope));
+                        addNavObject(aiObject, std::move(objectExpandedPolytope));
                     }
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
 					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
 					std::unique_ptr<Polytope> terrainExpandedPolytope = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshAgent);
-                    addNaVObject(aiTerrain, std::move(terrainExpandedPolytope));
+                    addNavObject(aiTerrain, std::move(terrainExpandedPolytope));
                 }
 
                 aiEntity->markRebuilt();
@@ -113,7 +113,7 @@ namespace urchin
 		}
 	}
 
-	void NavMeshGenerator::addNaVObject(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
+	void NavMeshGenerator::addNavObject(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
     {
         auto navObject = std::make_shared<NavObject>(expandedPolytope);
         navObjectsToRefresh.insert(navObject);
@@ -134,7 +134,7 @@ namespace urchin
         aiEntity->addNavObject(navObject);
     }
 
-    void NavMeshGenerator::removeNaVObject(const std::shared_ptr<AIEntity> &aiEntity)
+    void NavMeshGenerator::removeNavObject(const std::shared_ptr<AIEntity> &aiEntity)
     {
         for(const auto &navObject : aiEntity->getNavObjects())
         {

@@ -118,7 +118,7 @@ namespace urchin
 
         for(auto &ownerPairContainer : nodeData->getOwnerPairContainers())
         {
-            ownerPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
+            ownerPairContainer->removeOverlappingPairs(nodeData->getNodeObject()); //TODO not always working especially after long running on greenCity (ownerPairContainer seems invalid, nodeData->getNodeObject() is the npcCharacter)
         }
     }
 

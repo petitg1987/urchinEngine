@@ -33,8 +33,8 @@ namespace urchin
 
 		private:
 			void updateExpandedPolytopes(AIWorld &);
-            void addNaVObject(const std::shared_ptr<AIEntity> &, const std::shared_ptr<Polytope> &);
-            void removeNaVObject(const std::shared_ptr<AIEntity> &);
+            void addNavObject(const std::shared_ptr<AIEntity> &, const std::shared_ptr<Polytope> &);
+            void removeNavObject(const std::shared_ptr<AIEntity> &);
 
             void updateNearObjects();
             void updateNearObjects(const std::shared_ptr<NavObject> &);

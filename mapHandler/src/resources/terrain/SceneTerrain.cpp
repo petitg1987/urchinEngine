@@ -2,7 +2,7 @@
 
 #include "SceneTerrain.h"
 #include "resources/terrain/TerrainReaderWriter.h"
-#include "utils/AIEntityBuilder.h"
+#include "resources/common/AIEntityBuilder.h"
 
 namespace urchin
 {
