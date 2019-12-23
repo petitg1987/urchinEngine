@@ -4,7 +4,7 @@
 #include "UrchinPhysicsEngine.h"
 
 #include "AssertHelper.h"
-#include "physics/algorithm/inertia//InertiaCalculationTest.h"
+#include "physics/body/InertiaCalculationTest.h"
 using namespace urchin;
 
 void InertiaCalculationTest::boxInertiaCalculation()

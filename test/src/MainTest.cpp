@@ -13,16 +13,17 @@
 #include "physics/shape/ShapeToAABBoxTest.h"
 #include "physics/shape/ShapeToConvexObjectTest.h"
 #include "physics/object/SupportPointTest.h"
-#include "physics/algorithm/gjk/GJKBoxTest.h"
-#include "physics/algorithm/gjk/GJKConvexHullTest.h"
-#include "physics/algorithm/gjk/GJKSphereTest.h"
-#include "physics/algorithm/gjk/GJKConvexObjectTest.h"
-#include "physics/algorithm/epa/EPABoxTest.h"
-#include "physics/algorithm/epa/EPASphereTest.h"
-#include "physics/algorithm/epa/EPAConvexHullTest.h"
-#include "physics/algorithm/epa/EPAConvexObjectTest.h"
-#include "physics/algorithm/inertia/InertiaCalculationTest.h"
-#include "physics/island/IslandContainerTest.h"
+#include "physics/body/InertiaCalculationTest.h"
+#include "physics/collision/broadphase/aabbtree/BodyAABBTreeTest.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKBoxTest.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKConvexHullTest.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKSphereTest.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKConvexObjectTest.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPABoxTest.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPASphereTest.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPAConvexHullTest.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h"
+#include "physics/collision/island/IslandContainerTest.h"
 #include "physics/it/FallingObjectIT.h"
 #include "ai/path/navmesh/csg/CSGPolygonTest.h"
 #include "ai/path/navmesh/csg/PolygonsUnionTest.h"
@@ -63,7 +64,13 @@ void physicsTests(CppUnit::TextUi::TestRunner &runner)
     //object
     runner.addTest(SupportPointTest::suite());
 
-    //algorithm
+    //body
+    runner.addTest(InertiaCalculationTest::suite());
+
+    //broad phase
+    runner.addTest(BodyAABBTreeTest::suite());
+
+    //narrow phase
     runner.addTest(GJKSphereTest::suite());
     runner.addTest(GJKBoxTest::suite());
     runner.addTest(GJKConvexHullTest::suite());
@@ -73,10 +80,7 @@ void physicsTests(CppUnit::TextUi::TestRunner &runner)
     runner.addTest(EPAConvexHullTest::suite());
     runner.addTest(EPAConvexObjectTest::suite());
 
-    //constraint solver
-    runner.addTest(InertiaCalculationTest::suite());
-
-    //container
+    //island
     runner.addTest(IslandContainerTest::suite());
 
     //integration tests (IT)

@@ -16,6 +16,11 @@ void AssertHelper::assertTrue(bool b, const std::string &msg)
     }
 }
 
+void AssertHelper::assertString(const std::string &value, const std::string &expected)
+{
+    CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + value + ", expected: " + expected, value==expected);
+}
+
 void AssertHelper::assertInt(int value, int expected)
 {
 	CPPUNIT_ASSERT_MESSAGE("Assert fail. Value: " + std::to_string(value) + ", expected: " + std::to_string(expected), value==expected);

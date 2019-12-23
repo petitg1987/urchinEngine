@@ -1,5 +1,5 @@
-#include "physics/algorithm/epa/EPATestHelper.h"
-#include "physics/algorithm/gjk/GJKTestHelper.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
 using namespace urchin;
 
 std::shared_ptr<EPAResult<float>> EPATestHelper::executeEPA(const CollisionConvexObject3D &object1, const CollisionConvexObject3D &object2)

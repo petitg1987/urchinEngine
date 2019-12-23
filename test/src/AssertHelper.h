@@ -9,6 +9,7 @@ class AssertHelper
 	public:
 		static void assertTrue(bool, const std::string &msg = "");
 
+		static void assertString(const std::string &, const std::string &);
 		static void assertInt(int, int);
 		static void assert3Ints(const int *, const int *&&);
 		static void assertUnsignedInt(unsigned int, unsigned int);

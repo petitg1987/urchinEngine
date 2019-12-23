@@ -38,7 +38,30 @@ namespace urchin
 
     void BodyAABBTree::preRemoveObjectCallback(AABBNode<AbstractWorkBody *> *nodeToDelete)
     {
-        removeOverlappingPairs(dynamic_cast<BodyAABBNodeData *>(nodeToDelete->getNodeData()));
+        auto *bodyNodeToDelete = dynamic_cast<BodyAABBNodeData *>(nodeToDelete->getNodeData());
+
+        //remove alternative pair container references
+        //TODO review all this parts:
+        if(bodyNodeToDelete->hasAlternativePairContainer())
+        {
+            for (const auto &overlappingPair : bodyNodeToDelete->getAlternativePairContainer()->retrieveCopyOverlappingPairs()) //TODO /!\ to performance !!!
+            {
+                AbstractWorkBody *otherBody = overlappingPair.getBody1() == bodyNodeToDelete->getNodeObject() ? overlappingPair.getBody2() : overlappingPair.getBody1();
+                auto *otherNodeData = dynamic_cast<BodyAABBNodeData *>(BodyAABBTree::getNodeData(otherBody));
+
+                for (auto &ownerPairContainer : otherNodeData->getOwnerPairContainers())
+                {
+                    if (ownerPairContainer == bodyNodeToDelete->getAlternativePairContainer())
+                    {
+                        //TODO remove alternative pair from the collection
+                        std::cout << "TO REMOVE: alternative pair" << std::endl;
+                    }
+                }
+            }
+        }
+
+        //remove overlapping pairs
+        removeOverlappingPairs(bodyNodeToDelete);
     }
 
     void BodyAABBTree::updateBodies()
@@ -118,7 +141,7 @@ namespace urchin
 
         for(auto &ownerPairContainer : nodeData->getOwnerPairContainers())
         {
-            ownerPairContainer->removeOverlappingPairs(nodeData->getNodeObject()); //TODO not always working especially after long running on greenCity (ownerPairContainer seems invalid, nodeData->getNodeObject() is the npcCharacter)
+            ownerPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }
     }
 

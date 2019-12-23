@@ -5,8 +5,8 @@
 #include "UrchinPhysicsEngine.h"
 
 #include "AssertHelper.h"
-#include "physics/algorithm/gjk/GJKSphereTest.h"
-#include "physics/algorithm/gjk/GJKTestHelper.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKSphereTest.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
 using namespace urchin;
 
 void GJKSphereTest::identicalSphere()

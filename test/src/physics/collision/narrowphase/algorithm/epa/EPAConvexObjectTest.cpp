@@ -5,8 +5,8 @@
 #include "UrchinPhysicsEngine.h"
 
 #include "AssertHelper.h"
-#include "physics/algorithm/epa/EPAConvexObjectTest.h"
-#include "physics/algorithm/epa/EPATestHelper.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPAConvexObjectTest.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
 using namespace urchin;
 
 void EPAConvexObjectTest::overlapSphereAndBox()

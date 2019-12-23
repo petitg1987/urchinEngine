@@ -5,8 +5,8 @@
 #include "UrchinPhysicsEngine.h"
 
 #include "AssertHelper.h"
-#include "physics/algorithm/epa/EPABoxTest.h"
-#include "physics/algorithm/epa/EPATestHelper.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPABoxTest.h"
+#include "physics/collision/narrowphase/algorithm/epa/EPATestHelper.h"
 using namespace urchin;
 
 void EPABoxTest::identicalAABBox()

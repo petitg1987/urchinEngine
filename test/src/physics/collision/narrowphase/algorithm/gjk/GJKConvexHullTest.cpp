@@ -5,8 +5,8 @@
 #include "UrchinPhysicsEngine.h"
 
 #include "AssertHelper.h"
-#include "physics/algorithm/gjk/GJKConvexHullTest.h"
-#include "physics/algorithm/gjk/GJKTestHelper.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKConvexHullTest.h"
+#include "physics/collision/narrowphase/algorithm/gjk/GJKTestHelper.h"
 using namespace urchin;
 
 void GJKConvexHullTest::identicalBox()
