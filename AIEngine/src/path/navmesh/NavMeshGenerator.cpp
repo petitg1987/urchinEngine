@@ -37,9 +37,9 @@ namespace urchin
 		this->navMeshAgent = std::move(navMeshAgent);
         this->needFullRefresh.store(true, std::memory_order_relaxed);
 
-        //TODO float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
-        //TODO float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
-        //TODO this->navigationObjects.updateMargin(navigationObjectsMargin);
+        float navigationObjectsJumpMargin = this->navMeshAgent->getJumpDistance() / 2.0f;
+        float navigationObjectsMargin = std::max(navigationObjectsJumpMargin, ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin"));
+        this->navigationObjects.updateFatMargin(navigationObjectsMargin);
 	}
 
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const
@@ -384,7 +384,7 @@ namespace urchin
 	}
 
 	void NavMeshGenerator::updateNavLinks()
-    {
+    { //TODO missing links refresh when target is a navObject in navObjectsToRefresh
         ScopeProfiler scopeProfiler("ai", "upNavLinks");
 
         for(const auto &navObject : navObjectsToRefresh)
@@ -428,14 +428,6 @@ namespace urchin
                                 auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), nearEdgeIndex);
                                 triangle->addJumpLink(edgeIndex, nearTriangle, navJumpConstraint);
                             }
-
-                            //TODO performance: check is possible to un-comment below source code and not compute same jump 2 times
-//                            edgeJumpResult = edgeJumpDetection.detectJump(nearEdge, edge);
-//                            if (edgeJumpResult.hasJumpRange())
-//                            {
-//                                auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), edgeIndex);
-//                                nearTriangle->addJumpLink(nearEdgeIndex, triangle, navJumpConstraint);
-//                            }
                         }
                     }
                 }

@@ -93,3 +93,8 @@ template<class OBJ> void AABBNode<OBJ>::updateAABBox(float fatMargin)
         aabbox = children[0]->getAABBox().merge(children[1]->getAABBox());
     }
 }
+
+template<class OBJ> void AABBNode<OBJ>::clearNodeData()
+{
+    nodeData = nullptr;
+}

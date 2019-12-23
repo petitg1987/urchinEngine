@@ -11,6 +11,19 @@ template<class OBJ> AABBTree<OBJ>::~AABBTree()
     delete rootNode;
 }
 
+template<class OBJ> void AABBTree<OBJ>::updateFatMargin(float fatMargin)
+{
+    this->fatMargin = fatMargin;
+
+    std::vector<AABBNodeData<OBJ> *> allNodeData = extractAllNodeData();
+    delete rootNode;
+    rootNode = nullptr;
+    for(const auto nodeData : allNodeData)
+    {
+        addObject(nodeData);
+    }
+}
+
 template <class OBJ> AABBNode<OBJ> *AABBTree<OBJ>::getRootNode() const
 {
     return rootNode;
@@ -48,6 +61,34 @@ template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ> &nod
             browseNodes.push_back(currentNode->getLeftChild());
         }
     }
+}
+
+template <class OBJ> std::vector<AABBNodeData<OBJ> *> AABBTree<OBJ>::extractAllNodeData()
+{
+    std::vector<AABBNodeData<OBJ> *> allNodeData;
+
+    browseNodes.clear();
+    if(rootNode != nullptr)
+    {
+        browseNodes.push_back(rootNode);
+    }
+
+    for(std::size_t i=0; i<browseNodes.size(); ++i)
+    { //tree traversal: pre-order (iterative)
+        AABBNode<OBJ> *currentNode = browseNodes[i];
+
+        if (currentNode->isLeaf())
+        {
+            allNodeData.push_back(currentNode->getNodeData());
+            currentNode->clearNodeData();
+        }else
+        {
+            browseNodes.push_back(currentNode->getRightChild());
+            browseNodes.push_back(currentNode->getLeftChild());
+        }
+    }
+
+    return allNodeData;
 }
 
 template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ> *nodeData)

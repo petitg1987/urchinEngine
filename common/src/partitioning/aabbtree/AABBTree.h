@@ -16,6 +16,8 @@ namespace urchin
 			explicit AABBTree(float);
 			virtual ~AABBTree();
 
+			void updateFatMargin(float);
+
             AABBNode<OBJ> *getRootNode() const;
             AABBNodeData<OBJ> *getNodeData(OBJ) const;
             void getAllNodeObjects(std::vector<OBJ> &) const;
@@ -39,11 +41,12 @@ namespace urchin
             mutable std::vector<AABBNode<OBJ> *> browseNodes;
 
 		private:
+            std::vector<AABBNodeData<OBJ> *> extractAllNodeData();
 			void insertNode(AABBNode<OBJ> *, AABBNode<OBJ> *);
 			void replaceNode(AABBNode<OBJ> *, AABBNode<OBJ> *);
 			void removeNode(AABBNode<OBJ> *);
 
-			const float fatMargin;
+			float fatMargin;
 			AABBNode<OBJ> *rootNode;
 
 			#ifdef _DEBUG

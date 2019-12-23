@@ -7,9 +7,13 @@
 namespace urchin
 {
 
+    template<class OBJ> class AABBTree;
+
 	template<class OBJ> class AABBNode
 	{
 		public:
+            friend class AABBTree<OBJ>;
+
 			explicit AABBNode(AABBNodeData<OBJ> *);
 			~AABBNode();
 
@@ -30,6 +34,9 @@ namespace urchin
 
 			const AABBox<float> &getAABBox() const;
 			void updateAABBox(float);
+
+	    protected:
+            void clearNodeData();
 
 		private:
             AABBNodeData<OBJ> *nodeData;
