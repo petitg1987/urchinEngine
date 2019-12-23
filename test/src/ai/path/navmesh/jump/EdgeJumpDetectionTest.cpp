@@ -68,13 +68,13 @@ void EdgeJumpDetectionTest::testWrongJumpEdgesDirection()
 void EdgeJumpDetectionTest::testCrossEdges()
 {
     LineSegment3D<float> startJumpEdge(Point3<float>(-20.0f, 0.0f, 20.0f), Point3<float>(20.0f, 0.0f, -20.0f));
-    LineSegment3D<float> endJumpEdge(Point3<float>(-20.0f, 0.0f, -20.0f), Point3<float>(20.0f, 0.0f, 20.0f));
+    LineSegment3D<float> endJumpEdge(Point3<float>(0.0f, 0.0f, -20.0f), Point3<float>(0.0f, 0.0f, 20.0f));
 
     EdgeJumpDetection edgeJumpDetection(1.5f);
     EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(startJumpEdge, endJumpEdge);
 
     AssertHelper::assertTrue(edgeJumpResult.hasJumpRange());
-    AssertHelper::assertFloatEquals(edgeJumpResult.getJumpStartRange(), 0.5265f);
+    AssertHelper::assertFloatEquals(edgeJumpResult.getJumpStartRange(), 0.5375f, 0.012f);
     AssertHelper::assertFloatEquals(edgeJumpResult.getJumpEndRange(), 0.5f, 0.009f);
 }
 

@@ -19,10 +19,9 @@ namespace urchin
 			timeStep(0.0f),
 			paused(true),
 			bodyManager(new BodyManager()),
-			collisionWorld(new CollisionWorld(bodyManager))
+			collisionWorld(new CollisionWorld(bodyManager)),
+            collisionVisualizer(nullptr)
 	{
-	    collisionVisualizer = new CollisionVisualizer(collisionWorld); //TODO activate only for _DEBUG
-
 		NumericalCheck::instance()->perform();
 	}
 
@@ -292,8 +291,20 @@ namespace urchin
 		}
 	}
 
+    void PhysicsWorld::createCollisionVisualizer()
+    {
+	    if(!collisionVisualizer)
+        {
+            collisionVisualizer = new CollisionVisualizer(collisionWorld);
+        }
+    }
+
 	const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const
 	{
+        #ifdef _DEBUG
+	        assert(collisionVisualizer!=nullptr);
+        #endif
+
 		return collisionVisualizer;
 	}
 

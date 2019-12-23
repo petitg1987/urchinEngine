@@ -7,7 +7,7 @@ namespace urchin
             physicsWorld(physicsWorld),
             renderer3d(renderer3d)
     {
-
+        physicsWorld->createCollisionVisualizer();
     }
 
     CollisionPointDisplayer::~CollisionPointDisplayer()

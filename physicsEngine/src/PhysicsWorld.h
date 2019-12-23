@@ -45,6 +45,7 @@ namespace urchin
 			void interrupt();
 			void controlExecution();
 
+			void createCollisionVisualizer();
 			const CollisionVisualizer *getCollisionVisualizer() const;
 
 		private:
