@@ -9,10 +9,8 @@ namespace urchin
             expandedPolytope(std::move(expandedPolytope))
     {
         walkableSurfaces.reserve(2); //estimated memory size
-        navPolygons.reserve(4); //estimated memory size
-
         nearObjects.reserve(5); //estimated memory size
-        nearObjectsPtr.reserve(5); //estimated memory size
+        navPolygons.reserve(4); //estimated memory size
     }
 
     const std::shared_ptr<Polytope> &NavObject::getExpandedPolytope()
@@ -35,23 +33,20 @@ namespace urchin
         nearObjects.push_back(nearObject);
     }
 
-    const std::vector<std::shared_ptr<NavObject>> &NavObject::retrieveNearObjects()
+    const std::vector<std::weak_ptr<NavObject>> &NavObject::retrieveNearObjects()
     {
-        nearObjectsPtr.clear();
         for(auto it = nearObjects.begin(); it != nearObjects.end();)
         {
-            auto nearObjectPtr = it->lock();
-            if(nearObjectPtr)
-            {
-                nearObjectsPtr.push_back(nearObjectPtr);
-                ++it;
-            }
-            else
+            if(it->expired())
             {
                 it = nearObjects.erase(it);
             }
+            else
+            {
+                ++it;
+            }
         }
-        return nearObjectsPtr;
+        return nearObjects;
     }
 
     void NavObject::removeAllNearObjects()

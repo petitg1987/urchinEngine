@@ -6,10 +6,10 @@
 
 namespace urchin
 {
-    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, std::shared_ptr<NavTriangle> targetTriangle, NavJumpConstraint *jumpConstraint) :
+    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint) :
             linkType(linkType),
             sourceEdgeIndex(sourceEdgeIndex),
-            targetTriangle(std::move(targetTriangle)),
+            targetTriangle(targetTriangle),
             jumpConstraint(jumpConstraint)
     {
 
@@ -21,7 +21,7 @@ namespace urchin
     }
 
     std::shared_ptr<NavLink> NavLink::newDirectLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
-    { //TODO memory leak according to Valgrind (mapEditor). Same for newJumpLink
+    {
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::DIRECT, sourceEdgeIndex, targetTriangle, nullptr));
     }
 
@@ -50,9 +50,13 @@ namespace urchin
         return sourceEdgeIndex;
     }
 
-    const std::shared_ptr<NavTriangle> &NavLink::getTargetTriangle() const
+    std::shared_ptr<NavTriangle> NavLink::getTargetTriangle() const
     {
-        return targetTriangle;
+        #ifdef _DEBUG
+            assert(!targetTriangle.expired());
+        #endif
+
+        return targetTriangle.lock();
     }
 
     const NavJumpConstraint *NavLink::getJumpConstraint() const

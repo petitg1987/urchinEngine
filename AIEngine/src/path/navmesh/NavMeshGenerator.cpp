@@ -138,7 +138,7 @@ namespace urchin
     {
         for(const auto &navObject : aiEntity->getNavObjects())
         {
-            const std::vector<std::shared_ptr<NavObject>> &nearObjects = navObject->retrieveNearObjects();
+            const std::vector<std::weak_ptr<NavObject>> &nearObjects = navObject->retrieveNearObjects();
             navObjectsToRefresh.insert(nearObjects.begin(), nearObjects.end());
 
             navigationObjects.removeObject(navObject);
@@ -156,9 +156,10 @@ namespace urchin
 
             for(const auto &nearObject : navObject->retrieveNearObjects())
             {
-                if(navObjectsToRefresh.find(nearObject) == navObjectsToRefresh.end())
+                std::shared_ptr<NavObject> sharedPtrNearObject = nearObject.lock();
+                if(navObjectsToRefresh.find(sharedPtrNearObject) == navObjectsToRefresh.end())
                 {
-                    newAffectedNavObjects.insert(nearObject);
+                    newAffectedNavObjects.insert(sharedPtrNearObject);
                 }
             }
         }
@@ -245,7 +246,7 @@ namespace urchin
 
         for (const auto &nearObject : navObject->retrieveNearObjects())
         {
-            const std::shared_ptr<Polytope> &nearExpandedPolytope = nearObject->getExpandedPolytope();
+            const std::shared_ptr<Polytope> &nearExpandedPolytope = nearObject.lock()->getExpandedPolytope();
 
             if (nearExpandedPolytope->isObstacleCandidate() && nearExpandedPolytope->getAABBox().collideWithAABBox(walkableSurface->getAABBox()))
             {
@@ -412,7 +413,7 @@ namespace urchin
 
         for(const auto &nearNavObject : navObject->retrieveNearObjects())
         {
-            for(const auto &nearNavPolygon : nearNavObject->getNavPolygons())
+            for(const auto &nearNavPolygon : nearNavObject.lock()->getNavPolygons())
             {
                 for (const auto &nearTriangle : nearNavPolygon->getTriangles())
                 {

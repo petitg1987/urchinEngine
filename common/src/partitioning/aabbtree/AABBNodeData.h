@@ -12,6 +12,7 @@ namespace urchin
     {
         public:
             explicit AABBNodeData(OBJ);
+            virtual ~AABBNodeData() = default;
 
             OBJ getNodeObject() const;
 

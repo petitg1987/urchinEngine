@@ -33,6 +33,7 @@ namespace urchin
             void computeOverlappingPairsFor(AABBNode<AbstractWorkBody *> *);
             void createOverlappingPair(BodyAABBNodeData *, BodyAABBNodeData *);
             void removeOverlappingPairs(const BodyAABBNodeData *);
+            void removeAlternativePairContainerReferences(const AbstractWorkBody *, PairContainer *);
 
             void computeWorldBoundary();
             void controlBoundaries(AABBNode<AbstractWorkBody *> *);

@@ -10,6 +10,7 @@ namespace urchin
     class SceneEntity
     {
         public:
+            virtual ~SceneEntity() = default;
 
             void refresh();
 

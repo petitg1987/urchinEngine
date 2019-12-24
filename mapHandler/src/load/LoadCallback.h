@@ -17,6 +17,8 @@ namespace urchin
                 AI
             };
 
+            virtual ~LoadCallback() = default;
+
             virtual void execute(LoadedStage) = 0;
     };
 

@@ -23,7 +23,7 @@ namespace urchin
             const std::vector<std::shared_ptr<PolytopeSurface>> &getWalkableSurfaces() const;
 
             void addNearObject(const std::weak_ptr<NavObject> &);
-            const std::vector<std::shared_ptr<NavObject>> &retrieveNearObjects();
+            const std::vector<std::weak_ptr<NavObject>> &retrieveNearObjects();
             void removeAllNearObjects();
 
             void addNavPolygons(const std::vector<std::shared_ptr<NavPolygon>> &);
@@ -32,11 +32,8 @@ namespace urchin
 
         private:
             std::shared_ptr<Polytope> expandedPolytope;
-
             std::vector<std::shared_ptr<PolytopeSurface>> walkableSurfaces;
-            std::vector<std::weak_ptr<NavObject>> nearObjects;
-            mutable std::vector<std::shared_ptr<NavObject>> nearObjectsPtr;
-
+            std::vector<std::weak_ptr<NavObject>> nearObjects; //use weak_ptr to avoid cyclic references (=memory leak) between navigation object
             std::vector<std::shared_ptr<NavPolygon>> navPolygons;
     };
 

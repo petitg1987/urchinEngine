@@ -35,7 +35,7 @@ namespace urchin
             LineSegment3D<float> computeEdge(std::size_t) const;
 
         private:
-            std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references between triangle and polygon
+            std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references (=memory leak) between triangle and polygon
 
             std::size_t indices[3];
             std::vector<std::shared_ptr<NavLink>> links;

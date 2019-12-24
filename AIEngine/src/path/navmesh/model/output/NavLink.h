@@ -32,16 +32,16 @@ namespace urchin
 
             NavLinkType getLinkType() const;
             unsigned int getSourceEdgeIndex() const;
-            const std::shared_ptr<NavTriangle> &getTargetTriangle() const;
+            std::shared_ptr<NavTriangle> getTargetTriangle() const;
 
             const NavJumpConstraint *getJumpConstraint() const;
 
         private:
-            NavLink(NavLinkType, unsigned int, std::shared_ptr<NavTriangle>, NavJumpConstraint *);
+            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
 
             NavLinkType linkType;
             unsigned int sourceEdgeIndex;
-            std::shared_ptr<NavTriangle> targetTriangle;
+            std::weak_ptr<NavTriangle> targetTriangle; //use weak_ptr to avoid cyclic references (=memory leak) between two triangles
 
             NavJumpConstraint *jumpConstraint;
     };
