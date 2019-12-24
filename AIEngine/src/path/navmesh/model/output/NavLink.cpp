@@ -21,7 +21,7 @@ namespace urchin
     }
 
     std::shared_ptr<NavLink> NavLink::newDirectLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
-    {
+    { //TODO memory leak according to Valgrind (mapEditor). Same for newJumpLink
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::DIRECT, sourceEdgeIndex, targetTriangle, nullptr));
     }
 

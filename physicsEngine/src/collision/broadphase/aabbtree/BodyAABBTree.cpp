@@ -39,28 +39,6 @@ namespace urchin
     void BodyAABBTree::preRemoveObjectCallback(AABBNode<AbstractWorkBody *> *nodeToDelete)
     {
         auto *bodyNodeToDelete = dynamic_cast<BodyAABBNodeData *>(nodeToDelete->getNodeData());
-
-        //remove alternative pair container references
-        //TODO review all this parts:
-        if(bodyNodeToDelete->hasAlternativePairContainer())
-        {
-            for (const auto &overlappingPair : bodyNodeToDelete->getAlternativePairContainer()->retrieveCopyOverlappingPairs()) //TODO /!\ to performance !!!
-            {
-                AbstractWorkBody *otherBody = overlappingPair.getBody1() == bodyNodeToDelete->getNodeObject() ? overlappingPair.getBody2() : overlappingPair.getBody1();
-                auto *otherNodeData = dynamic_cast<BodyAABBNodeData *>(BodyAABBTree::getNodeData(otherBody));
-
-                for (auto &ownerPairContainer : otherNodeData->getOwnerPairContainers())
-                {
-                    if (ownerPairContainer == bodyNodeToDelete->getAlternativePairContainer())
-                    {
-                        //TODO remove alternative pair from the collection
-                        std::cout << "TO REMOVE: alternative pair" << std::endl;
-                    }
-                }
-            }
-        }
-
-        //remove overlapping pairs
         removeOverlappingPairs(bodyNodeToDelete);
     }
 
@@ -136,7 +114,28 @@ namespace urchin
             defaultPairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }else
         {
-            nodeData->getAlternativePairContainer()->removeOverlappingPairs(nodeData->getNodeObject());
+            PairContainer *alternativePairContainer = nodeData->getAlternativePairContainer();
+
+            //remove alternative pair container references
+            for (const auto &overlappingPair : alternativePairContainer->retrieveCopyOverlappingPairs()) //TODO /!\ to performance (can be avoid because we are in physics thread ?)
+            {
+                if(overlappingPair.getBody1() == nodeData->getNodeObject() || overlappingPair.getBody2() == nodeData->getNodeObject())
+                {
+                    AbstractWorkBody *otherBody = overlappingPair.getBody1() == nodeData->getNodeObject() ? overlappingPair.getBody2() : overlappingPair.getBody1();
+                    auto *otherNodeData = dynamic_cast<BodyAABBNodeData *>(BodyAABBTree::getNodeData(otherBody));
+
+                    for (auto &ownerPairContainer : otherNodeData->getOwnerPairContainers())
+                    {
+                        if (ownerPairContainer == nodeData->getAlternativePairContainer())
+                        {
+                            otherNodeData->removeOwnerPairContainer(ownerPairContainer);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            alternativePairContainer->removeOverlappingPairs(nodeData->getNodeObject());
         }
 
         for(auto &ownerPairContainer : nodeData->getOwnerPairContainers())

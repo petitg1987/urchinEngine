@@ -5,15 +5,21 @@
 #include <cppunit/Test.h>
 
 class BodyAABBTreeTest : public CppUnit::TestFixture
-{ //TODO add more test
+{
      public:
          static CppUnit::Test *suite();
 
-         void twoBodiesPairedAndRemoved();
+         void twoBodiesPairedAndRemove();
          void twoBodiesNotPaired();
 
-         void oneBodyWithAlternativePair();
+         void oneBodyWithAlternativePairAndRemoveIt();
+         void oneBodyWithAlternativePairAndRemoveOther();
          void twoBodiesWithAlternativePair();
+
+         void threeBodiesPairedAndRemove();
+
+    private:
+        void oneBodyWithAlternativePairAndRemove(bool);
 };
 
 #endif

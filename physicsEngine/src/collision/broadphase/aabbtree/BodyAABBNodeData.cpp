@@ -45,6 +45,11 @@ namespace urchin
 		ownerPairContainers.insert(ownerPairContainer);
 	}
 
+    void BodyAABBNodeData::removeOwnerPairContainer(PairContainer *ownerPairContainer)
+    {
+        ownerPairContainers.erase(ownerPairContainer);
+    }
+
 	/**
 	 * Returns pair containers which have pair(s) with this node data
 	 */

@@ -30,15 +30,14 @@ namespace urchin
         {
             std::shared_ptr<CollisionAlgorithm> collisionAlgorithm = getCollisionAlgorithmSelector()->createCollisionAlgorithm(
                     body1, &triangle, body2, &otherShape);
-            const CollisionAlgorithm *const constCollisionAlgorithm = collisionAlgorithm.get();
 
             CollisionObjectWrapper subObject1(triangle, object1.getShapeWorldTransform());
             CollisionObjectWrapper subObject2(otherShape, object2.getShapeWorldTransform());
 
             collisionAlgorithm->processCollisionAlgorithm(subObject1, subObject2, false);
 
-            const ManifoldResult &algorithmManifoldResult = constCollisionAlgorithm->getConstManifoldResult();
-            addContactPointsToManifold(algorithmManifoldResult, constCollisionAlgorithm->isObjectSwapped());
+            const ManifoldResult &algorithmManifoldResult = collisionAlgorithm->getConstManifoldResult();
+            addContactPointsToManifold(algorithmManifoldResult, collisionAlgorithm->isObjectSwapped());
         }
     }
 

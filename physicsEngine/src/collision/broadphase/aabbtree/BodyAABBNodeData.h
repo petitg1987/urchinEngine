@@ -25,6 +25,7 @@ namespace urchin
 			PairContainer *getAlternativePairContainer() const;
 
 			void addOwnerPairContainer(PairContainer *);
+            void removeOwnerPairContainer(PairContainer *);
 			std::set<PairContainer *> getOwnerPairContainers() const;
 
 		private:
