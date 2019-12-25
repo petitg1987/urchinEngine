@@ -392,59 +392,36 @@ namespace urchin
         {
             for(const auto &navPolygon : navObject->getNavPolygons())
             {
-                for(const auto &triangle : navPolygon->getTriangles())
+                for(const auto &externalEdge : navPolygon->retrieveExternalEdges())
                 {
-                    for(std::size_t edgeIndex=0; edgeIndex<3; ++edgeIndex)
-                    {
-                        if(isExternalEdge(triangle, edgeIndex))
-                        {
-                            updateNavLinks(navObject, triangle, edgeIndex);
-                        }
-                    }
+                    updateNavLinks(navObject, externalEdge);
                 }
             }
         }
     }
 
-    void NavMeshGenerator::updateNavLinks(const std::shared_ptr<NavObject> &navObject, const std::shared_ptr<NavTriangle> &triangle, std::size_t edgeIndex) const
+    void NavMeshGenerator::updateNavLinks(const std::shared_ptr<NavObject> &navObject, const NavPolygonEdge &externalEdge) const
     { //TODO: add jump on self object (but on different navPolygon) /!\ to terrain performance
         EdgeJumpDetection edgeJumpDetection(navMeshAgent->getJumpDistance());
-        LineSegment3D<float> edge = triangle->computeEdge(edgeIndex);
+        LineSegment3D<float> edge = externalEdge.triangle->computeEdge(externalEdge.edgeIndex);
 
         for(const auto &nearNavObject : navObject->retrieveNearObjects())
         {
             for(const auto &nearNavPolygon : nearNavObject.lock()->getNavPolygons())
             {
-                for (const auto &nearTriangle : nearNavPolygon->getTriangles())
+                for(const auto &nearExternalEdge : nearNavPolygon->retrieveExternalEdges())
                 {
-                    for (std::size_t nearEdgeIndex = 0; nearEdgeIndex < 3; ++nearEdgeIndex)
-                    {
-                        if (isExternalEdge(nearTriangle, nearEdgeIndex))
-                        {
-                            LineSegment3D<float> nearEdge = nearTriangle->computeEdge(nearEdgeIndex);
+                    LineSegment3D<float> nearEdge = nearExternalEdge.triangle->computeEdge(nearExternalEdge.edgeIndex);
 
-                            EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(edge, nearEdge);
-                            if (edgeJumpResult.hasJumpRange())
-                            {
-                                auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), nearEdgeIndex);
-                                triangle->addJumpLink(edgeIndex, nearTriangle, navJumpConstraint);
-                            }
-                        }
+                    EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(edge, nearEdge);
+                    if (edgeJumpResult.hasJumpRange())
+                    {
+                        auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), nearExternalEdge.edgeIndex);
+                        externalEdge.triangle->addJumpLink(externalEdge.edgeIndex, nearExternalEdge.triangle, navJumpConstraint);
                     }
                 }
             }
         }
     }
 
-    bool NavMeshGenerator::isExternalEdge(const std::shared_ptr<NavTriangle> &triangle, std::size_t edgeIndex) const
-    {
-        for(const auto &link : triangle->getLinks())
-        {
-            if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::DIRECT)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 }

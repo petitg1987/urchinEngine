@@ -31,7 +31,8 @@ namespace urchin
             void addLink(const std::shared_ptr<NavLink> &);
             std::vector<std::shared_ptr<NavLink>> getLinks() const;
 
-            bool hasEdgeLinks(std::size_t edgeIndex) const;
+            bool hasEdgeLinks(std::size_t) const;
+            bool isExternalEdge(std::size_t) const;
             LineSegment3D<float> computeEdge(std::size_t) const;
 
         private:

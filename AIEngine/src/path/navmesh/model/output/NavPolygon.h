@@ -5,6 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "path/navmesh/model/output/NavTriangle.h"
+#include "path/navmesh/model/output/NavPolygonEdge.h"
 #include "path/navmesh/model/output/topography/NavTopography.h"
 
 namespace urchin
@@ -28,6 +29,8 @@ namespace urchin
 
             const NavTopography *getNavTopography() const;
 
+            const std::vector<NavPolygonEdge> &retrieveExternalEdges() const;
+
 		private:
 			std::string name;
 
@@ -35,6 +38,8 @@ namespace urchin
 			std::vector<std::shared_ptr<NavTriangle>> triangles;
 
             const NavTopography *navTopography;
+
+            mutable std::vector<NavPolygonEdge> externalEdges;
 	};
 
 }

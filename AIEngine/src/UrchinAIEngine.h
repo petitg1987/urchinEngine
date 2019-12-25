@@ -12,6 +12,7 @@
 #include "path/navmesh/model/output/NavMeshAgent.h"
 #include "path/navmesh/model/output/NavMesh.h"
 #include "path/navmesh/model/output/NavPolygon.h"
+#include "path/navmesh/model/output/NavPolygonEdge.h"
 #include "path/navmesh/model/output/NavTriangle.h"
 #include "path/navmesh/model/output/NavLink.h"
 #include "path/navmesh/triangulation/MonotonePolygonAlgorithm.h"

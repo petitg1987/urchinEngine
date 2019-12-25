@@ -72,4 +72,26 @@ namespace urchin
 		return navTopography;
 	}
 
+    const std::vector<NavPolygonEdge> &NavPolygon::retrieveExternalEdges() const
+    {
+	    if(externalEdges.empty())
+        {
+            for (const auto &triangle : triangles)
+            {
+                for (std::size_t edgeIndex = 0; edgeIndex < 3; ++edgeIndex)
+                {
+                    if (triangle->isExternalEdge(edgeIndex))
+                    {
+                        NavPolygonEdge navPolygonEdge;
+                        navPolygonEdge.triangle = triangle;
+                        navPolygonEdge.edgeIndex = edgeIndex;
+                        externalEdges.emplace_back(navPolygonEdge);
+                    }
+                }
+            }
+        }
+
+        return externalEdges;
+    }
+
 }

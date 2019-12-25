@@ -129,6 +129,18 @@ namespace urchin
         return false;
     }
 
+    bool NavTriangle::isExternalEdge(std::size_t edgeIndex) const
+    {
+        for(const auto &link : links)
+        {
+            if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::DIRECT)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     LineSegment3D<float> NavTriangle::computeEdge(std::size_t edgeStartIndex) const
     {
         #ifdef _DEBUG
