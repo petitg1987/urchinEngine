@@ -112,6 +112,15 @@ namespace urchin
         links.emplace_back(navLink);
     }
 
+    void NavTriangle::removeLinksTo(const std::shared_ptr<NavPolygon> &navPolygon)
+    {
+        links.erase(std::remove_if(links.begin(), links.end(),
+                [navPolygon](const std::shared_ptr<NavLink>& link)
+                {
+                    return link->getTargetTriangle()->getNavPolygon() == navPolygon;
+                }), links.end());
+    }
+
     std::vector<std::shared_ptr<NavLink>> NavTriangle::getLinks() const
     {
         return links;

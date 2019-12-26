@@ -28,8 +28,9 @@ namespace urchin
 			const std::shared_ptr<NavTriangle> &getTriangle(std::size_t) const;
 
             const NavTopography *getNavTopography() const;
-
             const std::vector<NavPolygonEdge> &retrieveExternalEdges() const;
+
+            void removeLinksTo(const std::shared_ptr<NavPolygon> &);
 
 		private:
 			std::string name;
@@ -38,7 +39,6 @@ namespace urchin
 			std::vector<std::shared_ptr<NavTriangle>> triangles;
 
             const NavTopography *navTopography;
-
             mutable std::vector<NavPolygonEdge> externalEdges;
 	};
 

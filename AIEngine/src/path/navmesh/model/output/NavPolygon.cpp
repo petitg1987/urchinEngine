@@ -94,4 +94,12 @@ namespace urchin
         return externalEdges;
     }
 
+    void NavPolygon::removeLinksTo(const std::shared_ptr<NavPolygon> &navPolygon)
+    {
+	    for(const auto &triangle : triangles)
+        {
+            triangle->removeLinksTo(navPolygon);
+        }
+    }
+
 }

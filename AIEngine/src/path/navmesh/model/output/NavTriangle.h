@@ -29,6 +29,7 @@ namespace urchin
             void addDirectLink(std::size_t, const std::shared_ptr<NavTriangle> &);
             void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
             void addLink(const std::shared_ptr<NavLink> &);
+            void removeLinksTo(const std::shared_ptr<NavPolygon> &);
             std::vector<std::shared_ptr<NavLink>> getLinks() const;
 
             bool hasEdgeLinks(std::size_t) const;

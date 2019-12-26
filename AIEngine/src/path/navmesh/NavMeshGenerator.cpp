@@ -57,7 +57,7 @@ namespace urchin
 		ScopeProfiler scopeProfiler("ai", "navMeshGenerate");
 
 		updateExpandedPolytopes(aiWorld);
-        updateNearObjects();
+        prepareNavObjectsToUpdate();
 		updateNavPolygons();
 		updateNavLinks(); //TODO add in doc ?
 
@@ -145,11 +145,13 @@ namespace urchin
         }
     }
 
-    void NavMeshGenerator::updateNearObjects()
+    void NavMeshGenerator::prepareNavObjectsToUpdate()
     {
-        ScopeProfiler scopeProfiler("ai", "upNearObjects");
+        ScopeProfiler scopeProfiler("ai", "prepNavObjects");
 
         newAffectedNavObjects.clear();
+        navObjectsLinksToRefresh.clear();
+
         for(const auto &navObject : navObjectsToRefresh)
         {
             updateNearObjects(navObject);
@@ -167,7 +169,18 @@ namespace urchin
         for(const auto &navObject : newAffectedNavObjects)
         {
             updateNearObjects(navObject);
+
+            //TODO add comment here and create tests
+            for(const auto &nearNewAffectedNavObject : navObject->retrieveNearObjects())
+            {
+                std::shared_ptr<NavObject> sharedPtrNewAffectedObject = nearNewAffectedNavObject.lock();
+                if(navObjectsToRefresh.find(sharedPtrNewAffectedObject) == navObjectsToRefresh.end())
+                {
+                    navObjectsLinksToRefresh.insert(std::make_pair(sharedPtrNewAffectedObject, navObject));
+                }
+            }
         }
+
         navObjectsToRefresh.merge(newAffectedNavObjects);
     }
 
@@ -385,40 +398,56 @@ namespace urchin
 	}
 
 	void NavMeshGenerator::updateNavLinks()
-    { //TODO missing links refresh when target is a navObject in navObjectsToRefresh
+    {
         ScopeProfiler scopeProfiler("ai", "upNavLinks");
 
-        for(const auto &navObject : navObjectsToRefresh)
+        for(const auto &sourceNavObject : navObjectsToRefresh)
         {
-            for(const auto &navPolygon : navObject->getNavPolygons())
+            for(const auto &sourceNavPolygon : sourceNavObject->getNavPolygons())
             {
-                for(const auto &externalEdge : navPolygon->retrieveExternalEdges())
+                for(const auto &sourceExternalEdge : sourceNavPolygon->retrieveExternalEdges())
                 {
-                    updateNavLinks(navObject, externalEdge);
+                    for(const auto &targetNavObject : sourceNavObject->retrieveNearObjects())
+                    {
+                        createNavLinks(sourceExternalEdge, targetNavObject.lock());
+                    }
+                }
+            }
+        }
+
+        for(const auto &navObjectLinksToRefresh : navObjectsLinksToRefresh)
+        {
+            for(const std::shared_ptr<NavPolygon> &sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) //TODO why const is working while we remove links ?
+            {
+                for(const auto &targetNavPolygon : navObjectLinksToRefresh.second->getNavPolygons())
+                {
+                    sourceNavPolygon->removeLinksTo(targetNavPolygon);
+                }
+
+                for (const auto &sourceExternalEdge : sourceNavPolygon->retrieveExternalEdges())
+                {
+                    createNavLinks(sourceExternalEdge, navObjectLinksToRefresh.second);
                 }
             }
         }
     }
 
-    void NavMeshGenerator::updateNavLinks(const std::shared_ptr<NavObject> &navObject, const NavPolygonEdge &externalEdge) const
-    { //TODO: add jump on self object (but on different navPolygon) /!\ to terrain performance
+    void NavMeshGenerator::createNavLinks(const NavPolygonEdge &sourceExternalEdge, const std::shared_ptr<NavObject> &targetNavObject) const
+    {
         EdgeJumpDetection edgeJumpDetection(navMeshAgent->getJumpDistance());
-        LineSegment3D<float> edge = externalEdge.triangle->computeEdge(externalEdge.edgeIndex);
+        LineSegment3D<float> sourceEdge = sourceExternalEdge.triangle->computeEdge(sourceExternalEdge.edgeIndex);
 
-        for(const auto &nearNavObject : navObject->retrieveNearObjects())
+        for(const auto &targetNavPolygon : targetNavObject->getNavPolygons())
         {
-            for(const auto &nearNavPolygon : nearNavObject.lock()->getNavPolygons())
+            for(const auto &targetExternalEdge : targetNavPolygon->retrieveExternalEdges())
             {
-                for(const auto &nearExternalEdge : nearNavPolygon->retrieveExternalEdges())
-                {
-                    LineSegment3D<float> nearEdge = nearExternalEdge.triangle->computeEdge(nearExternalEdge.edgeIndex);
+                LineSegment3D<float> targetEdge = targetExternalEdge.triangle->computeEdge(targetExternalEdge.edgeIndex);
 
-                    EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(edge, nearEdge);
-                    if (edgeJumpResult.hasJumpRange())
-                    {
-                        auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), nearExternalEdge.edgeIndex);
-                        externalEdge.triangle->addJumpLink(externalEdge.edgeIndex, nearExternalEdge.triangle, navJumpConstraint);
-                    }
+                EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(sourceEdge, targetEdge);
+                if (edgeJumpResult.hasJumpRange())
+                {
+                    auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), targetExternalEdge.edgeIndex);
+                    sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navJumpConstraint);
                 }
             }
         }

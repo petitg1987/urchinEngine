@@ -36,7 +36,7 @@ namespace urchin
             void addNavObject(const std::shared_ptr<AIEntity> &, const std::shared_ptr<Polytope> &);
             void removeNavObject(const std::shared_ptr<AIEntity> &);
 
-            void updateNearObjects();
+            void prepareNavObjectsToUpdate();
             void updateNearObjects(const std::shared_ptr<NavObject> &);
 
             void updateNavPolygons();
@@ -48,7 +48,7 @@ namespace urchin
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
 
 			void updateNavLinks();
-            void updateNavLinks(const std::shared_ptr<NavObject> &, const NavPolygonEdge &) const;
+            void createNavLinks(const NavPolygonEdge &, const std::shared_ptr<NavObject> &) const;
 
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
@@ -60,6 +60,7 @@ namespace urchin
 
             AABBTree<std::shared_ptr<NavObject>> navigationObjects;
             mutable std::set<std::shared_ptr<NavObject>> navObjectsToRefresh, newAffectedNavObjects;
+            mutable std::set<std::pair<std::shared_ptr<NavObject>, std::shared_ptr<NavObject>>> navObjectsLinksToRefresh;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<std::shared_ptr<NavObject>> nearObjects;
 
