@@ -417,7 +417,7 @@ namespace urchin
 
         for(const auto &navObjectLinksToRefresh : navObjectsLinksToRefresh)
         {
-            for(const std::shared_ptr<NavPolygon> &sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons()) //TODO why const is working while we remove links ?
+            for(const auto &sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons())
             {
                 for(const auto &targetNavPolygon : navObjectLinksToRefresh.second->getNavPolygons())
                 {
