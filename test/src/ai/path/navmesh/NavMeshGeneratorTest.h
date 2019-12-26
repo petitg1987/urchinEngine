@@ -19,7 +19,10 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture
         void moveHoleOnWalkableFace();
         void removeHoleFromWalkableFace();
 
+        void linksRecreatedAfterMove();
+
     private:
+        bool polygonsAreLinked(const std::shared_ptr<urchin::NavPolygon> &sourcePolygon, const std::shared_ptr<urchin::NavPolygon> &targetPolygon);
         std::shared_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
 };
 

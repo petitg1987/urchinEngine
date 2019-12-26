@@ -72,9 +72,9 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getPoints().size(), 6);
     AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[0], Point3<float>(2.0, 0.01, 2.0));
     AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[1], Point3<float>(2.0, 0.01, -2.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[2], Point3<float>(-1.0, 0.01, -2.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[3], Point3<float>(-1.0, 0.01, -1.0));
-    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[4], Point3<float>(-2.0, 0.01, -1.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[2], Point3<float>(-0.8, 0.01, -2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[3], Point3<float>(-0.8, 0.01, -0.8));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[4], Point3<float>(-2.0, 0.01, -0.8));
     AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[0]->getPoints()[5], Point3<float>(-2.0, 0.01, 2.0));
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[0]->getTriangles().size(), 4);
     AssertHelper::assert3Sizes(navMesh->getPolygons()[0]->getTriangles()[0]->getIndices(), new std::size_t[3]{3, 1, 2});
@@ -143,9 +143,67 @@ void NavMeshGeneratorTest::removeHoleFromWalkableFace()
     AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<walkableFace[2]>");
 }
 
+void NavMeshGeneratorTest::linksRecreatedAfterMove()
+{
+    auto cubeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5, 0.5, 0.5)).get());
+    auto cube1Moving = std::make_shared<AIObject>("cube1", Transform<float>(Point3<float>(0.5, 1.5, 0.0)), false, cubeShape);
+    auto cube2AffectedByMove = std::make_shared<AIObject>("cube2", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), false, cubeShape);
+    auto cube3WitLinkToCube2 = std::make_shared<AIObject>("cube3", Transform<float>(Point3<float>(-2.0, 0.0, 0.0)), false, cubeShape);
+
+    AIWorld aiWorld;
+    aiWorld.addEntity(cube1Moving);
+    aiWorld.addEntity(cube2AffectedByMove);
+    aiWorld.addEntity(cube3WitLinkToCube2);
+    NavMeshGenerator navMeshGenerator;
+    navMeshGenerator.setNavMeshAgent(buildNavMeshAgent());
+
+    std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
+    auto cube1MovingPolygon = navMesh->getPolygons()[0];
+    auto cube2AffectedByMovePolygon = navMesh->getPolygons()[1];
+    auto cube3WitLinkToCube1Polygon = navMesh->getPolygons()[2];
+
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 3);
+    AssertHelper::assertString(cube1MovingPolygon->getName(), "<cube1[2]>");
+    AssertHelper::assertString(cube2AffectedByMovePolygon->getName(), "<cube2[2]>");
+    AssertHelper::assertString(cube3WitLinkToCube1Polygon->getName(), "<cube3[2]>");
+    AssertHelper::assertTrue(polygonsAreLinked(cube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon));
+
+    cube1Moving->updateTransform(Point3<float>(1.0, 1.5, 0.0), Quaternion<float>());
+
+    navMesh = navMeshGenerator.generate(aiWorld);
+    auto newCube1MovingPolygon = navMesh->getPolygons()[2];
+    auto newCube2AffectedByMovePolygon = navMesh->getPolygons()[1];
+    auto newCube3WitLinkToCube1Polygon = navMesh->getPolygons()[0];
+
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 3);
+    AssertHelper::assertString(newCube1MovingPolygon->getName(), "<cube1[2]>");
+    AssertHelper::assertString(newCube2AffectedByMovePolygon->getName(), "<cube2[2]>");
+    AssertHelper::assertString(newCube3WitLinkToCube1Polygon->getName(), "<cube3[2]>");
+    AssertHelper::assertTrue(cube1MovingPolygon != newCube1MovingPolygon); //polygon is re-created because moving
+    AssertHelper::assertTrue(cube2AffectedByMovePolygon != newCube2AffectedByMovePolygon); //polygon is re-created because affected by the moving polygon
+    AssertHelper::assertTrue(cube3WitLinkToCube1Polygon == newCube3WitLinkToCube1Polygon); //polygon is only updated (links are re-created)
+    AssertHelper::assertTrue(polygonsAreLinked(newCube3WitLinkToCube1Polygon, newCube2AffectedByMovePolygon));
+}
+
+bool NavMeshGeneratorTest::polygonsAreLinked(const std::shared_ptr<NavPolygon> &sourcePolygon, const std::shared_ptr<NavPolygon> &targetPolygon)
+{
+    for(const auto &triangle : sourcePolygon->getTriangles())
+    {
+        for(const auto &link : triangle->getLinks())
+        {
+            if(link->getTargetTriangle()->getNavPolygon() == targetPolygon)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent()
 {
-    NavMeshAgent navMeshAgent(2.0, 0.0);
+    NavMeshAgent navMeshAgent(2.0, 0.2);
+    navMeshAgent.setJumpDistance(1.5);
     return std::make_shared<NavMeshAgent>(navMeshAgent);
 }
 
@@ -159,6 +217,8 @@ CppUnit::Test *NavMeshGeneratorTest::suite()
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("moveHoleOnWalkableFace", &NavMeshGeneratorTest::moveHoleOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("removeHoleFromWalkableFace", &NavMeshGeneratorTest::removeHoleFromWalkableFace));
+
+    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("linksRecreatedAfterMove", &NavMeshGeneratorTest::linksRecreatedAfterMove));
 
     return suite;
 }
