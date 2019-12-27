@@ -160,7 +160,7 @@ namespace urchin
 					stack.pop();
 					SidedPoint top2Point = stack.top();
 
-                    monotoneTriangles.emplace_back(buildCCWOrientedTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex)); //TODO log input when currentPoint.pointIndex==topPoint.pointIndex
+                    monotoneTriangles.emplace_back(buildCCWOrientedTriangle(currentPoint.pointIndex, topPoint.pointIndex, top2Point.pointIndex));
                     determineNeighbors(monotoneTriangles, monotonePolygon);
 				}
 				stack.pop();

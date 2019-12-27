@@ -17,8 +17,9 @@
 #define OBSTACLE_REDUCE_SIZE 0.0001f
 
 namespace urchin
-{ //TODO split class in different services !
-
+{
+    //TODO check why cube on testEngineSfml doesn't have walkable surface
+    //TODO check artifact on jump in testEngineSfml
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
@@ -60,7 +61,7 @@ namespace urchin
         prepareNavObjectsToUpdate();
         deleteNavLinks();
 		updateNavPolygons();
-		createNavLinks(); //TODO add in doc ?
+		createNavLinks();
 
         allNavPolygons.clear();
         navigationObjects.getAllNodeObjects(allNavObjects);
@@ -402,6 +403,8 @@ namespace urchin
 
     void NavMeshGenerator::deleteNavLinks()
     {
+        ScopeProfiler scopeProfiler("ai", "delNavLinks");
+
         for(const auto &navObjectLinksToRefresh : navObjectsLinksToRefresh)
         {
             for (const auto &sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons())
@@ -416,7 +419,7 @@ namespace urchin
 
 	void NavMeshGenerator::createNavLinks()
     {
-        ScopeProfiler scopeProfiler("ai", "upNavLinks");
+        ScopeProfiler scopeProfiler("ai", "creNavLinks");
 
         for(const auto &sourceNavObject : navObjectsToRefresh)
         {
