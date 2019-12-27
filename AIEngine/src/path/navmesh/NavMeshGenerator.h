@@ -59,7 +59,8 @@ namespace urchin
             std::atomic_bool needFullRefresh;
 
             AABBTree<std::shared_ptr<NavObject>> navigationObjects;
-            mutable std::set<std::shared_ptr<NavObject>> navObjectsToRefresh, newAffectedNavObjects;
+            std::set<std::shared_ptr<NavObject>> newOrMovingNavObjectsToRefresh, affectedNavObjectsToRefresh;
+            mutable std::set<std::shared_ptr<NavObject>> navObjectsToRefresh;
             mutable std::set<std::pair<std::shared_ptr<NavObject>, std::shared_ptr<NavObject>>> navObjectsLinksToRefresh;
             mutable std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<std::shared_ptr<NavObject>> nearObjects;

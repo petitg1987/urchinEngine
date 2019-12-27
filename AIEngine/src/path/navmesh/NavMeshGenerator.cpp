@@ -78,7 +78,8 @@ namespace urchin
 	{
         ScopeProfiler scopeProfiler("ai", "upExpandPoly");
 
-        navObjectsToRefresh.clear();
+        newOrMovingNavObjectsToRefresh.clear();
+        affectedNavObjectsToRefresh.clear();
 
 		for(auto &aiObjectToRemove : aiWorld.getEntitiesToRemoveAndReset())
 		{
@@ -116,7 +117,7 @@ namespace urchin
 	void NavMeshGenerator::addNavObject(const std::shared_ptr<AIEntity> &aiEntity, const std::shared_ptr<Polytope>& expandedPolytope)
     {
         auto navObject = std::make_shared<NavObject>(expandedPolytope);
-        navObjectsToRefresh.insert(navObject);
+        newOrMovingNavObjectsToRefresh.insert(navObject);
 
         if(expandedPolytope->isWalkableCandidate())
         {
@@ -139,49 +140,52 @@ namespace urchin
         for(const auto &navObject : aiEntity->getNavObjects())
         {
             const std::vector<std::weak_ptr<NavObject>> &nearObjects = navObject->retrieveNearObjects();
-            navObjectsToRefresh.insert(nearObjects.begin(), nearObjects.end());
+            affectedNavObjectsToRefresh.insert(nearObjects.begin(), nearObjects.end());
 
             navigationObjects.removeObject(navObject);
         }
     }
 
     void NavMeshGenerator::prepareNavObjectsToUpdate()
-    {
+    { //TODO add more test for this methods: proof it is necessary to call "updateNearObjects()"
         ScopeProfiler scopeProfiler("ai", "prepNavObjects");
 
-        newAffectedNavObjects.clear();
+        navObjectsToRefresh.clear();
         navObjectsLinksToRefresh.clear();
 
-        for(const auto &navObject : navObjectsToRefresh)
+        for(const auto &navObject : newOrMovingNavObjectsToRefresh)
         {
             updateNearObjects(navObject);
 
             for(const auto &nearObject : navObject->retrieveNearObjects())
             {
                 std::shared_ptr<NavObject> sharedPtrNearObject = nearObject.lock();
-                if(navObjectsToRefresh.find(sharedPtrNearObject) == navObjectsToRefresh.end())
+                if(affectedNavObjectsToRefresh.find(sharedPtrNearObject) == affectedNavObjectsToRefresh.end()
+                    && newOrMovingNavObjectsToRefresh.find(sharedPtrNearObject) == newOrMovingNavObjectsToRefresh.end())
                 {
-                    newAffectedNavObjects.insert(sharedPtrNearObject);
+                    affectedNavObjectsToRefresh.insert(sharedPtrNearObject);
                 }
             }
         }
 
-        for(const auto &navObject : newAffectedNavObjects)
+        for(const auto &navObject : affectedNavObjectsToRefresh)
         {
             updateNearObjects(navObject);
 
-            //TODO add comment here and create tests
+            //When an affected NavObject is refreshed (deleted & created): we recreate existing links toward this NavObject:
             for(const auto &nearNewAffectedNavObject : navObject->retrieveNearObjects())
             {
                 std::shared_ptr<NavObject> sharedPtrNewAffectedObject = nearNewAffectedNavObject.lock();
-                if(navObjectsToRefresh.find(sharedPtrNewAffectedObject) == navObjectsToRefresh.end())
+                if(affectedNavObjectsToRefresh.find(sharedPtrNewAffectedObject) == affectedNavObjectsToRefresh.end()
+                   && newOrMovingNavObjectsToRefresh.find(sharedPtrNewAffectedObject) == newOrMovingNavObjectsToRefresh.end())
                 {
                     navObjectsLinksToRefresh.insert(std::make_pair(sharedPtrNewAffectedObject, navObject));
                 }
             }
         }
 
-        navObjectsToRefresh.merge(newAffectedNavObjects);
+        navObjectsToRefresh.merge(newOrMovingNavObjectsToRefresh);
+        navObjectsToRefresh.merge(affectedNavObjectsToRefresh);
     }
 
     void NavMeshGenerator::updateNearObjects(const std::shared_ptr<NavObject> &navObject)
