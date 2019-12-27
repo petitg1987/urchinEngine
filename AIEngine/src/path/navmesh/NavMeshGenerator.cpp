@@ -147,7 +147,7 @@ namespace urchin
     }
 
     void NavMeshGenerator::prepareNavObjectsToUpdate()
-    { //TODO add more test for this methods: proof it is necessary to call "updateNearObjects()"
+    {
         ScopeProfiler scopeProfiler("ai", "prepNavObjects");
 
         navObjectsToRefresh.clear();
