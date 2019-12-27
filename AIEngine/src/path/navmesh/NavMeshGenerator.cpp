@@ -18,7 +18,6 @@
 
 namespace urchin
 {
-    //TODO check why cube on testEngineSfml doesn't have walkable surface
     //TODO check artifact on jump in testEngineSfml
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
