@@ -53,7 +53,7 @@ namespace urchin
 	 * Y-monotone polygon: any lines on X-axis should intersect the polygon once (point/line) or not at all.
 	 */
 	std::vector<MonotonePolygon> MonotonePolygonAlgorithm::createYMonotonePolygons()
-	{ //TODO fix error from log: create a test
+	{
 		yMonotonePolygons.clear();
 
 		try

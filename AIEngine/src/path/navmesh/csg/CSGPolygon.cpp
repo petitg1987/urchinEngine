@@ -8,7 +8,7 @@ namespace urchin
 			cwPoints(cwPoints)
 	{
 		#ifdef _DEBUG
-			checkCwPoints();
+			assert(checkCwPoints());
 		#endif
 	}
 
@@ -17,7 +17,7 @@ namespace urchin
 			cwPoints(std::move(cwPoints))
 	{
 		#ifdef _DEBUG
-			checkCwPoints();
+            assert(checkCwPoints());
 		#endif
 	}
 
@@ -40,29 +40,6 @@ namespace urchin
 		this->name = std::move(polygon.name);
 		this->cwPoints = std::move(polygon.cwPoints);
 		return *this;
-	}
-
-	template<class T> void CSGPolygon<T>::checkCwPoints() const
-	{
-		if(cwPoints.size()>=3)
-		{
-			//assert no duplicate points
-			for (std::size_t i = 0; i < cwPoints.size(); ++i)
-			{
-				for (std::size_t j = 0; j < cwPoints.size(); ++j)
-				{
-					assert(i == j || cwPoints[i].X != cwPoints[j].X || cwPoints[i].Y != cwPoints[j].Y);
-				}
-			}
-
-			//assert clockwise order
-			double area = 0.0;
-			for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
-			{
-				area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
-			}
-			assert(area >= 0.0);
-		}
 	}
 
 	template<class T> const std::string &CSGPolygon<T>::getName() const
@@ -129,11 +106,26 @@ namespace urchin
 
 	template<class T> void CSGPolygon<T>::expand(T distance)
 	{
+        #ifdef _DEBUG
+            CSGPolygon<T> originalPolygon(*this);
+        #endif
+
 		ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
+
+        #ifdef _DEBUG
+		    if(!checkCwPoints())
+            {
+		        logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR, originalPolygon);
+            }
+        #endif
 	}
 
 	template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold)
 	{
+        #ifdef _DEBUG
+	        CSGPolygon<T> originalPolygon(*this);
+        #endif
+
         const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 
         for(int i=0; i<(int)cwPoints.size(); i++)
@@ -167,7 +159,57 @@ namespace urchin
         {
             cwPoints.clear();
         }
+
+        #ifdef _DEBUG
+            if(!checkCwPoints())
+            {
+                logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR, originalPolygon);
+            }
+        #endif
 	}
+
+    template<class T> bool CSGPolygon<T>::checkCwPoints() const
+    {
+        if(cwPoints.size()>=3)
+        {
+            //assert no duplicate points
+            for (std::size_t i = 0; i < cwPoints.size(); ++i)
+            {
+                for (std::size_t j = 0; j < cwPoints.size(); ++j)
+                {
+                    if(i != j && cwPoints[i].X == cwPoints[j].X && cwPoints[i].Y == cwPoints[j].Y)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            //TODO improve check to be sure there is no cross lines
+            //assert clockwise order
+            double area = 0.0;
+            for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
+            {
+                area += (cwPoints[i].X - cwPoints[prevI].X) * (cwPoints[i].Y + cwPoints[prevI].Y);
+            }
+            if(area < 0.0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    template<class T> void CSGPolygon<T>::logInputData(const std::string &message, Logger::CriticalityLevel logLevel, const CSGPolygon<T> &inputPolygon) const
+    {
+        std::stringstream logStream;
+        logStream.precision(std::numeric_limits<float>::max_digits10);
+
+        logStream<<message<<std::endl;
+        logStream<<inputPolygon;
+
+        Logger::logger().log(logLevel, logStream.str());
+    }
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const CSGPolygon<T> &polygon)
 	{
