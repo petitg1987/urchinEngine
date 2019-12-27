@@ -58,8 +58,9 @@ namespace urchin
 
 		updateExpandedPolytopes(aiWorld);
         prepareNavObjectsToUpdate();
+        deleteNavLinks();
 		updateNavPolygons();
-		updateNavLinks(); //TODO add in doc ?
+		createNavLinks(); //TODO add in doc ?
 
         allNavPolygons.clear();
         navigationObjects.getAllNodeObjects(allNavObjects);
@@ -160,8 +161,7 @@ namespace urchin
             for(const auto &nearObject : navObject->retrieveNearObjects())
             {
                 std::shared_ptr<NavObject> sharedPtrNearObject = nearObject.lock();
-                if(affectedNavObjectsToRefresh.find(sharedPtrNearObject) == affectedNavObjectsToRefresh.end()
-                    && newOrMovingNavObjectsToRefresh.find(sharedPtrNearObject) == newOrMovingNavObjectsToRefresh.end())
+                if(newOrMovingNavObjectsToRefresh.count(sharedPtrNearObject) == 0)
                 {
                     affectedNavObjectsToRefresh.insert(sharedPtrNearObject);
                 }
@@ -172,14 +172,13 @@ namespace urchin
         {
             updateNearObjects(navObject);
 
-            //When an affected NavObject is refreshed (deleted & created): we recreate existing links toward this NavObject:
-            for(const auto &nearNewAffectedNavObject : navObject->retrieveNearObjects())
+            //when an affected NavObject is refreshed (deleted & created): we recreate existing links toward this NavObject:
+            for(const auto &relinkNavObject : navObject->retrieveNearObjects())
             {
-                std::shared_ptr<NavObject> sharedPtrNewAffectedObject = nearNewAffectedNavObject.lock();
-                if(affectedNavObjectsToRefresh.find(sharedPtrNewAffectedObject) == affectedNavObjectsToRefresh.end()
-                   && newOrMovingNavObjectsToRefresh.find(sharedPtrNewAffectedObject) == newOrMovingNavObjectsToRefresh.end())
+                std::shared_ptr<NavObject> sharedPtrRelinkNavObject = relinkNavObject.lock();
+                if(affectedNavObjectsToRefresh.count(sharedPtrRelinkNavObject) == 0 && newOrMovingNavObjectsToRefresh.count(sharedPtrRelinkNavObject) == 0)
                 {
-                    navObjectsLinksToRefresh.insert(std::make_pair(sharedPtrNewAffectedObject, navObject));
+                    navObjectsLinksToRefresh.insert(std::make_pair(sharedPtrRelinkNavObject, navObject));
                 }
             }
         }
@@ -401,7 +400,21 @@ namespace urchin
 		return elevatedPoints;
 	}
 
-	void NavMeshGenerator::updateNavLinks()
+    void NavMeshGenerator::deleteNavLinks()
+    {
+        for(const auto &navObjectLinksToRefresh : navObjectsLinksToRefresh)
+        {
+            for (const auto &sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons())
+            {
+                for (const auto &targetNavPolygon : navObjectLinksToRefresh.second->getNavPolygons())
+                {
+                    sourceNavPolygon->removeLinksTo(targetNavPolygon);
+                }
+            }
+        }
+    }
+
+	void NavMeshGenerator::createNavLinks()
     {
         ScopeProfiler scopeProfiler("ai", "upNavLinks");
 
@@ -423,11 +436,6 @@ namespace urchin
         {
             for(const auto &sourceNavPolygon : navObjectLinksToRefresh.first->getNavPolygons())
             {
-                for(const auto &targetNavPolygon : navObjectLinksToRefresh.second->getNavPolygons())
-                {
-                    sourceNavPolygon->removeLinksTo(targetNavPolygon);
-                }
-
                 for (const auto &sourceExternalEdge : sourceNavPolygon->retrieveExternalEdges())
                 {
                     createNavLinks(sourceExternalEdge, navObjectLinksToRefresh.second);

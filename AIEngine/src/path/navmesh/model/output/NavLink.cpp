@@ -1,6 +1,5 @@
 #include "NavLink.h"
 
-#include <utility>
 #include "path/navmesh/model/output/NavPolygon.h"
 #include "path/navmesh/model/output/NavTriangle.h"
 

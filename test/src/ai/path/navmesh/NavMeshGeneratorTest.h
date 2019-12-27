@@ -22,7 +22,7 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture
         void linksRecreatedAfterMove();
 
     private:
-        bool polygonsAreLinked(const std::shared_ptr<urchin::NavPolygon> &sourcePolygon, const std::shared_ptr<urchin::NavPolygon> &targetPolygon);
+        unsigned int countPolygonLinks(const std::shared_ptr<urchin::NavPolygon> &sourcePolygon, const std::shared_ptr<urchin::NavPolygon> &targetPolygon);
         std::shared_ptr<urchin::NavMeshAgent> buildNavMeshAgent();
 };
 

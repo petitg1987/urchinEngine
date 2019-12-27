@@ -166,7 +166,7 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove()
     AssertHelper::assertString(cube1MovingPolygon->getName(), "<cube1[2]>");
     AssertHelper::assertString(cube2AffectedByMovePolygon->getName(), "<cube2[2]>");
     AssertHelper::assertString(cube3WitLinkToCube1Polygon->getName(), "<cube3[2]>");
-    AssertHelper::assertTrue(polygonsAreLinked(cube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon));
+    AssertHelper::assertUnsignedInt(countPolygonLinks(cube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 1);
 
     cube1Moving->updateTransform(Point3<float>(1.0, 1.5, 0.0), Quaternion<float>());
 
@@ -182,22 +182,24 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove()
     AssertHelper::assertTrue(cube1MovingPolygon != newCube1MovingPolygon); //polygon is re-created because moving
     AssertHelper::assertTrue(cube2AffectedByMovePolygon != newCube2AffectedByMovePolygon); //polygon is re-created because affected by the moving polygon
     AssertHelper::assertTrue(cube3WitLinkToCube1Polygon == newCube3WitLinkToCube1Polygon); //polygon is only updated (links are re-created)
-    AssertHelper::assertTrue(polygonsAreLinked(newCube3WitLinkToCube1Polygon, newCube2AffectedByMovePolygon));
+    AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, newCube2AffectedByMovePolygon), 1);
+    AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 0);
 }
 
-bool NavMeshGeneratorTest::polygonsAreLinked(const std::shared_ptr<NavPolygon> &sourcePolygon, const std::shared_ptr<NavPolygon> &targetPolygon)
+unsigned int NavMeshGeneratorTest::countPolygonLinks(const std::shared_ptr<NavPolygon> &sourcePolygon, const std::shared_ptr<NavPolygon> &targetPolygon)
 {
+    unsigned int countLinks = 0;
     for(const auto &triangle : sourcePolygon->getTriangles())
     {
         for(const auto &link : triangle->getLinks())
         {
             if(link->getTargetTriangle()->getNavPolygon() == targetPolygon)
             {
-                return true;
+                countLinks++;
             }
         }
     }
-    return false;
+    return countLinks;
 }
 
 std::shared_ptr<NavMeshAgent> NavMeshGeneratorTest::buildNavMeshAgent()

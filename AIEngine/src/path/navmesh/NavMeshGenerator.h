@@ -47,7 +47,8 @@ namespace urchin
             std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::shared_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
 
-			void updateNavLinks();
+            void deleteNavLinks();
+			void createNavLinks();
             void createNavLinks(const NavPolygonEdge &, const std::shared_ptr<NavObject> &) const;
 
 			const float polygonMinDotProductThreshold;
