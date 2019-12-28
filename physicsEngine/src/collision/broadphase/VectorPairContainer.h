@@ -24,12 +24,10 @@ namespace urchin
             void removeOverlappingPairs(AbstractWorkBody *) override;
 
             const std::vector<OverlappingPair *> &getOverlappingPairs() const override;
-            std::vector<OverlappingPair> &retrieveCopyOverlappingPairs() const override;
+            std::vector<OverlappingPair> retrieveCopyOverlappingPairs() const override;
 
-		private:
+		protected:
 			std::vector<OverlappingPair *> overlappingPairs;
-
-            mutable std::vector<OverlappingPair> copiedOverlappingPairs;
 	};
 
 }

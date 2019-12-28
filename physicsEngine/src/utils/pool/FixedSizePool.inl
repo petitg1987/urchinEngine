@@ -29,7 +29,7 @@ template<class BaseType> FixedSizePool<BaseType>::FixedSizePool(const std::strin
 template<class BaseType> FixedSizePool<BaseType>::~FixedSizePool()
 {
 	if(freeCount != maxElements) //ensure that 'free' method has been called
-	{ //TODO fix problem in testEngineSfml
+	{
 		Logger::logger().logError("Fixed size pool '" + poolName + "' not correctly cleared. Free count: " + std::to_string(freeCount) + ", max elements: " + std::to_string(maxElements) + ".");
 	}
 

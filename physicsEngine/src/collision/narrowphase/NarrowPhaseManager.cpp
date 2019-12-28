@@ -43,7 +43,7 @@ namespace urchin
 	 */
 	void NarrowPhaseManager::processGhostBody(WorkGhostBody *ghostBody, std::vector<ManifoldResult> &manifoldResults)
 	{
-		std::vector<OverlappingPair> &overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
+		std::vector<OverlappingPair> overlappingPairs = ghostBody->getPairContainer()->retrieveCopyOverlappingPairs();
 
         for(auto &overlappingPair : overlappingPairs)
         {
