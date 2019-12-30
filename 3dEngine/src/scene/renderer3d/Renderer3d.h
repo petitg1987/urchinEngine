@@ -88,8 +88,10 @@ namespace urchin
             void updateModelsInFrustum();
 
 			//scene
+			void displayBuffers();
 			void updateScene(float);
 			void deferredGeometryRendering(float);
+			void displayGeometryDetails();
 			void lightingPassRendering();
 			void postUpdateScene();
 

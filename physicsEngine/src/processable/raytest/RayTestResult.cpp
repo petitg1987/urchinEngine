@@ -49,7 +49,7 @@ namespace urchin
 		}
 
 		#ifdef _DEBUG
-			if(!hasHit())
+			if(rayTestResults.empty())
 			{
 				throw std::runtime_error("Impossible to return nearest result: there is no result.");
 			}

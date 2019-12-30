@@ -692,7 +692,6 @@ namespace urchin
 		glUniform1fv(depthSplitDistanceLoc, nbShadowMaps, depthSplitDistance);
 	}
 
-#ifdef _DEBUG
 	void ShadowManager::drawLightSceneBox(const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const
 	{
 		auto itShadowData = shadowDatas.find(light);
@@ -718,6 +717,5 @@ namespace urchin
 			sceneDependentObboxModel.display(viewMatrix);
 		}
 	}
-#endif
 
 }

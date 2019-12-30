@@ -3,6 +3,9 @@
 namespace urchin
 {
 
+    //Debug parameters
+    bool DEBUG_PRINT_ISLANDS = false;
+
 	IslandManager::IslandManager(const BodyManager *bodyManager) :
 		bodyManager(bodyManager),
 		squaredLinearSleepingThreshold(ConfigService::instance()->getFloatValue("island.linearSleepingThreshold") * ConfigService::instance()->getFloatValue("island.linearSleepingThreshold")),
@@ -23,9 +26,10 @@ namespace urchin
 		buildIslands(manifoldResults);
 		const std::vector<IslandElementLink> &islandElementsLink = islandContainer.retrieveSortedIslandElements();
 
-		#ifdef _DEBUG
-			//printIslands(islandElementsLink);
-		#endif
+		if(DEBUG_PRINT_ISLANDS)
+        {
+		    printIslands(islandElementsLink);
+        }
 
 		unsigned int i=0;
 		while(islandElementsLink.size()>i)
@@ -124,30 +128,28 @@ namespace urchin
 				 && body->getAngularVelocity().squareLength() < squaredAngularSleepingThreshold);
 	}
 
-	#ifdef _DEBUG
-		void IslandManager::printIslands(const std::vector<IslandElementLink> &islandElementsLink)
-		{
-			unsigned int islandId = 0;
-			unsigned int i=0;
-			while(islandElementsLink.size()>i)
-			{ //loop on islands
-				unsigned int startElementIndex = i;
-				unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
+    void IslandManager::printIslands(const std::vector<IslandElementLink> &islandElementsLink)
+    {
+        unsigned int islandId = 0;
+        unsigned int i=0;
+        while(islandElementsLink.size()>i)
+        { //loop on islands
+            unsigned int startElementIndex = i;
+            unsigned int nbElements = computeNumberElements(islandElementsLink, startElementIndex);
 
-				std::cout<<"Island "<<islandId<<":"<<std::endl;
+            std::cout<<"Island "<<islandId<<":"<<std::endl;
 
-				for(unsigned int j=0; j<nbElements; ++j)
-				{ //loop on elements of the island
-					auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
-					std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
-				}
+            for(unsigned int j=0; j<nbElements; ++j)
+            { //loop on elements of the island
+                auto *body = dynamic_cast<WorkRigidBody *>(islandElementsLink[startElementIndex+j].element);
+                std::cout<<"  - Body: "<<body->getId()<<" (moving: "<<isBodyMoving(body)<<", active: "<<body->isActive()<<")"<<std::endl;
+            }
 
-				i += nbElements;
-				islandId++;
-			}
+            i += nbElements;
+            islandId++;
+        }
 
-			std::cout<<std::endl;
-		}
-	#endif
+        std::cout<<std::endl;
+    }
 
 }

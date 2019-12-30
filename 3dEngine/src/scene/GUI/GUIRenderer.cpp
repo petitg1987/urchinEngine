@@ -4,11 +4,17 @@
 
 #include "scene/GUI/GUIRenderer.h"
 #include "scene/GUI/GUISkinService.h"
+#include "resources/MediaManager.h"
+#include "resources/font/Font.h"
 #include "utils/shader/ShaderManager.h"
+#include "utils/display/texture/TextureDisplayer.h"
 
 namespace urchin
 {
-	
+
+    //Debug parameters
+    bool DEBUG_DISPLAY_FONT_TEXTURE = false;
+
 	GUIRenderer::GUIRenderer() :
 		GUIShader(0),
 		mProjectionLoc(0),
@@ -175,17 +181,17 @@ namespace urchin
 			}
 		}
 
-		#ifdef _DEBUG
-//			//display font texture
-//			Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
-//
-//			TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_VALUE);
-//			textureDisplayer.setPosition(TextureDisplayer::USER_DEFINED_X, TextureDisplayer::USER_DEFINED_Y);
-//			textureDisplayer.setSize(20.0, font->getDimensionTexture() + 20.0, 20.0, font->getDimensionTexture() + 20.0);
-//			textureDisplayer.initialize(512, 512, -1.0, -1.0);
-//			textureDisplayer.display();
-//			font->release();
-		#endif
+		if(DEBUG_DISPLAY_FONT_TEXTURE)
+        {
+            Font *font = MediaManager::instance()->getMedia<Font>("font/font.fnt");
+
+            TextureDisplayer textureDisplayer(font->getTextureID(), TextureDisplayer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureDisplayer::USER_DEFINED_X, TextureDisplayer::USER_DEFINED_Y);
+            textureDisplayer.setSize(20.0f, (float)font->getDimensionTexture() + 20.0f, 20.0f, (float)font->getDimensionTexture() + 20.0f);
+            textureDisplayer.initialize(512u, 512u, -1.0f, -1.0f);
+            textureDisplayer.display();
+            font->release();
+        }
 	}
 
 }

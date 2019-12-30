@@ -6,11 +6,10 @@
 namespace urchin
 {
 
-	IslandContainer::IslandContainer()
+	IslandContainer::IslandContainer() :
+	    containerSorted(false)
 	{
-		#ifdef _DEBUG
-			containerSorted = false;
-		#endif
+
 	}
 
 	/**
@@ -18,9 +17,7 @@ namespace urchin
 	 */
 	void IslandContainer::reset(const std::vector<IslandElement *> &islandElements)
 	{
-		#ifdef _DEBUG
-			containerSorted = false;
-		#endif
+	    containerSorted = false;
 
 		islandElementsLink.clear();
 		islandElementsLink.resize(islandElements.size());
@@ -72,9 +69,7 @@ namespace urchin
 
 		std::sort(islandElementsLink.begin(), islandElementsLink.end(), IslandElementLinkSortPredicate());
 
-		#ifdef _DEBUG
-			containerSorted = true;
-		#endif
+		containerSorted = true;
 
 		return islandElementsLink;
 	}

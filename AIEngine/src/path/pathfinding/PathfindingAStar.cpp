@@ -7,6 +7,10 @@
 namespace urchin
 {
 
+    //Debug parameters
+    bool DEBUG_LOG_NAV_MESH = false;
+    bool DEBUG_EXPORT_NAV_MESH = false;
+
     bool PathNodeCompare::operator()(const std::shared_ptr<PathNode> &node1, const std::shared_ptr<PathNode> &node2) const
     {
         return node1->getFScore() < node2->getFScore();
@@ -16,9 +20,10 @@ namespace urchin
             jumpAdditionalCost(ConfigService::instance()->getFloatValue("pathfinding.jumpAdditionalCost")),
             navMesh(std::move(navMesh))
     {
-        #ifdef _DEBUG
-            //this->navMesh->logNavMesh();
-        #endif
+        if(DEBUG_LOG_NAV_MESH)
+        {
+            this->navMesh->logNavMesh();
+        }
     }
 
     std::vector<PathPoint> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
@@ -92,9 +97,11 @@ namespace urchin
             return pathPortalsToPathPoints(pathPortals, true);
         }
 
-        #ifdef _DEBUG
-//            navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/pathInfo/pathInfo" + std::to_string(navMesh->getId()) + ".html");
-        #endif
+        if(DEBUG_EXPORT_NAV_MESH)
+        {
+            navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/pathInfo/pathInfo" + std::to_string(navMesh->getUpdateId()) + ".html");
+        }
+
         return {}; //no path exists
     }
 

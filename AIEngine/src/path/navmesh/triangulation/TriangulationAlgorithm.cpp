@@ -8,6 +8,9 @@
 namespace urchin
 {
 
+    //Debug parameters
+    bool DEBUG_LOG_TRIANGULATION_OUTPUT_DATA = false;
+
 	SidedPoint::SidedPoint(std::size_t pointIndex, bool onLeft) :
 			pointIndex(pointIndex), onLeft(onLeft)
 	{
@@ -210,9 +213,10 @@ namespace urchin
             logOutputData("Missing neighbors (" + std::to_string(missingTriangleNeighbor) + ") on monotone polygon", monotoneTriangles, Logger::ERROR);
         }
 
-		#ifdef _DEBUG
-//      	logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO);
-    	#endif
+		if(DEBUG_LOG_TRIANGULATION_OUTPUT_DATA)
+        {
+            logOutputData("Output of triangulation algorithm", monotoneTriangles, Logger::INFO);
+        }
 
         return monotoneTriangles;
 	}

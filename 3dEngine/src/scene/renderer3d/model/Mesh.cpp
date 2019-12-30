@@ -84,7 +84,6 @@ namespace urchin
 		glDrawElements(GL_TRIANGLES, constMesh->getNumberTriangles()*3, GL_UNSIGNED_INT, nullptr);
 	}
 
-#ifdef _DEBUG
 	void Mesh::drawBaseBones(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
 		std::vector<Point3<float>> bonePositions;
@@ -98,6 +97,5 @@ namespace urchin
 		pointsModel->setAlwaysVisible(true);
 		pointsModel->display(viewMatrix);
 	}
-#endif
 
 }

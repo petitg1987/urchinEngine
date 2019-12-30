@@ -19,9 +19,7 @@ namespace urchin
 
 			void display(const MeshParameter &) const;
 
-			#ifdef _DEBUG
-				void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
-			#endif
+			void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
 
 		private:
 			const ConstMesh *const constMesh;

@@ -7,6 +7,11 @@
 namespace urchin
 {
 
+    //Debug parameters
+    bool DEBUG_LOG_MONOTONE_INPUT_DATA = false;
+    bool DEBUG_LOG_MONOTONE_OUTPUT_DATA = false;
+    bool DEBUG_EXPORT_MONOTONE_POINTS = false;
+
 	TypedPoint::TypedPoint(std::size_t pointIndex, PointType type) :
 			pointIndex(pointIndex), type(type)
 	{
@@ -43,9 +48,10 @@ namespace urchin
 	{
 		edgeHelpers.reserve(5);
 
-		#ifdef _DEBUG
-//			logInputData("Debug monotone polygon.", Logger::INFO);
-		#endif
+		if(DEBUG_LOG_MONOTONE_INPUT_DATA)
+        {
+            logInputData("Debug monotone polygon.", Logger::INFO);
+        }
 	}
 
 	/**
@@ -138,9 +144,10 @@ namespace urchin
 			}
 		}
 
-		#ifdef _DEBUG
-//			logOutputData("Debug monotone polygon.", Logger::INFO);
-		#endif
+		if(DEBUG_LOG_MONOTONE_OUTPUT_DATA)
+        {
+            logOutputData("Debug monotone polygon.", Logger::INFO);
+        }
 
 		return yMonotonePolygons;
 	}
@@ -518,9 +525,10 @@ namespace urchin
 		}
 		Logger::logger().log(logLevel, logStream.str());
 
-        #ifdef _DEBUG
-//            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
-        #endif
+        if(DEBUG_EXPORT_MONOTONE_POINTS)
+        {
+            exportSVG(std::string(std::getenv("HOME")) + "/monotonePoints.html");
+        }
 	}
 
     void MonotonePolygonAlgorithm::exportSVG(const std::string &filename) const

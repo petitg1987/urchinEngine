@@ -22,6 +22,9 @@
 namespace urchin
 {
 
+    //Debug parameters
+    bool DEBUG_EXPORT_SSAO_KERNEL = false;
+
 	AmbientOcclusionManager::AmbientOcclusionManager(unsigned int depthTexID, unsigned int normalAndAmbientTexID) :
 		sceneWidth(0),
 		sceneHeight(0),
@@ -209,9 +212,10 @@ namespace urchin
         int samplesLoc = glGetUniformLocation(ambientOcclusionShader, "samples");
         glUniform3fv(samplesLoc, ssaoKernel.size(), (const float *)ssaoKernel[0]);
 
-        #ifdef _DEBUG
-//      	exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
-        #endif
+        if(DEBUG_EXPORT_SSAO_KERNEL)
+        {
+            exportSVG(std::string(std::getenv("HOME")) + "/ssaoKernel.html", ssaoKernel);
+        }
     }
 
 	void AmbientOcclusionManager::generateNoiseTexture()

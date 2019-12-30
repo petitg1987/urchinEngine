@@ -37,9 +37,7 @@ namespace urchin
 			void loadLights();
 			void postUpdateLights();
 
-			#ifdef _DEBUG
-				void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;
-			#endif
+			void drawLightOctree(const Matrix4<float> &, const Matrix4<float> &) const;
 
 		private:
 			void onLightEvent(Light *, NotificationType);

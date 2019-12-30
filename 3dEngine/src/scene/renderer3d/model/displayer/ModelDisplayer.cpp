@@ -207,7 +207,6 @@ namespace urchin
 		}
 	}
 
-#ifdef _DEBUG
 	void ModelDisplayer::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
 		for (auto model : models)
@@ -226,6 +225,5 @@ namespace urchin
 			}
 		}
 	}
-#endif
 
 }

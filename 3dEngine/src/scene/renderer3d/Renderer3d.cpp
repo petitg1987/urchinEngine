@@ -5,12 +5,26 @@
 #include "Renderer3d.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 #include "utils/display/texture/TextureDisplayer.h"
+#include "utils/display/octree/OctreeDisplayer.h"
 #include "utils/shader/ShaderManager.h"
 
 #define DEFAULT_OCTREE_MIN_SIZE 20.0f
 
 namespace urchin
 {
+
+    //Debug parameters
+    bool DEBUG_DISPLAY_DEPTH_BUFFER = false;
+    bool DEBUG_DISPLAY_COLOR_BUFFER = false;
+    bool DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER = false;
+    bool DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER = false;
+    bool DEBUG_DISPLAY_SHADOW_MAP = false;
+    bool DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER = false;
+    bool DEBUG_DISPLAY_MODELS_OCTREE = false;
+    bool DEBUG_DISPLAY_MODELS_BOUNDING_BOX = false;
+    bool DEBUG_DISPLAY_MODEL_BASE_BONES = false;
+    bool DEBUG_DISPLAY_LIGHTS_OCTREE = false;
+    bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
 	Renderer3d::Renderer3d() :
 			width(0),
@@ -410,50 +424,64 @@ namespace urchin
 		}
 
 		postUpdateScene();
-
-		#ifdef _DEBUG
-			//display depth buffer
-//			float depthIntensity = 5.0f;
-//			TextureDisplayer textureDisplayer0(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_VALUE, depthIntensity);
-//			textureDisplayer0.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
-//			textureDisplayer0.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer0.display();
-
-			//display color buffer
-//			TextureDisplayer textureDisplayer1(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_VALUE);
-//			textureDisplayer1.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
-//			textureDisplayer1.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer1.display();
-
-//			//display normal and ambient buffer
-//			TextureDisplayer textureDisplayer2(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
-//			textureDisplayer2.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
-//			textureDisplayer2.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer2.display();
-
-			//display illuminated scene buffer
-//			TextureDisplayer textureDisplayer3(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
-//			textureDisplayer3.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
-//			textureDisplayer3.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer3.display();
-
-			//display shadow map
-//			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-//			const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
-//			unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
-//			TextureDisplayer textureDisplayer4(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_VALUE);
-//			textureDisplayer4.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
-//			textureDisplayer4.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer4.display();
-
-//			//display ambient occlusion buffer
-//			float ambientOcclusionIntensity = 10.0f;
-//			TextureDisplayer textureDisplayer5(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
-//			textureDisplayer5.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
-//			textureDisplayer5.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
-//			textureDisplayer5.display();
-		#endif
+        displayBuffers();
 	}
+
+	void Renderer3d::displayBuffers()
+    {
+        if(DEBUG_DISPLAY_DEPTH_BUFFER)
+        {
+            float depthIntensity = 5.0f;
+            TextureDisplayer textureDisplayer(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_VALUE, depthIntensity);
+            textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
+            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.display();
+        }
+
+        if(DEBUG_DISPLAY_COLOR_BUFFER)
+        {
+            TextureDisplayer textureDisplayer(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
+            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.display();
+        }
+
+        if(DEBUG_DISPLAY_NORMAL_AMBIENT_BUFFER)
+        {
+            TextureDisplayer textureDisplayer(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
+            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.display();
+        }
+
+        if(DEBUG_DISPLAY_ILLUMINATED_SCENE_BUFFER)
+        {
+            TextureDisplayer textureDisplayer(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
+            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.display();
+        }
+
+        if(DEBUG_DISPLAY_SHADOW_MAP)
+        {
+            const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
+            const unsigned int shadowMapNumber = 0; //choose shadow map to display [0, nbShadowMaps-1]
+            unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
+            TextureDisplayer textureDisplayer(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_VALUE);
+            textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
+            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.display();
+        }
+
+        if(DEBUG_DISPLAY_AMBIENT_OCCLUSION_BUFFER)
+        {
+            float ambientOcclusionIntensity = 10.0f;
+            TextureDisplayer textureDisplayer(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
+            textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
+            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.display();
+        }
+    }
 
 	void Renderer3d::updateScene(float dt)
 	{
@@ -520,29 +548,41 @@ namespace urchin
 			ambientOcclusionManager->updateAOTexture(camera);
 		}
 
-		#ifdef _DEBUG
-			//display the octree
-//			OctreeDisplayer octreeDisplayer(modelOctreeManager);
-//			octreeDisplayer.drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
-
-			//display models bounding box
-//			modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
-
-			//display bones of specified model in base position
-//			modelDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
-
-			//display light octree
-//			lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
-
-			//display scene box visible from light based on split frustums
-//			const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-//			for(auto &frustum : shadowManager->getSplitFrustums())
-//			{
-//				shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
-//			}
-
-		#endif
+        displayGeometryDetails();
 	}
+
+    void Renderer3d::displayGeometryDetails()
+    {
+        if(DEBUG_DISPLAY_MODELS_OCTREE)
+        {
+            OctreeDisplayer octreeDisplayer(modelOctreeManager);
+            octreeDisplayer.drawOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+        }
+
+        if(DEBUG_DISPLAY_MODELS_BOUNDING_BOX)
+        {
+            modelDisplayer->drawBBox(camera->getProjectionMatrix(), camera->getViewMatrix());
+        }
+
+        if(DEBUG_DISPLAY_MODEL_BASE_BONES)
+        {
+            modelDisplayer->drawBaseBones(camera->getProjectionMatrix(), camera->getViewMatrix(), "models/character.urchinMesh");
+        }
+
+        if(DEBUG_DISPLAY_LIGHTS_OCTREE)
+        {
+            lightManager->drawLightOctree(camera->getProjectionMatrix(), camera->getViewMatrix());
+        }
+
+        if(DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX)
+        { //display scene box visible from light based on split frustums
+            const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
+            for(auto &frustum : shadowManager->getSplitFrustums())
+            {
+                shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
+            }
+        }
+    }
 
 	/**
 	 * Second pass of deferred shading algorithm.

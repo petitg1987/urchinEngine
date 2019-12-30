@@ -8,7 +8,7 @@ namespace urchin
 	template<class T> IndexedTriangle2D<T>::IndexedTriangle2D(const std::size_t *indices) :
 	    indices()
 	{
-		#ifdef _DEBUG //TODO replace all by parameter (+ adapt parameter value for release)
+		#ifdef _DEBUG
 			assert(indices[0]!=indices[1] && indices[0]!=indices[2] && indices[1]!=indices[2]);
 		#endif
 

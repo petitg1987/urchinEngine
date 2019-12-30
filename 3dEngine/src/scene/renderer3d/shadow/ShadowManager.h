@@ -60,10 +60,8 @@ namespace urchin
 			void forceUpdateAllShadowMaps();
 			void updateShadowMaps();
 			void loadShadowMaps(const Matrix4<float> &, unsigned int);
-			
-			#ifdef _DEBUG
-				void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
-			#endif
+
+			void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 
 		private:
 			//model displayer

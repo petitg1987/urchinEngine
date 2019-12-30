@@ -45,10 +45,8 @@ namespace urchin
 			void updateAnimation(float);
 			void display(const MeshParameter &) const;
 
-			#ifdef _DEBUG
-                void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
-				void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
-			#endif
+			void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
+			void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &) const;
 
 		private:
 			void initialize(const std::string &);

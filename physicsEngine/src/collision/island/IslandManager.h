@@ -23,16 +23,14 @@ namespace urchin
 			unsigned int computeNumberElements(const std::vector<IslandElementLink> &, unsigned int) const;
 			bool isBodyMoving(const WorkRigidBody *) const;
 
+            void printIslands(const std::vector<IslandElementLink> &);
+
 			const BodyManager *bodyManager;
 			std::vector<IslandElement *> islandElements;
 			IslandContainer islandContainer;
 
 			const float squaredLinearSleepingThreshold;
 			const float squaredAngularSleepingThreshold;
-
-			#ifdef _DEBUG
-				void printIslands(const std::vector<IslandElementLink> &);
-			#endif
 	};
 
 }

@@ -43,10 +43,8 @@ namespace urchin
 			void updateAnimation(float);
 			void display(const Matrix4<float> &);
 
-			#ifdef _DEBUG
-				void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
-				void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &, const std::string &) const;
-			#endif
+			void drawBBox(const Matrix4<float> &, const Matrix4<float> &) const;
+			void drawBaseBones(const Matrix4<float> &, const Matrix4<float> &, const std::string &) const;
 
 		private:
 			void createShader(const std::string &, const std::string &, const std::string &);

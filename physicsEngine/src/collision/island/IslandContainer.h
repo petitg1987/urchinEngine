@@ -30,9 +30,7 @@ namespace urchin
 
 			std::vector<IslandElementLink> islandElementsLink;
 
-			#ifdef _DEBUG
-				bool containerSorted;
-			#endif
+			bool containerSorted;
 	};
 
 }

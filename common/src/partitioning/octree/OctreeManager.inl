@@ -1,7 +1,9 @@
 template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minSize) :
 		overflowSize(ConfigService::instance()->getFloatValue("octree.overflowSize")),
         minSize(minSize),
-		mainOctree(nullptr)
+		mainOctree(nullptr),
+        refreshModCount(0),
+        postRefreshModCount(0)
 {
 	if(overflowSize < -std::numeric_limits<float>::epsilon())
 	{
@@ -12,10 +14,6 @@ template<class TOctreeable> OctreeManager<TOctreeable>::OctreeManager(float minS
 	
 	std::vector<TOctreeable *> emptyOctreeable;
 	buildOctree(emptyOctreeable);
-	
-	#ifdef _DEBUG
-		refreshModCount = postRefreshModCount = 0;
-	#endif
 }
 
 template<class TOctreeable> OctreeManager<TOctreeable>::~OctreeManager()
@@ -188,8 +186,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 			throw std::runtime_error("Methods 'refreshOctreeables' and 'postRefreshOctreeables' must be called the same number of times: " +
 					std::to_string(refreshModCount) + " <-> " + std::to_string(postRefreshModCount));
 		}
-		refreshModCount++;
-	#endif
+    #endif
+    refreshModCount++;
 }
 
 template<class TOctreeable> void OctreeManager<TOctreeable>::postRefreshOctreeables()
@@ -200,10 +198,8 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::postRefreshOctreeab
 	}
 	
 	movingOctreeables.clear();
-	
-	#ifdef _DEBUG
-		postRefreshModCount++;
-	#endif
+
+    postRefreshModCount++;
 }
 
 template<class TOctreeable> const Octree<TOctreeable> &OctreeManager<TOctreeable>::getMainOctree() const

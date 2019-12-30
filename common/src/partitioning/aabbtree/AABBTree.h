@@ -48,10 +48,6 @@ namespace urchin
 
 			float fatMargin;
 			AABBNode<OBJ> *rootNode;
-
-			#ifdef _DEBUG
-				void printTree(AABBNode<OBJ> *, unsigned int);
-			#endif
 	};
 
     #include "AABBTree.inl"

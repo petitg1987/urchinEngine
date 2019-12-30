@@ -65,7 +65,7 @@ template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ> &nod
 
 template <class OBJ> std::vector<AABBNodeData<OBJ> *> AABBTree<OBJ>::extractAllNodeData()
 {
-    std::vector<AABBNodeData<OBJ> *> allNodeData;
+    std::vector<AABBNodeData<OBJ> *> allNodeData = {};
 
     browseNodes.clear();
     if(rootNode != nullptr)
@@ -106,10 +106,6 @@ template <class OBJ> void AABBTree<OBJ>::addObject(AABBNodeData<OBJ> *nodeData)
     }
 
     objectsNode[nodeData->getNodeObject()] = nodeToInsert;
-
-    #ifdef _DEBUG
-        //printTree(rootNode, 0);
-    #endif
 
     postAddObjectCallback(nodeToInsert);
 }
@@ -334,30 +330,3 @@ template<class OBJ> void AABBTree<OBJ>::enlargedRayQuery(const Ray<float> &ray, 
         }
     }
 }
-
-#ifdef _DEBUG
-    template<class OBJ> void AABBTree<OBJ>::printTree(AABBNode<OBJ> *node, unsigned int indentLevel)
-    { //tree traversal: pre-order (recursive)
-        if(node->isLeaf())
-        {
-            std::cout<<std::string(indentLevel, ' ')<<"- Leaf: "<<node->getNodeData()->getObjectId()<<std::endl;
-        }else
-        {
-            if(!node->getParent())
-            {
-                std::cout<<std::string(indentLevel, ' ')<<"Root:"<<std::endl;
-            }else
-            {
-                std::cout<<std::string(indentLevel, ' ')<<"- Node:"<<std::endl;
-            }
-
-            printTree(node->getLeftChild(), indentLevel + 2);
-            printTree(node->getRightChild(), indentLevel + 2);
-        }
-
-        if(indentLevel==0)
-        {
-            std::cout<<std::endl;
-        }
-    }
-#endif

@@ -127,7 +127,7 @@ namespace urchin
 		#ifdef _DEBUG
 			ALenum err;
 			while((err = alGetError()) != AL_NO_ERROR)
-			{
+			{ //TODO is it logged + review _DEBUG
 				throw std::runtime_error("OpenAL error: " + std::to_string(err));
 			}
         #endif

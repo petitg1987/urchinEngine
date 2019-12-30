@@ -269,7 +269,6 @@ namespace urchin
         }
 	}
 
-#ifdef _DEBUG
     void Model::drawBBox(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
     {
         AABBoxModel aabboxModel(getAABBox());
@@ -287,6 +286,5 @@ namespace urchin
 			}
 		}
 	}
-#endif
 
 }

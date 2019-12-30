@@ -216,12 +216,10 @@ namespace urchin
 		lightOctreeManager->postRefreshOctreeables();
 	}
 
-#ifdef _DEBUG
 	void LightManager::drawLightOctree(const Matrix4<float> &projectionMatrix, const Matrix4<float> &viewMatrix) const
 	{
         OctreeDisplayer octreeDisplayer(lightOctreeManager);
         octreeDisplayer.drawOctree(projectionMatrix, viewMatrix);
 	}
-#endif
 
 }

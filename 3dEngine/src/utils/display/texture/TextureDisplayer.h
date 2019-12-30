@@ -52,7 +52,7 @@ namespace urchin
 			void setSize(float, float, float, float);
 			void setFullScreen(bool);
 
-			void initialize(int, int, float, float);
+			void initialize(unsigned int, unsigned int, float, float);
 
 			void display();
 

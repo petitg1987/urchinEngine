@@ -99,7 +99,7 @@ namespace urchin
 		this->fullScreen = fullScreen;
 	}
 
-	void TextureDisplayer::initialize(int sceneWidth, int sceneHeight, float nearPlane, float farPlane)
+	void TextureDisplayer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane)
 	{
 		#ifdef _DEBUG
 			if(isInitialized)
