@@ -355,7 +355,7 @@ namespace urchin
 	{
 		stream.setf(std::ios::left);
 		stream << "AABBox min point: " << aabbox.getMin() << std::endl;
-		stream << "AABBox max point: " << aabbox.getMax() << std::endl;
+		stream << "AABBox max point: " << aabbox.getMax();
 
 		return stream;
 	}

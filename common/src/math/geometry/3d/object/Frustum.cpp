@@ -312,7 +312,7 @@ namespace urchin
 		stream << "Frustum point FTL: " << frustum.getFrustumPoint(Frustum<T>::FTL) << std::endl;
 		stream << "Frustum point FTR: " << frustum.getFrustumPoint(Frustum<T>::FTR) << std::endl;
 		stream << "Frustum point FBL: " << frustum.getFrustumPoint(Frustum<T>::FBL) << std::endl;
-		stream << "Frustum point FBR: " << frustum.getFrustumPoint(Frustum<T>::FBR) << std::endl;
+		stream << "Frustum point FBR: " << frustum.getFrustumPoint(Frustum<T>::FBR);
 
 		return stream;
 	}

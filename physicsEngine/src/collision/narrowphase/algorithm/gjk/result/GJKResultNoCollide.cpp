@@ -17,7 +17,7 @@ namespace urchin
             const float distanceDelta = closestPointA.vector(closestPointB).length() - separatingDistance;
 			if(!MathAlgorithm::isZero(distanceDelta, 0.01f))
 			{
-			    logSimplexData("Incoherent separating distance (" + std::to_string(separatingDistance) +") with simplex", simplex);
+			    logInputData("Incoherent separating distance (" + std::to_string(separatingDistance) +") with simplex", simplex);
 			}
         #endif
 	}

@@ -339,7 +339,7 @@ namespace urchin
         {
             if(this->points[i].triangleIndices.size() < 3)
             {
-                logConvexHullData("Convex hull initial tetrahedron built with a point having less then 3 triangles");
+                logConvexHullData("Initial convex hull tetrahedron built with a point having less then 3 triangles");
                 break;
             }
         }
@@ -397,8 +397,8 @@ namespace urchin
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
-        logStream<<errorMessage<<std::endl;
-        logStream<<*this<<std::endl;
+        logStream << errorMessage << std::endl;
+        logStream << *this;
 
         Logger::logger().logError(logStream.str());
     }
@@ -410,8 +410,7 @@ namespace urchin
 			stream << "Triangle "<< it->first <<": "
 				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(0)).point<<") "
 				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(1)).point<<") "
-				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(2)).point<<") "
-				<<std::endl;
+				<<"("<<ch.getConvexHullPoints().at(it->second.getIndex(2)).point<<") ";
 		}
 
 		return stream;

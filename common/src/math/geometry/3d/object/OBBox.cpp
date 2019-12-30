@@ -362,7 +362,7 @@ namespace urchin
 		stream << "OBBox point 5: " << obbox.getPoint(4) << std::endl;
 		stream << "OBBox point 6: " << obbox.getPoint(5) << std::endl;
 		stream << "OBBox point 7: " << obbox.getPoint(6) << std::endl;
-		stream << "OBBox point 8: " << obbox.getPoint(7) << std::endl;
+		stream << "OBBox point 8: " << obbox.getPoint(7);
 
 		return stream;
 	}

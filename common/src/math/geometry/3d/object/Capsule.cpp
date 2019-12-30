@@ -88,7 +88,7 @@ namespace urchin
 		stream << std::setw(20) << "Shape height: " << capsule.getCylinderHeight() << std::endl;
 		stream << std::setw(20) << "Shape orientation: " << capsule.getCapsuleOrientation() << std::endl;
 		stream << std::setw(20) << "Center of mass: " << capsule.getCenterOfMass() << std::endl;
-		stream << std::setw(20) << "Orientation: " << capsule.getOrientation() << std::endl;
+		stream << std::setw(20) << "Orientation: " << capsule.getOrientation();
 
 		return stream;
 	}

@@ -443,10 +443,10 @@ namespace urchin
         std::stringstream logStream;
         logStream.precision(std::numeric_limits<T>::max_digits10);
 
-        logStream<<errorMessage<<std::endl;
-        logStream<<"Convex object 1"<<convexObject1.toString()<<std::endl;
-        logStream<<"Convex object 2"<<convexObject2.toString()<<std::endl;
-        logStream<<"Simplex"<<gjkResult.getSimplex()<<std::endl;
+        logStream << errorMessage << std::endl;
+        logStream << "Convex object 1: " << std::endl << convexObject1.toString() << std::endl;
+        logStream << "Convex object 2: " << std::endl<< convexObject2.toString() << std::endl;
+        logStream << "Simplex: " << std::endl << gjkResult.getSimplex();
 
         Logger::logger().logError(logStream.str());
     }

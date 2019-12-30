@@ -270,7 +270,7 @@ namespace urchin
 		stream.setf(std::ios::left);
 		stream << std::setw(10) << m.a11 << " " << std::setw(10) << m.a12 << " " << std::setw(10) << m.a13 << std::endl;
 		stream << std::setw(10) << m.a21 << " " << std::setw(10) << m.a22 << " " << std::setw(10) << m.a23 << std::endl;
-		stream << std::setw(10) << m.a31 << " " << std::setw(10) << m.a32 << " " << std::setw(10) << m.a33 << std::endl;
+		stream << std::setw(10) << m.a31 << " " << std::setw(10) << m.a32 << " " << std::setw(10) << m.a33;
 
 		return stream;
 	}
