@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "ResizeConvexHull2DService.h"
 #include "math/geometry/2d/util/ResizePolygon2DService.h"
 #include "math/algebra/point/Point2.h"
@@ -18,9 +20,7 @@ namespace urchin
 	 */
 	template<class T> std::unique_ptr<ConvexHullShape2D<T>> ResizeConvexHull2DService<T>::resizeConvexHullShape(const ConvexHullShape2D<T> &originalConvexHullShape, T distance) const
 	{
-		#ifdef DEBUG
-			assert(distance > (0.0 - std::numeric_limits<T>::epsilon()));
-		#endif
+	    assert(distance > (0.0 - std::numeric_limits<T>::epsilon()));
 
 		std::vector<Point2<T>> ccwPoints = originalConvexHullShape.getPoints();
 		ResizePolygon2DService<T>::instance()->resizePolygon(ccwPoints, distance);

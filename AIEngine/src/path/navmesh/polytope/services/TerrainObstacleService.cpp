@@ -56,10 +56,8 @@ namespace urchin
 
     bool TerrainObstacleService::isWalkableSquare(unsigned int squareIndex, float maxSlopeDotProduct) const
     {
-        #ifdef _DEBUG
-            assert((squareIndex + 1) % xLength != 0); //not an extreme right point
-            assert(squareIndex < (xLength * (zLength - 1))); //not an extreme near point
-        #endif
+        assert((squareIndex + 1) % xLength != 0); //not an extreme right point
+        assert(squareIndex < (xLength * (zLength - 1))); //not an extreme near point
 
         Point3<float> farLeftPoint = localVertices[squareIndex];
         Point3<float> farRightPoint = localVertices[squareIndex + 1];

@@ -146,8 +146,8 @@ namespace urchin
 				).dotProduct(commonData.contactTangent);
 
 		#ifdef _DEBUG
-			assert(impulseSolvingData.normalImpulseDenominator!=0.0);
-			assert(impulseSolvingData.tangentImpulseDenominator!=0.0);
+			assert(impulseSolvingData.normalImpulseDenominator != 0.0);
+			assert(impulseSolvingData.tangentImpulseDenominator != 0.0);
 		#endif
 
 		//bias

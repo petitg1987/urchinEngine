@@ -10,6 +10,7 @@
 #include "utils/shader/ShaderManager.h"
 
 #define DEFAULT_NUM_GRASS_IN_TEX 1
+#define DEFAULT_GRASS_DISPLAY_DISTANCE 100.0
 #define DEFAULT_GRASS_HEIGHT 1.0
 #define DEFAULT_GRASS_LENGTH 1.0
 #define DEFAULT_GRASS_QUANTITY 0.1
@@ -67,6 +68,7 @@ namespace urchin
         setGrassTexture(grassTextureFilename);
         setMaskTexture("");
         setNumGrassInTexture(DEFAULT_NUM_GRASS_IN_TEX);
+        setGrassDisplayDistance(DEFAULT_GRASS_DISPLAY_DISTANCE);
         setGrassHeight(DEFAULT_GRASS_HEIGHT);
         setGrassLength(DEFAULT_GRASS_LENGTH);
         setGrassQuantity(DEFAULT_GRASS_QUANTITY);

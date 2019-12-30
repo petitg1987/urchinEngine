@@ -13,7 +13,10 @@ namespace urchin
 		filename(std::move(filename)),
 		volume(1.0f)
 	{
-	    assert(alcGetCurrentContext()); //No OpenAL context found: check that a sound manager has been created
+	    if(!alcGetCurrentContext())
+        {
+	        throw std::runtime_error("No OpenAL context found: check that a sound manager has been created");
+        }
 
 		alGenSources(1, &sourceId);
 		alSourcef(sourceId, AL_GAIN, volume);

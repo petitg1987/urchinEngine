@@ -181,7 +181,7 @@ namespace urchin
 
 		if(!isInitialized)
 		{
-			throw std::runtime_error("Model displayer must be initialized before displayed.");
+			throw std::runtime_error("Model displayer must be initialized before display");
 		}
 
 		ShaderManager::instance()->bind(modelShader);

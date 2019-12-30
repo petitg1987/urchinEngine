@@ -153,9 +153,9 @@ namespace urchin
 	XmlParser *GUISkinService::getXmlSkin() const
 	{
 		if(!xmlSkin)
-		{
-			throw std::runtime_error("Skin for the GUI isn't initialized.");
-		}
+        {
+            throw std::runtime_error("GUI skin is not initialized");
+        }
 
 		return xmlSkin;
 	}

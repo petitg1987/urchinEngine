@@ -30,7 +30,10 @@ namespace urchin
 		jumping(false),
 		slopeInPercentage(0.0f)
 	{
-	    assert(physicsWorld!=nullptr);
+	    if(!physicsWorld)
+        {
+            throw std::runtime_error("Physics world cannot be null for character controller.");
+        }
 
 		ghostBody->setIsActive(true); //always active for get better reactivity
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ghostBody);

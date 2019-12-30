@@ -10,10 +10,7 @@ namespace urchin
             targetEdgeIndex(targetEdgeIndex)
     {
         assert(targetEdgeIndex <= 2);
-
-        #ifdef _DEBUG
-            assert(sourceEdgeJumpStartRange >= sourceEdgeJumpEndRange);
-        #endif
+        assert(sourceEdgeJumpStartRange >= sourceEdgeJumpEndRange);
     }
 
     float NavJumpConstraint::getSourceEdgeJumpStartRange() const

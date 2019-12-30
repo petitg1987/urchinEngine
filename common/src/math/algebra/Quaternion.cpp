@@ -149,8 +149,10 @@ namespace urchin
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T> &normalizedLookAt, const Vector3<T> &normalizedUp)
     {
-		assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
-		assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
+        #ifndef NDEBUG
+            assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
+		    assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
+        #endif
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;

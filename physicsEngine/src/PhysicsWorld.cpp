@@ -301,7 +301,10 @@ namespace urchin
 
 	const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const
 	{
-	    assert(collisionVisualizer!=nullptr);
+	    if(!collisionVisualizer)
+        {
+	        throw std::runtime_error("Impossible to get collision visualizer because not created.");
+        }
 
 		return collisionVisualizer;
 	}
