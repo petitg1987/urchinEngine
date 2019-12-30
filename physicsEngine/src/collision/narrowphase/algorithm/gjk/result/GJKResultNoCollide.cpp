@@ -13,11 +13,13 @@ namespace urchin
 	{
 		simplex.computeClosestPoints(closestPointA, closestPointB);
 
-		#ifdef _DEBUG //TODO add in log
-			const float closestPointsLength = closestPointA.vector(closestPointB).length();
-			const float subtractDistance = closestPointsLength - separatingDistance;
-			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
-		#endif
+		#ifdef _DEBUG
+            const float distanceDelta = closestPointA.vector(closestPointB).length() - separatingDistance;
+			if(!MathAlgorithm::isZero(distanceDelta, 0.01f))
+			{
+			    logSimplexData("Incoherent separating distance (" + std::to_string(separatingDistance) +") with simplex", simplex);
+			}
+        #endif
 	}
 
 	template<class T> bool GJKResultNoCollide<T>::isValidResult() const
@@ -58,6 +60,17 @@ namespace urchin
 	{
 		return closestPointB;
 	}
+
+    template<class T> void GJKResultNoCollide<T>::logInputData(const std::string &errorMessage, const Simplex<T> &simplex)
+    {
+        std::stringstream logStream;
+        logStream.precision(std::numeric_limits<T>::max_digits10);
+
+        logStream<<errorMessage<<std::endl;
+        logStream<<simplex;
+
+        Logger::logger().logError(logStream.str());
+    }
 
 	//explicit template
 	template class GJKResultNoCollide<float>;

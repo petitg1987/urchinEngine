@@ -129,9 +129,12 @@ namespace urchin
 		const Point3<T> contactPointB = closestTriangleData.getBarycentric(0) * supportPointsB[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsB[pointIndex2]
 				+ closestTriangleData.getBarycentric(2) * supportPointsB[pointIndex3];
 
-		#ifdef _DEBUG //TODO add in log
-			const T subtractDistance = contactPointA.vector(contactPointB).squareLength() - distanceToOrigin*distanceToOrigin;
-			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
+		#ifdef _DEBUG
+			const T distanceDelta = contactPointA.vector(contactPointB).length() - distanceToOrigin;
+			if(!MathAlgorithm::isZero(distanceDelta, 0.1f))
+			{
+			    logInputData("Incoherent EPA distances", convexObject1, convexObject2, gjkResult);
+			}
 		#endif
 
 		return AlgorithmResultAllocator::instance()->newEPAResultCollide<T>(contactPointA, contactPointB, normal, distanceToOrigin);
@@ -433,6 +436,20 @@ namespace urchin
 
 		return EPATriangleData<T>(distanceToOrigin, normal, closestPointToOrigin, barycentrics);
 	}
+
+    template<class T> void EPAAlgorithm<T>::logInputData(const std::string &errorMessage, const CollisionConvexObject3D &convexObject1,
+            const CollisionConvexObject3D &convexObject2, const GJKResult<T> &gjkResult) const
+    {
+        std::stringstream logStream;
+        logStream.precision(std::numeric_limits<T>::max_digits10);
+
+        logStream<<errorMessage<<std::endl;
+        logStream<<"Convex object 1"<<convexObject1.toString()<<std::endl;
+        logStream<<"Convex object 2"<<convexObject2.toString()<<std::endl;
+        logStream<<"Simplex"<<gjkResult.getSimplex()<<std::endl;
+
+        Logger::logger().logError(logStream.str());
+    }
 
 	//explicit template
 	template class EPAAlgorithm<float>;

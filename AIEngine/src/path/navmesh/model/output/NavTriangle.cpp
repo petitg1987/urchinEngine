@@ -78,7 +78,7 @@ namespace urchin
         #ifndef NDEBUG
             assert(edgeIndex <= 2);
             for(const auto &link : getLinks())
-            { //TODO should be a log
+            {
                 assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have 2 direct links on same edge
             }
         #endif
@@ -91,7 +91,7 @@ namespace urchin
         #ifndef NDEBUG
             assert(edgeIndex <= 2);
             for(const auto &link : getLinks())
-            { //TODO should be a log
+            {
                 assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have a direct links and jump link on same edge
             }
         #endif

@@ -15,7 +15,7 @@ namespace urchin
      * @param endJumpEdge End jump edge. Edge must be part of a polygon CCW oriented when looked from top
      */
     EdgeJumpResult EdgeJumpDetection::detectJump(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge) const
-    { //TODO handle collinear edges (jump of length 0)
+    {
         if(startJumpEdge.toLine().minDistance(endJumpEdge.toLine()) > jumpMaxLength)
         {
             return EdgeJumpResult::noEdgeJump();

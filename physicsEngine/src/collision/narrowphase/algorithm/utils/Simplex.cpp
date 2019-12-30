@@ -222,8 +222,25 @@ namespace urchin
 		simplexPoints[index].barycentric = barycentric;
 	}
 
+    template<class T> std::ostream& operator <<(std::ostream &stream, const Simplex<T> &simplex)
+    {
+        for(std::size_t i=0; i < simplex.getSize(); ++i)
+        {
+            stream << "Simplex point " << i << " details:" << std::endl;
+            stream << " - Point: " << simplex.getPoint(i) <<std::endl;
+            stream << " - Support point A: " << simplex.getSupportPointA(i) <<std::endl;
+            stream << " - Support point B: " << simplex.getSupportPointB(i) <<std::endl;
+            stream << " - Barycentric: " << simplex.getBarycentric(i) <<std::endl;
+        }
+        stream << "Closest point to origin: " << simplex.getClosestPointToOrigin();
+        return stream;
+    }
+
 	//explicit template
 	template class Simplex<float>;
+    template std::ostream& operator <<<float>(std::ostream &, const Simplex<float> &);
+
 	template class Simplex<double>;
+    template std::ostream& operator <<<double>(std::ostream &, const Simplex<double> &);
 
 }
