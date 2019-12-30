@@ -208,7 +208,7 @@ void MonotonePolygonTest::polygonTwoHoles1()
 }
 
 void MonotonePolygonTest::polygonTwoHoles2()
-{ //see polygonTwoHoles2.ggb
+{ //see monotonePolygonTwoHoles2.ggb
 	std::vector<Point2<float>> polygonPoints = {
 			Point2<float>(52.2733727, 28.6202717), Point2<float>(53.4479446, 26.9843941), Point2<float>(54.7769241, 28.4795456), Point2<float>(53.6023521, 30.1154232), //polygon points
 			Point2<float>(52.2792969, 28.6201172), Point2<float>(52.609375, 28.9912109), Point2<float>(52.4365234, 28.4033203), //hole 1 points
@@ -246,7 +246,7 @@ void MonotonePolygonTest::polygonTwoHoles2()
 }
 
 void MonotonePolygonTest::polygonTwoHoles3()
-{ //see polygonTwoHoles3.ggb
+{ //see monotonePolygonTwoHoles3.ggb
 	std::vector<Point2<float>> polygonPoints = {
 			//polygon points:
 			Point2<float>(70.5370255, 62.2370338), Point2<float>(-67.5370255, 62.2370338), Point2<float>(-67.5370255, -75.8370361), Point2<float>(70.5370255, -75.8370361),

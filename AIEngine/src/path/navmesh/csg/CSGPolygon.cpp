@@ -130,29 +130,53 @@ namespace urchin
 
         for(int i=0; i<(int)cwPoints.size(); i++)
         {
+            //exclude points too close (only neighbor points)
             int nextI = (i+1) % cwPoints.size();
             if(cwPoints[i].squareDistance(cwPoints[nextI]) <= mergePointsSquareDistance)
-            { //exclude points too close
-                cwPoints.erase(cwPoints.begin()+nextI);
+            {
+                cwPoints.erase(cwPoints.begin() + nextI);
                 i--;
                 continue;
             }
 
+            //exclude angles near to 180 and 0/360 degrees
             int previousI = (i==0) ? cwPoints.size()-1 : i-1;
             Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
             Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
             T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
             if(absDotProduct >= polygonMinDotProductThreshold)
-            { //exclude angles near to 180 and 0/360 degrees
-                cwPoints.erase(cwPoints.begin()+i);
+            {
+                cwPoints.erase(cwPoints.begin() + i);
                 i--;
                 continue;
             }
         }
 
-        if(cwPoints.size() > 2 && cwPoints[0].squareDistance(cwPoints.back()) <= mergePointsSquareDistance)
-        { //first point and last point are too close: remove last one
-            cwPoints.resize(cwPoints.size()-1);
+        //move or exclude points too close (not neighbor points)
+        for(int i=0; i<(int)cwPoints.size(); i++)
+        {
+            //Use j=i+3 because:
+            // cwPoints[i] and cwPoints[i+1] cannot be close points: they should be already erased by previous loop because they are close neighbor
+            // cwPoints[i] and cwPoints[i+2] cannot be close points: they should be already erased by previous loop because of the angle between cwPoints[i]-cwPoints[i+1]-cwPoints[i+2]
+            bool keepGoing = true;
+            for(int j=i+3; j<(int)cwPoints.size() && keepGoing; j++)
+            {
+                if(cwPoints[i].squareDistance(cwPoints[j]) <= mergePointsSquareDistance)
+                {
+                    int previousI = (i==0) ? cwPoints.size()-1 : i-1;
+                    Vector2<T> moveVector = cwPoints[i].vector(cwPoints[previousI]);
+                    T moveVectorLength = moveVector.length();
+                    if(moveVectorLength > 2 * polygonMergePointsDistanceThreshold)
+                    {
+                        cwPoints[i] = cwPoints[i].translate((moveVector / moveVectorLength) * polygonMergePointsDistanceThreshold);
+                    } else
+                    {
+                        cwPoints.erase(cwPoints.begin() + i);
+                        i--;
+                        keepGoing = false;
+                    }
+                }
+            }
         }
 
         if(cwPoints.size() < 3)
@@ -170,7 +194,7 @@ namespace urchin
 
     template<class T> bool CSGPolygon<T>::checkCwPoints() const
     {
-        if(cwPoints.size()>=3)
+        if(cwPoints.size() >= 3)
         {
             //assert no duplicate points
             for (std::size_t i = 0; i < cwPoints.size(); ++i)
@@ -184,7 +208,6 @@ namespace urchin
                 }
             }
 
-            //TODO improve check to be sure there is no cross lines
             //assert clockwise order
             double area = 0.0;
             for (std::size_t i = 0, prevI = cwPoints.size() - 1; i < cwPoints.size(); prevI=i++)
@@ -194,6 +217,31 @@ namespace urchin
             if(area < 0.0)
             {
                 return false;
+            }
+
+            //assert no lines intersection
+            if(cwPoints.size() < 20) //don't check big polygons for performance reason
+            {
+                for(unsigned int i=0; i<cwPoints.size(); ++i)
+                {
+                    unsigned int iNext = (i+1)%cwPoints.size();
+                    LineSegment2D<double> line1(cwPoints[i].template cast<double>(), cwPoints[iNext].template cast<double>());
+                    for(unsigned int j=0; j<cwPoints.size(); ++j)
+                    {
+                        unsigned int jNext = (j + 1) % cwPoints.size();
+                        if (i != j && iNext != j && i != jNext)
+                        {
+                            LineSegment2D<double> line2(cwPoints[j].template cast<double>(), cwPoints[jNext].template cast<double>());
+
+                            bool hasIntersection;
+                            line1.intersectPoint(line2, hasIntersection);
+                            if (hasIntersection)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
             }
         }
 

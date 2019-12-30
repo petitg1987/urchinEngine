@@ -85,6 +85,44 @@ void CSGPolygonTest::simplifyTwoUselessPoints()
     AssertHelper::assertPolygonFloatEquals(polygon.getCwPoints(), {Point2<float>(0.0, 0.0), Point2<float>(1.0, 1.0), Point2<float>(1.0, 0.0)});
 }
 
+void CSGPolygonTest::simplifyCorridor()
+{ //see csgPolygonSimplifyCorridor.ggb
+    CSGPolygon<float> polygon("p1", {
+        Point2<float>(3.48144531, -8.87060547),
+        Point2<float>(2.90893555, -7.67126465), //point 2 is very close to point 5
+        Point2<float>(1.94140625, -8.80053711),
+        Point2<float>(2.25842285, -7.203125),
+        Point2<float>(2.90893555, -7.67102051), //point 5
+        Point2<float>(2.55004883, -6.91918945),
+        Point2<float>(4.14001465, -6.14477539)});
+
+    polygon.simplify(1.0, 0.01);
+
+    AssertHelper::assertUnsignedInt(polygon.getCwPoints().size(), 7);
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[1], Point2<float>(2.91324353, -7.68028927), 0.0001);
+}
+
+void CSGPolygonTest::simplifyCorridorWithClosePoints()
+{ //see csgPolygonSimplifyCorridorWithClosePoints.ggb
+    float distanceThreshold = 0.01f;
+    CSGPolygon<float> polygon("p1", {
+            Point2<float>(3.48144531, -8.87060547),
+            Point2<float>(2.90893555, -7.67126465 - (distanceThreshold + 0.005f)), //point 1 is close to point 2 but not enough to be directly eliminated by the distance threshold
+            Point2<float>(2.90893555, -7.67126465), //point 2 is very close to point 5
+            Point2<float>(1.94140625, -8.80053711),
+            Point2<float>(2.25842285, -7.203125),
+            Point2<float>(2.90893555, -7.67102051), //point 5
+            Point2<float>(2.55004883, -6.91918945),
+            Point2<float>(4.14001465, -6.14477539)});
+
+    polygon.simplify(1.0, distanceThreshold);
+
+    AssertHelper::assertUnsignedInt(polygon.getCwPoints().size(), 7);
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[0], Point2<float>(3.48144531, -8.87060547), 0.0001);
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[1], Point2<float>(2.90893555, -7.67126465 - (distanceThreshold + 0.005f)), 0.0001);
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[2], Point2<float>(1.94140625, -8.80053711), 0.0001);
+}
+
 CppUnit::Test *CSGPolygonTest::suite()
 {
     auto *suite = new CppUnit::TestSuite("CSGPolygonTest");
@@ -97,6 +135,9 @@ CppUnit::Test *CSGPolygonTest::suite()
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyFlatTriangle2", &CSGPolygonTest::simplifyFlatTriangle2));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyUselessPoint", &CSGPolygonTest::simplifyUselessPoint));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyTwoUselessPoints", &CSGPolygonTest::simplifyTwoUselessPoints));
+
+    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyCorridor", &CSGPolygonTest::simplifyCorridor));
+    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyCorridorWithClosePoints", &CSGPolygonTest::simplifyCorridorWithClosePoints));
 
     return suite;
 }

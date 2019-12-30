@@ -183,7 +183,7 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge3()
 }
 
 void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4()
-{ //see twoPolygonsUnionAlmostSameEdge4.ggb
+{ //see polygonsUnionAlmostSameEdge4.ggb
     std::vector<Point2<long long>> polyPoints1 = {Point2<long long>(-198, -6084), Point2<long long>(-214, -4811),
 												  Point2<long long>(148, -4806), Point2<long long>(148, -5728)};
     std::vector<Point2<long long>> polyPoints2 = {Point2<long long>(-199, -6084), Point2<long long>(-214, -4811), Point2<long long>(-203, -4811),
@@ -199,7 +199,7 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge4()
 }
 
 void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5()
-{ //see twoPolygonsUnionAlmostSameEdge5.ggb
+{ //see polygonsUnionAlmostSameEdge5.ggb
 	std::vector<Point2<long long>> polyPoints1 = {Point2<long long>(829, -2960), Point2<long long>(1029, -2872), Point2<long long>(882, -3304)};
 	std::vector<Point2<long long>> polyPoints2 = {Point2<long long>(829, -2961), Point2<long long>(2379, -2275),
 												  Point2<long long>(1994, -3397), Point2<long long>(896, -3397)};
@@ -213,7 +213,7 @@ void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge5()
 }
 
 void PolygonsUnionTest::twoPolygonsUnionAlmostSameEdge6()
-{ //see twoPolygonsUnionAlmostSameEdge6.ggb
+{ //see polygonsUnionAlmostSameEdge6.ggb
 	std::vector<Point2<float>> polyPoints1 = {Point2<float>(-2.56617975, -1.58268416), Point2<float>(2.56617975, -1.58268416),
 											  Point2<float>(2.56617975, -3.21731615), Point2<float>(-2.56617975, -3.21731615)};
 	std::vector<Point2<float>> polyPoints2 = {Point2<float>(55.3621445, -75.836937), Point2<float>(42.3322601, -75.836937),
@@ -347,7 +347,7 @@ void PolygonsUnionTest::twoAlmostIdenticalSquares3()
 }
 
 void PolygonsUnionTest::twoAlmostIdenticalTrapeze()
-{ //see twoAlmostIdenticalTrapeze.ggb
+{ //see polygonsUnionAlmostIdenticalTrapeze.ggb
 	std::vector<Point2<long long>> polyPoints1 = {Point2<long long>(748, -4979), Point2<long long>(922, -5010),
 												  Point2<long long>(922, -5786), Point2<long long>(541, -5786)};
 	std::vector<Point2<long long>> polyPoints2 = {Point2<long long>(747, -4979), Point2<long long>(973, -5019),
