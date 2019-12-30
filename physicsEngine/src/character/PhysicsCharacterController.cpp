@@ -30,9 +30,7 @@ namespace urchin
 		jumping(false),
 		slopeInPercentage(0.0f)
 	{
-		#ifdef _DEBUG
-			assert(physicsWorld!=nullptr);
-        #endif
+	    assert(physicsWorld!=nullptr);
 
 		ghostBody->setIsActive(true); //always active for get better reactivity
         physicsWorld->getCollisionWorld()->getBroadPhaseManager()->addBodyAsync(ghostBody);

@@ -165,9 +165,7 @@ namespace urchin
 	 */
 	void AbstractWorkBody::setIsActive(bool bIsActive)
 	{
-        #ifdef _DEBUG
-	        assert(!(bIsActive && bIsStatic)); //an active body cannot be static
-        #endif
+	    assert(!(bIsActive && bIsStatic)); //an active body cannot be static
 
 		this->bIsActive = bIsActive;
 	}

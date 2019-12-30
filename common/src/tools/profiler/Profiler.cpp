@@ -42,9 +42,7 @@ namespace urchin
     {
         if(isEnable)
         {
-            #ifdef _DEBUG
-                assert(nodeName.length() <= 15); //ensure to use "small string optimization"
-            #endif
+            assert(nodeName.length() <= 15); //ensure to use "small string optimization"
 
             if (currentNode->getName() == nodeName)
             {

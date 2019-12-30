@@ -10,9 +10,7 @@ namespace urchin
 	template<class T> Line2D<T>::Line2D(const Point2<T> &a,  const Point2<T> &b) :
 		a(a), b(b)
 	{
-		#ifdef _DEBUG
-			assert(a.X!=b.X || a.Y!=b.Y);
-		#endif
+		assert(a.X!=b.X || a.Y!=b.Y);
 	}
 
 	template<class T> const Point2<T> &Line2D<T>::getA() const

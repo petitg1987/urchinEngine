@@ -31,9 +31,7 @@ namespace urchin
  	 */
 	AbstractWorkBody *OverlappingPair::getBody(unsigned int index) const
 	{
-		#ifdef _DEBUG
-			assert(index==0 || index==1);
-		#endif
+	    assert(index==0 || index==1);
 
 		return index==0 ? body1 : body2;
 	}

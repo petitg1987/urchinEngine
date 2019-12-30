@@ -18,12 +18,7 @@ namespace urchin
 
 	void TextureFilter::initialize()
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Texture filter is already initialized.");
-			}
-		#endif
+        assert(!isInitialized);
 
 		initializeDisplay();
 		initializeTexture();
@@ -166,12 +161,7 @@ namespace urchin
 	 */
 	void TextureFilter::applyOn(unsigned int sourceTextureId, unsigned int layersToUpdate) const
 	{
-		#ifdef _DEBUG
-			if(!isInitialized)
-			{
-				throw std::runtime_error("Texture filter must be initialized before display.");
-			}
-		#endif
+        assert(isInitialized);
 
 		ShaderManager::instance()->bind(textureFilterShader);
 

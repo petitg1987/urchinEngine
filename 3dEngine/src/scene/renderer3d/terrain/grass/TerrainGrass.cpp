@@ -431,9 +431,7 @@ namespace urchin
         {
             ScopeProfiler profiler("3d", "grassDisplay");
 
-            #ifdef _DEBUG
-                assert(grassDisplayDistance!=0.0f);
-            #endif
+            assert(grassDisplayDistance!=0.0f);
 
             ShaderManager::instance()->bind(terrainGrassShader);
 

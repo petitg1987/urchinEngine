@@ -8,9 +8,7 @@ namespace urchin
 	template<class T> Line3D<T>::Line3D(const Point3<T> &a, const Point3<T> &b) :
 		a(a), b(b)
 	{
-		#ifdef _DEBUG
-			assert(a.X!=b.X || a.Y!=b.Y || a.Z!=b.Z);
-		#endif
+		assert(a.X!=b.X || a.Y!=b.Y || a.Z!=b.Z);
 	}
 
 	template<class T> const Point3<T> &Line3D<T>::getA() const

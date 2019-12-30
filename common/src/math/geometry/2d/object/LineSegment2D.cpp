@@ -152,9 +152,7 @@ namespace urchin
                     std::swap(t0, t1);
                 }
 
-                #ifdef _DEBUG
-                    assert(t0 <= t1);
-                #endif
+                assert(t0 <= t1);
 
                 if(t0>=0.0 && t0<=1.0 && t1>=1.0)
                 { //collinear with intersection

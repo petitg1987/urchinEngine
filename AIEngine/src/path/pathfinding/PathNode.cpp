@@ -40,10 +40,8 @@ namespace urchin
 
     void PathNode::setPreviousNode(const std::shared_ptr<PathNode> &previousNode, const std::shared_ptr<NavLink> &navLink)
     {
-        #ifdef _DEBUG
-            assert(previousNode != nullptr);
-            assert(navLink != nullptr);
-        #endif
+        assert(previousNode != nullptr);
+        assert(navLink != nullptr);
 
         this->previousNode = previousNode;
         this->navLink = navLink;
@@ -59,10 +57,8 @@ namespace urchin
      */
     PathNodeEdgesLink PathNode::computePathNodeEdgesLink() const
     {
-        #ifdef _DEBUG
-            assert(previousNode != nullptr);
-            assert(navLink != nullptr);
-        #endif
+        assert(previousNode != nullptr);
+        assert(navLink != nullptr);
 
         PathNodeEdgesLink pathNodeEdgesLink;
 

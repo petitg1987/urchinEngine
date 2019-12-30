@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 set(OpenGL_GL_PREFERENCE "GLVND")
 project(urchinEngine)
 
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-    add_definitions(-D_DEBUG)
+if (CMAKE_BUILD_TYPE MATCHES "Release")
+    add_definitions(-DNDEBUG) #disable assert
 endif()
 
 set(CMAKE_CXX_STANDARD 17)

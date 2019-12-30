@@ -67,10 +67,8 @@ namespace urchin
 
         if(solution.Childs.size()==1)
         {
-            #ifdef _DEBUG
-                assert(!solution.Childs[0]->IsOpen());
-                assert(!solution.Childs[0]->IsHole());
-            #endif
+            assert(!solution.Childs[0]->IsOpen());
+            assert(!solution.Childs[0]->IsHole());
 
             std::string unionName = "{" + polygon1.getName() + "} ∪ {" + polygon2.getName() + "}";
             twoPolygonUnions.emplace_back(CSGPolygonPath(solution.Childs[0]->Contour, unionName));

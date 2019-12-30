@@ -19,11 +19,9 @@ namespace urchin
 	template<class T> BoxShape<T>::BoxShape(const Vector3<T> &halfSizes) :
 			halfSizes(halfSizes)
 	{
-		#ifdef _DEBUG
-			assert(halfSizes.X >= 0.0);
-			assert(halfSizes.Y >= 0.0);
-			assert(halfSizes.Z >= 0.0);
-		#endif
+		assert(halfSizes.X >= 0.0);
+		assert(halfSizes.Y >= 0.0);
+		assert(halfSizes.Z >= 0.0);
 	}
 
 	template<class T> T BoxShape<T>::getHalfSize(unsigned int index) const

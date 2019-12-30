@@ -209,9 +209,7 @@ namespace urchin
             }, beginI, endI));
         }
         std::for_each(threadsNormalTriangle.begin(), threadsNormalTriangle.end(), [](std::thread& x){x.join();});
-        #ifdef _DEBUG
-            assert(totalTriangles == normalTriangles.size());
-        #endif
+        assert(totalTriangles == normalTriangles.size());
 
         //2. compute normal of vertex
         normals.resize(computeNumberNormals());

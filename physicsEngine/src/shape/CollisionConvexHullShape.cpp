@@ -138,9 +138,7 @@ namespace urchin
 
 		if(!convexHullShapeReduced)
 		{ //impossible to compute convex hull without margin => use convex hull with margin and set a margin of 0.0
-			#ifdef _DEBUG
-            	assert(getInnerMargin()==0.0f);
-    		#endif
+            assert(getInnerMargin()==0.0f);
             const std::shared_ptr<ConvexHull3D<float>> &convexHullWithoutMargin(convexHullWithMargin);
 
             auto *collisionObjectPtr = new (memPtr) CollisionConvexHullObject(getInnerMargin(), convexHullWithMargin, convexHullWithoutMargin);

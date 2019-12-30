@@ -16,9 +16,7 @@ namespace urchin
 	template<class T> std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> EPAAlgorithm<T>::processEPA(const CollisionConvexObject3D &convexObject1, const CollisionConvexObject3D &convexObject2,
 			const GJKResult<T> &gjkResult) const
 	{
-		#ifdef _DEBUG
-			assert(gjkResult.isCollide());
-        #endif
+	    assert(gjkResult.isCollide());
 
 		//handle sub triangle cases
 		std::unique_ptr<EPAResult<T>, AlgorithmResultDeleter> subTriangleResult = handleSubTriangle(convexObject1, convexObject2);

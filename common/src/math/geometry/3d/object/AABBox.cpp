@@ -19,11 +19,9 @@ namespace urchin
 		min(min),
 		max(max)
 	{
-		#ifdef _DEBUG
-			assert(min.X <= max.X);
-			assert(min.Y <= max.Y);
-			assert(min.Z <= max.Z);
-    	#endif
+		assert(min.X <= max.X);
+		assert(min.Y <= max.Y);
+		assert(min.Z <= max.Z);
 	}
 
 	template<class T> AABBox<T>::AABBox(const Point3<T> &min, const Vector3<T> &diagonal) :
@@ -31,11 +29,10 @@ namespace urchin
 		min(min),
 		max(min.translate(diagonal))
 	{
-		#ifdef _DEBUG
-			assert(min.X <= max.X);
-			assert(min.Y <= max.Y);
-			assert(min.Z <= max.Z);
-		#endif
+
+		assert(min.X <= max.X);
+		assert(min.Y <= max.Y);
+		assert(min.Z <= max.Z);
 	}
 
 	template<class T> AABBox<T>::AABBox(const std::vector<Point3<T>> &points) :
@@ -325,11 +322,9 @@ namespace urchin
 	template<class T> AABBox<T> operator *(const Matrix4<T> &m, const AABBox<T> &aabb)
 	{
 		//projection matrix not accepted
-		#ifdef _DEBUG
-			assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
-			assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
-			assert(fabs(m(3,2)) < std::numeric_limits<T>::epsilon());
-		#endif
+		assert(fabs(m(3,0)) < std::numeric_limits<T>::epsilon());
+		assert(fabs(m(3,1)) < std::numeric_limits<T>::epsilon());
+		assert(fabs(m(3,2)) < std::numeric_limits<T>::epsilon());
 
 		Point3<T> xa = Point3<T>(m(0,0), m(1,0), m(2,0)) * aabb.getMin().X;
 		Point3<T> xb = Point3<T>(m(0,0), m(1,0), m(2,0)) * aabb.getMax().X;

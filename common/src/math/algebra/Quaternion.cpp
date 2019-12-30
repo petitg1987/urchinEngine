@@ -149,10 +149,8 @@ namespace urchin
 
     template<class T> Quaternion<T>::Quaternion(const Vector3<T> &normalizedLookAt, const Vector3<T> &normalizedUp)
     {
-		#ifdef _DEBUG
-			assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
-			assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
-        #endif
+		assert(MathAlgorithm::isOne(normalizedLookAt.length(), 0.001));
+		assert(MathAlgorithm::isOne(normalizedUp.length(), 0.001));
 
         Vector3<T> right = normalizedUp.crossProduct(normalizedLookAt);
         T det = right.X + normalizedUp.Y + normalizedLookAt.Z;
@@ -259,7 +257,7 @@ namespace urchin
 	template<class T> Point3<T> Quaternion<T>::rotatePoint(const Point3<T> &point) const
 	{
 		//Rotate point only works with normalized quaternion
-		#ifdef _DEBUG
+        #ifndef NDEBUG
 			const T normValue = norm();
 			assert(normValue >= (T)0.999);
 			assert(normValue <= (T)1.001);
@@ -296,9 +294,8 @@ namespace urchin
             qW = -qW;
 		}
 
-        #ifdef _DEBUG
-		    assert(cosOmega < 1.1); //we should have two unit quaternions, so dot should be <= 1.0
-        #endif
+        //we should have two unit quaternions, so dot should be <= 1.0
+		assert(cosOmega < 1.1);
 
 		//computes interpolation fraction, checking for quaternions almost exactly the same
 		T k0, k1;

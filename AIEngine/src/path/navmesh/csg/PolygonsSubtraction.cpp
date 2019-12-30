@@ -45,9 +45,7 @@ namespace urchin
                 subtractedPolygons.emplace_back(CSGPolygonPath(mainSolution->Contour, subtractionName).template toCSGPolygon<T>());
             } else
             {
-                #ifdef _DEBUG
-                    assert(mainSolution->Childs[0]->IsHole());
-                #endif
+                assert(mainSolution->Childs[0]->IsHole());
 
                 subtrahendInside = true;
                 subtractedPolygons.emplace_back(minuendPolygon);

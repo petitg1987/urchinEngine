@@ -54,7 +54,7 @@ namespace urchin
 			fillAndPushChunk(task, i);
 		}
 
-		#ifdef _DEBUG
+        #ifndef NDEBUG
 			assert(!isTaskExist(sound));
 		#endif
 

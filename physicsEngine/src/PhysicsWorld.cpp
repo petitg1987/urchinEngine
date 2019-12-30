@@ -301,9 +301,7 @@ namespace urchin
 
 	const CollisionVisualizer *PhysicsWorld::getCollisionVisualizer() const
 	{
-        #ifdef _DEBUG
-	        assert(collisionVisualizer!=nullptr);
-        #endif
+	    assert(collisionVisualizer!=nullptr);
 
 		return collisionVisualizer;
 	}

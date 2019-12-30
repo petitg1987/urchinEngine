@@ -9,8 +9,9 @@ namespace urchin
             sourceEdgeJumpEndRange(sourceEdgeJumpEndRange),
             targetEdgeIndex(targetEdgeIndex)
     {
+        assert(targetEdgeIndex <= 2);
+
         #ifdef _DEBUG
-            assert(targetEdgeIndex <= 2);
             assert(sourceEdgeJumpStartRange >= sourceEdgeJumpEndRange);
         #endif
     }

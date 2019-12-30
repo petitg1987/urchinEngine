@@ -83,9 +83,7 @@ template<class TOctreeable> const std::vector<TOctreeable *> &Octree<TOctreeable
 
 template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable *octreeable, bool addRef)
 {
-    #ifdef _DEBUG
-        assert(bIsLeaf);
-    #endif
+    assert(bIsLeaf);
 
     octreeables.push_back(octreeable);
     if(addRef)
@@ -96,9 +94,7 @@ template<class TOctreeable> void Octree<TOctreeable>::addOctreeable(TOctreeable 
 
 template<class TOctreeable> void Octree<TOctreeable>::removeOctreeable(TOctreeable *octreeable, bool removeRef)
 {
-    #ifdef _DEBUG
-        assert(bIsLeaf);
-    #endif
+    assert(bIsLeaf);
 
     auto it = std::find(octreeables.begin(), octreeables.end(), octreeable);
     if(it!=octreeables.end())

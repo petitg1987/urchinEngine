@@ -19,7 +19,7 @@ namespace urchin
 
     const std::vector<std::shared_ptr<PathPortal>> &FunnelAlgorithm::computePivotPoints()
     {
-        #ifdef _DEBUG
+        #ifndef NDEBUG
             assert(portals.size() >= 2);
             assert(portals[0]->getPortal().getA() == portals[0]->getPortal().getB()); //degenerated start portal
             assert(portals.back()->getPortal().getA() == portals.back()->getPortal().getB()); //degenerated end portal

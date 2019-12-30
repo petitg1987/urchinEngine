@@ -13,9 +13,7 @@ namespace urchin
 
 	void RayTestResult::addResults(ccd_set &rayTestResults)
 	{
-		#ifdef _DEBUG
-			assert(this->rayTestResults.empty());
-    	#endif
+	    assert(this->rayTestResults.empty());
 
         this->rayTestResults.merge(rayTestResults);
 
@@ -48,12 +46,7 @@ namespace urchin
 			throw std::runtime_error("Ray test callback result is not ready.");
 		}
 
-		#ifdef _DEBUG
-			if(rayTestResults.empty())
-			{
-				throw std::runtime_error("Impossible to return nearest result: there is no result.");
-			}
-		#endif
+        assert(!rayTestResults.empty());
 
 		return *rayTestResults.begin();
 	}

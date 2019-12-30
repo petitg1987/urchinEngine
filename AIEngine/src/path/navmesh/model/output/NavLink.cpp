@@ -26,9 +26,7 @@ namespace urchin
 
     std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint)
     {
-        #ifdef _DEBUG
-            assert(jumpConstraint != nullptr);
-        #endif
+        assert(jumpConstraint != nullptr);
 
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::JUMP, sourceEdgeIndex, targetTriangle, jumpConstraint));
     }
@@ -51,18 +49,14 @@ namespace urchin
 
     std::shared_ptr<NavTriangle> NavLink::getTargetTriangle() const
     {
-        #ifdef _DEBUG
-            assert(!targetTriangle.expired());
-        #endif
+        assert(!targetTriangle.expired());
 
         return targetTriangle.lock();
     }
 
     const NavJumpConstraint *NavLink::getJumpConstraint() const
     {
-        #ifdef _DEBUG
-            assert(linkType == NavLinkType::JUMP);
-        #endif
+        assert(linkType == NavLinkType::JUMP);
 
         return jumpConstraint;
     }

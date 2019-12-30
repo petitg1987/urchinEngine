@@ -111,10 +111,8 @@ namespace urchin
 
     std::vector<unsigned int> TerrainObstacleService::retrieveNeighbors(unsigned int squareIndex) const
     {
-        #ifdef _DEBUG
-            assert((squareIndex + 1) % xLength != 0); //not an extreme right point
-            assert(squareIndex < (xLength * (zLength - 1))); //not an extreme near point
-        #endif
+        assert((squareIndex + 1) % xLength != 0); //not an extreme right point
+        assert(squareIndex < (xLength * (zLength - 1))); //not an extreme near point
 
         std::vector<unsigned int> neighbors;
         neighbors.reserve(4);

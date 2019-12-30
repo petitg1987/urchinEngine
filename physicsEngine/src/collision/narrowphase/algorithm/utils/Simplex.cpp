@@ -18,9 +18,7 @@ namespace urchin
 	 */
 	template<class T> void Simplex<T>::addPoint(const Point3<T> &supportPointA, const Point3<T> &supportPointB)
 	{
-        #ifdef _DEBUG
-	        assert(simplexPointsSize < 4);
-        #endif
+	    assert(simplexPointsSize < 4);
 
         if(simplexPointsSize < 4)
         {
@@ -210,9 +208,7 @@ namespace urchin
 
 	template<class T> void Simplex<T>::removePoint(std::size_t index)
 	{
-		#ifdef _DEBUG
-			assert(simplexPointsSize > 0);
-        #endif
+		assert(simplexPointsSize > 0);
 
 		for (long i = index; i < simplexPointsSize - 1; ++i)
 		{

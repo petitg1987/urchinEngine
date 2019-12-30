@@ -38,9 +38,7 @@ namespace urchin
 	 */
 	float SmoothStopAction::computeChangeVolumePercentage()
 	{
-		#ifdef _DEBUG
-			assert(bIsSmoothStopStarted);
-		#endif
+	    assert(bIsSmoothStopStarted);
 
 		if(soundBehavior.getStopBehavior()!=SoundBehavior::SMOOTH_STOP)
 		{
@@ -70,9 +68,7 @@ namespace urchin
 	 */
 	bool SmoothStopAction::isSmoothStopProcessing() const
 	{
-		#ifdef _DEBUG
-			assert(bIsSmoothStopStarted);
-		#endif
+	    assert(bIsSmoothStopStarted);
 
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		int timeInterval = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startingTime).count();

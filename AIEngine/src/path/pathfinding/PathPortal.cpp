@@ -32,9 +32,7 @@ namespace urchin
      */
     const Point3<float> &PathPortal::getTransitionPoint() const
     {
-        #ifdef _DEBUG
-            assert(bHasTransitionPoint);
-        #endif
+        assert(bHasTransitionPoint);
 
         return transitionPoint;
     }

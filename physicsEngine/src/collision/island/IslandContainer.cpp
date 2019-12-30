@@ -34,9 +34,7 @@ namespace urchin
 
 	void IslandContainer::mergeIsland(IslandElement *element1, IslandElement *element2)
 	{
-		#ifdef _DEBUG
-			assert(!containerSorted);
-		#endif
+	    assert(!containerSorted);
 
 		unsigned int islandId1 = findIslandId(element1->getIslandElementId());
 		unsigned int islandId2 = findIslandId(element2->getIslandElementId());

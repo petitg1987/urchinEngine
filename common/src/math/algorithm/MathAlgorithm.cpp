@@ -8,9 +8,7 @@ namespace urchin
 
 	template<class T> T MathAlgorithm::clamp(T value, T minValue, T maxValue)
 	{
-		#ifdef _DEBUG
-			assert((maxValue + std::numeric_limits<T>::epsilon()) > minValue);
-		#endif
+	    assert((maxValue + std::numeric_limits<T>::epsilon()) > minValue);
 
 		return std::max(minValue, std::min(maxValue, value));
 	}
@@ -64,9 +62,7 @@ namespace urchin
 	 */
 	template<class T> T MathAlgorithm::roundDivision(T dividend, T divisor)
 	{ //see https://stackoverflow.com/questions/17005364/dividing-two-integers-and-rounding-up-the-result-without-using-floating-point
-		#ifdef _DEBUG
-			assert(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T));
-    	#endif
+	    assert(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T));
 
 		return (dividend + (divisor / 2)) / divisor;
 	}

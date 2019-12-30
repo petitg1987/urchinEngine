@@ -55,12 +55,7 @@ namespace urchin
 
 	void TextureDisplayer::setPosition(TextureDisplayer::CoordinateX coordinateX, TextureDisplayer::CoordinateY coordinateY)
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Impossible to change position of a texture displayer initialized.");
-			}
-		#endif
+        assert(!isInitialized); //no update allowed after initialization
 
 		this->coordinateX = coordinateX;
 		this->coordinateY = coordinateY;
@@ -74,12 +69,7 @@ namespace urchin
 	 */
 	void TextureDisplayer::setSize(float minX, float maxX, float minY, float maxY)
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Impossible to change size of a texture displayer initialized.");
-			}
-		#endif
+        assert(!isInitialized); //no update allowed after initialization
 
 		userMinX = minX;
 		userMaxX = maxX;
@@ -89,24 +79,14 @@ namespace urchin
 
 	void TextureDisplayer::setFullScreen(bool fullScreen)
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Impossible to change full screen flag of a texture displayer initialized.");
-			}
-		#endif
+        assert(!isInitialized); //no update allowed after initialization
 
 		this->fullScreen = fullScreen;
 	}
 
 	void TextureDisplayer::initialize(unsigned int sceneWidth, unsigned int sceneHeight, float nearPlane, float farPlane)
 	{
-		#ifdef _DEBUG
-			if(isInitialized)
-			{
-				throw std::runtime_error("Display texture is already initialized.");
-			}
-		#endif
+        assert(!isInitialized); //no update allowed after initialization
 
 		initializeShader(nearPlane, farPlane);
 
@@ -212,12 +192,7 @@ namespace urchin
 
 	void TextureDisplayer::display()
 	{
-		#ifdef _DEBUG
-			if(!isInitialized)
-			{
-				throw std::runtime_error("Display texture must be initialized before display.");
-			}
-		#endif
+        assert(isInitialized);
 
 		ShaderManager::instance()->bind(displayTextureShader);
 

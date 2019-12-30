@@ -12,9 +12,7 @@ namespace urchin
     NavTriangle::NavTriangle(std::size_t index1, std::size_t index2, std::size_t index3) :
             indices()
     {
-        #ifdef _DEBUG
-            assert(index1!=index2 && index1!=index3 && index2!=index3);
-        #endif
+        assert(index1!=index2 && index1!=index3 && index2!=index3);
 
         this->indices[0] = index1;
         this->indices[1] = index2;
@@ -45,18 +43,14 @@ namespace urchin
 
     std::shared_ptr<NavPolygon> NavTriangle::getNavPolygon() const
     {
-        #ifdef _DEBUG
-            assert(!navPolygon.expired());
-        #endif
+        assert(!navPolygon.expired());
 
         return navPolygon.lock();
     }
 
     const Point3<float> &NavTriangle::getCenterPoint() const
     {
-        #ifdef _DEBUG
-            assert(getNavPolygon() != nullptr); //center point not computed until triangle is not linked to polygon
-        #endif
+        assert(getNavPolygon() != nullptr); //center point not computed until triangle is not linked to polygon
 
         return centerPoint;
     }
@@ -74,9 +68,7 @@ namespace urchin
      */
     std::size_t NavTriangle::getIndex(std::size_t index) const
     {
-        #ifdef _DEBUG
-            assert(index <= 2);
-        #endif
+        assert(index <= 2);
 
         return indices[index];
     }
@@ -152,9 +144,7 @@ namespace urchin
 
     LineSegment3D<float> NavTriangle::computeEdge(std::size_t edgeStartIndex) const
     {
-        #ifdef _DEBUG
-            assert(edgeStartIndex <= 2);
-        #endif
+        assert(edgeStartIndex <= 2);
 
         std::size_t edgeEndIndex = (edgeStartIndex + 1) % 3;
         return LineSegment3D<float>(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));

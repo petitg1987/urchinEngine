@@ -289,13 +289,11 @@ namespace urchin
 
     void PathfindingAStar::addMissingTransitionPoints(std::vector<std::shared_ptr<PathPortal>> &portals) const
     {
-        #ifdef _DEBUG
-            if(!portals.empty())
-            {
-                assert(portals[0]->hasTransitionPoint());
-                assert(portals.back()->hasTransitionPoint());
-            }
-        #endif
+        if(!portals.empty())
+        {
+            assert(portals[0]->hasTransitionPoint());
+            assert(portals.back()->hasTransitionPoint());
+        }
 
         Point3<float> previousTransitionPoint = portals[0]->getTransitionPoint();
         for(std::size_t i=0; i<portals.size(); ++i)
@@ -304,9 +302,7 @@ namespace urchin
             {
                 if (portals[i]->isJumpOriginPortal())
                 {
-                    #ifdef _DEBUG
-                        assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
-                    #endif
+                    assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
 
                     Point3<float> jumpStartPoint = computeTransitionPoint(portals[i], previousTransitionPoint);
                     portals[i]->setTransitionPoint(jumpStartPoint);

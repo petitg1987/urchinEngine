@@ -20,9 +20,7 @@ namespace urchin
 	 */
 	AbstractWorkBody *ManifoldResult::getBody(unsigned int index) const
 	{
-		#ifdef _DEBUG
-			assert(index==0 || index==1);
-		#endif
+	    assert(index==0 || index==1);
 
 		return index==0 ? body1 : body2;
 	}
@@ -84,12 +82,7 @@ namespace urchin
 	void ManifoldResult::addContactPoint(const Vector3<float> &normalFromObject2, const Point3<float> &pointOnObject1, const Point3<float> &pointOnObject2,
 			const Point3<float> &localPointOnObject1, const Point3<float> &localPointOnObject2, float depth, bool isPredictive)
 	{
-		#ifdef _DEBUG
-			if(!isPredictive)
-			{
-				assert(depth <= contactBreakingThreshold);
-			}
-		#endif
+        assert(isPredictive || depth <= contactBreakingThreshold);
 
 		//1. if similar point exist in manifold result: replace it
 		int nearestPointIndex = getNearestPointIndex(localPointOnObject2);
