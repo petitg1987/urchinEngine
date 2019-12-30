@@ -2,6 +2,7 @@
 #define URCHINENGINE_FILELOGGER_H
 
 #include <string>
+#include <limits>
 
 #include "tools/logger/Logger.h"
 
@@ -15,7 +16,7 @@ namespace urchin
 
 			const std::string &getFilename() const;
 
-			std::string readAll() const;
+			std::string readAll(unsigned long maxReadSize = std::numeric_limits<unsigned long>::max()) const;
 			void clearLogs();
 
 		private:

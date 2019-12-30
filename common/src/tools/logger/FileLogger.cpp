@@ -19,16 +19,17 @@ namespace urchin
 		return filename;
 	}
 
-	std::string FileLogger::readAll() const
+	std::string FileLogger::readAll(unsigned long maxReadSize) const
 	{
 		std::ifstream ifs(filename.c_str(), std::ios::in | std::ios::binary | std::ios::ate);
 		auto fileSize = static_cast<unsigned long>(ifs.tellg());
+		auto readSize = std::min(fileSize, maxReadSize);
 		ifs.seekg(0, std::ios::beg);
 
-		std::vector<char> bytes(fileSize);
-		ifs.read(bytes.data(), fileSize);
+		std::vector<char> bytes(readSize);
+		ifs.read(bytes.data(), readSize);
 
-		return std::string(bytes.data(), fileSize);
+		return std::string(bytes.data(), readSize);
 	}
 
 	void FileLogger::clearLogs()
