@@ -114,11 +114,8 @@ namespace urchin
 
 	void AbstractBody::updateTo(AbstractWorkBody *workBody)
 	{
-		#ifdef _DEBUG
-			if(bodyMutex.try_lock())
-			{
-				throw std::runtime_error("Body mutex should be locked before call this method.");
-			}
+		#ifndef NDEBUG
+	        assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
 		#endif
 
 		workBody->setRestitution(restitution);
@@ -129,12 +126,9 @@ namespace urchin
 
 	bool AbstractBody::applyFrom(const AbstractWorkBody *workBody)
 	{
-		#ifdef _DEBUG
-			if(bodyMutex.try_lock())
-			{
-				throw std::runtime_error("Body mutex should be locked before call this method.");
-			}
-		#endif
+        #ifndef NDEBUG
+            assert(!bodyMutex.try_lock()); //body mutex should be locked before call this method
+        #endif
 
 		bool fullRefreshRequested = bNeedFullRefresh.load(std::memory_order_relaxed);
 		if(!fullRefreshRequested)

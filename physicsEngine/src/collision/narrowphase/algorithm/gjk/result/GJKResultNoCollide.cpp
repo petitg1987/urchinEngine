@@ -13,7 +13,7 @@ namespace urchin
 	{
 		simplex.computeClosestPoints(closestPointA, closestPointB);
 
-		#ifdef _DEBUG
+		#ifdef _DEBUG //TODO add in log
 			const float closestPointsLength = closestPointA.vector(closestPointB).length();
 			const float subtractDistance = closestPointsLength - separatingDistance;
 			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);

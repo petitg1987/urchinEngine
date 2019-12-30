@@ -140,15 +140,20 @@ namespace urchin
 				commonData.invInertia2 * (commonData.r2.crossProduct(commonData.contactNormal)).crossProduct(commonData.r2)
 				).dotProduct(commonData.contactNormal);
 
+        if(impulseSolvingData.normalImpulseDenominator == 0.0)
+        {
+            logCommonData("Null normal impulse denominator", commonData);
+        }
+
 		impulseSolvingData.tangentImpulseDenominator = commonData.body1->getInvMass() + commonData.body2->getInvMass() +
 				(commonData.invInertia1 * (commonData.r1.crossProduct(commonData.contactTangent)).crossProduct(commonData.r1) +
 				commonData.invInertia2 * (commonData.r2.crossProduct(commonData.contactTangent)).crossProduct(commonData.r2)
 				).dotProduct(commonData.contactTangent);
 
-		#ifdef _DEBUG
-			assert(impulseSolvingData.normalImpulseDenominator != 0.0);
-			assert(impulseSolvingData.tangentImpulseDenominator != 0.0);
-		#endif
+		if(impulseSolvingData.tangentImpulseDenominator == 0.0)
+        {
+            logCommonData("Null tangent impulse denominator", commonData);
+        }
 
 		//bias
 		float invDeltaTime = dt > 0.0f ? 1.0f / dt : 0.0f;
@@ -247,4 +252,23 @@ namespace urchin
 
 		return tangentVelocity / tangentVelocityLength;
 	}
+
+    void ConstraintSolverManager::logCommonData(const std::string &message, const CommonSolvingData &commonData) const
+    {
+        std::stringstream logStream;
+        logStream.precision(std::numeric_limits<float>::max_digits10);
+
+        logStream<<message<<std::endl;
+        logStream<<"Common data:"<<commonData.body1->getInvMass()<<std::endl;
+        logStream<<" - Body 1 inverse mass: "<<commonData.body1->getInvMass()<<std::endl;
+        logStream<<" - Body 2 inverse mass: "<<commonData.body2->getInvMass()<<std::endl;
+        logStream<<" - Inverse inertia 1: "<<commonData.invInertia1<<std::endl;
+        logStream<<" - Inverse inertia 2: "<<commonData.invInertia2<<std::endl;
+        logStream<<" - R1: "<<commonData.r1<<std::endl;
+        logStream<<" - R2: "<<commonData.r2<<std::endl;
+        logStream<<" - Contact normal: "<<commonData.contactNormal<<std::endl;
+        logStream<<" - Contact tangent: "<<commonData.contactTangent;
+
+        Logger::logger().logError(logStream.str());
+    }
 }

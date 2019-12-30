@@ -7,18 +7,18 @@ namespace urchin
 			name(std::move(name)),
 			cwPoints(cwPoints)
 	{
-		#ifdef _DEBUG
+		#ifndef NDEBUG
 			assert(checkCwPoints());
-		#endif
+        #endif
 	}
 
 	template<class T> CSGPolygon<T>::CSGPolygon(std::string name, std::vector<Point2<T>> &&cwPoints) :
 			name(std::move(name)),
 			cwPoints(std::move(cwPoints))
 	{
-		#ifdef _DEBUG
+        #ifndef NDEBUG
             assert(checkCwPoints());
-		#endif
+        #endif
 	}
 
 	template<class T> CSGPolygon<T>::CSGPolygon(const CSGPolygon &polygon) :

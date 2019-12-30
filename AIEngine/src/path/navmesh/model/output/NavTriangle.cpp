@@ -75,10 +75,10 @@ namespace urchin
 
     void NavTriangle::addDirectLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
     {
-        #ifdef _DEBUG
+        #ifndef NDEBUG
             assert(edgeIndex <= 2);
             for(const auto &link : getLinks())
-            {
+            { //TODO should be a log
                 assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have 2 direct links on same edge
             }
         #endif
@@ -88,10 +88,10 @@ namespace urchin
 
     void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint)
     {
-        #ifdef _DEBUG
+        #ifndef NDEBUG
             assert(edgeIndex <= 2);
             for(const auto &link : getLinks())
-            {
+            { //TODO should be a log
                 assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have a direct links and jump link on same edge
             }
         #endif

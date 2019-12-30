@@ -251,12 +251,10 @@ namespace urchin
 
 	std::shared_ptr<NavTriangle> TriangulationAlgorithm::buildCCWOrientedTriangle(std::size_t pointIndex1, std::size_t pointIndex2, std::size_t pointIndex3) const
 	{
-		#ifdef _DEBUG
-			if(pointIndex1==pointIndex2 || pointIndex1==pointIndex3 || pointIndex2==pointIndex3)
-			{
-				logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR);
-			}
-    	#endif
+        if(pointIndex1==pointIndex2 || pointIndex1==pointIndex3 || pointIndex2==pointIndex3)
+        {
+            logInputData("Triangulation create navigation triangle with identical indices", Logger::ERROR);
+        }
 
         Vector2<double> v1 = polygonPoints[pointIndex1].template cast<double>().vector(polygonPoints[pointIndex2].template cast<double>());
         Vector2<double> v2 = polygonPoints[pointIndex2].template cast<double>().vector(polygonPoints[pointIndex3].template cast<double>());

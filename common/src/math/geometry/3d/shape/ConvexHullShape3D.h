@@ -46,6 +46,8 @@ namespace urchin
 			std::set<unsigned int> buildTetrahedron(const std::vector<Point3<T>> &);
 			std::invalid_argument buildException(const std::vector<Point3<T>> &, const std::set<unsigned int> &);
 
+            void logConvexHullData(const std::string &) const;
+
 			std::size_t nextPointIndex; //next index to use to store points in 'points' map
             std::size_t nextTriangleIndex; //next index to use to store triangles in 'indexedTriangles' map
 

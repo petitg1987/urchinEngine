@@ -46,7 +46,7 @@ namespace urchin
 
 	void Logger::log(CriticalityLevel criticalityLevel, const std::string &toLog)
 	{
-		#ifdef _DEBUG
+		#ifndef NDEBUG
 			write(prefix(criticalityLevel) + toLog + "\n");
 		#else
 			if(criticalityLevel >= WARNING)

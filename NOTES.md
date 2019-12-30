@@ -1,10 +1,27 @@
 # Global
-- Coordinates
+- Coordinates:
     - X+ (left), Z- (right)
     - Y+ (top), Y- (bottom)
     - Z+ (near), Z- (far)
+- Error handling:
+    - Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
+    - Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer
+        - *Note:* surround assert with `#ifndef NDEBUG`/`#endif` when condition has bad performance
+    - Use logger (`Logger::logger().logError(...)`) when the result of an algorithm is not the one excepted
+        - *Note:* surround logger call with `TODO`/`}` when condition has bad performance
+- Verify when `new` operator is called:
+    - Use following source code and add a debug point:
+        ```
+        void* operator new(std::size_t sz){
+            return std::malloc(sz);
+        }
+
+        void* operator new[](std::size_t sz) {
+            return std::malloc(sz);
+        }
+        ```
     
-# Rendering info
+# Games rendering info
 - Mesh
 	- Call Of Duty 4: characters of 6000 triangles + normal mapping
 	- Crysis 1: scene with 500 000 to 1 million of triangles displayed
@@ -19,15 +36,3 @@
 	- Assassin Creed Syndicate: MSAA4x+FXAA (VRAM=392Mo) or TXAA4x+FXAA (VRAM=410Mo)
 	- Far Cry 5: SMAA or TAA
 
-# Tips
-- Verify when `new` operator is called:
-    - Use following source code and add a debug point:
-        ```
-        void* operator new(std::size_t sz){
-            return std::malloc(sz);
-        }
-
-        void* operator new[](std::size_t sz) {
-            return std::malloc(sz);
-        }
-        ```

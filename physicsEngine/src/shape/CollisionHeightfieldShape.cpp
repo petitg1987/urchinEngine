@@ -48,11 +48,9 @@ namespace urchin
         min.Y = -maxAbsoluteYValue;
         max.Y = maxAbsoluteYValue;
 
-        #ifdef _DEBUG //check BoxShape is centered
-            assert(std::abs(std::abs(min.X)-max.X) < 0.01);
-            assert(std::abs(std::abs(min.Y)-max.Y) < 0.01);
-            assert(std::abs(std::abs(min.Z)-max.Z) < 0.01);
-        #endif
+        assert(std::abs(std::abs(min.X)-max.X) < 0.01);
+        assert(std::abs(std::abs(min.Y)-max.Y) < 0.01);
+        assert(std::abs(std::abs(min.Z)-max.Z) < 0.01);
 
         Vector3<float> halfSizes((max.X-min.X) / 2.0, (max.Y-min.Y) / 2.0, (max.Z-min.Z) / 2.0);
         return std::make_unique<BoxShape<float>>(halfSizes);

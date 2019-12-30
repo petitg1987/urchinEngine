@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <sstream>
+#include <cassert>
 
 #include "Plane.h"
 
@@ -14,11 +15,9 @@ namespace urchin
 		normal(normalizedNormal),
 		d(distanceToOrigin)
 	{
-		#ifdef _DEBUG
-			if(normal.length() < 0.9998f || normal.length() > (T)1.0002)
-			{
-				throw std::invalid_argument("Impossible to build a plane. Wrong normal length: " + std::to_string(normal.length()) + ".");
-			}
+		#ifndef NDEBUG
+		    T normalSquareLength = normal.squareLength();
+		    assert(normalSquareLength > (T)0.9996 || normalSquareLength < (T)1.0004);
 		#endif
 	}
 
@@ -53,12 +52,10 @@ namespace urchin
 
 	template<class T> void Plane<T>::buildFromNormalAndPoint(const Vector3<T> &normalizedNormal, const Point3<T> &point)
 	{
-		#ifdef _DEBUG
-			if(normalizedNormal.length() < 0.9998f || normalizedNormal.length() > (T)1.0002)
-			{
-				throw std::invalid_argument("Impossible to build a plane. Wrong normal length: " + std::to_string(normalizedNormal.length()) + ".");
-			}
-		#endif
+        #ifndef NDEBUG
+            T normalSquareLength = normal.squareLength();
+            assert(normalSquareLength > (T)0.9996 || normalSquareLength < (T)1.0004);
+        #endif
 
 		this->normal = normalizedNormal;
 		this->d = this->normal.dotProduct(-Vector3<T>(point.X, point.Y, point.Z));

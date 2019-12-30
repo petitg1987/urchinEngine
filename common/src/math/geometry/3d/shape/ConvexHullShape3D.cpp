@@ -146,22 +146,21 @@ namespace urchin
 				addTriangle(IndexedTriangle3D<T>(edge.second.first, edge.second.second, newPointIndex));
 			}
 
-			#ifdef _DEBUG
-				if(points[newPointIndex].triangleIndices.size() < 3)
-				{
-					throw std::runtime_error("A convex hull point must belong at least to 3 triangles");
-				}
-			#endif
+            if(points[newPointIndex].triangleIndices.size() < 3)
+            {
+                logConvexHullData("Add new point on convex hull: new point (index: " + std::to_string(newPointIndex) + ") having less then 3 triangles");
+            }
 
 			return newPointIndex;
 		}
 
-        #ifdef _DEBUG
-            if(edges.empty() && trianglesRemoved > 0)
-            {
-                throw std::runtime_error("Triangle removed but no new point added");
-            }
-        #endif
+        if(edges.empty() && trianglesRemoved > 0)
+        {
+            std::stringstream logNewPointStream;
+            logNewPointStream.precision(std::numeric_limits<T>::max_digits10);
+            logNewPointStream<<newPoint;
+            logConvexHullData("Add new point on convex hull: triangles removed but no new point added (value: " + logNewPointStream.str() + ")");
+        }
 
 		return 0;
 	}
@@ -336,15 +335,14 @@ namespace urchin
 			throw buildException(points, pointsUsed);
 		}
 
-		#ifdef _DEBUG
-			for(unsigned int i=0; i<4; ++i)
-			{
-				if(this->points[i].triangleIndices.size() < 3)
-				{
-					throw std::runtime_error("A convex hull point must belong at least to 3 triangles");
-				}
-			}
-		#endif
+        for(unsigned int i=0; i<4; ++i)
+        {
+            if(this->points[i].triangleIndices.size() < 3)
+            {
+                logConvexHullData("Convex hull initial tetrahedron built with a point having less then 3 triangles");
+                break;
+            }
+        }
 
 		return pointsUsed;
 	}
@@ -393,6 +391,17 @@ namespace urchin
 
 		return std::invalid_argument("Impossible to build the convex hull shape. All points form a " + formName + ".");
 	}
+
+    template<class T> void ConvexHullShape3D<T>::logConvexHullData(const std::string &errorMessage) const
+    {
+        std::stringstream logStream;
+        logStream.precision(std::numeric_limits<T>::max_digits10);
+
+        logStream<<errorMessage<<std::endl;
+        logStream<<*this<<std::endl;
+
+        Logger::logger().logError(logStream.str());
+    }
 
 	template<class T> std::ostream& operator <<(std::ostream &stream, const ConvexHullShape3D<T> &ch)
 	{

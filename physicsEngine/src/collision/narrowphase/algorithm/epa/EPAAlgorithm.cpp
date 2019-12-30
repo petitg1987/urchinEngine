@@ -129,7 +129,7 @@ namespace urchin
 		const Point3<T> contactPointB = closestTriangleData.getBarycentric(0) * supportPointsB[pointIndex1] + closestTriangleData.getBarycentric(1) * supportPointsB[pointIndex2]
 				+ closestTriangleData.getBarycentric(2) * supportPointsB[pointIndex3];
 
-		#ifdef _DEBUG
+		#ifdef _DEBUG //TODO add in log
 			const T subtractDistance = contactPointA.vector(contactPointB).squareLength() - distanceToOrigin*distanceToOrigin;
 			assert((subtractDistance-0.01) <= 0.0 && (subtractDistance+0.01) >= 0.0);
 		#endif

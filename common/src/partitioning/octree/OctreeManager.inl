@@ -179,14 +179,9 @@ template<class TOctreeable> void OctreeManager<TOctreeable>::refreshOctreeables(
 			addOctreeable(movingOctreeable);
 		}
 	}
-	
-	#ifdef _DEBUG
-		if(refreshModCount!=postRefreshModCount)
-		{
-			throw std::runtime_error("Methods 'refreshOctreeables' and 'postRefreshOctreeables' must be called the same number of times: " +
-					std::to_string(refreshModCount) + " <-> " + std::to_string(postRefreshModCount));
-		}
-    #endif
+
+	assert(refreshModCount==postRefreshModCount); //methods 'refreshOctreeables' and 'postRefreshOctreeables' must be called the same number of times
+
     refreshModCount++;
 }
 

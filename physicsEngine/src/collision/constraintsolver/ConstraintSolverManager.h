@@ -38,6 +38,8 @@ namespace urchin
 			Vector3<float> computeRelativeVelocity(const CommonSolvingData &) const;
 			Vector3<float> computeTangent(const CommonSolvingData &, const Vector3<float> &) const;
 
+			void logCommonData(const std::string &, const CommonSolvingData &) const;
+
 			std::vector<ConstraintSolving *> constraintsSolving;
 			FixedSizePool<ConstraintSolving> *constraintSolvingPool;
 
