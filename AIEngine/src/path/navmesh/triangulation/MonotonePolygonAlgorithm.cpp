@@ -110,20 +110,20 @@ namespace urchin
 							break;
 						}
 
-						#ifdef _DEBUG
-                            //check no duplicate points inserted in monotone
-							for(std::size_t monotonePointsIndex: monotonePointsIndices)
-							{
-								if(nextPointIndex==monotonePointsIndex)
-								{
-									std::stringstream logStream;
+                        if(Check::instance()->additionalChecksEnable())
+                        { //check no duplicate points inserted in monotone
+                            for (std::size_t monotonePointsIndex: monotonePointsIndices)
+                            {
+                                if (nextPointIndex == monotonePointsIndex)
+                                {
+                                    std::stringstream logStream;
                                     logStream.precision(std::numeric_limits<float>::max_digits10);
-									logStream<<"Duplicate point ("<<polygonPoints[nextPointIndex]<<") inserted in monotone polygon: ";
+                                    logStream << "Duplicate point (" << polygonPoints[nextPointIndex] << ") inserted in monotone polygon: ";
 
-									logInputData(logStream.str(), Logger::ERROR);
-								}
-							}
-						#endif
+                                    logInputData(logStream.str(), Logger::ERROR);
+                                }
+                            }
+                        }
 						monotonePointsIndices.push_back(nextPointIndex);
 
 						previousPointIndex = currentPointIndex;

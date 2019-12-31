@@ -8,7 +8,7 @@ namespace urchin
 			cwPoints(cwPoints)
 	{
 		#ifndef NDEBUG
-			assert(checkCwPoints());
+			assert(isCwPoints());
         #endif
 	}
 
@@ -17,7 +17,7 @@ namespace urchin
 			cwPoints(std::move(cwPoints))
 	{
         #ifndef NDEBUG
-            assert(checkCwPoints());
+            assert(isCwPoints());
         #endif
 	}
 
@@ -106,25 +106,27 @@ namespace urchin
 
 	template<class T> void CSGPolygon<T>::expand(T distance)
 	{
-        #ifdef _DEBUG
-            CSGPolygon<T> originalPolygon(*this);
-        #endif
+        std::unique_ptr<CSGPolygon<T>> originalPolygon(nullptr);
+        if(Check::instance()->additionalChecksEnable())
+        {
+            originalPolygon = std::make_unique<CSGPolygon<T>>(*this);
+        }
 
 		ResizePolygon2DService<T>::instance()->resizePolygon(cwPoints, -distance);
 
-        #ifdef _DEBUG
-		    if(!checkCwPoints())
-            {
-		        logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR, originalPolygon);
-            }
-        #endif
+        if(Check::instance()->additionalChecksEnable() && !isCwPoints())
+        {
+            logInputData("Impossible to expand polygon (distance: " + std::to_string(distance) + ")", Logger::ERROR, *originalPolygon);
+        }
 	}
 
 	template<class T> void CSGPolygon<T>::simplify(T polygonMinDotProductThreshold, T polygonMergePointsDistanceThreshold)
 	{
-        #ifdef _DEBUG
-	        CSGPolygon<T> originalPolygon(*this);
-        #endif
+        std::unique_ptr<CSGPolygon<T>> originalPolygon(nullptr);
+        if(Check::instance()->additionalChecksEnable())
+        {
+            originalPolygon = std::make_unique<CSGPolygon<T>>(*this);
+        }
 
         const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 
@@ -184,15 +186,13 @@ namespace urchin
             cwPoints.clear();
         }
 
-        #ifdef _DEBUG
-            if(!checkCwPoints())
-            {
-                logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR, originalPolygon);
-            }
-        #endif
+        if(Check::instance()->additionalChecksEnable() && !isCwPoints())
+        {
+            logInputData("Impossible to simplify polygon (dot: " + std::to_string(polygonMinDotProductThreshold) + ", distance: " + std::to_string(polygonMergePointsDistanceThreshold) + ")", Logger::ERROR, *originalPolygon);
+        }
 	}
 
-    template<class T> bool CSGPolygon<T>::checkCwPoints() const
+    template<class T> bool CSGPolygon<T>::isCwPoints() const
     {
         if(cwPoints.size() >= 3)
         {

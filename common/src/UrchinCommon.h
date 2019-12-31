@@ -5,6 +5,7 @@
 #include "libs/lodepng/lodepng.h"
 #include "libs/md5/md5.h"
 
+#include "tools/check/Check.h"
 #include "tools/file/PropertyFileHandler.h"
 #include "tools/logger/Logger.h"
 #include "tools/logger/FileLogger.h"

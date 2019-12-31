@@ -33,17 +33,18 @@ namespace urchin
 		this->endContourIndices.push_back(polygonPoints.size());
 		this->contourNames.push_back(name);
 
-        #ifdef _DEBUG
+        if(Check::instance()->additionalChecksEnable())
+        {
             double area = 0.0;
-            for (std::size_t i = 0, prevI = polygonPoints.size() - 1; i < polygonPoints.size(); prevI=i++)
+            for (std::size_t i = 0, prevI = polygonPoints.size() - 1; i < polygonPoints.size(); prevI = i++)
             {
                 area += (polygonPoints[i].X - polygonPoints[prevI].X) * (polygonPoints[i].Y + polygonPoints[prevI].Y);
             }
-            if(area > 0.0)
+            if (area > 0.0)
             {
                 logInputData("Triangulation input points not in CCW order. Area: " + std::to_string(area), Logger::ERROR);
             }
-        #endif
+        }
 	}
 
 	/**
@@ -64,7 +65,8 @@ namespace urchin
 		endContourIndices.push_back(polygonPoints.size());
 		contourNames.push_back(holeName);
 
-        #ifdef _DEBUG
+        if(Check::instance()->additionalChecksEnable())
+        {
             double area = 0.0;
             for (std::size_t i = 0, prevI = cwHolePoints.size() - 1; i < cwHolePoints.size(); prevI=i++)
             {
@@ -74,7 +76,7 @@ namespace urchin
             {
                 logInputData("Triangulation hole input points not in CW order. Area: " + std::to_string(area), Logger::ERROR);
             }
-        #endif
+        }
 
 		return endContourIndices.size() - 2;
 	}
@@ -97,19 +99,19 @@ namespace urchin
 
 	const std::vector<std::shared_ptr<NavTriangle>> &TriangulationAlgorithm::triangulate()
 	{ //based on "Computational Geometry - Algorithms and Applications, 3rd Ed" - "Polygon Triangulation"
-		#ifdef _DEBUG
-            //assert no duplicate points
-			for (std::size_t i = 0; i < polygonPoints.size(); ++i)
-			{
-				for (std::size_t j = 0; j < polygonPoints.size(); ++j)
-				{
-					if(i!=j && polygonPoints[i] == polygonPoints[j])
-					{
-						logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j), Logger::ERROR);
-					}
-				}
-			}
-		#endif
+        if(Check::instance()->additionalChecksEnable())
+        { //check no duplicate points
+            for (std::size_t i = 0; i < polygonPoints.size(); ++i)
+            {
+                for (std::size_t j = 0; j < polygonPoints.size(); ++j)
+                {
+                    if (i != j && polygonPoints[i] == polygonPoints[j])
+                    {
+                        logInputData("Triangulation point " + std::to_string(i) + " duplicates the point " + std::to_string(j), Logger::ERROR);
+                    }
+                }
+            }
+        }
 
 		std::vector<MonotonePolygon> monotonePolygons = MonotonePolygonAlgorithm(polygonPoints, endContourIndices, contourNames).createYMonotonePolygons();
 
