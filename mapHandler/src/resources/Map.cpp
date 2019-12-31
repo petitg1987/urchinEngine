@@ -11,7 +11,7 @@ namespace urchin
 			physicsWorld(physicsWorld),
 			soundManager(soundManager),
 			aiManager(aiManager),
-            sceneAI(nullptr)
+            sceneAI(new SceneAI(aiManager))
 	{
 
 	}
@@ -149,10 +149,7 @@ namespace urchin
 	{
 		std::shared_ptr<XmlChunk> aiElementsListChunk = xmlParser.getUniqueChunk(true, AI_ELEMENTS_TAG, XmlAttribute(), chunk);
 
-		auto *sceneAI = new SceneAI();
-		sceneAI->loadFrom(aiElementsListChunk, xmlParser);
-
-		setSceneAI(sceneAI);
+        sceneAI->loadFrom(aiElementsListChunk, xmlParser);
 	}
 
 	void Map::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
@@ -377,16 +374,15 @@ namespace urchin
 		delete sceneSound;
 	}
 
-	SceneAI *Map::getSceneAI() const
+	const SceneAI *Map::getSceneAI() const
 	{
 		return sceneAI;
 	}
 
-	void Map::setSceneAI(SceneAI *sceneAI)
-	{
-		sceneAI->setAIManager(aiManager);
-		this->sceneAI = sceneAI;
-	}
+    void Map::updateSceneAI(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
+    {
+	    sceneAI->changeNavMeshAgent(navMeshAgent);
+    }
 
 	void Map::refreshMap()
 	{

@@ -36,7 +36,7 @@ namespace urchin
 			bool disableAIEvent;
 
 		private slots:
-			void navMeshAgentChanged();
+			void aiChanged();
 	};
 
 }

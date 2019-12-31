@@ -28,19 +28,17 @@ namespace urchin
 		bIsModified = false;
 	}
 
-	const SceneAI * AIController::getSceneAI() const
+	const SceneAI *AIController::getSceneAI() const
 	{
 		return mapHandler->getMap()->getSceneAI();
 	}
 
-	SceneAI *AIController::updateNavMeshAgent(const std::shared_ptr<NavMeshAgent>& navMeshAgent)
+	const SceneAI *AIController::updateSceneAI(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
 	{
-		SceneAI *sceneAI = mapHandler->getMap()->getSceneAI();
-
-		sceneAI->changeNavMeshAgent(navMeshAgent);
+		mapHandler->getMap()->updateSceneAI(navMeshAgent);
 
 		markModified();
-		return sceneAI;
+		return mapHandler->getMap()->getSceneAI();
 	}
 
 }

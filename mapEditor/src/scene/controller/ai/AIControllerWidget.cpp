@@ -28,7 +28,7 @@ namespace urchin
 	{
 		this->aiController = aiController;
 
-		std::shared_ptr<NavMeshAgent> navMeshAgent = aiController->getSceneAI()->getNavMeshAgent(); //TODO crash when create new map in mapEditor
+		std::shared_ptr<NavMeshAgent> navMeshAgent = aiController->getSceneAI()->getNavMeshAgent();
         setupNavMeshAgentDataFrom(navMeshAgent);
 	}
 
@@ -53,7 +53,7 @@ namespace urchin
         navMeshAgentLayout->addWidget(agentHeight, 0, 1);
 		SpinBoxStyleHelper::applyDefaultStyleOn(agentHeight);
 		agentHeight->setMinimum(0.0);
-		connect(agentHeight, SIGNAL(valueChanged(double)), this, SLOT(navMeshAgentChanged()));
+		connect(agentHeight, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
 		auto *agentRadiusLabel = new QLabel("Agent Radius:");
         navMeshAgentLayout->addWidget(agentRadiusLabel, 0, 2);
@@ -62,7 +62,7 @@ namespace urchin
         navMeshAgentLayout->addWidget(agentRadius, 0, 3);
 		SpinBoxStyleHelper::applyDefaultStyleOn(agentRadius);
 		agentRadius->setMinimum(0.0);
-		connect(agentRadius, SIGNAL(valueChanged(double)), this, SLOT(navMeshAgentChanged()));
+		connect(agentRadius, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
 		auto *maxSlopeLabel = new QLabel("Max Slope (°):");
         navMeshAgentLayout->addWidget(maxSlopeLabel, 1, 0);
@@ -72,7 +72,7 @@ namespace urchin
 		SpinBoxStyleHelper::applyAngleStyleOn(maxSlope);
 		maxSlope->setMinimum(5.0);
 		maxSlope->setMaximum(85.0);
-		connect(maxSlope, SIGNAL(valueChanged(double)), this, SLOT(navMeshAgentChanged()));
+		connect(maxSlope, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 
         auto *jumpDistanceLabel = new QLabel("Jump distance:");
         navMeshAgentLayout->addWidget(jumpDistanceLabel, 1, 2);
@@ -81,10 +81,10 @@ namespace urchin
         navMeshAgentLayout->addWidget(jumpDistance, 1, 3);
         SpinBoxStyleHelper::applyDefaultStyleOn(jumpDistance);
         jumpDistance->setMinimum(0.0);
-        connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(navMeshAgentChanged()));
+        connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 	}
 
-	void AIControllerWidget::navMeshAgentChanged()
+	void AIControllerWidget::aiChanged()
 	{
 		if(!disableAIEvent)
 		{
@@ -92,7 +92,7 @@ namespace urchin
             navMeshAgent->setMaxSlope(AngleConverter<float>::toRadian(maxSlope->value()));
             navMeshAgent->setJumpDistance(static_cast<float>(jumpDistance->value()));
 
-			aiController->updateNavMeshAgent(navMeshAgent);
+			aiController->updateSceneAI(navMeshAgent);
 		}
 	}
 

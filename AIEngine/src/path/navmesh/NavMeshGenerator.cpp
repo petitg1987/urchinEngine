@@ -42,6 +42,11 @@ namespace urchin
         this->navigationObjects.updateFatMargin(navigationObjectsMargin);
 	}
 
+    const std::shared_ptr<NavMeshAgent> &NavMeshGenerator::getNavMeshAgent() const
+    {
+        return navMeshAgent;
+    }
+
     NavMesh NavMeshGenerator::copyLastGeneratedNavMesh() const
     {
         std::lock_guard<std::mutex> lock(navMeshMutex);

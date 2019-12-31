@@ -70,8 +70,8 @@ namespace urchin
 			void addSceneSound(SceneSound *);
 			void removeSceneSound(SceneSound *);
 
-			SceneAI *getSceneAI() const;
-			void setSceneAI(SceneAI *);
+			const SceneAI *getSceneAI() const;
+			void updateSceneAI(const std::shared_ptr<NavMeshAgent>&);
 
 			void refreshMap();
 
