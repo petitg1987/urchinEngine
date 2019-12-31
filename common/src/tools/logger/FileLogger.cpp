@@ -2,7 +2,6 @@
 #include <stdexcept>
 #include <vector>
 #include <ctime>
-#include <filesystem>
 
 #include "tools/logger/FileLogger.h"
 #include "system/FileHandler.h"
@@ -46,9 +45,12 @@ namespace urchin
     {
         std::string epoch = std::to_string(std::time(nullptr));
         std::string extension = FileHandler::getFileExtension(filename);
-        std::string newFilename = filename.substr(0, filename.size()-extension.size()-1) + "_" + epoch + "." + extension;
+        std::string archiveFilename = filename.substr(0, filename.size()-extension.size()-1) + "_" + epoch + "." + extension;
 
-		std::filesystem::copy(filename, newFilename);
+        std::ofstream archiveStream (archiveFilename);
+        archiveStream << retrieveContent(std::numeric_limits<unsigned long>::max()) << std::endl;
+        archiveStream.close();
+
         purge();
     }
 

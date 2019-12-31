@@ -146,7 +146,10 @@ namespace urchin
         for(const auto &navObject : aiEntity->getNavObjects())
         {
             const std::vector<std::weak_ptr<NavObject>> &nearObjects = navObject->retrieveNearObjects();
-            affectedNavObjectsToRefresh.insert(nearObjects.begin(), nearObjects.end());
+            for(const auto &nearObject : nearObjects)
+            {
+                affectedNavObjectsToRefresh.insert(nearObject.lock());
+            }
 
             navigationObjects.removeObject(navObject);
         }
