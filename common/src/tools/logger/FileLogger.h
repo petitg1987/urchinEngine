@@ -16,8 +16,9 @@ namespace urchin
 
 			const std::string &getFilename() const;
 
-			std::string readAll(unsigned long maxReadSize = std::numeric_limits<unsigned long>::max()) const;
-			void clearLogs();
+			std::string retrieveContent(unsigned long) const override;
+			void purge() const override;
+			void archive() const override;
 
 		private:
 			void write(const std::string &) override;

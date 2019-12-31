@@ -16,7 +16,7 @@ namespace urchin
 			return "";
 		}
 
-		return filePath.substr(found, filePath.size()-found-1);
+		return filePath.substr(found+1, filePath.size()-found);
 
 	}
 

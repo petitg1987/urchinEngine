@@ -6,7 +6,6 @@
 #include "physics/it/FallingObjectIT.h"
 #include "AssertHelper.h"
 #include "UrchinPhysicsEngine.h"
-#include "utils/LogsUtils.h"
 using namespace urchin;
 
 void FallingObjectIT::fallOnPlane()
@@ -37,7 +36,10 @@ void FallingObjectIT::fallOnPlane()
 
 void FallingObjectIT::fallForever()
 {
-    LogsUtils::emptyLogFile();
+    if(!Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max()).empty())
+    {
+        throw std::runtime_error("Log file must be emptied before start this test.");
+    }
 
     std::shared_ptr<CollisionBoxShape> planeShape = std::make_shared<CollisionBoxShape>(Vector3<float>(1000.0f, 0.5f, 1000.0f));
     auto *planeBody = new RigidBody("plane", Transform<float>(Point3<float>(0.0f, -0.5f, 0.0f), Quaternion<float>(), 1.0f), planeShape);
@@ -58,9 +60,10 @@ void FallingObjectIT::fallForever()
 
     AssertHelper::assertTrue(cubeBody->getTransform().getPosition().Y > -3.0f, "Check cube doesn't fall forever");
     AssertHelper::assertTrue(!cubeBody->isActive(), "Body must become inactive when it goes outside the world limits");
-    AssertHelper::assertTrue(LogsUtils::logFileContain("(WW) Body cube is below the limit of"), "Log must contain warning about body falling forever");
+    std::string logValue = Logger::logger().retrieveContent(std::numeric_limits<unsigned long>::max());
+    AssertHelper::assertTrue(logValue.find("(WW) Body cube is below the limit of") != std::string::npos);
 
-    LogsUtils::emptyLogFile();
+    Logger::logger().purge();
     delete collisionWorld;
     delete bodyManager;
 }

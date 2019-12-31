@@ -28,7 +28,7 @@ namespace urchin
 	{
 		this->aiController = aiController;
 
-		std::shared_ptr<NavMeshAgent> navMeshAgent = aiController->getSceneAI()->getNavMeshAgent();
+		std::shared_ptr<NavMeshAgent> navMeshAgent = aiController->getSceneAI()->getNavMeshAgent(); //TODO crash when create new map in mapEditor
         setupNavMeshAgentDataFrom(navMeshAgent);
 	}
 
