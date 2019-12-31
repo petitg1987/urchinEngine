@@ -5,7 +5,7 @@ namespace urchin
 {
 
     Check::Check() :
-            isAdditionalCheckEnable(ConfigService::instance()->getBoolValue("checks.additionalChecksEnable"))
+            isAdditionalCheckEnable(ConfigService::instance()->getBoolValue("checks.additionalChecksEnable")) //TODO change value for release
     {
 
     }
