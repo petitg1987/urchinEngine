@@ -1,5 +1,5 @@
-#ifndef TESTENGINESFML_SVGPOLYGON_H
-#define TESTENGINESFML_SVGPOLYGON_H
+#ifndef URCHINENGINE_SVGPOLYGON_H
+#define URCHINENGINE_SVGPOLYGON_H
 
 #include <vector>
 #include <string>

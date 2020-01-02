@@ -40,8 +40,6 @@ template <class OBJ> AABBNodeData<OBJ> *AABBTree<OBJ>::getNodeData(OBJ object) c
  */
 template <class OBJ> void AABBTree<OBJ>::getAllNodeObjects(std::vector<OBJ> &nodeObjects) const
 {
-    nodeObjects.clear();
-
     browseNodes.clear();
     if(rootNode != nullptr)
     {

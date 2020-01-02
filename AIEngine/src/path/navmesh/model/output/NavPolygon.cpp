@@ -20,7 +20,7 @@ namespace urchin
 	{
         for(const auto &triangle : navPolygon.getTriangles())
         {
-            triangles.push_back(std::make_shared<NavTriangle>(*triangle));
+            triangles.emplace_back(std::make_shared<NavTriangle>(*triangle));
         }
 	}
 

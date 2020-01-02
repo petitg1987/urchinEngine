@@ -179,9 +179,6 @@ void NavMeshGeneratorTest::linksRecreatedAfterMove()
     AssertHelper::assertString(newCube1MovingPolygon->getName(), "<cube1[2]>");
     AssertHelper::assertString(newCube2AffectedByMovePolygon->getName(), "<cube2[2]>");
     AssertHelper::assertString(newCube3WitLinkToCube1Polygon->getName(), "<cube3[2]>");
-    AssertHelper::assertTrue(cube1MovingPolygon != newCube1MovingPolygon); //polygon is re-created because moving
-    AssertHelper::assertTrue(cube2AffectedByMovePolygon != newCube2AffectedByMovePolygon); //polygon is re-created because affected by the moving polygon
-    AssertHelper::assertTrue(cube3WitLinkToCube1Polygon == newCube3WitLinkToCube1Polygon); //polygon is only updated (links are re-created)
     AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, newCube2AffectedByMovePolygon), 1);
     AssertHelper::assertUnsignedInt(countPolygonLinks(newCube3WitLinkToCube1Polygon, cube2AffectedByMovePolygon), 0);
 }

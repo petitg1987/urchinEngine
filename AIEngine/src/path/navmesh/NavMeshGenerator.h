@@ -52,6 +52,8 @@ namespace urchin
 			void createNavLinks();
             void createNavLinks(const NavPolygonEdge &, const std::shared_ptr<NavObject> &) const;
 
+            void updateNavMesh();
+
 			const float polygonMinDotProductThreshold;
 			const float polygonMergePointsDistanceThreshold;
 

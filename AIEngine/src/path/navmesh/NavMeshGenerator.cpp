@@ -18,7 +18,7 @@
 
 namespace urchin
 {
-    //TODO check artifact on jump in testEngineSfml
+
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
             polygonMergePointsDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.polygonMergePointsDistanceThreshold")),
@@ -66,16 +66,7 @@ namespace urchin
         deleteNavLinks();
 		updateNavPolygons();
 		createNavLinks();
-
-        allNavPolygons.clear();
-        navigationObjects.getAllNodeObjects(allNavObjects);
-        for(const auto &navObject : allNavObjects)
-        {
-            const std::vector<std::shared_ptr<NavPolygon>> &navPolygons = navObject->getNavPolygons();
-            allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
-        }
-        std::lock_guard<std::mutex> lock(navMeshMutex);
-        navMesh->replaceAllPolygons(allNavPolygons);
+        updateNavMesh();
 
 		return navMesh;
 	}
@@ -148,6 +139,9 @@ namespace urchin
             const std::vector<std::weak_ptr<NavObject>> &nearObjects = navObject->retrieveNearObjects();
             for(const auto &nearObject : nearObjects)
             {
+                #ifndef NDEBUG
+                    assert(!nearObject.expired());
+                #endif
                 affectedNavObjectsToRefresh.insert(nearObject.lock());
             }
 
@@ -473,6 +467,23 @@ namespace urchin
                 }
             }
         }
+    }
+
+    void NavMeshGenerator::updateNavMesh()
+    {
+        allNavPolygons.clear();
+
+        allNavObjects.clear();
+        navigationObjects.getAllNodeObjects(allNavObjects);
+
+        for(const auto &navObject : allNavObjects)
+        {
+            const std::vector<std::shared_ptr<NavPolygon>> &navPolygons = navObject->getNavPolygons();
+            allNavPolygons.insert(allNavPolygons.end(), navPolygons.begin(), navPolygons.end());
+        }
+
+        std::lock_guard<std::mutex> lock(navMeshMutex);
+        navMesh->copyAllPolygons(allNavPolygons);
     }
 
 }

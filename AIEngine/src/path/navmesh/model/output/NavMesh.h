@@ -20,7 +20,7 @@ namespace urchin
 
 			unsigned int getUpdateId() const;
 
-            void replaceAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &);
+            void copyAllPolygons(const std::vector<std::shared_ptr<NavPolygon>> &);
 			const std::vector<std::shared_ptr<NavPolygon>> &getPolygons() const;
 
 			void logNavMesh() const;

@@ -16,7 +16,7 @@ void PathfindingAStarTest::straightPath()
 
     navTriangle1->addDirectLink(1, navTriangle2);
     auto navMesh = std::make_shared<NavMesh>();
-    navMesh->replaceAllPolygons({navPolygon});
+    navMesh->copyAllPolygons({navPolygon});
     PathfindingAStar pathfindingAStar(navMesh);
 
     std::vector<PathPoint> pathPoints = pathfindingAStar.findPath(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(3.0f, 0.0f, 3.0f));
@@ -70,7 +70,7 @@ std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavJumpConstraint *nav
 
     navPolygon1Triangle1->addJumpLink(1, navPolygon2Triangle1, navJumpConstraint);
     auto navMesh = std::make_shared<NavMesh>();
-    navMesh->replaceAllPolygons({navPolygon1, navPolygon2});
+    navMesh->copyAllPolygons({navPolygon1, navPolygon2});
     PathfindingAStar pathfindingAStar(navMesh);
 
     return pathfindingAStar.findPath(Point3<float>(1.0f, 0.0f, 1.0f), Point3<float>(3.0f, 0.0f, 4.0f));
