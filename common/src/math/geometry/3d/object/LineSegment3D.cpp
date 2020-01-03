@@ -68,7 +68,7 @@ namespace urchin
 	{
 		Vector3<T> ab = a.vector(b);
 
-		T abSquareLength = ab.dotProduct(ab);
+		T abSquareLength = ab.squareLength();
 		if(abSquareLength==(T)0.0)
 		{
 			barycentrics[0] = 1.0;
@@ -93,20 +93,20 @@ namespace urchin
 		Vector3<T> ab = a.vector(b);
 		Vector3<T> ap = a.vector(p);
 
-		T e = ap.dotProduct(ab);
-		if (e <= 0.0f)
+		T apDotAb = ap.dotProduct(ab);
+		if (apDotAb <= 0.0f)
 		{
-			return ap.dotProduct(ap);
+			return ap.squareLength();
 		}
 
-		T f = ab.dotProduct(ab);
-		if (e >= f)
+		T abSquareLength = ab.squareLength();
+		if (apDotAb >= abSquareLength)
 		{
 			Vector3<T> bp = b.vector(p);
 			return bp.dotProduct(bp);
 		}
 
-		return ap.dotProduct(ap) - ((e * e) / f);
+		return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
 	}
 
     template<class T> Vector3<T> LineSegment3D<T>::toVector() const

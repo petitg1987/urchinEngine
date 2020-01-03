@@ -19,6 +19,10 @@ namespace urchin
             float jumpMaxLength;
             float jumpMaxSquareLength;
 
+            bool pointsAreEquals(const Point3<float> &, const Point3<float> &) const;
+            bool isCollinearLines(const Line3D<float> &, const Line3D<float> &) const;
+            bool isTouchingCollinearEdges(const LineSegment3D<float> &, const LineSegment3D<float> &, float &, float &) const;
+
             bool canJumpThatFar(const Point3<float> &, const Point3<float> &) const;
             bool isProperJumpDirection(const LineSegment3D<float> &, const LineSegment3D<float> &, const Point3<float> &, const Point3<float> &) const;
     };

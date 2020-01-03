@@ -44,7 +44,7 @@ namespace urchin
 	{
 		Vector2<T> ab = a.vector(b);
 
-		T abSquareLength = ab.dotProduct(ab);
+		T abSquareLength = ab.squareLength();
 		if(abSquareLength==(T)0.0)
 		{
 			barycentrics[0] = 1.0;
@@ -69,24 +69,24 @@ namespace urchin
 		Vector2<T> ab = a.vector(b);
 		Vector2<T> ap = a.vector(p);
 
-		T e = ap.dotProduct(ab);
-		if (e <= 0.0f)
+		T apDotAb = ap.dotProduct(ab);
+		if (apDotAb <= 0.0f)
 		{
 			return ap.dotProduct(ap);
 		}
 
-		T f = ab.dotProduct(ab);
-		if (e >= f)
+		T abSquareLength = ab.squareLength();
+		if (apDotAb >= abSquareLength)
 		{
 			Vector2<T> bp = b.vector(p);
-			return bp.dotProduct(bp);
+			return bp.squareLength();
 		}
 
         if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
         {
-            return ap.dotProduct(ap) - MathAlgorithm::roundDivision<T>(e * e, f);
+            return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, abSquareLength);
         }
-		return ap.dotProduct(ap) - ((e * e) / f);
+		return ap.squareLength() - ((apDotAb * apDotAb) / abSquareLength);
 	}
 
     template<class T> bool LineSegment2D<T>::onSegment(const Point2<T> &p) const

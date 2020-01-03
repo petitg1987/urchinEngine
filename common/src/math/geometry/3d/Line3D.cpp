@@ -38,10 +38,9 @@ namespace urchin
 		Vector3<T> ab = a.vector(b);
 		Vector3<T> ap = a.vector(p);
 
-		T e = ap.dotProduct(ab);
-		T f = ab.dotProduct(ab);
+		T apDotAb = ap.dotProduct(ab);
 
-		return ap.dotProduct(ap) - ((e * e) / f);
+		return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
 	}
 
 	template<class T> Line3D<T> Line3D<T>::parallelLine(const Point3<T> &p) const

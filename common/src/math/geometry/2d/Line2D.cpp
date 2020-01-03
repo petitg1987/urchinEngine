@@ -53,14 +53,13 @@ namespace urchin
 		Vector2<T> ab = a.vector(b);
 		Vector2<T> ap = a.vector(p);
 
-		T e = ap.dotProduct(ab);
-		T f = ab.dotProduct(ab);
+		T apDotAb = ap.dotProduct(ab);
 
 		if(typeid(int)==typeid(T) || typeid(long)==typeid(T) || typeid(long long)==typeid(T))
 		{
-			return ap.dotProduct(ap) - MathAlgorithm::roundDivision<T>(e * e, f);
+			return ap.squareLength() - MathAlgorithm::roundDivision<T>(apDotAb * apDotAb, ab.squareLength());
 		}
-		return ap.dotProduct(ap) - ((e * e) / f);
+		return ap.squareLength() - ((apDotAb * apDotAb) / ab.squareLength());
 	}
 
 	/**
