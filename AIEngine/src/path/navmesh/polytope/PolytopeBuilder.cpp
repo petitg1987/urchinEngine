@@ -61,7 +61,7 @@ namespace urchin
                 expandedPolytope = createExpandedPolytopeFor(shapeName, sphere, navMeshAgent);
             } else
             {
-                throw std::invalid_argument("Shape type not supported by navigation mesh generator: " + std::string(typeid(*object).name()));
+                throw std::invalid_argument("Shape type not supported by navigation mesh generator for object: " + aiObject->getName());
             }
 
             expandedPolytope->setObstacleCandidate(aiObject->isObstacleCandidate());
@@ -71,12 +71,14 @@ namespace urchin
         return expandedPolytopes;
     }
 
-    std::unique_ptr<Polytope> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
-    {
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
+    { //TODO divide terrain in square and them in returned std::vector
         #ifndef NDEBUG
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
         #endif
+
+        std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
@@ -90,11 +92,13 @@ namespace urchin
         auto expandedPolytope = std::make_unique<Polytope>(aiTerrain->getName(), expandedSurfaces);
         expandedPolytope->setWalkableCandidate(true);
         expandedPolytope->setObstacleCandidate(aiTerrain->isObstacleCandidate());
-        return expandedPolytope;
+        expandedPolytopes.push_back(std::move(expandedPolytope));
+
+        return expandedPolytopes;
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, OBBox<float> *box, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const
-    {
+    { //TODO divide big box in several smallest boxes
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
         std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
