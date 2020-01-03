@@ -220,7 +220,7 @@ namespace urchin
     }
 
 	std::vector<std::shared_ptr<NavPolygon>> NavMeshGenerator::createNavigationPolygons(const std::shared_ptr<NavObject> &navObject,
-	        const std::shared_ptr<PolytopeSurface> &walkableSurface) const
+	        const std::shared_ptr<PolytopeSurface> &walkableSurface)
 	{
 		ScopeProfiler scopeProfiler("ai", "createNavPolys");
 
@@ -312,7 +312,7 @@ namespace urchin
 		return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
 	}
 
-	void NavMeshGenerator::subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &obstaclePolygons) const
+	void NavMeshGenerator::subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &obstaclePolygons)
     {
         ScopeProfiler scopeProfiler("ai", "subObstacles");
 

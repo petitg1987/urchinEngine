@@ -41,10 +41,10 @@ namespace urchin
             void updateNearObjects(const std::shared_ptr<NavObject> &);
 
             void updateNavPolygons();
-			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
+			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &);
 			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
 			CSGPolygon<float> computePolytopeFootprint(const std::shared_ptr<Polytope> &, const std::shared_ptr<PolytopeSurface> &) const;
-            void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &) const;
+            void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &);
             std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::shared_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
 
@@ -64,17 +64,18 @@ namespace urchin
 
             AABBTree<std::shared_ptr<NavObject>> navigationObjects;
             std::set<std::shared_ptr<NavObject>> newOrMovingNavObjectsToRefresh, affectedNavObjectsToRefresh;
-            mutable std::set<std::shared_ptr<NavObject>> navObjectsToRefresh;
-            mutable std::set<std::pair<std::shared_ptr<NavObject>, std::shared_ptr<NavObject>>> navObjectsLinksToRefresh;
-            mutable std::vector<CSGPolygon<float>> walkablePolygons;
+            std::set<std::shared_ptr<NavObject>> navObjectsToRefresh;
+            std::set<std::pair<std::shared_ptr<NavObject>, std::shared_ptr<NavObject>>> navObjectsLinksToRefresh;
+            std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<std::shared_ptr<NavObject>> nearObjects;
 
-            mutable std::vector<CSGPolygon<float>> remainingObstaclePolygons;
+            std::vector<CSGPolygon<float>> remainingObstaclePolygons;
 			mutable std::vector<CSGPolygon<float>> holePolygons;
 			mutable std::vector<Point2<float>> footprintPoints;
 			mutable std::string navPolygonName;
-            mutable std::vector<std::shared_ptr<NavObject>> allNavObjects;
-			mutable std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
+
+            std::vector<std::shared_ptr<NavObject>> allNavObjects;
+			std::vector<std::shared_ptr<NavPolygon>> allNavPolygons;
 	};
 
 }
