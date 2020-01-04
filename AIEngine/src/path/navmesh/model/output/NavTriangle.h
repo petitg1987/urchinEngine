@@ -5,7 +5,7 @@
 #include "UrchinCommon.h"
 
 #include "path/navmesh/model/output/NavLink.h"
-#include "path/navmesh/model/output/NavJumpConstraint.h"
+#include "path/navmesh/model/output/NavLinkConstraint.h"
 
 namespace urchin
 {
@@ -27,7 +27,7 @@ namespace urchin
             std::size_t getIndex(std::size_t) const;
 
             void addDirectLink(std::size_t, const std::shared_ptr<NavTriangle> &);
-            void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
+            void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
             void addLink(const std::shared_ptr<NavLink> &);
             void removeLinksTo(const std::shared_ptr<NavPolygon> &);
             std::vector<std::shared_ptr<NavLink>> getLinks() const;

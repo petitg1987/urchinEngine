@@ -15,7 +15,7 @@ class PathfindingAStarTest : public CppUnit::TestFixture
         void jumpWithBigConstraint();
 
     private:
-        std::vector<urchin::PathPoint> pathWithJump(urchin::NavJumpConstraint *);
+        std::vector<urchin::PathPoint> pathWithJump(urchin::NavLinkConstraint *);
 };
 
 

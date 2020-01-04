@@ -18,7 +18,7 @@ class EdgeJumpDetectionTest: public CppUnit::TestFixture
         void testIdenticalEdgesWrongDirection();
         void testCollinearEdges1();
         void testCollinearEdges2();
-        void testCollinearEdgesNoJump();
+        void testCollinearEdgesNoLink();
         void testCollinearEdgesWrongDirection();
 
         void testWrongStartJumpEdgeDirection();

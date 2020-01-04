@@ -1,19 +1,19 @@
-#ifndef URCHINENGINE_EDGEJUMPDETECTION_H
-#define URCHINENGINE_EDGEJUMPDETECTION_H
+#ifndef URCHINENGINE_EDGELINKDETECTION_H
+#define URCHINENGINE_EDGELINKDETECTION_H
 
 #include "UrchinCommon.h"
 
-#include "path/navmesh/jump/EdgeJumpResult.h"
+#include "path/navmesh/link/EdgeLinkResult.h"
 
 namespace urchin
 {
 
-    class EdgeJumpDetection
+    class EdgeLinkDetection
     {
         public:
-            explicit EdgeJumpDetection(float);
+            explicit EdgeLinkDetection(float);
 
-            EdgeJumpResult detectJump(const LineSegment3D<float> &, const LineSegment3D<float> &) const;
+            EdgeLinkResult detectLink(const LineSegment3D<float> &, const LineSegment3D<float> &) const;
 
         private:
             float jumpMaxLength;

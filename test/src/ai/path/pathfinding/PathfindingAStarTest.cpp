@@ -28,7 +28,7 @@ void PathfindingAStarTest::straightPath()
 
 void PathfindingAStarTest::jumpWithSmallConstraint()
 {
-    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(1.0f, 0.0f, 2));
+    std::vector<PathPoint> pathPoints = pathWithJump(new NavLinkConstraint(1.0f, 0.0f, 2));
 
     AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
@@ -43,7 +43,7 @@ void PathfindingAStarTest::jumpWithSmallConstraint()
 
 void PathfindingAStarTest::jumpWithBigConstraint()
 {
-    std::vector<PathPoint> pathPoints = pathWithJump(new NavJumpConstraint(0.01f, 0.0f, 2));
+    std::vector<PathPoint> pathPoints = pathWithJump(new NavLinkConstraint(0.01f, 0.0f, 2));
 
     AssertHelper::assertUnsignedInt(pathPoints.size(), 4);
     AssertHelper::assertPoint3FloatEquals(pathPoints[0].getPoint(), Point3<float>(1.0f, 0.0f, 1.0f));
@@ -56,7 +56,7 @@ void PathfindingAStarTest::jumpWithBigConstraint()
     AssertHelper::assertTrue(!pathPoints[3].isJumpPoint());
 }
 
-std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavJumpConstraint *navJumpConstraint)
+std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavLinkConstraint *navLinkConstraint)
 {
     std::vector<Point3<float>> polygon1Points = {Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(0.0f, 0.0f, 4.0f), Point3<float>(4.0f, 0.0f, 0.0f)};
     auto navPolygon1 = std::make_shared<NavPolygon>("poly1TestName", std::move(polygon1Points), nullptr);
@@ -68,7 +68,7 @@ std::vector<PathPoint> PathfindingAStarTest::pathWithJump(NavJumpConstraint *nav
     auto navPolygon2Triangle1 = std::make_shared<NavTriangle>(0, 1, 2);
     navPolygon2->addTriangles({navPolygon2Triangle1}, navPolygon2);
 
-    navPolygon1Triangle1->addJumpLink(1, navPolygon2Triangle1, navJumpConstraint);
+    navPolygon1Triangle1->addJumpLink(1, navPolygon2Triangle1, navLinkConstraint);
     auto navMesh = std::make_shared<NavMesh>();
     navMesh->copyAllPolygons({navPolygon1, navPolygon2});
     PathfindingAStar pathfindingAStar(navMesh);

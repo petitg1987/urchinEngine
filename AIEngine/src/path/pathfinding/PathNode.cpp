@@ -62,7 +62,7 @@ namespace urchin
 
         PathNodeEdgesLink pathNodeEdgesLink;
 
-        if(navLink->getLinkType() == NavLinkType::DIRECT)
+        if(navLink->getLinkType() == NavLinkType::DIRECT) //TODO review for null jump
         {
             LineSegment3D<float> sourceAndTargetEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
 
@@ -73,8 +73,8 @@ namespace urchin
         }else if(navLink->getLinkType() == NavLinkType::JUMP)
         {
             LineSegment3D<float> sourceEdge = previousNode->getNavTriangle()->computeEdge(navLink->getSourceEdgeIndex());
-            pathNodeEdgesLink.sourceEdge = navLink->getJumpConstraint()->computeSourceJumpEdge(sourceEdge);
-            pathNodeEdgesLink.targetEdge = getNavTriangle()->computeEdge(navLink->getJumpConstraint()->getTargetEdgeIndex());
+            pathNodeEdgesLink.sourceEdge = navLink->getLinkConstraint()->computeSourceJumpEdge(sourceEdge);
+            pathNodeEdgesLink.targetEdge = getNavTriangle()->computeEdge(navLink->getLinkConstraint()->getTargetEdgeIndex());
             pathNodeEdgesLink.areIdenticalEdges = false;
             return pathNodeEdgesLink;
         }

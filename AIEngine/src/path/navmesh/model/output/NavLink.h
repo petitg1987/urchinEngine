@@ -3,12 +3,11 @@
 
 #include <memory>
 
-#include "path/navmesh/model/output/NavJumpConstraint.h"
+#include "path/navmesh/model/output/NavLinkConstraint.h"
 
 namespace urchin
 {
 
-    class NavPolygon;
     class NavTriangle;
 
     enum NavLinkType
@@ -26,7 +25,7 @@ namespace urchin
         public:
             ~NavLink();
             static std::shared_ptr<NavLink> newDirectLink(unsigned int, const std::shared_ptr<NavTriangle> &);
-            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
+            static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
 
             std::shared_ptr<NavLink> copyLink(const std::shared_ptr<NavTriangle> &) const;
 
@@ -34,16 +33,16 @@ namespace urchin
             unsigned int getSourceEdgeIndex() const;
             std::shared_ptr<NavTriangle> getTargetTriangle() const;
 
-            const NavJumpConstraint *getJumpConstraint() const;
+            const NavLinkConstraint *getLinkConstraint() const;
 
         private:
-            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle> &, NavJumpConstraint *);
+            NavLink(NavLinkType, unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
 
             NavLinkType linkType;
             unsigned int sourceEdgeIndex;
             std::weak_ptr<NavTriangle> targetTriangle; //use weak_ptr to avoid cyclic references (=memory leak) between two triangles
 
-            NavJumpConstraint *jumpConstraint;
+            NavLinkConstraint *linkConstraint;
     };
 
 }

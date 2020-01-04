@@ -5,18 +5,18 @@
 
 namespace urchin
 {
-    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint) :
+    NavLink::NavLink(NavLinkType linkType, unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint) :
             linkType(linkType),
             sourceEdgeIndex(sourceEdgeIndex),
             targetTriangle(targetTriangle),
-            jumpConstraint(jumpConstraint)
+            linkConstraint(linkConstraint)
     {
 
     }
 
     NavLink::~NavLink()
     {
-        delete jumpConstraint;
+        delete linkConstraint;
     }
 
     std::shared_ptr<NavLink> NavLink::newDirectLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
@@ -24,17 +24,17 @@ namespace urchin
         return std::shared_ptr<NavLink>(new NavLink(NavLinkType::DIRECT, sourceEdgeIndex, targetTriangle, nullptr));
     }
 
-    std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint)
+    std::shared_ptr<NavLink> NavLink::newJumpLink(unsigned int sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint)
     {
-        assert(jumpConstraint != nullptr);
+        assert(linkConstraint != nullptr);
 
-        return std::shared_ptr<NavLink>(new NavLink(NavLinkType::JUMP, sourceEdgeIndex, targetTriangle, jumpConstraint));
+        return std::shared_ptr<NavLink>(new NavLink(NavLinkType::JUMP, sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 
     std::shared_ptr<NavLink> NavLink::copyLink(const std::shared_ptr<NavTriangle> &newTargetTriangle) const
     {
-        auto *replicateJumpConstraint = jumpConstraint ? new NavJumpConstraint(*jumpConstraint) : nullptr;
-        return std::shared_ptr<NavLink>(new NavLink(linkType, sourceEdgeIndex, newTargetTriangle, replicateJumpConstraint));
+        auto *replicateLinkConstraint = linkConstraint ? new NavLinkConstraint(*linkConstraint) : nullptr;
+        return std::shared_ptr<NavLink>(new NavLink(linkType, sourceEdgeIndex, newTargetTriangle, replicateLinkConstraint));
     }
 
     NavLinkType NavLink::getLinkType() const
@@ -54,11 +54,11 @@ namespace urchin
         return targetTriangle.lock();
     }
 
-    const NavJumpConstraint *NavLink::getJumpConstraint() const
+    const NavLinkConstraint *NavLink::getLinkConstraint() const
     {
-        assert(linkType == NavLinkType::JUMP);
+        assert(linkType == NavLinkType::JUMP); //TODO wrong ?
 
-        return jumpConstraint;
+        return linkConstraint;
     }
 
 }

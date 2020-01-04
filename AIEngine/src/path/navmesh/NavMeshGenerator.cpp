@@ -11,7 +11,7 @@
 #include "path/navmesh/polytope/aabbtree/NavObjectAABBNodeData.h"
 #include "path/navmesh/csg/PolygonsUnion.h"
 #include "path/navmesh/csg/PolygonsSubtraction.h"
-#include "path/navmesh/jump/EdgeJumpDetection.h"
+#include "path/navmesh/link/EdgeLinkDetection.h"
 
 #define WALKABLE_FACE_EXPAND_SIZE 0.0001f
 #define OBSTACLE_REDUCE_SIZE 0.0001f
@@ -453,7 +453,7 @@ namespace urchin
 
     void NavMeshGenerator::createNavLinks(const NavPolygonEdge &sourceExternalEdge, const std::shared_ptr<NavObject> &targetNavObject) const
     {
-        EdgeJumpDetection edgeJumpDetection(navMeshAgent->getJumpDistance());
+        EdgeLinkDetection edgeLinkDetection(navMeshAgent->getJumpDistance());
         LineSegment3D<float> sourceEdge = sourceExternalEdge.triangle->computeEdge(sourceExternalEdge.edgeIndex);
 
         for(const auto &targetNavPolygon : targetNavObject->getNavPolygons())
@@ -462,11 +462,11 @@ namespace urchin
             {
                 LineSegment3D<float> targetEdge = targetExternalEdge.triangle->computeEdge(targetExternalEdge.edgeIndex);
 
-                EdgeJumpResult edgeJumpResult = edgeJumpDetection.detectJump(sourceEdge, targetEdge);
-                if (edgeJumpResult.hasJumpRange())
+                EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(sourceEdge, targetEdge);
+                if (edgeLinkResult.isJumpLink())
                 {
-                    auto *navJumpConstraint = new NavJumpConstraint(edgeJumpResult.getJumpStartRange(), edgeJumpResult.getJumpEndRange(), targetExternalEdge.edgeIndex);
-                    sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navJumpConstraint);
+                    auto *navLinkConstraint = new NavLinkConstraint(edgeLinkResult.getLinkStartRange(), edgeLinkResult.getLinkEndRange(), targetExternalEdge.edgeIndex);
+                    sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navLinkConstraint);
                 }
             }
         }

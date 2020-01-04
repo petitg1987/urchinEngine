@@ -86,7 +86,7 @@ namespace urchin
         links.emplace_back(NavLink::newDirectLink(edgeIndex, targetTriangle));
     }
 
-    void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavJumpConstraint *jumpConstraint)
+    void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint)
     {
         #ifndef NDEBUG
             assert(edgeIndex <= 2);
@@ -96,7 +96,7 @@ namespace urchin
             }
         #endif
 
-        links.emplace_back(NavLink::newJumpLink(edgeIndex, targetTriangle, jumpConstraint));
+        links.emplace_back(NavLink::newJumpLink(edgeIndex, targetTriangle, linkConstraint));
     }
 
     void NavTriangle::addLink(const std::shared_ptr<NavLink> &navLink)

@@ -1,9 +1,9 @@
 #include <cmath>
-#include "EdgeJumpDetection.h"
+#include "EdgeLinkDetection.h"
 
 namespace urchin
 {
-    EdgeJumpDetection::EdgeJumpDetection(float jumpMaxLength) :
+    EdgeLinkDetection::EdgeLinkDetection(float jumpMaxLength) :
             jumpMaxLength(jumpMaxLength),
             jumpMaxSquareLength(jumpMaxLength * jumpMaxLength)
     {
@@ -11,41 +11,40 @@ namespace urchin
     }
 
     /**
-     * @param startJumpEdge Start jump edge. Edge must be part of a polygon CCW oriented when looked from top
-     * @param endJumpEdge End jump edge. Edge must be part of a polygon CCW oriented when looked from top
+     * @param startEdge Start edge. Edge must be part of a polygon CCW oriented when looked from top
+     * @param endEdge End edge. Edge must be part of a polygon CCW oriented when looked from top
      */
-    EdgeJumpResult EdgeJumpDetection::detectJump(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge) const
+    EdgeLinkResult EdgeLinkDetection::detectLink(const LineSegment3D<float> &startEdge, const LineSegment3D<float> &endEdge) const
     {
-        Line3D<float> startJumpLine = startJumpEdge.toLine();
-        Line3D<float> endJumpLine = endJumpEdge.toLine();
+        Line3D<float> startLine = startEdge.toLine();
+        Line3D<float> endLine = endEdge.toLine();
 
-        if(startJumpLine.minDistance(endJumpLine) > jumpMaxLength)
-        { //no jump between edges
-            return EdgeJumpResult::noEdgeJump();
+        if(startLine.minDistance(endLine) > jumpMaxLength)
+        { //no link between edges
+            return EdgeLinkResult::noEdgeLink();
         }
 
-        if(pointsAreEquals(startJumpEdge.getA(), endJumpEdge.getB()) && pointsAreEquals(startJumpEdge.getB(), endJumpEdge.getA()))
-        { //identical edges and proper jump direction
-            return EdgeJumpResult::collinearEdgeJump(1.0f, 0.0f);
+        if(pointsAreEquals(startEdge.getA(), endEdge.getB()) && pointsAreEquals(startEdge.getB(), endEdge.getA()))
+        { //identical edges and proper link direction
+            return EdgeLinkResult::collinearEdgeLink(1.0f, 0.0f);
         }
 
-        if(isCollinearLines(startJumpLine, endJumpLine))
+        if(isCollinearLines(startLine, endLine))
         { //collinear edges
-            float jumpStartRange, jumpEndRange;
-            if(isTouchingCollinearEdges(startJumpEdge, endJumpEdge, jumpStartRange, jumpEndRange)
-                    && startJumpEdge.toVector().dotProduct(endJumpEdge.toVector()) < 0.0f)
-            { //touching collinear edges and proper jump direction
-                assert(jumpStartRange > -0.0001f && jumpStartRange < 1.0001f);
-                assert(jumpEndRange > -0.0001f && jumpEndRange < 1.0001f);
+            float linkStartRange, linkEndRange;
+            if(isTouchingCollinearEdges(startEdge, endEdge, linkStartRange, linkEndRange) && startEdge.toVector().dotProduct(endEdge.toVector()) < 0.0f)
+            { //touching collinear edges and proper link direction
+                assert(linkStartRange > -0.0001f && linkStartRange < 1.0001f);
+                assert(linkEndRange > -0.0001f && linkEndRange < 1.0001f);
 
-                return EdgeJumpResult::collinearEdgeJump(jumpStartRange, jumpEndRange);
+                return EdgeLinkResult::collinearEdgeLink(linkStartRange, linkEndRange);
             }
 
-            return EdgeJumpResult::collinearNoEdgeJump();
+            return EdgeLinkResult::noEdgeLink();
         }
 
         const float sampleSpaces = 1.0f;
-        const unsigned int samplesCount = 1 + (unsigned int)std::ceil(startJumpEdge.toVector().length() / sampleSpaces);
+        const unsigned int samplesCount = 1 + (unsigned int)std::ceil(startEdge.toVector().length() / sampleSpaces);
 
         bool hasJumpPoints = false;
         float jumpStartRange = -std::numeric_limits<float>::max();
@@ -54,10 +53,10 @@ namespace urchin
         for(unsigned int i=0; i<samplesCount; ++i)
         {
             float alpha = (float)i / ((float)samplesCount - 1.0f);
-            Point3<float> testPoint = alpha * startJumpEdge.getA() + (1.0f - alpha) * startJumpEdge.getB();
-            Point3<float> projectedPoint = endJumpEdge.closestPoint(testPoint);
+            Point3<float> testPoint = alpha * startEdge.getA() + (1.0f - alpha) * startEdge.getB();
+            Point3<float> projectedPoint = endEdge.closestPoint(testPoint);
 
-            if(canJumpThatFar(testPoint, projectedPoint) && isProperJumpDirection(startJumpEdge, endJumpEdge, testPoint, projectedPoint))
+            if(canJumpThatFar(testPoint, projectedPoint) && isProperJumpDirection(startEdge, endEdge, testPoint, projectedPoint))
             {
                 hasJumpPoints = true;
 
@@ -77,20 +76,20 @@ namespace urchin
         {
             if(jumpStartRange - jumpEndRange < 0.01f)
             { //if the jump start edge is only one point or a thin line: ignore it
-                return EdgeJumpResult::noEdgeJump();
+                return EdgeLinkResult::noEdgeLink();
             }
-            return EdgeJumpResult::edgeJump(jumpStartRange, jumpEndRange);
+            return EdgeLinkResult::edgeJump(jumpStartRange, jumpEndRange);
         }
 
-        return EdgeJumpResult::noEdgeJump();
+        return EdgeLinkResult::noEdgeLink();
     }
 
-    bool EdgeJumpDetection::pointsAreEquals(const Point3<float> &point1, const Point3<float> &point2) const
+    bool EdgeLinkDetection::pointsAreEquals(const Point3<float> &point1, const Point3<float> &point2) const
     {
         return point1.squareDistance(point2) < 0.0001f;
     }
 
-    bool EdgeJumpDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const
+    bool EdgeLinkDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const
     {
         return line1.squareDistance(line2.getA()) < 0.0001f && line1.squareDistance(line2.getB()) < 0.0001f;
     }
@@ -99,7 +98,7 @@ namespace urchin
      * @param touchingStartRange [out] Touching start range
      * @param touchingEndRange [out] Touching end range
      */
-    bool EdgeJumpDetection::isTouchingCollinearEdges(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
+    bool EdgeLinkDetection::isTouchingCollinearEdges(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
                                                      float &touchingStartRange, float &touchingEndRange) const
     {
         Point3<float> minIntersection(NAN, NAN, NAN), maxIntersection(NAN, NAN, NAN);
@@ -131,13 +130,13 @@ namespace urchin
         return true;
     }
 
-    bool EdgeJumpDetection::canJumpThatFar(const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
+    bool EdgeLinkDetection::canJumpThatFar(const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
     {
         return jumpStartPoint.squareDistance(jumpEndPoint) < jumpMaxSquareLength;
     }
 
-    bool EdgeJumpDetection::isProperJumpDirection(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
-            const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
+    bool EdgeLinkDetection::isProperJumpDirection(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
+                                                  const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
     {
         constexpr float jumpFoV = 0.17364817766; //FoV of 80° = cos((PI_VALUE/180.0) * 80.0)
         Vector2<float> normalizedJumpVectorXZ = Point2<float>(jumpStartPoint.X, jumpStartPoint.Z).vector(Point2<float>(jumpEndPoint.X, jumpEndPoint.Z)).normalize();
