@@ -24,7 +24,7 @@ namespace urchin
 			Plane<float> getPlane(const Rectangle<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
 			const std::vector<CSGPolygon<float>> &getSelfObstacles() const override;
 			Point3<float> computeRealPoint(const Point2<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
-			NavTopography *newNavTopography() const override;
+            std::shared_ptr<const NavTopography> newNavTopography() const override;
 
 			const std::vector<Point3<float>> &getCcwPoints() const;
 			const Vector3<float> &getNormal() const;

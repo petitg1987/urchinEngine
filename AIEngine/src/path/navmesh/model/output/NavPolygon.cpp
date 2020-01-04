@@ -5,10 +5,10 @@
 namespace urchin
 {
 
-	NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>> &&points, const NavTopography *navTopography) :
+	NavPolygon::NavPolygon(std::string name, std::vector<Point3<float>> &&points, std::shared_ptr<const NavTopography> navTopography) :
         	name(std::move(name)),
 			points(std::move(points)),
-			navTopography(navTopography)
+			navTopography(std::move(navTopography))
 	{
 
 	}
@@ -16,17 +16,12 @@ namespace urchin
 	NavPolygon::NavPolygon(const NavPolygon &navPolygon) :
 			name(navPolygon.getName()),
 			points(navPolygon.getPoints()),
-			navTopography(nullptr) //no copy because not used
+			navTopography(navPolygon.getNavTopography())
 	{
         for(const auto &triangle : navPolygon.getTriangles())
         {
             triangles.emplace_back(std::make_shared<NavTriangle>(*triangle));
         }
-	}
-
-	NavPolygon::~NavPolygon()
-	{
-		delete navTopography;
 	}
 
     const std::string &NavPolygon::getName() const
@@ -65,7 +60,7 @@ namespace urchin
 		return triangles[index];
 	}
 
-	const NavTopography *NavPolygon::getNavTopography() const
+	const std::shared_ptr<const NavTopography> &NavPolygon::getNavTopography() const
 	{
 		return navTopography;
 	}

@@ -108,10 +108,10 @@ namespace urchin
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }
 
-    NavTopography *PolytopeTerrainSurface::newNavTopography() const
+    std::shared_ptr<const NavTopography> PolytopeTerrainSurface::newNavTopography() const
     {
         auto constHeightfieldPointHelper = std::const_pointer_cast<const HeightfieldPointHelper<float>>(heightfieldPointHelper);
-        return new NavTerrainTopography(constHeightfieldPointHelper, position);
+        return std::make_shared<NavTerrainTopography>(constHeightfieldPointHelper, position);
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const
