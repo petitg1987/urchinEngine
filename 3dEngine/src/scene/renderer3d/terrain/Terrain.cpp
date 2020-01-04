@@ -8,6 +8,10 @@
 
 namespace urchin
 {
+
+    /**
+     * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
+     */
     Terrain::Terrain(std::shared_ptr<TerrainMesh> &mesh, std::unique_ptr<TerrainMaterial> &material, const Point3<float> &position) :
             bufferIDs(),
             vertexArrayObject(0),
@@ -149,6 +153,9 @@ namespace urchin
         return grass.get();
     }
 
+    /**
+     * @param position Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
+     */
     void Terrain::setPosition(const Point3<float> &position)
     {
         this->position = position;
@@ -158,6 +165,9 @@ namespace urchin
         refreshGrassMesh(); //grass uses terrain position: refresh is required
     }
 
+    /**
+     * @return Terrain position. Position is centered on XZ axis and Y value represents a point without elevation.
+     */
     const Point3<float> &Terrain::getPosition() const
     {
         return position;

@@ -89,11 +89,13 @@ namespace urchin
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
                                                       aiTerrain->getXLength(), aiTerrain->getZLength());
+
+        //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
         std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
-        auto expandedSurface = std::make_shared<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
+        auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
                                                                         aiTerrain->getXLength(), aiTerrain->getZLength(), selfObstacles);
-        expandedSurface->setWalkableCandidate(true);
-        expandedSurfaces.emplace_back(std::move(expandedSurface));
+        terrainSurface->setWalkableCandidate(true);
+        expandedSurfaces.emplace_back(std::move(terrainSurface));
 
         auto expandedPolytope = std::make_unique<Polytope>(aiTerrain->getName(), expandedSurfaces);
         expandedPolytope->setWalkableCandidate(true);
@@ -286,7 +288,7 @@ namespace urchin
             for(unsigned int i=0; i<4; ++i)
             {
                 if(isSlopeWalkable)
-                { //walkable surfaces are not expanded on X and Z axis to avoid character to walk outside the walkable surface
+                { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
                 }else
                 {
