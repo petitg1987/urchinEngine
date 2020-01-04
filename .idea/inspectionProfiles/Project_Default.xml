@@ -6,6 +6,7 @@
     </inspection_tool>
     <inspection_tool class="MemberFunctionCanBeStaticInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedGlobalDeclarationInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedProperty" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ValueMayNotFitIntoReceiver" enabled="true" level="INFORMATION" enabled_by_default="true" />
   </profile>
 </component>

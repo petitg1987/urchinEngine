@@ -23,8 +23,7 @@ namespace urchin
             std::vector<std::unique_ptr<Polytope>> buildExpandedPolytope(const std::shared_ptr<AITerrain> &, const std::shared_ptr<NavMeshAgent> &);
 
         private:
-            static const unsigned int POINT_INDEX_TO_PLANES[][4];
-            static const unsigned int PLANE_INDEX_TO_POINTS[][3];
+            PolytopeBuilder();
 
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, OBBox<float> *, const std::shared_ptr<NavMeshAgent> &) const;
             std::unique_ptr<Polytope> createExpandedPolytopeFor(const std::string &, Capsule<float> *, const std::shared_ptr<NavMeshAgent> &) const;
@@ -40,6 +39,11 @@ namespace urchin
 
             std::vector<std::shared_ptr<PolytopeSurface>> createExpandedPolytopeSurfaces(const std::vector<Point3<float>> &,
                     const std::vector<Point3<float>> &, const std::shared_ptr<NavMeshAgent> &) const;
+
+            static const unsigned int POINT_INDEX_TO_PLANES[][4];
+            static const unsigned int PLANE_INDEX_TO_POINTS[][3];
+
+            const float polytopeMaxSize;
     };
 
 }

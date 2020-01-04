@@ -29,6 +29,12 @@ namespace urchin
             {1, 3, 5} //FBL
     };
 
+    PolytopeBuilder::PolytopeBuilder() :
+            polytopeMaxSize(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))
+    {
+
+    }
+
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject> &aiObject, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
     {
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
@@ -72,7 +78,7 @@ namespace urchin
     }
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
-    { //TODO divide terrain in square and add them in returned std::vector
+    { //TODO divide terrain in square of 'polytopeMaxSize' and add them in returned std::vector
         #ifndef NDEBUG
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
@@ -98,7 +104,7 @@ namespace urchin
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, OBBox<float> *box, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const
-    { //TODO divide big box in several smallest boxes
+    { //TODO divide big box in several smallest boxes of 'polytopeMaxSize'
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
         std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
