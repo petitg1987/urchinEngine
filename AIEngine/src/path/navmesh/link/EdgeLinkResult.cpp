@@ -32,7 +32,7 @@ namespace urchin
     }
 
     bool EdgeLinkResult::hasEdgesLink() const
-    { //TODO use this method
+    {
         return bHasEdgesLink;
     }
 

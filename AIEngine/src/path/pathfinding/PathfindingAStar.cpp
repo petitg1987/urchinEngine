@@ -259,7 +259,7 @@ namespace urchin
             if(pathPortal->hasTransitionPoint())
             {
                 if(followTopography && !pathPoints.empty())
-                {
+                { //TODO follow topography seems to not work anymore (see testEngineSfml)
                     const NavTopography *navPolygonTopography = pathPortal->getPreviousPathNode()->getNavTriangle()->getNavPolygon()->getNavTopography();
                     if(navPolygonTopography)
                     {

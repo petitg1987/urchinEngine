@@ -26,7 +26,8 @@ namespace urchin
             const std::size_t *getIndices() const;
             std::size_t getIndex(std::size_t) const;
 
-            void addDirectLink(std::size_t, const std::shared_ptr<NavTriangle> &);
+            void addStandardLink(std::size_t, const std::shared_ptr<NavTriangle> &);
+            void addJoinPolygonsLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
             void addJumpLink(std::size_t, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
             void addLink(const std::shared_ptr<NavLink> &);
             void removeLinksTo(const std::shared_ptr<NavPolygon> &);
@@ -37,6 +38,8 @@ namespace urchin
             LineSegment3D<float> computeEdge(std::size_t) const;
 
         private:
+            void assertLinksValidity();
+
             std::weak_ptr<NavPolygon> navPolygon; //use weak_ptr to avoid cyclic references (=memory leak) between triangle and polygon
 
             std::size_t indices[3];

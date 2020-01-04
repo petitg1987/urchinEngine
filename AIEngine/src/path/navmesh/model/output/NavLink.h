@@ -12,8 +12,9 @@ namespace urchin
 
     enum NavLinkType
     {
-        DIRECT,
-        JUMP
+        STANDARD, //link between two triangles of the same polygon
+        JOIN_POLYGONS, //link between two triangles of different polygons
+        JUMP //jump between two triangles
     };
 
     /**
@@ -24,7 +25,8 @@ namespace urchin
     {
         public:
             ~NavLink();
-            static std::shared_ptr<NavLink> newDirectLink(unsigned int, const std::shared_ptr<NavTriangle> &);
+            static std::shared_ptr<NavLink> newStandardLink(unsigned int, const std::shared_ptr<NavTriangle> &);
+            static std::shared_ptr<NavLink> newJoinPolygonsLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
             static std::shared_ptr<NavLink> newJumpLink(unsigned int, const std::shared_ptr<NavTriangle> &, NavLinkConstraint *);
 
             std::shared_ptr<NavLink> copyLink(const std::shared_ptr<NavTriangle> &) const;

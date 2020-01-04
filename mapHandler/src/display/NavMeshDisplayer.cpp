@@ -37,7 +37,7 @@ namespace urchin
 
                     for (const auto &link : triangle->getLinks())
                     {
-                        if (link->getLinkType() == NavLinkType::JUMP) //TODO review for null jump
+                        if (link->getLinkType() == NavLinkType::JUMP)
                         {
                             LineSegment3D<float> startEdge = link->getLinkConstraint()->computeSourceJumpEdge(triangle->computeEdge(link->getSourceEdgeIndex()));
                             quadJumpPoints.emplace_back(startEdge.getA());

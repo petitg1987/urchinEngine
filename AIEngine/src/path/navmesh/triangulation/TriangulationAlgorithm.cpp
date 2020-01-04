@@ -292,18 +292,18 @@ namespace urchin
             {
                 if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 0, 1))
                 {
-                    currTriangle->addDirectLink(0, prevTriangle);
-                    prevTriangle->addDirectLink(prevEdgeIndex, currTriangle);
+                    currTriangle->addStandardLink(0, prevTriangle);
+                    prevTriangle->addStandardLink(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 1, 2))
                 {
-                    currTriangle->addDirectLink(1, prevTriangle);
-                    prevTriangle->addDirectLink(prevEdgeIndex, currTriangle);
+                    currTriangle->addStandardLink(1, prevTriangle);
+                    prevTriangle->addStandardLink(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 } else if (areSameEdge(prevTriangle, prevEdgeIndex, edgeIndex, currTriangle, 2, 0))
                 {
-                    currTriangle->addDirectLink(2, prevTriangle);
-                    prevTriangle->addDirectLink(prevEdgeIndex, currTriangle);
+                    currTriangle->addStandardLink(2, prevTriangle);
+                    prevTriangle->addStandardLink(prevEdgeIndex, currTriangle);
                     missingTriangleNeighbor--;
                 }
             }
@@ -334,8 +334,8 @@ namespace urchin
 					} else
 					{
                         std::size_t neighborIndex = itFind->second.triangleIndex;
-						currTriangle->addDirectLink(prevEdgeIndex, triangles[neighborIndex]);
-						triangles[neighborIndex]->addDirectLink(itFind->second.edgeIndex, currTriangle);
+						currTriangle->addStandardLink(prevEdgeIndex, triangles[neighborIndex]);
+						triangles[neighborIndex]->addStandardLink(itFind->second.edgeIndex, currTriangle);
 
 						sharedMonotoneEdges.erase(itFind);
 					}

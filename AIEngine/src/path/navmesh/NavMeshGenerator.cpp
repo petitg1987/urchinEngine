@@ -463,10 +463,16 @@ namespace urchin
                 LineSegment3D<float> targetEdge = targetExternalEdge.triangle->computeEdge(targetExternalEdge.edgeIndex);
 
                 EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(sourceEdge, targetEdge);
-                if (edgeLinkResult.isJumpLink())
+                if(edgeLinkResult.hasEdgesLink())
                 {
                     auto *navLinkConstraint = new NavLinkConstraint(edgeLinkResult.getLinkStartRange(), edgeLinkResult.getLinkEndRange(), targetExternalEdge.edgeIndex);
-                    sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navLinkConstraint);
+                    if (edgeLinkResult.isJumpLink())
+                    {
+                        sourceExternalEdge.triangle->addJumpLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navLinkConstraint);
+                    } else
+                    {
+                        sourceExternalEdge.triangle->addJoinPolygonsLink(sourceExternalEdge.edgeIndex, targetExternalEdge.triangle, navLinkConstraint);
+                    }
                 }
             }
         }

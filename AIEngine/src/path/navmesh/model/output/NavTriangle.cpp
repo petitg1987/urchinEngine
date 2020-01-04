@@ -73,35 +73,25 @@ namespace urchin
         return indices[index];
     }
 
-    void NavTriangle::addDirectLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
+    void NavTriangle::addStandardLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle)
     {
-        #ifndef NDEBUG
-            assert(edgeIndex <= 2);
-            for(const auto &link : getLinks())
-            {
-                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have 2 direct links on same edge
-            }
-        #endif
-
-        links.emplace_back(NavLink::newDirectLink(edgeIndex, targetTriangle));
+        addLink(NavLink::newStandardLink(sourceEdgeIndex, targetTriangle));
     }
 
-    void NavTriangle::addJumpLink(std::size_t edgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint)
+    void NavTriangle::addJoinPolygonsLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint)
     {
-        #ifndef NDEBUG
-            assert(edgeIndex <= 2);
-            for(const auto &link : getLinks())
-            {
-                assert(link->getSourceEdgeIndex() != edgeIndex || link->getLinkType() != NavLinkType::DIRECT); //cannot have a direct links and jump link on same edge
-            }
-        #endif
+        addLink(NavLink::newJoinPolygonsLink(sourceEdgeIndex, targetTriangle, linkConstraint));
+    }
 
-        links.emplace_back(NavLink::newJumpLink(edgeIndex, targetTriangle, linkConstraint));
+    void NavTriangle::addJumpLink(std::size_t sourceEdgeIndex, const std::shared_ptr<NavTriangle> &targetTriangle, NavLinkConstraint *linkConstraint)
+    {
+        addLink(NavLink::newJumpLink(sourceEdgeIndex, targetTriangle, linkConstraint));
     }
 
     void NavTriangle::addLink(const std::shared_ptr<NavLink> &navLink)
     {
         links.emplace_back(navLink);
+        assertLinksValidity();
     }
 
     void NavTriangle::removeLinksTo(const std::shared_ptr<NavPolygon> &navPolygon)
@@ -134,7 +124,7 @@ namespace urchin
     {
         for(const auto &link : links)
         {
-            if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::DIRECT)
+            if(link->getSourceEdgeIndex() == edgeIndex && link->getLinkType() == NavLinkType::STANDARD)
             {
                 return false;
             }
@@ -148,6 +138,41 @@ namespace urchin
 
         std::size_t edgeEndIndex = (edgeStartIndex + 1) % 3;
         return LineSegment3D<float>(getNavPolygon()->getPoint(indices[edgeStartIndex]), getNavPolygon()->getPoint(indices[edgeEndIndex]));
+    }
+
+    void NavTriangle::assertLinksValidity()
+    {
+        #ifndef NDEBUG
+            for(unsigned int edgeIndex=0; edgeIndex <3; ++edgeIndex)
+            {
+                unsigned int countStandardLink = 0;
+                unsigned int countJoinPolygonsLink = 0;
+                unsigned int countJumpLink = 0;
+                for(const auto &link : getLinks())
+                {
+                    assert(link->getSourceEdgeIndex() <= 2);
+                    if(link->getSourceEdgeIndex() == edgeIndex)
+                    {
+                        switch(link->getLinkType())
+                        {
+                            case NavLinkType::STANDARD: countStandardLink++; break;
+                            case NavLinkType::JOIN_POLYGONS: countJoinPolygonsLink++; break;
+                            case NavLinkType::JUMP: countJumpLink++; break;
+                        }
+                    }
+                }
+
+                assert(countStandardLink <= 1);
+                if(countStandardLink > 0)
+                {
+                    assert(countJoinPolygonsLink == 0);
+                    assert(countJumpLink == 0);
+                }else if(countJoinPolygonsLink > 0)
+                {
+                    assert(countJumpLink == 0);
+                }
+            }
+        #endif
     }
 
 }
