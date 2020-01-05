@@ -77,6 +77,9 @@ namespace urchin
         return zSize;
     }
 
+    /**
+     * @return Terrain local vertices. First point is the far left point (min X, min Z) and the last pint the near right point (max X, max Z).
+     */
     const std::vector<Point3<float>> &TerrainMesh::getVertices() const
     {
         return vertices;

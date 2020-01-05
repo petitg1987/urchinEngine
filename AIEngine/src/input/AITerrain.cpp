@@ -5,9 +5,9 @@
 namespace urchin
 {
     AITerrain::AITerrain(std::string name, const Transform<float> &transform, bool bIsObstacleCandidate,
-                         std::vector<Point3<float>> vertices, unsigned int xLength, unsigned int zLength) :
+                         std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength) :
             AIEntity(std::move(name), transform, bIsObstacleCandidate),
-            vertices(std::move(vertices)), xLength(xLength), zLength(zLength)
+            localVertices(std::move(localVertices)), xLength(xLength), zLength(zLength)
     {
 
     }
@@ -17,9 +17,9 @@ namespace urchin
         return AIEntity::TERRAIN;
     }
 
-    const std::vector<Point3<float>> &AITerrain::getVertices() const
+    const std::vector<Point3<float>> &AITerrain::getLocalVertices() const
     {
-        return vertices;
+        return localVertices;
     }
 
     unsigned int AITerrain::getXLength() const

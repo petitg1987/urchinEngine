@@ -87,13 +87,13 @@ namespace urchin
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
-        TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
+        TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getLocalVertices(),
                                                       aiTerrain->getXLength(), aiTerrain->getZLength());
+        std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
 
         //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
-        std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
-        auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getVertices(),
-                                                                        aiTerrain->getXLength(), aiTerrain->getZLength(), selfObstacles);
+        auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getLocalVertices(),
+                                                                       aiTerrain->getXLength(), aiTerrain->getZLength(), selfObstacles);
         terrainSurface->setWalkableCandidate(true);
         expandedSurfaces.emplace_back(std::move(terrainSurface));
 
