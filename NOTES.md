@@ -1,8 +1,12 @@
 # Global
 - Coordinates:
-    - X+ (left), Z- (right)
-    - Y+ (top), Y- (bottom)
-    - Z+ (near), Z- (far)
+    - 3D (e.g.: *3D models, Physics rigid bodies, 3D Nav mesh*)
+        - X+ (left), X- (right)
+        - Y+ (top), Y- (bottom)
+        - Z+ (near), Z- (far)
+    - 2D top view (e.g.: *2D Nav mesh*)
+        - X+ (left), X- (right)
+        - Y+ (far), Y- (near)
 - Error handling:
     - Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
     - Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer

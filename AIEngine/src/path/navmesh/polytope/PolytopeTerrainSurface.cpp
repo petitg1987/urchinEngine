@@ -51,18 +51,12 @@ namespace urchin
 
     Rectangle<float> PolytopeTerrainSurface::computeXZRectangle() const
     {
-        Point2<float> minPoint(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-        Point2<float> maxPoint(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-        for(const auto &localVertex : localVertices)
-        {
-            Point3<float> globalVertex = position + localVertex;
+        Point3<float> farRightVertex = position + localVertices[xLength - 1];
+        Point3<float> nearLeftVertex = position + localVertices[(xLength * zLength) - xLength];
 
-            minPoint.X = minPoint.X > globalVertex.X ? globalVertex.X : minPoint.X;
-            minPoint.Y = minPoint.Y > -globalVertex.Z ? -globalVertex.Z : minPoint.Y;
+        Point2<float> minPoint(nearLeftVertex.X, -nearLeftVertex.Z);
+        Point2<float> maxPoint(farRightVertex.X, -farRightVertex.Z);
 
-            maxPoint.X = maxPoint.X < globalVertex.X ? globalVertex.X : minPoint.X;
-            maxPoint.Y = maxPoint.Y < -globalVertex.Z ? -globalVertex.Z : minPoint.Y;
-        }
         return Rectangle<float>(minPoint, maxPoint);
     }
 
