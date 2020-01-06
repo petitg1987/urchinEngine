@@ -1,6 +1,8 @@
 #include <cmath>
 #include "EdgeLinkDetection.h"
 
+#define MIN_EDGE_LINK_SQUARE_LENGTH 0.02f
+
 namespace urchin
 {
     EdgeLinkDetection::EdgeLinkDetection(float jumpMaxLength) :
@@ -32,11 +34,8 @@ namespace urchin
         if(isCollinearLines(startLine, endLine))
         { //collinear edges
             float linkStartRange, linkEndRange;
-            if(isTouchingCollinearEdges(startEdge, endEdge, linkStartRange, linkEndRange) && startEdge.toVector().dotProduct(endEdge.toVector()) < 0.0f)
-            { //touching collinear edges and proper link direction
-                assert(linkStartRange > -0.0001f && linkStartRange < 1.0001f);
-                assert(linkEndRange > -0.0001f && linkEndRange < 1.0001f);
-
+            if(hasCollinearEdgesLink(startEdge, endEdge, linkStartRange, linkEndRange) && startEdge.toVector().dotProduct(endEdge.toVector()) < 0.0f)
+            { //collinear edges link and proper link direction
                 return EdgeLinkResult::collinearEdgeLink(linkStartRange, linkEndRange);
             }
 
@@ -74,8 +73,8 @@ namespace urchin
 
         if(hasJumpPoints)
         {
-            if(jumpStartRange - jumpEndRange < 0.01f)
-            { //if the jump start edge is only one point or a thin line: ignore it
+            if(isRangeTooSmall(jumpStartRange, jumpEndRange, startEdge))
+            {
                 return EdgeLinkResult::noEdgeLink();
             }
             return EdgeLinkResult::edgeJump(jumpStartRange, jumpEndRange);
@@ -98,14 +97,14 @@ namespace urchin
      * @param touchingStartRange [out] Touching start range
      * @param touchingEndRange [out] Touching end range
      */
-    bool EdgeLinkDetection::isTouchingCollinearEdges(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
+    bool EdgeLinkDetection::hasCollinearEdgesLink(const LineSegment3D<float> &startEdge, const LineSegment3D<float> &endEdge,
                                                      float &touchingStartRange, float &touchingEndRange) const
     {
         Point3<float> minIntersection(NAN, NAN, NAN), maxIntersection(NAN, NAN, NAN);
         for(std::size_t i=0; i<3; ++i)
         {
-            minIntersection[i] = std::max(std::min(startJumpEdge.getA()[i], startJumpEdge.getB()[i]), std::min(endJumpEdge.getA()[i], endJumpEdge.getB()[i]));
-            maxIntersection[i] = std::min(std::max(startJumpEdge.getA()[i], startJumpEdge.getB()[i]), std::max(endJumpEdge.getA()[i], endJumpEdge.getB()[i]));
+            minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
+            maxIntersection[i] = std::min(std::max(startEdge.getA()[i], startEdge.getB()[i]), std::max(endEdge.getA()[i], endEdge.getB()[i]));
 
             if(minIntersection[i] > maxIntersection[i] + 0.0001f)
             { //collinear edges are not touching each other
@@ -119,15 +118,31 @@ namespace urchin
         touchingEndRange = 0.0f;
         for(std::size_t i=0; i<3; ++i)
         {
-            float denominator = startJumpEdge.getA()[i] - startJumpEdge.getB()[i];
+            float denominator = startEdge.getA()[i] - startEdge.getB()[i];
             if(!MathAlgorithm::isZero(denominator))
             {
-                touchingStartRange = (minIntersection[i] - startJumpEdge.getB()[i]) / denominator;
-                touchingEndRange = (maxIntersection[i] - startJumpEdge.getB()[i]) / denominator;
-                break;
+                touchingStartRange = (minIntersection[i] - startEdge.getB()[i]) / denominator;
+                touchingEndRange = (maxIntersection[i] - startEdge.getB()[i]) / denominator;
+
+                if(touchingStartRange < touchingEndRange)
+                {
+                    std::swap(touchingStartRange, touchingEndRange);
+                }
+
+                if(isRangeTooSmall(touchingStartRange, touchingEndRange, startEdge))
+                {
+                    return false;
+                }
+
+                assert(touchingStartRange > -0.0001f && touchingStartRange < 1.0001f);
+                assert(touchingEndRange > -0.0001f && touchingEndRange < 1.0001f);
+
+                return true;
             }
         }
-        return true;
+
+        assert(false);
+        return false;
     }
 
     bool EdgeLinkDetection::canJumpThatFar(const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
@@ -154,6 +169,14 @@ namespace urchin
         }
 
         return false;
+    }
+
+    bool EdgeLinkDetection::isRangeTooSmall(float startRange, float endRange, const LineSegment3D<float> &startEdge) const
+    { //if the link on start edge is only one point or a thin line: ignore it for performance and aesthetic reason
+        Point3<float> startLinkPoint = startRange * startEdge.getA() + (1.0f - startRange) * startEdge.getB();
+        Point3<float> endLinkPoint = endRange * startEdge.getA() + (1.0f - endRange) * startEdge.getB();
+
+        return startLinkPoint.squareDistance(endLinkPoint) < MIN_EDGE_LINK_SQUARE_LENGTH;
     }
 
 }

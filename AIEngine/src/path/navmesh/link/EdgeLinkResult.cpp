@@ -13,7 +13,7 @@ namespace urchin
             linkEndRange(linkEndRange)
     {
         assert(!bIsJumpLink || bHasEdgesLink);
-        assert(!bHasEdgesLink || linkStartRange >= linkEndRange);
+        assert(!bHasEdgesLink || linkStartRange > linkEndRange);
     }
 
     EdgeLinkResult EdgeLinkResult::noEdgeLink()

@@ -31,7 +31,7 @@
 #include "ai/path/navmesh/triangulation/MonotonePolygonTest.h"
 #include "ai/path/navmesh/triangulation/TriangulationTest.h"
 #include "ai/path/navmesh/polytope/services/TerrainObstacleServiceTest.h"
-#include "ai/path/navmesh/jump/EdgeJumpDetectionTest.h"
+#include "ai/path/navmesh/jump/EdgeLinkDetectionTest.h"
 #include "ai/path/navmesh/NavMeshGeneratorTest.h"
 #include "ai/path/pathfinding/FunnelAlgorithmTest.h"
 #include "ai/path/pathfinding/PathfindingAStarTest.h"
@@ -96,7 +96,7 @@ void aiTests(CppUnit::TextUi::TestRunner &runner)
     runner.addTest(MonotonePolygonTest::suite());
     runner.addTest(TriangulationTest::suite());
     runner.addTest(TerrainObstacleServiceTest::suite());
-    runner.addTest(EdgeJumpDetectionTest::suite());
+    runner.addTest(EdgeLinkDetectionTest::suite());
     runner.addTest(NavMeshGeneratorTest::suite());
 
     //pathfinding

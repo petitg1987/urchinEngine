@@ -2,11 +2,11 @@
 #include <cppunit/TestCaller.h>
 #include "UrchinCommon.h"
 
-#include "EdgeJumpDetectionTest.h"
+#include "EdgeLinkDetectionTest.h"
 #include "AssertHelper.h"
 using namespace urchin;
 
-void EdgeJumpDetectionTest::testNearParallelEdges()
+void EdgeLinkDetectionTest::testNearParallelEdges()
 {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
@@ -20,7 +20,7 @@ void EdgeJumpDetectionTest::testNearParallelEdges()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
-void EdgeJumpDetectionTest::testFarParallelEdges()
+void EdgeLinkDetectionTest::testFarParallelEdges()
 {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 50.0f), Point3<float>(-20.0f, 0.0f, 50.0f));
@@ -31,7 +31,7 @@ void EdgeJumpDetectionTest::testFarParallelEdges()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeJumpDetectionTest::testIdenticalEdges()
+void EdgeLinkDetectionTest::testIdenticalEdges()
 {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
@@ -46,7 +46,7 @@ void EdgeJumpDetectionTest::testIdenticalEdges()
 
 }
 
-void EdgeJumpDetectionTest::testIdenticalEdgesWrongDirection()
+void EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection()
 {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
@@ -57,7 +57,7 @@ void EdgeJumpDetectionTest::testIdenticalEdgesWrongDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeJumpDetectionTest::testCollinearEdges1()
+void EdgeLinkDetectionTest::testCollinearEdges1()
 {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(2.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
@@ -71,7 +71,7 @@ void EdgeJumpDetectionTest::testCollinearEdges1()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.333333333f);
 }
 
-void EdgeJumpDetectionTest::testCollinearEdges2()
+void EdgeLinkDetectionTest::testCollinearEdges2()
 {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, -1.0f));
     LineSegment3D<float> endEdge(Point3<float>(6.0f, 0.0f, -2.0f), Point3<float>(1.5f, 0.0f, -0.5f));
@@ -85,7 +85,21 @@ void EdgeJumpDetectionTest::testCollinearEdges2()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
 }
 
-void EdgeJumpDetectionTest::testCollinearEdgesNoLink()
+void EdgeLinkDetectionTest::testCollinearEdges3()
+{
+    LineSegment3D<float> startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
+    LineSegment3D<float> endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-99.0f, 0.0f, 0.0f));
+
+    EdgeLinkDetection edgeLinkDetection(1.5f);
+    EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
+
+    AssertHelper::assertTrue(edgeLinkResult.hasEdgesLink());
+    AssertHelper::assertTrue(!edgeLinkResult.isJumpLink());
+    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkStartRange(), 0.02f);
+    AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.0f);
+}
+
+void EdgeLinkDetectionTest::testCollinearEdgesNoLink()
 {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(1.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(4.0f, 0.0f, 0.0f));
@@ -96,7 +110,18 @@ void EdgeJumpDetectionTest::testCollinearEdgesNoLink()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeJumpDetectionTest::testCollinearEdgesWrongDirection()
+void EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint()
+{
+    LineSegment3D<float> startEdge(Point3<float>(-50.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
+    LineSegment3D<float> endEdge(Point3<float>(-150.0f, 0.0f, 0.0f), Point3<float>(-100.0f, 0.0f, 0.0f));
+
+    EdgeLinkDetection edgeLinkDetection(1.5f);
+    EdgeLinkResult edgeLinkResult = edgeLinkDetection.detectLink(startEdge, endEdge);
+
+    AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
+}
+
+void EdgeLinkDetectionTest::testCollinearEdgesWrongDirection()
 {
     LineSegment3D<float> startEdge(Point3<float>(0.0f, 0.0f, 0.0f), Point3<float>(3.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(1.0f, 0.0f, 0.0f), Point3<float>(2.0f, 0.0f, 0.0f));
@@ -107,7 +132,7 @@ void EdgeJumpDetectionTest::testCollinearEdgesWrongDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeJumpDetectionTest::testWrongStartJumpEdgeDirection()
+void EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection()
 {
     LineSegment3D<float> startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(20.0f, 0.0f, 1.0f), Point3<float>(-20.0f, 0.0f, 1.0f));
@@ -118,7 +143,7 @@ void EdgeJumpDetectionTest::testWrongStartJumpEdgeDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will stay inside the polygon represented by startEdge
 }
 
-void EdgeJumpDetectionTest::testWrongEndJumpEdgeDirection()
+void EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection()
 {
     LineSegment3D<float> startEdge(Point3<float>(-5.0f, 0.0f, 0.0f), Point3<float>(5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
@@ -129,7 +154,7 @@ void EdgeJumpDetectionTest::testWrongEndJumpEdgeDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink()); //Cannot jump because character will be on the edge of the polygon represented by endEdge but in direction of the outside
 }
 
-void EdgeJumpDetectionTest::testWrongJumpEdgesDirection()
+void EdgeLinkDetectionTest::testWrongJumpEdgesDirection()
 {
     LineSegment3D<float> startEdge(Point3<float>(5.0f, 0.0f, 0.0f), Point3<float>(-5.0f, 0.0f, 0.0f));
     LineSegment3D<float> endEdge(Point3<float>(-20.0f, 0.0f, 1.0f), Point3<float>(20.0f, 0.0f, 1.0f));
@@ -140,7 +165,7 @@ void EdgeJumpDetectionTest::testWrongJumpEdgesDirection()
     AssertHelper::assertTrue(!edgeLinkResult.hasEdgesLink());
 }
 
-void EdgeJumpDetectionTest::testCrossEdges()
+void EdgeLinkDetectionTest::testCrossEdges()
 {
     LineSegment3D<float> startEdge(Point3<float>(-20.0f, 0.0f, 20.0f), Point3<float>(20.0f, 0.0f, -20.0f));
     LineSegment3D<float> endEdge(Point3<float>(0.0f, 0.0f, -20.0f), Point3<float>(0.0f, 0.0f, 20.0f));
@@ -154,25 +179,27 @@ void EdgeJumpDetectionTest::testCrossEdges()
     AssertHelper::assertFloatEquals(edgeLinkResult.getLinkEndRange(), 0.5f, 0.009f);
 }
 
-CppUnit::Test *EdgeJumpDetectionTest::suite()
+CppUnit::Test *EdgeLinkDetectionTest::suite()
 {
     auto *suite = new CppUnit::TestSuite("EdgeJumpDetectionTest");
 
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testNearParallelEdges", &EdgeJumpDetectionTest::testNearParallelEdges));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testFarParallelEdges", &EdgeJumpDetectionTest::testFarParallelEdges));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testNearParallelEdges", &EdgeLinkDetectionTest::testNearParallelEdges));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testFarParallelEdges", &EdgeLinkDetectionTest::testFarParallelEdges));
 
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testIdenticalEdges", &EdgeJumpDetectionTest::testIdenticalEdges));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testIdenticalEdgesWrongDirection", &EdgeJumpDetectionTest::testIdenticalEdgesWrongDirection));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testCollinearEdges1", &EdgeJumpDetectionTest::testCollinearEdges1));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testCollinearEdges2", &EdgeJumpDetectionTest::testCollinearEdges2));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testCollinearEdgesNoLink", &EdgeJumpDetectionTest::testCollinearEdgesNoLink));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testCollinearEdgesWrongDirection", &EdgeJumpDetectionTest::testCollinearEdgesWrongDirection));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testIdenticalEdges", &EdgeLinkDetectionTest::testIdenticalEdges));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testIdenticalEdgesWrongDirection", &EdgeLinkDetectionTest::testIdenticalEdgesWrongDirection));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdges1", &EdgeLinkDetectionTest::testCollinearEdges1));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdges2", &EdgeLinkDetectionTest::testCollinearEdges2));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdges3", &EdgeLinkDetectionTest::testCollinearEdges3));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdgesNoLink", &EdgeLinkDetectionTest::testCollinearEdgesNoLink));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdgesTouchingInOnePoint", &EdgeLinkDetectionTest::testCollinearEdgesTouchingInOnePoint));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCollinearEdgesWrongDirection", &EdgeLinkDetectionTest::testCollinearEdgesWrongDirection));
 
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testWrongStartJumpEdgeDirection", &EdgeJumpDetectionTest::testWrongStartJumpEdgeDirection));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testWrongEndJumpEdgeDirection", &EdgeJumpDetectionTest::testWrongEndJumpEdgeDirection));
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testWrongJumpEdgesDirection", &EdgeJumpDetectionTest::testWrongJumpEdgesDirection));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testWrongStartJumpEdgeDirection", &EdgeLinkDetectionTest::testWrongStartJumpEdgeDirection));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testWrongEndJumpEdgeDirection", &EdgeLinkDetectionTest::testWrongEndJumpEdgeDirection));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testWrongJumpEdgesDirection", &EdgeLinkDetectionTest::testWrongJumpEdgesDirection));
 
-    suite->addTest(new CppUnit::TestCaller<EdgeJumpDetectionTest>("testCrossEdges", &EdgeJumpDetectionTest::testCrossEdges));
+    suite->addTest(new CppUnit::TestCaller<EdgeLinkDetectionTest>("testCrossEdges", &EdgeLinkDetectionTest::testCrossEdges));
 
     return suite;
 }

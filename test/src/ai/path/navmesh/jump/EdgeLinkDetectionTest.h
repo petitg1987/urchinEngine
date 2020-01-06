@@ -1,12 +1,12 @@
-#ifndef URCHINENGINE_EDGEJUMPDETECTIONTEST_H
-#define URCHINENGINE_EDGEJUMPDETECTIONTEST_H
+#ifndef URCHINENGINE_EDGELINKDETECTIONTEST_H
+#define URCHINENGINE_EDGELINKDETECTIONTEST_H
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/Test.h>
 
 #include "UrchinAIEngine.h"
 
-class EdgeJumpDetectionTest: public CppUnit::TestFixture
+class EdgeLinkDetectionTest: public CppUnit::TestFixture
 {
     public:
         static CppUnit::Test *suite();
@@ -18,7 +18,9 @@ class EdgeJumpDetectionTest: public CppUnit::TestFixture
         void testIdenticalEdgesWrongDirection();
         void testCollinearEdges1();
         void testCollinearEdges2();
+        void testCollinearEdges3();
         void testCollinearEdgesNoLink();
+        void testCollinearEdgesTouchingInOnePoint();
         void testCollinearEdgesWrongDirection();
 
         void testWrongStartJumpEdgeDirection();

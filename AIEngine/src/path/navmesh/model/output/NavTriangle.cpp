@@ -167,9 +167,6 @@ namespace urchin
                 {
                     assert(countJoinPolygonsLink == 0);
                     assert(countJumpLink == 0);
-                }else if(countJoinPolygonsLink > 0)
-                {
-                    assert(countJumpLink == 0);
                 }
             }
         #endif

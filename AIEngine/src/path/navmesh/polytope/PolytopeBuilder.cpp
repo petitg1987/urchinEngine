@@ -5,6 +5,7 @@
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
 #include "path/navmesh/polytope/PolytopeTerrainSurface.h"
 #include "path/navmesh/polytope/services/TerrainObstacleService.h"
+#include "path/navmesh/polytope/services/TerrainSplitService.h"
 
 namespace urchin
 {
@@ -78,7 +79,7 @@ namespace urchin
     }
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
-    { //TODO divide terrain in square of 'polytopeMaxSize' and add them in returned std::vector
+    {
         #ifndef NDEBUG
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getOrientationMatrix().determinant()));
@@ -86,21 +87,26 @@ namespace urchin
 
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
-        std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
-        TerrainObstacleService terrainObstacleService(aiTerrain->getName(), aiTerrain->getTransform().getPosition(), aiTerrain->getLocalVertices(),
-                                                      aiTerrain->getXLength(), aiTerrain->getZLength());
-        std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
+        TerrainSplitService terrainSplitService(polytopeMaxSize);
+        std::vector<TerrainSplit> terrainSplits = terrainSplitService.splitTerrain(aiTerrain);
 
-        //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
-        auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(aiTerrain->getTransform().getPosition(), aiTerrain->getLocalVertices(),
-                                                                       aiTerrain->getXLength(), aiTerrain->getZLength(), selfObstacles);
-        terrainSurface->setWalkableCandidate(true);
-        expandedSurfaces.emplace_back(std::move(terrainSurface));
+        for(const auto &terrainSplit : terrainSplits)
+        {
+            TerrainObstacleService terrainObstacleService(terrainSplit.name, terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength);
+            std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
 
-        auto expandedPolytope = std::make_unique<Polytope>(aiTerrain->getName(), expandedSurfaces);
-        expandedPolytope->setWalkableCandidate(true);
-        expandedPolytope->setObstacleCandidate(aiTerrain->isObstacleCandidate());
-        expandedPolytopes.push_back(std::move(expandedPolytope));
+            //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
+            auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices,
+                                                                           terrainSplit.xLength, terrainSplit.zLength, selfObstacles);
+            terrainSurface->setWalkableCandidate(true);
+            std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
+            expandedSurfaces.emplace_back(std::move(terrainSurface));
+
+            auto expandedPolytope = std::make_unique<Polytope>(terrainSplit.name, expandedSurfaces);
+            expandedPolytope->setWalkableCandidate(true);
+            expandedPolytope->setObstacleCandidate(aiTerrain->isObstacleCandidate());
+            expandedPolytopes.push_back(std::move(expandedPolytope));
+        }
 
         return expandedPolytopes;
     }
