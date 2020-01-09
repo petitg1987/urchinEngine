@@ -9,7 +9,7 @@ namespace urchin
     }
 
     std::vector<TerrainSplit> TerrainSplitService::splitTerrain(const std::shared_ptr<AITerrain> &aiTerrain) const
-    { //TODO impl
+    {
         std::vector<TerrainSplit> terrainSplits;
 
         Point3<float> terrainPosition = aiTerrain->getTransform().getPosition();
@@ -24,16 +24,16 @@ namespace urchin
         unsigned int zShit = 0;
         for(unsigned int zSample=0; zSample < zSamples; ++zSample)
         {
-            unsigned int zSize = (aiTerrain->getZLength() / zSamples); //TODO adapt for last loop
+            unsigned int zSize = std::lround((float)((zSample + 1) * aiTerrain->getZLength()) / (float)zSamples) - zShit;
             unsigned int xShit = 0;
 
             for(unsigned int xSample=0; xSample < xSamples; ++xSample)
             {
-                unsigned int xSize = (aiTerrain->getXLength() / xSamples); //TODO adapt for last loop
+                unsigned int xSize = std::lround((float)((xSample + 1) * aiTerrain->getXLength()) / (float)xSamples) - xShit;
 
                 TerrainSplit terrainSplit = TerrainSplit();
                 terrainSplit.name = aiTerrain->getName() + "-" + std::to_string((zSample * xSamples) + xSample);
-                terrainSplit.position = aiTerrain->getTransform().getPosition(); //TODO wrong ?
+                terrainSplit.position = aiTerrain->getTransform().getPosition();
                 terrainSplit.localVertices.reserve(xSize * zSize);
                 terrainSplit.xLength = xSize;
                 terrainSplit.zLength = zSize;
@@ -45,8 +45,6 @@ namespace urchin
                         terrainSplit.localVertices.emplace_back(aiTerrain->getLocalVertices()[verticesPos]);
                     }
                 }
-
-                std::cout<<"Build terrain: "<<terrainSplit.name<<" of "<<terrainSplit.localVertices.size()<<" vertices"<<std::endl;
                 terrainSplits.push_back(terrainSplit);
 
                 xShit += xSize - 1;
