@@ -373,7 +373,7 @@ namespace urchin
         }
 
         std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableSurface);
-        std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(points), walkableSurface->newNavTopography());
+        std::shared_ptr<NavPolygon> navPolygon = std::make_shared<NavPolygon>(navPolygonName, std::move(points), walkableSurface->getNavTopography());
         navPolygon->addTriangles(triangulation.triangulate(), navPolygon);
 
         return std::move(navPolygon);

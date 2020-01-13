@@ -6,6 +6,7 @@
 #include "path/navmesh/polytope/PolytopeTerrainSurface.h"
 #include "path/navmesh/polytope/services/TerrainObstacleService.h"
 #include "path/navmesh/polytope/services/TerrainSplitService.h"
+#include "path/navmesh/model/output/topography/NavTerrainTopography.h"
 
 namespace urchin
 {
@@ -90,14 +91,17 @@ namespace urchin
         TerrainSplitService terrainSplitService(polytopeMaxSize);
         std::vector<TerrainSplit> terrainSplits = terrainSplitService.splitTerrain(aiTerrain);
 
+        auto heightfieldPointHelper = std::make_shared<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
+        auto terrainNavTopography = std::make_shared<NavTerrainTopography>(heightfieldPointHelper, aiTerrain->getTransform().getPosition());
+
         for(const auto &terrainSplit : terrainSplits)
         {
             TerrainObstacleService terrainObstacleService(terrainSplit.name, terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength);
             std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
 
             //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
-            auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices,
-                                                                           terrainSplit.xLength, terrainSplit.zLength, selfObstacles);
+            auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength,
+                    selfObstacles, terrainNavTopography);
             terrainSurface->setWalkableCandidate(true);
             std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
             expandedSurfaces.emplace_back(std::move(terrainSurface));

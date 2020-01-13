@@ -17,7 +17,7 @@ namespace urchin
             const Point3<float> &getTransitionPoint() const;
 
             bool isJumpOriginPortal() const;
-            bool isBetweenTwoPolygons() const;
+            bool hasDifferentTopography() const;
 
             const LineSegment3D<float> &getPortal() const;
             const std::shared_ptr<PathNode> &getPreviousPathNode() const;

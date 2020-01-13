@@ -6,14 +6,15 @@
 namespace urchin
 {
 
-    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, std::vector<Point3<float>> localVertices, unsigned int xLength,
-                                                   unsigned int zLength, std::vector<CSGPolygon<float>> selfObstacles) :
+    PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength,
+            std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
             PolytopeSurface(),
             position(position),
             localVertices(std::move(localVertices)),
             xLength(xLength),
             zLength(zLength),
-            selfObstacles(std::move(selfObstacles))
+            selfObstacles(std::move(selfObstacles)),
+            navTopography(std::move(navTopography))
     {
         buildOutlineCwPoints();
         buildAABBox();
@@ -102,10 +103,9 @@ namespace urchin
         return Point3<float>(localCoordinate.X, heightfieldPointHelper->findHeightAt(localCoordinate), localCoordinate.Y) + position;
     }
 
-    std::shared_ptr<const NavTopography> PolytopeTerrainSurface::newNavTopography() const
+    const std::shared_ptr<const NavTopography> &PolytopeTerrainSurface::getNavTopography() const
     {
-        auto constHeightfieldPointHelper = std::const_pointer_cast<const HeightfieldPointHelper<float>>(heightfieldPointHelper);
-        return std::make_shared<NavTerrainTopography>(constHeightfieldPointHelper, position);
+        return navTopography;
     }
 
     const Point3<float> &PolytopeTerrainSurface::getPosition() const

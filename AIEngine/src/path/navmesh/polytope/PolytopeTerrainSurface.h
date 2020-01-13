@@ -12,7 +12,8 @@ namespace urchin
     class PolytopeTerrainSurface : public PolytopeSurface
     {
         public:
-            PolytopeTerrainSurface(const Point3<float> &, std::vector<Point3<float>>, unsigned int, unsigned int, std::vector<CSGPolygon<float>>);
+            PolytopeTerrainSurface(const Point3<float> &, std::vector<Point3<float>>, unsigned int, unsigned int,
+                    std::vector<CSGPolygon<float>>, std::shared_ptr<const NavTopography>);
 
             bool isWalkable() const override;
             Rectangle<float> computeXZRectangle() const override;
@@ -22,7 +23,7 @@ namespace urchin
             Plane<float> getPlane(const Rectangle<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
             const std::vector<CSGPolygon<float>> &getSelfObstacles() const override;
             Point3<float> computeRealPoint(const Point2<float> &, const std::shared_ptr<NavMeshAgent> &) const override;
-            std::shared_ptr<const NavTopography> newNavTopography() const override;
+            const std::shared_ptr<const NavTopography> &getNavTopography() const override;
 
             const Point3<float> &getPosition() const;
             const std::vector<Point3<float>> &getLocalVertices() const;
@@ -38,10 +39,12 @@ namespace urchin
             std::vector<Point3<float>> localVertices;
             unsigned int xLength;
             unsigned int zLength;
-            std::shared_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
 
             std::vector<Point2<float>> outlineCwPoints;
             std::vector<CSGPolygon<float>> selfObstacles;
+
+            std::shared_ptr<HeightfieldPointHelper<float>> heightfieldPointHelper;
+            std::shared_ptr<const NavTopography> navTopography;
 
             AABBox<float> aabbox;
     };

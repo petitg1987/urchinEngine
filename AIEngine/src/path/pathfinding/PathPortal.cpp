@@ -42,9 +42,9 @@ namespace urchin
         return bIsJumpOriginPortal;
     }
 
-    bool PathPortal::isBetweenTwoPolygons() const
+    bool PathPortal::hasDifferentTopography() const
     {
-        return previousPathNode->getNavTriangle()->getNavPolygon()->getName() != nextPathNode->getNavTriangle()->getNavPolygon()->getName();
+        return previousPathNode->getNavTriangle()->getNavPolygon()->getNavTopography() != nextPathNode->getNavTriangle()->getNavPolygon()->getNavTopography();
     }
 
     const LineSegment3D<float> &PathPortal::getPortal() const

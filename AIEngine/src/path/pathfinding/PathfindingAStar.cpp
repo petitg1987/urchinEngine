@@ -309,7 +309,7 @@ namespace urchin
 
                     Point3<float> jumpEndPoint = portals[i + 1]->getPortal().closestPoint(jumpStartPoint);
                     portals[i + 1]->setTransitionPoint(jumpEndPoint);
-                } else if (portals[i]->isBetweenTwoPolygons())
+                } else if (portals[i]->hasDifferentTopography())
                 {
                     portals[i]->setTransitionPoint(computeTransitionPoint(portals[i], previousTransitionPoint));
                 }
