@@ -130,9 +130,9 @@ namespace urchin
 
         const T mergePointsSquareDistance = polygonMergePointsDistanceThreshold * polygonMergePointsDistanceThreshold;
 
+        //exclude points too close (only neighbor points)
         for(int i=0; i<(int)cwPoints.size(); i++)
         {
-            //exclude points too close (only neighbor points)
             int nextI = (i+1) % cwPoints.size();
             if(cwPoints[i].squareDistance(cwPoints[nextI]) <= mergePointsSquareDistance)
             {
@@ -140,9 +140,14 @@ namespace urchin
                 i--;
                 continue;
             }
+        }
 
-            //exclude angles near to 180 and 0/360 degrees
+        //exclude angles near to 180 and 0/360 degrees
+        for(int i=0; i<(int)cwPoints.size(); i++)
+        {
+            int nextI = (i+1) % cwPoints.size();
             int previousI = (i==0) ? cwPoints.size()-1 : i-1;
+
             Vector2<T> normalizedEdge1 = cwPoints[previousI].vector(cwPoints[i]).normalize();
             Vector2<T> normalizedEdge2 = cwPoints[i].vector(cwPoints[nextI]).normalize();
             T absDotProduct = std::abs(normalizedEdge1.dotProduct(normalizedEdge2));
@@ -158,7 +163,7 @@ namespace urchin
         for(int i=0; i<(int)cwPoints.size(); i++)
         {
             //Use j=i+3 because:
-            // cwPoints[i] and cwPoints[i+1] cannot be close points: they should be already erased by previous loop because they are close neighbor
+            // cwPoints[i] and cwPoints[i+1] cannot be close points: they should be already erased by first loop because they are close neighbor
             // cwPoints[i] and cwPoints[i+2] cannot be close points: they should be already erased by previous loop because of the angle between cwPoints[i]-cwPoints[i+1]-cwPoints[i+2]
             bool keepGoing = true;
             for(int j=i+3; j<(int)cwPoints.size() && keepGoing; j++)
@@ -246,6 +251,20 @@ namespace urchin
         }
 
         return true;
+    }
+
+    template<class T> SVGPolygon *CSGPolygon<T>::toCsvPolygon(SVGShape::SVGColor color) const
+    {
+        std::vector<Point2<float>> cwPointsFloat;
+        cwPointsFloat.reserve(cwPoints.size());
+        for(const auto &point : cwPoints)
+        {
+            cwPointsFloat.emplace_back(point.template cast<float>());
+        }
+
+        auto *svgPolygon = new SVGPolygon(cwPointsFloat, color, 0.5f);
+        svgPolygon->setStroke(color, 0.05f);
+        return svgPolygon;
     }
 
     template<class T> void CSGPolygon<T>::logInputData(const std::string &message, Logger::CriticalityLevel logLevel, const CSGPolygon<T> &inputPolygon) const

@@ -17,9 +17,9 @@ class CSGPolygonTest : public CppUnit::TestFixture
         void simplifyFlatTriangle2();
         void simplifyUselessPoint();
         void simplifyTwoUselessPoints();
-
         void simplifyCorridor();
         void simplifyCorridorWithClosePoints();
+        void simplifyFlatAngleAndNearPoints();
 };
 
 #endif

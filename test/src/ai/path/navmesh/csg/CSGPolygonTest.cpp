@@ -123,6 +123,25 @@ void CSGPolygonTest::simplifyCorridorWithClosePoints()
     AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[2], Point2<float>(1.94140625, -8.80053711), 0.0001);
 }
 
+void CSGPolygonTest::simplifyFlatAngleAndNearPoints()
+{ //see csgPolygonSimplifyFlatAngleAndNearPoints.ggb
+    CSGPolygon<float> polygon("p1", {
+            Point2<float>(27.8000488, -19.4000244), //close to last point
+            Point2<float>(27.8000488, -0.600097656),
+            Point2<float>(46.2000732, -0.600097656),
+            Point2<float>(28.6002197, -19.0002441),
+            Point2<float>(27.8001709, -19.0002441), //thisPoint + nextPoint + nextNextPoint forms a small angle
+            Point2<float>(27.8001709, -19.4000244)});
+
+    polygon.simplify(0.99619469483 /*5 degrees*/, 0.01);
+
+    AssertHelper::assertUnsignedInt(polygon.getCwPoints().size(), 4);
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[0], Point2<float>(27.8000488, -0.600097656));
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[1], Point2<float>(46.2000732, -0.600097656));
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[2], Point2<float>(28.6002197, -19.0002441));
+    AssertHelper::assertPoint2FloatEquals(polygon.getCwPoints()[3], Point2<float>(27.8001709, -19.0002441));
+}
+
 CppUnit::Test *CSGPolygonTest::suite()
 {
     auto *suite = new CppUnit::TestSuite("CSGPolygonTest");
@@ -135,9 +154,9 @@ CppUnit::Test *CSGPolygonTest::suite()
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyFlatTriangle2", &CSGPolygonTest::simplifyFlatTriangle2));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyUselessPoint", &CSGPolygonTest::simplifyUselessPoint));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyTwoUselessPoints", &CSGPolygonTest::simplifyTwoUselessPoints));
-
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyCorridor", &CSGPolygonTest::simplifyCorridor));
     suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyCorridorWithClosePoints", &CSGPolygonTest::simplifyCorridorWithClosePoints));
+    suite->addTest(new CppUnit::TestCaller<CSGPolygonTest>("simplifyFlatAngleAndNearPoints", &CSGPolygonTest::simplifyFlatAngleAndNearPoints));
 
     return suite;
 }

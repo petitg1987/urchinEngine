@@ -27,6 +27,8 @@ namespace urchin
 			void expand(T);
 			void simplify(T, T);
 
+            SVGPolygon *toCsvPolygon(SVGShape::SVGColor) const;
+
 		private:
 			bool pointInsidePolygon(const Point2<T> &, bool) const;
 
