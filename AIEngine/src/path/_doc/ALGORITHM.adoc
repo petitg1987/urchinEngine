@@ -28,3 +28,12 @@ image:navmesh/triang.png[tr]
 *** Create links
 * `NavMeshGenerator::updateNavMesh()`:
 ** Copy all `NavPolygon` into `NavMesh`
+
+== Pathfinding - naming
+image:pathfinding/pathfindingNaming.png[pa]
+
+* Legend:
+** [red black-background]*Red*: `PathNode` is link between two `NavTriangle` which belong to the path.
+** [green black-background]*Green*: `PathPortal` is a line segment between two `PathNode`.
+** [blue black-background]*Blue*: `PathPortal#getTransitionPoint()` represents a transition (turning point, jump start/end, different topography) in the path. Turning points are determined by the funnel algorithm.
+** [fuchsia black-background]*Fuchsia*: `PathPoint` represents a point of the final path. They are basically the transition points + others points to follow the topography.

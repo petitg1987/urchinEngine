@@ -298,21 +298,24 @@ namespace urchin
         Point3<float> previousTransitionPoint = portals[0]->getTransitionPoint();
         for(std::size_t i=0; i<portals.size(); ++i)
         {
-            if (!portals[i]->hasTransitionPoint())
+            if (portals[i]->isJumpOriginPortal())
             {
-                if (portals[i]->isJumpOriginPortal())
+                assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
+
+                Point3<float> jumpStartPoint = computeTransitionPoint(portals[i], previousTransitionPoint);
+                if(!portals[i]->hasTransitionPoint())
                 {
-                    assert(portals.size() >= i + 1); //jump is composed of two portals (start jump portal & end jump portal)
-
-                    Point3<float> jumpStartPoint = computeTransitionPoint(portals[i], previousTransitionPoint);
                     portals[i]->setTransitionPoint(jumpStartPoint);
+                }
 
+                if(!portals[i + 1]->hasTransitionPoint())
+                {
                     Point3<float> jumpEndPoint = portals[i + 1]->getPortal().closestPoint(jumpStartPoint);
                     portals[i + 1]->setTransitionPoint(jumpEndPoint);
-                } else if (portals[i]->hasDifferentTopography())
-                {
-                    portals[i]->setTransitionPoint(computeTransitionPoint(portals[i], previousTransitionPoint));
                 }
+            } else if (!portals[i]->hasTransitionPoint() && portals[i]->hasDifferentTopography())
+            {
+                portals[i]->setTransitionPoint(computeTransitionPoint(portals[i], previousTransitionPoint));
             }
 
             if (portals[i]->hasTransitionPoint())
@@ -323,7 +326,7 @@ namespace urchin
     }
 
     Point3<float> PathfindingAStar::computeTransitionPoint(const std::shared_ptr<PathPortal> &portal, const Point3<float> &previousTransitionPoint) const
-    {
+    { //TODO review it ?
         //Compute approximate point for performance reason (note: real point is intersection of [portal->getPortal()] with [nextTransitionPoint.vector(previousTransitionPoint)])
         return portal->getPortal().closestPoint(previousTransitionPoint);
     }
