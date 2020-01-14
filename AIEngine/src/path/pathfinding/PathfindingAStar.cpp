@@ -308,25 +308,23 @@ namespace urchin
                     portals[i]->setTransitionPoint(jumpStartPoint);
                 }
 
-                if(!portals[i + 1]->hasTransitionPoint())
+                i++;
+                if(!portals[i]->hasTransitionPoint())
                 {
-                    Point3<float> jumpEndPoint = portals[i + 1]->getPortal().closestPoint(jumpStartPoint);
-                    portals[i + 1]->setTransitionPoint(jumpEndPoint);
+                    Point3<float> jumpEndPoint = portals[i]->getPortal().closestPoint(jumpStartPoint);
+                    portals[i]->setTransitionPoint(jumpEndPoint);
                 }
+                previousTransitionPoint = portals[i]->getTransitionPoint();
             } else if (!portals[i]->hasTransitionPoint() && portals[i]->hasDifferentTopography())
             {
                 portals[i]->setTransitionPoint(computeTransitionPoint(portals[i], previousTransitionPoint));
-            }
-
-            if (portals[i]->hasTransitionPoint())
-            {
                 previousTransitionPoint = portals[i]->getTransitionPoint();
             }
         }
     }
 
     Point3<float> PathfindingAStar::computeTransitionPoint(const std::shared_ptr<PathPortal> &portal, const Point3<float> &previousTransitionPoint) const
-    { //TODO review it ?
+    {
         //Compute approximate point for performance reason (note: real point is intersection of [portal->getPortal()] with [nextTransitionPoint.vector(previousTransitionPoint)])
         return portal->getPortal().closestPoint(previousTransitionPoint);
     }
