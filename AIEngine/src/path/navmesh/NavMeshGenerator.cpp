@@ -102,7 +102,7 @@ namespace urchin
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
 					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshAgent);
+                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain);
                     for (auto &terrainExpandedPolytope : terrainExpandedPolytopes)
                     {
                         addNavObject(aiTerrain, std::move(terrainExpandedPolytope));

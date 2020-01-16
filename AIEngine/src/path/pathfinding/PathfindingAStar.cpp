@@ -19,7 +19,7 @@ namespace urchin
     PathfindingAStar::PathfindingAStar(std::shared_ptr<NavMesh> navMesh) :
             jumpAdditionalCost(ConfigService::instance()->getFloatValue("pathfinding.jumpAdditionalCost")),
             navMesh(std::move(navMesh))
-    {
+    { //TODO wrong path found in greenCity
         if(DEBUG_LOG_NAV_MESH)
         {
             this->navMesh->logNavMesh();

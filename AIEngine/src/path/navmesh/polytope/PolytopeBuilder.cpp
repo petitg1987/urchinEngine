@@ -79,7 +79,7 @@ namespace urchin
         return expandedPolytopes;
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain)
     {
         #ifndef NDEBUG
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
@@ -93,11 +93,12 @@ namespace urchin
 
         auto heightfieldPointHelper = std::make_shared<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
         auto terrainNavTopography = std::make_shared<NavTerrainTopography>(heightfieldPointHelper, aiTerrain->getTransform().getPosition());
+        auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
 
         for(const auto &terrainSplit : terrainSplits)
         {
             TerrainObstacleService terrainObstacleService(terrainSplit.name, terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength);
-            std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(navMeshAgent->getMaxSlope());
+            std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(terrainMaxWalkableSlope);
 
             //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
             auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength,
