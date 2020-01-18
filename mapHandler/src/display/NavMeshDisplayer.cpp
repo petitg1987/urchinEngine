@@ -39,13 +39,14 @@ namespace urchin
                     {
                         if (link->getLinkType() == NavLinkType::JUMP)
                         {
-                            LineSegment3D<float> startEdge = link->getLinkConstraint()->computeSourceJumpEdge(triangle->computeEdge(link->getSourceEdgeIndex()));
-                            quadJumpPoints.emplace_back(startEdge.getA());
-                            quadJumpPoints.emplace_back(startEdge.getB());
+                            LineSegment3D<float> constrainedStartEdge = link->getLinkConstraint()->computeSourceJumpEdge(triangle->computeEdge(link->getSourceEdgeIndex()));
+                            quadJumpPoints.emplace_back(constrainedStartEdge.getA());
+                            quadJumpPoints.emplace_back(constrainedStartEdge.getB());
 
                             LineSegment3D<float> endEdge = link->getTargetTriangle()->computeEdge(link->getLinkConstraint()->getTargetEdgeIndex());
-                            quadJumpPoints.emplace_back(endEdge.getA());
-                            quadJumpPoints.emplace_back(endEdge.getB());
+                            LineSegment3D<float> constrainedEndEdge(endEdge.closestPoint(constrainedStartEdge.getA()), endEdge.closestPoint(constrainedStartEdge.getB()));
+                            quadJumpPoints.emplace_back(constrainedEndEdge.getA());
+                            quadJumpPoints.emplace_back(constrainedEndEdge.getB());
                         }
                     }
                 }

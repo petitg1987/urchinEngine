@@ -9,7 +9,8 @@ namespace urchin
             jumpMaxLength(jumpMaxLength),
             jumpMaxSquareLength(jumpMaxLength * jumpMaxLength)
     {
-
+        //TODO no jump between same (split) polygon
+        //TODO no jump between two edges of obstacle
     }
 
     /**
