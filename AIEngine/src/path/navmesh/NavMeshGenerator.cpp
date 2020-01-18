@@ -26,7 +26,7 @@ namespace urchin
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
-    {
+    { //TODO wrong tree coniferous obstacle in greenCity
 
 	}
 
