@@ -7,12 +7,13 @@ namespace urchin
 {
 
     PolytopeTerrainSurface::PolytopeTerrainSurface(const Point3<float> &position, std::vector<Point3<float>> localVertices, unsigned int xLength, unsigned int zLength,
-            std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
+            const Vector3<float> &approximateNormal, std::vector<CSGPolygon<float>> selfObstacles, std::shared_ptr<const NavTopography> navTopography) :
             PolytopeSurface(),
             position(position),
             localVertices(std::move(localVertices)),
             xLength(xLength),
             zLength(zLength),
+            approximateNormal(approximateNormal),
             selfObstacles(std::move(selfObstacles)),
             navTopography(std::move(navTopography))
     {
@@ -94,7 +95,10 @@ namespace urchin
      */
     Point3<float> PolytopeTerrainSurface::computeRealPoint(const Point2<float> &point, const std::shared_ptr<NavMeshAgent> &agent) const
     {
-        return retrieveGlobalVertex(point);
+        Point3<float> expandedPoint = retrieveGlobalVertex(point);
+
+        float reduceDistance = - agent->computeExpandDistance(approximateNormal);
+        return expandedPoint.translate(approximateNormal * reduceDistance);
     }
 
     Point3<float> PolytopeTerrainSurface::retrieveGlobalVertex(const Point2<float> &globalXzCoordinate) const
@@ -126,6 +130,11 @@ namespace urchin
     unsigned int PolytopeTerrainSurface::getZLength() const
     {
         return zLength;
+    }
+
+    const Vector3<float> &PolytopeTerrainSurface::getApproximateNormal() const
+    {
+        return approximateNormal;
     }
 
 }

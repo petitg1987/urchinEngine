@@ -26,7 +26,7 @@ namespace urchin
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
-    { //TODO wrong tree coniferous obstacle in greenCity
+    { //TODO wrong walkable surface around the rock in greenCity
 
 	}
 
@@ -102,7 +102,7 @@ namespace urchin
                 }else if(aiEntity->getType()==AIEntity::TERRAIN)
                 {
 					auto aiTerrain = std::dynamic_pointer_cast<AITerrain>(aiEntity);
-                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain);
+                    std::vector<std::unique_ptr<Polytope>> terrainExpandedPolytopes = PolytopeBuilder::instance()->buildExpandedPolytope(aiTerrain, navMeshAgent);
                     for (auto &terrainExpandedPolytope : terrainExpandedPolytopes)
                     {
                         addNavObject(aiTerrain, std::move(terrainExpandedPolytope));

@@ -13,7 +13,7 @@ namespace urchin
     {
         public:
             PolytopeTerrainSurface(const Point3<float> &, std::vector<Point3<float>>, unsigned int, unsigned int,
-                    std::vector<CSGPolygon<float>>, std::shared_ptr<const NavTopography>);
+                    const Vector3<float> &, std::vector<CSGPolygon<float>>, std::shared_ptr<const NavTopography>);
 
             bool isWalkable() const override;
             Rectangle<float> computeXZRectangle() const override;
@@ -29,6 +29,7 @@ namespace urchin
             const std::vector<Point3<float>> &getLocalVertices() const;
             unsigned int getXLength() const;
             unsigned int getZLength() const;
+            const Vector3<float> &getApproximateNormal() const;
 
         private:
             void buildOutlineCwPoints();
@@ -39,6 +40,7 @@ namespace urchin
             std::vector<Point3<float>> localVertices;
             unsigned int xLength;
             unsigned int zLength;
+            Vector3<float> approximateNormal;
 
             std::vector<Point2<float>> outlineCwPoints;
             std::vector<CSGPolygon<float>> selfObstacles;

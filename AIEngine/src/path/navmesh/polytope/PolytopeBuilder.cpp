@@ -79,7 +79,7 @@ namespace urchin
         return expandedPolytopes;
     }
 
-    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain)
+    std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytope(const std::shared_ptr<AITerrain> &aiTerrain, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
     {
         #ifndef NDEBUG
             assert(MathAlgorithm::isOne(aiTerrain->getTransform().getScale()));
@@ -88,21 +88,30 @@ namespace urchin
 
         std::vector<std::unique_ptr<Polytope>> expandedPolytopes;
 
-        TerrainSplitService terrainSplitService(polytopeMaxSize);
-        std::vector<TerrainSplit> terrainSplits = terrainSplitService.splitTerrain(aiTerrain);
-
+        auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
         auto heightfieldPointHelper = std::make_shared<const HeightfieldPointHelper<float>>(aiTerrain->getLocalVertices(), aiTerrain->getXLength());
         auto terrainNavTopography = std::make_shared<NavTerrainTopography>(heightfieldPointHelper, aiTerrain->getTransform().getPosition());
-        auto terrainMaxWalkableSlope = AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.terrainMaxWalkableSlopeInDegree"));
+
+        Vector3<float> approximateNormal(0.0, 1.0, 0.0); //use approximate normal for all terrain surface instead of normal by vertex to speed up the computation
+        Vector3<float> expandShiftVector = approximateNormal * navMeshAgent->computeExpandDistance(approximateNormal);
+        std::vector<Point3<float>> expandedLocalVertices;
+        expandedLocalVertices.reserve(aiTerrain->getLocalVertices().size());
+        for(const auto &localVertex : aiTerrain->getLocalVertices())
+        {
+            expandedLocalVertices.emplace_back(localVertex.translate(expandShiftVector));
+        }
+
+        TerrainSplitService terrainSplitService(polytopeMaxSize);
+        std::vector<TerrainSplit> terrainSplits = terrainSplitService.splitTerrain(aiTerrain->getName(), aiTerrain->getTransform().getPosition(),
+                expandedLocalVertices, aiTerrain->getXLength(), aiTerrain->getZLength());
 
         for(const auto &terrainSplit : terrainSplits)
         {
             TerrainObstacleService terrainObstacleService(terrainSplit.name, terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength);
             std::vector<CSGPolygon<float>> selfObstacles = terrainObstacleService.computeSelfObstacles(terrainMaxWalkableSlope);
 
-            //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
             auto terrainSurface = std::make_shared<PolytopeTerrainSurface>(terrainSplit.position, terrainSplit.localVertices, terrainSplit.xLength, terrainSplit.zLength,
-                    selfObstacles, terrainNavTopography);
+                    approximateNormal, selfObstacles, terrainNavTopography);
             terrainSurface->setWalkableCandidate(true);
             std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
             expandedSurfaces.emplace_back(std::move(terrainSurface));
@@ -291,17 +300,20 @@ namespace urchin
 
             float angleToHorizontalInRadian = std::acos(normal.dotProduct(Vector3<float>(0.0, 1.0, 0.0)));
             bool isSlopeWalkable = std::fabs(angleToHorizontalInRadian) < navMeshAgent->getMaxSlope();
-            Vector3<float> shiftVector = normal * navMeshAgent->computeExpandDistance(normal);
 
             std::vector<Point3<float>> surfacePoints;
             surfacePoints.reserve(4);
 
-            for(unsigned int i=0; i<4; ++i)
-            {
-                if(isSlopeWalkable)
-                { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
+            if(isSlopeWalkable)
+            { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
+                Vector3<float> shiftVector = normal * navMeshAgent->computeExpandDistance(normal);
+                for(unsigned int i=0; i<4; ++i)
+                {
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
-                }else
+                }
+            } else
+            {
+                for(unsigned int i=0; i<4; ++i)
                 {
                     surfacePoints.push_back(sortedExpandedPoints[pointIndex[i]]);
                 }

@@ -52,10 +52,10 @@ namespace urchin
                 }
             }
 
-            auto *meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.01f));
+            auto *meshModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.02f));
             addNavMeshModel(meshModel, GeometryModel::FILL, Vector3<float>(0.0, 0.0, 1.0));
 
-            auto *meshWireframeModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.015f));
+            auto *meshWireframeModel = new TrianglesModel(toDisplayPoints(triangleMeshPoints, 0.025f));
             addNavMeshModel(meshWireframeModel, GeometryModel::WIREFRAME, Vector3<float>(0.5, 0.5, 1.0));
 
             auto *jumpModel = new QuadsModel(quadJumpPoints);
