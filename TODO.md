@@ -44,12 +44,13 @@
 
 # AI engine
 - Navigation mesh
-	- **NEW FEATURE** (`medium`): Create jump links for (jump) drop in navigation mesh (update AABBTree margin accordingly)
+	- **BUG** (`medium`): Prohibit jump links between two edges from an edge created by an obstacle
+	- **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
-	- **OPTIMIZATION** (`medium`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
+	- **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
 	- **OPTIMIZATION** (`medium`): Exclude small objects from navigation mesh
-	- **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
 	- **OPTIMIZATION** (`minor`): Exclude fast moving objects from walkable face
+	- **OPTIMIZATION** (`minor`): NavMeshGenerator#computePolytopeFootprint: put result in cache
 	- **QUALITY IMPROVEMENT** (`minor`): Insert bevel planes during Polytope#buildExpanded* (see BrushExpander.cpp from Hesperus)
 - Pathfinding
 	- **OPTIMIZATION** (`medium`): When compute A* G score: avoid to execute funnel algorithm from start each time
