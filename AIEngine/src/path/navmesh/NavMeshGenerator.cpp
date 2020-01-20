@@ -26,7 +26,7 @@ namespace urchin
 			navMesh(std::make_shared<NavMesh>()),
 			needFullRefresh(false),
             navigationObjects(AABBTree<std::shared_ptr<NavObject>>(ConfigService::instance()->getFloatValue("navMesh.polytopeAabbTreeFatMargin")))
-    { //TODO wrong walkable surface around the rock in greenCity
+    {
 
 	}
 
@@ -286,7 +286,7 @@ namespace urchin
 	CSGPolygon<float> NavMeshGenerator::computePolytopeFootprint(const std::shared_ptr<Polytope> &polytopeObstacle, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
 	{
 		footprintPoints.clear();
-        Plane<float> walkablePlane = walkableSurface->getPlane(polytopeObstacle->getXZRectangle(), navMeshAgent);
+        Plane<float> walkablePlane = walkableSurface->getPlane(polytopeObstacle->getXZRectangle());
 
 		for(const auto &polytopeSurface : polytopeObstacle->getSurfaces())
 		{
@@ -315,7 +315,7 @@ namespace urchin
 		return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
 	}
 
-	void NavMeshGenerator::subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &obstaclePolygons)
+	void NavMeshGenerator::subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &obstaclePolygons) //TODO method signature not clear
     {
         ScopeProfiler scopeProfiler("ai", "subObstacles");
 
@@ -345,6 +345,7 @@ namespace urchin
                         //slightly reduce to avoid obstacle points touch others obstacles points (not supported by triangulation)
                         obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
                         remainingObstaclePolygons.emplace_back(obstaclePolygon);
+                        break;
                     }
                 }
             }

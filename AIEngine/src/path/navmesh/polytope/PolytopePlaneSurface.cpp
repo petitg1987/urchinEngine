@@ -78,7 +78,7 @@ namespace urchin
         return outlineCwPoints;
     }
 
-	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &box, const std::shared_ptr<NavMeshAgent> &agent) const
+	Plane<float> PolytopePlaneSurface::getPlane(const Rectangle<float> &box) const
 	{
 		return Plane<float>(ccwPoints[0], ccwPoints[1], ccwPoints[2]);
 	}

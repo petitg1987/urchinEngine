@@ -72,17 +72,12 @@ namespace urchin
         return outlineCwPoints;
     }
 
-    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box, const std::shared_ptr<NavMeshAgent> &agent) const
+    Plane<float> PolytopeTerrainSurface::getPlane(const Rectangle<float> &box) const
     {
         Point3<float> point1 = retrieveGlobalVertex(box.getMin());
         Point3<float> point2 = retrieveGlobalVertex(box.getMax());
         Point3<float> point3 = retrieveGlobalVertex(Point2<float>(box.getMin().X, box.getMax().Y));
-        Plane<float> plane(point1, point2, point3);
-
-        float expandDistance = agent->computeExpandDistance(plane.getNormal());
-        plane.setDistanceToOrigin(plane.getDistanceToOrigin() - expandDistance);
-
-        return plane;
+        return Plane<float>(point1, point2, point3);
     }
 
     const std::vector<CSGPolygon<float>> &PolytopeTerrainSurface::getSelfObstacles() const
