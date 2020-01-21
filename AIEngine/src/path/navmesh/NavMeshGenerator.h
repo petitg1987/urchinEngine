@@ -44,7 +44,7 @@ namespace urchin
 			std::vector<std::shared_ptr<NavPolygon>> createNavigationPolygons(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &);
 			std::vector<CSGPolygon<float>> &determineObstacles(const std::shared_ptr<NavObject> &, const std::shared_ptr<PolytopeSurface> &) const;
 			CSGPolygon<float> computePolytopeFootprint(const std::shared_ptr<Polytope> &, const std::shared_ptr<PolytopeSurface> &) const;
-            void subtractObstaclesOnOutline(std::vector<CSGPolygon<float>> &);
+            void applyObstaclesOnWalkablePolygon(const CSGPolygon<float> &, std::vector<CSGPolygon<float>> &);
             std::shared_ptr<NavPolygon> createNavigationPolygon(CSGPolygon<float> &, const std::shared_ptr<PolytopeSurface> &) const;
 			std::vector<Point3<float>> elevateTriangulatedPoints(const TriangulationAlgorithm &, const std::shared_ptr<PolytopeSurface> &) const;
 
@@ -69,7 +69,7 @@ namespace urchin
             std::vector<CSGPolygon<float>> walkablePolygons;
             mutable std::vector<std::shared_ptr<NavObject>> nearObjects;
 
-            std::vector<CSGPolygon<float>> remainingObstaclePolygons;
+            std::vector<CSGPolygon<float>> obstaclesInsideWalkablePolygon;
 			mutable std::vector<CSGPolygon<float>> holePolygons;
 			mutable std::vector<Point2<float>> footprintPoints;
 			mutable std::string navPolygonName;
