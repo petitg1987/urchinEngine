@@ -1,8 +1,8 @@
 #include <cmath>
 #include "EdgeLinkDetection.h"
 
-#define MIN_EDGE_LINK_SQUARE_LENGTH 0.02f
-#define SQUARE_DISTANCE_TOLERANCE 0.001f
+#define MIN_EDGE_LINK_LENGTH 0.05f //TODO should be a properties
+#define EQUALITY_DISTANCE_TOLERANCE 0.03f //TODO should be a properties
 
 namespace urchin
 {
@@ -86,12 +86,13 @@ namespace urchin
 
     bool EdgeLinkDetection::pointsAreEquals(const Point3<float> &point1, const Point3<float> &point2) const
     {
-        return point1.squareDistance(point2) < SQUARE_DISTANCE_TOLERANCE;
+        return point1.squareDistance(point2) < EQUALITY_DISTANCE_TOLERANCE * EQUALITY_DISTANCE_TOLERANCE;
     }
 
     bool EdgeLinkDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const
     {
-        return line1.squareDistance(line2.getA()) < SQUARE_DISTANCE_TOLERANCE && line1.squareDistance(line2.getB()) < SQUARE_DISTANCE_TOLERANCE;
+        return line1.squareDistance(line2.getA()) < EQUALITY_DISTANCE_TOLERANCE * EQUALITY_DISTANCE_TOLERANCE
+            && line1.squareDistance(line2.getB()) < EQUALITY_DISTANCE_TOLERANCE * EQUALITY_DISTANCE_TOLERANCE;
     }
 
     /**
@@ -107,7 +108,7 @@ namespace urchin
             minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
             maxIntersection[i] = std::min(std::max(startEdge.getA()[i], startEdge.getB()[i]), std::max(endEdge.getA()[i], endEdge.getB()[i]));
 
-            if(minIntersection[i] > maxIntersection[i] + 0.0001f)
+            if(minIntersection[i] > maxIntersection[i] + EQUALITY_DISTANCE_TOLERANCE)
             { //collinear edges are not touching each other
                 touchingStartRange = NAN;
                 touchingEndRange = NAN;
@@ -122,23 +123,15 @@ namespace urchin
             float denominator = startEdge.getA()[i] - startEdge.getB()[i];
             if(!MathAlgorithm::isZero(denominator))
             {
-                touchingStartRange = (minIntersection[i] - startEdge.getB()[i]) / denominator;
-                touchingEndRange = (maxIntersection[i] - startEdge.getB()[i]) / denominator;
+                touchingStartRange = std::clamp((minIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
+                touchingEndRange = std::clamp((maxIntersection[i] - startEdge.getB()[i]) / denominator, 0.0f, 1.0f);
 
                 if(touchingStartRange < touchingEndRange)
                 {
                     std::swap(touchingStartRange, touchingEndRange);
                 }
 
-                if(isRangeTooSmall(touchingStartRange, touchingEndRange, startEdge))
-                {
-                    return false;
-                }
-
-                assert(touchingStartRange > -0.0001f && touchingStartRange < 1.0001f);
-                assert(touchingEndRange > -0.0001f && touchingEndRange < 1.0001f);
-
-                return true;
+                return !isRangeTooSmall(touchingStartRange, touchingEndRange, startEdge);
             }
         }
 
@@ -177,7 +170,7 @@ namespace urchin
         Point3<float> startLinkPoint = startRange * startEdge.getA() + (1.0f - startRange) * startEdge.getB();
         Point3<float> endLinkPoint = endRange * startEdge.getA() + (1.0f - endRange) * startEdge.getB();
 
-        return startLinkPoint.squareDistance(endLinkPoint) < MIN_EDGE_LINK_SQUARE_LENGTH;
+        return startLinkPoint.squareDistance(endLinkPoint) < MIN_EDGE_LINK_LENGTH * MIN_EDGE_LINK_LENGTH;
     }
 
 }

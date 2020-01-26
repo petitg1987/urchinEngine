@@ -1,4 +1,3 @@
-#include <cassert>
 #include <vector>
 #include <limits>
 #include <cmath>
@@ -7,7 +6,7 @@
 #include "collision/ManifoldContactPoint.h"
 #include "PhysicsWorld.h"
 
-#define MIN_RECOVERABLE_DEPTH 0.0001f
+#define MIN_RECOVERABLE_DEPTH 0.0001f //TODO should be a properties
 #define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f
 #define MAX_VERTICAL_SPEED 55.0f
 
