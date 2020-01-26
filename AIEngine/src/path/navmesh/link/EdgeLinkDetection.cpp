@@ -1,8 +1,8 @@
 #include <cmath>
 #include "EdgeLinkDetection.h"
 
-#define MIN_EDGE_LINK_LENGTH 0.05f //TODO should be a properties
-#define EQUALITY_DISTANCE_TOLERANCE 0.03f //TODO should be a properties
+#define EDGE_LINK_MIN_LENGTH 0.05f //TODO should be a property
+#define EQUALITY_DISTANCE_TOLERANCE 0.03f //TODO should be a property
 
 namespace urchin
 {
@@ -170,7 +170,7 @@ namespace urchin
         Point3<float> startLinkPoint = startRange * startEdge.getA() + (1.0f - startRange) * startEdge.getB();
         Point3<float> endLinkPoint = endRange * startEdge.getA() + (1.0f - endRange) * startEdge.getB();
 
-        return startLinkPoint.squareDistance(endLinkPoint) < MIN_EDGE_LINK_LENGTH * MIN_EDGE_LINK_LENGTH;
+        return startLinkPoint.squareDistance(endLinkPoint) < EDGE_LINK_MIN_LENGTH * EDGE_LINK_MIN_LENGTH;
     }
 
 }

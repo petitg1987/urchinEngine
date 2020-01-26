@@ -13,7 +13,7 @@
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 #include "path/navmesh/link/EdgeLinkDetection.h"
 
-#define OBSTACLE_REDUCE_SIZE 0.0002f //TODO should be a properties
+#define OBSTACLE_REDUCE_SIZE 0.0002f
 
 namespace urchin
 {

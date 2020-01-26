@@ -57,7 +57,9 @@ namespace urchin
 
 			const float recoverFactors[RECOVER_PENETRATION_SUB_STEPS] = {0.4, 0.7, 0.9, 1.0};
 			const float timeKeepMoveInAir;
-			const float percentageControlInAir;
+            const float percentageControlInAir;
+			const float maxDepthToRecover;
+			const float maxVerticalSpeed;
 
             std::shared_ptr<PhysicsCharacter> physicsCharacter;
 			PhysicsWorld *physicsWorld;

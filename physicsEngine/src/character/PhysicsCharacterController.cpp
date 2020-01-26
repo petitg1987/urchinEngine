@@ -6,9 +6,7 @@
 #include "collision/ManifoldContactPoint.h"
 #include "PhysicsWorld.h"
 
-#define MIN_RECOVERABLE_DEPTH 0.0001f //TODO should be a properties
 #define MAX_TIME_IN_AIR_CONSIDERED_AS_ON_GROUND 0.15f
-#define MAX_VERTICAL_SPEED 55.0f
 
 namespace urchin
 {
@@ -16,6 +14,8 @@ namespace urchin
 	PhysicsCharacterController::PhysicsCharacterController(const std::shared_ptr<PhysicsCharacter> &physicsCharacter, PhysicsWorld *physicsWorld) :
 		timeKeepMoveInAir(ConfigService::instance()->getFloatValue("character.timeKeepMoveInAir")),
 		percentageControlInAir(ConfigService::instance()->getFloatValue("character.percentageControlInAir")),
+        maxDepthToRecover(ConfigService::instance()->getFloatValue("character.maxDepthToRecover")),
+        maxVerticalSpeed(ConfigService::instance()->getFloatValue("character.maxVerticalSpeed")),
         physicsCharacter(physicsCharacter),
         physicsWorld(physicsWorld),
 		ghostBody(new WorkGhostBody(physicsCharacter->getName(), physicsCharacter->getTransform(), physicsCharacter->getShape())),
@@ -137,9 +137,9 @@ namespace urchin
 		if(!isOnGround || numberOfHit > 1)
 		{
 			verticalSpeed -= (-physicsWorld->getGravity().Y) * dt;
-			if(verticalSpeed < -MAX_VERTICAL_SPEED)
+			if(verticalSpeed < -maxVerticalSpeed)
 			{
-				verticalSpeed = -MAX_VERTICAL_SPEED;
+				verticalSpeed = -maxVerticalSpeed;
 			}
 		}
 
@@ -172,7 +172,7 @@ namespace urchin
 					const ManifoldContactPoint &manifoldContactPoint = manifoldResult.getManifoldContactPoint(i);
 					float depth = manifoldContactPoint.getDepth();
 
-					if(depth < MIN_RECOVERABLE_DEPTH)
+					if(depth < maxDepthToRecover)
 					{
 						Vector3<float> normal =  manifoldContactPoint.getNormalFromObject2() * sign;
 						Vector3<float> moveVector = normal * depth * recoverFactors[subStepIndex];
