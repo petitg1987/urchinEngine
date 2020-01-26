@@ -1,14 +1,12 @@
 #include <cmath>
 #include "EdgeLinkDetection.h"
 
-#define EDGE_LINK_MIN_LENGTH 0.05f //TODO should be a property
-#define EQUALITY_DISTANCE_TOLERANCE 0.03f //TODO should be a property
-
 namespace urchin
 {
     EdgeLinkDetection::EdgeLinkDetection(float jumpMaxLength) :
             jumpMaxLength(jumpMaxLength),
-            jumpMaxSquareLength(jumpMaxLength * jumpMaxLength)
+            edgeLinkMinLength(ConfigService::instance()->getFloatValue("navMesh.edgeLinkMinLength")),
+            equalityDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.edgeLinkEqualityDistanceThreshold"))
     {
         //TODO no jump between same (split) polygon
     }
@@ -86,13 +84,13 @@ namespace urchin
 
     bool EdgeLinkDetection::pointsAreEquals(const Point3<float> &point1, const Point3<float> &point2) const
     {
-        return point1.squareDistance(point2) < EQUALITY_DISTANCE_TOLERANCE * EQUALITY_DISTANCE_TOLERANCE;
+        return point1.squareDistance(point2) < equalityDistanceThreshold * equalityDistanceThreshold;
     }
 
     bool EdgeLinkDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const
     {
-        return line1.squareDistance(line2.getA()) < EQUALITY_DISTANCE_TOLERANCE * EQUALITY_DISTANCE_TOLERANCE
-            && line1.squareDistance(line2.getB()) < EQUALITY_DISTANCE_TOLERANCE * EQUALITY_DISTANCE_TOLERANCE;
+        return line1.squareDistance(line2.getA()) < equalityDistanceThreshold * equalityDistanceThreshold
+            && line1.squareDistance(line2.getB()) < equalityDistanceThreshold * equalityDistanceThreshold;
     }
 
     /**
@@ -108,7 +106,7 @@ namespace urchin
             minIntersection[i] = std::max(std::min(startEdge.getA()[i], startEdge.getB()[i]), std::min(endEdge.getA()[i], endEdge.getB()[i]));
             maxIntersection[i] = std::min(std::max(startEdge.getA()[i], startEdge.getB()[i]), std::max(endEdge.getA()[i], endEdge.getB()[i]));
 
-            if(minIntersection[i] > maxIntersection[i] + EQUALITY_DISTANCE_TOLERANCE)
+            if(minIntersection[i] > maxIntersection[i] + equalityDistanceThreshold)
             { //collinear edges are not touching each other
                 touchingStartRange = NAN;
                 touchingEndRange = NAN;
@@ -141,7 +139,7 @@ namespace urchin
 
     bool EdgeLinkDetection::canJumpThatFar(const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
     {
-        return jumpStartPoint.squareDistance(jumpEndPoint) < jumpMaxSquareLength;
+        return jumpStartPoint.squareDistance(jumpEndPoint) < jumpMaxLength * jumpMaxLength;
     }
 
     bool EdgeLinkDetection::isProperJumpDirection(const LineSegment3D<float> &startJumpEdge, const LineSegment3D<float> &endJumpEdge,
@@ -170,7 +168,7 @@ namespace urchin
         Point3<float> startLinkPoint = startRange * startEdge.getA() + (1.0f - startRange) * startEdge.getB();
         Point3<float> endLinkPoint = endRange * startEdge.getA() + (1.0f - endRange) * startEdge.getB();
 
-        return startLinkPoint.squareDistance(endLinkPoint) < EDGE_LINK_MIN_LENGTH * EDGE_LINK_MIN_LENGTH;
+        return startLinkPoint.squareDistance(endLinkPoint) < edgeLinkMinLength * edgeLinkMinLength;
     }
 
 }

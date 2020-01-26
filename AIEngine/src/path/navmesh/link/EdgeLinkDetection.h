@@ -16,8 +16,9 @@ namespace urchin
             EdgeLinkResult detectLink(const LineSegment3D<float> &, const LineSegment3D<float> &) const;
 
         private:
-            float jumpMaxLength;
-            float jumpMaxSquareLength;
+            const float jumpMaxLength;
+            const float edgeLinkMinLength;
+            const float equalityDistanceThreshold;
 
             bool pointsAreEquals(const Point3<float> &, const Point3<float> &) const;
             bool isCollinearLines(const Line3D<float> &, const Line3D<float> &) const;
