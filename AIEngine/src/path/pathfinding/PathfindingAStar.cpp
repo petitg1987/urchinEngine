@@ -7,10 +7,6 @@
 namespace urchin
 {
 
-    //Debug parameters
-    bool DEBUG_LOG_NAV_MESH = false;
-    bool DEBUG_EXPORT_NAV_MESH = false;
-
     bool PathNodeCompare::operator()(const std::shared_ptr<PathNode> &node1, const std::shared_ptr<PathNode> &node2) const
     {
         return node1->getFScore() < node2->getFScore();
@@ -19,11 +15,8 @@ namespace urchin
     PathfindingAStar::PathfindingAStar(std::shared_ptr<NavMesh> navMesh) :
             jumpAdditionalCost(ConfigService::instance()->getFloatValue("pathfinding.jumpAdditionalCost")),
             navMesh(std::move(navMesh))
-    { //TODO wrong path found in greenCity
-        if(DEBUG_LOG_NAV_MESH)
-        {
-            this->navMesh->logNavMesh();
-        }
+    {
+
     }
 
     std::vector<PathPoint> PathfindingAStar::findPath(const Point3<float> &startPoint, const Point3<float> &endPoint) const
@@ -95,11 +88,6 @@ namespace urchin
         {
             std::vector<std::shared_ptr<PathPortal>> pathPortals = determinePath(endNodePath, startPoint, endPoint);
             return pathPortalsToPathPoints(pathPortals, true);
-        }
-
-        if(DEBUG_EXPORT_NAV_MESH)
-        {
-            navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/pathInfo/pathInfo" + std::to_string(navMesh->getUpdateId()) + ".html");
         }
 
         return {}; //no path exists

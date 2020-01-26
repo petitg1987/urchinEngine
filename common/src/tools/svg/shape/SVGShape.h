@@ -16,7 +16,10 @@ namespace urchin
                 BLACK,
                 LIME,
                 RED,
-                BLUE
+                BLUE,
+                ORANGE,
+                GREEN,
+                YELLOW
             };
 
             SVGShape(SVGColor, float);

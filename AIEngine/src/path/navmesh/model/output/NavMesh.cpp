@@ -10,13 +10,13 @@ namespace urchin
 	unsigned int NavMesh::nextUpdateId = 0;
 
 	NavMesh::NavMesh() :
-        updateId(changeUpdateId())
+        updateId(0)
 	{
 
 	}
 
 	NavMesh::NavMesh(const NavMesh &navMesh) :
-        updateId(changeUpdateId())
+        updateId(navMesh.getUpdateId())
 	{
         NavModelCopy::copyNavPolygons(navMesh.getPolygons(), polygons);
 	}
@@ -37,31 +37,6 @@ namespace urchin
 	const std::vector<std::shared_ptr<NavPolygon>> &NavMesh::getPolygons() const
 	{
 		return polygons;
-	}
-
-	void NavMesh::logNavMesh() const
-	{
-		std::stringstream logStream;
-		logStream.precision(std::numeric_limits<float>::max_digits10);
-
-		logStream<<"Nav mesh:"<<std::endl;
-
-		for(std::size_t i=0; i<getPolygons().size(); ++i)
-		{
-			const std::shared_ptr<NavPolygon> &polygon = getPolygons()[i];
-			logStream<<" - Polygon "<<i<<": "<<polygon->getName()<<std::endl;
-
-			for(std::size_t j=0; j<polygon->getTriangles().size(); ++j)
-			{
-				const std::shared_ptr<NavTriangle> &triangle = polygon->getTriangle(j);
-				logStream<<"  - Triangle "<<j<<": "
-                         <<"{"<<triangle->getIndex(0)<<": "<<polygon->getPoint(triangle->getIndex(0))
-						 <<"}, {"<<triangle->getIndex(1)<<": "<<polygon->getPoint(triangle->getIndex(1))
-						 <<"}, {"<<triangle->getIndex(2)<<": "<<polygon->getPoint(triangle->getIndex(2))<<"}"<<std::endl;
-			}
-		}
-
-		Logger::logger().log(Logger::INFO, logStream.str());
 	}
 
 	void NavMesh::svgMeshExport(const std::string &filename) const

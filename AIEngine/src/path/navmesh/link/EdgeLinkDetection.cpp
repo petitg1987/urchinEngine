@@ -2,6 +2,7 @@
 #include "EdgeLinkDetection.h"
 
 #define MIN_EDGE_LINK_SQUARE_LENGTH 0.02f
+#define MIN_DISTANCE_FOR_COLLINEAR 0.001f
 
 namespace urchin
 {
@@ -90,7 +91,7 @@ namespace urchin
 
     bool EdgeLinkDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const
     {
-        return line1.squareDistance(line2.getA()) < 0.0001f && line1.squareDistance(line2.getB()) < 0.0001f;
+        return line1.squareDistance(line2.getA()) < MIN_DISTANCE_FOR_COLLINEAR && line1.squareDistance(line2.getB()) < MIN_DISTANCE_FOR_COLLINEAR;
     }
 
     /**

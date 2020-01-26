@@ -37,6 +37,12 @@ namespace urchin
                 return "red";
             case SVGColor::BLUE:
                 return "blue";
+            case SVGColor::ORANGE:
+                return "orange";
+            case SVGColor::GREEN:
+                return "green";
+            case SVGColor::YELLOW:
+                return "yellow";
             default:
                 throw std::runtime_error("Unknown SVG color: " + std::to_string(color));
         }

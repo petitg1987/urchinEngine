@@ -13,11 +13,13 @@
 #include "path/navmesh/csg/PolygonsSubtraction.h"
 #include "path/navmesh/link/EdgeLinkDetection.h"
 
-#define WALKABLE_FACE_EXPAND_SIZE 0.0001f
-#define OBSTACLE_REDUCE_SIZE 0.0001f
+#define OBSTACLE_REDUCE_SIZE 0.0002f
 
 namespace urchin
 {
+
+    //Debug parameters
+    bool DEBUG_EXPORT_NAV_MESH = false;
 
     NavMeshGenerator::NavMeshGenerator() :
             polygonMinDotProductThreshold(std::cos(AngleConverter<float>::toRadian(ConfigService::instance()->getFloatValue("navMesh.polygonRemoveAngleThresholdInDegree")))),
@@ -67,6 +69,11 @@ namespace urchin
 		updateNavPolygons();
 		createNavLinks();
         updateNavMesh();
+
+        if(DEBUG_EXPORT_NAV_MESH)
+        {
+            navMesh->svgMeshExport(std::string(std::getenv("HOME")) + "/navMesh/navMesh" + std::to_string(navMesh->getUpdateId()) + ".html");
+        }
 
 		return navMesh;
 	}
@@ -310,7 +317,7 @@ namespace urchin
 		}
 
 		if(footprintPoints.size() < 3)
-        { //no footprint
+        { //no footprint: return empty polygon
 		    return CSGPolygon<float>("", {});
         }
 
@@ -349,7 +356,7 @@ namespace urchin
 
                     if (obstacleInsideWalkable)
                     {
-                        //slightly reduce to avoid obstacle points touch others obstacles points (not supported by triangulation)
+                        //slightly reduce the obstacle to prevent it from touching others obstacles or the walkable face (not supported by triangulation)
                         obstaclePolygon.expand(-OBSTACLE_REDUCE_SIZE);
                         obstaclesInsideWalkablePolygon.emplace_back(obstaclePolygon);
                         break;
@@ -363,11 +370,8 @@ namespace urchin
     {
         ScopeProfiler scopeProfiler("ai", "createNavPoly");
 
-        //slightly expand to avoid obstacle points to be in contact with walkable edges (not supported by triangulation)
-        walkablePolygon.expand(WALKABLE_FACE_EXPAND_SIZE);
-        std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
-
         navPolygonName = "<" + walkablePolygon.getName() + ">";
+        std::vector<Point2<float>> walkablePolygonPoints = walkablePolygon.getCwPoints();
         std::reverse(walkablePolygonPoints.begin(), walkablePolygonPoints.end()); //CW to CCW
         TriangulationAlgorithm triangulation(std::move(walkablePolygonPoints), walkablePolygon.getName());
 
