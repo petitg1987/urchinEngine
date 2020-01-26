@@ -2,7 +2,7 @@
 #include "EdgeLinkDetection.h"
 
 #define MIN_EDGE_LINK_SQUARE_LENGTH 0.02f
-#define MIN_DISTANCE_FOR_COLLINEAR 0.001f
+#define SQUARE_DISTANCE_TOLERANCE 0.001f
 
 namespace urchin
 {
@@ -86,12 +86,12 @@ namespace urchin
 
     bool EdgeLinkDetection::pointsAreEquals(const Point3<float> &point1, const Point3<float> &point2) const
     {
-        return point1.squareDistance(point2) < 0.0001f;
+        return point1.squareDistance(point2) < SQUARE_DISTANCE_TOLERANCE;
     }
 
     bool EdgeLinkDetection::isCollinearLines(const Line3D<float> &line1, const Line3D<float> &line2) const
     {
-        return line1.squareDistance(line2.getA()) < MIN_DISTANCE_FOR_COLLINEAR && line1.squareDistance(line2.getB()) < MIN_DISTANCE_FOR_COLLINEAR;
+        return line1.squareDistance(line2.getA()) < SQUARE_DISTANCE_TOLERANCE && line1.squareDistance(line2.getB()) < SQUARE_DISTANCE_TOLERANCE;
     }
 
     /**
