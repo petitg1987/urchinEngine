@@ -243,6 +243,7 @@ namespace urchin
 
         applyObstaclesOnWalkablePolygon(walkablePolygon, obstaclePolygons);
 
+        bool uniqueWalkableSurface = walkablePolygons.size() == 1;
 		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
 		navPolygons.reserve(walkablePolygons.size());
 		for(auto &walkablePolygon : walkablePolygons)
@@ -251,7 +252,7 @@ namespace urchin
 			walkablePolygon.simplify(polygonMinDotProductThreshold, polygonMergePointsDistanceThreshold);
             if(walkablePolygon.getCwPoints().size() > 2)
             {
-                std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygon(walkablePolygon, walkableSurface);
+                std::shared_ptr<NavPolygon> navPolygon = createNavigationPolygon(walkablePolygon, walkableSurface, uniqueWalkableSurface);
                 navPolygons.push_back(navPolygon);
             }
 		}
@@ -366,7 +367,7 @@ namespace urchin
         }
     }
 
-    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float> &walkablePolygon, const std::shared_ptr<PolytopeSurface> &walkableSurface) const
+    std::shared_ptr<NavPolygon> NavMeshGenerator::createNavigationPolygon(CSGPolygon<float> &walkablePolygon, const std::shared_ptr<PolytopeSurface> &walkableSurface, bool uniqueWalkableSurface) const
     {
         ScopeProfiler scopeProfiler("ai", "createNavPoly");
 
@@ -377,7 +378,7 @@ namespace urchin
 
         for(const auto &obstacleInsideWalkablePolygon : obstaclesInsideWalkablePolygon)
         {
-            if(walkablePolygon.pointInsideOrOnPolygon(obstacleInsideWalkablePolygon.getCwPoints()[0]))
+            if(uniqueWalkableSurface || walkablePolygon.pointInsideOrOnPolygon(obstacleInsideWalkablePolygon.getCwPoints()[0]))
             { //obstacle fully inside walkable polygon
                 triangulation.addHolePoints(obstacleInsideWalkablePolygon.getCwPoints(), obstacleInsideWalkablePolygon.getName());
                 navPolygonName += " - <" + obstacleInsideWalkablePolygon.getName() + ">";
