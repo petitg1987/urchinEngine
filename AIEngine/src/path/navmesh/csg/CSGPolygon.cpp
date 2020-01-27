@@ -263,7 +263,7 @@ namespace urchin
         }
 
         auto *svgPolygon = new SVGPolygon(cwPointsFloat, color, 0.5f);
-        svgPolygon->setStroke(color, 0.05f);
+        svgPolygon->setStroke(color, 0.01f);
         return svgPolygon;
     }
 

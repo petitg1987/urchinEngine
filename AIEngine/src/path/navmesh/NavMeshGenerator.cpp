@@ -377,8 +377,11 @@ namespace urchin
 
         for(const auto &obstacleInsideWalkablePolygon : obstaclesInsideWalkablePolygon)
         {
-            triangulation.addHolePoints(obstacleInsideWalkablePolygon.getCwPoints(), obstacleInsideWalkablePolygon.getName());
-            navPolygonName += " - <" + obstacleInsideWalkablePolygon.getName() + ">";
+            if(walkablePolygon.pointInsideOrOnPolygon(obstacleInsideWalkablePolygon.getCwPoints()[0]))
+            { //obstacle fully inside walkable polygon
+                triangulation.addHolePoints(obstacleInsideWalkablePolygon.getCwPoints(), obstacleInsideWalkablePolygon.getName());
+                navPolygonName += " - <" + obstacleInsideWalkablePolygon.getName() + ">";
+            }
         }
 
         std::vector<Point3<float>> points = elevateTriangulatedPoints(triangulation, walkableSurface);

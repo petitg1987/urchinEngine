@@ -13,8 +13,9 @@ class NavMeshGeneratorTest : public CppUnit::TestFixture
         static CppUnit::Test *suite();
 
         void holeOnWalkableFace();
-        void holeEdgeOnWalkableFace();
+        void holeOnWalkableFaceEdge();
         void holeOverlapOnWalkableFace();
+        void holeAndCrossingHoleOnWalkableFace();
 
         void moveHoleOnWalkableFace();
         void removeHoleFromWalkableFace();

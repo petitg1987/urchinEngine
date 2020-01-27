@@ -30,7 +30,7 @@ void NavMeshGeneratorTest::holeOnWalkableFace()
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
 }
 
-void NavMeshGeneratorTest::holeEdgeOnWalkableFace()
+void NavMeshGeneratorTest::holeOnWalkableFaceEdge()
 {
     auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
     auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
@@ -84,6 +84,37 @@ void NavMeshGeneratorTest::holeOverlapOnWalkableFace()
     AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<hole[2]>");
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 4); //4 points of "hole" polygon
     AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 2); //2 triangles of "hole" polygon
+}
+
+void NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace()
+{
+    auto walkableShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(2.0, 0.01, 2.0)).get());
+    auto walkableFaceObject = std::make_shared<AIObject>("walkableFace", Transform<float>(Point3<float>(0.0, 0.0, 0.0)), true, walkableShape);
+    auto holeShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5, 0.01, 0.5)).get());
+    auto holeObject = std::make_shared<AIObject>("hole", Transform<float>(Point3<float>(-0.5, 1.0, -0.5)), true, holeShape);
+    auto crossingHoleShape = std::make_shared<AIShape>(std::make_shared<BoxShape<float>>(Vector3<float>(0.5, 0.01, 3.0)).get());
+    auto crossingHoleObject = std::make_shared<AIObject>("crossingHole", Transform<float>(Point3<float>(1.0, 1.0, 0.0)), true, crossingHoleShape);
+
+    AIWorld aiWorld;
+    aiWorld.addEntity(walkableFaceObject);
+    aiWorld.addEntity(holeObject);
+    aiWorld.addEntity(crossingHoleObject);
+    NavMeshGenerator navMeshGenerator;
+    navMeshGenerator.setNavMeshAgent(buildNavMeshAgent());
+
+    std::shared_ptr<NavMesh> navMesh = navMeshGenerator.generate(aiWorld);
+
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons().size(), 4);
+    AssertHelper::assertTrue(navMesh->getPolygons()[0]->getName()=="<hole[2]>");
+    AssertHelper::assertTrue(navMesh->getPolygons()[1]->getName()=="<[walkableFace[2]] - [crossingHole]{0}> - <hole>");
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getPoints().size(), 8);
+    AssertHelper::assertUnsignedInt(navMesh->getPolygons()[1]->getTriangles().size(), 8);
+    AssertHelper::assertTrue(navMesh->getPolygons()[2]->getName()=="<[walkableFace[2]] - [crossingHole]{1}>");
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[2]->getPoints()[0], Point3<float>(2.0, 0.01, 2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[2]->getPoints()[1], Point3<float>(2.0, 0.01, -2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[2]->getPoints()[2], Point3<float>(1.7, 0.01, -2.0));
+    AssertHelper::assertPoint3FloatEquals(navMesh->getPolygons()[2]->getPoints()[3], Point3<float>(1.7, 0.01, 2.0));
+    AssertHelper::assertTrue(navMesh->getPolygons()[3]->getName()=="<crossingHole[2]>");
 }
 
 void NavMeshGeneratorTest::moveHoleOnWalkableFace()
@@ -211,8 +242,9 @@ CppUnit::Test *NavMeshGeneratorTest::suite()
     auto *suite = new CppUnit::TestSuite("NavMeshGeneratorTest");
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFace", &NavMeshGeneratorTest::holeOnWalkableFace));
-    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeEdgeOnWalkableFace", &NavMeshGeneratorTest::holeEdgeOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOnWalkableFaceEdge", &NavMeshGeneratorTest::holeOnWalkableFaceEdge));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeOverlapOnWalkableFace", &NavMeshGeneratorTest::holeOverlapOnWalkableFace));
+    suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("holeAndCrossingHoleOnWalkableFace", &NavMeshGeneratorTest::holeAndCrossingHoleOnWalkableFace));
 
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("moveHoleOnWalkableFace", &NavMeshGeneratorTest::moveHoleOnWalkableFace));
     suite->addTest(new CppUnit::TestCaller<NavMeshGeneratorTest>("removeHoleFromWalkableFace", &NavMeshGeneratorTest::removeHoleFromWalkableFace));
