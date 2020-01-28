@@ -8,7 +8,7 @@ namespace urchin
             edgeLinkMinLength(ConfigService::instance()->getFloatValue("navMesh.edgeLinkMinLength")),
             equalityDistanceThreshold(ConfigService::instance()->getFloatValue("navMesh.edgeLinkEqualityDistanceThreshold"))
     {
-        //TODO no jump between same (split) polygon
+
     }
 
     /**

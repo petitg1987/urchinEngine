@@ -44,7 +44,7 @@
 
 # AI engine
 - Navigation mesh
-	- **BUG** (`medium`): Prohibit jump links between two edges from an edge created by an obstacle
+	- **BUG** (`medium`): Jump from an edge created by an obstacle should be allowed only if target is this obstacle and vice versa
 	- **NEW FEATURE** (`medium`): Create jump/drop links from an edge to a walkable surface (+ update AABBTree margin accordingly)
 	- **OPTIMIZATION** (`minor`): Reduce memory allocation in NavMeshGenerator::createNavigationPolygon
 	- **OPTIMIZATION** (`minor`): TerrainObstacleService: apply a roughly simplification on self obstacles polygons
