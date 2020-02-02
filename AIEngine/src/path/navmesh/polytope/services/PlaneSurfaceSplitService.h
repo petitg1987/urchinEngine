@@ -17,7 +17,7 @@ namespace urchin
         public:
             explicit PlaneSurfaceSplitService(float);
 
-            std::vector<PlaneSurfaceSplit> splitSurface(const std::vector<Point3<float>> &);
+            std::vector<PlaneSurfaceSplit> splitRectangleSurface(const std::vector<Point3<float>> &);
 
         private:
             float surfaceMaxSize;

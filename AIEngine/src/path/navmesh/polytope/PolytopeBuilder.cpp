@@ -320,7 +320,7 @@ namespace urchin
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
                 }
 
-                std::vector<PlaneSurfaceSplit> planeSurfaceSplits = planeSurfaceSplitService->splitSurface(surfacePoints);
+                std::vector<PlaneSurfaceSplit> planeSurfaceSplits = planeSurfaceSplitService->splitRectangleSurface(surfacePoints);
                 for(const auto &planeSurfaceSplit : planeSurfaceSplits)
                 {
                     expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(planeSurfaceSplit.planeSurfacePoints, normal, isSlopeWalkable));
