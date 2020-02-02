@@ -5,7 +5,6 @@
 #include "path/navmesh/polytope/PolytopePlaneSurface.h"
 #include "path/navmesh/polytope/PolytopeTerrainSurface.h"
 #include "path/navmesh/polytope/services/TerrainObstacleService.h"
-#include "path/navmesh/polytope/services/TerrainSplitService.h"
 #include "path/navmesh/model/output/topography/NavTerrainTopography.h"
 
 namespace urchin
@@ -32,9 +31,16 @@ namespace urchin
     };
 
     PolytopeBuilder::PolytopeBuilder() :
-            polytopeMaxSize(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))
+            planeSurfaceSplitService(new PlaneSurfaceSplitService(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize"))),
+            terrainSplitService(new TerrainSplitService(ConfigService::instance()->getFloatValue("navMesh.polytopeMaxSize")))
     {
 
+    }
+
+    PolytopeBuilder::~PolytopeBuilder()
+    {
+        delete terrainSplitService;
+        delete planeSurfaceSplitService;
     }
 
     std::vector<std::unique_ptr<Polytope>> PolytopeBuilder::buildExpandedPolytopes(const std::shared_ptr<AIObject> &aiObject, const std::shared_ptr<NavMeshAgent> &navMeshAgent)
@@ -101,8 +107,7 @@ namespace urchin
             expandedLocalVertices.emplace_back(localVertex.translate(expandShiftVector));
         }
 
-        TerrainSplitService terrainSplitService(polytopeMaxSize);
-        std::vector<TerrainSplit> terrainSplits = terrainSplitService.splitTerrain(aiTerrain->getName(), aiTerrain->getTransform().getPosition(),
+        std::vector<TerrainSplit> terrainSplits = terrainSplitService->splitTerrain(aiTerrain->getName(), aiTerrain->getTransform().getPosition(),
                 expandedLocalVertices, aiTerrain->getXLength(), aiTerrain->getZLength());
 
         for(const auto &terrainSplit : terrainSplits)
@@ -126,7 +131,7 @@ namespace urchin
     }
 
     std::unique_ptr<Polytope> PolytopeBuilder::createExpandedPolytopeFor(const std::string &name, OBBox<float> *box, const std::shared_ptr<NavMeshAgent> &navMeshAgent) const
-    { //TODO divide big box in several smallest boxes of 'polytopeMaxSize'
+    {
         std::vector<Point3<float>> sortedOriginalPoints = box->getPoints();
         std::vector<Point3<float>> sortedExpandedPoints = createExpandedPoints(sortedOriginalPoints, navMeshAgent);
         std::vector<std::shared_ptr<PolytopeSurface>> expandedPolytopeSurfaces = createExpandedPolytopeSurfaces(sortedOriginalPoints, sortedExpandedPoints, navMeshAgent);
@@ -292,6 +297,9 @@ namespace urchin
         std::vector<std::shared_ptr<PolytopeSurface>> expandedSurfaces;
         expandedSurfaces.reserve(6);
 
+        std::vector<Point3<float>> surfacePoints;
+        surfacePoints.reserve(4);
+
         for(auto pointIndex : POINT_INDEX_TO_PLANES)
         {
             Vector3<float> v1 = sortedOriginalPoints[pointIndex[0]].vector(sortedOriginalPoints[pointIndex[2]]);
@@ -301,15 +309,21 @@ namespace urchin
             float angleToHorizontalInRadian = std::acos(normal.dotProduct(Vector3<float>(0.0, 1.0, 0.0)));
             bool isSlopeWalkable = std::fabs(angleToHorizontalInRadian) < navMeshAgent->getMaxSlope();
 
-            std::vector<Point3<float>> surfacePoints;
-            surfacePoints.reserve(4);
+            surfacePoints.clear();
 
             if(isSlopeWalkable)
             { //walkable surfaces are not expanded on XZ axis to avoid character to walk outside the walkable surface
+
                 Vector3<float> shiftVector = normal * navMeshAgent->computeExpandDistance(normal);
                 for(unsigned int i=0; i<4; ++i)
                 {
                     surfacePoints.push_back(sortedOriginalPoints[pointIndex[i]].translate(shiftVector));
+                }
+
+                std::vector<PlaneSurfaceSplit> planeSurfaceSplits = planeSurfaceSplitService->splitSurface(surfacePoints);
+                for(const auto &planeSurfaceSplit : planeSurfaceSplits)
+                {
+                    expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(planeSurfaceSplit.planeSurfacePoints, normal, isSlopeWalkable));
                 }
             } else
             {
@@ -317,9 +331,9 @@ namespace urchin
                 {
                     surfacePoints.push_back(sortedExpandedPoints[pointIndex[i]]);
                 }
-            }
 
-            expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(std::move(surfacePoints), normal, isSlopeWalkable));
+                expandedSurfaces.push_back(std::make_shared<PolytopePlaneSurface>(surfacePoints, normal, isSlopeWalkable));
+            }
         }
 
         return expandedSurfaces;
