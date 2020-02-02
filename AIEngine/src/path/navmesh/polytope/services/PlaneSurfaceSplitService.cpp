@@ -21,6 +21,15 @@ namespace urchin
         unsigned int aSamples = static_cast<int>(std::ceil(planeSurfacePoints[0].distance(planeSurfacePoints[1]) / surfaceMaxSize));
         unsigned int bSamples = static_cast<int>(std::ceil(planeSurfacePoints[1].distance(planeSurfacePoints[2]) / surfaceMaxSize));
 
+        if(aSamples == 1 && bSamples == 1)
+        { //no split required
+            PlaneSurfaceSplit planeSurfaceSplit;
+            planeSurfaceSplit.planeSurfacePoints = planeSurfacePoints;
+            planeSurfaceSplits.emplace_back(planeSurfaceSplit);
+
+            return planeSurfaceSplits;
+        }
+
         for(unsigned int aSample=0; aSample < aSamples; ++aSample)
         {
             float aPointStartRange = (float)aSample / (float)aSamples;
