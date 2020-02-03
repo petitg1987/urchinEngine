@@ -146,15 +146,15 @@ namespace urchin
                                                   const Point3<float> &jumpStartPoint, const Point3<float> &jumpEndPoint) const
     {
         constexpr float jumpFoV = 0.17364817766; //FoV of 80° = cos((PI_VALUE/180.0) * 80.0)
-        Vector2<float> normalizedJumpVectorXZ = Point2<float>(jumpStartPoint.X, jumpStartPoint.Z).vector(Point2<float>(jumpEndPoint.X, jumpEndPoint.Z)).normalize();
+        Vector2<float> normalizedJumpVectorXZ = jumpStartPoint.toPoint2XZ().vector(jumpEndPoint.toPoint2XZ()).normalize();
 
-        Line2D<float> startJumpEdgeXZ(Point2<float>(startJumpEdge.getA().X, startJumpEdge.getA().Z), Point2<float>(startJumpEdge.getB().X, startJumpEdge.getB().Z));
+        Line2D<float> startJumpEdgeXZ(startJumpEdge.getA().toPoint2XZ(), startJumpEdge.getB().toPoint2XZ());
         Vector2<float> orthogonalStartJumpVectorXZ = startJumpEdgeXZ.getA().vector(startJumpEdgeXZ.getA().translate(startJumpEdgeXZ.computeNormal()));
         bool jumpOutsideOfStartPolygon = orthogonalStartJumpVectorXZ.normalize().dotProduct(normalizedJumpVectorXZ) >= jumpFoV;
 
         if(jumpOutsideOfStartPolygon)
         {
-            Line2D<float> endJumpEdgeXZ(Point2<float>(endJumpEdge.getA().X, endJumpEdge.getA().Z), Point2<float>(endJumpEdge.getB().X, endJumpEdge.getB().Z));
+            Line2D<float> endJumpEdgeXZ(endJumpEdge.getA().toPoint2XZ(), endJumpEdge.getB().toPoint2XZ());
             Vector2<float> orthogonalEndJumpVectorXZ = endJumpEdgeXZ.getA().vector(endJumpEdgeXZ.getA().translate(endJumpEdgeXZ.computeNormal()));
             bool jumpInsideOfEndPolygon = orthogonalEndJumpVectorXZ.normalize().dotProduct(normalizedJumpVectorXZ) < -jumpFoV;
             return jumpInsideOfEndPolygon;

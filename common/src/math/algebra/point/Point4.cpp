@@ -62,11 +62,6 @@ namespace urchin
 		X = Y = Z = W = 0;
 	}
 
-	template<class T> T Point4<T>::distance() const
-	{
-		return std::sqrt(X*X + Y*Y + Z*Z + W*W);
-	}
-
 	template<class T> T Point4<T>::distance(const Point4<T> &p) const
 	{
 		return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)) + ((Z-p.Z)*(Z-p.Z)) + ((W-p.W)*(W-p.W)));

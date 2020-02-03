@@ -125,9 +125,9 @@ namespace urchin
         Point3<float> p1 = polygon->getPoint(triangle->getIndex(1));
         Point3<float> p2 = polygon->getPoint(triangle->getIndex(2));
 
-        bool b1 = sign(point, Point2<float>(p0.X, p0.Z), Point2<float>(p1.X, p1.Z)) < 0.0f;
-        bool b2 = sign(point, Point2<float>(p1.X, p1.Z), Point2<float>(p2.X, p2.Z)) < 0.0f;
-        bool b3 = sign(point, Point2<float>(p2.X, p2.Z), Point2<float>(p0.X, p0.Z)) < 0.0f;
+        bool b1 = sign(point, p0.toPoint2XZ(), p1.toPoint2XZ()) < 0.0f;
+        bool b2 = sign(point, p1.toPoint2XZ(), p2.toPoint2XZ()) < 0.0f;
+        bool b3 = sign(point, p2.toPoint2XZ(), p0.toPoint2XZ()) < 0.0f;
 
         return ((b1 == b2) && (b2 == b3));
     }

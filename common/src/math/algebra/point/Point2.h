@@ -21,7 +21,6 @@ namespace urchin
 			void setValues(T, T);
 			void setNull();
 
-			T distance() const;
 			T distance(const Point2<T> &) const;
 			T squareDistance(const Point2<T> &) const;
 			Vector2<T> vector(const Point2<T> &) const;

@@ -38,11 +38,6 @@ namespace urchin
 		X = Y = 0;
 	}
 
-	template<class T> T Point2<T>::distance() const
-	{
-		return std::sqrt(X*X + Y*Y);
-	}
-
 	template<class T> T Point2<T>::distance(const Point2<T> &p) const
 	{
 		return std::sqrt(((X-p.X)*(X-p.X)) + ((Y-p.Y)*(Y-p.Y)));
