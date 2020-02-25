@@ -6,9 +6,12 @@
 # 3d Engine
 - Model
     - **OPTIMIZATION** (`medium`): Group same models in same octree to perform one draw call
+    - **NEW FEATURE** (`minor`): Use reverse depth for far distant view (<https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
 	- **OPTIMIZATION** (`minor`): Models LOD
 	- **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
 	- **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
+- Lighting
+    - **OPTIMIZATION** (`minor`): Use tiled-based deferred shading (<https://software.intel.com/en-us/articles/deferred-rendering-for-current-and-future-rendering-pipelines>)
 - Shadow
     - **OPTIMIZATION** (`medium`): Improve performance ShadowManager::updateVisibleModels
         - Tips 1: find solution where models to display could be re-used in Renderer3d::deferredGeometryRendering
