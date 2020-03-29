@@ -12,10 +12,12 @@ namespace urchin
     class SkyboxReaderWriter
     {
         //XML tags
+        #define TEXTURES_TAG "textures"
         #define FILENAME_TAG "filename"
+        #define OFFSET_Y_TAG "offsetY"
 
         public:
-            std::vector<std::string> loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
+            std::unique_ptr<Skybox> loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &) const;
             void writeOn(const std::shared_ptr<XmlChunk> &, const std::unique_ptr<Skybox> &, XmlWriter &) const;
     };
 

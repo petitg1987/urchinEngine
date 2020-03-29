@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include "io/StringUtil.h"
 #include "system/FileHandler.h"
 
 namespace urchin
@@ -84,7 +85,7 @@ namespace urchin
 	}
 
 	/**
-	 * @return Simplified path. Example: xx/yy/../zz/ -> xx/zz/
+	 * @return Simplified path. Example: xx/yy/../zz/ -> xx/zz/; xx/./ -> xx/
 	 */
 	std::string FileHandler::simplifyDirectoryPath(const std::string &directoryPath)
 	{
@@ -93,7 +94,7 @@ namespace urchin
 
 		std::string simplifiedDirectoryPath = directoryPath;
 		std::size_t returnDirFound = simplifiedDirectoryPath.find(parentDirectorySymbol);
-		while(returnDirFound!=std::string::npos)
+		while(returnDirFound != std::string::npos)
 		{
 			std::size_t found = simplifiedDirectoryPath.find_last_of("/\\", returnDirFound-2);
 			if(found==std::string::npos)
@@ -104,6 +105,8 @@ namespace urchin
 			simplifiedDirectoryPath = simplifiedDirectoryPath.replace(found+1, (returnDirFound+2)-found, "");
 			returnDirFound = simplifiedDirectoryPath.find(parentDirectorySymbol);
 		}
+
+        StringUtil::replaceAll(simplifiedDirectoryPath, "./", "");
 
 		return simplifiedDirectoryPath;
 	}

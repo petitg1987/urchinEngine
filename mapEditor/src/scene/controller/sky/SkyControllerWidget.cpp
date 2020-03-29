@@ -6,6 +6,7 @@
 #include "SkyControllerWidget.h"
 #include "support/ButtonStyleHelper.h"
 #include "support/GroupBoxStyleHelper.h"
+#include "support/SpinBoxStyleHelper.h"
 
 namespace urchin
 {
@@ -20,6 +21,7 @@ namespace urchin
             ypSkyboxFilenameText(nullptr),
             znSkyboxFilenameText(nullptr),
             zpSkyboxFilenameText(nullptr),
+            offsetY(nullptr),
             disableSkyEvent(false)
     {
         auto *mainLayout = new QVBoxLayout(this);
@@ -86,6 +88,14 @@ namespace urchin
         connect(selectZpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(showZpSkyboxFilenameDialog()));
         auto *clearZpSkyboxFileButton = createClearFileButton(zpSkyboxLayout);
         connect(clearZpSkyboxFileButton, SIGNAL(clicked()), this, SLOT(clearZpSkyboxFilename()));
+
+        auto *offsetYLabel = new QLabel("Offset Y:");
+        skyboxLayout->addWidget(offsetYLabel, 6, 0);
+
+        offsetY = new QDoubleSpinBox();
+        skyboxLayout->addWidget(offsetY, 6, 1);
+        SpinBoxStyleHelper::applyDefaultStyleOn(offsetY);
+        connect(offsetY, SIGNAL(valueChanged(double)), this, SLOT(skyChanged()));
     }
 
     QHBoxLayout *SkyControllerWidget::createFilenameInputText(QGridLayout *skyboxLayout, int row, const QString &text, QLineEdit **skyboxFilenameText)
@@ -214,6 +224,19 @@ namespace urchin
         skyChanged();
     }
 
+    void SkyControllerWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
+    {
+        disableSkyEvent = true;
+        this->xnSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[0]));
+        this->xpSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[1]));
+        this->ynSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[2]));
+        this->ypSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[3]));
+        this->znSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[4]));
+        this->zpSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[5]));
+        this->offsetY->setValue(skybox->getOffsetY());
+        disableSkyEvent = false;
+    }
+
     void SkyControllerWidget::skyChanged()
     {
         if(!disableSkyEvent)
@@ -226,20 +249,8 @@ namespace urchin
             skyboxFilenames.emplace_back(znSkyboxFilenameText->text().toStdString());
             skyboxFilenames.emplace_back(zpSkyboxFilenameText->text().toStdString());
 
-            skyController->updateSceneSky(skyboxFilenames);
+            skyController->updateSceneSky(skyboxFilenames, offsetY->value());
         }
-    }
-
-    void SkyControllerWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
-    {
-        disableSkyEvent = true;
-        this->xnSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[0]));
-        this->xpSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[1]));
-        this->ynSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[2]));
-        this->ypSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[3]));
-        this->znSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[4]));
-        this->zpSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[5]));
-        disableSkyEvent = false;
     }
 
 }

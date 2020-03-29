@@ -68,7 +68,7 @@ namespace urchin
 			void removeSceneWater(SceneWater *);
 
             const SceneSky *getSceneSky() const;
-            void updateSceneSky(const std::vector<std::string> &);
+            void updateSceneSky(const std::vector<std::string> &, float);
 
 			const std::list<SceneSound *> &getSceneSounds() const;
 			SceneSound *getSceneSound(const std::string &) const;

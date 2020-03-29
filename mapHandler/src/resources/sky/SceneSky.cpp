@@ -14,9 +14,9 @@ namespace urchin
         return renderer3d->getSkybox();
     }
 
-    void SceneSky::changeSkybox(const std::vector<std::string> &skyboxFilenames)
+    void SceneSky::changeSkybox(std::unique_ptr<Skybox> skybox)
     {
-        renderer3d->setSkybox(std::make_unique<Skybox>(skyboxFilenames));
+        renderer3d->setSkybox(std::move(skybox));
     }
 
     void SceneSky::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)

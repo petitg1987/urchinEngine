@@ -4,6 +4,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDoubleSpinBox>
 
 #include "scene/controller/sky/SkyController.h"
 
@@ -37,6 +38,7 @@ namespace urchin
             QLineEdit *ynSkyboxFilenameText, *ypSkyboxFilenameText;
             QLineEdit *znSkyboxFilenameText, *zpSkyboxFilenameText;
             static QString preferredSkyboxPath;
+            QDoubleSpinBox *offsetY;
 
             bool disableSkyEvent;
 

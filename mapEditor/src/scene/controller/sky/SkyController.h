@@ -17,7 +17,7 @@ namespace urchin
 
             const SceneSky *getSceneSky() const;
 
-            const SceneSky *updateSceneSky(const std::vector<std::string> &);
+            const SceneSky *updateSceneSky(const std::vector<std::string> &, float);
 
         private:
             void markModified();

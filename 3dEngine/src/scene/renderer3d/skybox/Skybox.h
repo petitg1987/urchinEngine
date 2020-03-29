@@ -21,8 +21,9 @@ namespace urchin
 			~Skybox();
 
 			void onCameraProjectionUpdate(const Camera *);
-			void setOffsetY(float);
 
+			float getOffsetY() const;
+			void setOffsetY(float);
 			const std::vector<std::string> &getFilenames() const;
 
 			void display(const Matrix4<float> &, const Point3<float> &);

@@ -17,7 +17,7 @@ namespace urchin
             explicit SceneSky(Renderer3d *);
 
             const std::unique_ptr<Skybox> &getSkybox() const;
-            void changeSkybox(const std::vector<std::string> &skyboxFilenames);
+            void changeSkybox(std::unique_ptr<Skybox>);
 
         private:
             void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);

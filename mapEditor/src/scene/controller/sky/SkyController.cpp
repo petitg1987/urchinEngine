@@ -29,9 +29,9 @@ namespace urchin
         return mapHandler->getMap()->getSceneSky();
     }
 
-    const SceneSky *SkyController::updateSceneSky(const std::vector<std::string> &skyboxFilenames)
+    const SceneSky *SkyController::updateSceneSky(const std::vector<std::string> &skyboxFilenames, float offsetY)
     {
-        mapHandler->getMap()->updateSceneSky(skyboxFilenames);
+        mapHandler->getMap()->updateSceneSky(skyboxFilenames, offsetY);
 
         markModified();
         return mapHandler->getMap()->getSceneSky();

@@ -16,13 +16,13 @@ namespace urchin
 	 */
 	Skybox::Skybox() :
             textureID(0),
-			offsetY(0.0),
+			offsetY(0.0f),
             skyboxShader(0),
             mProjectionLoc(0),
             mViewLoc(0)
 	{
 		texSkybox = new Image*[6];
-        for(unsigned int i=0; i<6; ++i)
+        for(unsigned int i=0; i < 6; ++i)
         {
             texSkybox[i] = new Image(SKYBOX_DEFAULT_SIZE, SKYBOX_DEFAULT_SIZE, Image::IMAGE_RGB, std::vector<unsigned char>(SKYBOX_DEFAULT_SIZE * SKYBOX_DEFAULT_SIZE * 3, 0));
         }
@@ -41,7 +41,7 @@ namespace urchin
             mProjectionLoc(0),
             mViewLoc(0)
 	{
-		if(filenames.size()!=6)
+		if(filenames.size() != 6)
 		{
 			throw std::invalid_argument("There is no 6 skybox filenames.");
 		}
@@ -184,6 +184,11 @@ namespace urchin
 		ShaderManager::instance()->bind(skyboxShader);
 		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)camera->getProjectionMatrix());
 	}
+
+    float Skybox::getOffsetY() const
+    {
+	    return offsetY;
+    }
 
 	void Skybox::setOffsetY(float offsetY)
 	{
