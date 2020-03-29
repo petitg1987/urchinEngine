@@ -11,6 +11,7 @@ namespace urchin
 			physicsWorld(physicsWorld),
 			soundManager(soundManager),
 			aiManager(aiManager),
+			sceneSky(new SceneSky(renderer3d)),
             sceneAI(new SceneAI(aiManager))
 	{
 
@@ -18,6 +19,9 @@ namespace urchin
 
 	Map::~Map()
 	{
+        delete sceneAI;
+        delete sceneSky;
+
 		for(SceneObject *sceneObject : sceneObjects)
 		{
 			delete sceneObject;
@@ -42,8 +46,6 @@ namespace urchin
 		{
 			delete sceneSound;
 		}
-
-		delete sceneAI;
 	}
 
 	void Map::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser, LoadCallback &loadCallback)
@@ -66,6 +68,7 @@ namespace urchin
 
 		loadSceneTerrainFrom(chunk, xmlParser);
 		loadSceneWaterFrom(chunk, xmlParser);
+        loadSceneSkyFrom(chunk, xmlParser);
 		loadCallback.execute(LoadCallback::LANDSCAPE);
 
 		loadSceneSoundsFrom(chunk, xmlParser);
@@ -131,6 +134,13 @@ namespace urchin
 		}
 	}
 
+    void Map::loadSceneSkyFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
+    {
+        std::shared_ptr<XmlChunk> skyChunk = xmlParser.getUniqueChunk(true, SKY_TAG, XmlAttribute(), chunk);
+
+        sceneSky->loadFrom(skyChunk, xmlParser);
+    }
+
 	void Map::loadSceneSoundsFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
 	{
 		std::shared_ptr<XmlChunk> soundElementsListChunk = xmlParser.getUniqueChunk(true, SOUND_ELEMENTS_TAG, XmlAttribute(), chunk);
@@ -158,6 +168,7 @@ namespace urchin
 		writeSceneLightsOn(chunk, xmlWriter);
 		writeSceneTerrainsOn(chunk, xmlWriter);
 		writeSceneWatersOn(chunk, xmlWriter);
+        writeSceneSkyOn(chunk, xmlWriter);
 		writeSceneSoundsOn(chunk, xmlWriter);
 		writeSceneAIOn(chunk, xmlWriter);
 	}
@@ -205,6 +216,13 @@ namespace urchin
 			sceneWater->writeOn(watersChunk, xmlWriter);
 		}
 	}
+
+    void Map::writeSceneSkyOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
+    {
+        std::shared_ptr<XmlChunk> skyChunk = xmlWriter.createChunk(SKY_TAG, XmlAttribute(), chunk);
+
+        sceneSky->writeOn(skyChunk, xmlWriter);
+    }
 
 	void Map::writeSceneSoundsOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
 	{
@@ -343,6 +361,16 @@ namespace urchin
 		sceneWaters.remove(sceneWater);
 		delete sceneWater;
 	}
+
+    const SceneSky *Map::getSceneSky() const
+    {
+	    return sceneSky;
+    }
+
+    void Map::updateSceneSky(const std::vector<std::string> &skyboxFilenames)
+    {
+        sceneSky->changeSkybox(skyboxFilenames);
+    }
 
 	const std::list<SceneSound *> &Map::getSceneSounds() const
 	{

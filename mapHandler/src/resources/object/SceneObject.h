@@ -27,7 +27,7 @@ namespace urchin
 			friend class Map;
 
 			SceneObject();
-			~SceneObject();
+			~SceneObject() override;
 
 			void setObjectManagers(Renderer3d *, PhysicsWorld *, AIManager *);
 

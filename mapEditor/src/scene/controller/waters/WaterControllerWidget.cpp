@@ -398,11 +398,11 @@ namespace urchin
         QString filename = QFileDialog::getOpenFileName(this, tr("Open image file"), directory, "Image file (*.tga *.png)", nullptr, QFileDialog::DontUseNativeDialog);
         if(!filename.isNull())
         {
-            std::string tgaFilenamePath = filename.toUtf8().constData();
-            std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, tgaFilenamePath);
+            std::string imageFilenamePath = filename.toUtf8().constData();
+            std::string relativeTgaFilenamePath = FileHandler::getRelativePath(resourcesDirectory, imageFilenamePath);
             this->normalTextureFilenameText->setText(QString::fromStdString(relativeTgaFilenamePath));
 
-            std::string preferredPathString = FileHandler::getDirectoryFrom(tgaFilenamePath);
+            std::string preferredPathString = FileHandler::getDirectoryFrom(imageFilenamePath);
             preferredNormalTexturePath = QString::fromStdString(preferredPathString);
 
             try

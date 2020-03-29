@@ -23,10 +23,13 @@ namespace urchin
 			void onCameraProjectionUpdate(const Camera *);
 			void setOffsetY(float);
 
+			const std::vector<std::string> &getFilenames() const;
+
 			void display(const Matrix4<float> &, const Point3<float> &);
 		private:
 			void initialize();
 
+            std::vector<std::string> filenames;
 			Image **texSkybox;
 			unsigned int textureID;
 			

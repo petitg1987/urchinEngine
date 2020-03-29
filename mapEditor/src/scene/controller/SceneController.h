@@ -8,6 +8,7 @@
 #include "scene/controller/lights/LightController.h"
 #include "scene/controller/terrains/TerrainController.h"
 #include "scene/controller/waters/WaterController.h"
+#include "scene/controller/sky/SkyController.h"
 #include "scene/controller/sounds/SoundController.h"
 #include "scene/controller/ai/AIController.h"
 
@@ -29,6 +30,7 @@ namespace urchin
 			LightController *getLightController();
 			TerrainController *getTerrainController();
 			WaterController *getWaterController();
+            SkyController *getSkyController();
 			SoundController *getSoundController();
 			AIController *getAIController();
 
@@ -43,6 +45,7 @@ namespace urchin
 			LightController *lightController;
 			TerrainController *terrainController;
             WaterController *waterController;
+            SkyController *skyController;
 			SoundController *soundController;
 			AIController *aiController;
 	};

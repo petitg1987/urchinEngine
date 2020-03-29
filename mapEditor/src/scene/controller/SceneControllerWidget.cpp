@@ -10,19 +10,22 @@ namespace urchin
 			sceneController(nullptr)
 	{
 		tabObjects = new ObjectControllerWidget();
-		addTab(tabObjects, "Objects");
+		addTab(tabObjects, "Object");
 
 		tabLights = new LightControllerWidget();
-		addTab(tabLights, "Lights");
+		addTab(tabLights, "Light");
 
 		tabTerrains = new TerrainControllerWidget();
-		addTab(tabTerrains, "Terrains");
+		addTab(tabTerrains, "Terrain");
 
 		tabWaters = new WaterControllerWidget();
-		addTab(tabWaters, "Waters");
+		addTab(tabWaters, "Water");
+
+		tabSky = new SkyControllerWidget();
+        addTab(tabSky, "Sky");
 
 		tabSounds = new SoundControllerWidget();
-		addTab(tabSounds, "Sounds");
+		addTab(tabSounds, "Sound");
 
 		tabAI = new AIControllerWidget();
 		addTab(tabAI, "AI");
@@ -57,6 +60,11 @@ namespace urchin
 		return tabWaters;
 	}
 
+    SkyControllerWidget *SceneControllerWidget::getSkyControllerWidget() const
+    {
+        return tabSky;
+    }
+
 	SoundControllerWidget *SceneControllerWidget::getSoundControllerWidget() const
 	{
 		return tabSounds;
@@ -89,6 +97,7 @@ namespace urchin
 		tabLights->load(sceneController->getLightController());
 		tabTerrains->load(sceneController->getTerrainController());
 		tabWaters->load(sceneController->getWaterController());
+		tabSky->load(sceneController->getSkyController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
 	}
@@ -104,6 +113,7 @@ namespace urchin
 		tabLights->load(sceneController->getLightController());
 		tabTerrains->load(sceneController->getTerrainController());
 		tabWaters->load(sceneController->getWaterController());
+        tabSky->load(sceneController->getSkyController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
 	}
@@ -122,6 +132,7 @@ namespace urchin
 		tabLights->unload();
 		tabTerrains->unload();
 		tabWaters->unload();
+		tabSky->unload();
 		tabSounds->unload();
 		tabAI->unload();
 		setEnabled(false);
@@ -143,12 +154,15 @@ namespace urchin
 		{
 			return TabName::TERRAINS;
 		}else if(tabIndex==3)
-		{
-			return TabName::WATERS;
-		}else if(tabIndex==4)
+        {
+            return TabName::WATERS;
+        }else if(tabIndex==4)
+        {
+            return TabName::SKY;
+		}else if(tabIndex==5)
 		{
 			return TabName::SOUNDS;
-		}else if(tabIndex==5)
+		}else if(tabIndex==6)
 		{
 			return TabName::AI;
 		}

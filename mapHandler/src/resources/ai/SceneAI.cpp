@@ -1,5 +1,5 @@
 #include "SceneAI.h"
-#include "resources/ai/NavMeshAgentWriter.h"
+#include "resources/ai/NavMeshAgentReaderWriter.h"
 
 namespace urchin
 {
@@ -24,14 +24,14 @@ namespace urchin
     {
         std::shared_ptr<XmlChunk> navMeshAgentChunk = xmlParser.getUniqueChunk(true, NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
 
-        changeNavMeshAgent(NavMeshAgentWriter().loadFrom(navMeshAgentChunk, xmlParser));
+        changeNavMeshAgent(NavMeshAgentReaderWriter().loadFrom(navMeshAgentChunk, xmlParser));
     }
 
     void SceneAI::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
     {
         std::shared_ptr<XmlChunk> navMeshAgentChunk = xmlWriter.createChunk(NAV_MESH_AGENT_TAG, XmlAttribute(), chunk);
 
-        NavMeshAgentWriter().writeOn(navMeshAgentChunk, getNavMeshAgent(), xmlWriter);
+        NavMeshAgentReaderWriter().writeOn(navMeshAgentChunk, getNavMeshAgent(), xmlWriter);
     }
 
 }

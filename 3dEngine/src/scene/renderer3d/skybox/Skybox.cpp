@@ -6,6 +6,8 @@
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
+#define SKYBOX_DEFAULT_SIZE 1
+
 namespace urchin
 {
 
@@ -20,12 +22,10 @@ namespace urchin
             mViewLoc(0)
 	{
 		texSkybox = new Image*[6];
-		texSkybox[0] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
-		texSkybox[1] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
-		texSkybox[2] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
-		texSkybox[3] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
-		texSkybox[4] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
-		texSkybox[5] = new Image(1, 1, Image::IMAGE_RGB, std::vector<unsigned char>({0, 0, 0}));
+        for(unsigned int i=0; i<6; ++i)
+        {
+            texSkybox[i] = new Image(SKYBOX_DEFAULT_SIZE, SKYBOX_DEFAULT_SIZE, Image::IMAGE_RGB, std::vector<unsigned char>(SKYBOX_DEFAULT_SIZE * SKYBOX_DEFAULT_SIZE * 3, 0));
+        }
 
 		initialize();
 	}
@@ -34,6 +34,7 @@ namespace urchin
 	* @param filenames Filenames of the textures in the following order: X-, X+, Y-, Y+, Z-, Z+
 	*/
 	Skybox::Skybox(const std::vector<std::string> &filenames) :
+            filenames(filenames),
             textureID(0),
             offsetY(0.0),
             skyboxShader(0),
@@ -47,12 +48,35 @@ namespace urchin
 
 		//create the textures
 		texSkybox = new Image*[6];
-		texSkybox[0] = MediaManager::instance()->getMedia<Image>(filenames[0]);
-		texSkybox[1] = MediaManager::instance()->getMedia<Image>(filenames[1]);
-		texSkybox[2] = MediaManager::instance()->getMedia<Image>(filenames[2]);
-		texSkybox[3] = MediaManager::instance()->getMedia<Image>(filenames[3]);
-		texSkybox[4] = MediaManager::instance()->getMedia<Image>(filenames[4]);
-		texSkybox[5] = MediaManager::instance()->getMedia<Image>(filenames[5]);
+		unsigned int skyboxSize = SKYBOX_DEFAULT_SIZE;
+		for(std::size_t i=0; i<6; ++i)
+        {
+		    if(!filenames[i].empty())
+            {
+                texSkybox[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
+                if(texSkybox[i]->getWidth() != texSkybox[i]->getHeight())
+                {
+                    throw std::runtime_error("Skybox image " + std::to_string(i) + " must be a square. Present image size: " +
+                        std::to_string(texSkybox[i]->getWidth()) + "x" + std::to_string(texSkybox[i]->getHeight()));
+                }
+
+                if(texSkybox[i]->getWidth() != SKYBOX_DEFAULT_SIZE)
+                {
+                    skyboxSize = texSkybox[i]->getWidth();
+                }else if(texSkybox[i]->getWidth() != skyboxSize)
+                {
+                    throw std::runtime_error("All skybox images must have the same size: " + std::to_string(texSkybox[i]->getWidth()) + " != " + std::to_string(skyboxSize));
+                }
+            }
+        }
+
+        for(std::size_t i=0; i<6; ++i)
+        {
+            if(filenames[i].empty())
+            {
+                texSkybox[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::vector<unsigned char>(skyboxSize * skyboxSize * 3, 0));
+            }
+        }
 
 		initialize();
 	}
@@ -73,11 +97,11 @@ namespace urchin
 			GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
 			GL_TEXTURE_CUBE_MAP_POSITIVE_Z
 		};
-		const float SIZE = 10.0;
-		
+		const float SIZE = 10.0f;
+
 		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-		for (int i=0; i<6; i++)
+		for (std::size_t i=0; i<6; i++)
 		{
 			glTexImage2D(cubeMapTarget[i], 0, texSkybox[i]->retrieveInternalFormat(), texSkybox[i]->getWidth(), texSkybox[i]->getHeight(), 0, texSkybox[i]->retrieveFormat(), GL_UNSIGNED_BYTE, &texSkybox[i]->getTexels()[0]);
 			texSkybox[i]->release();
@@ -147,6 +171,11 @@ namespace urchin
 	{
 		this->offsetY = offsetY;
 	}
+
+    const std::vector<std::string> &Skybox::getFilenames() const
+    {
+	    return filenames;
+    }
 
 	void Skybox::display(const Matrix4<float> &viewMatrix, const Point3<float> &cameraPosition)
 	{

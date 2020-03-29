@@ -12,7 +12,6 @@ namespace urchin
                 OBJECTS,
                 LIGHTS,
                 LANDSCAPE,
-                WATERS,
                 SOUNDS,
                 AI
             };

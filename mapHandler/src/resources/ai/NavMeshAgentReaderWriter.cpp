@@ -1,8 +1,8 @@
-#include "NavMeshAgentWriter.h"
+#include "NavMeshAgentReaderWriter.h"
 
 namespace urchin
 {
-    std::shared_ptr<NavMeshAgent> NavMeshAgentWriter::loadFrom(const std::shared_ptr<XmlChunk> &navMeshAgentChunk, const XmlParser &xmlParser) const
+    std::shared_ptr<NavMeshAgent> NavMeshAgentReaderWriter::loadFrom(const std::shared_ptr<XmlChunk> &navMeshAgentChunk, const XmlParser &xmlParser) const
     {
         std::shared_ptr<XmlChunk> agentHeightChunk = xmlParser.getUniqueChunk(true, AGENT_HEIGHT_TAG, XmlAttribute(), navMeshAgentChunk);
         float agentHeight = agentHeightChunk->getFloatValue();
@@ -20,7 +20,7 @@ namespace urchin
         return navMeshAgent;
     }
 
-    void NavMeshAgentWriter::writeOn(const std::shared_ptr<XmlChunk> &navMeshAgentChunk, const std::shared_ptr<const NavMeshAgent> &navMeshAgent, XmlWriter &xmlWriter) const
+    void NavMeshAgentReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &navMeshAgentChunk, const std::shared_ptr<const NavMeshAgent> &navMeshAgent, XmlWriter &xmlWriter) const
     {
         std::shared_ptr<XmlChunk> agentHeightChunk = xmlWriter.createChunk(AGENT_HEIGHT_TAG, XmlAttribute(), navMeshAgentChunk);
         agentHeightChunk->setFloatValue(navMeshAgent->getAgentHeight());

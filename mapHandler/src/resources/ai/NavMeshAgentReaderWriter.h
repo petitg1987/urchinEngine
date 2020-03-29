@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_NAVMESHAGENTWRITER_H
-#define URCHINENGINE_NAVMESHAGENTWRITER_H
+#ifndef URCHINENGINE_NAVMESHAGENTREADERWRITER_H
+#define URCHINENGINE_NAVMESHAGENTREADERWRITER_H
 
 #include <memory>
 
@@ -8,7 +8,7 @@
 namespace urchin
 {
 
-    class NavMeshAgentWriter
+    class NavMeshAgentReaderWriter
     {
         //XML tags
         #define AGENT_HEIGHT_TAG "agentHeight"

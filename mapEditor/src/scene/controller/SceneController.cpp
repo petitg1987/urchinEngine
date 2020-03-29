@@ -13,6 +13,7 @@ namespace urchin
 		lightController = new LightController(mapHandler);
 		terrainController = new TerrainController(mapHandler);
 		waterController = new WaterController(mapHandler);
+		skyController = new SkyController(mapHandler);
 		soundController = new SoundController(mapHandler);
 		aiController = new AIController(mapHandler);
 	}
@@ -23,6 +24,7 @@ namespace urchin
 		delete lightController;
 		delete terrainController;
 		delete waterController;
+		delete skyController;
 		delete soundController;
 		delete aiController;
 	}
@@ -41,6 +43,7 @@ namespace urchin
 				|| lightController->isModified()
 			    || terrainController->isModified()
 			    || waterController->isModified()
+			    || skyController->isModified()
 				|| soundController->isModified()
 				|| aiController->isModified();
 	}
@@ -57,6 +60,7 @@ namespace urchin
 		lightController->resetModified();
 		terrainController->resetModified();
 		waterController->resetModified();
+		skyController->resetModified();
 		soundController->resetModified();
 		aiController->resetModified();
 	}
@@ -90,6 +94,11 @@ namespace urchin
 	{
 		return waterController;
 	}
+
+    SkyController *SceneController::getSkyController()
+    {
+        return skyController;
+    }
 
 	SoundController *SceneController::getSoundController()
 	{
