@@ -62,8 +62,8 @@ namespace urchin
 			Camera *getCamera() const;
 
 			//skybox
-			void createSkybox(const std::vector<std::string> &);
-			Skybox *getSkybox() const;
+			void setSkybox(std::unique_ptr<Skybox>);
+			const std::unique_ptr<Skybox> &getSkybox() const;
 
 			//models
 			void addModel(Model *);
@@ -126,7 +126,7 @@ namespace urchin
 			Camera *camera;
 
 			//skybox
-			Skybox *skybox;
+			std::unique_ptr<Skybox> skybox;
 
 			//visual
 			unsigned int *fboIDs;

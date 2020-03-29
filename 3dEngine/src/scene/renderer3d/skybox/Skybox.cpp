@@ -49,32 +49,37 @@ namespace urchin
 		//create the textures
 		texSkybox = new Image*[6];
 		unsigned int skyboxSize = SKYBOX_DEFAULT_SIZE;
-		for(std::size_t i=0; i<6; ++i)
+		for(std::size_t i=0; i < 6; ++i)
         {
 		    if(!filenames[i].empty())
             {
                 texSkybox[i] = MediaManager::instance()->getMedia<Image>(filenames[i]);
-                if(texSkybox[i]->getWidth() != texSkybox[i]->getHeight())
-                {
-                    throw std::runtime_error("Skybox image " + std::to_string(i) + " must be a square. Present image size: " +
-                        std::to_string(texSkybox[i]->getWidth()) + "x" + std::to_string(texSkybox[i]->getHeight()));
-                }
-
-                if(texSkybox[i]->getWidth() != SKYBOX_DEFAULT_SIZE)
-                {
-                    skyboxSize = texSkybox[i]->getWidth();
-                }else if(texSkybox[i]->getWidth() != skyboxSize)
-                {
-                    throw std::runtime_error("All skybox images must have the same size: " + std::to_string(texSkybox[i]->getWidth()) + " != " + std::to_string(skyboxSize));
-                }
+                skyboxSize = texSkybox[i]->getWidth();
             }
         }
 
-        for(std::size_t i=0; i<6; ++i)
+        for(std::size_t i=0; i < 6; ++i)
         {
             if(filenames[i].empty())
             {
                 texSkybox[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::vector<unsigned char>(skyboxSize * skyboxSize * 3, 0));
+            }
+        }
+
+        for(std::size_t i=0; i < 6 - 1; ++i)
+        {
+            unsigned int widthSize = texSkybox[i]->getWidth();
+            unsigned int heightSize = texSkybox[i]->getHeight();
+            unsigned int nextWidthSize = texSkybox[i + 1]->getWidth();
+
+            if(texSkybox[i]->getWidth() != texSkybox[i]->getHeight())
+            {
+                clearTexSkybox();
+                throw std::runtime_error("Skybox image must be a square. Present image size: " + std::to_string(widthSize) + "x" + std::to_string(heightSize));
+            }else if(widthSize != nextWidthSize)
+            {
+                clearTexSkybox();
+                throw std::runtime_error("All skybox images must have the same size: " + std::to_string(widthSize) + " != " + std::to_string(nextWidthSize));
             }
         }
 
@@ -83,6 +88,7 @@ namespace urchin
 
 	Skybox::~Skybox()
 	{
+        clearTexSkybox();
 		glDeleteTextures(1, &textureID);
 		ShaderManager::instance()->removeProgram(skyboxShader);
 	}
@@ -104,9 +110,8 @@ namespace urchin
 		for (std::size_t i=0; i<6; i++)
 		{
 			glTexImage2D(cubeMapTarget[i], 0, texSkybox[i]->retrieveInternalFormat(), texSkybox[i]->getWidth(), texSkybox[i]->getHeight(), 0, texSkybox[i]->retrieveFormat(), GL_UNSIGNED_BYTE, &texSkybox[i]->getTexels()[0]);
-			texSkybox[i]->release();
 		}
-		delete [] texSkybox;
+        clearTexSkybox();
 
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -160,6 +165,19 @@ namespace urchin
 				->textureData(GL_FLOAT, &textureCoord[0], false)
 				->build();
 	}
+
+    void Skybox::clearTexSkybox()
+    {
+	    if(texSkybox != nullptr)
+        {
+            for (std::size_t i = 0; i < 6; i++)
+            {
+                texSkybox[i]->release();
+            }
+            delete[] texSkybox;
+        }
+        texSkybox = nullptr;
+    }
 
 	void Skybox::onCameraProjectionUpdate(const Camera *const camera)
 	{

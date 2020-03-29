@@ -28,6 +28,7 @@ namespace urchin
 			void display(const Matrix4<float> &, const Point3<float> &);
 		private:
 			void initialize();
+			void clearTexSkybox();
 
             std::vector<std::string> filenames;
 			Image **texSkybox;

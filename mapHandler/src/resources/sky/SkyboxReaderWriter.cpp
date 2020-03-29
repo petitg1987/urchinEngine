@@ -21,7 +21,7 @@ namespace urchin
         return filenames;
     }
 
-    void SkyboxReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &skyboxChunk, const Skybox *skybox, XmlWriter &xmlWriter) const
+    void SkyboxReaderWriter::writeOn(const std::shared_ptr<XmlChunk> &skyboxChunk, const std::unique_ptr<Skybox> &skybox, XmlWriter &xmlWriter) const
     {
         for(const auto &filename : skybox->getFilenames())
         {

@@ -77,8 +77,8 @@ namespace urchin
 		antiAliasingManager = new AntiAliasingManager();
 		isAntiAliasingActivated = true;
 
-		//default black skybox
-		skybox = new Skybox();
+		//default skybox
+		skybox = std::make_unique<Skybox>();
 	}
 
 	Renderer3d::~Renderer3d()
@@ -100,9 +100,6 @@ namespace urchin
 		delete lightManager;
 		delete ambientOcclusionManager;
 		delete antiAliasingManager;
-
-		//skybox
-		delete skybox;
 
 		//deferred shading (pass 1)
 		if(fboIDs)
@@ -288,6 +285,11 @@ namespace urchin
 
 	void Renderer3d::setCamera(Camera *camera)
 	{
+	    if(this->camera != nullptr)
+        {
+	       throw std::runtime_error("Redefine a camera is currently not supported");
+        }
+
 		this->camera = camera;
 		if(camera)
 		{
@@ -323,13 +325,12 @@ namespace urchin
 		return camera;
 	}
 
-	void Renderer3d::createSkybox(const std::vector<std::string> &filenames)
-	{
-		delete skybox;
-		skybox = new Skybox(filenames);
-	}
+    void Renderer3d::setSkybox(std::unique_ptr<Skybox> skybox)
+    {
+        this->skybox = std::move(skybox);
+    }
 
-	Skybox *Renderer3d::getSkybox() const
+	const std::unique_ptr<Skybox> &Renderer3d::getSkybox() const
 	{
 		return skybox;
 	}

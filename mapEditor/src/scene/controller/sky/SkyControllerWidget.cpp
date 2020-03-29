@@ -33,7 +33,7 @@ namespace urchin
     {
         this->skyController = skyController;
 
-        const Skybox *skybox = skyController->getSceneSky()->getSkybox();
+        auto &skybox = skyController->getSceneSky()->getSkybox();
         setupSkyDataFrom(skybox);
     }
 
@@ -230,7 +230,7 @@ namespace urchin
         }
     }
 
-    void SkyControllerWidget::setupSkyDataFrom(const Skybox *skybox)
+    void SkyControllerWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
     {
         disableSkyEvent = true;
         this->xnSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[0]));
