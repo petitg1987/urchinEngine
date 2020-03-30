@@ -4,9 +4,9 @@
 #include <QMessageBox>
 
 #include "WaterControllerWidget.h"
-#include "support/GroupBoxStyleHelper.h"
-#include "support/SpinBoxStyleHelper.h"
-#include "support/ButtonStyleHelper.h"
+#include "support/style/GroupBoxStyleHelper.h"
+#include "support/style/SpinBoxStyleHelper.h"
+#include "support/style/ButtonStyleHelper.h"
 #include "scene/controller/waters/dialog/NewWaterDialog.h"
 
 namespace urchin

@@ -2,7 +2,7 @@
 #include <QtWidgets/QLabel>
 
 #include "SoundShapeWidget.h"
-#include "support/SpinBoxStyleHelper.h"
+#include "support/style/SpinBoxStyleHelper.h"
 
 namespace urchin
 {

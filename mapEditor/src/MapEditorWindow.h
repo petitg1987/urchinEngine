@@ -31,6 +31,9 @@ namespace urchin
 			void setupSceneDisplayerWidget(QWidget *, QHBoxLayout *);
 			void setupSceneControllerWidget(QWidget *, QHBoxLayout *);
 
+            QString getPreferredMapPath();
+            void savePreferredMapPath(const std::string &);
+
 			bool checkCurrentMapSaved();
 			void updateMenuStatus();
 			void updateMapFilename(const QString&);
@@ -45,7 +48,7 @@ namespace urchin
 
 			std::string mapEditorPath;
 			std::string mapFilename;
-			QString preferredMapPath;
+			const std::string preferredMapPathId;
 
 			SceneDisplayerWidget *sceneDisplayerWidget;
 			SceneControllerWidget *sceneControllerWidget;

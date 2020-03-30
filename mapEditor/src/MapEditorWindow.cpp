@@ -6,6 +6,7 @@
 #include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "scene/controller/lights/LightTableView.h"
 #include "scene/controller/sounds/SoundTableView.h"
+#include "support/PreferredPathHelper.h"
 
 #include <stdexcept>
 #include <QApplication>
@@ -13,6 +14,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QFileDialog>
 #include <utility>
+#include <QtCore/QStandardPaths>
 
 namespace urchin
 {
@@ -22,7 +24,7 @@ namespace urchin
             saveAsAction(nullptr),
             closeAction(nullptr),
             mapEditorPath(std::move(mapEditorPath)),
-            preferredMapPath("./"),
+            preferredMapPathId("preferred.map.path"),
             sceneDisplayerWidget(nullptr),
             sceneControllerWidget(nullptr)
 	{
@@ -175,6 +177,21 @@ namespace urchin
 		sceneDisplayerWidget->addObserver(sceneControllerWidget->getObjectControllerWidget(), SceneDisplayerWidget::BODY_PICKED);
 	}
 
+    QString MapEditorWindow::getPreferredMapPath()
+    {
+        std::string savedPreferredMapPath = PreferredPathHelper::instance()->retrievePreferredPath(preferredMapPathId);
+        if(!savedPreferredMapPath.empty())
+        {
+            return QString::fromStdString(savedPreferredMapPath);
+        }
+        return "./";
+    }
+
+    void MapEditorWindow::savePreferredMapPath(const std::string &preferredMapPath)
+    {
+        PreferredPathHelper::instance()->savePreferredPath(preferredMapPathId, preferredMapPath);
+    }
+
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
 	{
 		if(dynamic_cast<SceneControllerWidget *>(observable))
@@ -249,7 +266,7 @@ namespace urchin
 	{
 		if(checkCurrentMapSaved())
 		{
-			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), preferredMapPath, "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
+			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
 			if(!filename.isNull())
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
@@ -269,7 +286,7 @@ namespace urchin
 
 	void MapEditorWindow::showSaveAsDialog()
 	{
-		QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), preferredMapPath, "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
+		QString filename = QFileDialog::getSaveFileName(this, tr("Save file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
 		if(!filename.isNull())
 		{
 			std::string filenameString = filename.toUtf8().constData();
@@ -366,7 +383,7 @@ namespace urchin
 		}else
 		{
 			std::string preferredMapPathString = FileHandler::getDirectoryFrom(mapFilename);
-			preferredMapPath = QString::fromStdString(preferredMapPathString);
+			savePreferredMapPath(preferredMapPathString);
 
 			this->setWindowTitle(QString::fromStdString(std::string(WINDOW_TITLE) + " (" + mapFilename + ")"));
 		}

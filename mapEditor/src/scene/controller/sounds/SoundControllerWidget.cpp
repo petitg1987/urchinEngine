@@ -1,10 +1,10 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "SoundControllerWidget.h"
-#include "support/GroupBoxStyleHelper.h"
-#include "support/SpinBoxStyleHelper.h"
-#include "support/ButtonStyleHelper.h"
-#include "support/FrameStyleHelper.h"
+#include "support/style/GroupBoxStyleHelper.h"
+#include "support/style/SpinBoxStyleHelper.h"
+#include "support/style/ButtonStyleHelper.h"
+#include "support/style/FrameStyleHelper.h"
 #include "scene/controller/sounds/dialog/NewSoundDialog.h"
 #include "scene/controller/sounds/dialog/ChangeSoundTriggerDialog.h"
 #include "scene/controller/sounds/dialog/ChangeSoundShapeDialog.h"

@@ -6,8 +6,8 @@
 #include "UrchinCommon.h"
 
 #include "NewObjectDialog.h"
-#include "support/LabelStyleHelper.h"
-#include "support/ButtonStyleHelper.h"
+#include "support/style/LabelStyleHelper.h"
+#include "support/style/ButtonStyleHelper.h"
 
 namespace urchin
 {

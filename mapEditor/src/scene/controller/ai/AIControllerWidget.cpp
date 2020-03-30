@@ -3,8 +3,8 @@
 #include <QtWidgets/QLabel>
 
 #include "AIControllerWidget.h"
-#include "support/GroupBoxStyleHelper.h"
-#include "support/SpinBoxStyleHelper.h"
+#include "support/style/GroupBoxStyleHelper.h"
+#include "support/style/SpinBoxStyleHelper.h"
 
 namespace urchin
 {

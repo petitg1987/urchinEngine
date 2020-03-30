@@ -2,7 +2,7 @@
 #include <QtWidgets/QDoubleSpinBox>
 
 #include "SpinBoxDelegate.h"
-#include "support/SpinBoxStyleHelper.h"
+#include "support/style/SpinBoxStyleHelper.h"
 
 namespace urchin
 {

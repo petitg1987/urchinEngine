@@ -1,11 +1,11 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "ObjectControllerWidget.h"
-#include "support/GroupBoxStyleHelper.h"
-#include "support/SpinBoxStyleHelper.h"
-#include "support/ButtonStyleHelper.h"
-#include "support/ComboBoxStyleHelper.h"
-#include "support/FrameStyleHelper.h"
+#include "support/style/GroupBoxStyleHelper.h"
+#include "support/style/SpinBoxStyleHelper.h"
+#include "support/style/ButtonStyleHelper.h"
+#include "support/style/ComboBoxStyleHelper.h"
+#include "support/style/FrameStyleHelper.h"
 #include "scene/controller/objects/dialog/NewObjectDialog.h"
 #include "scene/controller/objects/dialog/CloneObjectDialog.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"

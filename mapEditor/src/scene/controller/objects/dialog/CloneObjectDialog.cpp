@@ -4,7 +4,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "CloneObjectDialog.h"
-#include "support/LabelStyleHelper.h"
+#include "support/style/LabelStyleHelper.h"
 
 namespace urchin
 {
