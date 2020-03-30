@@ -17,7 +17,7 @@
 #include "scene/renderer3d/terrain/TerrainManager.h"
 #include "scene/renderer3d/fog/FogManager.h"
 #include "scene/renderer3d/water/WaterManager.h"
-#include "scene/renderer3d/skybox/Skybox.h"
+#include "scene/renderer3d/sky/SkyManager.h"
 #include "utils/display/geometry/GeometryManager.h"
 #include "utils/display/geometry/GeometryModel.h"
 #include "utils/display/quad/QuadDisplayer.h"
@@ -44,6 +44,8 @@ namespace urchin
 
 			WaterManager *getWaterManager() const;
 
+			SkyManager *getSkyManager() const;
+
 			GeometryManager *getGeometryManager() const;
 
 			LightManager *getLightManager() const;
@@ -60,10 +62,6 @@ namespace urchin
 			//camera
 			void setCamera(Camera *);
 			Camera *getCamera() const;
-
-			//skybox
-			void setSkybox(std::unique_ptr<Skybox>);
-			const std::unique_ptr<Skybox> &getSkybox() const;
 
 			//models
 			void addModel(Model *);
@@ -109,6 +107,8 @@ namespace urchin
 
 			WaterManager *waterManager;
 
+			SkyManager *skyManager;
+
             GeometryManager *geometryManager;
 
 			LightManager *lightManager;
@@ -124,9 +124,6 @@ namespace urchin
 
 			//camera
 			Camera *camera;
-
-			//skybox
-			std::unique_ptr<Skybox> skybox;
 
 			//visual
 			unsigned int *fboIDs;

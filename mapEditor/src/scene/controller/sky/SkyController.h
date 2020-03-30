@@ -21,6 +21,7 @@ namespace urchin
 
         private:
             void markModified();
+            bool isSkyboxFilenamesAllEmpty(const std::vector<std::string> &) const;
 
             bool bIsModified;
             MapHandler *mapHandler;

@@ -16,11 +16,10 @@ namespace urchin
 	class Skybox
 	{
 		public:
-			Skybox();
 			explicit Skybox(const std::vector<std::string> &);
 			~Skybox();
 
-			void onCameraProjectionUpdate(const Camera *);
+			void onCameraProjectionUpdate(const Matrix4<float> &);
 
 			float getOffsetY() const;
 			void setOffsetY(float);

@@ -12,6 +12,7 @@ namespace urchin
     class SkyboxReaderWriter
     {
         //XML tags
+        #define SKYBOX_TAG "skybox"
         #define TEXTURES_TAG "textures"
         #define FILENAME_TAG "filename"
         #define OFFSET_Y_TAG "offsetY"

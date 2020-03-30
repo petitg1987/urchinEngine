@@ -8,9 +8,6 @@ namespace urchin
 
     class SceneSky
     {
-        //XML tags
-        #define SKYBOX_TAG "skybox"
-
         public:
             friend class Map;
 

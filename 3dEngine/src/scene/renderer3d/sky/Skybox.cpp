@@ -6,30 +6,8 @@
 #include "resources/MediaManager.h"
 #include "utils/display/quad/QuadDisplayerBuilder.h"
 
-#define SKYBOX_DEFAULT_SIZE 1
-
 namespace urchin
 {
-
-	/**
-	 * Create black skybox
-	 */
-	Skybox::Skybox() :
-            textureID(0),
-			offsetY(0.0f),
-            skyboxShader(0),
-            mProjectionLoc(0),
-            mViewLoc(0)
-	{
-		texSkybox = new Image*[6];
-        for(unsigned int i=0; i < 6; ++i)
-        {
-            texSkybox[i] = new Image(SKYBOX_DEFAULT_SIZE, SKYBOX_DEFAULT_SIZE, Image::IMAGE_RGB, std::vector<unsigned char>(SKYBOX_DEFAULT_SIZE * SKYBOX_DEFAULT_SIZE * 3, 0));
-        }
-
-		initialize();
-	}
-
 	/**
 	* @param filenames Filenames of the textures in the following order: X-, X+, Y-, Y+, Z-, Z+
 	*/
@@ -48,7 +26,7 @@ namespace urchin
 
 		//create the textures
 		texSkybox = new Image*[6];
-		unsigned int skyboxSize = SKYBOX_DEFAULT_SIZE;
+		unsigned int skyboxSize = 1;
 		for(std::size_t i=0; i < 6; ++i)
         {
 		    if(!filenames[i].empty())
@@ -62,7 +40,15 @@ namespace urchin
         {
             if(filenames[i].empty())
             {
-                texSkybox[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::vector<unsigned char>(skyboxSize * skyboxSize * 3, 0));
+				std::vector<unsigned char> defaultTexPixels;
+				defaultTexPixels.reserve(skyboxSize * skyboxSize);
+            	for(std::size_t pixelIndex=0; pixelIndex < skyboxSize * skyboxSize; ++pixelIndex)
+				{
+					defaultTexPixels.push_back(150); //R
+					defaultTexPixels.push_back(50); //G
+					defaultTexPixels.push_back(255); //B
+				}
+                texSkybox[i] = new Image(skyboxSize, skyboxSize, Image::IMAGE_RGB, std::move(defaultTexPixels));
             }
         }
 
@@ -179,10 +165,10 @@ namespace urchin
         texSkybox = nullptr;
     }
 
-	void Skybox::onCameraProjectionUpdate(const Camera *const camera)
+	void Skybox::onCameraProjectionUpdate(const Matrix4<float> &projectionMatrix)
 	{
 		ShaderManager::instance()->bind(skyboxShader);
-		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)camera->getProjectionMatrix());
+		glUniformMatrix4fv(mProjectionLoc, 1, GL_FALSE, (const float*)projectionMatrix);
 	}
 
     float Skybox::getOffsetY() const

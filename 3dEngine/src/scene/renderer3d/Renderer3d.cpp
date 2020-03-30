@@ -33,9 +33,9 @@ namespace urchin
 			fogManager(nullptr),
 			terrainManager(nullptr),
 			waterManager(nullptr),
+			skyManager(nullptr),
 			geometryManager(nullptr),
 			camera(nullptr),
-			skybox(nullptr),
 			fboIDs(nullptr),
             fboAttachments{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2},
 			textureIDs(nullptr),
@@ -59,6 +59,8 @@ namespace urchin
 
 		waterManager = new WaterManager();
 
+		skyManager = new SkyManager();
+
 		geometryManager = new GeometryManager();
 
 		lightManager = new LightManager();
@@ -76,9 +78,6 @@ namespace urchin
 
 		antiAliasingManager = new AntiAliasingManager();
 		isAntiAliasingActivated = true;
-
-		//default skybox
-		skybox = std::make_unique<Skybox>();
 	}
 
 	Renderer3d::~Renderer3d()
@@ -91,6 +90,7 @@ namespace urchin
 
 		//managers
 		delete modelDisplayer;
+		delete skyManager;
 		delete waterManager;
 		delete terrainManager;
 		delete fogManager;
@@ -238,6 +238,11 @@ namespace urchin
 		return waterManager;
 	}
 
+    SkyManager *Renderer3d::getSkyManager() const
+    {
+	    return skyManager;
+    }
+
 	GeometryManager *Renderer3d::getGeometryManager() const
 	{
 		return geometryManager;
@@ -299,18 +304,12 @@ namespace urchin
 
 	void Renderer3d::onCameraProjectionUpdate()
 	{
-		skybox->onCameraProjectionUpdate(camera);
-
 		modelDisplayer->onCameraProjectionUpdate(camera);
-
 		terrainManager->onCameraProjectionUpdate(camera);
-
 		waterManager->onCameraProjectionUpdate(camera);
-
+        skyManager->onCameraProjectionUpdate(camera);
 		geometryManager->onCameraProjectionUpdate(camera);
-
 		shadowManager->onCameraProjectionUpdate(camera);
-
 		ambientOcclusionManager->onCameraProjectionUpdate(camera);
 	}
 
@@ -323,16 +322,6 @@ namespace urchin
 	Camera *Renderer3d::getCamera() const
 	{
 		return camera;
-	}
-
-    void Renderer3d::setSkybox(std::unique_ptr<Skybox> skybox)
-    {
-        this->skybox = std::move(skybox);
-    }
-
-	const std::unique_ptr<Skybox> &Renderer3d::getSkybox() const
-	{
-		return skybox;
 	}
 
 	void Renderer3d::addModel(Model *model)
@@ -529,9 +518,9 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "defGeoRender");
 
-		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear((unsigned int)GL_DEPTH_BUFFER_BIT | (unsigned int)GL_COLOR_BUFFER_BIT);
 
-		skybox->display(camera->getViewMatrix(), camera->getPosition());
+        skyManager->display(camera->getViewMatrix(), camera->getPosition());
 
         updateModelsInFrustum();
         modelDisplayer->setModels(modelsInFrustum);

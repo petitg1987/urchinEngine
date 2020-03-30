@@ -367,11 +367,8 @@ namespace urchin
 	    return sceneSky;
     }
 
-    void Map::updateSceneSky(const std::vector<std::string> &skyboxFilenames, float offsetY)
+    void Map::updateSceneSky(std::unique_ptr<Skybox> skybox)
     {
-        auto skybox = std::make_unique<Skybox>(skyboxFilenames);
-        skybox->setOffsetY(offsetY);
-
         sceneSky->changeSkybox(std::move(skybox));
     }
 

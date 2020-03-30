@@ -11,25 +11,21 @@ namespace urchin
 
     const std::unique_ptr<Skybox> &SceneSky::getSkybox() const
     {
-        return renderer3d->getSkybox();
+        return renderer3d->getSkyManager()->getSkybox();
     }
 
     void SceneSky::changeSkybox(std::unique_ptr<Skybox> skybox)
     {
-        renderer3d->setSkybox(std::move(skybox));
+        renderer3d->getSkyManager()->setSkybox(std::move(skybox));
     }
 
     void SceneSky::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser)
     {
-        std::shared_ptr<XmlChunk> skyboxChunk = xmlParser.getUniqueChunk(true, SKYBOX_TAG, XmlAttribute(), chunk);
-
-        changeSkybox(SkyboxReaderWriter().loadFrom(skyboxChunk, xmlParser));
+        changeSkybox(SkyboxReaderWriter().loadFrom(chunk, xmlParser));
     }
 
     void SceneSky::writeOn(const std::shared_ptr<XmlChunk> &chunk, XmlWriter &xmlWriter) const
     {
-        std::shared_ptr<XmlChunk> skyboxChunk = xmlWriter.createChunk(SKYBOX_TAG, XmlAttribute(), chunk);
-
-        SkyboxReaderWriter().writeOn(skyboxChunk, getSkybox(), xmlWriter);
+        SkyboxReaderWriter().writeOn(chunk, getSkybox(), xmlWriter);
     }
 }

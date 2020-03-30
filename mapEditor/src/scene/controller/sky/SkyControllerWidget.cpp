@@ -227,13 +227,13 @@ namespace urchin
     void SkyControllerWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
     {
         disableSkyEvent = true;
-        this->xnSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[0]));
-        this->xpSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[1]));
-        this->ynSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[2]));
-        this->ypSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[3]));
-        this->znSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[4]));
-        this->zpSkyboxFilenameText->setText(QString::fromStdString(skybox->getFilenames()[5]));
-        this->offsetY->setValue(skybox->getOffsetY());
+        xnSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[0]) : "");
+        xpSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[1]) : "");
+        ynSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[2]) : "");
+        ypSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[3]) : "");
+        znSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[4]) : "");
+        zpSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[5]) : "");
+        offsetY->setValue(skybox != nullptr ? skybox->getOffsetY() : 0.0f);
         disableSkyEvent = false;
     }
 
@@ -249,7 +249,7 @@ namespace urchin
             skyboxFilenames.emplace_back(znSkyboxFilenameText->text().toStdString());
             skyboxFilenames.emplace_back(zpSkyboxFilenameText->text().toStdString());
 
-            skyController->updateSceneSky(skyboxFilenames, offsetY->value());
+            skyController->updateSceneSky(skyboxFilenames, static_cast<float>(offsetY->value()));
         }
     }
 

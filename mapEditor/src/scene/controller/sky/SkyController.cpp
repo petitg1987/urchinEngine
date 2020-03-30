@@ -31,9 +31,27 @@ namespace urchin
 
     const SceneSky *SkyController::updateSceneSky(const std::vector<std::string> &skyboxFilenames, float offsetY)
     {
-        mapHandler->getMap()->updateSceneSky(skyboxFilenames, offsetY);
+        std::unique_ptr<Skybox> updatedSkybox(nullptr);
+        if(!isSkyboxFilenamesAllEmpty(skyboxFilenames))
+        {
+            updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);
+            updatedSkybox->setOffsetY(offsetY);
+        }
+        mapHandler->getMap()->updateSceneSky(std::move(updatedSkybox));
 
         markModified();
         return mapHandler->getMap()->getSceneSky();
+    }
+
+    bool SkyController::isSkyboxFilenamesAllEmpty(const std::vector<std::string> &skyboxFilenames) const
+    {
+        for(const auto &skyboxFilename : skyboxFilenames)
+        {
+            if(!skyboxFilename.empty())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
