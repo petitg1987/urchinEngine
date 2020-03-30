@@ -6,7 +6,7 @@
 # 3d Engine
 - Model
     - **OPTIMIZATION** (`medium`): Group same models in same octree to perform one draw call
-    - **NEW FEATURE** (`minor`): Use reverse depth for far distant view (<https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
+    - **QUALITY IMPROVEMENT** (`minor`): Use reverse depth for far distant view (<https://outerra.blogspot.com/2012/11/maximizing-depth-buffer-range-and.html>)
 	- **OPTIMIZATION** (`minor`): Models LOD
 	- **OPTIMIZATION** (`minor`): Subdivide octree only when number of objects inside this octree reach a threshold
 	- **OPTIMIZATION** (`minor`): Coherent hierarchical culling revisited
