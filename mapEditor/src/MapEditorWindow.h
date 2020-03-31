@@ -16,8 +16,6 @@ namespace urchin
 	{
 		Q_OBJECT
 
-		#define WINDOW_TITLE "Urchin - Map Editor"
-
 		public:
 			explicit MapEditorWindow(std::string );
             ~MapEditorWindow() override = default;
@@ -40,6 +38,8 @@ namespace urchin
 
 			void notify(Observable *, int) override;
 			void handleCompoundShapeSelectionChange(Observable *, int);
+
+			static const std::string WINDOW_TITLE;
 
 			QAction *saveAction;
 			QAction *saveAsAction;

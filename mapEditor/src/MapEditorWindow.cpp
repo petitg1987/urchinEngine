@@ -19,6 +19,9 @@
 namespace urchin
 {
 
+    //static
+    const std::string MapEditorWindow::WINDOW_TITLE = "Urchin - Map Editor";
+
 	MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
             saveAction(nullptr),
             saveAsAction(nullptr),
@@ -28,7 +31,7 @@ namespace urchin
             sceneControllerWidget(nullptr)
 	{
 		this->setAttribute(Qt::WA_DeleteOnClose);
-		this->setWindowTitle(WINDOW_TITLE);
+		this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
 		this->resize(1200, 675);
 		auto *centralWidget = new QWidget(this);
 
@@ -374,13 +377,13 @@ namespace urchin
 
 		if(qMapFilename.isEmpty())
 		{
-			this->setWindowTitle(WINDOW_TITLE);
+			this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
 		}else
 		{
 			std::string preferredMapPathString = FileHandler::getDirectoryFrom(mapFilename);
 			savePreferredMapPath(preferredMapPathString);
 
-			this->setWindowTitle(QString::fromStdString(std::string(WINDOW_TITLE) + " (" + mapFilename + ")"));
+			this->setWindowTitle(QString::fromStdString(WINDOW_TITLE + " (" + mapFilename + ")"));
 		}
 	}
 
