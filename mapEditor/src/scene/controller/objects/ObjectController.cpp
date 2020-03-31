@@ -9,30 +9,14 @@ namespace urchin
 {
 
 	ObjectController::ObjectController(MapHandler *mapHandler) :
-			bIsModified(false),
-			mapHandler(mapHandler)
+            AbstractController(mapHandler)
 	{
 
-	}
-
-	bool ObjectController::isModified() const
-	{
-		return bIsModified;
-	}
-
-	void ObjectController::markModified()
-	{
-		bIsModified = true;
-	}
-
-	void ObjectController::resetModified()
-	{
-		bIsModified = false;
 	}
 
 	std::list<const SceneObject *> ObjectController::getSceneObjects() const
 	{
-		const std::list<SceneObject *> &sceneObjects = mapHandler->getMap()->getSceneObjects();
+		const std::list<SceneObject *> &sceneObjects = getMapHandler()->getMap()->getSceneObjects();
 		std::list<const SceneObject *> constSceneObjects;
 		constSceneObjects.insert(constSceneObjects.begin(), sceneObjects.begin(), sceneObjects.end());
 
@@ -54,7 +38,7 @@ namespace urchin
 
 	void ObjectController::addSceneObject(SceneObject *sceneObject)
 	{
-		mapHandler->getMap()->addSceneObject(sceneObject);
+		getMapHandler()->getMap()->addSceneObject(sceneObject);
 
 		markModified();
 	}
@@ -62,7 +46,7 @@ namespace urchin
 	void ObjectController::removeSceneObject(const SceneObject *constSceneObject)
 	{
 		SceneObject *sceneObject = findSceneObject(constSceneObject);
-		mapHandler->getMap()->removeSceneObject(sceneObject);
+		getMapHandler()->getMap()->removeSceneObject(sceneObject);
 
 		markModified();
 	}
@@ -185,7 +169,7 @@ namespace urchin
 
 	SceneObject *ObjectController::findSceneObject(const SceneObject *constSceneObject)
 	{
-		const std::list<SceneObject *> &sceneObjects = mapHandler->getMap()->getSceneObjects();
+		const std::list<SceneObject *> &sceneObjects = getMapHandler()->getMap()->getSceneObjects();
 		auto it = std::find(sceneObjects.begin(), sceneObjects.end(), constSceneObject);
 
 		if(it!=sceneObjects.end())

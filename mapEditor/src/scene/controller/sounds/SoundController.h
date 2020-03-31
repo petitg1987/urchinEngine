@@ -6,16 +6,15 @@
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"
 
+#include "scene/controller/AbstractController.h"
+
 namespace urchin
 {
 
-	class SoundController
+	class SoundController : public AbstractController
 	{
 		public:
 			explicit SoundController(MapHandler *);
-
-			bool isModified() const;
-			void resetModified();
 
 			std::list<const SceneSound *> getSceneSounds() const;
 			void addSceneSound(SceneSound *);
@@ -30,11 +29,7 @@ namespace urchin
 			const SceneSound *updateSceneSoundShape(const SceneSound *, const SoundShape *);
 
 		private:
-			void markModified();
 			SceneSound *findSceneSound(const SceneSound *);
-
-			bool bIsModified;
-			MapHandler *mapHandler;
 	};
 
 }

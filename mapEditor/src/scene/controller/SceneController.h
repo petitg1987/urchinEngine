@@ -15,14 +15,16 @@
 namespace urchin
 {
 
-	class SceneController
+	class SceneController : public AbstractController
 	{
 		public:
 			explicit SceneController(MapHandler *);
 			~SceneController();
 
 			void setRelativeWorkingDirectory(const std::string &);
-			bool isModified() const;
+
+            bool isModified() const override;
+            void resetModified() override;
 
 			void saveMapOnFile(const std::string &);
 
@@ -35,12 +37,6 @@ namespace urchin
 			AIController *getAIController();
 
 		private:
-			void markModified();
-			void resetModified();
-
-			bool bIsModified;
-			MapHandler *mapHandler;
-
 			ObjectController *objectController;
 			LightController *lightController;
 			TerrainController *terrainController;

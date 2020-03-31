@@ -4,27 +4,22 @@
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
 
+#include "scene/controller/AbstractController.h"
+
 namespace urchin
 {
 
-    class SkyController
+    class SkyController : public AbstractController
     {
         public:
             explicit SkyController(MapHandler *);
-
-            bool isModified() const;
-            void resetModified();
 
             const SceneSky *getSceneSky() const;
 
             const SceneSky *updateSceneSky(const std::vector<std::string> &, float);
 
         private:
-            void markModified();
             bool isSkyboxFilenamesAllEmpty(const std::vector<std::string> &) const;
-
-            bool bIsModified;
-            MapHandler *mapHandler;
     };
 
 }

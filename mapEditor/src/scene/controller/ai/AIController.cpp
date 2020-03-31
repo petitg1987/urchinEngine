@@ -7,38 +7,22 @@ namespace urchin
 {
 
 	AIController::AIController(MapHandler *mapHandler) :
-			bIsModified(false),
-			mapHandler(mapHandler)
+			AbstractController(mapHandler)
 	{
 
-	}
-
-	bool AIController::isModified() const
-	{
-		return bIsModified;
-	}
-
-	void AIController::markModified()
-	{
-		bIsModified = true;
-	}
-
-	void AIController::resetModified()
-	{
-		bIsModified = false;
 	}
 
 	const SceneAI *AIController::getSceneAI() const
 	{
-		return mapHandler->getMap()->getSceneAI();
+		return getMapHandler()->getMap()->getSceneAI();
 	}
 
 	const SceneAI *AIController::updateSceneAI(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
 	{
-		mapHandler->getMap()->updateSceneAI(navMeshAgent);
+		getMapHandler()->getMap()->updateSceneAI(navMeshAgent);
 
 		markModified();
-		return mapHandler->getMap()->getSceneAI();
+		return getMapHandler()->getMap()->getSceneAI();
 	}
 
 }

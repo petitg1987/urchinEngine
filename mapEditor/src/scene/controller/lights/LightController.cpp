@@ -6,30 +6,14 @@ namespace urchin
 {
 
 	LightController::LightController(MapHandler *mapHandler) :
-			bIsModified(false),
-			mapHandler(mapHandler)
+            AbstractController(mapHandler)
 	{
 
-	}
-
-	bool LightController::isModified() const
-	{
-		return bIsModified;
-	}
-
-	void LightController::markModified()
-	{
-		bIsModified = true;
-	}
-
-	void LightController::resetModified()
-	{
-		bIsModified = false;
 	}
 
 	std::list<const SceneLight *> LightController::getSceneLights() const
 	{
-		const std::list<SceneLight *> &sceneLights = mapHandler->getMap()->getSceneLights();
+		const std::list<SceneLight *> &sceneLights = getMapHandler()->getMap()->getSceneLights();
 		std::list<const SceneLight *> constSceneLights;
 		constSceneLights.insert(constSceneLights.begin(), sceneLights.begin(), sceneLights.end());
 
@@ -38,7 +22,7 @@ namespace urchin
 
 	void LightController::addSceneLight(SceneLight *sceneLight)
 	{
-		mapHandler->getMap()->addSceneLight(sceneLight);
+		getMapHandler()->getMap()->addSceneLight(sceneLight);
 
 		markModified();
 	}
@@ -46,7 +30,7 @@ namespace urchin
 	void LightController::removeSceneLight(const SceneLight *constSceneLight)
 	{
 		SceneLight *sceneLight = findSceneLight(constSceneLight);
-		mapHandler->getMap()->removeSceneLight(sceneLight);
+		getMapHandler()->getMap()->removeSceneLight(sceneLight);
 
 		markModified();
 	}
@@ -93,7 +77,7 @@ namespace urchin
 
 	SceneLight *LightController::findSceneLight(const SceneLight *constSceneLight)
 	{
-		const std::list<SceneLight *> &sceneLights = mapHandler->getMap()->getSceneLights();
+		const std::list<SceneLight *> &sceneLights = getMapHandler()->getMap()->getSceneLights();
 		auto it = std::find(sceneLights.begin(), sceneLights.end(), constSceneLight);
 
 		if(it!=sceneLights.end())

@@ -7,30 +7,14 @@ namespace urchin
 {
 
 	SoundController::SoundController(MapHandler *mapHandler) :
-			bIsModified(false),
-			mapHandler(mapHandler)
+            AbstractController(mapHandler)
 	{
 
-	}
-
-	bool SoundController::isModified() const
-	{
-		return bIsModified;
-	}
-
-	void SoundController::markModified()
-	{
-		bIsModified = true;
-	}
-
-	void SoundController::resetModified()
-	{
-		bIsModified = false;
 	}
 
 	std::list<const SceneSound *> SoundController::getSceneSounds() const
 	{
-		const std::list<SceneSound *> &sceneSounds = mapHandler->getMap()->getSceneSounds();
+		const std::list<SceneSound *> &sceneSounds = getMapHandler()->getMap()->getSceneSounds();
 		std::list<const SceneSound *> constSceneSounds;
 		constSceneSounds.insert(constSceneSounds.begin(), sceneSounds.begin(), sceneSounds.end());
 
@@ -39,7 +23,7 @@ namespace urchin
 
 	void SoundController::addSceneSound(SceneSound *sceneSound)
 	{
-		mapHandler->getMap()->addSceneSound(sceneSound);
+		getMapHandler()->getMap()->addSceneSound(sceneSound);
 
 		markModified();
 	}
@@ -47,7 +31,7 @@ namespace urchin
 	void SoundController::removeSceneSound(const SceneSound *constSceneSound)
 	{
 		SceneSound *sceneSound = findSceneSound(constSceneSound);
-		mapHandler->getMap()->removeSceneSound(sceneSound);
+		getMapHandler()->getMap()->removeSceneSound(sceneSound);
 
 		markModified();
 	}
@@ -67,7 +51,7 @@ namespace urchin
 			newSoundTrigger = new ShapeTrigger(soundTrigger->getSoundBehavior(), newDefaultShape);
 		}else
 		{
-			throw std::invalid_argument("Impossible to change of trigger type: " + triggerType);
+			throw std::invalid_argument("Impossible to change of trigger type: " + std::to_string(triggerType));
 		}
 
 		sceneSound->changeSoundTrigger(newSoundTrigger);
@@ -130,7 +114,7 @@ namespace urchin
 			newSoundTrigger = new ShapeTrigger(newSoundBehavior, clonedShape);
 		}else
 		{
-			throw std::invalid_argument("Impossible to update sound behavior because unknown trigger type: " + soundTrigger->getTriggerType());
+			throw std::invalid_argument("Impossible to update sound behavior because unknown trigger type: " + std::to_string(soundTrigger->getTriggerType()));
 		}
 
 		sceneSound->changeSoundTrigger(newSoundTrigger);
@@ -153,7 +137,7 @@ namespace urchin
 
 	SceneSound *SoundController::findSceneSound(const SceneSound *constSceneSound)
 	{
-		const std::list<SceneSound *> &sceneSounds = mapHandler->getMap()->getSceneSounds();
+		const std::list<SceneSound *> &sceneSounds = getMapHandler()->getMap()->getSceneSounds();
 		auto it = std::find(sceneSounds.begin(), sceneSounds.end(), constSceneSound);
 
 		if(it!=sceneSounds.end())

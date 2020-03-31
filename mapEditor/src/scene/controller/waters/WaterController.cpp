@@ -5,30 +5,14 @@
 namespace urchin
 {
     WaterController::WaterController(MapHandler *mapHandler) :
-            bIsModified(false),
-            mapHandler(mapHandler)
+            AbstractController(mapHandler)
     {
 
-    }
-
-    bool WaterController::isModified() const
-    {
-        return bIsModified;
-    }
-
-    void WaterController::markModified()
-    {
-        bIsModified = true;
-    }
-
-    void WaterController::resetModified()
-    {
-        bIsModified = false;
     }
 
     std::list<const SceneWater *> WaterController::getSceneWaters() const
     {
-        const std::list<SceneWater *> &sceneWaters = mapHandler->getMap()->getSceneWaters();
+        const std::list<SceneWater *> &sceneWaters = getMapHandler()->getMap()->getSceneWaters();
         std::list<const SceneWater *> constSceneWaters;
         constSceneWaters.insert(constSceneWaters.begin(), sceneWaters.begin(), sceneWaters.end());
 
@@ -37,7 +21,7 @@ namespace urchin
 
     void WaterController::addSceneWater(SceneWater *sceneWater)
     {
-        mapHandler->getMap()->addSceneWater(sceneWater);
+        getMapHandler()->getMap()->addSceneWater(sceneWater);
 
         markModified();
     }
@@ -45,7 +29,7 @@ namespace urchin
     void WaterController::removeSceneWater(const SceneWater *constSceneWater)
     {
         SceneWater *sceneWater = findSceneWater(constSceneWater);
-        mapHandler->getMap()->removeSceneWater(sceneWater);
+        getMapHandler()->getMap()->removeSceneWater(sceneWater);
 
         markModified();
     }
@@ -95,7 +79,7 @@ namespace urchin
 
     SceneWater *WaterController::findSceneWater(const SceneWater *constSceneWater)
     {
-        const std::list<SceneWater *> &sceneWaters = mapHandler->getMap()->getSceneWaters();
+        const std::list<SceneWater *> &sceneWaters = getMapHandler()->getMap()->getSceneWaters();
         auto it = std::find(sceneWaters.begin(), sceneWaters.end(), constSceneWater);
 
         if(it!=sceneWaters.end())

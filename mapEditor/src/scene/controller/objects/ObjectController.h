@@ -6,16 +6,15 @@
 #include "UrchinPhysicsEngine.h"
 #include "UrchinMapHandler.h"
 
+#include "scene/controller/AbstractController.h"
+
 namespace urchin
 {
 
-	class ObjectController
+	class ObjectController : public AbstractController
 	{
 		public:
 			explicit ObjectController(MapHandler *);
-
-			bool isModified() const;
-			void resetModified();
 
 			std::list<const SceneObject *> getSceneObjects() const;
 			const SceneObject *findSceneObjectByBodyId(const std::string &) const;
@@ -34,11 +33,7 @@ namespace urchin
 			const SceneObject *updateSceneObjectPhysicsShape(const SceneObject *, const std::shared_ptr< const CollisionShape3D>&);
 
 		private:
-			void markModified();
 			SceneObject *findSceneObject(const SceneObject *);
-
-			bool bIsModified;
-			MapHandler *mapHandler;
 	};
 
 }

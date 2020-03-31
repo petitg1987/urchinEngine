@@ -6,16 +6,15 @@
 #include "UrchinMapHandler.h"
 #include "Urchin3dEngine.h"
 
+#include "scene/controller/AbstractController.h"
+
 namespace urchin
 {
 
-	class LightController
+	class LightController : public AbstractController
 	{
 		public:
 			explicit LightController(MapHandler *);
-
-			bool isModified() const;
-			void resetModified();
 
 			std::list<const SceneLight *> getSceneLights() const;
 			void addSceneLight(SceneLight *);
@@ -26,11 +25,7 @@ namespace urchin
 			const SceneLight *updateSceneSunLightProperties(const SceneLight *, const Vector3<float> &);
 
 		private:
-			void markModified();
 			SceneLight *findSceneLight(const SceneLight *);
-
-			bool bIsModified;
-			MapHandler *mapHandler;
 	};
 
 }

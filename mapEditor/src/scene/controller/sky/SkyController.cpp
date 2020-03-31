@@ -3,30 +3,14 @@
 namespace urchin
 {
     SkyController::SkyController(MapHandler *mapHandler) :
-            bIsModified(false),
-            mapHandler(mapHandler)
+            AbstractController(mapHandler)
     {
 
-    }
-
-    bool SkyController::isModified() const
-    {
-        return bIsModified;
-    }
-
-    void SkyController::markModified()
-    {
-        bIsModified = true;
-    }
-
-    void SkyController::resetModified()
-    {
-        bIsModified = false;
     }
 
     const SceneSky *SkyController::getSceneSky() const
     {
-        return mapHandler->getMap()->getSceneSky();
+        return getMapHandler()->getMap()->getSceneSky();
     }
 
     const SceneSky *SkyController::updateSceneSky(const std::vector<std::string> &skyboxFilenames, float offsetY)
@@ -37,10 +21,10 @@ namespace urchin
             updatedSkybox = std::make_unique<Skybox>(skyboxFilenames);
             updatedSkybox->setOffsetY(offsetY);
         }
-        mapHandler->getMap()->updateSceneSky(std::move(updatedSkybox));
+        getMapHandler()->getMap()->updateSceneSky(std::move(updatedSkybox));
 
         markModified();
-        return mapHandler->getMap()->getSceneSky();
+        return getMapHandler()->getMap()->getSceneSky();
     }
 
     bool SkyController::isSkyboxFilenamesAllEmpty(const std::vector<std::string> &skyboxFilenames) const

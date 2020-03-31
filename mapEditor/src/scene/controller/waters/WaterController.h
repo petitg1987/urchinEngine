@@ -6,16 +6,15 @@
 #include "UrchinMapHandler.h"
 #include "Urchin3dEngine.h"
 
+#include "scene/controller/AbstractController.h"
+
 namespace urchin
 {
 
-    class WaterController
+    class WaterController : public AbstractController
     {
         public:
             explicit WaterController(MapHandler *);
-
-            bool isModified() const;
-            void resetModified();
 
             std::list<const SceneWater *> getSceneWaters() const;
             void addSceneWater(SceneWater *);
@@ -26,11 +25,7 @@ namespace urchin
             const SceneWater *updateSceneWaterUnderWater(const SceneWater *, float, float);
 
         private:
-            void markModified();
             SceneWater *findSceneWater(const SceneWater *);
-
-            bool bIsModified;
-            MapHandler *mapHandler;
     };
 
 }

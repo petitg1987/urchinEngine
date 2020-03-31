@@ -6,16 +6,15 @@
 #include "UrchinMapHandler.h"
 #include "Urchin3dEngine.h"
 
+#include "scene/controller/AbstractController.h"
+
 namespace urchin
 {
 
-    class TerrainController
+    class TerrainController : public AbstractController
     {
         public:
             explicit TerrainController(MapHandler *);
-
-            bool isModified() const;
-            void resetModified();
 
             std::list<const SceneTerrain *> getSceneTerrains() const;
             void addSceneTerrain(SceneTerrain *);
@@ -27,11 +26,7 @@ namespace urchin
             const SceneTerrain *updateSceneTerrainGrass(const SceneTerrain *, const std::string&, const std::string&, unsigned int, float, float, float, const Vector3<float> &, float);
 
         private:
-            void markModified();
             SceneTerrain *findSceneTerrain(const SceneTerrain *);
-
-            bool bIsModified;
-            MapHandler *mapHandler;
     };
 
 }

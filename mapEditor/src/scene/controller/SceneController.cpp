@@ -6,8 +6,7 @@ namespace urchin
 {
 
 	SceneController::SceneController(MapHandler *mapHandler) :
-			bIsModified(false),
-			mapHandler(mapHandler)
+            AbstractController(mapHandler)
 	{
 		objectController = new ObjectController(mapHandler);
 		lightController = new LightController(mapHandler);
@@ -31,14 +30,14 @@ namespace urchin
 
 	void SceneController::setRelativeWorkingDirectory(const std::string &relativeWorkingDirectory)
 	{
-		mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
+		getMapHandler()->setRelativeWorkingDirectory(relativeWorkingDirectory);
 
 		markModified();
 	}
 
 	bool SceneController::isModified() const
 	{
-		return bIsModified
+		return AbstractController::isModified()
 				|| objectController->isModified()
 				|| lightController->isModified()
 			    || terrainController->isModified()
@@ -48,14 +47,9 @@ namespace urchin
 				|| aiController->isModified();
 	}
 
-	void SceneController::markModified()
-	{
-		bIsModified = true;
-	}
-
 	void SceneController::resetModified()
 	{
-		bIsModified = false;
+        AbstractController::resetModified();
 		objectController->resetModified();
 		lightController->resetModified();
 		terrainController->resetModified();
@@ -69,7 +63,7 @@ namespace urchin
 	{
 		std::string tmpResourcesDirectory = FileSystem::instance()->getResourcesDirectory();
 		FileSystem::instance()->setupResourcesDirectory("");
-		mapHandler->writeMapOnFile(mapFilename);
+		getMapHandler()->writeMapOnFile(mapFilename);
 		FileSystem::instance()->setupResourcesDirectory(tmpResourcesDirectory);
 
 		resetModified();

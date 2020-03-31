@@ -5,30 +5,14 @@
 namespace urchin
 {
     TerrainController::TerrainController(MapHandler *mapHandler) :
-            bIsModified(false),
-            mapHandler(mapHandler)
+            AbstractController(mapHandler)
     {
 
-    }
-
-    bool TerrainController::isModified() const
-    {
-        return bIsModified;
-    }
-
-    void TerrainController::markModified()
-    {
-        bIsModified = true;
-    }
-
-    void TerrainController::resetModified()
-    {
-        bIsModified = false;
     }
 
     std::list<const SceneTerrain *> TerrainController::getSceneTerrains() const
     {
-        const std::list<SceneTerrain *> &sceneTerrains = mapHandler->getMap()->getSceneTerrains();
+        const std::list<SceneTerrain *> &sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         std::list<const SceneTerrain *> constSceneTerrains;
         constSceneTerrains.insert(constSceneTerrains.begin(), sceneTerrains.begin(), sceneTerrains.end());
 
@@ -37,7 +21,7 @@ namespace urchin
 
     void TerrainController::addSceneTerrain(SceneTerrain *sceneTerrain)
     {
-        mapHandler->getMap()->addSceneTerrain(sceneTerrain);
+        getMapHandler()->getMap()->addSceneTerrain(sceneTerrain);
 
         markModified();
     }
@@ -45,7 +29,7 @@ namespace urchin
     void TerrainController::removeSceneTerrain(const SceneTerrain *constSceneTerrain)
     {
         SceneTerrain *sceneTerrain = findSceneTerrain(constSceneTerrain);
-        mapHandler->getMap()->removeSceneTerrain(sceneTerrain);
+        getMapHandler()->getMap()->removeSceneTerrain(sceneTerrain);
 
         markModified();
     }
@@ -128,7 +112,7 @@ namespace urchin
 
     SceneTerrain *TerrainController::findSceneTerrain(const SceneTerrain *constSceneTerrain)
     {
-        const std::list<SceneTerrain *> &sceneTerrains = mapHandler->getMap()->getSceneTerrains();
+        const std::list<SceneTerrain *> &sceneTerrains = getMapHandler()->getMap()->getSceneTerrains();
         auto it = std::find(sceneTerrains.begin(), sceneTerrains.end(), constSceneTerrain);
 
         if(it!=sceneTerrains.end())
