@@ -95,10 +95,10 @@ namespace urchin
 		{
 			if(isUseMouseToMoveCamera())
 			{
-				moveX(dt*speed);
+                moveOnLocalXAxis(dt * speed);
 			}else
 			{
-				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), dt*rotateSpeed));
+				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), dt * rotateSpeed));
 			}
 		}
 		
@@ -106,21 +106,21 @@ namespace urchin
 		{
 			if(isUseMouseToMoveCamera())
 			{
-				moveX(-dt*speed);
+                moveOnLocalXAxis(-dt * speed);
 			}else
 			{
-				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), -dt*rotateSpeed));
+				rotate(Quaternion<float>(Vector3<float>(0.0, 1.0f, 0.0), -dt * rotateSpeed));
 			}
 		}
 		
 		if(isKeyFrontPressed)
 		{
-			moveZ(dt*speed);
+            moveOnLocalZAxis(dt * speed);
 		}
 		
 		if(isKeyBackPressed)
 		{
-			moveZ(-dt*speed);
+            moveOnLocalZAxis(-dt * speed);
 		}
 	}
 

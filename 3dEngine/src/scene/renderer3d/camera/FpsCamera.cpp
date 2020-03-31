@@ -81,22 +81,22 @@ namespace urchin
 	{
 		if(isKeyLeftPressed)
 		{
-			moveX(dt*speed);
+            moveOnLocalXAxis(dt * speed);
 		}
 		
 		if(isKeyRightPressed)
 		{
-			moveX(-dt*speed);
+            moveOnLocalXAxis(-dt * speed);
 		}
 		
 		if(isKeyFrontPressed)
 		{
-			moveZ(dt*speed);
+            moveOnLocalZAxis(dt * speed);
 		}
 		
 		if(isKeyBackPressed)
 		{
-			moveZ(-dt*speed);
+            moveOnLocalZAxis(-dt * speed);
 		}
 	}
 

@@ -37,8 +37,9 @@ namespace urchin
 			float getFarPlane() const;
 
 			void moveTo(const Point3<float> &);
-			void moveX(float);
-			void moveZ(float);
+			void moveOnLocalXAxis(float);
+			void moveOnLocalZAxis(float);
+			void lookAt(const Vector3<float> &);
 			void rotate(const Quaternion<float> &);
 			
 			virtual void onKeyDown(unsigned int);
@@ -48,7 +49,7 @@ namespace urchin
 			void onMouseMove(int, int);
 
 		private:
-			void updateMatrix();
+			void updateViewMatrix();
 
 			Matrix4<float> mView, mProjection;
 
