@@ -42,6 +42,7 @@
 
 #include "io/Converter.h"
 #include "io/StringUtil.h"
+#include "io/MapUtil.h"
 #include "io/FileReaderUtil.h"
 
 #include "system/FileSystem.h"

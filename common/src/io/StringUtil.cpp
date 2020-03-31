@@ -41,10 +41,10 @@ namespace urchin
 	        tokens.emplace_back(std::string(start, temp));
 
 	        start = temp;
-	        while((start != str.end()) && (*start == delimiter))
-	        {
-	        	start++;
-	        }
+	        if(start != str.end())
+            {
+                std::advance(start, 1);
+            }
 	    }
 	}
 
@@ -57,10 +57,10 @@ namespace urchin
 
 		for (std::size_t i = 0; i < a.size(); ++i)
 		{
-		        if (tolower(a[i]) != tolower(b[i]))
-		        {
-		            return false;
-		        }
+		    if (tolower(a[i]) != tolower(b[i]))
+		    {
+		        return false;
+		    }
 		}
 
 		return true;

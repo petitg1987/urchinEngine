@@ -1,5 +1,7 @@
 #include <cppunit/ui/text/TestRunner.h>
 
+#include "common/io/StringUtilTest.h"
+#include "common/io/MapUtilTest.h"
 #include "common/system/FileHandlerTest.h"
 #include "common/math/algebra/QuaternionTest.h"
 #include "common/math/geometry/OrthogonalProjectionTest.h"
@@ -38,6 +40,10 @@
 
 void commonTests(CppUnit::TextUi::TestRunner &runner)
 {
+    //io
+    runner.addTest(StringUtilTest::suite());
+    runner.addTest(MapUtilTest::suite());
+
     //system - file
     runner.addTest(FileHandlerTest::suite());
 
