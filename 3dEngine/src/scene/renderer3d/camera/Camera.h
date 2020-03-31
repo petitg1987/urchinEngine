@@ -29,7 +29,7 @@ namespace urchin
 			const Frustum<float> &getFrustum() const;
 
 			const Point3<float> &getPosition() const;
-			const Point3<float> &getView() const;
+			const Vector3<float> &getView() const;
 			const Vector3<float> &getUp() const;
 
 			float getAngle() const;
@@ -56,9 +56,9 @@ namespace urchin
 			Frustum<float> baseFrustum; //base frustum (without any matrix transformation)
 			Frustum<float> frustum;
 
-			Point3<float> position, view;
-			Vector3<float> up;
-			float currentRotationX, maxRotationX;
+			Point3<float> position;
+			Vector3<float> view, up;
+			float maxRotationX;
 			float distance; //distance between the camera and the rotation point (0 : first person camera | >0 : third person camera)
 
 			bool bUseMouse; //true if the cursor is used to move the camera

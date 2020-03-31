@@ -117,8 +117,6 @@ namespace urchin
         //3d
         sceneManager = new SceneManager();
         camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, parentWidget);
-        camera->setDistance(0.0f);
-        camera->moveTo(Point3<float>(0.0f, 0.0f, 10.0f));
 		camera->setSpeed(45.0f, 2.0f);
         sceneManager->newRenderer3d(true);
         sceneManager->getActiveRenderer3d()->setCamera(camera);

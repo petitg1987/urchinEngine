@@ -17,9 +17,8 @@ namespace urchin
 			baseFrustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
 			frustum(Frustum<float>(angle, 1.0f, nearPlane, farPlane)),
 			position(Point3<float>(0.0f, 0.0f, 0.0f)),
-			view(Point3<float>(0.0f, 0.0f, -1.0f)),
+			view(Vector3<float>(0.0f, 0.0f, -1.0f)),
 			up(Vector3<float>(0.0f, 1.0f, 0.0f)),
-			currentRotationX(0.0f),
 			maxRotationX(DEFAULT_MAX_ROTATION_X),
 			distance(0.0f),
 			bUseMouse(false),
@@ -115,7 +114,7 @@ namespace urchin
 		return position;
 	}
 
-	const Point3<float> &Camera::getView() const
+	const Vector3<float> &Camera::getView() const
 	{
 		return view;
 	}
@@ -140,62 +139,47 @@ namespace urchin
 		return farPlane;
 	}
 
-	void Camera::moveTo(const Point3<float> &newPos)
+	void Camera::moveTo(const Point3<float> &position)
 	{
-        Vector3<float> axis = position.vector(newPos);
-        position = newPos;
-        view = view.translate(axis);
+        this->position = position;
 
         updateMatrix();
 	}
 
-	void Camera::moveZ(float dist)
+	void Camera::moveZ(float distance)
 	{
-        Vector3<float> axis = position.vector(view).normalize();
-        axis = axis * dist;
+        Vector3<float> axis = view * distance;
+        position = position.translate(axis);
+
+        updateMatrix();
+	}
+
+	void Camera::moveX(float distance)
+	{
+        Vector3<float> axis = up.crossProduct(view).normalize();
+        axis = axis * distance;
 
         position = position.translate(axis);
-        view = view.translate(axis);
 
         updateMatrix();
 	}
 
-	void Camera::moveX(float dist)
-	{
-        Vector3<float> axis = (view.vector(position)).crossProduct(up).normalize();
-        axis = axis * dist;
-
-        position = position.translate(axis);
-        view = view.translate(axis);
-
-        updateMatrix();
-	}
-
-	/**
-	* @param angle Angle of the rotation in radian
-	* @param x X coordinate of the vector where the camera turns around
-	* @param y Y coordinate of the vector where the camera turns around
-	* @param z Z coordinate of the vector where the camera turns around
-	*/
 	void Camera::rotate(const Quaternion<float> &quatRotation)
 	{
         Point3<float> pivot;
         if (std::fabs(distance) > std::numeric_limits<float>::epsilon())
         {
-            Vector3<float> axis = position.vector(view).normalize();
-            pivot = position.translate(axis * distance);
+            pivot = position.translate(view * distance);
         } else
         {
             pivot = position;
         }
 
         //moves view point
-        Vector3<float> axis = pivot.vector(view);
-        Quaternion<float> quatView(axis.X, axis.Y, axis.Z, 0.0f);
+        Quaternion<float> quatView(view.X, view.Y, view.Z, 0.0f);
         const Quaternion<float> &resultView = (quatRotation * quatView.normalize()) * quatRotation.conjugate();
-        view.X = resultView.X + pivot.X;
-        view.Y = resultView.Y + pivot.Y;
-        view.Z = resultView.Z + pivot.Z;
+        Point3<float> viewPoint(resultView.X + pivot.X, resultView.Y + pivot.Y, resultView.Z + pivot.Z);
+        view = position.vector(viewPoint).normalize();
 
         //moves up vector
         Quaternion<float> quatUp(up.X, up.Y, up.Z, 0.0f);
@@ -207,7 +191,7 @@ namespace urchin
         //moves position point
         if (std::fabs(distance) > std::numeric_limits<float>::epsilon())
         {
-            axis = pivot.vector(position);
+            Vector3<float> axis = pivot.vector(position);
             Quaternion<float> quatPosition(axis.X, axis.Y, axis.Z, 0.0f);
             const Quaternion<float> &resultPosition = (quatRotation * quatPosition.normalize()) * quatRotation.conjugate();
 
@@ -253,22 +237,19 @@ namespace urchin
             mouseDirection.Y = (float)(static_cast<int>(middleScreenY) - mouseY) * mouseSensitivity;
 
             //we don't want to rotate up/down more than "MaxRotationX" percent
-            Vector3<float> axis = position.vector(view).normalize();
-            currentRotationX = Vector3<float>(0.0, 1.0, 0.0).dotProduct(axis);
-
+            float currentRotationX = Vector3<float>(0.0, 1.0, 0.0).dotProduct(view);
             currentRotationX += mouseDirection.Y;
+
             if (currentRotationX > 0.0 && currentRotationX > maxRotationX)
             {
                 mouseDirection.Y -= (currentRotationX - maxRotationX);
-                currentRotationX = maxRotationX;
             } else if (currentRotationX < 0.0 && currentRotationX < -maxRotationX)
             {
                 mouseDirection.Y -= (currentRotationX + maxRotationX);
-                currentRotationX = -maxRotationX;
             }
 
             //get the axis to rotate around the x axis.
-            axis = ((position.vector(view)).crossProduct(up)).normalize();
+            Vector3<float> axis = view.crossProduct(up).normalize();
 
             //rotate around the y and x axis
             rotate(Quaternion<float>(axis, mouseDirection.Y));
@@ -280,8 +261,8 @@ namespace urchin
 
 	void Camera::updateMatrix()
 	{
-		 //gluLookAt :
-		const Vector3<float> &f = position.vector(view).normalize();
+		//gluLookAt:
+		const Vector3<float> &f = view;
 		const Vector3<float> &s = f.crossProduct(up).normalize();
 		const Vector3<float> &u = s.crossProduct(f).normalize();
 

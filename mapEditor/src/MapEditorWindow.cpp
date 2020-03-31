@@ -6,7 +6,7 @@
 #include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "scene/controller/lights/LightTableView.h"
 #include "scene/controller/sounds/SoundTableView.h"
-#include "support/PreferredPathHelper.h"
+#include "support/SettingsHelper.h"
 
 #include <stdexcept>
 #include <QApplication>
@@ -179,17 +179,13 @@ namespace urchin
 
     QString MapEditorWindow::getPreferredMapPath()
     {
-        std::string savedPreferredMapPath = PreferredPathHelper::instance()->retrievePreferredPath(preferredMapPathId);
-        if(!savedPreferredMapPath.empty())
-        {
-            return QString::fromStdString(savedPreferredMapPath);
-        }
-        return "./";
+        std::string savedPreferredMapPath = SettingsHelper::instance()->retrieveSetting(preferredMapPathId, "./");
+        return QString::fromStdString(savedPreferredMapPath);
     }
 
     void MapEditorWindow::savePreferredMapPath(const std::string &preferredMapPath)
     {
-        PreferredPathHelper::instance()->savePreferredPath(preferredMapPathId, preferredMapPath);
+        SettingsHelper::instance()->saveSetting(preferredMapPathId, preferredMapPath);
     }
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
