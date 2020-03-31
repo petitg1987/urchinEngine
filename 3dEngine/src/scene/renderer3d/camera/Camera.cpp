@@ -241,7 +241,7 @@ namespace urchin
             mouseDirection.X = (float)(static_cast<int>(middleScreenX) - mouseX) * mouseSensitivity;
             mouseDirection.Y = (float)(static_cast<int>(middleScreenY) - mouseY) * mouseSensitivity;
 
-            //we don't want to rotate up/down more than "maxRotationX" percent
+            //do not rotate up/down more than "maxRotationX" percent
             float currentRotationX = view.Y + mouseDirection.Y;
             if (currentRotationX > 0.0 && currentRotationX > maxRotationX)
             {
@@ -252,8 +252,8 @@ namespace urchin
             }
 
             //rotate around the y and x axis
-            Vector3<float> xAxis = view.crossProduct(up).normalize();
-            rotate(Quaternion<float>(xAxis, mouseDirection.Y));
+            Vector3<float> localXAxis = up.crossProduct(view).normalize();
+            rotate(Quaternion<float>(localXAxis, -mouseDirection.Y));
             rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), mouseDirection.X));
 
             updateViewMatrix();
