@@ -9,6 +9,10 @@
 namespace urchin
 {
 
+    //static
+    const char Converter::FLOAT_DELIMITER = ' ';
+    const float Converter::FLOAT_INT_SCALE = 8192.0;
+
     bool Converter::isInt(const std::string &str)
     {
         std::istringstream iss(str);
@@ -145,7 +149,7 @@ namespace urchin
 	{
 		std::vector<std::string> stringValues;
 		stringValues.reserve(expectedSplit);
-		StringUtil::split(str, FLOAT_DELIMITOR, stringValues);
+		StringUtil::split(str, FLOAT_DELIMITER, stringValues);
 
 		if(stringValues.size()!=expectedSplit)
 		{

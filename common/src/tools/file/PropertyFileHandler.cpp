@@ -5,6 +5,7 @@
 
 #include "tools/file/PropertyFileHandler.h"
 #include "io/FileReaderUtil.h"
+#include "io/StringUtil.h"
 
 namespace urchin
 {
@@ -44,7 +45,10 @@ namespace urchin
 				continue;
 			}
 
-			iss >> equalSign >> propertyValue;
+			iss >> equalSign;
+			std::getline(iss, propertyValue);
+            StringUtil::ltrim(propertyValue);
+
 			properties[propertyName] = propertyValue;
 		}while(!file.eof());
 

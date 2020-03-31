@@ -6,7 +6,7 @@
 #include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "scene/controller/lights/LightTableView.h"
 #include "scene/controller/sounds/SoundTableView.h"
-#include "support/SettingsHelper.h"
+#include "support/StateSaveHelper.h"
 
 #include <stdexcept>
 #include <QApplication>
@@ -24,7 +24,6 @@ namespace urchin
             saveAsAction(nullptr),
             closeAction(nullptr),
             mapEditorPath(std::move(mapEditorPath)),
-            preferredMapPathId("preferred.map.path"),
             sceneDisplayerWidget(nullptr),
             sceneControllerWidget(nullptr)
 	{
@@ -179,13 +178,13 @@ namespace urchin
 
     QString MapEditorWindow::getPreferredMapPath()
     {
-        std::string savedPreferredMapPath = SettingsHelper::instance()->retrieveSetting(preferredMapPathId, "./");
+        std::string savedPreferredMapPath = StateSaveHelper::instance()->retrieveState("preferred.map.path", "./");
         return QString::fromStdString(savedPreferredMapPath);
     }
 
     void MapEditorWindow::savePreferredMapPath(const std::string &preferredMapPath)
     {
-        SettingsHelper::instance()->saveSetting(preferredMapPathId, preferredMapPath);
+        StateSaveHelper::instance()->saveState("preferred.map.path", preferredMapPath);
     }
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)

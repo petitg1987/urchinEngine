@@ -48,7 +48,6 @@ namespace urchin
 
 			std::string mapEditorPath;
 			std::string mapFilename;
-			const std::string preferredMapPathId;
 
 			SceneDisplayerWidget *sceneDisplayerWidget;
 			SceneControllerWidget *sceneControllerWidget;

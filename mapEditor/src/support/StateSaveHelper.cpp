@@ -1,4 +1,4 @@
-#include "SettingsHelper.h"
+#include "StateSaveHelper.h"
 
 #include <QApplication>
 #include <QtCore/QStandardPaths>
@@ -6,25 +6,25 @@
 namespace urchin
 {
 
-    SettingsHelper::SettingsHelper()
+    StateSaveHelper::StateSaveHelper()
     {
         std::string applicationDirPath = QCoreApplication::applicationDirPath().toStdString();
-        std::string settingsPropertiesPath = applicationDirPath + "/save/settings.properties";
-        propertyFileHandler = std::make_unique<PropertyFileHandler>(settingsPropertiesPath);
+        std::string propertiesFilePath = applicationDirPath + "/save/states.properties";
+        propertyFileHandler = std::make_unique<PropertyFileHandler>(propertiesFilePath);
     }
 
-    void SettingsHelper::saveSetting(const std::string &settingId, const std::string &settingValue)
+    void StateSaveHelper::saveState(const std::string &stateId, const std::string &stateValue)
     {
         std::map<std::string, std::string> properties = propertyFileHandler->loadPropertyFile();
-        properties[settingId] = settingValue;
+        properties[stateId] = stateValue;
 
         propertyFileHandler->savePropertyFile(properties);
     }
 
-    std::string SettingsHelper::retrieveSetting(const std::string &settingId, const std::string &defaultValue) const
+    std::string StateSaveHelper::retrieveState(const std::string &stateId, const std::string &defaultValue) const
     {
         std::map<std::string, std::string> properties = propertyFileHandler->loadPropertyFile();
-        const auto &it = properties.find(settingId);
+        const auto &it = properties.find(stateId);
         if(it != properties.end())
         {
             return it->second;

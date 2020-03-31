@@ -58,15 +58,18 @@ namespace urchin
 		return sceneDisplayer->getMapHandler();
 	}
 
-	void SceneDisplayerWidget::saveMap(const std::string &) const
+	void SceneDisplayerWidget::saveMap(const std::string &mapFilename) const
 	{
-		//do nothing
+		if(sceneDisplayer)
+        {
+		    sceneDisplayer->getCamera()->saveCameraState(mapFilename);
+        }
 	}
 
 	void SceneDisplayerWidget::closeMap()
 	{
 		delete sceneDisplayer;
-		sceneDisplayer=nullptr;
+		sceneDisplayer = nullptr;
 	}
 
 	void SceneDisplayerWidget::setViewProperties(SceneDisplayer::ViewProperties viewProperty, bool value)

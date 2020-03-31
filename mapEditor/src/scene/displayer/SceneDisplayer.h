@@ -46,12 +46,13 @@ namespace urchin
 			void resize(unsigned int width, unsigned int height);
 
 			SceneManager *getSceneManager() const;
+            SceneFreeCamera *getCamera() const;
 			PhysicsWorld *getPhysicsWorld() const;
 			MapHandler *getMapHandler() const;
 
 		private:
 			void initializeEngineResources(const std::string &);
-			void initializeScene();
+			void initializeScene(const std::string &);
 
 			void refreshRigidBodyShapeModel();
 			void refreshLightScopeModel();

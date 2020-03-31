@@ -16,7 +16,12 @@ namespace urchin
 
 			void moveMouse(unsigned int, unsigned int) override;
 
+			void loadCameraState(const std::string &);
+			void saveCameraState(const std::string &) const;
+
 		private:
+	        static const char DATA_DELIMITER;
+
 			const QWidget *parentWidget;
 	};
 

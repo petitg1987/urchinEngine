@@ -130,7 +130,7 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y));
+		setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y));
 	}
 
 	Point3<float> XmlChunk::getPoint3Value() const
@@ -142,7 +142,7 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z));
+		setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z));
 	}
 
 	Point4<float> XmlChunk::getPoint4Value() const
@@ -154,8 +154,8 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z)
-			+ FLOAT_DELIMITOR + std::to_string(value.W));
+		setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z)
+			+ Converter::FLOAT_DELIMITER + std::to_string(value.W));
 	}
 
 	Vector2<float> XmlChunk::getVector2Value() const
@@ -167,7 +167,7 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y));
+		setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y));
 	}
 
 	Vector3<float> XmlChunk::getVector3Value() const
@@ -179,7 +179,7 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z));
+		setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z));
 	}
 
 	Vector4<float> XmlChunk::getVector4Value() const
@@ -191,7 +191,7 @@ namespace urchin
 	{
 		std::locale::global(std::locale("C")); //for float
 
-		setStringValue(std::to_string(value.X) + FLOAT_DELIMITOR + std::to_string(value.Y) + FLOAT_DELIMITOR + std::to_string(value.Z)
-			+ FLOAT_DELIMITOR + std::to_string(value.W));
+		setStringValue(std::to_string(value.X) + Converter::FLOAT_DELIMITER + std::to_string(value.Y) + Converter::FLOAT_DELIMITER + std::to_string(value.Z)
+			+ Converter::FLOAT_DELIMITER + std::to_string(value.W));
 	}
 }

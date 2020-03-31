@@ -16,10 +16,10 @@ namespace urchin
 
 	class Converter
 	{
-		#define FLOAT_DELIMITOR ' '
-		#define FLOAT_INT_SCALE 8192.0
-
 		public:
+			static const char FLOAT_DELIMITER;
+			static const float FLOAT_INT_SCALE;
+
 			static bool isInt(const std::string &);
 			static int toInt(const std::string &);
 			static bool isUnsignedInt(const std::string &);

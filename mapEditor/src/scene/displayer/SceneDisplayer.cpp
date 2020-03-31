@@ -57,7 +57,7 @@ namespace urchin
 			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapResourcesDir);
 			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
-			initializeScene();
+			initializeScene(mapFilename);
 
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
 			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
@@ -84,7 +84,7 @@ namespace urchin
 			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapResourcesDir);
 			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
-			initializeScene();
+			initializeScene(mapFilename);
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
 
 			isInitialized = true;
@@ -107,7 +107,7 @@ namespace urchin
 		FileSystem::instance()->setupSaveDirectory(mapEditorSaveDirectory);
 	}
 
-	void SceneDisplayer::initializeScene()
+	void SceneDisplayer::initializeScene(const std::string &mapFilename)
 	{
 		if(isInitialized)
 		{
@@ -118,6 +118,7 @@ namespace urchin
         sceneManager = new SceneManager();
         camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, parentWidget);
 		camera->setSpeed(45.0f, 2.0f);
+		camera->loadCameraState(mapFilename);
         sceneManager->newRenderer3d(true);
         sceneManager->getActiveRenderer3d()->setCamera(camera);
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
@@ -245,6 +246,11 @@ namespace urchin
 	{
 		return sceneManager;
 	}
+
+    SceneFreeCamera *SceneDisplayer::getCamera() const
+    {
+        return camera;
+    }
 
     PhysicsWorld *SceneDisplayer::getPhysicsWorld() const
     {

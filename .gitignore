@@ -1,5 +1,6 @@
 .idea/workspace.xml
 .build/
 mapEditor/save/*.frl
+mapEditor/save/states.properties
 mapEditor/urchinMapEditor
 test/testRunner
