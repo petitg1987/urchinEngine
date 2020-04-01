@@ -85,7 +85,7 @@ namespace urchin
 		return sceneController!=nullptr;
 	}
 
-	void SceneControllerWidget::newMap(MapHandler *mapHandler, const std::string &relativeWorkingDirectory)
+    SceneController *SceneControllerWidget::newMap(MapHandler *mapHandler, const std::string &relativeWorkingDirectory)
 	{
 		closeMap();
 
@@ -100,9 +100,11 @@ namespace urchin
 		tabSky->load(sceneController->getSkyController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
+
+		return sceneController;
 	}
 
-	void SceneControllerWidget::openMap(MapHandler *mapHandler)
+    SceneController *SceneControllerWidget::openMap(MapHandler *mapHandler)
 	{
 		closeMap();
 
@@ -116,6 +118,8 @@ namespace urchin
         tabSky->load(sceneController->getSkyController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
+
+		return sceneController;
 	}
 
 	void SceneControllerWidget::saveMap(const std::string &mapFilename)

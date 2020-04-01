@@ -9,23 +9,33 @@ namespace urchin
             AbstractController(mapHandler)
 	{
 		objectController = new ObjectController(mapHandler);
+        subControllers.emplace_back(objectController);
+
 		lightController = new LightController(mapHandler);
+        subControllers.emplace_back(lightController);
+
 		terrainController = new TerrainController(mapHandler);
+        subControllers.emplace_back(terrainController);
+
 		waterController = new WaterController(mapHandler);
+        subControllers.emplace_back(waterController);
+
 		skyController = new SkyController(mapHandler);
+        subControllers.emplace_back(skyController);
+
 		soundController = new SoundController(mapHandler);
+        subControllers.emplace_back(soundController);
+
 		aiController = new AIController(mapHandler);
+        subControllers.emplace_back(aiController);
 	}
 
 	SceneController::~SceneController()
 	{
-		delete objectController;
-		delete lightController;
-		delete terrainController;
-		delete waterController;
-		delete skyController;
-		delete soundController;
-		delete aiController;
+	    for(const auto &subController: subControllers)
+        {
+	        delete subController;
+        }
 	}
 
 	void SceneController::setRelativeWorkingDirectory(const std::string &relativeWorkingDirectory)
@@ -35,28 +45,38 @@ namespace urchin
 		markModified();
 	}
 
+    void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType)
+    {
+	    this->addObserver(observer, notificationType);
+        for(const auto &subController: subControllers)
+        {
+            subController->addObserver(observer, notificationType);
+        }
+    }
+
 	bool SceneController::isModified() const
 	{
-		return AbstractController::isModified()
-				|| objectController->isModified()
-				|| lightController->isModified()
-			    || terrainController->isModified()
-			    || waterController->isModified()
-			    || skyController->isModified()
-				|| soundController->isModified()
-				|| aiController->isModified();
+	    if(AbstractController::isModified())
+        {
+	        return true;
+        }
+
+        for(const auto &subController: subControllers)
+        {
+            if(subController->isModified())
+            {
+                return true;
+            }
+        }
 	}
 
 	void SceneController::resetModified()
 	{
         AbstractController::resetModified();
-		objectController->resetModified();
-		lightController->resetModified();
-		terrainController->resetModified();
-		waterController->resetModified();
-		skyController->resetModified();
-		soundController->resetModified();
-		aiController->resetModified();
+        for(const auto &subController: subControllers)
+        {
+            subController->resetModified();
+        }
 	}
 
 	void SceneController::saveMapOnFile(const std::string &mapFilename)

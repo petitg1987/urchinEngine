@@ -53,8 +53,8 @@ namespace urchin
 			bool isModified() const;
 			bool hasMapOpen() const;
 
-			void newMap(MapHandler *, const std::string &);
-			void openMap(MapHandler *);
+            SceneController *newMap(MapHandler *, const std::string &);
+            SceneController *openMap(MapHandler *);
 			void saveMap(const std::string &);
 			void closeMap();
 

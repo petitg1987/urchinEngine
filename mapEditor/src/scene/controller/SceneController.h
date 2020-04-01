@@ -19,9 +19,10 @@ namespace urchin
 	{
 		public:
 			explicit SceneController(MapHandler *);
-			~SceneController();
+			~SceneController() override;
 
 			void setRelativeWorkingDirectory(const std::string &);
+			void addObserverOnAllControllers(Observer *, int);
 
             bool isModified() const override;
             void resetModified() override;
@@ -37,6 +38,8 @@ namespace urchin
 			AIController *getAIController();
 
 		private:
+	        std::vector<AbstractController *> subControllers;
+
 			ObjectController *objectController;
 			LightController *lightController;
 			TerrainController *terrainController;

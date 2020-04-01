@@ -89,4 +89,3 @@
 	- **NEW FEATURE** (`medium`): Display box around objects which don't have mesh (allow to select them easily with left click)
 - UI
 	- **NEW FEATURE** (`minor`): Allow CTRL+Y to return in previous value
-	- **NEW FEATURE** (`medium`): When save (CTRL+S): change window title from "(not saved)" to "(saved)"

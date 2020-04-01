@@ -33,8 +33,9 @@ namespace urchin
             void savePreferredMapPath(const std::string &);
 
 			bool checkCurrentMapSaved();
-			void updateMenuStatus();
+			void updateInterfaceState(bool);
 			void updateMapFilename(const QString&);
+            void refreshWindowTitle(bool);
 
 			void notify(Observable *, int) override;
 			void handleCompoundShapeSelectionChange(Observable *, int);

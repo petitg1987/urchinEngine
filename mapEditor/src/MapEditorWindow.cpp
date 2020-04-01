@@ -167,13 +167,11 @@ namespace urchin
 		sizePolicy.setHeightForWidth(sceneControllerWidget->sizePolicy().hasHeightForWidth());
 		sceneControllerWidget->setSizePolicy(sizePolicy);
 		sceneControllerWidget->setMaximumSize(QSize(380, 16777215));
-
 		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::SELECTION_CHANGED);
 		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::BODY_SHAPE_INITIALIZED);
 		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::SELECTION_CHANGED);
 		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SELECTION_CHANGED);
 		sceneControllerWidget->addObserver(this, SceneControllerWidget::TAB_SELECTED);
-
 		horizontalLayout->addWidget(sceneControllerWidget);
 
 		sceneDisplayerWidget->addObserver(sceneControllerWidget->getObjectControllerWidget(), SceneDisplayerWidget::BODY_PICKED);
@@ -216,7 +214,13 @@ namespace urchin
             {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
-		}
+		}else if(dynamic_cast<AbstractController *>(observable))
+        {
+		    if(notificationType==AbstractController::CHANGES_DONE)
+            {
+                refreshWindowTitle(true);
+            }
+        }
 
 		handleCompoundShapeSelectionChange(observable, notificationType);
 	}
@@ -252,10 +256,11 @@ namespace urchin
 			if(newDialog.result()==QDialog::Accepted)
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->newMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
-				sceneControllerWidget->newMap(mapHandler, newDialog.getRelativeWorkingDirectory());
+				SceneController *sceneController = sceneControllerWidget->newMap(mapHandler, newDialog.getRelativeWorkingDirectory());
+                sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(QString::fromStdString(newDialog.getFilename()));
-				updateMenuStatus();
+                updateInterfaceState(true);
 			}
 		}
 	}
@@ -268,10 +273,11 @@ namespace urchin
 			if(!filename.isNull())
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
-				sceneControllerWidget->openMap(mapHandler);
+                SceneController *sceneController = sceneControllerWidget->openMap(mapHandler);
+                sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(filename);
-				updateMenuStatus();
+                updateInterfaceState(false);
 			}
 		}
 	}
@@ -280,6 +286,8 @@ namespace urchin
 	{
 		sceneDisplayerWidget->saveMap(mapFilename);
 		sceneControllerWidget->saveMap(mapFilename);
+
+		updateInterfaceState(false);
 	}
 
 	void MapEditorWindow::showSaveAsDialog()
@@ -298,6 +306,7 @@ namespace urchin
 			sceneControllerWidget->saveMap(filenameString);
 
 			updateMapFilename(QString::fromStdString(filenameString));
+            updateInterfaceState(false);
 		}
 	}
 
@@ -310,7 +319,7 @@ namespace urchin
 			sceneControllerWidget->closeMap();
 
 			updateMapFilename("");
-			updateMenuStatus();
+            updateInterfaceState(false);
 
 			canProceed = true;
 		}
@@ -358,7 +367,7 @@ namespace urchin
 		return canProceed;
 	}
 
-	void MapEditorWindow::updateMenuStatus()
+	void MapEditorWindow::updateInterfaceState(bool mapContainsNotSavedChange)
 	{
 		bool hasMapOpen = sceneControllerWidget->hasMapOpen();
 
@@ -369,23 +378,36 @@ namespace urchin
 		{
 			viewAction.second->setEnabled(hasMapOpen);
 		}
+
+        refreshWindowTitle(mapContainsNotSavedChange);
 	}
 
 	void MapEditorWindow::updateMapFilename(const QString& qMapFilename)
 	{
 		mapFilename = qMapFilename.toUtf8().constData();
 
-		if(qMapFilename.isEmpty())
-		{
-			this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
-		}else
+        if(!mapFilename.empty())
 		{
 			std::string preferredMapPathString = FileHandler::getDirectoryFrom(mapFilename);
 			savePreferredMapPath(preferredMapPathString);
-
-			this->setWindowTitle(QString::fromStdString(WINDOW_TITLE + " (" + mapFilename + ")"));
 		}
 	}
+
+	void MapEditorWindow::refreshWindowTitle(bool mapContainsNotSavedChange)
+    {
+        if(mapFilename.empty())
+        {
+            this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
+        } else
+        {
+            if(mapContainsNotSavedChange)
+            {
+                this->setWindowTitle(QString::fromStdString("*" + WINDOW_TITLE + " (" + mapFilename + ")"));
+            } else {
+                this->setWindowTitle(QString::fromStdString(WINDOW_TITLE + " (" + mapFilename + ")"));
+            }
+        }
+    }
 
 	void MapEditorWindow::executeViewPropertiesChangeAction()
 	{

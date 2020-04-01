@@ -22,6 +22,8 @@ namespace urchin
     void AbstractController::markModified()
     {
         bIsModified = true;
+
+        notifyObservers(this, AbstractController::CHANGES_DONE);
     }
 
     MapHandler *AbstractController::getMapHandler() const
