@@ -234,14 +234,12 @@ namespace urchin
 	{
 		ScopeProfiler scopeProfiler("ai", "createNavPolys");
 
-        walkablePolygons.clear();
-        obstaclesInsideWalkablePolygon.clear();
-
         std::string walkableName = walkableSurface->getPolytope()->getName() + "[" + std::to_string(walkableSurface->getSurfacePosition()) + "]";
-        CSGPolygon<float> walkablePolygon(walkableName, walkableSurface->getOutlineCwPoints());
+        walkablePolygons.clear();
+        walkablePolygons.emplace_back(CSGPolygon<float>(walkableName, walkableSurface->getOutlineCwPoints()));
         std::vector<CSGPolygon<float>> &obstaclePolygons = determineObstacles(navObject, walkableSurface);
 
-        applyObstaclesOnWalkablePolygon(walkablePolygon, obstaclePolygons);
+        applyObstaclesOnWalkablePolygon(obstaclePolygons);
 
         bool uniqueWalkableSurface = walkablePolygons.size() == 1;
 		std::vector<std::shared_ptr<NavPolygon>> navPolygons;
@@ -328,11 +326,12 @@ namespace urchin
 		return CSGPolygon<float>(polytopeObstacle->getName(), std::move(cwPoints));
 	}
 
-	void NavMeshGenerator::applyObstaclesOnWalkablePolygon(const CSGPolygon<float> &walkablePolygon, std::vector<CSGPolygon<float>> &obstaclePolygons)
+	void NavMeshGenerator::applyObstaclesOnWalkablePolygon(std::vector<CSGPolygon<float>> &obstaclePolygons)
     {
         ScopeProfiler scopeProfiler("ai", "subObstacles");
 
-        walkablePolygons.emplace_back(walkablePolygon);
+        assert(walkablePolygons.size() == 1);
+        obstaclesInsideWalkablePolygon.clear();
 
         for(auto &obstaclePolygon : obstaclePolygons)
         {

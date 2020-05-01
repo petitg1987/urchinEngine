@@ -80,7 +80,7 @@ namespace urchin
 			}
 			
 			//numTriangles
-			unsigned int numTriangles;
+			unsigned int numTriangles = 0;
 			FileReaderUtil::nextLine(file, buffer);
 			iss.clear(); iss.str(buffer);
 			iss >> sdata >> numTriangles;
