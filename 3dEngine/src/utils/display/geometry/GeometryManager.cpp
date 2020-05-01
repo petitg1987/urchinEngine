@@ -39,7 +39,7 @@ namespace urchin
 
 	void GeometryManager::display(const Matrix4<float> &viewMatrix) const
 	{
-		for (auto geometryModel : geometryModels)
+		for (auto *geometryModel : geometryModels)
 		{
 			geometryModel->display(viewMatrix);
 		}

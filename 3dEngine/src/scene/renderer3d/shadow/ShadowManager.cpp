@@ -210,7 +210,7 @@ namespace urchin
 		return shadowMapBias;
 	}
 
-	void ShadowManager::setShadowMapResolution(unsigned int shadowMapResolution)
+    void ShadowManager::setShadowMapResolution(unsigned int shadowMapResolution)
 	{
 		this->shadowMapResolution = shadowMapResolution;
 
@@ -526,7 +526,7 @@ namespace urchin
 	void ShadowManager::createShadowMaps(const Light *light)
 	{
 		//frame buffer object
-		unsigned int fboID;
+		unsigned int fboID = 0;
 		glGenFramebuffers(1, &fboID);
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 
@@ -660,7 +660,7 @@ namespace urchin
 	{
 		int i = 0;
 		const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
-		for (auto visibleLight : visibleLights)
+		for (auto *visibleLight : visibleLights)
 		{
 			if(visibleLight->isProduceShadow())
 			{

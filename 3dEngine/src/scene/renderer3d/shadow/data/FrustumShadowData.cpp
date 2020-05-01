@@ -64,7 +64,7 @@ namespace urchin
             modelsRequireUpdate = true;
         }else
         {
-            for (auto model : models)
+            for (auto *model : models)
             {
                 if(model->isMovingInOctree() || model->isAnimate())
                 {

@@ -45,7 +45,6 @@ namespace urchin
 		blurSize(DEFAULT_BLUR_SIZE),
 		blurSharpness(DEFAULT_BLUR_SHARPNESS),
 
-
 		fboID(0),
 		ambientOcclusionTexID(0),
 
@@ -373,7 +372,7 @@ namespace urchin
 	{
 		ScopeProfiler profiler("3d", "updateAOTexture");
 
-		GLint activeFBO;
+		GLint activeFBO = 0;
 		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &activeFBO);
 		glBindFramebuffer(GL_FRAMEBUFFER, fboID);
 

@@ -33,7 +33,7 @@ namespace urchin
 		glGenBuffers(1, &cursorLineBufferID);
 		glGenVertexArrays(1, &cursorLineVAO);
 
-		createOrUpdateWidget();
+        TextBox::createOrUpdateWidget();
 	}
 
 	TextBox::~TextBox()
@@ -178,8 +178,9 @@ namespace urchin
 
 		//determine the text to display
 		const Font *font = text->getFont();
-		unsigned int widthText = 0, endTextIndex;
-		for(endTextIndex=startTextIndex; endTextIndex<(int)allText.length(); ++endTextIndex)
+		unsigned int widthText = 0;
+		unsigned int endTextIndex = startTextIndex;
+		for(; endTextIndex<(int)allText.length(); ++endTextIndex)
 		{
 			auto letter = static_cast<unsigned char>(allText[endTextIndex]);
 			widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();

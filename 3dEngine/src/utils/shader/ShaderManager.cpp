@@ -102,7 +102,7 @@ namespace urchin
 			throw std::invalid_argument("Cannot open the file " + filename + ".");
 		}
 
-		char c;
+		char c = 0;
 		while (file.get(c))
 		{
 			fileContent.append(1, c);

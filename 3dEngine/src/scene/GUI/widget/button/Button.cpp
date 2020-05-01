@@ -17,7 +17,7 @@ namespace urchin
 		  buttonText(std::move(buttonText)),
           textureID(0)
 	{
-		createOrUpdateWidget();
+        Button::createOrUpdateWidget();
 	}
 
 	void Button::createOrUpdateWidget()

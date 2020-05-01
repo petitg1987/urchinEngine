@@ -20,7 +20,7 @@ namespace urchin
 		title(nullptr),
 		widgetOutline(new WidgetOutline())
 	{
-		createOrUpdateWidget();
+        Window::createOrUpdateWidget();
 	}
 
 	Window::~Window()

@@ -37,7 +37,7 @@ namespace urchin
 		std::shared_ptr<XmlChunk> rightButtonTextChunk = GUISkinService::instance()->getXmlSkin()->getUniqueChunk(true, "rightButtonText", XmlAttribute(), sliderChunk);
 		rightButtonString = rightButtonTextChunk->getStringValue();
 
-		createOrUpdateWidget();
+        Slider::createOrUpdateWidget();
 	}
 
 	void Slider::createOrUpdateWidget()

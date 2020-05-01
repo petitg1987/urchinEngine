@@ -15,6 +15,7 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   - Space partitioning (octree)
   - UI 2D: button, window, text (TTF), text input, bitmap, slider
   - Skybox
+  - Fog
 
 - Physics Engine:
   - Supported shapes: sphere, box, cylinder, capsule, cone, convex hull, compound shape, terrain
@@ -42,8 +43,13 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
   - HTTP request sender
   
 - Map Editor:
-  - Add > 3d model, rigid body and sound on scene
-  - Debug > view light scope, hitbox, sound trigger, navigation mesh
+  - Handle:
+    - 3d objects with physics
+    - Lights
+    - Landscape: terrain, water, sky
+    - Sound
+    - AI agent
+  - Debug visualization: hit box, light range, sound trigger, navigation mesh
 
 ## Build
 - Pre-requisites: 

@@ -14,7 +14,7 @@ namespace urchin
 		filename(std::move(filename)),
 		tex(nullptr)
 	{
-		createOrUpdateWidget();
+        StaticBitmap::createOrUpdateWidget();
 	}
 
 	StaticBitmap::~StaticBitmap()

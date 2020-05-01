@@ -43,7 +43,8 @@ namespace urchin
 			void notify(Observable *, int) override;
 
 			float getShadowMapBias() const;
-			void setShadowMapResolution(unsigned int);
+
+            void setShadowMapResolution(unsigned int);
 			unsigned int getShadowMapResolution() const;
 			void setNumberShadowMaps(unsigned int);
 			unsigned int getNumberShadowMaps() const;
