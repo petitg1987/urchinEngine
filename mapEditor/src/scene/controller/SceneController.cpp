@@ -68,6 +68,8 @@ namespace urchin
                 return true;
             }
         }
+
+        return false;
 	}
 
 	void SceneController::resetModified()
