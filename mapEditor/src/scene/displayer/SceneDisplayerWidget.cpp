@@ -29,7 +29,10 @@ namespace urchin
 
 	SceneDisplayerWidget::~SceneDisplayerWidget()
 	{
-	    context()->doneCurrent();
+	    if(context()->isValid())
+        {
+            context()->doneCurrent();
+        }
 
 		delete sceneDisplayer;
 	}
