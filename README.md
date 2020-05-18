@@ -58,15 +58,15 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
 - Build:
   - Debug:
     ```
-    git clone https://github.com/petitg1987/urchinEngine.git
-    cmake -DCMAKE_BUILD_TYPE=Debug -S urchinEngine/ -B urchinEngine/.build/debug/
-    cmake --build urchinEngine/.build/debug/ --target all -- -j 6
+    git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
+    cmake -DCMAKE_BUILD_TYPE=Debug -S ./ -B .build/debug/
+    cmake --build .build/debug/ -- -j 12
     ```
   - Release:
     ```
-    git clone https://github.com/petitg1987/urchinEngine.git
-    cmake -DCMAKE_BUILD_TYPE=Release -S urchinEngine/ -B urchinEngine/.build/release/
-    cmake --build urchinEngine/.build/release/ --target all -- -j 6
+    git clone https://github.com/petitg1987/urchinEngine.git && cd ./urchinEngine
+    cmake -DCMAKE_BUILD_TYPE=Release -S ./ -B .build/release/
+    cmake --build .build/release/ -- -j 12
     ```
 - Execute tests:
     ```
