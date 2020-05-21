@@ -70,13 +70,13 @@ Video: <https://www.youtube.com/watch?v=lSbCx7u6RtE>
     ```
 - Execute tests:
     ```
-    cd UrchinEngine/test/
+    cd urchinEngine/test/
     ./testRunner
     ```
 
 ## Launch map editor
 ```
-cd UrchinEngine/mapEditor/
+cd urchinEngine/mapEditor/
 ./urchinMapEditor
 ```
 
