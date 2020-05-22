@@ -17,6 +17,7 @@ namespace urchin
 		camera(nullptr),
 		mapHandler(nullptr),
 		bodyShapeDisplayer(nullptr),
+        objectMoveAxisDisplayer(nullptr),
 		lightScopeDisplayer(nullptr),
 		soundTriggerDisplayer(nullptr),
 		navMeshDisplayer(nullptr),
@@ -39,6 +40,7 @@ namespace urchin
         delete physicsWorld;
 
         delete bodyShapeDisplayer;
+        delete objectMoveAxisDisplayer;
         delete lightScopeDisplayer;
         delete soundTriggerDisplayer;
         delete navMeshDisplayer;
@@ -124,6 +126,7 @@ namespace urchin
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
+        objectMoveAxisDisplayer = new ObjectMoveAxisDisplayer(sceneManager);
         lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
 
@@ -166,15 +169,17 @@ namespace urchin
 		this->highlightSceneSound = highlightSceneSound;
 	}
 
-	void SceneDisplayer::refreshRigidBodyShapeModel()
+	void SceneDisplayer::refreshObjectsModel()
 	{
-		if(viewProperties[MODEL_PHYSICS] && highlightSceneObject && highlightSceneObject->getRigidBody())
-		{
-			bodyShapeDisplayer->displayBodyShapeFor(highlightSceneObject);
-		}else
-		{
-			bodyShapeDisplayer->displayBodyShapeFor(nullptr);
-		}
+        if(viewProperties[MODEL_PHYSICS] && highlightSceneObject && highlightSceneObject->getRigidBody())
+        {
+            bodyShapeDisplayer->displayBodyShapeFor(highlightSceneObject);
+        }else
+        {
+            bodyShapeDisplayer->displayBodyShapeFor(nullptr);
+        }
+
+        objectMoveAxisDisplayer->displayAxisFor(highlightSceneObject);
 	}
 
 	void SceneDisplayer::refreshLightScopeModel()
@@ -218,7 +223,7 @@ namespace urchin
 			{
 				mapHandler->refreshMap();
 
-				refreshRigidBodyShapeModel();
+                refreshObjectsModel();
 				refreshLightScopeModel();
 				refreshSoundTriggerModel();
 				refreshNavMeshModel();

@@ -8,9 +8,10 @@ namespace urchin
 {
 
     //static
-    std::vector<AABBox<float>> Model::defaultModelAABBoxes = {AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f))};
+    AABBox<float> Model::defaultModelLocalAABBox = AABBox<float>(Point3<float>(-0.5f, -0.5f, -0.5f), Point3<float>(0.5f, 0.5f, 0.5f));
 
 	Model::Model(const std::string &meshFilename) :
+            defaultModelAABBoxes({defaultModelLocalAABBox}),
 			meshes(nullptr),
 			currAnimation(nullptr),
 			stopAnimationAtLastFrame(false),
@@ -20,6 +21,7 @@ namespace urchin
 	}
 
     Model::Model(const Model &model) : Octreeable(model),
+            defaultModelAABBoxes({defaultModelLocalAABBox}),
             meshes(nullptr),
 			currAnimation(nullptr),
 			stopAnimationAtLastFrame(false),
@@ -115,19 +117,22 @@ namespace urchin
 
 	void Model::onMoving(const Transform<float> &newTransform)
 	{
-		//inform the OctreeManager that the model should be updated in the octree
-		this->notifyOctreeableMove();
-
 		//update the bounding box
 		if(meshes)
 		{
 			meshes->onMoving(newTransform);
-		}
-		if(currAnimation)
-		{
-			currAnimation->onMoving(newTransform);
-		}
-	}
+            if(currAnimation)
+            {
+                currAnimation->onMoving(newTransform);
+            }
+		}else
+        {
+            defaultModelAABBoxes[0] = defaultModelLocalAABBox.moveAABBox(transform);
+        }
+
+        //inform the OctreeManager that the model should be updated in the octree
+        this->notifyOctreeableMove();
+    }
 
 	const ConstMeshes *Model::getMeshes() const
 	{
@@ -196,7 +201,7 @@ namespace urchin
 			return meshes->getGlobalLocalAABBox();
 		}else
         {
-            return defaultModelAABBoxes[0];
+            return defaultModelLocalAABBox;
         }
 	}
 

@@ -428,7 +428,7 @@ namespace urchin
                 if(sceneObject)
                 {
                     int row = this->objectTableView->getSceneObjectRow(sceneObject);
-                    if(row >=0)
+                    if(row >= 0)
                     {
                         this->objectTableView->selectRow(row);
                     }

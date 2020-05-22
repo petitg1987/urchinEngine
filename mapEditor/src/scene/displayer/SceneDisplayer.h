@@ -11,6 +11,7 @@
 
 #include "scene/displayer/SceneFreeCamera.h"
 #include "scene/displayer/objects/BodyShapeDisplayer.h"
+#include "scene/displayer/objects/ObjectMoveAxisDisplayer.h"
 #include "scene/displayer/lights/LightScopeDisplayer.h"
 #include "scene/displayer/sounds/SoundTriggerDisplayer.h"
 
@@ -54,7 +55,7 @@ namespace urchin
 			void initializeEngineResources(const std::string &);
 			void initializeScene(const std::string &);
 
-			void refreshRigidBodyShapeModel();
+			void refreshObjectsModel();
 			void refreshLightScopeModel();
 			void refreshSoundTriggerModel();
 			void refreshNavMeshModel();
@@ -66,6 +67,7 @@ namespace urchin
 			SceneManager *sceneManager;
 			SceneFreeCamera *camera;
 			BodyShapeDisplayer *bodyShapeDisplayer;
+			ObjectMoveAxisDisplayer *objectMoveAxisDisplayer;
 			LightScopeDisplayer *lightScopeDisplayer;
 			SoundTriggerDisplayer *soundTriggerDisplayer;
 

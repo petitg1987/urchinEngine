@@ -52,12 +52,13 @@ namespace urchin
 			void initialize(const std::string &);
 			void onMoving(const Transform<float> &);
 
-			static std::vector<AABBox<float>> defaultModelAABBoxes;
+			static AABBox<float> defaultModelLocalAABBox;
+            std::vector<AABBox<float>> defaultModelAABBoxes;
 
 			//meshes
 			Meshes *meshes;
-			
-			//animations
+
+            //animations
 			std::map<std::string, Animation *> animations;
 			Animation *currAnimation;
 			bool stopAnimationAtLastFrame;
