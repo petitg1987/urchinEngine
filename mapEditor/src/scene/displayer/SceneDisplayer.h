@@ -39,7 +39,6 @@ namespace urchin
 
 			void setViewProperties(SceneDisplayer::ViewProperties, bool);
 			void setHighlightSceneObject(const SceneObject *);
-			void setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
 			void setHighlightSceneLight(const SceneLight *);
 			void setHighlightSceneSound(const SceneSound *);
 
@@ -50,6 +49,9 @@ namespace urchin
             SceneFreeCamera *getCamera() const;
 			PhysicsWorld *getPhysicsWorld() const;
 			MapHandler *getMapHandler() const;
+
+            BodyShapeDisplayer *getBodyShapeDisplayer() const;
+            ObjectMoveAxisDisplayer *getObjectMoveAxisDisplayer() const;
 
 		private:
 			void initializeEngineResources(const std::string &);

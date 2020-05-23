@@ -12,6 +12,7 @@
 #include <QApplication>
 #include <QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QToolBar>
 #include <QtWidgets/QFileDialog>
 #include <utility>
 #include <QtCore/QStandardPaths>
@@ -136,8 +137,33 @@ namespace urchin
 	}
 
 	void MapEditorWindow::setupStatusBar()
-	{
+	{ //TODO review dynamic...
 		auto *statusBar = new QStatusBar(this);
+
+        auto *moveKeyLabel = new QLabel("Move selected object: Ctrl + X/Y/Z");
+        statusBar->addWidget(moveKeyLabel);
+
+        QFrame* separator1 = new QFrame();
+        separator1->setFrameShape(QFrame::VLine);
+        separator1->setFrameShadow(QFrame::Shadow::Raised);
+        statusBar->addWidget(separator1);
+
+        auto *moveConfirmLabel = new QLabel("Confirm: LMB");
+        statusBar->addWidget(moveConfirmLabel);
+
+        QFrame* separator2 = new QFrame();
+        separator2->setFrameShape(QFrame::VLine);
+        separator2->setFrameShadow(QFrame::Shadow::Raised);
+        statusBar->addWidget(separator2);
+
+        auto *moveCancelLabel = new QLabel("Cancel: RMB");
+        statusBar->addWidget(moveCancelLabel);
+
+        QFrame* separator3 = new QFrame();
+        separator3->setFrameShape(QFrame::VLine);
+        separator3->setFrameShadow(QFrame::Shadow::Raised);
+        statusBar->addWidget(separator3);
+
 		this->setStatusBar(statusBar);
 	}
 

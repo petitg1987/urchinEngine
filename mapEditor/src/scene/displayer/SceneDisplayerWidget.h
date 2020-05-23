@@ -17,7 +17,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SceneDisplayerWidget(QWidget *, std::string );
+			SceneDisplayerWidget(QWidget *, std::string);
 			~SceneDisplayerWidget() override;
 
 			enum NotificationType
@@ -46,6 +46,7 @@ namespace urchin
 			void mouseReleaseEvent(QMouseEvent *) override;
 			void mouseMoveEvent(QMouseEvent *) override;
 
+            bool onMouseClickBodyPickup();
 			const std::string &getLastPickedBodyId() const;
 
 		private:
@@ -58,6 +59,11 @@ namespace urchin
 
 			int mouseX, mouseY;
 			std::string lastPickedBodyId;
+
+        private slots:
+	        void onCtrlXPressed();
+            void onCtrlYPressed();
+            void onCtrlZPressed();
 	};
 
 }

@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <memory>
 #include <QMessageBox>
 
 #include "SceneDisplayer.h"
@@ -154,11 +153,6 @@ namespace urchin
 		this->highlightSceneObject = highlightSceneObject;
 	}
 
-	void SceneDisplayer::setHighlightCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
-	{
-		bodyShapeDisplayer->setSelectedCompoundShapeComponent(std::move(selectedCompoundShapeComponent));
-	}
-
 	void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight)
 	{
 		this->highlightSceneLight = highlightSceneLight;
@@ -266,5 +260,15 @@ namespace urchin
 	{
 		return mapHandler;
 	}
+
+    BodyShapeDisplayer *SceneDisplayer::getBodyShapeDisplayer() const
+    {
+	    return bodyShapeDisplayer;
+    }
+
+    ObjectMoveAxisDisplayer *SceneDisplayer::getObjectMoveAxisDisplayer() const
+    {
+	    return objectMoveAxisDisplayer;
+    }
 
 }

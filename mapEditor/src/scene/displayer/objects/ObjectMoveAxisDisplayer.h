@@ -13,6 +13,11 @@ namespace urchin
             explicit ObjectMoveAxisDisplayer(SceneManager *);
             ~ObjectMoveAxisDisplayer();
 
+            void startMove(unsigned int);
+            bool onMouseMove(int, int);
+            bool onMouseLeftButton();
+            bool onMouseRightButton();
+
             void displayAxisFor(const SceneObject *);
 
         private:
@@ -21,6 +26,9 @@ namespace urchin
 
             SceneManager *sceneManager;
             std::vector<GeometryModel *> objectMoveAxisModels;
+
+            const SceneObject *displayedObject;
+            int selectedAxis;
     };
 
 }
