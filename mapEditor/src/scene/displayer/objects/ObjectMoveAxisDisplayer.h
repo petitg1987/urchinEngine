@@ -16,7 +16,7 @@ namespace urchin
             void startMove(unsigned int);
             bool onMouseMove(int, int);
             bool onMouseLeftButton();
-            bool onMouseRightButton();
+            bool onEscapeKey();
 
             void displayAxisFor(const SceneObject *);
 

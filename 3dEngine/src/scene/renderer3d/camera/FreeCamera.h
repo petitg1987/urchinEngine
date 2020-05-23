@@ -20,8 +20,8 @@ namespace urchin
 			void setKeys(unsigned int, unsigned int, unsigned int, unsigned int);
 			void setSpeed(float, float);
 		
-			void onKeyDown(unsigned int) override;
-			void onKeyUp(unsigned int) override;
+			bool onKeyDown(unsigned int) override;
+			bool onKeyUp(unsigned int) override;
 
 			void updateCameraView(float) override;
 		

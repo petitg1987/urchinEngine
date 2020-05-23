@@ -349,18 +349,18 @@ namespace urchin
 
 	bool Renderer3d::onKeyDown(unsigned int key)
 	{
-		if(camera && key<260)
+		if(camera && key < 260)
 		{
-			camera->onKeyDown(key);
+			return camera->onKeyDown(key);
 		}
 		return true;
 	}
 
 	bool Renderer3d::onKeyUp(unsigned int key)
 	{
-		if(camera && key<260)
+		if(camera && key < 260)
 		{
-			camera->onKeyUp(key);
+			return camera->onKeyUp(key);
 		}
 		return true;
 	}
@@ -375,7 +375,7 @@ namespace urchin
 	{
 		if(camera)
 		{
-			camera->onMouseMove(mouseX, mouseY);
+			return camera->onMouseMove(mouseX, mouseY);
 		}
 		return true;
 	}

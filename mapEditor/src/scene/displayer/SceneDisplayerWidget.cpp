@@ -194,6 +194,9 @@ namespace urchin
             }else if(event->key() == Qt::Key_Right)
             {
                 sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::RIGHT_ARROW);
+            }else if(event->key() == Qt::Key_Escape)
+            {
+                sceneDisplayer->getObjectMoveAxisDisplayer()->onEscapeKey();
             }
 		}
 	}
@@ -229,11 +232,7 @@ namespace urchin
                 }
             }else if (event->button() == Qt::RightButton)
             {
-                bool propagateEvent = sceneDisplayer->getObjectMoveAxisDisplayer()->onMouseRightButton();
-                if(propagateEvent)
-                {
-                    sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_RIGHT);
-                }
+                sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_RIGHT);
             }
 		}
 	}
@@ -245,10 +244,10 @@ namespace urchin
 
 		if(sceneDisplayer)
 		{
-            bool propagateEvent = sceneDisplayer->getObjectMoveAxisDisplayer()->onMouseMove(mouseX, mouseY);
+            bool propagateEvent = sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
 		    if(propagateEvent)
             {
-                sceneDisplayer->getSceneManager()->onMouseMove(mouseX, mouseY);
+                sceneDisplayer->getObjectMoveAxisDisplayer()->onMouseMove(mouseX, mouseY);
             }
 		}
 	}

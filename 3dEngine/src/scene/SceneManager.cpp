@@ -279,15 +279,16 @@ namespace urchin
 		return true;
 	}
 
-	void SceneManager::onMouseMove(int mouseX, int mouseY)
+	bool SceneManager::onMouseMove(int mouseX, int mouseY)
 	{
 		for(int i=NUM_RENDERER-1; i>=0; --i)
 		{
 			if(activeRenderers[i] && !activeRenderers[i]->onMouseMove(mouseX, mouseY))
 			{
-				break;
+				return false;
 			}
 		}
+		return true;
 	}
 
 	void SceneManager::display()

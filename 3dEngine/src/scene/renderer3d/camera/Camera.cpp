@@ -208,17 +208,19 @@ namespace urchin
         updateViewMatrix();
 	}
 
-	void Camera::onKeyDown(unsigned int)
+	bool Camera::onKeyDown(unsigned int)
 	{
 		//do nothing
+		return true;
 	}
 
-	void Camera::onKeyUp(unsigned int)
+	bool Camera::onKeyUp(unsigned int)
 	{
 		//do nothing
+		return true;
 	}
 
-	void Camera::onMouseMove(int mouseX, int mouseY)
+	bool Camera::onMouseMove(int mouseX, int mouseY)
 	{
         if(mouseX > 0 || mouseY > 0)
         {
@@ -226,11 +228,11 @@ namespace urchin
             {
                 oldMouseX = static_cast<unsigned int>(mouseX);
                 oldMouseY = static_cast<unsigned int>(mouseY);
-                return;
+                return true;
             }
             if ((mouseX == middleScreenX) && (mouseY == middleScreenY))
             {
-                return;
+                return true;
             }
 
             //move the mouse back to the middle of the screen
@@ -257,7 +259,11 @@ namespace urchin
             rotate(Quaternion<float>(Vector3<float>(0.0, 1.0, 0.0), mouseDirection.X));
 
             updateViewMatrix();
+
+            return false;
         }
+
+        return true;
 	}
 
 	void Camera::updateViewMatrix()

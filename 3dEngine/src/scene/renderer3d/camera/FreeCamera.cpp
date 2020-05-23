@@ -49,44 +49,56 @@ namespace urchin
 		this->rotateSpeed = rotateSpeed;
 	}
 
-	void FreeCamera::onKeyDown(unsigned int key)
+	bool FreeCamera::onKeyDown(unsigned int key)
 	{
 		if(key == InputDevice::Key::MOUSE_RIGHT)
 		{
 			useMouseToMoveCamera(true);
+			return false;
 		}else if(key == keyFront)
 		{
 			isKeyFrontPressed = true;
+            return false;
 		}else if(key == keyBack)
 		{
 			isKeyBackPressed = true;
+            return false;
 		}else if(key == keyLeft)
 		{
 			isKeyLeftPressed = true;
+            return false;
 		}else if(key == keyRight)
 		{
 			isKeyRightPressed = true;
+            return false;
 		}
+        return true;
 	}
 
-	void FreeCamera::onKeyUp(unsigned int key)
+	bool FreeCamera::onKeyUp(unsigned int key)
 	{
 		if(key == InputDevice::Key::MOUSE_RIGHT)
 		{
 			useMouseToMoveCamera(false);
+            return false;
 		}else if(key == keyFront)
 		{
 			isKeyFrontPressed = false;
+            return false;
 		}else if(key == keyBack)
 		{
 			isKeyBackPressed = false;
+            return false;
 		}else if(key == keyLeft)
 		{
 			isKeyLeftPressed = false;
+            return false;
 		}else if(key == keyRight)
 		{
 			isKeyRightPressed = false;
+            return false;
 		}
+		return true;
 	}
 
 	void FreeCamera::updateCameraView(float dt)

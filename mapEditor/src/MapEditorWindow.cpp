@@ -156,7 +156,7 @@ namespace urchin
         separator2->setFrameShadow(QFrame::Shadow::Raised);
         statusBar->addWidget(separator2);
 
-        auto *moveCancelLabel = new QLabel("Cancel: RMB");
+        auto *moveCancelLabel = new QLabel("Cancel: Esc");
         statusBar->addWidget(moveCancelLabel);
 
         QFrame* separator3 = new QFrame();

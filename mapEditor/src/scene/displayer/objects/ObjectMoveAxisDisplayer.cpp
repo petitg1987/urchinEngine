@@ -22,10 +22,14 @@ namespace urchin
 
     bool ObjectMoveAxisDisplayer::onMouseMove(int mouseX, int mouseY)
     {
-        //TODO
+        if(selectedAxis != -1)
+        {
+            //TODO
+            std::cout<<"Move: "<<mouseX<<":"<<mouseY<<std::endl;
 
-        bool propagateEvent = selectedAxis == -1;
-        return propagateEvent;
+            return false;
+        }
+        return true;
     }
 
     bool ObjectMoveAxisDisplayer::onMouseLeftButton()
@@ -43,7 +47,7 @@ namespace urchin
         return propagateEvent;
     }
 
-    bool ObjectMoveAxisDisplayer::onMouseRightButton()
+    bool ObjectMoveAxisDisplayer::onEscapeKey()
     {
         bool propagateEvent = true;
         if(selectedAxis != -1)

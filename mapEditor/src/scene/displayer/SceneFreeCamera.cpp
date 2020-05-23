@@ -18,8 +18,7 @@ namespace urchin
 
 	void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
 	{
-		QPoint point((int)x, (int)y);
-		QCursor::setPos(parentWidget->mapToGlobal(point));
+		QCursor::setPos(parentWidget->mapToGlobal(QPoint((int)x, (int)y)));
 	}
 
     void SceneFreeCamera::loadCameraState(const std::string &mapFilename)
