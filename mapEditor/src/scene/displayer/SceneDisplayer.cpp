@@ -6,9 +6,9 @@
 namespace urchin
 {
 
-	SceneDisplayer::SceneDisplayer(QWidget *parentWidget) :
+	SceneDisplayer::SceneDisplayer(const MouseController &&mouseController) :
 		isInitialized(false),
-		parentWidget(parentWidget),
+        mouseController(mouseController),
 		sceneManager(nullptr),
 		physicsWorld(nullptr),
 		soundManager(nullptr),
@@ -117,7 +117,7 @@ namespace urchin
 
         //3d
         sceneManager = new SceneManager();
-        camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, parentWidget);
+        camera = new SceneFreeCamera(50.0f, 0.1f, 2000.0f, mouseController);
 		camera->setSpeed(45.0f, 2.0f);
 		camera->loadCameraState(mapFilename);
         sceneManager->newRenderer3d(true);

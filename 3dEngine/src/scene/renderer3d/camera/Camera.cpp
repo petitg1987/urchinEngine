@@ -232,7 +232,7 @@ namespace urchin
             }
             if ((mouseX == middleScreenX) && (mouseY == middleScreenY))
             {
-                return true;
+                return false;
             }
 
             //move the mouse back to the middle of the screen

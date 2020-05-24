@@ -5,13 +5,15 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 
+#include "scene/displayer/MouseController.h"
+
 namespace urchin
 {
 
 	class SceneFreeCamera : public FreeCamera
 	{
 		public:
-			SceneFreeCamera(float, float, float, const QWidget *);
+			SceneFreeCamera(float, float, float, const MouseController &);
 			~SceneFreeCamera() override = default;
 
 			void moveMouse(unsigned int, unsigned int) override;
@@ -22,7 +24,7 @@ namespace urchin
 		private:
 	        static const char DATA_DELIMITER;
 
-			const QWidget *parentWidget;
+			MouseController mouseController;
 	};
 
 }

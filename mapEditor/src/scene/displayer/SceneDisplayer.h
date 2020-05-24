@@ -9,6 +9,7 @@
 #include "UrchinSoundEngine.h"
 #include "UrchinMapHandler.h"
 
+#include "scene/displayer/MouseController.h"
 #include "scene/displayer/SceneFreeCamera.h"
 #include "scene/displayer/objects/BodyShapeDisplayer.h"
 #include "scene/displayer/objects/ObjectMoveAxisDisplayer.h"
@@ -31,7 +32,7 @@ namespace urchin
 				LAST_VIEW_PROPERTIES
 			};
 
-			explicit SceneDisplayer(QWidget *);
+			explicit SceneDisplayer(const MouseController &&);
 			~SceneDisplayer();
 
 			void initializeFromExistingMap(const std::string &, const std::string &);
@@ -63,7 +64,7 @@ namespace urchin
 			void refreshNavMeshModel();
 
 			bool isInitialized;
-			QWidget *parentWidget;
+            MouseController mouseController;
 
 			//3d
 			SceneManager *sceneManager;

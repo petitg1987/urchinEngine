@@ -1,7 +1,7 @@
 #include <QCursor>
 
 #include "SceneFreeCamera.h"
-#include "src/support/StateSaveHelper.h"
+#include "support/StateSaveHelper.h"
 
 namespace urchin
 {
@@ -9,16 +9,16 @@ namespace urchin
     //static
     const char SceneFreeCamera::DATA_DELIMITER = '@';
 
-	SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const QWidget *parentWidget) :
+	SceneFreeCamera::SceneFreeCamera(float angle, float nearPlane, float farPlane, const MouseController &mouseController) :
 		FreeCamera(angle, nearPlane, farPlane),
-		parentWidget(parentWidget)
+        mouseController(mouseController)
 	{
 
 	}
 
 	void SceneFreeCamera::moveMouse(unsigned int x, unsigned int y)
 	{
-		QCursor::setPos(parentWidget->mapToGlobal(QPoint((int)x, (int)y)));
+        mouseController.moveMouse(x, y);
 	}
 
     void SceneFreeCamera::loadCameraState(const std::string &mapFilename)

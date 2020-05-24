@@ -45,6 +45,7 @@ namespace urchin
 			void mousePressEvent(QMouseEvent *) override;
 			void mouseReleaseEvent(QMouseEvent *) override;
 			void mouseMoveEvent(QMouseEvent *) override;
+			void disableNextMouseMoveEvent();
 
             bool onMouseClickBodyPickup();
 			const std::string &getLastPickedBodyId() const;
@@ -58,6 +59,7 @@ namespace urchin
 			bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 
 			int mouseX, mouseY;
+			bool bDisableNextMouseMoveEvent;
 			std::string lastPickedBodyId;
 
         private slots:

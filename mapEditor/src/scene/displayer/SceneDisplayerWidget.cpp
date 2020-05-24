@@ -15,7 +15,8 @@ namespace urchin
 			sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
-            mouseY(0)
+            mouseY(0),
+            bDisableNextMouseMoveEvent(false)
 	{
 		QGLFormat glFormat;
 		glFormat.setVersion(4, 4);
@@ -46,7 +47,7 @@ namespace urchin
 	{
 		closeMap();
 
-		sceneDisplayer = new SceneDisplayer(this);
+		sceneDisplayer = new SceneDisplayer(MouseController(this));
 		sceneDisplayer->initializeFromNewMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
 		sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
 		updateSceneDisplayerViewProperties();
@@ -58,7 +59,7 @@ namespace urchin
 	{
 		closeMap();
 
-		sceneDisplayer = new SceneDisplayer(this);
+		sceneDisplayer = new SceneDisplayer(MouseController(this));
 		sceneDisplayer->initializeFromExistingMap(mapEditorPath, mapFilename);
 		sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
 		updateSceneDisplayerViewProperties();
@@ -239,6 +240,12 @@ namespace urchin
 
 	void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event)
 	{
+	    if(bDisableNextMouseMoveEvent)
+        {
+            bDisableNextMouseMoveEvent = false;
+	        return;
+        }
+
         this->mouseX = event->x();
         this->mouseY = event->y();
 
@@ -252,8 +259,13 @@ namespace urchin
 		}
 	}
 
-    bool SceneDisplayerWidget::onMouseClickBodyPickup()
+    void SceneDisplayerWidget::disableNextMouseMoveEvent()
     {
+        bDisableNextMouseMoveEvent = true;
+    }
+
+    bool SceneDisplayerWidget::onMouseClickBodyPickup()
+    { //TODO move in physicsEngine / mapHandler ?
         bool propagateEvent = true;
 
         Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
