@@ -9,6 +9,7 @@
 #include "scene/renderer3d/camera/Camera.h"
 #include "scene/renderer3d/camera/FpsCamera.h"
 #include "scene/renderer3d/camera/FreeCamera.h"
+#include "scene/renderer3d/camera/CameraRayService.h"
 #include "scene/renderer3d/model/Model.h"
 #include "scene/renderer3d/light/sun/SunLight.h"
 #include "scene/renderer3d/light/omnidirectional/OmnidirectionalLight.h"

@@ -39,19 +39,19 @@ namespace urchin
 		ShaderManager::instance()->removeProgram(GUIShader);
 	}
 
-	void GUIRenderer::onResize(unsigned int width, unsigned int height)
+	void GUIRenderer::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
 	{
 		//orthogonal matrix with origin at top left screen
 		ShaderManager::instance()->bind(GUIShader);
-		mProjection.setValues(2.0f/(float)width, 0.0, -1.0,
-			0.0, -2.0f/(float)height, 1.0,
-			0.0, 0.0, 1.0);
+		mProjection.setValues(2.0f/(float)sceneWidth, 0.0f, -1.0f,
+			0.0f, -2.0f/(float)sceneHeight, 1.0f,
+			0.0f, 0.0f, 1.0f);
 		glUniformMatrix3fv(mProjectionLoc, 1, GL_FALSE, (const float*)mProjection);
 
 		//widgets resize
 		for(long i=(long)widgets.size()-1; i>=0; --i)
 		{
-			widgets[i]->onResize(width, height);
+			widgets[i]->onResize(sceneWidth, sceneHeight);
 		}
 	}
 

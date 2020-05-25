@@ -94,7 +94,7 @@ namespace urchin
 			void postUpdateScene();
 
 			//scene properties
-			unsigned int width, height;
+			unsigned int sceneWidth, sceneHeight;
 
 			//managers
 			ModelDisplayer *modelDisplayer;

@@ -237,9 +237,9 @@ namespace urchin
 	/**
 	 * @param isProduceShadow Indicate whether model can produce shadow. The value should be generally set to false for ground to having better shadow rendering.
 	 */
-	void Model::setProduceShadow(bool bIsProduceShaodw)
+	void Model::setProduceShadow(bool bIsProduceShadow)
 	{
-		this->bIsProduceShadow = bIsProduceShaodw;
+		this->bIsProduceShadow = bIsProduceShadow;
 	}
 
 	bool Model::isProduceShadow() const

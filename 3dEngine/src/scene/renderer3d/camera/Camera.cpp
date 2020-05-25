@@ -23,6 +23,8 @@ namespace urchin
 			distance(0.0f),
 			bUseMouse(false),
 			mouseSensitivity(DEFAULT_MOUSE_SENSITIVITY),
+            sceneWidth(0),
+			sceneHeight(0),
 			middleScreenX(0),
 			middleScreenY(0),
 			oldMouseX(0),
@@ -31,10 +33,12 @@ namespace urchin
 
 	}
 
-	void Camera::onResize(unsigned int width, unsigned int height)
+	void Camera::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
 	{
-		middleScreenX = width/2;
-		middleScreenY = height/2;
+        this->sceneWidth = sceneWidth;
+	    this->sceneHeight = sceneHeight;
+        this->middleScreenX = sceneWidth / 2;
+        this->middleScreenY = sceneHeight / 2;
 
 		if(bUseMouse)
 		{
@@ -43,7 +47,7 @@ namespace urchin
 
 		//projection matrix
 		float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
-		float ratio = (float)width/(float)height;
+		float ratio = (float)sceneWidth/(float)sceneHeight;
 		mProjection.setValues(
 			fov/ratio, 	0, 		0, 		0,
 			0, 				fov, 	0, 		0,
@@ -123,6 +127,16 @@ namespace urchin
 	{
 		return up;
 	}
+
+    float Camera::getSceneWidth()
+    {
+	    return sceneWidth;
+    }
+
+    float Camera::getSceneHeight()
+    {
+	    return sceneHeight;
+    }
 
 	float Camera::getAngle() const
 	{

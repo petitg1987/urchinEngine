@@ -121,10 +121,10 @@ namespace urchin
 		ambientOcclusionTexLoc = glGetUniformLocation(deferredShaderID, "ambientOcclusionTex");
 	}
 
-	void AmbientOcclusionManager::onResize(unsigned int width, unsigned int height)
+	void AmbientOcclusionManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
 	{
-		sceneWidth = width;
-		sceneHeight = height;
+		this->sceneWidth = sceneWidth;
+		this->sceneHeight = sceneHeight;
 		
 		createOrUpdateAOTexture();
 		createOrUpdateAOShader();

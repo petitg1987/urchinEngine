@@ -21,11 +21,18 @@ namespace urchin
     }
 
     bool ObjectMoveAxisDisplayer::onMouseMove(int mouseX, int mouseY)
-    {
+    { //TODO inform mapEditor of change on object to ask to save, etc...
         if(selectedAxis != -1)
         {
-            //TODO
-            std::cout<<"Move: "<<mouseX<<":"<<mouseY<<std::endl;
+            //TODO impl move
+            Transform<float> t = displayedObject->getModel()->getTransform();
+            t.setPosition(Point3<float>(t.getPosition().X + 0.1, t.getPosition().Y, t.getPosition().Z));
+
+            displayedObject->getModel()->setTransform(t); //TODO need 2 transform move ?
+            if(displayedObject->getRigidBody())
+            {
+                displayedObject->getRigidBody()->setTransform(t);
+            }
 
             return false;
         }

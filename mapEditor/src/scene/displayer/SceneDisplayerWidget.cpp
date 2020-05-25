@@ -265,20 +265,11 @@ namespace urchin
     }
 
     bool SceneDisplayerWidget::onMouseClickBodyPickup()
-    { //TODO move in physicsEngine / mapHandler ?
+    {
         bool propagateEvent = true;
 
         Camera *camera = sceneDisplayer->getSceneManager()->getActiveRenderer3d()->getCamera();
-        float clipSpaceX = (2.0f * (float)mouseX) / ((float)sceneDisplayer->getSceneManager()->getSceneWidth()) - 1.0f;
-        float clipSpaceY = 1.0f - (2.0f * (float)mouseY) / ((float)sceneDisplayer->getSceneManager()->getSceneHeight());
-        urchin::Vector4<float> rayDirectionClipSpace(clipSpaceX, clipSpaceY, -1.0f, 1.0f);
-        urchin::Vector4<float> rayDirectionEyeSpace = camera->getProjectionMatrix().inverse() * rayDirectionClipSpace;
-        rayDirectionEyeSpace.setValues(rayDirectionEyeSpace.X, rayDirectionEyeSpace.Y, -1.0f, 0.0f);
-        urchin::Vector3<float> rayDirectionWorldSpace = (camera->getViewMatrix().inverse() * rayDirectionEyeSpace).xyz().normalize();
-
-        const urchin::Point3<float> &rayStart = camera->getPosition();
-        urchin::Point3<float> rayEnd = rayStart.translate(rayDirectionWorldSpace * PICKING_RAY_LENGTH);
-        Ray<float> pickingRay(rayStart, rayEnd);
+        Ray<float> pickingRay = CameraRayService(camera).screenPointToRay(Point2<float>(mouseX, mouseY), PICKING_RAY_LENGTH);
         std::shared_ptr<const RayTestResult> rayTestResult = sceneDisplayer->getPhysicsWorld()->rayTest(pickingRay);
 
         while(!rayTestResult->isResultReady())

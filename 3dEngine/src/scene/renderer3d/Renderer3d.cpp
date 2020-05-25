@@ -27,8 +27,8 @@ namespace urchin
     bool DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX = false;
 
 	Renderer3d::Renderer3d() :
-			width(0),
-			height(0),
+			sceneWidth(0),
+			sceneHeight(0),
 			modelDisplayer(nullptr),
 			fogManager(nullptr),
 			terrainManager(nullptr),
@@ -150,16 +150,16 @@ namespace urchin
 		ambientOcclusionManager->loadUniformLocationFor(deferredShadingShader);
 	}
 
-	void Renderer3d::onResize(unsigned int width, unsigned int height)
+	void Renderer3d::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
 	{
 		//scene properties
-		this->width = width;
-		this->height = height;
+		this->sceneWidth = sceneWidth;
+		this->sceneHeight = sceneHeight;
 
 		//camera
 		if(camera)
 		{
-			camera->onResize(width, height);
+			camera->onResize(sceneWidth, sceneHeight);
 			onCameraProjectionUpdate();
 		}
 
@@ -171,7 +171,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, sceneWidth, sceneHeight, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureIDs[TEX_DEPTH], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE]); //diffuse buffer
@@ -179,7 +179,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[0], GL_TEXTURE_2D, textureIDs[TEX_DIFFUSE], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT]); //normal and ambient factor buffer
@@ -187,7 +187,7 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[1], GL_TEXTURE_2D, textureIDs[TEX_NORMAL_AND_AMBIENT], 0);
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS]); //illuminated scene buffer
@@ -195,16 +195,16 @@ namespace urchin
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sceneWidth, sceneHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, fboAttachments[2], GL_TEXTURE_2D, textureIDs[TEX_LIGHTING_PASS], 0);
 
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		//manager
-		shadowManager->onResize(width, height);
-		ambientOcclusionManager->onResize(width, height);
-		antiAliasingManager->onResize(width, height);
+		shadowManager->onResize(sceneWidth, sceneHeight);
+		ambientOcclusionManager->onResize(sceneWidth, sceneHeight);
+		antiAliasingManager->onResize(sceneWidth, sceneHeight);
 	}
 
 	void Renderer3d::notify(Observable *observable, int notificationType)
@@ -424,7 +424,7 @@ namespace urchin
             float depthIntensity = 5.0f;
             TextureDisplayer textureDisplayer(textureIDs[TEX_DEPTH], TextureDisplayer::DEPTH_VALUE, depthIntensity);
             textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::TOP);
-            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
@@ -432,7 +432,7 @@ namespace urchin
         {
             TextureDisplayer textureDisplayer(textureIDs[TEX_DIFFUSE], TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::TOP);
-            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
@@ -440,7 +440,7 @@ namespace urchin
         {
             TextureDisplayer textureDisplayer(textureIDs[TEX_NORMAL_AND_AMBIENT], TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::TOP);
-            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
@@ -448,7 +448,7 @@ namespace urchin
         {
             TextureDisplayer textureDisplayer(textureIDs[TEX_LIGHTING_PASS], TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::LEFT, TextureDisplayer::BOTTOM);
-            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
@@ -459,7 +459,7 @@ namespace urchin
             unsigned int shadowMapTextureID = shadowManager->getShadowData(firstLight).getShadowMapTextureID();
             TextureDisplayer textureDisplayer(shadowMapTextureID, shadowMapNumber, TextureDisplayer::DEFAULT_VALUE);
             textureDisplayer.setPosition(TextureDisplayer::CENTER_X, TextureDisplayer::BOTTOM);
-            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
 
@@ -468,7 +468,7 @@ namespace urchin
             float ambientOcclusionIntensity = 10.0f;
             TextureDisplayer textureDisplayer(ambientOcclusionManager->getAmbientOcclusionTextureID(), TextureDisplayer::INVERSE_GRAYSCALE_VALUE, ambientOcclusionIntensity);
             textureDisplayer.setPosition(TextureDisplayer::RIGHT, TextureDisplayer::BOTTOM);
-            textureDisplayer.initialize(width, height, camera->getNearPlane(), camera->getFarPlane());
+            textureDisplayer.initialize(sceneWidth, sceneHeight, camera->getNearPlane(), camera->getFarPlane());
             textureDisplayer.display();
         }
     }

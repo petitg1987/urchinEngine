@@ -43,12 +43,12 @@ namespace urchin
 		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
 	}
 
-	void AntiAliasingManager::onResize(unsigned int width, unsigned int height)
+	void AntiAliasingManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
 	{
 		ShaderManager::instance()->bind(fxaaShader);
 
-		this->sceneWidth = width;
-		this->sceneHeight = height;
+		this->sceneWidth = sceneWidth;
+		this->sceneHeight = sceneHeight;
 
 		glUniform2f(invSceneSizeLoc, 1.0f/(float)sceneWidth, 1.0f/(float)sceneHeight);
 	}

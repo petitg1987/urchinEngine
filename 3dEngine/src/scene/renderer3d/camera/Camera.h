@@ -32,6 +32,8 @@ namespace urchin
 			const Vector3<float> &getView() const;
 			const Vector3<float> &getUp() const;
 
+			float getSceneWidth();
+			float getSceneHeight();
 			float getAngle() const;
 			float getNearPlane() const;
 			float getFarPlane() const;
@@ -64,7 +66,9 @@ namespace urchin
 
 			bool bUseMouse; //true if the cursor is used to move the camera
 			float mouseSensitivity;
-			unsigned int middleScreenX, middleScreenY, oldMouseX, oldMouseY;
+			unsigned int sceneWidth, sceneHeight;
+			unsigned int middleScreenX, middleScreenY;
+			unsigned int oldMouseX, oldMouseY;
 	};
 
 }

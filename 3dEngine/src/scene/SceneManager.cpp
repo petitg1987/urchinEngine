@@ -88,13 +88,13 @@ namespace urchin
 		glCullFace(GL_FRONT);
 	}
 
-	void SceneManager::onResize(unsigned int width, unsigned int height)
+	void SceneManager::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
 	{
-		if(width!=0 && height!=0)
+		if(sceneWidth!=0 && sceneHeight!=0)
 		{
 			//scene properties
-			sceneWidth = width;
-			sceneHeight = height;
+			this->sceneWidth = sceneWidth;
+			this->sceneHeight = sceneHeight;
 			glViewport(0, 0, sceneWidth, sceneHeight);
 
 			//renderer
