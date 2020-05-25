@@ -11,7 +11,6 @@ namespace urchin
 
     void MouseController::moveMouse(unsigned int x, unsigned int y)
     {
-        sceneDisplayerWidget->disableNextMouseMoveEvent();
         QCursor::setPos(sceneDisplayerWidget->mapToGlobal(QPoint((int)x, (int)y)));
     }
 }

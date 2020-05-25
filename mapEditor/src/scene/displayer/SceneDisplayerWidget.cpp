@@ -15,8 +15,7 @@ namespace urchin
 			sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
-            mouseY(0),
-            bDisableNextMouseMoveEvent(false)
+            mouseY(0)
 	{
 		QGLFormat glFormat;
 		glFormat.setVersion(4, 4);
@@ -240,12 +239,6 @@ namespace urchin
 
 	void SceneDisplayerWidget::mouseMoveEvent(QMouseEvent *event)
 	{
-	    if(bDisableNextMouseMoveEvent)
-        {
-            bDisableNextMouseMoveEvent = false;
-	        return;
-        }
-
         this->mouseX = event->x();
         this->mouseY = event->y();
 
@@ -258,11 +251,6 @@ namespace urchin
             }
 		}
 	}
-
-    void SceneDisplayerWidget::disableNextMouseMoveEvent()
-    {
-        bDisableNextMouseMoveEvent = true;
-    }
 
     bool SceneDisplayerWidget::onMouseClickBodyPickup()
     {
