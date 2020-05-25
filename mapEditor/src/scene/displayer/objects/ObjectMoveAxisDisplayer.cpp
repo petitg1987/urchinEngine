@@ -5,7 +5,9 @@ namespace urchin
     ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager) :
             sceneManager(sceneManager),
             displayedObject(nullptr),
-            selectedAxis(-1)
+            selectedAxis(-1),
+            oldMouseX(-1),
+            oldMouseY(-1)
     {
 
     }
@@ -21,22 +23,54 @@ namespace urchin
     }
 
     bool ObjectMoveAxisDisplayer::onMouseMove(int mouseX, int mouseY)
-    { //TODO inform mapEditor of change on object to ask to save, etc...
+    {
+        bool propagateEvent = true;
         if(selectedAxis != -1)
         {
-            //TODO impl move
-            Transform<float> t = displayedObject->getModel()->getTransform();
-            t.setPosition(Point3<float>(t.getPosition().X + 0.1, t.getPosition().Y, t.getPosition().Z));
-
-            displayedObject->getModel()->setTransform(t); //TODO need 2 transform move ?
-            if(displayedObject->getRigidBody())
+            if(oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved())
             {
-                displayedObject->getRigidBody()->setTransform(t);
+                moveObject(Point2<float>(oldMouseX, oldMouseY), Point2<float>(mouseX, mouseY));
             }
 
-            return false;
+            propagateEvent = false;
         }
-        return true;
+
+        this->oldMouseX = mouseX;
+        this->oldMouseY = mouseY;
+        this->oldCameraViewMatrix = sceneManager->getActiveRenderer3d()->getCamera()->getViewMatrix();
+
+        return propagateEvent;
+    }
+
+    bool ObjectMoveAxisDisplayer::isCameraMoved() const
+    {
+        Matrix4<float> cameraViewMatrix = sceneManager->getActiveRenderer3d()->getCamera()->getViewMatrix();
+        for(unsigned int i=0; i<16; ++i)
+        {
+            if(this->oldCameraViewMatrix(i) != cameraViewMatrix(i))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void ObjectMoveAxisDisplayer::moveObject(const Point2<float> &oldMousePosition, const Point2<float> &newMousePosition)
+    { //TODO impl
+        Transform<float> t = displayedObject->getModel()->getTransform();
+        updateObjectPosition(Point3<float>(t.getPosition().X + 0.1, t.getPosition().Y, t.getPosition().Z));
+    }
+
+    void ObjectMoveAxisDisplayer::updateObjectPosition(const Point3<float> &newPosition)
+    { //TODO inform mapEditor of change on object to ask to save (see ObjectController::updateSceneObjectTransform)
+        Transform<float> transform = displayedObject->getModel()->getTransform();
+        transform.setPosition(newPosition);
+
+        displayedObject->getModel()->setTransform(transform);
+        if(displayedObject->getRigidBody())
+        {
+            displayedObject->getRigidBody()->setTransform(transform);
+        }
     }
 
     bool ObjectMoveAxisDisplayer::onMouseLeftButton()

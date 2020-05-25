@@ -24,11 +24,18 @@ namespace urchin
             GeometryModel *createAxisModel(Model *, unsigned int);
             void cleanCurrentDisplay();
 
+            bool isCameraMoved() const;
+            void moveObject(const Point2<float> &, const Point2<float> &);
+            void updateObjectPosition(const Point3<float> &);
+
             SceneManager *sceneManager;
             std::vector<GeometryModel *> objectMoveAxisModels;
 
             const SceneObject *displayedObject;
             int selectedAxis;
+
+            int oldMouseX, oldMouseY;
+            Matrix4<float> oldCameraViewMatrix;
     };
 
 }
