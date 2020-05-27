@@ -44,10 +44,10 @@ namespace urchin
 
     bool ObjectMoveAxisDisplayer::isCameraMoved() const
     {
-        Matrix4<float> cameraViewMatrix = sceneManager->getActiveRenderer3d()->getCamera()->getViewMatrix();
+        Camera *camera = sceneManager->getActiveRenderer3d()->getCamera();
         for(unsigned int i=0; i<16; ++i)
         {
-            if(this->oldCameraViewMatrix(i) != cameraViewMatrix(i))
+            if(this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i))
             {
                 return true;
             }
@@ -55,10 +55,38 @@ namespace urchin
         return false;
     }
 
-    void ObjectMoveAxisDisplayer::moveObject(const Point2<float> &oldMousePosition, const Point2<float> &newMousePosition)
-    { //TODO impl
-        Transform<float> t = displayedObject->getModel()->getTransform();
-        updateObjectPosition(Point3<float>(t.getPosition().X + 0.1, t.getPosition().Y, t.getPosition().Z));
+    void ObjectMoveAxisDisplayer::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
+    {
+        Model *model = displayedObject->getModel();
+        Camera *camera = sceneManager->getActiveRenderer3d()->getCamera();
+
+        Point4<float> startAxisPointGlobalSpace(model->getTransform().getPosition(), 1.0f);
+        startAxisPointGlobalSpace[selectedAxis] -= 1000.0f;
+        Point4<float> endAxisPointGlobalSpace(model->getTransform().getPosition(), 1.0f);
+        endAxisPointGlobalSpace[selectedAxis] += 1000.0f;
+        Point4<float> startAxisPointNDCSpace = (camera->getProjectionMatrix() * camera->getViewMatrix() * startAxisPointGlobalSpace).divideByW();
+        Point4<float> endAxisPointNDCSpace = (camera->getProjectionMatrix() * camera->getViewMatrix() * endAxisPointGlobalSpace).divideByW();
+        Point2<float> startAxisPointScreenSpace = Point2<float>(
+                ((startAxisPointNDCSpace.X + 1.0f) / 2.0f) * camera->getSceneWidth(),
+                ((startAxisPointNDCSpace.Y + 1.0f) / 2.0f) * camera->getSceneHeight());
+        Point2<float> endAxisPointScreenSpace = Point2<float>(
+                ((endAxisPointNDCSpace.X + 1.0f) / 2.0f) * camera->getSceneWidth(),
+                ((endAxisPointNDCSpace.Y + 1.0f) / 2.0f) * camera->getSceneHeight());
+
+        Vector2<float> mouseVector = oldMouseCoord.vector(newMouseCoord);
+
+        float moveFactor = startAxisPointScreenSpace.vector(endAxisPointScreenSpace).dotProduct(mouseVector) * 1.0f;
+
+
+        std::cout<<"Mouse vector: "<<oldMouseCoord<< " ::: "<<newMouseCoord<<std::endl;
+        std::cout<<"Object vector (NDC): "<<startAxisPointNDCSpace<<" ::: "<<endAxisPointNDCSpace<<std::endl;
+        std::cout<<"Object vector (Screen): "<<startAxisPointScreenSpace<<" ::: "<<endAxisPointScreenSpace<<std::endl;
+        std::cout<<"Move factor: "<<moveFactor<<std::endl<<std::endl;
+
+
+        Point3<float> newPosition = displayedObject->getModel()->getTransform().getPosition();
+        newPosition[selectedAxis] += moveFactor;
+        updateObjectPosition(newPosition);
     }
 
     void ObjectMoveAxisDisplayer::updateObjectPosition(const Point3<float> &newPosition)
@@ -79,7 +107,7 @@ namespace urchin
 
         if(selectedAxis != -1)
         {
-            //TODO
+            //TODO confirm ?
 
             propagateEvent = false;
             selectedAxis = -1;
@@ -93,6 +121,8 @@ namespace urchin
         bool propagateEvent = true;
         if(selectedAxis != -1)
         {
+            //TODO cancel
+
             selectedAxis = -1;
             propagateEvent = false;
         }

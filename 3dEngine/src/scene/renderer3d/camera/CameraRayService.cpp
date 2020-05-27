@@ -11,7 +11,7 @@ namespace urchin
 
     /**
      * Create a ray in world space from camera position to a screen point target.
-     * @param screenPoint Point on screen defining the target of the ray. It is generally the cursor/sight position.
+     * @param screenPoint Point on screen defining the target of the ray. This point is generally defined by the cursor/sight position.
      */
     Ray<float> CameraRayService::screenPointToRay(const Point2<float> &screenPoint, float rayLength) const
     {

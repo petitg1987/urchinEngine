@@ -17,7 +17,7 @@ namespace urchin
 	{
 		#ifndef NDEBUG
 		    T normalSquareLength = normal.squareLength();
-		    assert(normalSquareLength > (T)0.9996 || normalSquareLength < (T)1.0004);
+		    assert(normalSquareLength > (T)0.9996 && normalSquareLength < (T)1.0004);
 		#endif
 	}
 

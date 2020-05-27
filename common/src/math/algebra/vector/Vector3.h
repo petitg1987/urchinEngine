@@ -27,9 +27,9 @@ namespace urchin
 			T dotProduct(const Vector3<T> &) const;
 			Vector3<T> crossProduct(const Vector3<T> &) const;
             Vector3<T> truncate(T) const;
-			Vector2<T> toVector2XY() const;
-			Vector2<T> toVector2XZ() const;
-			Vector2<T> toVector2YZ() const;
+			Vector2<T> xy() const;
+			Vector2<T> xz() const;
+			Vector2<T> yz() const;
 		
 			Vector3<T> operator +() const;
 			Vector3<T> operator -() const;

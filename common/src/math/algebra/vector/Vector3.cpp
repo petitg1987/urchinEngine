@@ -80,17 +80,17 @@ namespace urchin
         return Vector3<T>(X, Y, Z) * (maxLength / vLength);
     }
 
-	template<class T> Vector2<T> Vector3<T>::toVector2XY() const
+	template<class T> Vector2<T> Vector3<T>::xy() const
 	{
 		return Vector2<T>(X, Y);
 	}
 
-	template<class T> Vector2<T> Vector3<T>::toVector2XZ() const
+	template<class T> Vector2<T> Vector3<T>::xz() const
 	{
 		return Vector2<T>(X, Z);
 	}
 
-	template<class T> Vector2<T> Vector3<T>::toVector2YZ() const
+	template<class T> Vector2<T> Vector3<T>::yz() const
 	{
 		return Vector2<T>(Y, Z);
 	}

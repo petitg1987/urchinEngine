@@ -99,7 +99,7 @@ namespace urchin
         Vector2<float> desiredVelocity = retrieveCharacterPosition().vector(target).normalize() * character->retrieveMaxVelocityInMs();
         Vector2<float> desiredMomentum = desiredVelocity * character->getMass();
 
-        steeringMomentum = desiredMomentum - character->getMomentum().toVector2XZ();
+        steeringMomentum = desiredMomentum - character->getMomentum().xz();
         steeringMomentum = steeringMomentum.truncate(character->retrieveMaxMomentum());
     }
 
