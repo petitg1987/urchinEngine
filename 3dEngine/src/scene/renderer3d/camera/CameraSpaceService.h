@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_CAMERARAYSERVICE_H
-#define URCHINENGINE_CAMERARAYSERVICE_H
+#ifndef URCHINENGINE_CAMERASPACESERVICE_H
+#define URCHINENGINE_CAMERASPACESERVICE_H
 
 #include "UrchinCommon.h"
 
@@ -8,11 +8,12 @@
 namespace urchin
 {
 
-    class CameraRayService
+    class CameraSpaceService
     {
         public:
-            CameraRayService(Camera *);
+            CameraSpaceService(Camera *);
 
+            Point2<float> worldSpacePointToScreenSpace(const Point3<float> &) const;
             Ray<float> screenPointToRay(const Point2<float> &, float) const;
 
         private:

@@ -57,35 +57,23 @@ namespace urchin
 
     void ObjectMoveAxisDisplayer::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
     {
-        Model *model = displayedObject->getModel();
-        Camera *camera = sceneManager->getActiveRenderer3d()->getCamera();
+        Point3<float> objectPosition = displayedObject->getModel()->getTransform().getPosition();
+        CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 
-        Point4<float> startAxisPointGlobalSpace(model->getTransform().getPosition(), 1.0f);
-        startAxisPointGlobalSpace[selectedAxis] -= 1000.0f;
-        Point4<float> endAxisPointGlobalSpace(model->getTransform().getPosition(), 1.0f);
-        endAxisPointGlobalSpace[selectedAxis] += 1000.0f;
-        Point4<float> startAxisPointNDCSpace = (camera->getProjectionMatrix() * camera->getViewMatrix() * startAxisPointGlobalSpace).divideByW();
-        Point4<float> endAxisPointNDCSpace = (camera->getProjectionMatrix() * camera->getViewMatrix() * endAxisPointGlobalSpace).divideByW();
-        Point2<float> startAxisPointScreenSpace = Point2<float>(
-                ((startAxisPointNDCSpace.X + 1.0f) / 2.0f) * camera->getSceneWidth(),
-                ((startAxisPointNDCSpace.Y + 1.0f) / 2.0f) * camera->getSceneHeight());
-        Point2<float> endAxisPointScreenSpace = Point2<float>(
-                ((endAxisPointNDCSpace.X + 1.0f) / 2.0f) * camera->getSceneWidth(),
-                ((endAxisPointNDCSpace.Y + 1.0f) / 2.0f) * camera->getSceneHeight());
+        Point3<float> startAxisWorldSpacePoint = objectPosition;
+        startAxisWorldSpacePoint[selectedAxis] -= 100.0f;
+        Point2<float> startAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(startAxisWorldSpacePoint);
+
+        Point3<float> endAxisWorldSpacePoint = objectPosition;
+        endAxisWorldSpacePoint[selectedAxis] += 100.0f;
+        Point2<float> endAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(endAxisWorldSpacePoint);
 
         Vector2<float> mouseVector = oldMouseCoord.vector(newMouseCoord);
 
-        float moveFactor = startAxisPointScreenSpace.vector(endAxisPointScreenSpace).dotProduct(mouseVector) * 1.0f;
+        float moveFactor = startAxisPointScreenSpace.vector(endAxisPointScreenSpace).normalize().dotProduct(mouseVector.normalize()) * 1.0f;
 
-
-        std::cout<<"Mouse vector: "<<oldMouseCoord<< " ::: "<<newMouseCoord<<std::endl;
-        std::cout<<"Object vector (NDC): "<<startAxisPointNDCSpace<<" ::: "<<endAxisPointNDCSpace<<std::endl;
-        std::cout<<"Object vector (Screen): "<<startAxisPointScreenSpace<<" ::: "<<endAxisPointScreenSpace<<std::endl;
-        std::cout<<"Move factor: "<<moveFactor<<std::endl<<std::endl;
-
-
-        Point3<float> newPosition = displayedObject->getModel()->getTransform().getPosition();
-        newPosition[selectedAxis] += moveFactor;
+        Point3<float> newPosition = objectPosition;
+        newPosition[selectedAxis] -= moveFactor;
         updateObjectPosition(newPosition);
     }
 
