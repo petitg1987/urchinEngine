@@ -424,7 +424,7 @@ namespace urchin
 		    if(notificationType==SceneDisplayerWidget::BODY_PICKED)
             {
                 const std::string &bodyId = sceneDisplayerWidget->getLastPickedBodyId();
-                const SceneObject *sceneObject = objectController->findSceneObjectByBodyId(bodyId);
+                const SceneObject *sceneObject = bodyId.empty() ? nullptr : objectController->findSceneObjectByBodyId(bodyId);
                 if(sceneObject)
                 {
                     int row = this->objectTableView->getSceneObjectRow(sceneObject);
@@ -432,6 +432,9 @@ namespace urchin
                     {
                         this->objectTableView->selectRow(row);
                     }
+                }else
+                {
+                    this->objectTableView->clearSelection();
                 }
             }
 		}

@@ -9,8 +9,9 @@
 namespace urchin
 {
 
-	SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, std::string mapEditorPath) :
+	SceneDisplayerWidget::SceneDisplayerWidget(QWidget *parent, const StatusBarController &statusBarController, std::string mapEditorPath) :
 			QGLWidget(parent),
+            statusBarController(statusBarController),
 			mapEditorPath(std::move(mapEditorPath)),
 			sceneDisplayer(nullptr),
             viewProperties(),
@@ -46,7 +47,7 @@ namespace urchin
 	{
 		closeMap();
 
-		sceneDisplayer = new SceneDisplayer(MouseController(this));
+		sceneDisplayer = new SceneDisplayer(MouseController(this), statusBarController);
 		sceneDisplayer->initializeFromNewMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
 		sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
 		updateSceneDisplayerViewProperties();
@@ -58,7 +59,7 @@ namespace urchin
 	{
 		closeMap();
 
-		sceneDisplayer = new SceneDisplayer(MouseController(this));
+		sceneDisplayer = new SceneDisplayer(MouseController(this), statusBarController);
 		sceneDisplayer->initializeFromExistingMap(mapEditorPath, mapFilename);
 		sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
 		updateSceneDisplayerViewProperties();
@@ -270,6 +271,10 @@ namespace urchin
             lastPickedBodyId = (*rayTestResult->getResults().begin())->getBody2()->getId();
             notifyObservers(this, BODY_PICKED);
             propagateEvent = false;
+        } else
+        {
+            lastPickedBodyId = nullptr;
+            notifyObservers(this, BODY_PICKED);
         }
 
         return propagateEvent;
@@ -284,7 +289,7 @@ namespace urchin
     {
         if(sceneDisplayer)
         {
-            sceneDisplayer->getObjectMoveAxisDisplayer()->startMove(0);
+            sceneDisplayer->getObjectMoveAxisDisplayer()->onCtrlXYZ(0);
         }
 	}
 
@@ -292,7 +297,7 @@ namespace urchin
     {
         if(sceneDisplayer)
         {
-            sceneDisplayer->getObjectMoveAxisDisplayer()->startMove(1);
+            sceneDisplayer->getObjectMoveAxisDisplayer()->onCtrlXYZ(1);
         }
     }
 
@@ -300,7 +305,7 @@ namespace urchin
     {
         if(sceneDisplayer)
         {
-            sceneDisplayer->getObjectMoveAxisDisplayer()->startMove(2);
+            sceneDisplayer->getObjectMoveAxisDisplayer()->onCtrlXYZ(2);
         }
     }
 

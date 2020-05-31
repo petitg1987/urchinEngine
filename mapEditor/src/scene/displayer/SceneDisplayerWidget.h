@@ -17,7 +17,7 @@ namespace urchin
 		Q_OBJECT
 
 		public:
-			SceneDisplayerWidget(QWidget *, std::string);
+			SceneDisplayerWidget(QWidget *, const StatusBarController &, std::string);
 			~SceneDisplayerWidget() override;
 
 			enum NotificationType
@@ -52,6 +52,7 @@ namespace urchin
 		private:
 			void updateSceneDisplayerViewProperties();
 
+            StatusBarController statusBarController;
 			std::string mapEditorPath;
 
 			SceneDisplayer *sceneDisplayer;

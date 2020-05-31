@@ -9,7 +9,8 @@ namespace urchin
 {
 
 	BodyShapeDisplayer::BodyShapeDisplayer(SceneManager *sceneManager) :
-		sceneManager(sceneManager)
+		sceneManager(sceneManager),
+		selectedSceneObject(nullptr)
 	{
 
 	}
@@ -19,19 +20,24 @@ namespace urchin
 		cleanCurrentDisplay();
 	}
 
+	void BodyShapeDisplayer::setSelectedSceneObject(const SceneObject *selectedSceneObject)
+	{
+		this->selectedSceneObject = selectedSceneObject;
+	}
+
 	void BodyShapeDisplayer::setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent)
 	{
 		this->selectedCompoundShapeComponent = std::move(selectedCompoundShapeComponent);
 	}
 
-	void BodyShapeDisplayer::displayBodyShapeFor(const SceneObject *sceneObject)
+	void BodyShapeDisplayer::displayBodyShape()
 	{
 		cleanCurrentDisplay();
 
-		if(sceneObject)
+		if(selectedSceneObject && selectedSceneObject->getRigidBody())
 		{
-			const Transform<float> &modelTransform = sceneObject->getModel()->getTransform();
-			std::shared_ptr<const CollisionShape3D> bodyShape = sceneObject->getRigidBody()->getScaledShape();
+			const Transform<float> &modelTransform = selectedSceneObject->getModel()->getTransform();
+			std::shared_ptr<const CollisionShape3D> bodyShape = selectedSceneObject->getRigidBody()->getScaledShape();
 
 			if(bodyShape->isConcave())
 			{

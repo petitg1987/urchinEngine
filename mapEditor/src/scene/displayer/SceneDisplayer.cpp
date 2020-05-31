@@ -6,9 +6,10 @@
 namespace urchin
 {
 
-	SceneDisplayer::SceneDisplayer(const MouseController &&mouseController) :
+	SceneDisplayer::SceneDisplayer(const MouseController &&mouseController, const StatusBarController &statusBarController) :
 		isInitialized(false),
-        mouseController(mouseController),
+        mouseController(std::move(mouseController)),
+        statusBarController(statusBarController),
 		sceneManager(nullptr),
 		physicsWorld(nullptr),
 		soundManager(nullptr),
@@ -125,7 +126,7 @@ namespace urchin
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
-        objectMoveAxisDisplayer = new ObjectMoveAxisDisplayer(sceneManager);
+        objectMoveAxisDisplayer = new ObjectMoveAxisDisplayer(sceneManager, statusBarController);
         lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
 
@@ -150,12 +151,18 @@ namespace urchin
 
 	void SceneDisplayer::setHighlightSceneObject(const SceneObject *highlightSceneObject)
 	{
-		this->highlightSceneObject = highlightSceneObject;
+	    if(this->highlightSceneObject != highlightSceneObject)
+        {
+            this->highlightSceneObject = highlightSceneObject;
+
+            bodyShapeDisplayer->setSelectedSceneObject(highlightSceneObject);
+            objectMoveAxisDisplayer->setSelectedSceneObject(highlightSceneObject);
+        }
 	}
 
 	void SceneDisplayer::setHighlightSceneLight(const SceneLight *highlightSceneLight)
 	{
-		this->highlightSceneLight = highlightSceneLight;
+	    this->highlightSceneLight = highlightSceneLight;
 	}
 
 	void SceneDisplayer::setHighlightSceneSound(const SceneSound *highlightSceneSound)
@@ -165,15 +172,12 @@ namespace urchin
 
 	void SceneDisplayer::refreshObjectsModel()
 	{
-        if(viewProperties[MODEL_PHYSICS] && highlightSceneObject && highlightSceneObject->getRigidBody())
+        if(viewProperties[MODEL_PHYSICS])
         {
-            bodyShapeDisplayer->displayBodyShapeFor(highlightSceneObject);
-        }else
-        {
-            bodyShapeDisplayer->displayBodyShapeFor(nullptr);
+            bodyShapeDisplayer->displayBodyShape();
         }
 
-        objectMoveAxisDisplayer->displayAxisFor(highlightSceneObject);
+        objectMoveAxisDisplayer->displayAxis();
 	}
 
 	void SceneDisplayer::refreshLightScopeModel()

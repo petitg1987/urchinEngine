@@ -4,21 +4,25 @@
 #include "Urchin3dEngine.h"
 #include "UrchinMapHandler.h"
 
+#include "scene/displayer/StatusBarController.h"
+
 namespace urchin
 {
 
     class ObjectMoveAxisDisplayer
     {
         public:
-            explicit ObjectMoveAxisDisplayer(SceneManager *);
+            ObjectMoveAxisDisplayer(SceneManager *, StatusBarController);
             ~ObjectMoveAxisDisplayer();
 
-            void startMove(unsigned int);
+            void onCtrlXYZ(unsigned int);
             bool onMouseMove(int, int);
             bool onMouseLeftButton();
             bool onEscapeKey();
 
-            void displayAxisFor(const SceneObject *);
+            void setSelectedSceneObject(const SceneObject *);
+
+            void displayAxis();
 
         private:
             GeometryModel *createAxisModel(Model *, unsigned int);
@@ -29,9 +33,10 @@ namespace urchin
             void updateObjectPosition(const Point3<float> &);
 
             SceneManager *sceneManager;
+            StatusBarController statusBarController;
             std::vector<GeometryModel *> objectMoveAxisModels;
 
-            const SceneObject *displayedObject;
+            const SceneObject *selectedSceneObject;
             int selectedAxis;
 
             int oldMouseX, oldMouseY;

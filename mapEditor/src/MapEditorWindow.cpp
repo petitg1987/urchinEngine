@@ -24,6 +24,7 @@ namespace urchin
     const std::string MapEditorWindow::WINDOW_TITLE = "Urchin - Map Editor";
 
 	MapEditorWindow::MapEditorWindow(std::string mapEditorPath) :
+            statusBarController(StatusBarController(this)),
             saveAction(nullptr),
             saveAsAction(nullptr),
             closeAction(nullptr),
@@ -41,7 +42,7 @@ namespace urchin
 		horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
 		setupMenu();
-		setupStatusBar();
+        statusBarController.applyInitialState();
 
 		setupSceneDisplayerWidget(centralWidget, horizontalLayout);
 		setupSceneControllerWidget(centralWidget, horizontalLayout);
@@ -136,40 +137,9 @@ namespace urchin
 		this->setMenuBar(menu);
 	}
 
-	void MapEditorWindow::setupStatusBar()
-	{ //TODO review dynamic...
-		auto *statusBar = new QStatusBar(this);
-
-        auto *moveKeyLabel = new QLabel("Move selected object: Ctrl + X/Y/Z");
-        statusBar->addWidget(moveKeyLabel);
-
-        QFrame* separator1 = new QFrame();
-        separator1->setFrameShape(QFrame::VLine);
-        separator1->setFrameShadow(QFrame::Shadow::Raised);
-        statusBar->addWidget(separator1);
-
-        auto *moveConfirmLabel = new QLabel("Confirm: LMB");
-        statusBar->addWidget(moveConfirmLabel);
-
-        QFrame* separator2 = new QFrame();
-        separator2->setFrameShape(QFrame::VLine);
-        separator2->setFrameShadow(QFrame::Shadow::Raised);
-        statusBar->addWidget(separator2);
-
-        auto *moveCancelLabel = new QLabel("Cancel: Esc");
-        statusBar->addWidget(moveCancelLabel);
-
-        QFrame* separator3 = new QFrame();
-        separator3->setFrameShape(QFrame::VLine);
-        separator3->setFrameShadow(QFrame::Shadow::Raised);
-        statusBar->addWidget(separator3);
-
-		this->setStatusBar(statusBar);
-	}
-
 	void MapEditorWindow::setupSceneDisplayerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout)
 	{
-		sceneDisplayerWidget = new SceneDisplayerWidget(centralWidget, mapEditorPath);
+		sceneDisplayerWidget = new SceneDisplayerWidget(centralWidget, statusBarController, mapEditorPath);
 		sceneDisplayerWidget->setMouseTracking(true);
 		sceneDisplayerWidget->setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 		QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

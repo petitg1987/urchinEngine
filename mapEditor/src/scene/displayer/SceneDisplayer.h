@@ -10,6 +10,7 @@
 #include "UrchinMapHandler.h"
 
 #include "scene/displayer/MouseController.h"
+#include "scene/displayer/StatusBarController.h"
 #include "scene/displayer/SceneFreeCamera.h"
 #include "scene/displayer/objects/BodyShapeDisplayer.h"
 #include "scene/displayer/objects/ObjectMoveAxisDisplayer.h"
@@ -32,7 +33,7 @@ namespace urchin
 				LAST_VIEW_PROPERTIES
 			};
 
-			explicit SceneDisplayer(const MouseController &&);
+			SceneDisplayer(const MouseController &&, const StatusBarController &);
 			~SceneDisplayer();
 
 			void initializeFromExistingMap(const std::string &, const std::string &);
@@ -65,6 +66,7 @@ namespace urchin
 
 			bool isInitialized;
             MouseController mouseController;
+            StatusBarController statusBarController;
 
 			//3d
 			SceneManager *sceneManager;

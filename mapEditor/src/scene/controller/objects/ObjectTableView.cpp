@@ -35,7 +35,7 @@ namespace urchin
 
 	bool ObjectTableView::hasSceneObjectSelected() const
 	{
-		return this->currentIndex().row()!=-1;
+		return this->currentIndex().row() != -1 && this->selectedIndexes().size() != 0;
 	}
 
 	int ObjectTableView::getSceneObjectRow(const SceneObject *expectedSceneObject) const
@@ -55,10 +55,9 @@ namespace urchin
 
 	const SceneObject *ObjectTableView::getSelectedSceneObject() const
 	{
-		QModelIndex selectedIndex = this->currentIndex();
-		if(selectedIndex.row()!=-1)
+		if(hasSceneObjectSelected())
 		{
-			return selectedIndex.data(Qt::UserRole + 1).value<const SceneObject *>();
+			return this->currentIndex().data(Qt::UserRole + 1).value<const SceneObject *>();
 		}
 		return nullptr;
 	}

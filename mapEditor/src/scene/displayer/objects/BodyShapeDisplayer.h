@@ -13,9 +13,10 @@ namespace urchin
 			explicit BodyShapeDisplayer(SceneManager *);
 			~BodyShapeDisplayer();
 
+            void setSelectedSceneObject(const SceneObject *);
 			void setSelectedCompoundShapeComponent(std::shared_ptr<const LocalizedCollisionShape>);
 
-			void displayBodyShapeFor(const SceneObject *);
+			void displayBodyShape();
 
 		private:
 			GeometryModel *retrieveSingleGeometry(CollisionShape3D::ShapeType shapeType, const std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> &);
@@ -32,6 +33,7 @@ namespace urchin
 			SceneManager *sceneManager;
 			std::vector<GeometryModel *> bodyShapeModels;
 
+            const SceneObject *selectedSceneObject;
 			std::shared_ptr<const LocalizedCollisionShape> selectedCompoundShapeComponent;
 	};
 

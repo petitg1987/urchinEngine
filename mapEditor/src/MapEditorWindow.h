@@ -25,7 +25,6 @@ namespace urchin
 
 		private:
 			void setupMenu();
-			void setupStatusBar();
 			void setupSceneDisplayerWidget(QWidget *, QHBoxLayout *);
 			void setupSceneControllerWidget(QWidget *, QHBoxLayout *);
 
@@ -41,6 +40,8 @@ namespace urchin
 			void handleCompoundShapeSelectionChange(Observable *, int);
 
 			static const std::string WINDOW_TITLE;
+
+			StatusBarController statusBarController;
 
 			QAction *saveAction;
 			QAction *saveAsAction;
