@@ -12,7 +12,7 @@ namespace urchin
 		soundsListModel = new QStandardItemModel(0, 2, this);
 		soundsListModel->setHorizontalHeaderItem(0, new QStandardItem("Sound Name"));
 		soundsListModel->setHorizontalHeaderItem(1, new QStandardItem("Sound File"));
-		setModel(soundsListModel);
+        QTableView::setModel(soundsListModel);
 
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
 		horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);

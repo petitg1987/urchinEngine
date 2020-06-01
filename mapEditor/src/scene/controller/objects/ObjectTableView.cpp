@@ -12,7 +12,7 @@ namespace urchin
 		objectsListModel = new QStandardItemModel(0, 2, this);
 		objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
 		objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Mesh File"));
-		setModel(objectsListModel); //TODO fix this warning
+        QTableView::setModel(objectsListModel);
 
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
 		horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);

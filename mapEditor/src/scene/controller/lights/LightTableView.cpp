@@ -10,7 +10,7 @@ namespace urchin
 	{
 		lightsListModel = new QStandardItemModel(0, 1, this);
 		lightsListModel->setHorizontalHeaderItem(0, new QStandardItem("Light Name"));
-		setModel(lightsListModel);
+        QTableView::setModel(lightsListModel);
 
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
 		horizontalHeader()->resizeSection(0, 355);

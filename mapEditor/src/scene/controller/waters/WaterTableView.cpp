@@ -9,7 +9,7 @@ namespace urchin
     {
         watersListModel = new QStandardItemModel(0, 1, this);
         watersListModel->setHorizontalHeaderItem(0, new QStandardItem("Water Name"));
-        setModel(watersListModel);
+        QTableView::setModel(watersListModel);
 
         horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
         horizontalHeader()->resizeSection(0, 355);

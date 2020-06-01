@@ -14,7 +14,7 @@ namespace urchin
 		localizedShapesTableModel = new QStandardItemModel(0, 1, this);
 		localizedShapesTableModel->setHorizontalHeaderItem(0, new QStandardItem("Shape Type"));
 
-		setModel(localizedShapesTableModel); //TODO fix warning
+        QTableView::setModel(localizedShapesTableModel);
 		horizontalHeader()->resizeSection(0, 325);
 
 		setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);

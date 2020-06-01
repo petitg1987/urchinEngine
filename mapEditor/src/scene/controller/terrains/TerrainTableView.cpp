@@ -10,7 +10,7 @@ namespace urchin
         terrainsListModel = new QStandardItemModel(0, 2, this);
         terrainsListModel->setHorizontalHeaderItem(0, new QStandardItem("Terrain Name"));
         terrainsListModel->setHorizontalHeaderItem(1, new QStandardItem("Height File"));
-        setModel(terrainsListModel);
+        QTableView::setModel(terrainsListModel);
 
         horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
         horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
