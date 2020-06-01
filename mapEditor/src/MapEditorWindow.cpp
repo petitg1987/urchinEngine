@@ -163,8 +163,8 @@ namespace urchin
 		sizePolicy.setHeightForWidth(sceneControllerWidget->sizePolicy().hasHeightForWidth());
 		sceneControllerWidget->setSizePolicy(sizePolicy);
 		sceneControllerWidget->setMaximumSize(QSize(380, 16777215));
+        sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
 		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
-		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
 		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
 		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
 		sceneControllerWidget->addObserver(this, SceneControllerWidget::TAB_SELECTED);
@@ -216,9 +216,10 @@ namespace urchin
             {
                 refreshWindowTitle(true);
             }
+        }else
+        {
+            handleCompoundShapeSelectionChange(observable, notificationType);
         }
-
-		handleCompoundShapeSelectionChange(observable, notificationType);
 	}
 
 	void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType)

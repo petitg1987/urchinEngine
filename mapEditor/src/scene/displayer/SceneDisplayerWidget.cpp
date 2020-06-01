@@ -235,10 +235,10 @@ namespace urchin
                 if(propagateEvent)
                 {
                     propagateEvent = onMouseClickBodyPickup();
-                }
-                if(propagateEvent)
-                {
-                    sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_LEFT);
+                    if(propagateEvent)
+                    {
+                        sceneDisplayer->getSceneManager()->onKeyUp(InputDevice::Key::MOUSE_LEFT);
+                    }
                 }
             }else if (event->button() == Qt::RightButton)
             {
