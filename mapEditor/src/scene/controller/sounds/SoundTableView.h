@@ -22,7 +22,7 @@ namespace urchin
 
 			enum NotificationType
 			{
-				SELECTION_CHANGED
+				SOUND_SELECTION_CHANGED
 			};
 
 			bool hasSceneSoundSelected() const;

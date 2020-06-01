@@ -26,7 +26,7 @@ namespace urchin
 		horizontalHeader()->resizeSection(0, 341);
 		horizontalHeader()->resizeSection(0, 340);
 
-		notifyObservers(this, NotificationType::SELECTION_CHANGED);
+		notifyObservers(this, NotificationType::LIGHT_SELECTION_CHANGED);
 	}
 
 	bool LightTableView::hasSceneLightSelected() const

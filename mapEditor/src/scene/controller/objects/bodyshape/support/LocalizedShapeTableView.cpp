@@ -14,7 +14,7 @@ namespace urchin
 		localizedShapesTableModel = new QStandardItemModel(0, 1, this);
 		localizedShapesTableModel->setHorizontalHeaderItem(0, new QStandardItem("Shape Type"));
 
-		setModel(localizedShapesTableModel);
+		setModel(localizedShapesTableModel); //TODO fix warning
 		horizontalHeader()->resizeSection(0, 325);
 
 		setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
@@ -23,7 +23,7 @@ namespace urchin
 
 	void LocalizedShapeTableView::selectionChanged(const QItemSelection &, const QItemSelection &)
 	{
-		notifyObservers(this, NotificationType::SELECTION_CHANGED);
+		notifyObservers(this, NotificationType::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
 	}
 
 	bool LocalizedShapeTableView::hasLocalizedShapeSelected() const
@@ -72,7 +72,7 @@ namespace urchin
 
 	int LocalizedShapeTableView::addLocalizedShape(const std::shared_ptr<const LocalizedCollisionShape>& localizedShape)
 	{
-		BodyShapeWidget *bodyShapeWidget = BodyShapeWidgetRetriever(nullptr).retrieveShapeWidget(localizedShape->shape->getShapeType());
+		BodyShapeWidget *bodyShapeWidget = BodyShapeWidgetRetriever(nullptr).createBodyShapeWidget(localizedShape->shape->getShapeType());
 		std::string shapeTypeString = bodyShapeWidget->getBodyShapeName();
 		delete bodyShapeWidget;
 

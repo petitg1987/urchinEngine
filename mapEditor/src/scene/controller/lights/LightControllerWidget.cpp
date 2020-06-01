@@ -34,7 +34,7 @@ namespace urchin
 
 		lightTableView = new LightTableView();
 		mainLayout->addWidget(lightTableView);
-		lightTableView->addObserver(this, LightTableView::SELECTION_CHANGED);
+		lightTableView->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
 		lightTableView->setFixedHeight(220);
 
 		auto *buttonsLayout = new QHBoxLayout();
@@ -197,7 +197,7 @@ namespace urchin
 	{
 		if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
-		    if(notificationType==LightTableView::SELECTION_CHANGED)
+		    if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED)
             {
                 if(lightTableView->hasSceneLightSelected())
                 {

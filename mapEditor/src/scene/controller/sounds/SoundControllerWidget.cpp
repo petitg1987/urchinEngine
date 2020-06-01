@@ -41,7 +41,7 @@ namespace urchin
 
 		soundTableView = new SoundTableView();
 		mainLayout->addWidget(soundTableView);
-		soundTableView->addObserver(this, SoundTableView::SELECTION_CHANGED);
+		soundTableView->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
 		soundTableView->setFixedHeight(220);
 
 		auto *buttonsLayout = new QHBoxLayout();
@@ -249,7 +249,7 @@ namespace urchin
 	{
 		if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
-		    if(notificationType==SoundTableView::SELECTION_CHANGED)
+		    if(notificationType==SoundTableView::SOUND_SELECTION_CHANGED)
             {
                 if(soundTableView->hasSceneSoundSelected())
                 {

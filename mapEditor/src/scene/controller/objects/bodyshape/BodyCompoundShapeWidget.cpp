@@ -23,7 +23,7 @@ namespace urchin
 		localizedShapeTableView = new LocalizedShapeTableView();
 		mainLayout->addWidget(localizedShapeTableView, 1, 0);
 		localizedShapeTableView->setFixedHeight(100);
-		localizedShapeTableView->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
+		localizedShapeTableView->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
 
         auto *buttonLayout = new QHBoxLayout();
 		mainLayout->addLayout(buttonLayout, 2, 0);
@@ -90,7 +90,7 @@ namespace urchin
 	{
 		if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
 		{
-		    if(notificationType==LocalizedShapeTableView::SELECTION_CHANGED)
+		    if(notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED)
             {
                 if(localizedShapeTableView->hasLocalizedShapeSelected())
                 {
@@ -194,7 +194,7 @@ namespace urchin
 		shapeGroupBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
 		auto *shapeLayout = new QGridLayout(shapeGroupBox);
-		bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).retrieveShapeWidget(localizedShape->shape->getShapeType());
+		bodyShapeWidget = BodyShapeWidgetRetriever(getSceneObject()).createBodyShapeWidget(localizedShape->shape->getShapeType());
 		shapeLayout->addWidget(bodyShapeWidget, 0, 0);
 		bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		bodyShapeWidget->setupShapePropertiesFrom(localizedShape->shape);

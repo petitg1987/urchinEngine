@@ -43,9 +43,9 @@ namespace urchin
 		mainLayout->setAlignment(Qt::AlignTop);
 		mainLayout->setContentsMargins(1, 1, 1, 1);
 
-		objectTableView = new ObjectTableView();
+		objectTableView = new ObjectTableView(this);
 		mainLayout->addWidget(objectTableView);
-		objectTableView->addObserver(this, ObjectTableView::SELECTION_CHANGED);
+		objectTableView->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
 		objectTableView->setFixedHeight(220);
 
 		auto *buttonsLayout = new QHBoxLayout();
@@ -402,7 +402,7 @@ namespace urchin
 	{
 		if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
-		    if(notificationType==ObjectTableView::SELECTION_CHANGED)
+		    if(notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED)
             {
                 if(objectTableView->hasSceneObjectSelected())
                 {
@@ -495,24 +495,24 @@ namespace urchin
 			tabPhysicsRigidBody->hide();
 		}
 
-		BodyShapeWidget *bodyShapeWidget = retrieveBodyShapeWidget(bodyScaledShape, sceneObject);
+		BodyShapeWidget *bodyShapeWidget = createBodyShapeWidget(bodyScaledShape, sceneObject);
 		bodyShapeWidget->setupShapePropertiesFrom(bodyScaledShape);
 
 		shapeTypeValueLabel->setText(QString::fromStdString(bodyShapeWidget->getBodyShapeName()));
 		disableObjectEvent = false;
 	}
 
-	BodyShapeWidget *ObjectControllerWidget::retrieveBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject *sceneObject)
+	BodyShapeWidget *ObjectControllerWidget::createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>& shape, const SceneObject *sceneObject)
 	{
 		delete bodyShapeWidget;
 
-		bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).retrieveShapeWidget(shape);
+		bodyShapeWidget = BodyShapeWidgetRetriever(sceneObject).createBodyShapeWidget(shape);
 		physicsShapeLayout->addWidget(bodyShapeWidget);
 		bodyShapeWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 		bodyShapeWidget->show();
 		connect(bodyShapeWidget, SIGNAL(bodyShapeChange(std::shared_ptr<const CollisionShape3D>)), this, SLOT(bodyShapeChanged(std::shared_ptr<const CollisionShape3D>)));
 
-		notifyObservers(this, NotificationType::BODY_SHAPE_INITIALIZED);
+		notifyObservers(this, NotificationType::OBJECT_BODY_SHAPE_WIDGET_CREATED);
 
 		return bodyShapeWidget;
 	}
@@ -617,7 +617,7 @@ namespace urchin
 				const SceneObject *updatedSceneObject = objectController->updateSceneObjectPhysicsShape(sceneObject, originalCollisionShape);
 
 				std::shared_ptr<const CollisionShape3D> scaledCollisionShape = updatedSceneObject->getRigidBody()->getScaledShape();
-				BodyShapeWidget *bodyShapeWidget = retrieveBodyShapeWidget(scaledCollisionShape, updatedSceneObject);
+				BodyShapeWidget *bodyShapeWidget = createBodyShapeWidget(scaledCollisionShape, updatedSceneObject);
 				bodyShapeWidget->setupShapePropertiesFrom(scaledCollisionShape);
 			}
 		}

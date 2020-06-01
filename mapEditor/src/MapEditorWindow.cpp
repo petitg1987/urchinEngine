@@ -163,10 +163,10 @@ namespace urchin
 		sizePolicy.setHeightForWidth(sceneControllerWidget->sizePolicy().hasHeightForWidth());
 		sceneControllerWidget->setSizePolicy(sizePolicy);
 		sceneControllerWidget->setMaximumSize(QSize(380, 16777215));
-		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::SELECTION_CHANGED);
-		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::BODY_SHAPE_INITIALIZED);
-		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::SELECTION_CHANGED);
-		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SELECTION_CHANGED);
+		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
+		sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
+		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
 		sceneControllerWidget->addObserver(this, SceneControllerWidget::TAB_SELECTED);
 		horizontalLayout->addWidget(sceneControllerWidget);
 
@@ -194,19 +194,19 @@ namespace urchin
             }
 		}else if(auto *objectTableView = dynamic_cast<ObjectTableView *>(observable))
 		{
-		    if(notificationType==ObjectTableView::SELECTION_CHANGED)
+		    if(notificationType==ObjectTableView::OBJECT_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightSceneObject(objectTableView->getSelectedSceneObject());
             }
 		}else if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
-		    if(notificationType==LightTableView::SELECTION_CHANGED)
+		    if(notificationType==LightTableView::LIGHT_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightSceneLight(lightTableView->getSelectedSceneLight());
             }
 		}else if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
-		    if(notificationType==SoundTableView::SELECTION_CHANGED)
+		    if(notificationType==SoundTableView::SOUND_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightSceneSound(soundTableView->getSelectedSceneSound());
             }
@@ -225,17 +225,17 @@ namespace urchin
 	{
 		if(auto *objectControllerWidget = dynamic_cast<ObjectControllerWidget *>(observable))
 		{
-		    if(notificationType==ObjectControllerWidget::BODY_SHAPE_INITIALIZED)
+		    if(notificationType==ObjectControllerWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED)
             {
                 BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
                 if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
                 {
-                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::SELECTION_CHANGED);
+                    bodyCompoundShapeWidget->getLocalizedShapeTableView()->addObserver(this, LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED);
                 }
             }
 		}else if(auto *localizedShapeTableView = dynamic_cast<LocalizedShapeTableView *>(observable))
 		{
-		    if(notificationType==LocalizedShapeTableView::SELECTION_CHANGED)
+		    if(notificationType==LocalizedShapeTableView::OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED)
             {
                 sceneDisplayerWidget->setHighlightCompoundShapeComponent(localizedShapeTableView->getSelectedLocalizedShape());
             }

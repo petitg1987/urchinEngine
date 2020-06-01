@@ -22,7 +22,7 @@ namespace urchin
 
 			enum NotificationType
 			{
-				SELECTION_CHANGED
+				OBJECT_SELECTION_CHANGED
 			};
 
 			bool hasSceneObjectSelected() const;

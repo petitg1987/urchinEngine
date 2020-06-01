@@ -30,7 +30,7 @@ namespace urchin
 		horizontalHeader()->resizeSection(0, 91);
 		horizontalHeader()->resizeSection(0, 90);
 
-		notifyObservers(this, NotificationType::SELECTION_CHANGED);
+		notifyObservers(this, NotificationType::SOUND_SELECTION_CHANGED);
 	}
 
 	bool SoundTableView::hasSceneSoundSelected() const

@@ -25,7 +25,7 @@ namespace urchin
 
 			enum NotificationType
 			{
-				SELECTION_CHANGED
+				OBJECT_COMPOUND_SHAPE_SELECTION_CHANGED
 			};
 
 			bool hasLocalizedShapeSelected() const;

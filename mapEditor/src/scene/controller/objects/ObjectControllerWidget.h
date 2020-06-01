@@ -32,7 +32,7 @@ namespace urchin
 
 			enum NotificationType
 			{
-				BODY_SHAPE_INITIALIZED
+                OBJECT_BODY_SHAPE_WIDGET_CREATED
 			};
 
 			ObjectTableView *getObjectTableView() const;
@@ -57,7 +57,7 @@ namespace urchin
 			void setupObjectDataFrom(const SceneObject *);
 			void setupObjectPhysicsDataFrom(const SceneObject *);
 
-			BodyShapeWidget *retrieveBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject *);
+			BodyShapeWidget *createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&, const SceneObject *);
 
 			ObjectController *objectController;
 

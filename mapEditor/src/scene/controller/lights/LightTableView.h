@@ -22,7 +22,7 @@ namespace urchin
 
 			enum NotificationType
 			{
-				SELECTION_CHANGED
+				LIGHT_SELECTION_CHANGED
 			};
 
 			bool hasSceneLightSelected() const;

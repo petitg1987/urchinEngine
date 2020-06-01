@@ -12,7 +12,7 @@ namespace urchin
 		objectsListModel = new QStandardItemModel(0, 2, this);
 		objectsListModel->setHorizontalHeaderItem(0, new QStandardItem("Object Name"));
 		objectsListModel->setHorizontalHeaderItem(1, new QStandardItem("Mesh File"));
-		setModel(objectsListModel);
+		setModel(objectsListModel); //TODO fix this warning
 
 		horizontalHeader()->setSectionResizeMode(0, QHeaderView::Interactive);
 		horizontalHeader()->setSectionResizeMode(1, QHeaderView::Interactive);
@@ -30,7 +30,7 @@ namespace urchin
 		horizontalHeader()->resizeSection(0, 91);
 		horizontalHeader()->resizeSection(0, 90);
 
-		notifyObservers(this, NotificationType::SELECTION_CHANGED);
+		notifyObservers(this, NotificationType::OBJECT_SELECTION_CHANGED);
 	}
 
 	bool ObjectTableView::hasSceneObjectSelected() const

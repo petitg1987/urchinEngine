@@ -16,8 +16,8 @@ namespace urchin
 		public:
 			explicit BodyShapeWidgetRetriever(const SceneObject *);
 
-			BodyShapeWidget *retrieveShapeWidget(const std::shared_ptr<const CollisionShape3D>&);
-			BodyShapeWidget *retrieveShapeWidget(CollisionShape3D::ShapeType);
+			BodyShapeWidget *createBodyShapeWidget(const std::shared_ptr<const CollisionShape3D>&);
+			BodyShapeWidget *createBodyShapeWidget(CollisionShape3D::ShapeType);
 
 		private:
 			const SceneObject *sceneObject;

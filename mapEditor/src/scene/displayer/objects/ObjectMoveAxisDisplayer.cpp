@@ -89,6 +89,7 @@ namespace urchin
 
     void ObjectMoveAxisDisplayer::updateObjectPosition(const Point3<float> &newPosition)
     { //TODO inform mapEditor of change on object to ask to save (see ObjectController::updateSceneObjectTransform)
+        //TODO update position in right controller...
         Transform<float> transform = selectedSceneObject->getModel()->getTransform();
         transform.setPosition(newPosition);
 
