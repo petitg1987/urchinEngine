@@ -4,7 +4,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "NewWaterDialog.h"
-#include "support/style/LabelStyleHelper.h"
+#include "widget/style/LabelStyleHelper.h"
 
 namespace urchin
 {

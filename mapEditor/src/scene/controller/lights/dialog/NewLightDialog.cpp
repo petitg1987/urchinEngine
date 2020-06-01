@@ -6,7 +6,7 @@
 
 #include "UrchinCommon.h"
 #include "NewLightDialog.h"
-#include "support/style/LabelStyleHelper.h"
+#include "widget/style/LabelStyleHelper.h"
 
 namespace urchin
 {

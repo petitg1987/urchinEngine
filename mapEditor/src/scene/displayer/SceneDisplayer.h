@@ -9,8 +9,8 @@
 #include "UrchinSoundEngine.h"
 #include "UrchinMapHandler.h"
 
-#include "scene/displayer/widget/mouse/MouseController.h"
-#include "scene/displayer/widget/statusbar/StatusBarController.h"
+#include "widget/controller/mouse/MouseController.h"
+#include "widget/controller/statusbar/StatusBarController.h"
 #include "scene/displayer/SceneFreeCamera.h"
 #include "scene/displayer/objects/BodyShapeDisplayer.h"
 #include "scene/displayer/objects/ObjectMoveAxisDisplayer.h"

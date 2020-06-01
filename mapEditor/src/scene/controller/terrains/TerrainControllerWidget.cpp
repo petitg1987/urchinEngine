@@ -5,9 +5,9 @@
 #include <QSignalMapper>
 
 #include "TerrainControllerWidget.h"
-#include "support/style/GroupBoxStyleHelper.h"
-#include "support/style/SpinBoxStyleHelper.h"
-#include "support/style/ButtonStyleHelper.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 #include "scene/controller/terrains/dialog/NewTerrainDialog.h"
 
 namespace urchin

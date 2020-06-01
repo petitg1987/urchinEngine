@@ -2,11 +2,11 @@
 #include <QtWidgets/QGroupBox>
 
 #include "BodyCompoundShapeWidget.h"
-#include "support/style/LabelStyleHelper.h"
-#include "support/style/GroupBoxStyleHelper.h"
-#include "support/style/SpinBoxStyleHelper.h"
-#include "support/style/ButtonStyleHelper.h"
-#include "support/style/ComboBoxStyleHelper.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
+#include "widget/style/ComboBoxStyleHelper.h"
 #include "scene/controller/objects/dialog/ChangeBodyShapeDialog.h"
 #include "scene/controller/objects/bodyshape/BodyShapeWidgetRetriever.h"
 #include "scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h"

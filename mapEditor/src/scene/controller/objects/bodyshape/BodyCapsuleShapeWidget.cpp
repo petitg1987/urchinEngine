@@ -1,7 +1,7 @@
 #include <QtWidgets/QLabel>
 
 #include "BodyCapsuleShapeWidget.h"
-#include "support/style/SpinBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin
 {

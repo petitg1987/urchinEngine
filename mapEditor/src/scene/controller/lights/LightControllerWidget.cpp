@@ -1,9 +1,9 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "LightControllerWidget.h"
-#include "support/style/GroupBoxStyleHelper.h"
-#include "support/style/SpinBoxStyleHelper.h"
-#include "support/style/ButtonStyleHelper.h"
+#include "widget/style/GroupBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 #include "scene/controller/lights/dialog/NewLightDialog.h"
 
 namespace urchin

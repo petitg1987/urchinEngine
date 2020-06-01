@@ -3,8 +3,8 @@
 #include <QHeaderView>
 
 #include "BodyConvexHullShapeWidget.h"
-#include "support/style/LabelStyleHelper.h"
-#include "support/style/ButtonStyleHelper.h"
+#include "widget/style/LabelStyleHelper.h"
+#include "widget/style/ButtonStyleHelper.h"
 #include "scene/controller/objects/bodyshape/support/SpinBoxDelegate.h"
 #include "scene/controller/objects/bodyshape/support/DefaultBodyShapeCreator.h"
 

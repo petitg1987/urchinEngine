@@ -5,7 +5,7 @@
 #include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 
-#include "scene/displayer/widget/mouse/MouseController.h"
+#include "widget/controller/mouse/MouseController.h"
 
 namespace urchin
 {

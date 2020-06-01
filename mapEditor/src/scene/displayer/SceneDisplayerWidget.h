@@ -8,7 +8,7 @@
 
 #include "UrchinCommon.h"
 #include "SceneDisplayer.h"
-#include "scene/displayer/widget/statusbar/StatusBarController.h"
+#include "widget/controller/statusbar/StatusBarController.h"
 
 namespace urchin
 {

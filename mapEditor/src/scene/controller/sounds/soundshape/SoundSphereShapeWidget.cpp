@@ -2,7 +2,7 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "SoundSphereShapeWidget.h"
-#include "support/style/SpinBoxStyleHelper.h"
+#include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin
 {

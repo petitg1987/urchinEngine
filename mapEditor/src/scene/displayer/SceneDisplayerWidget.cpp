@@ -3,7 +3,7 @@
 #include <QtWidgets/QShortcut>
 
 #include "SceneDisplayerWidget.h"
-#include "scene/displayer/widget/mouse/MouseController.h"
+#include "widget/controller/mouse/MouseController.h"
 
 #define PICKING_RAY_LENGTH 100.0f
 
