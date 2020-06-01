@@ -21,7 +21,7 @@ namespace urchin
     void ObjectMoveAxisDisplayer::onCtrlXYZ(unsigned int axisIndex)
     {
         selectedAxis = axisIndex;
-        statusBarController.replaceStatus({"Move: mouse", "Confirm: LMB", "Cancel: Esc"});
+        statusBarController.applyState(StatusBarState::OBJECT_MOVE);
     }
 
     bool ObjectMoveAxisDisplayer::onMouseMove(int mouseX, int mouseY)
@@ -102,8 +102,9 @@ namespace urchin
         {
             //TODO confirm ?
 
-            propagateEvent = false;
+            statusBarController.applyPreviousState();
             selectedAxis = -1;
+            propagateEvent = false;
         }
 
         return propagateEvent;
@@ -116,6 +117,7 @@ namespace urchin
         {
             //TODO cancel
 
+            statusBarController.applyPreviousState();
             selectedAxis = -1;
             propagateEvent = false;
         }
@@ -129,10 +131,10 @@ namespace urchin
 
         if(selectedSceneObject)
         {
-            statusBarController.replaceStatus({"Move selected: Ctrl + X/Y/Z"});
+            statusBarController.applyState(StatusBarState::OBJECT_SELECTED);
         }else
         {
-            statusBarController.applyInitialState();
+            statusBarController.applyPreviousState();
         }
     }
 

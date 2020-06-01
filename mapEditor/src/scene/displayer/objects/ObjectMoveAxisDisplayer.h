@@ -4,7 +4,7 @@
 #include "Urchin3dEngine.h"
 #include "UrchinMapHandler.h"
 
-#include "scene/displayer/StatusBarController.h"
+#include "scene/displayer/widget/statusbar/StatusBarController.h"
 
 namespace urchin
 {

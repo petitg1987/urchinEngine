@@ -3,11 +3,12 @@
 
 #include <string>
 #include <QKeyEvent>
+#include <GL/glew.h>
+#include <QGLWidget>
 
 #include "UrchinCommon.h"
 #include "SceneDisplayer.h"
-#include <QGLWidget>
-
+#include "scene/displayer/widget/statusbar/StatusBarController.h"
 
 namespace urchin
 {
@@ -50,6 +51,7 @@ namespace urchin
 			const std::string &getLastPickedBodyId() const;
 
 		private:
+            MapHandler *loadMap(const std::string &, const std::string &);
 			void updateSceneDisplayerViewProperties();
 
             StatusBarController statusBarController;

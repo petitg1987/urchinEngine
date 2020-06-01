@@ -42,7 +42,7 @@ namespace urchin
 		horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
 		setupMenu();
-        statusBarController.applyInitialState();
+        statusBarController.clearState();
 
 		setupSceneDisplayerWidget(centralWidget, horizontalLayout);
 		setupSceneControllerWidget(centralWidget, horizontalLayout);

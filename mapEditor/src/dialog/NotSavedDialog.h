@@ -21,7 +21,7 @@ namespace urchin
 			QDialogButtonBox *buttonBox;
 
 		private slots:
-			void buttonclick(QAbstractButton *);
+			void buttonClick(QAbstractButton *);
 	};
 
 }

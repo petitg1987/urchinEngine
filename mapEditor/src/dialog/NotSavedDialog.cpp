@@ -27,7 +27,7 @@ namespace urchin
 		buttonBox->setOrientation(Qt::Horizontal);
 		buttonBox->setStandardButtons(QDialogButtonBox::Yes|QDialogButtonBox::No|QDialogButtonBox::Cancel);
 
-		QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonclick(QAbstractButton*)));
+		QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(buttonClick(QAbstractButton*)));
 	}
 
 	bool NotSavedDialog::needSave() const
@@ -35,7 +35,7 @@ namespace urchin
 		return bNeedSave;
 	}
 
-	void NotSavedDialog::buttonclick(QAbstractButton *button)
+	void NotSavedDialog::buttonClick(QAbstractButton *button)
 	{
 		if(buttonBox->standardButton(button) == QDialogButtonBox::Yes)
 		{
