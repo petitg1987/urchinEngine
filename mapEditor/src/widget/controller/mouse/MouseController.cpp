@@ -1,5 +1,5 @@
 #include "MouseController.h"
-#include "scene/displayer/SceneDisplayerWidget.h"
+#include "scene/SceneDisplayerWidget.h"
 
 namespace urchin
 {

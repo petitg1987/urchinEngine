@@ -1,11 +1,11 @@
 #include "MapEditorWindow.h"
 #include "dialog/NewDialog.h"
 #include "dialog/NotSavedDialog.h"
-#include "scene/controller/objects/ObjectTableView.h"
-#include "scene/controller/objects/bodyshape/BodyCompoundShapeWidget.h"
-#include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
-#include "scene/controller/lights/LightTableView.h"
-#include "scene/controller/sounds/SoundTableView.h"
+#include "panel/objects/ObjectTableView.h"
+#include "panel/objects/bodyshape/BodyCompoundShapeWidget.h"
+#include "panel/objects/bodyshape/support/LocalizedShapeTableView.h"
+#include "panel/lights/LightTableView.h"
+#include "panel/sounds/SoundTableView.h"
 #include "state/StateSaveHelper.h"
 
 #include <stdexcept>
