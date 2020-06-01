@@ -6,7 +6,7 @@
 #include "scene/controller/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "scene/controller/lights/LightTableView.h"
 #include "scene/controller/sounds/SoundTableView.h"
-#include "support/StateSaveHelper.h"
+#include "state/StateSaveHelper.h"
 
 #include <stdexcept>
 #include <QApplication>

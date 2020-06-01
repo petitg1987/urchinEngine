@@ -20,6 +20,11 @@ namespace urchin
 
     void ObjectMoveAxisDisplayer::onCtrlXYZ(unsigned int axisIndex)
     {
+        if(selectedAxis == -1)
+        {
+            savedPosition = selectedSceneObject->getModel()->getTransform().getPosition();
+        }
+
         selectedAxis = axisIndex;
         statusBarController.applyState(StatusBarState::OBJECT_MOVE);
     }
@@ -58,7 +63,7 @@ namespace urchin
     }
 
     void ObjectMoveAxisDisplayer::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
-    {
+    { //TODO improve move based on mouse speed
         Point3<float> objectPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 
@@ -100,8 +105,6 @@ namespace urchin
 
         if(selectedAxis != -1)
         {
-            //TODO confirm ?
-
             statusBarController.applyPreviousState();
             selectedAxis = -1;
             propagateEvent = false;
@@ -115,7 +118,7 @@ namespace urchin
         bool propagateEvent = true;
         if(selectedAxis != -1)
         {
-            //TODO cancel
+            updateObjectPosition(savedPosition);
 
             statusBarController.applyPreviousState();
             selectedAxis = -1;

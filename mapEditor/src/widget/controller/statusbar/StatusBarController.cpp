@@ -44,9 +44,13 @@ namespace urchin
             case StatusBarState::MAP_LOADED:
                 return StatusBarStateData({"Select object: LMB"}, StatusBarState::NONE);
             case StatusBarState::OBJECT_SELECTED:
-                return StatusBarStateData({"Select object: LMB", "Move selected: Ctrl + X/Y/Z"}, StatusBarState::MAP_LOADED);
+                return StatusBarStateData({"Select another object: LMB",
+                                           "Move selected: Ctrl + X/Y/Z"}, StatusBarState::MAP_LOADED);
             case StatusBarState::OBJECT_MOVE:
-                return StatusBarStateData({"Move: mouse", "Switch move axis: Ctrl + X/Y/Z", "Confirm: LMB", "Cancel: Esc"}, StatusBarState::OBJECT_SELECTED);
+                return StatusBarStateData({"Move selected: mouse",
+                                           "Switch axis: Ctrl + X/Y/Z",
+                                           "Confirm: LMB",
+                                           "Cancel: Esc"}, StatusBarState::OBJECT_SELECTED);
             default:
                 throw std::runtime_error("Unknown status bar state: " + std::to_string(state));
         }

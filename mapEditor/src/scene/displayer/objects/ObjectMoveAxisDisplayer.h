@@ -38,6 +38,7 @@ namespace urchin
 
             const SceneObject *selectedSceneObject;
             int selectedAxis;
+            Point3<float> savedPosition;
 
             int oldMouseX, oldMouseY;
             Matrix4<float> oldCameraViewMatrix;
