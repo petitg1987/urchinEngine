@@ -35,11 +35,6 @@ namespace urchin
 		setEnabled(false);
 	}
 
-	SceneControllerWidget::~SceneControllerWidget()
-	{
-		delete sceneController;
-	}
-
 	ObjectControllerWidget *SceneControllerWidget::getObjectControllerWidget() const
 	{
 		return tabObjects;
@@ -75,22 +70,10 @@ namespace urchin
 		return tabAI;
 	}
 
-	bool SceneControllerWidget::isModified() const
-	{
-		return hasMapOpen() && sceneController->isModified();
-	}
-
-	bool SceneControllerWidget::hasMapOpen() const
-	{
-		return sceneController!=nullptr;
-	}
-
-    SceneController *SceneControllerWidget::newMap(MapHandler *mapHandler, const std::string &relativeWorkingDirectory)
+    SceneController *SceneControllerWidget::newMap(SceneController *sceneController)
 	{
 		closeMap();
-
-		sceneController = new SceneController(mapHandler);
-		sceneController->setRelativeWorkingDirectory(relativeWorkingDirectory);
+		this->sceneController = sceneController;
 
 		setEnabled(true);
 		tabObjects->load(sceneController->getObjectController());
@@ -104,11 +87,10 @@ namespace urchin
 		return sceneController;
 	}
 
-    SceneController *SceneControllerWidget::openMap(MapHandler *mapHandler)
+    SceneController *SceneControllerWidget::openMap(SceneController *sceneController)
 	{
 		closeMap();
-
-		sceneController = new SceneController(mapHandler);
+        this->sceneController = sceneController;
 
 		setEnabled(true);
 		tabObjects->load(sceneController->getObjectController());
@@ -122,14 +104,6 @@ namespace urchin
 		return sceneController;
 	}
 
-	void SceneControllerWidget::saveMap(const std::string &mapFilename)
-	{
-		if(sceneController)
-		{
-			sceneController->saveMapOnFile(mapFilename);
-		}
-	}
-
 	void SceneControllerWidget::closeMap()
 	{
 		tabObjects->unload();
@@ -141,8 +115,7 @@ namespace urchin
 		tabAI->unload();
 		setEnabled(false);
 
-		delete sceneController;
-		sceneController=nullptr;
+		sceneController = nullptr;
 	}
 
 	SceneControllerWidget::TabName SceneControllerWidget::getTabSelected() const

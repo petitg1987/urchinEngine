@@ -74,7 +74,7 @@ namespace urchin
         return sceneDisplayer->getMapHandler();
     }
 
-	void SceneDisplayerWidget::saveMap(const std::string &mapFilename) const
+	void SceneDisplayerWidget::saveState(const std::string &mapFilename) const
 	{
 		if(sceneDisplayer)
         {

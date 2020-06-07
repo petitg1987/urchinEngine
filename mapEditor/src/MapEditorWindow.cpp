@@ -6,7 +6,7 @@
 #include "panel/objects/bodyshape/support/LocalizedShapeTableView.h"
 #include "panel/lights/LightTableView.h"
 #include "panel/sounds/SoundTableView.h"
-#include "state/StateSaveHelper.h"
+#include "StateSaveHelper.h"
 
 #include <stdexcept>
 #include <QApplication>
@@ -29,6 +29,7 @@ namespace urchin
             saveAsAction(nullptr),
             closeAction(nullptr),
             mapEditorPath(std::move(mapEditorPath)),
+            sceneController(nullptr),
             sceneDisplayerWidget(nullptr),
             sceneControllerWidget(nullptr)
 	{
@@ -49,6 +50,11 @@ namespace urchin
 
 		this->setCentralWidget(centralWidget);
 	}
+
+    MapEditorWindow::~MapEditorWindow()
+    {
+	    delete sceneController;
+    }
 
 	void MapEditorWindow::setupMenu()
 	{
@@ -253,7 +259,9 @@ namespace urchin
 			if(newDialog.result()==QDialog::Accepted)
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->newMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
-				SceneController *sceneController = sceneControllerWidget->newMap(mapHandler, newDialog.getRelativeWorkingDirectory());
+                sceneController = new SceneController(mapHandler);
+                sceneController->setRelativeWorkingDirectory(newDialog.getRelativeWorkingDirectory());
+				sceneControllerWidget->newMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(QString::fromStdString(newDialog.getFilename()));
@@ -270,7 +278,8 @@ namespace urchin
 			if(!filename.isNull())
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
-                SceneController *sceneController = sceneControllerWidget->openMap(mapHandler);
+                sceneController = new SceneController(mapHandler);
+                sceneControllerWidget->openMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(filename);
@@ -281,8 +290,11 @@ namespace urchin
 
 	void MapEditorWindow::executeSaveAction()
 	{
-		sceneDisplayerWidget->saveMap(mapFilename);
-		sceneControllerWidget->saveMap(mapFilename);
+		sceneDisplayerWidget->saveState(mapFilename);
+        if(sceneController)
+        {
+            sceneController->saveMapOnFile(mapFilename);
+        }
 
 		updateInterfaceState(false);
 	}
@@ -299,8 +311,11 @@ namespace urchin
 				filenameString += ".xml";
 			}
 
-			sceneDisplayerWidget->saveMap(filenameString);
-			sceneControllerWidget->saveMap(filenameString);
+			sceneDisplayerWidget->saveState(filenameString);
+            if(sceneController)
+            {
+                sceneController->saveMapOnFile(filenameString);
+            }
 
 			updateMapFilename(QString::fromStdString(filenameString));
             updateInterfaceState(false);
@@ -317,6 +332,9 @@ namespace urchin
 
 			updateMapFilename("");
             updateInterfaceState(false);
+
+            delete sceneController;
+            sceneController = nullptr;
 
 			canProceed = true;
 		}
@@ -347,7 +365,7 @@ namespace urchin
 	bool MapEditorWindow::checkCurrentMapSaved()
 	{
 		bool canProceed = true;
-		if(sceneControllerWidget->hasMapOpen() && sceneControllerWidget->isModified())
+		if(sceneController != nullptr && sceneController->isModified())
 		{
 			NotSavedDialog notSavedDialog(this);
 			notSavedDialog.exec();
@@ -366,7 +384,7 @@ namespace urchin
 
 	void MapEditorWindow::updateInterfaceState(bool mapContainsNotSavedChange)
 	{
-		bool hasMapOpen = sceneControllerWidget->hasMapOpen();
+		bool hasMapOpen = sceneController != nullptr;
 
 		saveAction->setEnabled(hasMapOpen);
 		saveAsAction->setEnabled(hasMapOpen);

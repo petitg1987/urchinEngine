@@ -6,7 +6,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QDoubleSpinBox>
 
-#include "panel/sky/SkyController.h"
+#include "controller/sky/SkyController.h"
 
 namespace urchin
 {

@@ -6,7 +6,7 @@
 #include "UrchinMapHandler.h"
 #include "UrchinSoundEngine.h"
 
-#include "panel/AbstractController.h"
+#include "controller/AbstractController.h"
 
 namespace urchin
 {

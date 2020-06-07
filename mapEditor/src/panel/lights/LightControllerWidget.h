@@ -11,7 +11,7 @@
 #include <QtWidgets/QLabel>
 
 #include "UrchinCommon.h"
-#include "panel/lights/LightController.h"
+#include "controller/lights/LightController.h"
 #include "panel/lights/LightTableView.h"
 
 namespace urchin

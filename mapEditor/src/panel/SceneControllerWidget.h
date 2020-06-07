@@ -6,7 +6,7 @@
 
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
-#include "panel/SceneController.h"
+#include "controller/SceneController.h"
 #include "panel/objects/ObjectControllerWidget.h"
 #include "panel/lights/LightControllerWidget.h"
 #include "panel/terrains/TerrainControllerWidget.h"
@@ -24,7 +24,6 @@ namespace urchin
 
 		public:
 			explicit SceneControllerWidget(QWidget *parent);
-			~SceneControllerWidget() override;
 
 			enum NotificationType
 			{
@@ -50,12 +49,8 @@ namespace urchin
 			SoundControllerWidget *getSoundControllerWidget() const;
 			AIControllerWidget *getAIControllerWidget() const;
 
-			bool isModified() const;
-			bool hasMapOpen() const;
-
-            SceneController *newMap(MapHandler *, const std::string &);
-            SceneController *openMap(MapHandler *);
-			void saveMap(const std::string &);
+            SceneController *newMap(SceneController *);
+            SceneController *openMap(SceneController *);
 			void closeMap();
 
 			TabName getTabSelected() const;

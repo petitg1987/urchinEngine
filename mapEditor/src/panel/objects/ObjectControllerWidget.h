@@ -15,7 +15,7 @@
 
 #include "UrchinCommon.h"
 #include "UrchinPhysicsEngine.h"
-#include "panel/objects/ObjectController.h"
+#include "controller/objects/ObjectController.h"
 #include "panel/objects/ObjectTableView.h"
 #include "panel/objects/bodyshape/BodyShapeWidget.h"
 

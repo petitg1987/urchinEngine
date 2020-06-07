@@ -12,7 +12,7 @@
 #include <QtWidgets/QLabel>
 
 #include "UrchinCommon.h"
-#include "panel/sounds/SoundController.h"
+#include "controller/sounds/SoundController.h"
 #include "panel/sounds/SoundTableView.h"
 #include "panel/sounds/soundshape/SoundShapeWidget.h"
 

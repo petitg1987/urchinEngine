@@ -28,7 +28,7 @@ namespace urchin
 
 			MapHandler *newMap(const std::string &, const std::string &);
 			MapHandler *openMap(const std::string &);
-			void saveMap(const std::string &) const;
+			void saveState(const std::string &) const;
 			void closeMap();
 
 			void setViewProperties(SceneDisplayer::ViewProperties, bool);

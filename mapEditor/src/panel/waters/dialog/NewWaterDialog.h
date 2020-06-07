@@ -7,7 +7,7 @@
 #include <QtWidgets/QLabel>
 
 #include "UrchinMapHandler.h"
-#include "panel/waters/WaterController.h"
+#include "controller/waters/WaterController.h"
 
 namespace urchin
 {

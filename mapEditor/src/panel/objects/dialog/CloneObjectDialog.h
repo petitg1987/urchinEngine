@@ -8,7 +8,7 @@
 #include <QtWidgets/QLabel>
 
 #include "UrchinMapHandler.h"
-#include "panel/objects/ObjectController.h"
+#include "controller/objects/ObjectController.h"
 
 namespace urchin
 {

@@ -11,7 +11,7 @@
 #include <QtWidgets/QLineEdit>
 #include "UrchinCommon.h"
 
-#include "panel/waters/WaterController.h"
+#include "controller/waters/WaterController.h"
 #include "panel/waters/WaterTableView.h"
 
 namespace urchin

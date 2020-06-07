@@ -5,7 +5,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDoubleSpinBox>
 
-#include "panel/ai/AIController.h"
+#include "controller/ai/AIController.h"
 
 namespace urchin
 {

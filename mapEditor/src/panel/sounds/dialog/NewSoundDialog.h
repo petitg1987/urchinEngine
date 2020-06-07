@@ -8,7 +8,7 @@
 #include <QtWidgets/QComboBox>
 
 #include "UrchinMapHandler.h"
-#include "panel/sounds/SoundController.h"
+#include "controller/sounds/SoundController.h"
 
 namespace urchin
 {

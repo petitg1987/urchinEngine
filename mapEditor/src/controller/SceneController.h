@@ -4,13 +4,13 @@
 #include <list>
 
 #include "UrchinMapHandler.h"
-#include "panel/objects/ObjectController.h"
-#include "panel/lights/LightController.h"
-#include "panel/terrains/TerrainController.h"
-#include "panel/waters/WaterController.h"
-#include "panel/sky/SkyController.h"
-#include "panel/sounds/SoundController.h"
-#include "panel/ai/AIController.h"
+#include "controller/objects/ObjectController.h"
+#include "controller/lights/LightController.h"
+#include "controller/terrains/TerrainController.h"
+#include "controller/waters/WaterController.h"
+#include "controller/sky/SkyController.h"
+#include "controller/sounds/SoundController.h"
+#include "controller/ai/AIController.h"
 
 namespace urchin
 {

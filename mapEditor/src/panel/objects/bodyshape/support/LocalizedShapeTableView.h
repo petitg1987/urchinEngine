@@ -9,7 +9,7 @@
 
 #include "UrchinCommon.h"
 #include "UrchinMapHandler.h"
-#include "panel/SceneController.h"
+#include "controller/SceneController.h"
 
 Q_DECLARE_METATYPE(const urchin::LocalizedCollisionShape *)
 

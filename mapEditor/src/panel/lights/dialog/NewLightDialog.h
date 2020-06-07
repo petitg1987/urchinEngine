@@ -8,7 +8,7 @@
 #include <QtWidgets/QComboBox>
 
 #include "UrchinMapHandler.h"
-#include "panel/lights/LightController.h"
+#include "controller/lights/LightController.h"
 
 namespace urchin
 {

@@ -11,7 +11,7 @@
 #include <QtWidgets/QLineEdit>
 #include "UrchinCommon.h"
 
-#include "panel/terrains/TerrainController.h"
+#include "controller/terrains/TerrainController.h"
 #include "panel/terrains/TerrainTableView.h"
 
 #define MAX_MATERIAL 4 //maximum 4 materials (RGBA)
