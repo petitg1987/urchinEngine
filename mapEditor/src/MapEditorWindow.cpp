@@ -1,6 +1,6 @@
 #include "MapEditorWindow.h"
-#include "dialog/NewDialog.h"
-#include "dialog/NotSavedDialog.h"
+#include "widget/dialog/NewDialog.h"
+#include "widget/dialog/NotSavedDialog.h"
 #include "panel/objects/ObjectTableView.h"
 #include "panel/objects/bodyshape/BodyCompoundShapeWidget.h"
 #include "panel/objects/bodyshape/support/LocalizedShapeTableView.h"
