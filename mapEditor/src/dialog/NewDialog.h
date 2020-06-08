@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_NEWDIALOG_H
-#define URCHINENGINE_MAPEDITOR_NEWDIALOG_H
+#ifndef URCHINENGINE_NEWDIALOG_H
+#define URCHINENGINE_NEWDIALOG_H
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QDialog>

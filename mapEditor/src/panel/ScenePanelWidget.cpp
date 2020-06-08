@@ -1,33 +1,33 @@
 #include <stdexcept>
 
-#include "SceneControllerWidget.h"
+#include "ScenePanelWidget.h"
 
 namespace urchin
 {
 
-	SceneControllerWidget::SceneControllerWidget(QWidget *parent) :
+	ScenePanelWidget::ScenePanelWidget(QWidget *parent) :
 			QTabWidget(parent),
 			sceneController(nullptr)
 	{
-		tabObjects = new ObjectControllerWidget();
+		tabObjects = new ObjectPanelWidget();
 		addTab(tabObjects, "Object");
 
-		tabLights = new LightControllerWidget();
+		tabLights = new LightPanelWidget();
 		addTab(tabLights, "Light");
 
-		tabTerrains = new TerrainControllerWidget();
+		tabTerrains = new TerrainPanelWidget();
 		addTab(tabTerrains, "Terrain");
 
-		tabWaters = new WaterControllerWidget();
+		tabWaters = new WaterPanelWidget();
 		addTab(tabWaters, "Water");
 
-		tabSky = new SkyControllerWidget();
+		tabSky = new SkyPanelWidget();
         addTab(tabSky, "Sky");
 
-		tabSounds = new SoundControllerWidget();
+		tabSounds = new SoundPanelWidget();
 		addTab(tabSounds, "Sound");
 
-		tabAI = new AIControllerWidget();
+		tabAI = new AIPanelWidget();
 		addTab(tabAI, "AI");
 
 		connect(this, SIGNAL(currentChanged(int)), this, SLOT(tabSelected()));
@@ -35,42 +35,42 @@ namespace urchin
 		setEnabled(false);
 	}
 
-	ObjectControllerWidget *SceneControllerWidget::getObjectControllerWidget() const
+	ObjectPanelWidget *ScenePanelWidget::getObjectPanelWidget() const
 	{
 		return tabObjects;
 	}
 
-	LightControllerWidget *SceneControllerWidget::getLightControllerWidget() const
+	LightPanelWidget *ScenePanelWidget::getLightPanelWidget() const
 	{
 		return tabLights;
 	}
 
-	TerrainControllerWidget *SceneControllerWidget::getTerrainControllerWidget() const
+	TerrainPanelWidget *ScenePanelWidget::getTerrainPanelWidget() const
 	{
 		return tabTerrains;
 	}
 
-	WaterControllerWidget *SceneControllerWidget::getWaterControllerWidget() const
+	WaterPanelWidget *ScenePanelWidget::getWaterPanelWidget() const
 	{
 		return tabWaters;
 	}
 
-    SkyControllerWidget *SceneControllerWidget::getSkyControllerWidget() const
+    SkyPanelWidget *ScenePanelWidget::getSkyPanelWidget() const
     {
         return tabSky;
     }
 
-	SoundControllerWidget *SceneControllerWidget::getSoundControllerWidget() const
+	SoundPanelWidget *ScenePanelWidget::getSoundPanelWidget() const
 	{
 		return tabSounds;
 	}
 
-	AIControllerWidget *SceneControllerWidget::getAIControllerWidget() const
+	AIPanelWidget *ScenePanelWidget::getAIPanelWidget() const
 	{
 		return tabAI;
 	}
 
-    SceneController *SceneControllerWidget::newMap(SceneController *sceneController)
+    SceneController *ScenePanelWidget::newMap(SceneController *sceneController)
 	{
 		closeMap();
 		this->sceneController = sceneController;
@@ -87,7 +87,7 @@ namespace urchin
 		return sceneController;
 	}
 
-    SceneController *SceneControllerWidget::openMap(SceneController *sceneController)
+    SceneController *ScenePanelWidget::openMap(SceneController *sceneController)
 	{
 		closeMap();
         this->sceneController = sceneController;
@@ -104,7 +104,7 @@ namespace urchin
 		return sceneController;
 	}
 
-	void SceneControllerWidget::closeMap()
+	void ScenePanelWidget::closeMap()
 	{
 		tabObjects->unload();
 		tabLights->unload();
@@ -118,7 +118,7 @@ namespace urchin
 		sceneController = nullptr;
 	}
 
-	SceneControllerWidget::TabName SceneControllerWidget::getTabSelected() const
+	ScenePanelWidget::TabName ScenePanelWidget::getTabSelected() const
 	{
 		int tabIndex = this->currentIndex();
 		if(tabIndex==0)
@@ -147,7 +147,7 @@ namespace urchin
 		throw std::runtime_error("Unknown selected tab index: " + std::to_string(tabIndex));
 	}
 
-	void SceneControllerWidget::tabSelected()
+	void ScenePanelWidget::tabSelected()
 	{
 		notifyObservers(this, NotificationType::TAB_SELECTED);
 	}

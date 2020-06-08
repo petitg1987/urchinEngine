@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_TERRAINCONTROLLERWIDGET_H
-#define URCHINENGINE_MAPEDITOR_TERRAINCONTROLLERWIDGET_H
+#ifndef URCHINENGINE_TERRAINPANELWIDGET_H
+#define URCHINENGINE_TERRAINPANELWIDGET_H
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -19,13 +19,13 @@
 namespace urchin
 {
 
-    class TerrainControllerWidget : public QWidget, public Observer
+    class TerrainPanelWidget : public QWidget, public Observer
     {
         Q_OBJECT
 
         public:
-            TerrainControllerWidget();
-            ~TerrainControllerWidget() override = default;
+            TerrainPanelWidget();
+            ~TerrainPanelWidget() override = default;
 
             TerrainTableView *getTerrainTableView() const;
 

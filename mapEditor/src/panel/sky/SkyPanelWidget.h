@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_SKYCONTROLLERWIDGET_H
-#define URCHINENGINE_SKYCONTROLLERWIDGET_H
+#ifndef URCHINENGINE_SKYPANELWIDGET_H
+#define URCHINENGINE_SKYPANELWIDGET_H
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -11,19 +11,19 @@
 namespace urchin
 {
 
-    class SkyControllerWidget : public QWidget
+    class SkyPanelWidget : public QWidget
     {
         Q_OBJECT
 
         public:
-            SkyControllerWidget();
-            ~SkyControllerWidget() override = default;
+            SkyPanelWidget();
+            ~SkyPanelWidget() override = default;
 
             void load(SkyController *);
             void unload();
 
         private:
-            typedef void (SkyControllerWidget::*SkyControllerWidgetMemFn)();
+            typedef void (SkyPanelWidget::*SkyControllerWidgetMemFn)();
 
             void setupSkyboxBox(QVBoxLayout *);
             QHBoxLayout *createFilenameInputText(QGridLayout *, int, const QString &, QLineEdit **);

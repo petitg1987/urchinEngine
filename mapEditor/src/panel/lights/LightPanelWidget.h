@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_LIGHTCONTROLLERWIDGET_H
-#define URCHINENGINE_MAPEDITOR_LIGHTCONTROLLERWIDGET_H
+#ifndef URCHINENGINE_LIGHTPANELWIDGET_H
+#define URCHINENGINE_LIGHTPANELWIDGET_H
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -17,13 +17,13 @@
 namespace urchin
 {
 
-	class LightControllerWidget : public QWidget, public Observer
+	class LightPanelWidget : public QWidget, public Observer
 	{
 		Q_OBJECT
 
 		public:
-			LightControllerWidget();
-			~LightControllerWidget() override = default;
+			LightPanelWidget();
+			~LightPanelWidget() override = default;
 
 			LightTableView *getLightTableView() const;
 

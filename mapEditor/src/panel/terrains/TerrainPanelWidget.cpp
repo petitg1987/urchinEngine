@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QSignalMapper>
 
-#include "TerrainControllerWidget.h"
+#include "TerrainPanelWidget.h"
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
@@ -12,12 +12,12 @@
 
 namespace urchin
 {
-    QString TerrainControllerWidget::preferredMaskMapPath = QString();
-    QString TerrainControllerWidget::preferredMaterialPath = QString();
-    QString TerrainControllerWidget::preferredGrassTexturePath = QString();
-    QString TerrainControllerWidget::preferredGrassMaskPath = QString();
+    QString TerrainPanelWidget::preferredMaskMapPath = QString();
+    QString TerrainPanelWidget::preferredMaterialPath = QString();
+    QString TerrainPanelWidget::preferredGrassTexturePath = QString();
+    QString TerrainPanelWidget::preferredGrassMaskPath = QString();
 
-    TerrainControllerWidget::TerrainControllerWidget() :
+    TerrainPanelWidget::TerrainPanelWidget() :
             terrainController(nullptr),
             terrainTableView(nullptr),
             addTerrainButton(nullptr),
@@ -68,7 +68,7 @@ namespace urchin
         setupGrassBox(mainLayout);
     }
 
-    void TerrainControllerWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
+    void TerrainPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
     {
         generalPropertiesGroupBox = new QGroupBox("General Properties");
         mainLayout->addWidget(generalPropertiesGroupBox);
@@ -107,7 +107,7 @@ namespace urchin
         connect(ambient, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGeneralProperties()));
     }
 
-    void TerrainControllerWidget::setupMeshBox(QVBoxLayout *mainLayout)
+    void TerrainPanelWidget::setupMeshBox(QVBoxLayout *mainLayout)
     {
         meshGroupBox = new QGroupBox("Mesh");
         mainLayout->addWidget(meshGroupBox);
@@ -138,7 +138,7 @@ namespace urchin
         connect(yScale, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainMesh()));
     }
 
-    void TerrainControllerWidget::setupMaterialBox(QVBoxLayout *mainLayout)
+    void TerrainPanelWidget::setupMaterialBox(QVBoxLayout *mainLayout)
     {
         materialGroupBox = new QGroupBox("Material");
         mainLayout->addWidget(materialGroupBox);
@@ -215,7 +215,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::setupGrassBox(QVBoxLayout *mainLayout)
+    void TerrainPanelWidget::setupGrassBox(QVBoxLayout *mainLayout)
     {
         grassGroupBox = new QGroupBox("Grass");
         mainLayout->addWidget(grassGroupBox);
@@ -326,12 +326,12 @@ namespace urchin
         connect(windStrength, SIGNAL(valueChanged(double)), this, SLOT(updateTerrainGrass()));
     }
 
-    TerrainTableView *TerrainControllerWidget::getTerrainTableView() const
+    TerrainTableView *TerrainPanelWidget::getTerrainTableView() const
     {
         return terrainTableView;
     }
 
-    void TerrainControllerWidget::load(TerrainController *terrainController)
+    void TerrainPanelWidget::load(TerrainController *terrainController)
     {
         this->terrainController = terrainController;
 
@@ -342,14 +342,14 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::unload()
+    void TerrainPanelWidget::unload()
     {
         terrainTableView->removeAllTerrains();
 
         terrainController = nullptr;
     }
 
-    void TerrainControllerWidget::notify(Observable *observable, int notificationType)
+    void TerrainPanelWidget::notify(Observable *observable, int notificationType)
     {
         if(auto *terrainTableView = dynamic_cast<TerrainTableView *>(observable))
         {
@@ -377,7 +377,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::setupTerrainDataFrom(const SceneTerrain *sceneTerrain)
+    void TerrainPanelWidget::setupTerrainDataFrom(const SceneTerrain *sceneTerrain)
     {
         disableTerrainEvent = true;
         const Terrain *terrain = sceneTerrain->getTerrain();
@@ -426,7 +426,7 @@ namespace urchin
         disableTerrainEvent = false;
     }
 
-    void TerrainControllerWidget::showAddTerrainDialog()
+    void TerrainPanelWidget::showAddTerrainDialog()
     {
         NewTerrainDialog newSceneTerrainDialog(this, terrainController);
         newSceneTerrainDialog.exec();
@@ -440,7 +440,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::removeSelectedTerrain()
+    void TerrainPanelWidget::removeSelectedTerrain()
     {
         if(terrainTableView->hasSceneTerrainSelected())
         {
@@ -451,7 +451,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::updateTerrainGeneralProperties()
+    void TerrainPanelWidget::updateTerrainGeneralProperties()
     {
         if(!disableTerrainEvent)
         {
@@ -462,7 +462,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::updateTerrainMesh()
+    void TerrainPanelWidget::updateTerrainMesh()
     {
         if(!disableTerrainEvent)
         {
@@ -472,7 +472,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::updateTerrainMaterial()
+    void TerrainPanelWidget::updateTerrainMaterial()
     {
         if(!disableTerrainEvent)
         {
@@ -488,7 +488,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::updateTerrainGrass()
+    void TerrainPanelWidget::updateTerrainGrass()
     {
         if(!disableTerrainEvent)
         {
@@ -503,7 +503,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::showMaskFilenameDialog()
+    void TerrainPanelWidget::showMaskFilenameDialog()
     {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredMaskMapPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredMaskMapPath;
@@ -528,14 +528,14 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::clearMaskFilename()
+    void TerrainPanelWidget::clearMaskFilename()
     {
         this->maskMapFilenameText->setText("");
 
         updateTerrainMaterial();
     }
 
-    void TerrainControllerWidget::showMaterialFilenameDialog(const QString &positionIndexStr)
+    void TerrainPanelWidget::showMaterialFilenameDialog(const QString &positionIndexStr)
     {
         int i = std::stoi(positionIndexStr.toStdString());
 
@@ -562,7 +562,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::clearMaterialFilename(const QString &positionIndexStr)
+    void TerrainPanelWidget::clearMaterialFilename(const QString &positionIndexStr)
     {
         int i = std::stoi(positionIndexStr.toStdString());
         this->materialFilenameTexts[i]->setText("");
@@ -570,7 +570,7 @@ namespace urchin
         updateTerrainMaterial();
     }
 
-    void TerrainControllerWidget::showGrassTextureFilenameDialog()
+    void TerrainPanelWidget::showGrassTextureFilenameDialog()
     {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredGrassTexturePath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassTexturePath;
@@ -595,14 +595,14 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::clearGrassTextureFilename()
+    void TerrainPanelWidget::clearGrassTextureFilename()
     {
         this->grassTextureFilenameText->setText("");
 
         updateTerrainGrass();
     }
 
-    void TerrainControllerWidget::showGrassMaskFilenameDialog()
+    void TerrainPanelWidget::showGrassMaskFilenameDialog()
     {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredGrassMaskPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredGrassMaskPath;
@@ -627,7 +627,7 @@ namespace urchin
         }
     }
 
-    void TerrainControllerWidget::clearGrassMaskFilename()
+    void TerrainPanelWidget::clearGrassMaskFilename()
     {
         this->grassMaskFilenameText->setText("");
 

@@ -31,7 +31,7 @@ namespace urchin
             mapEditorPath(std::move(mapEditorPath)),
             sceneController(nullptr),
             sceneDisplayerWidget(nullptr),
-            sceneControllerWidget(nullptr)
+            scenePanelWidget(nullptr)
 	{
 		this->setAttribute(Qt::WA_DeleteOnClose);
 		this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
@@ -162,21 +162,21 @@ namespace urchin
 
 	void MapEditorWindow::setupSceneControllerWidget(QWidget *centralWidget, QHBoxLayout *horizontalLayout)
 	{
-		sceneControllerWidget = new SceneControllerWidget(centralWidget);
+        scenePanelWidget = new ScenePanelWidget(centralWidget);
 		QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 		sizePolicy.setHorizontalStretch(0);
 		sizePolicy.setVerticalStretch(0);
-		sizePolicy.setHeightForWidth(sceneControllerWidget->sizePolicy().hasHeightForWidth());
-		sceneControllerWidget->setSizePolicy(sizePolicy);
-		sceneControllerWidget->setMaximumSize(QSize(380, 16777215));
-        sceneControllerWidget->getObjectControllerWidget()->addObserver(this, ObjectControllerWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
-		sceneControllerWidget->getObjectControllerWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
-		sceneControllerWidget->getLightControllerWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
-		sceneControllerWidget->getSoundControllerWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
-		sceneControllerWidget->addObserver(this, SceneControllerWidget::TAB_SELECTED);
-		horizontalLayout->addWidget(sceneControllerWidget);
+		sizePolicy.setHeightForWidth(scenePanelWidget->sizePolicy().hasHeightForWidth());
+        scenePanelWidget->setSizePolicy(sizePolicy);
+        scenePanelWidget->setMaximumSize(QSize(380, 16777215));
+        scenePanelWidget->getObjectPanelWidget()->addObserver(this, ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED);
+        scenePanelWidget->getObjectPanelWidget()->getObjectTableView()->addObserver(this, ObjectTableView::OBJECT_SELECTION_CHANGED);
+        scenePanelWidget->getLightPanelWidget()->getLightTableView()->addObserver(this, LightTableView::LIGHT_SELECTION_CHANGED);
+        scenePanelWidget->getSoundPanelWidget()->getSoundTableView()->addObserver(this, SoundTableView::SOUND_SELECTION_CHANGED);
+        scenePanelWidget->addObserver(this, ScenePanelWidget::TAB_SELECTED);
+		horizontalLayout->addWidget(scenePanelWidget);
 
-		sceneDisplayerWidget->addObserver(sceneControllerWidget->getObjectControllerWidget(), SceneDisplayerWidget::BODY_PICKED);
+		sceneDisplayerWidget->addObserver(scenePanelWidget->getObjectPanelWidget(), SceneDisplayerWidget::BODY_PICKED);
 	}
 
     QString MapEditorWindow::getPreferredMapPath()
@@ -192,9 +192,9 @@ namespace urchin
 
 	void MapEditorWindow::notify(Observable *observable, int notificationType)
 	{
-		if(dynamic_cast<SceneControllerWidget *>(observable))
+		if(dynamic_cast<ScenePanelWidget *>(observable))
 		{
-		    if(notificationType==SceneControllerWidget::TAB_SELECTED)
+		    if(notificationType == ScenePanelWidget::TAB_SELECTED)
             {
                 executeViewPropertiesChangeAction();
             }
@@ -230,9 +230,9 @@ namespace urchin
 
 	void MapEditorWindow::handleCompoundShapeSelectionChange(Observable *observable, int notificationType)
 	{
-		if(auto *objectControllerWidget = dynamic_cast<ObjectControllerWidget *>(observable))
+		if(auto *objectControllerWidget = dynamic_cast<ObjectPanelWidget *>(observable))
 		{
-		    if(notificationType==ObjectControllerWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED)
+		    if(notificationType == ObjectPanelWidget::OBJECT_BODY_SHAPE_WIDGET_CREATED)
             {
                 BodyShapeWidget *bodyShapeWidget = objectControllerWidget->getBodyShapeWidget();
                 if (auto *bodyCompoundShapeWidget = dynamic_cast<BodyCompoundShapeWidget *>(bodyShapeWidget))
@@ -261,7 +261,7 @@ namespace urchin
 				MapHandler *mapHandler = sceneDisplayerWidget->newMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController = new SceneController(mapHandler);
                 sceneController->setRelativeWorkingDirectory(newDialog.getRelativeWorkingDirectory());
-				sceneControllerWidget->newMap(sceneController);
+                scenePanelWidget->newMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(QString::fromStdString(newDialog.getFilename()));
@@ -279,7 +279,7 @@ namespace urchin
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
                 sceneController = new SceneController(mapHandler);
-                sceneControllerWidget->openMap(sceneController);
+                scenePanelWidget->openMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(filename);
@@ -328,7 +328,7 @@ namespace urchin
 		if(checkCurrentMapSaved())
 		{
 			sceneDisplayerWidget->closeMap();
-			sceneControllerWidget->closeMap();
+            scenePanelWidget->closeMap();
 
 			updateMapFilename("");
             updateInterfaceState(false);
@@ -431,30 +431,30 @@ namespace urchin
 			auto viewProperties = static_cast<SceneDisplayer::ViewProperties>(i);
 
 			bool isViewChecked = viewActions[viewProperties]->isChecked();
-			bool isCorrespondingTabSelected = (sceneControllerWidget==nullptr && i==0)
-					|| (sceneControllerWidget!=nullptr && getConcernedTabFor(viewProperties)==sceneControllerWidget->getTabSelected());
+			bool isCorrespondingTabSelected = (scenePanelWidget==nullptr && i==0)
+					|| (scenePanelWidget!=nullptr && getConcernedTabFor(viewProperties)==scenePanelWidget->getTabSelected());
 
 			sceneDisplayerWidget->setViewProperties(viewProperties, isViewChecked && isCorrespondingTabSelected);
 		}
 	}
 
-	SceneControllerWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties)
+	ScenePanelWidget::TabName MapEditorWindow::getConcernedTabFor(SceneDisplayer::ViewProperties viewProperties)
 	{
 		if(SceneDisplayer::MODEL_PHYSICS==viewProperties)
 		{
-			return SceneControllerWidget::OBJECTS;
+			return ScenePanelWidget::OBJECTS;
 		}
 		if(SceneDisplayer::LIGHT_SCOPE==viewProperties)
 		{
-			return SceneControllerWidget::LIGHTS;
+			return ScenePanelWidget::LIGHTS;
 		}
 		if(SceneDisplayer::SOUND_TRIGGER==viewProperties)
 		{
-			return SceneControllerWidget::SOUNDS;
+			return ScenePanelWidget::SOUNDS;
 		}
 		if(SceneDisplayer::NAV_MESH==viewProperties)
 		{
-			return SceneControllerWidget::AI;
+			return ScenePanelWidget::AI;
 		}
 
 		throw std::runtime_error("Impossible to find concerned tab for properties: " + std::to_string(viewProperties));

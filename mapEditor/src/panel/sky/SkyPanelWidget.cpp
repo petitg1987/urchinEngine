@@ -3,7 +3,7 @@
 #include <QtWidgets/QLabel>
 #include <QMessageBox>
 
-#include "SkyControllerWidget.h"
+#include "SkyPanelWidget.h"
 #include "widget/style/ButtonStyleHelper.h"
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
@@ -11,9 +11,9 @@
 namespace urchin
 {
 
-    QString SkyControllerWidget::preferredSkyboxPath = QString();
+    QString SkyPanelWidget::preferredSkyboxPath = QString();
 
-    SkyControllerWidget::SkyControllerWidget() :
+    SkyPanelWidget::SkyPanelWidget() :
             skyController(nullptr),
             xnSkyboxFilenameText(nullptr),
             xpSkyboxFilenameText(nullptr),
@@ -31,7 +31,7 @@ namespace urchin
         setupSkyboxBox(mainLayout);
     }
 
-    void SkyControllerWidget::load(SkyController *skyController)
+    void SkyPanelWidget::load(SkyController *skyController)
     {
         this->skyController = skyController;
 
@@ -39,12 +39,12 @@ namespace urchin
         setupSkyDataFrom(skybox);
     }
 
-    void SkyControllerWidget::unload()
+    void SkyPanelWidget::unload()
     {
         skyController = nullptr;
     }
 
-    void SkyControllerWidget::setupSkyboxBox(QVBoxLayout *mainLayout)
+    void SkyPanelWidget::setupSkyboxBox(QVBoxLayout *mainLayout)
     {
         auto *skyboxGroupBox = new QGroupBox("Skybox");
         mainLayout->addWidget(skyboxGroupBox);
@@ -98,7 +98,7 @@ namespace urchin
         connect(offsetY, SIGNAL(valueChanged(double)), this, SLOT(skyChanged()));
     }
 
-    QHBoxLayout *SkyControllerWidget::createFilenameInputText(QGridLayout *skyboxLayout, int row, const QString &text, QLineEdit **skyboxFilenameText)
+    QHBoxLayout *SkyPanelWidget::createFilenameInputText(QGridLayout *skyboxLayout, int row, const QString &text, QLineEdit **skyboxFilenameText)
     {
         auto *skyboxFilenameLabel= new QLabel(text);
         skyboxLayout->addWidget(skyboxFilenameLabel, row, 0);
@@ -112,7 +112,7 @@ namespace urchin
         return skyboxFilenameLayout;
     }
 
-    QPushButton *SkyControllerWidget::createSelectFileButton(QHBoxLayout *skyboxFilenameLayout)
+    QPushButton *SkyPanelWidget::createSelectFileButton(QHBoxLayout *skyboxFilenameLayout)
     {
         auto *selectSkyboxFileButton = new QPushButton("...");
         skyboxFilenameLayout->addWidget(selectSkyboxFileButton);
@@ -122,7 +122,7 @@ namespace urchin
         return selectSkyboxFileButton;
     }
 
-    QPushButton *SkyControllerWidget::createClearFileButton(QHBoxLayout *skyboxFilenameLayout)
+    QPushButton *SkyPanelWidget::createClearFileButton(QHBoxLayout *skyboxFilenameLayout)
     {
         auto *clearSkyboxFileButton = new QPushButton("Clr");
         skyboxFilenameLayout->addWidget(clearSkyboxFileButton);
@@ -132,37 +132,37 @@ namespace urchin
         return clearSkyboxFileButton;
     }
 
-    void SkyControllerWidget::showXnSkyboxFilenameDialog()
+    void SkyPanelWidget::showXnSkyboxFilenameDialog()
     {
         showSkyboxFilenameDialog(xnSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::showXpSkyboxFilenameDialog()
+    void SkyPanelWidget::showXpSkyboxFilenameDialog()
     {
         showSkyboxFilenameDialog(xpSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::showYnSkyboxFilenameDialog()
+    void SkyPanelWidget::showYnSkyboxFilenameDialog()
     {
         showSkyboxFilenameDialog(ynSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::showYpSkyboxFilenameDialog()
+    void SkyPanelWidget::showYpSkyboxFilenameDialog()
     {
         showSkyboxFilenameDialog(ypSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::showZnSkyboxFilenameDialog()
+    void SkyPanelWidget::showZnSkyboxFilenameDialog()
     {
         showSkyboxFilenameDialog(znSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::showZpSkyboxFilenameDialog()
+    void SkyPanelWidget::showZpSkyboxFilenameDialog()
     {
         showSkyboxFilenameDialog(zpSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::showSkyboxFilenameDialog(QLineEdit *skyboxFilenameText)
+    void SkyPanelWidget::showSkyboxFilenameDialog(QLineEdit *skyboxFilenameText)
     {
         std::string resourcesDirectory = FileSystem::instance()->getResourcesDirectory();
         QString directory = preferredSkyboxPath.isEmpty() ? QString::fromStdString(resourcesDirectory) : preferredSkyboxPath;
@@ -187,44 +187,44 @@ namespace urchin
         }
     }
 
-    void SkyControllerWidget::clearXnSkyboxFilename()
+    void SkyPanelWidget::clearXnSkyboxFilename()
     {
         clearSkyboxFilename(xnSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::clearXpSkyboxFilename()
+    void SkyPanelWidget::clearXpSkyboxFilename()
     {
         clearSkyboxFilename(xpSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::clearYnSkyboxFilename()
+    void SkyPanelWidget::clearYnSkyboxFilename()
     {
         clearSkyboxFilename(ynSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::clearYpSkyboxFilename()
+    void SkyPanelWidget::clearYpSkyboxFilename()
     {
         clearSkyboxFilename(ypSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::clearZnSkyboxFilename()
+    void SkyPanelWidget::clearZnSkyboxFilename()
     {
         clearSkyboxFilename(znSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::clearZpSkyboxFilename()
+    void SkyPanelWidget::clearZpSkyboxFilename()
     {
         clearSkyboxFilename(zpSkyboxFilenameText);
     }
 
-    void SkyControllerWidget::clearSkyboxFilename(QLineEdit *skyboxFilenameText)
+    void SkyPanelWidget::clearSkyboxFilename(QLineEdit *skyboxFilenameText)
     {
         skyboxFilenameText->setText("");
 
         skyChanged();
     }
 
-    void SkyControllerWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
+    void SkyPanelWidget::setupSkyDataFrom(const std::unique_ptr<Skybox> &skybox)
     {
         disableSkyEvent = true;
         xnSkyboxFilenameText->setText(skybox != nullptr ? QString::fromStdString(skybox->getFilenames()[0]) : "");
@@ -237,7 +237,7 @@ namespace urchin
         disableSkyEvent = false;
     }
 
-    void SkyControllerWidget::skyChanged()
+    void SkyPanelWidget::skyChanged()
     {
         if(!disableSkyEvent)
         {

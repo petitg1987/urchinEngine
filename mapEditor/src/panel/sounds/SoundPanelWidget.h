@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_SOUNDCONTROLLERWIDGET_H
-#define URCHINENGINE_MAPEDITOR_SOUNDCONTROLLERWIDGET_H
+#ifndef URCHINENGINE_SOUNDPANELWIDGET_H
+#define URCHINENGINE_SOUNDPANELWIDGET_H
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -19,7 +19,7 @@
 namespace urchin
 {
 
-	class SoundControllerWidget : public QWidget, public Observer
+	class SoundPanelWidget : public QWidget, public Observer
 	{
 		Q_OBJECT
 
@@ -29,8 +29,8 @@ namespace urchin
 		#define SMOOTH_STOP_LABEL "Smooth Stop"
 
 		public:
-			SoundControllerWidget();
-			~SoundControllerWidget() override = default;
+			SoundPanelWidget();
+			~SoundPanelWidget() override = default;
 
 			SoundTableView *getSoundTableView() const;
 

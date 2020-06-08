@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_AICONTROLLERWIDGET_H
-#define URCHINENGINE_MAPEDITOR_AICONTROLLERWIDGET_H
+#ifndef URCHINENGINE_AIPANELWIDGET_H
+#define URCHINENGINE_AIPANELWIDGET_H
 
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
@@ -10,13 +10,13 @@
 namespace urchin
 {
 
-	class AIControllerWidget : public QWidget
+	class AIPanelWidget : public QWidget
 	{
 		Q_OBJECT
 
 		public:
-			AIControllerWidget();
-			~AIControllerWidget() override = default;
+			AIPanelWidget();
+			~AIPanelWidget() override = default;
 
 			void load(AIController *);
 			void unload();

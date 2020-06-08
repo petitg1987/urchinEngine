@@ -1,6 +1,6 @@
 #include <QtWidgets/QHBoxLayout>
 
-#include "SoundControllerWidget.h"
+#include "SoundPanelWidget.h"
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
@@ -13,7 +13,7 @@
 namespace urchin
 {
 
-	SoundControllerWidget::SoundControllerWidget() :
+	SoundPanelWidget::SoundPanelWidget() :
 			soundController(nullptr),
             soundTableView(nullptr),
             addSoundButton(nullptr),
@@ -80,7 +80,7 @@ namespace urchin
 		setupSpecificTriggerShapeBox(soundTriggerLayout);
 	}
 
-	void SoundControllerWidget::setupSoundGeneralPropertiesBox(QVBoxLayout *soundPropertiesLayout)
+	void SoundPanelWidget::setupSoundGeneralPropertiesBox(QVBoxLayout *soundPropertiesLayout)
 	{
         auto *generalGroupBox = new QGroupBox("General");
 		soundPropertiesLayout->addWidget(generalGroupBox);
@@ -105,7 +105,7 @@ namespace urchin
 		generalPropertiesLayout->addWidget(soundType, 1, 1);
 	}
 
-	void SoundControllerWidget::setupSpecificPointSoundBox(QVBoxLayout *soundPropertiesLayout)
+	void SoundPanelWidget::setupSpecificPointSoundBox(QVBoxLayout *soundPropertiesLayout)
 	{
 		specificPointSoundGroupBox = new QGroupBox("Point Sound");
 		soundPropertiesLayout->addWidget(specificPointSoundGroupBox);
@@ -143,7 +143,7 @@ namespace urchin
 		connect(inaudibleDistance, SIGNAL(valueChanged(double)), this, SLOT(updateSoundSpecificProperties()));
 	}
 
-	void SoundControllerWidget::setupSoundBehaviorPropertiesBox(QVBoxLayout *soundTriggerLayout)
+	void SoundPanelWidget::setupSoundBehaviorPropertiesBox(QVBoxLayout *soundTriggerLayout)
 	{
         auto *soundBehaviorGroupBox = new QGroupBox("Sound Behavior");
 		soundTriggerLayout->addWidget(soundBehaviorGroupBox);
@@ -190,7 +190,7 @@ namespace urchin
 		connect(changeSoundTriggerTypeButton, SIGNAL(clicked()), this, SLOT(showChangeSoundTriggerDialog()));
 	}
 
-	void SoundControllerWidget::setupSpecificTriggerShapeBox(QVBoxLayout *soundTriggerLayout)
+	void SoundPanelWidget::setupSpecificTriggerShapeBox(QVBoxLayout *soundTriggerLayout)
 	{
 		specificTriggerShapeGroupBox = new QGroupBox("Trigger Shape");
 		soundTriggerLayout->addWidget(specificTriggerShapeGroupBox);
@@ -222,12 +222,12 @@ namespace urchin
 		soundShapeWidget = nullptr;
 	}
 
-	SoundTableView *SoundControllerWidget::getSoundTableView() const
+	SoundTableView *SoundPanelWidget::getSoundTableView() const
 	{
 		return soundTableView;
 	}
 
-	void SoundControllerWidget::load(SoundController *soundController)
+	void SoundPanelWidget::load(SoundController *soundController)
 	{
 		this->soundController = soundController;
 
@@ -238,14 +238,14 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::unload()
+	void SoundPanelWidget::unload()
 	{
 		soundTableView->removeAllSounds();
 
 		soundController = nullptr;
 	}
 
-	void SoundControllerWidget::notify(Observable *observable, int notificationType)
+	void SoundPanelWidget::notify(Observable *observable, int notificationType)
 	{
 		if(auto *soundTableView = dynamic_cast<SoundTableView *>(observable))
 		{
@@ -269,7 +269,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::setupSoundDataFrom(const SceneSound *sceneSound)
+	void SoundPanelWidget::setupSoundDataFrom(const SceneSound *sceneSound)
 	{
 		disableSoundEvent = true;
 
@@ -308,14 +308,14 @@ namespace urchin
 		disableSoundEvent = false;
 	}
 
-	void SoundControllerWidget::setupAmbientSoundDataFrom()
+	void SoundPanelWidget::setupAmbientSoundDataFrom()
 	{
 		specificPointSoundGroupBox->hide();
 
 		soundType->setText(AMBIENT_SOUND_LABEL);
 	}
 
-	void SoundControllerWidget::setupPointSoundDataFrom(const PointSound *pointSound)
+	void SoundPanelWidget::setupPointSoundDataFrom(const PointSound *pointSound)
 	{
 		specificPointSoundGroupBox->show();
 
@@ -328,7 +328,7 @@ namespace urchin
 		this->inaudibleDistance->setValue(pointSound->getInaudibleDistance());
 	}
 
-	void SoundControllerWidget::setupSoundBehaviorDataFrom(const SoundTrigger *soundTrigger)
+	void SoundPanelWidget::setupSoundBehaviorDataFrom(const SoundTrigger *soundTrigger)
 	{
 		const SoundBehavior &soundBehavior = soundTrigger->getSoundBehavior();
 
@@ -347,13 +347,13 @@ namespace urchin
 		this->volumeDecreasePercentageOnStop->setValue(soundBehavior.getVolumeDecreasePercentageOnStop() * 100.0);
 	}
 
-	void SoundControllerWidget::setupManualTriggerDataFrom()
+	void SoundPanelWidget::setupManualTriggerDataFrom()
 	{
 		specificTriggerShapeGroupBox->hide();
 		soundTriggerType->setText(MANUAL_TRIGGER_LABEL);
 	}
 
-	void SoundControllerWidget::setupShapeTriggerDataFrom(const SceneSound *sceneSound)
+	void SoundPanelWidget::setupShapeTriggerDataFrom(const SceneSound *sceneSound)
 	{
 		specificTriggerShapeGroupBox->show();
 		soundTriggerType->setText(SHAPE_TRIGGER_LABEL);
@@ -366,7 +366,7 @@ namespace urchin
 		soundShapeType->setText(QString::fromStdString(soundShapeWidget->getSoundShapeName()));
 	}
 
-	SoundShapeWidget *SoundControllerWidget::retrieveSoundShapeWidget(const SoundShape *shape, const SceneSound *sceneSound)
+	SoundShapeWidget *SoundPanelWidget::retrieveSoundShapeWidget(const SoundShape *shape, const SceneSound *sceneSound)
 	{
 		delete soundShapeWidget;
 
@@ -379,7 +379,7 @@ namespace urchin
 		return soundShapeWidget;
 	}
 
-	void SoundControllerWidget::showAddSoundDialog()
+	void SoundPanelWidget::showAddSoundDialog()
 	{
 		NewSoundDialog newSceneSoundDialog(this, soundController);
 		newSceneSoundDialog.exec();
@@ -393,7 +393,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::removeSelectedSound()
+	void SoundPanelWidget::removeSelectedSound()
 	{
 		if(soundTableView->hasSceneSoundSelected())
 		{
@@ -404,7 +404,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::updateSoundGeneralProperties()
+	void SoundPanelWidget::updateSoundGeneralProperties()
 	{
 		if(!disableSoundEvent)
 		{
@@ -416,7 +416,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::updateSoundSpecificProperties()
+	void SoundPanelWidget::updateSoundSpecificProperties()
 	{
 		if(!disableSoundEvent)
 		{
@@ -439,7 +439,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::updateSoundBehaviorProperties()
+	void SoundPanelWidget::updateSoundBehaviorProperties()
 	{
 		if(!disableSoundEvent)
 		{
@@ -457,7 +457,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::showChangeSoundTriggerDialog()
+	void SoundPanelWidget::showChangeSoundTriggerDialog()
 	{
 		ChangeSoundTriggerDialog changeSoundTriggerDialog(this);
 		changeSoundTriggerDialog.exec();
@@ -472,7 +472,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::showChangeSoundShapeDialog()
+	void SoundPanelWidget::showChangeSoundShapeDialog()
 	{
 		ChangeSoundShapeDialog changeSoundShapeDialog(this);
 		changeSoundShapeDialog.exec();
@@ -487,7 +487,7 @@ namespace urchin
 		}
 	}
 
-	void SoundControllerWidget::soundShapeChanged(const SoundShape *soundShape)
+	void SoundPanelWidget::soundShapeChanged(const SoundShape *soundShape)
 	{
 		if(!disableSoundEvent)
 		{

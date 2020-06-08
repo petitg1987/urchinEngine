@@ -1,6 +1,6 @@
 #include <QtWidgets/QHBoxLayout>
 
-#include "LightControllerWidget.h"
+#include "LightPanelWidget.h"
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 #include "widget/style/ButtonStyleHelper.h"
@@ -9,7 +9,7 @@
 namespace urchin
 {
 
-	LightControllerWidget::LightControllerWidget() :
+	LightPanelWidget::LightPanelWidget() :
 			lightController(nullptr),
             generalPropertiesGroupBox(nullptr),
             specificOmnidirectionalLightGroupBox(nullptr),
@@ -57,7 +57,7 @@ namespace urchin
 		setupSpecificSunLightBox(mainLayout);
 	}
 
-	void LightControllerWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
+	void LightPanelWidget::setupGeneralPropertiesBox(QVBoxLayout *mainLayout)
 	{
 		generalPropertiesGroupBox = new QGroupBox("General Properties");
 		mainLayout->addWidget(generalPropertiesGroupBox);
@@ -102,7 +102,7 @@ namespace urchin
 		generalPropertiesLayout->addWidget(lightType, 2, 1);
 	}
 
-	void LightControllerWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout *mainLayout)
+	void LightPanelWidget::setupSpecificOmnidirectionalLightBox(QVBoxLayout *mainLayout)
 	{
 		specificOmnidirectionalLightGroupBox = new QGroupBox("Omnidirectional Light");
 		mainLayout->addWidget(specificOmnidirectionalLightGroupBox);
@@ -141,7 +141,7 @@ namespace urchin
 		connect(attenuation, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 	}
 
-	void LightControllerWidget::setupSpecificSunLightBox(QVBoxLayout *mainLayout)
+	void LightPanelWidget::setupSpecificSunLightBox(QVBoxLayout *mainLayout)
 	{
 		specificSunLightGroupBox = new QGroupBox("Sun Light");
 		mainLayout->addWidget(specificSunLightGroupBox);
@@ -170,12 +170,12 @@ namespace urchin
 		connect(directionZ, SIGNAL(valueChanged(double)), this, SLOT(updateLightSpecificProperties()));
 	}
 
-	LightTableView *LightControllerWidget::getLightTableView() const
+	LightTableView *LightPanelWidget::getLightTableView() const
 	{
 		return lightTableView;
 	}
 
-	void LightControllerWidget::load(LightController *lightController)
+	void LightPanelWidget::load(LightController *lightController)
 	{
 		this->lightController = lightController;
 
@@ -186,14 +186,14 @@ namespace urchin
 		}
 	}
 
-	void LightControllerWidget::unload()
+	void LightPanelWidget::unload()
 	{
 		lightTableView->removeAllLights();
 
 		lightController = nullptr;
 	}
 
-	void LightControllerWidget::notify(Observable *observable, int notificationType)
+	void LightPanelWidget::notify(Observable *observable, int notificationType)
 	{
 		if(auto *lightTableView = dynamic_cast<LightTableView *>(observable))
 		{
@@ -215,7 +215,7 @@ namespace urchin
 		}
 	}
 
-	void LightControllerWidget::setupLightDataFrom(const SceneLight *sceneLight)
+	void LightPanelWidget::setupLightDataFrom(const SceneLight *sceneLight)
 	{
 		disableLightEvent = true;
 		const Light *light = sceneLight->getLight();
@@ -242,7 +242,7 @@ namespace urchin
 		disableLightEvent = false;
 	}
 
-	void LightControllerWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *light)
+	void LightPanelWidget::setupOmnidirectionalLightDataFrom(const OmnidirectionalLight *light)
 	{
 		specificOmnidirectionalLightGroupBox->show();
 		specificSunLightGroupBox->hide();
@@ -256,7 +256,7 @@ namespace urchin
 		this->attenuation->setValue(light->getExponentialAttenuation());
 	}
 
-	void LightControllerWidget::setupSunLightDataFrom(const SunLight *light)
+	void LightPanelWidget::setupSunLightDataFrom(const SunLight *light)
 	{
 		specificSunLightGroupBox->show();
 		specificOmnidirectionalLightGroupBox->hide();
@@ -268,7 +268,7 @@ namespace urchin
 		this->directionZ->setValue(light->getDirections()[0].Z);
 	}
 
-	void LightControllerWidget::showAddLightDialog()
+	void LightPanelWidget::showAddLightDialog()
 	{
 		NewLightDialog newSceneLightDialog(this, lightController);
 		newSceneLightDialog.exec();
@@ -282,7 +282,7 @@ namespace urchin
 		}
 	}
 
-	void LightControllerWidget::removeSelectedLight()
+	void LightPanelWidget::removeSelectedLight()
 	{
 		if(lightTableView->hasSceneLightSelected())
 		{
@@ -293,7 +293,7 @@ namespace urchin
 		}
 	}
 
-	void LightControllerWidget::updateLightGeneralProperties()
+	void LightPanelWidget::updateLightGeneralProperties()
 	{
 		if(!disableLightEvent)
 		{
@@ -306,7 +306,7 @@ namespace urchin
 		}
 	}
 
-	void LightControllerWidget::updateLightSpecificProperties()
+	void LightPanelWidget::updateLightSpecificProperties()
 	{
 		if(!disableLightEvent)
 		{

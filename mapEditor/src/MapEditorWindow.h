@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_MAPEDITORWINDOW_H
-#define URCHINENGINE_MAPEDITOR_MAPEDITORWINDOW_H
+#ifndef URCHINENGINE_MAPEDITORWINDOW_H
+#define URCHINENGINE_MAPEDITORWINDOW_H
 
 #include <string>
 #include <map>
@@ -7,7 +7,7 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "scene/SceneDisplayerWidget.h"
-#include "panel/SceneControllerWidget.h"
+#include "panel/ScenePanelWidget.h"
 
 namespace urchin
 {
@@ -53,7 +53,7 @@ namespace urchin
 
 			SceneController *sceneController;
 			SceneDisplayerWidget *sceneDisplayerWidget;
-			SceneControllerWidget *sceneControllerWidget;
+			ScenePanelWidget *scenePanelWidget;
 
 		private slots:
 			void showNewDialog();
@@ -64,7 +64,7 @@ namespace urchin
 			void executeExitAction();
 
 			void executeViewPropertiesChangeAction();
-			SceneControllerWidget::TabName getConcernedTabFor(SceneDisplayer::ViewProperties);
+			ScenePanelWidget::TabName getConcernedTabFor(SceneDisplayer::ViewProperties);
 	};
 
 }

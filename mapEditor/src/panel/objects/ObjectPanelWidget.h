@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_OBJECTCONTROLLERWIDGET_H
-#define URCHINENGINE_MAPEDITOR_OBJECTCONTROLLERWIDGET_H
+#ifndef URCHINENGINE_OBJECTPANELWIDGET_H
+#define URCHINENGINE_OBJECTPANELWIDGET_H
 
 #include <string>
 #include <memory>
@@ -22,13 +22,13 @@
 namespace urchin
 {
 
-	class ObjectControllerWidget : public QWidget, public Observer, public Observable
+	class ObjectPanelWidget : public QWidget, public Observer, public Observable
 	{
 		Q_OBJECT
 
 		public:
-			ObjectControllerWidget();
-			~ObjectControllerWidget() override = default;
+			ObjectPanelWidget();
+			~ObjectPanelWidget() override = default;
 
 			enum NotificationType
 			{

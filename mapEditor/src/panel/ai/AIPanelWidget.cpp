@@ -2,14 +2,14 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 
-#include "AIControllerWidget.h"
+#include "AIPanelWidget.h"
 #include "widget/style/GroupBoxStyleHelper.h"
 #include "widget/style/SpinBoxStyleHelper.h"
 
 namespace urchin
 {
 
-	AIControllerWidget::AIControllerWidget() :
+	AIPanelWidget::AIPanelWidget() :
 			aiController(nullptr),
             agentHeight(nullptr),
             agentRadius(nullptr),
@@ -24,7 +24,7 @@ namespace urchin
 		setupNavMeshAgentBox(mainLayout);
 	}
 
-	void AIControllerWidget::load(AIController *aiController)
+	void AIPanelWidget::load(AIController *aiController)
 	{
 		this->aiController = aiController;
 
@@ -32,12 +32,12 @@ namespace urchin
         setupNavMeshAgentDataFrom(navMeshAgent);
 	}
 
-	void AIControllerWidget::unload()
+	void AIPanelWidget::unload()
 	{
 		aiController = nullptr;
 	}
 
-	void AIControllerWidget::setupNavMeshAgentBox(QVBoxLayout *mainLayout)
+	void AIPanelWidget::setupNavMeshAgentBox(QVBoxLayout *mainLayout)
 	{
 		auto *navMeshAgentGroupBox = new QGroupBox("Nav Mesh Agent");
 		mainLayout->addWidget(navMeshAgentGroupBox);
@@ -84,7 +84,7 @@ namespace urchin
         connect(jumpDistance, SIGNAL(valueChanged(double)), this, SLOT(aiChanged()));
 	}
 
-	void AIControllerWidget::aiChanged()
+	void AIPanelWidget::aiChanged()
 	{
 		if(!disableAIEvent)
 		{
@@ -96,7 +96,7 @@ namespace urchin
 		}
 	}
 
-    void AIControllerWidget::setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
+    void AIPanelWidget::setupNavMeshAgentDataFrom(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
     {
         disableAIEvent = true;
         agentHeight->setValue(navMeshAgent->getAgentHeight());

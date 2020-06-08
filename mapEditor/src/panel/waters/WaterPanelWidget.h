@@ -1,5 +1,5 @@
-#ifndef URCHINENGINE_MAPEDITOR_WATERCONTROLLERWIDGET_H
-#define URCHINENGINE_MAPEDITOR_WATERCONTROLLERWIDGET_H
+#ifndef URCHINENGINE_WATERPANELWIDGET_H
+#define URCHINENGINE_WATERPANELWIDGET_H
 
 #include <string>
 #include <QtWidgets/QVBoxLayout>
@@ -17,13 +17,13 @@
 namespace urchin
 {
 
-    class WaterControllerWidget : public QWidget, public Observer
+    class WaterPanelWidget : public QWidget, public Observer
     {
         Q_OBJECT
 
         public:
-            WaterControllerWidget();
-            ~WaterControllerWidget() override = default;
+            WaterPanelWidget();
+            ~WaterPanelWidget() override = default;
 
             WaterTableView *getWaterTableView() const;
 
