@@ -70,7 +70,7 @@ namespace urchin
 		return tabAI;
 	}
 
-    SceneController *ScenePanelWidget::newMap(SceneController *sceneController)
+    SceneController *ScenePanelWidget::loadMap(SceneController *sceneController)
 	{
 		closeMap();
 		this->sceneController = sceneController;
@@ -81,23 +81,6 @@ namespace urchin
 		tabTerrains->load(sceneController->getTerrainController());
 		tabWaters->load(sceneController->getWaterController());
 		tabSky->load(sceneController->getSkyController());
-		tabSounds->load(sceneController->getSoundController());
-		tabAI->load(sceneController->getAIController());
-
-		return sceneController;
-	}
-
-    SceneController *ScenePanelWidget::openMap(SceneController *sceneController)
-	{
-		closeMap();
-        this->sceneController = sceneController;
-
-		setEnabled(true);
-		tabObjects->load(sceneController->getObjectController());
-		tabLights->load(sceneController->getLightController());
-		tabTerrains->load(sceneController->getTerrainController());
-		tabWaters->load(sceneController->getWaterController());
-        tabSky->load(sceneController->getSkyController());
 		tabSounds->load(sceneController->getSoundController());
 		tabAI->load(sceneController->getAIController());
 

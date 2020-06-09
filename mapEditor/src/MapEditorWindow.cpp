@@ -261,7 +261,7 @@ namespace urchin
 				MapHandler *mapHandler = sceneDisplayerWidget->newMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController = new SceneController(mapHandler);
                 sceneController->forceModified();
-                scenePanelWidget->newMap(sceneController);
+                scenePanelWidget->loadMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(QString::fromStdString(newDialog.getFilename()));
@@ -279,7 +279,7 @@ namespace urchin
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
                 sceneController = new SceneController(mapHandler);
-                scenePanelWidget->openMap(sceneController);
+                scenePanelWidget->loadMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(filename);
