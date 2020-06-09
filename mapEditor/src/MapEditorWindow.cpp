@@ -260,7 +260,7 @@ namespace urchin
 			{
 				MapHandler *mapHandler = sceneDisplayerWidget->newMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController = new SceneController(mapHandler);
-                sceneController->setRelativeWorkingDirectory(newDialog.getRelativeWorkingDirectory());
+                sceneController->forceModified();
                 scenePanelWidget->newMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 

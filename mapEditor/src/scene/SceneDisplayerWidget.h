@@ -8,6 +8,7 @@
 
 #include "UrchinCommon.h"
 #include "SceneDisplayer.h"
+#include "src/controller/SceneController.h"
 #include "widget/controller/statusbar/StatusBarController.h"
 
 namespace urchin
@@ -51,12 +52,13 @@ namespace urchin
 			const std::string &getLastPickedBodyId() const;
 
 		private:
-            MapHandler *loadMap(const std::string &, const std::string &);
+            MapHandler *loadMap(const std::string &, const std::unique_ptr<std::string> &);
 			void updateSceneDisplayerViewProperties();
 
             StatusBarController statusBarController;
 			std::string mapEditorPath;
 
+			SceneController *sceneController; //TODO setup...
 			SceneDisplayer *sceneDisplayer;
 			bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 

@@ -21,9 +21,9 @@ namespace urchin
 			explicit SceneController(MapHandler *);
 			~SceneController() override;
 
-			void setRelativeWorkingDirectory(const std::string &);
 			void addObserverOnAllControllers(Observer *, int);
 
+            void forceModified();
             bool isModified() const override;
             void resetModified() override;
 

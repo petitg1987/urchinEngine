@@ -88,6 +88,7 @@ namespace urchin
 
 			initializeScene(mapFilename);
 			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
+			mapHandler->setRelativeWorkingDirectory(relativeMapResourcesDir);
 
 			isInitialized = true;
 		}catch(std::exception &e)

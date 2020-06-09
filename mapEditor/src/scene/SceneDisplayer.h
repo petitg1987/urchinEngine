@@ -13,7 +13,7 @@
 #include "widget/controller/statusbar/StatusBarController.h"
 #include "scene/SceneFreeCamera.h"
 #include "scene/objects/BodyShapeDisplayer.h"
-#include "scene/objects/ObjectMoveAxisDisplayer.h"
+#include "scene/objects/move/ObjectMoveAxisDisplayer.h"
 #include "scene/lights/LightScopeDisplayer.h"
 #include "scene/sounds/SoundTriggerDisplayer.h"
 

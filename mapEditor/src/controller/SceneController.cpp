@@ -38,13 +38,6 @@ namespace urchin
         }
 	}
 
-	void SceneController::setRelativeWorkingDirectory(const std::string &relativeWorkingDirectory)
-	{
-		getMapHandler()->setRelativeWorkingDirectory(relativeWorkingDirectory);
-
-		markModified();
-	}
-
     void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType)
     {
 	    this->addObserver(observer, notificationType);
@@ -52,6 +45,11 @@ namespace urchin
         {
             subController->addObserver(observer, notificationType);
         }
+    }
+
+    void SceneController::forceModified()
+    {
+         AbstractController::markModified();
     }
 
 	bool SceneController::isModified() const
