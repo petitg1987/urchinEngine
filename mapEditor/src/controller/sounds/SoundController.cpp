@@ -6,8 +6,8 @@
 namespace urchin
 {
 
-	SoundController::SoundController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+	SoundController::SoundController() :
+            AbstractController()
 	{
 
 	}

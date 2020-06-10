@@ -4,8 +4,8 @@
 
 namespace urchin
 {
-    WaterController::WaterController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+    WaterController::WaterController() :
+            AbstractController()
     {
 
     }

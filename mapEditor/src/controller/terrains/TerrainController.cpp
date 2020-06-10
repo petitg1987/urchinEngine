@@ -4,8 +4,8 @@
 
 namespace urchin
 {
-    TerrainController::TerrainController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+    TerrainController::TerrainController() :
+            AbstractController()
     {
 
     }

@@ -6,8 +6,8 @@
 namespace urchin
 {
 
-	AIController::AIController(MapHandler *mapHandler) :
-			AbstractController(mapHandler)
+	AIController::AIController() :
+			AbstractController()
 	{
 
 	}

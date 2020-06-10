@@ -18,9 +18,10 @@ namespace urchin
 	class SceneController : public AbstractController
 	{
 		public:
-			explicit SceneController(MapHandler *);
+			SceneController();
 			~SceneController() override;
 
+            void setup(MapHandler *) override;
 			void addObserverOnAllControllers(Observer *, int);
 
             void forceModified();

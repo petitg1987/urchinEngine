@@ -8,8 +8,8 @@
 namespace urchin
 {
 
-	ObjectController::ObjectController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+	ObjectController::ObjectController() :
+            AbstractController()
 	{
 
 	}

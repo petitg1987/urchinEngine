@@ -12,7 +12,7 @@ namespace urchin
     class SkyController : public AbstractController
     {
         public:
-            explicit SkyController(MapHandler *);
+            SkyController();
 
             const SceneSky *getSceneSky() const;
 

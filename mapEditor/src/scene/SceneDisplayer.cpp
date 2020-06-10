@@ -6,9 +6,10 @@
 namespace urchin
 {
 
-	SceneDisplayer::SceneDisplayer(const MouseController &&mouseController, const StatusBarController &statusBarController) :
+	SceneDisplayer::SceneDisplayer(SceneController *sceneController, const MouseController &mouseController, const StatusBarController &statusBarController) :
 		isInitialized(false),
-        mouseController(std::move(mouseController)),
+        sceneController(sceneController),
+        mouseController(mouseController),
         statusBarController(statusBarController),
 		sceneManager(nullptr),
 		physicsWorld(nullptr),
@@ -127,7 +128,7 @@ namespace urchin
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
-        objectMoveAxisDisplayer = new ObjectMoveAxisDisplayer(sceneManager, statusBarController);
+        objectMoveAxisDisplayer = new ObjectMoveAxisDisplayer(sceneManager, sceneController, statusBarController);
         lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
 

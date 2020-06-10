@@ -258,10 +258,10 @@ namespace urchin
 
 			if(newDialog.result()==QDialog::Accepted)
 			{
-				MapHandler *mapHandler = sceneDisplayerWidget->newMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
-                sceneController = new SceneController(mapHandler);
-                sceneController->forceModified();
+                sceneController = new SceneController();
+				sceneDisplayerWidget->newMap(sceneController, newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 scenePanelWidget->loadMap(sceneController);
+                sceneController->forceModified();
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 
 				updateMapFilename(QString::fromStdString(newDialog.getFilename()));
@@ -277,8 +277,8 @@ namespace urchin
 			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
 			if(!filename.isNull())
 			{
-				MapHandler *mapHandler = sceneDisplayerWidget->openMap(filename.toUtf8().constData());
-                sceneController = new SceneController(mapHandler);
+                sceneController = new SceneController();
+				sceneDisplayerWidget->openMap(sceneController, filename.toUtf8().constData());
                 scenePanelWidget->loadMap(sceneController);
                 sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
 

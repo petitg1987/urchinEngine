@@ -12,7 +12,7 @@ namespace urchin
 	class AIController : public AbstractController
 	{
 		public:
-			explicit AIController(MapHandler *);
+			AIController();
 
 			const SceneAI *getSceneAI() const;
 

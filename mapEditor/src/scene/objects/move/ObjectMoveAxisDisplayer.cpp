@@ -2,8 +2,9 @@
 
 namespace urchin
 {
-    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager, StatusBarController statusBarController) :
+    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager, SceneController *sceneController, StatusBarController statusBarController) :
             sceneManager(sceneManager),
+            sceneController(sceneController),
             statusBarController(std::move(statusBarController)),
             selectedSceneObject(nullptr),
             selectedAxis(-1),
@@ -88,16 +89,11 @@ namespace urchin
     }
 
     void ObjectMoveAxisDisplayer::updateObjectPosition(const Point3<float> &newPosition)
-    { //TODO inform mapEditor of change on object to ask to save (see ObjectController::updateSceneObjectTransform)
-        //TODO update position in right controller...
+    {//TODO update position in right controller...
         Transform<float> transform = selectedSceneObject->getModel()->getTransform();
         transform.setPosition(newPosition);
 
-        selectedSceneObject->getModel()->setTransform(transform);
-        if(selectedSceneObject->getRigidBody())
-        {
-            selectedSceneObject->getRigidBody()->setTransform(transform);
-        }
+        sceneController->getObjectController()->updateSceneObjectTransform(selectedSceneObject, transform);
     }
 
     bool ObjectMoveAxisDisplayer::onMouseLeftButton()

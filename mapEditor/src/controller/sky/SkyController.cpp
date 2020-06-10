@@ -2,8 +2,8 @@
 
 namespace urchin
 {
-    SkyController::SkyController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+    SkyController::SkyController() :
+            AbstractController()
     {
 
     }

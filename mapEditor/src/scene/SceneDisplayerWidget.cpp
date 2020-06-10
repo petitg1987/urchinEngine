@@ -14,7 +14,6 @@ namespace urchin
 			QGLWidget(parent),
             statusBarController(statusBarController),
 			mapEditorPath(std::move(mapEditorPath)),
-			sceneController(nullptr),
 			sceneDisplayer(nullptr),
             viewProperties(),
             mouseX(0),
@@ -45,23 +44,23 @@ namespace urchin
 		delete sceneDisplayer;
 	}
 
-	MapHandler *SceneDisplayerWidget::newMap(const std::string &mapFilename, const std::string &relativeWorkingDirectory)
+	void SceneDisplayerWidget::newMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
 	{
 		closeMap();
-        return loadMap(mapFilename, std::make_unique<std::string>(relativeWorkingDirectory));
+        loadMap(sceneController, mapFilename, std::make_unique<std::string>(relativeWorkingDirectory));
 	}
 
-	MapHandler *SceneDisplayerWidget::openMap(const std::string &mapFilename)
+	void SceneDisplayerWidget::openMap(SceneController *sceneController, const std::string &mapFilename)
 	{
 		closeMap();
-		return loadMap(mapFilename, std::unique_ptr<std::string>(nullptr));
+		loadMap(sceneController, mapFilename, std::unique_ptr<std::string>(nullptr));
 	}
 
-    MapHandler *SceneDisplayerWidget::loadMap(const std::string &mapFilename, const std::unique_ptr<std::string> &relativeWorkingDirectory)
+    void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::unique_ptr<std::string> &relativeWorkingDirectory)
     {
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
-        sceneDisplayer = new SceneDisplayer(MouseController(this), statusBarController);
+        sceneDisplayer = new SceneDisplayer(sceneController, MouseController(this), statusBarController);
         if(relativeWorkingDirectory)
         {
             sceneDisplayer->initializeFromNewMap(mapEditorPath, mapFilename, *relativeWorkingDirectory);
@@ -70,9 +69,8 @@ namespace urchin
             sceneDisplayer->initializeFromExistingMap(mapEditorPath, mapFilename);
         }
         sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
+        sceneController->setup(sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
-
-        return sceneDisplayer->getMapHandler();
     }
 
 	void SceneDisplayerWidget::saveState(const std::string &mapFilename) const

@@ -11,6 +11,7 @@
 
 #include "widget/controller/mouse/MouseController.h"
 #include "widget/controller/statusbar/StatusBarController.h"
+#include "controller/SceneController.h"
 #include "scene/SceneFreeCamera.h"
 #include "scene/objects/BodyShapeDisplayer.h"
 #include "scene/objects/move/ObjectMoveAxisDisplayer.h"
@@ -33,7 +34,7 @@ namespace urchin
 				LAST_VIEW_PROPERTIES
 			};
 
-			SceneDisplayer(const MouseController &&, const StatusBarController &);
+			SceneDisplayer(SceneController *, const MouseController &, const StatusBarController &);
 			~SceneDisplayer();
 
 			void initializeFromExistingMap(const std::string &, const std::string &);
@@ -65,6 +66,7 @@ namespace urchin
 			void refreshNavMeshModel();
 
 			bool isInitialized;
+			SceneController *sceneController;
             MouseController mouseController;
             StatusBarController statusBarController;
 

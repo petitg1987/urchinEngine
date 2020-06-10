@@ -27,8 +27,8 @@ namespace urchin
 				BODY_PICKED
 			};
 
-			MapHandler *newMap(const std::string &, const std::string &);
-			MapHandler *openMap(const std::string &);
+			void newMap(SceneController *, const std::string &, const std::string &);
+			void openMap(SceneController *, const std::string &);
 			void saveState(const std::string &) const;
 			void closeMap();
 
@@ -52,13 +52,12 @@ namespace urchin
 			const std::string &getLastPickedBodyId() const;
 
 		private:
-            MapHandler *loadMap(const std::string &, const std::unique_ptr<std::string> &);
+            void loadMap(SceneController *, const std::string &, const std::unique_ptr<std::string> &);
 			void updateSceneDisplayerViewProperties();
 
             StatusBarController statusBarController;
 			std::string mapEditorPath;
 
-			SceneController *sceneController; //TODO setup...
 			SceneDisplayer *sceneDisplayer;
 			bool viewProperties[SceneDisplayer::LAST_VIEW_PROPERTIES];
 

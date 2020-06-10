@@ -14,7 +14,7 @@ namespace urchin
     class TerrainController : public AbstractController
     {
         public:
-            explicit TerrainController(MapHandler *);
+            TerrainController();
 
             std::list<const SceneTerrain *> getSceneTerrains() const;
             void addSceneTerrain(SceneTerrain *);

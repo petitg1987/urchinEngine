@@ -14,7 +14,7 @@ namespace urchin
     class WaterController : public AbstractController
     {
         public:
-            explicit WaterController(MapHandler *);
+            WaterController();
 
             std::list<const SceneWater *> getSceneWaters() const;
             void addSceneWater(SceneWater *);

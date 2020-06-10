@@ -2,11 +2,17 @@
 
 namespace urchin
 {
-    AbstractController::AbstractController(MapHandler *mapHandler) :
+    AbstractController::AbstractController() :
         bIsModified(false),
-        mapHandler(mapHandler)
+        mapHandler(nullptr)
     {
 
+    }
+
+
+    void AbstractController::setup(MapHandler *mapHandler)
+    {
+        this->mapHandler = mapHandler;
     }
 
     bool AbstractController::isModified() const

@@ -5,8 +5,8 @@
 namespace urchin
 {
 
-	LightController::LightController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+	LightController::LightController() :
+            AbstractController()
 	{
 
 	}

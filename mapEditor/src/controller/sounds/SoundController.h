@@ -14,7 +14,7 @@ namespace urchin
 	class SoundController : public AbstractController
 	{
 		public:
-			explicit SoundController(MapHandler *);
+			SoundController();
 
 			std::list<const SceneSound *> getSceneSounds() const;
 			void addSceneSound(SceneSound *);

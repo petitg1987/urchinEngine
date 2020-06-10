@@ -4,6 +4,7 @@
 #include "Urchin3dEngine.h"
 #include "UrchinMapHandler.h"
 
+#include "controller/SceneController.h"
 #include "widget/controller/statusbar/StatusBarController.h"
 
 namespace urchin
@@ -12,7 +13,7 @@ namespace urchin
     class ObjectMoveAxisDisplayer
     {
         public:
-            ObjectMoveAxisDisplayer(SceneManager *, StatusBarController);
+            ObjectMoveAxisDisplayer(SceneManager *, SceneController *, StatusBarController);
             ~ObjectMoveAxisDisplayer();
 
             void onCtrlXYZ(unsigned int);
@@ -33,6 +34,7 @@ namespace urchin
             void updateObjectPosition(const Point3<float> &);
 
             SceneManager *sceneManager;
+            SceneController *sceneController;
             StatusBarController statusBarController;
             std::vector<GeometryModel *> objectMoveAxisModels;
 

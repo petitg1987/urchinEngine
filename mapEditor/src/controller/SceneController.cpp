@@ -5,28 +5,28 @@
 namespace urchin
 {
 
-	SceneController::SceneController(MapHandler *mapHandler) :
-            AbstractController(mapHandler)
+	SceneController::SceneController() :
+            AbstractController()
 	{
-		objectController = new ObjectController(mapHandler);
+		objectController = new ObjectController();
         subControllers.emplace_back(objectController);
 
-		lightController = new LightController(mapHandler);
+		lightController = new LightController();
         subControllers.emplace_back(lightController);
 
-		terrainController = new TerrainController(mapHandler);
+		terrainController = new TerrainController();
         subControllers.emplace_back(terrainController);
 
-		waterController = new WaterController(mapHandler);
+		waterController = new WaterController();
         subControllers.emplace_back(waterController);
 
-		skyController = new SkyController(mapHandler);
+		skyController = new SkyController();
         subControllers.emplace_back(skyController);
 
-		soundController = new SoundController(mapHandler);
+		soundController = new SoundController();
         subControllers.emplace_back(soundController);
 
-		aiController = new AIController(mapHandler);
+		aiController = new AIController();
         subControllers.emplace_back(aiController);
 	}
 
@@ -37,6 +37,19 @@ namespace urchin
 	        delete subController;
         }
 	}
+
+	void SceneController::setup(MapHandler *mapHandler)
+    {
+        AbstractController::setup(mapHandler);
+
+        objectController->setup(mapHandler);
+        lightController->setup(mapHandler);
+        terrainController->setup(mapHandler);
+        waterController->setup(mapHandler);
+        skyController->setup(mapHandler);
+        soundController->setup(mapHandler);
+        aiController->setup(mapHandler);
+    }
 
     void SceneController::addObserverOnAllControllers(Observer *observer, int notificationType)
     {

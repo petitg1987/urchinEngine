@@ -14,7 +14,7 @@ namespace urchin
 	class ObjectController : public AbstractController
 	{
 		public:
-			explicit ObjectController(MapHandler *);
+			ObjectController();
 
 			std::list<const SceneObject *> getSceneObjects() const;
 			const SceneObject *findSceneObjectByBodyId(const std::string &) const;

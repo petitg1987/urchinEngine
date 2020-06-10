@@ -14,7 +14,7 @@ namespace urchin
 	class LightController : public AbstractController
 	{
 		public:
-			explicit LightController(MapHandler *);
+			LightController();
 
 			std::list<const SceneLight *> getSceneLights() const;
 			void addSceneLight(SceneLight *);
