@@ -14,7 +14,7 @@
 #include "controller/SceneController.h"
 #include "scene/SceneFreeCamera.h"
 #include "scene/objects/BodyShapeDisplayer.h"
-#include "scene/objects/move/ObjectMoveAxisDisplayer.h"
+#include "scene/objects/move/ObjectMoveController.h"
 #include "scene/lights/LightScopeDisplayer.h"
 #include "scene/sounds/SoundTriggerDisplayer.h"
 
@@ -54,7 +54,7 @@ namespace urchin
 			MapHandler *getMapHandler() const;
 
             BodyShapeDisplayer *getBodyShapeDisplayer() const;
-            ObjectMoveAxisDisplayer *getObjectMoveAxisDisplayer() const;
+            ObjectMoveController *getObjectMoveController() const;
 
 		private:
 			void initializeEngineResources(const std::string &);
@@ -74,7 +74,7 @@ namespace urchin
 			SceneManager *sceneManager;
 			SceneFreeCamera *camera;
 			BodyShapeDisplayer *bodyShapeDisplayer;
-			ObjectMoveAxisDisplayer *objectMoveAxisDisplayer;
+            ObjectMoveController *objectMoveController;
 			LightScopeDisplayer *lightScopeDisplayer;
 			SoundTriggerDisplayer *soundTriggerDisplayer;
 

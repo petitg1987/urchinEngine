@@ -2,14 +2,8 @@
 
 namespace urchin
 {
-    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager, SceneController *sceneController, StatusBarController statusBarController) :
-            sceneManager(sceneManager),
-            sceneController(sceneController),
-            statusBarController(std::move(statusBarController)),
-            selectedSceneObject(nullptr),
-            selectedAxis(-1),
-            oldMouseX(-1),
-            oldMouseY(-1)
+    ObjectMoveAxisDisplayer::ObjectMoveAxisDisplayer(SceneManager *sceneManager) :
+            sceneManager(sceneManager)
     {
 
     }
@@ -19,140 +13,18 @@ namespace urchin
         cleanCurrentDisplay();
     }
 
-    void ObjectMoveAxisDisplayer::onCtrlXYZ(unsigned int axisIndex)
-    {
-        if(selectedAxis == -1)
-        {
-            savedPosition = selectedSceneObject->getModel()->getTransform().getPosition();
-        }
-
-        selectedAxis = axisIndex;
-        statusBarController.applyState(StatusBarState::OBJECT_MOVE);
-    }
-
-    bool ObjectMoveAxisDisplayer::onMouseMove(int mouseX, int mouseY)
-    {
-        bool propagateEvent = true;
-        if(selectedAxis != -1)
-        {
-            if(oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved())
-            {
-                moveObject(Point2<float>(oldMouseX, oldMouseY), Point2<float>(mouseX, mouseY));
-            }
-
-            propagateEvent = false;
-        }
-
-        this->oldMouseX = mouseX;
-        this->oldMouseY = mouseY;
-        this->oldCameraViewMatrix = sceneManager->getActiveRenderer3d()->getCamera()->getViewMatrix();
-
-        return propagateEvent;
-    }
-
-    bool ObjectMoveAxisDisplayer::isCameraMoved() const
-    {
-        Camera *camera = sceneManager->getActiveRenderer3d()->getCamera();
-        for(unsigned int i=0; i<16; ++i)
-        {
-            if(this->oldCameraViewMatrix(i) != camera->getViewMatrix()(i))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    void ObjectMoveAxisDisplayer::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
-    { //TODO improve move based on mouse speed
-        Point3<float> objectPosition = selectedSceneObject->getModel()->getTransform().getPosition();
-        CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
-
-        Point3<float> startAxisWorldSpacePoint = objectPosition;
-        startAxisWorldSpacePoint[selectedAxis] -= 1.0f;
-        Point2<float> startAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(startAxisWorldSpacePoint);
-
-        Point3<float> endAxisWorldSpacePoint = objectPosition;
-        endAxisWorldSpacePoint[selectedAxis] += 1.0f;
-        Point2<float> endAxisPointScreenSpace = cameraSpaceService.worldSpacePointToScreenSpace(endAxisWorldSpacePoint);
-
-        Vector2<float> mouseVector = oldMouseCoord.vector(newMouseCoord);
-        Vector2<float> axisVector = startAxisPointScreenSpace.vector(endAxisPointScreenSpace);
-
-        float moveFactor = axisVector.normalize().dotProduct(mouseVector);
-        float moveSpeed = sceneManager->getActiveRenderer3d()->getCamera()->getPosition().distance(objectPosition);
-        float moveReduceFactor = 0.001f;
-
-        Point3<float> newPosition = objectPosition;
-        newPosition[selectedAxis] += moveFactor * moveSpeed * moveReduceFactor;
-        updateObjectPosition(newPosition);
-    }
-
-    void ObjectMoveAxisDisplayer::updateObjectPosition(const Point3<float> &newPosition)
-    {//TODO update position in right controller...
-        Transform<float> transform = selectedSceneObject->getModel()->getTransform();
-        transform.setPosition(newPosition);
-
-        sceneController->getObjectController()->updateSceneObjectTransform(selectedSceneObject, transform);
-    }
-
-    bool ObjectMoveAxisDisplayer::onMouseLeftButton()
-    {
-        bool propagateEvent = true;
-
-        if(selectedAxis != -1)
-        {
-            statusBarController.applyPreviousState();
-            selectedAxis = -1;
-            propagateEvent = false;
-        }
-
-        return propagateEvent;
-    }
-
-    bool ObjectMoveAxisDisplayer::onEscapeKey()
-    {
-        bool propagateEvent = true;
-        if(selectedAxis != -1)
-        {
-            updateObjectPosition(savedPosition);
-
-            statusBarController.applyPreviousState();
-            selectedAxis = -1;
-            propagateEvent = false;
-        }
-        return propagateEvent;
-    }
-
-    void ObjectMoveAxisDisplayer::setSelectedSceneObject(const SceneObject *selectedSceneObject)
-    {
-        this->selectedSceneObject = selectedSceneObject;
-        this->selectedAxis = -1;
-
-        if(selectedSceneObject)
-        {
-            statusBarController.applyState(StatusBarState::OBJECT_SELECTED);
-        }else
-        {
-            statusBarController.applyPreviousState();
-        }
-    }
-
-    void ObjectMoveAxisDisplayer::displayAxis()
+    void ObjectMoveAxisDisplayer::displayAxis(const Point3<float> &position, unsigned int selectedAxis)
     {
         cleanCurrentDisplay();
 
-        if (selectedSceneObject)
-        {
-            GeometryModel *xLine = createAxisModel(selectedSceneObject->getModel(), 0);
-            xLine->setColor(1.0, 0.0, 0.0, selectedAxis==0 ? 1.0f : 0.5f);
+        GeometryModel *xLine = createAxisModel(position, selectedAxis, 0);
+        xLine->setColor(1.0, 0.0, 0.0, selectedAxis==0 ? 1.0f : 0.5f);
 
-            GeometryModel *yLine = createAxisModel(selectedSceneObject->getModel(), 1);
-            yLine->setColor(0.0, 1.0, 0.0, selectedAxis==1 ? 1.0f : 0.5f);
+        GeometryModel *yLine = createAxisModel(position, selectedAxis, 1);
+        yLine->setColor(0.0, 1.0, 0.0, selectedAxis==1 ? 1.0f : 0.5f);
 
-            GeometryModel *zLine = createAxisModel(selectedSceneObject->getModel(), 2);
-            zLine->setColor(0.0, 0.0, 1.0, selectedAxis==2 ? 1.0f : 0.5f);
-        }
+        GeometryModel *zLine = createAxisModel(position, selectedAxis, 2);
+        zLine->setColor(0.0, 0.0, 1.0, selectedAxis==2 ? 1.0f : 0.5f);
 
         for (auto &objectMoveAxisModel : objectMoveAxisModels)
         {
@@ -171,12 +43,12 @@ namespace urchin
         objectMoveAxisModels.clear();
     }
 
-    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(Model *model, unsigned int axisIndex)
+    GeometryModel *ObjectMoveAxisDisplayer::createAxisModel(const Point3<float> &position, unsigned int selectedAxis, unsigned int axisIndex)
     {
-        Point3<float> startPoint = model->getTransform().getPosition();
+        Point3<float> startPoint = position;
         startPoint[axisIndex] -= 500.0f;
 
-        Point3<float> endPoint = model->getTransform().getPosition();
+        Point3<float> endPoint = position;
         endPoint[axisIndex] += 500.0f;
 
         LineSegment3D<float> axeLineSegment(startPoint, endPoint);

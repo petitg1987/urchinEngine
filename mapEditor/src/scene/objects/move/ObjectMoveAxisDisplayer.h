@@ -13,37 +13,17 @@ namespace urchin
     class ObjectMoveAxisDisplayer
     {
         public:
-            ObjectMoveAxisDisplayer(SceneManager *, SceneController *, StatusBarController);
+            ObjectMoveAxisDisplayer(SceneManager *);
             ~ObjectMoveAxisDisplayer();
 
-            void onCtrlXYZ(unsigned int);
-            bool onMouseMove(int, int);
-            bool onMouseLeftButton();
-            bool onEscapeKey();
-
-            void setSelectedSceneObject(const SceneObject *);
-
-            void displayAxis();
-
-        private:
-            GeometryModel *createAxisModel(Model *, unsigned int);
+            void displayAxis(const Point3<float> &, unsigned int);
             void cleanCurrentDisplay();
 
-            bool isCameraMoved() const;
-            void moveObject(const Point2<float> &, const Point2<float> &);
-            void updateObjectPosition(const Point3<float> &);
+        private:
+            GeometryModel *createAxisModel(const Point3<float> &, unsigned int, unsigned int);
 
             SceneManager *sceneManager;
-            SceneController *sceneController;
-            StatusBarController statusBarController;
             std::vector<GeometryModel *> objectMoveAxisModels;
-
-            const SceneObject *selectedSceneObject;
-            int selectedAxis;
-            Point3<float> savedPosition;
-
-            int oldMouseX, oldMouseY;
-            Matrix4<float> oldCameraViewMatrix;
     };
 
 }

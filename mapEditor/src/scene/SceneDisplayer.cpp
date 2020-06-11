@@ -18,7 +18,7 @@ namespace urchin
 		camera(nullptr),
 		mapHandler(nullptr),
 		bodyShapeDisplayer(nullptr),
-        objectMoveAxisDisplayer(nullptr),
+        objectMoveController(nullptr),
 		lightScopeDisplayer(nullptr),
 		soundTriggerDisplayer(nullptr),
 		navMeshDisplayer(nullptr),
@@ -41,7 +41,7 @@ namespace urchin
         delete physicsWorld;
 
         delete bodyShapeDisplayer;
-        delete objectMoveAxisDisplayer;
+        delete objectMoveController;
         delete lightScopeDisplayer;
         delete soundTriggerDisplayer;
         delete navMeshDisplayer;
@@ -128,7 +128,7 @@ namespace urchin
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
-        objectMoveAxisDisplayer = new ObjectMoveAxisDisplayer(sceneManager, sceneController, statusBarController);
+        objectMoveController = new ObjectMoveController(sceneManager, sceneController, statusBarController);
         lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
 
@@ -158,7 +158,7 @@ namespace urchin
             this->highlightSceneObject = highlightSceneObject;
 
             bodyShapeDisplayer->setSelectedSceneObject(highlightSceneObject);
-            objectMoveAxisDisplayer->setSelectedSceneObject(highlightSceneObject);
+            objectMoveController->setSelectedSceneObject(highlightSceneObject);
         }
 	}
 
@@ -179,7 +179,7 @@ namespace urchin
             bodyShapeDisplayer->displayBodyShape();
         }
 
-        objectMoveAxisDisplayer->displayAxis();
+        objectMoveController->displayAxis();
 	}
 
 	void SceneDisplayer::refreshLightScopeModel()
@@ -272,9 +272,9 @@ namespace urchin
 	    return bodyShapeDisplayer;
     }
 
-    ObjectMoveAxisDisplayer *SceneDisplayer::getObjectMoveAxisDisplayer() const
+    ObjectMoveController *SceneDisplayer::getObjectMoveController() const
     {
-	    return objectMoveAxisDisplayer;
+	    return objectMoveController;
     }
 
 }
