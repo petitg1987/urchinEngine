@@ -34,11 +34,10 @@ namespace urchin
 
 	void MapHandler::loadMapFromFile(const std::string &filename, LoadCallback &loadCallback)
 	{
-		XmlParser xmlParser(filename);
+        XmlParser xmlParser(filename);
 
-		this->relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
-
-		map->loadFrom(xmlParser.getRootChunk(), xmlParser, loadCallback);
+        relativeWorkingDirectory = xmlParser.getRootChunk()->getAttributeValue(WORKING_DIR_ATTR);
+        map->loadFrom(xmlParser.getRootChunk(), xmlParser, loadCallback);
 	}
 
 	void MapHandler::writeMapOnFile(const std::string &filename) const

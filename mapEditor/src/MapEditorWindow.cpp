@@ -259,9 +259,7 @@ namespace urchin
 
 			if(newDialog.result()==QDialog::Accepted)
 			{
-                sceneController = new SceneController();
-				sceneDisplayerWidget->newMap(sceneController, newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
-                loadMap(QString::fromStdString(newDialog.getFilename()));
+                loadMap(newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
                 sceneController->forceModified();
 			}
 		}
@@ -274,20 +272,24 @@ namespace urchin
 			QString filename = QFileDialog::getOpenFileName(this, tr("Open file"), getPreferredMapPath(), "XML file (*.xml)", nullptr, QFileDialog::DontUseNativeDialog);
 			if(!filename.isNull())
 			{
-                sceneController = new SceneController();
-				sceneDisplayerWidget->openMap(sceneController, filename.toUtf8().constData());
-                loadMap(filename);
+			    std::string mapFilename = filename.toUtf8().constData();
+                std::string relativeWorkingDirectory = MapHandler::getRelativeWorkingDirectory(mapFilename);
+                loadMap(mapFilename, relativeWorkingDirectory);
 			}
 		}
 	}
 
-	void MapEditorWindow::loadMap(const QString &qMapFilename)
+	void MapEditorWindow::loadMap(const std::string &mapFilename, const std::string &relativeWorkingDirectory)
     {
+        sceneController = new SceneController();
+
+        sceneDisplayerWidget->loadMap(sceneController, mapFilename, relativeWorkingDirectory);
         scenePanelWidget->loadMap(sceneController);
+
         sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
         sceneDisplayerWidget->addObserverObjectMoveController(scenePanelWidget->getObjectPanelWidget(), ObjectMoveController::OBJECT_MOVED);
 
-        updateMapFilename(qMapFilename);
+        updateMapFilename(mapFilename);
         updateInterfaceState();
     }
 
@@ -320,7 +322,7 @@ namespace urchin
                 sceneController->saveMapOnFile(filenameString);
             }
 
-			updateMapFilename(QString::fromStdString(filenameString));
+			updateMapFilename(filenameString);
             updateInterfaceState();
 		}
 	}
@@ -400,9 +402,9 @@ namespace urchin
         refreshWindowTitle();
 	}
 
-	void MapEditorWindow::updateMapFilename(const QString &qMapFilename)
+	void MapEditorWindow::updateMapFilename(const std::string &mapFilename)
 	{
-		mapFilename = qMapFilename.toUtf8().constData();
+		this->mapFilename = mapFilename;
 
         if(!mapFilename.empty())
 		{

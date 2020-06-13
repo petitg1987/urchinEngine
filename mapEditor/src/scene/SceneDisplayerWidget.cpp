@@ -44,30 +44,13 @@ namespace urchin
 		delete sceneDisplayer;
 	}
 
-	void SceneDisplayerWidget::newMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
-	{
-		closeMap();
-        loadMap(sceneController, mapFilename, std::make_unique<std::string>(relativeWorkingDirectory));
-	}
-
-	void SceneDisplayerWidget::openMap(SceneController *sceneController, const std::string &mapFilename)
-	{
-		closeMap();
-		loadMap(sceneController, mapFilename, std::unique_ptr<std::string>(nullptr));
-	}
-
-    void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::unique_ptr<std::string> &relativeWorkingDirectory)
+    void SceneDisplayerWidget::loadMap(SceneController *sceneController, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
     {
+        closeMap();
         statusBarController.applyState(StatusBarState::MAP_LOADED);
 
         sceneDisplayer = new SceneDisplayer(sceneController, MouseController(this), statusBarController);
-        if(relativeWorkingDirectory)
-        {
-            sceneDisplayer->initializeFromNewMap(mapEditorPath, mapFilename, *relativeWorkingDirectory);
-        }else
-        {
-            sceneDisplayer->initializeFromExistingMap(mapEditorPath, mapFilename);
-        }
+        sceneDisplayer->loadMap(mapEditorPath, mapFilename, relativeWorkingDirectory);
         sceneDisplayer->resize(static_cast<unsigned int>(geometry().width()), static_cast<unsigned int>(geometry().height()));
         sceneController->setup(sceneDisplayer->getMapHandler());
         updateSceneDisplayerViewProperties();
@@ -281,7 +264,7 @@ namespace urchin
             propagateEvent = false;
         } else
         {
-            lastPickedBodyId = nullptr;
+            lastPickedBodyId = "";
             notifyObservers(this, BODY_PICKED);
         }
 

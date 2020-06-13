@@ -60,7 +60,7 @@ namespace urchin
     }
 
     void ObjectMoveController::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
-    { //TODO improve move based on mouse speed
+    { //TODO improve move based on mouse speed + move mouse cursor on screen center
         Point3<float> objectPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 

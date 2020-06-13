@@ -27,8 +27,7 @@ namespace urchin
 				BODY_PICKED
 			};
 
-			void newMap(SceneController *, const std::string &, const std::string &);
-			void openMap(SceneController *, const std::string &);
+            void loadMap(SceneController *, const std::string &, const std::string &);
 			void saveState(const std::string &) const;
 			void closeMap();
 
@@ -53,7 +52,6 @@ namespace urchin
 			void addObserverObjectMoveController(Observer *, int);
 
 		private:
-            void loadMap(SceneController *, const std::string &, const std::unique_ptr<std::string> &);
 			void updateSceneDisplayerViewProperties();
 
             StatusBarController statusBarController;

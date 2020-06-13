@@ -51,55 +51,37 @@ namespace urchin
 		SingletonManager::destroyAllSingletons();
 	}
 
-	void SceneDisplayer::initializeFromExistingMap(const std::string &mapEditorPath, const std::string &mapFilename)
-	{
-		try
-		{
-			initializeEngineResources(mapEditorPath);
-			std::string relativeMapResourcesDir = MapHandler::getRelativeWorkingDirectory(mapFilename);
-			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapResourcesDir);
-			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
+	void SceneDisplayer::loadMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeWorkingDirectory)
+    {
+        try
+        {
+            initializeEngineResources(mapEditorPath);
+            std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeWorkingDirectory);
+            FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
 
-			initializeScene(mapFilename);
+            initializeScene(mapFilename);
 
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
-			std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
-			NullLoadCallback nullLoadCallback;
-			mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
-			physicsWorld->play();
-			aiManager->play();
+            mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
+            mapHandler->setRelativeWorkingDirectory(relativeWorkingDirectory);
+            std::string relativeMapFilename = FileHandler::getRelativePath(mapResourcesDirectory, mapFilename);
+            std::ifstream streamMapFile(FileSystem::instance()->getResourcesDirectory() + relativeMapFilename);
+            if (streamMapFile)
+            { //existing map
+                NullLoadCallback nullLoadCallback;
+                mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
+            }
+            physicsWorld->play();
+            aiManager->play();
 
-			isInitialized = true;
-		}catch(std::exception &e)
-		{
-			Logger::logger().logError("Error occurred during map initialization: " + std::string(e.what()));
+            isInitialized = true;
+        }catch(std::exception &e)
+        {
+            Logger::logger().logError("Error occurred during map load: " + std::string(e.what()));
             QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
-			this->~SceneDisplayer();
-			exit(1);
-		}
-	}
-
-	void SceneDisplayer::initializeFromNewMap(const std::string &mapEditorPath, const std::string &mapFilename, const std::string &relativeMapResourcesDir)
-	{
-		try
-		{
-			initializeEngineResources(mapEditorPath);
-			std::string mapResourcesDirectory = FileHandler::simplifyDirectoryPath(FileHandler::getDirectoryFrom(mapFilename) + relativeMapResourcesDir);
-			FileSystem::instance()->setupResourcesDirectory(mapResourcesDirectory);
-
-			initializeScene(mapFilename);
-			mapHandler = new MapHandler(sceneManager->getActiveRenderer3d(), physicsWorld, soundManager, aiManager);
-			mapHandler->setRelativeWorkingDirectory(relativeMapResourcesDir);
-
-			isInitialized = true;
-		}catch(std::exception &e)
-		{
-			Logger::logger().logError("Error occurred during map creation: " + std::string(e.what()));
-			QMessageBox::critical(nullptr, "Error", "Unexpected error occurred. Check log file for more details.");
-			this->~SceneDisplayer();
-			exit(1);
-		}
-	}
+            this->~SceneDisplayer();
+            exit(1);
+        }
+    }
 
 	void SceneDisplayer::initializeEngineResources(const std::string &mapEditorPath)
 	{

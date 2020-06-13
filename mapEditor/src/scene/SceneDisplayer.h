@@ -37,8 +37,7 @@ namespace urchin
 			SceneDisplayer(SceneController *, const MouseController &, const StatusBarController &);
 			~SceneDisplayer();
 
-			void initializeFromExistingMap(const std::string &, const std::string &);
-			void initializeFromNewMap(const std::string &, const std::string &, const std::string &);
+            void loadMap(const std::string &, const std::string &, const std::string &);
 
 			void setViewProperties(SceneDisplayer::ViewProperties, bool);
 			void setHighlightSceneObject(const SceneObject *);
