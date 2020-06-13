@@ -87,4 +87,4 @@
 	- **QUALITY IMPROVEMENT** (`medium`): Make objects without physics selectable with left click
 	- **NEW FEATURE** (`medium`): Display box around objects which don't have mesh (allow to select them easily with left click)
 - UI
-	- **NEW FEATURE** (`minor`): Allow CTRL+Y to return in previous value
+	- **NEW FEATURE** (`minor`): Allow undo on actions
