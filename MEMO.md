@@ -1,4 +1,4 @@
-# Global
+# Engine memo
 - Coordinates:
     - 3D (e.g.: *3D models, Physics rigid bodies, 3D Nav mesh*)
         - X+ (left), X- (right)
@@ -7,6 +7,8 @@
     - 2D top view (e.g.: *2D Nav mesh*)
         - X+ (left), X- (right)
         - Y+ (far), Y- (near)
+
+# Development tips
 - Error handling:
     - Use exception (`throw std::runtime_error(...)`) for methods which could be wrongly used by the final user
     - Use assert (`assert(...)`) for methods which could be wrongly used by the engine developer
@@ -24,8 +26,8 @@
             return std::malloc(sz);
         }
         ```
-    
-# Games rendering info
+
+# Third party games
 - Mesh
 	- Call Of Duty 4: characters of 6000 triangles + normal mapping
 	- Crysis 1: scene with 500 000 to 1 million of triangles displayed
