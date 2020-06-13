@@ -293,6 +293,12 @@ namespace urchin
 		return lastPickedBodyId;
 	}
 
+    void SceneDisplayerWidget::addObserverObjectMoveController(Observer *observer, int notificationType)
+    {
+        assert(sceneDisplayer != nullptr);
+        sceneDisplayer->getObjectMoveController()->addObserver(observer, notificationType);
+    }
+
     void SceneDisplayerWidget::onCtrlXPressed()
     {
         if(sceneDisplayer)

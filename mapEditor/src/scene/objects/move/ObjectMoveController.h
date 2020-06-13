@@ -1,6 +1,7 @@
 #ifndef URCHINENGINE_OBJECTMOVECONTROLLER_H
 #define URCHINENGINE_OBJECTMOVECONTROLLER_H
 
+#include "UrchinCommon.h"
 #include "Urchin3dEngine.h"
 #include "UrchinMapHandler.h"
 
@@ -11,10 +12,15 @@
 namespace urchin
 {
 
-    class ObjectMoveController
+    class ObjectMoveController : public Observable
     {
         public:
             ObjectMoveController(SceneManager *, SceneController *, StatusBarController);
+
+            enum NotificationType
+            {
+                OBJECT_MOVED
+            };
 
             void onCtrlXYZ(unsigned int);
             bool onMouseMove(int, int);
@@ -22,6 +28,7 @@ namespace urchin
             bool onEscapeKey();
 
             void setSelectedSceneObject(const SceneObject *);
+            const SceneObject *getSelectedSceneObject() const;
 
             void displayAxis();
 

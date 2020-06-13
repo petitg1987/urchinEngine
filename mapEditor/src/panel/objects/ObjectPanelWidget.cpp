@@ -11,6 +11,7 @@
 #include "panel/objects/dialog/ChangeBodyShapeDialog.h"
 #include "panel/objects/bodyshape/BodyShapeWidgetRetriever.h"
 #include "scene/SceneDisplayerWidget.h"
+#include "scene/objects/move/ObjectMoveController.h"
 
 namespace urchin
 {
@@ -437,7 +438,13 @@ namespace urchin
                     this->objectTableView->clearSelection();
                 }
             }
-		}
+		}else if(auto *objectMoveController = dynamic_cast<ObjectMoveController *>(observable))
+        {
+            if(notificationType==ObjectMoveController::OBJECT_MOVED)
+            {
+                setupObjectDataFrom(objectMoveController->getSelectedSceneObject());
+            }
+        }
 	}
 
 	void ObjectPanelWidget::setupObjectDataFrom(const SceneObject *sceneObject)

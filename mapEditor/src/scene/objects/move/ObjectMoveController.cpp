@@ -85,11 +85,12 @@ namespace urchin
     }
 
     void ObjectMoveController::updateObjectPosition(const Point3<float> &newPosition)
-    {//TODO update position in right controller...
+    {
         Transform<float> transform = selectedSceneObject->getModel()->getTransform();
         transform.setPosition(newPosition);
 
         sceneController->getObjectController()->updateSceneObjectTransform(selectedSceneObject, transform);
+        notifyObservers(this, NotificationType::OBJECT_MOVED);
     }
 
     bool ObjectMoveController::onMouseLeftButton()
@@ -132,6 +133,11 @@ namespace urchin
         {
             statusBarController.applyPreviousState();
         }
+    }
+
+    const SceneObject *ObjectMoveController::getSelectedSceneObject() const
+    {
+        return selectedSceneObject;
     }
 
     void ObjectMoveController::displayAxis()

@@ -16,6 +16,7 @@ namespace urchin
 
 			void addObserver(Observer *, int) const;
 			void removeObserver(Observer *, int) const;
+
 			void notifyObservers(Observable *, int);
 
 		private:

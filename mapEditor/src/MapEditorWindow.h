@@ -31,10 +31,11 @@ namespace urchin
             QString getPreferredMapPath();
             void savePreferredMapPath(const std::string &);
 
+            void loadMap(const QString &);
 			bool checkCurrentMapSaved();
-			void updateInterfaceState(bool);
-			void updateMapFilename(const QString&);
-            void refreshWindowTitle(bool);
+			void updateInterfaceState();
+			void updateMapFilename(const QString &);
+            void refreshWindowTitle();
 
 			void notify(Observable *, int) override;
 			void handleCompoundShapeSelectionChange(Observable *, int);

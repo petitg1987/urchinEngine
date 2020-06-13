@@ -50,6 +50,7 @@ namespace urchin
 
             bool onMouseClickBodyPickup();
 			const std::string &getLastPickedBodyId() const;
+			void addObserverObjectMoveController(Observer *, int);
 
 		private:
             void loadMap(SceneController *, const std::string &, const std::unique_ptr<std::string> &);

@@ -220,7 +220,8 @@ namespace urchin
         {
 		    if(notificationType==AbstractController::CHANGES_DONE)
             {
-                refreshWindowTitle(true);
+                refreshWindowTitle();
+
             }
         }else
         {
@@ -260,12 +261,8 @@ namespace urchin
 			{
                 sceneController = new SceneController();
 				sceneDisplayerWidget->newMap(sceneController, newDialog.getFilename(), newDialog.getRelativeWorkingDirectory());
-                scenePanelWidget->loadMap(sceneController);
+                loadMap(QString::fromStdString(newDialog.getFilename()));
                 sceneController->forceModified();
-                sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
-
-				updateMapFilename(QString::fromStdString(newDialog.getFilename()));
-                updateInterfaceState(true);
 			}
 		}
 	}
@@ -279,14 +276,20 @@ namespace urchin
 			{
                 sceneController = new SceneController();
 				sceneDisplayerWidget->openMap(sceneController, filename.toUtf8().constData());
-                scenePanelWidget->loadMap(sceneController);
-                sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
-
-				updateMapFilename(filename);
-                updateInterfaceState(false);
+                loadMap(filename);
 			}
 		}
 	}
+
+	void MapEditorWindow::loadMap(const QString &qMapFilename)
+    {
+        scenePanelWidget->loadMap(sceneController);
+        sceneController->addObserverOnAllControllers(this, AbstractController::CHANGES_DONE);
+        sceneDisplayerWidget->addObserverObjectMoveController(scenePanelWidget->getObjectPanelWidget(), ObjectMoveController::OBJECT_MOVED);
+
+        updateMapFilename(qMapFilename);
+        updateInterfaceState();
+    }
 
 	void MapEditorWindow::executeSaveAction()
 	{
@@ -296,7 +299,7 @@ namespace urchin
             sceneController->saveMapOnFile(mapFilename);
         }
 
-		updateInterfaceState(false);
+		updateInterfaceState();
 	}
 
 	void MapEditorWindow::showSaveAsDialog()
@@ -318,7 +321,7 @@ namespace urchin
             }
 
 			updateMapFilename(QString::fromStdString(filenameString));
-            updateInterfaceState(false);
+            updateInterfaceState();
 		}
 	}
 
@@ -331,7 +334,7 @@ namespace urchin
             scenePanelWidget->closeMap();
 
 			updateMapFilename("");
-            updateInterfaceState(false);
+            updateInterfaceState();
 
             delete sceneController;
             sceneController = nullptr;
@@ -382,7 +385,7 @@ namespace urchin
 		return canProceed;
 	}
 
-	void MapEditorWindow::updateInterfaceState(bool mapContainsNotSavedChange)
+	void MapEditorWindow::updateInterfaceState()
 	{
 		bool hasMapOpen = sceneController != nullptr;
 
@@ -394,10 +397,10 @@ namespace urchin
 			viewAction.second->setEnabled(hasMapOpen);
 		}
 
-        refreshWindowTitle(mapContainsNotSavedChange);
+        refreshWindowTitle();
 	}
 
-	void MapEditorWindow::updateMapFilename(const QString& qMapFilename)
+	void MapEditorWindow::updateMapFilename(const QString &qMapFilename)
 	{
 		mapFilename = qMapFilename.toUtf8().constData();
 
@@ -408,17 +411,18 @@ namespace urchin
 		}
 	}
 
-	void MapEditorWindow::refreshWindowTitle(bool mapContainsNotSavedChange)
+	void MapEditorWindow::refreshWindowTitle()
     {
         if(mapFilename.empty())
         {
             this->setWindowTitle(QString::fromStdString(WINDOW_TITLE));
         } else
         {
-            if(mapContainsNotSavedChange)
+            if(sceneController && sceneController->isModified())
             {
                 this->setWindowTitle(QString::fromStdString("*" + WINDOW_TITLE + " (" + mapFilename + ")"));
-            } else {
+            } else
+            {
                 this->setWindowTitle(QString::fromStdString(WINDOW_TITLE + " (" + mapFilename + ")"));
             }
         }

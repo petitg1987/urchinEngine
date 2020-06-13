@@ -230,7 +230,8 @@ namespace urchin
 	    if(bIsStatic)
         {
             makeBodyStatic();
-        } else {
+        } else
+        {
             AbstractWorkBody::setIsStatic(false);
 	    }
     }
