@@ -45,7 +45,7 @@ namespace urchin
 			void setHighlightSceneSound(const SceneSound *);
 
 			void paint();
-			void resize(unsigned int width, unsigned int height);
+			void resize(unsigned int, unsigned int);
 
 			SceneManager *getSceneManager() const;
             SceneFreeCamera *getCamera() const;

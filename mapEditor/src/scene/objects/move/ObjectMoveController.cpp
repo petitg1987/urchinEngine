@@ -2,10 +2,12 @@
 
 namespace urchin
 {
-    ObjectMoveController::ObjectMoveController(SceneManager *sceneManager, SceneController *sceneController, StatusBarController statusBarController) :
+    ObjectMoveController::ObjectMoveController(SceneManager *sceneManager, SceneController *sceneController,
+                                               MouseController mouseController, StatusBarController statusBarController) :
             objectMoveAxisDisplayer(sceneManager),
             sceneManager(sceneManager),
             sceneController(sceneController),
+            mouseController(std::move(mouseController)),
             statusBarController(std::move(statusBarController)),
             selectedSceneObject(nullptr),
             selectedAxis(-1),
@@ -46,6 +48,18 @@ namespace urchin
         return propagateEvent;
     }
 
+    bool ObjectMoveController::onMouseOut()
+    {
+        bool propagateEvent = true;
+        if(selectedAxis != -1)
+        {
+            //TODO mouse mouse back to screen with "mouseController"
+            propagateEvent = false;
+        }
+
+        return propagateEvent;
+    }
+
     bool ObjectMoveController::isCameraMoved() const
     {
         Camera *camera = sceneManager->getActiveRenderer3d()->getCamera();
@@ -60,7 +74,7 @@ namespace urchin
     }
 
     void ObjectMoveController::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
-    { //TODO improve move based on mouse speed + move mouse cursor on screen center
+    { //TODO improve move based on mouse speed
         Point3<float> objectPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 

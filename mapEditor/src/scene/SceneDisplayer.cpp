@@ -110,7 +110,7 @@ namespace urchin
         sceneManager->getActiveRenderer3d()->getLightManager()->setGlobalAmbientColor(Point4<float>(0.05, 0.05, 0.05, 0.0));
 
         bodyShapeDisplayer = new BodyShapeDisplayer(sceneManager);
-        objectMoveController = new ObjectMoveController(sceneManager, sceneController, statusBarController);
+        objectMoveController = new ObjectMoveController(sceneManager, sceneController, mouseController, statusBarController);
         lightScopeDisplayer = new LightScopeDisplayer(sceneManager);
         soundTriggerDisplayer = new SoundTriggerDisplayer(sceneManager);
 

@@ -141,11 +141,11 @@ namespace urchin
 		update();
 	}
 
-	void SceneDisplayerWidget::resizeGL(int widget, int height)
+	void SceneDisplayerWidget::resizeGL(int width, int height)
 	{
 		if(sceneDisplayer)
 		{
-			sceneDisplayer->resize(static_cast<unsigned int>(widget), static_cast<unsigned int>(height));
+			sceneDisplayer->resize(static_cast<unsigned int>(width), static_cast<unsigned int>(height));
 		}
 	}
 
@@ -243,6 +243,14 @@ namespace urchin
             }
 		}
 	}
+
+    void SceneDisplayerWidget::leaveEvent(QEvent *event)
+    {
+	    if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos())))
+        {
+            sceneDisplayer->getObjectMoveController()->onMouseOut();
+        }
+    }
 
     bool SceneDisplayerWidget::onMouseClickBodyPickup()
     {

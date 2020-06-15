@@ -8,6 +8,7 @@
 #include "controller/SceneController.h"
 #include "scene/objects/move/ObjectMoveAxisDisplayer.h"
 #include "widget/controller/statusbar/StatusBarController.h"
+#include "widget/controller/mouse/MouseController.h"
 
 namespace urchin
 {
@@ -15,7 +16,7 @@ namespace urchin
     class ObjectMoveController : public Observable
     {
         public:
-            ObjectMoveController(SceneManager *, SceneController *, StatusBarController);
+            ObjectMoveController(SceneManager *, SceneController *, MouseController, StatusBarController);
 
             enum NotificationType
             {
@@ -24,6 +25,7 @@ namespace urchin
 
             void onCtrlXYZ(unsigned int);
             bool onMouseMove(int, int);
+            bool onMouseOut();
             bool onMouseLeftButton();
             bool onEscapeKey();
 
@@ -40,6 +42,7 @@ namespace urchin
             ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
             SceneManager *sceneManager;
             SceneController *sceneController;
+            MouseController mouseController;
             StatusBarController statusBarController;
 
             const SceneObject *selectedSceneObject;

@@ -46,6 +46,7 @@ namespace urchin
 			void mousePressEvent(QMouseEvent *) override;
 			void mouseReleaseEvent(QMouseEvent *) override;
 			void mouseMoveEvent(QMouseEvent *) override;
+			void leaveEvent(QEvent *) override;
 
             bool onMouseClickBodyPickup();
 			const std::string &getLastPickedBodyId() const;
