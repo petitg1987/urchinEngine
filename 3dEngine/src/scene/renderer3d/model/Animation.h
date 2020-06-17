@@ -22,7 +22,7 @@ namespace urchin
 			const AABBox<float> &getGlobalLocalAABBox() const;
 
 			const ConstAnimation *getConstAnimation() const;
-			int getCurrFrame() const;
+			unsigned int getCurrFrame() const;
 
 			void animate(float);
 

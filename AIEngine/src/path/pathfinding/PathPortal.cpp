@@ -10,8 +10,8 @@ namespace urchin
         portal(std::move(portal)),
         previousPathNode(std::move(previousPathNode)),
         nextPathNode(std::move(nextPathNode)),
-        bHasTransitionPoint(false),
-        bIsJumpOriginPortal(bIsJumpOriginPortal)
+        bIsJumpOriginPortal(bIsJumpOriginPortal),
+        bHasTransitionPoint(false)
     {
 
     }

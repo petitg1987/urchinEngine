@@ -27,7 +27,7 @@ namespace urchin
 			void display(int, float) override;
 
 		private:
-			std::string cutText(const std::string &, int);
+			std::string cutText(const std::string &, unsigned int);
 
 			//properties
 			std::string text;

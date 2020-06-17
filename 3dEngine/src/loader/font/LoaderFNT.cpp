@@ -71,7 +71,7 @@ namespace urchin
 		}
 		int bitmapTopA = face->glyph->bitmap_top;
 		
-		for(int i=0;i<NUM_LETTERS;i++)
+		for(std::size_t i=0;i<NUM_LETTERS;i++)
 		{
 			glyphIndex = FT_Get_Char_Index(face, static_cast<FT_ULong>(i));
 			if(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT))
@@ -159,7 +159,7 @@ namespace urchin
 		texAlphabet->toTexture(false, false, false);
 		
 		//clears buffers of letters
-		for(int i=0;i<NUM_LETTERS;i++)
+		for(std::size_t i=0;i<NUM_LETTERS;i++)
 		{
 			delete [] glyph[i].buf;
 			glyph[i].buf = nullptr;

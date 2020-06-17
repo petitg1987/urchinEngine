@@ -244,7 +244,7 @@ namespace urchin
                 oldMouseY = static_cast<unsigned int>(mouseY);
                 return true;
             }
-            if ((mouseX == middleScreenX) && (mouseY == middleScreenY))
+            if ((static_cast<unsigned int>(mouseX) == middleScreenX) && (static_cast<unsigned int>(mouseY) == middleScreenY))
             {
                 return false;
             }

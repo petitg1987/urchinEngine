@@ -4,6 +4,8 @@ namespace urchin
 {
     ObjectMoveController::ObjectMoveController(SceneManager *sceneManager, SceneController *sceneController,
                                                MouseController mouseController, StatusBarController statusBarController) :
+            sceneWidth(0),
+            sceneHeight(0),
             objectMoveAxisDisplayer(sceneManager),
             sceneManager(sceneManager),
             sceneController(sceneController),
@@ -15,6 +17,12 @@ namespace urchin
             oldMouseY(-1)
     {
 
+    }
+
+    void ObjectMoveController::onResize(unsigned int sceneWidth, unsigned int sceneHeight)
+    {
+        this->sceneWidth = sceneWidth;
+        this->sceneHeight = sceneHeight;
     }
 
     void ObjectMoveController::onCtrlXYZ(unsigned int axisIndex)
@@ -31,33 +39,37 @@ namespace urchin
     bool ObjectMoveController::onMouseMove(int mouseX, int mouseY)
     {
         bool propagateEvent = true;
+        bool mousePositionAdjusted = false;
         if(selectedAxis != -1)
         {
             if(oldMouseX != -1 && oldMouseY != -1 && !isCameraMoved())
             {
-                moveObject(Point2<float>(oldMouseX, oldMouseY), Point2<float>(mouseX, mouseY));
+                mousePositionAdjusted = adjustMousePosition();
+                if(!mousePositionAdjusted)
+                {
+                    moveObject(Point2<float>(oldMouseX, oldMouseY), Point2<float>(mouseX, mouseY));
+                }
             }
 
             propagateEvent = false;
         }
 
-        this->oldMouseX = mouseX;
-        this->oldMouseY = mouseY;
-        this->oldCameraViewMatrix = sceneManager->getActiveRenderer3d()->getCamera()->getViewMatrix();
+        if(!mousePositionAdjusted)
+        {
+            oldMouseX = mouseX;
+            oldMouseY = mouseY;
+        }
+        oldCameraViewMatrix = sceneManager->getActiveRenderer3d()->getCamera()->getViewMatrix();
 
         return propagateEvent;
     }
 
-    bool ObjectMoveController::onMouseOut()
+    void ObjectMoveController::onMouseOut()
     {
-        bool propagateEvent = true;
         if(selectedAxis != -1)
         {
-            //TODO mouse mouse back to screen with "mouseController"
-            propagateEvent = false;
+            adjustMousePosition();
         }
-
-        return propagateEvent;
     }
 
     bool ObjectMoveController::isCameraMoved() const
@@ -73,8 +85,41 @@ namespace urchin
         return false;
     }
 
+    bool ObjectMoveController::adjustMousePosition()
+    {
+        Point2<int> mousePosition = mouseController.getMousePosition();
+        Point2<int> newMousePosition = mousePosition;
+
+        if(mousePosition.X >= static_cast<int>(sceneWidth))
+        {
+            newMousePosition.X = 1;
+        }else if(mousePosition.X <= 0)
+        {
+            newMousePosition.X = static_cast<int>(sceneWidth) - 1;
+        }
+
+        if(mousePosition.Y >= static_cast<int>(sceneHeight))
+        {
+            newMousePosition.Y = 1;
+        }else if(mousePosition.Y <= 0)
+        {
+            newMousePosition.Y = static_cast<int>(sceneHeight) - 1;
+        }
+
+        if(mousePosition != newMousePosition)
+        {
+            oldMouseX = newMousePosition.X;
+            oldMouseY = newMousePosition.Y;
+
+            mouseController.moveMouse(newMousePosition.X, newMousePosition.Y);
+            return true;
+        }
+
+        return false;
+    }
+
     void ObjectMoveController::moveObject(const Point2<float> &oldMouseCoord, const Point2<float> &newMouseCoord)
-    { //TODO improve move based on mouse speed
+    {
         Point3<float> objectPosition = selectedSceneObject->getModel()->getTransform().getPosition();
         CameraSpaceService cameraSpaceService(sceneManager->getActiveRenderer3d()->getCamera());
 

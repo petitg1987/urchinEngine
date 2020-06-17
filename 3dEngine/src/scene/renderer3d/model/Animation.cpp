@@ -49,7 +49,7 @@ namespace urchin
 		return constAnimation;
 	}
 
-	int Animation::getCurrFrame() const
+	unsigned int Animation::getCurrFrame() const
 	{
 		return animationInformation.currFrame;
 	}

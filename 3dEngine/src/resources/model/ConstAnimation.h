@@ -11,8 +11,8 @@ namespace urchin
 	
 	struct AnimationInformation
 	{
-		int currFrame;
-		int nextFrame;
+		unsigned int currFrame;
+		unsigned int nextFrame;
 		float lastTime;
 		float maxTime;
 	};
@@ -31,7 +31,7 @@ namespace urchin
 			unsigned int getNumberFrames() const;
 			unsigned int getNumberBones() const;
 			unsigned int getFrameRate() const;
-			const Bone &getBone(int, int) const;
+			const Bone &getBone(unsigned int, unsigned int) const;
 
 			const AABBox<float> &getOriginalGlobalAABBox() const;
 			const std::vector<AABBox<float>> &getOriginalGlobalSplitAABBoxes() const;

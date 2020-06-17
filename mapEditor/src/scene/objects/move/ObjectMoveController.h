@@ -23,9 +23,11 @@ namespace urchin
                 OBJECT_MOVED
             };
 
+            void onResize(unsigned int, unsigned int);
+
             void onCtrlXYZ(unsigned int);
             bool onMouseMove(int, int);
-            bool onMouseOut();
+            void onMouseOut();
             bool onMouseLeftButton();
             bool onEscapeKey();
 
@@ -36,8 +38,11 @@ namespace urchin
 
         private:
             bool isCameraMoved() const;
+            bool adjustMousePosition();
             void moveObject(const Point2<float> &, const Point2<float> &);
             void updateObjectPosition(const Point3<float> &);
+
+            unsigned int sceneWidth, sceneHeight;
 
             ObjectMoveAxisDisplayer objectMoveAxisDisplayer;
             SceneManager *sceneManager;

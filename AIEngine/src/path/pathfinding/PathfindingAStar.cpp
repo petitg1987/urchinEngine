@@ -161,7 +161,7 @@ namespace urchin
         std::vector<PathPoint> path = pathPortalsToPathPoints(pathPortals, false);
 
         float pathCost = 0.0f;
-        for(std::size_t i=0; i<static_cast<long>(path.size())-1; i++)
+        for(int i=0; i < static_cast<long>(path.size())-1; i++)
         {
             pathCost += path[i].getPoint().distance(path[i+1].getPoint());
             if(path[i].isJumpPoint())

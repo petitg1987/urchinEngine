@@ -1,3 +1,6 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
+
 /*******************************************************************************
 *                                                                              *
 * Author    :  Angus Johnson                                                   *
@@ -4627,3 +4630,5 @@ std::ostream& operator <<(std::ostream &s, const Paths &p)
 //------------------------------------------------------------------------------
 
 } //ClipperLib namespace
+
+#pragma GCC diagnostic pop

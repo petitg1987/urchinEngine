@@ -118,21 +118,21 @@ namespace urchin
 	{
 		if(state==ACTIVE)
 		{
-			if(character==8 && cursorIndex>0)
+			if(character == 8 && cursorIndex > 0)
 			{ //key backspace
 				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
 				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex-1L));
 				allText.append(tmpRight);
 
 				refreshText(cursorIndex-1);
-			}else if(character==127 && allText.length()>0 && cursorIndex<(int)allText.length())
+			}else if(character == 127 && allText.length() > 0 && cursorIndex < allText.length())
 			{ //key delete
 				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex+1L), allText.length()-cursorIndex);
 				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
 				allText.append(tmpRight);
 
 				refreshText(cursorIndex);
-			}else if(character<256 && character>30 && character!=127)
+			}else if(character < 256 && character > 30 && character != 127)
 			{
 				std::string tmpRight = allText.substr(static_cast<unsigned long>(cursorIndex), allText.length()-cursorIndex);
 				allText = allText.substr(0, static_cast<unsigned long>(cursorIndex));
@@ -159,7 +159,7 @@ namespace urchin
 	void TextBox::refreshText(unsigned int newCursorIndex)
 	{
 		//refresh cursor index
-		if(	(newCursorIndex > cursorIndex && cursorIndex < (int)allText.length()) ||
+		if(	(newCursorIndex > cursorIndex && cursorIndex < allText.length()) ||
 				(newCursorIndex < cursorIndex && cursorIndex!=0))
 		{
 			cursorIndex = newCursorIndex;
@@ -169,7 +169,7 @@ namespace urchin
 		computeCursorPosition();
 		if(cursorPosition > maxWidthText)
 		{
-			startTextIndex = (startTextIndex <= (int)allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
+			startTextIndex = (startTextIndex <= allText.length()) ? startTextIndex + LETTER_SHIFT : (int)allText.length();
 		}else if(cursorIndex <= startTextIndex)
 		{
 			startTextIndex = (startTextIndex>0) ? startTextIndex-LETTER_SHIFT : 0;
@@ -180,7 +180,7 @@ namespace urchin
 		const Font *font = text->getFont();
 		unsigned int widthText = 0;
 		unsigned int endTextIndex = startTextIndex;
-		for(; endTextIndex<(int)allText.length(); ++endTextIndex)
+		for(; endTextIndex < allText.length(); ++endTextIndex)
 		{
 			auto letter = static_cast<unsigned char>(allText[endTextIndex]);
 			widthText += font->getGlyph(letter).width + font->getSpaceBetweenLetters();
@@ -217,7 +217,7 @@ namespace urchin
 		const Font *font = text->getFont();
 		float widthText = 0.0f;
 
-		for(cursorIndex=startTextIndex; cursorIndex < (int)allText.length(); ++cursorIndex)
+		for(cursorIndex=startTextIndex; cursorIndex < allText.length(); ++cursorIndex)
 		{
 			auto letter = static_cast<unsigned char>(allText[cursorIndex]);
 			widthText += (float)font->getGlyph(letter).width / 2.0f;

@@ -4,7 +4,7 @@ project(urchin3dEngine)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES -ffast-math)
+add_definitions(-DGLEW_STATIC -DGL_GLEXT_PROTOTYPES -ffast-math -Wall)
 include_directories(src ../common/src /usr/include/freetype2)
 
 if (WIN32)

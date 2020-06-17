@@ -252,7 +252,7 @@ namespace urchin
 		//animate model
 		if(isAnimate())
 		{
-			if(stopAnimationAtLastFrame && currAnimation->getCurrFrame() == 0)
+			if(stopAnimationAtLastFrame && currAnimation->getCurrFrame() == 0u)
 			{
 				stopAnimation(true);
 				stopAnimationAtLastFrame = false;

@@ -56,7 +56,7 @@ namespace urchin
 		return frameRate;
 	}
 
-	const Bone &ConstAnimation::getBone(int frameNumber, int boneNumber) const
+	const Bone &ConstAnimation::getBone(unsigned int frameNumber, unsigned int boneNumber) const
 	{
 		return skeletonFrames[frameNumber][boneNumber];
 	}

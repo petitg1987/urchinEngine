@@ -38,7 +38,7 @@ namespace urchin
 
 		//cut the text if needed
 		unsigned int numLetters = 0;
-		std::stringstream cuttedTextStream((maxLength>0) ? cutText(text, maxLength) : text);
+		std::stringstream cuttedTextStream((maxLength > 0) ? cutText(text, static_cast<unsigned int>(maxLength)) : text);
 		std::string item;
 		cutTextLines.clear();
 		while (std::getline(cuttedTextStream, item, '\n'))
@@ -102,7 +102,7 @@ namespace urchin
 		quadDisplayer->update(quadDisplayerBuilder.get());
 	}
 
-	std::string Text::cutText(const std::string &constText, int maxLength)
+	std::string Text::cutText(const std::string &constText, unsigned int maxLength)
 	{
 		std::string text(constText);
 

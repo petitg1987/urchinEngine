@@ -12,16 +12,16 @@ namespace urchin
         mouseController(mouseController),
         statusBarController(statusBarController),
 		sceneManager(nullptr),
-		physicsWorld(nullptr),
-		soundManager(nullptr),
-		aiManager(nullptr),
-		camera(nullptr),
-		mapHandler(nullptr),
-		bodyShapeDisplayer(nullptr),
+        camera(nullptr),
+        bodyShapeDisplayer(nullptr),
         objectMoveController(nullptr),
-		lightScopeDisplayer(nullptr),
-		soundTriggerDisplayer(nullptr),
-		navMeshDisplayer(nullptr),
+        lightScopeDisplayer(nullptr),
+        soundTriggerDisplayer(nullptr),
+		physicsWorld(nullptr),
+        aiManager(nullptr),
+        navMeshDisplayer(nullptr),
+		soundManager(nullptr),
+		mapHandler(nullptr),
         viewProperties(),
 		highlightSceneObject(nullptr),
 		highlightSceneLight(nullptr),
@@ -226,6 +226,7 @@ namespace urchin
 		if(isInitialized)
 		{
 			sceneManager->onResize(width, height);
+			objectMoveController->onResize(width, height);
 		}
 	}
 

@@ -89,9 +89,9 @@ namespace urchin
 		std::vector<float> offsetsLinearSampling(nbTextureFetch);
 
 		int firstOffset = -(int)(std::floor((float)blurSize / 2.0f));
-		for(int i=0; i<nbTextureFetch; ++i)
+		for(std::size_t i=0; i < nbTextureFetch; ++i)
 		{
-			if(i * 2 + 1>=blurSize)
+			if(i * 2 + 1 >= blurSize)
 			{
 				offsetsLinearSampling[i] = firstOffset+i*2;
 			}else
