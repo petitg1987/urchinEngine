@@ -111,7 +111,7 @@ namespace urchin
         return lastAABBox;
     }
 
-    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionHeightfieldShape::toConvexObject(const PhysicsTransform &physicsTransform) const
+    std::unique_ptr<CollisionConvexObject3D, ObjectDeleter> CollisionHeightfieldShape::toConvexObject(const PhysicsTransform &) const
     {
         throw std::runtime_error("Impossible to transform heightfield shape to convex object");
     }

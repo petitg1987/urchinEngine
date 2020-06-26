@@ -656,7 +656,7 @@ namespace urchin
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	}
 
-	void ShadowManager::loadShadowMaps(const Matrix4<float> &viewMatrix, unsigned int shadowMapTextureUnitStart)
+	void ShadowManager::loadShadowMaps(unsigned int shadowMapTextureUnitStart)
 	{
 		int i = 0;
 		const std::vector<Light *> &visibleLights = lightManager->getVisibleLights();
@@ -682,7 +682,7 @@ namespace urchin
 			++i;
 		}
 
-		float depthSplitDistance[nbShadowMaps];
+		float *depthSplitDistance = new float[nbShadowMaps];
 		for(unsigned int shadowMapIndex=0; shadowMapIndex<nbShadowMaps; ++shadowMapIndex)
 		{
 			float currSplitDistance = splitDistances[shadowMapIndex];
@@ -690,6 +690,7 @@ namespace urchin
 		}
 
 		glUniform1fv(depthSplitDistanceLoc, nbShadowMaps, depthSplitDistance);
+		delete []depthSplitDistance;
 	}
 
 	void ShadowManager::drawLightSceneBox(const Frustum<float> &frustum, const Light *light, const Matrix4<float> &viewMatrix) const

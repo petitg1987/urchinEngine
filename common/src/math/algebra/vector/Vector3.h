@@ -15,8 +15,9 @@ namespace urchin
 		public:
 			Vector3();
 			explicit Vector3(T Xu, T Yu, T Zu);
-			Vector3(const Vector3<T> &);
 			explicit Vector3(const Vector2<T> &, T Zu=0);
+            Vector3(const Vector3<T> &);
+            Vector3<T>& operator=(const Vector3<T> &);
 		
 			void setValues(T, T, T);
 			void setNull();

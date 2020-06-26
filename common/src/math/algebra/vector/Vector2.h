@@ -15,6 +15,7 @@ namespace urchin
 			Vector2();
 			explicit Vector2(T Xu, T Yu);
 			Vector2(const Vector2<T> &);
+            Vector2<T>& operator=(const Vector2<T> &);
 		
 			void setValues(T, T);
 			void setNull();

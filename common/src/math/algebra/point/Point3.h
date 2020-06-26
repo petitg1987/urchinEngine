@@ -21,6 +21,7 @@ namespace urchin
 			explicit Point3(const Vector2<T> &, T Zu=1);
 			explicit Point3(const Vector3<T> &);
 			Point3(const Point3<T> &);
+            Point3<T>& operator=(const Point3<T> &);
 
 			void setValues(T, T, T);
 			void setNull();

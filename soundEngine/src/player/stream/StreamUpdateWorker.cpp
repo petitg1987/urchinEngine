@@ -41,12 +41,13 @@ namespace urchin
 		auto *task = new StreamUpdateTask(sound, new StreamChunk[nbChunkBuffer], playLoop);
 
 		//create buffers/chunks
-		ALuint bufferId[nbChunkBuffer];
+		ALuint *bufferId = new ALuint[nbChunkBuffer];
 		alGenBuffers(nbChunkBuffer, bufferId);
 		for(unsigned int i=0; i<nbChunkBuffer; ++i)
 		{
 			task->getStreamChunk(i).bufferId = bufferId[i];
 		}
+		delete []bufferId;
 
 		//initialize buffers/chunks
 		for(unsigned int i=0; i<nbChunkBuffer; ++i)

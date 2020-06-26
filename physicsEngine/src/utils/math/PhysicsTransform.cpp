@@ -33,6 +33,13 @@ namespace urchin
 		}
 	}
 
+    PhysicsTransform& PhysicsTransform::operator=(const PhysicsTransform &physicsTransform)
+    {
+	    this->position = physicsTransform.getPosition();
+	    this->orientation = physicsTransform.getOrientation();
+	    return *this;
+    }
+
 	void PhysicsTransform::setPosition(const Point3<float> &position)
 	{
 		this->position = position;

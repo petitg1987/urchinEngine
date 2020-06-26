@@ -40,6 +40,14 @@ namespace urchin
 
 	}
 
+    template<class T> Point3<T>& Point3<T>::operator=(const Point3<T> &point)
+    {
+        X = point.X;
+        Y = point.Y;
+        Z = point.Z;
+        return *this;
+    }
+
 	template<class T> void Point3<T>::setValues(T Xu, T Yu, T Zu)
 	{
 		X = Xu;

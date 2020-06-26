@@ -60,7 +60,7 @@ namespace urchin
 			void updateVisibleModels(const Frustum<float> &);
 			void forceUpdateAllShadowMaps();
 			void updateShadowMaps();
-			void loadShadowMaps(const Matrix4<float> &, unsigned int);
+			void loadShadowMaps(unsigned int);
 
 			void drawLightSceneBox(const Frustum<float> &, const Light *, const Matrix4<float> &) const;
 

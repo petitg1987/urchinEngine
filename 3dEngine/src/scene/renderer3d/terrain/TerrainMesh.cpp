@@ -343,7 +343,7 @@ namespace urchin
 
     std::string TerrainMesh::readMd5(std::ifstream &file) const
     {
-        unsigned int md5Size = 32;
+        constexpr unsigned int md5Size = 32;
         char md5[md5Size];
         file.read(&md5[0], sizeof(md5));
         return std::string(md5, md5Size);

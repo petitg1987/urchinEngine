@@ -17,6 +17,8 @@ namespace urchin
 			Plane(const Vector3<T> &, const Point3<T> &);
 			explicit Plane(T a=0.0, T b=1.0, T c=0.0, T d=0.0);
 			Plane(const Plane<T> &);
+            Plane<T> operator=(const Plane<T> &);
+			Plane<T> operator=(Plane<T> &&);
 		
 			void buildFrom3Points(const Point3<T> &, const Point3<T> &, const Point3<T> &);
 			void buildFromNormalAndPoint(const Vector3<T> &, const Point3<T> &);

@@ -40,6 +40,50 @@ namespace urchin
 		buildFrustum(ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr);
 	}
 
+    template<class T> Frustum<T>::Frustum(Frustum<T> &&frustum)
+    {
+        frustumPoints[0] = frustum.getFrustumPoints()[0];
+        frustumPoints[1] = frustum.getFrustumPoints()[1];
+        frustumPoints[2] = frustum.getFrustumPoints()[2];
+        frustumPoints[3] = frustum.getFrustumPoints()[3];
+        frustumPoints[4] = frustum.getFrustumPoints()[4];
+        frustumPoints[5] = frustum.getFrustumPoints()[5];
+        frustumPoints[6] = frustum.getFrustumPoints()[6];
+        frustumPoints[7] = frustum.getFrustumPoints()[7];
+
+        position = frustum.getPosition();
+
+        planes[TOP] = frustum.planes[TOP];
+        planes[BOTTOM] = frustum.planes[BOTTOM];
+        planes[LEFT] = frustum.planes[LEFT];
+        planes[RIGHT] = frustum.planes[RIGHT];
+        planes[NEARP] = frustum.planes[NEARP];
+        planes[FARP] = frustum.planes[FARP];
+    }
+
+    template<class T> Frustum<T>& Frustum<T>::operator=(Frustum<T> &&frustum)
+    {
+        frustumPoints[0] = frustum.getFrustumPoints()[0];
+        frustumPoints[1] = frustum.getFrustumPoints()[1];
+        frustumPoints[2] = frustum.getFrustumPoints()[2];
+        frustumPoints[3] = frustum.getFrustumPoints()[3];
+        frustumPoints[4] = frustum.getFrustumPoints()[4];
+        frustumPoints[5] = frustum.getFrustumPoints()[5];
+        frustumPoints[6] = frustum.getFrustumPoints()[6];
+        frustumPoints[7] = frustum.getFrustumPoints()[7];
+
+        position = frustum.getPosition();
+
+        planes[TOP] = frustum.planes[TOP];
+        planes[BOTTOM] = frustum.planes[BOTTOM];
+        planes[LEFT] = frustum.planes[LEFT];
+        planes[RIGHT] = frustum.planes[RIGHT];
+        planes[NEARP] = frustum.planes[NEARP];
+        planes[FARP] = frustum.planes[FARP];
+
+        return *this;
+    }
+
 	/**
 	* Frustum builder from angle, ratio and near/far distances.
 	* Default frustum position: x=0, y=0, z=0

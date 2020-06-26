@@ -19,7 +19,7 @@ namespace urchin
 
 		public:
 			explicit BodyConeShapeWidget(const SceneObject *);
-			~BodyConeShapeWidget() override = default;;
+			~BodyConeShapeWidget() override = default;
 
 			std::string getBodyShapeName() const override;
 

@@ -19,6 +19,13 @@ namespace urchin
 
 	}
 
+    template<class T> Vector2<T>& Vector2<T>::operator=(const Vector2<T> &vector)
+    {
+        X = vector.X;
+        Y = vector.Y;
+        return *this;
+    }
+
 	template<class T> void Vector2<T>::setValues(T Xu, T Yu)
 	{
 		X = Xu;

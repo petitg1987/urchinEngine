@@ -44,7 +44,7 @@ namespace urchin
 		manualTriggerValue = ManualTriggerValue::PAUSE;
 	}
 
-	SoundTrigger::TriggerResultValue ManualTrigger::evaluateTrigger(const Point3<float> &listenerPosition)
+	SoundTrigger::TriggerResultValue ManualTrigger::evaluateTrigger(const Point3<float> &)
 	{
 		SoundTrigger::TriggerResultValue result;
 

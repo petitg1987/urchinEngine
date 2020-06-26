@@ -244,7 +244,7 @@ namespace urchin
 		}
 	}
 
-    void SceneDisplayerWidget::leaveEvent(QEvent *event)
+    void SceneDisplayerWidget::leaveEvent(QEvent *)
     {
 	    if(sceneDisplayer && !rect().contains(mapFromGlobal(QCursor::pos())))
         {

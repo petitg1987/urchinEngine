@@ -73,13 +73,29 @@ namespace urchin
 		boxShape = BoxShape<T>(Vector3<T>((max.X-min.X)/2.0, (max.Y-min.Y)/2.0, (max.Z-min.Z)/2.0));
 	}
 
-	template<class T> AABBox<T>::AABBox(const AABBox<T> &aabBox) :
-			boxShape(aabBox.getHalfSizes()),
-			min(aabBox.getMin()),
-			max(aabBox.getMax())
+	template<class T> AABBox<T>::AABBox(const AABBox<T> &aabbox) :
+			boxShape(BoxShape<T>(aabbox.getHalfSizes())),
+			min(aabbox.getMin()),
+			max(aabbox.getMax())
 	{
 
 	}
+
+    template<class T> AABBox<T>& AABBox<T>::operator=(const AABBox<T> &aabbox)
+    {
+        this->boxShape = BoxShape<T>(aabbox.getHalfSizes());
+        this->min = aabbox.getMin();
+        this->max = aabbox.getMax();
+        return *this;
+    }
+
+    template<class T> AABBox<T>& AABBox<T>::operator=(AABBox<T> &&aabbox)
+    {
+        this->boxShape = BoxShape<T>(std::move(aabbox.getHalfSizes()));
+        this->min = std::move(aabbox.getMin());
+        this->max = std::move(aabbox.getMax());
+        return *this;
+    }
 
 	template<class T> T AABBox<T>::getHalfSize(unsigned int index) const
 	{

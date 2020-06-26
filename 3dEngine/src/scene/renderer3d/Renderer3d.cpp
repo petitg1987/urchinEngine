@@ -601,7 +601,7 @@ namespace urchin
 
 		if(isShadowActivated)
 		{
-			shadowManager->loadShadowMaps(camera->getViewMatrix(), nextTextureUnit);
+			shadowManager->loadShadowMaps(nextTextureUnit);
 			nextTextureUnit += shadowManager->getNumberShadowMaps();
 		}
 

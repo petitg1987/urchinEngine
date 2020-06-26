@@ -4,7 +4,7 @@ project(urchinSoundEngine)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-ffast-math -Wall)
+add_definitions(-ffast-math -Wall -Wextra -Wpedantic -Werror)
 include_directories(src ../common/src)
 
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")

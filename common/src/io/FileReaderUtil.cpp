@@ -9,10 +9,9 @@ namespace urchin
             std::getline(file, buffer);
 
             //delete '\r'
-            unsigned long length = (buffer.length() > 0) ? buffer.length()-1 : 0;
-            if(length >= 0 && buffer[length] == '\r')
+            if(buffer.length() > 0 && buffer[buffer.length() - 1] == '\r')
             {
-                buffer.resize(length);
+                buffer.resize(buffer.length() - 1);
             }
         }while(buffer.length()==0 && !file.eof());
     }
