@@ -128,12 +128,12 @@ namespace urchin
 		return up;
 	}
 
-    float Camera::getSceneWidth()
+    unsigned int Camera::getSceneWidth() const
     {
 	    return sceneWidth;
     }
 
-    float Camera::getSceneHeight()
+    unsigned int Camera::getSceneHeight() const
     {
 	    return sceneHeight;
     }

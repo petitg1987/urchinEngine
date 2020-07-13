@@ -11,7 +11,7 @@ void ShapeToConvexObjectTest::boxConversion()
 {
 	CollisionBoxShape collisionBox(Vector3<float>(1.0, 2.0, 1.0)); //box 1x2x1
 	PhysicsTransform transform(urchin::Point3<float>(1.0, 1.0, 1.0), //move 1 unit on X, Y and Z axis
-			urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2)); //rotate 90° on X axis
+			urchin::Quaternion<float>(urchin::Vector3<float>(1.0, 0.0, 0.0), PI_VALUE/2.0f)); //rotate 90° on X axis
 
 	auto boxObject = collisionBox.toConvexObject(transform);
 	auto *box = dynamic_cast<CollisionBoxObject *>(boxObject.get());

@@ -134,9 +134,9 @@ namespace urchin
 		}
         this->mass = mass;
 
-		this->invLocalInertia.X = MathAlgorithm::isZero(localInertia.X) ? 0.0 : 1.0/localInertia.X;
-		this->invLocalInertia.Y = MathAlgorithm::isZero(localInertia.Y) ? 0.0 : 1.0/localInertia.Y;
-		this->invLocalInertia.Z = MathAlgorithm::isZero(localInertia.Z) ? 0.0 : 1.0/localInertia.Z;
+		this->invLocalInertia.X = MathAlgorithm::isZero(localInertia.X) ? 0.0f : 1.0f/localInertia.X;
+		this->invLocalInertia.Y = MathAlgorithm::isZero(localInertia.Y) ? 0.0f : 1.0f/localInertia.Y;
+		this->invLocalInertia.Z = MathAlgorithm::isZero(localInertia.Z) ? 0.0f : 1.0f/localInertia.Z;
 	}
 
 	float WorkRigidBody::getMass() const

@@ -32,8 +32,8 @@ namespace urchin
 			const Vector3<float> &getView() const;
 			const Vector3<float> &getUp() const;
 
-			float getSceneWidth();
-			float getSceneHeight();
+			unsigned int getSceneWidth() const;
+            unsigned int getSceneHeight() const;
 			float getAngle() const;
 			float getNearPlane() const;
 			float getFarPlane() const;

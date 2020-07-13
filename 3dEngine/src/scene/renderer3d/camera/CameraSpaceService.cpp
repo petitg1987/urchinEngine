@@ -14,8 +14,8 @@ namespace urchin
         Point4<float> pointClipSpace = camera->getProjectionMatrix() * camera->getViewMatrix() * Point4<float>(worldSpacePoint, 1.0f);
         Point4<float> pointNdcSpace = pointClipSpace.divideByW();
         return Point2<float>(
-                ((pointNdcSpace.X + 1.0f) / 2.0f) * camera->getSceneWidth(),
-                ((-pointNdcSpace.Y + 1.0f) / 2.0f) * camera->getSceneHeight());
+                ((pointNdcSpace.X + 1.0f) / 2.0f) * ((float)camera->getSceneWidth()),
+                ((-pointNdcSpace.Y + 1.0f) / 2.0f) * ((float)camera->getSceneHeight()));
     }
 
     /**
