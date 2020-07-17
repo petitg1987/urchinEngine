@@ -75,10 +75,10 @@ namespace urchin
     }
 
     /**
-     * Launch the AI simulation in new thread
+     * Set up the AI simulation in new thread
      * @param timeStep Frequency updates expressed in second
      */
-    void AIManager::start(float timeStep, bool startPaused)
+    void AIManager::setUp(float timeStep)
     {
         if(aiSimulationThread)
         {
@@ -86,7 +86,6 @@ namespace urchin
         }
 
         this->timeStep = timeStep;
-        this->paused = startPaused;
 
         aiSimulationThread = new std::thread(&AIManager::startAIUpdate, this);
     }
@@ -98,7 +97,7 @@ namespace urchin
         paused = true;
     }
 
-    void AIManager::play()
+    void AIManager::unpause()
     {
         std::lock_guard<std::mutex> lock(mutex);
 

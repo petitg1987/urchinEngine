@@ -42,7 +42,7 @@ namespace urchin
 
 		if(bUseMouse)
 		{
-			moveMouse(middleScreenX, middleScreenY);
+            resetMousePosition();
 		}
 
 		//projection matrix
@@ -59,13 +59,18 @@ namespace urchin
 		frustum = baseFrustum * mView.inverse();
 	}
 
+    void Camera::resetMousePosition()
+    {
+	    moveMouse(middleScreenX, middleScreenY);
+    }
+
 	void Camera::useMouseToMoveCamera(bool use)
 	{
 		if(use)
 		{
             if(middleScreenX!=0 || middleScreenY!=0)
             {
-                moveMouse(middleScreenX, middleScreenY);
+                resetMousePosition();
             }
 		}else
 		{
@@ -250,7 +255,7 @@ namespace urchin
             }
 
             //move the mouse back to the middle of the screen
-            moveMouse(middleScreenX, middleScreenY);
+            resetMousePosition();
 
             //vector that describes mousePosition - center
             Vector2<float> mouseDirection;

@@ -29,6 +29,7 @@ namespace urchin
 	Renderer3d::Renderer3d() :
 			sceneWidth(0),
 			sceneHeight(0),
+            paused(true),
 			modelDisplayer(nullptr),
 			fogManager(nullptr),
 			terrainManager(nullptr),
@@ -347,9 +348,29 @@ namespace urchin
 		return std::find(allOctreeables.begin(), allOctreeables.end(), model) != allOctreeables.end();
 	}
 
+    void Renderer3d::pause()
+    {
+        paused = true;
+    }
+
+    void Renderer3d::unpause()
+    {
+        if(camera)
+        {
+            camera->resetMousePosition();
+        }
+
+        paused = false;
+    }
+
+    bool Renderer3d::isPaused() const
+    {
+        return paused;
+    }
+
 	bool Renderer3d::onKeyDown(unsigned int key)
 	{
-		if(camera && key < 260)
+		if(!paused && camera && key < 260)
 		{
 			return camera->onKeyDown(key);
 		}
@@ -358,7 +379,7 @@ namespace urchin
 
 	bool Renderer3d::onKeyUp(unsigned int key)
 	{
-		if(camera && key < 260)
+		if(!paused && camera && key < 260)
 		{
 			return camera->onKeyUp(key);
 		}
@@ -373,7 +394,7 @@ namespace urchin
 
 	bool Renderer3d::onMouseMove(int mouseX, int mouseY)
 	{
-		if(camera)
+		if(!paused && camera)
 		{
 			return camera->onMouseMove(mouseX, mouseY);
 		}

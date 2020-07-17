@@ -26,8 +26,8 @@ namespace urchin
 			SoundTrigger *getSoundTrigger() const;
 			void changeSoundTrigger(SoundTrigger *);
 
-			void globalPause();
-			void globalResume();
+			void pause();
+			void unpause();
 
 			void process(const Point3<float> &);
 
@@ -42,7 +42,7 @@ namespace urchin
 			SoundTrigger::TriggerResultValue triggerValue;
 
 			AudioPlayer *audioPlayer;
-			bool isGlobalPaused;
+			bool isPaused;
 	};
 
 }

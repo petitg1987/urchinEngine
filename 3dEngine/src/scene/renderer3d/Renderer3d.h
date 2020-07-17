@@ -69,6 +69,7 @@ namespace urchin
 			bool isModelExist(Model *);
 
 			//events
+            bool isPaused() const;
 			bool onKeyDown(unsigned int) override;
 			bool onKeyUp(unsigned int) override;
 			bool onChar(unsigned int) override;
@@ -76,6 +77,8 @@ namespace urchin
 			void onDisable() override;
 
 			//scene
+            void pause();
+            void unpause();
 			void display(float) override;
 
 		private:
@@ -95,6 +98,7 @@ namespace urchin
 
 			//scene properties
 			unsigned int sceneWidth, sceneHeight;
+            bool paused;
 
 			//managers
 			ModelDisplayer *modelDisplayer;

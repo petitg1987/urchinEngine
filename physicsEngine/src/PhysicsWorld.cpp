@@ -126,10 +126,10 @@ namespace urchin
 	}
 
 	/**
-	 * Launch the physics simulation in new thread
+	 * Set up the physics simulation in new thread
 	 * @param timeStep Frequency updates expressed in second
 	 */
-	void PhysicsWorld::start(float timeStep, bool startPaused)
+	void PhysicsWorld::setUp(float timeStep)
 	{
 		if(physicsSimulationThread)
 		{
@@ -137,7 +137,6 @@ namespace urchin
 		}
 
 		this->timeStep = timeStep;
-		this->paused = startPaused;
 
 		physicsSimulationThread = new std::thread(&PhysicsWorld::startPhysicsUpdate, this);
 	}
@@ -149,7 +148,7 @@ namespace urchin
 		paused = true;
 	}
 
-	void PhysicsWorld::play()
+	void PhysicsWorld::unpause()
 	{
 		std::lock_guard<std::mutex> lock(mutex);
 

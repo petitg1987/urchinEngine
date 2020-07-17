@@ -50,6 +50,11 @@ namespace urchin
 
 	void Map::loadFrom(const std::shared_ptr<XmlChunk> &chunk, const XmlParser &xmlParser, LoadCallback &loadCallback)
 	{
+        if(renderer3d && !renderer3d->isPaused())
+        { //to avoid move camera before being able to see the map
+            throw std::runtime_error("Renderer 3d should be paused while loading map.");
+        }
+
 		if(physicsWorld && !physicsWorld->isPaused())
 		{ //to avoid miss of collision between objects just loaded and on objects not loaded yet
 			throw std::runtime_error("Physics world should be paused while loading map.");
@@ -410,6 +415,52 @@ namespace urchin
     void Map::updateSceneAI(const std::shared_ptr<NavMeshAgent> &navMeshAgent)
     {
 	    sceneAI->changeNavMeshAgent(navMeshAgent);
+    }
+
+    void Map::pause()
+    {
+        if(renderer3d)
+        {
+            renderer3d->pause();
+        }
+
+        if(physicsWorld)
+        {
+            physicsWorld->pause();
+        }
+
+        if(aiManager)
+        {
+            aiManager->pause();
+        }
+
+        if(soundManager)
+        {
+            soundManager->pause();
+        }
+    }
+
+    void Map::unpause()
+    {
+        if(renderer3d)
+        {
+            renderer3d->unpause();
+        }
+
+        if(physicsWorld)
+        {
+            physicsWorld->unpause();
+        }
+
+        if(aiManager)
+        {
+            aiManager->unpause();
+        }
+
+        if(soundManager)
+        {
+            soundManager->unpause();
+        }
     }
 
 	void Map::refreshMap()

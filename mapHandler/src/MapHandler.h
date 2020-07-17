@@ -41,6 +41,9 @@ namespace urchin
 			void refreshMap();
 			Map *getMap() const;
 
+            void pause();
+			void unpause();
+
 		private:
 			std::string relativeWorkingDirectory;
 			Map *map;

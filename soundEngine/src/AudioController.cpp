@@ -11,7 +11,7 @@ namespace urchin
 			sound(sound),
 			soundTrigger(soundTrigger),
 			triggerValue(SoundTrigger::STOP),
-            isGlobalPaused(false)
+            isPaused(false)
 	{
 		smoothStopAction = new SmoothStopAction(soundTrigger->getSoundBehavior());
 
@@ -51,23 +51,23 @@ namespace urchin
 		smoothStopAction = new SmoothStopAction(soundTrigger->getSoundBehavior());
 	}
 
-	void AudioController::globalPause()
+	void AudioController::pause()
 	{
 		if(audioPlayer->isPlaying())
 		{
 			audioPlayer->pause();
 
-            isGlobalPaused = true;
+            isPaused = true;
 		}
 	}
 
-	void AudioController::globalResume()
+	void AudioController::unpause()
 	{
-        if(isGlobalPaused)
+        if(isPaused)
         {
-            audioPlayer->play(); //as it's a resume: use 'play' or 'playLoop' method doesn't make any difference
+            audioPlayer->play(); //as it's a unpause: use 'play' or 'playLoop' method doesn't make any difference
 
-            isGlobalPaused = false;
+            isPaused = false;
         }
 	}
 

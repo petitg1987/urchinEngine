@@ -16,8 +16,8 @@ namespace urchin
 			virtual ~Camera() = default;
 			
 			void onResize(unsigned int, unsigned int);
-			virtual void moveMouse(unsigned int, unsigned int) = 0;
-			
+
+			void resetMousePosition();
 			void useMouseToMoveCamera(bool);
 			bool isUseMouseToMoveCamera() const;
 			void setMouseSensitivity(float);
@@ -49,6 +49,9 @@ namespace urchin
 			virtual void updateCameraView(float) = 0;
 		
 			bool onMouseMove(int, int);
+
+	    protected:
+            virtual void moveMouse(unsigned int, unsigned int) = 0;
 
 		private:
 			void updateViewMatrix();

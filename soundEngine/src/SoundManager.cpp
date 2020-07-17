@@ -20,7 +20,7 @@ namespace urchin
 
 	SoundManager::~SoundManager()
 	{
-		for (auto audioController : audioControllers)
+		for (auto *audioController : audioControllers)
 		{
 			deleteAudioController(audioController);
 		}
@@ -94,19 +94,19 @@ namespace urchin
 		throw std::invalid_argument("Impossible to find a sound trigger for the sound.");
 	}
 
-    void SoundManager::globalPause()
+    void SoundManager::pause()
     {
         for(auto &audioController : audioControllers)
         {
-            audioController->globalPause();
+            audioController->pause();
         }
     }
 
-    void SoundManager::globalResume()
+    void SoundManager::unpause()
     {
         for(auto &audioController : audioControllers)
         {
-            audioController->globalResume();
+            audioController->unpause();
         }
     }
 

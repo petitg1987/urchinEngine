@@ -70,8 +70,7 @@ namespace urchin
                 NullLoadCallback nullLoadCallback;
                 mapHandler->loadMapFromFile(relativeMapFilename, nullLoadCallback);
             }
-            physicsWorld->play();
-            aiManager->play();
+            mapHandler->unpause();
 
             isInitialized = true;
         }catch(std::exception &e)
@@ -117,11 +116,11 @@ namespace urchin
         //physics
 		physicsWorld = new PhysicsWorld();
         AbstractWorkBody::disableAllBodies(true);
-		physicsWorld->start(1.0f/50.0f, true);
+		physicsWorld->setUp(1.0f/50.0f);
 
         //AI
 		aiManager = new AIManager();
-		aiManager->start(1.0f/4.0f, true);
+		aiManager->setUp(1.0f/4.0f);
         navMeshDisplayer = new NavMeshDisplayer(aiManager, sceneManager->getActiveRenderer3d());
 
         //sound

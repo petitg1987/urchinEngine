@@ -86,4 +86,14 @@ namespace urchin
 		return map;
 	}
 
+    void MapHandler::pause()
+    {
+        map->pause();
+    }
+
+    void MapHandler::unpause()
+    {
+        map->unpause();
+    }
+
 }

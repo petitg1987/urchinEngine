@@ -80,6 +80,9 @@ namespace urchin
 
 			void refreshMap();
 
+			void pause();
+			void unpause();
+
 		private:
 			void loadFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &, LoadCallback &);
 			void loadSceneObjectsFrom(const std::shared_ptr<XmlChunk> &, const XmlParser &);

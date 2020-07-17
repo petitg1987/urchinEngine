@@ -27,8 +27,8 @@ namespace urchin
 			std::vector<const SoundTrigger *> getSoundTriggers() const;
 			SoundTrigger *retrieveSoundTriggerFor(const Sound *) const;
 
-            void globalPause();
-            void globalResume();
+            void pause();
+            void unpause();
 
 			void controlExecution();
 
