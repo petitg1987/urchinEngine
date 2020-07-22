@@ -84,7 +84,7 @@ namespace urchin
 	Renderer3d::~Renderer3d()
 	{
 		//models
-		for (auto allOctreeableModel : modelOctreeManager->getAllOctreeables())
+		for (auto *allOctreeableModel : modelOctreeManager->getAllOctreeables())
 		{
 			delete allOctreeableModel;
 		}
@@ -588,7 +588,7 @@ namespace urchin
         if(DEBUG_DISPLAY_LIGHTS_SCENE_BOUNDING_BOX)
         { //display scene box visible from light based on split frustums
             const Light *firstLight = lightManager->getVisibleLights()[0]; //choose light
-            for(auto &frustum : shadowManager->getSplitFrustums())
+            for(const auto &frustum : shadowManager->getSplitFrustums())
             {
                 shadowManager->drawLightSceneBox(frustum, firstLight, camera->getViewMatrix());
             }

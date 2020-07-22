@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "collision/constraintsolver/ConstraintSolverManager.h"
 
 namespace urchin
