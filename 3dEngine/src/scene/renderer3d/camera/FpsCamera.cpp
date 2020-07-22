@@ -45,45 +45,45 @@ namespace urchin
 
 	bool FpsCamera::onKeyDown(unsigned int key)
 	{
-		if(key == keyFront)
-		{
-			isKeyFrontPressed = true;
+        if (key == keyFront)
+        {
+            isKeyFrontPressed = true;
             return false;
-		}else if(key == keyBack)
-		{
-			isKeyBackPressed = true;
+        } else if (key == keyBack)
+        {
+            isKeyBackPressed = true;
             return false;
-		}else if(key == keyLeft)
-		{
-			isKeyLeftPressed = true;
+        } else if (key == keyLeft)
+        {
+            isKeyLeftPressed = true;
             return false;
-		}else if(key == keyRight)
-		{
-			isKeyRightPressed = true;
+        } else if (key == keyRight)
+        {
+            isKeyRightPressed = true;
             return false;
-		}
-		return true;
+        }
+        return true;
 	}
 
 	bool FpsCamera::onKeyUp(unsigned int key)
 	{
-		if(key == keyFront)
-		{
-			isKeyFrontPressed = false;
+        if (key == keyFront)
+        {
+            isKeyFrontPressed = false;
             return false;
-		}else if(key == keyBack)
-		{
-			isKeyBackPressed = false;
+        } else if (key == keyBack)
+        {
+            isKeyBackPressed = false;
             return false;
-		}else if(key == keyLeft)
-		{
-			isKeyLeftPressed = false;
+        } else if (key == keyLeft)
+        {
+            isKeyLeftPressed = false;
             return false;
-		}else if(key == keyRight)
-		{
-			isKeyRightPressed = false;
+        } else if (key == keyRight)
+        {
+            isKeyRightPressed = false;
             return false;
-		}
+        }
         return true;
 	}
 

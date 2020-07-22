@@ -40,10 +40,7 @@ namespace urchin
         this->middleScreenX = sceneWidth / 2;
         this->middleScreenY = sceneHeight / 2;
 
-		if(bUseMouse)
-		{
-            resetMousePosition();
-		}
+        resetMousePosition();
 
 		//projection matrix
 		float fov = 1.0f / (float)std::tan((angle * PI_VALUE) / 360.0f);
@@ -61,11 +58,16 @@ namespace urchin
 
     void Camera::resetMousePosition()
     {
-	    moveMouse(middleScreenX, middleScreenY);
+	    if(bUseMouse)
+        {
+            moveMouse(middleScreenX, middleScreenY);
+        }
     }
 
 	void Camera::useMouseToMoveCamera(bool use)
 	{
+        bUseMouse = use;
+
 		if(use)
 		{
             if(middleScreenX!=0 || middleScreenY!=0)
@@ -76,8 +78,6 @@ namespace urchin
 		{
 			moveMouse(oldMouseX, oldMouseY);
 		}
-		
-		bUseMouse = use;
 	}
 
 	bool Camera::isUseMouseToMoveCamera() const
